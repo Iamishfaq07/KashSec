@@ -1,4 +1,4 @@
-/* KashSec Academy v2.6 — Path 00 + Path 13 Career Prep + many practical labs */ 
+/* KashSec Academy v2.6 — Phase 1: Progress Tracking + Search + Bookmarks (starting) */ 
 
  document.getElementById('year').textContent = new Date().getFullYear();
 document.body.classList.add('reveal-ready');
@@ -230,6 +230,54 @@ const FEATURES = [
   {ico:"unlock",   t:"Free, forever",       d:"No account, no paywall, no tracking. World-class security education, open to everyone."}
 ];
 
+/* --- Phase 1: Progress Tracking (localStorage) --- */
+const PROGRESS_KEY = 'kashsec_progress';
+
+function getProgress() {
+  try {
+    return JSON.parse(localStorage.getItem(PROGRESS_KEY)) || [];
+  } catch {
+    return [];
+  }
+}
+
+function saveProgress(completed) {
+  localStorage.setItem(PROGRESS_KEY, JSON.stringify(completed));
+}
+
+function isLessonCompleted(pathId, subId) {
+  const key = `${pathId}/${subId}`;
+  return getProgress().includes(key);
+}
+
+function toggleLessonComplete(pathId, subId) {
+  const key = `${pathId}/${subId}`;
+  let completed = getProgress();
+  if (completed.includes(key)) {
+    completed = completed.filter(k => k !== key);
+  } else {
+    completed.push(key);
+  }
+  saveProgress(completed);
+  return completed.includes(key);
+}
+
+function getPathProgress(pathId) {
+  const path = findPath(pathId);
+  if (!path) return { completed: 0, total: 0, percent: 0 };
+  const completed = getProgress().filter(key => key.startsWith(pathId + '/')).length;
+  const total = path.subs.length;
+  const percent = total > 0 ? Math.round((completed / total) * 100) : 0;
+  return { completed, total, percent };
+}
+
+function getOverallProgress() {
+  const total = totalSubLessons();
+  const completed = getProgress().length;
+  const percent = total > 0 ? Math.round((completed / total) * 100) : 0;
+  return { completed, total, percent };
+}
+
 /* --- Helpers --- */
 const app = document.getElementById('app');
 
@@ -343,6 +391,7 @@ function countUp(){
 /* --- Views --- */
 function renderHome(){
   const total = totalSubLessons();
+  const progress = getOverallProgress();
   app.innerHTML = `
     <section class="hero">
       <div class="hero-inner">
@@ -360,7 +409,7 @@ function renderHome(){
         <div class="hero-stats" data-reveal style="--i:4">
           <div><div class="hstat-n" data-count="${PATHS.length}">${PATHS.length}</div><div class="hstat-l">learning paths</div></div>
           <div><div class="hstat-n" data-count="${total}" data-suffix="+">${total}+</div><div class="hstat-l">sub-lessons</div></div>
-          <div><div class="hstat-n">Labs</div><div class="hstat-l">+ challenges</div></div>
+          <div><div class="hstat-n">${progress.percent}%</div><div class="hstat-l">completed</div></div>
           <div><div class="hstat-n">₹0</div><div class="hstat-l">forever</div></div>
         </div>
       </div>
@@ -388,14 +437,16 @@ function renderHome(){
         <p class="sec-lead">Start at Path 00 and work down. Each path builds on the last, and every path is split into short sub-lessons.</p>
       </div>
       <div class="paths">
-        ${PATHS.map((p,i)=>`
+        ${PATHS.map((p,i)=>{
+          const pProgress = getPathProgress(p.id);
+          return `
           <a class="path-card" href="#/lesson/${p.id}" data-spotlight data-reveal style="--i:${i%3}">
             <div class="path-num">PATH ${p.n}</div>
             <div class="path-title">${p.title}</div>
             <div class="path-desc">${p.desc}</div>
-            <div class="path-meta">${p.subs.length} sub-lessons · ${p.level}</div>
-          </a>
-        `).join('')}
+            <div class="path-meta">${p.subs.length} sub-lessons · ${p.level} · ${pProgress.percent}% complete</div>
+          </a>`;
+        }).join('')}
       </div>
     </section>
     <section class="sec">
@@ -435,14 +486,16 @@ function renderCourseIndex(){
         <p class="sec-lead">Each path is split into short focused sub-lessons. Click a path to see its map.</p>
       </div>
       <div class="paths">
-        ${PATHS.map((p,i)=>`
+        ${PATHS.map((p,i)=>{
+          const pProgress = getPathProgress(p.id);
+          return `
           <a class="path-card" href="#/lesson/${p.id}" data-spotlight data-reveal style="--i:${i%3}">
             <div class="path-num">PATH ${p.n}</div>
             <div class="path-title">${p.title}</div>
             <div class="path-desc">${p.desc}</div>
-            <div class="path-meta">${p.subs.length} sub-lessons · ${p.level}</div>
-          </a>
-        `).join('')}
+            <div class="path-meta">${p.subs.length} sub-lessons · ${p.level} · ${pProgress.percent}% complete</div>
+          </a>`;
+        }).join('')}
       </div>
     </section>
   `;
@@ -451,24 +504,30 @@ function renderCourseIndex(){
 function renderPathOverview(pathId){
   const p = findPath(pathId);
   if(!p) return renderNotFound();
+  const pProgress = getPathProgress(pathId);
   app.innerHTML = `
     <section class="sec">
       <div class="path-overview">
         <div class="path-tag" data-reveal>Path ${p.n} · ${p.level}</div>
         <h1 data-reveal style="--i:1">${p.title}</h1>
         <p class="lead" data-reveal style="--i:2">${p.desc}</p>
+        <div style="margin: 1rem 0; font-size: 0.95rem; color: var(--muted);">
+          Progress: <strong>${pProgress.completed}/${pProgress.total}</strong> lessons completed (${pProgress.percent}%)
+        </div>
         <div data-reveal style="--i:3;margin-top:1.5rem"><a class="btn-amber" href="#/lesson/${p.id}/${p.subs[0].id}">Start Sub-lesson 1 →</a></div>
         <div class="sublesson-grid">
-          ${p.subs.map((s,i)=>`
-            <a class="sublesson-card" href="#/lesson/${p.id}/${s.id}" data-reveal style="--i:${i}">
+          ${p.subs.map((s,i)=>{
+            const completed = isLessonCompleted(pathId, s.id);
+            return `
+            <a class="sublesson-card ${completed ? 'completed' : ''}" href="#/lesson/${pathId}/${s.id}" data-reveal style="--i:${i}">
               <div class="sl-n">${p.n}.${s.n}</div>
               <div class="sl-body">
-                <div class="sl-t">${s.title}</div>
+                <div class="sl-t">${s.title} ${completed ? '✓' : ''}</div>
                 <div class="sl-d">${s.desc}</div>
               </div>
               <svg class="sl-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
-            </a>
-          `).join('')}
+            </a>`;
+          }).join('')}
         </div>
       </div>
     </section>
@@ -534,8 +593,10 @@ async function renderSubLesson(pathId, subId){
   const ctx = findSubContext(pathId, subId);
   if(!ctx) return renderNotFound();
 
+  const isCompleted = isLessonCompleted(pathId, subId);
+
   app.innerHTML = `
-    <div class="reader-progress" id:"rprog" style="width:0%"></div>
+    <div class="reader-progress" id="rprog" style="width:0%"></div>
     <div class="reader-wrap">
       <aside class="sidebar" id="sidebar">
         <div class="sb-head">All paths</div>
@@ -549,6 +610,14 @@ async function renderSubLesson(pathId, subId){
           </div>
           <button class="btn-ghost sm mobile-only", id="menuBtn" aria-label="Open lesson menu">☰ Lessons</button>
         </div>
+
+        <!-- Progress Toggle Button -->
+        <div style="margin-bottom: 1rem;">
+          <button id="completeBtn" class="btn-ghost sm" style="font-size: 0.9rem;">
+            ${isCompleted ? '✓ Completed' : 'Mark as Complete'}
+          </button>
+        </div>
+
         <div class="md" id="content"><div class="loading">Loading…</div></div>
         <div class="reader-nav">
           ${ctx.prev
@@ -567,6 +636,20 @@ async function renderSubLesson(pathId, subId){
     document.getElementById('sidebar').classList.toggle('open');
   });
   wireProgress();
+
+  // Complete button handler
+  const completeBtn = document.getElementById('completeBtn');
+  if (completeBtn) {
+    completeBtn.addEventListener('click', () => {
+      const nowCompleted = toggleLessonComplete(pathId, subId);
+      completeBtn.textContent = nowCompleted ? '✓ Completed' : 'Mark as Complete';
+      completeBtn.style.background = nowCompleted ? 'var(--success)' : '';
+      // Refresh path overview if needed
+      if (location.hash.includes('/lesson/')) {
+        // optional: could refresh current view
+      }
+    });
+  }
 
   try{
     const res = await fetch(`course/${pathId}/${subId}.md`);
@@ -600,11 +683,12 @@ function renderSidebar(activePathId, activeSubId){
         </button>
         <ul class="sb-sublist">
           <li><a href="#/lesson/${p.id}" class="${isActive && !activeSubId ? 'active':''}"><em>Overview</em></a></li>
-          ${p.subs.map(s=>`
-            <li><a href="#/lesson/${p.id}/${s.id}" class="${isActive && s.id===activeSubId?'active':''}">
-              ${p.n}.${s.n} · ${s.title}
-            </a></li>
-          `).join('')}
+          ${p.subs.map(s=>{
+            const completed = isLessonCompleted(p.id, s.id);
+            return `<li><a href="#/lesson/${p.id}/${s.id}" class="${isActive && s.id===activeSubId?'active':''}">
+              ${p.n}.${s.n} · ${s.title} ${completed ? '✓' : ''}
+            </a></li>`;
+          }).join('')}
         </ul>
       </div>
     `;
