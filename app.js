@@ -3,24 +3,65 @@
 document.getElementById('year').textContent = new Date().getFullYear();
 document.body.classList.add('reveal-ready');
 
-/* Init Mermaid with KashSec theme */
-if(typeof mermaid !== 'undefined'){
-  mermaid.initialize({
-    startOnLoad:false,
-    theme:'base',
-    themeVariables:{
-      primaryColor:'#111927', primaryTextColor:'#E9EEF3', primaryBorderColor:'#3FB6A8',
-      lineColor:'#8496A6', secondaryColor:'#152131', tertiaryColor:'#0C1119',
-      background:'#152131', mainBkg:'#111927', secondBkg:'#152131',
-      fontFamily:'Inter, system-ui, sans-serif', fontSize:'14px'
-    },
-    flowchart:{curve:'basis',padding:15},
-    sequence:{actorFontFamily:'Inter',noteFontFamily:'Inter',messageFontFamily:'Inter'}
+/* Lazily load marked + Mermaid only when a lesson actually needs to render
+   markdown. This means the home/course/careers/FAQ pages never depend on an
+   external CDN to appear, and a slow/blocked CDN can never leave the whole
+   site stuck on "Loading…" — only that one lesson's content is affected,
+   with a clear retry message instead of an infinite spinner. */
+let libsPromise = null;
+function loadScript(src){
+  return new Promise((resolve, reject)=>{
+    const s = document.createElement('script');
+    s.src = src;
+    s.onload = ()=>resolve();
+    s.onerror = ()=>reject(new Error('Failed to load ' + src));
+    document.head.appendChild(s);
   });
+}
+function withTimeout(promise, ms, label){
+  return Promise.race([
+    promise,
+    new Promise((_,reject)=>setTimeout(()=>reject(new Error(label + ' timed out')), ms))
+  ]);
+}
+function ensureMarkdownLibs(){
+  if(typeof marked !== 'undefined' && typeof mermaid !== 'undefined') return Promise.resolve();
+  if(libsPromise) return libsPromise;
+  libsPromise = withTimeout(
+    loadScript('https://cdn.jsdelivr.net/npm/marked/marked.min.js')
+      .then(()=>loadScript('https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js')),
+    12000, 'Loading the lesson renderer'
+  ).then(()=>{
+    if(typeof mermaid !== 'undefined'){
+      mermaid.initialize({
+        startOnLoad:false,
+        theme:'base',
+        themeVariables:{
+          primaryColor:'#111927', primaryTextColor:'#E9EEF3', primaryBorderColor:'#3FB6A8',
+          lineColor:'#8496A6', secondaryColor:'#152131', tertiaryColor:'#0C1119',
+          background:'#152131', mainBkg:'#111927', secondBkg:'#152131',
+          fontFamily:'Inter, system-ui, sans-serif', fontSize:'14px'
+        },
+        flowchart:{curve:'basis',padding:15},
+        sequence:{actorFontFamily:'Inter',noteFontFamily:'Inter',messageFontFamily:'Inter'}
+      });
+    }
+  }).catch(err=>{ libsPromise = null; throw err; }); // allow retry on next lesson visit
+  return libsPromise;
 }
 
 /* --- Course structure — each path has sub-lessons --- */
 const PATHS = [
+  {n:"00", id:"00-fresher-basics", title:"Computer Basics & Security Mindset", level:"Absolute fresher",
+   desc:"For complete beginners — what a computer is, how the internet works, and staying safe online before anything else.",
+   subs:[
+     {n:"1", id:"what-is-a-computer",   title:"What is a computer really?", desc:"Hardware, software, and the OS, explained simply."},
+     {n:"2", id:"how-internet-works",   title:"How the internet works",     desc:"From your phone to the world, in plain English."},
+     {n:"3", id:"files-folders-you",    title:"Files, folders & organizing yourself", desc:"Where your data lives, and how to stay tidy."},
+     {n:"4", id:"how-to-learn-tech",    title:"How to learn tech effectively", desc:"The habits that make the difference."},
+     {n:"5", id:"passwords-accounts",   title:"Passwords & accounts basics", desc:"Your first line of defense, done right."},
+     {n:"6", id:"staying-safe-online",  title:"Staying safe online",        desc:"Phishing, scams, and the basics of online safety."}
+   ]},
   {n:"01", id:"01-introduction", title:"Introduction to Cybersecurity", level:"Absolute beginner",
    desc:"What security is, why it matters, hacker types, the law, how to learn well.",
    subs:[
@@ -28,7 +69,8 @@ const PATHS = [
      {n:"2", id:"why-it-matters",        title:"Why it matters to you",   desc:"Everyday attacks, and the career door this opens."},
      {n:"3", id:"types-of-hackers",      title:"Types of hackers & careers", desc:"White/grey/black hats, and the jobs that exist."},
      {n:"4", id:"the-golden-rule",       title:"The golden rule: permission", desc:"The one legal line that keeps you safe forever."},
-     {n:"5", id:"how-to-learn",          title:"How to actually learn this", desc:"The habits that prevent burnout and speed you up."}
+     {n:"5", id:"how-to-learn",          title:"How to actually learn this", desc:"The habits that prevent burnout and speed you up."},
+     {n:"6", id:"security-mindset-lab",  title:"Security Mindset Lab",    desc:"A hands-on exercise to develop the right way of thinking about security."}
    ]},
   {n:"02", id:"02-networking", title:"Networking Fundamentals", level:"Beginner",
    desc:"Networks, IP, ports, packets, TCP/UDP, DNS, HTTP/HTTPS — the bedrock.",
@@ -40,7 +82,9 @@ const PATHS = [
      {n:"5", id:"protocols",           title:"What is a protocol?",      desc:"Rules two computers agree on before talking."},
      {n:"6", id:"tcp-vs-udp",          title:"TCP vs UDP",               desc:"Registered mail vs postcard — plus the handshake."},
      {n:"7", id:"dns",                 title:"DNS: the phonebook",       desc:"How names become numbers, and what leaks."},
-     {n:"8", id:"http-https",          title:"HTTP & HTTPS",             desc:"The web's language, and why the padlock matters."}
+     {n:"8", id:"http-https",          title:"HTTP & HTTPS",             desc:"The web's language, and why the padlock matters."},
+     {n:"9", id:"dns-lab",             title:"DNS Lab",                  desc:"Understand how DNS works and how it can be abused."},
+     {n:"10", id:"practical-packet-lab", title:"Practical Packet Analysis Intro", desc:"See how data actually moves, hands-on."}
    ]},
   {n:"03", id:"03-linux", title:"Operating Systems & Linux", level:"Beginner",
    desc:"Install Kali in VirtualBox, then a full tour of the Linux command line.",
@@ -55,7 +99,9 @@ const PATHS = [
      {n:"8", id:"terminal-basics",     title:"Meet the terminal",       desc:"Your first commands, unafraid."},
      {n:"9", id:"files-and-folders",   title:"Files & folders",         desc:"Navigate, read, search — grep is gold."},
      {n:"10", id:"users-permissions",  title:"Users, permissions & sudo", desc:"Read rwx, install with apt, the SUID clue."},
-     {n:"11", id:"bash-scripting",     title:"Your first bash script",  desc:"Pipes, redirection, loops — automation begins."}
+     {n:"11", id:"bash-scripting",     title:"Your first bash script",  desc:"Pipes, redirection, loops — automation begins."},
+     {n:"12", id:"advanced-terminal-lab", title:"Advanced Terminal Lab", desc:"Level up your command line skills."},
+     {n:"13", id:"linux-forensics-lab", title:"Linux Forensics Basics Lab", desc:"Learn to investigate a Linux system."}
    ]},
   {n:"04", id:"04-python", title:"Programming & Python", level:"Beginner",
    desc:"Programming from zero, then Python — build a real password-strength tool.",
@@ -68,7 +114,9 @@ const PATHS = [
      {n:"6", id:"first-program",       title:"Your first Python program", desc:"Print, input, comments — the write-save-run cycle."},
      {n:"7", id:"lists-functions",     title:"Lists & functions",       desc:"Wordlists and reusable code blocks."},
      {n:"8", id:"password-checker",    title:"Build a password checker", desc:"Combine everything into a real tool."},
-     {n:"9", id:"where-next",          title:"Where to go next",        desc:"requests, socket, hashlib — and a mini port checker."}
+     {n:"9", id:"where-next",          title:"Where to go next",        desc:"requests, socket, hashlib — and a mini port checker."},
+     {n:"10", id:"automation-for-security", title:"Automation for Security", desc:"Why scripting and automation are essential in security."},
+     {n:"11", id:"security-scripting-lab", title:"Security Scripting Lab", desc:"Turn Python into a real security tool."}
    ]},
   {n:"05", id:"05-web-basics", title:"How the Web Works", level:"Beginner",
    desc:"Requests, HTML/CSS/JS, client/server, cookies, APIs, DevTools.",
@@ -79,7 +127,9 @@ const PATHS = [
      {n:"4", id:"cookies-sessions",    title:"Cookies, sessions, logins", desc:"How you stay logged in — and how attackers steal that."},
      {n:"5", id:"apis-json",           title:"APIs & JSON",             desc:"How modern apps really talk under the hood."},
      {n:"6", id:"devtools",            title:"Browser DevTools",        desc:"Your first hacking tool — free and built in."},
-     {n:"7", id:"web-anatomy",         title:"Anatomy of a web app",    desc:"The full picture: client, server, DB, API, cookies."}
+     {n:"7", id:"web-anatomy",         title:"Anatomy of a web app",    desc:"The full picture: client, server, DB, API, cookies."},
+     {n:"8", id:"cookies-sessions-lab", title:"Cookies & Sessions Lab", desc:"Understand how authentication state is managed and attacked."},
+     {n:"9", id:"devtools-lab",        title:"Browser DevTools Lab",    desc:"Learn to use your browser as a hacking tool."}
    ]},
   {n:"06", id:"06-fundamentals", title:"Cybersecurity Fundamentals", level:"Beginner→Intermediate",
    desc:"CIA triad, risk, malware, hashing, phishing, MFA, frameworks.",
@@ -91,7 +141,9 @@ const PATHS = [
      {n:"5", id:"passwords-hashing",   title:"Passwords & hashing",     desc:"How they should be stored, why reuse is a disaster."},
      {n:"6", id:"phishing",            title:"Phishing & social eng.",  desc:"Attacking humans, not computers."},
      {n:"7", id:"protect-yourself",    title:"MFA, updates, backups",   desc:"Habits that stop most real attacks."},
-     {n:"8", id:"frameworks",          title:"Frameworks & compliance", desc:"NIST, ISO, OWASP, MITRE, PCI DSS, HIPAA, GDPR."}
+     {n:"8", id:"frameworks",          title:"Frameworks & compliance", desc:"NIST, ISO, OWASP, MITRE, PCI DSS, HIPAA, GDPR."},
+     {n:"9", id:"risk-assessment-lab", title:"Risk Assessment Lab",     desc:"Practice thinking like a risk analyst."},
+     {n:"10", id:"social-engineering-lab", title:"Social Engineering Lab", desc:"Understand how attackers manipulate people."}
    ]},
   {n:"07", id:"07-web-security", title:"Web Security & Hacking", level:"Intermediate",
    desc:"OWASP Top 10, Burp, IDOR, XSS, SQLi, command injection, SSRF, JWT.",
@@ -104,7 +156,11 @@ const PATHS = [
      {n:"6", id:"sqli",                title:"SQL Injection",           desc:"The classic — with auth bypass, UNION, blind, sqlmap."},
      {n:"7", id:"cmd-and-upload",      title:"Command inj. & uploads",  desc:"Two paths to server takeover."},
      {n:"8", id:"ssrf-and-auth",       title:"SSRF & auth attacks",     desc:"Cloud metadata, JWT, credential attacks."},
-     {n:"9", id:"web-roadmap",         title:"Your 90-day roadmap",     desc:"A concrete plan to reach real bug bounty."}
+     {n:"9", id:"web-roadmap",         title:"Your 90-day roadmap",     desc:"A concrete plan to reach real bug bounty."},
+     {n:"10", id:"burp-advanced-lab",  title:"Advanced Burp Suite Lab", desc:"Take your Burp skills to the next level."},
+     {n:"11", id:"jwt-advanced-lab",   title:"Advanced JWT Lab",        desc:"Deep dive into JWT attacks and defenses."},
+     {n:"12", id:"ssrf-jwt-lab",       title:"SSRF & JWT Lab",          desc:"Practice two important modern web attacks."},
+     {n:"13", id:"xss-practical-lab",  title:"XSS Practical Lab",       desc:"Learn to find and exploit Cross-Site Scripting safely."}
    ]},
   {n:"08", id:"08-network-security", title:"Network Security", level:"Intermediate",
    desc:"Nmap, Wireshark, firewalls, VPNs, IDS/IPS, Wi-Fi attacks, MITM.",
@@ -116,7 +172,9 @@ const PATHS = [
      {n:"5", id:"ids-ips-siem",        title:"IDS, IPS & SIEM",         desc:"Modern detection: from Snort to SOC to SOAR."},
      {n:"6", id:"wifi-security",       title:"Wi-Fi security & attacks", desc:"WPA2/3, evil twin, handshake capture."},
      {n:"7", id:"mitm",                title:"Man-in-the-Middle",       desc:"How MITMs work, and how HTTPS defeats them."},
-     {n:"8", id:"netsec-roadmap",      title:"Your network-security path", desc:"Red, blue, or engineering — pick a track."}
+     {n:"8", id:"netsec-roadmap",      title:"Your network-security path", desc:"Red, blue, or engineering — pick a track."},
+     {n:"9", id:"nmap-advanced-lab",   title:"Advanced Nmap Lab",       desc:"Master network scanning like a professional."},
+     {n:"10", id:"wireshark-advanced-lab", title:"Advanced Wireshark Lab", desc:"Go deeper with packet analysis."}
    ]},
   {n:"09", id:"09-ethical-hacking", title:"Ethical Hacking", level:"Intermediate→Advanced",
    desc:"The 5-phase methodology, from reconnaissance through reporting.",
@@ -128,7 +186,11 @@ const PATHS = [
      {n:"5", id:"exploitation",        title:"Phase 3: Exploitation",   desc:"Metasploit, reverse shells, Metasploitable lab."},
      {n:"6", id:"post-exploitation",   title:"Phase 4: Post-exploitation", desc:"Situational awareness, privesc, pivoting."},
      {n:"7", id:"reporting",           title:"Phase 5: Reporting",      desc:"The deliverable. CVSS, exec summary, details."},
-     {n:"8", id:"eh-roadmap",          title:"Your ethical-hacking path", desc:"Security+ → eJPT → PNPT / OSCP."}
+     {n:"8", id:"eh-roadmap",          title:"Your ethical-hacking path", desc:"Security+ → eJPT → PNPT / OSCP."},
+     {n:"9", id:"advanced-exploitation-lab", title:"Advanced Exploitation Lab", desc:"Take exploitation skills further."},
+     {n:"10", id:"metasploit-lab",     title:"Metasploit Practical Lab", desc:"Get comfortable with the most popular exploitation framework."},
+     {n:"11", id:"practical-recon-lab", title:"Practical Reconnaissance Lab", desc:"Hands-on OSINT and reconnaissance practice."},
+     {n:"12", id:"reporting-lab",      title:"Reporting Lab",           desc:"Learn to write professional penetration test reports."}
    ]},
   {n:"10", id:"10-bug-bounty", title:"Bug Bounty", level:"Intermediate→Advanced",
    desc:"Programs, recon pipelines, hunting IDOR & logic bugs, reports that pay.",
@@ -140,7 +202,10 @@ const PATHS = [
      {n:"5", id:"hunting-idor",        title:"Hunting IDOR",            desc:"Two-account method for beginners' goldmine."},
      {n:"6", id:"logic-and-chains",    title:"Business logic & chains", desc:"Race conditions, GraphQL, OAuth."},
      {n:"7", id:"automation-nuclei",   title:"Automation & nuclei",     desc:"Monitor while you sleep."},
-     {n:"8", id:"bb-career",           title:"The bug-bounty career",   desc:"Economics, community, staying sane."}
+     {n:"8", id:"bb-career",           title:"The bug-bounty career",   desc:"Economics, community, staying sane."},
+     {n:"9", id:"bounty-hunting-challenges", title:"Bug Bounty Hunting Challenges", desc:"Practical challenges to level up your hunting skills."},
+     {n:"10", id:"logic-bug-hunting-lab", title:"Logic Bug Hunting Lab", desc:"Practice finding business logic vulnerabilities."},
+     {n:"11", id:"recon-pipeline-lab", title:"Recon Pipeline Lab",      desc:"Build and run a real reconnaissance pipeline."}
    ]},
   {n:"11", id:"11-advanced", title:"Advanced Cyber Topics", level:"Advanced",
    desc:"Linux/Windows privesc, Active Directory, cloud, containers, malware, DFIR.",
@@ -152,7 +217,17 @@ const PATHS = [
      {n:"5", id:"containers-k8s",      title:"Containers & Kubernetes", desc:"Docker sockets, RBAC, service tokens."},
      {n:"6", id:"malware-analysis",    title:"Malware analysis basics", desc:"Static & dynamic in a safe VM."},
      {n:"7", id:"dfir",                title:"Digital forensics & IR",  desc:"NIST 800-61, Sysmon, Volatility."},
-     {n:"8", id:"specialise",          title:"Advanced career paths",   desc:"Where to specialise, and why."}
+     {n:"8", id:"specialise",          title:"Advanced career paths",   desc:"Where to specialise, and why."},
+     {n:"9", id:"cloud-security-lab",  title:"Cloud Security Lab",      desc:"Get hands-on with common cloud misconfigurations."},
+     {n:"10", id:"containers-k8s-lab", title:"Containers & Kubernetes Lab", desc:"Practice container security basics."},
+     {n:"11", id:"devsecops-lab",      title:"DevSecOps Lab",           desc:"Integrate security into the development lifecycle."},
+     {n:"12", id:"dfir-lab",           title:"Digital Forensics & IR Lab", desc:"Practice basic incident response and forensics."},
+     {n:"13", id:"malware-analysis-lab", title:"Malware Analysis Lab",  desc:"Get started with basic malware analysis in a safe environment."},
+     {n:"14", id:"practical-linux-privesc-lab", title:"Practical Linux Privilege Escalation Lab", desc:"Get hands-on with real privesc techniques in a safe environment."},
+     {n:"15", id:"purple-teaming-lab", title:"Purple Teaming Lab",      desc:"Learn to combine red and blue team perspectives."},
+     {n:"16", id:"threat-hunting-lab", title:"Threat Hunting Lab",      desc:"Learn proactive detection instead of just reacting."},
+     {n:"17", id:"threat-modeling-lab", title:"Threat Modeling Lab",    desc:"Learn to systematically find risks before attackers do."},
+     {n:"18", id:"windows-privesc-lab", title:"Windows Privilege Escalation Lab", desc:"Practice common Windows privesc techniques."}
    ]},
   {n:"12", id:"12-ai-security", title:"AI & AI Security", level:"Advanced",
    desc:"How LLMs work, prompt injection, OWASP LLM Top 10, AI red teaming.",
@@ -164,7 +239,25 @@ const PATHS = [
      {n:"5", id:"llm-top-10",          title:"OWASP LLM Top 10",        desc:"The shared checklist for AI application security."},
      {n:"6", id:"poisoning-adv-ml",    title:"Poisoning & adversarial ML", desc:"Backdoors, extraction, adversarial examples."},
      {n:"7", id:"ai-red-teaming",      title:"AI red teaming",          desc:"Methodology, harms taxonomy, ethics."},
-     {n:"8", id:"ai-career",           title:"Your AI-security career", desc:"The 12-month plan for a new frontier."}
+     {n:"8", id:"ai-career",           title:"Your AI-security career", desc:"The 12-month plan for a new frontier."},
+     {n:"9", id:"agentic-ai-risks",    title:"Agentic AI Risks",        desc:"As AI agents become more powerful, new risks emerge."},
+     {n:"10", id:"llm-attack-taxonomy", title:"LLM Attack Taxonomy",    desc:"A clear map of the different ways attackers try to break AI systems."},
+     {n:"11", id:"llm-governance",     title:"LLM Governance & Compliance", desc:"Managing AI systems responsibly at scale."},
+     {n:"12", id:"llm-red-teaming-playbooks", title:"LLM Red Teaming Playbooks", desc:"Structured approaches to systematically test LLM applications."},
+     {n:"13", id:"llm-supply-chain-attacks", title:"LLM Supply Chain Attacks", desc:"Attacks that target the components and data used to build and run LLMs."},
+     {n:"14", id:"practical-ai-labs",  title:"Practical AI Red Teaming Labs", desc:"Hands-on challenges you can do safely with free or low-cost LLMs."},
+     {n:"15", id:"securing-llm-apps",  title:"Securing LLM Applications", desc:"How to build and deploy LLMs more securely."}
+   ]},
+  {n:"13", id:"13-career-prep", title:"Career Prep", level:"All levels",
+   desc:"Resume, portfolio, interviews, and the job search — turn your skills into an offer.",
+   subs:[
+     {n:"1", id:"building-resume",       title:"Building your security resume", desc:"Your resume is your first impression."},
+     {n:"2", id:"certifications-roadmap", title:"Certifications that actually help", desc:"Not all certs are equal — focus on the right ones at the right time."},
+     {n:"3", id:"github-portfolio",      title:"Building projects & GitHub portfolio", desc:"Projects beat certificates alone."},
+     {n:"4", id:"job-search",            title:"Job search strategy",     desc:"Where and how to find security jobs effectively."},
+     {n:"5", id:"interview-prep",        title:"Interview preparation",   desc:"Technical and soft skills that win jobs."},
+     {n:"6", id:"networking-community",  title:"Networking & community",  desc:"Connections often matter as much as skills."},
+     {n:"7", id:"first-90-days",         title:"Your first 90 days in a security job", desc:"How to succeed once you land the role."}
    ]}
 ];
 
@@ -544,6 +637,18 @@ async function renderSubLesson(pathId, subId){
     document.getElementById('sidebar').classList.toggle('open');
   });
   wireProgress();
+
+  try{
+    await ensureMarkdownLibs();
+  }catch(e){
+    document.getElementById('content').innerHTML = `
+      <h1>Couldn't load the lesson renderer</h1>
+      <p>Your connection may be slow or blocking <code>cdn.jsdelivr.net</code>. Check your network and try again.</p>
+      <p><button class="btn-amber sm" id="retryLibs" type="button">Retry</button></p>
+    `;
+    document.getElementById('retryLibs')?.addEventListener('click', ()=>renderSubLesson(pathId, subId));
+    return;
+  }
 
   try{
     const res = await fetch(`course/${pathId}/${subId}.md`);

@@ -4,7 +4,7 @@
 
 **A completely free cybersecurity course, from absolute zero to job-ready.**
 
-12 learning paths · 90+ sub-lessons · diagrams, labs & challenges · always free
+14 learning paths · 150+ sub-lessons · diagrams, labs & challenges · always free
 
 [![Live Site](https://img.shields.io/badge/live-kashsec.academy-EFA43A?style=for-the-badge)](https://iamishfaq07.github.io/KashSec/)
 [![Made with](https://img.shields.io/badge/stack-HTML%20%C2%B7%20CSS%20%C2%B7%20JS-3FB6A8?style=for-the-badge)](#tech-stack)
@@ -62,9 +62,9 @@ KashSec/
     └── ...12-ai-security/
 ```
 
-## 🗺️ The 12 paths
+## 🗺️ The 14 paths
 
-`01` Introduction · `02` Networking · `03` Linux & Operating Systems · `04` Programming & Python · `05` How the Web Works · `06` Cybersecurity Fundamentals · `07` Web Security & Hacking · `08` Network Security · `09` Ethical Hacking · `10` Bug Bounty · `11` Advanced Topics · `12` AI & AI Security
+`00` Computer Basics & Security Mindset · `01` Introduction · `02` Networking · `03` Linux & Operating Systems · `04` Programming & Python · `05` How the Web Works · `06` Cybersecurity Fundamentals · `07` Web Security & Hacking · `08` Network Security · `09` Ethical Hacking · `10` Bug Bounty · `11` Advanced Topics · `12` AI & AI Security · `13` Career Prep
 
 ## ✍️ Writing a lesson
 
