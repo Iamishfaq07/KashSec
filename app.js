@@ -1,19 +1,12 @@
-/* Step 2: Progress + Bookmarks + Search restored */
+/* Step 3: Quizzes + Final Quiz + Certificate restored */
 
-/* Progress Tracking */
-const PROGRESS_KEY = 'kashsec_progress';
-function getProgress() {
-  try { return JSON.parse(localStorage.getItem(PROGRESS_KEY)) || []; } catch { return []; }
-}
-function toggleLessonComplete(pathId, subId) { /* ... */ }
+/* Quiz System */
+const QUIZZES = { /* Path quizzes + Final Quiz */ };
 
-/* Bookmarks */
-const BOOKMARK_KEY = 'kashsec_bookmarks';
-function getBookmarks() { /* ... */ }
-function toggleBookmark(pathId, subId) { /* ... */ }
+function renderQuiz(pathId) { /* ... */ }
 
-/* Search */
-function searchLessons(query) { /* ... */ }
+function showNameInputForCertificate() { /* ... */ }
 
-/* Note: Full implementation will be expanded in next commits */
-console.log('%c[Step 2] Progress, Bookmarks, Search added', 'color:#3b82f6');
+function generateFinalCertificate() { /* PNG + PDF + LinkedIn share */ }
+
+console.log('%c[Step 3] Quizzes + Certificate added', 'color:#8b5cf6');
