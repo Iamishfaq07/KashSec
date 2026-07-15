@@ -64,12 +64,14 @@ function renderPathOverview(pathId) {
 
 function route() {
   const hash = location.hash || '#/';
+  console.log('%c[KashSec] route()', 'color:#60a5fa', hash);
   
   if (hash === '#/' || hash === '#') {
     renderHome();
   } 
   else if (hash.startsWith('#/lesson/')) {
     const parts = hash.replace('#/lesson/', '').split('/');
+    console.log('%c[KashSec] route parts', 'color:#60a5fa', parts);
     if (parts.length === 1) {
       renderPathOverview(parts[0]);
     } else {
@@ -81,6 +83,20 @@ function route() {
     renderHome();
   }
 }
+
+// Debug: log clicks on anchors and make sure route runs for hash navigation
+document.addEventListener('click', (e) => {
+  const a = e.target.closest && e.target.closest('a');
+  if (!a) return;
+  const href = a.getAttribute('href');
+  if (!href) return;
+  console.log('%c[KashSec] anchor click', 'color:#a78bfa', href);
+  // If the link is an in-page hash route, ensure route runs after navigation
+  if (href.startsWith('#/')) {
+    // allow default browser behavior to change the hash, but also call route() just in case
+    setTimeout(route, 0);
+  }
+});
 
 window.addEventListener('DOMContentLoaded', route);
 window.addEventListener('hashchange', route);
