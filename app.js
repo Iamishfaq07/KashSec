@@ -1,6 +1,8 @@
 /* KashSec Academy - Minimal Working Version */
 
-document.getElementById('year').textContent = new Date().getFullYear();
+// Guard access to the year element so a missing #year doesn't throw and stop the script
+const yearEl = document.getElementById('year');
+if (yearEl) yearEl.textContent = new Date().getFullYear();
 
 const PATHS = [
   {
@@ -74,6 +76,9 @@ function route() {
       // For now just show path overview
       renderPathOverview(parts[0]);
     }
+  } else {
+    // Unknown hash: fall back to home
+    renderHome();
   }
 }
 
