@@ -1,6 +1,7 @@
 /* KashSec Academy v2 — two-level structure, Mermaid, callouts, external refs */
 
 document.getElementById('year').textContent = new Date().getFullYear();
+document.body.classList.add('reveal-ready');
 
 /* Init Mermaid with KashSec theme */
 if(typeof mermaid !== 'undefined'){
@@ -187,6 +188,25 @@ const FAQS = [
   {q:"How long does the whole course take?", a:"At a sensible pace (a sub-lesson a day), the full course takes 3–4 months. Depth beats speed."}
 ];
 
+const ICON = {
+  book:'<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>',
+  terminal:'<polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/>',
+  grid:'<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/>',
+  map:'<polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/>',
+  link:'<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>',
+  unlock:'<rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/>'
+};
+const svgIco = (name)=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ICON[name]}</svg>`;
+
+const FEATURES = [
+  {ico:"book",     t:"Plain-English first", d:"Every term is defined the moment it appears — no assumed knowledge, no jargon walls, ever."},
+  {ico:"terminal", t:"Hands-on labs",       d:"Real exercises and challenges in a safe, legal lab you build yourself and fully control."},
+  {ico:"grid",     t:"Diagrams that click", d:"Mermaid flowcharts and hand-drawn SVGs turn abstract ideas into pictures you remember."},
+  {ico:"map",      t:"A real roadmap",      d:"12 ordered paths, 97 focused sub-lessons — each one building on the one before it."},
+  {ico:"link",     t:"Curated references",  d:"Every lesson ends with links to the best free resources, so you always know where to go deeper."},
+  {ico:"unlock",   t:"Free, forever",       d:"No account, no paywall, no tracking. World-class security education, open to everyone."}
+];
+
 /* --- Helpers --- */
 const app = document.getElementById('app');
 
@@ -213,15 +233,88 @@ window.addEventListener('DOMContentLoaded', route);
 function route(){
   const hash = location.hash || '#/';
   window.scrollTo(0,0);
-  if(hash === '#/' || hash === '#') return renderHome();
-  if(hash === '#/course') return renderCourseIndex();
-  if(hash === '#/careers') return renderCareers();
-  if(hash === '#/faq') return renderFAQ();
-  const partsSub = hash.match(/^#\/lesson\/([^/]+)\/([^/]+)$/);
-  if(partsSub) return renderSubLesson(partsSub[1], partsSub[2]);
-  const partsPath = hash.match(/^#\/lesson\/([^/]+)$/);
-  if(partsPath) return renderPathOverview(partsPath[1]);
-  renderNotFound();
+  if(hash === '#/' || hash === '#') renderHome();
+  else if(hash === '#/course') renderCourseIndex();
+  else if(hash === '#/careers') renderCareers();
+  else if(hash === '#/faq') renderFAQ();
+  else {
+    const partsSub = hash.match(/^#\/lesson\/([^/]+)\/([^/]+)$/);
+    const partsPath = hash.match(/^#\/lesson\/([^/]+)$/);
+    if(partsSub) renderSubLesson(partsSub[1], partsSub[2]);
+    else if(partsPath) renderPathOverview(partsPath[1]);
+    else renderNotFound();
+  }
+  afterRender();
+}
+
+const prefersReduced = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* Runs after every view render: reveal-on-scroll, cursor spotlight,
+   active nav highlight, and hero count-up. */
+function afterRender(){
+  updateActiveNav();
+  setupReveal();
+  wireSpotlight();
+  countUp();
+}
+
+function updateActiveNav(){
+  const hash = location.hash || '#/';
+  document.querySelectorAll('#navLinks a').forEach(a=>{
+    const href = a.getAttribute('href') || '';
+    if(!href.startsWith('#')) return; // skip external (GitHub)
+    const active = href === hash || (href === '#/course' && hash.startsWith('#/lesson'));
+    a.classList.toggle('active', active);
+    if(active) a.setAttribute('aria-current','page'); else a.removeAttribute('aria-current');
+  });
+}
+
+let revealObserver;
+function setupReveal(){
+  const els = app.querySelectorAll('[data-reveal]');
+  if(!els.length) return;
+  if(prefersReduced() || !('IntersectionObserver' in window)){
+    els.forEach(e=>e.classList.add('in'));
+    return;
+  }
+  if(revealObserver) revealObserver.disconnect();
+  revealObserver = new IntersectionObserver((entries,obs)=>{
+    entries.forEach(en=>{
+      if(en.isIntersecting){ en.target.classList.add('in'); obs.unobserve(en.target); }
+    });
+  },{rootMargin:'0px 0px -8% 0px', threshold:0.06});
+  els.forEach(e=>revealObserver.observe(e));
+  // Safety net: never leave content hidden if the observer misses.
+  setTimeout(()=>els.forEach(e=>e.classList.add('in')), 1600);
+}
+
+function wireSpotlight(){
+  if(window.matchMedia('(pointer: coarse)').matches) return; // touch: skip
+  app.querySelectorAll('[data-spotlight]').forEach(card=>{
+    card.addEventListener('pointermove',e=>{
+      const r = card.getBoundingClientRect();
+      card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+      card.style.setProperty('--my', (e.clientY - r.top) + 'px');
+    });
+  });
+}
+
+function countUp(){
+  const els = app.querySelectorAll('[data-count]');
+  if(!els.length) return;
+  els.forEach(el=>{
+    const target = parseInt(el.getAttribute('data-count'),10);
+    const suffix = el.getAttribute('data-suffix') || '';
+    if(prefersReduced() || !target){ el.textContent = target + suffix; return; }
+    const dur = 1100, start = performance.now();
+    const tick = (now)=>{
+      const t = Math.min((now - start) / dur, 1);
+      const eased = 1 - Math.pow(1 - t, 3);
+      el.textContent = Math.round(target * eased) + suffix;
+      if(t < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  });
 }
 
 /* --- Views --- */
@@ -230,34 +323,50 @@ function renderHome(){
   app.innerHTML = `
     <section class="hero">
       <div class="hero-inner">
-        <div class="eyebrow">Free cybersecurity course · zero experience needed</div>
-        <h1>Start cybersecurity from <span class="amber">absolute zero</span>.</h1>
-        <p class="hero-sub">
+        <div class="eyebrow" data-reveal>Free cybersecurity course · zero experience needed</div>
+        <h1 data-reveal style="--i:1">Start cybersecurity from <span class="amber">absolute zero</span>.</h1>
+        <p class="hero-sub" data-reveal style="--i:2">
           Networks, Linux, Python, web hacking, bug bounty, advanced topics, and AI security —
           all written in plain words with hands-on labs, diagrams, and links to real references.
           ${total}+ sub-lessons across ${PATHS.length} paths, always free.
         </p>
-        <div class="hero-btns">
+        <div class="hero-btns" data-reveal style="--i:3">
           <a class="btn-amber" href="#/lesson/01-introduction/what-is-cybersecurity">Begin lesson 1 →</a>
           <a class="btn-ghost" href="#/course">See the roadmap</a>
         </div>
-        <div class="hero-stats">
-          <div><div class="hstat-n">${PATHS.length}</div><div class="hstat-l">learning paths</div></div>
-          <div><div class="hstat-n">${total}+</div><div class="hstat-l">sub-lessons</div></div>
+        <div class="hero-stats" data-reveal style="--i:4">
+          <div><div class="hstat-n" data-count="${PATHS.length}">${PATHS.length}</div><div class="hstat-l">learning paths</div></div>
+          <div><div class="hstat-n" data-count="${total}" data-suffix="+">${total}+</div><div class="hstat-l">sub-lessons</div></div>
           <div><div class="hstat-n">Labs</div><div class="hstat-l">+ challenges</div></div>
           <div><div class="hstat-n">₹0</div><div class="hstat-l">forever</div></div>
         </div>
       </div>
     </section>
     <section class="sec">
-      <div class="sec-head">
+      <div class="sec-head" data-reveal>
+        <div class="sec-eyebrow">Why KashSec</div>
+        <h2>Built to actually get you there</h2>
+        <p class="sec-lead">Most security resources assume you already know the basics. This one doesn't — it's engineered for the complete beginner, end to end.</p>
+      </div>
+      <div class="features">
+        ${FEATURES.map((f,i)=>`
+          <div class="feature-card" data-spotlight data-reveal style="--i:${i}">
+            <div class="feature-ico">${svgIco(f.ico)}</div>
+            <h3>${f.t}</h3>
+            <p>${f.d}</p>
+          </div>
+        `).join('')}
+      </div>
+    </section>
+    <section class="sec">
+      <div class="sec-head" data-reveal>
         <div class="sec-eyebrow">The roadmap</div>
         <h2>Everything, in the right order</h2>
         <p class="sec-lead">Start at Path 01 and work down. Each path builds on the last, and every path is split into short sub-lessons.</p>
       </div>
       <div class="paths">
-        ${PATHS.map(p=>`
-          <a class="path-card" href="#/lesson/${p.id}">
+        ${PATHS.map((p,i)=>`
+          <a class="path-card" href="#/lesson/${p.id}" data-spotlight data-reveal style="--i:${i%3}">
             <div class="path-num">PATH ${p.n}</div>
             <div class="path-title">${p.title}</div>
             <div class="path-desc">${p.desc}</div>
@@ -267,28 +376,28 @@ function renderHome(){
       </div>
     </section>
     <section class="sec">
-      <div class="sec-head">
+      <div class="sec-head" data-reveal>
         <div class="sec-eyebrow">Careers</div>
         <h2>Where can this take you?</h2>
         <p class="sec-lead">Security is many jobs — here's a shortlist and which paths lead to each.</p>
       </div>
       <div class="careers">
-        ${CAREERS.slice(0,4).map(c=>`
-          <div class="career-card">
+        ${CAREERS.slice(0,4).map((c,i)=>`
+          <div class="career-card" data-spotlight data-reveal style="--i:${i}">
             <h3>${c.role}</h3><p>${c.desc}</p>
             <div class="career-follow"><span>Follow:</span> ${c.follow}</div>
           </div>
         `).join('')}
       </div>
-      <div style="text-align:center;margin-top:1.4rem"><a class="btn-ghost" href="#/careers">See all careers →</a></div>
+      <div class="sec-cta" data-reveal><a class="btn-ghost" href="#/careers">See all careers →</a></div>
     </section>
     <section class="sec">
-      <div class="sec-head">
+      <div class="sec-head" data-reveal>
         <div class="sec-eyebrow">Questions</div>
         <h2>Good to know</h2>
       </div>
       ${faqHTML(FAQS.slice(0,4))}
-      <div style="text-align:center;margin-top:1.4rem"><a class="btn-ghost" href="#/faq">All FAQs →</a></div>
+      <div class="sec-cta" data-reveal><a class="btn-ghost" href="#/faq">All FAQs →</a></div>
     </section>
   `;
   wireFAQ();
@@ -297,14 +406,14 @@ function renderHome(){
 function renderCourseIndex(){
   app.innerHTML = `
     <section class="sec">
-      <div class="sec-head">
+      <div class="sec-head" data-reveal>
         <div class="sec-eyebrow">The full course</div>
         <h2>12 paths, ${totalSubLessons()}+ sub-lessons</h2>
         <p class="sec-lead">Each path is split into short focused sub-lessons. Click a path to see its map.</p>
       </div>
       <div class="paths">
-        ${PATHS.map(p=>`
-          <a class="path-card" href="#/lesson/${p.id}">
+        ${PATHS.map((p,i)=>`
+          <a class="path-card" href="#/lesson/${p.id}" data-spotlight data-reveal style="--i:${i%3}">
             <div class="path-num">PATH ${p.n}</div>
             <div class="path-title">${p.title}</div>
             <div class="path-desc">${p.desc}</div>
@@ -322,13 +431,13 @@ function renderPathOverview(pathId){
   app.innerHTML = `
     <section class="sec">
       <div class="path-overview">
-        <div class="path-tag">Path ${p.n} · ${p.level}</div>
-        <h1>${p.title}</h1>
-        <p class="lead">${p.desc}</p>
-        <div style="margin-top:1.5rem"><a class="btn-amber" href="#/lesson/${p.id}/${p.subs[0].id}">Start Sub-lesson 1 →</a></div>
+        <div class="path-tag" data-reveal>Path ${p.n} · ${p.level}</div>
+        <h1 data-reveal style="--i:1">${p.title}</h1>
+        <p class="lead" data-reveal style="--i:2">${p.desc}</p>
+        <div data-reveal style="--i:3;margin-top:1.5rem"><a class="btn-amber" href="#/lesson/${p.id}/${p.subs[0].id}">Start Sub-lesson 1 →</a></div>
         <div class="sublesson-grid">
-          ${p.subs.map(s=>`
-            <a class="sublesson-card" href="#/lesson/${p.id}/${s.id}">
+          ${p.subs.map((s,i)=>`
+            <a class="sublesson-card" href="#/lesson/${p.id}/${s.id}" data-reveal style="--i:${i}">
               <div class="sl-n">${p.n}.${s.n}</div>
               <div class="sl-body">
                 <div class="sl-t">${s.title}</div>
@@ -346,14 +455,14 @@ function renderPathOverview(pathId){
 function renderCareers(){
   app.innerHTML = `
     <section class="sec">
-      <div class="sec-head">
+      <div class="sec-head" data-reveal>
         <div class="sec-eyebrow">Careers</div>
         <h2>Where this course leads</h2>
         <p class="sec-lead">Security has many careers. Here's what each does and which paths get you there.</p>
       </div>
       <div class="careers">
-        ${CAREERS.map(c=>`
-          <div class="career-card">
+        ${CAREERS.map((c,i)=>`
+          <div class="career-card" data-spotlight data-reveal style="--i:${i%4}">
             <h3>${c.role}</h3><p>${c.desc}</p>
             <div class="career-follow"><span>Follow paths:</span> ${c.follow}</div>
           </div>
@@ -366,7 +475,7 @@ function renderCareers(){
 function renderFAQ(){
   app.innerHTML = `
     <section class="sec">
-      <div class="sec-head">
+      <div class="sec-head" data-reveal>
         <div class="sec-eyebrow">FAQ</div>
         <h2>Common questions</h2>
       </div>
@@ -377,9 +486,9 @@ function renderFAQ(){
 }
 
 function faqHTML(items){
-  return `<div class="faq">${items.map(f=>`
-    <div class="faq-item">
-      <button class="faq-q">
+  return `<div class="faq">${items.map((f,i)=>`
+    <div class="faq-item" data-reveal style="--i:${i}">
+      <button class="faq-q" aria-expanded="false">
         <span>${f.q}</span>
         <svg class="faq-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
       </button>
@@ -390,7 +499,11 @@ function faqHTML(items){
 
 function wireFAQ(){
   document.querySelectorAll('.faq-item').forEach(item=>{
-    item.querySelector('.faq-q').addEventListener('click',()=>item.classList.toggle('open'));
+    const btn = item.querySelector('.faq-q');
+    btn.addEventListener('click',()=>{
+      const open = item.classList.toggle('open');
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
   });
 }
 
@@ -411,7 +524,7 @@ async function renderSubLesson(pathId, subId){
             <a href="#/lesson/${ctx.path.id}" style="color:var(--teal);text-decoration:none">Path ${ctx.path.n}: ${ctx.path.title}</a>
             &nbsp;·&nbsp; Sub-lesson ${ctx.path.n}.${ctx.sub.n}
           </div>
-          <button class="btn-ghost sm mobile-only" id="menuBtn">☰</button>
+          <button class="btn-ghost sm mobile-only" id="menuBtn" aria-label="Open lesson menu">☰ Lessons</button>
         </div>
         <div class="md" id="content"><div class="loading">Loading…</div></div>
         <div class="reader-nav">
@@ -546,16 +659,35 @@ function defaultLabel(kind){
 function renderNotFound(){
   app.innerHTML = `
     <section class="sec">
-      <h2>Page not found</h2>
-      <p style="color:var(--muted);margin-top:1rem">Try the <a href="#/">home page</a> or <a href="#/course">the full course</a>.</p>
+      <div class="sec-head" data-reveal>
+        <div class="sec-eyebrow">404</div>
+        <h2>This page wandered off</h2>
+        <p class="sec-lead">The link may be old or mistyped. Let's get you back on track.</p>
+      </div>
+      <div class="hero-btns" data-reveal style="--i:1">
+        <a class="btn-amber" href="#/">Back to home</a>
+        <a class="btn-ghost" href="#/course">Browse the course</a>
+      </div>
     </section>
   `;
 }
 
 /* Mobile nav */
-document.getElementById('hamb').addEventListener('click',()=>{
-  document.getElementById('navLinks').classList.toggle('open');
+const hamb = document.getElementById('hamb');
+const navLinks = document.getElementById('navLinks');
+hamb.addEventListener('click',()=>{
+  const open = navLinks.classList.toggle('open');
+  hamb.setAttribute('aria-expanded', open ? 'true' : 'false');
 });
 document.querySelectorAll('#navLinks a').forEach(a=>{
-  a.addEventListener('click',()=>document.getElementById('navLinks').classList.remove('open'));
+  a.addEventListener('click',()=>{
+    navLinks.classList.remove('open');
+    hamb.setAttribute('aria-expanded','false');
+  });
 });
+
+/* Sticky-nav shadow on scroll */
+const siteNav = document.getElementById('siteNav');
+const onScroll = ()=> siteNav.classList.toggle('scrolled', window.scrollY > 8);
+window.addEventListener('scroll', onScroll, {passive:true});
+onScroll();
