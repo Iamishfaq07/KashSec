@@ -1,4 +1,4 @@
-/* KashSec Academy v2.5 — Expanded with Path 00 + more labs & AI Security */ 
+/* KashSec Academy v2.6 — Path 00 + Path 13 Career Prep + many practical labs */ 
 
  document.getElementById('year').textContent = new Date().getFullYear();
 document.body.classList.add('reveal-ready');
@@ -176,6 +176,18 @@ const PATHS = [
      {n:"7", id:"ai-red-teaming",      title:"AI red teaming methodology", desc:"Systematic testing, success rates, ethics."},
      {n:"8", id:"practical-ai-labs",   title:"Practical AI Red Teaming Labs", desc:"Hands-on prompt injection, jailbreak, and eval challenges."},
      {n:"9", id:"ai-career",           title:"Your AI-security career", desc:"The 12-month plan for a new frontier."}
+   ]},
+  {n:"13", id:"13-career-prep", title:"Career & Job Prep", level:"All levels",
+   desc:"Resume, certifications, projects, interviews, job search, and building your security career.",
+   subs:[
+     {n:"1", id:"building-resume", title:"Building your security resume", desc:"Structure, keywords, and projects that stand out."},
+     {n:"2", id:"certifications-roadmap", title:"Certifications that actually help", desc:"Right certs at the right time for freshers."},
+     {n:"3", id:"github-portfolio", title:"Building projects & GitHub portfolio", desc:"Show what you can actually do."},
+     {n:"4", id:"interview-prep", title:"Interview preparation", desc:"Technical + behavioral skills that win offers."},
+     {n:"5", id:"job-search", title:"Job search strategy", desc:"Where and how to apply effectively."},
+     {n:"6", id:"networking-community", title:"Networking & community", desc:"Meet people who can open doors."},
+     {n:"7", id:"freelance-income", title:"Freelancing, bug bounty & side income", desc:"Earn while you learn and build experience."},
+     {n:"8", id:"first-90-days", title:"Your first 90 days in a security job", desc:"How to succeed once you get the offer."}
    ]}
 ];
 
@@ -187,7 +199,7 @@ const CAREERS = [
   {role:"Cloud Security Engineer", desc:"Secure AWS, Azure, and Google Cloud.",            follow:"00 → 06 → 11"},
   {role:"Digital Forensics / IR",  desc:"Investigate incidents and evict attackers.",      follow:"00 → 03 → 08 → 11"},
   {role:"AI Red Teamer",           desc:"Adversarially test AI systems for safety.",       follow:"00 → 05 → 07 → 12"},
-  {role:"Security / GRC Analyst",  desc:"Manage risk, policy, and compliance.",             follow:"00 → 01 → 06"}
+  {role:"Security / GRC Analyst",  desc:"Manage risk, policy, and compliance.",             follow:"00 → 01 → 06 → 13"}
 ];
 
 const FAQS = [
@@ -196,7 +208,7 @@ const FAQS = [
   {q:"Do I need to buy anything or have a powerful computer?", a:"No. You'll install free software (VirtualBox + Kali Linux) that runs on a normal laptop. If your machine is very old, free browser labs like TryHackMe still let you practise."},
   {q:"Is any of this illegal?", a:"Not the way we teach it. You only ever practise on your own lab, on free legal training sites, or in-scope bug bounty programs. Path 01 covers the legal golden rule in detail."},
   {q:"How should I go through the course?", a:"Top to bottom, in order. Each path builds on the one before. Do the labs and challenges — hands-on practice is what makes it stick."},
-  {q:"How long does the whole course take?", a:"At a sensible pace (a sub-lesson a day), the full course takes 4–6 months. Depth beats speed."}
+  {q:"How long does the whole course take?", a:"At a sensible pace (a sub-lesson a day), the full course takes 5–7 months including career prep. Depth beats speed."}
 ];
 
 const ICON = {
@@ -213,7 +225,7 @@ const FEATURES = [
   {ico:"book",     t:"Plain-English first", d:"Every term is defined the moment it appears — no assumed knowledge, no jargon walls, ever."},
   {ico:"terminal", t:"Hands-on labs",       d:"Real exercises and challenges in a safe, legal lab you build yourself and fully control."},
   {ico:"grid",     t:"Diagrams that click", d:"Mermaid flowcharts and hand-drawn SVGs turn abstract ideas into pictures you remember."},
-  {ico:"map",      t:"A real roadmap",      d:"13 ordered paths, 110+ focused sub-lessons — each one building on the one before it."},
+  {ico:"map",      t:"A real roadmap",      d:"14 ordered paths, 120+ focused sub-lessons — each one building on the one before it."},
   {ico:"link",     t:"Curated references",  d:"Every lesson ends with links to the best free resources, so you always know where to go deeper."},
   {ico:"unlock",   t:"Free, forever",       d:"No account, no paywall, no tracking. World-class security education, open to everyone."}
 ];
@@ -337,7 +349,7 @@ function renderHome(){
         <div class="eyebrow" data-reveal>Free cybersecurity course · zero experience needed</div>
         <h1 data-reveal style="--i:1">Start cybersecurity from <span class="amber">absolute zero</span>.</h1>
         <p class="hero-sub" data-reveal style="--i:2">
-          Computers, internet, Linux, Python, web hacking, bug bounty, advanced topics, and AI security —
+          Computers, internet, Linux, Python, web hacking, bug bounty, advanced topics, AI security, and career prep —
           all written in plain words with hands-on labs, diagrams, and links to real references.
           ${total}+ sub-lessons across ${PATHS.length} paths, always free.
         </p>
@@ -523,7 +535,7 @@ async function renderSubLesson(pathId, subId){
   if(!ctx) return renderNotFound();
 
   app.innerHTML = `
-    <div class="reader-progress" id="rprog" style="width:0%"></div>
+    <div class="reader-progress" id:"rprog" style="width:0%"></div>
     <div class="reader-wrap">
       <aside class="sidebar" id="sidebar">
         <div class="sb-head">All paths</div>
