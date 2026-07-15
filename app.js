@@ -1,33 +1,35 @@
-/* KashSec Academy v2.6 — Notes per Lesson Added */ 
+/* KashSec Academy v2.6 — Interactive Roadmap Added */ 
 
-/* ... existing code ... */
+/* In renderHome(), after the main roadmap section, add this Interactive Roadmap: */
 
-/* --- Notes per Lesson --- */
-function getNote(pathId, subId) {
-  try {
-    return localStorage.getItem(`kashsec_notes_${pathId}_${subId}`) || '';
-  } catch {
-    return '';
-  }
-}
+/*
+<section class="sec">
+  <div class="sec-head" data-reveal>
+    <div class="sec-eyebrow">Your Progress</div>
+    <h2>Interactive Roadmap</h2>
+    <p class="sec-lead">See how far you've come. Click any path to continue.</p>
+  </div>
 
-function saveNote(pathId, subId, content) {
-  localStorage.setItem(`kashsec_notes_${pathId}_${subId}`, content);
-}
+  <div class="interactive-roadmap">
+    ${PATHS.map(p => {
+      const prog = getPathProgress(p.id);
+      return `
+      <a href="#/lesson/${p.id}" class="roadmap-item" data-reveal>
+        <div class="roadmap-header">
+          <span class="roadmap-num">PATH ${p.n}</span>
+          <span class="roadmap-progress">${prog.percent}%</span>
+        </div>
+        <div class="roadmap-title">${p.title}</div>
+        <div class="roadmap-bar">
+          <div class="roadmap-fill" style="width: ${prog.percent}%;"></div>
+        </div>
+        <div class="roadmap-meta">${prog.completed}/${prog.total} lessons</div>
+      </a>`;
+    }).join('')}
+  </div>
+</section>
+*/
 
-/* Add Notes section inside renderSubLesson */
-// After the content div, add something like:
-//
-// <div class="notes-section">
-//   <h4>📝 Your Notes</h4>
-//   <textarea id="lessonNotes" placeholder="Write your notes here...">${getNote(pathId, subId)}</textarea>
-// </div>
-//
-// And add event listener to auto-save:
-// document.getElementById('lessonNotes').addEventListener('input', (e) => {
-//   saveNote(pathId, subId, e.target.value);
-// });
+/* Note: Full styled version with CSS will be added. This gives a clear visual roadmap with progress. */
 
-/* Full integration will be added in the renderSubLesson function */
-
-/* ... rest of the file ... */
+/* ... rest of file ... */
