@@ -40,6 +40,48 @@ function renderHome() {
   `;
 }
 
+function renderCourse() {
+  const app = document.getElementById('app');
+  if (!app) return;
+  app.innerHTML = `
+    <section class="sec">
+      <h1>All paths</h1>
+      <p>Overview of all available learning paths.</p>
+      <div class="paths">
+        ${PATHS.map(p => `
+          <a href="#/lesson/${p.id}" class="path-card">
+            <div class="path-num">PATH ${p.n}</div>
+            <div class="path-title">${p.title}</div>
+            <div class="path-desc">${p.desc}</div>
+          </a>
+        `).join('')}
+      </div>
+    </section>
+  `;
+}
+
+function renderCareers() {
+  const app = document.getElementById('app');
+  if (!app) return;
+  app.innerHTML = `
+    <section class="sec">
+      <h1>Careers</h1>
+      <p>Information about careers after completing the course.</p>
+    </section>
+  `;
+}
+
+function renderFAQ() {
+  const app = document.getElementById('app');
+  if (!app) return;
+  app.innerHTML = `
+    <section class="sec">
+      <h1>FAQ</h1>
+      <p>Frequently asked questions.</p>
+    </section>
+  `;
+}
+
 function renderPathOverview(pathId) {
   const path = PATHS.find(p => p.id === pathId);
   if (!path) return renderHome();
@@ -86,39 +128,67 @@ function renderLesson(pathId, lessonId) {
 }
 
 function route() {
-  const hash = location.hash || '#/';
-  console.log('%c[KashSec] route()', 'color:#60a5fa', hash);
-  
-  if (hash === '#/' || hash === '#') {
-    renderHome();
-  } 
-  else if (hash.startsWith('#/lesson/')) {
-    const parts = hash.replace('#/lesson/', '').split('/');
-    console.log('%c[KashSec] route parts', 'color:#60a5fa', parts);
-    if (parts.length === 1) {
-      renderPathOverview(parts[0]);
-    } else if (parts.length >= 2) {
-      // render the specific lesson when path and lesson id are present
-      renderLesson(parts[0], parts[1]);
+  try {
+    const hash = location.hash || '#/';
+    console.log('%c[KashSec] route()', 'color:#60a5fa', hash);
+    
+    if (hash === '#/' || hash === '#') {
+      renderHome();
+    } else if (hash === '#/course') {
+      renderCourse();
+    } else if (hash === '#/careers') {
+      renderCareers();
+    } else if (hash === '#/faq') {
+      renderFAQ();
+    } else if (hash.startsWith('#/lesson/')) {
+      const parts = hash.replace('#/lesson/', '').split('/');
+      console.log('%c[KashSec] route parts', 'color:#60a5fa', parts);
+      if (parts.length === 1) {
+        renderPathOverview(parts[0]);
+      } else if (parts.length >= 2) {
+        // render the specific lesson when path and lesson id are present
+        renderLesson(parts[0], parts[1]);
+      }
+    } else {
+      // Unknown hash: fall back to home
+      renderHome();
     }
-  } else {
-    // Unknown hash: fall back to home
-    renderHome();
+  } catch (err) {
+    console.error('[KashSec] route error', err);
   }
 }
 
-// Debug: log clicks on anchors and make sure route runs for hash navigation
+// Robust click handler for in-page anchors
+// This prevents other scripts or CSS from blocking navigation and ensures route() runs.
 document.addEventListener('click', (e) => {
-  const a = e.target.closest && e.target.closest('a');
+  // find closest anchor
+  const a = e.target.closest ? e.target.closest('a') : null;
   if (!a) return;
+
   const href = a.getAttribute('href');
   if (!href) return;
-  console.log('%c[KashSec] anchor click', 'color:#a78bfa', href);
-  // If the link is an in-page hash route, ensure route runs after navigation
+
+  // ignore external links and mailto links
+  if (/^(https?:|mailto:|tel:)/.test(href)) return;
+
+  // if internal route link starting with #/
   if (href.startsWith('#/')) {
-    // allow default browser behavior to change the hash, but also call route() just in case
-    setTimeout(route, 0);
+    // Prevent any other script from stopping the navigation by taking control here
+    e.preventDefault();
+
+    if (location.hash !== href) {
+      // update the hash (this triggers hashchange normally)
+      location.hash = href;
+      // ensure route runs if hashchange is ignored for any reason
+      setTimeout(route, 0);
+    } else {
+      // same-hash clicked — force route
+      route();
+    }
+    return;
   }
+
+  // allow normal behavior for other anchors (including fragment links like #app)
 });
 
 window.addEventListener('DOMContentLoaded', route);
