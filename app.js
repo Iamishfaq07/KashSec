@@ -1,9 +1,10 @@
-/* KashSec Academy - Minimal Working Version */
+/* KashSec Academy - Minimal Working Version (improved) */
 
-// Guard access to the year element so a missing #year doesn't throw and stop the script
+// Safe year fill
 const yearEl = document.getElementById('year');
 if (yearEl) yearEl.textContent = new Date().getFullYear();
 
+// Basic course structure (expanded). Add more paths/subs as files are authored.
 const PATHS = [
   {
     n: "00",
@@ -13,10 +14,32 @@ const PATHS = [
     desc: "For complete beginners.",
     subs: [
       { n: "1", id: "what-is-a-computer", title: "What is a computer really?", desc: "Hardware, software, OS." },
-      { n: "2", id: "how-internet-works", title: "How the internet works", desc: "From your phone to the world." }
+      { n: "2", id: "how-internet-works", title: "How the internet works", desc: "From your phone to the world." },
+      { n: "3", id: "files-folders-you", title: "Files, folders & you", desc: "Where your data lives." },
+      { n: "4", id: "how-to-learn-tech", title: "How to learn tech", desc: "Study habits and practice." },
+      { n: "5", id: "passwords-accounts", title: "Passwords & accounts", desc: "Keep access safe." },
+      { n: "6", id: "staying-safe-online", title: "Staying safe online", desc: "Basic online safety." }
     ]
-  }
+  },
+  { n: "01", id: "01-introduction", title: "Introduction", level: "Beginner", desc: "Orientation & roadmap.", subs: [] },
+  { n: "02", id: "02-networking", title: "Networking Basics", level: "Beginner", desc: "How networks work.", subs: [] },
+  { n: "03", id: "03-linux", title: "Linux Essentials", level: "Beginner", desc: "Command line & system basics.", subs: [] },
+  { n: "04", id: "04-python", title: "Python for Security", level: "Beginner", desc: "Scripting for automation.", subs: [] },
+  { n: "05", id: "05-web-basics", title: "Web Basics", level: "Beginner", desc: "HTTP, browsers, HTML.", subs: [] },
+  { n: "06", id: "06-fundamentals", title: "Security Fundamentals", level: "Intermediate", desc: "Threats & defenses.", subs: [] },
+  { n: "07", id: "07-web-security", title: "Web Security", level: "Intermediate", desc: "OWASP & testing.", subs: [] },
+  { n: "08", id: "08-network-security", title: "Network Security", level: "Intermediate", desc: "Firewalls, IDS/IPS.", subs: [] },
+  { n: "09", id: "09-ethical-hacking", title: "Ethical Hacking", level: "Advanced", desc: "Pentesting basics.", subs: [] },
+  { n: "10", id: "10-bug-bounty", title: "Bug Bounty", level: "Advanced", desc: "Report vulnerabilities.", subs: [] },
+  { n: "11", id: "11-advanced", title: "Advanced topics", level: "Advanced", desc: "Deep dives.", subs: [] },
+  { n: "12", id: "12-ai-security", title: "AI & Security", level: "Advanced", desc: "Securing models.", subs: [] },
+  { n: "13", id: "13-career-prep", title: "Career Prep", level: "All", desc: "Getting hired.", subs: [] }
 ];
+
+function setLoadingHTML(app, message = 'Loading…') {
+  if (!app) return;
+  app.innerHTML = `<div class="loading">${message}</div>`;
+}
 
 function renderHome() {
   const app = document.getElementById('app');
@@ -87,18 +110,25 @@ function renderPathOverview(pathId) {
   if (!path) return renderHome();
 
   const app = document.getElementById('app');
+  if (!app) return;
+
+  // If subs are empty, show a placeholder that lessons will be listed when authored
+  const subsHTML = (path.subs && path.subs.length)
+    ? path.subs.map(s => `
+        <a href="#/lesson/${path.id}/${s.id}" class="sublesson-card">
+          <div>${path.n}.${s.n} · ${s.title}</div>
+          <div>${s.desc}</div>
+        </a>
+      `).join('')
+    : '<div class="empty">Lessons coming soon.</div>';
+
   app.innerHTML = `
     <section class="sec">
       <h1>${path.title}</h1>
       <p>${path.desc}</p>
       
       <div class="sublesson-grid">
-        ${path.subs.map(s => `
-          <a href="#/lesson/${path.id}/${s.id}" class="sublesson-card">
-            <div>${path.n}.${s.n} · ${s.title}</div>
-            <div>${s.desc}</div>
-          </a>
-        `).join('')}
+        ${subsHTML}
       </div>
     </section>
   `;
@@ -107,31 +137,45 @@ function renderPathOverview(pathId) {
 function renderLesson(pathId, lessonId) {
   const path = PATHS.find(p => p.id === pathId);
   if (!path) return renderHome();
-  const lesson = path.subs.find(s => s.id === lessonId);
-  if (!lesson) return renderPathOverview(pathId);
 
   const app = document.getElementById('app');
   if (!app) return;
 
-  app.innerHTML = `
-    <section class="sec">
-      <a class="back-link" href="#/lesson/${path.id}">← Back to ${path.title}</a>
-      <h1>${lesson.title}</h1>
-      <p>${lesson.desc}</p>
+  setLoadingHTML(app, 'Loading lesson…');
 
-      <article class="lesson-content">
-        <p>(Lesson content not yet available — this is a placeholder.)</p>
-        <pre><code>// You can author markdown content for lessons and render it with marked.js</code></pre>
-      </article>
-    </section>
-  `;
+  // Attempt to fetch markdown file for the lesson and render using marked.js
+  const mdPath = `course/${pathId}/${lessonId}.md`;
+  fetch(mdPath).then(res => {
+    if (!res.ok) throw new Error('Lesson not found');
+    return res.text();
+  }).then(md => {
+    const html = (typeof marked !== 'undefined') ? marked.parse(md) : `<pre>${md.replace(/</g,'&lt;')}</pre>`;
+    app.innerHTML = `
+      <section class="sec lesson">
+        <a class="back-link" href="#/lesson/${path.id}">← Back to ${path.title}</a>
+        <h1>${lessonId.replace(/-/g,' ')}</h1>
+        <div class="lesson-content">${html}</div>
+      </section>
+    `;
+    // move focus for accessibility
+    const first = app.querySelector('h1'); if (first) first.focus && first.focus();
+  }).catch(err => {
+    app.innerHTML = `
+      <section class="sec">
+        <a class="back-link" href="#/lesson/${path.id}">← Back to ${path.title}</a>
+        <h1>Lesson not found</h1>
+        <p>We couldn't load this lesson (${lessonId}). It may not be authored yet.</p>
+      </section>
+    `;
+    console.warn('[KashSec] failed to fetch lesson', mdPath, err);
+  });
 }
 
 function route() {
   try {
     const hash = location.hash || '#/';
     console.log('%c[KashSec] route()', 'color:#60a5fa', hash);
-    
+
     if (hash === '#/' || hash === '#') {
       renderHome();
     } else if (hash === '#/course') {
@@ -146,11 +190,9 @@ function route() {
       if (parts.length === 1) {
         renderPathOverview(parts[0]);
       } else if (parts.length >= 2) {
-        // render the specific lesson when path and lesson id are present
         renderLesson(parts[0], parts[1]);
       }
     } else {
-      // Unknown hash: fall back to home
       renderHome();
     }
   } catch (err) {
@@ -159,36 +201,22 @@ function route() {
 }
 
 // Robust click handler for in-page anchors
-// This prevents other scripts or CSS from blocking navigation and ensures route() runs.
 document.addEventListener('click', (e) => {
-  // find closest anchor
   const a = e.target.closest ? e.target.closest('a') : null;
   if (!a) return;
-
   const href = a.getAttribute('href');
   if (!href) return;
-
-  // ignore external links and mailto links
   if (/^(https?:|mailto:|tel:)/.test(href)) return;
-
-  // if internal route link starting with #/
   if (href.startsWith('#/')) {
-    // Prevent any other script from stopping the navigation by taking control here
     e.preventDefault();
-
     if (location.hash !== href) {
-      // update the hash (this triggers hashchange normally)
       location.hash = href;
-      // ensure route runs if hashchange is ignored for any reason
       setTimeout(route, 0);
     } else {
-      // same-hash clicked — force route
       route();
     }
     return;
   }
-
-  // allow normal behavior for other anchors (including fragment links like #app)
 });
 
 window.addEventListener('DOMContentLoaded', route);
