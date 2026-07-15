@@ -29,11 +29,23 @@
   <nav class="nav-links" id="navLinks" aria-label="Primary">
     <a href="#/">Home</a>
     <a href="#/course">Course</a>
+    <a href="#/roadmap">Roadmap</a>
     <a href="#/careers">Careers</a>
     <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
   </nav>
   <div class="nav-cta">
-    <a class="btn-amber sm" href="#/lesson/01-introduction">Start</a>
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
     <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
     </button>
@@ -74,6 +86,7 @@
   </div>
 </footer>
 
+<script src="quizzes.js"></script>
 <script src="app.js"></script>
 <script type="module" src="speed-insights.js"></script>
 </body>

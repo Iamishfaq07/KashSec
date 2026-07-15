@@ -50,6 +50,181 @@ function ensureMarkdownLibs(){
   return libsPromise;
 }
 
+/* ============================================================
+   STORE — everything below is local-only (localStorage), no
+   account, no server. One JSON blob is the single source of
+   truth for progress, bookmarks, notes, quiz scores, and prefs.
+   ============================================================ */
+const STORE_KEY = 'kashsec_state_v1';
+function defaultState(){
+  return {
+    completed:{},      // { "pathId/subId": timestamp }
+    bookmarks:{},      // { "pathId/subId": timestamp }
+    notes:{},          // { "pathId/subId": "text" }
+    quizScores:{},      // { pathId: {score,total,pct,passed,ts} }
+    finalQuiz:null,      // {score,total,pct,passed,ts}
+    lastVisited:null,    // {pathId,subId,ts}
+    theme:null,          // 'dark' | 'light' | null(=auto)
+    certName:'',         // last name used for the certificate
+    achievements:{},     // { achievementId: timestamp }
+    visitDays:{},        // { "YYYY-MM-DD": true }
+    usedSearch:false
+  };
+}
+function loadState(){
+  try{
+    const raw = localStorage.getItem(STORE_KEY);
+    if(raw) return Object.assign(defaultState(), JSON.parse(raw));
+  }catch(e){}
+  return defaultState();
+}
+let STATE = loadState();
+function saveState(){ try{ localStorage.setItem(STORE_KEY, JSON.stringify(STATE)); }catch(e){} }
+const lessonKey = (pathId,subId) => pathId+'/'+subId;
+
+function isComplete(pathId,subId){ return !!STATE.completed[lessonKey(pathId,subId)]; }
+function toggleComplete(pathId,subId){
+  const k = lessonKey(pathId,subId);
+  const nowComplete = !STATE.completed[k];
+  if(nowComplete) STATE.completed[k] = Date.now(); else delete STATE.completed[k];
+  saveState();
+  checkAchievements();
+  return nowComplete;
+}
+function isBookmarked(pathId,subId){ return !!STATE.bookmarks[lessonKey(pathId,subId)]; }
+function toggleBookmark(pathId,subId){
+  const k = lessonKey(pathId,subId);
+  const nowSaved = !STATE.bookmarks[k];
+  if(nowSaved) STATE.bookmarks[k] = Date.now(); else delete STATE.bookmarks[k];
+  saveState();
+  checkAchievements();
+  return nowSaved;
+}
+function getNote(pathId,subId){ return STATE.notes[lessonKey(pathId,subId)] || ''; }
+function setNote(pathId,subId,text){
+  const k = lessonKey(pathId,subId);
+  if(text && text.trim()) STATE.notes[k] = text; else delete STATE.notes[k];
+  saveState();
+  checkAchievements();
+}
+function pathProgress(pathId){
+  const p = findPath(pathId);
+  if(!p) return {done:0,total:0,pct:0};
+  const total = p.subs.length;
+  const done = p.subs.filter(s=>isComplete(pathId,s.id)).length;
+  return {done,total,pct: total ? Math.round(done/total*100) : 0};
+}
+function overallProgress(){
+  const total = totalSubLessons();
+  const done = Object.keys(STATE.completed).length;
+  return {done,total,pct: total ? Math.round(done/total*100) : 0};
+}
+function recordVisit(pathId,subId){
+  STATE.lastVisited = {pathId,subId,ts:Date.now()};
+  const day = new Date().toISOString().slice(0,10);
+  STATE.visitDays[day] = true;
+  saveState();
+  checkAchievements();
+}
+function quizPassCount(){ return Object.values(STATE.quizScores).filter(q=>q.passed).length; }
+
+/* ---------- Theme ---------- */
+function currentTheme(){
+  return document.documentElement.getAttribute('data-theme') || 'dark';
+}
+function applyTheme(){
+  const theme = STATE.theme || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+  document.documentElement.setAttribute('data-theme', theme);
+  document.getElementById('themeToggle')?.setAttribute('aria-pressed', theme === 'light' ? 'true' : 'false');
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if(meta) meta.setAttribute('content', theme === 'light' ? '#F6F7FA' : '#0A0E13');
+}
+function toggleTheme(){
+  STATE.theme = currentTheme() === 'light' ? 'dark' : 'light';
+  saveState();
+  applyTheme();
+  STATE.achievements['theme-explorer-seen-dark'] = STATE.achievements['theme-explorer-seen-dark'] || (currentTheme()==='dark');
+  STATE.achievements['theme-explorer-seen-light'] = STATE.achievements['theme-explorer-seen-light'] || (currentTheme()==='light');
+  checkAchievements();
+}
+applyTheme();
+
+/* ---------- Achievements ---------- */
+const ACHIEVEMENTS = [
+  {id:'first-lesson', ico:'🎯', t:'First Steps', d:'Complete your first lesson.',
+   check:()=>Object.keys(STATE.completed).length >= 1},
+  {id:'ten-lessons', ico:'📈', t:'Getting Serious', d:'Complete 10 lessons.',
+   check:()=>Object.keys(STATE.completed).length >= 10},
+  {id:'fifty-percent', ico:'🔥', t:'Halfway There', d:'Reach 50% overall progress.',
+   check:()=>overallProgress().pct >= 50},
+  {id:'all-complete', ico:'🏆', t:'Course Complete', d:'Complete every lesson in the course.',
+   check:()=>overallProgress().pct >= 100},
+  {id:'first-path', ico:'🚀', t:'Path Pioneer', d:'Finish every lesson in a single path.',
+   check:()=>PATHS.some(p=>pathProgress(p.id).pct >= 100)},
+  {id:'quiz-pass', ico:'✅', t:'Quiz Taker', d:'Pass your first path quiz.',
+   check:()=>quizPassCount() >= 1},
+  {id:'quiz-master', ico:'🧠', t:'Quiz Master', d:'Pass 5 path quizzes.',
+   check:()=>quizPassCount() >= 5},
+  {id:'final-quiz', ico:'🎓', t:'Exam Ready', d:'Pass the Final Exam.',
+   check:()=>!!(STATE.finalQuiz && STATE.finalQuiz.passed)},
+  {id:'certificate', ico:'📜', t:'Certified', d:'Generate your certificate of completion.',
+   check:()=>!!STATE.achievements['_certificate_issued']},
+  {id:'bookworm', ico:'🔖', t:'Bookworm', d:'Bookmark 5 lessons to revisit later.',
+   check:()=>Object.keys(STATE.bookmarks).length >= 5},
+  {id:'note-taker', ico:'✍️', t:'Note Taker', d:'Write notes on 3 lessons.',
+   check:()=>Object.keys(STATE.notes).length >= 3},
+  {id:'streak', ico:'📅', t:'Consistent Learner', d:'Visit the course on 3 different days.',
+   check:()=>Object.keys(STATE.visitDays).length >= 3},
+  {id:'theme-explorer', ico:'🌓', t:'Night & Day', d:'Try both the light and dark themes.',
+   check:()=>!!(STATE.achievements['theme-explorer-seen-dark'] && STATE.achievements['theme-explorer-seen-light'])},
+  {id:'searcher', ico:'🔍', t:'Explorer', d:'Use search to jump straight to a lesson.',
+   check:()=>!!STATE.usedSearch}
+];
+let pendingToasts = [];
+function checkAchievements(){
+  let newlyUnlocked = [];
+  ACHIEVEMENTS.forEach(a=>{
+    if(STATE.achievements[a.id]) return;
+    try{
+      if(a.check()){ STATE.achievements[a.id] = Date.now(); newlyUnlocked.push(a); }
+    }catch(e){}
+  });
+  if(newlyUnlocked.length){
+    saveState();
+    newlyUnlocked.forEach(a=>showAchievementToast(a));
+    refreshProgressRing();
+  }
+}
+function showAchievementToast(a){
+  let host = document.getElementById('toastHost');
+  if(!host){
+    host = document.createElement('div');
+    host.id = 'toastHost';
+    host.className = 'toast-host';
+    host.setAttribute('aria-live','polite');
+    document.body.appendChild(host);
+  }
+  const el = document.createElement('div');
+  el.className = 'toast';
+  el.innerHTML = `<span class="toast-ico">${a.ico}</span><div><div class="toast-t">Achievement unlocked</div><div class="toast-d">${a.t} — ${a.d}</div></div>`;
+  host.appendChild(el);
+  requestAnimationFrame(()=>el.classList.add('in'));
+  setTimeout(()=>{
+    el.classList.remove('in');
+    setTimeout(()=>el.remove(), 400);
+  }, 4200);
+}
+function refreshProgressRing(){
+  const ring = document.getElementById('ringFill');
+  if(!ring) return;
+  const R = 15.5, C = 2*Math.PI*R;
+  const pct = overallProgress().pct;
+  ring.setAttribute('stroke-dasharray', C.toFixed(1));
+  ring.setAttribute('stroke-dashoffset', (C - (C*pct/100)).toFixed(1));
+  const btn = document.getElementById('progressRingBtn');
+  if(btn) btn.setAttribute('aria-label', `Your progress: ${pct}% complete`);
+}
+
 /* --- Course structure — each path has sub-lessons --- */
 const PATHS = [
   {n:"00", id:"00-fresher-basics", title:"Computer Basics & Security Mindset", level:"Absolute fresher",
@@ -330,10 +505,16 @@ function route(){
   else if(hash === '#/course') renderCourseIndex();
   else if(hash === '#/careers') renderCareers();
   else if(hash === '#/faq') renderFAQ();
+  else if(hash === '#/roadmap') renderRoadmap();
+  else if(hash === '#/progress') renderProgressHub();
+  else if(hash === '#/certificate') renderCertificate();
+  else if(hash === '#/quiz/final') renderQuiz('final');
   else {
+    const partsQuiz = hash.match(/^#\/quiz\/([^/]+)$/);
     const partsSub = hash.match(/^#\/lesson\/([^/]+)\/([^/]+)$/);
     const partsPath = hash.match(/^#\/lesson\/([^/]+)$/);
-    if(partsSub) renderSubLesson(partsSub[1], partsSub[2]);
+    if(partsQuiz) renderQuiz(partsQuiz[1]);
+    else if(partsSub) renderSubLesson(partsSub[1], partsSub[2]);
     else if(partsPath) renderPathOverview(partsPath[1]);
     else renderNotFound();
   }
@@ -413,19 +594,24 @@ function countUp(){
 /* --- Views --- */
 function renderHome(){
   const total = totalSubLessons();
+  const continueCtx = STATE.lastVisited ? findSubContext(STATE.lastVisited.pathId, STATE.lastVisited.subId) : null;
   app.innerHTML = `
     <section class="hero">
       <div class="hero-inner">
-        <div class="eyebrow" data-reveal>Free cybersecurity course · zero experience needed</div>
-        <h1 data-reveal style="--i:1">Start cybersecurity from <span class="amber">absolute zero</span>.</h1>
+        <div class="eyebrow" data-reveal>${continueCtx ? '▶ Welcome back' : 'Free cybersecurity course · zero experience needed'}</div>
+        <h1 data-reveal style="--i:1">${continueCtx ? `Pick up right where you <span class="amber">left off</span>.` : `Start cybersecurity from <span class="amber">absolute zero</span>.`}</h1>
         <p class="hero-sub" data-reveal style="--i:2">
-          Networks, Linux, Python, web hacking, bug bounty, advanced topics, and AI security —
+          ${continueCtx
+            ? `You were on <strong>${continueCtx.path.n}.${continueCtx.sub.n} · ${continueCtx.sub.title}</strong> in ${continueCtx.path.title}. Jump back in, or explore the rest of the course — ${total}+ sub-lessons across ${PATHS.length} paths, always free.`
+            : `Networks, Linux, Python, web hacking, bug bounty, advanced topics, and AI security —
           all written in plain words with hands-on labs, diagrams, and links to real references.
-          ${total}+ sub-lessons across ${PATHS.length} paths, always free.
+          ${total}+ sub-lessons across ${PATHS.length} paths, always free.`}
         </p>
         <div class="hero-btns" data-reveal style="--i:3">
-          <a class="btn-amber" href="#/lesson/01-introduction/what-is-cybersecurity">Begin lesson 1 →</a>
-          <a class="btn-ghost" href="#/course">See the roadmap</a>
+          ${continueCtx
+            ? `<a class="btn-amber" href="#/lesson/${continueCtx.path.id}/${continueCtx.sub.id}">Continue learning →</a>`
+            : `<a class="btn-amber" href="#/lesson/01-introduction/what-is-cybersecurity">Begin lesson 1 →</a>`}
+          <a class="btn-ghost" href="#/roadmap">See the roadmap</a>
         </div>
         <div class="hero-stats" data-reveal style="--i:4">
           <div><div class="hstat-n" data-count="${PATHS.length}">${PATHS.length}</div><div class="hstat-l">learning paths</div></div>
@@ -459,12 +645,7 @@ function renderHome(){
       </div>
       <div class="paths">
         ${PATHS.map((p,i)=>`
-          <a class="path-card" href="#/lesson/${p.id}" data-spotlight data-reveal style="--i:${i%3}">
-            <div class="path-num">PATH ${p.n}</div>
-            <div class="path-title">${p.title}</div>
-            <div class="path-desc">${p.desc}</div>
-            <div class="path-meta">${p.subs.length} sub-lessons · ${p.level}</div>
-          </a>
+${pathCardHTML(p,i)}
         `).join('')}
       </div>
     </section>
@@ -501,17 +682,12 @@ function renderCourseIndex(){
     <section class="sec">
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow">The full course</div>
-        <h2>12 paths, ${totalSubLessons()}+ sub-lessons</h2>
+        <h2>${PATHS.length} paths, ${totalSubLessons()}+ sub-lessons</h2>
         <p class="sec-lead">Each path is split into short focused sub-lessons. Click a path to see its map.</p>
       </div>
       <div class="paths">
         ${PATHS.map((p,i)=>`
-          <a class="path-card" href="#/lesson/${p.id}" data-spotlight data-reveal style="--i:${i%3}">
-            <div class="path-num">PATH ${p.n}</div>
-            <div class="path-title">${p.title}</div>
-            <div class="path-desc">${p.desc}</div>
-            <div class="path-meta">${p.subs.length} sub-lessons · ${p.level}</div>
-          </a>
+${pathCardHTML(p,i)}
         `).join('')}
       </div>
     </section>
@@ -521,21 +697,36 @@ function renderCourseIndex(){
 function renderPathOverview(pathId){
   const p = findPath(pathId);
   if(!p) return renderNotFound();
+  const prog = pathProgress(p.id);
+  const firstUnfinished = p.subs.find(s=>!isComplete(p.id,s.id)) || p.subs[0];
+  const startLabel = prog.done > 0 ? (prog.pct>=100 ? 'Review from the start' : 'Continue') : 'Start Sub-lesson 1';
+  const quiz = QUIZZES && QUIZZES[p.id];
+  const quizResult = STATE.quizScores[p.id];
   app.innerHTML = `
     <section class="sec">
       <div class="path-overview">
         <div class="path-tag" data-reveal>Path ${p.n} · ${p.level}</div>
         <h1 data-reveal style="--i:1">${p.title}</h1>
         <p class="lead" data-reveal style="--i:2">${p.desc}</p>
-        <div data-reveal style="--i:3;margin-top:1.5rem"><a class="btn-amber" href="#/lesson/${p.id}/${p.subs[0].id}">Start Sub-lesson 1 →</a></div>
+        <div data-reveal style="--i:3">
+          <div class="mini-progress" style="max-width:22rem;margin:0 0 1.4rem">
+            <div class="mini-progress-track"><div class="mini-progress-fill" style="width:${prog.pct}%"></div></div>
+            <div class="mini-progress-label"><span>${prog.done}/${prog.total} lessons complete</span><span>${prog.pct}%</span></div>
+          </div>
+          <div class="hero-btns" style="justify-content:flex-start;margin-bottom:0">
+            <a class="btn-amber" href="#/lesson/${p.id}/${firstUnfinished.id}">${startLabel} →</a>
+            ${quiz ? `<a class="btn-ghost" href="#/quiz/${p.id}">${quizResult ? (quizResult.passed?'✅ Retake quiz':'Retake quiz') : '📝 Take the path quiz'}</a>` : ''}
+          </div>
+        </div>
         <div class="sublesson-grid">
           ${p.subs.map((s,i)=>`
-            <a class="sublesson-card" href="#/lesson/${p.id}/${s.id}" data-reveal style="--i:${i}">
-              <div class="sl-n">${p.n}.${s.n}</div>
+            <a class="sublesson-card ${isComplete(p.id,s.id)?'is-complete':''}" href="#/lesson/${p.id}/${s.id}" data-reveal style="--i:${i}">
+              <div class="sl-n">${isComplete(p.id,s.id) ? '<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 6 9 17 4 12\"/></svg>' : p.n+'.'+s.n}</div>
               <div class="sl-body">
                 <div class="sl-t">${s.title}</div>
                 <div class="sl-d">${s.desc}</div>
               </div>
+              ${isBookmarked(p.id,s.id) ? '<svg class="sl-bookmark" width="15" height="15" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>' : ''}
               <svg class="sl-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
             </a>
           `).join('')}
@@ -578,6 +769,30 @@ function renderFAQ(){
   wireFAQ();
 }
 
+function pathCardHTML(p, i){
+  const prog = pathProgress(p.id);
+  const done = prog.pct >= 100;
+  return `
+    <a class="path-card ${done?'is-complete':''}" href="#/lesson/${p.id}" data-spotlight data-reveal style="--i:${i%3}">
+      <div class="path-title-row">
+        <div class="path-num">PATH ${p.n}</div>
+        <span class="path-check" title="Path complete">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        </span>
+      </div>
+      <div class="path-title">${p.title}</div>
+      <div class="path-desc">${p.desc}</div>
+      <div class="path-meta">${p.subs.length} sub-lessons · ${p.level}</div>
+      ${prog.done > 0 ? `
+        <div class="mini-progress">
+          <div class="mini-progress-track"><div class="mini-progress-fill" style="width:${prog.pct}%"></div></div>
+          <div class="mini-progress-label"><span>${prog.done}/${prog.total} done</span><span>${prog.pct}%</span></div>
+        </div>
+      ` : ''}
+    </a>
+  `;
+}
+
 function faqHTML(items){
   return `<div class="faq">${items.map((f,i)=>`
     <div class="faq-item" data-reveal style="--i:${i}">
@@ -617,9 +832,25 @@ async function renderSubLesson(pathId, subId){
             <a href="#/lesson/${ctx.path.id}" style="color:var(--teal);text-decoration:none">Path ${ctx.path.n}: ${ctx.path.title}</a>
             &nbsp;·&nbsp; Sub-lesson ${ctx.path.n}.${ctx.sub.n}
           </div>
-          <button class="btn-ghost sm mobile-only" id="menuBtn" aria-label="Open lesson menu">☰ Lessons</button>
+          <div class="reader-actions">
+            <button class="icon-btn ${isBookmarked(pathId,subId)?'active':''}" id="bookmarkBtn" type="button" aria-label="Bookmark this lesson" aria-pressed="${isBookmarked(pathId,subId)}">
+              <svg viewBox="0 0 24 24" fill="${isBookmarked(pathId,subId)?'currentColor':'none'}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+            </button>
+            <button class="complete-btn ${isComplete(pathId,subId)?'done':''}" id="completeBtn" type="button" aria-pressed="${isComplete(pathId,subId)}">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              <span id="completeBtnLabel">${isComplete(pathId,subId) ? 'Completed' : 'Mark complete'}</span>
+            </button>
+            <button class="btn-ghost sm mobile-only" id="menuBtn" aria-label="Open lesson menu">☰ Lessons</button>
+          </div>
         </div>
         <div class="md" id="content"><div class="loading">Loading…</div></div>
+        <details class="notes-panel">
+          <summary>✍️ My notes on this lesson</summary>
+          <div class="notes-panel-body">
+            <textarea id="lessonNotes" placeholder="Jot down anything you want to remember — only visible to you, saved automatically.">${escapeHtml(getNote(pathId,subId))}</textarea>
+            <div class="notes-status" id="notesStatus"></div>
+          </div>
+        </details>
         <div class="reader-nav">
           ${ctx.prev
             ? `<a class="btn-ghost sm" href="#/lesson/${ctx.prev.pathId}/${ctx.prev.subId}">← ${ctx.prev.pathN}.${ctx.prev.subN} ${ctx.prev.subTitle}</a>`
@@ -635,6 +866,38 @@ async function renderSubLesson(pathId, subId){
   renderSidebar(pathId, subId);
   document.getElementById('menuBtn')?.addEventListener('click',()=>{
     document.getElementById('sidebar').classList.toggle('open');
+  });
+
+  recordVisit(pathId, subId);
+
+  document.getElementById('bookmarkBtn').addEventListener('click', ()=>{
+    const saved = toggleBookmark(pathId, subId);
+    const btn = document.getElementById('bookmarkBtn');
+    btn.classList.toggle('active', saved);
+    btn.setAttribute('aria-pressed', saved);
+    btn.querySelector('svg').setAttribute('fill', saved ? 'currentColor' : 'none');
+  });
+
+  document.getElementById('completeBtn').addEventListener('click', ()=>{
+    const done = toggleComplete(pathId, subId);
+    const btn = document.getElementById('completeBtn');
+    btn.classList.toggle('done', done);
+    btn.setAttribute('aria-pressed', done);
+    document.getElementById('completeBtnLabel').textContent = done ? 'Completed' : 'Mark complete';
+    refreshProgressRing();
+  });
+
+  let notesTimer = null;
+  const notesEl = document.getElementById('lessonNotes');
+  const notesStatus = document.getElementById('notesStatus');
+  notesEl.addEventListener('input', ()=>{
+    clearTimeout(notesTimer);
+    notesStatus.textContent = 'Saving…';
+    notesTimer = setTimeout(()=>{
+      setNote(pathId, subId, notesEl.value);
+      notesStatus.textContent = 'Saved';
+      setTimeout(()=>{ if(notesStatus.textContent==='Saved') notesStatus.textContent=''; }, 1800);
+    }, 500);
   });
   wireProgress();
 
@@ -757,6 +1020,12 @@ function decodeHtml(s){
   return t.value;
 }
 
+function escapeHtml(s){
+  const d = document.createElement('div');
+  d.textContent = s || '';
+  return d.innerHTML;
+}
+
 function defaultLabel(kind){
   return ({tip:'TIP',warn:'WARNING',danger:'DANGER',lab:'🧪 LAB',challenge:'🚩 CHALLENGE',note:'NOTE'})[kind] || kind;
 }
@@ -775,6 +1044,554 @@ function renderNotFound(){
       </div>
     </section>
   `;
+}
+
+/* ============================================================
+   Quiz engine — used for both per-path quizzes and the Final Exam.
+   Question-by-question, locks in an answer before revealing it,
+   then a results screen with a full review.
+   ============================================================ */
+function renderQuiz(id){
+  const isFinal = id === 'final';
+  const quiz = isFinal ? FINAL_QUIZ : QUIZZES[id];
+  const path = isFinal ? null : findPath(id);
+  if(!quiz || (!isFinal && !path)) return renderNotFound();
+
+  let qi = 0;
+  const answers = new Array(quiz.questions.length).fill(null);
+  let finished = false;
+
+  function scoreNow(){
+    const total = quiz.questions.length;
+    const score = answers.reduce((n,a,i)=> n + (a===quiz.questions[i].correct ? 1 : 0), 0);
+    return {score, total, pct: Math.round(score/total*100)};
+  }
+
+  function paintQuestion(){
+    const q = quiz.questions[qi];
+    const answered = answers[qi] !== null;
+    app.innerHTML = `
+      <section class="sec">
+        <div class="quiz-wrap">
+          <div class="quiz-head" data-reveal>
+            <div class="sec-eyebrow">${isFinal ? 'Final Exam' : `Path ${path.n} Quiz`}</div>
+            <h2>${quiz.title}</h2>
+          </div>
+          <div class="quiz-progress-dots">
+            ${quiz.questions.map((_,i)=>`<div class="quiz-dot ${i===qi?'current':answers[i]!==null?'answered':''}"></div>`).join('')}
+          </div>
+          <div class="quiz-card" data-reveal>
+            <div class="quiz-qn">Question ${qi+1} of ${quiz.questions.length}</div>
+            <div class="quiz-q">${q.q}</div>
+            <div class="quiz-options">
+              ${q.options.map((opt,oi)=>{
+                let cls = '';
+                if(answered){
+                  if(oi===q.correct) cls = 'correct';
+                  else if(oi===answers[qi]) cls = 'wrong';
+                }
+                return `<button class="quiz-opt ${cls}" data-oi="${oi}" ${answered?'disabled':''} type="button">
+                  <span class="opt-letter">${String.fromCharCode(65+oi)}</span><span>${opt}</span>
+                </button>`;
+              }).join('')}
+            </div>
+            ${answered ? `<div class="quiz-explain"><strong>${answers[qi]===q.correct?'Correct — ':'Not quite — '}</strong>${q.explain}</div>` : ''}
+          </div>
+          <div class="quiz-nav">
+            ${answered ? `<button class="btn-amber" id="quizNextBtn" type="button">${qi < quiz.questions.length-1 ? 'Next question →' : 'See results →'}</button>` : ''}
+          </div>
+        </div>
+      </section>
+    `;
+    setupReveal();
+    app.querySelectorAll('.quiz-opt').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        if(answers[qi] !== null) return;
+        answers[qi] = parseInt(btn.getAttribute('data-oi'),10);
+        paintQuestion();
+      });
+    });
+    document.getElementById('quizNextBtn')?.addEventListener('click', ()=>{
+      if(qi < quiz.questions.length-1){ qi++; window.scrollTo(0,0); paintQuestion(); }
+      else finish();
+    });
+  }
+
+  function finish(){
+    const {score,total,pct} = scoreNow();
+    const passed = pct >= quiz.passPct;
+    const result = {score,total,pct,passed,ts:Date.now()};
+    if(isFinal) STATE.finalQuiz = result; else STATE.quizScores[id] = result;
+    saveState();
+    checkAchievements();
+    finished = true;
+    window.scrollTo(0,0);
+    paintResult();
+  }
+
+  function paintResult(){
+    const {score,total,pct} = scoreNow();
+    const passed = pct >= quiz.passPct;
+    const R = 66, C = 2*Math.PI*R;
+    app.innerHTML = `
+      <section class="sec">
+        <div class="quiz-result">
+          <div class="sec-eyebrow" data-reveal>${isFinal ? 'Final Exam' : `Path ${path.n} Quiz`} results</div>
+          <div class="quiz-result-ring" data-reveal style="--i:1">
+            <svg viewBox="0 0 150 150">
+              <circle class="ring-track" cx="75" cy="75" r="${R}"/>
+              <circle class="ring-fill ${passed?'pass':'fail'}" cx="75" cy="75" r="${R}" stroke-dasharray="${C.toFixed(1)}" stroke-dashoffset="${(C-(C*pct/100)).toFixed(1)}"/>
+            </svg>
+            <div class="quiz-result-pct">${pct}%</div>
+          </div>
+          <div class="quiz-result-msg" data-reveal style="--i:2">${passed ? (isFinal ? '🎉 You passed the Final Exam!' : '✅ Path quiz passed!') : 'Not quite — review below and try again'}</div>
+          <p class="sec-lead" data-reveal style="--i:3">You scored ${score} out of ${total} (need ${quiz.passPct}% to pass).</p>
+          <div class="hero-btns" data-reveal style="--i:4">
+            <button class="btn-amber" id="retakeBtn" type="button">Retake quiz</button>
+            ${isFinal
+              ? (passed ? `<a class="btn-ghost" href="#/certificate">Get your certificate →</a>` : `<a class="btn-ghost" href="#/progress">Back to progress</a>`)
+              : `<a class="btn-ghost" href="#/lesson/${id}">Back to path</a>`}
+          </div>
+          <div class="quiz-review" data-reveal style="--i:5">
+            ${quiz.questions.map((q,i)=>{
+              const right = answers[i]===q.correct;
+              return `<div class="quiz-review-item ${right?'':'wrong'}">
+                <div class="qr-q">${i+1}. ${q.q}</div>
+                <div class="qr-a">${right
+                  ? `<span class="right-answer">✓ ${q.options[q.correct]}</span>`
+                  : `<span class="wrong-answer">${q.options[answers[i]]}</span> → <span class="right-answer">${q.options[q.correct]}</span>`}</div>
+              </div>`;
+            }).join('')}
+          </div>
+        </div>
+      </section>
+    `;
+    setupReveal();
+    document.getElementById('retakeBtn')?.addEventListener('click', ()=>{
+      qi = 0; answers.fill(null); finished = false;
+      window.scrollTo(0,0);
+      paintQuestion();
+    });
+  }
+
+  paintQuestion();
+}
+
+/* ============================================================
+   Certificate — unlocks once the Final Exam is passed. Drawn on a
+   <canvas> so it can be downloaded as a PNG, printed to PDF via the
+   browser's native print dialog, and shared to LinkedIn.
+   ============================================================ */
+function certId(name){
+  let h = 0;
+  const s = name + '|' + (STATE.finalQuiz ? STATE.finalQuiz.ts : '');
+  for(let i=0;i<s.length;i++){ h = ((h<<5)-h + s.charCodeAt(i))|0; }
+  return 'KS-' + Math.abs(h).toString(36).toUpperCase().slice(0,6).padStart(6,'0');
+}
+
+function drawCertificate(canvas, name){
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+
+  // Background
+  ctx.fillStyle = '#FBF9F4';
+  ctx.fillRect(0,0,W,H);
+  const vign = ctx.createRadialGradient(W/2,H/2,H*0.2, W/2,H/2,W*0.65);
+  vign.addColorStop(0,'rgba(20,20,20,0)');
+  vign.addColorStop(1,'rgba(180,150,90,0.06)');
+  ctx.fillStyle = vign;
+  ctx.fillRect(0,0,W,H);
+
+  // Outer + inner border
+  ctx.strokeStyle = '#C77F1E';
+  ctx.lineWidth = 6;
+  ctx.strokeRect(28,28,W-56,H-56);
+  ctx.strokeStyle = '#12897E';
+  ctx.lineWidth = 1.5;
+  ctx.strokeRect(46,46,W-92,H-92);
+
+  // Corner flourishes
+  ctx.fillStyle = '#EFA43A';
+  [[28,28],[W-28,28],[28,H-28],[W-28,H-28]].forEach(([cx,cy])=>{
+    ctx.beginPath(); ctx.arc(cx,cy,7,0,Math.PI*2); ctx.fill();
+  });
+
+  const cx = W/2;
+
+  // Brand mark
+  const bmY = 108;
+  ctx.fillStyle = '#EA9C2C';
+  roundRect(ctx, cx-30, bmY-30, 60, 60, 14); ctx.fill();
+  ctx.fillStyle = '#1a1204';
+  ctx.font = '700 30px Menlo, Consolas, monospace';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText('>_', cx, bmY+2);
+
+  ctx.fillStyle = '#1B2430';
+  ctx.font = '700 30px Georgia, "Times New Roman", serif';
+  ctx.textBaseline = 'alphabetic';
+  ctx.fillText('KashSec Academy', cx, bmY+66);
+
+  // Eyebrow
+  ctx.fillStyle = '#0E8377';
+  ctx.font = '700 16px Menlo, Consolas, monospace';
+  ctx.fillText('C E R T I F I C A T E   O F   C O M P L E T I O N', cx, bmY+118);
+
+  // "This certifies that"
+  ctx.fillStyle = '#5B6472';
+  ctx.font = '400 22px Georgia, serif';
+  ctx.fillText('This certifies that', cx, bmY+178);
+
+  // Name — auto-shrink to fit
+  let nameSize = 66;
+  ctx.font = `italic 700 ${nameSize}px Georgia, "Times New Roman", serif`;
+  while(ctx.measureText(name).width > W - 260 && nameSize > 28){
+    nameSize -= 2;
+    ctx.font = `italic 700 ${nameSize}px Georgia, "Times New Roman", serif`;
+  }
+  ctx.fillStyle = '#12151C';
+  ctx.fillText(name, cx, bmY+178+nameSize+18);
+  const nameBaseline = bmY+178+nameSize+18;
+  ctx.strokeStyle = '#C97B0F'; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(cx-180, nameBaseline+18); ctx.lineTo(cx+180, nameBaseline+18); ctx.stroke();
+
+  // Body text
+  ctx.fillStyle = '#333c49';
+  ctx.font = '400 21px Georgia, serif';
+  const total = totalSubLessons();
+  const bodyLines = wrapText(ctx, `has successfully completed the KashSec Academy cybersecurity curriculum — ${PATHS.length} learning paths and ${total} sub-lessons — and passed the Final Exam with a score of ${STATE.finalQuiz.pct}%.`,
+    cx, nameBaseline+62, W-320, 30);
+  const bodyBottom = nameBaseline + 62 + (bodyLines-1)*30;
+
+  // Date + Cert ID + signature row — positioned relative to where the body
+  // text actually ends, so short names/bodies don't leave a huge empty gap.
+  const rowY = Math.min(bodyBottom + 150, H-150);
+  ctx.textAlign = 'left';
+  ctx.fillStyle = '#12151C';
+  ctx.font = '700 18px Georgia, serif';
+  ctx.fillText(new Date().toLocaleDateString(undefined,{year:'numeric',month:'long',day:'numeric'}), 110, rowY);
+  ctx.strokeStyle = '#D7DCE5'; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(90, rowY+14); ctx.lineTo(330, rowY+14); ctx.stroke();
+  ctx.fillStyle = '#8188A0'; ctx.font = '400 13px Menlo, Consolas, monospace';
+  ctx.fillText('DATE ISSUED', 90, rowY+36);
+
+  ctx.textAlign = 'right';
+  ctx.fillStyle = '#12151C'; ctx.font = 'italic 700 22px Georgia, serif';
+  ctx.fillText('KashSec Academy', W-110, rowY);
+  ctx.beginPath(); ctx.moveTo(W-330, rowY+14); ctx.lineTo(W-90, rowY+14); ctx.stroke();
+  ctx.fillStyle = '#8188A0'; ctx.font = '400 13px Menlo, Consolas, monospace';
+  ctx.fillText('ISSUING ORGANIZATION', W-90, rowY+36);
+
+  // Seal
+  const sealX = cx, sealY = rowY-10;
+  ctx.beginPath(); ctx.arc(sealX, sealY, 46, 0, Math.PI*2);
+  ctx.fillStyle = '#0E8377'; ctx.fill();
+  ctx.beginPath(); ctx.arc(sealX, sealY, 46, 0, Math.PI*2);
+  ctx.strokeStyle = '#EFA43A'; ctx.lineWidth = 3; ctx.stroke();
+  ctx.strokeStyle = '#fff'; ctx.lineWidth = 4; ctx.lineCap='round'; ctx.lineJoin='round';
+  ctx.beginPath(); ctx.moveTo(sealX-18,sealY); ctx.lineTo(sealX-6,sealY+14); ctx.lineTo(sealX+20,sealY-16); ctx.stroke();
+
+  // Cert ID footer
+  ctx.textAlign = 'center'; ctx.fillStyle = '#A7ADBB'; ctx.font = '400 13px Menlo, Consolas, monospace';
+  ctx.fillText(`Certificate ID: ${certId(name)}  ·  Verify at kashsec.academy`, cx, H-40);
+}
+
+function roundRect(ctx,x,y,w,h,r){
+  ctx.beginPath();
+  ctx.moveTo(x+r,y);
+  ctx.arcTo(x+w,y,x+w,y+h,r);
+  ctx.arcTo(x+w,y+h,x,y+h,r);
+  ctx.arcTo(x,y+h,x,y,r);
+  ctx.arcTo(x,y,x+w,y,r);
+  ctx.closePath();
+}
+function wrapText(ctx, text, x, y, maxWidth, lineHeight){
+  const words = text.split(' ');
+  let line = '';
+  ctx.textAlign = 'center';
+  const lines = [];
+  words.forEach(word=>{
+    const test = line + word + ' ';
+    if(ctx.measureText(test).width > maxWidth && line){
+      lines.push(line);
+      line = word + ' ';
+    } else line = test;
+  });
+  lines.push(line);
+  lines.forEach((l,i)=> ctx.fillText(l.trim(), x, y + i*lineHeight));
+  return lines.length;
+}
+
+function renderCertificate(){
+  const passed = !!(STATE.finalQuiz && STATE.finalQuiz.passed);
+
+  if(!passed){
+    app.innerHTML = `
+      <section class="sec">
+        <div class="cert-wrap">
+          <div class="sec-eyebrow" data-reveal>Certificate</div>
+          <h2 data-reveal style="--i:1">Your certificate is waiting</h2>
+          <div class="cert-locked" data-reveal style="--i:2">
+            <div class="lock-ico">🔒</div>
+            <h3 style="margin-bottom:.6rem">Pass the Final Exam to unlock it</h3>
+            <p class="sec-lead" style="margin:0 0 1.4rem">The certificate of completion is issued once you pass the ${FINAL_QUIZ.questions.length}-question Final Exam covering the whole course.</p>
+            <a class="btn-amber" href="#/quiz/final">Take the Final Exam →</a>
+          </div>
+        </div>
+      </section>
+    `;
+    return;
+  }
+
+  app.innerHTML = `
+    <section class="sec">
+      <div class="cert-wrap">
+        <div class="sec-eyebrow" data-reveal>Certificate</div>
+        <h2 data-reveal style="--i:1">🎉 You've earned it</h2>
+        <p class="sec-lead" data-reveal style="--i:2">Enter your name exactly as you'd like it to appear, then generate your certificate.</p>
+        <form class="cert-form" id="certForm" data-reveal style="--i:3">
+          <input type="text" id="certNameInput" placeholder="Your full name" maxlength="60" value="${escapeHtml(STATE.certName)}" required>
+          <button class="btn-amber" type="submit">Generate certificate</button>
+        </form>
+        <div id="certOutput"></div>
+      </div>
+    </section>
+  `;
+
+  const form = document.getElementById('certForm');
+  form.addEventListener('submit', (e)=>{
+    e.preventDefault();
+    const name = document.getElementById('certNameInput').value.trim();
+    if(!name) return;
+    STATE.certName = name;
+    STATE.achievements['_certificate_issued'] = STATE.achievements['_certificate_issued'] || Date.now();
+    saveState();
+    checkAchievements();
+    paintCertOutput(name);
+  });
+
+  if(STATE.certName) paintCertOutput(STATE.certName);
+}
+
+function paintCertOutput(name){
+  const out = document.getElementById('certOutput');
+  out.innerHTML = `
+    <div class="cert-canvas-wrap" data-reveal style="--i:4">
+      <canvas id="certCanvas" width="1400" height="990"></canvas>
+    </div>
+    <div class="cert-actions" data-reveal style="--i:5">
+      <button class="btn-amber" id="dlPngBtn" type="button">⬇ Download PNG</button>
+      <button class="btn-ghost" id="printBtn" type="button">🖨 Print / Save as PDF</button>
+      <button class="btn-ghost" id="linkedinBtn" type="button">Share on LinkedIn</button>
+      <button class="btn-ghost" id="copyCaptionBtn" type="button">Copy caption</button>
+    </div>
+  `;
+  const canvas = document.getElementById('certCanvas');
+  drawCertificate(canvas, name);
+  setupReveal();
+
+  document.getElementById('dlPngBtn').addEventListener('click', ()=>{
+    const a = document.createElement('a');
+    a.download = `kashsec-certificate-${name.replace(/\s+/g,'-').toLowerCase()}.png`;
+    a.href = canvas.toDataURL('image/png');
+    a.click();
+  });
+
+  document.getElementById('printBtn').addEventListener('click', ()=>{
+    let printArea = document.getElementById('certPrintArea');
+    if(!printArea){
+      printArea = document.createElement('div');
+      printArea.id = 'certPrintArea';
+      document.body.appendChild(printArea);
+    }
+    printArea.innerHTML = `<img src="${canvas.toDataURL('image/png')}" alt="Certificate">`;
+    window.print();
+  });
+
+  document.getElementById('linkedinBtn').addEventListener('click', ()=>{
+    const url = encodeURIComponent(location.href.split('#')[0]);
+    window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}`, '_blank', 'noopener,noreferrer,width=600,height=600');
+  });
+
+  document.getElementById('copyCaptionBtn').addEventListener('click', async ()=>{
+    const caption = `I just completed the KashSec Academy cybersecurity course — ${PATHS.length} paths and ${totalSubLessons()} lessons, capped off with the Final Exam. 🎓🛡️\n\nFree, self-paced, and open to anyone starting from zero: https://iamishfaq07.github.io/KashSec/\n\n#CyberSecurity #KashSecAcademy #LearningInPublic`;
+    try{
+      await navigator.clipboard.writeText(caption);
+      const btn = document.getElementById('copyCaptionBtn');
+      const original = btn.textContent;
+      btn.textContent = 'Copied!';
+      setTimeout(()=>{ btn.textContent = original; }, 1600);
+    }catch(e){
+      alert(caption);
+    }
+  });
+}
+
+/* ============================================================
+   Roadmap — a visual, clickable timeline of all paths with your
+   progress overlaid: done, in-progress, or not started.
+   ============================================================ */
+function renderRoadmap(){
+  const overall = overallProgress();
+  const activePathId = STATE.lastVisited ? STATE.lastVisited.pathId : (PATHS.find(p=>pathProgress(p.id).pct<100)||PATHS[0]).id;
+
+  app.innerHTML = `
+    <section class="sec">
+      <div class="sec-head" data-reveal>
+        <div class="sec-eyebrow">Roadmap</div>
+        <h2>Your journey through KashSec</h2>
+        <p class="sec-lead">Every path, in order. Click any node to jump straight in — your progress is tracked automatically.</p>
+        <div class="mini-progress" style="max-width:26rem;margin-top:1.3rem">
+          <div class="mini-progress-track"><div class="mini-progress-fill" style="width:${overall.pct}%"></div></div>
+          <div class="mini-progress-label"><span>${overall.done}/${overall.total} lessons complete</span><span>${overall.pct}%</span></div>
+        </div>
+      </div>
+      <div class="roadmap-wrap">
+        <div class="roadmap-line"></div>
+        ${PATHS.map((p,i)=>{
+          const prog = pathProgress(p.id);
+          const done = prog.pct >= 100;
+          const active = !done && p.id === activePathId;
+          return `
+            <a class="roadmap-node ${done?'done':active?'active':''}" href="#/lesson/${p.id}" data-reveal style="--i:${i%6}">
+              <div class="roadmap-dot">${done
+                ? '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>'
+                : p.n}</div>
+              <div class="roadmap-card">
+                <div class="roadmap-card-title">${p.title}</div>
+                <div class="roadmap-card-desc">${p.desc}</div>
+                <div class="mini-progress" style="margin-top:.6rem">
+                  <div class="mini-progress-track"><div class="mini-progress-fill" style="width:${prog.pct}%"></div></div>
+                  <div class="mini-progress-label"><span>${prog.done}/${prog.total} done</span><span>${p.level}</span></div>
+                </div>
+              </div>
+            </a>
+          `;
+        }).join('')}
+        <a class="roadmap-node ${STATE.finalQuiz && STATE.finalQuiz.passed ? 'done':''}" href="#/quiz/final" data-reveal style="--i:0">
+          <div class="roadmap-dot">${STATE.finalQuiz && STATE.finalQuiz.passed
+            ? '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>'
+            : '🎓'}</div>
+          <div class="roadmap-card">
+            <div class="roadmap-card-title">Final Exam</div>
+            <div class="roadmap-card-desc">20 questions across every path — pass it to unlock your certificate.</div>
+          </div>
+        </a>
+      </div>
+    </section>
+  `;
+}
+
+/* ============================================================
+   Progress hub — the personal dashboard: overall stats, per-path
+   progress, achievements, bookmarks, notes, and the certificate CTA.
+   ============================================================ */
+function renderProgressHub(){
+  const overall = overallProgress();
+  const unlockedCount = Object.keys(STATE.achievements).filter(k=>!k.startsWith('_') && !k.startsWith('theme-explorer-seen')).length;
+  const bookmarkEntries = Object.keys(STATE.bookmarks)
+    .sort((a,b)=>STATE.bookmarks[b]-STATE.bookmarks[a])
+    .map(k=>{ const [pathId,subId]=k.split('/'); return findSubContext(pathId,subId); })
+    .filter(Boolean);
+  const noteEntries = Object.keys(STATE.notes)
+    .map(k=>{ const [pathId,subId]=k.split('/'); return findSubContext(pathId,subId); })
+    .filter(Boolean);
+
+  const continueCtx = STATE.lastVisited ? findSubContext(STATE.lastVisited.pathId, STATE.lastVisited.subId) : null;
+
+  app.innerHTML = `
+    <section class="sec">
+      <div class="sec-head" data-reveal>
+        <div class="sec-eyebrow">Your progress</div>
+        <h2>Track everything in one place</h2>
+        <p class="sec-lead">Progress, bookmarks, notes, achievements, and your certificate — all saved locally in this browser.</p>
+      </div>
+
+      ${continueCtx ? `
+        <div class="hero-btns" style="justify-content:flex-start" data-reveal style="--i:1">
+          <a class="btn-amber" href="#/lesson/${continueCtx.path.id}/${continueCtx.sub.id}">▶ Continue: ${continueCtx.path.n}.${continueCtx.sub.n} ${continueCtx.sub.title} →</a>
+        </div>
+      ` : ''}
+
+      <div class="hub-grid" data-reveal style="--i:2">
+        <div class="hub-stat"><div class="hub-stat-n">${overall.pct}%</div><div class="hub-stat-l">Overall complete</div></div>
+        <div class="hub-stat"><div class="hub-stat-n">${overall.done}/${overall.total}</div><div class="hub-stat-l">Lessons done</div></div>
+        <div class="hub-stat"><div class="hub-stat-n">${quizPassCount()}/${PATHS.length}</div><div class="hub-stat-l">Quizzes passed</div></div>
+        <div class="hub-stat"><div class="hub-stat-n">${unlockedCount}/${ACHIEVEMENTS.length}</div><div class="hub-stat-l">Achievements</div></div>
+      </div>
+
+      <div class="hub-section" data-reveal style="--i:3">
+        <div class="hub-section-head">
+          <h3 style="font-family:'Space Grotesk';font-size:1.15rem">📜 Certificate</h3>
+        </div>
+        ${STATE.finalQuiz && STATE.finalQuiz.passed
+          ? `<div class="hub-list-item" style="cursor:default"><div><div class="hli-t">Final Exam passed — ${STATE.finalQuiz.pct}%</div><div class="hli-d">Your certificate is ready</div></div><a class="btn-amber sm" href="#/certificate">View certificate →</a></div>`
+          : `<div class="hub-list-item" style="cursor:default"><div><div class="hli-t">Not yet unlocked</div><div class="hli-d">Pass the Final Exam to earn your certificate</div></div><a class="btn-ghost sm" href="#/quiz/final">Take Final Exam →</a></div>`}
+      </div>
+
+      <div class="hub-section" data-reveal style="--i:4">
+        <div class="hub-section-head"><h3 style="font-family:'Space Grotesk';font-size:1.15rem">🗺️ Path progress</h3></div>
+        ${PATHS.map(p=>{
+          const prog = pathProgress(p.id);
+          return `
+            <a class="hub-path-row" href="#/lesson/${p.id}" style="text-decoration:none;color:inherit">
+              <span class="hpr-name">${p.n} · ${p.title}</span>
+              <div class="mini-progress"><div class="mini-progress-track"><div class="mini-progress-fill" style="width:${prog.pct}%"></div></div></div>
+              <span style="font-family:'JetBrains Mono';font-size:.75rem;color:var(--muted2);flex:none">${prog.done}/${prog.total}</span>
+            </a>
+          `;
+        }).join('')}
+      </div>
+
+      <div class="hub-section" data-reveal style="--i:5">
+        <div class="hub-section-head"><h3 style="font-family:'Space Grotesk';font-size:1.15rem">🏅 Achievements</h3></div>
+        <div class="badge-grid">
+          ${ACHIEVEMENTS.map(a=>`
+            <div class="badge-card ${STATE.achievements[a.id]?'':'locked'}">
+              <div class="badge-ico">${a.ico}</div>
+              <div class="badge-t">${a.t}</div>
+              <div class="badge-d">${a.d}</div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+
+      <div class="hub-section" data-reveal style="--i:6">
+        <div class="hub-section-head"><h3 style="font-family:'Space Grotesk';font-size:1.15rem">🔖 Bookmarks</h3></div>
+        ${bookmarkEntries.length ? bookmarkEntries.map(ctx=>`
+          <a class="hub-list-item" href="#/lesson/${ctx.path.id}/${ctx.sub.id}">
+            <div><div class="hli-t">${ctx.path.n}.${ctx.sub.n} · ${ctx.sub.title}</div><div class="hli-d">${ctx.path.title}</div></div>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+          </a>
+        `).join('') : `<div class="hub-empty">No bookmarks yet — save a lesson with the 🔖 icon while reading.</div>`}
+      </div>
+
+      <div class="hub-section" data-reveal style="--i:7">
+        <div class="hub-section-head"><h3 style="font-family:'Space Grotesk';font-size:1.15rem">✍️ Notes</h3></div>
+        ${noteEntries.length ? noteEntries.map(ctx=>`
+          <a class="hub-list-item" href="#/lesson/${ctx.path.id}/${ctx.sub.id}">
+            <div><div class="hli-t">${ctx.path.n}.${ctx.sub.n} · ${ctx.sub.title}</div><div class="hli-d">${escapeHtml(getNote(ctx.path.id,ctx.sub.id)).slice(0,80)}${getNote(ctx.path.id,ctx.sub.id).length>80?'…':''}</div></div>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+          </a>
+        `).join('') : `<div class="hub-empty">No notes yet — jot one down from the notes panel on any lesson.</div>`}
+      </div>
+
+      <div class="hub-section" data-reveal style="--i:8">
+        <button class="btn-ghost sm" id="resetProgressBtn" type="button">Reset all local progress</button>
+      </div>
+    </section>
+  `;
+
+  document.getElementById('resetProgressBtn')?.addEventListener('click', ()=>{
+    if(confirm('This clears all progress, bookmarks, notes, quiz scores, and achievements stored in this browser. This cannot be undone. Continue?')){
+      STATE = defaultState();
+      saveState();
+      applyTheme();
+      refreshProgressRing();
+      renderProgressHub();
+      afterRender();
+    }
+  });
 }
 
 /* Mobile nav */
@@ -796,3 +1613,134 @@ const siteNav = document.getElementById('siteNav');
 const onScroll = ()=> siteNav.classList.toggle('scrolled', window.scrollY > 8);
 window.addEventListener('scroll', onScroll, {passive:true});
 onScroll();
+
+/* Theme toggle */
+document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+
+/* Progress ring: reflects overall completion, links to the progress hub */
+refreshProgressRing();
+
+/* ============================================================
+   Global search — Ctrl/Cmd+K or the search icon. Searches path and
+   sub-lesson titles/descriptions (metadata only — the lesson bodies
+   themselves aren't fetched, so results are instant).
+   ============================================================ */
+const SEARCH_INDEX = [];
+PATHS.forEach(p=>{
+  SEARCH_INDEX.push({type:'path', title:p.title, desc:p.desc, url:`#/lesson/${p.id}`, context:`Path ${p.n}`});
+  p.subs.forEach(s=>{
+    SEARCH_INDEX.push({type:'lesson', title:s.title, desc:s.desc, url:`#/lesson/${p.id}/${s.id}`, context:`${p.n}.${s.n} · ${p.title}`});
+  });
+});
+
+let searchOverlay = null, searchActiveIndex = -1, searchCurrentResults = [];
+
+function buildSearchOverlay(){
+  if(searchOverlay) return searchOverlay;
+  searchOverlay = document.createElement('div');
+  searchOverlay.className = 'search-overlay';
+  searchOverlay.innerHTML = `
+    <div class="search-modal" role="dialog" aria-modal="true" aria-label="Search lessons">
+      <div class="search-input-row">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="searchInput" placeholder="Search 151 lessons across 14 paths…" autocomplete="off" spellcheck="false">
+        <kbd>Esc</kbd>
+      </div>
+      <div class="search-results" id="searchResults"></div>
+    </div>
+  `;
+  document.body.appendChild(searchOverlay);
+  searchOverlay.addEventListener('click', (e)=>{ if(e.target === searchOverlay) closeSearch(); });
+  const input = searchOverlay.querySelector('#searchInput');
+  input.addEventListener('input', ()=> runSearch(input.value));
+  input.addEventListener('keydown', (e)=>{
+    if(e.key === 'Escape') closeSearch();
+    else if(e.key === 'ArrowDown'){ e.preventDefault(); moveSearchSelection(1); }
+    else if(e.key === 'ArrowUp'){ e.preventDefault(); moveSearchSelection(-1); }
+    else if(e.key === 'Enter'){ e.preventDefault(); const r = searchCurrentResults[searchActiveIndex] || searchCurrentResults[0]; if(r) goToSearchResult(r); }
+  });
+  return searchOverlay;
+}
+
+function escapeRegex(s){ return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+function highlightMatch(text, q){
+  if(!q) return text;
+  return text.replace(new RegExp('(' + escapeRegex(q) + ')', 'ig'), '<mark>$1</mark>');
+}
+
+function runSearch(q){
+  const resultsEl = document.getElementById('searchResults');
+  q = q.trim();
+  if(!q){
+    searchCurrentResults = [];
+    resultsEl.innerHTML = `<div class="search-empty">Type to search lesson titles and topics — or press <kbd>↵</kbd> on a result to jump in.</div>`;
+    return;
+  }
+  const ql = q.toLowerCase();
+  searchCurrentResults = SEARCH_INDEX
+    .map(item=>{
+      const t = item.title.toLowerCase(), d = item.desc.toLowerCase();
+      let score = -1;
+      if(t.startsWith(ql)) score = 100;
+      else if(t.includes(ql)) score = 70;
+      else if(d.includes(ql)) score = 30;
+      return {...item, score};
+    })
+    .filter(item=>item.score > -1)
+    .sort((a,b)=>b.score-a.score)
+    .slice(0,30);
+
+  searchActiveIndex = searchCurrentResults.length ? 0 : -1;
+  if(!searchCurrentResults.length){
+    resultsEl.innerHTML = `<div class="search-empty">No lessons matched "${escapeHtml(q)}".</div>`;
+    return;
+  }
+  resultsEl.innerHTML = searchCurrentResults.map((r,i)=>`
+    <a class="search-result ${i===0?'active':''}" href="${r.url}" data-idx="${i}">
+      <div class="sr-path">${r.context}${r.type==='path'?' · Path overview':''}</div>
+      <div class="sr-title">${highlightMatch(r.title, q)}</div>
+      <div class="sr-desc">${highlightMatch(r.desc, q)}</div>
+    </a>
+  `).join('');
+  resultsEl.querySelectorAll('.search-result').forEach(el=>{
+    el.addEventListener('click', (e)=>{ e.preventDefault(); goToSearchResult(searchCurrentResults[parseInt(el.getAttribute('data-idx'),10)]); });
+    el.addEventListener('mouseenter', ()=>{ searchActiveIndex = parseInt(el.getAttribute('data-idx'),10); updateSearchActiveClass(); });
+  });
+}
+
+function moveSearchSelection(dir){
+  if(!searchCurrentResults.length) return;
+  searchActiveIndex = (searchActiveIndex + dir + searchCurrentResults.length) % searchCurrentResults.length;
+  updateSearchActiveClass();
+  document.querySelectorAll('.search-result')[searchActiveIndex]?.scrollIntoView({block:'nearest'});
+}
+function updateSearchActiveClass(){
+  document.querySelectorAll('.search-result').forEach((el,i)=> el.classList.toggle('active', i===searchActiveIndex));
+}
+function goToSearchResult(r){
+  STATE.usedSearch = true;
+  saveState();
+  checkAchievements();
+  closeSearch();
+  location.hash = r.url;
+}
+
+function openSearch(){
+  const overlay = buildSearchOverlay();
+  overlay.classList.add('open');
+  const input = overlay.querySelector('#searchInput');
+  input.value = '';
+  runSearch('');
+  setTimeout(()=>input.focus(), 30);
+}
+function closeSearch(){
+  searchOverlay?.classList.remove('open');
+}
+
+document.getElementById('searchBtn').addEventListener('click', openSearch);
+window.addEventListener('keydown', (e)=>{
+  if((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k'){
+    e.preventDefault();
+    openSearch();
+  }
+});
