@@ -62,6 +62,29 @@ function renderPathOverview(pathId) {
   `;
 }
 
+function renderLesson(pathId, lessonId) {
+  const path = PATHS.find(p => p.id === pathId);
+  if (!path) return renderHome();
+  const lesson = path.subs.find(s => s.id === lessonId);
+  if (!lesson) return renderPathOverview(pathId);
+
+  const app = document.getElementById('app');
+  if (!app) return;
+
+  app.innerHTML = `
+    <section class="sec">
+      <a class="back-link" href="#/lesson/${path.id}">← Back to ${path.title}</a>
+      <h1>${lesson.title}</h1>
+      <p>${lesson.desc}</p>
+
+      <article class="lesson-content">
+        <p>(Lesson content not yet available — this is a placeholder.)</p>
+        <pre><code>// You can author markdown content for lessons and render it with marked.js</code></pre>
+      </article>
+    </section>
+  `;
+}
+
 function route() {
   const hash = location.hash || '#/';
   console.log('%c[KashSec] route()', 'color:#60a5fa', hash);
@@ -74,9 +97,9 @@ function route() {
     console.log('%c[KashSec] route parts', 'color:#60a5fa', parts);
     if (parts.length === 1) {
       renderPathOverview(parts[0]);
-    } else {
-      // For now just show path overview
-      renderPathOverview(parts[0]);
+    } else if (parts.length >= 2) {
+      // render the specific lesson when path and lesson id are present
+      renderLesson(parts[0], parts[1]);
     }
   } else {
     // Unknown hash: fall back to home
