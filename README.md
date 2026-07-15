@@ -1,49 +1,26 @@
-<div align="center">
-
 # 🛡️ KashSec Academy
 
 **A completely free cybersecurity course, from absolute zero to job-ready.**
 
-14 learning paths · 150+ sub-lessons · diagrams, labs & challenges · always free
+14 learning paths · 151 sub-lessons · diagrams, labs & challenges · always free
 
 [![Live Site](https://img.shields.io/badge/live-kashsec.academy-EFA43A?style=for-the-badge)](https://iamishfaq07.github.io/KashSec/)
-[![Made with](https://img.shields.io/badge/stack-HTML%20%C2%B7%20CSS%20%C2%B7%20JS-3FB6A8?style=for-the-badge)](#tech-stack)
-[![Price](https://img.shields.io/badge/price-%E2%82%B90%20forever-111927?style=for-the-badge)](#)
 
-</div>
+## What's new
+- **Path 00**: Computer Basics & Security Mindset, for absolute freshers with zero prior exposure
+- **Path 13**: Career Prep — resume, portfolio, interviews, and the job search
+- ~30 new hands-on lab lessons folded into the existing paths (Linux forensics, JWT attacks, cloud misconfig, threat hunting, LLM red-teaming, and more)
 
----
-
-## What is this?
-
-KashSec Academy is a static, single-page course site that teaches cybersecurity from the very first principles — *"what is a network?"* — all the way through web hacking, bug bounty hunting, and AI red-teaming. No login, no paywall, no tracking. Just open it and start reading.
-
-The whole site is plain HTML/CSS/JS with no build step, no framework, and no `npm install`. Lessons are written in Markdown and rendered client-side, so adding or editing content is as simple as editing a `.md` file.
-
-## ✨ Features
-
-| | |
-|---|---|
-| 🗺️ **12 structured paths** | From Intro & Networking through Advanced Topics & AI Security |
-| 📖 **Two-level navigation** | Every path is split into short, focused sub-lessons |
-| 🧜 **Mermaid diagrams** | Flowcharts and sequence diagrams rendered live in the browser |
-| 🎨 **Inline SVG figures** | Custom hand-built diagrams where a picture beats a paragraph |
-| 💡 **Rich callouts** | `tip` / `warn` / `danger` / `lab` / `challenge` / `note` boxes |
-| 🔗 **Further reading** | Curated external references at the end of every lesson |
-| 📊 **Reading progress bar** | Know how far through a lesson you are |
-| 📱 **Fully responsive** | Same experience on phone, tablet, and desktop |
-
-## 🚀 Quick start
-
+## Quick start
 ```bash
 git clone https://github.com/iamishfaq07/KashSec.git
 cd KashSec
 python3 -m http.server 8000
 ```
 
-Then open **http://localhost:8000** — that's it. No dependencies to install.
+Open http://localhost:8000
 
-> Lessons are fetched with `fetch()`, so opening `index.html` directly by double-clicking won't work (browsers block `fetch` on `file://`). Always serve it, even locally.
+**Start here →** Path 00 for complete beginners.
 
 ## 📁 Project structure
 
@@ -55,11 +32,11 @@ KashSec/
 ├── .nojekyll                 # tells GitHub Pages: don't run Jekyll
 ├── DEPLOY.md                 # full deployment walkthrough
 └── course/
-    ├── 01-introduction/      # one folder per path
-    │   ├── what-is-cybersecurity.md
+    ├── 00-fresher-basics/    # one folder per path
+    │   ├── what-is-a-computer.md
     │   └── ...
-    ├── 02-networking/
-    └── ...12-ai-security/
+    ├── 01-introduction/
+    └── ...13-career-prep/
 ```
 
 ## 🗺️ The 14 paths
