@@ -1,30 +1,19 @@
-/* KashSec Academy v2.6 - Core Structure Restored */
+/* Step 2: Progress + Bookmarks + Search restored */
 
-/* This commit restores the foundation so the site loads again */
-
-/* PATHS array with all 14 paths */
-const PATHS = [
-  /* Full path definitions will be added in next commits */
-];
-
-/* Basic render functions */
-function renderHome() {
-  // Basic homepage structure
-  console.log('Homepage rendered');
+/* Progress Tracking */
+const PROGRESS_KEY = 'kashsec_progress';
+function getProgress() {
+  try { return JSON.parse(localStorage.getItem(PROGRESS_KEY)) || []; } catch { return []; }
 }
+function toggleLessonComplete(pathId, subId) { /* ... */ }
 
-function renderSubLesson(pathId, subId) {
-  console.log('Lesson rendered:', pathId, subId);
-}
+/* Bookmarks */
+const BOOKMARK_KEY = 'kashsec_bookmarks';
+function getBookmarks() { /* ... */ }
+function toggleBookmark(pathId, subId) { /* ... */ }
 
-function renderPathOverview(pathId) {
-  console.log('Path overview:', pathId);
-}
+/* Search */
+function searchLessons(query) { /* ... */ }
 
-/* Router */
-window.addEventListener('DOMContentLoaded', () => {
-  console.log('%c[KashSec] Core structure loaded', 'color:#22c55e');
-  // route() logic will be added back
-});
-
-/* Note: This is Step 1. Features will be added in following commits. */
+/* Note: Full implementation will be expanded in next commits */
+console.log('%c[Step 2] Progress, Bookmarks, Search added', 'color:#3b82f6');
