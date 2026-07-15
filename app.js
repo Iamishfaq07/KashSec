@@ -257,7 +257,7 @@ async function renderLesson(pathId, lessonSlug) {
         
         return `
           <div class="sb-path ${isActive ? 'active' : ''} ${isOpen ? 'open' : ''}">
-            <button class="sb-path-head">
+            <button class="sb-path-head" data-path-id="${pid}">
               <span class="n">${Object.keys(COURSE_STRUCTURE).indexOf(pid).toString().padStart(2, '0')}</span>
               <span class="name">${p.title}</span>
               <span class="chev">›</span>
@@ -459,9 +459,13 @@ function renderNotFound() {
 // Attach sidebar collapsible handlers
 function attachSidebarHandlers() {
   document.querySelectorAll('.sb-path-head').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const pathDiv = btn.parentElement;
-      pathDiv.classList.toggle('open');
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const pathDiv = btn.closest('.sb-path');
+      if (pathDiv) {
+        pathDiv.classList.toggle('open');
+      }
     });
   });
 }
@@ -469,9 +473,13 @@ function attachSidebarHandlers() {
 // Attach FAQ click handlers
 function attachFAQHandlers() {
   document.querySelectorAll('.faq-q').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const item = btn.parentElement;
-      item.classList.toggle('open');
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const item = btn.closest('.faq-item');
+      if (item) {
+        item.classList.toggle('open');
+      }
     });
   });
 }
@@ -498,6 +506,9 @@ async function route() {
   if (navLinks && navLinks.classList.contains('open')) {
     navLinks.classList.remove('open');
   }
+  
+  // Scroll to top
+  window.scrollTo(0, 0);
   
   // Route
   if (route === 'lesson' && params[0] && params[1]) {
@@ -533,6 +544,16 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
+
+// Intercept all navigation clicks
+document.addEventListener('click', (e) => {
+  const link = e.target.closest('a[href^="#/"]');
+  if (link) {
+    e.preventDefault();
+    const href = link.getAttribute('href');
+    window.location.hash = href;
+  }
+}, true);
 
 // Scroll event for nav styling
 let ticking = false;
