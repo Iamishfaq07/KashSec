@@ -112,7 +112,7 @@ async function renderHome() {
         
         <div class="feature-card">
           <div class="feature-ico">
-            <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/></svg>
+            <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm3.5-9c0 1.93-1.57 3.5-3.5 3.5S8.5 12.93 8.5 11 10.07 7.5 12 7.5s3.5 1.57 3.5 3.5z"/></svg>
           </div>
           <h3>Structured Paths</h3>
           <p>Follow our curated learning paths or choose your own adventure.</p>
@@ -315,6 +315,9 @@ async function renderLesson(pathId, lessonSlug) {
       }
     }
     
+    // Attach sidebar collapsible handlers
+    attachSidebarHandlers();
+    
     updateNav('#/course');
   } catch (e) {
     console.error('Failed to load lesson:', e);
@@ -451,6 +454,16 @@ function renderNotFound() {
       <a href="#/" class="btn-amber" style="margin-top: 1.5rem;">Back to Home</a>
     </section>
   `;
+}
+
+// Attach sidebar collapsible handlers
+function attachSidebarHandlers() {
+  document.querySelectorAll('.sb-path-head').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const pathDiv = btn.parentElement;
+      pathDiv.classList.toggle('open');
+    });
+  });
 }
 
 // Attach FAQ click handlers
