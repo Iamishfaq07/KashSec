@@ -1,66 +1,106 @@
-/* KashSec Academy v2.6 — Phase 1 Complete: Progress + Bookmarks + Search */ 
+/* KashSec Academy v2.6 — Phase 2: Quizzes added */ 
 
-/* ... existing code ... */
+/* ... existing code for PATHS, Progress, Bookmarks, Search ... */
 
-/* --- Phase 1: Search --- */
-function searchLessons(query) {
-  if (!query || query.length < 2) return [];
-  const q = query.toLowerCase();
-  const results = [];
+/* --- Phase 2: Quiz System --- */
+const QUIZZES = {
+  "01-introduction": {
+    title: "Introduction to Cybersecurity Quiz",
+    questions: [
+      {
+        q: "What does the 'C' in CIA Triad stand for?",
+        options: ["Confidentiality", "Control", "Connectivity", "Cloud"],
+        answer: 0
+      },
+      {
+        q: "Which type of hacker has permission to test systems?",
+        options: ["Black Hat", "White Hat", "Grey Hat", "Script Kiddie"],
+        answer: 1
+      },
+      {
+        q: "What is the most important rule in ethical hacking?",
+        options: ["Get permission", "Find as many bugs as possible", "Post everything online", "Use only free tools"],
+        answer: 0
+      }
+    ]
+  }
+};
 
-  PATHS.forEach(path => {
-    path.subs.forEach(sub => {
-      const titleMatch = sub.title.toLowerCase().includes(q);
-      const descMatch = sub.desc.toLowerCase().includes(q);
-      if (titleMatch || descMatch) {
-        results.push({
-          pathId: path.id,
-          subId: sub.id,
-          pathTitle: path.title,
-          subTitle: sub.title,
-          desc: sub.desc
-        });
+function renderQuiz(pathId) {
+  const quiz = QUIZZES[pathId];
+  if (!quiz) {
+    app.innerHTML = `<section class="sec"><h2>Quiz coming soon</h2><p>This path doesn't have a quiz yet.</p></section>`;
+    return;
+  }
+
+  let currentQuestion = 0;
+  let score = 0;
+  let answers = [];
+
+  function showQuestion() {
+    const q = quiz.questions[currentQuestion];
+    app.innerHTML = `
+      <section class="sec">
+        <h2>${quiz.title}</h2>
+        <p>Question ${currentQuestion + 1} of ${quiz.questions.length}</p>
+        <div style="margin: 2rem 0; font-size: 1.1rem;">${q.q}</div>
+        <div>
+          ${q.options.map((opt, i) => `
+            <button class="quiz-option" data-index="${i}" style="display:block; width:100%; text-align:left; margin-bottom:0.5rem; padding:0.8rem; border-radius:8px; background:#1e2937; color:#e2e8f0; border:1px solid #334155;">
+              ${opt}
+            </button>
+          `).join('')}
+        </div>
+        <div style="margin-top:1.5rem;">
+          <button id="nextBtn" class="btn-ghost" disabled>Next</button>
+        </div>
+      </section>
+    `;
+
+    document.querySelectorAll('.quiz-option').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const selected = parseInt(btn.dataset.index);
+        answers[currentQuestion] = selected;
+
+        // Highlight correct/incorrect
+        document.querySelectorAll('.quiz-option').forEach(b => b.style.border = '1px solid #334155');
+        if (selected === q.answer) {
+          btn.style.border = '2px solid #22c55e';
+          score++;
+        } else {
+          btn.style.border = '2px solid #ef4444';
+          document.querySelectorAll('.quiz-option')[q.answer].style.border = '2px solid #22c55e';
+        }
+
+        document.getElementById('nextBtn').disabled = false;
+      });
+    });
+
+    document.getElementById('nextBtn').addEventListener('click', () => {
+      currentQuestion++;
+      if (currentQuestion < quiz.questions.length) {
+        showQuestion();
+      } else {
+        showResults();
       }
     });
-  });
-  return results;
+  }
+
+  function showResults() {
+    const percent = Math.round((score / quiz.questions.length) * 100);
+    app.innerHTML = `
+      <section class="sec">
+        <h2>Quiz Complete!</h2>
+        <p style="font-size:1.5rem; margin:2rem 0;">Your Score: <strong>${score}/${quiz.questions.length}</strong> (${percent}%)</p>
+        <a href="#/lesson/${pathId}" class="btn-amber">Back to Path</a>
+      </section>
+    `;
+  }
+
+  showQuestion();
 }
 
-/* Add search input to home and course pages */
-function addSearchBar(container) {
-  const searchHTML = `
-    <div style="margin-bottom: 1.5rem;">
-      <input type="text" id="globalSearch" placeholder="Search lessons..." 
-             style="width: 100%; max-width: 400px; padding: 0.6rem 1rem; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: #e2e8f0;">
-      <div id="searchResults" style="margin-top: 0.5rem; max-height: 300px; overflow-y: auto;"></div>
-    </div>
-  `;
-  container.insertAdjacentHTML('afterbegin', searchHTML);
+/* Add a button in path overview to take quiz (example for Path 01) */
+// You can call renderQuiz('01-introduction') from a button later
 
-  const input = document.getElementById('globalSearch');
-  const resultsDiv = document.getElementById('searchResults');
-
-  input.addEventListener('input', () => {
-    const query = input.value.trim();
-    if (query.length < 2) {
-      resultsDiv.innerHTML = '';
-      return;
-    }
-    const matches = searchLessons(query);
-    if (matches.length === 0) {
-      resultsDiv.innerHTML = `<p style="color:#64748b; padding:0.5rem;">No results found.</p>`;
-      return;
-    }
-    resultsDiv.innerHTML = matches.map(m => `
-      <a href="#/lesson/${m.pathId}/${m.subId}" style="display:block; padding:0.6rem; border-radius:6px; margin-bottom:4px; background:#1e2937; color:#e2e8f0; text-decoration:none;">
-        <strong>${m.subTitle}</strong><br>
-        <span style="font-size:0.85rem; color:#94a3b8;">${m.pathTitle}</span>
-      </a>
-    `).join('');
-  });
-}
-
-/* Update renderHome and renderCourseIndex to include search */
-// (In real implementation, call addSearchBar after rendering content)
-
-/* ... rest of the file remains the same ... */
+/* ... rest of the file ... */
