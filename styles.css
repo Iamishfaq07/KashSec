@@ -97,7 +97,7 @@ a{color:inherit}
 .mobile-only{display:none}
 
 /* Rendered markdown */
-.md{max-width:72ch}
+.md{max-width:72ch;overflow-wrap:break-word}
 .md h1{font-size:clamp(1.6rem,3.4vw,2.2rem);font-weight:700;margin:0 0 1rem;color:var(--text)}
 .md h2{font-size:1.5rem;font-weight:700;margin:2.2rem 0 .8rem;padding-bottom:.5rem;border-bottom:1px solid var(--line-soft)}
 .md h3{font-size:1.22rem;font-weight:600;margin:1.9rem 0 .7rem;color:var(--text)}
@@ -106,7 +106,7 @@ a{color:inherit}
 .md ul,.md ol{color:#c9d3dd;font-size:1rem;margin:0 0 1.1rem;padding-left:1.3rem;display:flex;flex-direction:column;gap:.5rem;line-height:1.65}
 .md ul li::marker{color:var(--amber)}
 .md ol li::marker{color:var(--teal);font-family:'JetBrains Mono'}
-.md ul li,.md ol li{padding-left:.2rem}
+.md ul li,.md ol li{padding-left:.2rem;min-width:0}
 .md a{color:var(--teal);text-decoration:underline;text-underline-offset:3px}
 .md a:hover{color:var(--amber)}
 .md strong{color:var(--text);font-weight:600}
@@ -117,7 +117,8 @@ a{color:inherit}
 .md blockquote{border-left:3px solid var(--amber);padding:.6rem 0 .6rem 1rem;margin:0 0 1.2rem;color:#d3e2df}
 .md blockquote p{margin:0}
 .md hr{border:none;border-top:1px solid var(--line-soft);margin:2.5rem 0}
-.md table{width:100%;border-collapse:collapse;margin:0 0 1.2rem;font-size:.92rem;overflow-x:auto;display:block}
+.md .table-scroll{overflow-x:auto;margin:0 0 1.2rem;-webkit-overflow-scrolling:touch}
+.md table{width:100%;min-width:420px;border-collapse:collapse;font-size:.92rem}
 .md thead{background:var(--surface2)}
 .md th,.md td{padding:.6rem .8rem;text-align:left;border-bottom:1px solid var(--line-soft);white-space:nowrap}
 .md th{color:var(--amber);font-family:'JetBrains Mono';font-size:.75rem;letter-spacing:.04em;text-transform:uppercase}
@@ -174,9 +175,9 @@ a{color:inherit}
 .sublesson-card .sl-arrow{color:var(--muted);flex-shrink:0}
 
 /* Callout boxes (rendered from > **TAG:** blockquotes) */
-.callout{display:flex;gap:.7rem;padding:.9rem 1.1rem;border-radius:10px;margin:0 0 1.2rem;font-size:.94rem;line-height:1.6}
-.callout .ct-tag{font-family:'JetBrains Mono';font-size:.6rem;letter-spacing:.06em;padding:.2rem .45rem;border-radius:5px;flex-shrink:0;height:fit-content;margin-top:2px;font-weight:700}
-.callout .ct-body{flex:1}
+.callout{display:flex;flex-wrap:wrap;gap:.5rem .7rem;padding:.9rem 1.1rem;border-radius:10px;margin:0 0 1.2rem;font-size:.94rem;line-height:1.6}
+.callout .ct-tag{font-family:'JetBrains Mono';font-size:.6rem;letter-spacing:.06em;padding:.2rem .45rem;border-radius:5px;flex-shrink:0;max-width:100%;height:fit-content;margin-top:2px;font-weight:700;white-space:normal;overflow-wrap:break-word}
+.callout .ct-body{flex:1;min-width:min(100%,22rem)}
 .callout .ct-body>*:first-child{margin-top:0}
 .callout .ct-body>*:last-child{margin-bottom:0}
 .callout.tip{background:rgba(63,182,168,.08);border:1px solid rgba(63,182,168,.22);color:#cfe6e2}

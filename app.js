@@ -523,6 +523,13 @@ function enrichMarkdown(md){
   html = html.replace(/<pre><code class="language-mermaid">([\s\S]*?)<\/code><\/pre>/g,
     (m, code)=> `<div class="mermaid">${decodeHtml(code)}</div>`);
 
+  // Wrap tables in a scrollable container. A table's <thead>/<tr> children keep
+  // their native table layout regardless of any display:block on <table> itself,
+  // so without this wrapper wide tables blow out the whole page's width instead
+  // of scrolling on their own.
+  html = html.replace(/<table>([\s\S]*?)<\/table>/g,
+    (m)=> `<div class="table-scroll">${m}</div>`);
+
   return html;
 }
 
