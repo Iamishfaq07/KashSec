@@ -1,12 +1,17 @@
-/* Step 3: Quizzes + Final Quiz + Certificate restored */
+/* Step 4: Badges + Notes + Interactive Roadmap + Theme Toggle */
 
-/* Quiz System */
-const QUIZZES = { /* Path quizzes + Final Quiz */ };
+/* Achievements / Badges */
+const BADGES = [ /* ... */ ];
+function getEarnedBadges() { /* ... */ }
 
-function renderQuiz(pathId) { /* ... */ }
+/* Notes per Lesson */
+function getNote(pathId, subId) { /* ... */ }
+function saveNote(pathId, subId, content) { /* ... */ }
 
-function showNameInputForCertificate() { /* ... */ }
+/* Interactive Roadmap */
+/* Already partially in renderHome */
 
-function generateFinalCertificate() { /* PNG + PDF + LinkedIn share */ }
+/* Theme Toggle */
+function toggleTheme() { /* Dark/Light switch */ }
 
-console.log('%c[Step 3] Quizzes + Certificate added', 'color:#8b5cf6');
+console.log('%c[Step 4] Badges, Notes, Roadmap, Theme added', 'color:#ec4899');
