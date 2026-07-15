@@ -1,6 +1,6 @@
-/* KashSec Academy v2 — two-level structure, Mermaid, callouts, external refs */
+/* KashSec Academy v2.5 — Expanded with Path 00 + more labs & AI Security */ 
 
-document.getElementById('year').textContent = new Date().getFullYear();
+ document.getElementById('year').textContent = new Date().getFullYear();
 document.body.classList.add('reveal-ready');
 
 /* Init Mermaid with KashSec theme */
@@ -21,6 +21,16 @@ if(typeof mermaid !== 'undefined'){
 
 /* --- Course structure — each path has sub-lessons --- */
 const PATHS = [
+  {n:"00", id:"00-fresher-basics", title:"Computer Basics & Security Mindset", level:"Absolute fresher",
+   desc:"For complete beginners: computers, internet, files, passwords, and safe online habits.",
+   subs:[
+     {n:"1", id:"what-is-a-computer", title:"What is a computer really?", desc:"Hardware, software, OS — the simple picture."},
+     {n:"2", id:"how-internet-works", title:"How the internet works", desc:"From your phone to the world in simple steps."},
+     {n:"3", id:"files-folders-you", title:"Files, folders & organizing yourself", desc:"Don't lose your work ever again."},
+     {n:"4", id:"passwords-accounts", title:"Passwords & accounts basics", desc:"Strong passwords, 2FA, and account safety."},
+     {n:"5", id:"staying-safe-online", title:"Staying safe online (phishing & scams)", desc:"Spot fakes before they spot you."},
+     {n:"6", id:"how-to-learn-tech", title:"How to learn tech effectively", desc:"Habits that actually work for freshers."}
+   ]},
   {n:"01", id:"01-introduction", title:"Introduction to Cybersecurity", level:"Absolute beginner",
    desc:"What security is, why it matters, hacker types, the law, how to learn well.",
    subs:[
@@ -155,7 +165,7 @@ const PATHS = [
      {n:"8", id:"specialise",          title:"Advanced career paths",   desc:"Where to specialise, and why."}
    ]},
   {n:"12", id:"12-ai-security", title:"AI & AI Security", level:"Advanced",
-   desc:"How LLMs work, prompt injection, OWASP LLM Top 10, AI red teaming.",
+   desc:"How LLMs work, prompt injection, OWASP LLM Top 10, AI red teaming, practical labs.",
    subs:[
      {n:"1", id:"how-llms-work",       title:"How LLMs actually work",  desc:"A friendly primer without the mystique."},
      {n:"2", id:"why-ai-security",     title:"Why AI security is new",  desc:"What makes AI attacks unlike any before."},
@@ -163,38 +173,39 @@ const PATHS = [
      {n:"4", id:"jailbreaks",          title:"Jailbreaks & bypasses",   desc:"Bypassing policy, not just instructions."},
      {n:"5", id:"llm-top-10",          title:"OWASP LLM Top 10",        desc:"The shared checklist for AI application security."},
      {n:"6", id:"poisoning-adv-ml",    title:"Poisoning & adversarial ML", desc:"Backdoors, extraction, adversarial examples."},
-     {n:"7", id:"ai-red-teaming",      title:"AI red teaming",          desc:"Methodology, harms taxonomy, ethics."},
-     {n:"8", id:"ai-career",           title:"Your AI-security career", desc:"The 12-month plan for a new frontier."}
+     {n:"7", id:"ai-red-teaming",      title:"AI red teaming methodology", desc:"Systematic testing, success rates, ethics."},
+     {n:"8", id:"practical-ai-labs",   title:"Practical AI Red Teaming Labs", desc:"Hands-on prompt injection, jailbreak, and eval challenges."},
+     {n:"9", id:"ai-career",           title:"Your AI-security career", desc:"The 12-month plan for a new frontier."}
    ]}
 ];
 
 const CAREERS = [
-  {role:"SOC Analyst",             desc:"Watch for and respond to attacks in real time.", follow:"02 → 06 → 08"},
-  {role:"Penetration Tester",      desc:"Legally break into systems and report how.",     follow:"03 → 09 → 07"},
-  {role:"AppSec Engineer",         desc:"Help developers ship safe software.",             follow:"04 → 05 → 07"},
-  {role:"Bug Bounty Hunter",       desc:"Find bugs in real companies for cash rewards.",   follow:"05 → 07 → 10"},
-  {role:"Cloud Security Engineer", desc:"Secure AWS, Azure, and Google Cloud.",            follow:"06 → 11"},
-  {role:"Digital Forensics / IR",  desc:"Investigate incidents and evict attackers.",      follow:"03 → 08 → 11"},
-  {role:"AI Red Teamer",           desc:"Adversarially test AI systems for safety.",       follow:"05 → 07 → 12"},
-  {role:"Security / GRC Analyst",  desc:"Manage risk, policy, and compliance.",             follow:"01 → 06"}
+  {role:"SOC Analyst",             desc:"Watch for and respond to attacks in real time.", follow:"00 → 02 → 06 → 08"},
+  {role:"Penetration Tester",      desc:"Legally break into systems and report how.",     follow:"00 → 03 → 09 → 07"},
+  {role:"AppSec Engineer",         desc:"Help developers ship safe software.",             follow:"00 → 04 → 05 → 07"},
+  {role:"Bug Bounty Hunter",       desc:"Find bugs in real companies for cash rewards.",   follow:"00 → 05 → 07 → 10"},
+  {role:"Cloud Security Engineer", desc:"Secure AWS, Azure, and Google Cloud.",            follow:"00 → 06 → 11"},
+  {role:"Digital Forensics / IR",  desc:"Investigate incidents and evict attackers.",      follow:"00 → 03 → 08 → 11"},
+  {role:"AI Red Teamer",           desc:"Adversarially test AI systems for safety.",       follow:"00 → 05 → 07 → 12"},
+  {role:"Security / GRC Analyst",  desc:"Manage risk, policy, and compliance.",             follow:"00 → 01 → 06"}
 ];
 
 const FAQS = [
-  {q:"I have zero experience. Can I really do this?", a:"Yes — the course is built exactly for you. Start at path 1 and go in order. Every term is explained in plain words with everyday examples, and nothing is assumed."},
+  {q:"I have zero experience. Can I really do this?", a:"Yes — the course is built exactly for you. Start at path 00 and go in order. Every term is explained in plain words with everyday examples, and nothing is assumed."},
   {q:"Is it really free?", a:"Completely. Every lesson stays free forever. No card, no paywall, no upsell."},
   {q:"Do I need to buy anything or have a powerful computer?", a:"No. You'll install free software (VirtualBox + Kali Linux) that runs on a normal laptop. If your machine is very old, free browser labs like TryHackMe still let you practise."},
   {q:"Is any of this illegal?", a:"Not the way we teach it. You only ever practise on your own lab, on free legal training sites, or in-scope bug bounty programs. Path 01 covers the legal golden rule in detail."},
   {q:"How should I go through the course?", a:"Top to bottom, in order. Each path builds on the one before. Do the labs and challenges — hands-on practice is what makes it stick."},
-  {q:"How long does the whole course take?", a:"At a sensible pace (a sub-lesson a day), the full course takes 3–4 months. Depth beats speed."}
+  {q:"How long does the whole course take?", a:"At a sensible pace (a sub-lesson a day), the full course takes 4–6 months. Depth beats speed."}
 ];
 
 const ICON = {
   book:'<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>',
   terminal:'<polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/>',
-  grid:'<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/>',
+  grid:'<rect x="3" y="3" width="7" height:"7" rx="1"/><rect x="14" y="3" width="7" height:"7" rx="1"/><rect x="14" y="14" width="7" height:"7" rx="1"/><rect x="3" y="14" width="7" height:"7" rx="1"/>',
   map:'<polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/>',
   link:'<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>',
-  unlock:'<rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/>'
+  unlock:'<rect x="3" y="11" width="18" height:"11" rx="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/>'
 };
 const svgIco = (name)=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ICON[name]}</svg>`;
 
@@ -202,7 +213,7 @@ const FEATURES = [
   {ico:"book",     t:"Plain-English first", d:"Every term is defined the moment it appears — no assumed knowledge, no jargon walls, ever."},
   {ico:"terminal", t:"Hands-on labs",       d:"Real exercises and challenges in a safe, legal lab you build yourself and fully control."},
   {ico:"grid",     t:"Diagrams that click", d:"Mermaid flowcharts and hand-drawn SVGs turn abstract ideas into pictures you remember."},
-  {ico:"map",      t:"A real roadmap",      d:"12 ordered paths, 97 focused sub-lessons — each one building on the one before it."},
+  {ico:"map",      t:"A real roadmap",      d:"13 ordered paths, 110+ focused sub-lessons — each one building on the one before it."},
   {ico:"link",     t:"Curated references",  d:"Every lesson ends with links to the best free resources, so you always know where to go deeper."},
   {ico:"unlock",   t:"Free, forever",       d:"No account, no paywall, no tracking. World-class security education, open to everyone."}
 ];
@@ -326,13 +337,13 @@ function renderHome(){
         <div class="eyebrow" data-reveal>Free cybersecurity course · zero experience needed</div>
         <h1 data-reveal style="--i:1">Start cybersecurity from <span class="amber">absolute zero</span>.</h1>
         <p class="hero-sub" data-reveal style="--i:2">
-          Networks, Linux, Python, web hacking, bug bounty, advanced topics, and AI security —
+          Computers, internet, Linux, Python, web hacking, bug bounty, advanced topics, and AI security —
           all written in plain words with hands-on labs, diagrams, and links to real references.
           ${total}+ sub-lessons across ${PATHS.length} paths, always free.
         </p>
         <div class="hero-btns" data-reveal style="--i:3">
-          <a class="btn-amber" href="#/lesson/01-introduction/what-is-cybersecurity">Begin lesson 1 →</a>
-          <a class="btn-ghost" href="#/course">See the roadmap</a>
+          <a class="btn-amber" href="#/lesson/00-fresher-basics/what-is-a-computer">Begin with Path 00 →</a>
+          <a class="btn-ghost" href="#/course">See the full roadmap</a>
         </div>
         <div class="hero-stats" data-reveal style="--i:4">
           <div><div class="hstat-n" data-count="${PATHS.length}">${PATHS.length}</div><div class="hstat-l">learning paths</div></div>
@@ -362,7 +373,7 @@ function renderHome(){
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow">The roadmap</div>
         <h2>Everything, in the right order</h2>
-        <p class="sec-lead">Start at Path 01 and work down. Each path builds on the last, and every path is split into short sub-lessons.</p>
+        <p class="sec-lead">Start at Path 00 and work down. Each path builds on the last, and every path is split into short sub-lessons.</p>
       </div>
       <div class="paths">
         ${PATHS.map((p,i)=>`
@@ -379,7 +390,7 @@ function renderHome(){
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow">Careers</div>
         <h2>Where can this take you?</h2>
-        <p class="sec-lead">Security is many jobs — here's a shortlist and which paths lead to each.</p>
+        <p class="sec-lead">Security has many careers. Here's a shortlist and which paths lead to each.</p>
       </div>
       <div class="careers">
         ${CAREERS.slice(0,4).map((c,i)=>`
@@ -408,7 +419,7 @@ function renderCourseIndex(){
     <section class="sec">
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow">The full course</div>
-        <h2>12 paths, ${totalSubLessons()}+ sub-lessons</h2>
+        <h2>${PATHS.length} paths, ${totalSubLessons()}+ sub-lessons</h2>
         <p class="sec-lead">Each path is split into short focused sub-lessons. Click a path to see its map.</p>
       </div>
       <div class="paths">
@@ -524,7 +535,7 @@ async function renderSubLesson(pathId, subId){
             <a href="#/lesson/${ctx.path.id}" style="color:var(--teal);text-decoration:none">Path ${ctx.path.n}: ${ctx.path.title}</a>
             &nbsp;·&nbsp; Sub-lesson ${ctx.path.n}.${ctx.sub.n}
           </div>
-          <button class="btn-ghost sm mobile-only" id="menuBtn" aria-label="Open lesson menu">☰ Lessons</button>
+          <button class="btn-ghost sm mobile-only", id="menuBtn" aria-label="Open lesson menu">☰ Lessons</button>
         </div>
         <div class="md" id="content"><div class="loading">Loading…</div></div>
         <div class="reader-nav">
