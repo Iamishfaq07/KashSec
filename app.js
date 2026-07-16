@@ -79,7 +79,10 @@ function loadState(){
   return defaultState();
 }
 let STATE = loadState();
-function saveState(){ try{ localStorage.setItem(STORE_KEY, JSON.stringify(STATE)); }catch(e){} }
+function saveState(){
+  try{ localStorage.setItem(STORE_KEY, JSON.stringify(STATE)); }catch(e){}
+  if(typeof SupabaseSync !== 'undefined') SupabaseSync.pushState(STATE);
+}
 const lessonKey = (pathId,subId) => pathId+'/'+subId;
 
 function isComplete(pathId,subId){ return !!STATE.completed[lessonKey(pathId,subId)]; }
@@ -499,6 +502,15 @@ window.addEventListener('hashchange', route);
 window.addEventListener('DOMContentLoaded', route);
 
 function route(){
+  // Magic-link / OAuth redirects land back on the site with auth tokens
+  // riding in the URL (e.g. #access_token=...). That's not a real route —
+  // show a brief loading state and let the auth bootstrap below redirect
+  // to a clean hash once the session is established, instead of flashing
+  // a 404 while Supabase parses and strips the tokens.
+  if(typeof SupabaseSync !== 'undefined' && SupabaseSync.isAuthCallbackUrl()){
+    app.innerHTML = `<div class="loading">Signing you in…</div>`;
+    return;
+  }
   const hash = location.hash || '#/';
   window.scrollTo(0,0);
   if(hash === '#/' || hash === '#') renderHome();
@@ -1513,6 +1525,15 @@ function renderProgressHub(){
         </div>
       ` : ''}
 
+      ${typeof SupabaseSync !== 'undefined' && SupabaseSync.CONFIGURED ? `
+        <div class="hub-section" data-reveal style="--i:1">
+          <div class="hub-section-head"><h3 style="font-family:'Space Grotesk';font-size:1.15rem">☁️ Sync</h3></div>
+          ${SupabaseSync.isSignedIn()
+            ? `<div class="hub-list-item" style="cursor:default"><div><div class="hli-t">Signed in as ${escapeHtml(SupabaseSync.userEmail()||'')}</div><div class="hli-d">Progress syncs automatically</div></div><button class="btn-ghost sm" id="hubSignOutBtn" type="button">Sign out</button></div>`
+            : `<div class="hub-list-item" style="cursor:default"><div><div class="hli-t">Not signed in</div><div class="hli-d">Sign in to back up and sync across devices</div></div><button class="btn-amber sm" id="hubSignInBtn" type="button">Sign in →</button></div>`}
+        </div>
+      ` : ''}
+
       <div class="hub-grid" data-reveal style="--i:2">
         <div class="hub-stat"><div class="hub-stat-n">${overall.pct}%</div><div class="hub-stat-l">Overall complete</div></div>
         <div class="hub-stat"><div class="hub-stat-n">${overall.done}/${overall.total}</div><div class="hub-stat-l">Lessons done</div></div>
@@ -1581,6 +1602,13 @@ function renderProgressHub(){
       </div>
     </section>
   `;
+
+  document.getElementById('hubSignInBtn')?.addEventListener('click', openAuth);
+  document.getElementById('hubSignOutBtn')?.addEventListener('click', async ()=>{
+    await SupabaseSync.signOut();
+    renderProgressHub();
+    afterRender();
+  });
 
   document.getElementById('resetProgressBtn')?.addEventListener('click', ()=>{
     if(confirm('This clears all progress, bookmarks, notes, quiz scores, and achievements stored in this browser. This cannot be undone. Continue?')){
@@ -1744,3 +1772,135 @@ window.addEventListener('keydown', (e)=>{
     openSearch();
   }
 });
+
+/* ============================================================
+   Optional account + cloud sync (Supabase). Everything here is
+   inert when SupabaseSync.CONFIGURED is false — see sync.js. The
+   nav's "Sign in" link stays hidden until sync is actually set up.
+   ============================================================ */
+let authOverlay = null;
+
+function buildAuthOverlay(){
+  if(authOverlay) return authOverlay;
+  authOverlay = document.createElement('div');
+  authOverlay.className = 'search-overlay auth-overlay';
+  authOverlay.innerHTML = `
+    <div class="search-modal auth-modal" role="dialog" aria-modal="true" aria-label="Account">
+      <div class="auth-header">
+        <span></span>
+        <button class="icon-btn" id="authCloseBtn" aria-label="Close" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="auth-body" id="authBody"></div>
+    </div>
+  `;
+  document.body.appendChild(authOverlay);
+  authOverlay.addEventListener('click', (e)=>{ if(e.target === authOverlay) closeAuth(); });
+  document.getElementById('authCloseBtn').addEventListener('click', closeAuth);
+  window.addEventListener('keydown', (e)=>{ if(e.key === 'Escape' && authOverlay.classList.contains('open')) closeAuth(); });
+  return authOverlay;
+}
+
+function paintAuthSignedOut(){
+  const body = document.getElementById('authBody');
+  body.innerHTML = `
+    <div class="sec-eyebrow">Optional</div>
+    <h3 class="auth-title">Sign in to sync</h3>
+    <p class="auth-sub">Back up your progress, bookmarks, notes, and quiz scores, and pick up on any device. The site works completely fine without this.</p>
+    <form id="magicLinkForm" class="auth-form">
+      <input type="email" id="authEmailInput" placeholder="you@example.com" required autocomplete="email">
+      <button class="btn-amber sm" type="submit">Send link</button>
+    </form>
+    <div class="auth-divider"><span>or</span></div>
+    <button class="btn-ghost auth-google" id="googleSignInBtn" type="button">
+      <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+      Continue with Google
+    </button>
+    <div class="auth-status" id="authStatus"></div>
+  `;
+  document.getElementById('magicLinkForm').addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    const email = document.getElementById('authEmailInput').value.trim();
+    if(!email) return;
+    const status = document.getElementById('authStatus');
+    status.textContent = 'Sending…';
+    try{
+      await SupabaseSync.signInWithEmail(email);
+      document.getElementById('authBody').innerHTML = `
+        <div class="sec-eyebrow">Check your email</div>
+        <h3 class="auth-title">Link sent to ${escapeHtml(email)}</h3>
+        <p class="auth-sub">Click the link in that email on this device to finish signing in. You can close this window.</p>
+      `;
+    }catch(err){
+      status.textContent = 'Something went wrong — ' + (err.message || 'please try again.');
+    }
+  });
+  document.getElementById('googleSignInBtn').addEventListener('click', async ()=>{
+    const status = document.getElementById('authStatus');
+    try{ await SupabaseSync.signInWithGoogle(); }
+    catch(err){ status.textContent = 'Something went wrong — ' + (err.message || 'please try again.'); }
+  });
+}
+
+function paintAuthSignedIn(){
+  const body = document.getElementById('authBody');
+  body.innerHTML = `
+    <div class="sec-eyebrow">Signed in</div>
+    <h3 class="auth-title" style="word-break:break-all">${escapeHtml(SupabaseSync.userEmail()||'')}</h3>
+    <p class="auth-sub">Your progress syncs automatically in the background.</p>
+    <button class="btn-ghost auth-google" id="signOutBtn" type="button">Sign out</button>
+  `;
+  document.getElementById('signOutBtn').addEventListener('click', async ()=>{
+    await SupabaseSync.signOut();
+    closeAuth();
+  });
+}
+
+function openAuth(){
+  buildAuthOverlay();
+  authOverlay.classList.add('open');
+  if(SupabaseSync.isSignedIn()) paintAuthSignedIn(); else paintAuthSignedOut();
+}
+function closeAuth(){ authOverlay?.classList.remove('open'); }
+
+function updateAccountNav(user){
+  const link = document.getElementById('accountNavLink');
+  if(!link) return;
+  if(!SupabaseSync.CONFIGURED){ link.style.display = 'none'; return; }
+  link.style.display = '';
+  link.textContent = user ? (user.email || 'Account') : 'Sign in';
+  link.title = user ? 'Manage your account' : 'Sign in to sync your progress';
+}
+
+document.getElementById('accountNavLink')?.addEventListener('click', (e)=>{
+  e.preventDefault();
+  navLinks.classList.remove('open');
+  openAuth();
+});
+
+/* Auth bootstrap: pick up an existing session, merge local + cloud
+   progress on sign-in, and land on a clean URL after a magic-link or
+   OAuth redirect. */
+if(typeof SupabaseSync !== 'undefined' && SupabaseSync.CONFIGURED){
+  let handledInitialSignIn = false;
+  SupabaseSync.onAuthChange(async (user)=>{
+    updateAccountNav(user);
+    if(user && !handledInitialSignIn){
+      handledInitialSignIn = true;
+      STATE = await SupabaseSync.pullAndMerge(STATE);
+      try{ localStorage.setItem(STORE_KEY, JSON.stringify(STATE)); }catch(e){}
+      refreshProgressRing();
+      if(SupabaseSync.isAuthCallbackUrl() || !location.hash || location.hash === '#'){
+        location.hash = '#/progress';
+      } else {
+        route();
+      }
+      if(authOverlay && authOverlay.classList.contains('open')) closeAuth();
+    }
+    if(!user) handledInitialSignIn = false;
+  });
+  SupabaseSync.init();
+} else {
+  updateAccountNav(null);
+}

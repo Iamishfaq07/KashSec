@@ -623,8 +623,10 @@ a{color:inherit}
 .hub-list-item{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.85rem 1rem;
   background:var(--surface);border:1px solid var(--border);border-radius:var(--r-sm);margin-bottom:.55rem;text-decoration:none;color:var(--text)}
 .hub-list-item:hover{border-color:rgba(239,164,58,.4)}
-.hub-list-item .hli-t{font-weight:600;font-size:.9rem}
-.hub-list-item .hli-d{color:var(--muted2);font-size:.76rem;margin-top:.15rem}
+.hub-list-item>div:first-child{min-width:0;flex:1}
+.hub-list-item .hli-t{font-weight:600;font-size:.9rem;overflow-wrap:break-word}
+.hub-list-item .hli-d{color:var(--muted2);font-size:.76rem;margin-top:.15rem;overflow-wrap:break-word}
+.hub-list-item>.btn-amber,.hub-list-item>.btn-ghost,.hub-list-item>svg{flex:none}
 
 /* ============================================================
    Global search (Ctrl+K)
@@ -647,6 +649,22 @@ a{color:inherit}
 .search-result .sr-desc{color:var(--muted);font-size:.8rem}
 .search-empty{padding:2rem 1rem;text-align:center;color:var(--muted);font-size:.9rem}
 mark{background:rgba(239,164,58,.35);color:inherit;border-radius:3px;padding:0 1px}
+
+/* ============================================================
+   Auth modal (optional Supabase sign-in)
+   ============================================================ */
+.auth-modal{padding:1.6rem clamp(1.3rem,4vw,2.2rem) 2rem}
+.auth-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:.4rem}
+.auth-title{font-family:'Space Grotesk';font-size:1.35rem;font-weight:700;margin:.4rem 0 .7rem;letter-spacing:-.01em}
+.auth-sub{color:var(--muted);font-size:.9rem;line-height:1.6;margin-bottom:1.4rem}
+.auth-form{display:flex;gap:.6rem;flex-wrap:wrap}
+.auth-form input{flex:1;min-width:12rem;padding:.75rem 1rem;border-radius:10px;border:1px solid var(--border-strong);background:var(--surface2);color:var(--text);font-family:inherit;font-size:.92rem}
+.auth-form input:focus-visible{outline:2px solid var(--amber);outline-offset:1px}
+.auth-divider{display:flex;align-items:center;gap:.8rem;color:var(--muted2);font-family:'JetBrains Mono';font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;margin:1.3rem 0}
+.auth-divider::before,.auth-divider::after{content:"";flex:1;height:1px;background:var(--line-soft)}
+.auth-google{width:100%;justify-content:center}
+.auth-status{min-height:1.2em;margin-top:.9rem;font-size:.85rem;color:var(--crim)}
+.account-nav-link{font-weight:600!important;color:var(--amber)!important}
 
 @media(max-width:640px){
   .quiz-result-ring{width:120px;height:120px}

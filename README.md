@@ -7,6 +7,10 @@
 [![Live Site](https://img.shields.io/badge/live-kashsec.academy-EFA43A?style=for-the-badge)](https://iamishfaq07.github.io/KashSec/)
 
 ## What's new
+- **Progress tracking, bookmarks & notes** on every lesson, plus an interactive roadmap and a personal progress dashboard
+- **14 path quizzes + a Final Exam**, with a canvas-drawn **certificate of completion** (PNG download, print-to-PDF, LinkedIn share)
+- **14 achievements**, a light/dark **theme toggle**, global **search** (Ctrl/Cmd+K), and "continue where you left off"
+- Optional **cloud sync** — sign in to back up progress across devices; the site works fully without it (see [`SUPABASE_SETUP.md`](./SUPABASE_SETUP.md))
 - **Path 00**: Computer Basics & Security Mindset, for absolute freshers with zero prior exposure
 - **Path 13**: Career Prep — resume, portfolio, interviews, and the job search
 - ~30 new hands-on lab lessons folded into the existing paths (Linux forensics, JWT attacks, cloud misconfig, threat hunting, LLM red-teaming, and more)
@@ -76,11 +80,20 @@ To add a brand-new sub-lesson: drop a `.md` file in the right `course/<path>/` f
 
 - **[marked](https://marked.js.org/)** — Markdown → HTML
 - **[Mermaid](https://mermaid.js.org/)** — diagrams as code
+- **[Supabase](https://supabase.com)** *(optional)* — auth + Postgres for cross-device sync; the site never depends on it being configured
 - Zero build tooling — what you edit is what ships
 
 ## 🌐 Deployment
 
 The site auto-deploys to **GitHub Pages** from the `main` branch. See [`DEPLOY.md`](./DEPLOY.md) for the full walkthrough, including custom domains.
+
+## ☁️ Optional cloud sync
+
+Progress, bookmarks, notes, and quiz scores live in `localStorage` by
+default — no account needed, ever. If you want people to be able to
+sign in and sync across devices, see [`SUPABASE_SETUP.md`](./SUPABASE_SETUP.md)
+for a step-by-step guide (free Supabase tier, ~10 minutes). Until it's
+configured, the sign-in UI stays hidden and nothing changes.
 
 ## 🤝 Contributing
 
