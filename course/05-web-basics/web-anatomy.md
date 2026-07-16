@@ -86,6 +86,10 @@ Two words that sound similar and get conflated constantly, but mean very differe
 
 A huge fraction of real-world bugs are **authorization** failures on systems with *perfectly fine* authentication — you're definitely logged in as yourself, the app just forgot to check whether *you* should see *this* particular resource. That's IDOR (Path 07), and it's one of the most commonly found bugs in bug bounty (Path 10).
 
+## Staging, development, and internal environments
+
+Production isn't the only environment a company runs — most maintain `staging.example.com`, `dev.example.com`, or `internal.example.com` copies of the same application, used for testing changes before they ship to real users. These environments are consistently a rich hunting ground precisely *because* they're treated as less important: weaker passwords, verbose debug error pages left enabled, outdated software versions not yet patched, or sometimes no authentication at all because "no one will find it." Subdomain enumeration (Path 02's DNS lesson, formalised properly in Path 10's recon pipeline) is largely a hunt for exactly these forgotten, lower-guard copies of the real application.
+
 ## Reading a site's architecture in 5 minutes
 
 A practical checklist you can run on any target:

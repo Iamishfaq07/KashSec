@@ -99,6 +99,10 @@ Speed is helped by aggressive caching:
 
 For security learners, caches matter because **cached content can leak between users** — a classic bug class called **web cache poisoning / deception**, popularised by researcher James Kettle.
 
+## The critical rendering path — why some resources block the page
+
+Not every resource loads and displays equally: the browser must fully download and parse CSS before it can safely paint anything to the screen (since styles can change layout entirely), which is why CSS is called **render-blocking** by default. JavaScript is worse — by default, a `<script>` tag pauses HTML parsing entirely until that script finishes downloading and executing, since the script might use `document.write()` to inject more HTML. This is exactly why modern pages use `async` or `defer` attributes on script tags, and why this course's own app.js lazy-loads Markdown/diagram libraries (referenced in this course's own architecture) rather than blocking the whole page on them. Understanding this **critical rendering path** — which resources genuinely must load before anything appears, versus which can load quietly in the background — explains both real performance engineering and, from a security angle, exactly why a slow or blocked third-party script can sometimes freeze an entire page (a legitimate site reliability concern, and occasionally a deliberate denial-of-service angle).
+
 ## 🧪 Lab — Trace a real page load
 
 Open Firefox in Kali, then:

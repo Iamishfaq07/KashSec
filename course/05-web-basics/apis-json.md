@@ -121,6 +121,14 @@ APIs deserve their own OWASP top-10 because they have *specific* recurring bug c
 
 You'll meet each in Path 07. The point today: **APIs are where modern web bugs live, at least as much as the HTML UI.**
 
+## API versioning and forgotten endpoints
+
+APIs rarely stay static — as apps evolve, developers introduce `/api/v2/...` while `/api/v1/...` often keeps running quietly in the background for older mobile app versions still in the wild. Those old, unmaintained versions are a genuinely rich attack surface: a `v1` endpoint might lack a security fix that was only ever applied to `v2`, or might expose a field that `v2` deliberately hid after a privacy review. This is exactly the kind of thing Path 10's recon material teaches you to hunt for — trying `/api/v1/`, `/api/v0/`, `/api/beta/`, and similar guesses against any API you find, since forgotten versions are consistently one of the highest-value things to check in bug bounty recon.
+
+## Rate limiting and pagination — the practical side
+
+Two mundane-sounding API behaviours matter a lot in practice. **Rate limiting** caps how many requests a caller can make in a given window (commonly signalled with `429 Too Many Requests` and headers like `X-RateLimit-Remaining`) — the same defence discussed in Path 04's automation lesson, applied from the server's side this time. **Pagination** controls how much data a single request returns, typically via `?page=2&per_page=50` or a `cursor` parameter — an API that returns *everything* in one unpaginated response isn't just slow, it can hand an attacker your entire user table in a single request if authorization is also missing. Reading how an API paginates and rate-limits tells you a lot about how seriously its developers thought about abuse.
+
 ## Finding APIs on a site
 
 Even sites with no "API documentation" have APIs. Every modern SPA is calling them under the hood. Simple approach:

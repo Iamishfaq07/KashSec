@@ -100,6 +100,17 @@ Great for user experience. Zero security value — the attacker just skips it. Y
 
 **Fix:** Validate on the client for UX; **re-validate** on the server for security.
 
+### 5. Trusting the client's math
+
+```javascript
+const total = quantity * unitPrice - discount;
+fetch("/checkout", { method: "POST", body: JSON.stringify({ total }) });
+```
+
+The client computed `total` and simply *told* the server what to charge. Whatever formula ran in the browser is invisible from the server's side — the attacker can open DevTools, edit `total` to `0.01` before the request fires, and the server has no way to know the number didn't come from the real calculation. This exact pattern — trusting a client-computed total, tax amount, or shipping cost — has caused real financial losses at real companies.
+
+**Fix:** The server recomputes the total itself from trusted server-side prices; it never accepts a final number from the client for anything that involves money or permissions.
+
 ## What lives where — the honest picture
 
 | Layer | Runs on | Attacker can | Suitable for |
@@ -137,6 +148,10 @@ You'll hear the terms "server-side rendered" (SSR) and "single-page app" (SPA).
 - **SPA:** the server ships a JS app once; the app then talks JSON APIs. Bugs skew towards DOM-XSS, insecure client-side routing, API auth issues.
 
 Both have plenty of bugs — the *shape* just differs.
+
+## Mobile apps and desktop clients — the same rule, less obvious
+
+It's tempting to think "client vs server" is only about web browsers, but the exact same rule applies to a mobile app talking to an API, or a desktop client talking to a backend. Path 15's mobile security material covers this directly: a mobile app is just as fully in the attacker's control as a browser is — they can decompile it, intercept its traffic with a proxy, and send whatever requests they want directly to the API, completely bypassing the app's own UI and its client-side checks. The lesson generalises far beyond "web pages": **any code running on a device you don't control is a client, and the server must never trust it.**
 
 ## 🧪 Lab — Change reality in your own browser
 

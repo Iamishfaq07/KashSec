@@ -75,12 +75,20 @@ Set **breakpoints** by clicking a line number in any loaded script; the page pau
 
 Firefox: click the padlock icon → **More Information**. Shows the TLS certificate details, whether the connection is secure, and any mixed-content warnings (HTTP resources loaded on an HTTPS page — a real bug class).
 
+### Sources panel — reading a site's actual JavaScript files
+
+Distinct from the Debugger's breakpoint view, the **Sources** (Firefox: **Debugger**) panel's file tree lets you browse every JS, CSS, and asset file the page has loaded, organised by domain and path. Two habits worth building here: first, checking for **source maps** — a `//# sourceMappingURL=` comment at the bottom of a minified `.js` file that, if the map file is accidentally left accessible on the server, lets DevTools reconstruct the *original*, human-readable source code, variable names and all, straight from production; second, using **Ctrl+F inside a specific file** to search minified code for strings like `api_key`, `admin`, or `/internal/` — developers frequently leave revealing strings in client-side JS even after minification, since minification obscures logic but not string literals.
+
 ## View Source vs Inspector — know the difference
 
 - **Ctrl+U (View Source)** shows the *original* HTML the server sent, before any JavaScript ran.
 - **Inspector** shows the *current* DOM, after JavaScript has modified it.
 
 On modern SPAs these can look wildly different — View Source might show almost nothing (`<div id="root"></div>`) while the Inspector shows a fully-built page. Both views matter for different reasons: View Source for what the server actually sent; Inspector for what's actually rendered.
+
+## Copying values without breaking formatting
+
+Two small DevTools habits save real time during recon: **right-click → Copy → Copy object** on any Console result serialises a full JavaScript object as JSON, ready to paste into a notes file or a Python script's test fixtures; and **`console.table(data)`** renders an array of objects as an actual sortable table in the Console, far easier to scan than a wall of nested `{ }` when you're eyeballing dozens of API results at once. Small as these sound, spending five minutes learning DevTools' own convenience features consistently pays back across hundreds of future recon sessions.
 
 ## Responsive Design Mode
 

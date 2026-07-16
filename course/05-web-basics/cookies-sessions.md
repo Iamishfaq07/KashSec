@@ -120,6 +120,20 @@ Multiple subdomains sharing cookies can accidentally let one subdomain overwrite
 
 *Defence:* Careful `Domain` and `Path` scoping, `__Host-` cookie prefix.
 
+### Session timeout and idle expiry
+
+A session that lives forever is a growing liability — every cookie an attacker could ever steal stays valid indefinitely, and a device left logged in at a library or shared computer stays logged in for whoever sits down next. Well-designed sites enforce two separate limits: an **absolute timeout** (the session expires a fixed time after login, e.g. 24 hours, no matter what) and an **idle timeout** (the session expires after a period of *inactivity*, e.g. 30 minutes with no requests). Sensitive actions — changing a password, viewing payment details — often require *re-authentication* even within an otherwise-valid session, precisely because a session cookie alone isn't considered strong enough proof of "this is really the account owner, right now" for high-stakes actions. This same idea — that authentication isn't binary but has different strength requirements for different actions — reappears directly in Path 06's authentication material.
+
+## The __Host- and __Secure- cookie prefixes
+
+Browsers support special cookie name prefixes that come with *enforced* guarantees, closing gaps that the regular flags above leave open:
+
+```http
+Set-Cookie: __Host-session=abc123; Path=/; Secure; HttpOnly; SameSite=Strict
+```
+
+A cookie named `__Host-...` is only accepted by the browser if it also has `Secure` set, has `Path=/`, and has **no** `Domain` attribute at all — which means it can never be sent to a different subdomain, closing exactly the cookie-tossing/subdomain-confusion gap described above. `__Secure-` is a lighter version that only enforces `Secure`. These prefixes are a genuinely underused, cheap way to make a cookie's security properties self-enforcing rather than relying on every developer remembering to configure `Domain` and `Path` correctly by hand.
+
 ## Reading cookies as an attacker/defender
 
 In Firefox DevTools:
