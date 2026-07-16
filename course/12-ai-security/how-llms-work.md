@@ -112,6 +112,10 @@ flowchart LR
 
 Once an LLM can take real-world actions rather than just producing text a human reviews before acting, every security concept from this course — access control (Path 07.1), least privilege (Path 09.4), input validation (Path 07.6) — becomes directly and urgently relevant to AI systems specifically, and the remaining lessons in this path build toward exactly this territory.
 
+## Temperature and sampling — why the same prompt gives different answers
+
+A detail worth understanding early, since it shapes how you'll reason about testing an LLM for security issues throughout this path: an LLM doesn't just deterministically pick the single "most likely" next token every time — a parameter called **temperature** controls how much randomness is introduced into that choice. At temperature 0, the model always picks the highest-probability token, producing the same output for the same input every time (useful for testing reproducibility). At higher temperatures, it samples more randomly among plausible next tokens, producing more varied, creative output — but also meaning the exact same jailbreak or prompt injection attempt (Path 12.3/12.4) might succeed on one attempt and fail on the next, purely due to this randomness. This has a direct, practical security testing implication: a single failed jailbreak attempt against a non-zero-temperature model doesn't prove the model is safe against that technique — genuine security testing requires multiple attempts to account for this inherent variability, a habit Path 12.7's red teaming methodology builds on directly.
+
 ## The OWASP LLM Top 10 — this path's organising framework
 
 Directly mirroring Path 07.1's OWASP Top 10 for web applications, **OWASP has published an LLM-specific Top 10** cataloguing the most critical risks in LLM-integrated applications — the framework the remaining lessons in this path are organised around, covered in full in Path 12.5.

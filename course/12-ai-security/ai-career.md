@@ -1,6 +1,6 @@
 # Building an AI security career
 
-You've reached the final lesson of KashSec Academy. This closing lesson looks at where AI security fits in the broader career landscape you've built across this entire course, and offers genuine, grounded guidance for anyone wanting to specialise here specifically.
+You've reached the final career-focused lesson of Path 12. This closing lesson looks at where AI security fits in the broader career landscape you've built across this entire course, and offers genuine, grounded guidance for anyone wanting to specialise here specifically.
 
 ## Why AI security is a distinctive career opportunity right now
 
@@ -60,21 +60,25 @@ This is worth sitting with directly: **nothing in Path 12 stands alone.** Every 
 - **Engage with the responsible disclosure ecosystem** — several major AI labs now run bug bounty-style programs specifically for model safety issues, directly extending Path 10's entire methodology into this new domain.
 - **Watch MITRE ATLAS and OWASP LLM Top 10 updates** — both frameworks (Path 12.5-12.6) are actively evolving; following their development is itself a way of staying current with the field's evolving consensus.
 
+## Building a public portfolio in a field with few established norms
+
+Recall Path 10.8's bug bounty career-building advice — the same principle of verifiable, public proof of skill applies here, but with a genuinely different texture given how young this field is. Where a web pentester can point to CVE credits or HackerOne reputation scores following well-established conventions, AI security's portfolio norms are still forming: a well-documented writeup of a novel jailbreak technique (submitted responsibly per Path 12.4's disclosure ethics, then published once a lab has addressed it), a contribution to an open-source red-teaming tool like Garak or PyRIT, or a detailed public breakdown of testing a specific open-source model against the OWASP LLM Top 10 can all serve as genuine portfolio pieces precisely because there isn't yet a single obvious "did this the right way" template to follow. This is a double-edged opportunity: the lack of established norms means more creative freedom in how you demonstrate skill, but also means you can't simply follow a well-worn path the way a traditional pentest career track allows — expect to spend real effort figuring out how to present your work convincingly, not just doing the work itself.
+
 ## A closing thought on staying grounded
 
 Recall Path 12.2's explicit warning against both hype and dismissiveness. As you continue in this field, resist both temptations: don't treat every AI system as reflexively, uniquely dangerous beyond what evidence supports, and don't dismiss genuine, demonstrated risks because "it's just a language model." The same rigorous, evidence-based, methodical thinking this entire course has modelled — from Path 01's legal foundations through Path 11's advanced techniques — applies exactly here too. Test carefully, report responsibly, and let the evidence from your own systematic work (not speculation in either direction) guide your conclusions.
 
-## 🧪 Final lab — Your personal path forward
+## 🧪 Lab — Your personal path forward
 
-Drawing on this entire 90-lesson course:
+Drawing on everything covered so far across this course:
 
 1. Which of the five AI security roles listed above most genuinely interests you, and why?
 2. Which single lesson across the **entire** course (not just Path 12) do you think will matter most as you pursue this interest?
 3. What's one concrete thing you'll build or practice in the next month, directly informed by this course's hands-on labs?
 4. How does this connect to your existing security work — bug bounty practice (Path 10), professional AppSec work, or something else entirely?
 
-:::challenge Final reflection
-Looking back across all twelve paths — from Path 01's very first lesson on what cybersecurity even is, through this final lesson on AI security careers — what's the single idea or lesson that you expect to keep coming back to, regardless of which specific specialisation you eventually pursue?
+:::challenge Reflection
+Looking back across everything from Path 01's very first lesson on what cybersecurity even is, through this lesson on AI security careers — what's the single idea or lesson that you expect to keep coming back to, regardless of which specific specialisation you eventually pursue?
 
 <details><summary>A thought on this, to close the course</summary>There's no single correct answer, but if this course has done its job, a strong candidate is something like: <strong>the recurring pattern of trust boundaries and where they break</strong> — client vs. server (Path 05.3), trusted instructions vs. untrusted data (Path 12.1/12.3), authenticated vs. authorized (Path 07.4), least privilege everywhere it applies (Path 09.6, 11.4, 12.5). This single idea, in slightly different clothing, has appeared in nearly every path of this entire course — networking, web security, network security, ethical hacking, bug bounty, advanced topics, and now AI security. Recognising that pattern, wherever it appears, in whatever new technology comes next after AI, is arguably the single most durable, transferable piece of security thinking this course has tried to build.</details>
 :::
@@ -102,11 +106,11 @@ Looking back across all twelve paths — from Path 01's very first lesson on wha
 
 ---
 
-## 🎉🎉🎉 You've completed KashSec Academy — all 12 paths, 90 lessons 🎉🎉🎉
+## 🎉 You've reached the career-planning close of Path 12
 
-From Path 01's very first question — "what is cybersecurity?" — through networking, Linux, Python, web fundamentals, security fundamentals, web security, network security, ethical hacking methodology, bug bounty hunting, advanced privilege escalation and infrastructure security, and finally AI/LLM security — you've built a genuinely complete, hands-on, professional-grade foundation across the full breadth of modern cybersecurity.
+From Path 01's very first question — "what is cybersecurity?" — through networking, Linux, Python, web fundamentals, security fundamentals, web security, network security, ethical hacking methodology, bug bounty hunting, advanced privilege escalation and infrastructure security, and now AI/LLM security — you've built a genuinely complete, hands-on, professional-grade foundation across the full breadth of modern cybersecurity. A few more lessons remain in Path 12 itself (agentic risks, the attack taxonomy, governance, red-teaming playbooks, supply chain, and securing LLM apps), and Career Prep, CTF Challenges, and several more specialised paths still lie ahead.
 
-This is not the end of learning — it's the end of the *foundation*. Every path pointed toward real certifications, real bug bounty programs, real career specialisations, and a real, continuing practice. The recon pipelines, the report templates, the privesc checklists, the red-teaming test harnesses you built along the way are yours to keep using, extending, and building on.
+This is not the end of learning — it's the end of the *core generalist foundation*. Every path pointed toward real certifications, real bug bounty programs, real career specialisations, and a real, continuing practice. The recon pipelines, the report templates, the privesc checklists, the red-teaming test harnesses you built along the way are yours to keep using, extending, and building on.
 
 Thank you for building this course. Good luck out there — ethically, legally, and with genuine curiosity.
 

@@ -122,6 +122,10 @@ flowchart LR
 
 This exact chaining pattern — individually-modest AI security weaknesses combining into a critical real-world impact — is precisely the kind of narrative that makes for a compelling, well-documented finding, directly applying Path 10.6's chaining methodology to this genuinely different but structurally similar domain.
 
+## Why this list keeps changing faster than the original OWASP Top 10
+
+Recall Path 07.9's discussion of why the original web-focused OWASP Top 10 refreshes every 3-4 years — the LLM version is updating on a noticeably faster cycle, reflecting just how quickly the underlying technology and its real-world deployment patterns are shifting. Categories that felt speculative at first publication (LLM08's Excessive Agency, in particular) have become dramatically more urgent as agentic systems moved from research demos to production tools handling real user data and real-world actions in the span of roughly a year — a pace of category-relevance shift that the original web Top 10 essentially never experiences, since HTTP and browser fundamentals change far more slowly than what LLM applications are actually being asked to do. Treating this list as a living document you revisit periodically, rather than a fixed reference memorised once, is genuinely more important here than for almost any other framework in this course.
+
 ## Using this framework practically
 
 Just as Path 07.1's OWASP Top 10 serves as a testing checklist, syllabus, and shared vocabulary — this framework serves the same three purposes for AI systems specifically:
