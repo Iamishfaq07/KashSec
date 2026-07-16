@@ -60,6 +60,22 @@ The field traditionally sorts hackers by the colour of an imaginary hat, borrowe
 The single line separating a white hat from a criminal is **permission**. Same skills, same tools — but the ethical hacker was *invited*. Sub-lesson 1.4 is entirely about this line.
 :::
 
+## Beyond the three hats — a few more labels worth knowing
+
+The hat system is a useful simplification, but you'll encounter several more specific labels throughout this course and the wider industry:
+
+- **Script kiddie** — someone with limited technical skill who runs pre-built attack tools written by others, often without fully understanding how they work. Not a skill level to aspire to, but a genuinely common starting point many professionals honestly admit to — the difference is whether you keep learning *why* the tools work, which this entire course is built around.
+- **Hacktivist** — an attacker motivated by political or social causes rather than money, defacing websites or leaking data to make a statement. Legally, hacktivism is treated the same as any other unauthorized access, regardless of motive.
+- **State-sponsored actor / APT (Advanced Persistent Threat)** — hackers working for or on behalf of a national government, typically extremely well-resourced, patient, and focused on long-term espionage or sabotage rather than quick financial gain. "Persistent" is the key word — these groups often maintain covert access to a target network for months or years before being discovered, referenced again in Path 06's attackers and kill chain lesson.
+
+## Red team, blue team, and purple team — a preview
+
+You'll see these three terms constantly once you reach Path 11's advanced material, so it's worth planting the vocabulary now:
+
+- **Red team** — plays the attacker's role, testing an organization's defenses through realistic, often prolonged simulated attacks (broader in scope and duration than a typical pentest engagement).
+- **Blue team** — plays the defender's role, monitoring, detecting, and responding to those simulated (or real) attacks.
+- **Purple team** — not a separate group of people, but a *collaborative approach* where red and blue teams actively share findings with each other during an engagement, specifically to improve detection faster than either working in isolation would — Path 11 has a dedicated purple teaming lab built around exactly this idea.
+
 ## The jobs you can aim for
 
 "Cybersecurity" isn't one job — it's a whole industry, the way "medicine" contains surgeons, nurses, and pharmacists. Here are the most popular roles:

@@ -108,6 +108,10 @@ Some concrete "stuck" strategies that pros use:
 Explaining your problem out loud to a rubber duck (or any inanimate object) works so well that "rubber duck debugging" is a real professional practice. Try it before asking a human.
 :::
 
+## Avoiding "tutorial hell"
+
+A specific trap worth naming directly: **tutorial hell** is the state of endlessly consuming more courses, videos, and walkthroughs without ever independently applying what you've learned — it *feels* productive (you're "still learning!"), but it's often a comfortable way to avoid the genuinely harder, more uncomfortable work of struggling through a problem with no one guiding your hand. The fix is deliberate: after finishing a lesson or lab in this course, try a *similar but not identical* challenge on your own before moving to the next tutorial — a slightly different CTF box, a variation on the same vulnerability class — specifically to test whether you can apply the concept, not just recognize it when someone else demonstrates it.
+
 ## Habit 5 — Go slow to go fast
 
 There's no prize for rushing. **It is far better to deeply understand one lesson a day than to skim ten and retain none.** Depth beats speed every time in this field.
@@ -176,7 +180,7 @@ You now understand:
 - Why it matters (to you and as a career)
 - The types of hackers and the careers ahead
 - The one legal rule that keeps you safe
-- The habits that will get you through the next 11 paths
+- The habits that will get you through the paths ahead
 
 That's a real achievement. Take a moment.
 

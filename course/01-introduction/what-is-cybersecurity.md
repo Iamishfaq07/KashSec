@@ -88,6 +88,14 @@ The people who try to break in are called **attackers** or **threat actors**. Fo
 
 You'll meet each type properly in sub-lesson **1.3**.
 
+## A brief origin story — where this field actually came from
+
+Cybersecurity as a distinct discipline is younger than you might expect. In 1988, a graduate student released a self-replicating program onto the fledgling internet — intended as an experiment, not an attack — but a bug in its code caused it to spread far more aggressively than planned, slowing or crashing roughly 10% of the internet's then-tiny number of connected machines. This became known as the **Morris Worm**, and it's widely considered the moment the world realized networked computers needed *dedicated*, ongoing defense — directly leading to the creation of the first Computer Emergency Response Team (CERT) that same year. Every SOC, every CERT, and every "incident response" job title you'll encounter throughout this course traces its lineage back to exactly this kind of realization.
+
+## The attack surface keeps growing
+
+A useful, recurring concept worth introducing early: your **attack surface** is the total sum of everywhere an attacker could possibly try to get in — every device, every account, every piece of software you use. Decades ago, that surface was small: a handful of computers, mostly disconnected from each other. Today it includes your phone, your smart TV, your car's onboard computer, your doorbell camera, your fitness watch, and dozens of cloud accounts — a category of connected everyday devices broadly called the **Internet of Things (IoT)**. Every new connected device is a new potential entry point, which is exactly why the field keeps expanding rather than ever feeling "finished."
+
 ## Why the field even exists
 
 A century ago, almost everything valuable was physical, so all security was physical: locks, walls, guards. Today, enormous parts of your life are digital.
@@ -97,6 +105,10 @@ A century ago, almost everything valuable was physical, so all security was phys
 - Your **identity** is spread across dozens of online accounts.
 
 As our valuables moved into computers, a new kind of protection had to be invented to guard them there. **That protection is cybersecurity — and because the digital world keeps growing, so does the need for people who understand it.**
+
+## Security is a process, not a product
+
+One more idea worth planting early, since it will save you real frustration later: there is no single tool, setting, or product you can buy or install that makes something "secure" once and for all. A locked door can still be picked; a firewall can still be misconfigured; a strong password can still be phished. Security is better understood as an ongoing **process** — a continuous cycle of assessing risk, applying layered defenses (a concept called **defense in depth**, which you'll see formalized throughout later paths), monitoring for problems, and adapting as new threats emerge. Anyone who tells you a single product makes you "hacker-proof" is, at best, oversimplifying.
 
 :::tip REASSURANCE
 You do not need to be a genius or a "maths person." Cybersecurity is mostly curiosity, logical thinking, and patience. Every expert you've heard of started exactly where you are now.
@@ -108,6 +120,10 @@ In one sentence and without looking, what are the **three broad things** cyberse
 <details><summary>Show answer</summary>Data (information), systems (machines), and access (who can do what).</details>
 :::
 
+:::challenge Map your own attack surface
+List every internet-connected device you personally own or regularly use — don't stop at your phone and laptop; think about smart home devices, wearables, your car, and gaming consoles. For each one, note in one phrase what would happen if an attacker gained control of it. Most people are surprised by how long this list actually is.
+:::
+
 ## Key terms
 
 - **Cybersecurity** — protecting digital things from digital threats.
@@ -115,19 +131,24 @@ In one sentence and without looking, what are the **three broad things** cyberse
 - **System** — a machine (laptop, phone, server).
 - **Server** — a computer that runs websites, apps, or services behind the scenes.
 - **Attacker / threat actor** — a person or program trying to break in.
+- **Attack surface** — the total sum of everywhere an attacker could possibly attempt entry.
+- **Defense in depth** — layering multiple independent security controls rather than relying on any single one.
 
 ## Recap
 
 - Cybersecurity is protecting digital things, the same instinct as locking a home.
 - We protect **data**, **systems**, and **access**.
 - Attackers are often automated or organised — not lone individuals.
-- The field exists because our valuable things moved into computers.
+- The field exists because our valuable things moved into computers, and it traces its origin as a dedicated discipline back to incidents like the 1988 Morris Worm.
+- Your attack surface keeps growing as more everyday devices connect to the internet.
+- Security is an ongoing process of layered defense, not a one-time product you install.
 
 ???refs
 - [Cybersecurity — Wikipedia overview](https://en.wikipedia.org/wiki/Computer_security) — a broad, encyclopedic intro.
 - [NIST Cybersecurity Glossary](https://csrc.nist.gov/glossary) — the authoritative dictionary; bookmark this for later paths.
 - [Cybersecurity 101 — CISA](https://www.cisa.gov/topics/cybersecurity-best-practices) — US government's introductory guidance for citizens.
 - [Kaspersky "What is cybersecurity?"](https://usa.kaspersky.com/resource-center/definitions/what-is-cyber-security) — friendly beginner explainer.
+- [The Morris Worm — CISA retrospective](https://www.cisa.gov/news-events/news/morris-worm-30-years-later) — a free, official look back at the incident that helped start the field.
 ???
 
 **Next up →** [Why it matters to you](#/lesson/01-introduction/why-it-matters)

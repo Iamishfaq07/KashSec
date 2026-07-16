@@ -97,6 +97,14 @@ An attacker gets into your **email**. Because your email can reset the password 
 
 None of these attacks required you to be famous or rich. They required you to be *online* — which is everyone.
 
+## You're not just a victim — you can become a weapon too
+
+Here's a piece of the picture most beginners never consider: a compromised device doesn't just hurt *you*. Attackers frequently use one compromised machine as a stepping stone to attack others — sending phishing emails from your real, trusted email account to everyone in your contacts (who are far more likely to trust a message that genuinely comes from your address), or enlisting your device into a **botnet**: a network of thousands of compromised machines an attacker controls remotely, often used to attack other, much larger targets without your knowledge at all. Your own personal security isn't purely a personal matter — a compromised home computer can become one small part of a much larger attack against someone else entirely.
+
+## The real financial and human cost
+
+Beyond the individual scenarios above, the aggregate cost of cybercrime is genuinely enormous — industry reports consistently estimate global losses in the trillions of dollars annually, and that figure keeps climbing year over year. For an individual, the cost isn't only financial: victims of identity theft or ransomware often describe the experience as deeply stressful and time-consuming to resolve, frequently taking weeks or months to fully recover accounts, credit, and peace of mind — directly connecting to Path 20's identity theft protection lesson later in this course, which covers exactly how to prepare for and respond to this.
+
 ## Two very good reasons to learn this
 
 ### Reason 1: it protects you and the people you love
@@ -116,8 +124,14 @@ There is a genuine, worldwide **shortage of skilled security people**. Reports f
 - Strong job security.
 - And unlike many professions, you can break in **without an expensive degree** if you build real, demonstrable skills — which is exactly what this course is designed to help you do.
 
+Security roles also span a genuinely wide range of day-to-day work, not just one narrow job description: some people spend their days finding vulnerabilities before attackers do (offensive security — Path 09, Path 10), others defend live systems and investigate incidents as they happen (defensive security — Path 08, Path 11), and others focus on policy, compliance, and risk management for entire organizations. Path 01's next lesson walks through these roles in detail, so you can start forming a sense of which direction genuinely interests you.
+
 :::tip THIS IS BOTH A HOBBY AND A CAREER FOUNDATION
 Every single skill you learn here is a skill an employer will pay for. You are not just learning to protect yourself — you're laying the first bricks of a serious career.
+:::
+
+:::challenge Reflect on your own stakes
+Write down, honestly: what's the single account or device in your own life that would cause the most disruption if it were compromised today? For that one thing specifically, note whether you currently have a strong unique password and 2FA enabled — if not, that's your very first real action item from this entire course.
 :::
 
 :::challenge Test yourself
