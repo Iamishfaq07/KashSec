@@ -110,6 +110,10 @@ print(f"Successful redemptions: {success_count} (expected: 1)")
 
 If a single-use gift card, discount code, or "claim your free item" action succeeds more than once when fired concurrently, that's a genuine, often high-severity race condition — and increasingly well-understood and actively hunted across major bounty programs today.
 
+## OAuth flow logic flaws
+
+OAuth ("Sign in with Google/GitHub/Facebook") deserves its own specific attention, since its multi-step, multi-party redirect flow creates exactly the kind of "developer assumption" surface this lesson focuses on. A few patterns worth checking systematically: **redirect_uri validation gaps** — if an app doesn't strictly validate the `redirect_uri` parameter against an exact allowlist, an attacker can sometimes redirect the OAuth authorization code to their own server instead of the legitimate app, hijacking the login flow entirely; **state parameter misuse** — the `state` parameter exists specifically to prevent CSRF (Path 05.4) on the OAuth callback, and its absence or predictability lets an attacker link their own OAuth session to a victim's account; and **account-linking confusion** — if an app links accounts by email address alone without verifying the OAuth provider actually confirmed that email, an attacker can sometimes create an account at a *different* OAuth provider using a victim's email (one that doesn't verify ownership as strictly) and get automatically linked into the victim's existing account. Each of these is, at its core, the exact same "the code works as written, but the workflow's assumptions don't hold" pattern as every other business logic flaw in this lesson — just applied to a widely-reused, multi-party protocol most developers integrate without fully understanding.
+
 ## The real skill: thinking like a creative user, not just an attacker
 
 Business logic hunting rewards a specific mindset shift: instead of asking *"what technical exploit can I try here?"*, ask ***"what did the developer assume would always be true, that I could make false?"***

@@ -121,6 +121,10 @@ query {
 
 If this query succeeds using Account B's authentication token, targeting Account A's ID, that's a GraphQL-flavoured IDOR/BOLA — test every resolver that accepts an ID argument this same systematic way.
 
+## Indirect IDOR — when the ID isn't obviously an ID
+
+Not every access-control bug involves an obvious numeric identifier. **Indirect IDOR** happens when the vulnerable reference is disguised as something else — a filename that embeds a user's email address (`export_alice@example.com.pdf`), a base64-encoded string that decodes to a predictable internal ID, or a JWT (Path 07.8) whose payload itself contains a swappable user reference the server trusts without re-verifying ownership. These are systematically underreported precisely because they don't *look* like the classic `?id=1024` pattern beginners are trained to spot first — worth developing the habit of decoding and inspecting every opaque-looking token or filename you encounter during testing, rather than only sweeping obviously numeric parameters. A base64 string that decodes into readable JSON containing a user ID is functionally identical to a plain `?user_id=` parameter — it's just wearing a disguise.
+
 ## 🧪 Lab — Full IDOR sweep on PortSwigger + your shortlisted program
 
 1. Revisit [PortSwigger's Access Control labs](https://portswigger.net/web-security/access-control) (from Path 07.4) — this time, deliberately practise the **two-account methodology** from this lesson on every lab, even ones that don't strictly require it, to build the habit.

@@ -173,6 +173,21 @@ echo "[+] Done. Results in $OUTDIR/"
 
 This exact pattern — cron-scheduled, diffed, alerting only on genuine change — is precisely how experienced hunters (and Ishfaq's own real Burp Suite + MCP + Cline automation setup) sustain ongoing coverage across multiple programs without manually re-running everything from scratch every single day.
 
+## Notification integration — closing the loop without babysitting a terminal
+
+A pipeline that only writes results to a text file still requires you to remember to go look at it — the final piece that makes automation genuinely sustainable is pushing new findings somewhere you'll actually notice them, without needing to manually check in:
+
+```bash
+# Send a Slack/Discord webhook notification only when the diff script finds something new:
+if [ -s new-findings.txt ]; then
+    curl -s -X POST -H 'Content-type: application/json' \
+      --data "{\"text\":\"New recon findings for $TARGET: $(cat new-findings.txt | wc -l) items\"}" \
+      "$WEBHOOK_URL"
+fi
+```
+
+This closes the loop the diffing step opened: subdomain enumeration finds candidates, diffing filters down to what's genuinely new, and a notification makes sure that signal actually reaches you promptly rather than sitting silently in a log file on a cron-scheduled machine you only check once a week. For a target with real time-sensitivity — a newly-deployed subdomain is at its most under-tested in the first few days after appearing — the gap between "the pipeline found it" and "a human actually looked at it" is exactly where competitive advantage over other hunters lives.
+
 ## Respecting scope and rate limits in automation
 
 Recall Path 10.2's scope discipline — automation makes it dangerously easy to accidentally exceed a program's authorized scope or rate limits:

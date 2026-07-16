@@ -70,6 +70,10 @@ The scripts and templates you've built throughout Path 10 — the diffing script
 
 This structure — genuinely mirroring how experienced hunters (and directly, Ishfaq's own real Burp Suite + MCP + Cline automation setup) actually organise their ongoing practice — compounds in value every single session, since each new custom template or refined script immediately benefits every future target you point it at.
 
+## The unglamorous business side — income tracking and taxes
+
+A genuinely practical detail that catches many hunters off guard once bounty income becomes real: in most jurisdictions, bug bounty earnings count as taxable income, and platforms may issue tax forms once payouts cross a reporting threshold — treating it as a genuine side income stream from the start (keeping a simple spreadsheet of each payout, date, and program) saves real headaches later compared to reconstructing a year's worth of scattered payments from memory. It's also worth understanding that payouts often arrive in different forms depending on the platform and your location — direct bank transfer, PayPal, or platform-specific credit — each with its own fees and processing time, which matters when comparing programs' *effective* reward value, not just their headline numbers. None of this is exciting work, but treating bounty hunting as a genuine income stream from day one — with the same basic financial discipline as any other freelance work — is exactly the kind of unglamorous professionalism that separates a sustainable practice from one that creates problems down the road.
+
 ## How this connects to the rest of your security journey
 
 ```mermaid

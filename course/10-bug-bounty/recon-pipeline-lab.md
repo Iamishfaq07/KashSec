@@ -41,6 +41,12 @@ flowchart LR
     D --> E[Manual testing\non promising findings]
 ```
 
+6. **Screenshot your live hosts for visual triage.** Once you have `live.txt`, run a screenshotting tool against the full list rather than opening each one manually:
+   ```bash
+   cat live.txt | gowitness file -f - --screenshot-path ./screenshots
+   ```
+   Scroll through the resulting screenshots looking specifically for anything that looks like an admin login page, an error page revealing a stack trace, or a default "it works!" placeholder page — these visual signals are often faster to spot by eye across dozens of hosts than by reading raw HTTP responses one at a time.
+
 :::tip Pipe everything together into one script
 Once you're comfortable with each tool individually, chain them into a single bash script (exactly the skill practiced in Path 03's Advanced Terminal Lab) that takes a domain as an argument and runs the full pipeline automatically — a genuinely useful, portfolio-worthy tool referenced directly in this path's Automation lesson.
 :::

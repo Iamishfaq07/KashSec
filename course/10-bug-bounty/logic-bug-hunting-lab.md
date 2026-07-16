@@ -11,6 +11,8 @@ Business logic vulnerabilities are, in many ways, harder to find than technical 
 - **Price manipulation** — modifying a hidden price field, a discount code's underlying value, or a quantity that goes negative to produce an unintended (often favorable-to-the-attacker) total.
 - **Authentication/authorization logic flaws** — a password reset flow that doesn't properly bind the reset token to the specific account requesting it, or a permission check that verifies a role client-side but not server-side.
 
+- **State desynchronization across multiple sessions/tabs** — opening the same workflow (a shopping cart, a multi-step form) in two browser tabs simultaneously and making conflicting changes in each, checking whether the server correctly resolves the conflict or silently corrupts state by trusting whichever request happened to arrive last.
+
 ## Lab approach
 
 Use a deliberately vulnerable app (several free options exist for business-logic-specific practice, or a wide-scope real bug bounty program) and, critically, spend real time *understanding the intended workflow first* — read through the checkout flow, the coupon redemption flow, the account settings flow, end to end, as a normal user would use it — before trying to break any assumption within it. This is the actual methodology, not a shortcut you can skip.
@@ -26,6 +28,10 @@ flowchart LR
 
 :::tip Ask "what is this workflow assuming?" for every step
 This is the exact same core question from Path 01's Security Mindset Lab, applied specifically to application workflows: does this checkout flow assume the price sent by the client matches what was actually displayed? Does this coupon-redeem endpoint assume it can only be called once? Does this password reset assume the token can only be used by the person who requested it? Every assumption is a hypothesis worth testing directly.
+:::
+
+:::tip Keep a running "assumptions log" per target
+As you work through an application's workflows, write down every assumption you notice the moment you notice it — even ones you haven't tested yet — in a simple running list. Revisiting this log after finishing your first pass often surfaces two or three assumptions you noted but forgot to actually go back and test, which is a genuinely common way real findings slip through even careful manual testing.
 :::
 
 :::challenge Find and document a logic flaw

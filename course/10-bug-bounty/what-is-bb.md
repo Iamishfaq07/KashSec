@@ -79,6 +79,10 @@ Bug bounty hunting has genuine earning potential, but the field is also **highly
 - **Consistency and specialisation** (Path 10.6/10.7 will cover this) matter far more than raw hours spent — targeted, methodical hunting significantly outperforms broad, unfocused effort.
 - Many successful hunters treat it as a **skill-building and portfolio-building activity first**, with financial reward as a genuinely welcome but secondary outcome, especially early on.
 
+## VDPs vs paid bounty programs — a distinction worth knowing
+
+Not every legitimate disclosure channel offers money. A **VDP (Vulnerability Disclosure Program)** provides a legal, authorized way to report findings — often with public acknowledgment ("hall of fame" recognition) — but explicitly **no monetary reward**, distinct from a **paid bug bounty program** where valid findings earn actual money based on severity. Many organisations, especially government agencies and smaller companies without dedicated security budgets, run VDPs specifically because they want the legal protection and community goodwill of an open reporting channel without the ongoing cost commitment of a paid program. For someone starting out, VDPs are genuinely worth pursuing early — the lower competition (many hunters skip unpaid programs entirely, chasing money instead) combined with real, disclosable findings for a portfolio makes them a surprisingly good place to build a track record before competing in higher-traffic paid programs.
+
 ## The legal and ethical framework, reinforced
 
 Recall Path 09.1's authorization principle — bug bounty programs provide **exactly** this authorization, but strictly bounded by each program's specific **scope and policy** document (the direct analogue of Path 09.2's Rules of Engagement). Testing anything outside a program's explicitly published scope is not authorized, even on the same company's infrastructure, and can expose you to real legal risk despite good intentions.

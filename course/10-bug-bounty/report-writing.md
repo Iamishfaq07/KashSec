@@ -98,6 +98,10 @@ Explicitly referencing the **specific program's own published severity taxonomy*
 - **Re-submitting a "won't fix" finding repeatedly** without new information — if a triager has made a considered decision, respectfully accept it (or use the platform's formal appeal/mediation process if one exists) rather than resubmitting the same report.
 - **Public disclosure before authorization** — nearly every program requires explicit permission before you publish any details publicly, even after the bug is fixed; violating this can result in program bans and, in serious cases, legal consequences.
 
+## Understanding a report's lifecycle states
+
+A submitted report moves through a series of named states on most platforms, and understanding what each one actually means avoids a lot of unnecessary anxiety and misjudged follow-up. **New/Pending** means it hasn't been triaged yet — normal to sit here for hours to days depending on program volume. **Triaged** means a human has validated the finding and it's now in the client's queue for fixing — this is the meaningful "yes, this is real" milestone, even before payment is finalised. **Informative** means the report was read but doesn't meet the bar for a paid finding (often correct-but-low-impact, or already-known behaviour) — worth reading the triager's reasoning carefully rather than assuming a mistake. **Duplicate** and **Not Applicable** are self-explanatory but worth the same careful reading — sometimes a "duplicate" marking references an internal issue you had no way of knowing about, which is a legitimate, if frustrating, outcome rather than an error to dispute. Knowing this vocabulary means you can track your own submissions' health across a program without needing to ask "what does this status mean" every time.
+
 ## Handling triager questions and disagreements professionally
 
 ```markdown

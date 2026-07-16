@@ -179,6 +179,29 @@ This is a direct, practical extension of Path 04's Python automation skills — 
 Recall Path 10.4's explicit warning against "spamming low-quality/automated-scanner output." Nuclei is a phenomenal **discovery** tool but produces false positives, and even true positives often need manual investigation to determine *actual* exploitability and impact before they're submission-ready. Always manually verify every automated finding — confirm it with Burp, understand the real impact, and write a proper PoC — before ever submitting it as a report.
 :::
 
+## Detecting blind vulnerabilities with Interactsh
+
+Nuclei's built-in **Interactsh** integration extends its detection well beyond simple response-matching, directly addressing the blind SSRF and blind command injection scenarios from Path 07's lessons. Rather than checking a response body for a specific string, a template can inject a unique, per-scan callback URL into a request and then watch a free, hosted out-of-band service for any resulting DNS or HTTP interaction — proving execution happened even when the vulnerable response never shows any visible sign of it:
+
+```yaml
+id: blind-ssrf-check
+info:
+  name: Blind SSRF via webhook parameter
+  severity: high
+http:
+  - method: POST
+    path:
+      - "{{BaseURL}}/api/webhook-test"
+    body: '{"url": "http://{{interactsh-url}}"}'
+    matchers:
+      - type: word
+        part: interactsh_protocol
+        words:
+          - "http"
+```
+
+This is the exact same detection principle as manually setting up a Burp Collaborator listener (Path 09's advanced exploitation lab) — just automated and scalable across an entire target list rather than one manual check at a time, making it possible to sweep hundreds of endpoints for blind vulnerabilities that would otherwise require painstaking one-by-one manual confirmation.
+
 ## Keeping your template library updated
 
 ```bash

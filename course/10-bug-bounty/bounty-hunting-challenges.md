@@ -12,6 +12,9 @@ This lab bridges everything you've learned across Path 07 (web security) and thi
    Open redirects are frequently underestimated but genuinely useful in phishing chains — a link to the real, trusted domain that silently redirects to an attacker-controlled page is far more convincing than an obviously fake URL.
 3. **Test for XSS in comments.** Revisit the techniques from Path 07's XSS practical lab against a real (in-scope) bug bounty target — comment fields, review sections, and profile bios are consistently among the highest-yield places to find stored XSS in real applications.
 
+4. **Check for missing security headers.** A quick, low-effort but genuinely useful first pass on any new target: check the response headers for `Content-Security-Policy`, `X-Frame-Options`, and `Strict-Transport-Security` (all covered in Path 05 and Path 08) using `curl -sI <target>`. Missing headers alone are usually low severity on their own, but they're fast to check, help you build a quick risk profile of a target before deeper testing, and occasionally combine with another finding into something more severe (a missing `X-Frame-Options` header enabling a clickjacking chain, for instance).
+5. **Look for exposed version control or backup files.** Try requesting `/.git/config`, `/.env`, `/backup.sql`, and similar common accidentally-exposed paths directly — a shockingly common, embarrassingly simple finding that requires no special tooling, just knowing which paths are worth trying on every new target.
+
 ## Tools you should know
 
 - **Burp Suite** — your primary interception and testing tool, covered throughout Path 07.

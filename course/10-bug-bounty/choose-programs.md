@@ -115,6 +115,10 @@ This is a genuinely realistic example of the kind of small Python tool (Path 04'
 
 Building toward private program invitations is a genuine, achievable milestone — consistently submitting high-quality, well-written reports (Path 09.7's discipline, applied here) on public programs is exactly how those invitations get extended.
 
+## Bounty type — pay-per-report vs managed/continuous programs
+
+Beyond public/private status, programs also differ in how consistently they pay out. **Pay-per-report** programs reward each individual valid finding on its own merits, which is the default model most beginners picture. Some platforms also offer **managed programs** where the company works with the platform's own internal triage team before a report ever reaches the client — often resulting in faster, more consistent responses since a professional triager has already validated the report's quality and severity before the client sees it, compared to **self-managed** programs where the company's own (sometimes less experienced, sometimes slower) internal team handles every incoming report directly. Checking which model a program uses is a genuinely practical signal worth factoring into the response-time expectations from the scoring framework above — a managed program's triage overhead can mean a slightly longer initial wait but a more consistent, professional outcome.
+
 ## Reading program policy for legal safety
 
 Beyond scope, always check:
