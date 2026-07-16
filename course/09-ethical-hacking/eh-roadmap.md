@@ -87,6 +87,10 @@ flowchart LR
 
 This is a realistic, not overly optimistic, timeline for someone dedicating consistent part-time effort — matching well against Ishfaq's own real documented trajectory of eJPT/CEH toward CPENT and OSCP pursuit over a similar multi-month arc.
 
+## Freelance and consultancy paths — the business side of the craft
+
+Beyond employment at a security firm, a meaningful number of experienced testers eventually work independently — as freelance consultants or founders of small boutique testing firms. This path trades the steady structure of employment for direct control over client relationships, pricing, and specialisation focus, but it also demands a genuinely different skill set layered on top of the technical one: writing proposals and statements of work (a formalised, business-facing version of the scoping document from Path 09.2), managing client expectations and communication throughout an engagement, and handling the administrative and legal overhead of running a small business. It's not the right path for everyone, and most testers benefit from several years of employed experience first — but worth knowing it exists as a genuine long-term option, since the methodology in this path transfers completely regardless of who's signing your paycheck.
+
 ## 🧪 Lab — Your first end-to-end mini-engagement
 
 Treat your Metasploitable VM as a genuine, if small, client engagement. Produce a **complete mini-report** covering the entire methodology from this path:

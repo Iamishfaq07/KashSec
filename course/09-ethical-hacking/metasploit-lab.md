@@ -40,6 +40,14 @@ flowchart LR
     E --> F["Post-exploitation:\nsysinfo, hashdump, getsystem"]
 ```
 
+5. **Use an auxiliary module for scanning, not just exploitation.** Metasploit isn't only exploit modules — practice using an auxiliary module for reconnaissance directly within the framework, keeping your entire workflow in one console instead of switching tools constantly:
+   ```
+   use auxiliary/scanner/portscan/tcp
+   set RHOSTS <target-ip>
+   run
+   ```
+   Try a service-specific auxiliary scanner too, like `auxiliary/scanner/smb/smb_version`, and compare its output to what `enum4linux` gave you in Path 09.4's lab — noticing that Metasploit's ecosystem covers far more than just "the exploit part" is a genuinely useful realisation at this stage.
+
 :::tip Metasploit isn't magic — understand what each module does
 Before running any exploit module, read its description (`info <module-name>`) — knowing exactly what vulnerability it targets and how deepens your understanding far more than treating Metasploit as a black box that "just works." This distinction matters directly in real interviews (Path 13) that probe beyond "have you used Metasploit" into "do you understand what it's actually doing."
 :::

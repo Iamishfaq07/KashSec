@@ -144,6 +144,20 @@ if __name__ == "__main__":
 
 This is exactly the kind of Python automation from Path 04 applied directly to real penetration testing workflow — parsing tool output and cross-referencing it programmatically rather than manually, at scale.
 
+### DNS zone-adjacent enumeration and MySQL/database services
+
+Two more service categories worth naming, since they show up regularly in real environments. A misconfigured DNS server sometimes still allows a full **zone transfer** (echoing Path 02's DNS lesson) even when it shouldn't, dumping every record the server holds in one request — worth an explicit check separate from ordinary subdomain brute-forcing, since it reveals the complete internal DNS picture rather than a wordlist-limited guess:
+
+```bash
+dig axfr @ns1.example.com example.com
+```
+
+Database services exposed further than intended (a MySQL or PostgreSQL port reachable from outside its intended network segment) deserve a direct authentication check too — not to brute-force blindly, but to test for default or blank credentials, a genuinely common finding on internal assessments:
+
+```bash
+mysql -h target-ip -u root -p     # test for blank/default root password
+```
+
 ## Prioritising what to test first
 
 A real environment might reveal dozens of services across dozens of hosts — you can't exhaustively deep-dive everything with equal priority in a time-boxed engagement. Prioritise based on:

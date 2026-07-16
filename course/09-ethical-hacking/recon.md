@@ -101,6 +101,15 @@ Even this early-stage document is genuinely valuable — some organisations comm
 - **Never contact employees directly** during recon unless social engineering testing is explicitly authorized in the RoE — casual "just checking" outreach can itself constitute an unauthorized action.
 - **Document everything as you go** — which source, what you found, when — both for the eventual report and to maintain a clear record if any scope question arises later.
 
+## GitHub and code-hosting reconnaissance
+
+Public code repositories are consistently one of the highest-value, most overlooked recon sources — developers routinely commit things they shouldn't, and even after deletion, Git's history often preserves them permanently unless the repository is fully rewritten. Worth checking systematically: an organisation's public GitHub org for repos with internal-sounding names accidentally left public, commit history for hardcoded API keys or credentials (tools like **TruffleHog** and **Gitleaks** automate scanning entire commit histories for exactly this pattern), and even individual employees' personal repositories, which sometimes contain internal scripts, config file templates, or infrastructure-as-code snippets referencing real internal hostnames. This directly extends the JavaScript source-mining technique from Path 07.3 — the same "developers leave more in public artifacts than they realise" principle, applied to source control instead of shipped client-side code.
+
+```bash
+# Scanning a public repo's full commit history for leaked secrets:
+trufflehog git https://github.com/example-org/example-repo
+```
+
 ## Automating recon with your Python skills
 
 Recall Path 04's tool-building lessons — professional recon is very often partially automated:

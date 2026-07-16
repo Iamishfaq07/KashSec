@@ -26,6 +26,8 @@ Reconnaissance is where every real engagement actually begins — this lab pract
 3. **Check for leaked credentials, ethically.** Use [Have I Been Pwned](https://haveibeenpwned.com/) to check whether email addresses associated with your target domain have appeared in known public breaches — a legitimate, widely used reconnaissance step that requires no special access, only public breach data.
 4. **Try Shodan on your own infrastructure only.** Search Shodan for a service or IP you own or explicitly control (never someone else's) to see exactly what information is publicly visible about it — banner information, open ports, sometimes even default login pages, all indexed and searchable by anyone.
 
+5. **Search public code repositories for leaked artifacts.** Using your chosen target's organisation name, search GitHub directly for repositories that might belong to employees or the company itself, looking specifically for configuration files, internal documentation, or accidentally-committed credentials — the same technique covered in the main Phase 1 lesson's GitHub reconnaissance section, practiced hands-on here. Note how much of this is simply knowing *where* to look rather than needing any special tooling at all.
+
 :::warn Passive recon only, and only against authorized targets
 Every technique in this lab is passive — querying public data sources, not touching the target directly — which keeps it legal and safe even during genuine reconnaissance practice. Still, only run these against a domain you own, a fictional test domain, or a real organization with an explicit, current bug bounty program covering this kind of activity.
 :::

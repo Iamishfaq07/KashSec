@@ -69,6 +69,14 @@ Imagine a scoped web application test:
 
 That chaining — connecting multiple individually "medium" findings into one higher-impact scenario — is a hallmark of experienced, high-quality penetration testing versus a purely automated scan.
 
+## Assumed breach — starting from "the attacker is already inside"
+
+A distinct engagement model worth knowing about: rather than starting from zero external access and working through all five phases to gain a foothold, an **assumed breach** test deliberately hands the tester a foothold from the start — a low-privilege domain account, a workstation on the internal network — and skips straight to phases 3 through 5 from that internal starting point. The reasoning is pragmatic: real breaches very often *do* start from a successful phishing email or a single compromised credential, so testing "what happens after that inevitable first foothold" produces more realistic, more useful findings about lateral movement and privilege escalation (Path 11's dedicated territory) than spending the entire engagement's limited time budget on the initial-access phase alone. Many mature organisations run assumed-breach tests specifically *because* they've already invested heavily in perimeter defence and want to know what happens if — not if, but when — that perimeter is eventually bypassed.
+
+## Purple teaming — collaboration instead of pure adversary simulation
+
+Where a traditional penetration test (or the more adversarial "red team" from Path 09.1's discipline comparison) deliberately withholds its findings until the final report, **purple teaming** takes a fundamentally collaborative approach: the offensive tester (red) and the defensive SOC team (blue) work together in real time, with the red side narrating each technique as they execute it so the blue side can immediately check whether their detection tooling actually caught it. The explicit goal isn't "did we get in" — it's "did our detection and response actually work, and if not, exactly which specific rule or process needs fixing." This tight feedback loop, directly building on the SIEM/detection-coverage concepts from Path 08.5, tends to improve an organisation's actual defensive posture faster than a traditional report-and-wait engagement, precisely because gaps get identified and understood in the moment rather than discovered weeks later in a PDF.
+
 ## Why methodology matters more than tool knowledge alone
 
 A beginner with deep tool knowledge but no methodology tends to jump randomly between techniques, missing systematic coverage and losing track of what's already been tried. A professional with strong methodology, even with more modest tool depth, produces **complete, reliable, defensible** results — because the process itself ensures nothing is skipped and everything is properly documented. This is precisely why this path exists as a distinct topic from Paths 07-08's technique-focused content.

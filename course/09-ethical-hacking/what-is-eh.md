@@ -60,6 +60,10 @@ Recall Path 01's golden rule. Before *any* ethical hacking engagement begins, pr
 
 Skipping any of this, even with good intentions, transforms legitimate security work into a potential crime — the exact distinction the "hats" taxonomy above is built around.
 
+## Black box, white box, and grey box — how much the tester knows going in
+
+Beyond intent and authorization, engagements are also categorised by how much internal information the tester starts with, and this choice shapes the entire methodology that follows. **Black box** testing gives the tester nothing beyond a target's public-facing name or URL — mimicking a genuine external attacker with zero inside knowledge, which makes Phase 1 reconnaissance (next lesson) especially critical and time-consuming. **White box** testing gives the tester full access up front — source code, network diagrams, credentials, architecture docs — trading realism for thoroughness, since far more of an application's attack surface can be reviewed directly rather than discovered through trial and error. **Grey box** sits between the two — some information provided (perhaps a test account and basic architecture) but not full internal access — and is, in practice, the most common real-world engagement type, since it balances realistic external testing with efficient use of a client's limited testing budget and timeline.
+
 ## Relevant certifications in this space
 
 You'll encounter these constantly in job listings and professional development:

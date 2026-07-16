@@ -124,6 +124,14 @@ Writing findings that satisfy both audiences (a clear one-paragraph business-imp
 - **No remediation guidance**, or generic, unhelpful guidance ("fix the vulnerability") instead of specific, actionable direction.
 - **Overwhelming the reader with raw tool output** in the main body — raw Nmap/Burp/sqlmap output belongs in an **appendix**, referenced from the finding, not pasted inline disrupting the narrative.
 
+## The readout call — the report isn't the final step
+
+A written report is rarely the last thing a client receives — most professional engagements close with a **readout call**, where the tester walks through the findings live with both the executive and engineering audiences together, in real time. This matters because reports get skimmed, misread, or shelved, while a live conversation lets a client ask "wait, does this affect our payment system too?" and get an immediate, precise answer — the kind of nuance a static document can't anticipate for every reader. Being able to explain a critical finding clearly out loud, adjusting your language on the fly for whoever's actually in the room, is a genuinely distinct skill from writing the report itself, and it's exactly the kind of communication ability that separates testers clients want to hire again from those who technically did fine work nobody remembers fondly.
+
+## Retesting — closing the loop on remediation
+
+The engagement doesn't truly end at report delivery either — most contracts include a **retest window**, typically 30-90 days later, where the tester specifically re-verifies that each reported finding was actually fixed, rather than just trusting the client's word for it. A retest report is much shorter than the original, structured simply as a per-finding status: **Fixed** (re-attempted and confirmed no longer exploitable), **Not Fixed** (still exploitable exactly as before), or **Partially Fixed** (the original exact reproduction steps no longer work, but a related, weaker variant of the issue remains). This closing-the-loop step is precisely what turns a one-time snapshot of risk into genuine risk *reduction* — a report full of findings that never get verified as fixed provides far less real security value than the same report followed by a rigorous retest.
+
 ## Responsible disclosure — reporting outside a formal contract
 
 The reporting discipline in this lesson applies just as directly to **bug bounty submissions** (Path 10) and **responsible disclosure** to vendors without a formal contract — the same four-part structure (description, reproduction, impact, remediation) is exactly what a well-written bug bounty report or CVE submission needs, just typically shorter and without the Executive Summary/Scope sections meant for a formal client relationship.

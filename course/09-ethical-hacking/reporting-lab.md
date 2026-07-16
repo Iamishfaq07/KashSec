@@ -18,6 +18,8 @@ flowchart TD
     D --> E[Assemble Full Report\nsorted by severity]
 ```
 
+6. **Peer-review someone else's finding for clarity.** Swap your written finding from Task 3 with a fellow learner (or, if working solo, set it aside for a day and re-read it cold) and specifically check: could someone with zero prior context reproduce the exact steps without needing to ask a single clarifying question? Ambiguity that felt obvious while you were writing it — because you already knew what you meant — is often invisible to the person who wrote it and glaringly obvious to a fresh reader, which is exactly why real security teams build peer review into their reporting process rather than shipping a single author's first draft.
+
 :::tip A report is written for two audiences at once
 Every real pentest report needs to work for both a non-technical executive (who reads only the executive summary and cares about business risk) and a technical engineer (who reads the detailed findings and needs exact reproduction steps to fix the issue). Writing with both audiences in mind — plain language up top, precise technical detail below — is a skill worth deliberately practicing, not an afterthought.
 :::
