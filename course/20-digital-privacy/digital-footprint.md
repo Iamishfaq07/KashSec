@@ -31,6 +31,10 @@ flowchart LR
     B --> D[Doxxing risk]
 ```
 
+## Metadata hiding inside your own uploads
+
+A specific, often-overlooked passive footprint source worth calling out directly: photos and documents you upload yourself frequently carry hidden **metadata** describing far more than the visible content alone. A photo taken on a smartphone typically embeds **EXIF data** — the exact GPS coordinates where it was taken, the device model, and the precise timestamp — meaning a seemingly innocent photo posted to a forum or marketplace listing can reveal your home address if GPS tagging wasn't stripped before upload. Documents carry their own metadata too: a PDF or Word file's properties often retain the original author's name, the organization, and sometimes prior-revision content that was "deleted" from the visible text but persists in the file's underlying structure (Path 09.3's document-metadata OSINT technique, applied here to your own files instead of a target company's). Many social platforms now strip EXIF data automatically on upload, but not all do, and files shared directly (email attachments, cloud-storage links, marketplace listings) frequently retain it in full — worth checking explicitly with a tool like `exiftool` before sharing anything sensitive.
+
 ## Google yourself — a genuinely useful first exercise
 
 A simple, immediately actionable exercise: search your own name (and variations of it) in a search engine, and separately check what's publicly visible on your social media accounts when viewed *while logged out*, simulating what a stranger actually sees. Most people are meaningfully surprised by how much is visible and how easily it can be found — exactly the reconnaissance discipline from Path 09, turned inward on yourself defensively.
