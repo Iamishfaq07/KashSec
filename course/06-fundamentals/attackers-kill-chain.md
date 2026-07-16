@@ -78,6 +78,14 @@ From Path 06.2, but worth reinforcing here with the kill chain lens: motivation 
 
 Modern attackers increasingly avoid dropping obvious malware, instead using tools *already present* on the system (PowerShell, WMI, legitimate admin tools) to blend into normal activity and evade detection. This is called **LOLBins** (Living Off the Land Binaries) — you'll meet this concept again in Path 11 (privilege escalation uses many of the same "already there" tools).
 
+## The Unified Kill Chain — bridging both models
+
+A more recent model worth knowing about, the **Unified Kill Chain**, was built specifically to address a real weakness in the original 7-stage model: the Lockheed Martin chain treats an intrusion as one straight line, but real breaches — especially the patient, sophisticated ones — loop back through reconnaissance, exploitation, and lateral movement *repeatedly* as the attacker expands their foothold across a network. The Unified Kill Chain models this as 18 phases across three broader groups (In, Through, Out), explicitly capturing the "attacker moves from one compromised machine deeper into the network, then repeats earlier stages against the new target" pattern that Path 11's lateral movement material covers hands-on. You don't need to memorise all 18 phases — the point worth internalising is that real intrusions are rarely as linear as the simplified 7-stage diagram suggests.
+
+## Detection opportunities at every stage
+
+The kill chain isn't just useful for understanding attacks — it's a direct planning tool for defenders, and this is where **threat hunting** (Path 11's dedicated lesson) gets its structure. Instead of waiting passively for an alert, a threat hunter picks a kill-chain stage and actively searches for its telltale signs: unusual outbound beaconing traffic (C2 stage), a new scheduled task created outside change-management hours (installation stage), or an account suddenly authenticating from a country it's never used before (initial access). Mapping *where* in the chain a given detection rule lives is exactly how mature security teams identify their blind spots — if every detection rule you have covers "delivery" and "exploitation" but nothing covers "C2" or "actions on objectives," an attacker who slips past the early stages will move freely afterward.
+
 ## Where you fit in as a beginner
 
 You're learning this model for two reasons:

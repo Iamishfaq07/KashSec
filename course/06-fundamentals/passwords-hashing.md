@@ -118,6 +118,14 @@ MFA doesn't need to be perfect to be hugely valuable — Microsoft and Google ha
 
 SMS-based MFA is the weakest form (vulnerable to SIM-swapping); app-based TOTP (Google Authenticator, Authy) and hardware keys (YubiKey, using the **FIDO2/WebAuthn** standard) are considerably stronger.
 
+## Peppering — a lesser-known extra layer
+
+Beyond salting, some systems add a **pepper**: a secret value, shared across *all* users (unlike a salt, which is unique per user), stored separately from the database — often in application code, an environment variable, or a hardware security module (HSM). Where a salt only defeats precomputed rainbow tables, a pepper is meant to protect against the specific scenario where an attacker steals the *database* (containing hashes and salts) but not the *application server* (where the pepper lives) — without the pepper, the stolen hashes can't be cracked even with unlimited compute, because the attacker is missing an input to the hash function entirely. Peppering is less universally adopted than salting because it adds real operational complexity (pepper rotation, secure storage), but it's a meaningful extra layer for high-value targets, and worth recognising by name if you encounter it in a system design.
+
+## Passkeys — passwords' likely successor
+
+Path 00's account-security material introduced passkeys briefly; worth returning to here with the cryptography now in view. A **passkey** replaces the shared-secret password model entirely with **public-key cryptography**: your device generates a key pair, keeps the private key locked in secure hardware (never transmitted anywhere, ever), and gives the site only the public key. Logging in means proving you hold the private key — typically via a device unlock (fingerprint, face, PIN) — with nothing secret ever crossing the network for an attacker to phish, intercept, or steal from a breached database. Because there's no shared secret sitting in a server's database at all, passkeys eliminate the entire class of problems this lesson has been about: no password to hash badly, no rainbow table to defeat, no credential-stuffing risk from reuse. The **FIDO2/WebAuthn** standard mentioned above for hardware security keys is the same underlying technology passkeys are built on.
+
 ## 🧪 Lab — See hashing algorithm speed differences yourself
 
 ```bash

@@ -102,6 +102,14 @@ Some frameworks flip CIA around to talk about the *attacker's* goals instead of 
 
 There's also the more detailed **Parkerian Hexad**, which adds three more properties: **Possession/Control**, **Authenticity**, and **Utility**. You don't need to memorise it, but knowing it exists shows you the CIA triad is a simplification, not the final word — useful for job interviews where someone asks "what's beyond CIA?"
 
+## Non-repudiation — the property people forget
+
+Closely related to, but distinct from, the CIA triad's three pillars is **non-repudiation**: the guarantee that someone who performed an action can't later credibly deny having done it. A digital signature (covered properly in Path 17's cryptography material) is the classic mechanism — if a document is signed with someone's private key, they can't plausibly claim "that wasn't me," because only their key could have produced that signature. Non-repudiation matters most in situations with real accountability stakes: financial transactions, contract signing, audit logs of who accessed what. It's easy to see why it doesn't fit neatly into C, I, or A — it's less about protecting the data itself and more about being able to *prove*, after the fact, who did what.
+
+## CIA in the cloud — the shared responsibility angle
+
+Path 19's cloud security material introduces the **shared responsibility model**: in a cloud environment, the cloud provider (AWS, Azure, GCP) and the customer each own different slices of C-I-A. The provider typically guarantees the *availability* of the underlying infrastructure (their data centres, their network), while the customer remains fully responsible for *confidentiality* of their own data (did they leave an S3 bucket public?) and often *integrity* of their own application logic. A huge fraction of real cloud security incidents trace back to someone misunderstanding this split — assuming the provider handles a piece of the triad that was actually the customer's job all along.
+
 ## 🧪 Lab — Classify real headlines
 
 Search the web for three recent security incidents (use the terms "data breach 2026", "ransomware attack 2026", "DDoS attack 2026"). For each one, write down:

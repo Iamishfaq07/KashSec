@@ -68,6 +68,14 @@ The EU's **General Data Protection Regulation** — the most influential privacy
 
 Not a compliance framework in the traditional sense, but the essential **practical reference** for web application security specifically. You'll meet the **OWASP Top 10** (the ten most critical web application security risks) constantly starting in Path 07 — it's less "compliance checkbox" and more "the field's shared, practical vocabulary for common bugs."
 
+### CIS Controls
+
+Where NIST CSF and ISO 27001 are relatively high-level and strategic, the **CIS Critical Security Controls** (from the Center for Internet Security) are deliberately practical and prioritised — an ordered list of specific, concrete actions (inventory your assets, control admin privileges, continuously manage vulnerabilities) roughly ranked by real-world impact. Many smaller organisations without the resources for a full ISO 27001 certification use CIS Controls as a pragmatic "do these things first" starting checklist, and it maps cleanly onto much of Path 08's network security material — firewall configuration, patch management, and access control all show up directly as numbered CIS controls.
+
+### SOC 2 Type I vs Type II — a distinction worth knowing precisely
+
+When someone says "we're SOC 2 compliant," it's worth asking *which type*, because the two mean meaningfully different things. **Type I** is a point-in-time snapshot — an auditor confirms that the described controls exist and are designed appropriately, as of one specific date. **Type II** is far more rigorous: the auditor observes those controls actually *operating effectively* over an extended period, typically 3–12 months, checking evidence throughout rather than just a design review on one day. A Type II report is considerably more meaningful to enterprise customers precisely because it demonstrates sustained practice, not just a policy document that looked good on the day of the audit.
+
 ## Quick reference table
 
 | Framework | Focus | Mandatory? | Where you'll meet it |

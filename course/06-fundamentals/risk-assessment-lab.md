@@ -18,6 +18,9 @@ flowchart LR
     D --> E[Propose\nMitigations]
 ```
 
+6. **Classify each risk's disposition.** For every row in your register, decide explicitly which of the four risk-response strategies from the main lesson applies — mitigate, accept, transfer, or avoid — and write a one-sentence justification. Forcing yourself to pick one of these four, rather than leaving it vague, is exactly the discipline that separates a real risk assessment from a worried list of concerns.
+7. **Revisit after one "what if."** Pick your single highest-rated risk and imagine the mitigation you proposed simply isn't available (too expensive, technically impossible, or blocked by someone else). What's your next-best fallback? This mirrors a genuinely common real-world situation — the ideal fix isn't always on the table, and a good risk assessor always has a second option in mind.
+
 :::tip Prioritization is the actual point
 A risk register with 30 items and no prioritization is nearly useless in practice — real organizations have limited time and budget, so the entire value of this exercise is being able to say "these three risks matter far more than the other twenty-seven, fix these first." Always sort your finished list by risk level before presenting it.
 :::

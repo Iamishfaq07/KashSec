@@ -84,6 +84,10 @@ Because you can't "patch" human psychology the way you patch software, defence i
 - **Verification culture** — normalising "let me call you back on a known number to confirm" for any unusual request, especially involving money or credentials, with zero social penalty for double-checking.
 - **Clear reporting paths** — a one-click "Report Phishing" button and a culture where reporting a suspicious email (even a false alarm) is praised, never mocked.
 
+## AI-generated phishing — why the old "poor grammar" tell is dying
+
+The red-flag table above notes that bad grammar isn't a reliable signal any more, and generative AI is the main reason why. Large language models let attackers produce grammatically flawless, contextually convincing phishing emails at essentially zero marginal cost per message — and worse, AI voice cloning (mentioned above under vishing) now needs only a short public audio sample of someone's real voice to produce a convincing fake call. Path 12's AI security material covers the flip side of this same technology directly: AI systems themselves becoming attack targets (via prompt injection) and attack *tools* (via AI-generated phishing content and deepfakes) are two faces of the same underlying shift — the economics of producing convincing deception have dropped dramatically, meaning volume and personalisation that once required real human effort per target can now be automated at scale.
+
 ## How to think like a defender when something feels "off"
 
 A simple mental checklist worth internalising for life, not just this course:

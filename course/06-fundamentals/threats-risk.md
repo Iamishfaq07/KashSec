@@ -124,6 +124,14 @@ Every professional risk conversation ends in one of these four buckets — and "
 
 You'll see all three constantly once you start reading security advisories, in Path 07 onward.
 
+## Inherent risk vs residual risk
+
+Two terms that come up in every real risk conversation once controls enter the picture: **inherent risk** is how risky something would be with *no controls at all* — the raw, unmitigated exposure. **Residual risk** is what's left *after* applying your chosen controls (a firewall, MFA, encryption, staff training). No control ever drives risk fully to zero — there's always some residual amount, which is exactly why "accept" is a legitimate formal category rather than an admission of failure. A mature security program doesn't chase an impossible zero-residual-risk goal; it deliberately drives residual risk down to a level leadership has explicitly agreed to live with, and documents that decision.
+
+## Qualitative vs quantitative risk assessment
+
+Risk can be scored two different ways, and knowing which one you're looking at matters. **Qualitative** assessment uses labels like Low/Medium/High/Critical (exactly what the risk matrix above does) — fast, intuitive, and the most common approach for day-to-day prioritisation. **Quantitative** assessment instead assigns real numbers, often in dollars — for example, estimating that a specific breach scenario has a 5% annual likelihood and would cost $2 million, giving an **Annualized Loss Expectancy (ALE)** of $100,000. Quantitative numbers are far more persuasive in a boardroom when arguing for security budget, but they require real data and assumptions that are often shakier than the precise-looking number suggests. Path 13's career-prep material touches on why being able to speak both languages — technical severity *and* business dollar-impact — is a genuinely valuable skill for security professionals trying to get budget approved.
+
 ## 🧪 Lab — Do a mini risk assessment
 
 Pick something you personally own — your phone, your home Wi-Fi, or a social media account. For it, write down:

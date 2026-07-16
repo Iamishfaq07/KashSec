@@ -92,6 +92,14 @@ Recall Path 06's kill chain — reconnaissance often starts with public social m
 - Be mindful of oversharing real-time location, travel plans, and workplace details publicly.
 - Consider what a spear-phisher could learn about you from public info alone — that's exactly the reconnaissance an attacker would do (Path 09 teaches this from the offensive side).
 
+## 9. Mobile-specific hardening
+
+Phones deserve their own quick pass beyond "device hardening basics" above, since they carry a different risk profile — always-on location, a payment method, and typically far more accounts logged in simultaneously than a laptop. Worth doing specifically on mobile: review which apps have background location access (most don't need it), disable Bluetooth and Wi-Fi auto-connect to unknown networks (a classic public-space attack vector), install apps only from official stores rather than sideloaded APKs/IPAs, and check for a "Find My Device" / remote-wipe feature being active in case of loss or theft. Path 15's mobile security material goes considerably deeper into the attacker's side of this — worth returning to once you're comfortable here.
+
+## 10. Digital privacy beyond security
+
+Security (keeping attackers out) and privacy (limiting what's collected and shared about you even by legitimate parties) overlap but aren't identical — you can be perfectly secure against hackers while still leaking enormous amounts of personal data to advertisers, data brokers, and the services you use every day. A few starting habits: review and trim third-party app permissions connected to your Google/Microsoft/Apple account (many people have dozens of forgotten OAuth grants from apps they used once years ago), consider a privacy-respecting browser or extension that blocks third-party trackers, and periodically check what a basic people-search site reveals about you publicly. Path 20's digital privacy path is dedicated entirely to this adjacent, equally important topic.
+
 ## A prioritised action list for this week
 
 If you do nothing else from this lesson, do these five things, roughly in this order:
