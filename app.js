@@ -237,9 +237,9 @@ const PATHS = [
      {n:"1", id:"what-is-a-computer",   title:"What is a computer really?", desc:"Hardware, software, and the OS, explained simply."},
      {n:"2", id:"how-internet-works",   title:"How the internet works",     desc:"From your phone to the world, in plain English."},
      {n:"3", id:"files-folders-you",    title:"Files, folders & organizing yourself", desc:"Where your data lives, and how to stay tidy."},
-     {n:"4", id:"how-to-learn-tech",    title:"How to learn tech effectively", desc:"The habits that make the difference."},
-     {n:"5", id:"passwords-accounts",   title:"Passwords & accounts basics", desc:"Your first line of defense, done right."},
-     {n:"6", id:"staying-safe-online",  title:"Staying safe online",        desc:"Phishing, scams, and the basics of online safety."}
+     {n:"4", id:"passwords-accounts",   title:"Passwords & accounts basics", desc:"Your first line of defense, done right."},
+     {n:"5", id:"staying-safe-online",  title:"Staying safe online",        desc:"Phishing, scams, and the basics of online safety."},
+     {n:"6", id:"how-to-learn-tech",    title:"How to learn tech effectively", desc:"The habits that make the difference."}
    ]},
   {n:"01", id:"01-introduction", title:"Introduction to Cybersecurity", level:"Absolute beginner",
    desc:"What security is, why it matters, hacker types, the law, how to learn well.",
@@ -437,6 +437,18 @@ const PATHS = [
      {n:"5", id:"interview-prep",        title:"Interview preparation",   desc:"Technical and soft skills that win jobs."},
      {n:"6", id:"networking-community",  title:"Networking & community",  desc:"Connections often matter as much as skills."},
      {n:"7", id:"first-90-days",         title:"Your first 90 days in a security job", desc:"How to succeed once you land the role."}
+   ]},
+  {n:"14", id:"14-ctf-challenges", title:"CTF Challenges", level:"All levels",
+   desc:"A standalone Capture The Flag zone — self-contained hands-on puzzles across Web, Crypto, Forensics, Misc, and Linux privesc. No new material, just applying what you've learned under pressure.",
+   subs:[
+     {n:"1", id:"ctf-briefing",              title:"Welcome to the CTF Zone", desc:"Flag format, categories, and how to actually approach a challenge."},
+     {n:"2", id:"web-idor-hunt",             title:"Web — The IDOR Hunt", desc:"Spot and explain a broken access control flaw. Easy."},
+     {n:"3", id:"crypto-layered-cipher",     title:"Crypto — The Layered Cipher", desc:"Peel back two stacked encodings by hand. Easy."},
+     {n:"4", id:"forensics-log-hunt",        title:"Forensics — The Log Hunt", desc:"Find the successful brute-force in a sea of noise. Easy."},
+     {n:"5", id:"web-jwt-forge",             title:"Web — Forge the Token", desc:"Exploit alg=none to forge admin access. Medium."},
+     {n:"6", id:"misc-hidden-headers",       title:"Misc — Hidden in Plain Sight", desc:"Reassemble a flag scattered across HTTP headers. Medium."},
+     {n:"7", id:"crypto-xor-cipher",         title:"Crypto — Break the XOR Cipher", desc:"A real known-plaintext attack on repeating-key XOR. Hard."},
+     {n:"8", id:"linux-privesc-challenge",   title:"Linux — The Privesc Puzzle", desc:"Turn a passwordless sudo rule into a root shell. Medium."}
    ]}
 ];
 
@@ -1840,7 +1852,7 @@ function buildSearchOverlay(){
     <div class="search-modal" role="dialog" aria-modal="true" aria-label="Search lessons">
       <div class="search-input-row">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" id="searchInput" placeholder="Search 151 lessons across 14 paths…" autocomplete="off" spellcheck="false">
+        <input type="text" id="searchInput" placeholder="Search ${totalSubLessons()} lessons across ${PATHS.length} paths…" autocomplete="off" spellcheck="false">
         <kbd>Esc</kbd>
       </div>
       <div class="search-results" id="searchResults"></div>

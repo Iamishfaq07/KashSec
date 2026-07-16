@@ -2,18 +2,19 @@
 
 **A completely free cybersecurity course, from absolute zero to job-ready.**
 
-14 learning paths · 151 sub-lessons · diagrams, labs & challenges · always free
+15 learning paths · 159 sub-lessons · diagrams, labs, a hands-on CTF zone & challenges · always free
 
 [![Live Site](https://img.shields.io/badge/live-kashsec.academy-EFA43A?style=for-the-badge)](https://kashsec.vercel.app/)
 
 ## What's new
+- **Path 14 — CTF Challenges**: a standalone Capture The Flag zone with 8 self-contained puzzles across Web, Crypto, Forensics, Misc, and Linux privilege escalation
 - **Progress tracking, bookmarks & notes** on every lesson, plus an interactive roadmap and a personal progress dashboard
-- **14 path quizzes + a Final Exam**, with a canvas-drawn **certificate of completion** (PNG download, print-to-PDF, LinkedIn share)
+- **15 path quizzes + a Final Exam**, with a canvas-drawn **certificate of completion** (PNG download, print-to-PDF, LinkedIn share)
 - **14 achievements**, a light/dark **theme toggle**, global **search** (Ctrl/Cmd+K), and "continue where you left off"
 - Optional **cloud sync** — sign in to back up progress across devices; the site works fully without it (see [`SUPABASE_SETUP.md`](./SUPABASE_SETUP.md))
-- **Path 00**: Computer Basics & Security Mindset, for absolute freshers with zero prior exposure
-- **Path 13**: Career Prep — resume, portfolio, interviews, and the job search
-- ~30 new hands-on lab lessons folded into the existing paths (Linux forensics, JWT attacks, cloud misconfig, threat hunting, LLM red-teaming, and more)
+- **Path 00**: Computer Basics & Security Mindset, now fully expanded for absolute freshers with zero prior exposure
+- **Path 13**: Career Prep — resume, portfolio, interviews, and the job search, now fully expanded
+- ~30 hands-on lab lessons folded into the existing paths (Linux forensics, JWT attacks, cloud misconfig, threat hunting, LLM red-teaming, and more)
 
 ## Quick start
 ```bash
@@ -43,9 +44,9 @@ KashSec/
     └── ...13-career-prep/
 ```
 
-## 🗺️ The 14 paths
+## 🗺️ The 15 paths
 
-`00` Computer Basics & Security Mindset · `01` Introduction · `02` Networking · `03` Linux & Operating Systems · `04` Programming & Python · `05` How the Web Works · `06` Cybersecurity Fundamentals · `07` Web Security & Hacking · `08` Network Security · `09` Ethical Hacking · `10` Bug Bounty · `11` Advanced Topics · `12` AI & AI Security · `13` Career Prep
+`00` Computer Basics & Security Mindset · `01` Introduction · `02` Networking · `03` Linux & Operating Systems · `04` Programming & Python · `05` How the Web Works · `06` Cybersecurity Fundamentals · `07` Web Security & Hacking · `08` Network Security · `09` Ethical Hacking · `10` Bug Bounty · `11` Advanced Topics · `12` AI & AI Security · `13` Career Prep · `14` CTF Challenges
 
 ## ✍️ Writing a lesson
 

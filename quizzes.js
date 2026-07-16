@@ -157,6 +157,17 @@ const QUIZZES = {
       {q:"What best describes effective job searching in security?", options:["Applying to one company and waiting","A mix of networking, targeted applications, and community involvement","Only relying on recruiters","Never following up"], correct:1, explain:"Multiple channels — network, applications, community — dramatically improve your odds."},
       {q:"What's a good habit during your first 90 days in a new security role?", options:["Staying silent and avoiding questions","Learning the environment, asking questions, and building trust","Immediately changing all existing processes","Working alone without communicating"], correct:1, explain:"Early on, understanding context and building trust matters more than making big changes."}
     ]
+  },
+  "14-ctf-challenges": {
+    title: "CTF Challenges Quiz",
+    passPct: 70,
+    questions: [
+      {q:"What does IDOR stand for, and what makes it exploitable?", options:["Insecure Direct Object Reference — missing authorization checks on object access","Internet Data Object Routing — a DNS misconfiguration","Indirect Denial of Resource — a rate-limiting bug","Isolated Data Object Request — a CORS issue"], correct:0, explain:"IDOR happens when an app uses a raw, guessable identifier without verifying the requester actually owns or may access that object."},
+      {q:"Why is Base64 not a form of encryption?", options:["It's too slow to be encryption","It uses no secret key and is trivially reversible by anyone","It only works on images","It requires a password to decode"], correct:1, explain:"Base64 is an encoding, not encryption — there's no key involved, and decoding it back to the original data requires no secret at all."},
+      {q:"Why is a JWT with \"alg\":\"none\" dangerous if a server accepts it from untrusted users?", options:["It makes tokens larger","It skips signature verification entirely, letting anyone forge arbitrary claims","It slows down the server","It only affects token expiration"], correct:1, explain:"An unsigned token has nothing to verify — a server that still honors alg=none trusts whatever claims the client wrote itself."},
+      {q:"In a repeating-key XOR cipher, what makes a known-plaintext attack possible?", options:["XOR cannot be reversed at all","Knowing even part of the plaintext lets you recover the key directly via ciphertext XOR known-plaintext","The key is always sent alongside the ciphertext","XOR only works on numbers, not text"], correct:1, explain:"Because ciphertext = plaintext XOR key, if you already know the plaintext for a segment, XORing it against the matching ciphertext recovers the key for that segment directly."},
+      {q:"What does finding \"(root) NOPASSWD: /usr/bin/find\" in a sudo -l listing suggest?", options:["Nothing exploitable — find is a harmless search tool","Likely privilege escalation via find's -exec flag spawning a root shell","The system is already fully patched","It only allows searching, nothing else"], correct:1, explain:"find's -exec flag runs arbitrary commands — if find itself runs as root via sudo, anything it execs also runs as root, a well-known GTFOBins technique."}
+    ]
   }
 };
 
