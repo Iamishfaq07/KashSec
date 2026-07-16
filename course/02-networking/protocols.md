@@ -44,6 +44,34 @@ Over the next three lessons you'll meet the ones that matter most:
 
 You've already met them without realising — port 80 is HTTP, port 443 is HTTPS, port 53 is DNS. Those port numbers are the *doors* where each protocol listens.
 
+## Watching a protocol's rules in action
+
+Protocols aren't abstract — you can watch their actual back-and-forth "conversation" directly. A classic, genuinely educational example is **SMTP** (the email-sending protocol), which is simple enough to speak by hand using a raw text connection:
+
+```
+telnet smtp.example.com 25
+220 smtp.example.com ESMTP ready
+HELO mytest.com
+250 smtp.example.com Hello mytest.com
+MAIL FROM:<you@mytest.com>
+250 OK
+RCPT TO:<friend@example.com>
+250 OK
+DATA
+354 Start mail input
+Subject: Test
+This is a test message.
+.
+250 OK: queued
+QUIT
+```
+
+Notice the strict back-and-forth structure: the server greets first (`220`), you introduce yourself (`HELO`), then a rigid sequence of `MAIL FROM` → `RCPT TO` → `DATA` → a message body ending with a lone `.` on its own line. Neither side can skip a step or respond out of order — this rigid structure *is* the protocol, and it's exactly why the same sequence works identically whether you're a Windows machine, a Linux server, or (as in this example) a human typing commands directly over a raw connection.
+
+## Protocol versions — rules evolve too
+
+Protocols aren't fixed forever — they get revised over time as weaknesses are found or better approaches emerge, and both sides of a connection typically negotiate which version to actually use. TLS (the encryption protocol underlying HTTPS, covered in the next lesson) is a good example: TLS 1.0 and 1.1 are now considered insecure and deprecated, while TLS 1.2 and 1.3 are the current, recommended versions — and during connection setup, client and server briefly negotiate the highest mutually-supported version before actual communication begins. Path 17's cryptography material and Path 07's web security lessons both reference this negotiation process directly, since forcing a connection down to an older, weaker protocol version (a technique called a **downgrade attack**) has historically been a real attack vector.
+
 ## Where protocols are defined
 
 Real internet protocols are described in documents called **RFCs** (Request For Comments), published by the IETF. They're free, technical, and dense — but they're the actual standard everyone builds against. When you eventually want to know exactly how HTTP or TLS *should* behave, an RFC is your source of truth.

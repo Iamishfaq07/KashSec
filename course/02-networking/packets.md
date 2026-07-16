@@ -105,6 +105,10 @@ flowchart LR
 
 Your HTTP request sits *inside* a TCP segment, *inside* an IP packet, *inside* an Ethernet frame — like a letter inside an envelope inside a mailbag inside a truck. **Wireshark** (Path 08) peels these apart for you and it's genuinely magical to see the first time.
 
+## MTU and fragmentation — when a packet is too big
+
+Every network link has a **Maximum Transmission Unit (MTU)** — a limit on how large a single packet is allowed to be (commonly 1500 bytes on standard Ethernet). If a packet is larger than the MTU of a link it needs to cross, it must be broken down further into smaller pieces, a process called **fragmentation** — genuinely just another, smaller-scale version of the same "break it into pieces" idea this lesson has been building throughout, just happening automatically at a lower layer than the packet numbering described above. Fragmentation is worth knowing about specifically because it's historically been a source of real vulnerabilities — some older attacks exploited how different operating systems handled reassembling deliberately malformed, overlapping fragments differently, causing crashes or security bypasses.
+
 ## Why this matters so much for security
 
 Because your data is broken into labelled envelopes travelling shared roads:

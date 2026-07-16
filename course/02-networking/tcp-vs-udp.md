@@ -40,6 +40,14 @@ You'll hear these terms constantly. Every TCP connection begins with this ritual
 Port scanners (like Nmap) work by *starting* this handshake with each port to see which answer — a door that completes the handshake is "open." Attackers can also *abuse* it: flooding a server with endless SYN "hello" requests it must try to answer is an attack called a **SYN flood** (a type of denial-of-service).
 :::
 
+## Ending a TCP connection — the teardown
+
+Just as TCP opens carefully with a three-way handshake, it closes carefully too, using **FIN** (finish) and **ACK** packets exchanged by both sides — a graceful four-step process ensuring both computers agree the conversation is genuinely over before either discards its connection state, rather than one side abruptly vanishing mid-conversation. An abrupt, ungraceful termination instead uses a **RST (reset)** packet — immediately killing the connection with no negotiation, normally used to signal an error condition (like connecting to a closed port, referenced in the previous ports lesson) rather than a normal, planned goodbye. This distinction between a clean FIN-based close and an abrupt RST matters directly in Path 08's Wireshark labs, since it's one of the first things worth checking when a captured connection looks unusual — a graceful close suggests normal application behavior, while an unexpected RST often signals something worth investigating further.
+
+## Connection states — a brief preview
+
+Throughout a TCP connection's life, both sides track which "state" the connection is currently in — `LISTEN` (a server waiting for a connection), `SYN_SENT`/`SYN_RECEIVED` (mid-handshake), `ESTABLISHED` (actively exchanging data), and several teardown states. You'll see these exact state names appear directly in tools like `netstat` and `ss` output (Path 18's Windows networking commands, and their Linux equivalents) — recognizing them as literally the handshake and teardown steps you just learned, rather than mysterious jargon, makes reading that output far less intimidating.
+
 ## Side by side
 
 |  | **TCP** | **UDP** |

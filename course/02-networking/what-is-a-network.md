@@ -90,6 +90,25 @@ Names you'll keep meeting:
 
 Don't memorise the table — just recognise the words when they appear.
 
+## LAN, WAN, and the sizes of networks
+
+Networks come in different scales, and the vocabulary matters throughout this course:
+
+- **LAN (Local Area Network)** — a network confined to one physical location: your home, an office floor, a single building. Your home Wi-Fi is a LAN.
+- **WAN (Wide Area Network)** — a network spanning a much larger geographic area, connecting multiple LANs together — a company with offices in three cities connects them via a WAN. The internet itself is, in a sense, the largest WAN of all: a network of networks spanning the entire globe.
+- **MAN (Metropolitan Area Network)** — a middle ground, typically covering a single city, less commonly referenced day-to-day but occasionally worth knowing exists.
+
+This distinction matters practically in Path 08's network security material: attacks and defenses that make sense on a small, trusted LAN (like relying on physical proximity as a security control) often don't hold up once you're reasoning about a WAN spanning untrusted public internet infrastructure.
+
+## Bandwidth vs. latency — two different kinds of "speed"
+
+Two terms people often conflate but which measure genuinely different things:
+
+- **Bandwidth** — how much data can be transferred per unit of time (measured in Mbps/Gbps) — think of it as how *wide* the road is, how many cars can travel side by side at once.
+- **Latency** — how long it takes a single piece of data to make the trip (measured in milliseconds) — think of it as how *long* the road is, regardless of how wide it is.
+
+A connection can have high bandwidth but also high latency (a satellite internet connection, for instance, moves plenty of data per second but each individual round-trip takes noticeably longer due to the physical distance to space and back) — which is exactly why "my internet is fast" and "my connection feels laggy" can both be true statements about entirely different properties of the same connection. Path 02's later packets lesson and Path 08's Wireshark labs both give you direct, hands-on ways to actually measure this distinction yourself.
+
 ## Why a security learner cares
 
 Every message you send, every site you visit, and every attack a hacker launches is a "letter" travelling this postal system. Once you can picture the post office, you can reason about *where* an attacker might:

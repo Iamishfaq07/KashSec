@@ -124,6 +124,10 @@ When you connect over HTTPS, the browser and server perform a **TLS handshake** 
 On a real site, a certificate warning often means someone is trying to intercept your connection (a **man-in-the-middle** attack). Don't click "proceed anyway" on sites where you'll enter passwords or personal data.
 :::
 
+## Idempotency and "safe" methods — a distinction that matters for testing
+
+Two properties worth understanding about HTTP methods, since they directly affect how you test safely: a method is **safe** if it's not supposed to change anything on the server (GET, HEAD — just retrieving data), and a method is **idempotent** if calling it multiple times has the same effect as calling it once (GET, PUT, DELETE all qualify — deleting the same resource twice leaves it deleted either way; POST notably does *not* qualify, since submitting the same form twice might create two separate orders). This matters directly in testing: automated scanners and tools like Burp's Intruder (Path 07) are generally safe to run against GET requests repeatedly, but running the same destructive POST request many times during testing can have real, compounding side effects on the target application — worth being deliberate about, especially during authorized testing where causing unintended damage reflects poorly regardless of your actual intentions.
+
 ## HTTP headers worth knowing
 
 You'll live in these when testing:

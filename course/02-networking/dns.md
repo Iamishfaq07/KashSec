@@ -77,6 +77,10 @@ dog google.com
 3. Run `dig google.com TXT +short` — notice all the third-party services listed?
 4. Try it on your own domain if you have one. Notice how much you can learn about a company's tech stack from public records alone, without touching their servers.
 
+## TTL — how long a lookup gets remembered
+
+Every DNS record has a **TTL (Time To Live)** — a number, in seconds, telling resolvers how long they're allowed to cache (remember) that answer before asking again. A low TTL (like 60 seconds) means changes propagate to the world quickly, but generates more repeated lookup traffic; a high TTL (like 86400, a full day) means better caching efficiency, but changes take longer to take effect everywhere. This matters practically: administrators often deliberately lower a record's TTL shortly *before* making a planned change (like moving to a new server), specifically to shrink the window where some users see the old answer and others see the new one — and it matters for reconnaissance too, since historical DNS data (referenced in this path's earlier hands-on lab) exists precisely because some resolvers and services log every answer they've ever cached, TTL or not.
+
 ## Why hackers care about DNS
 
 The phonebook quietly reveals structure. By exploring DNS, an attacker can discover forgotten **subdomains** like `mail.company.com`, `test.company.com`, or `old-server.company.com` — each a possible side entrance the owner forgot about. This is a core recon technique in Paths 09 and 10.

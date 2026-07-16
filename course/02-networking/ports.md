@@ -93,6 +93,14 @@ So the full address of a service is really two parts together:
 
 That reads as *"the secure-web door of the machine at 192.168.1.20."* Every service on the internet has this shape.
 
+## Ephemeral ports — the other side of every connection
+
+The well-known ports table above describes the *server's* side of a connection — but your own device also uses a port for every outgoing connection, typically a randomly chosen number from the dynamic/private range (49152–65535) mentioned in the tip above. This is called an **ephemeral port**, and it's genuinely temporary — used only for the duration of that one connection, then released for reuse. This is exactly why, when you open several browser tabs to the same website, each tab's connection uses a *different* ephemeral port on your side, even though they're all talking to the same server port 443 — it's how your device (and the server replying to it) keeps each individual connection distinct.
+
+## How firewalls relate to ports
+
+A **firewall** (covered in full in Path 08) makes its allow/block decisions largely based on ports — a basic firewall rule might say "allow anything on port 443 (HTTPS), block everything on port 3389 (remote desktop) from outside the local network." This is exactly why an unnecessarily open port is a real security risk even before any vulnerability in the service behind it is considered: every open port is one more thing a firewall has to deliberately allow, and one more potential entry point an attacker can find during reconnaissance. The general security principle — **close every port you don't genuinely need running** — is a direct, practical application of the "attack surface" concept from Path 01.
+
 ## Scanning = knocking on doors
 
 When you hear a hacker "scanned" a machine, this is exactly what they did: they knocked on many doors to see which open.

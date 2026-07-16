@@ -75,6 +75,14 @@ There are three "private" address ranges you'll see everywhere:
 | `172.16.0.0` – `172.31.255.255` | Medium networks |
 | `192.168.0.0` – `192.168.255.255` | Home networks (very common) |
 
+## Subnet masks and CIDR notation — describing a range of addresses
+
+You'll constantly see addresses written like `192.168.1.0/24` throughout later paths (Path 08's Nmap lessons, Path 19's cloud networking lesson) — that `/24` is **CIDR notation**, and it's worth understanding now rather than treating it as magic later. It describes how many addresses belong to one network: `/24` means the first 24 bits (the first three of the four numbers) identify the network, leaving the last 8 bits free to number individual devices — giving you `192.168.1.0` through `192.168.1.255`, 256 addresses total. A smaller number after the slash means a *larger* range of addresses (`/16` covers 65,536 addresses), which can feel backwards at first but becomes intuitive with practice. This notation is exactly how a penetration test's scope document (Path 09) specifies which entire ranges of addresses are authorized for testing, rather than listing every individual IP by hand.
+
+## Static vs. dynamic IPs — and DHCP
+
+Most devices on a home network don't have a permanently fixed private IP — instead, your router runs a service called **DHCP (Dynamic Host Configuration Protocol)**, automatically assigning each device an available address from its private range whenever it joins the network. This is called a **dynamic IP**, and it can change over time (e.g., after your device reconnects). A **static IP** is manually configured to never change — commonly used for servers, printers, or anything else that other devices need to reliably find at the same address every time. Understanding this distinction matters directly for Path 08's network scanning material: a device you scanned yesterday at `192.168.1.20` might genuinely be a different physical device today if it's using a dynamic IP and simply reconnected.
+
 ## Special addresses worth knowing
 
 - `127.0.0.1` — called **localhost** or the **loopback** address. It always means "this very computer." When you build something and test it "on localhost," you're talking to your own machine.
