@@ -49,6 +49,14 @@ SHA-256("password124") = 8a9c1b5a...  (completely different output — even a ti
 
 That last property — a tiny input change producing a completely different output — is called the **avalanche effect**, and it's exactly what makes hashing useful for detecting *any* tampering with data, not just passwords.
 
+## A brief history — why cryptography matters beyond computers
+
+Cryptography is far older than computing itself, and knowing a little of that history helps ground why the field is structured the way it is today. Military and diplomatic communication drove cryptography's development for millennia — the Caesar cipher above genuinely was used by Roman military commanders; centuries later, the German Enigma machine's mechanical rotor-based encryption, and the Allied codebreaking effort at Bletchley Park (involving Alan Turing, widely regarded as a founder of computer science) that eventually broke it, is often cited as a pivotal moment in World War II and a direct ancestor of modern computing itself. The core lesson that keeps repeating across this entire history, right up to the present day: a cipher that seems unbreakable to its own designers often has a flaw invisible to them but findable by dedicated, motivated adversaries — which is exactly why "never roll your own crypto" (a phrase you'll see repeated throughout this path) isn't overcautious advice, but the hard-won, historically-proven lesson of a field with a long track record of confident designers being wrong.
+
+## Kerckhoffs's principle — a foundational design rule
+
+A specific historical lesson worth naming directly, since it shapes essentially every modern cryptographic system: **Kerckhoffs's principle**, formulated in the 19th century, states that a cryptographic system should remain secure even if everything about it — the algorithm, the implementation, the design — is publicly known, with the sole exception of the key. This is precisely why AES and RSA (covered in the next two lessons) are open, published, publicly-scrutinized algorithms rather than secret proprietary designs — a system's security should never depend on attackers not knowing *how* it works, only on them not having the *specific secret key*. A corollary worth internalizing: "security through obscurity" (hiding how a system works, hoping attackers won't figure it out) is not a substitute for genuine cryptographic security, and a design that only holds up as long as its inner workings stay secret should be treated as fundamentally broken, not merely unproven.
+
 :::tip A quick way to remember the distinction
 Ask: "Do I need to get the original data back?" If yes, and you don't mind anyone being able to reverse it, that's **encoding**. If yes, but only someone with a secret should be able to, that's **encryption**. If no — you only ever need to *verify*, never *recover* — that's **hashing**.
 :::

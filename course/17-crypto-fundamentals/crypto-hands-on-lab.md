@@ -29,8 +29,17 @@ This capstone lab turns every concept from this path — encoding vs. encryption
 6. **Inspect a real website's certificate.** Visit any HTTPS site, click the padlock icon in your browser's address bar, and view the certificate details — find the issuing Certificate Authority, the domain(s) it's valid for, and its expiration date, connecting directly to this path's digital signatures & certificates lesson.
 7. **Demonstrate ECB mode's pattern leakage.** In CyberChef, take a repetitive piece of text (e.g., the same short phrase repeated 20 times) and encrypt it with "AES Encrypt" using ECB mode versus CBC mode — compare the two ciphertext outputs and notice the ECB output shows an obvious repeating structure that CBC's output doesn't, a text-based echo of the classic "ECB penguin" image referenced in Path 17's symmetric encryption lesson.
 
+8. **Sign and verify a message with HMAC.** In CyberChef, drag "HMAC" onto a short message using SHA256 and a key of your choice, then change a single character in the original message and recompute the HMAC — confirm the output changes completely. This is a direct, hands-on demonstration of Path 17.4's HMAC discussion: without the correct key, an attacker modifying the message has no way to produce a matching HMAC tag, which is exactly the integrity+authenticity guarantee that makes it useful for verifying JWTs and webhook payloads.
+9. **Generate a certificate signing request (CSR).** Using OpenSSL, generate a fresh key pair and a CSR — the exact artifact a real website operator submits to a CA when requesting a certificate:
+   ```bash
+   openssl req -new -newkey rsa:2048 -nodes -keyout lab.key -out lab.csr \
+     -subj "/CN=lab.kashsec-labs.test"
+   openssl req -in lab.csr -noout -text
+   ```
+   Reading the CSR's decoded output (the last command) shows exactly the identity information — the domain name in `CN`, the public key — that a CA would review and sign, connecting directly to this path's certificate-issuance diagram.
+
 :::challenge Build a mini crypto reference sheet
-Using everything from this lab, create your own one-page cheat sheet: when to use encoding vs. encryption vs. hashing, when to use symmetric vs. asymmetric encryption, and the 7 crypto mistakes from the previous lesson, each with a one-line "how to avoid it." Save it in your notes — this is exactly the kind of reference that pays off constantly across the rest of this course.
+Using everything from this lab, create your own one-page cheat sheet: when to use encoding vs. encryption vs. hashing, when to use symmetric vs. asymmetric encryption, and the 8 crypto mistakes from the previous lesson, each with a one-line "how to avoid it." Save it in your notes — this is exactly the kind of reference that pays off constantly across the rest of this course.
 :::
 
 ## Where crypto concepts show up throughout this course
@@ -43,7 +52,7 @@ Cryptography stops feeling like abstract math the moment you actually manipulate
 
 ## 🎓 Path complete
 
-You've now covered the encoding/encryption/hashing distinction, symmetric encryption (AES, modes of operation), asymmetric encryption (RSA, hybrid encryption, digital signatures), hashing and password storage, the certificate infrastructure behind HTTPS, the seven recurring real-world crypto mistakes, and hands-on practice with CyberChef and OpenSSL. Every crypto reference throughout the rest of this course should now make genuine sense.
+You've now covered the encoding/encryption/hashing distinction, symmetric encryption (AES, modes of operation), asymmetric encryption (RSA, hybrid encryption, digital signatures), hashing and password storage, the certificate infrastructure behind HTTPS, the eight recurring real-world crypto mistakes, and hands-on practice with CyberChef and OpenSSL. Every crypto reference throughout the rest of this course should now make genuine sense.
 
 ???refs
 - [CyberChef](https://gchq.github.io/CyberChef/) — the free, browser-based tool used throughout this lab.

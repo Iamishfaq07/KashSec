@@ -37,12 +37,16 @@ Encryption alone protects **confidentiality** (no one can read the data) but not
 
 This is exactly the root cause behind Path 07's `alg: none` JWT vulnerability, revisited here in its general form: never let untrusted input dictate *how* to verify or decrypt that same input. A server that reads an `algorithm` field from a client-supplied token and dynamically decides which verification method to use, based on what the client itself claims, hands an attacker direct control over their own verification process — the fix, as established in Path 07, is always hardcoding the expected algorithm/scheme server-side and rejecting anything else outright.
 
-:::tip The meta-lesson across all seven mistakes
-Every single mistake in this lesson has the same underlying shape: **implementation and key management failures, not flaws in the underlying cryptographic algorithms themselves.** AES, RSA, and SHA-256 are all, when used correctly, genuinely unbroken — the enormous majority of real-world "crypto failures" you'll encounter in security work come from exactly the seven categories above, not from anyone actually breaking the math.
+## Mistake 8: Trusting a library's insecure defaults without checking
+
+A subtler variant worth calling out on its own: many cryptography libraries, especially older ones, ship with historically weak options as their **default** setting purely for backward compatibility — a library's default cipher mode might still be ECB (Path 17.2's classic mistake), its default key derivation might use far too few iterations for modern hardware, or its default random number source might not actually be cryptographically secure on every platform it runs on. Developers who call an encryption library's most obvious, simplest function — assuming "it's a security library, so it must be secure by default" — can end up with exactly the mistakes catalogued above, not because they made an active bad choice, but because they never overrode a bad default they didn't know existed. This is precisely why reading a cryptography library's documentation specifically for its default parameters, rather than assuming sane-by-default behavior, is a genuinely important habit — and why modern, well-designed libraries (like libsodium/NaCl, which deliberately expose almost no configurable parameters at all) increasingly try to make the *only* easily-reachable option the secure one, removing the "insecure default" failure mode by design rather than relying on developers to read documentation carefully every time.
+
+:::tip The meta-lesson across all eight mistakes
+Every single mistake in this lesson has the same underlying shape: **implementation and key management failures, not flaws in the underlying cryptographic algorithms themselves.** AES, RSA, and SHA-256 are all, when used correctly, genuinely unbroken — the enormous majority of real-world "crypto failures" you'll encounter in security work come from exactly the eight categories above, not from anyone actually breaking the math.
 :::
 
 :::challenge Audit for these patterns
-Revisit Path 15's mobile APK analysis lesson and Path 16's static analysis lesson — both taught you to grep decompiled code for strings and suspicious patterns. Using that same skill, list which of this lesson's 7 mistakes each technique would most directly help you find in a real app or binary, and why.
+Revisit Path 15's mobile APK analysis lesson and Path 16's static analysis lesson — both taught you to grep decompiled code for strings and suspicious patterns. Using that same skill, list which of this lesson's 8 mistakes each technique would most directly help you find in a real app or binary, and why.
 :::
 
 ## Key terms
@@ -54,7 +58,7 @@ Revisit Path 15's mobile APK analysis lesson and Path 16's static analysis lesso
 ## Recap
 
 - Nearly every real-world "crypto broke" story traces back to implementation and key management mistakes, not flaws in the underlying algorithms.
-- The seven recurring patterns — encoding confused with encryption, hardcoded keys, weak algorithms, reused nonces, weak randomness, missing integrity protection, and trusting client-supplied crypto metadata — cover the overwhelming majority of real-world crypto vulnerabilities.
+- The eight recurring patterns — encoding confused with encryption, hardcoded keys, weak algorithms, reused nonces, weak randomness, missing integrity protection, trusting client-supplied crypto metadata, and blindly trusting insecure library defaults — cover the overwhelming majority of real-world crypto vulnerabilities.
 - This lesson ties together crypto-adjacent findings from across this entire course (Path 07's JWT lesson, Path 15's mobile storage lesson, Path 16's static analysis lesson) as instances of these same seven patterns.
 
 ???refs
