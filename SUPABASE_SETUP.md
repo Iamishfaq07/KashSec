@@ -67,7 +67,7 @@ Supabase needs to know it's allowed.
 
 1. **Authentication → URL Configuration**.
 2. Set **Site URL** to your deployed site, e.g.
-   `https://iamishfaq07.github.io/KashSec/`
+   `https://kashsec.vercel.app`
 3. Under **Redirect URLs**, add the same URL again (and
    `http://localhost:8000/` too, if you want magic links to work while
    testing locally).

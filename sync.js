@@ -11,8 +11,8 @@
    public key into the two constants below. Full walkthrough in
    SUPABASE_SETUP.md.
    ============================================================ */
-const SUPABASE_URL = '';
-const SUPABASE_ANON_KEY = '';
+const SUPABASE_URL = 'https://rmddbrobcxttrqdrvtbg.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJtZGRicm9iY3h0dHJxZHJ2dGJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQxNzAxNTUsImV4cCI6MjA5OTc0NjE1NX0.zP5JxNGorbwSA87VfwqiuqRYmpn0IROdye-l6rQk_4s';
 
 const SupabaseSync = (function(){
   const CONFIGURED = !!(SUPABASE_URL && SUPABASE_ANON_KEY);
