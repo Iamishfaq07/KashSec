@@ -13,6 +13,9 @@ Use **PortSwigger's free Web Security Academy** labs (the same platform referenc
 3. **Find and exploit an IDOR vulnerability.** Using two test accounts if the lab supports it (the "two-account method" from Path 10's IDOR lesson), capture a request that accesses "your" data by ID, then modify just that ID in Repeater and check whether you can access someone else's.
 4. **Run Burp's built-in scanner** (available in the paid Pro version, but the free Community Edition's manual Repeater/Intruder workflow covers everything above) against the lab target and compare what it flags to what you found manually — a genuinely instructive comparison of automated versus manual testing, echoed in Path 07's SQLi lab discussion of `sqlmap` versus manual testing.
 
+5. **Use Intruder to automate a repeated test.** Take a request with a suspected ID-based IDOR (from challenge 3), send it to **Intruder** instead of manually editing it in Repeater each time, mark the ID as a payload position, and configure a numeric range (e.g., 1–50) as the payload set. Run the attack and sort results by response length or status code — this is the same underlying idea as the manual Repeater sweep, but automated across dozens of values in seconds rather than minutes of manual clicking.
+6. **Diff two responses with Comparer.** Capture a response from a valid login attempt and a response from an invalid one, send both to **Comparer**, and use its word-diff view to spot exactly which bytes differ — this is precisely the technique for confirming subtle username-enumeration signals from Path 07.8, where the visible difference might be a single word or a few milliseconds of timing rather than anything obvious on the page.
+
 **Success goal**: Find at least 2 different vulnerabilities using this workflow, and note how much of the process was really just "intercept → modify in Repeater → observe the response" repeated with different payloads.
 
 :::tip Build a personal payload cheat-sheet

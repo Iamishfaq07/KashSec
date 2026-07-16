@@ -125,6 +125,10 @@ http://target.com/uploads/shell.php?cmd=whoami
 - **Set a strict `Content-Type`/`Content-Disposition`** on serving uploaded files so browsers download rather than execute/render them where inappropriate.
 - **Virus/malware scanning** on upload as an additional layer for user-generated content platforms.
 
+## Path traversal — the upload feature's other risk
+
+Related to, but distinct from, uploading malicious file *content*, an insecure upload feature can also fail on the **filename** itself. If the server naively uses an attacker-supplied filename to decide where to save a file, a filename like `../../etc/cron.d/malicious` (a **path traversal** or "directory traversal" payload, using `../` to climb out of the intended upload directory) can let an attacker write files to arbitrary locations on the filesystem entirely — including sensitive locations like scheduled-task directories or web-accessible folders outside the intended uploads path. The same `../` technique also shows up independently of uploads, in any feature that reads a file based on user input (`GET /download?file=../../etc/passwd`), which is why filename and file-path handling deserves the same never-trust-the-client discipline as every other input in this lesson — validate that the resolved path still sits inside the intended directory before ever touching the filesystem.
+
 ## Where these fit in the OWASP Top 10
 
 Both command injection and unrestricted file upload fall under **A03: Injection** and **A05: Security Misconfiguration** territory from Path 07.1 — different delivery mechanisms, same underlying theme: **untrusted input being interpreted somewhere it shouldn't be trusted.**

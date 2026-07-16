@@ -107,6 +107,14 @@ Broader defensive strategies:
 - **Centralise authorization logic** — a shared, tested "can this user access this object?" function used consistently, rather than ad-hoc checks scattered (and sometimes forgotten) across every endpoint.
 - **Deny by default** — require an explicit authorization check to pass, rather than allowing access unless explicitly denied.
 
+## Mass assignment — IDOR's close cousin
+
+Worth distinguishing here since the two are easy to conflate: IDOR is about accessing *someone else's* object by changing an ID; **mass assignment** (referenced back in Path 05.5's API bug table) is about *modifying fields you shouldn't be able to touch on your own object*. If a `PATCH /api/profile` endpoint naively accepts and applies every field in the submitted JSON body straight to the database record, an attacker can add an unexpected field — `{"bio": "hi", "role": "admin"}` — and if the server doesn't explicitly whitelist which fields a normal user is allowed to change, that extra `role` field gets silently applied too. The fix pattern is the same underlying discipline as IDOR's fix: never trust the client's full input; explicitly whitelist what's actually allowed to change, rather than blacklisting what isn't.
+
+## Automating IDOR discovery with Autorize
+
+Manually testing every endpoint with a second account gets tedious fast on a large app — this is exactly what the **Autorize** Burp extension (mentioned in Path 07.2's BApp Store section) automates: you log in with two accounts of different privilege levels, and Autorize automatically replays every request your higher-privilege session makes using the lower-privilege session's cookies instead, flagging any response that still returns real data instead of an access-denied error. Running a tool like this passively in the background while you browse an application normally is a genuinely efficient way to surface IDOR and BOLA issues across dozens of endpoints without hand-testing each one individually.
+
 ## 🧪 Lab — PortSwigger's free IDOR labs
 
 The single best hands-on resource for this exact topic:

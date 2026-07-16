@@ -24,6 +24,8 @@ flowchart TD
     E -->|Yes| F[Accept token]
 ```
 
+5. **Test for JWT expiration and revocation gaps.** Capture a valid token, note its `exp` claim, then test two separate scenarios: does the server actually reject the token once `exp` has passed (some implementations only check this client-side), and — separately — if the lab has a "log out" feature, does the *same* token still work after logout? Many JWT-based systems have no server-side revocation list at all, meaning a stolen token remains valid until its natural expiry regardless of any logout action, a meaningfully different risk profile from the server-side session model in Path 05.4 where logout can immediately invalidate the session store entry.
+
 :::warn Never reuse rockyou.txt-style wordlists outside authorized labs
 Everything in Task 3 must happen against a lab you own or are explicitly authorized to test — cracking attempts against real production systems without permission cross directly from "practice" into unauthorized access, exactly the line Path 01's golden rule establishes.
 :::

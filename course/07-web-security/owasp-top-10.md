@@ -79,6 +79,10 @@ A newer standalone category (previously bundled elsewhere): tricking a server in
 
 The Top 10 is refreshed roughly every 3-4 years (2013, 2017, 2021 editions; a 2025 edition process began recently), based on aggregated data from dozens of security firms and thousands of real applications. Categories get merged, renamed, or reprioritised as the industry's understanding shifts — access control moving to #1 in 2021 reflects genuinely how common those bugs turned out to be in the real data, more than XSS or injection which used to dominate the top spots.
 
+## What the 2025 refresh is expected to change
+
+As referenced above, OWASP began the process toward a new edition; while the exact final categories aren't locked until release, the underlying trend worth understanding is *why* these refreshes happen at all — not because old categories stop mattering, but because the industry's aggregated testing data shifts as technology shifts. API-first architectures (Path 05's APIs & JSON lesson), widespread cloud misconfiguration (Path 19), and AI/LLM-specific risks (Path 12's dedicated material, and OWASP's own separate "Top 10 for LLM Applications" project) are all putting upward pressure on categories that barely existed as distinct concerns in 2013. Learning the *current* list matters, but learning to read *why* a list changes is the more durable skill — it's the same "which stage of an attack is this abusing" thinking from Path 06's kill chain lesson, just applied to an evolving risk taxonomy instead of a fixed attack sequence.
+
 ## How to actually use the Top 10 in practice
 
 - **As a beginner:** it's your syllabus. Each category points to a cluster of concrete, learnable bugs (which the rest of this path covers hands-on).

@@ -109,6 +109,14 @@ print(json.loads(base64.urlsafe_b64decode(payload + '==')))
 
 Then test the classic **`alg: none`** attack — modify the header to declare no signature algorithm at all, strip the signature, and see if the server foolishly accepts it as valid anyway.
 
+## Blind SSRF — no response body, still exploitable
+
+Just as blind SQLi and blind XSS have no directly visible output, **blind SSRF** occurs when the vulnerable server makes the attacker-controlled request but never returns the response content back to the attacker in any form — the "import from URL" feature above might just silently succeed or fail with no data shown. Detection here relies on the same out-of-band callback pattern from the command injection lesson: point the vulnerable parameter at an attacker-controlled server (or a Burp Collaborator domain) and watch for an inbound HTTP or DNS request, which alone confirms the server made the fetch even though nothing about the response was ever visible. Blind SSRF is still often fully exploitable for internal port scanning and cloud metadata access — the attacker just has to infer results from *whether a request happened and how long it took*, rather than reading a response body directly.
+
+## Credential stuffing vs brute force — a precise distinction worth having
+
+These two terms get used interchangeably by beginners, but they describe different attacks with different defences. **Brute force** tries many *guessed* password candidates (from a wordlist or systematic generation) against one or a few accounts, hoping one guess happens to be correct — rate limiting and account lockouts are the primary defence. **Credential stuffing** instead tries password pairs *already known to be real*, leaked from a completely unrelated breach, betting purely on password reuse across sites — because each individual attempt uses a real, previously-valid credential rather than a guess, it often defeats simple rate limiting by spreading attempts across a botnet of different IPs, and the actual defence is different too: MFA, breach-monitoring services like Have I Been Pwned (Path 06.5), and blocking known-compromised passwords at signup time, rather than just slowing down guess attempts.
+
 ## 🧪 Lab — PortSwigger SSRF & authentication labs
 
 1. [PortSwigger — SSRF labs](https://portswigger.net/web-security/ssrf) — practise reaching internal-only services and cloud metadata endpoints in a safe, legal, hosted environment.

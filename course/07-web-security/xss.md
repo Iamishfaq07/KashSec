@@ -156,6 +156,14 @@ As covered in Path 05.4 — doesn't prevent XSS itself, but limits the damage: e
 
 Rejecting obviously malicious input patterns helps, but is easily bypassed and should never be the *only* defence — output encoding based on context is the real fix.
 
+## Blind XSS — when you never see the payload fire
+
+A distinct and genuinely tricky variant worth naming: **blind XSS** happens when the injected payload executes somewhere the attacker *can't directly observe* — a support ticket viewed only by internal staff, an admin dashboard's log viewer, a "contact us" form whose submissions only an internal team ever opens. Because the attacker never sees the alert box pop up on their own screen, standard testing (submit payload, check if it fires) doesn't work here at all. The practical technique: instead of `alert(1)`, use a payload that phones home to an attacker-controlled server when it executes — tools like **XSS Hunter** generate a unique tracking script for exactly this purpose, so if a payload ever fires in some internal admin panel days later, the tester gets a notification with a screenshot and cookie dump from that hidden execution context. Blind XSS is a genuinely common, high-impact finding in bug bounty programs precisely because it targets the parts of an application ordinary testing never reaches.
+
+## Self-XSS — the social engineering trap worth knowing
+
+Not every "XSS" a user reports is real. **Self-XSS** describes a common scam pattern where an attacker convinces a victim to paste malicious JavaScript into their *own* browser console, framing it as some kind of hack, unlock, or free item — Facebook and other social platforms display persistent warnings in their DevTools console specifically because of how common this scam became. It's worth understanding as the inverse lesson to everything else in this file: the vulnerability class is real and serious when an *attacker* can make *someone else's* browser run code without their knowledge or consent — but a user knowingly pasting code into their own console isn't a vulnerability in the site at all, just a classic social-engineering trick exploiting the same DevTools power you learned to use responsibly back in Path 05.6.
+
 ## 🧪 Lab — PortSwigger XSS labs
 
 1. Go to [PortSwigger Web Security Academy — Cross-site scripting](https://portswigger.net/web-security/cross-site-scripting).

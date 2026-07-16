@@ -66,6 +66,10 @@ Web security is vast — a few important categories worth knowing exist, to rese
 - **GraphQL-specific issues** — introspection abuse, batching attacks, overly permissive queries (mentioned briefly in Path 05.5).
 - **Race conditions** — exploiting timing windows between a check and an action (e.g., redeeming a gift card twice by sending simultaneous requests).
 
+## Writing findings that get fixed, not filed away
+
+A vulnerability report that a developer can't act on quickly is a report that sits in a backlog forever — a genuinely underrated skill separates testers whose findings actually get remediated from those whose reports just accumulate. Beyond the four-part what/where/how/impact structure covered below, the highest-leverage addition is a **concrete, specific remediation suggestion** tailored to the actual bug, not a generic "sanitize user input" — for a SQLi finding, naming the exact parameterised-query pattern from Path 07.6; for stored XSS, naming the specific output-encoding function relevant to the framework in use. Also worth including: a **realistic severity/business-impact framing** in plain language a non-technical stakeholder can grasp ("an attacker could read every customer's payment history" lands far better than "CVSS 8.1"), since the report's real audience is often someone deciding what to prioritise, not just the engineer who'll implement the fix.
+
 ## Building your own practice lab
 
 Beyond PortSwigger's hosted labs, running your own vulnerable applications locally deepens understanding significantly:

@@ -111,6 +111,14 @@ Target → Scope settings → Add → *.testphp.vulnweb.com
 
 Then enable **"Show only in-scope items"** in Target and HTTP history views to declutter your workspace.
 
+## Extending Burp — the BApp Store
+
+Burp's functionality isn't fixed — the **Extensions** tab includes a built-in marketplace called the **BApp Store**, offering free community-built add-ons that plug directly into Burp's UI. A few worth knowing by name once you're comfortable with the basics: **Logger++** gives a far more searchable, filterable version of HTTP history than the built-in log; **Autorize** automates authorization testing by replaying every request with a lower-privilege session's cookies to catch IDOR-style bugs automatically; **JS Link Finder** scans loaded JavaScript files for hardcoded endpoint URLs, directly complementing the manual "search minified JS for strings" technique from Path 05's DevTools lesson. Most Community Edition users eventually install at least a couple of these — they don't require Pro, just a few clicks in the Extensions tab.
+
+## Match and Replace — automating small repeated edits
+
+A genuinely underused Burp feature: **Proxy → Options → Match and Replace** lets you define a rule that automatically finds a pattern in every request or response passing through Burp and silently substitutes something else — no manual editing required each time. A common beginner use case: automatically swapping a session cookie's value on every outgoing request so you don't have to paste it in manually after every login, or stripping a security header from every response to test how a page behaves without it. It's a small feature, but it turns a repetitive manual edit into a one-time setup, freeing your attention for the actual testing.
+
 ## Alternatives worth knowing
 
 - **OWASP ZAP** — free, open-source, similar proxy-based approach, popular in CI/CD pipelines for automated DAST (directly relevant to Ishfaq's professional SAST/DAST integration work).

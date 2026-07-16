@@ -153,6 +153,22 @@ User.objects.raw(f"SELECT * FROM users WHERE username = '{username}'")
 Using an ORM doesn't automatically guarantee safety — string-formatting your way into any "raw SQL" escape hatch reintroduces the exact same vulnerability. The safety comes from parameterisation, not from which library you're using.
 :::
 
+## Second-order SQLi — the delayed detonation
+
+Every example so far assumes the injected input reaches the database in the *same request* where it's typed. **Second-order SQLi** is subtler: the malicious input is safely stored on first submission (perhaps even correctly escaped at that point), but later gets pulled out of the database and used, unsafely, to build a *different* query — for example, a username containing injection syntax is stored cleanly during registration, then used unsanitised months later when an admin panel builds a "recent activity for this user" report. This delay between injection and detonation makes second-order SQLi genuinely hard to spot with straightforward single-request testing, since the vulnerable query never appears anywhere near the form that actually introduced the malicious data.
+
+## NoSQL injection — same idea, different syntax
+
+Databases like MongoDB don't use SQL at all, but they're not immune to the same underlying class of bug — just with a different injection syntax. Where an app builds a MongoDB query directly from user-supplied JSON, an attacker can sometimes inject a query *operator* instead of a plain value:
+
+```json
+// Intended: {"username": "alice", "password": "hunter2"}
+// Attacker sends instead:
+{"username": "alice", "password": {"$ne": null}}
+```
+
+`$ne` (not-equal) is a legitimate MongoDB query operator — if the backend blindly passes the parsed JSON body into a query, `{"$ne": null}` matches *any* non-null password, authenticating as Alice with no valid password at all. The root cause is identical to classic SQLi — untrusted input treated as query structure instead of pure data — which is exactly why the fix is the same underlying principle: validate and strictly type incoming data rather than passing it straight through to the query layer.
+
 ## 🧪 Lab — PortSwigger SQLi labs + sqlmap practice
 
 1. Work through [PortSwigger's SQL injection labs](https://portswigger.net/web-security/sql-injection) — start with the login bypass labs, then move to UNION-based data extraction.

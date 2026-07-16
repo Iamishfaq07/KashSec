@@ -120,6 +120,20 @@ curl -s https://example.com/sitemap.xml
 
 `robots.txt` in particular has a long history of accidentally telling attackers exactly which paths the site owner *doesn't want indexed* — often because those paths are sensitive.
 
+### Parameter discovery
+
+Finding hidden parameters an endpoint quietly accepts — beyond what's visible in the UI — is its own valuable recon subtask, since apps frequently support debug flags, legacy parameters, or admin-only options that were never removed from the code even after the corresponding UI was:
+
+```bash
+# Fuzz for hidden GET parameters against a known endpoint:
+ffuf -u "https://example.com/profile?FUZZ=1" -w /usr/share/seclists/Discovery/Web-Content/burp-parameter-names.txt -fs <baseline-response-size>
+
+# Or the purpose-built tool:
+arjun -u https://example.com/profile
+```
+
+A parameter like `?debug=true`, `?admin=1`, or `?format=xml` that the UI never sends can sometimes unlock behaviour the developers assumed was safely hidden simply because nothing in the visible interface exposed it.
+
 ## Building a recon pipeline
 
 Professional recon chains multiple tools together, each feeding the next:
@@ -153,6 +167,18 @@ Recon isn't just "collect data" — it's collecting data **with specific questio
 - What parameters and endpoints exist that aren't obvious from clicking around the UI?
 - What did the site look like historically that might reveal old, forgotten functionality still technically live?
 - Are there any exposed files that shouldn't be (`.git/`, `.env`, backup files like `.sql`, `.bak`)?
+
+## JavaScript source mining
+
+Modern SPAs (Path 05's web-anatomy lesson) ship most of their logic as downloadable JavaScript bundles — which means those bundles are, functionally, a map of the entire application handed directly to anyone who looks. Downloading and searching every JS file a site loads for API endpoint strings, feature-flag names, and even leftover comments is a distinct, high-value recon step:
+
+```bash
+# Download every JS file a site references, then grep for interesting strings:
+katana -u https://example.com -jc -o urls.txt
+grep -oE '"/api/[a-zA-Z0-9/_-]+"' *.js | sort -u
+```
+
+Tools like **LinkFinder** and **SecretFinder** automate exactly this — scanning JS for endpoint-shaped strings and accidentally-committed API keys/tokens respectively. This is the automated, at-scale version of the manual Sources-panel searching from Path 05's DevTools lab, and it consistently turns up endpoints the site's own visible navigation never links to.
 
 ## 🧪 Lab — Full recon pass on a legal target
 

@@ -26,6 +26,8 @@ This is the capstone lab for Path 07 — hands-on practice finding and exploitin
    <script>alert(document.cookie)</script>
    ```
 
+5. **Find a DOM-based XSS via client-side source review.** Rather than probing blindly, deliberately read a page's JavaScript (Path 05.6's Sources-panel technique) looking for a "sink" — code that writes attacker-controllable data into the page using `innerHTML`, `document.write()`, or similar — fed by a "source" like `location.search` or `location.hash`. Confirm the flow manually by tracing exactly how data moves from URL to sink before crafting your payload, rather than just guessing payloads at the URL and hoping one works. This source-to-sink tracing habit is precisely what separates efficient DOM-XSS hunting from unfocused trial and error.
+
 :::warn Impact demonstration, not real exploitation
 Everything here should stay confined to proving impact within your own lab session — never actually exfiltrate real session data to an external server, even "just to prove it works," without explicit written authorization covering exactly that kind of test. A `document.cookie` popup within your own lab session proves the same point without crossing that line.
 :::

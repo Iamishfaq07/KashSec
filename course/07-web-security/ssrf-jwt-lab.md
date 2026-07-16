@@ -27,6 +27,8 @@ flowchart LR
     D --> E
 ```
 
+5. **Test whether SSRF protections are bypassable via redirect.** If the target validates the initial URL against a blocklist but then follows HTTP redirects, host (or simulate) a redirect from an allowed-looking URL to an internal address — `http://allowed-domain.com/redirect?to=http://169.254.169.254/` — and check whether the server's HTTP client follows the redirect without re-validating the final destination. This exact gap (validate once, then blindly follow redirects) is one of the most common real-world SSRF filter bypasses, since developers often remember to check the *input* URL but forget the client library will happily follow a `302` anywhere afterward.
+
 :::tip Real bug bounty reports increasingly reward chains
 Individual low/medium severity findings are common and often pay modestly. A well-documented *chain* connecting two separate, individually modest findings into a genuinely serious combined impact is exactly the kind of report that tends to earn the highest bounties and the most attention — Path 10's business logic & chains lesson covers this pattern directly.
 :::
