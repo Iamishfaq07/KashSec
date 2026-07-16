@@ -109,6 +109,17 @@ ticketer.py -nthash KRBTGT_HASH -domain-sid S-1-5-21-... -domain example.local A
 
 This is why KRBTGT password rotation (ideally done **twice**, since AD retains the previous password for a grace period) is a critical incident response step (Path 11.7) after any suspected AD compromise — without it, an attacker retains persistent, essentially undetectable domain-wide access indefinitely.
 
+## DCSync — abusing legitimate replication permissions
+
+A distinct, particularly stealthy attack worth understanding on its own: Domain Controllers legitimately replicate password data between each other as part of normal AD operation, using a permission called **Replicating Directory Changes**. If an attacker compromises an account holding that permission (often accidentally over-delegated to a service account or an application admin who never needed it), they can impersonate a Domain Controller and simply *ask* the real DC to replicate password hashes for any account — including the KRBTGT account itself, or the domain administrator directly:
+
+```bash
+# Using Impacket's secretsdump.py to perform a DCSync attack:
+secretsdump.py example.local/username:password@dc-ip -just-dc
+```
+
+What makes DCSync especially dangerous is that it requires no code execution on the Domain Controller at all — the attacker simply uses a legitimate AD replication protocol from any machine with the right permission, meaning it can be far quieter than exploiting a service or planting a ticket. Monitoring for this specific pattern (any non-Domain-Controller account issuing directory replication requests) is a genuinely high-value SIEM detection rule precisely because a legitimate reason for that pattern almost never exists.
+
 ## The general AD attack chain, assembled
 
 ```mermaid

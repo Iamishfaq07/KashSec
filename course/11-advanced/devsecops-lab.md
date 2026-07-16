@@ -33,6 +33,8 @@ flowchart LR
     E -->|No| G[Build passes]
 ```
 
+6. **Tune out false positives deliberately.** Real SAST tools flag things that turn out fine on manual review — deliberately trigger a Semgrep false positive (a hardcoded string that happens to match a "possible secret" pattern but isn't actually sensitive) and practice adding a scoped suppression comment or config exclusion rather than disabling the entire rule. Learning to tune a scanner's noise down to a genuinely actionable signal, without turning it off wholesale, is exactly the skill that determines whether a team keeps trusting their pipeline's findings over time.
+
 :::tip Why the gate matters more than the scan itself
 A scanner that only produces a report nobody reads changes nothing. The actual security value comes from the **gate** — making it structurally impossible to merge code with a known-critical issue, the same way a failing unit test blocks a merge. This is the real difference between "we have a security scanner" and genuine DevSecOps practice.
 :::

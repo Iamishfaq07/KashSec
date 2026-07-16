@@ -75,6 +75,14 @@ Resist the urge to try to master everything in this path simultaneously — genu
 
 One more genuinely distinct, rapidly-growing specialisation remains: **AI/LLM security** — covered in full in the final path of this course. Given how recently this field has matured, it represents a genuinely different kind of opportunity than the six areas in this path: less established literature, fewer experienced practitioners, and correspondingly more room for someone starting now to become a genuine early expert rather than one of thousands of established professionals in a mature field.
 
+## Matching specialisation to work style, not just interest
+
+Beyond which topic felt most intellectually engaging, it's worth honestly considering *how* you like to work, since these six areas genuinely differ in daily rhythm, not just subject matter. Offensive work (privesc, AD attacks) tends to be project-based and adversarial — deep focus for days or weeks on a single target, then moving on. DFIR and SOC-adjacent blue team work tends to be reactive and unpredictable — periods of routine monitoring punctuated by genuine urgency when an incident hits, often requiring comfort with being on-call. Malware analysis and threat research reward patient, methodical, almost puzzle-solving temperament, often working solo for extended stretches. Cloud/AppSec engineering work sits closer to traditional software engineering — more collaborative, more focused on building durable systems and pipelines than one-off investigations. None of these work styles is objectively better, but a genuine mismatch between your preferred pace and a specialisation's actual daily reality is a common, avoidable source of career dissatisfaction — worth weighing directly alongside pure topic interest.
+
+## Purple teaming as a blended path
+
+Recall Path 09.2's introduction to purple teaming — worth mentioning again here as a genuine specialisation option in its own right, not just a methodology. Some practitioners build careers specifically at the intersection of offense and defense: understanding attacker techniques deeply enough to simulate them (this path's offensive content) while also understanding detection engineering well enough to translate each technique into a concrete SIEM rule or Sysmon-based detection (Path 11.7's DFIR content). This blended role is genuinely well-suited to someone who found *both* the offensive privesc/AD material and the DFIR material equally engaging in this path, rather than clearly preferring one over the other — it's a smaller, more specialised niche than pure red or blue team work, but one that's increasingly valued as organisations mature past simply hiring separate offensive and defensive teams that rarely talk to each other.
+
 ## 🧪 Lab — Write your own specialisation plan
 
 Drawing on everything from this path:

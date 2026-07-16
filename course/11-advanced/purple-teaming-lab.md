@@ -23,6 +23,8 @@ flowchart LR
     C -->|No, fully detected| E["Document what worked\nand why"]
 ```
 
+6. **Map each technique to MITRE ATT&CK before and after.** For each attack you run, look up its corresponding ATT&CK technique ID (an SSH brute-force maps to T1110, for instance) and explicitly note whether your detection rule, once written, actually covers that technique's documented detection guidance. This habit — deliberately checking your own coverage against a shared, industry-standard reference — is exactly how real purple team programs track detection coverage systematically across an entire organisation, rather than one improvised rule at a time.
+
 :::tip This exact loop is a real, named methodology
 What you just practiced is a compressed version of real **purple team engagements**, which some organizations run as formal, ongoing programs specifically because this attack-detect-improve loop is far more effective at hardening detection than a one-off red team engagement followed by a report nobody acts on.
 :::

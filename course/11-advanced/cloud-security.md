@@ -132,6 +132,10 @@ secret = client.get_secret_value(SecretId='prod/database/password')
 
 Hardcoded credentials accidentally committed to public GitHub repositories remain a persistent, ongoing real-world incident source — directly connecting back to Ishfaq's own professional supply-chain security context, where scanning for exactly this pattern (leaked secrets in code/CI pipelines) is a core AppSec responsibility.
 
+## Cloud logging and monitoring — CloudTrail and its equivalents
+
+Recall Path 08.5's SIEM/logging concepts, applied here to the cloud control plane itself: **AWS CloudTrail**, **Azure Activity Log**, and **GCP Cloud Audit Logs** record every API call made against a cloud account — who did what, when, from where. A genuinely common and dangerous finding in real cloud audits is CloudTrail either **disabled entirely** or scoped to only a subset of regions, meaning an attacker who compromises credentials can operate in an unmonitored region with zero audit trail at all. Beyond simply having logging enabled, mature cloud security practice ships those logs to a separate, access-restricted account or storage location — since an attacker with sufficiently broad IAM permissions in a compromised account can otherwise simply delete or disable the very logs that would reveal their activity, precisely the kind of "the attacker controls their own evidence" problem that centralized, separately-permissioned logging is designed to prevent.
+
 ## Container and serverless considerations, briefly previewed
 
 Cloud security increasingly extends into containers (Kubernetes, covered in depth in the next lesson) and serverless functions (AWS Lambda, Azure Functions) — each introducing their own specific misconfiguration patterns (overly permissive Lambda execution roles, exposed container registries) that build directly on the IAM and networking fundamentals in this lesson.

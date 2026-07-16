@@ -27,6 +27,13 @@ flowchart TD
     E -->|Yes| F["Potato-family tool →\nSYSTEM directly"]
 ```
 
+6. **AlwaysInstallElevated check.** Query both registry locations that together enable this misconfiguration:
+   ```powershell
+   reg query HKCU\Software\Policies\Microsoft\Windows\Installer
+   reg query HKLM\Software\Policies\Microsoft\Windows\Installer
+   ```
+   If both keys are set to `1`, generate a malicious MSI with `msfvenom` and install it directly with `msiexec /quiet /qn /i malicious.msi` — no admin rights required at all if this specific misconfiguration is present, making it one of the fastest possible wins when it shows up.
+
 :::tip Automate the enumeration, understand the exploitation
 Running WinPEAS is the fast way to *find* candidates across all of these categories at once — but make sure you understand *why* each flagged item is exploitable well enough to explain it without the tool, exactly as this lab's manual commands demonstrate. Interviewers (Path 13) and real engagements both expect this depth, not just "I ran a tool."
 :::

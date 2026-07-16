@@ -118,6 +118,19 @@ dir /s /b unattend.xml sysprep.inf sysprep.xml 2>nul
 reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon"
 ```
 
+### 7. DLL hijacking — the Windows equivalent of PATH hijacking
+
+Directly analogous to Linux's PATH hijacking (previous lesson), Windows applications often load DLLs by name without specifying a full path, following a defined **search order** that checks the application's own directory before checking trusted system directories. If an attacker can write a malicious DLL with the exact expected name into a directory earlier in that search order — often the application's own working directory, if it's writable — the application loads the attacker's code instead of the legitimate library the next time it runs:
+
+```powershell
+# A tool like Sysinternals' Process Monitor (procmon) can reveal exactly
+# which DLLs a privileged process attempts to load and from where,
+# surfacing missing-DLL or wrong-order-search opportunities:
+procmon.exe /AcceptEula
+```
+
+Finding a legitimate application that's missing an expected DLL, running with elevated privileges, and writable by a lower-privileged user in its load path is a classic, high-value discovery — exactly the kind of finding the LOLBAS reference below catalogues extensively.
+
 ## A systematic Windows privesc checklist
 
 ```mermaid
@@ -140,6 +153,10 @@ flowchart TB
     style Token fill:#2b1010,color:#E05548,stroke:#E05548
     style Cred fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
 ```
+
+### 8. Registry AutoRuns and startup persistence as an escalation clue
+
+Beyond the credential-hunting registry check above, worth a dedicated look: entries in `HKLM\...\Run` and startup folders reveal what executes automatically at boot or logon, often *as SYSTEM* or as a specific service account. If any of those startup entries point to a script or executable writable by a lower-privileged user, replacing it achieves the same "wait for it to run with elevated privileges" outcome as the cron/scheduled-task techniques above — Sysinternals' **Autoruns** tool is the standard way to enumerate every such entry on a system in one pass rather than checking each registry location manually.
 
 ## The defender's view
 

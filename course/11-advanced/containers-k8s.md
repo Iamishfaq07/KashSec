@@ -153,6 +153,27 @@ Beyond the Docker-level escapes above, Kubernetes-specific escape vectors includ
 - **Privileged pods** (the Kubernetes equivalent of `docker run --privileged`).
 - **Node compromise via kubelet API** — an exposed, unauthenticated kubelet API can allow direct command execution on the underlying node.
 
+## Kubernetes Secrets — less secret than the name suggests
+
+A common source of misplaced confidence: Kubernetes **Secrets** are, by default, only **base64-encoded**, not encrypted — anyone with API access to read a Secret object (or with `etcd` access, since Secrets are stored there) can trivially decode it back to plaintext:
+
+```bash
+kubectl get secret my-secret -o jsonpath='{.data.password}' | base64 -d
+```
+
+This matters directly for the RBAC discussion above — a service account with overly broad read permissions on Secrets across namespaces effectively has read access to every credential stored in the cluster, base64 encoding providing essentially zero real protection against anyone who already has that access. Production clusters should enable **encryption at rest** for etcd specifically, and increasingly, teams route secrets through a dedicated external secrets manager (the same AWS Secrets Manager / HashiCorp Vault tools from the previous lesson) rather than relying on native Kubernetes Secrets as the sole protection layer.
+
+## Image signing and supply chain integrity
+
+Beyond scanning an image's *contents* for known vulnerabilities (Trivy's job above), a separate and increasingly important question is whether an image is genuinely the one your team built at all, or whether it's been tampered with somewhere in the registry/pull chain. Tools like **cosign** (part of the Sigstore project) let teams cryptographically sign container images at build time and verify that signature before ever deploying them:
+
+```bash
+cosign sign --key cosign.key example-registry/example-app:latest
+cosign verify --key cosign.pub example-registry/example-app:latest
+```
+
+This directly extends the software supply-chain security theme threaded throughout this course (the trivy-action incident referenced above, Path 04's PyPI typosquatting mention) — a perfectly scanned, vulnerability-free image is still a risk if there's no cryptographic guarantee it's actually the image your CI/CD pipeline produced, rather than a substituted one injected somewhere between build and deployment.
+
 ## The defender's view
 
 - **Never run containers as root** unless there's a specific, well-understood reason — set an explicit non-root `USER` in every Dockerfile.

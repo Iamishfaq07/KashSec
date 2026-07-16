@@ -19,6 +19,8 @@ You'll need **Docker** installed (on your Kali VM, your host machine, or via Doc
 3. **Explore Kubernetes RBAC (optional, if you set up a local cluster).** Spin up a `kind` cluster, create a service account with overly broad permissions, and use `kubectl auth can-i --list --as=system:serviceaccount:default:your-sa` to see exactly what that identity can do — this mirrors exactly how real Kubernetes privilege escalation assessments start.
 4. **Hunt for secrets in plain sight.** Run `docker inspect <container>` on a running container and check the `Env` section, and separately check any `ConfigMap`/`Secret` objects if using Kubernetes — misconfigured environments regularly leak API keys and database credentials this way, in both container and Kubernetes environments.
 
+5. **Scan your own test images with Trivy.** Pull a deliberately outdated image (`docker pull nginx:1.18`) and scan it: `trivy image nginx:1.18`. Compare the results against scanning a current image (`nginx:latest`) — note how many known CVEs the older image carries versus the current one, a direct, hands-on demonstration of why base-image freshness matters as much as application-level code security.
+
 :::warn Only ever test containers/clusters you built or own
 Everything above must be run against your own local Docker/Kubernetes setup — never against infrastructure you don't have explicit authorization to test, exactly as with every other lab in this course.
 :::

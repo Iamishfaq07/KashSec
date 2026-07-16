@@ -88,6 +88,23 @@ psort.py -o l2tcsv -w timeline.csv timeline.plaso
 
 A properly-built timeline directly answers the questions every stakeholder asks first: *when did the attacker first gain access? What did they do, and in what order? When were they finally contained?* — precisely mapping onto the kill chain concept from Path 06.3, now reconstructed from real evidence rather than theorised in the abstract.
 
+### Sysmon — Windows endpoint logging that actually helps
+
+Default Windows event logging is notoriously thin for real investigative work — **Sysmon (System Monitor)**, a free Sysinternals tool, fills that gap by logging far richer, forensically useful detail: every process creation with its full command line and parent process, every network connection, every file creation of interest, and every registry modification, all with configurable filtering to keep log volume manageable:
+
+```xml
+<!-- A minimal Sysmon config snippet logging process creation with command lines -->
+<Sysmon schemaversion="4.90">
+  <EventFiltering>
+    <ProcessCreate onmatch="exclude">
+      <Image condition="end with">svchost.exe</Image>
+    </ProcessCreate>
+  </EventFiltering>
+</Sysmon>
+```
+
+Once deployed, Sysmon events (visible in Windows Event Viewer or, far more usefully, shipped to a SIEM per Path 08.5) let an investigator answer exactly the kind of question a timeline reconstruction needs: which process spawned `powershell.exe` with a suspicious base64-encoded argument, and what did that process do next. This is precisely the kind of preparation-phase investment — deploying rich logging *before* an incident, not scrambling to enable it during one — that separates organisations who can actually investigate an incident from those left guessing.
+
 ## Phase 3: Containment
 
 Stopping the incident from causing further damage, **while preserving evidence** wherever possible:

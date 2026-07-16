@@ -30,6 +30,8 @@ flowchart TD
     D --> G["root shell —\ndocument the chain"]
 ```
 
+5. **Run LinPEAS as a cross-check, after your manual pass.** Only once you've worked through tasks 1-4 manually, run [LinPEAS](https://github.com/peass-ng/PEASS-ng) and compare its output against what you found by hand. Note anything it flagged that you missed entirely — a genuinely honest way to calibrate how thorough your own manual enumeration actually was, rather than reaching for the automated tool first and never building the underlying instinct.
+
 :::warn Only on systems you own or have explicit permission to test
 Metasploitable 2 and your own Docker containers are safe, legal targets built specifically for this. Never attempt any of these techniques against a system you don't have explicit written authorization to test — the golden rule from Path 01 applies here as strictly as anywhere else in this course.
 :::
