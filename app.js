@@ -462,6 +462,19 @@ const PATHS = [
      {n:"7", id:"ios-security-basics",          title:"iOS App Security Basics", desc:"IPA structure, ATS, and the Keychain."},
      {n:"8", id:"mobile-privesc-root-detection", title:"Mobile Privilege Escalation & Root Detection", desc:"Root/jailbreak detection bypass and exported component attacks."},
      {n:"9", id:"mobile-security-lab",          title:"Mobile Security Capstone Lab", desc:"A full assessment against a real vulnerable app."}
+   ]},
+  {n:"16", id:"16-malware-re", title:"Malware & Reverse Engineering", level:"Advanced",
+   desc:"A deep dive into reverse engineering and malware analysis — PE internals, Ghidra disassembly, dynamic analysis, unpacking, and writing YARA detection rules.",
+   subs:[
+     {n:"1", id:"re-fundamentals",            title:"Reverse Engineering Fundamentals", desc:"What RE is, assembly basics, and the core toolset."},
+     {n:"2", id:"malware-families-deep-dive", title:"Malware Families Deep Dive", desc:"Ransomware crypto, rootkits, worms, and botnet C2, mechanically explained."},
+     {n:"3", id:"static-analysis-deep-dive",  title:"Static Analysis Deep Dive", desc:"PE format internals, imports, and entropy analysis."},
+     {n:"4", id:"disassembly-with-ghidra",    title:"Disassembly with Ghidra", desc:"Hands-on: navigating, decompiling, and renaming your way through a real binary."},
+     {n:"5", id:"dynamic-analysis-sandboxing", title:"Dynamic Analysis & Sandboxing", desc:"Automated sandboxes, ProcMon, and combining static + dynamic workflow."},
+     {n:"6", id:"unpacking-and-obfuscation",  title:"Unpacking & Obfuscation", desc:"What packers do, and how to get past them — including by hand."},
+     {n:"7", id:"yara-rules-and-detection",   title:"YARA Rules & Detection", desc:"Turn one analysis into scalable, automated detection."},
+     {n:"8", id:"anti-analysis-techniques",   title:"Anti-Analysis Techniques", desc:"Anti-debug, anti-VM, anti-sandbox — and how to see past each."},
+     {n:"9", id:"malware-re-capstone-lab",    title:"Malware & RE Capstone Lab", desc:"A full analysis pipeline against a real sample, start to finish."}
    ]}
 ];
 
