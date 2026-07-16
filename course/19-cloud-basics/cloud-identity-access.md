@@ -59,6 +59,20 @@ A genuinely valuable, quick audit technique: search every attached policy across
 
 Path 00's passwords lesson already established MFA as blocking the overwhelming majority of account-takeover attempts — this matters with particular force for cloud provider root/administrator accounts specifically, since a compromised cloud root account potentially grants an attacker control over an organization's *entire* infrastructure, not just one application or service.
 
+## IAM privilege escalation — when permissions grant more permissions
+
+Recall Path 11.4's brief mention of IAM privilege escalation — worth expanding here now that this lesson has covered IAM's core building blocks. A specific, subtle danger exists whenever a policy grants permission to *modify permissions themselves* — a user who can attach policies to their own account, create new IAM roles, or modify an existing role's trust relationship can potentially escalate their own effective access far beyond what their original, seemingly-limited policy intended:
+
+```json
+{
+  "Effect": "Allow",
+  "Action": ["iam:CreatePolicyVersion", "iam:AttachUserPolicy"],
+  "Resource": "*"
+}
+```
+
+A user holding only this policy looks unprivileged at first glance — no direct access to any data at all — but `iam:AttachUserPolicy` lets them attach an administrator policy directly to their own account, and `iam:CreatePolicyVersion` lets them modify an existing policy's actual permissions. This is directly analogous to a Linux user who can edit their own `sudoers` entry (Path 11.1) or a Windows user who can add themselves to the Administrators group (Path 11.2) — the specific *permission to grant more permissions* is itself the vulnerability, regardless of how limited the account's other, more visible permissions appear. Tools like **Pacu** (mentioned in Path 11.4) and **PMapper** specifically automate discovering these escalation chains across a real IAM policy set, since manually tracing every possible combination of permissions across dozens of roles quickly becomes impractical by hand.
+
 ## Federation and single sign-on (SSO)
 
 Larger organizations typically don't create individual IAM users for every employee manually — instead, they use **federation**, connecting cloud IAM to an existing identity provider (often the same Active Directory referenced in Path 11's AD attacks lesson, now extended into the cloud via Azure AD/Entra ID or similar), letting employees use one existing corporate identity to access cloud resources rather than managing separate cloud-specific credentials.
