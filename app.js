@@ -449,6 +449,19 @@ const PATHS = [
      {n:"6", id:"misc-hidden-headers",       title:"Misc — Hidden in Plain Sight", desc:"Reassemble a flag scattered across HTTP headers. Medium."},
      {n:"7", id:"crypto-xor-cipher",         title:"Crypto — Break the XOR Cipher", desc:"A real known-plaintext attack on repeating-key XOR. Hard."},
      {n:"8", id:"linux-privesc-challenge",   title:"Linux — The Privesc Puzzle", desc:"Turn a passwordless sudo rule into a root shell. Medium."}
+   ]},
+  {n:"15", id:"15-mobile-security", title:"Mobile App Security", level:"Intermediate→Advanced",
+   desc:"Android & iOS security from the ground up — APK analysis, insecure storage, traffic interception, certificate pinning bypass, and exported component vulnerabilities.",
+   subs:[
+     {n:"1", id:"mobile-security-fundamentals", title:"Mobile Security Fundamentals", desc:"Sandboxing, permissions, and how Android/iOS differ."},
+     {n:"2", id:"mobile-testing-lab-setup",     title:"Setting Up a Mobile Testing Lab", desc:"Emulator, ADB, Burp, and root access — all wired together."},
+     {n:"3", id:"owasp-mobile-top-10",          title:"OWASP Mobile Top 10", desc:"The shared checklist for mobile application security."},
+     {n:"4", id:"android-apk-analysis",         title:"Android APK Analysis", desc:"Decompile and read an app's code without ever running it."},
+     {n:"5", id:"insecure-data-storage",        title:"Insecure Data Storage", desc:"The most common real-world mobile finding, hands-on."},
+     {n:"6", id:"intercepting-mobile-traffic",  title:"Intercepting Mobile Traffic", desc:"Certificate pinning, and bypassing it with Frida."},
+     {n:"7", id:"ios-security-basics",          title:"iOS App Security Basics", desc:"IPA structure, ATS, and the Keychain."},
+     {n:"8", id:"mobile-privesc-root-detection", title:"Mobile Privilege Escalation & Root Detection", desc:"Root/jailbreak detection bypass and exported component attacks."},
+     {n:"9", id:"mobile-security-lab",          title:"Mobile Security Capstone Lab", desc:"A full assessment against a real vulnerable app."}
    ]}
 ];
 

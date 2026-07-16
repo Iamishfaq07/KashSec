@@ -2,11 +2,12 @@
 
 **A completely free cybersecurity course, from absolute zero to job-ready.**
 
-15 learning paths · 159 sub-lessons · diagrams, labs, a hands-on CTF zone & challenges · always free
+16 learning paths · 168 sub-lessons · diagrams, labs, a hands-on CTF zone & challenges · always free
 
 [![Live Site](https://img.shields.io/badge/live-kashsec.academy-EFA43A?style=for-the-badge)](https://kashsec.vercel.app/)
 
 ## What's new
+- **Path 15 — Mobile App Security**: Android & iOS from the ground up — APK analysis, insecure storage, traffic interception, certificate pinning bypass, and exported component vulnerabilities, capped with a full assessment lab
 - **Path 14 — CTF Challenges**: a standalone Capture The Flag zone with 8 self-contained puzzles across Web, Crypto, Forensics, Misc, and Linux privilege escalation
 - **Progress tracking, bookmarks & notes** on every lesson, plus an interactive roadmap and a personal progress dashboard
 - **15 path quizzes + a Final Exam**, with a canvas-drawn **certificate of completion** (PNG download, print-to-PDF, LinkedIn share)
@@ -44,9 +45,9 @@ KashSec/
     └── ...13-career-prep/
 ```
 
-## 🗺️ The 15 paths
+## 🗺️ The 16 paths
 
-`00` Computer Basics & Security Mindset · `01` Introduction · `02` Networking · `03` Linux & Operating Systems · `04` Programming & Python · `05` How the Web Works · `06` Cybersecurity Fundamentals · `07` Web Security & Hacking · `08` Network Security · `09` Ethical Hacking · `10` Bug Bounty · `11` Advanced Topics · `12` AI & AI Security · `13` Career Prep · `14` CTF Challenges
+`00` Computer Basics & Security Mindset · `01` Introduction · `02` Networking · `03` Linux & Operating Systems · `04` Programming & Python · `05` How the Web Works · `06` Cybersecurity Fundamentals · `07` Web Security & Hacking · `08` Network Security · `09` Ethical Hacking · `10` Bug Bounty · `11` Advanced Topics · `12` AI & AI Security · `13` Career Prep · `14` CTF Challenges · `15` Mobile App Security
 
 ## ✍️ Writing a lesson
 
