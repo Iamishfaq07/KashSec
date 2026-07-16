@@ -212,6 +212,7 @@ function showAchievementToast(a){
   el.innerHTML = `<span class="toast-ico">${a.ico}</span><div><div class="toast-t">Achievement unlocked</div><div class="toast-d">${a.t} — ${a.d}</div></div>`;
   host.appendChild(el);
   requestAnimationFrame(()=>el.classList.add('in'));
+  if(typeof fireConfetti === 'function') fireConfetti({count:36, x:window.innerWidth-140, y:110});
   setTimeout(()=>{
     el.classList.remove('in');
     setTimeout(()=>el.remove(), 400);
@@ -501,7 +502,13 @@ function findSubContext(pathId, subId){
 window.addEventListener('hashchange', route);
 window.addEventListener('DOMContentLoaded', route);
 
+/* Bumped on every navigation so in-flight async work (a lesson fetch
+   still resolving after the user clicked elsewhere) can tell it's stale
+   and skip writing into DOM nodes that no longer exist. */
+let renderGeneration = 0;
+
 function route(){
+  renderGeneration++;
   // Magic-link / OAuth redirects land back on the site with auth tokens
   // riding in the URL (e.g. #access_token=...). That's not a real route —
   // show a brief loading state and let the auth bootstrap below redirect
@@ -542,6 +549,78 @@ function afterRender(){
   setupReveal();
   wireSpotlight();
   countUp();
+  playRouteTransition();
+  animateProgressBars();
+}
+
+/* Whole-view fade+slide whenever a route renders. Purely a CSS class
+   toggle on already-painted content — never delays the actual render. */
+function playRouteTransition(){
+  if(prefersReduced()) return;
+  app.classList.remove('route-transition');
+  void app.offsetWidth; // force reflow so the animation restarts
+  app.classList.add('route-transition');
+}
+
+/* Mini progress bars render at width:0 and animate up to their real
+   value right after paint, so completion always feels like it "fills in". */
+function animateProgressBars(){
+  const bars = app.querySelectorAll('.mini-progress-fill[data-pct]');
+  if(!bars.length) return;
+  requestAnimationFrame(()=>{
+    bars.forEach(b=> b.style.width = b.getAttribute('data-pct') + '%');
+  });
+}
+
+/* Lightweight canvas confetti for celebratory moments (achievement
+   unlocks, quiz pass, certificate earned). Self-cleans; no-ops under
+   prefers-reduced-motion. */
+function fireConfetti(opts){
+  if(prefersReduced()) return;
+  const count = (opts && opts.count) || 90;
+  const originX = (opts && opts.x) || window.innerWidth/2;
+  const originY = (opts && opts.y) || window.innerHeight*0.3;
+  const colors = ['#EFA43A','#FFC369','#3FB6A8','#5FE0CF','#E05548'];
+
+  const canvas = document.createElement('canvas');
+  canvas.style.cssText = 'position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:500';
+  canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+  document.body.appendChild(canvas);
+  const ctx = canvas.getContext('2d');
+
+  const particles = Array.from({length:count}, ()=>({
+    x: originX, y: originY,
+    vx: (Math.random()-0.5)*11,
+    vy: Math.random()*-11 - 4,
+    size: Math.random()*6+4,
+    color: colors[Math.floor(Math.random()*colors.length)],
+    rot: Math.random()*Math.PI*2,
+    vr: (Math.random()-0.5)*0.3,
+    shape: Math.random()>0.5 ? 'rect' : 'circle'
+  }));
+
+  const gravity = 0.35, drag = 0.992;
+  let frame = 0;
+  const maxFrames = 130;
+
+  function tick(){
+    frame++;
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    particles.forEach(p=>{
+      p.vx *= drag; p.vy = p.vy*drag + gravity;
+      p.x += p.vx; p.y += p.vy; p.rot += p.vr;
+      ctx.save();
+      ctx.translate(p.x,p.y); ctx.rotate(p.rot);
+      ctx.fillStyle = p.color;
+      ctx.globalAlpha = frame > maxFrames-30 ? Math.max(0,(maxFrames-frame)/30) : 1;
+      if(p.shape==='rect') ctx.fillRect(-p.size/2,-p.size/3,p.size,p.size*0.66);
+      else{ ctx.beginPath(); ctx.arc(0,0,p.size/2,0,Math.PI*2); ctx.fill(); }
+      ctx.restore();
+    });
+    if(frame < maxFrames) requestAnimationFrame(tick);
+    else canvas.remove();
+  }
+  requestAnimationFrame(tick);
 }
 
 function updateActiveNav(){
@@ -722,7 +801,7 @@ function renderPathOverview(pathId){
         <p class="lead" data-reveal style="--i:2">${p.desc}</p>
         <div data-reveal style="--i:3">
           <div class="mini-progress" style="max-width:22rem;margin:0 0 1.4rem">
-            <div class="mini-progress-track"><div class="mini-progress-fill" style="width:${prog.pct}%"></div></div>
+            <div class="mini-progress-track"><div class="mini-progress-fill" style="width:0%" data-pct="${prog.pct}"></div></div>
             <div class="mini-progress-label"><span>${prog.done}/${prog.total} lessons complete</span><span>${prog.pct}%</span></div>
           </div>
           <div class="hero-btns" style="justify-content:flex-start;margin-bottom:0">
@@ -797,7 +876,7 @@ function pathCardHTML(p, i){
       <div class="path-meta">${p.subs.length} sub-lessons · ${p.level}</div>
       ${prog.done > 0 ? `
         <div class="mini-progress">
-          <div class="mini-progress-track"><div class="mini-progress-fill" style="width:${prog.pct}%"></div></div>
+          <div class="mini-progress-track"><div class="mini-progress-fill" style="width:0%" data-pct="${prog.pct}"></div></div>
           <div class="mini-progress-label"><span>${prog.done}/${prog.total} done</span><span>${prog.pct}%</span></div>
         </div>
       ` : ''}
@@ -830,6 +909,7 @@ function wireFAQ(){
 async function renderSubLesson(pathId, subId){
   const ctx = findSubContext(pathId, subId);
   if(!ctx) return renderNotFound();
+  const myGen = renderGeneration;
 
   app.innerHTML = `
     <div class="reader-progress" id="rprog" style="width:0%"></div>
@@ -916,7 +996,10 @@ async function renderSubLesson(pathId, subId){
   try{
     await ensureMarkdownLibs();
   }catch(e){
-    document.getElementById('content').innerHTML = `
+    if(myGen !== renderGeneration) return; // navigated away while loading — don't touch a dead DOM
+    const contentEl = document.getElementById('content');
+    if(!contentEl) return;
+    contentEl.innerHTML = `
       <h1>Couldn't load the lesson renderer</h1>
       <p>Your connection may be slow or blocking <code>cdn.jsdelivr.net</code>. Check your network and try again.</p>
       <p><button class="btn-amber sm" id="retryLibs" type="button">Retry</button></p>
@@ -924,18 +1007,25 @@ async function renderSubLesson(pathId, subId){
     document.getElementById('retryLibs')?.addEventListener('click', ()=>renderSubLesson(pathId, subId));
     return;
   }
+  if(myGen !== renderGeneration) return;
 
   try{
     const res = await fetch(`course/${pathId}/${subId}.md`);
     if(!res.ok) throw new Error(res.status);
     const md = await res.text();
-    document.getElementById('content').innerHTML = enrichMarkdown(md);
+    if(myGen !== renderGeneration) return;
+    const contentEl = document.getElementById('content');
+    if(!contentEl) return;
+    contentEl.innerHTML = enrichMarkdown(md);
     // Render Mermaid diagrams
     if(typeof mermaid !== 'undefined'){
       try{ await mermaid.run({querySelector:'.mermaid'}); }catch(e){}
     }
   }catch(e){
-    document.getElementById('content').innerHTML = `
+    if(myGen !== renderGeneration) return;
+    const contentEl = document.getElementById('content');
+    if(!contentEl) return;
+    contentEl.innerHTML = `
       <h1>Coming soon</h1>
       <p>This sub-lesson (<code>course/${pathId}/${subId}.md</code>) hasn't been written yet.</p>
       <p>Path ${ctx.path.n} is being expanded into detailed sub-lessons — check back soon!</p>
@@ -1179,6 +1269,7 @@ function renderQuiz(id){
       </section>
     `;
     setupReveal();
+    if(passed) fireConfetti({count: isFinal ? 140 : 80});
     document.getElementById('retakeBtn')?.addEventListener('click', ()=>{
       qi = 0; answers.fill(null); finished = false;
       window.scrollTo(0,0);
@@ -1201,18 +1292,38 @@ function certId(name){
   return 'KS-' + Math.abs(h).toString(36).toUpperCase().slice(0,6).padStart(6,'0');
 }
 
+const CERT_SIGNER_NAME = 'Ishfaq';
+const CERT_SIGNER_TITLE = 'KashSec Academy';
+
 function drawCertificate(canvas, name){
   const ctx = canvas.getContext('2d');
   const W = canvas.width, H = canvas.height;
+  const cx = W/2;
 
-  // Background
+  // Background: warm base + soft vignette + a faint dot-grid texture,
+  // confined behind everything else drawn afterward.
   ctx.fillStyle = '#FBF9F4';
   ctx.fillRect(0,0,W,H);
+  ctx.fillStyle = 'rgba(20,20,20,0.035)';
+  for(let y=70; y<H-70; y+=22){
+    for(let x=70; x<W-70; x+=22){
+      ctx.beginPath(); ctx.arc(x,y,1,0,Math.PI*2); ctx.fill();
+    }
+  }
   const vign = ctx.createRadialGradient(W/2,H/2,H*0.2, W/2,H/2,W*0.65);
   vign.addColorStop(0,'rgba(20,20,20,0)');
-  vign.addColorStop(1,'rgba(180,150,90,0.06)');
+  vign.addColorStop(1,'rgba(180,150,90,0.08)');
   ctx.fillStyle = vign;
   ctx.fillRect(0,0,W,H);
+
+  // Faint shield watermark, centered behind the text.
+  ctx.save();
+  ctx.globalAlpha = 0.05;
+  ctx.strokeStyle = '#0E8377';
+  ctx.lineWidth = 5;
+  drawShieldPath(ctx, cx, H/2 - 10, 340, 400);
+  ctx.stroke();
+  ctx.restore();
 
   // Outer + inner border
   ctx.strokeStyle = '#C77F1E';
@@ -1222,17 +1333,28 @@ function drawCertificate(canvas, name){
   ctx.lineWidth = 1.5;
   ctx.strokeRect(46,46,W-92,H-92);
 
-  // Corner flourishes
+  // Top accent bar — brand gradient
+  const barGrad = ctx.createLinearGradient(46,0,W-46,0);
+  barGrad.addColorStop(0,'#C97B0F'); barGrad.addColorStop(0.5,'#E39A2E'); barGrad.addColorStop(1,'#0E8377');
+  ctx.fillStyle = barGrad;
+  ctx.fillRect(46, 46, W-92, 7);
+
+  // Corner ornaments: dot + bracket lines
   ctx.fillStyle = '#EFA43A';
-  [[28,28],[W-28,28],[28,H-28],[W-28,H-28]].forEach(([cx,cy])=>{
-    ctx.beginPath(); ctx.arc(cx,cy,7,0,Math.PI*2); ctx.fill();
+  [[28,28],[W-28,28],[28,H-28],[W-28,H-28]].forEach(([ccx,ccy])=>{
+    ctx.beginPath(); ctx.arc(ccx,ccy,7,0,Math.PI*2); ctx.fill();
+  });
+  ctx.strokeStyle = '#0E8377'; ctx.lineWidth = 2.5; ctx.lineCap = 'round';
+  const bl = 26;
+  [[70,70,1,1],[W-70,70,-1,1],[70,H-70,1,-1],[W-70,H-70,-1,-1]].forEach(([bx,by,dx,dy])=>{
+    ctx.beginPath(); ctx.moveTo(bx+dx*bl, by); ctx.lineTo(bx, by); ctx.lineTo(bx, by+dy*bl); ctx.stroke();
   });
 
-  const cx = W/2;
-
   // Brand mark
-  const bmY = 108;
-  ctx.fillStyle = '#EA9C2C';
+  const bmY = 118;
+  const bmGrad = ctx.createLinearGradient(cx-30,bmY-30,cx+30,bmY+30);
+  bmGrad.addColorStop(0,'#F5B152'); bmGrad.addColorStop(1,'#EA9C2C');
+  ctx.fillStyle = bmGrad;
   roundRect(ctx, cx-30, bmY-30, 60, 60, 14); ctx.fill();
   ctx.fillStyle = '#1a1204';
   ctx.font = '700 30px Menlo, Consolas, monospace';
@@ -1244,10 +1366,16 @@ function drawCertificate(canvas, name){
   ctx.textBaseline = 'alphabetic';
   ctx.fillText('KashSec Academy', cx, bmY+66);
 
-  // Eyebrow
+  // Eyebrow, flanked by short decorative lines
+  const eyebrowY = bmY+118;
   ctx.fillStyle = '#0E8377';
   ctx.font = '700 16px Menlo, Consolas, monospace';
-  ctx.fillText('C E R T I F I C A T E   O F   C O M P L E T I O N', cx, bmY+118);
+  const eyebrowText = 'C E R T I F I C A T E   O F   C O M P L E T I O N';
+  const eyebrowW = ctx.measureText(eyebrowText).width;
+  ctx.fillText(eyebrowText, cx, eyebrowY);
+  ctx.strokeStyle = 'rgba(14,131,119,0.4)'; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(cx-eyebrowW/2-46, eyebrowY-6); ctx.lineTo(cx-eyebrowW/2-14, eyebrowY-6); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(cx+eyebrowW/2+14, eyebrowY-6); ctx.lineTo(cx+eyebrowW/2+46, eyebrowY-6); ctx.stroke();
 
   // "This certifies that"
   ctx.fillStyle = '#5B6472';
@@ -1264,7 +1392,9 @@ function drawCertificate(canvas, name){
   ctx.fillStyle = '#12151C';
   ctx.fillText(name, cx, bmY+178+nameSize+18);
   const nameBaseline = bmY+178+nameSize+18;
-  ctx.strokeStyle = '#C97B0F'; ctx.lineWidth = 2;
+  const underlineGrad = ctx.createLinearGradient(cx-180,0,cx+180,0);
+  underlineGrad.addColorStop(0,'rgba(201,123,15,0)'); underlineGrad.addColorStop(0.5,'#C97B0F'); underlineGrad.addColorStop(1,'rgba(201,123,15,0)');
+  ctx.strokeStyle = underlineGrad; ctx.lineWidth = 2;
   ctx.beginPath(); ctx.moveTo(cx-180, nameBaseline+18); ctx.lineTo(cx+180, nameBaseline+18); ctx.stroke();
 
   // Body text
@@ -1275,8 +1405,8 @@ function drawCertificate(canvas, name){
     cx, nameBaseline+62, W-320, 30);
   const bodyBottom = nameBaseline + 62 + (bodyLines-1)*30;
 
-  // Date + Cert ID + signature row — positioned relative to where the body
-  // text actually ends, so short names/bodies don't leave a huge empty gap.
+  // Date + signature row — positioned relative to where the body text
+  // actually ends, so short names/bodies don't leave a huge empty gap.
   const rowY = Math.min(bodyBottom + 150, H-150);
   ctx.textAlign = 'left';
   ctx.fillStyle = '#12151C';
@@ -1287,25 +1417,61 @@ function drawCertificate(canvas, name){
   ctx.fillStyle = '#8188A0'; ctx.font = '400 13px Menlo, Consolas, monospace';
   ctx.fillText('DATE ISSUED', 90, rowY+36);
 
+  // Signature block: a script-style name, small org line, then the rule
+  // and printed caption — mirrors a real diploma's signature line.
   ctx.textAlign = 'right';
-  ctx.fillStyle = '#12151C'; ctx.font = 'italic 700 22px Georgia, serif';
-  ctx.fillText('KashSec Academy', W-110, rowY);
+  ctx.fillStyle = '#12151C';
+  ctx.font = `italic 700 27px Georgia, "Times New Roman", serif`;
+  ctx.fillText(CERT_SIGNER_NAME, W-110, rowY-16);
+  ctx.fillStyle = '#5B6472';
+  ctx.font = '400 13px Georgia, serif';
+  ctx.fillText(CERT_SIGNER_TITLE, W-110, rowY);
+  ctx.strokeStyle = '#D7DCE5'; ctx.lineWidth = 1;
   ctx.beginPath(); ctx.moveTo(W-330, rowY+14); ctx.lineTo(W-90, rowY+14); ctx.stroke();
   ctx.fillStyle = '#8188A0'; ctx.font = '400 13px Menlo, Consolas, monospace';
-  ctx.fillText('ISSUING ORGANIZATION', W-90, rowY+36);
+  ctx.fillText('AUTHORIZED SIGNATURE', W-90, rowY+36);
 
-  // Seal
-  const sealX = cx, sealY = rowY-10;
-  ctx.beginPath(); ctx.arc(sealX, sealY, 46, 0, Math.PI*2);
-  ctx.fillStyle = '#0E8377'; ctx.fill();
-  ctx.beginPath(); ctx.arc(sealX, sealY, 46, 0, Math.PI*2);
-  ctx.strokeStyle = '#EFA43A'; ctx.lineWidth = 3; ctx.stroke();
-  ctx.strokeStyle = '#fff'; ctx.lineWidth = 4; ctx.lineCap='round'; ctx.lineJoin='round';
-  ctx.beginPath(); ctx.moveTo(sealX-18,sealY); ctx.lineTo(sealX-6,sealY+14); ctx.lineTo(sealX+20,sealY-16); ctx.stroke();
+  // Seal — a ribboned medallion
+  drawRibbonSeal(ctx, cx, rowY-4);
 
   // Cert ID footer
   ctx.textAlign = 'center'; ctx.fillStyle = '#A7ADBB'; ctx.font = '400 13px Menlo, Consolas, monospace';
   ctx.fillText(`Certificate ID: ${certId(name)}  ·  Verify at kashsec.academy`, cx, H-40);
+}
+
+function drawShieldPath(ctx, cx, cy, w, h){
+  const hw = w/2;
+  ctx.beginPath();
+  ctx.moveTo(cx-hw, cy-h*0.38);
+  ctx.lineTo(cx-hw, cy-h*0.02);
+  ctx.bezierCurveTo(cx-hw, cy+h*0.30, cx-hw*0.52, cy+h*0.44, cx, cy+h*0.5);
+  ctx.bezierCurveTo(cx+hw*0.52, cy+h*0.44, cx+hw, cy+h*0.30, cx+hw, cy-h*0.02);
+  ctx.lineTo(cx+hw, cy-h*0.38);
+  ctx.quadraticCurveTo(cx, cy-h*0.56, cx-hw, cy-h*0.38);
+  ctx.closePath();
+}
+
+function drawRibbonSeal(ctx, sealX, sealY){
+  // Ribbon tails
+  ctx.fillStyle = '#0B6F64';
+  ctx.beginPath();
+  ctx.moveTo(sealX-22, sealY+18); ctx.lineTo(sealX-34, sealY+72); ctx.lineTo(sealX-10, sealY+58); ctx.closePath(); ctx.fill();
+  ctx.fillStyle = '#0E8377';
+  ctx.beginPath();
+  ctx.moveTo(sealX+22, sealY+18); ctx.lineTo(sealX+34, sealY+72); ctx.lineTo(sealX+10, sealY+58); ctx.closePath(); ctx.fill();
+
+  // Outer ring
+  ctx.beginPath(); ctx.arc(sealX, sealY, 48, 0, Math.PI*2);
+  ctx.fillStyle = '#EFA43A'; ctx.fill();
+  // Inner medallion
+  ctx.beginPath(); ctx.arc(sealX, sealY, 40, 0, Math.PI*2);
+  ctx.fillStyle = '#0E8377'; ctx.fill();
+  // Thin decorative ring
+  ctx.beginPath(); ctx.arc(sealX, sealY, 34, 0, Math.PI*2);
+  ctx.strokeStyle = 'rgba(255,255,255,0.5)'; ctx.lineWidth = 1.5; ctx.stroke();
+  // Checkmark
+  ctx.strokeStyle = '#fff'; ctx.lineWidth = 4.5; ctx.lineCap='round'; ctx.lineJoin='round';
+  ctx.beginPath(); ctx.moveTo(sealX-16,sealY); ctx.lineTo(sealX-5,sealY+12); ctx.lineTo(sealX+18,sealY-14); ctx.stroke();
 }
 
 function roundRect(ctx,x,y,w,h,r){
@@ -1380,6 +1546,7 @@ function renderCertificate(){
     saveState();
     checkAchievements();
     paintCertOutput(name);
+    fireConfetti({count:160});
   });
 
   if(STATE.certName) paintCertOutput(STATE.certName);
@@ -1454,7 +1621,7 @@ function renderRoadmap(){
         <h2>Your journey through KashSec</h2>
         <p class="sec-lead">Every path, in order. Click any node to jump straight in — your progress is tracked automatically.</p>
         <div class="mini-progress" style="max-width:26rem;margin-top:1.3rem">
-          <div class="mini-progress-track"><div class="mini-progress-fill" style="width:${overall.pct}%"></div></div>
+          <div class="mini-progress-track"><div class="mini-progress-fill" style="width:0%" data-pct="${overall.pct}"></div></div>
           <div class="mini-progress-label"><span>${overall.done}/${overall.total} lessons complete</span><span>${overall.pct}%</span></div>
         </div>
       </div>
@@ -1473,7 +1640,7 @@ function renderRoadmap(){
                 <div class="roadmap-card-title">${p.title}</div>
                 <div class="roadmap-card-desc">${p.desc}</div>
                 <div class="mini-progress" style="margin-top:.6rem">
-                  <div class="mini-progress-track"><div class="mini-progress-fill" style="width:${prog.pct}%"></div></div>
+                  <div class="mini-progress-track"><div class="mini-progress-fill" style="width:0%" data-pct="${prog.pct}"></div></div>
                   <div class="mini-progress-label"><span>${prog.done}/${prog.total} done</span><span>${p.level}</span></div>
                 </div>
               </div>
@@ -1557,7 +1724,7 @@ function renderProgressHub(){
           return `
             <a class="hub-path-row" href="#/lesson/${p.id}" style="text-decoration:none;color:inherit">
               <span class="hpr-name">${p.n} · ${p.title}</span>
-              <div class="mini-progress"><div class="mini-progress-track"><div class="mini-progress-fill" style="width:${prog.pct}%"></div></div></div>
+              <div class="mini-progress"><div class="mini-progress-track"><div class="mini-progress-fill" style="width:0%" data-pct="${prog.pct}"></div></div></div>
               <span style="font-family:'JetBrains Mono';font-size:.75rem;color:var(--muted2);flex:none">${prog.done}/${prog.total}</span>
             </a>
           `;
@@ -1605,7 +1772,9 @@ function renderProgressHub(){
 
   document.getElementById('hubSignInBtn')?.addEventListener('click', openAuth);
   document.getElementById('hubSignOutBtn')?.addEventListener('click', async ()=>{
+    const genAtClick = renderGeneration;
     await SupabaseSync.signOut();
+    if(genAtClick !== renderGeneration) return; // navigated away before sign-out finished
     renderProgressHub();
     afterRender();
   });
