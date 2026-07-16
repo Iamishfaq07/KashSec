@@ -1593,7 +1593,7 @@ function paintCertOutput(name){
   });
 
   document.getElementById('copyCaptionBtn').addEventListener('click', async ()=>{
-    const caption = `I just completed the KashSec Academy cybersecurity course — ${PATHS.length} paths and ${totalSubLessons()} lessons, capped off with the Final Exam. 🎓🛡️\n\nFree, self-paced, and open to anyone starting from zero: https://iamishfaq07.github.io/KashSec/\n\n#CyberSecurity #KashSecAcademy #LearningInPublic`;
+    const caption = `I just completed the KashSec Academy cybersecurity course — ${PATHS.length} paths and ${totalSubLessons()} lessons, capped off with the Final Exam. 🎓🛡️\n\nFree, self-paced, and open to anyone starting from zero: https://kashsec.vercel.app/\n\n#CyberSecurity #KashSecAcademy #LearningInPublic`;
     try{
       await navigator.clipboard.writeText(caption);
       const btn = document.getElementById('copyCaptionBtn');

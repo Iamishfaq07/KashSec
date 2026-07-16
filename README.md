@@ -4,7 +4,7 @@
 
 14 learning paths · 151 sub-lessons · diagrams, labs & challenges · always free
 
-[![Live Site](https://img.shields.io/badge/live-kashsec.academy-EFA43A?style=for-the-badge)](https://iamishfaq07.github.io/KashSec/)
+[![Live Site](https://img.shields.io/badge/live-kashsec.academy-EFA43A?style=for-the-badge)](https://kashsec.vercel.app/)
 
 ## What's new
 - **Progress tracking, bookmarks & notes** on every lesson, plus an interactive roadmap and a personal progress dashboard
@@ -85,7 +85,7 @@ To add a brand-new sub-lesson: drop a `.md` file in the right `course/<path>/` f
 
 ## 🌐 Deployment
 
-The site auto-deploys to **GitHub Pages** from the `main` branch. See [`DEPLOY.md`](./DEPLOY.md) for the full walkthrough, including custom domains.
+The site auto-deploys to **Vercel** from the `main` branch — zero build step, it's served as-is. Live at [kashsec.vercel.app](https://kashsec.vercel.app/).
 
 ## ☁️ Optional cloud sync
 

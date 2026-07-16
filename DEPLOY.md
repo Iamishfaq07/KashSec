@@ -30,15 +30,16 @@ kashsec-site-v2/
     └── ...
 ```
 
-## How to deploy — same as before
+## How to deploy
 
-### Option A — Replace your existing repo contents
-1. In your existing GitHub repo, delete everything.
-2. Upload the entire contents of `kashsec-site-v2/` (drag the *contents*, not the folder itself).
-3. Commit. GitHub Pages will rebuild in ~1 minute.
+The site is deployed on **Vercel**, connected to the `main` branch of this
+repo — every push to `main` triggers an automatic redeploy. There's no
+build step; Vercel just serves the static files as-is (root directory,
+no framework preset needed).
 
-### Option B — New repo
-Follow the same steps as v1: create repo → upload contents → Settings → Pages → Deploy from branch main → save.
+To point Vercel at a fresh copy of this repo: [vercel.com/new](https://vercel.com/new) →
+import the repo → leave the build settings on defaults (no build command,
+output directory `.`) → Deploy.
 
 ## Content status
 
