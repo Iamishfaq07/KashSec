@@ -52,6 +52,14 @@ Prepare 4–5 STAR stories in advance covering common themes: overcoming a techn
 "Why do you want to work here?" is one of the most common questions asked, and a generic answer ("I want to grow my career") is immediately noticeable. Spend 20–30 minutes before any interview reading the company's product, recent news, and — if it's a security-specific role — their engineering or security blog if they have one. A specific, informed answer stands out disproportionately given how few candidates actually do this.
 :::
 
+## When you genuinely don't know the answer
+
+Every technical interview eventually hits a question you can't fully answer — how you handle that moment matters as much as the answers you do know. Guessing confidently and being wrong reads far worse than honestly saying "I haven't worked with that directly, but here's how I'd reason through it" and then actually reasoning through it out loud, showing your problem-solving process even without the specific memorized fact. Interviewers, especially at companies with a healthy engineering culture, are frequently testing *how you think under uncertainty* as much as raw knowledge recall — a candidate who says "I don't know, but let me think about it" and then works toward a reasonable answer methodically often scores better than one who bluffs through an incorrect confident answer. This is a genuinely learnable skill worth practicing deliberately: pick a topic you're shaky on and practice narrating your reasoning process out loud, rather than only rehearsing questions you already know cold.
+
+## Negotiating an offer
+
+Once an offer arrives, remember that the number on the table is very often a starting point, not a final figure — many candidates, especially freshers eager to just get an offer, accept the first number without ever asking if there's room to negotiate. A simple, low-risk approach: express genuine enthusiasm for the role first, then ask directly whether there's flexibility on the number, citing your specific portfolio/certification work or a competing offer if you have one as concrete justification. Beyond base salary, remember the full compensation picture is negotiable too — signing bonus, certification/training budget (recall the employer-sponsored certification point from Path 13.2), remote work flexibility, and start date can all be worth raising even when base salary itself has limited room to move. The worst realistic outcome of a polite, professional negotiation ask is simply "no" — companies rarely rescind an offer over a reasonable, respectfully-phrased negotiation attempt.
+
 ## Questions you should ask them
 
 Interviews are two-way. Prepared, genuine questions ("What does the on-call rotation actually look like for this team?" "What's the biggest security challenge the team is facing right now?") signal real engagement and also genuinely help you evaluate whether the role is right for you.

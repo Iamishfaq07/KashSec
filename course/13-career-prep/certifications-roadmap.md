@@ -57,6 +57,14 @@ Certification costs vary enormously, and there's no need to spend money you don'
 
 Free platforms (TryHackMe, Hack The Box, this course itself) let you build and *prove to yourself* substantial skill before spending a dollar on formal certification — a smart way to sequence a limited budget.
 
+## Cloud-specific and specialised certifications worth knowing
+
+Beyond the general offensive/defensive tracks above, several increasingly-relevant certifications track specific specialisations covered elsewhere in this course. **AWS Certified Security – Specialty** and **Microsoft's Azure Security Engineer** certifications validate cloud-specific knowledge directly building on Path 11's cloud security material — genuinely valuable given how much modern infrastructure has shifted to cloud platforms, and often more immediately applicable to day-to-day AppSec/cloud-engineering work than a general pentesting certification. **CKS (Certified Kubernetes Security Specialist)** does the same for container/Kubernetes-specific knowledge from Path 11's containers material. None of these replace the foundational Security+ → practical-offensive-or-defensive track above — they're best pursued as a second, targeted credential once you've identified cloud or container security specifically as your area of interest, rather than a first certification for someone still building general foundations.
+
+## Employer-sponsored certification paths
+
+A detail worth knowing as you evaluate job offers, not just certifications in isolation: many employers, once you're hired, will sponsor certification costs (exam fees, training materials, sometimes paid study time) as part of professional development — meaning the "which certification should I get first" calculus can shift once you're employed, since an expensive certification like OSCP becomes far more accessible with employer backing than paying the $1,600+ fee yourself while job-hunting. This is worth asking about directly in interviews or when evaluating an offer (Path 13.5's interview-prep lesson covers exactly this kind of question) — a role offering strong certification support and a clear growth path can be worth more long-term than a marginally higher starting salary at a company with no such investment in your continued development.
+
 ## 🧪 Hands-on lab — build your certification plan
 
 1. Decide which track resonates more right now: offensive (pentesting) or defensive (blue team/SOC) — it's fine to be unsure; this course's later paths (09 Ethical Hacking, 08 Network Security) will help you decide with real hands-on exposure either way.

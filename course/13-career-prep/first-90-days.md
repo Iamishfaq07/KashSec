@@ -42,6 +42,10 @@ Nearly everyone starting a new security role feels behind at first — the tools
 - **Ask for feedback proactively**, rather than waiting for a formal review cycle — a simple "how do you think that went?" after a task shows self-awareness and accelerates your growth.
 - **Find quick, real wins.** A small automation that saves the team 20 minutes a week, or cleaning up a piece of confusing documentation, builds credibility fast without requiring deep tenure or seniority.
 
+## Managing up — making your manager's job easier
+
+A skill rarely taught explicitly but genuinely valued from day one: **managing up** means proactively giving your manager the information and visibility they need to support you effectively, rather than passively waiting to be managed. Concretely, this looks like sending a short weekly summary of what you worked on and what's blocking you (even if not formally requested), flagging risks or delays *before* they become surprises rather than after, and being explicit about what kind of help you need ("I'm stuck on X specifically, can you point me toward the right person or doc" rather than a vague "I'm stuck"). New hires who manage up well are consistently perceived as more capable and further along than their actual tenure would suggest, simply because their manager always has accurate visibility into their work rather than having to extract it through repeated check-ins — a genuinely learnable habit that compounds significantly over a career, well beyond just the first 90 days.
+
 ## A realistic 90-day plan template
 
 | Timeframe | Focus | Example goals |
@@ -79,4 +83,4 @@ Why is attempting to "prove yourself" with a flashy technical contribution in th
 - [The First 90 Days (concept overview)](https://hbr.org/2017/05/the-first-90-days) — Harvard Business Review's widely referenced framework for role transitions.
 ???
 
-**Congratulations!** You've completed Path 13 — and with it, the entire KashSec Academy journey from absolute zero to job-ready. You now have a resume, a portfolio strategy, a certification roadmap, interview preparation, a networking approach, and a plan for your first 90 days. Keep learning, keep building, and keep showing up in the community — that's genuinely most of what it takes from here.
+**Congratulations!** You've completed Path 13 — the career-prep core of KashSec Academy, taking you from absolute zero to genuinely job-ready. You now have a resume, a portfolio strategy, a certification roadmap, interview preparation, a networking approach, and a plan for your first 90 days. The CTF Challenges zone and several specialised paths (mobile security, malware/RE, cryptography, Windows security, cloud basics, digital privacy) still lie ahead if you want to keep building depth. Keep learning, keep building, and keep showing up in the community — that's genuinely most of what it takes from here.

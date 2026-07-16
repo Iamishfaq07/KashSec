@@ -66,6 +66,14 @@ recon was slow and repetitive — this automates the first pass.
 API keys, credentials, and `.env` files should never be committed — use a `.gitignore` from day one, and if you accidentally commit a secret, rotate it immediately (removing it from history alone is not sufficient once it's been pushed publicly). This habit matters doubly in security roles, where this exact mistake is something you'll be expected to catch in *other people's* code.
 :::
 
+## Beyond GitHub — a personal blog as a durable second portfolio channel
+
+A GitHub profile shows *what* you built; a short technical blog post shows *how you think* — a distinct, complementary signal worth building alongside your repos, not instead of them. A single well-written post walking through a CTF challenge's solution, explaining a security concept you recently understood deeply for the first time, or documenting a home-lab project's setup process demonstrates the exact communication skill covered in Path 09.7's reporting lesson — a genuinely underrated differentiator, since most junior candidates can point to code but far fewer can clearly explain their own reasoning in writing. Free platforms (a GitHub Pages site, Dev.to, a simple Markdown-based static site) remove any excuse around cost or setup complexity; the actual bar is just finishing and publishing one piece, however short, rather than waiting for a topic that feels impressive enough.
+
+## Contributing to existing open-source projects
+
+Building your own projects from scratch isn't the only path to a credible portfolio — **contributing to existing open-source security tools** (a Nuclei template, a small bug fix in a tool you use regularly, improved documentation for a project that helped you learn) is often faster to start than a solo project and comes with a built-in credibility signal: a merged pull request into a project real practitioners actually use is objectively verifiable, timestamped, and often more impressive to an experienced interviewer than another isolated portfolio piece, precisely because it required your contribution to meet an existing maintainer's real quality bar rather than just your own. Starting small — fixing a typo in documentation, adding a missing test case — is a completely legitimate first contribution; the goal early on is building the habit and understanding the contribution workflow (forking, branching, PR review) rather than making an immediately dramatic impact.
+
 ## 🧪 Hands-on lab — ship one real project this week
 
 1. Pick one idea from the list above that genuinely interests you — motivation matters more than ambition for a first portfolio piece.

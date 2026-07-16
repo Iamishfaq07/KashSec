@@ -43,6 +43,14 @@ Use the **XYZ formula** as a starting template: *"Accomplished [X], measured by 
 
 Read the job description closely and mirror its exact terminology where it genuinely applies to you — if the posting says "vulnerability assessment" and you've been calling the same work "security testing," align your wording. This isn't dishonest; it's translating your real experience into the vocabulary the ATS and the hiring manager are actually looking for. Never claim a skill or tool you can't discuss confidently in an interview — this backfires immediately and badly.
 
+## Tailoring per application without starting from scratch each time
+
+A genuinely sustainable approach: maintain one comprehensive **master resume** containing every project, bullet point, and skill you've ever wanted to include, with no length limit — then, for each specific application, copy it and trim down to the single most relevant page for that particular role, swapping in the specific keywords and reordering sections to lead with whatever matches that posting best. A candidate applying to both a SOC analyst role and an AppSec role shouldn't submit the identical resume to both — the SOC application should lead with SIEM/detection experience and incident response projects, while the AppSec application should lead with secure coding, SAST/DAST, and vulnerability-finding work. This master-resume approach avoids the two failure modes beginners fall into: rewriting from scratch every time (exhausting, inconsistent) or sending one generic resume everywhere (weaker match on every single application).
+
+## Handling employment gaps and career changes honestly
+
+Many people entering security are changing careers or have gaps in formal employment — neither is disqualifying, but both benefit from direct, confident framing rather than vague evasion. A career-changer's resume should explicitly connect prior experience to security wherever a genuine parallel exists (a former sysadmin already understands networks and Linux deeply; a former customer support lead already understands social engineering and phishing from the defender's side); an employment gap used for structured self-study (this course, CTFs, certifications, home lab projects) is legitimate, quantifiable experience and belongs on the resume with real specifics, not hidden or apologized for. Recruiters in security specifically are unusually receptive to career-changers, since the field's talent shortage means genuine, demonstrable skill consistently matters more than a conventional linear career path.
+
 ## Format and length
 
 - **One page** for anyone with fewer than ~8–10 years of experience — recruiters spend seconds per resume, and a second page rarely gets read.

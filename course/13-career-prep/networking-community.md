@@ -32,6 +32,10 @@ Cold-messaging someone you've never interacted with, immediately asking for a re
 - **Ask good questions.** A specific, well-researched question ("I've tried X and Y for this SSRF bypass and both failed with this exact error — any ideas?") gets far better engagement and respect than a vague "how do I hack websites?"
 - **Give credit generously.** If someone's write-up or tool helped you solve something, say so publicly. This is both good etiquette and quietly builds your own reputation as someone worth collaborating with.
 
+## Introversion and community-building — it doesn't require being loud
+
+A common, understandable worry: "I'm not a naturally outgoing person, does that rule out building a real community presence?" It doesn't. Community engagement in security skews heavily toward *written* contribution — a thoughtful GitHub issue comment, a well-researched forum question, a technical write-up — none of which requires the real-time verbal confidence that conferences or meetups demand. Many well-known, well-respected practitioners in this field built their entire reputation through consistent written contribution alone, rarely or never attending in-person events at all. If in-person networking genuinely drains you, lean into the asynchronous channels (Discord threads you can compose thoughtfully rather than respond to instantly, GitHub, technical blogging) where the same underlying principle — genuine, consistent, helpful contribution — works exactly as well without requiring extroversion as a prerequisite.
+
 ## Building relationships, not just contacts
 
 The word "networking" often conjures an image of collecting business cards — the reality that actually works is closer to making a handful of genuine professional friendships over time. Regularly interacting with the same handful of people in a Discord server or on Twitter, being consistently helpful and present, naturally builds real relationships far more effectively than an aggressive one-time outreach campaign ever will.
