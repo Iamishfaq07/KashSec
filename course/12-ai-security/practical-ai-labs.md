@@ -54,4 +54,4 @@ Why is it important to test the *same* attack many times with small variations?
 <details><summary>Show answer</summary>Because LLMs are probabilistic — the same prompt can give different results each time. One success or failure doesn't prove anything. You need rates and patterns.</details>
 :::
 
-**Next up →** [Your AI-security career](#/lesson/12-ai-security/ai-career)
+**Next up →** [Securing LLM Applications](#/lesson/12-ai-security/securing-llm-apps)

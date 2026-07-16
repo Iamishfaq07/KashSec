@@ -140,4 +140,4 @@ Which single tool or concept from this path do you think you'll use most in your
 
 You now have hands-on familiarity with network scanning, packet analysis, firewalls, VPNs, intrusion detection, SIEM concepts, wireless security, and man-in-the-middle attacks and defences — the complete infrastructure-layer counterpart to Path 07's application security depth.
 
-**Next up →** [Path 09: What is ethical hacking?](#/lesson/09-ethical-hacking/what-is-eh)
+**Next up →** [Advanced Nmap Lab](#/lesson/08-network-security/nmap-advanced-lab)

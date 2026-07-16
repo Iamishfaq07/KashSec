@@ -16,4 +16,4 @@ Start with a simple inventory of all LLMs used in your organization, their data 
 ## Challenge
 Create a basic governance checklist for deploying a new LLM feature in a product.
 
-**Next up →** [Your AI-security career](#/lesson/12-ai-security/ai-career)
+**Next up →** [LLM Red Teaming Playbooks](#/lesson/12-ai-security/llm-red-teaming-playbooks)

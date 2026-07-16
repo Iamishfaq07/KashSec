@@ -138,4 +138,4 @@ A healthcare technology company handling patient billing data most directly need
 
 You now understand the CIA triad, how to reason about threats/vulnerabilities/risk, the attacker's kill chain, malware categories, password security, social engineering, personal hardening, and the major compliance frameworks shaping the industry. This is the complete conceptual foundation — everything from Path 07 onward is applying these ideas hands-on.
 
-**Next up →** [Path 07: OWASP Top 10 overview](#/lesson/07-web-security/owasp-top-10)
+**Next up →** [Risk Assessment Lab](#/lesson/06-fundamentals/risk-assessment-lab)

@@ -180,4 +180,4 @@ You now understand:
 
 That's a real achievement. Take a moment.
 
-**Next up →** [Path 02 — Networking Fundamentals: What is a network?](#/lesson/02-networking/what-is-a-network)
+**Next up →** [Security Mindset Lab](#/lesson/01-introduction/security-mindset-lab)

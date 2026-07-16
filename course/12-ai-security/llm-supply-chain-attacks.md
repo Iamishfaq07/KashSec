@@ -18,4 +18,4 @@ Attacks that target the components and data used to build and run LLMs.
 ## Challenge
 Research one real-world example of an LLM supply chain attack (or a close analog) and summarize how it could have been prevented.
 
-**Next up →** [Securing LLM Applications](#/lesson/12-ai-security/securing-llm-apps)
+**Next up →** [Practical AI Red Teaming Labs](#/lesson/12-ai-security/practical-ai-labs)

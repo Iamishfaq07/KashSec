@@ -19,4 +19,4 @@ Structured approaches to systematically test LLM applications.
 ## Challenge
 Create a mini playbook with at least 10 test cases for a fictional LLM application that has access to tools.
 
-**Next up →** [Poisoning & adversarial ML](#/lesson/12-ai-security/poisoning-adv-ml)
+**Next up →** [LLM Supply Chain Attacks](#/lesson/12-ai-security/llm-supply-chain-attacks)

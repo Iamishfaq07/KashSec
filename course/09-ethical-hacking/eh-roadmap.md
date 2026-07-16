@@ -131,4 +131,4 @@ Looking back across Paths 07, 08, and 09 together — which single moment or lab
 
 You now hold the complete, professional penetration testing methodology — from signed authorization through recon, scanning, exploitation, post-exploitation, and clear, actionable reporting. Combined with Paths 07-08's technical depth, you have a genuinely practical, employable foundation in ethical hacking.
 
-**Next up →** [Path 10: What is bug bounty hunting?](#/lesson/10-bug-bounty/what-is-bb)
+**Next up →** [Advanced Exploitation Lab](#/lesson/09-ethical-hacking/advanced-exploitation-lab)

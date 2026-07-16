@@ -131,4 +131,4 @@ Across this entire path, which single concept do you think will matter most for 
 
 You now have a complete, practical bug bounty methodology — program selection, automated recon pipelines, systematic IDOR/access-control hunting, business logic and chaining thinking, Nuclei-based automation, and a realistic framework for building this into a sustainable long-term practice. Combined with Paths 07-09, you have genuine, employable, and directly monetisable security skills.
 
-**Next up →** [Path 11: Linux privilege escalation](#/lesson/11-advanced/linux-privesc)
+**Next up →** [Bug Bounty Hunting Challenges](#/lesson/10-bug-bounty/bounty-hunting-challenges)

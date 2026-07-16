@@ -111,3 +111,5 @@ This is not the end of learning — it's the end of the *foundation*. Every path
 Thank you for building this course. Good luck out there — ethically, legally, and with genuine curiosity.
 
 **— KashSec Academy**
+
+**Next up →** [Agentic AI Risks](#/lesson/12-ai-security/agentic-ai-risks)

@@ -154,4 +154,4 @@ Of the six vulnerability classes covered in this path (IDOR, XSS, SQLi, command 
 
 You now have a genuinely practical, hands-on understanding of web application security — the OWASP Top 10, Burp Suite, reconnaissance, and six major vulnerability classes with real exploitation and defence detail for each. This is the applied core the rest of the course builds directly on.
 
-**Next up →** [Path 08: Why network security matters](#/lesson/08-network-security/why-netsec)
+**Next up →** [Advanced Burp Suite Lab](#/lesson/07-web-security/burp-advanced-lab)

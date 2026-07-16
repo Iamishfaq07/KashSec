@@ -116,4 +116,4 @@ Of everything covered in Path 11, which topic do you think has the steepest lear
 
 You now have advanced, hands-on exposure to privilege escalation on both major operating systems, Active Directory attack methodology, cloud and container security, malware analysis fundamentals, and digital forensics/incident response — the deep, specialised layer built on top of the complete generalist foundation from Paths 01-10.
 
-**Next up →** [Path 12: How LLMs actually work](#/lesson/12-ai-security/how-llms-work)
+**Next up →** [Cloud Security Lab](#/lesson/11-advanced/cloud-security-lab)

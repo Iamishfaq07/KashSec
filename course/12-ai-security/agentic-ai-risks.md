@@ -16,4 +16,4 @@ As AI agents become more powerful, new risks emerge.
 ## Challenge
 Design 5 test cases for an AI agent that can use tools (browser, code execution, email).
 
-**Next up →** [AI Red Teaming](#/lesson/12-ai-security/ai-red-teaming)
+**Next up →** [LLM Attack Taxonomy](#/lesson/12-ai-security/llm-attack-taxonomy)
