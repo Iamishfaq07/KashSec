@@ -55,7 +55,7 @@ Every file also has **permissions** attached to it — rules about who can read,
 Beyond a file's visible content, many file types carry **metadata** — extra information embedded inside the file itself, often invisible unless you specifically look for it. The most well-known example is **EXIF data** in photos: modern phone cameras automatically embed the exact date, time, camera model, and — critically — often the precise **GPS coordinates** of where a photo was taken, directly inside the image file.
 
 :::warn Photos can leak your exact location without you realizing it
-Posting a photo online without stripping its EXIF data can reveal your home address, workplace, or real-time location to anyone who downloads and inspects the file — a genuinely real privacy risk, and directly relevant to Path 20's digital footprint lesson later in this course. Most social media platforms strip this data automatically on upload, but messaging apps and direct file sharing often don't. Check your phone's camera settings for an option to disable location tagging, or use a metadata-removal tool before sharing sensitive photos elsewhere.
+Posting a photo online without stripping its EXIF data can reveal your home address, workplace, or real-time location to anyone who downloads and inspects the file — a genuinely real privacy risk, and directly relevant to Path 09's digital footprint lesson later in this course. Most social media platforms strip this data automatically on upload, but messaging apps and direct file sharing often don't. Check your phone's camera settings for an option to disable location tagging, or use a metadata-removal tool before sharing sensitive photos elsewhere.
 :::
 
 ## Archives and compression — files within files
@@ -103,7 +103,7 @@ Why is "always show file extensions" considered a security best practice, rather
 
 ???refs
 - [Filesystem Hierarchy Standard](https://refspecs.linuxfoundation.org/FHS_3.0/fhs/index.html) — the official spec for how Linux organizes its folder structure (useful reference for Path 03).
-- [EFF: Metadata and privacy](https://ssd.eff.org/module/why-metadata-matters) — a free, clear explanation of why metadata matters for privacy, referenced again in Path 20.
+- [EFF: Metadata and privacy](https://ssd.eff.org/module/why-metadata-matters) — a free, clear explanation of why metadata matters for privacy, referenced again in Path 09.
 ???
 
 **Next up →** [Passwords & accounts basics](#/lesson/00-fresher-basics/passwords-accounts)

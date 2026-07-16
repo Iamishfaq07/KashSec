@@ -41,7 +41,7 @@ echo "You entered $target"
 
 ### Reading command-line arguments
 
-Real scripts take input directly from how they're invoked, not just interactive prompts — genuinely essential once you start building the recon and automation tools referenced throughout Path 04 and Path 10:
+Real scripts take input directly from how they're invoked, not just interactive prompts — genuinely essential once you start building the recon and automation tools referenced throughout Path 04 and Path 15:
 
 ```bash
 #!/bin/bash
@@ -176,7 +176,7 @@ A line like this runs `recon.sh` every day at 3am:
 0 3 * * * /home/kali/recon.sh >> /home/kali/recon.log 2>&1
 ```
 
-Format: `minute hour day-of-month month day-of-week command`. In Path 10 you'll use cron to keep bug-bounty recon fresh while you sleep.
+Format: `minute hour day-of-month month day-of-week command`. In Path 15 you'll use cron to keep bug-bounty recon fresh while you sleep.
 
 ## Best practices worth adopting now
 
@@ -205,7 +205,7 @@ Bash is perfect for glue and quick automation. When your script grows past ~100 
 
 ## 🧪 Lab — A recon skeleton
 
-Build this script — you'll extend it in Paths 09 and 10:
+Build this script — you'll extend it in Paths 14 and 10:
 
 ```bash
 #!/bin/bash

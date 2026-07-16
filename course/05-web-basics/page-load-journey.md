@@ -1,6 +1,6 @@
 # The page-load journey
 
-Web hacking makes far more sense once you can picture what actually happens when a page loads. In this lesson we trace every step from click to rendered page — the mental model everything else in Path 05 (and Path 07) hangs on.
+Web hacking makes far more sense once you can picture what actually happens when a page loads. In this lesson we trace every step from click to rendered page — the mental model everything else in Path 05 (and Path 11) hangs on.
 
 ## Where we're going
 
@@ -77,7 +77,7 @@ Almost every web vulnerability lives in step 5 (the request as the server sees i
 | **Response HTML/JS** | XSS, clickjacking, CSRF |
 | **Assets** | Subresource integrity issues, supply-chain attacks |
 
-You'll meet each in Path 07. The point right now is that you can look at any web bug and ask *"which step is this abusing?"*
+You'll meet each in Path 11. The point right now is that you can look at any web bug and ask *"which step is this abusing?"*
 
 ## First-party vs third-party requests
 

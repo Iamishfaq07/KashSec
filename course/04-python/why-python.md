@@ -9,7 +9,7 @@ You've written a bit of Python now. Let's zoom out: why is Python *the* language
 - **Enormous ecosystem.** For anything else, `pip install <thing>` gets you battle-tested libraries. Requests, Scapy, BeautifulSoup, Pwntools, Impacket — the security world's toolbox.
 - **Cross-platform.** Runs on Windows, macOS, Linux; the same script usually works everywhere.
 - **Interoperability.** Talks to APIs, shells, C libraries, and databases with ease.
-- **AI/ML native.** Every modern AI/ML tool lives in Python — matters for Path 12.
+- **AI/ML native.** Every modern AI/ML tool lives in Python — matters for Path 18.
 
 ## The tools built in Python you'll use
 
@@ -76,7 +76,7 @@ pip freeze > requirements.txt   # snapshot current versions
 Most real Python projects have a `requirements.txt` listing everything they need. Include one when you ship your own scripts.
 
 :::warn PyPI packages are a real supply chain risk
-Anyone can publish a package to PyPI (Python's public package index) — and attackers have repeatedly published malicious packages with names deliberately similar to popular ones (`reqeusts` instead of `requests`), banking on typos, exactly the **typosquatting** concept from Path 00's phishing lesson, applied here to package names instead of domains. Before installing an unfamiliar package, a quick check of its download count, GitHub repo, and recent activity is a cheap, worthwhile habit — directly connecting to the supply chain security material in Path 11's DevSecOps lab and Path 12's LLM supply chain lesson.
+Anyone can publish a package to PyPI (Python's public package index) — and attackers have repeatedly published malicious packages with names deliberately similar to popular ones (`reqeusts` instead of `requests`), banking on typos, exactly the **typosquatting** concept from Path 00's phishing lesson, applied here to package names instead of domains. Before installing an unfamiliar package, a quick check of its download count, GitHub repo, and recent activity is a cheap, worthwhile habit — directly connecting to the supply chain security material in Path 16's DevSecOps lab and Path 18's LLM supply chain lesson.
 :::
 
 ## The shape of a real security script
@@ -157,7 +157,7 @@ You get free `--help` output and proper handling of missing/invalid arguments.
 - **Weeks 1–4:** finish this path — comfortable with variables, control flow, functions, files, `requests`, `socket`.
 - **Weeks 5–8:** write small tools: a subdomain resolver, a directory brute-forcer, a hash cracker (against hashes you generated yourself).
 - **Weeks 9–12:** read the source of a small existing tool (e.g., `dnsx`, `waybackpy`). Add a feature. This is how skill compounds.
-- **Later:** Scapy for packet crafting (Path 08), Impacket for AD (Path 11), custom exploits (Path 09/11).
+- **Later:** Scapy for packet crafting (Path 12), Impacket for AD (Path 16), custom exploits (Path 14/11).
 
 :::challenge Test yourself
 Why should you use a virtual environment for each Python project?

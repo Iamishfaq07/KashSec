@@ -82,7 +82,7 @@ The cookie itself contains the state, cryptographically signed so it can't be fo
 eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiYWxpY2UiLCJyb2xlIjoidXNlciJ9.<signature>
 ```
 
-That's a **JWT** (JSON Web Token). Anyone can decode the base64 middle and read your claims — the *signature* stops them tampering. Convenient, but JWTs have a long, colourful history of bugs (bad algorithms, weak secrets, `alg: none` tricks). More in Path 07.
+That's a **JWT** (JSON Web Token). Anyone can decode the base64 middle and read your claims — the *signature* stops them tampering. Convenient, but JWTs have a long, colourful history of bugs (bad algorithms, weak secrets, `alg: none` tricks). More in Path 11.
 
 ## What can go wrong — attacks worth knowing
 
@@ -122,7 +122,7 @@ Multiple subdomains sharing cookies can accidentally let one subdomain overwrite
 
 ### Session timeout and idle expiry
 
-A session that lives forever is a growing liability — every cookie an attacker could ever steal stays valid indefinitely, and a device left logged in at a library or shared computer stays logged in for whoever sits down next. Well-designed sites enforce two separate limits: an **absolute timeout** (the session expires a fixed time after login, e.g. 24 hours, no matter what) and an **idle timeout** (the session expires after a period of *inactivity*, e.g. 30 minutes with no requests). Sensitive actions — changing a password, viewing payment details — often require *re-authentication* even within an otherwise-valid session, precisely because a session cookie alone isn't considered strong enough proof of "this is really the account owner, right now" for high-stakes actions. This same idea — that authentication isn't binary but has different strength requirements for different actions — reappears directly in Path 06's authentication material.
+A session that lives forever is a growing liability — every cookie an attacker could ever steal stays valid indefinitely, and a device left logged in at a library or shared computer stays logged in for whoever sits down next. Well-designed sites enforce two separate limits: an **absolute timeout** (the session expires a fixed time after login, e.g. 24 hours, no matter what) and an **idle timeout** (the session expires after a period of *inactivity*, e.g. 30 minutes with no requests). Sensitive actions — changing a password, viewing payment details — often require *re-authentication* even within an otherwise-valid session, precisely because a session cookie alone isn't considered strong enough proof of "this is really the account owner, right now" for high-stakes actions. This same idea — that authentication isn't binary but has different strength requirements for different actions — reappears directly in Path 10's authentication material.
 
 ## The __Host- and __Secure- cookie prefixes
 

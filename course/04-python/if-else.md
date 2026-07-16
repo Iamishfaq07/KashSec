@@ -81,7 +81,7 @@ if len(data) > 0 and data[0] == "admin":
     print("First entry is admin")
 ```
 
-Reversing the order (`data[0] == "admin" and len(data) > 0`) would crash on an empty list, since Python would try to access `data[0]` before ever checking the length — a genuinely common beginner bug, and a useful pattern to recognize once you start validating untrusted input (Path 07's entire premise) rather than clean, well-formed data.
+Reversing the order (`data[0] == "admin" and len(data) > 0`) would crash on an empty list, since Python would try to access `data[0]` before ever checking the length — a genuinely common beginner bug, and a useful pattern to recognize once you start validating untrusted input (Path 11's entire premise) rather than clean, well-formed data.
 
 ## A real-world check: is a port "well-known"?
 

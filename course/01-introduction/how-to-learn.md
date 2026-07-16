@@ -18,14 +18,14 @@ flowchart TD
     F2 --> F3[Path 03 - Linux]
     F3 --> F4[Path 04 - Python]
     F4 --> F5[Path 05 - Web basics]
-    F5 --> F6[Path 06 - Fundamentals]
-    F6 --> A1[Path 07 - Web hacking]
-    F6 --> A2[Path 08 - Network security]
-    A1 --> B1[Path 09 - Ethical hacking]
+    F5 --> F6[Path 10 - Fundamentals]
+    F6 --> A1[Path 11 - Web hacking]
+    F6 --> A2[Path 12 - Network security]
+    A1 --> B1[Path 14 - Ethical hacking]
     A2 --> B1
-    B1 --> C1[Path 10 - Bug bounty]
-    C1 --> D1[Path 11 - Advanced]
-    D1 --> E1[Path 12 - AI security]
+    B1 --> C1[Path 15 - Bug bounty]
+    C1 --> D1[Path 16 - Advanced]
+    D1 --> E1[Path 18 - AI security]
 
     style F1 fill:#3FB6A8,color:#04120f,stroke:#3FB6A8
     style F2 fill:#111927,color:#3FB6A8,stroke:#3FB6A8

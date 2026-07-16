@@ -99,7 +99,7 @@ The well-known ports table above describes the *server's* side of a connection �
 
 ## How firewalls relate to ports
 
-A **firewall** (covered in full in Path 08) makes its allow/block decisions largely based on ports — a basic firewall rule might say "allow anything on port 443 (HTTPS), block everything on port 3389 (remote desktop) from outside the local network." This is exactly why an unnecessarily open port is a real security risk even before any vulnerability in the service behind it is considered: every open port is one more thing a firewall has to deliberately allow, and one more potential entry point an attacker can find during reconnaissance. The general security principle — **close every port you don't genuinely need running** — is a direct, practical application of the "attack surface" concept from Path 01.
+A **firewall** (covered in full in Path 12) makes its allow/block decisions largely based on ports — a basic firewall rule might say "allow anything on port 443 (HTTPS), block everything on port 3389 (remote desktop) from outside the local network." This is exactly why an unnecessarily open port is a real security risk even before any vulnerability in the service behind it is considered: every open port is one more thing a firewall has to deliberately allow, and one more potential entry point an attacker can find during reconnaissance. The general security principle — **close every port you don't genuinely need running** — is a direct, practical application of the "attack surface" concept from Path 01.
 
 ## Scanning = knocking on doors
 
@@ -120,7 +120,7 @@ sequenceDiagram
     Note over S,T: Each open door = a service to investigate
 ```
 
-Each open door is a service to investigate and a potential way in. In **Path 08** you'll run **Nmap** to do this for real, legally, on `scanme.nmap.org`.
+Each open door is a service to investigate and a potential way in. In **Path 12** you'll run **Nmap** to do this for real, legally, on `scanme.nmap.org`.
 
 ## 🧪 Lab — Match the ports (paper exercise)
 

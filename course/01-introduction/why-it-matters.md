@@ -55,7 +55,7 @@ You are **not too small to be attacked**. Automation makes *everyone* a target, 
 Here are the four attacks that account for the vast majority of everyday breaches. Every one of them is automated and non-targeted:
 
 ### 1. Phishing
-A fake email or text that looks like it's from your bank, a courier, or a social network tricks you into typing your password into a fake copy of the real site. Now the attacker has it. We'll go deep on phishing in Path 06.
+A fake email or text that looks like it's from your bank, a courier, or a social network tricks you into typing your password into a fake copy of the real site. Now the attacker has it. We'll go deep on phishing in Path 10.
 
 ### 2. Password reuse (credential stuffing)
 You used the same simple password on ten sites. One of those sites gets breached and leaks it. Attackers then try that password on your email, your bank, your shopping accounts — and it works, because you reused it. This is called **credential stuffing**, and it's devastatingly effective.
@@ -103,7 +103,7 @@ Here's a piece of the picture most beginners never consider: a compromised devic
 
 ## The real financial and human cost
 
-Beyond the individual scenarios above, the aggregate cost of cybercrime is genuinely enormous — industry reports consistently estimate global losses in the trillions of dollars annually, and that figure keeps climbing year over year. For an individual, the cost isn't only financial: victims of identity theft or ransomware often describe the experience as deeply stressful and time-consuming to resolve, frequently taking weeks or months to fully recover accounts, credit, and peace of mind — directly connecting to Path 20's identity theft protection lesson later in this course, which covers exactly how to prepare for and respond to this.
+Beyond the individual scenarios above, the aggregate cost of cybercrime is genuinely enormous — industry reports consistently estimate global losses in the trillions of dollars annually, and that figure keeps climbing year over year. For an individual, the cost isn't only financial: victims of identity theft or ransomware often describe the experience as deeply stressful and time-consuming to resolve, frequently taking weeks or months to fully recover accounts, credit, and peace of mind — directly connecting to Path 09's identity theft protection lesson later in this course, which covers exactly how to prepare for and respond to this.
 
 ## Two very good reasons to learn this
 
@@ -124,7 +124,7 @@ There is a genuine, worldwide **shortage of skilled security people**. Reports f
 - Strong job security.
 - And unlike many professions, you can break in **without an expensive degree** if you build real, demonstrable skills — which is exactly what this course is designed to help you do.
 
-Security roles also span a genuinely wide range of day-to-day work, not just one narrow job description: some people spend their days finding vulnerabilities before attackers do (offensive security — Path 09, Path 10), others defend live systems and investigate incidents as they happen (defensive security — Path 08, Path 11), and others focus on policy, compliance, and risk management for entire organizations. Path 01's next lesson walks through these roles in detail, so you can start forming a sense of which direction genuinely interests you.
+Security roles also span a genuinely wide range of day-to-day work, not just one narrow job description: some people spend their days finding vulnerabilities before attackers do (offensive security — Path 14, Path 15), others defend live systems and investigate incidents as they happen (defensive security — Path 12, Path 16), and others focus on policy, compliance, and risk management for entire organizations. Path 01's next lesson walks through these roles in detail, so you can start forming a sense of which direction genuinely interests you.
 
 :::tip THIS IS BOTH A HOBBY AND A CAREER FOUNDATION
 Every single skill you learn here is a skill an employer will pay for. You are not just learning to protect yourself — you're laying the first bricks of a serious career.

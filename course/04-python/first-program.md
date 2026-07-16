@@ -126,7 +126,7 @@ except requests.exceptions.ConnectionError:
     print(f"{url} refused connection — skipping")
 ```
 
-This exact pattern is genuinely essential for any recon or scanning script (Path 04's automation lesson, Path 10's recon pipeline) — checking a list of 500 URLs where 10 happen to be offline should skip those 10 gracefully and keep going, not crash the entire run on the first failure.
+This exact pattern is genuinely essential for any recon or scanning script (Path 04's automation lesson, Path 15's recon pipeline) — checking a list of 500 URLs where 10 happen to be offline should skip those 10 gracefully and keep going, not crash the entire run on the first failure.
 
 ## Step 6 — Reading and writing files
 
@@ -204,10 +204,10 @@ sha256_salted = hashlib.sha256((salt + pw).encode()).hexdigest()
 print(f"\nMD5:            {md5}")
 print(f"SHA-1:          {sha1}")
 print(f"SHA-256+salt:   {sha256_salted}")
-print("\n(Never store MD5/SHA-1 for passwords. Use bcrypt/argon2 — Path 06.)")
+print("\n(Never store MD5/SHA-1 for passwords. Use bcrypt/argon2 — Path 10.)")
 ```
 
-You just used a real security library. Path 06 explains why MD5 and SHA-1 are unfit for passwords in detail.
+You just used a real security library. Path 10 explains why MD5 and SHA-1 are unfit for passwords in detail.
 
 ## Common beginner tripwires
 

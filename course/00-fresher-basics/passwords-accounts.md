@@ -26,7 +26,7 @@ Two related, commonly confused terms: a **brute-force attack** tries every possi
 
 - **Length matters more than complexity.** A 16-character phrase like `correct-horse-battery-staple-42` is dramatically harder to crack than an 8-character mess like `P@ssw0rd!`, despite looking "less complicated." Every extra character multiplies the number of possible combinations an attacker has to try.
 - **Uniqueness matters more than memorability.** Every account should have a completely different password. This sounds impossible to manage by hand — which is exactly why the next section exists.
-- **Avoid personal information.** Names, birthdays, and pet names are the first things attackers guess, because they're often findable from your social media (Path 20 covers exactly how much of this is publicly discoverable in far more depth).
+- **Avoid personal information.** Names, birthdays, and pet names are the first things attackers guess, because they're often findable from your social media (Path 09 covers exactly how much of this is publicly discoverable in far more depth).
 
 ## Password managers — the actual solution
 
@@ -54,7 +54,7 @@ Common types of second factor, roughly from weakest to strongest:
 
 ### What SIM-swapping actually is
 
-SMS-based 2FA's specific weakness is worth understanding, not just knowing exists: in a **SIM-swap attack**, an attacker convinces (or social-engineers, Path 06) your mobile carrier into transferring your phone number to a SIM card *they* control — after which they receive your SMS 2FA codes directly, completely bypassing the "something only you have" premise the second factor was supposed to guarantee. This is exactly why authenticator apps and hardware keys — which don't depend on your phone *number* at all, only a specific device or app you actually possess — are considered meaningfully stronger.
+SMS-based 2FA's specific weakness is worth understanding, not just knowing exists: in a **SIM-swap attack**, an attacker convinces (or social-engineers, Path 10) your mobile carrier into transferring your phone number to a SIM card *they* control — after which they receive your SMS 2FA codes directly, completely bypassing the "something only you have" premise the second factor was supposed to guarantee. This is exactly why authenticator apps and hardware keys — which don't depend on your phone *number* at all, only a specific device or app you actually possess — are considered meaningfully stronger.
 
 ### Passkeys — the emerging passwordless alternative
 

@@ -42,11 +42,11 @@ Port scanners (like Nmap) work by *starting* this handshake with each port to se
 
 ## Ending a TCP connection — the teardown
 
-Just as TCP opens carefully with a three-way handshake, it closes carefully too, using **FIN** (finish) and **ACK** packets exchanged by both sides — a graceful four-step process ensuring both computers agree the conversation is genuinely over before either discards its connection state, rather than one side abruptly vanishing mid-conversation. An abrupt, ungraceful termination instead uses a **RST (reset)** packet — immediately killing the connection with no negotiation, normally used to signal an error condition (like connecting to a closed port, referenced in the previous ports lesson) rather than a normal, planned goodbye. This distinction between a clean FIN-based close and an abrupt RST matters directly in Path 08's Wireshark labs, since it's one of the first things worth checking when a captured connection looks unusual — a graceful close suggests normal application behavior, while an unexpected RST often signals something worth investigating further.
+Just as TCP opens carefully with a three-way handshake, it closes carefully too, using **FIN** (finish) and **ACK** packets exchanged by both sides — a graceful four-step process ensuring both computers agree the conversation is genuinely over before either discards its connection state, rather than one side abruptly vanishing mid-conversation. An abrupt, ungraceful termination instead uses a **RST (reset)** packet — immediately killing the connection with no negotiation, normally used to signal an error condition (like connecting to a closed port, referenced in the previous ports lesson) rather than a normal, planned goodbye. This distinction between a clean FIN-based close and an abrupt RST matters directly in Path 12's Wireshark labs, since it's one of the first things worth checking when a captured connection looks unusual — a graceful close suggests normal application behavior, while an unexpected RST often signals something worth investigating further.
 
 ## Connection states — a brief preview
 
-Throughout a TCP connection's life, both sides track which "state" the connection is currently in — `LISTEN` (a server waiting for a connection), `SYN_SENT`/`SYN_RECEIVED` (mid-handshake), `ESTABLISHED` (actively exchanging data), and several teardown states. You'll see these exact state names appear directly in tools like `netstat` and `ss` output (Path 18's Windows networking commands, and their Linux equivalents) — recognizing them as literally the handshake and teardown steps you just learned, rather than mysterious jargon, makes reading that output far less intimidating.
+Throughout a TCP connection's life, both sides track which "state" the connection is currently in — `LISTEN` (a server waiting for a connection), `SYN_SENT`/`SYN_RECEIVED` (mid-handshake), `ESTABLISHED` (actively exchanging data), and several teardown states. You'll see these exact state names appear directly in tools like `netstat` and `ss` output (Path 07's Windows networking commands, and their Linux equivalents) — recognizing them as literally the handshake and teardown steps you just learned, rather than mysterious jargon, makes reading that output far less intimidating.
 
 ## Side by side
 
@@ -81,10 +81,10 @@ This is why the setup can seem fine but audio glitches: different layers, differ
   - **UDP flood / amplification attacks** — send small requests that generate large replies to a victim (DNS/NTP amplification).
   - **UDP spoofing** — trivial to spoof source IPs on UDP because there's no handshake.
 
-You'll see these in detail in Path 08.
+You'll see these in detail in Path 12.
 
 :::lab TRY IT: SEE A REAL HANDSHAKE
-Open Wireshark (Path 08 covers install). Start a capture. In a browser, visit `http://example.com`. Stop the capture. Filter for `tcp.flags.syn == 1`. You'll see the three-way handshake in the first three packets — SYN, SYN-ACK, ACK — before the actual HTTP request. Magic made visible.
+Open Wireshark (Path 12 covers install). Start a capture. In a browser, visit `http://example.com`. Stop the capture. Filter for `tcp.flags.syn == 1`. You'll see the three-way handshake in the first three packets — SYN, SYN-ACK, ACK — before the actual HTTP request. Magic made visible.
 :::
 
 :::challenge Test yourself

@@ -59,17 +59,17 @@ Type 2 is much easier to set up; Type 1 is more efficient but industrial.
 
 ## Virtual networking modes — a preview of a setting you'll configure soon
 
-When you create a VM, you'll choose how it connects to networks — a setting worth understanding conceptually now, since Path 11's cloud networking lesson and this course's own lab setups reference it constantly:
+When you create a VM, you'll choose how it connects to networks — a setting worth understanding conceptually now, since Path 16's cloud networking lesson and this course's own lab setups reference it constantly:
 
 - **NAT** — the VM can reach the internet, but your host and other devices can't directly reach *into* the VM. The default, and the safest choice for most learning labs.
 - **Bridged** — the VM appears as its own independent device directly on your physical network, with its own IP address, as if it were a separate physical computer plugged into your router.
-- **Host-only** — the VM can only talk to your host machine (and other host-only VMs), completely cut off from the wider internet — exactly the isolated setup Path 16's malware analysis lessons insist on for safely running untrusted samples.
+- **Host-only** — the VM can only talk to your host machine (and other host-only VMs), completely cut off from the wider internet — exactly the isolated setup Path 17's malware analysis lessons insist on for safely running untrusted samples.
 
 Choosing the right mode for the right task is a genuinely important habit: host-only for anything potentially dangerous (malware analysis), NAT for general safe practice, and bridged only when you specifically need the VM to look like an independent device on your real network.
 
 ## Containers vs. virtual machines — a term you'll hear constantly later
 
-You'll frequently hear "containers" (Docker, referenced throughout Path 11's containers/Kubernetes lab) mentioned alongside VMs — worth distinguishing now even briefly. A VM virtualizes an entire computer, including its own full operating system kernel, making it heavier but very strongly isolated. A **container** instead shares the host machine's kernel, packaging just an application and its dependencies — much lighter and faster to start, but with a thinner isolation boundary between container and host than a full VM provides. This tradeoff — VMs prioritize strong isolation, containers prioritize speed and efficiency — is exactly why Path 11's container security lab spends real time on container *escape* techniques: the isolation boundary, while real, is genuinely weaker than a full VM's.
+You'll frequently hear "containers" (Docker, referenced throughout Path 16's containers/Kubernetes lab) mentioned alongside VMs — worth distinguishing now even briefly. A VM virtualizes an entire computer, including its own full operating system kernel, making it heavier but very strongly isolated. A **container** instead shares the host machine's kernel, packaging just an application and its dependencies — much lighter and faster to start, but with a thinner isolation boundary between container and host than a full VM provides. This tradeoff — VMs prioritize strong isolation, containers prioritize speed and efficiency — is exactly why Path 16's container security lab spends real time on container *escape* techniques: the isolation boundary, while real, is genuinely weaker than a full VM's.
 
 ## The professional habit
 

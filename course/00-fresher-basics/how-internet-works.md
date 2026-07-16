@@ -64,7 +64,7 @@ Every stage of that journey is a potential attack point:
 | **The server itself** | If the destination server is compromised or malicious, it can serve you fake content or malware. |
 | **Your own device** | Malware already on your machine can intercept requests before they even leave, or after they arrive. |
 
-This is exactly why **HTTPS** (the padlock icon in your browser) exists — it encrypts traffic between you and the server so that even if someone is watching the network in between, they can't read or tamper with it. A **VPN (Virtual Private Network)** adds another layer, encrypting *all* your traffic and routing it through a trusted server, hiding your activity from your ISP and from anyone else on your local network (like on public Wi-Fi). Path 20 of this course covers VPNs in much more depth, including exactly what they do and don't actually protect against.
+This is exactly why **HTTPS** (the padlock icon in your browser) exists — it encrypts traffic between you and the server so that even if someone is watching the network in between, they can't read or tamper with it. A **VPN (Virtual Private Network)** adds another layer, encrypting *all* your traffic and routing it through a trusted server, hiding your activity from your ISP and from anyone else on your local network (like on public Wi-Fi). Path 09 of this course covers VPNs in much more depth, including exactly what they do and don't actually protect against.
 
 :::tip
 When you type a website address, your browser is silently asking a DNS server for the real numeric address *before* it can send anything — that lookup is invisible to you, but it happens on nearly every request.
@@ -120,7 +120,7 @@ If DNS is just "asking a server for an IP address," why is DNS spoofing (an atta
 - Every device has an IP address; DNS exists so humans don't have to memorize them. Private IPs (behind your router's NAT) differ from your one public-facing IP.
 - Ports let one IP address run many different services at once — covered fully in Path 02.
 - Every stage of the journey (DNS, the network path, the server, your own device) is a potential attack point.
-- HTTPS encrypts the content of your connection; a VPN adds a further layer of privacy over the network path (Path 20 goes deep on this).
+- HTTPS encrypts the content of your connection; a VPN adds a further layer of privacy over the network path (Path 09 goes deep on this).
 - No single entity owns the internet — it's a decentralized, cooperatively-run network of networks.
 
 ???refs

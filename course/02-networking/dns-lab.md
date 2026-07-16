@@ -36,7 +36,7 @@ DNS is the internet's phonebook — this lab has you actually query it directly,
    Only run this against a domain you own or that has an explicit, current bug bounty program permitting this kind of active enumeration.
 
 :::tip DNS is a reconnaissance goldmine, not just plumbing
-Path 09's reconnaissance lesson and Path 10's recon pipeline both lean heavily on DNS enumeration for exactly this reason — subdomain discovery, mail infrastructure mapping, and third-party service fingerprinting all start here, often before a single request even hits the target's actual web server.
+Path 14's reconnaissance lesson and Path 15's recon pipeline both lean heavily on DNS enumeration for exactly this reason — subdomain discovery, mail infrastructure mapping, and third-party service fingerprinting all start here, often before a single request even hits the target's actual web server.
 :::
 
 :::challenge Map a domain's DNS footprint

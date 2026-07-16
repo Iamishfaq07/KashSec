@@ -1,6 +1,6 @@
 # Browser DevTools tour
 
-DevTools is the single most-used "tool" in web security — and it's already sitting in every browser, free. This lesson is a proper tour so you're fluent before Path 07's hands-on labs.
+DevTools is the single most-used "tool" in web security — and it's already sitting in every browser, free. This lesson is a proper tour so you're fluent before Path 11's hands-on labs.
 
 ## Opening DevTools
 
@@ -50,7 +50,7 @@ Console also shows JavaScript **errors** and any `console.log()` calls the page'
 
 ### Network — every request, inspectable
 
-The panel you'll live in during Path 07. Shows every request the page makes: method, URL, status, size, timing. Click any request to see:
+The panel you'll live in during Path 11. Shows every request the page makes: method, URL, status, size, timing. Click any request to see:
 
 - **Headers** — request and response, including cookies and auth tokens
 - **Payload/Request** — what was sent (form data or JSON body)
@@ -69,7 +69,7 @@ Shows **Cookies**, **Local Storage**, **Session Storage**, **IndexedDB**, and **
 
 ### Debugger — step through JavaScript
 
-Set **breakpoints** by clicking a line number in any loaded script; the page pauses there so you can inspect variables, step line by line, and understand exactly what the code does. Useful when reverse-engineering minified/obfuscated client-side logic (common in Path 10 recon).
+Set **breakpoints** by clicking a line number in any loaded script; the page pauses there so you can inspect variables, step line by line, and understand exactly what the code does. Useful when reverse-engineering minified/obfuscated client-side logic (common in Path 15 recon).
 
 ### Security / info panel
 
@@ -110,7 +110,7 @@ Toolbar icon (phone/tablet icon) or **Ctrl+Shift+M**. Simulates different screen
 document.evaluate("//comment()", document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null)
 ```
 
-These little one-liners are the start of manual web recon — you'll formalise this in Path 07.
+These little one-liners are the start of manual web recon — you'll formalise this in Path 11.
 
 ## Disabling things to see what breaks
 

@@ -103,7 +103,7 @@ flowchart LR
     style Wire fill:#152131,color:#E9EEF3,stroke:#3FB6A8
 ```
 
-Your HTTP request sits *inside* a TCP segment, *inside* an IP packet, *inside* an Ethernet frame — like a letter inside an envelope inside a mailbag inside a truck. **Wireshark** (Path 08) peels these apart for you and it's genuinely magical to see the first time.
+Your HTTP request sits *inside* a TCP segment, *inside* an IP packet, *inside* an Ethernet frame — like a letter inside an envelope inside a mailbag inside a truck. **Wireshark** (Path 12) peels these apart for you and it's genuinely magical to see the first time.
 
 ## MTU and fragmentation — when a packet is too big
 
@@ -136,7 +136,7 @@ If one packet gets lost on the way, does the whole message need re-sending?
 
 ## 🧪 Lab — See encapsulation in action
 
-You'll do this properly with Wireshark in Path 08, but a taste now:
+You'll do this properly with Wireshark in Path 12, but a taste now:
 
 1. On Linux/Mac, run:
    ```bash

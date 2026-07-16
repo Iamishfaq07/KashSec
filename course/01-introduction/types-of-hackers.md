@@ -66,15 +66,15 @@ The hat system is a useful simplification, but you'll encounter several more spe
 
 - **Script kiddie** — someone with limited technical skill who runs pre-built attack tools written by others, often without fully understanding how they work. Not a skill level to aspire to, but a genuinely common starting point many professionals honestly admit to — the difference is whether you keep learning *why* the tools work, which this entire course is built around.
 - **Hacktivist** — an attacker motivated by political or social causes rather than money, defacing websites or leaking data to make a statement. Legally, hacktivism is treated the same as any other unauthorized access, regardless of motive.
-- **State-sponsored actor / APT (Advanced Persistent Threat)** — hackers working for or on behalf of a national government, typically extremely well-resourced, patient, and focused on long-term espionage or sabotage rather than quick financial gain. "Persistent" is the key word — these groups often maintain covert access to a target network for months or years before being discovered, referenced again in Path 06's attackers and kill chain lesson.
+- **State-sponsored actor / APT (Advanced Persistent Threat)** — hackers working for or on behalf of a national government, typically extremely well-resourced, patient, and focused on long-term espionage or sabotage rather than quick financial gain. "Persistent" is the key word — these groups often maintain covert access to a target network for months or years before being discovered, referenced again in Path 10's attackers and kill chain lesson.
 
 ## Red team, blue team, and purple team — a preview
 
-You'll see these three terms constantly once you reach Path 11's advanced material, so it's worth planting the vocabulary now:
+You'll see these three terms constantly once you reach Path 16's advanced material, so it's worth planting the vocabulary now:
 
 - **Red team** — plays the attacker's role, testing an organization's defenses through realistic, often prolonged simulated attacks (broader in scope and duration than a typical pentest engagement).
 - **Blue team** — plays the defender's role, monitoring, detecting, and responding to those simulated (or real) attacks.
-- **Purple team** — not a separate group of people, but a *collaborative approach* where red and blue teams actively share findings with each other during an engagement, specifically to improve detection faster than either working in isolation would — Path 11 has a dedicated purple teaming lab built around exactly this idea.
+- **Purple team** — not a separate group of people, but a *collaborative approach* where red and blue teams actively share findings with each other during an engagement, specifically to improve detection faster than either working in isolation would — Path 16 has a dedicated purple teaming lab built around exactly this idea.
 
 ## The jobs you can aim for
 
@@ -98,7 +98,7 @@ flowchart LR
     style Offense fill:#152131,color:#EFA43A,stroke:#213043
 ```
 
-Let's meet each role briefly. You'll see the full career details in the **[Careers page](#/careers)** and in the roadmap at the end of Paths 07, 09, and 10.
+Let's meet each role briefly. You'll see the full career details in the **[Careers page](#/careers)** and in the roadmap at the end of Paths 11, 09, and 10.
 
 ### SOC Analyst
 **SOC** stands for **Security Operations Centre** — a kind of security control room. These analysts watch alerts and network activity in real time, spot attacks as they happen, and respond.
@@ -111,22 +111,22 @@ SOC Analyst is one of the most common **first jobs** in security. Entry-friendly
 Paid to legally break into a company's systems, then write a report explaining exactly how, so the holes can be closed. Very hands-on, offensive, and hands-on-keyboard.
 
 ### Bug Bounty Hunter
-An independent hacker who finds flaws in companies' websites through official programs and earns a cash reward for each valid one. Work from home, on your own schedule, for companies worldwide. **Path 10** covers this in depth.
+An independent hacker who finds flaws in companies' websites through official programs and earns a cash reward for each valid one. Work from home, on your own schedule, for companies worldwide. **Path 15** covers this in depth.
 
 ### AppSec (Application Security) Engineer
 Works alongside software developers to build safe software from the start, so bugs never ship. Great if you also enjoy building things.
 
 ### Cloud Security Engineer
-Secures the huge systems companies run on cloud services (Amazon, Microsoft, Google). Fast-growing and in high demand. Path 11 covers this.
+Secures the huge systems companies run on cloud services (Amazon, Microsoft, Google). Fast-growing and in high demand. Path 16 covers this.
 
 ### Digital Forensics & Incident Responder (DFIR)
-The detective. When an attack happens, they investigate what the attacker did, how they got in, and how to recover. Path 11 covers this too.
+The detective. When an attack happens, they investigate what the attacker did, how they got in, and how to recover. Path 16 covers this too.
 
 ### GRC / Security Analyst
 **Governance, Risk & Compliance** — the strategic side: managing risk, writing policy, making sure the organisation meets security standards. Great for people who love organisation and structured thinking.
 
 ### AI Red Teamer *(new frontier)*
-Adversarially tests AI systems (like ChatGPT-style products) for safety and security flaws. Path 12 covers this brand-new field.
+Adversarially tests AI systems (like ChatGPT-style products) for safety and security flaws. Path 18 covers this brand-new field.
 
 ## The rough salary shape (just so you know)
 

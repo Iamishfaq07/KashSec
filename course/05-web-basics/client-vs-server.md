@@ -37,7 +37,7 @@ flowchart LR
 The user controls the browser. They can:
 
 - Open DevTools and change any value on the page.
-- Intercept and modify every request with a proxy (Burp Suite — Path 07).
+- Intercept and modify every request with a proxy (Burp Suite — Path 11).
 - Skip your JavaScript entirely and craft a raw HTTP request in `curl` or Python.
 - Replay old requests, tamper with cookies, remove headers.
 
@@ -127,7 +127,7 @@ That fourth row is the security boundary. Everything protecting your users must 
 
 Modern apps have a JavaScript UI that calls JSON APIs on the server. Attackers skip your beautiful UI entirely and hit the API directly. They'll find endpoints your UI doesn't even *use* — old ones, admin ones, forgotten ones.
 
-That's why in Path 10 (Bug Bounty) recon focuses heavily on **enumerating APIs**, not just clicking through the UI.
+That's why in Path 15 (Bug Bounty) recon focuses heavily on **enumerating APIs**, not just clicking through the UI.
 
 ## Cases where the browser IS the target
 
@@ -138,7 +138,7 @@ There's a whole class of attacks where the *client* is the victim, not the serve
 - **Clickjacking** — attacker embeds your page in a hidden frame and hijacks clicks.
 - **Malicious extensions / supply-chain compromised JS** — attacker owns the client via a script you unknowingly loaded.
 
-For these, the *server* is well-behaved; the *browser* is the battleground. You'll defend with headers like CSP, X-Frame-Options, and cookie flags. All covered in Path 07.
+For these, the *server* is well-behaved; the *browser* is the battleground. You'll defend with headers like CSP, X-Frame-Options, and cookie flags. All covered in Path 11.
 
 ## Server-side vs client-side rendering — quick note
 
@@ -151,7 +151,7 @@ Both have plenty of bugs — the *shape* just differs.
 
 ## Mobile apps and desktop clients — the same rule, less obvious
 
-It's tempting to think "client vs server" is only about web browsers, but the exact same rule applies to a mobile app talking to an API, or a desktop client talking to a backend. Path 15's mobile security material covers this directly: a mobile app is just as fully in the attacker's control as a browser is — they can decompile it, intercept its traffic with a proxy, and send whatever requests they want directly to the API, completely bypassing the app's own UI and its client-side checks. The lesson generalises far beyond "web pages": **any code running on a device you don't control is a client, and the server must never trust it.**
+It's tempting to think "client vs server" is only about web browsers, but the exact same rule applies to a mobile app talking to an API, or a desktop client talking to a backend. Path 13's mobile security material covers this directly: a mobile app is just as fully in the attacker's control as a browser is — they can decompile it, intercept its traffic with a proxy, and send whatever requests they want directly to the API, completely bypassing the app's own UI and its client-side checks. The lesson generalises far beyond "web pages": **any code running on a device you don't control is a client, and the server must never trust it.**
 
 ## 🧪 Lab — Change reality in your own browser
 

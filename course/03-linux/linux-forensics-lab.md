@@ -1,6 +1,6 @@
 # Linux Forensics Basics Lab
 
-This lab is a first, gentler pass at the same skill Path 11's DFIR Lab covers in depth later: investigating a Linux system for signs of compromise. Everything here uses only commands built into virtually every Linux system — no special tools required.
+This lab is a first, gentler pass at the same skill Path 16's DFIR Lab covers in depth later: investigating a Linux system for signs of compromise. Everything here uses only commands built into virtually every Linux system — no special tools required.
 
 ## Tasks
 
@@ -35,7 +35,7 @@ This lab is a first, gentler pass at the same skill Path 11's DFIR Lab covers in
    sudo crontab -l -u root           # root's scheduled jobs
    ls -la /etc/cron.d/ /etc/cron.daily/
    ```
-   An unfamiliar entry here — especially one downloading and executing something from a remote URL — is a strong persistence indicator, directly echoing the living-off-the-land pattern from Path 11's threat hunting lab.
+   An unfamiliar entry here — especially one downloading and executing something from a remote URL — is a strong persistence indicator, directly echoing the living-off-the-land pattern from Path 16's threat hunting lab.
 6. **Check shell history for command evidence.** `cat ~/.bash_history` (or the equivalent for the shell in use) shows every command a user has typed — genuinely revealing during an investigation, though be aware a careful attacker may have cleared or disabled this file, which is itself a suspicious finding worth noting.
 
 :::tip Build a mental baseline first

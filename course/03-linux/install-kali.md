@@ -120,12 +120,12 @@ You'll be asked for your password (the one you'll change next lesson). This take
 
 Kali ships with hundreds of tools pre-installed, organized into categories accessible from its applications menu — worth a brief browse now, even though you won't use most of them for a while:
 
-- **Information Gathering** — recon tools (Path 09), including `nmap`, `theHarvester`.
-- **Web Application Analysis** — Burp Suite, `sqlmap` (Path 07).
-- **Password Attacks** — `hashcat`, `john` (referenced in Path 17's crypto material).
-- **Exploitation Tools** — Metasploit Framework (Path 09).
-- **Sniffing & Spoofing** — Wireshark (Path 08).
-- **Forensics** — Autopsy, Volatility (Path 11's DFIR lab).
+- **Information Gathering** — recon tools (Path 14), including `nmap`, `theHarvester`.
+- **Web Application Analysis** — Burp Suite, `sqlmap` (Path 11).
+- **Password Attacks** — `hashcat`, `john` (referenced in Path 06's crypto material).
+- **Exploitation Tools** — Metasploit Framework (Path 14).
+- **Sniffing & Spoofing** — Wireshark (Path 12).
+- **Forensics** — Autopsy, Volatility (Path 16's DFIR lab).
 
 You'll formally meet most of these tools by name throughout the rest of this course — this browse is just so the menu feels familiar rather than overwhelming the first time you actually need something from it.
 

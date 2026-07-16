@@ -73,7 +73,7 @@ That's it — the lab foundation is built. In the next lesson you'll add Kali.
 
 ## Verify your download — a habit worth starting now
 
-Before installing anything, especially security tooling, it's worth building the habit of verifying a download's integrity using its published **checksum** (referenced conceptually back in Path 17's hashing lesson) — a hash value the official site publishes alongside the download, which you can recompute locally and compare:
+Before installing anything, especially security tooling, it's worth building the habit of verifying a download's integrity using its published **checksum** (referenced conceptually back in Path 06's hashing lesson) — a hash value the official site publishes alongside the download, which you can recompute locally and compare:
 
 ```bash
 # macOS/Linux:
@@ -83,7 +83,7 @@ shasum -a 256 VirtualBox-installer.dmg
 Get-FileHash VirtualBox-installer.exe -Algorithm SHA256
 ```
 
-If your computed hash doesn't match the one published on virtualbox.org, don't install it — the file may have been corrupted in transit or, in a worse case, tampered with somewhere along the way (exactly the supply-chain risk referenced in Path 11's DevSecOps lab). This habit costs 30 seconds and becomes second nature quickly.
+If your computed hash doesn't match the one published on virtualbox.org, don't install it — the file may have been corrupted in transit or, in a worse case, tampered with somewhere along the way (exactly the supply-chain risk referenced in Path 16's DevSecOps lab). This habit costs 30 seconds and becomes second nature quickly.
 
 ## Common installation issues
 

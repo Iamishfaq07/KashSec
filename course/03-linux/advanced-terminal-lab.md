@@ -29,7 +29,7 @@ The earlier lessons in this path got you comfortable navigating and running basi
 6. **Combine `watch` with a status command.** Run `watch -n 2 'ss -tulnp'` to see your machine's open ports refresh automatically every 2 seconds — genuinely useful for observing a service starting up, or watching a target's exposed ports change in real time during a lab exercise.
 
 :::tip Building your own tools starts exactly here
-Every custom recon/automation tool referenced throughout this course (Path 13's portfolio lesson specifically recommends building one) starts as exactly this: a handful of standard Unix tools chained together in a small script. You don't need to learn a "real" programming language first — Path 04 covers Python next, but a huge amount of genuinely useful security tooling is just well-composed bash.
+Every custom recon/automation tool referenced throughout this course (Path 20's portfolio lesson specifically recommends building one) starts as exactly this: a handful of standard Unix tools chained together in a small script. You don't need to learn a "real" programming language first — Path 04 covers Python next, but a huge amount of genuinely useful security tooling is just well-composed bash.
 :::
 
 :::challenge Build a custom recon script

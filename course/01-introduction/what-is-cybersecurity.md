@@ -74,7 +74,7 @@ Let's unpack each one:
 3. **Access — the rules about who can do what.** Making sure only the right people can open the right doors. A surprising number of real breaches are simply *someone getting access they were never supposed to have* — an employee who sees files they shouldn't, or a stranger who slips into an admin account.
 
 :::note THE CIA TRIAD
-A handy shorthand you'll meet in Path 06 is the **CIA triad** — Confidentiality, Integrity, Availability — a more formal way of saying "keep data secret, keep it correct, and keep it available." Just the vocabulary here; we'll unpack it properly later.
+A handy shorthand you'll meet in Path 10 is the **CIA triad** — Confidentiality, Integrity, Availability — a more formal way of saying "keep data secret, keep it correct, and keep it available." Just the vocabulary here; we'll unpack it properly later.
 :::
 
 ## Who are we protecting it from?

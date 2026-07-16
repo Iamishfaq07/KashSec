@@ -104,7 +104,7 @@ In **Path 03** you'll build a safe practice computer *inside* your own machine (
 ### 2. Training platforms
 - **[TryHackMe](https://tryhackme.com)** — guided, beginner-friendly, browser-based labs. Excellent free tier.
 - **[Hack The Box](https://hackthebox.com)** — more advanced, with an "Academy" for structured learning and a "Labs" area for CTF-style machines.
-- **[PortSwigger Web Security Academy](https://portswigger.net/web-security)** — the gold standard for web hacking, entirely free. You'll live here in Path 07.
+- **[PortSwigger Web Security Academy](https://portswigger.net/web-security)** — the gold standard for web hacking, entirely free. You'll live here in Path 11.
 - **[OverTheWire](https://overthewire.org/wargames/)** — classic Linux and networking wargames.
 
 ### 3. Official practice targets
@@ -115,11 +115,11 @@ Some tool authors deliberately provide targets:
 - **`http://testfire.net`** — IBM's altoro mutual test site.
 
 ### 4. Bug bounty programs
-Real companies **publicly invite** hackers to test their sites — and even pay rewards. But you must stay strictly inside the **scope** (the published list of what you're allowed to touch) and the rules. Path 10 covers this in depth.
+Real companies **publicly invite** hackers to test their sites — and even pay rewards. But you must stay strictly inside the **scope** (the published list of what you're allowed to touch) and the rules. Path 15 covers this in depth.
 
 ## What "permission" actually looks like in professional work
 
-Once you move from practice platforms into real, paid engagements (covered in depth in Path 09), permission isn't a casual verbal agreement — it's a formal document called **Rules of Engagement (RoE)**, signed by both the tester and the client, spelling out exactly: which systems are in scope, which testing techniques are and aren't allowed (some clients exclude denial-of-service style tests, for instance), the exact time window testing is authorized for, and emergency contact information if something unexpected happens mid-test. This document is often informally called a **"get out of jail free card"** — it's the tester's actual legal proof of authorization if anything is ever questioned, and no professional engagement should ever begin without one, fully signed, in hand.
+Once you move from practice platforms into real, paid engagements (covered in depth in Path 14), permission isn't a casual verbal agreement — it's a formal document called **Rules of Engagement (RoE)**, signed by both the tester and the client, spelling out exactly: which systems are in scope, which testing techniques are and aren't allowed (some clients exclude denial-of-service style tests, for instance), the exact time window testing is authorized for, and emergency contact information if something unexpected happens mid-test. This document is often informally called a **"get out of jail free card"** — it's the tester's actual legal proof of authorization if anything is ever questioned, and no professional engagement should ever begin without one, fully signed, in hand.
 
 :::tip Verbal permission is not real permission
 Even from someone who genuinely owns the system and genuinely means it, spoken permission ("yeah sure, go ahead and test it") offers you essentially no protection if a dispute arises later — memories differ, and there's no proof. Always get authorization in writing, even for a favor for a friend, and even more so for any professional work.

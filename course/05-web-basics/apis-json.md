@@ -119,11 +119,11 @@ APIs deserve their own OWASP top-10 because they have *specific* recurring bug c
 | **Unrestricted resource consumption** | No rate limit → brute force, credential stuffing. |
 | **Server-side request forgery (SSRF)** | An API endpoint fetches a URL you supply, unfiltered. |
 
-You'll meet each in Path 07. The point today: **APIs are where modern web bugs live, at least as much as the HTML UI.**
+You'll meet each in Path 11. The point today: **APIs are where modern web bugs live, at least as much as the HTML UI.**
 
 ## API versioning and forgotten endpoints
 
-APIs rarely stay static — as apps evolve, developers introduce `/api/v2/...` while `/api/v1/...` often keeps running quietly in the background for older mobile app versions still in the wild. Those old, unmaintained versions are a genuinely rich attack surface: a `v1` endpoint might lack a security fix that was only ever applied to `v2`, or might expose a field that `v2` deliberately hid after a privacy review. This is exactly the kind of thing Path 10's recon material teaches you to hunt for — trying `/api/v1/`, `/api/v0/`, `/api/beta/`, and similar guesses against any API you find, since forgotten versions are consistently one of the highest-value things to check in bug bounty recon.
+APIs rarely stay static — as apps evolve, developers introduce `/api/v2/...` while `/api/v1/...` often keeps running quietly in the background for older mobile app versions still in the wild. Those old, unmaintained versions are a genuinely rich attack surface: a `v1` endpoint might lack a security fix that was only ever applied to `v2`, or might expose a field that `v2` deliberately hid after a privacy review. This is exactly the kind of thing Path 15's recon material teaches you to hunt for — trying `/api/v1/`, `/api/v0/`, `/api/beta/`, and similar guesses against any API you find, since forgotten versions are consistently one of the highest-value things to check in bug bounty recon.
 
 ## Rate limiting and pagination — the practical side
 

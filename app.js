@@ -310,7 +310,51 @@ const PATHS = [
      {n:"8", id:"cookies-sessions-lab", title:"Cookies & Sessions Lab", desc:"Understand how authentication state is managed and attacked."},
      {n:"9", id:"devtools-lab",        title:"Browser DevTools Lab",    desc:"Learn to use your browser as a hacking tool."}
    ]},
-  {n:"06", id:"06-fundamentals", title:"Cybersecurity Fundamentals", level:"Beginner→Intermediate",
+  {n:"06", id:"06-crypto-fundamentals", title:"Cryptography Fundamentals", level:"Beginner",
+   desc:"Crypto concepts get used everywhere in this course — this path teaches them from zero: encoding vs encryption vs hashing, AES, RSA, certificates, and the mistakes that keep breaking real systems.",
+   subs:[
+     {n:"1", id:"what-is-cryptography",          title:"What is cryptography?", desc:"Encoding vs. encryption vs. hashing — the distinction that unlocks everything else."},
+     {n:"2", id:"symmetric-encryption",          title:"Symmetric Encryption", desc:"One shared key, AES, and why ECB mode is a classic mistake."},
+     {n:"3", id:"asymmetric-encryption",         title:"Asymmetric Encryption", desc:"Public/private keys, RSA, hybrid encryption, and digital signatures."},
+     {n:"4", id:"hashing-explained",             title:"Hashing Explained", desc:"SHA-256, why passwords need bcrypt not SHA-256, and salting."},
+     {n:"5", id:"digital-signatures-certificates", title:"Digital Signatures & Certificates", desc:"How the padlock icon actually works, and what it doesn't promise."},
+     {n:"6", id:"common-crypto-mistakes",        title:"Common Crypto Mistakes", desc:"Seven recurring real-world failure patterns, gathered in one place."},
+     {n:"7", id:"crypto-hands-on-lab",           title:"Crypto Hands-On Lab", desc:"CyberChef and OpenSSL — encode, encrypt, hash, and inspect real certificates."}
+   ]},
+  {n:"07", id:"07-windows-security", title:"Windows Security Basics", level:"Beginner",
+   desc:"Path 03 went deep on Linux — this path does the same for Windows: architecture, the Registry, Event Viewer, PowerShell, and a full hardening checklist.",
+   subs:[
+     {n:"1", id:"windows-fundamentals",       title:"Windows Fundamentals for Security", desc:"Architecture, the Registry, and services — Windows' equivalent of Path 03."},
+     {n:"2", id:"windows-security-settings",  title:"Windows Security Settings", desc:"Defender, Firewall, Windows Update, UAC, and BitLocker."},
+     {n:"3", id:"windows-event-viewer",       title:"Windows Event Viewer", desc:"Reading the Security log — Windows' equivalent of auth.log."},
+     {n:"4", id:"windows-user-accounts",      title:"Windows User Accounts & UAC", desc:"Standard vs. admin, least privilege, and account auditing."},
+     {n:"5", id:"windows-command-line-basics", title:"Windows Command Line Basics", desc:"Command Prompt and PowerShell, and why attackers love the latter too."},
+     {n:"6", id:"securing-a-windows-machine", title:"Securing a Windows Machine", desc:"A complete, practical hardening checklist."},
+     {n:"7", id:"windows-security-lab",       title:"Windows Security Lab", desc:"Hands-on on a real Windows VM, start to finish."}
+   ]},
+  {n:"08", id:"08-cloud-basics", title:"Cloud Computing Basics", level:"Beginner",
+   desc:"Path 16 jumps straight into cloud security — this path builds the foundation first: what cloud computing is, storage, networking, IAM, and the shared responsibility model.",
+   subs:[
+     {n:"1", id:"what-is-cloud-computing",    title:"What is Cloud Computing?", desc:"IaaS/PaaS/SaaS, and why this course is itself a cloud example."},
+     {n:"2", id:"cloud-providers-overview",   title:"Cloud Providers Overview", desc:"AWS, Azure, GCP — the same concepts, different names."},
+     {n:"3", id:"cloud-storage-basics",       title:"Cloud Storage Basics", desc:"Buckets, objects, and why misconfigured storage is a top real-world breach cause."},
+     {n:"4", id:"cloud-networking-basics",    title:"Cloud Networking Basics", desc:"VPCs, security groups, and the instance metadata service, explained fully."},
+     {n:"5", id:"cloud-identity-access",      title:"Cloud Identity & Access Management", desc:"IAM roles, least privilege, and why leaked keys are a leading breach cause."},
+     {n:"6", id:"shared-responsibility-model", title:"The Shared Responsibility Model", desc:"Where the provider's job ends and yours begins."},
+     {n:"7", id:"cloud-basics-lab",           title:"Cloud Basics Hands-On Lab", desc:"A real free-tier account, start to finish — prep for Path 16's flAWS lab."}
+   ]},
+  {n:"09", id:"09-digital-privacy", title:"Digital Privacy & Personal Security", level:"Beginner",
+   desc:"A full path on protecting yourself, not just systems — your digital footprint, VPNs, browser tracking, secure messaging, identity theft, and a complete personal security audit.",
+   subs:[
+     {n:"1", id:"digital-footprint",          title:"Your Digital Footprint", desc:"What you leave behind online, and why it enables spear phishing."},
+     {n:"2", id:"vpns-explained",             title:"VPNs Explained", desc:"What a VPN genuinely protects against — and what it doesn't."},
+     {n:"3", id:"browser-privacy",            title:"Browser Privacy", desc:"Third-party cookies, fingerprinting, and why incognito mode isn't a privacy tool."},
+     {n:"4", id:"secure-communications",      title:"Secure Communications", desc:"End-to-end encryption vs. encrypted-in-transit, and what metadata still reveals."},
+     {n:"5", id:"identity-theft-protection",  title:"Identity Theft Protection", desc:"Credit freezes, monitoring, and a concrete response checklist."},
+     {n:"6", id:"privacy-settings-audit",     title:"Privacy Settings Audit", desc:"A structured, repeatable audit of your real accounts."},
+     {n:"7", id:"personal-security-lab",      title:"Personal Security Capstone Lab", desc:"A complete personal security review, start to finish."}
+   ]},
+  {n:"10", id:"10-fundamentals", title:"Cybersecurity Fundamentals", level:"Beginner→Intermediate",
    desc:"CIA triad, risk, malware, hashing, phishing, MFA, frameworks.",
    subs:[
      {n:"1", id:"cia-triad",           title:"The CIA triad",           desc:"Confidentiality, Integrity, Availability — the field's core."},
@@ -324,7 +368,7 @@ const PATHS = [
      {n:"9", id:"risk-assessment-lab", title:"Risk Assessment Lab",     desc:"Practice thinking like a risk analyst."},
      {n:"10", id:"social-engineering-lab", title:"Social Engineering Lab", desc:"Understand how attackers manipulate people."}
    ]},
-  {n:"07", id:"07-web-security", title:"Web Security & Hacking", level:"Intermediate",
+  {n:"11", id:"11-web-security", title:"Web Security & Hacking", level:"Intermediate",
    desc:"OWASP Top 10, Burp, IDOR, XSS, SQLi, command injection, SSRF, JWT.",
    subs:[
      {n:"1", id:"owasp-top-10",        title:"The OWASP Top 10",        desc:"The web hacker's shared checklist, in plain words."},
@@ -341,7 +385,7 @@ const PATHS = [
      {n:"12", id:"ssrf-jwt-lab",       title:"SSRF & JWT Lab",          desc:"Practice two important modern web attacks."},
      {n:"13", id:"xss-practical-lab",  title:"XSS Practical Lab",       desc:"Learn to find and exploit Cross-Site Scripting safely."}
    ]},
-  {n:"08", id:"08-network-security", title:"Network Security", level:"Intermediate",
+  {n:"12", id:"12-network-security", title:"Network Security", level:"Intermediate",
    desc:"Nmap, Wireshark, firewalls, VPNs, IDS/IPS, Wi-Fi attacks, MITM.",
    subs:[
      {n:"1", id:"why-netsec",          title:"Why network security matters", desc:"Mapping, watching, filtering — the three activities."},
@@ -355,7 +399,20 @@ const PATHS = [
      {n:"9", id:"nmap-advanced-lab",   title:"Advanced Nmap Lab",       desc:"Master network scanning like a professional."},
      {n:"10", id:"wireshark-advanced-lab", title:"Advanced Wireshark Lab", desc:"Go deeper with packet analysis."}
    ]},
-  {n:"09", id:"09-ethical-hacking", title:"Ethical Hacking", level:"Intermediate→Advanced",
+  {n:"13", id:"13-mobile-security", title:"Mobile App Security", level:"Intermediate→Advanced",
+   desc:"Android & iOS security from the ground up — APK analysis, insecure storage, traffic interception, certificate pinning bypass, and exported component vulnerabilities.",
+   subs:[
+     {n:"1", id:"mobile-security-fundamentals", title:"Mobile Security Fundamentals", desc:"Sandboxing, permissions, and how Android/iOS differ."},
+     {n:"2", id:"mobile-testing-lab-setup",     title:"Setting Up a Mobile Testing Lab", desc:"Emulator, ADB, Burp, and root access — all wired together."},
+     {n:"3", id:"owasp-mobile-top-10",          title:"OWASP Mobile Top 10", desc:"The shared checklist for mobile application security."},
+     {n:"4", id:"android-apk-analysis",         title:"Android APK Analysis", desc:"Decompile and read an app's code without ever running it."},
+     {n:"5", id:"insecure-data-storage",        title:"Insecure Data Storage", desc:"The most common real-world mobile finding, hands-on."},
+     {n:"6", id:"intercepting-mobile-traffic",  title:"Intercepting Mobile Traffic", desc:"Certificate pinning, and bypassing it with Frida."},
+     {n:"7", id:"ios-security-basics",          title:"iOS App Security Basics", desc:"IPA structure, ATS, and the Keychain."},
+     {n:"8", id:"mobile-privesc-root-detection", title:"Mobile Privilege Escalation & Root Detection", desc:"Root/jailbreak detection bypass and exported component attacks."},
+     {n:"9", id:"mobile-security-lab",          title:"Mobile Security Capstone Lab", desc:"A full assessment against a real vulnerable app."}
+   ]},
+  {n:"14", id:"14-ethical-hacking", title:"Ethical Hacking", level:"Intermediate→Advanced",
    desc:"The 5-phase methodology, from reconnaissance through reporting.",
    subs:[
      {n:"1", id:"what-is-eh",          title:"What ethical hacking really is", desc:"Same skills, opposite purpose. The RoE and scope."},
@@ -371,7 +428,7 @@ const PATHS = [
      {n:"11", id:"practical-recon-lab", title:"Practical Reconnaissance Lab", desc:"Hands-on OSINT and reconnaissance practice."},
      {n:"12", id:"reporting-lab",      title:"Reporting Lab",           desc:"Learn to write professional penetration test reports."}
    ]},
-  {n:"10", id:"10-bug-bounty", title:"Bug Bounty", level:"Intermediate→Advanced",
+  {n:"15", id:"15-bug-bounty", title:"Bug Bounty", level:"Intermediate→Advanced",
    desc:"Programs, recon pipelines, hunting IDOR & logic bugs, reports that pay.",
    subs:[
      {n:"1", id:"what-is-bb",          title:"What is a bug bounty?",   desc:"Platforms, scope, and responsible disclosure."},
@@ -386,7 +443,7 @@ const PATHS = [
      {n:"10", id:"logic-bug-hunting-lab", title:"Logic Bug Hunting Lab", desc:"Practice finding business logic vulnerabilities."},
      {n:"11", id:"recon-pipeline-lab", title:"Recon Pipeline Lab",      desc:"Build and run a real reconnaissance pipeline."}
    ]},
-  {n:"11", id:"11-advanced", title:"Advanced Cyber Topics", level:"Advanced",
+  {n:"16", id:"16-advanced", title:"Advanced Cyber Topics", level:"Advanced",
    desc:"Linux/Windows privesc, Active Directory, cloud, containers, malware, DFIR.",
    subs:[
      {n:"1", id:"linux-privesc",       title:"Linux privilege escalation", desc:"GTFOBins, SUID, capabilities, LinPEAS."},
@@ -408,7 +465,20 @@ const PATHS = [
      {n:"17", id:"threat-modeling-lab", title:"Threat Modeling Lab",    desc:"Learn to systematically find risks before attackers do."},
      {n:"18", id:"windows-privesc-lab", title:"Windows Privilege Escalation Lab", desc:"Practice common Windows privesc techniques."}
    ]},
-  {n:"12", id:"12-ai-security", title:"AI & AI Security", level:"Advanced",
+  {n:"17", id:"17-malware-re", title:"Malware & Reverse Engineering", level:"Advanced",
+   desc:"A deep dive into reverse engineering and malware analysis — PE internals, Ghidra disassembly, dynamic analysis, unpacking, and writing YARA detection rules.",
+   subs:[
+     {n:"1", id:"re-fundamentals",            title:"Reverse Engineering Fundamentals", desc:"What RE is, assembly basics, and the core toolset."},
+     {n:"2", id:"malware-families-deep-dive", title:"Malware Families Deep Dive", desc:"Ransomware crypto, rootkits, worms, and botnet C2, mechanically explained."},
+     {n:"3", id:"static-analysis-deep-dive",  title:"Static Analysis Deep Dive", desc:"PE format internals, imports, and entropy analysis."},
+     {n:"4", id:"disassembly-with-ghidra",    title:"Disassembly with Ghidra", desc:"Hands-on: navigating, decompiling, and renaming your way through a real binary."},
+     {n:"5", id:"dynamic-analysis-sandboxing", title:"Dynamic Analysis & Sandboxing", desc:"Automated sandboxes, ProcMon, and combining static + dynamic workflow."},
+     {n:"6", id:"unpacking-and-obfuscation",  title:"Unpacking & Obfuscation", desc:"What packers do, and how to get past them — including by hand."},
+     {n:"7", id:"yara-rules-and-detection",   title:"YARA Rules & Detection", desc:"Turn one analysis into scalable, automated detection."},
+     {n:"8", id:"anti-analysis-techniques",   title:"Anti-Analysis Techniques", desc:"Anti-debug, anti-VM, anti-sandbox — and how to see past each."},
+     {n:"9", id:"malware-re-capstone-lab",    title:"Malware & RE Capstone Lab", desc:"A full analysis pipeline against a real sample, start to finish."}
+   ]},
+  {n:"18", id:"18-ai-security", title:"AI & AI Security", level:"Advanced",
    desc:"How LLMs work, prompt injection, OWASP LLM Top 10, AI red teaming.",
    subs:[
      {n:"1", id:"how-llms-work",       title:"How LLMs actually work",  desc:"A friendly primer without the mystique."},
@@ -427,18 +497,7 @@ const PATHS = [
      {n:"14", id:"practical-ai-labs",  title:"Practical AI Red Teaming Labs", desc:"Hands-on challenges you can do safely with free or low-cost LLMs."},
      {n:"15", id:"securing-llm-apps",  title:"Securing LLM Applications", desc:"How to build and deploy LLMs more securely."}
    ]},
-  {n:"13", id:"13-career-prep", title:"Career Prep", level:"All levels",
-   desc:"Resume, portfolio, interviews, and the job search — turn your skills into an offer.",
-   subs:[
-     {n:"1", id:"building-resume",       title:"Building your security resume", desc:"Your resume is your first impression."},
-     {n:"2", id:"certifications-roadmap", title:"Certifications that actually help", desc:"Not all certs are equal — focus on the right ones at the right time."},
-     {n:"3", id:"github-portfolio",      title:"Building projects & GitHub portfolio", desc:"Projects beat certificates alone."},
-     {n:"4", id:"job-search",            title:"Job search strategy",     desc:"Where and how to find security jobs effectively."},
-     {n:"5", id:"interview-prep",        title:"Interview preparation",   desc:"Technical and soft skills that win jobs."},
-     {n:"6", id:"networking-community",  title:"Networking & community",  desc:"Connections often matter as much as skills."},
-     {n:"7", id:"first-90-days",         title:"Your first 90 days in a security job", desc:"How to succeed once you land the role."}
-   ]},
-  {n:"14", id:"14-ctf-challenges", title:"CTF Challenges", level:"All levels",
+  {n:"19", id:"19-ctf-challenges", title:"CTF Challenges", level:"All levels",
    desc:"A standalone Capture The Flag zone — self-contained hands-on puzzles across Web, Crypto, Forensics, Misc, and Linux privesc. No new material, just applying what you've learned under pressure.",
    subs:[
      {n:"1", id:"ctf-briefing",              title:"Welcome to the CTF Zone", desc:"Flag format, categories, and how to actually approach a challenge."},
@@ -450,87 +509,29 @@ const PATHS = [
      {n:"7", id:"crypto-xor-cipher",         title:"Crypto — Break the XOR Cipher", desc:"A real known-plaintext attack on repeating-key XOR. Hard."},
      {n:"8", id:"linux-privesc-challenge",   title:"Linux — The Privesc Puzzle", desc:"Turn a passwordless sudo rule into a root shell. Medium."}
    ]},
-  {n:"15", id:"15-mobile-security", title:"Mobile App Security", level:"Intermediate→Advanced",
-   desc:"Android & iOS security from the ground up — APK analysis, insecure storage, traffic interception, certificate pinning bypass, and exported component vulnerabilities.",
+  {n:"20", id:"20-career-prep", title:"Career Prep", level:"All levels",
+   desc:"Resume, portfolio, interviews, and the job search — turn your skills into an offer.",
    subs:[
-     {n:"1", id:"mobile-security-fundamentals", title:"Mobile Security Fundamentals", desc:"Sandboxing, permissions, and how Android/iOS differ."},
-     {n:"2", id:"mobile-testing-lab-setup",     title:"Setting Up a Mobile Testing Lab", desc:"Emulator, ADB, Burp, and root access — all wired together."},
-     {n:"3", id:"owasp-mobile-top-10",          title:"OWASP Mobile Top 10", desc:"The shared checklist for mobile application security."},
-     {n:"4", id:"android-apk-analysis",         title:"Android APK Analysis", desc:"Decompile and read an app's code without ever running it."},
-     {n:"5", id:"insecure-data-storage",        title:"Insecure Data Storage", desc:"The most common real-world mobile finding, hands-on."},
-     {n:"6", id:"intercepting-mobile-traffic",  title:"Intercepting Mobile Traffic", desc:"Certificate pinning, and bypassing it with Frida."},
-     {n:"7", id:"ios-security-basics",          title:"iOS App Security Basics", desc:"IPA structure, ATS, and the Keychain."},
-     {n:"8", id:"mobile-privesc-root-detection", title:"Mobile Privilege Escalation & Root Detection", desc:"Root/jailbreak detection bypass and exported component attacks."},
-     {n:"9", id:"mobile-security-lab",          title:"Mobile Security Capstone Lab", desc:"A full assessment against a real vulnerable app."}
-   ]},
-  {n:"16", id:"16-malware-re", title:"Malware & Reverse Engineering", level:"Advanced",
-   desc:"A deep dive into reverse engineering and malware analysis — PE internals, Ghidra disassembly, dynamic analysis, unpacking, and writing YARA detection rules.",
-   subs:[
-     {n:"1", id:"re-fundamentals",            title:"Reverse Engineering Fundamentals", desc:"What RE is, assembly basics, and the core toolset."},
-     {n:"2", id:"malware-families-deep-dive", title:"Malware Families Deep Dive", desc:"Ransomware crypto, rootkits, worms, and botnet C2, mechanically explained."},
-     {n:"3", id:"static-analysis-deep-dive",  title:"Static Analysis Deep Dive", desc:"PE format internals, imports, and entropy analysis."},
-     {n:"4", id:"disassembly-with-ghidra",    title:"Disassembly with Ghidra", desc:"Hands-on: navigating, decompiling, and renaming your way through a real binary."},
-     {n:"5", id:"dynamic-analysis-sandboxing", title:"Dynamic Analysis & Sandboxing", desc:"Automated sandboxes, ProcMon, and combining static + dynamic workflow."},
-     {n:"6", id:"unpacking-and-obfuscation",  title:"Unpacking & Obfuscation", desc:"What packers do, and how to get past them — including by hand."},
-     {n:"7", id:"yara-rules-and-detection",   title:"YARA Rules & Detection", desc:"Turn one analysis into scalable, automated detection."},
-     {n:"8", id:"anti-analysis-techniques",   title:"Anti-Analysis Techniques", desc:"Anti-debug, anti-VM, anti-sandbox — and how to see past each."},
-     {n:"9", id:"malware-re-capstone-lab",    title:"Malware & RE Capstone Lab", desc:"A full analysis pipeline against a real sample, start to finish."}
-   ]},
-  {n:"17", id:"17-crypto-fundamentals", title:"Cryptography Fundamentals", level:"Beginner",
-   desc:"Crypto concepts get used everywhere in this course — this path teaches them from zero: encoding vs encryption vs hashing, AES, RSA, certificates, and the mistakes that keep breaking real systems.",
-   subs:[
-     {n:"1", id:"what-is-cryptography",          title:"What is cryptography?", desc:"Encoding vs. encryption vs. hashing — the distinction that unlocks everything else."},
-     {n:"2", id:"symmetric-encryption",          title:"Symmetric Encryption", desc:"One shared key, AES, and why ECB mode is a classic mistake."},
-     {n:"3", id:"asymmetric-encryption",         title:"Asymmetric Encryption", desc:"Public/private keys, RSA, hybrid encryption, and digital signatures."},
-     {n:"4", id:"hashing-explained",             title:"Hashing Explained", desc:"SHA-256, why passwords need bcrypt not SHA-256, and salting."},
-     {n:"5", id:"digital-signatures-certificates", title:"Digital Signatures & Certificates", desc:"How the padlock icon actually works, and what it doesn't promise."},
-     {n:"6", id:"common-crypto-mistakes",        title:"Common Crypto Mistakes", desc:"Seven recurring real-world failure patterns, gathered in one place."},
-     {n:"7", id:"crypto-hands-on-lab",           title:"Crypto Hands-On Lab", desc:"CyberChef and OpenSSL — encode, encrypt, hash, and inspect real certificates."}
-   ]},
-  {n:"18", id:"18-windows-security", title:"Windows Security Basics", level:"Beginner",
-   desc:"Path 03 went deep on Linux — this path does the same for Windows: architecture, the Registry, Event Viewer, PowerShell, and a full hardening checklist.",
-   subs:[
-     {n:"1", id:"windows-fundamentals",       title:"Windows Fundamentals for Security", desc:"Architecture, the Registry, and services — Windows' equivalent of Path 03."},
-     {n:"2", id:"windows-security-settings",  title:"Windows Security Settings", desc:"Defender, Firewall, Windows Update, UAC, and BitLocker."},
-     {n:"3", id:"windows-event-viewer",       title:"Windows Event Viewer", desc:"Reading the Security log — Windows' equivalent of auth.log."},
-     {n:"4", id:"windows-user-accounts",      title:"Windows User Accounts & UAC", desc:"Standard vs. admin, least privilege, and account auditing."},
-     {n:"5", id:"windows-command-line-basics", title:"Windows Command Line Basics", desc:"Command Prompt and PowerShell, and why attackers love the latter too."},
-     {n:"6", id:"securing-a-windows-machine", title:"Securing a Windows Machine", desc:"A complete, practical hardening checklist."},
-     {n:"7", id:"windows-security-lab",       title:"Windows Security Lab", desc:"Hands-on on a real Windows VM, start to finish."}
-   ]},
-  {n:"19", id:"19-cloud-basics", title:"Cloud Computing Basics", level:"Beginner",
-   desc:"Path 11 jumps straight into cloud security — this path builds the foundation first: what cloud computing is, storage, networking, IAM, and the shared responsibility model.",
-   subs:[
-     {n:"1", id:"what-is-cloud-computing",    title:"What is Cloud Computing?", desc:"IaaS/PaaS/SaaS, and why this course is itself a cloud example."},
-     {n:"2", id:"cloud-providers-overview",   title:"Cloud Providers Overview", desc:"AWS, Azure, GCP — the same concepts, different names."},
-     {n:"3", id:"cloud-storage-basics",       title:"Cloud Storage Basics", desc:"Buckets, objects, and why misconfigured storage is a top real-world breach cause."},
-     {n:"4", id:"cloud-networking-basics",    title:"Cloud Networking Basics", desc:"VPCs, security groups, and the instance metadata service, explained fully."},
-     {n:"5", id:"cloud-identity-access",      title:"Cloud Identity & Access Management", desc:"IAM roles, least privilege, and why leaked keys are a leading breach cause."},
-     {n:"6", id:"shared-responsibility-model", title:"The Shared Responsibility Model", desc:"Where the provider's job ends and yours begins."},
-     {n:"7", id:"cloud-basics-lab",           title:"Cloud Basics Hands-On Lab", desc:"A real free-tier account, start to finish — prep for Path 11's flAWS lab."}
-   ]},
-  {n:"20", id:"20-digital-privacy", title:"Digital Privacy & Personal Security", level:"Beginner",
-   desc:"A full path on protecting yourself, not just systems — your digital footprint, VPNs, browser tracking, secure messaging, identity theft, and a complete personal security audit.",
-   subs:[
-     {n:"1", id:"digital-footprint",          title:"Your Digital Footprint", desc:"What you leave behind online, and why it enables spear phishing."},
-     {n:"2", id:"vpns-explained",             title:"VPNs Explained", desc:"What a VPN genuinely protects against — and what it doesn't."},
-     {n:"3", id:"browser-privacy",            title:"Browser Privacy", desc:"Third-party cookies, fingerprinting, and why incognito mode isn't a privacy tool."},
-     {n:"4", id:"secure-communications",      title:"Secure Communications", desc:"End-to-end encryption vs. encrypted-in-transit, and what metadata still reveals."},
-     {n:"5", id:"identity-theft-protection",  title:"Identity Theft Protection", desc:"Credit freezes, monitoring, and a concrete response checklist."},
-     {n:"6", id:"privacy-settings-audit",     title:"Privacy Settings Audit", desc:"A structured, repeatable audit of your real accounts."},
-     {n:"7", id:"personal-security-lab",      title:"Personal Security Capstone Lab", desc:"A complete personal security review, start to finish."}
+     {n:"1", id:"building-resume",       title:"Building your security resume", desc:"Your resume is your first impression."},
+     {n:"2", id:"certifications-roadmap", title:"Certifications that actually help", desc:"Not all certs are equal — focus on the right ones at the right time."},
+     {n:"3", id:"github-portfolio",      title:"Building projects & GitHub portfolio", desc:"Projects beat certificates alone."},
+     {n:"4", id:"job-search",            title:"Job search strategy",     desc:"Where and how to find security jobs effectively."},
+     {n:"5", id:"interview-prep",        title:"Interview preparation",   desc:"Technical and soft skills that win jobs."},
+     {n:"6", id:"networking-community",  title:"Networking & community",  desc:"Connections often matter as much as skills."},
+     {n:"7", id:"first-90-days",         title:"Your first 90 days in a security job", desc:"How to succeed once you land the role."}
    ]}
+
 ];
 
 const CAREERS = [
-  {role:"SOC Analyst",             desc:"Watch for and respond to attacks in real time.", follow:"02 → 06 → 08"},
-  {role:"Penetration Tester",      desc:"Legally break into systems and report how.",     follow:"03 → 09 → 07"},
-  {role:"AppSec Engineer",         desc:"Help developers ship safe software.",             follow:"04 → 05 → 07"},
-  {role:"Bug Bounty Hunter",       desc:"Find bugs in real companies for cash rewards.",   follow:"05 → 07 → 10"},
-  {role:"Cloud Security Engineer", desc:"Secure AWS, Azure, and Google Cloud.",            follow:"06 → 11"},
-  {role:"Digital Forensics / IR",  desc:"Investigate incidents and evict attackers.",      follow:"03 → 08 → 11"},
-  {role:"AI Red Teamer",           desc:"Adversarially test AI systems for safety.",       follow:"05 → 07 → 12"},
-  {role:"Security / GRC Analyst",  desc:"Manage risk, policy, and compliance.",             follow:"01 → 06"}
+  {role:"SOC Analyst",             desc:"Watch for and respond to attacks in real time.", follow:"02 → 10 → 12"},
+  {role:"Penetration Tester",      desc:"Legally break into systems and report how.",     follow:"03 → 14 → 11"},
+  {role:"AppSec Engineer",         desc:"Help developers ship safe software.",             follow:"04 → 05 → 11"},
+  {role:"Bug Bounty Hunter",       desc:"Find bugs in real companies for cash rewards.",   follow:"05 → 11 → 15"},
+  {role:"Cloud Security Engineer", desc:"Secure AWS, Azure, and Google Cloud.",            follow:"10 → 16"},
+  {role:"Digital Forensics / IR",  desc:"Investigate incidents and evict attackers.",      follow:"03 → 12 → 16"},
+  {role:"AI Red Teamer",           desc:"Adversarially test AI systems for safety.",       follow:"05 → 11 → 18"},
+  {role:"Security / GRC Analyst",  desc:"Manage risk, policy, and compliance.",             follow:"01 → 10"}
 ];
 
 const FAQS = [

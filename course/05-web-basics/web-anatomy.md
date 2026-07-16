@@ -63,7 +63,7 @@ Not every site has all of this — a small blog might just be CDN → single ser
 ## Monolith vs microservices
 
 - **Monolith** — one application does everything (auth, orders, emails, all in one codebase/server). Simpler to reason about; a single bug can expose everything.
-- **Microservices** — many small services, each doing one job, talking over the network (often internal APIs). More resilient to a single bug, but the *internal* network between services becomes its own attack surface (Path 11 covers this in cloud/container contexts).
+- **Microservices** — many small services, each doing one job, talking over the network (often internal APIs). More resilient to a single bug, but the *internal* network between services becomes its own attack surface (Path 16 covers this in cloud/container contexts).
 
 Most companies you'll test are somewhere in between — a big monolith with a few newer microservices bolted on.
 
@@ -84,11 +84,11 @@ Two words that sound similar and get conflated constantly, but mean very differe
 - **Authentication (AuthN)** — *"who are you?"* Logging in, proving identity.
 - **Authorization (AuthZ)** — *"what are you allowed to do?"* Checking permissions on every action.
 
-A huge fraction of real-world bugs are **authorization** failures on systems with *perfectly fine* authentication — you're definitely logged in as yourself, the app just forgot to check whether *you* should see *this* particular resource. That's IDOR (Path 07), and it's one of the most commonly found bugs in bug bounty (Path 10).
+A huge fraction of real-world bugs are **authorization** failures on systems with *perfectly fine* authentication — you're definitely logged in as yourself, the app just forgot to check whether *you* should see *this* particular resource. That's IDOR (Path 11), and it's one of the most commonly found bugs in bug bounty (Path 15).
 
 ## Staging, development, and internal environments
 
-Production isn't the only environment a company runs — most maintain `staging.example.com`, `dev.example.com`, or `internal.example.com` copies of the same application, used for testing changes before they ship to real users. These environments are consistently a rich hunting ground precisely *because* they're treated as less important: weaker passwords, verbose debug error pages left enabled, outdated software versions not yet patched, or sometimes no authentication at all because "no one will find it." Subdomain enumeration (Path 02's DNS lesson, formalised properly in Path 10's recon pipeline) is largely a hunt for exactly these forgotten, lower-guard copies of the real application.
+Production isn't the only environment a company runs — most maintain `staging.example.com`, `dev.example.com`, or `internal.example.com` copies of the same application, used for testing changes before they ship to real users. These environments are consistently a rich hunting ground precisely *because* they're treated as less important: weaker passwords, verbose debug error pages left enabled, outdated software versions not yet patched, or sometimes no authentication at all because "no one will find it." Subdomain enumeration (Path 02's DNS lesson, formalised properly in Path 15's recon pipeline) is largely a hunt for exactly these forgotten, lower-guard copies of the real application.
 
 ## Reading a site's architecture in 5 minutes
 
@@ -108,13 +108,13 @@ curl -s https://example.com/sitemap.xml
 dig example.com
 ```
 
-This exact checklist is the opening move of Path 07's recon lesson and Path 10's bug bounty methodology — you're getting a head start right now.
+This exact checklist is the opening move of Path 11's recon lesson and Path 15's bug bounty methodology — you're getting a head start right now.
 
 ## 🧪 Lab — Architect-sketch three real sites
 
 Pick three websites you use regularly. For each, spend five minutes with the checklist above and sketch (on paper or in a notes app) your best guess at their architecture: CDN? WAF? SSR or SPA? Third parties loaded? Any exposed API docs?
 
-Compare your sketches. You'll likely notice big, well-funded sites have more defensive layers (WAF, CDN, strict CSP) than small ones — a pattern that holds broadly across the industry and matters when you're prioritising targets in Path 10.
+Compare your sketches. You'll likely notice big, well-funded sites have more defensive layers (WAF, CDN, strict CSP) than small ones — a pattern that holds broadly across the industry and matters when you're prioritising targets in Path 15.
 
 :::challenge Test yourself
 A tester finds that Alice, logged in normally, can view Bob's private invoice by changing an ID in the URL. Is this an authentication bug or an authorization bug?
@@ -128,7 +128,7 @@ A tester finds that Alice, logged in normally, can view Bob's private invoice by
 - **Monolith / microservices** — one big app vs many small ones.
 - **SSR / SPA / hybrid** — where rendering happens.
 - **Authentication vs Authorization** — who you are vs what you can do.
-- **IDOR** — the classic authorization failure (full detail in Path 07).
+- **IDOR** — the classic authorization failure (full detail in Path 11).
 
 ## Recap
 
@@ -146,6 +146,6 @@ A tester finds that Alice, logged in normally, can view Bob's private invoice by
 
 ## 🎉 You've finished Path 05
 
-You can now trace a full page load, distinguish HTML/CSS/JS, reason about client vs server trust boundaries, understand cookies and sessions, read and call JSON APIs, navigate DevTools fluently, and sketch the architecture of any real website. This is the complete mental model Path 07 (Web Security) builds directly on top of.
+You can now trace a full page load, distinguish HTML/CSS/JS, reason about client vs server trust boundaries, understand cookies and sessions, read and call JSON APIs, navigate DevTools fluently, and sketch the architecture of any real website. This is the complete mental model Path 11 (Web Security) builds directly on top of.
 
 **Next up →** [Cookies & Sessions Lab](#/lesson/05-web-basics/cookies-sessions-lab)

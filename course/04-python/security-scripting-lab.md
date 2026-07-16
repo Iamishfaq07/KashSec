@@ -1,6 +1,6 @@
 # Security Scripting Lab
 
-This is the capstone lab for Path 04 — turning everything from variables and loops through to the password checker project into genuinely useful security tools, the same category of small custom scripts referenced throughout Path 03's Advanced Terminal Lab and Path 13's portfolio advice.
+This is the capstone lab for Path 04 — turning everything from variables and loops through to the password checker project into genuinely useful security tools, the same category of small custom scripts referenced throughout Path 03's Advanced Terminal Lab and Path 20's portfolio advice.
 
 ## Lab tasks
 
@@ -65,11 +65,11 @@ This is the capstone lab for Path 04 — turning everything from variables and l
 6. **Add rate limiting to your URL checker.** Revisit Task 1's URL status checker and add a small `time.sleep()` delay between requests, per this path's automation lesson — practice the responsible-automation habit now, on your own small script, before it matters on a real authorized engagement.
 
 :::tip Combine what you've built
-Each of these four scripts does one thing well — the real skill, and the direction Path 10's recon pipeline lesson goes next, is chaining small single-purpose tools together into a pipeline, exactly like real tools such as `subfinder → httpx → gau → nuclei` do.
+Each of these four scripts does one thing well — the real skill, and the direction Path 15's recon pipeline lesson goes next, is chaining small single-purpose tools together into a pipeline, exactly like real tools such as `subfinder → httpx → gau → nuclei` do.
 :::
 
 :::challenge Build a combined recon script
-Write one script that takes a domain as input, checks whether it responds on port 80 and 443 using your port-scanning knowledge, and — if it does — fetches the page and prints its `<title>` tag using BeautifulSoup. This "open ports + HTTP title" pattern is a genuinely useful, portfolio-worthy mini recon tool, and a great addition to the GitHub portfolio Path 13 recommends building.
+Write one script that takes a domain as input, checks whether it responds on port 80 and 443 using your port-scanning knowledge, and — if it does — fetches the page and prints its `<title>` tag using BeautifulSoup. This "open ports + HTTP title" pattern is a genuinely useful, portfolio-worthy mini recon tool, and a great addition to the GitHub portfolio Path 20 recommends building.
 :::
 
 ## Key takeaway

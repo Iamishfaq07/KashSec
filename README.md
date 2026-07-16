@@ -7,16 +7,16 @@
 [![Live Site](https://img.shields.io/badge/live-kashsec.academy-EFA43A?style=for-the-badge)](https://kashsec.vercel.app/)
 
 ## What's new
-- **Four new beginner-friendly paths**: **Cryptography Fundamentals** (encoding vs. encryption vs. hashing, from zero), **Windows Security Basics** (Path 03's Linux depth, now for Windows), **Cloud Computing Basics** (the foundation Path 11's cloud security assumes), and **Digital Privacy & Personal Security** (your footprint, VPNs, secure messaging, identity theft)
-- **Path 16 — Malware & Reverse Engineering**: PE internals, hands-on Ghidra disassembly, dynamic analysis and sandboxing, unpacking/obfuscation, and writing YARA detection rules, capped with a full analysis pipeline lab
-- **Path 15 — Mobile App Security**: Android & iOS from the ground up — APK analysis, insecure storage, traffic interception, certificate pinning bypass, and exported component vulnerabilities, capped with a full assessment lab
-- **Path 14 — CTF Challenges**: a standalone Capture The Flag zone with 8 self-contained puzzles across Web, Crypto, Forensics, Misc, and Linux privilege escalation
+- **Four new beginner-friendly paths**: **Cryptography Fundamentals** (encoding vs. encryption vs. hashing, from zero), **Windows Security Basics** (Path 03's Linux depth, now for Windows), **Cloud Computing Basics** (the foundation Path 16's cloud security assumes), and **Digital Privacy & Personal Security** (your footprint, VPNs, secure messaging, identity theft)
+- **Path 17 — Malware & Reverse Engineering**: PE internals, hands-on Ghidra disassembly, dynamic analysis and sandboxing, unpacking/obfuscation, and writing YARA detection rules, capped with a full analysis pipeline lab
+- **Path 13 — Mobile App Security**: Android & iOS from the ground up — APK analysis, insecure storage, traffic interception, certificate pinning bypass, and exported component vulnerabilities, capped with a full assessment lab
+- **Path 19 — CTF Challenges**: a standalone Capture The Flag zone with 8 self-contained puzzles across Web, Crypto, Forensics, Misc, and Linux privilege escalation
 - **Progress tracking, bookmarks & notes** on every lesson, plus an interactive roadmap and a personal progress dashboard
 - **15 path quizzes + a Final Exam**, with a canvas-drawn **certificate of completion** (PNG download, print-to-PDF, LinkedIn share)
 - **14 achievements**, a light/dark **theme toggle**, global **search** (Ctrl/Cmd+K), and "continue where you left off"
 - Optional **cloud sync** — sign in to back up progress across devices; the site works fully without it (see [`SUPABASE_SETUP.md`](./SUPABASE_SETUP.md))
 - **Path 00**: Computer Basics & Security Mindset, now fully expanded for absolute freshers with zero prior exposure
-- **Path 13**: Career Prep — resume, portfolio, interviews, and the job search, now fully expanded
+- **Path 20**: Career Prep — resume, portfolio, interviews, and the job search, now fully expanded
 - ~30 hands-on lab lessons folded into the existing paths (Linux forensics, JWT attacks, cloud misconfig, threat hunting, LLM red-teaming, and more)
 
 ## Quick start
@@ -44,12 +44,12 @@ KashSec/
     │   ├── what-is-a-computer.md
     │   └── ...
     ├── 01-introduction/
-    └── ...13-career-prep/
+    └── ...20-career-prep/
 ```
 
 ## 🗺️ The 21 paths
 
-`00` Computer Basics & Security Mindset · `01` Introduction · `02` Networking · `03` Linux & Operating Systems · `04` Programming & Python · `05` How the Web Works · `06` Cybersecurity Fundamentals · `07` Web Security & Hacking · `08` Network Security · `09` Ethical Hacking · `10` Bug Bounty · `11` Advanced Topics · `12` AI & AI Security · `13` Career Prep · `14` CTF Challenges · `15` Mobile App Security · `16` Malware & Reverse Engineering · `17` Cryptography Fundamentals · `18` Windows Security Basics · `19` Cloud Computing Basics · `20` Digital Privacy & Personal Security
+`00` Computer Basics & Security Mindset · `01` Introduction · `02` Networking · `03` Linux & Operating Systems · `04` Programming & Python · `05` How the Web Works · `06` Cryptography Fundamentals · `07` Windows Security Basics · `08` Cloud Computing Basics · `09` Digital Privacy & Personal Security · `10` Cybersecurity Fundamentals · `11` Web Security & Hacking · `12` Network Security · `13` Mobile App Security · `14` Ethical Hacking · `15` Bug Bounty · `16` Advanced Topics · `17` Malware & Reverse Engineering · `18` AI & AI Security · `19` CTF Challenges · `20` Career Prep
 
 ## ✍️ Writing a lesson
 

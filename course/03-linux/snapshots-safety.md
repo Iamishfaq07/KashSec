@@ -6,7 +6,7 @@ You've got a Kali VM. Before you point it at anything, spend ten minutes on the 
 
 - You'll download and run tools whose behaviour you don't fully understand yet.
 - Some deliberately-vulnerable targets you'll practise on (Metasploitable, DVWA) are *actually* insecure — you don't want them exposed to your real network.
-- Malware analysis (Path 11) genuinely runs live samples.
+- Malware analysis (Path 16) genuinely runs live samples.
 - A misconfigured tool run against the wrong target is a career-ending mistake.
 
 Snapshots and network isolation cost minutes. Not using them can cost days.
@@ -164,7 +164,7 @@ Which VirtualBox network mode puts your VM on your real home LAN alongside your 
 - [Metasploitable 2](https://sourceforge.net/projects/metasploitable/) — a deliberately-vulnerable Linux VM to practise on.
 - [VulnHub](https://www.vulnhub.com/) — dozens more vulnerable VMs.
 - [VirtualBox Networking docs](https://www.virtualbox.org/manual/ch06.html) — the full explanation.
-- [DVWA](https://github.com/digininja/DVWA) — Damn Vulnerable Web App, great for Path 07.
+- [DVWA](https://github.com/digininja/DVWA) — Damn Vulnerable Web App, great for Path 11.
 ???
 
 **Next up →** [Meet the terminal](#/lesson/03-linux/terminal-basics)

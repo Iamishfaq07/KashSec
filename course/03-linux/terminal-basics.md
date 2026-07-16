@@ -65,7 +65,7 @@ echo $PATH
 # /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 ```
 
-The shell checks each folder in that list, in order, until it finds a program matching what you typed. This matters for security in a genuinely concrete way: **PATH hijacking** (referenced in Path 11's Windows privesc lab, and its Linux equivalent) exploits exactly this lookup mechanism — if an attacker can place a malicious file with the same name as a legitimate command somewhere earlier in the PATH search order, the shell runs the attacker's version instead, without you or the calling program necessarily noticing. Environment variables generally (viewable with `env` or `printenv`) store all kinds of configuration the shell and programs read — your default text editor, your home directory location, and dozens of other settings.
+The shell checks each folder in that list, in order, until it finds a program matching what you typed. This matters for security in a genuinely concrete way: **PATH hijacking** (referenced in Path 16's Windows privesc lab, and its Linux equivalent) exploits exactly this lookup mechanism — if an attacker can place a malicious file with the same name as a legitimate command somewhere earlier in the PATH search order, the shell runs the attacker's version instead, without you or the calling program necessarily noticing. Environment variables generally (viewable with `env` or `printenv`) store all kinds of configuration the shell and programs read — your default text editor, your home directory location, and dozens of other settings.
 
 ## Which shell am I even using?
 

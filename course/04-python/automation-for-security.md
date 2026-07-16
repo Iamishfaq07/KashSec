@@ -14,11 +14,11 @@ flowchart LR
 
 ## Where automation earns its keep in security
 
-- **Reconnaissance automation** — the recon pipeline referenced throughout this course (Path 09's reconnaissance lesson, Path 10's dedicated pipeline lab) chains subdomain enumeration, live-host probing, and URL gathering into a single script — turning what would be hours of manual tool-switching into one command.
-- **Vulnerability scanning automation** — tools like Nmap's NSE scripts (Path 08) and Nuclei (Path 10) run hundreds of known-vulnerability checks automatically, something no analyst could realistically replicate by hand across a large scope.
-- **Log analysis and alerting** — Path 11's threat hunting lab practices exactly this: turning a manual "read through the logs" process into a script or query that automatically flags suspicious patterns (repeated failed logins, unusual access times) the moment they appear, rather than requiring a human to notice them during periodic manual review.
-- **Report generation** — automatically formatting scan results, findings, and evidence into a consistent report structure (Path 09's reporting lesson) saves substantial time on the tedious, error-prone parts of report writing, freeing attention for the analysis itself.
-- **Continuous monitoring** — a one-time manual scan only tells you about right now; a scheduled script re-running your recon/scan pipeline daily or weekly (Path 10's automation & nuclei lesson covers exactly this pattern) catches new exposures — a newly deployed subdomain, a newly disclosed vulnerability affecting a service you already found — that a single point-in-time check would completely miss.
+- **Reconnaissance automation** — the recon pipeline referenced throughout this course (Path 14's reconnaissance lesson, Path 15's dedicated pipeline lab) chains subdomain enumeration, live-host probing, and URL gathering into a single script — turning what would be hours of manual tool-switching into one command.
+- **Vulnerability scanning automation** — tools like Nmap's NSE scripts (Path 12) and Nuclei (Path 15) run hundreds of known-vulnerability checks automatically, something no analyst could realistically replicate by hand across a large scope.
+- **Log analysis and alerting** — Path 16's threat hunting lab practices exactly this: turning a manual "read through the logs" process into a script or query that automatically flags suspicious patterns (repeated failed logins, unusual access times) the moment they appear, rather than requiring a human to notice them during periodic manual review.
+- **Report generation** — automatically formatting scan results, findings, and evidence into a consistent report structure (Path 14's reporting lesson) saves substantial time on the tedious, error-prone parts of report writing, freeing attention for the analysis itself.
+- **Continuous monitoring** — a one-time manual scan only tells you about right now; a scheduled script re-running your recon/scan pipeline daily or weekly (Path 15's automation & nuclei lesson covers exactly this pattern) catches new exposures — a newly deployed subdomain, a newly disclosed vulnerability affecting a service you already found — that a single point-in-time check would completely miss.
 
 ## Rate limiting — automation's most common real-world mistake
 
@@ -32,11 +32,11 @@ for target in targets:
     time.sleep(0.5)   # a small, deliberate pause between requests
 ```
 
-This single `time.sleep()` call is often the difference between a scan that runs invisibly in the background and one that sets off every alarm on the target's network (Path 08's IDS/IPS lesson) — or, worse, one that actually causes a denial of service you never intended. Building rate-limiting into your automation from the start is a genuinely important professional habit, not an afterthought.
+This single `time.sleep()` call is often the difference between a scan that runs invisibly in the background and one that sets off every alarm on the target's network (Path 12's IDS/IPS lesson) — or, worse, one that actually causes a denial of service you never intended. Building rate-limiting into your automation from the start is a genuinely important professional habit, not an afterthought.
 
 ## Automation doesn't replace judgment — it multiplies it
 
-A critically important nuance: automation handles the *repetitive, well-defined* parts of security work extremely well, but it doesn't replace the human judgment needed to interpret results, investigate genuinely novel findings, or make the kind of nuanced business-logic assessment covered in Path 10's logic bug hunting lab. The realistic goal is automating away the tedious 80% so your limited attention concentrates on the interesting 20% that actually requires a human — exactly the same principle behind Path 07's discussion of `sqlmap` versus manual SQLi testing.
+A critically important nuance: automation handles the *repetitive, well-defined* parts of security work extremely well, but it doesn't replace the human judgment needed to interpret results, investigate genuinely novel findings, or make the kind of nuanced business-logic assessment covered in Path 15's logic bug hunting lab. The realistic goal is automating away the tedious 80% so your limited attention concentrates on the interesting 20% that actually requires a human — exactly the same principle behind Path 11's discussion of `sqlmap` versus manual SQLi testing.
 
 :::tip Start small — automate one annoying task, not everything at once
 The single best way to build real automation skill is picking one specific, repetitive task you already do manually and scripting just that one thing — checking a list of subdomains for which ones are alive, for instance. A working 15-line script beats an ambitious, half-finished framework every time, and this exact "small, working, then extend" approach is what the next lesson's hands-on labs build on directly.
@@ -48,8 +48,8 @@ Think back through any manual security task you've done in this course so far (c
 
 ## Key terms
 
-- **Recon pipeline** — a chained sequence of automated reconnaissance tools, covered in depth in Path 10.
-- **NSE (Nmap Scripting Engine)** — Nmap's built-in automated vulnerability/detection scripting system, covered in Path 08.
+- **Recon pipeline** — a chained sequence of automated reconnaissance tools, covered in depth in Path 15.
+- **NSE (Nmap Scripting Engine)** — Nmap's built-in automated vulnerability/detection scripting system, covered in Path 12.
 - **Continuous monitoring** — automation that re-runs periodically to catch new exposures over time, not just a single point-in-time check.
 
 ## Recap
@@ -60,7 +60,7 @@ Think back through any manual security task you've done in this course so far (c
 - Starting with one small, real, annoying manual task is the most effective way to build genuine automation skill.
 
 ???refs
-- [ProjectDiscovery tools](https://github.com/projectdiscovery) — subfinder, httpx, nuclei, and more; the free, widely-used toolkit referenced throughout Path 10's recon pipeline material.
+- [ProjectDiscovery tools](https://github.com/projectdiscovery) — subfinder, httpx, nuclei, and more; the free, widely-used toolkit referenced throughout Path 15's recon pipeline material.
 ???
 
 **Next up →** [Security Scripting Lab](#/lesson/04-python/security-scripting-lab)

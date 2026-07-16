@@ -57,7 +57,7 @@ When in doubt, don't click — go directly to the website yourself by typing the
 
 ## Other social engineering techniques worth knowing
 
-Phishing is the most common form of social engineering, but not the only one — Path 06 covers this category in more depth, but it's worth previewing a few other terms now, since you'll encounter them by name throughout this course:
+Phishing is the most common form of social engineering, but not the only one — Path 10 covers this category in more depth, but it's worth previewing a few other terms now, since you'll encounter them by name throughout this course:
 
 - **Pretexting** — inventing a fabricated scenario ("I'm calling from IT, I need to verify your password to fix an issue with your account") to extract information under false pretenses, often over the phone.
 - **Baiting** — leaving something enticing (a USB drive labeled "Confidential — Salaries 2026" left in a parking lot) for a curious victim to pick up and plug in, hoping curiosity overrides caution.

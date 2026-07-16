@@ -124,7 +124,7 @@ find / -perm -4000 -type f 2>/dev/null
 ```
 
 :::danger SUID IS A PRIVESC GOLDMINE
-A SUID binary owned by root that has any exploitable behaviour (like an old version, or one that spawns a shell) can turn a low-privileged user into root. This is huge in Path 11. Sites like **GTFOBins** catalogue every abusable SUID binary. Sneak preview: `sudo -l` on a target and see if `find`, `vim`, or `less` are in the list.
+A SUID binary owned by root that has any exploitable behaviour (like an old version, or one that spawns a shell) can turn a low-privileged user into root. This is huge in Path 16. Sites like **GTFOBins** catalogue every abusable SUID binary. Sneak preview: `sudo -l` on a target and see if `find`, `vim`, or `less` are in the list.
 :::
 
 ## Linux capabilities — a more modern, finer-grained alternative to SUID
@@ -135,7 +135,7 @@ SUID is genuinely all-or-nothing — a SUID binary runs with the *entire* privil
 getcap -r / 2>/dev/null
 ```
 
-Just like SUID binaries, an unexpectedly powerful capability grant on the wrong binary is a genuine privilege escalation vector — Path 11's Linux privilege escalation lesson covers this alongside SUID as part of the same systematic enumeration checklist.
+Just like SUID binaries, an unexpectedly powerful capability grant on the wrong binary is a genuine privilege escalation vector — Path 16's Linux privilege escalation lesson covers this alongside SUID as part of the same systematic enumeration checklist.
 
 ## Installing software — the package manager
 
@@ -178,7 +178,7 @@ find / -perm -4000 -type f 2>/dev/null | head
 
 # 4. Install a new tool for later paths
 sudo apt install seclists -y
-ls /usr/share/seclists    # a huge wordlist collection you'll use in Path 07/10
+ls /usr/share/seclists    # a huge wordlist collection you'll use in Path 11/10
 ```
 
 :::challenge Test yourself

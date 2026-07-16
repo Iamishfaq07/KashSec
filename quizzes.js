@@ -70,7 +70,7 @@ const QUIZZES = {
       {q:"What's the \"anatomy\" of a typical web app?", options:["Just HTML","Client, server, database, and APIs working together","Only a database","Only a server"], correct:1, explain:"A real web app is a system of parts working together, not a single file."}
     ]
   },
-  "06-fundamentals": {
+  "10-fundamentals": {
     title: "Cybersecurity Fundamentals Quiz",
     passPct: 70,
     questions: [
@@ -81,7 +81,7 @@ const QUIZZES = {
       {q:"What does MFA add to authentication?", options:["Multiple Failed Attempts lockouts","An additional verification factor beyond your password","A faster login","A backup password"], correct:1, explain:"MFA (Multi-Factor Authentication) means a stolen password alone isn't enough to get in."}
     ]
   },
-  "07-web-security": {
+  "11-web-security": {
     title: "Web Security & Hacking Quiz",
     passPct: 70,
     questions: [
@@ -92,7 +92,7 @@ const QUIZZES = {
       {q:"What is the OWASP Top 10?", options:["A list of the ten most popular hacking tools","A widely-used checklist of the most critical web application risks","A ranking of the best browsers","A list of hacking movies"], correct:1, explain:"It's the industry-standard reference for the most critical, common web application vulnerabilities."}
     ]
   },
-  "08-network-security": {
+  "12-network-security": {
     title: "Network Security Quiz",
     passPct: 70,
     questions: [
@@ -103,7 +103,7 @@ const QUIZZES = {
       {q:"What is a Man-in-the-Middle (MITM) attack?", options:["Malware that deletes files","An attacker secretly intercepting communication between two parties","A denial-of-service flood","A weak password guess"], correct:1, explain:"MITM attacks position the attacker between two parties, able to read or alter traffic — HTTPS is the main defense."}
     ]
   },
-  "09-ethical-hacking": {
+  "14-ethical-hacking": {
     title: "Ethical Hacking Quiz",
     passPct: 70,
     questions: [
@@ -114,7 +114,7 @@ const QUIZZES = {
       {q:"What's a common entry-level certification path into ethical hacking?", options:["Starting with OSCP directly","Security+ then more hands-on certs like eJPT or PNPT","No certifications needed, ever","A college degree only"], correct:1, explain:"Most people build up through foundational certs before tackling advanced, hands-on ones."}
     ]
   },
-  "10-bug-bounty": {
+  "15-bug-bounty": {
     title: "Bug Bounty Quiz",
     passPct: 70,
     questions: [
@@ -125,7 +125,7 @@ const QUIZZES = {
       {q:"What is an IDOR-style bug often described as for beginners?", options:["Impossible to find", "A friendly first bug — changing an ID reveals someone else's data","Only findable by AI","Not exploitable in practice"], correct:1, explain:"IDOR bugs are often simple to spot and a great entry point into bug hunting."}
     ]
   },
-  "11-advanced": {
+  "16-advanced": {
     title: "Advanced Cyber Topics Quiz",
     passPct: 70,
     questions: [
@@ -136,7 +136,7 @@ const QUIZZES = {
       {q:"What does \"purple teaming\" combine?", options:["Two red teams","Red team (attack) and blue team (defense) collaborating","Only automated tools","Sales and marketing teams"], correct:1, explain:"Purple teaming has attackers and defenders work together to improve detection and response."}
     ]
   },
-  "12-ai-security": {
+  "18-ai-security": {
     title: "AI & AI Security Quiz",
     passPct: 70,
     questions: [
@@ -147,7 +147,7 @@ const QUIZZES = {
       {q:"Why is \"AI red teaming\" important?", options:["To make AI models faster","To adversarially test AI systems for safety and security issues before attackers do","To replace human developers","To increase model size"], correct:1, explain:"Red teaming finds an AI system's weaknesses proactively, before real attackers do."}
     ]
   },
-  "13-career-prep": {
+  "20-career-prep": {
     title: "Career Prep Quiz",
     passPct: 70,
     questions: [
@@ -158,7 +158,7 @@ const QUIZZES = {
       {q:"What's a good habit during your first 90 days in a new security role?", options:["Staying silent and avoiding questions","Learning the environment, asking questions, and building trust","Immediately changing all existing processes","Working alone without communicating"], correct:1, explain:"Early on, understanding context and building trust matters more than making big changes."}
     ]
   },
-  "14-ctf-challenges": {
+  "19-ctf-challenges": {
     title: "CTF Challenges Quiz",
     passPct: 70,
     questions: [
@@ -169,7 +169,7 @@ const QUIZZES = {
       {q:"What does finding \"(root) NOPASSWD: /usr/bin/find\" in a sudo -l listing suggest?", options:["Nothing exploitable — find is a harmless search tool","Likely privilege escalation via find's -exec flag spawning a root shell","The system is already fully patched","It only allows searching, nothing else"], correct:1, explain:"find's -exec flag runs arbitrary commands — if find itself runs as root via sudo, anything it execs also runs as root, a well-known GTFOBins technique."}
     ]
   },
-  "15-mobile-security": {
+  "13-mobile-security": {
     title: "Mobile App Security Quiz",
     passPct: 70,
     questions: [
@@ -180,7 +180,7 @@ const QUIZZES = {
       {q:"Where should a mobile app store sensitive data like auth tokens, according to this path?", options:["Plain SharedPreferences/UserDefaults, since the sandbox protects it","The platform's hardware-backed secure storage — Android Keystore or iOS Keychain","Directly in the AndroidManifest.xml","In a world-readable external storage file"], correct:1, explain:"Keystore/Keychain-backed storage uses hardware-protected encryption keys that survive even root access far better than plain preference files or unencrypted local databases."}
     ]
   },
-  "16-malware-re": {
+  "17-malware-re": {
     title: "Malware & Reverse Engineering Quiz",
     passPct: 70,
     questions: [
@@ -191,7 +191,7 @@ const QUIZZES = {
       {q:"Why might an automated malware sandbox report \"no malicious behavior\" for a sample that's actually malicious?", options:["Automated sandboxes are always 100% accurate","The sample may use anti-analysis techniques (time-delay, VM/sandbox detection) that prevent its real payload from executing within the sandbox's short observation window", "The file was scanned twice", "Malware cannot be detected by automated tools under any circumstances"], correct:1, explain:"Anti-analysis techniques specifically target the short, fixed observation windows and detectable characteristics of automated sandboxes, letting malware stay dormant during automated scanning while still activating for a real victim."}
     ]
   },
-  "17-crypto-fundamentals": {
+  "06-crypto-fundamentals": {
     title: "Cryptography Fundamentals Quiz",
     passPct: 70,
     questions: [
@@ -202,7 +202,7 @@ const QUIZZES = {
       {q:"What does the padlock icon in a browser's address bar actually verify?", options:["That the website is legitimate and not a scam","That the connection is encrypted and the certificate was validly signed by a trusted CA for that specific domain — nothing about the site's actual trustworthiness","That the site has been manually reviewed by the browser vendor","That no cookies are being used"], correct:1, explain:"A phishing site can obtain a perfectly valid certificate for its own domain — the padlock confirms encryption and domain-bound signing, not that the domain itself is safe or legitimate."}
     ]
   },
-  "18-windows-security": {
+  "07-windows-security": {
     title: "Windows Security Basics Quiz",
     passPct: 70,
     questions: [
@@ -213,7 +213,7 @@ const QUIZZES = {
       {q:"Why is Windows Event ID 1102 (\"The audit log was cleared\") considered a major red flag in incident response?", options:["It happens automatically every day and is meaningless","A legitimate administrator rarely has reason to clear the security log, so its presence often indicates an attacker covering their tracks after gaining access","It only appears when Windows is being reinstalled","It indicates a successful software update"], correct:1, explain:"Clearing the audit log is an unusual administrative action; when it appears, it's often a sign an attacker is trying to erase evidence of their activity after compromising a system."}
     ]
   },
-  "19-cloud-basics": {
+  "08-cloud-basics": {
     title: "Cloud Computing Basics Quiz",
     passPct: 70,
     questions: [
@@ -224,7 +224,7 @@ const QUIZZES = {
       {q:"Under the shared responsibility model, whose responsibility is it to correctly configure a security group's firewall rules on a customer's own cloud virtual machine?", options:["Entirely the cloud provider's responsibility", "The customer's — the provider secures the underlying network fabric, but the specific rules configured on top of it are the customer's own configuration choice","No one's responsibility — it's automatic","Only relevant for on-premises servers, not cloud"], correct:1, explain:"The provider secures 'of the cloud' (the network fabric itself); the customer is responsible for 'in the cloud' — including which specific security group rules they configure on their own resources."}
     ]
   },
-  "20-digital-privacy": {
+  "09-digital-privacy": {
     title: "Digital Privacy & Personal Security Quiz",
     passPct: 70,
     questions: [

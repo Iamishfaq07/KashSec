@@ -98,7 +98,7 @@ Networks come in different scales, and the vocabulary matters throughout this co
 - **WAN (Wide Area Network)** — a network spanning a much larger geographic area, connecting multiple LANs together — a company with offices in three cities connects them via a WAN. The internet itself is, in a sense, the largest WAN of all: a network of networks spanning the entire globe.
 - **MAN (Metropolitan Area Network)** — a middle ground, typically covering a single city, less commonly referenced day-to-day but occasionally worth knowing exists.
 
-This distinction matters practically in Path 08's network security material: attacks and defenses that make sense on a small, trusted LAN (like relying on physical proximity as a security control) often don't hold up once you're reasoning about a WAN spanning untrusted public internet infrastructure.
+This distinction matters practically in Path 12's network security material: attacks and defenses that make sense on a small, trusted LAN (like relying on physical proximity as a security control) often don't hold up once you're reasoning about a WAN spanning untrusted public internet infrastructure.
 
 ## Bandwidth vs. latency — two different kinds of "speed"
 
@@ -107,7 +107,7 @@ Two terms people often conflate but which measure genuinely different things:
 - **Bandwidth** — how much data can be transferred per unit of time (measured in Mbps/Gbps) — think of it as how *wide* the road is, how many cars can travel side by side at once.
 - **Latency** — how long it takes a single piece of data to make the trip (measured in milliseconds) — think of it as how *long* the road is, regardless of how wide it is.
 
-A connection can have high bandwidth but also high latency (a satellite internet connection, for instance, moves plenty of data per second but each individual round-trip takes noticeably longer due to the physical distance to space and back) — which is exactly why "my internet is fast" and "my connection feels laggy" can both be true statements about entirely different properties of the same connection. Path 02's later packets lesson and Path 08's Wireshark labs both give you direct, hands-on ways to actually measure this distinction yourself.
+A connection can have high bandwidth but also high latency (a satellite internet connection, for instance, moves plenty of data per second but each individual round-trip takes noticeably longer due to the physical distance to space and back) — which is exactly why "my internet is fast" and "my connection feels laggy" can both be true statements about entirely different properties of the same connection. Path 02's later packets lesson and Path 12's Wireshark labs both give you direct, hands-on ways to actually measure this distinction yourself.
 
 ## Why a security learner cares
 
@@ -130,7 +130,7 @@ In the post-office analogy, what real device plays the role of your "local post 
 
 Do this on your own home network only.
 
-1. On your phone or laptop, open your Wi-Fi settings and note the **network name (SSID)** and its **security type** (WPA2/WPA3 hopefully — we cover this in Path 08).
+1. On your phone or laptop, open your Wi-Fi settings and note the **network name (SSID)** and its **security type** (WPA2/WPA3 hopefully — we cover this in Path 12).
 2. Try to find the IP address of your **router**. On Windows: `ipconfig` and look for "Default Gateway." On macOS/Linux: `ip route | grep default`.
 3. Open a browser and type that IP address (usually `192.168.1.1` or `192.168.0.1`). You'll see your router's admin login. **Don't log in unless you know the password** — but see, it's just a tiny web server sitting in your house.
 

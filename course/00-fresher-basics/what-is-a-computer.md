@@ -88,7 +88,7 @@ flowchart LR
     D --> E
 ```
 
-Some languages (like C) are **compiled** — translated entirely into machine code ahead of time, producing a standalone program the CPU can run directly. Others (like Python, referenced throughout Path 04) are **interpreted** — a separate program (the interpreter) reads and translates your code line-by-line while it runs. Compiled programs generally run faster since the translation work happens once, upfront; interpreted programs are typically easier to write and test, since you can run code immediately without a separate compilation step. This exact distinction becomes directly relevant much later in this course, when Path 16's reverse engineering material discusses reading compiled machine code back into readable form.
+Some languages (like C) are **compiled** — translated entirely into machine code ahead of time, producing a standalone program the CPU can run directly. Others (like Python, referenced throughout Path 04) are **interpreted** — a separate program (the interpreter) reads and translates your code line-by-line while it runs. Compiled programs generally run faster since the translation work happens once, upfront; interpreted programs are typically easier to write and test, since you can run code immediately without a separate compilation step. This exact distinction becomes directly relevant much later in this course, when Path 17's reverse engineering material discusses reading compiled machine code back into readable form.
 
 ## Why this matters for security
 

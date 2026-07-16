@@ -97,7 +97,7 @@ find /home -type f -mtime -1
 # files modified in the last day
 
 find / -perm -4000 -type f 2>/dev/null
-# SUID binaries — huge for privesc (Path 11!)
+# SUID binaries — huge for privesc (Path 16!)
 
 locate sshd_config
 # instant search using a pre-built index; run 'sudo updatedb' first
@@ -112,7 +112,7 @@ find /home -name "*.log" -exec grep -l "error" {} \;
 # find every .log file, then grep each one for "error"
 ```
 
-This is genuinely powerful for legitimate administration — but it's also exactly the mechanism this course's CTF Zone privesc challenge and Path 11's privilege escalation lab exploit: if `find` itself is ever run with elevated privileges (via `sudo`), whatever `-exec` launches inherits that same elevated privilege. Filing this pattern away now will make that later material click immediately instead of feeling like a brand-new trick.
+This is genuinely powerful for legitimate administration — but it's also exactly the mechanism this course's CTF Zone privesc challenge and Path 16's privilege escalation lab exploit: if `find` itself is ever run with elevated privileges (via `sudo`), whatever `-exec` launches inherits that same elevated privilege. Filing this pattern away now will make that later material click immediately instead of feeling like a brand-new trick.
 
 ## grep — the search command you'll live in
 

@@ -83,7 +83,7 @@ Every DNS record has a **TTL (Time To Live)** — a number, in seconds, telling 
 
 ## Why hackers care about DNS
 
-The phonebook quietly reveals structure. By exploring DNS, an attacker can discover forgotten **subdomains** like `mail.company.com`, `test.company.com`, or `old-server.company.com` — each a possible side entrance the owner forgot about. This is a core recon technique in Paths 09 and 10.
+The phonebook quietly reveals structure. By exploring DNS, an attacker can discover forgotten **subdomains** like `mail.company.com`, `test.company.com`, or `old-server.company.com` — each a possible side entrance the owner forgot about. This is a core recon technique in Paths 14 and 10.
 
 Beyond subdomain hunting, DNS has several attack surfaces:
 

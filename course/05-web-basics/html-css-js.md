@@ -110,7 +110,7 @@ The `<script>` tag isn't the only place JavaScript lives. HTML has a long list o
 <svg onload="alert(1)">
 ```
 
-This matters enormously for security: a filter that only strips `<script>` tags but forgets `onerror`, `onload`, or `javascript:` URLs is trivially bypassed. This is exactly why real-world XSS filter bypass lists (which you'll use directly in Path 07 and Path 10) are so long — there are dozens of HTML attributes and contexts that can execute code, not just one. Recognising *all* the places JavaScript can hide in HTML, not just the obvious `<script>` tag, is a genuinely important skill for both finding and defending against XSS.
+This matters enormously for security: a filter that only strips `<script>` tags but forgets `onerror`, `onload`, or `javascript:` URLs is trivially bypassed. This is exactly why real-world XSS filter bypass lists (which you'll use directly in Path 11 and Path 15) are so long — there are dozens of HTML attributes and contexts that can execute code, not just one. Recognising *all* the places JavaScript can hide in HTML, not just the obvious `<script>` tag, is a genuinely important skill for both finding and defending against XSS.
 
 ## CSS selectors and specificity — a quick primer
 
@@ -156,7 +156,7 @@ If the site inserts the user's search term straight into the HTML without escapi
 
 ...the browser will *execute* that script as if the site itself wrote it. That's **reflected XSS** — one of the classic web bugs, and it lives in the boundary between user input and HTML rendering.
 
-Path 07 has an entire lesson on XSS. For now, remember the shape: **untrusted input → HTML context → executed as code**.
+Path 11 has an entire lesson on XSS. For now, remember the shape: **untrusted input → HTML context → executed as code**.
 
 ## JSON — the modern glue
 
@@ -170,7 +170,7 @@ Most modern web apps don't render entire HTML pages any more. Instead they load 
 }
 ```
 
-You'll see JSON everywhere in Path 07 (APIs) and Path 10 (bug bounty). If you can read JSON, you can read most modern APIs.
+You'll see JSON everywhere in Path 11 (APIs) and Path 15 (bug bounty). If you can read JSON, you can read most modern APIs.
 
 ## Browser security foundations (glossary)
 
@@ -196,7 +196,7 @@ document.querySelectorAll("a").forEach(a => a.textContent = "🐉");
 
 Press Enter after each line. Watch the page change *right now*, in your own browser.
 
-This is the exact power an XSS attacker gets on *someone else's* browser. Path 07 covers how attackers *land* code on a page — this lab is only what the code can do *once* there.
+This is the exact power an XSS attacker gets on *someone else's* browser. Path 11 covers how attackers *land* code on a page — this lab is only what the code can do *once* there.
 
 :::challenge Test yourself
 Which browser security rule stops JavaScript on `evil.com` from reading data on `bank.com` by default?

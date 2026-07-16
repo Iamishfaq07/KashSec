@@ -29,7 +29,7 @@ s.post("https://target/login", data={"u": "admin", "p": "secret"})
 r = s.get("https://target/admin")  # session cookie sent automatically
 ```
 
-You'll live in `requests` for anything web-related (Paths 07, 10, 12).
+You'll live in `requests` for anything web-related (Paths 11, 10, 12).
 
 ### 2. `socket` — raw TCP/UDP
 

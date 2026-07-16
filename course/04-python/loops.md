@@ -126,7 +126,7 @@ for user in users:
         print(f"Trying {user}:{password}")
 ```
 
-That's genuinely the shape of a login brute-force script. In Path 07 you'll build a *responsible*, in-lab-only version of this against a deliberately-vulnerable target.
+That's genuinely the shape of a login brute-force script. In Path 11 you'll build a *responsible*, in-lab-only version of this against a deliberately-vulnerable target.
 
 ## The security learner's most-used loop pattern
 

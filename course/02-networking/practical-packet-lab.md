@@ -1,6 +1,6 @@
 # Practical Packet Analysis Intro
 
-Everything you've learned so far in this path — IP addresses, ports, TCP/UDP, DNS — has been conceptual. This lab makes it real: you'll capture actual packets flowing across your own network and see these concepts in raw form, setting up the deeper packet analysis work in Path 08.
+Everything you've learned so far in this path — IP addresses, ports, TCP/UDP, DNS — has been conceptual. This lab makes it real: you'll capture actual packets flowing across your own network and see these concepts in raw form, setting up the deeper packet analysis work in Path 12.
 
 ## Simple exercise
 
@@ -15,7 +15,7 @@ Everything you've learned so far in this path — IP addresses, ports, TCP/UDP, 
 - **DNS queries.** Filter by `dns` — you'll see the actual lookup that happened before your browser could even connect, translating the domain name into the IP address used in every subsequent packet.
 - **Cleartext data.** On the unencrypted HTTP site from Task 2, right-click the HTTP packet stream and choose "Follow → TCP Stream" — you'll see the entire request and response in plain readable text, including any form data submitted. This is exactly why HTTPS exists: on an encrypted connection, this same view would show only unreadable ciphertext.
 
-5. **Filter by IP and port together.** Try a combined filter like `ip.addr == 8.8.8.8 && udp.port == 53` — narrowing a capture to a specific conversation is exactly how you'd isolate one interesting exchange out of thousands of packets in a real investigation (Path 11's DFIR lab does exactly this at a larger scale).
+5. **Filter by IP and port together.** Try a combined filter like `ip.addr == 8.8.8.8 && udp.port == 53` — narrowing a capture to a specific conversation is exactly how you'd isolate one interesting exchange out of thousands of packets in a real investigation (Path 16's DFIR lab does exactly this at a larger scale).
 6. **Check packet sizes against this path's MTU discussion.** In Wireshark's packet list, look at the "Length" column for a few packets carrying a large file download — most should sit right around 1500 bytes or just under, directly matching standard Ethernet's MTU from this path's packets lesson. This is real, observable evidence of fragmentation limits at work, not just a stated fact to memorize.
 
 :::tip Try the same exercise against an HTTPS site
@@ -23,7 +23,7 @@ Repeat the capture against any normal HTTPS website and try the same "Follow TCP
 :::
 
 :::challenge Label 10 packets
-Capture a fresh session while browsing normally for about 30 seconds, then pick any 10 consecutive packets and label what each one is doing in your own words (e.g., "DNS query for example.com," "TCP SYN starting a new connection," "HTTP GET request for /style.css"). This exercise — translating raw packets into plain-English narrative — is exactly the skill Path 08's Wireshark labs build on.
+Capture a fresh session while browsing normally for about 30 seconds, then pick any 10 consecutive packets and label what each one is doing in your own words (e.g., "DNS query for example.com," "TCP SYN starting a new connection," "HTTP GET request for /style.css"). This exercise — translating raw packets into plain-English narrative — is exactly the skill Path 12's Wireshark labs build on.
 :::
 
 ## Key takeaway

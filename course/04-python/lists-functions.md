@@ -305,7 +305,7 @@ Try it: create a tiny wordlist like `wl.txt` with a few names (`www`, `mail`, `t
 python3 resolve.py example.com wl.txt
 ```
 
-You just wrote a real subdomain enumerator. In Path 10, you'll extend this with wildcards, threading, and API-based recon.
+You just wrote a real subdomain enumerator. In Path 15, you'll extend this with wildcards, threading, and API-based recon.
 
 :::challenge Test yourself
 In the code below, what does `[t for t in tools if len(t) < 6]` produce, given `tools = ["nmap", "burp", "sqlmap"]`?
