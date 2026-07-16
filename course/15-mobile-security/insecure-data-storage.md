@@ -54,6 +54,16 @@ Android's `adb backup` feature (and iOS's iTunes/Finder backups) can capture an 
 
 Checking for `android:allowBackup="true"` (or its absence, which defaults to allowing backups on many Android versions) during the APK analysis from the previous lesson is a genuinely quick, high-value check — an app storing sensitive unencrypted data with backups enabled can leak that entire dataset to anyone with brief physical access to an unlocked device and a computer.
 
+## Logs and clipboard — two more overlooked leak paths
+
+Beyond persistent storage, two transient data paths regularly leak sensitive information without anyone noticing until it's flagged. **System logs** (readable via `adb logcat` on a debug-enabled or rooted device) are a genuinely common accidental leak: developers routinely `Log.d("token", authToken)` during development and forget to strip it before shipping to production, and unlike a crash that would get noticed immediately, a stray debug log line can persist through many release cycles unnoticed since nothing about the app's visible behavior changes:
+
+```bash
+adb logcat | grep -i "token\|password\|secret"
+```
+
+The **clipboard** is the second overlooked path — any app can read whatever's currently on the system clipboard on many Android versions (more recent versions have added notifications and restrictions, but older or unpatched devices remain exposed), meaning a password manager or banking app that copies a password or OTP code to the clipboard for convenience is briefly exposing that value to any other app on the device that chooses to poll clipboard contents. Checking both of these during an assessment — not just the persistent storage locations covered above — rounds out a genuinely thorough insecure-storage review.
+
 ## The correct approach — using the platform Keystore/Keychain
 
 Both platforms provide a hardware-backed secure storage mechanism specifically designed for secrets: the **Android Keystore** and **iOS Keychain**. Data stored here is encrypted using keys that never leave secure hardware (on supporting devices), meaning even root access alone typically can't directly extract the raw secret the way it can with a plain SharedPreferences file.

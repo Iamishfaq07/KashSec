@@ -26,9 +26,17 @@ flowchart TD
 
 Notice how several items (#3, #4) are essentially the web vulnerabilities from Path 07, just triggered through a mobile app's API calls instead of a browser — a mobile app is still, ultimately, a client talking to a server, and every server-side lesson from earlier in this course applies directly to that backend regardless of what kind of client calls it. What's genuinely new here is everything related to the **client itself**: local storage, binary protection, and the app's own code being distributable and inspectable in ways a web server's backend code never is.
 
+## How mobile findings translate to bug bounty severity
+
+Recall Path 10.1's severity/reward table for web findings — mobile-specific categories map onto that same general framework, but with some notably different weighting worth knowing before you start hunting. Hardcoded API keys or credentials (#1) found via APK decompilation are often surprisingly high-severity if that key grants broad backend access, precisely because unlike a web app's server-side secrets, a mobile app's compiled code is distributed directly to every user's device — meaning "extracting a secret from the app" is a baseline capability any attacker has, not a sophisticated technique. Insecure data storage (#9) severity depends heavily on whether exploitation requires physical device access (generally rated lower, since it requires the attacker to have the specific victim's device) versus being remotely triggerable (rated much higher). Certificate pinning bypasses (#5, covered in this path's traffic-interception lesson) are frequently rated as informational or low on their own, specifically because most programs consider "attacker has installed a custom root CA on their own rooted device" a reduced-severity scenario — the real severity comes from *what* that bypass then reveals, not the bypass technique itself.
+
 :::tip This list evolves — always check the current version
 OWASP periodically revises this list based on real-world findings; the version summarized here reflects the current widely-referenced structure, but always check [owasp.org/www-project-mobile-top-10](https://owasp.org/www-project-mobile-top-10/) directly for the latest official wording and any updates before citing it formally (in a report, for instance).
 :::
+
+## MASVS — the verification standard behind the checklist
+
+Beyond the Top 10 itself, OWASP's mobile project maintains a companion standard worth knowing by name: the **MASVS (Mobile Application Security Verification Standard)**, which does for mobile apps what Path 07.1 mentioned ASVS doing for web applications — a far more detailed, testable set of security requirements organised by category (storage, cryptography, authentication, network communication, platform interaction, code quality, resilience), each requirement independently verifiable rather than expressed as a broad risk category. Where the Top 10 answers "what are the ten most common ways mobile apps fail," MASVS answers "here's a specific, checkable list of controls a genuinely secure app should implement" — the practical difference between a syllabus and an audit checklist. Formal mobile security assessments and certifications increasingly reference MASVS levels (L1: standard security, L2: defense-in-depth, R: resilience against reverse engineering) directly, making it worth a bookmark alongside the Top 10 itself once you're doing real assessment work rather than just learning the landscape.
 
 ## How this list shapes the rest of this path
 

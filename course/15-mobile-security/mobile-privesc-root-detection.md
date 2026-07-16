@@ -34,6 +34,18 @@ flowchart LR
 
 A classic real-world example: an exported Activity intended only to be launched from within the app itself (say, an "admin settings" screen assuming the user already authenticated through the main UI) can sometimes be launched directly by any other app via an explicit Intent, completely bypassing whatever authentication gate the normal UI flow enforces — the mobile equivalent of a broken access control finding from Path 07.
 
+## Content Provider SQL injection — a distinct exported-component risk
+
+Beyond simply reaching restricted screens, an exported **Content Provider** carries its own specific, more severe risk: many Content Providers are backed directly by a SQLite database, and if the provider builds its underlying query by concatenating caller-supplied input rather than using parameterised queries, it's vulnerable to exactly the SQL injection technique from Path 07.6 — just reached via Android's IPC mechanism instead of an HTTP request:
+
+```bash
+# Querying an exported Content Provider directly, probing for injection:
+adb shell content query --uri content://com.example.vulnerableapp.provider/users \
+  --where "id=1 OR 1=1"
+```
+
+If that query returns every row instead of just the intended one, the provider is vulnerable to the exact same injection class as any web application's login form — a genuinely common finding on real Android apps, since Content Providers are frequently written with less security scrutiny than an app's network-facing API code, on the mistaken assumption that "it's just internal Android IPC" makes it inherently safer.
+
 ## Testing exported components
 
 ```bash

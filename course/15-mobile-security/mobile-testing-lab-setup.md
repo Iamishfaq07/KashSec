@@ -61,6 +61,21 @@ On a genuinely dedicated physical test device (never your primary phone), tools 
 Everything in this path should be practiced against apps you've built yourself, deliberately vulnerable practice apps (covered in this path's capstone lab), or apps with an explicit, current bug bounty program covering mobile testing. The same golden rule from Path 01 applies here without exception — mobile app testing against apps you don't have authorization for is unauthorized access, full stop.
 :::
 
+## Snapshotting your lab state, the same discipline as Path 03
+
+Recall Path 03.7's VM snapshot habit — apply the exact same discipline to your mobile lab. Before installing an unfamiliar or deliberately vulnerable app, snapshot your emulator's clean state (`emulator -avd Pixel_6_API_33 -snapshot-name clean`), so you can instantly revert if a test app misbehaves, corrupts the emulator's storage, or you simply want to re-run a test from a known-clean starting point rather than manually uninstalling and resetting app data by hand. This matters more in mobile testing than you might expect: some deliberately-vulnerable practice apps intentionally leave persistent artifacts (planted "flags," modified system settings, root-detection bypass hooks) specifically to simulate a compromised device state, and reverting cleanly between exercises keeps your results for each individual lesson's lab genuinely isolated from whatever you tested previously.
+
+## Frida and Objection — instrumentation you'll need soon
+
+Two tools worth installing now, even though later lessons cover their actual use in depth: **Frida** is a dynamic instrumentation toolkit that lets you inject JavaScript into a running app's process to hook functions, bypass checks, and observe behavior in real time — the mobile-security equivalent of attaching a debugger, but far more scriptable. **Objection** is a Frida-powered CLI wrapper specifically built for mobile security testing, automating many of the most common tasks (bypassing SSL pinning, dumping keychain/keystore data, exploring an app's file system) without requiring you to write raw Frida scripts for routine tasks:
+
+```bash
+pip install frida-tools objection --break-system-packages
+frida-ps -U   # list running processes on a connected USB device/emulator
+```
+
+Getting these installed and confirmed working now — rather than mid-lesson later in this path — means the certificate-pinning bypass and root-detection lessons ahead can focus entirely on the actual technique instead of troubleshooting a fresh tool installation under time pressure.
+
 ## 5. A deliberately vulnerable practice app
 
 Install **DIVA (Damn Insecure and Vulnerable App)** or **InsecureBankv2** — both free, open-source, deliberately flawed Android apps built specifically for learning mobile security hands-on, referenced again in this path's capstone lab.

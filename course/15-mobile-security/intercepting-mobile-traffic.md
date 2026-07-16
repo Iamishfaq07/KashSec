@@ -40,6 +40,24 @@ objection -g com.example.vulnerableapp explore
 android sslpinning disable
 ```
 
+## Network Security Config — pinning without touching code
+
+On modern Android, certificate pinning is increasingly configured declaratively rather than in application code, through a **Network Security Config** XML file referenced from the manifest — worth checking for specifically during the APK analysis pass from Path 15.4, since it's often faster to identify (and sometimes even to patch out) than hunting for pinning logic buried in decompiled Java:
+
+```xml
+<!-- res/xml/network_security_config.xml -->
+<network-security-config>
+    <domain-config>
+        <domain includeSubdomains="true">api.example.com</domain>
+        <pin-set expiration="2027-01-01">
+            <pin digest="SHA-256">7HIpactkIAq2Y49orFOOQKurWxmmSFZhBCoQYcRhJ3Y=</pin>
+        </pin-set>
+    </domain-config>
+</network-security-config>
+```
+
+Because this file is plain, unobfuscated XML sitting in the decompiled resources folder, a tester can — with apktool's rebuild capability from Path 15.4 — simply delete or relax the `pin-set` entry, then re-sign and reinstall the modified APK, bypassing pinning entirely without touching Frida at all. This is a genuinely faster path than runtime instrumentation whenever it's available, and worth checking for before reaching for Frida/Objection as the default first move.
+
 ## What to look for once traffic is visible
 
 Once pinning is bypassed and Burp can see the app's real traffic, apply everything from Path 07 directly: unencrypted parameters, IDOR opportunities in API calls (Path 07/10), tokens or API keys visible in headers (this course's CTF Zone's hidden-headers challenge), and — specifically mobile-relevant — whether the app falls back to *any* plaintext HTTP endpoints at all, even briefly during startup or analytics calls.

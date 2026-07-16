@@ -53,6 +53,33 @@ Hardcoded API keys and credentials found this way are a genuinely, surprisingly 
 Sensitive values are sometimes stored in `res/values/strings.xml` rather than directly in code — always grep both locations when hunting for hardcoded secrets.
 :::
 
+## Reading Smali when Java decompilation fails
+
+Occasionally, jadx's decompiler chokes on a specific method — heavily obfuscated code, unusual bytecode patterns, or unsupported language features can produce broken or missing output for select methods, even though the surrounding app decompiles fine. When this happens, **Smali** (apktool's disassembly format, mentioned above) is the fallback: a human-readable assembly-like representation of Dalvik bytecode that, unlike Java decompilation, works reliably on essentially anything, at the cost of being far more verbose and considerably less pleasant to read line by line:
+
+```smali
+.method private checkLicense()Z
+    .locals 2
+    invoke-static {}, Lcom/example/app/LicenseValidator;->isValid()Z
+    move-result v0
+    return v0
+.end method
+```
+
+Even without deep Smali fluency, pattern-matching is usually enough — spotting a method name like `checkLicense` or `isRooted`, noting what it calls and what it returns, and tracing callers of that method elsewhere in the disassembly. This is exactly the "trace logic by behavior, not by name" skill mentioned below, just at one level lower than decompiled Java — a genuinely useful fallback skill for the rare cases where jadx's higher-level output isn't available or trustworthy.
+
+## Certificate and signing information — a quick provenance check
+
+Beyond code and manifest analysis, an APK's signing certificate is worth a quick check in its own right, since it answers a distinct question: is this actually the genuine app, or a repackaged/modified copy?
+
+```bash
+apksigner verify --print-certs app.apk
+# or, for a quick look with standard tools:
+keytool -printcert -jarfile app.apk
+```
+
+A mismatch between the certificate fingerprint and the developer's officially published one (many legitimate developers publish their signing key's fingerprint for exactly this verification purpose) is a strong signal the APK you're analyzing has been repackaged — potentially by a malware author who decompiled the original, inserted malicious code, and re-signed it with their own key, a genuinely common real-world Android malware distribution pattern worth checking for before investing significant time analyzing an APK's behavior as if it were the trusted original.
+
 ## What decompiled code can't fully recover
 
 Decompilation reconstructs readable-ish source, but variable and method names are often mangled or generic if the app was obfuscated (via tools like ProGuard/R8, common in production Android builds) — you'll frequently need to trace logic by *behavior* (what does this method call, what does it return) rather than relying on self-explanatory names, a genuinely useful close-reading skill this lesson starts building.
