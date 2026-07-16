@@ -131,6 +131,18 @@ with ThreadPoolExecutor(max_workers=50) as pool:
 
 For heavier work or huge concurrency, look into **asyncio + httpx**. Both are worth learning once you're comfortable.
 
+## Type hints — a modern habit worth adopting early
+
+Modern Python supports optional **type hints**, documenting what type a function expects and returns directly in its signature:
+
+```python
+def scan_port(host: str, port: int, timeout: float = 1.0) -> bool:
+    """Return True if the port is open."""
+    ...
+```
+
+Python doesn't actually *enforce* these at runtime — you can still pass the wrong type and Python won't stop you — but tools like `mypy` can check your code against them, and most modern code editors use them to catch mistakes and offer better autocomplete as you type. Reading real-world Python code (including the tools listed below), you'll see type hints constantly; adopting them in your own scripts, even loosely, is a genuinely good habit that pays off as scripts grow past a few dozen lines.
+
 ## Reading someone else's code
 
 The single fastest way to level up is reading real tools. Pick something small and dig in:

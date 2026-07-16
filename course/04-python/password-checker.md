@@ -89,6 +89,8 @@ def hibp_count(pw: str) -> int:
 
 Notice we **never send the password itself** anywhere. That's a beautiful privacy design worth studying.
 
+**k-anonymity** as a general technique (not just this one API) means providing enough information to get a useful answer while remaining indistinguishable within a group of at least *k* other possibilities — here, sending only a 5-character hash prefix means HIBP's servers see a bucket of hundreds of possible full hashes, never which *specific* one is actually yours. This same privacy-preserving pattern shows up elsewhere in security and privacy engineering, and is directly relevant to Path 20's digital privacy material — genuinely useful to recognize as a reusable design pattern, not just a one-off API quirk.
+
 ## Step 5 — Put it all together
 
 ```python

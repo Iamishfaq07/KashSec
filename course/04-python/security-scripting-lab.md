@@ -46,6 +46,24 @@ This is the capstone lab for Path 04 — turning everything from variables and l
    ```
    This exact technique — fetch, parse, extract — underlies real reconnaissance tools that map out a site's structure automatically.
 
+5. **Multi-threaded port scanning.** Task 2's scanner checks ports one at a time, sequentially — genuinely slow across a wide range. Use Python's `concurrent.futures.ThreadPoolExecutor` to check many ports simultaneously instead:
+   ```python
+   import socket
+   from concurrent.futures import ThreadPoolExecutor
+
+   def check_port(port, target="127.0.0.1"):
+       s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+       s.settimeout(0.3)
+       if s.connect_ex((target, port)) == 0:
+           print(f"Port {port} is open")
+       s.close()
+
+   with ThreadPoolExecutor(max_workers=50) as executor:
+       executor.map(check_port, range(1, 1025))
+   ```
+   Time both versions against your own machine and compare — the speed difference is genuinely dramatic, and this exact threading pattern underlies why real tools like Nmap and Nuclei can scan large ranges in a reasonable time.
+6. **Add rate limiting to your URL checker.** Revisit Task 1's URL status checker and add a small `time.sleep()` delay between requests, per this path's automation lesson — practice the responsible-automation habit now, on your own small script, before it matters on a real authorized engagement.
+
 :::tip Combine what you've built
 Each of these four scripts does one thing well — the real skill, and the direction Path 10's recon pipeline lesson goes next, is chaining small single-purpose tools together into a pipeline, exactly like real tools such as `subfinder → httpx → gau → nuclei` do.
 :::

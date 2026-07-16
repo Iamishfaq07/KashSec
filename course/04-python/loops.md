@@ -93,6 +93,26 @@ for line in open("emails.txt"):
     print(f"Processing: {line}")
 ```
 
+### Avoiding accidental infinite loops
+
+A `while` loop only stops when its condition becomes false — if you forget to actually update the variable the condition depends on, the loop runs forever, freezing your script (and sometimes your terminal):
+
+```python
+# BUG: count never changes, this loop never ends
+count = 0
+while count < 5:
+    print("stuck")
+    # forgot: count += 1
+
+# FIXED:
+count = 0
+while count < 5:
+    print(count)
+    count += 1   # this line is what actually lets the loop finish
+```
+
+If a script you run seems to hang forever with no output, an infinite loop is one of the first things worth suspecting — `Ctrl+C` in the terminal force-stops it, and re-reading your loop's condition (and whether anything inside the loop actually changes it) is the fix.
+
 ## Nested loops
 
 You can put a loop inside another loop. Useful for combinations like "every user × every password":

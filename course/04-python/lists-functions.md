@@ -130,6 +130,22 @@ scan("scanme.nmap.org", timeout=0.5)    # override just timeout by name
 
 Naming arguments (`timeout=0.5`) makes calls self-documenting.
 
+### *args and **kwargs — accepting a flexible number of arguments
+
+Sometimes you don't know in advance how many arguments a function needs to accept — `*args` collects any number of extra positional arguments into a tuple, and `**kwargs` collects any number of extra named arguments into a dictionary:
+
+```python
+def scan_multiple(*hosts, **options):
+    for host in hosts:
+        print(f"Scanning {host} with options: {options}")
+
+scan_multiple("host1.com", "host2.com", "host3.com", timeout=2, verbose=True)
+# hosts = ("host1.com", "host2.com", "host3.com")
+# options = {"timeout": 2, "verbose": True}
+```
+
+You'll see `*args`/`**kwargs` constantly when reading other people's code (many real libraries use this pattern to stay flexible) — recognizing the pattern on sight matters more at this stage than writing it yourself often.
+
 ## Multiple return values
 
 Functions can return multiple values (as a tuple):

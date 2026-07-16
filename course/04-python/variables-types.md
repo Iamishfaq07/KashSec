@@ -111,6 +111,18 @@ print(age < 18 or age > 65)     # False
 print(not True)                 # False
 ```
 
+### Dynamic typing — no need to declare a type upfront
+
+Unlike some languages (Java, C), Python never requires you to declare a variable's type in advance — you just assign a value, and Python figures out the type automatically:
+
+```python
+x = 5          # Python infers: this is an integer
+x = "hello"    # now the SAME variable holds a string instead — totally legal
+print(type(x)) # <class 'str'>
+```
+
+This flexibility (called **dynamic typing**) is a big part of why Python reads so cleanly for beginners — but it's also a real source of subtle bugs once scripts grow larger, since nothing stops you from accidentally reassigning a variable to an unexpected type partway through a script. The `type()` function, used above, is your go-to tool whenever you're unsure what a variable currently holds — genuinely useful during debugging.
+
 ## Type conversion
 
 ```python

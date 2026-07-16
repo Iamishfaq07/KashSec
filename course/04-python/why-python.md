@@ -75,6 +75,10 @@ pip freeze > requirements.txt   # snapshot current versions
 
 Most real Python projects have a `requirements.txt` listing everything they need. Include one when you ship your own scripts.
 
+:::warn PyPI packages are a real supply chain risk
+Anyone can publish a package to PyPI (Python's public package index) — and attackers have repeatedly published malicious packages with names deliberately similar to popular ones (`reqeusts` instead of `requests`), banking on typos, exactly the **typosquatting** concept from Path 00's phishing lesson, applied here to package names instead of domains. Before installing an unfamiliar package, a quick check of its download count, GitHub repo, and recent activity is a cheap, worthwhile habit — directly connecting to the supply chain security material in Path 11's DevSecOps lab and Path 12's LLM supply chain lesson.
+:::
+
 ## The shape of a real security script
 
 Every professional-looking script tends to have this shape. Learn it now:

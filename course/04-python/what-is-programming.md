@@ -88,6 +88,25 @@ flowchart LR
 
 You'll go around this loop hundreds of times as you learn. Every professional does. Bugs are normal — the skill is **reading the error and fixing it.**
 
+## Syntax vs. logic — two very different kinds of "wrong"
+
+Every beginner runs into two genuinely different categories of problem, worth distinguishing clearly because they need different fixes: a **syntax error** means your code doesn't follow the language's grammar rules at all (a missing colon, an unclosed bracket) — Python refuses to even attempt running it, and the error message usually points at almost exactly the right line. A **logic error** is much sneakier: the code runs perfectly fine, with no error at all, but produces the *wrong result* because your instructions, while grammatically valid, don't actually do what you intended. Syntax errors are annoying but easy — Python tells you where to look. Logic errors are the genuinely hard, interesting part of programming, and debugging them is exactly the skill this entire path is building.
+
+## Planning with pseudocode
+
+Before writing real code for anything non-trivial, experienced programmers often sketch out the logic in **pseudocode** — informal, half-English, half-code notes describing the steps, without worrying about correct syntax yet:
+
+```
+if password is shorter than 8 characters:
+    reject it
+otherwise if password has no numbers:
+    reject it
+otherwise:
+    accept it
+```
+
+This costs almost no time and catches logic errors *before* you've invested effort translating them into actual, syntax-correct Python — a genuinely useful habit worth adopting from your very first script, and one you'll use directly in this path's password-checker project.
+
 ## What being "good at code" actually means
 
 For security purposes, "good" doesn't mean writing beautiful abstract software architectures. It means:

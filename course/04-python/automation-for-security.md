@@ -20,6 +20,20 @@ flowchart LR
 - **Report generation** — automatically formatting scan results, findings, and evidence into a consistent report structure (Path 09's reporting lesson) saves substantial time on the tedious, error-prone parts of report writing, freeing attention for the analysis itself.
 - **Continuous monitoring** — a one-time manual scan only tells you about right now; a scheduled script re-running your recon/scan pipeline daily or weekly (Path 10's automation & nuclei lesson covers exactly this pattern) catches new exposures — a newly deployed subdomain, a newly disclosed vulnerability affecting a service you already found — that a single point-in-time check would completely miss.
 
+## Rate limiting — automation's most common real-world mistake
+
+A genuinely important caveat, easy to overlook when you're excited about your first working automation script: hitting a target with hundreds or thousands of requests per second, simply because your script *can* run that fast, can crash the target's server, trigger its defensive rate-limiting or IP-blocking systems, or — in an authorized test — violate the explicit Rules of Engagement (Path 01's golden rule lesson) if the client specified acceptable request rates. Responsible automation deliberately throttles itself:
+
+```python
+import time
+
+for target in targets:
+    scan(target)
+    time.sleep(0.5)   # a small, deliberate pause between requests
+```
+
+This single `time.sleep()` call is often the difference between a scan that runs invisibly in the background and one that sets off every alarm on the target's network (Path 08's IDS/IPS lesson) — or, worse, one that actually causes a denial of service you never intended. Building rate-limiting into your automation from the start is a genuinely important professional habit, not an afterthought.
+
 ## Automation doesn't replace judgment — it multiplies it
 
 A critically important nuance: automation handles the *repetitive, well-defined* parts of security work extremely well, but it doesn't replace the human judgment needed to interpret results, investigate genuinely novel findings, or make the kind of nuanced business-logic assessment covered in Path 10's logic bug hunting lab. The realistic goal is automating away the tedious 80% so your limited attention concentrates on the interesting 20% that actually requires a human — exactly the same principle behind Path 07's discussion of `sqlmap` versus manual SQLi testing.

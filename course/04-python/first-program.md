@@ -112,6 +112,22 @@ The three most common early errors:
 The oldest trick in programming: sprinkle `print()` calls to see what's happening at each step. Not glamorous. Extremely effective. Real professionals do this constantly.
 :::
 
+### Handling errors gracefully with try/except
+
+Reading tracebacks helps you *fix* bugs while writing code — but a finished script often needs to *anticipate* errors that are expected to sometimes happen (a network request timing out, a file that doesn't exist) without crashing entirely. Python's `try`/`except` catches an error and lets your script recover instead of dying:
+
+```python
+try:
+    response = requests.get(url, timeout=5)
+    print(response.status_code)
+except requests.exceptions.Timeout:
+    print(f"{url} timed out — skipping")
+except requests.exceptions.ConnectionError:
+    print(f"{url} refused connection — skipping")
+```
+
+This exact pattern is genuinely essential for any recon or scanning script (Path 04's automation lesson, Path 10's recon pipeline) — checking a list of 500 URLs where 10 happen to be offline should skip those 10 gracefully and keep going, not crash the entire run on the first failure.
+
 ## Step 6 — Reading and writing files
 
 Files are how your program remembers things between runs. This is the pattern:
