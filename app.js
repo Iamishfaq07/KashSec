@@ -51,6 +51,103 @@ function ensureMarkdownLibs(){
 }
 
 /* ============================================================
+   PWA — service worker registration, install prompt, and
+   offline/update indicators. Once installed, sw.js has already
+   precached the app shell and all 205 lessons, so the whole
+   course works with no network at all.
+   ============================================================ */
+function pwaToastHost(){
+  let host = document.getElementById('toastHost');
+  if(!host){
+    host = document.createElement('div');
+    host.id = 'toastHost';
+    host.className = 'toast-host';
+    host.setAttribute('aria-live','polite');
+    document.body.appendChild(host);
+  }
+  return host;
+}
+
+let deferredInstallPrompt = null;
+window.addEventListener('beforeinstallprompt', (e)=>{
+  e.preventDefault();
+  deferredInstallPrompt = e;
+  const btn = document.getElementById('installBtn');
+  if(btn) btn.hidden = false;
+});
+window.addEventListener('appinstalled', ()=>{
+  deferredInstallPrompt = null;
+  const btn = document.getElementById('installBtn');
+  if(btn) btn.hidden = true;
+});
+document.addEventListener('DOMContentLoaded', ()=>{
+  const btn = document.getElementById('installBtn');
+  if(!btn) return;
+  if(window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone){
+    btn.hidden = true;
+  }
+  btn.addEventListener('click', async ()=>{
+    if(!deferredInstallPrompt) return;
+    btn.hidden = true;
+    deferredInstallPrompt.prompt();
+    await deferredInstallPrompt.userChoice;
+    deferredInstallPrompt = null;
+  });
+});
+
+function showUpdateToast(reg){
+  const host = pwaToastHost();
+  const el = document.createElement('div');
+  el.className = 'toast toast-action';
+  el.innerHTML = `<span class="toast-ico">⟳</span><div><div class="toast-t">Update available</div><div class="toast-d">A newer version of KashSec is ready.</div></div><button class="toast-btn" type="button">Refresh</button>`;
+  host.appendChild(el);
+  requestAnimationFrame(()=>el.classList.add('in'));
+  el.querySelector('.toast-btn').addEventListener('click', ()=>{
+    if(reg.waiting) reg.waiting.postMessage({type:'SKIP_WAITING'});
+  });
+}
+
+if('serviceWorker' in navigator){
+  let refreshingAfterUpdate = false;
+  navigator.serviceWorker.addEventListener('controllerchange', ()=>{
+    if(refreshingAfterUpdate) return;
+    refreshingAfterUpdate = true;
+    window.location.reload();
+  });
+  window.addEventListener('load', ()=>{
+    navigator.serviceWorker.register('sw.js').then(reg=>{
+      reg.addEventListener('updatefound', ()=>{
+        const worker = reg.installing;
+        if(!worker) return;
+        worker.addEventListener('statechange', ()=>{
+          if(worker.state === 'installed' && navigator.serviceWorker.controller){
+            showUpdateToast(reg);
+          }
+        });
+      });
+    }).catch(()=>{ /* offline support just won't be available this session */ });
+  });
+}
+
+function updateOfflineBadge(){
+  let badge = document.getElementById('offlineBadge');
+  if(!navigator.onLine){
+    if(!badge){
+      badge = document.createElement('div');
+      badge.id = 'offlineBadge';
+      badge.className = 'offline-badge';
+      badge.innerHTML = '<span></span>Offline — showing saved content';
+      document.body.appendChild(badge);
+    }
+  } else if(badge){
+    badge.remove();
+  }
+}
+window.addEventListener('online', updateOfflineBadge);
+window.addEventListener('offline', updateOfflineBadge);
+updateOfflineBadge();
+
+/* ============================================================
    STORE — everything below is local-only (localStorage), no
    account, no server. One JSON blob is the single source of
    truth for progress, bookmarks, notes, quiz scores, and prefs.
@@ -553,11 +650,11 @@ const ICON = {
 };
 const svgIco = (name)=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ICON[name]}</svg>`;
 
-const FEATURES = [
+const FEATURES = () => [
   {ico:"book",     t:"Plain-English first", d:"Every term is defined the moment it appears — no assumed knowledge, no jargon walls, ever."},
   {ico:"terminal", t:"Hands-on labs",       d:"Real exercises and challenges in a safe, legal lab you build yourself and fully control."},
   {ico:"grid",     t:"Diagrams that click", d:"Mermaid flowcharts and hand-drawn SVGs turn abstract ideas into pictures you remember."},
-  {ico:"map",      t:"A real roadmap",      d:"12 ordered paths, 97 focused sub-lessons — each one building on the one before it."},
+  {ico:"map",      t:"A real roadmap",      d:`${PATHS.length} ordered paths, ${totalSubLessons()} focused sub-lessons — each one building on the one before it.`},
   {ico:"link",     t:"Curated references",  d:"Every lesson ends with links to the best free resources, so you always know where to go deeper."},
   {ico:"unlock",   t:"Free, forever",       d:"No account, no paywall, no tracking. World-class security education, open to everyone."}
 ];
@@ -802,7 +899,7 @@ function renderHome(){
         <p class="sec-lead">Most security resources assume you already know the basics. This one doesn't — it's engineered for the complete beginner, end to end.</p>
       </div>
       <div class="features">
-        ${FEATURES.map((f,i)=>`
+        ${FEATURES().map((f,i)=>`
           <div class="feature-card" data-spotlight data-reveal style="--i:${i}">
             <div class="feature-ico">${svgIco(f.ico)}</div>
             <h3>${f.t}</h3>

@@ -7,6 +7,7 @@
 [![Live Site](https://img.shields.io/badge/live-kashsec.academy-EFA43A?style=for-the-badge)](https://kashsec.vercel.app/)
 
 ## What's new
+- **Installable & works offline** — KashSec is a full PWA now. Install it from the browser (or "Add to Home Screen" on mobile) and the entire course — app shell plus all 205 lessons — is available with zero network connection. See [Offline / PWA support](#offline--pwa-support) below.
 - **Four new beginner-friendly paths**: **Cryptography Fundamentals** (encoding vs. encryption vs. hashing, from zero), **Windows Security Basics** (Path 03's Linux depth, now for Windows), **Cloud Computing Basics** (the foundation Path 16's cloud security assumes), and **Digital Privacy & Personal Security** (your footprint, VPNs, secure messaging, identity theft)
 - **Path 17 — Malware & Reverse Engineering**: PE internals, hands-on Ghidra disassembly, dynamic analysis and sandboxing, unpacking/obfuscation, and writing YARA detection rules, capped with a full analysis pipeline lab
 - **Path 13 — Mobile App Security**: Android & iOS from the ground up — APK analysis, insecure storage, traffic interception, certificate pinning bypass, and exported component vulnerabilities, capped with a full assessment lab
@@ -98,6 +99,19 @@ default — no account needed, ever. If you want people to be able to
 sign in and sync across devices, see [`SUPABASE_SETUP.md`](./SUPABASE_SETUP.md)
 for a step-by-step guide (free Supabase tier, ~10 minutes). Until it's
 configured, the sign-in UI stays hidden and nothing changes.
+
+## 📴 Offline / PWA support
+
+KashSec is an installable Progressive Web App. A service worker (`sw.js`) precaches the entire app shell plus all 205 lesson files the first time you visit, so once that finishes, the whole course works with **no network connection at all** — refresh, close the tab, come back a week later on a plane, it's all still there.
+
+- **Install it**: most browsers show an install icon in the address bar, or use the install button in the site header (desktop Chrome/Edge, Android). On iOS Safari, use Share → **Add to Home Screen**.
+- **Regenerating the precache list**: `sw.js` is generated, not hand-written. After adding, removing, or renaming any path or lesson, run:
+  ```bash
+  npm run build:sw
+  ```
+  This reads the `PATHS` array in `app.js` and rewrites `sw.js`'s lesson list to match — commit the regenerated file.
+- **Update flow**: when a new version deploys, the site shows a "Refresh" toast instead of silently swapping content under you mid-session.
+- Supabase auth/sync calls are never cached and always go straight to the network — sync only ever reflects live, current data.
 
 ## 🤝 Contributing
 
