@@ -36,6 +36,23 @@ Every device connected to the internet has an **IP address**, a unique numeric i
 - **IPv4** — the older, more familiar format: four numbers separated by dots, e.g. `142.250.80.14`. There are only about 4.3 billion possible IPv4 addresses, and we've essentially run out.
 - **IPv6** — the newer format, e.g. `2607:f8b0:4005:80a::200e`, with a vastly larger address space designed to never run out.
 
+### Public vs. private IP addresses, and why your home router matters
+
+Not every device has its own globally unique IP address directly. Inside your home, your phone, laptop, and smart TV each get a **private IP address** (usually something starting with `192.168.` or `10.`) — only meaningful *within* your home network. Your router itself has one **public IP address** that represents your entire household to the rest of the internet, and uses a technique called **NAT (Network Address Translation)** to figure out which of your internal devices each incoming reply is actually meant for.
+
+```mermaid
+flowchart LR
+    A["Your laptop\n192.168.1.5"] -->|request| R[Your Router\nNAT + one public IP]
+    B["Your phone\n192.168.1.8"] -->|request| R
+    R -->|appears as ONE\npublic IP address| I[Internet]
+```
+
+This matters for security in a genuinely practical way: your home router's NAT accidentally provides a real, useful side benefit — devices behind it generally aren't directly reachable from the open internet unless you (or malware) specifically configure the router to forward a connection through (a technique called **port forwarding**). This is one reason your home network feels a bit "sheltered" compared to a device with a direct public IP address, like a cloud server.
+
+## What a "port" is, briefly
+
+A single IP address can run many different services at once, distinguished by **port numbers** — think of the IP address as a building's street address, and the port number as which specific apartment or office within it. Web traffic conventionally uses port 80 (unencrypted HTTP) or 443 (encrypted HTTPS); email, file transfer, and countless other services each have their own conventional ports. This is only a brief preview here — Path 02 dedicates an entire lesson to ports, since they matter enormously once you start scanning networks and understanding what services are actually exposed on a given machine.
+
 ## Why security matters at every step
 
 Every stage of that journey is a potential attack point:
@@ -47,7 +64,7 @@ Every stage of that journey is a potential attack point:
 | **The server itself** | If the destination server is compromised or malicious, it can serve you fake content or malware. |
 | **Your own device** | Malware already on your machine can intercept requests before they even leave, or after they arrive. |
 
-This is exactly why **HTTPS** (the padlock icon in your browser) exists — it encrypts traffic between you and the server so that even if someone is watching the network in between, they can't read or tamper with it. A **VPN (Virtual Private Network)** adds another layer, encrypting *all* your traffic and routing it through a trusted server, hiding your activity from your ISP and from anyone else on your local network (like on public Wi-Fi).
+This is exactly why **HTTPS** (the padlock icon in your browser) exists — it encrypts traffic between you and the server so that even if someone is watching the network in between, they can't read or tamper with it. A **VPN (Virtual Private Network)** adds another layer, encrypting *all* your traffic and routing it through a trusted server, hiding your activity from your ISP and from anyone else on your local network (like on public Wi-Fi). Path 20 of this course covers VPNs in much more depth, including exactly what they do and don't actually protect against.
 
 :::tip
 When you type a website address, your browser is silently asking a DNS server for the real numeric address *before* it can send anything — that lookup is invisible to you, but it happens on nearly every request.
@@ -56,6 +73,10 @@ When you type a website address, your browser is silently asking a DNS server fo
 :::warn Public Wi-Fi is a shared room, not a private line
 On open (password-free) public Wi-Fi, other people on the same network can potentially see unencrypted traffic. HTTPS protects the content of what you send, but a VPN adds extra protection for *which sites* you're even visiting. Never do sensitive logins (banking, work accounts) on open public Wi-Fi without a VPN if you can help it.
 :::
+
+## Who actually owns "the internet"?
+
+A genuinely common beginner question: no single company or government owns the internet. It's a decentralized network of networks, held together by voluntary cooperation between ISPs, and by organizations like **ICANN**, which coordinates the domain name system and IP address allocation globally, so that "google.com" reliably means the same thing no matter which country you're browsing from. This decentralization is deliberate — it's part of why the internet is remarkably resilient to any single point of failure, even though it also makes globally coordinated security responses to internet-wide threats genuinely difficult to organize.
 
 ## 🧪 Hands-on lab — trace your own request
 
@@ -75,6 +96,7 @@ On open (password-free) public Wi-Fi, other people on the same network can poten
    ```
 4. Count how many "hops" (intermediate routers) your request passes through before reaching Google's servers. It's usually somewhere between 8 and 20 — a genuinely surprising number for something that feels instant.
 5. Open your browser, visit any HTTPS website, and click the padlock icon next to the address bar to see the certificate details — this is the proof that your connection to that specific site is encrypted.
+6. Find your own device's private IP address (Windows: `ipconfig`; macOS/Linux: `ifconfig` or `ip addr`) and separately search "what is my IP" in a browser to see your router's public IP address — confirm they're genuinely different numbers, directly demonstrating this lesson's NAT discussion.
 
 :::challenge Test yourself
 If DNS is just "asking a server for an IP address," why is DNS spoofing (an attacker lying about that answer) such a dangerous attack — even if the real destination server is perfectly secure?
@@ -84,7 +106,9 @@ If DNS is just "asking a server for an IP address," why is DNS spoofing (an atta
 ## Key terms
 
 - **DNS (Domain Name System)** — translates domain names into IP addresses.
-- **IP address** — a device's unique numeric address on the internet.
+- **IP address** — a device's unique numeric address on the internet; public (internet-facing) or private (local network only).
+- **NAT (Network Address Translation)** — lets many devices share one public IP address via a router.
+- **Port** — a number identifying which specific service on a device a connection is meant for.
 - **Packet** — a small chunk of data that gets routed across the network.
 - **HTTPS** — encrypted web traffic, shown as a padlock icon in the browser.
 - **VPN** — encrypts and routes all of your device's traffic through a trusted server.
@@ -93,13 +117,16 @@ If DNS is just "asking a server for an IP address," why is DNS spoofing (an atta
 ## Recap
 
 - Visiting a website involves DNS lookup → routing through many hops → the server responding → your browser rendering the page.
-- Every device has an IP address; DNS exists so humans don't have to memorize them.
+- Every device has an IP address; DNS exists so humans don't have to memorize them. Private IPs (behind your router's NAT) differ from your one public-facing IP.
+- Ports let one IP address run many different services at once — covered fully in Path 02.
 - Every stage of the journey (DNS, the network path, the server, your own device) is a potential attack point.
-- HTTPS encrypts the content of your connection; a VPN adds a further layer of privacy over the network path.
+- HTTPS encrypts the content of your connection; a VPN adds a further layer of privacy over the network path (Path 20 goes deep on this).
+- No single entity owns the internet — it's a decentralized, cooperatively-run network of networks.
 
 ???refs
 - [How DNS Works (comic)](https://howdns.works/) — a genuinely fun, illustrated explanation of DNS.
 - [Cloudflare: What happens when you type a URL into your browser?](https://www.cloudflare.com/learning/dns/what-is-dns/) — a solid, free deep dive.
+- [ICANN: What does ICANN do?](https://www.icann.org/resources/pages/what-2012-02-25-en) — a free, official overview of how internet-wide coordination actually works.
 ???
 
 **Next up →** [Files, folders & organizing yourself](#/lesson/00-fresher-basics/files-folders-you)
