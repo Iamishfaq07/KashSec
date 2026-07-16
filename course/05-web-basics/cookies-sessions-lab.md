@@ -1,14 +1,24 @@
 # Cookies & Sessions Lab
 
-Understand how authentication state is managed and attacked.
+The main lesson explained *why* cookies and sessions exist. This lab has you actually inspect, break, and understand real session mechanics using nothing but your browser's built-in tools.
 
 ## Lab tasks
-1. Inspect cookies in DevTools and identify session tokens
-2. Test for insecure cookie flags (HttpOnly, Secure, SameSite)
-3. Attempt session fixation or hijacking in a vulnerable lab
-4. Understand how servers validate sessions
 
-## Challenge
-Find and exploit a session-related vulnerability in a lab environment and document the impact.
+1. **Inspect cookies in DevTools.** Open DevTools (`F12`) → **Application** tab (Chrome) or **Storage** tab (Firefox) → **Cookies**. Log into any site you have an account on and find the session cookie — usually named something like `session`, `sessionid`, `PHPSESSID`, or a framework-specific name. Note its value: a long, effectively random-looking string is exactly what you'd expect from a securely generated session token.
+2. **Test for insecure cookie flags.** Still in that same cookie inspector, check for three critical flags: **HttpOnly** (prevents JavaScript from reading the cookie — a key XSS mitigation), **Secure** (the cookie is only ever sent over HTTPS, never plain HTTP), and **SameSite** (controls whether the cookie is sent on cross-site requests, a core CSRF defense). Test a few different sites you use and note how many get all three right — you'll likely be surprised how inconsistent this is even among major sites.
+3. **Attempt session behavior testing in a safe lab.** Using PortSwigger's free Web Security Academy (referenced throughout Path 07), work through one of their session-related labs — session fixation (where an attacker sets a victim's session ID *before* they log in, then reuses it after) is a great first one to understand hands-on.
+4. **Understand server-side validation.** Open your browser's Network tab, find any authenticated request, and note that the *only* thing proving who you are on every single request is that cookie value being sent along automatically — there's no re-typing your password each time. This is exactly why protecting that one value (via HttpOnly, Secure, and proper session expiration) matters so much.
 
-**Next up →** [APIs & JSON](#/lesson/05-web-basics/apis-json)
+:::tip Try tampering with a cookie value yourself
+In a lab environment you're authorized to test (PortSwigger's labs are ideal for this), try manually editing a cookie value in DevTools — even something as simple as changing a numeric user ID stored in a cookie — and reload the page. If the app blindly trusts what it receives, you've just found a real vulnerability class covered directly in Path 07's IDOR lesson.
+:::
+
+:::challenge Document a session vulnerability
+Using a PortSwigger lab (or another legal, purpose-built vulnerable target), find and exploit one session-related flaw — a missing `HttpOnly` flag combined with a reflected XSS, a predictable session token, or a session fixation issue. Write it up: what the flaw was, how you exploited it, and what the real-world impact would be for actual users.
+:::
+
+## Key takeaway
+
+Session cookies are, functionally, the single credential proving your identity on every request after login — the three flags (`HttpOnly`, `Secure`, `SameSite`) exist specifically to protect that one value from the three most common ways it gets stolen or abused (script access, network interception, and cross-site forgery), and checking for them takes seconds once you know where to look.
+
+**Next up →** [Browser DevTools Lab](#/lesson/05-web-basics/devtools-lab)
