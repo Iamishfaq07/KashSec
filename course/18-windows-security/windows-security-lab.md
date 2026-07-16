@@ -19,6 +19,12 @@ Microsoft provides free, time-limited **Windows evaluation VMs** specifically fo
 Using everything from this lab, write a short report on your test VM's security posture: baseline findings (Task 1-2), your simulated incident and how it appeared in the logs (Task 3-4), and your hardening actions with before/after comparison (Task 5-6). This mirrors exactly the report structure from Path 09's reporting lesson, adapted for a defensive/hardening assessment rather than an offensive penetration test.
 :::
 
+## Bonus tasks — going further
+
+7. **PowerShell remoting check.** Confirm whether WinRM is enabled on your test VM (`Get-Service WinRM`) — if it's a fresh evaluation VM it's likely disabled by default on a workstation image, which is itself worth noting as a correctly-hardened baseline. If you have a second VM available, enable remoting deliberately and practice `Invoke-Command` against it, then find the resulting Event ID 4648 entry in the target's Security log, directly connecting this path's command-line lesson to its Event Viewer lesson.
+8. **Attack-surface-reduction check.** Open Windows Security → App & browser control → Exploit protection, and review which system-wide mitigations (DEP, ASLR) are enabled by default. Separately, check whether any ASR rules are configured (`Get-MpPreference | Select-Object -ExpandProperty AttackSurfaceReductionRules_Ids`) — on a fresh evaluation VM this list is likely empty, a genuine, concrete finding worth including in your report as a specific, actionable hardening recommendation.
+9. **Built-in account review.** Check whether the built-in Administrator account is enabled (`Get-LocalUser -Name Administrator`) and confirm the Guest account remains disabled — directly applying this path's user-accounts lesson's discussion of why these two default accounts deserve special scrutiny beyond ordinary account hygiene.
+
 ## Where this connects across the course
 
 This path's skills feed directly into several others: Path 11's DFIR and threat hunting labs assume comfort reading Windows logs exactly like this lab practiced; Path 11's Windows privesc lessons target exactly the account and service misconfigurations this path teaches you to audit and fix; and Path 08's SIEM material assumes the Event ID vocabulary from this path's Event Viewer lesson as a starting foundation.

