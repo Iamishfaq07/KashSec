@@ -475,6 +475,50 @@ const PATHS = [
      {n:"7", id:"yara-rules-and-detection",   title:"YARA Rules & Detection", desc:"Turn one analysis into scalable, automated detection."},
      {n:"8", id:"anti-analysis-techniques",   title:"Anti-Analysis Techniques", desc:"Anti-debug, anti-VM, anti-sandbox — and how to see past each."},
      {n:"9", id:"malware-re-capstone-lab",    title:"Malware & RE Capstone Lab", desc:"A full analysis pipeline against a real sample, start to finish."}
+   ]},
+  {n:"17", id:"17-crypto-fundamentals", title:"Cryptography Fundamentals", level:"Beginner",
+   desc:"Crypto concepts get used everywhere in this course — this path teaches them from zero: encoding vs encryption vs hashing, AES, RSA, certificates, and the mistakes that keep breaking real systems.",
+   subs:[
+     {n:"1", id:"what-is-cryptography",          title:"What is cryptography?", desc:"Encoding vs. encryption vs. hashing — the distinction that unlocks everything else."},
+     {n:"2", id:"symmetric-encryption",          title:"Symmetric Encryption", desc:"One shared key, AES, and why ECB mode is a classic mistake."},
+     {n:"3", id:"asymmetric-encryption",         title:"Asymmetric Encryption", desc:"Public/private keys, RSA, hybrid encryption, and digital signatures."},
+     {n:"4", id:"hashing-explained",             title:"Hashing Explained", desc:"SHA-256, why passwords need bcrypt not SHA-256, and salting."},
+     {n:"5", id:"digital-signatures-certificates", title:"Digital Signatures & Certificates", desc:"How the padlock icon actually works, and what it doesn't promise."},
+     {n:"6", id:"common-crypto-mistakes",        title:"Common Crypto Mistakes", desc:"Seven recurring real-world failure patterns, gathered in one place."},
+     {n:"7", id:"crypto-hands-on-lab",           title:"Crypto Hands-On Lab", desc:"CyberChef and OpenSSL — encode, encrypt, hash, and inspect real certificates."}
+   ]},
+  {n:"18", id:"18-windows-security", title:"Windows Security Basics", level:"Beginner",
+   desc:"Path 03 went deep on Linux — this path does the same for Windows: architecture, the Registry, Event Viewer, PowerShell, and a full hardening checklist.",
+   subs:[
+     {n:"1", id:"windows-fundamentals",       title:"Windows Fundamentals for Security", desc:"Architecture, the Registry, and services — Windows' equivalent of Path 03."},
+     {n:"2", id:"windows-security-settings",  title:"Windows Security Settings", desc:"Defender, Firewall, Windows Update, UAC, and BitLocker."},
+     {n:"3", id:"windows-event-viewer",       title:"Windows Event Viewer", desc:"Reading the Security log — Windows' equivalent of auth.log."},
+     {n:"4", id:"windows-user-accounts",      title:"Windows User Accounts & UAC", desc:"Standard vs. admin, least privilege, and account auditing."},
+     {n:"5", id:"windows-command-line-basics", title:"Windows Command Line Basics", desc:"Command Prompt and PowerShell, and why attackers love the latter too."},
+     {n:"6", id:"securing-a-windows-machine", title:"Securing a Windows Machine", desc:"A complete, practical hardening checklist."},
+     {n:"7", id:"windows-security-lab",       title:"Windows Security Lab", desc:"Hands-on on a real Windows VM, start to finish."}
+   ]},
+  {n:"19", id:"19-cloud-basics", title:"Cloud Computing Basics", level:"Beginner",
+   desc:"Path 11 jumps straight into cloud security — this path builds the foundation first: what cloud computing is, storage, networking, IAM, and the shared responsibility model.",
+   subs:[
+     {n:"1", id:"what-is-cloud-computing",    title:"What is Cloud Computing?", desc:"IaaS/PaaS/SaaS, and why this course is itself a cloud example."},
+     {n:"2", id:"cloud-providers-overview",   title:"Cloud Providers Overview", desc:"AWS, Azure, GCP — the same concepts, different names."},
+     {n:"3", id:"cloud-storage-basics",       title:"Cloud Storage Basics", desc:"Buckets, objects, and why misconfigured storage is a top real-world breach cause."},
+     {n:"4", id:"cloud-networking-basics",    title:"Cloud Networking Basics", desc:"VPCs, security groups, and the instance metadata service, explained fully."},
+     {n:"5", id:"cloud-identity-access",      title:"Cloud Identity & Access Management", desc:"IAM roles, least privilege, and why leaked keys are a leading breach cause."},
+     {n:"6", id:"shared-responsibility-model", title:"The Shared Responsibility Model", desc:"Where the provider's job ends and yours begins."},
+     {n:"7", id:"cloud-basics-lab",           title:"Cloud Basics Hands-On Lab", desc:"A real free-tier account, start to finish — prep for Path 11's flAWS lab."}
+   ]},
+  {n:"20", id:"20-digital-privacy", title:"Digital Privacy & Personal Security", level:"Beginner",
+   desc:"A full path on protecting yourself, not just systems — your digital footprint, VPNs, browser tracking, secure messaging, identity theft, and a complete personal security audit.",
+   subs:[
+     {n:"1", id:"digital-footprint",          title:"Your Digital Footprint", desc:"What you leave behind online, and why it enables spear phishing."},
+     {n:"2", id:"vpns-explained",             title:"VPNs Explained", desc:"What a VPN genuinely protects against — and what it doesn't."},
+     {n:"3", id:"browser-privacy",            title:"Browser Privacy", desc:"Third-party cookies, fingerprinting, and why incognito mode isn't a privacy tool."},
+     {n:"4", id:"secure-communications",      title:"Secure Communications", desc:"End-to-end encryption vs. encrypted-in-transit, and what metadata still reveals."},
+     {n:"5", id:"identity-theft-protection",  title:"Identity Theft Protection", desc:"Credit freezes, monitoring, and a concrete response checklist."},
+     {n:"6", id:"privacy-settings-audit",     title:"Privacy Settings Audit", desc:"A structured, repeatable audit of your real accounts."},
+     {n:"7", id:"personal-security-lab",      title:"Personal Security Capstone Lab", desc:"A complete personal security review, start to finish."}
    ]}
 ];
 
