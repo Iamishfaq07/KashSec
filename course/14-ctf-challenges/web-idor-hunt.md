@@ -67,6 +67,23 @@ KASHSEC{1d0r-1s-2-e4sy}
 
 IDOR is one of the most commonly *and easily* found vulnerability classes in real bug bounty programs — precisely because testing for it requires nothing more than two test accounts and the willingness to change a number in a URL or request body. Path 07's lesson on **Broken Access & IDOR**, and Path 10's **Hunting IDOR** lesson, cover the full "two-account method" for finding these systematically in real, authorized testing — this challenge is the compressed, self-contained version of that exact workflow.
 
+## Bonus round — a disguised variant
+
+Before moving on, try this harder variant using the same underlying vulnerability. The app's export feature makes a different-looking request:
+
+```
+GET /api/notes/export?token=bm90ZS04ODMw HTTP/1.1
+Host: internal-notes.kashsec-labs.test
+Cookie: session=a91f...redacted
+```
+
+That `token` value doesn't look like a plain integer ID — but is it actually any safer? Try decoding `bm90ZS04ODMw` (it's a very common, easily-reversible text encoding, not encryption) before checking the hint.
+
+:::challenge Is the export endpoint actually protected?
+<details><summary>Hint</summary>The encoding is Base64 — decode it and see what you get. Does obscuring an ID's *appearance* change whether the server performs an ownership check on it?</details>
+<details><summary>Show answer</summary><code>bm90ZS04ODMw</code> decodes to <code>note-8830</code> — the exact same note ID from the main challenge, just wrapped in Base64. This is a classic beginner mistake: encoding an identifier is <strong>not</strong> the same as protecting it. Base64 (like the URL-encoding, hex, and other encodings covered in Path 05's DevTools lesson) is trivially reversible by anyone, and provides zero actual security — the server still needs the exact same ownership check on this endpoint as on the plain <code>/api/notes/{id}</code> one. A disguised IDOR is still an IDOR; only genuine server-side authorization logic fixes it, never obscuring the parameter's format.</details>
+:::
+
 :::tip Real-world severity varies enormously
 Not every IDOR is equally severe — an IDOR exposing another user's grocery list (like note `8832` above) is a low-impact finding; one exposing board meeting passwords or financial data (like note `8830`) can be critical. Always assess and report the actual *impact* of what the exposed data allows, not just the mechanical existence of the bug — this is exactly what separates a strong bug bounty report from a weak one.
 :::

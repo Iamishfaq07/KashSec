@@ -45,6 +45,14 @@ This is the part most beginners skip, and it's the actual skill being tested —
 The exact loop above — read carefully, enumerate everything, form and test a hypothesis, iterate — is precisely what a real penetration test or bug bounty hunt looks like day to day. CTF practice isn't just a game bolted onto this course; it's rehearsal for the actual job.
 :::
 
+## Jeopardy-style vs attack-defense CTFs
+
+The challenges in this section follow the **jeopardy-style** format — a fixed menu of independent challenges, each worth points, solved in any order (much like the TV quiz show it's named after). This is by far the most common format for beginners and the one every platform mentioned in this lesson's references uses. A second, more advanced format worth knowing about is **attack-defense**: each team runs an identical set of vulnerable services, and must simultaneously patch their own services against attack while exploiting the same vulnerabilities in every other team's identical copy — a genuinely different skill, closer to live incident response under active attack than to the puzzle-solving this section practices. Most competitors spend months or years in jeopardy-style CTFs before attack-defense competitions start to feel approachable, so treat jeopardy-style mastery as the deliberate foundation, not a lesser format to graduate past quickly.
+
+## Dynamic vs static scoring
+
+Real CTF platforms typically use one of two scoring models, worth recognizing when you eventually compete live. **Static scoring** assigns each challenge a fixed point value based on its difficulty, unaffected by how many teams solve it. **Dynamic scoring** starts a challenge at a high point value that *decreases* as more teams solve it — meaning the first team to solve a given challenge earns significantly more than the hundredth team to solve the same one. Dynamic scoring rewards speed and rewards choosing challenges other competitors are avoiding (echoing Path 10.2's "less-hunted program" strategy from bug bounty, applied to competitive CTF strategy instead) — a genuinely useful mental model even in this section's fixed practice challenges, where thinking about "what's the fastest, cleanest path to this flag" builds the same instinct.
+
 ## A note on scope and safety
 
 Every challenge in this section is entirely self-contained — you're working with data provided directly in the lesson (log excerpts, encoded strings, request/response examples), not attacking any live system. This means you can practice freely with zero legal or ethical concerns. When you're ready to test these same skills against real (legally sanctioned) targets, revisit the **golden rule of permission** from Path 01, and use platforms like TryHackMe, Hack The Box, or PortSwigger's free labs, all referenced throughout this course.

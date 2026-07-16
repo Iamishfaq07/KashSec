@@ -41,6 +41,20 @@ The flag encodes the attacker's IP address with dots replaced by dashes:
 KASHSEC{203-0-113-77}
 ```
 
+## Bonus round — what happened after the login?
+
+The attacker successfully authenticated at `02:31:22`. Here's the next few lines of the log, previously trimmed from the excerpt above:
+
+```
+Mar 14 02:31:45 web01 sudo:     admin : TTY=pts/0 ; PWD=/home/admin ; USER=root ; COMMAND=/usr/bin/cat /etc/shadow
+Mar 14 02:32:10 web01 sudo:     admin : TTY=pts/0 ; PWD=/home/admin ; USER=root ; COMMAND=/usr/sbin/useradd -m backup_svc
+Mar 14 02:32:31 web01 sudo:     admin : TTY=pts/0 ; PWD=/home/admin ; USER=root ; COMMAND=/usr/sbin/usermod -aG sudo backup_svc
+```
+
+:::challenge What is the attacker doing, and why does it matter for your incident response?
+<details><summary>Show answer</summary>This is <strong>post-exploitation persistence</strong>, exactly the pattern covered in Path 09.6: the attacker first dumps <code>/etc/shadow</code> (harvesting every password hash on the system for offline cracking, Path 06.5's territory), then creates a brand-new user account (<code>backup_svc</code> — deliberately named to look like a legitimate service account rather than an obvious backdoor) and immediately adds it to the <code>sudo</code> group, granting it full administrative rights. This means simply resetting the <code>admin</code> account's password is nowhere near sufficient remediation — the attacker has planted an entirely separate, fully-privileged account that survives the original compromised credential being fixed. A real incident response here requires finding and removing <em>every</em> artifact the attacker created, not just closing the original entry point — precisely the "eradication" phase from Path 11.7's DFIR six-phase model, and exactly why a full timeline reconstruction (not just identifying the initial breach) matters so much.</details>
+:::
+
 ## Why this matters beyond the CTF
 
 This exact pattern — a burst of failed logins across multiple usernames from one source, followed by a success — is one of the most common indicators of compromise a SOC analyst reviews, and it's exactly what an **IDS/IPS** (Path 08) or a **SIEM** correlation rule is built to flag automatically in a real environment. Distinguishing a real attack from normal "noisy" user behavior (like the legitimate `deploy` user's occasional typos) is a genuinely important skill — over-alerting on every failed login buries analysts in false positives, while under-alerting misses real breaches. Path 11's **Digital Forensics & IR** lesson and its DFIR lab go deeper into this exact kind of log-based investigation.

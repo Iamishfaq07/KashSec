@@ -51,9 +51,25 @@ This is not a contrived puzzle — `find`, `vim`, `less`, `awk`, `python`, and d
 Running <code>sudo -l</code> the moment you land on any Linux box — as this challenge opened with — is one of the single highest-value, lowest-effort privilege escalation checks that exists. Automated enumeration tools like **LinPEAS** (covered in Path 03's Advanced Terminal Lab) run this check automatically alongside dozens of others, but understanding what to do with the result manually, as you just did, is the skill that actually matters.
 :::
 
+## Bonus round — a second sudo rule, no GTFOBins entry needed
+
+Suppose the box instead gave you this `sudo -l` output:
+
+```
+User analyst may run the following commands on kashsec-box:
+    (root) NOPASSWD: /usr/bin/systemctl restart backup-agent.service
+```
+
+No file-search flags, no obvious `-exec`-style feature — `systemctl` restarting one specific service doesn't look like an escalation path at all.
+
+:::challenge Is a narrowly-scoped sudo rule like this actually safe?
+<details><summary>Hint</summary>What determines <em>what</em> actually runs when that service restarts? Is that something the sudo rule controls, or something defined somewhere else entirely — somewhere <code>analyst</code> might have write access to?</details>
+<details><summary>Show answer</summary>It depends entirely on <strong>who can write to the service's unit file</strong> (typically under <code>/etc/systemd/system/</code>) or whatever script/binary that unit file points to. <code>sudo</code> only restricts <em>which command</em> <code>analyst</code> can run as root — it says nothing about the <em>contents</em> of <code>backup-agent.service</code> itself. If <code>analyst</code> can write to that unit file (check with <code>ls -la /etc/systemd/system/backup-agent.service</code>) or to the script it executes, they can point it at anything — including <code>ExecStart=/bin/sh -c "chmod u+s /bin/bash"</code> — then trigger it with the permitted <code>sudo systemctl restart</code> command, and it runs as root. This is exactly the same underlying lesson as the main challenge, generalized: <strong>a narrowly-scoped sudo rule is only as safe as everything that command's execution actually depends on</strong> — file permissions, environment variables, config file contents — not just the command name itself. Real privesc enumeration checks all of these layers, not just the sudoers entry in isolation.</details>
+:::
+
 ## 🎓 Section complete
 
-You've now worked through all six challenges in the CTF Zone — Web (IDOR and JWT forgery), Crypto (layered encoding and known-plaintext XOR cryptanalysis), Forensics (log analysis), Misc (hidden data), and Linux privilege escalation. This is genuinely representative of what a real CTF competition or authorized penetration test day-to-day looks like: methodical enumeration, hypothesis testing, and applying concrete technical knowledge under uncertainty. When you're ready for the next level, TryHackMe and Hack The Box (referenced throughout this course) offer hundreds more challenges across exactly these same categories.
+You've now worked through all seven challenges in the CTF Zone — Web (IDOR and JWT forgery), Crypto (layered encoding and known-plaintext XOR cryptanalysis), Forensics (log analysis), Misc (hidden data), and Linux privilege escalation. This is genuinely representative of what a real CTF competition or authorized penetration test day-to-day looks like: methodical enumeration, hypothesis testing, and applying concrete technical knowledge under uncertainty. When you're ready for the next level, TryHackMe and Hack The Box (referenced throughout this course) offer hundreds more challenges across exactly these same categories.
 
 ???refs
 - [GTFOBins](https://gtfobins.github.io/) — the definitive, community-maintained database of Unix binary privesc techniques.

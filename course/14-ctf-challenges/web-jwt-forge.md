@@ -50,6 +50,21 @@ KASHSEC{alg_none_1s_never_f1ne}
 
 `alg=none` acceptance is a real, historically significant JWT vulnerability class — it's been found in production applications repeatedly enough that it's explicitly called out in most JWT security guidance. The deeper lesson generalizes far beyond this one bug: **never trust client-supplied metadata about how to verify the client's own data.** The fix, covered in Path 07's **Advanced JWT Lab**, is for the server to hardcode which algorithm(s) it accepts and reject anything else outright — never dynamically trust the `alg` field from the token itself to decide how to validate it.
 
+## Bonus round — spotting the fix
+
+The developers patch the `alg=none` bug. Here's their fix, posted in the same changelog:
+
+```
+v0.9.3: Fixed #4471. Server now checks: if (token.header.alg !== decodedExpectedAlg) reject.
+decodedExpectedAlg is read from the token's own "kid" (key ID) header field,
+which selects which key/algorithm to verify against from our key store.
+```
+
+:::challenge Did this actually fix the vulnerability?
+<details><summary>Hint</summary>The fix checks the token's <code>alg</code> against an <em>expected</em> algorithm — but where does that expected algorithm actually come from? Is it something the server decided on its own, or something the attacker still gets to influence?</details>
+<details><summary>Show answer</summary><strong>No — this is still broken</strong>, just in a subtler way. The server is now checking the <code>alg</code> field against an "expected" value, but that expected value is itself derived from the <code>kid</code> header — a field the <em>attacker still fully controls</em>, since it's part of the token they submit. This is the classic <strong>algorithm confusion</strong> attack mentioned below: if an attacker can point <code>kid</code> at a key the server will treat as an HMAC secret (or otherwise manipulate which key/algorithm gets selected), they can potentially forge a validly-signed token all over again, just through a different manipulation than <code>alg=none</code>. A genuinely correct fix never lets <em>any</em> token-supplied field — not <code>alg</code>, not <code>kid</code>, nothing — influence which algorithm or key the server uses to verify it; the expected algorithm and key must be hardcoded server-side, chosen entirely independently of anything in the incoming token.</details>
+:::
+
 :::danger This isn't the only JWT attack worth knowing
 Beyond `alg=none`, watch for: algorithm confusion (tricking an RS256-verifying server into checking a signature with the public key as if it were an HMAC secret), weak/guessable HMAC secrets crackable by brute force, and tokens with no expiration ever enforced. Path 07's JWT lab covers all of these in depth — this challenge deliberately isolates just one to keep the puzzle focused.
 :::

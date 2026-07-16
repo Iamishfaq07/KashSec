@@ -36,6 +36,21 @@ KASHSEC{c4es4r_4nd_b4se64_l4yers}
 
 Recognizing encoding formats on sight — Base64's clean alphanumeric-plus-padding look, hex's `0-9a-f` pairs, URL-encoding's `%XX` sequences — is a skill you'll use constantly in real work: reading captured HTTP traffic, analyzing malware configuration strings, or parsing log data. Layered "obfuscation" like this (stacking a trivial substitution cipher under a standard encoding) is also a real pattern seen in unsophisticated malware and poorly designed applications — it slows down casual inspection but provides essentially no real security against anyone who methodically peels back each layer, exactly as you just did.
 
+## Bonus round — spot the encoding by eye, no decoding needed
+
+A genuinely useful drill for building instant pattern recognition: without decoding anything, just identify which encoding each string below most likely uses, based purely on its character set and shape.
+
+```
+A) 4b4153485345437b737065656472756e7d
+B) KASHSEC%7Bfast%5Frecon%7D
+C) S0FTSFNFQ3tsYXllcmVkX2VuY29kaW5nfQ==
+```
+
+:::challenge Name each encoding by sight
+<details><summary>Hint</summary>Look at the alphabet each one uses: does it only contain <code>0-9a-f</code>? Does it contain <code>%</code> followed by two characters? Does it end in <code>=</code> padding with a mixed-case alphanumeric body?</details>
+<details><summary>Show answer</summary><strong>A</strong> is <strong>hex</strong> — only characters 0-9 and a-f appear, always in pairs (each pair represents one byte). <strong>B</strong> is <strong>URL encoding</strong> — the <code>%7B</code>/<code>%7D</code>/<code>%5F</code> sequences are percent-encoded special characters (<code>{</code>, <code>}</code>, <code>_</code>), exactly the format from Path 05's HTTP lessons for safely transmitting special characters in a URL. <strong>C</strong> is <strong>Base64</strong> — mixed-case letters and digits with trailing <code>=</code> padding. All three decode to a real <code>KASHSEC{...}</code> flag if you want to confirm it yourself — but the actual point of this drill is recognizing the format <em>instantly, without needing to decode first</em>, since in real forensic or bug bounty work you'll often triage dozens of encoded strings and need to know at a glance which decoder to reach for.</details>
+:::
+
 :::warn Encoding is not encryption
 Base64 has no secret key and no security property at all — anyone can decode it instantly. Confusing "encoded" with "encrypted" is a genuinely common and dangerous mistake: teams sometimes base64-encode sensitive data and mistakenly believe it's now "protected." It isn't. Real confidentiality requires actual encryption (AES, etc.) with a properly managed secret key — a distinction worth internalizing permanently.
 :::
