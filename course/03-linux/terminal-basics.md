@@ -56,6 +56,21 @@ ls -l /etc
 #  +----------- the command itself
 ```
 
+## Environment variables and PATH — how the shell finds commands
+
+When you type `ls`, the shell doesn't magically know where the `ls` program lives on disk — it searches a specific list of folders stored in an **environment variable** called `PATH`:
+
+```bash
+echo $PATH
+# /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+```
+
+The shell checks each folder in that list, in order, until it finds a program matching what you typed. This matters for security in a genuinely concrete way: **PATH hijacking** (referenced in Path 11's Windows privesc lab, and its Linux equivalent) exploits exactly this lookup mechanism — if an attacker can place a malicious file with the same name as a legitimate command somewhere earlier in the PATH search order, the shell runs the attacker's version instead, without you or the calling program necessarily noticing. Environment variables generally (viewable with `env` or `printenv`) store all kinds of configuration the shell and programs read — your default text editor, your home directory location, and dozens of other settings.
+
+## Which shell am I even using?
+
+`bash` is this course's default assumption, but you'll also encounter `zsh` (macOS's modern default), `sh` (a minimal, older shell many scripts target for maximum compatibility), and others. Check which one you're currently in with `echo $SHELL` or `ps -p $$`. The core commands in this lesson work identically across nearly all of them — the differences mostly show up in scripting syntax and interactive features (autocompletion styles, prompt customization), which won't trip you up at this stage.
+
 ## Getting help — the two most important commands
 
 You will forget things. Every professional does. There are two universal ways to look things up:

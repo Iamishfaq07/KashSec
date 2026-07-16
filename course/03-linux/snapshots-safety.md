@@ -113,6 +113,10 @@ You can add **two adapters** to Kali: adapter 1 as Host-only (for talking to tar
 
 Now those VMs form a private ethernet segment. Kali and your target VM can scan and attack each other; the outside world can't see either.
 
+## Managing snapshots well
+
+A few practical habits that save real frustration later: **name snapshots descriptively** (`before-privesc-attempt`, not `snapshot 3`) so you can actually find the right restore point weeks later; **snapshots consume real disk space**, since each one stores the differences from the previous state — an old VM with dozens of forgotten snapshots can quietly consume tens of gigabytes; and **snapshot chains have a direction** — restoring an old snapshot discards everything that happened after it, so always double-check which snapshot you're restoring before confirming, since there's no "undo the restore" once other snapshots depending on that history are gone.
+
 ## Golden rules of a safe home lab
 
 1. **Vulnerable VMs never go on Bridged mode.** They shouldn't be reachable from anywhere but Kali.

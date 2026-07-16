@@ -116,6 +116,23 @@ You'll be asked for your password (the one you'll change next lesson). This take
 | Time drifts | Guest Additions usually fixes it |
 | Slow performance | Give more RAM and CPUs in VM Settings |
 
+## A quick tour of what's already installed
+
+Kali ships with hundreds of tools pre-installed, organized into categories accessible from its applications menu — worth a brief browse now, even though you won't use most of them for a while:
+
+- **Information Gathering** — recon tools (Path 09), including `nmap`, `theHarvester`.
+- **Web Application Analysis** — Burp Suite, `sqlmap` (Path 07).
+- **Password Attacks** — `hashcat`, `john` (referenced in Path 17's crypto material).
+- **Exploitation Tools** — Metasploit Framework (Path 09).
+- **Sniffing & Spoofing** — Wireshark (Path 08).
+- **Forensics** — Autopsy, Volatility (Path 11's DFIR lab).
+
+You'll formally meet most of these tools by name throughout the rest of this course — this browse is just so the menu feels familiar rather than overwhelming the first time you actually need something from it.
+
+:::note Kali defaults to a non-root user, and that's intentional
+Older Kali versions ran everything as `root` by default — a convenient but genuinely risky default, since any tool you ran (or any mistake you made) had full system privileges automatically. Modern Kali defaults to a standard, non-root `kali` user instead, requiring explicit `sudo` for privileged actions — directly applying the principle of least privilege from Path 00's fundamentals, now to your own primary security workstation.
+:::
+
 ## Alternative — Kali in Docker or WSL
 
 For lighter footprints:

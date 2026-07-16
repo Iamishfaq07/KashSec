@@ -29,6 +29,15 @@ This lab is a first, gentler pass at the same skill Path 11's DFIR Lab covers in
    ```
    A recently modified system binary, or a new SUID binary you didn't create, both warrant close attention.
 
+5. **Check cron jobs and scheduled persistence.** A system's own scheduler is a common place for malicious persistence to hide, running quietly on its own schedule:
+   ```bash
+   crontab -l                        # current user's scheduled jobs
+   sudo crontab -l -u root           # root's scheduled jobs
+   ls -la /etc/cron.d/ /etc/cron.daily/
+   ```
+   An unfamiliar entry here — especially one downloading and executing something from a remote URL — is a strong persistence indicator, directly echoing the living-off-the-land pattern from Path 11's threat hunting lab.
+6. **Check shell history for command evidence.** `cat ~/.bash_history` (or the equivalent for the shell in use) shows every command a user has typed — genuinely revealing during an investigation, though be aware a careful attacker may have cleared or disabled this file, which is itself a suspicious finding worth noting.
+
 :::tip Build a mental baseline first
 Real incident response is far easier when you already know what "normal" looks like for a given system — the processes that always run, the accounts that should exist, the typical login pattern. Run through these same four commands on your own everyday machine right now (nothing suspicious expected), just to build the habit of noticing what a "clean" baseline actually looks like before you ever need to spot an anomaly against it.
 :::

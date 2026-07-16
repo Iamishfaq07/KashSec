@@ -103,6 +103,17 @@ locate sshd_config
 # instant search using a pre-built index; run 'sudo updatedb' first
 ```
 
+### find's -exec flag — a preview of something important later
+
+Beyond just locating files, `find` can run a command against every result it finds using `-exec`:
+
+```bash
+find /home -name "*.log" -exec grep -l "error" {} \;
+# find every .log file, then grep each one for "error"
+```
+
+This is genuinely powerful for legitimate administration — but it's also exactly the mechanism this course's CTF Zone privesc challenge and Path 11's privilege escalation lab exploit: if `find` itself is ever run with elevated privileges (via `sudo`), whatever `-exec` launches inherits that same elevated privilege. Filing this pattern away now will make that later material click immediately instead of feeling like a brand-new trick.
+
 ## grep — the search command you'll live in
 
 `grep` finds text *inside* files or streams. It is the single most-used security tool that isn't in the security toolbox.

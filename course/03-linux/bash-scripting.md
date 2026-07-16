@@ -39,6 +39,22 @@ read -p "Enter a target IP: " target
 echo "You entered $target"
 ```
 
+### Reading command-line arguments
+
+Real scripts take input directly from how they're invoked, not just interactive prompts — genuinely essential once you start building the recon and automation tools referenced throughout Path 04 and Path 10:
+
+```bash
+#!/bin/bash
+# Usage: ./scan.sh target.com
+
+target=$1        # the first argument
+echo "Scanning $target..."
+echo "Total arguments given: $#"
+echo "All arguments: $@"
+```
+
+Run it as `./scan.sh target.com` and `$1` holds `target.com` automatically — this is exactly how every command-line security tool you've used so far (`nmap`, `dig`, `curl`) accepts a target, and now you can build tools that work the same way.
+
 ## Conditions
 
 ```bash
