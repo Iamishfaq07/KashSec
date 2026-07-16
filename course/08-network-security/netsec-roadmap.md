@@ -99,6 +99,10 @@ Beyond Nmap and Wireshark, as you progress:
 - **Bettercap** — a modern, powerful framework for MITM attacks, Wi-Fi reconnaissance, and network manipulation, effectively a more comprehensive successor to some `aircrack-ng`/`ettercap` functionality.
 - **Zeek (formerly Bro)** — a powerful network analysis framework, popular in SOC/threat-hunting contexts for deep traffic inspection beyond what Wireshark alone typically handles at scale.
 
+## Building network security intuition through continuous practice
+
+The tools in this path are genuinely easy to click through once and forget — the durable skill is building an intuitive feel for what "normal" looks like on a network, so anomalies actually jump out. A few concrete habits worth adopting beyond this course: periodically capture and skim traffic on your own home network just to notice what's normally there (which apps phone home constantly, which devices talk to unexpected destinations); keep a running personal log of interesting Nmap/Wireshark findings the way the payload cheat-sheet habit from Path 07's Burp lab suggested; and follow real incident write-ups (Path 06.3's kill chain lesson linked several) specifically paying attention to which network-layer signal, if caught earlier, would have shortened the attacker's dwell time. None of this replaces hands-on lab practice, but it's what turns "I've used Nmap" into "I actually notice when something's off."
+
 ## 🧪 Lab — Full lab network assessment
 
 Using your Kali VM and (ideally) a second target VM on your isolated Host-only network from Path 03.7:

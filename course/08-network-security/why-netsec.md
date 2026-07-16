@@ -67,6 +67,14 @@ Unlike Path 07 (which leaned heavily offensive), network security has an unusual
 
 This connects directly to Ishfaq's real professional world: supply chain security, SOC operations, and the broader "can we detect and contain this" mindset that runs through every mature security program.
 
+## Zero Trust — the modern shift in network thinking
+
+Traditional network security followed a "castle and moat" model: build a hard perimeter (firewall, VPN gateway), and trust anything already inside it. That assumption has aged badly — once an attacker gets past the perimeter (via a single phished employee, a compromised laptop, a misconfigured cloud service), a castle-and-moat network trusts them completely, letting them move freely. **Zero Trust** flips this: no device, user, or request is trusted by default just because it's "inside" the network — every single access request is verified on its own merits, continuously, regardless of where it originates. This isn't a single product but an architectural philosophy, and it directly shapes why modern organisations increasingly treat internal network segmentation (limiting lateral movement, per Path 06's kill chain) as equally important as the perimeter itself — an idea Path 11's cloud and Active Directory material returns to in real, hands-on detail.
+
+## The physical layer — the network security beginners forget
+
+Every concept above assumes the network's physical infrastructure is trustworthy, but that's an assumption worth stating explicitly rather than skipping past. An unlocked network closet with an accessible switch, an ethernet port in a public lobby still live and untagged into the internal VLAN, or a discarded router that still holds its old Wi-Fi credentials in flash memory are all genuinely exploitable network security gaps — no clever packet manipulation required, just physical proximity. Professional penetration tests (Path 09) frequently include a physical security component for exactly this reason: the most sophisticated network segmentation in the world doesn't help if an attacker can simply walk up to an unsecured switch and plug in directly.
+
 ## 🧪 Lab — Map your own home network
 
 Before diving into tools next lesson, do a simple manual exercise:

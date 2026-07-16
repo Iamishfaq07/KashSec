@@ -66,6 +66,14 @@ WPS was designed for convenient device pairing (push a button or enter a short P
 
 **KRACK (Key Reinstallation Attack)**, disclosed in 2017, exploited a flaw in WPA2's four-way handshake itself (not password strength) allowing traffic decryption under specific conditions. Patched via firmware/OS updates across virtually all major vendors — a good reminder that even well-designed protocols can have implementation-level flaws discovered years later, reinforcing why keeping router firmware updated (Path 06.7) matters.
 
+### PMKID attack — cracking without a client present
+
+A refinement on the four-way handshake capture worth knowing: the **PMKID attack** (discovered in 2018) lets an attacker recover the same crackable material *without waiting for a client to connect or forcibly deauthenticating anyone*. Many access points include the PMKID (a value derived from the network password, used to speed up roaming between access points on the same network) in a single frame sent even to an attacker who simply requests it directly — meaning the entire "deauth a client, wait for a fresh handshake" step from the classic attack above becomes unnecessary. This matters practically because it's stealthier (no disruptive deauth packets that alert anyone monitoring the network) and faster, and it's exactly the kind of "the same underlying password-cracking economics, a quieter delivery mechanism" pattern worth recognising across many attack classes in this course.
+
+## Bluetooth and BLE — wireless security beyond Wi-Fi
+
+Wi-Fi isn't the only wireless protocol carrying real security stakes. **Bluetooth** and **BLE (Bluetooth Low Energy)** — used by everything from wireless headphones to medical devices and smart locks — have their own distinct attack surface: **BlueSnarfing** exploits weak or absent authentication to silently pull data off a paired device, **BlueJacking** sends unsolicited messages to nearby discoverable devices, and various **pairing-downgrade attacks** trick two devices into negotiating a weaker, crackable encryption mode during initial pairing. The core lesson generalises directly from Wi-Fi: any wireless protocol broadcasting through open air needs its own explicit encryption and authentication design, since — exactly as with Wi-Fi — physical proximity alone is often all an attacker needs to start listening. Path 15's mobile security material returns to Bluetooth/BLE attacks in more depth, since mobile devices are the most common real-world Bluetooth attack surface today.
+
 ## Defensive best practices, consolidated
 
 - Use **WPA3** where possible, WPA2-AES as the minimum acceptable fallback.

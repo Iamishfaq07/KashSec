@@ -30,6 +30,12 @@ Use your own Kali VM against a local vulnerable target (Metasploitable 2, refere
    ```
    The `-oA` flag saves output in all three formats simultaneously (normal, XML, and grepable) — the XML format in particular is what many other tools (including some vulnerability scanners) expect as input, making it the standard "handoff" format between recon and later analysis stages.
 
+5. **Cross-reference a found service version against a real CVE database.** Take one specific service+version Nmap identified in task 2 (say, an older OpenSSH or Apache version) and manually search the [NVD (National Vulnerability Database)](https://nvd.nist.gov/) or `searchsploit` on Kali for known CVEs affecting that exact version:
+   ```bash
+   searchsploit apache 2.4.41
+   ```
+   This is the manual step NSE's `--script vuln` scripts automate for you — doing it by hand once, deliberately, builds a real understanding of what that automation is actually doing under the hood, and how CVE/CVSS (Path 06.2) connect to a specific line in your scan output.
+
 :::tip Always start broad, then narrow
 A common, efficient real-world pattern: run a fast scan across all 65,535 ports first (`nmap -p- target`) just to see what's open, *then* run a slower, more detailed `-sV -O --script vuln` scan against only those specific open ports. Scanning all ports with full detail from the start wastes enormous time on the 65,000+ ports that turn out to be closed.
 :::

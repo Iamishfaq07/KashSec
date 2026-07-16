@@ -81,6 +81,10 @@ Once a browser has seen this header once for a domain, it will **refuse** to con
 
 **Certificate pinning** goes further than standard CA validation — the application (commonly used in mobile apps) is hardcoded to only trust one **specific** certificate or public key, rather than any certificate from any generally-trusted CA. This defeats MITM attempts even if an attacker somehow obtained a fraudulently-issued but technically "valid" certificate from a compromised or coerced CA — at the cost of added operational complexity when legitimately rotating certificates.
 
+## AitM phishing kits — MITM meets MFA bypass
+
+A genuinely important modern evolution worth naming precisely: **AitM (Adversary-in-the-Middle)** phishing kits combine social engineering (Path 06.6) with a real-time MITM position to defeat MFA entirely — something a static fake login page never could. Instead of hosting a simple cloned login form, the attacker's server acts as a **live reverse proxy** to the real site: the victim's login attempt, MFA code, and every subsequent action pass *through* the attacker's server to the genuine site in real time, meaning the attacker captures not just credentials but the resulting **authenticated session cookie itself** — completely bypassing MFA, since the victim actually completed real MFA against the real site, just with an invisible middleman relaying every step. Toolkits like Evilginx popularised this technique, and it's a major reason security teams increasingly push toward phishing-resistant authentication methods (hardware security keys and passkeys from Path 06.5, which cryptographically bind the login to the specific origin domain and simply refuse to complete on a proxy's spoofed domain) rather than relying on TOTP codes alone, which an AitM proxy can transparently relay.
+
 ## Defending against MITM, consolidated
 
 - **Always verify HTTPS is in use** and heed certificate warnings rather than clicking through them.

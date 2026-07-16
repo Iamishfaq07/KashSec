@@ -137,6 +137,14 @@ flowchart TB
 
 An employee's traffic is encrypted via VPN in transit, then the firewall at the gateway enforces exactly which internal resources that authenticated tunnel is allowed to reach — layering encryption (confidentiality) with access control (least privilege), rather than relying on either alone.
 
+## Forward vs reverse proxies — the other traffic middlemen
+
+Beyond firewalls and VPNs, **proxies** are the third major traffic-control primitive, and the two directions are easy to confuse. A **forward proxy** sits in front of *clients*, making requests on their behalf — Burp Suite (Path 07.2) is literally a forward proxy, and so are corporate web filters that route every employee's outbound traffic through a central checkpoint for content filtering and logging. A **reverse proxy** sits in front of *servers* instead, receiving all inbound requests and distributing them to backend systems — this is exactly the load balancer role from Path 05's web-anatomy lesson, and tools like Nginx and Cloudflare routinely serve as reverse proxies, terminating TLS, caching content, and shielding the real backend server's IP address from direct exposure to the internet. The one-sentence distinction worth remembering: forward proxies protect and represent *clients*, reverse proxies protect and represent *servers*.
+
+## Split tunneling — a VPN configuration choice worth understanding
+
+Not every VPN routes *all* of a device's traffic through the tunnel. **Split tunneling** lets an administrator (or user) configure only *specific* traffic to go through the VPN — say, traffic destined for internal company servers — while everything else (regular internet browsing) goes directly out the normal connection, bypassing the tunnel entirely. This has real tradeoffs: it reduces load on the VPN gateway and can improve performance for non-corporate traffic, but it also means a compromised device connected via split tunneling has one foot in the trusted internal network and one foot in the untrusted open internet simultaneously — a genuine security tradeoff that security teams weigh carefully, and exactly the kind of nuance that shows why "connected via VPN" alone (as the challenge below explores) never tells the whole access-control story.
+
 ## The rise of Zero Trust — a modern evolution
 
 Traditional network security assumed "inside the firewall/VPN = trusted." **Zero Trust** architecture instead assumes **no** implicit trust based on network location alone — every request, from anywhere, must be authenticated and authorised on its own merits, continuously, regardless of whether it originates "inside" the traditional perimeter. This is a significant, ongoing industry shift worth being aware of as you progress — the old "castle and moat" model is increasingly considered insufficient on its own.

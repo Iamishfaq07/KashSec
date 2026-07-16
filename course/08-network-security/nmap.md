@@ -129,6 +129,10 @@ nmap -oA results scanme.nmap.org          # all three formats at once
 
 You'll parse this XML output with Python in Path 09/10 as part of building automated recon pipelines — exactly the kind of tool-chaining you practised conceptually back in Path 07.3.
 
+## Firewall/IDS evasion techniques — and why to use them carefully
+
+Nmap includes several options specifically designed to slip past basic firewalls and intrusion detection systems, worth knowing by name even as a beginner since they illustrate how scan detection actually works under the hood. `-f` fragments probe packets into smaller pieces, sometimes evading simple packet-inspection rules that only examine whole packets; `-D decoy1,decoy2,ME` sends the same scan from several spoofed source addresses simultaneously alongside your real one, making it harder for a defender to tell which source was the genuine scanner; `--data-length` pads packets to avoid signature-based detection tuned to Nmap's default packet sizes. These techniques matter far more for understanding *how IDS/IPS systems work* (Path 08.5 covers the defensive side directly) than for routine use — on any legitimate, authorised engagement, being detected by the client's own monitoring is usually a fine, even desired, outcome, since it tests whether their detection actually works.
+
 ## A realistic scanning workflow
 
 ```mermaid
@@ -158,6 +162,10 @@ nmap --script vuln -p 445,3306 192.168.1.5
 ```
 
 This staged approach — broad and fast first, narrow and deep later — is exactly how real network assessments (and Path 09's methodology) actually proceed, rather than blasting every possible check against every possible host from the start.
+
+## Nmap vs its modern, faster cousins
+
+Nmap remains the standard, but it isn't the only scanner worth knowing. **Masscan** trades Nmap's depth for raw speed — capable of scanning the entire IPv4 address space for a single port in minutes rather than the hours a full Nmap sweep would take, making it the tool of choice for internet-wide research rather than focused, in-depth single-target assessment. **RustScan** takes a hybrid approach: it uses its own extremely fast initial port discovery, then hands the results off to Nmap automatically for the detailed version/OS/script detection Nmap does best — combining Masscan-like speed for the "which ports are even open" question with Nmap's depth for everything after. Understanding when raw speed matters (a huge external attack surface, Path 10's bug bounty recon) versus when depth matters (a focused internal assessment) is exactly the judgment call a working network security professional makes routinely.
 
 ## 🧪 Lab — Full Nmap sweep against your own lab
 

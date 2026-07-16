@@ -99,6 +99,14 @@ Numerous sites provide free, legal sample captures specifically for learning —
 - **ARP anomalies** — signs of ARP spoofing (next lesson's MITM territory).
 - **Repeated connection attempts** — potential scanning or brute-force activity, visible as unusually repetitive SYN packets.
 
+## Capture filters vs display filters — a distinction that trips up beginners
+
+It's easy to conflate these, but they operate at fundamentally different points: a **capture filter** (set before you start capturing, using tcpdump-style syntax like `port 80`) decides which packets Wireshark records *at all* — packets that don't match are discarded before ever touching disk or the packet list. A **display filter** (typed into the filter bar after capturing, using Wireshark's own richer syntax like `tcp.port == 443`) only decides which *already-captured* packets are currently shown — nothing is discarded, you can always clear the display filter and see everything again. The practical implication: capture filters are for controlling capture *volume* on a busy interface (avoid recording gigabytes of irrelevant traffic), while display filters are for *analysis* after the fact — when in doubt, capture broadly and filter narrowly during display, since you can't display-filter your way back to packets a capture filter already threw away.
+
+## Statistics menu — the bird's-eye view
+
+Beyond packet-by-packet inspection, Wireshark's **Statistics** menu offers several aggregate views that reveal patterns invisible in the raw packet list. **Statistics → Conversations** summarises every distinct connection in the capture (by IP pair or port pair) along with total bytes and duration — an efficient way to spot a single host that transferred unusually large amounts of data, a classic exfiltration signal. **Statistics → Protocol Hierarchy** breaks down the entire capture by protocol as a percentage tree, useful for quickly answering "what kind of traffic is even in this capture" before diving into individual packets. **Statistics → I/O Graph** plots traffic volume over time, making sudden spikes (a possible DoS attempt, a large exfiltration burst) visually obvious at a glance rather than requiring you to scroll through thousands of rows.
+
 ## Command-line packet capture — tshark and tcpdump
 
 For automation, scripting, or headless servers without a GUI:
