@@ -18,7 +18,7 @@
  */
 import fs from 'fs';
 import path from 'path';
-import { fileURLToPath, pathToFileURL } from 'url';
+import { fileURLToPath } from 'url';
 
 const ROOT = path.dirname(fileURLToPath(import.meta.url));
 const SITE = 'https://kashsec.vercel.app';
@@ -28,18 +28,15 @@ const m = appJs.match(/const PATHS = \[[\s\S]*?\n\];/);
 if (!m) throw new Error('Could not find PATHS array in app.js');
 const PATHS = new Function(m[0] + '; return PATHS;')();
 
-// Use marked from the local install (scratchpad copy). If unavailable, fall
-// back to a very simple heading+paragraph renderer — worse for SEO but still
-// beats an empty shell.
+// `marked` is a devDependency (npm install marked) — only needed at build
+// time to prerender lesson HTML; the live site still loads it from CDN in
+// the browser (app.js's ensureMarkdownLibs), this is a separate copy.
 let marked;
 try {
-  const markedPath = '/tmp/claude-0/-home-user-KashSec/241cca8d-1135-5d87-9b96-cb0f46cb3f50/scratchpad/pkg2/package/lib/marked.esm.js';
-  if (fs.existsSync(markedPath)) {
-    marked = (await import(pathToFileURL(markedPath).href)).marked;
-  }
+  marked = (await import('marked')).marked;
 } catch {}
 if (!marked) {
-  console.warn('marked not found — falling back to minimal renderer.');
+  console.warn('marked not installed (run `npm install`) — falling back to a minimal renderer.');
   marked = { parse: (md) => md.split('\n\n').map(p => p.startsWith('#') ? `<h2>${p.replace(/^#+\s*/,'')}</h2>` : `<p>${p.replace(/\n/g,' ')}</p>`).join('\n') };
 }
 
