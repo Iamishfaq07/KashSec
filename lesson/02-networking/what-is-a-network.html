@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What is a network? — Path 02 · KashSec Academy</title>
+<meta name="description" content="Before we attack or defend anything, we must understand how computers actually communicate. Networking is the human body that a security &quot;doctor&quot; needs to understand. This lesson gives you the mental ">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/02-networking/what-is-a-network">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="What is a network? — Path 02 · KashSec Academy">
+<meta property="og:description" content="Before we attack or defend anything, we must understand how computers actually communicate. Networking is the human body that a security &quot;doctor&quot; needs to understand. This lesson gives you the mental ">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/02-networking/what-is-a-network">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="What is a network? — Path 02 · KashSec Academy">
+<meta name="twitter:description" content="Before we attack or defend anything, we must understand how computers actually communicate. Networking is the human body that a security &quot;doctor&quot; needs to understand. This lesson gives you the mental ">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"What is a network? — Path 02 · KashSec Academy","description":"Before we attack or defend anything, we must understand how computers actually communicate. Networking is the human body that a security \"doctor\" needs to understand. This lesson gives you the mental ","url":"https://kashsec.vercel.app/#/lesson/02-networking/what-is-a-network","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/02-networking/what-is-a-network">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 02 — Networking Fundamentals</a> · What is a network?</div>
+  <article><h1>What is a network?</h1>
+<p>Before we attack or defend anything, we must understand how computers actually communicate. Networking is the <em>human body</em> that a security &quot;doctor&quot; needs to understand. This lesson gives you the mental model that everything else hangs on.</p>
+<p>Almost every attack you&#39;ll ever learn about travels across a network. If networking is fuzzy for you, hacking will feel like magic. Get this clear now and the rest of the course opens up.</p>
+<h2>The simplest definition</h2>
+<p>A <strong>network</strong> is two or more computers connected together so they can share information. That&#39;s genuinely all it is. When your phone messages a friend&#39;s phone, when your laptop loads a website, or when you stream a film to your TV, computers are talking over a network.</p>
+<p>You&#39;re already surrounded by them:</p>
+<ul>
+<li><strong>Your home Wi-Fi</strong> is a small network joining your phone, laptop, and TV.</li>
+<li><strong>Your workplace</strong> has a bigger one.</li>
+<li>All these smaller networks are joined into one gigantic global network we call <strong>the internet</strong> — literally an <em>inter-network</em>, a network of networks.</li>
+</ul>
+<h2>The post office picture</h2>
+<p>The easiest way to understand a network is a worldwide <strong>postal system</strong> — because it works almost exactly the same way.</p>
+<p><em>[The internet is a postal system]</em></p>
+<p>To send information to another computer, it&#39;s like posting a letter: it needs an <strong>address</strong>, it gets <strong>carried</strong> step by step, and it eventually <strong>arrives</strong>.</p>
+<ul>
+<li><strong>Your devices</strong> (phone, laptop, TV) are the <strong>houses</strong>. Each can send and receive letters.</li>
+<li><strong>Your router</strong> — the Wi-Fi box from your internet provider — is your <strong>local post office</strong>. Everything you send goes there first, and it forwards mail to the world and brings replies back.</li>
+<li><strong>The internet</strong> is the <strong>worldwide delivery network</strong> — all the roads, sorting centres, and other post offices that carry your letter to any other house on Earth.</li>
+</ul>
+<h2>Wired vs wireless — same idea</h2>
+<p>Devices join a network in one of two ways:</p>
+<ul>
+<li><strong>Wired</strong> — a physical <strong>Ethernet cable</strong> plugged into the router.</li>
+<li><strong>Wireless</strong> — over <strong>Wi-Fi</strong>, radio waves in the air.</li>
+</ul>
+<p>From the network&#39;s point of view it barely matters. One uses a physical road, the other uses radio waves, but both are just ways of carrying your &quot;letters&quot; to the local post office.</p>
+<h2>A first tour of the pieces</h2>
+<p>Names you&#39;ll keep meeting:</p>
+<table>
+<thead>
+<tr>
+<th>Device</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Router</strong></td>
+<td>Your local post office; connects your home to the internet and directs traffic.</td>
+</tr>
+<tr>
+<td><strong>Switch</strong></td>
+<td>Inside bigger networks, connects many computers locally (an internal mail room).</td>
+</tr>
+<tr>
+<td><strong>Modem</strong></td>
+<td>Translates your provider&#39;s signal into something your router understands.</td>
+</tr>
+<tr>
+<td><strong>Client</strong></td>
+<td>A device <em>asking</em> for something (your laptop loading a page).</td>
+</tr>
+<tr>
+<td><strong>Server</strong></td>
+<td>A computer <em>providing</em> something (the machine hosting the website).</td>
+</tr>
+<tr>
+<td><strong>Access Point (AP)</strong></td>
+<td>The Wi-Fi radio, often built into your router.</td>
+</tr>
+</tbody></table>
+<p>Don&#39;t memorise the table — just recognise the words when they appear.</p>
+<h2>LAN, WAN, and the sizes of networks</h2>
+<p>Networks come in different scales, and the vocabulary matters throughout this course:</p>
+<ul>
+<li><strong>LAN (Local Area Network)</strong> — a network confined to one physical location: your home, an office floor, a single building. Your home Wi-Fi is a LAN.</li>
+<li><strong>WAN (Wide Area Network)</strong> — a network spanning a much larger geographic area, connecting multiple LANs together — a company with offices in three cities connects them via a WAN. The internet itself is, in a sense, the largest WAN of all: a network of networks spanning the entire globe.</li>
+<li><strong>MAN (Metropolitan Area Network)</strong> — a middle ground, typically covering a single city, less commonly referenced day-to-day but occasionally worth knowing exists.</li>
+</ul>
+<p>This distinction matters practically in Path 12&#39;s network security material: attacks and defenses that make sense on a small, trusted LAN (like relying on physical proximity as a security control) often don&#39;t hold up once you&#39;re reasoning about a WAN spanning untrusted public internet infrastructure.</p>
+<h2>Bandwidth vs. latency — two different kinds of &quot;speed&quot;</h2>
+<p>Two terms people often conflate but which measure genuinely different things:</p>
+<ul>
+<li><strong>Bandwidth</strong> — how much data can be transferred per unit of time (measured in Mbps/Gbps) — think of it as how <em>wide</em> the road is, how many cars can travel side by side at once.</li>
+<li><strong>Latency</strong> — how long it takes a single piece of data to make the trip (measured in milliseconds) — think of it as how <em>long</em> the road is, regardless of how wide it is.</li>
+</ul>
+<p>A connection can have high bandwidth but also high latency (a satellite internet connection, for instance, moves plenty of data per second but each individual round-trip takes noticeably longer due to the physical distance to space and back) — which is exactly why &quot;my internet is fast&quot; and &quot;my connection feels laggy&quot; can both be true statements about entirely different properties of the same connection. Path 02&#39;s later packets lesson and Path 12&#39;s Wireshark labs both give you direct, hands-on ways to actually measure this distinction yourself.</p>
+<h2>Why a security learner cares</h2>
+<p>Every message you send, every site you visit, and every attack a hacker launches is a &quot;letter&quot; travelling this postal system. Once you can picture the post office, you can reason about <em>where</em> an attacker might:</p>
+<ul>
+<li><strong>Read</strong> a letter as it passes (eavesdropping)</li>
+<li><strong>Forge</strong> the address on an envelope (spoofing)</li>
+<li><strong>Impersonate</strong> a post office (rogue router / evil twin Wi-Fi)</li>
+<li><strong>Block</strong> the delivery route (denial of service)</li>
+</ul>
+<p>This mental model will serve you through the entire course.</p>
+<p>In the post-office analogy, what real device plays the role of your &quot;local post office&quot;?</p>
+<details><summary>Show answer</summary>Your <strong>router</strong> — it takes everything you send and forwards it to the wider internet, and brings replies back to you.</details><h2>🧪 Lab — Peek at your own network</h2>
+<p>Do this on your own home network only.</p>
+<ol>
+<li>On your phone or laptop, open your Wi-Fi settings and note the <strong>network name (SSID)</strong> and its <strong>security type</strong> (WPA2/WPA3 hopefully — we cover this in Path 12).</li>
+<li>Try to find the IP address of your <strong>router</strong>. On Windows: <code>ipconfig</code> and look for &quot;Default Gateway.&quot; On macOS/Linux: <code>ip route | grep default</code>.</li>
+<li>Open a browser and type that IP address (usually <code>192.168.1.1</code> or <code>192.168.0.1</code>). You&#39;ll see your router&#39;s admin login. <strong>Don&#39;t log in unless you know the password</strong> — but see, it&#39;s just a tiny web server sitting in your house.</li>
+</ol>
+<h2>Key terms</h2>
+<ul>
+<li><strong>Network</strong> — two or more connected computers sharing information.</li>
+<li><strong>The internet</strong> — a global network of networks.</li>
+<li><strong>Router</strong> — connects your home network to the internet and directs traffic.</li>
+<li><strong>Client / server</strong> — the device <em>asking</em> vs the device <em>providing</em>.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>A network connects computers so they can share information.</li>
+<li>The internet is a &quot;network of networks.&quot;</li>
+<li>The postal-system model: devices are houses, your router is the local post office, the internet is the global delivery network.</li>
+<li>Wired and wireless are just two ways to carry the same letters.</li>
+</ul>
+<h3>References</h3>
+<ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Learn/Common_questions/Web_mechanics/How_does_the_Internet_work">How the Internet works — Mozilla MDN</a> — an excellent beginner explainer.</li>
+<li><a href="https://www.cloudflare.com/learning/network-layer/what-is-the-internet/">Cloudflare Learning: What is the Internet?</a> — short and clear.</li>
+<li><a href="https://www.practicalnetworking.net/">Practical Networking: Fundamentals series</a> — free deeper tutorials once you&#39;re ready.</li>
+<li><a href="https://www.cisco.com/c/en/us/solutions/small-business/resource-center/networking/networking-basics.html">Networking Basics — Cisco</a></li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/02-networking/ip-addresses">IP addresses</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/02-networking/what-is-a-network";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

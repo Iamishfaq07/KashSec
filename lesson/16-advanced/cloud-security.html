@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cloud security — Path 16 · KashSec Academy</title>
+<meta name="description" content="Recall Path 12.1's brief mention — cloud environments have their own networking and access-control concepts, distinct enough from traditional on-premise infrastructure to warrant dedicated treatment. ">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/16-advanced/cloud-security">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Cloud security — Path 16 · KashSec Academy">
+<meta property="og:description" content="Recall Path 12.1's brief mention — cloud environments have their own networking and access-control concepts, distinct enough from traditional on-premise infrastructure to warrant dedicated treatment. ">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/16-advanced/cloud-security">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Cloud security — Path 16 · KashSec Academy">
+<meta name="twitter:description" content="Recall Path 12.1's brief mention — cloud environments have their own networking and access-control concepts, distinct enough from traditional on-premise infrastructure to warrant dedicated treatment. ">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Cloud security — Path 16 · KashSec Academy","description":"Recall Path 12.1's brief mention — cloud environments have their own networking and access-control concepts, distinct enough from traditional on-premise infrastructure to warrant dedicated treatment. ","url":"https://kashsec.vercel.app/#/lesson/16-advanced/cloud-security","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/16-advanced/cloud-security">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 16 — Advanced Cyber Topics</a> · Cloud security</div>
+  <article><h1>Cloud security fundamentals</h1>
+<p>Recall Path 12.1&#39;s brief mention — cloud environments have their own networking and access-control concepts, distinct enough from traditional on-premise infrastructure to warrant dedicated treatment. This lesson covers the fundamentals across AWS, Azure, and GCP, with a focus on the misconfigurations that show up constantly in both bug bounty programs (Path 15) and real breaches.</p>
+<h2>The shared responsibility model</h2>
+<p>The single most important cloud security concept to internalise first:</p>
+<p>Cloud providers secure the underlying infrastructure — but <strong>you</strong> remain fully responsible for how you configure everything built on top of it. The overwhelming majority of real cloud security incidents stem from <strong>customer misconfiguration</strong>, not a flaw in AWS/Azure/GCP&#39;s own infrastructure — a crucial distinction that shapes this entire lesson.</p>
+<h2>IAM — Identity and Access Management</h2>
+<p>Cloud IAM controls <strong>who can do what</strong> to <strong>which resources</strong> — the cloud-native evolution of the access control concepts from Path 11.1 (A01: Broken Access Control) and Path 10&#39;s authorization principles, now applied to infrastructure itself rather than application data.</p>
+<h3>The principle of least privilege, cloud-style</h3>
+<pre><code class="language-json">// AWS IAM policy - DANGEROUS, overly permissive:
+{
+  &quot;Effect&quot;: &quot;Allow&quot;,
+  &quot;Action&quot;: &quot;*&quot;,
+  &quot;Resource&quot;: &quot;*&quot;
+}
+
+// AWS IAM policy - properly scoped:
+{
+  &quot;Effect&quot;: &quot;Allow&quot;,
+  &quot;Action&quot;: [&quot;s3:GetObject&quot;],
+  &quot;Resource&quot;: &quot;arn:aws:s3:::my-specific-bucket/*&quot;
+}
+</code></pre>
+<p>The wildcard (<code>&quot;Action&quot;: &quot;*&quot;</code>, <code>&quot;Resource&quot;: &quot;*&quot;</code>) pattern grants <strong>every possible action on every possible resource</strong> — a catastrophic over-permission that, if the associated credentials leak, gives an attacker essentially unlimited control over the entire cloud account. This exact pattern is depressingly common in real-world audits and a leading root cause in major cloud breaches.</p>
+<h3>Privilege escalation via IAM misconfigurations</h3>
+<p>Just like Linux/Windows privesc (previous lessons), cloud IAM has its own escalation patterns — a low-privilege user with permission to, say, modify their <strong>own</strong> IAM policy, or attach a more-privileged role to themselves, can often escalate to full account control:</p>
+<pre><code class="language-bash"># Example AWS enumeration technique (using an authorized test account):
+aws iam get-user
+aws iam list-attached-user-policies --user-name current-user
+aws iam simulate-principal-policy --policy-source-arn &lt;user-arn&gt; --action-names iam:CreateAccessKey
+</code></pre>
+<p>Tools like <strong>PMapper</strong> and <strong>Pacu</strong> (AWS-specific offensive security frameworks) automate discovering exactly these kinds of IAM privilege escalation paths, conceptually identical to BloodHound&#39;s role in AD (previous lesson) — mapping a graph of who-can-become-who.</p>
+<h2>Misconfigured storage — the classic, recurring incident pattern</h2>
+<p><strong>Publicly-readable cloud storage buckets</strong> (AWS S3, Azure Blob Storage, GCP Cloud Storage) remain one of the single most common, most damaging cloud misconfigurations in real breach history:</p>
+<pre><code class="language-bash"># Checking if an S3 bucket is publicly accessible (only against your own
+# or explicitly authorized buckets):
+aws s3 ls s3://target-bucket-name --no-sign-request
+
+# Or via a direct HTTP request:
+curl https://target-bucket-name.s3.amazonaws.com/
+</code></pre>
+<pre><code class="language-bash"># Tools built specifically for discovering exposed cloud storage at scale:
+# (only run against explicitly authorized scope, per Path 15.2&#39;s discipline)
+s3scanner scan --bucket-file discovered-bucket-names.txt
+</code></pre>
+<p>Bucket names are often guessable — following predictable company-name patterns — making this a genuine, ongoing bug bounty and real-attacker reconnaissance technique (echoing Path 11.3/10.3&#39;s recon philosophy, applied to cloud storage specifically).</p>
+<h2>SSRF-to-metadata — revisiting Path 11.8 in full cloud context</h2>
+<p>Recall Path 11.8&#39;s introduction — this remains one of the highest-impact cloud-specific attack chains:</p>
+<pre><code>SSRF vulnerability → http://169.254.169.254/latest/meta-data/iam/security-credentials/
+→ Temporary AWS credentials returned, no authentication required
+→ Attacker now has whatever permissions that instance&#39;s IAM role holds
+</code></pre>
+<p>The defensive fix, reinforced here: <strong>IMDSv2</strong> (AWS), which requires a session token obtained via a PUT request before metadata can be queried — specifically designed to defeat simple SSRF-based metadata theft, since a basic SSRF vulnerability typically can&#39;t easily perform the required PUT request as part of its exploitation.</p>
+<h2>Cloud-native networking — VPCs and security groups</h2>
+<p>Recall Path 12.4&#39;s firewall concepts, now in their cloud-native form:</p>
+<ul>
+<li><strong>VPC (Virtual Private Cloud)</strong> — an isolated, logically-defined network within the cloud provider, the cloud equivalent of a traditional private network segment.</li>
+<li><strong>Security groups</strong> — stateful, instance-level virtual firewalls (directly analogous to Path 12.4&#39;s stateful firewall concept) controlling inbound/outbound traffic.</li>
+<li><strong>Network ACLs</strong> — subnet-level, stateless traffic filtering, a coarser-grained complement to security groups.</li>
+</ul>
+<pre><code class="language-bash"># A dangerously permissive security group rule (0.0.0.0/0 = the entire internet):
+aws ec2 describe-security-groups --filters Name=ip-permission.cidr,Values=0.0.0.0/0
+</code></pre>
+<p>Auditing for security groups that expose sensitive ports (database ports, SSH/RDP) to <code>0.0.0.0/0</code> (the entire internet, recall Path 02&#39;s CIDR notation) rather than restricting to specific known IP ranges is one of the highest-value, most common cloud security audit findings.</p>
+<h2>Secrets management — avoiding hardcoded credentials</h2>
+<p>A theme recurring throughout this entire course (Path 10.5, 09.6, 11.2) — cloud environments introduce their own dedicated secrets management services specifically to avoid hardcoding credentials in code or configuration:</p>
+<ul>
+<li><strong>AWS Secrets Manager / Parameter Store</strong></li>
+<li><strong>Azure Key Vault</strong></li>
+<li><strong>GCP Secret Manager</strong></li>
+<li><strong>HashiCorp Vault</strong> (cloud-agnostic, popular in multi-cloud/hybrid environments)</li>
+</ul>
+<pre><code class="language-python"># BAD — hardcoded credential directly in source code:
+DATABASE_PASSWORD = &quot;SuperSecret123!&quot;
+
+# GOOD — retrieved from a proper secrets manager at runtime:
+import boto3
+client = boto3.client(&#39;secretsmanager&#39;)
+secret = client.get_secret_value(SecretId=&#39;prod/database/password&#39;)
+</code></pre>
+<p>Hardcoded credentials accidentally committed to public GitHub repositories remain a persistent, ongoing real-world incident source — directly connecting back to Ishfaq&#39;s own professional supply-chain security context, where scanning for exactly this pattern (leaked secrets in code/CI pipelines) is a core AppSec responsibility.</p>
+<h2>Cloud logging and monitoring — CloudTrail and its equivalents</h2>
+<p>Recall Path 12.5&#39;s SIEM/logging concepts, applied here to the cloud control plane itself: <strong>AWS CloudTrail</strong>, <strong>Azure Activity Log</strong>, and <strong>GCP Cloud Audit Logs</strong> record every API call made against a cloud account — who did what, when, from where. A genuinely common and dangerous finding in real cloud audits is CloudTrail either <strong>disabled entirely</strong> or scoped to only a subset of regions, meaning an attacker who compromises credentials can operate in an unmonitored region with zero audit trail at all. Beyond simply having logging enabled, mature cloud security practice ships those logs to a separate, access-restricted account or storage location — since an attacker with sufficiently broad IAM permissions in a compromised account can otherwise simply delete or disable the very logs that would reveal their activity, precisely the kind of &quot;the attacker controls their own evidence&quot; problem that centralized, separately-permissioned logging is designed to prevent.</p>
+<h2>Container and serverless considerations, briefly previewed</h2>
+<p>Cloud security increasingly extends into containers (Kubernetes, covered in depth in the next lesson) and serverless functions (AWS Lambda, Azure Functions) — each introducing their own specific misconfiguration patterns (overly permissive Lambda execution roles, exposed container registries) that build directly on the IAM and networking fundamentals in this lesson.</p>
+<h2>🧪 Lab — Cloud security self-audit (using a free-tier account)</h2>
+<p>If you have (or create) a free-tier AWS/Azure/GCP account for learning purposes:</p>
+<ol>
+<li>Review your account&#39;s IAM users/roles — are any policies using wildcard (<code>*</code>) permissions unnecessarily?</li>
+<li>Check any storage buckets you&#39;ve created — are any accidentally publicly readable?</li>
+<li>Review security group rules on any running instances — is anything unnecessarily open to <code>0.0.0.0/0</code>?</li>
+<li>If you&#39;re using IMDSv1-compatible instances, research how to enforce IMDSv2 specifically.</li>
+<li>Search your own code repositories (even personal projects) for accidentally hardcoded credentials — this is a genuinely valuable habit-building exercise regardless of cloud provider.</li>
+</ol>
+<p>Cloud free tiers have usage limits — always monitor your usage and set up billing alerts to avoid unexpected charges while experimenting. Never scan or test cloud infrastructure you don&#39;t own or have explicit authorization for, exactly as established throughout this entire course.</p>
+<p>An IAM policy grants a user permission to attach any IAM policy to their own user account. Why is this specific permission itself a serious privilege escalation risk, even if their current explicit permissions seem limited?</p>
+<details><summary>Show answer</summary>A user with permission to <strong>attach policies to themselves</strong> can simply attach a highly-privileged (or fully administrative) policy to their own account, instantly escalating their effective permissions far beyond whatever they were originally granted — regardless of how limited their <em>starting</em> explicit permissions appeared. This is directly analogous to a Linux user who can modify their own sudoers entry, or a Windows user who can modify their own group memberships — the specific <em>permission to grant more permissions</em> is itself the vulnerability, a pattern IAM privilege escalation tools like Pacu specifically hunt for.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Shared responsibility model</strong> — the division between provider-secured infrastructure and customer-secured configuration.</li>
+<li><strong>IAM (Identity and Access Management)</strong> — cloud-native access control, the infrastructure-level analogue of application authorization.</li>
+<li><strong>VPC / security group</strong> — cloud-native isolated networks and instance-level stateful firewalls.</li>
+<li><strong>IMDSv2</strong> — AWS&#39;s token-based metadata service protocol, defeating basic SSRF-to-metadata attacks.</li>
+<li><strong>Secrets manager</strong> — dedicated services (AWS Secrets Manager, Azure Key Vault) avoiding hardcoded credentials.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>The shared responsibility model means customer misconfiguration, not provider infrastructure flaws, causes most real cloud incidents.</li>
+<li>Overly permissive IAM policies (wildcard actions/resources) and self-privilege-escalation permissions are recurring, serious findings.</li>
+<li>Publicly-readable storage buckets remain one of the most common and damaging cloud misconfigurations in breach history.</li>
+<li>SSRF-to-metadata attacks (Path 11.8) remain a critical cloud-specific escalation chain, mitigated by IMDSv2.</li>
+<li>Dedicated secrets managers prevent the persistent, ongoing risk of hardcoded credentials in code and CI pipelines.</li>
+</ul>
+<h3>References</h3>
+<ul>
+<li><a href="https://aws.amazon.com/compliance/shared-responsibility-model/">AWS — Shared Responsibility Model</a> — official documentation.</li>
+<li><a href="https://github.com/RhinoSecurityLabs/pacu">Pacu — AWS exploitation framework</a> — the AWS-specific equivalent of Metasploit for IAM/cloud attack paths.</li>
+<li><a href="https://cloud.hacktricks.xyz/pentesting-cloud/aws-security">HackTricks — AWS Pentesting</a> — extensive cloud-specific technique reference.</li>
+<li><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configuring-instance-metadata-service.html">AWS IMDSv2 documentation</a> — the official SSRF-to-metadata mitigation reference.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/16-advanced/containers-k8s">Containers &amp; Kubernetes security</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/16-advanced/cloud-security";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

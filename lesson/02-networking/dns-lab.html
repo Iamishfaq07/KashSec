@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DNS Lab — Path 02 · KashSec Academy</title>
+<meta name="description" content="DNS is the internet's phonebook — this lab has you actually query it directly, the way real reconnaissance and troubleshooting both do, rather than just trusting whatever a browser silently resolves b">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/02-networking/dns-lab">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="DNS Lab — Path 02 · KashSec Academy">
+<meta property="og:description" content="DNS is the internet's phonebook — this lab has you actually query it directly, the way real reconnaissance and troubleshooting both do, rather than just trusting whatever a browser silently resolves b">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/02-networking/dns-lab">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="DNS Lab — Path 02 · KashSec Academy">
+<meta name="twitter:description" content="DNS is the internet's phonebook — this lab has you actually query it directly, the way real reconnaissance and troubleshooting both do, rather than just trusting whatever a browser silently resolves b">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"DNS Lab — Path 02 · KashSec Academy","description":"DNS is the internet's phonebook — this lab has you actually query it directly, the way real reconnaissance and troubleshooting both do, rather than just trusting whatever a browser silently resolves b","url":"https://kashsec.vercel.app/#/lesson/02-networking/dns-lab","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/02-networking/dns-lab">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 02 — Networking Fundamentals</a> · DNS Lab</div>
+  <article><h1>DNS Lab</h1>
+<p>DNS is the internet&#39;s phonebook — this lab has you actually query it directly, the way real reconnaissance and troubleshooting both do, rather than just trusting whatever a browser silently resolves behind the scenes.</p>
+<h2>Tools</h2>
+<p><code>dig</code> and <code>nslookup</code> come pre-installed on most systems (Linux/macOS have <code>dig</code>; Windows has <code>nslookup</code> built in, and can get <code>dig</code> via WSL). No special setup required.</p>
+<h2>Tasks</h2>
+<ol>
+<li><p><strong>Query different record types.</strong> DNS holds far more than just the <code>A</code> record (IPv4 address) most people think of:</p>
+<pre><code class="language-bash">dig example.com A       # IPv4 address
+dig example.com AAAA    # IPv6 address
+dig example.com MX      # mail servers
+dig example.com TXT     # arbitrary text — often SPF/DKIM email security records
+dig example.com NS      # authoritative nameservers
+</code></pre>
+<p>Run all five against a real domain you&#39;re curious about and note what each reveals.</p>
+</li>
+<li><p><strong>Find the authoritative nameservers.</strong> The <code>NS</code> records from Task 1 tell you exactly which servers are authoritative for a domain — meaning they hold the actual, canonical DNS records, as opposed to intermediate caching resolvers. Query one directly to see the freshest possible data:</p>
+<pre><code class="language-bash">dig @&lt;nameserver-from-NS-record&gt; example.com A
+</code></pre>
+</li>
+<li><p><strong>Look up historical DNS data.</strong> Services like <a href="https://securitytrails.com/">SecurityTrails</a> and <a href="https://viewdns.info/">viewdns.info</a> keep historical records of what a domain used to resolve to — genuinely useful in real reconnaissance, since old, forgotten subdomains sometimes still point to decommissioned-but-still-accessible infrastructure.</p>
+</li>
+<li><p><strong>Hunt for interesting records.</strong> <code>TXT</code> records in particular often reveal more than intended — SPF records reveal which mail providers a company uses, and occasionally you&#39;ll find verification tokens for third-party services (Google Workspace, AWS, etc.) that hint at what infrastructure a company relies on.</p>
+</li>
+<li><p><strong>Test for a zone transfer misconfiguration (read-only, against a lab target only).</strong> A <strong>zone transfer</strong> (<code>AXFR</code>) is meant to let secondary DNS servers replicate a domain&#39;s complete record set from the primary server — but if misconfigured to allow transfers from <em>anyone</em>, it hands an attacker the domain&#39;s entire DNS map in one request, including internal-only subdomains never meant to be public:</p>
+<pre><code class="language-bash">dig axfr @&lt;nameserver&gt; example.com
+</code></pre>
+<p>Properly configured servers refuse this for unauthorized requesters (you&#39;ll almost always see a &quot;Transfer failed&quot; or refusal against real-world domains) — but it&#39;s a classic, well-documented misconfiguration worth knowing how to check for, entirely passively, with zero exploitation involved.</p>
+</li>
+<li><p><strong>Brute-force subdomains with a wordlist tool.</strong> Historical data (Task 3) only surfaces subdomains that existed publicly before; a wordlist-based brute-force tool like <code>dnsx</code> or <code>gobuster dns</code> tries many common subdomain name guesses (<code>dev</code>, <code>staging</code>, <code>api</code>, <code>admin</code>, and thousands more) directly:</p>
+<pre><code class="language-bash">gobuster dns -d example.com -w /usr/share/wordlists/subdomains.txt
+</code></pre>
+<p>Only run this against a domain you own or that has an explicit, current bug bounty program permitting this kind of active enumeration.</p>
+</li>
+</ol>
+<p>Path 14&#39;s reconnaissance lesson and Path 15&#39;s recon pipeline both lean heavily on DNS enumeration for exactly this reason — subdomain discovery, mail infrastructure mapping, and third-party service fingerprinting all start here, often before a single request even hits the target&#39;s actual web server.</p>
+<p>Pick a domain (your own site, or any organization that publishes a public bug bounty scope — never an arbitrary company without permission), and produce a short report: its nameservers, mail infrastructure (MX + relevant TXT records), any subdomains you can find via historical data tools, and one observation about what this data reveals about their infrastructure choices.</p>
+<h2>Key takeaway</h2>
+<p>DNS records are public by design, and querying them directly (rather than relying only on what a browser shows you) reveals a surprising amount about an organization&#39;s infrastructure — which is exactly why DNS enumeration is one of the very first steps in almost every real penetration test and bug bounty engagement.</p>
+<p><strong>Next up →</strong> <a href="#/lesson/02-networking/practical-packet-lab">Practical Packet Analysis Intro</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/02-networking/dns-lab";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

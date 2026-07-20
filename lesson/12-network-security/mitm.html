@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Man-in-the-Middle — Path 12 · KashSec Academy</title>
+<meta name="description" content="You've been using a man-in-the-middle setup deliberately and legitimately throughout Path 11 — that's exactly what Burp Suite does. This lesson covers the same fundamental technique used maliciously, ">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/12-network-security/mitm">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Man-in-the-Middle — Path 12 · KashSec Academy">
+<meta property="og:description" content="You've been using a man-in-the-middle setup deliberately and legitimately throughout Path 11 — that's exactly what Burp Suite does. This lesson covers the same fundamental technique used maliciously, ">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/12-network-security/mitm">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Man-in-the-Middle — Path 12 · KashSec Academy">
+<meta name="twitter:description" content="You've been using a man-in-the-middle setup deliberately and legitimately throughout Path 11 — that's exactly what Burp Suite does. This lesson covers the same fundamental technique used maliciously, ">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Man-in-the-Middle — Path 12 · KashSec Academy","description":"You've been using a man-in-the-middle setup deliberately and legitimately throughout Path 11 — that's exactly what Burp Suite does. This lesson covers the same fundamental technique used maliciously, ","url":"https://kashsec.vercel.app/#/lesson/12-network-security/mitm","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/12-network-security/mitm">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 12 — Network Security</a> · Man-in-the-Middle</div>
+  <article><h1>Man-in-the-middle attacks</h1>
+<p>You&#39;ve been using a man-in-the-middle setup deliberately and legitimately throughout Path 11 — that&#39;s exactly what Burp Suite does. This lesson covers the same fundamental technique used <strong>maliciously</strong>, and how to defend against it.</p>
+<h2>The core concept</h2>
+<p>A <strong>man-in-the-middle (MITM)</strong> attack happens when an attacker secretly positions themselves between two communicating parties, able to intercept, read, and potentially modify traffic passing between them — while both parties believe they&#39;re communicating directly with each other.</p>
+<p>The victim&#39;s traffic still appears to work normally — pages load, logins succeed — while the attacker silently observes or tampers with everything passing through.</p>
+<h2>How attackers actually get into the middle</h2>
+<h3>ARP spoofing (on a local network)</h3>
+<p>Recall Path 02&#39;s ARP protocol — devices on a local network use it to map IP addresses to MAC addresses. ARP has <strong>no authentication built in</strong>, so an attacker can send forged ARP replies claiming &quot;I am the router&quot; to the victim, and &quot;I am the victim&quot; to the router — redirecting all traffic between them through the attacker&#39;s machine.</p>
+<pre><code class="language-bash"># Using arpspoof (part of dsniff, on Kali):
+sudo arpspoof -i eth0 -t &lt;victim-ip&gt; &lt;gateway-ip&gt;
+sudo arpspoof -i eth0 -t &lt;gateway-ip&gt; &lt;victim-ip&gt;
+
+# Enable IP forwarding so traffic still reaches its real destination
+# (otherwise you&#39;d just break the victim&#39;s connection instead of intercepting it):
+echo 1 | sudo tee /proc/sys/net/ipv4/ip_forward
+</code></pre>
+<h3>Evil twin Wi-Fi (previous lesson)</h3>
+<p>Tricking a victim into connecting to an attacker-controlled access point puts all their traffic through the attacker by design — no ARP trickery needed, since the attacker&#39;s machine is genuinely the network gateway from the victim&#39;s perspective.</p>
+<h3>DNS spoofing</h3>
+<p>Recall Path 02&#39;s DNS lesson — if an attacker can intercept or influence DNS responses (via ARP spoofing plus a malicious DNS responder, or a compromised/misconfigured DNS server), they can redirect a victim&#39;s <code>bank.com</code> lookup to the attacker&#39;s own server instead of the real one.</p>
+<h3>Rogue/compromised network infrastructure</h3>
+<p>A compromised router, a malicious public Wi-Fi hotspot deliberately set up to intercept, or a compromised ISP-level device can all provide the same &quot;in the middle&quot; position without needing any active attack technique at all — simply because the attacker already controls a legitimate point in the path.</p>
+<h2>What an attacker actually does once in the middle</h2>
+<ul>
+<li><strong>Passive eavesdropping</strong> — simply reading unencrypted traffic (exactly what your Wireshark lab in the earlier lesson demonstrated).</li>
+<li><strong>SSL stripping</strong> — downgrading an HTTPS connection to HTTP by intercepting the initial request before it upgrades to HTTPS, tricking the victim&#39;s browser into using an unencrypted connection the attacker can read (largely mitigated today by <strong>HSTS</strong> — see below).</li>
+<li><strong>Session hijacking</strong> — stealing session cookies observed in transit (recall Path 05.4 — this is exactly why the <code>Secure</code> cookie flag matters, since it prevents the cookie from ever being sent over an unencrypted connection an MITM could read).</li>
+<li><strong>Content injection</strong> — modifying pages in transit (injecting ads, malware, or altering displayed content) before forwarding them to the victim.</li>
+<li><strong>Credential harvesting</strong> — presenting fake login forms or capturing plaintext credentials directly from intercepted unencrypted traffic.</li>
+</ul>
+<h2>Why HTTPS/TLS is the primary defence</h2>
+<p>Recall Path 02 and Path 05.1&#39;s TLS handshake — when done correctly, HTTPS defeats MITM attacks specifically because:</p>
+<ol>
+<li>The server presents a <strong>certificate</strong>, cryptographically signed by a trusted Certificate Authority, proving its identity.</li>
+<li>The browser <strong>verifies</strong> this certificate against known trusted CAs.</li>
+<li>If an attacker tries to intercept and present their <em>own</em> certificate instead (exactly as Burp does, deliberately, in Path 11.2), the browser will <strong>reject</strong> it with a prominent warning — unless the attacker&#39;s certificate has somehow also been explicitly trusted by the victim&#39;s device (which is precisely why installing Burp&#39;s CA certificate was a deliberate, informed step you took yourself).</li>
+</ol>
+<p>This is the exact reason <strong>browser certificate warnings should never be dismissed casually</strong> — a warning like &quot;this connection is not private&quot; or &quot;certificate not trusted&quot; is the browser actively detecting a potential MITM attempt (or, far more commonly in practice, a simple misconfiguration) and refusing to proceed silently.</p>
+<h2>HSTS — closing the SSL-stripping gap</h2>
+<p><strong>HSTS (HTTP Strict Transport Security)</strong> is a response header telling the browser: <em>&quot;Always use HTTPS for this domain, for the next N seconds, no exceptions — never even attempt a plain HTTP connection.&quot;</em></p>
+<pre><code class="language-http">Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+</code></pre>
+<p>Once a browser has seen this header once for a domain, it will <strong>refuse</strong> to connect over plain HTTP for that domain for the specified duration, even if an attacker tries to intercept and strip the initial HTTPS upgrade — directly closing the SSL-stripping attack window described above. Modern browsers also maintain a <strong>built-in preload list</strong> of major sites that enforce HTTPS-only from the very first connection, with no prior visit needed.</p>
+<h2>Certificate pinning — an even stronger (if less flexible) defence</h2>
+<p><strong>Certificate pinning</strong> goes further than standard CA validation — the application (commonly used in mobile apps) is hardcoded to only trust one <strong>specific</strong> certificate or public key, rather than any certificate from any generally-trusted CA. This defeats MITM attempts even if an attacker somehow obtained a fraudulently-issued but technically &quot;valid&quot; certificate from a compromised or coerced CA — at the cost of added operational complexity when legitimately rotating certificates.</p>
+<h2>AitM phishing kits — MITM meets MFA bypass</h2>
+<p>A genuinely important modern evolution worth naming precisely: <strong>AitM (Adversary-in-the-Middle)</strong> phishing kits combine social engineering (Path 10.6) with a real-time MITM position to defeat MFA entirely — something a static fake login page never could. Instead of hosting a simple cloned login form, the attacker&#39;s server acts as a <strong>live reverse proxy</strong> to the real site: the victim&#39;s login attempt, MFA code, and every subsequent action pass <em>through</em> the attacker&#39;s server to the genuine site in real time, meaning the attacker captures not just credentials but the resulting <strong>authenticated session cookie itself</strong> — completely bypassing MFA, since the victim actually completed real MFA against the real site, just with an invisible middleman relaying every step. Toolkits like Evilginx popularised this technique, and it&#39;s a major reason security teams increasingly push toward phishing-resistant authentication methods (hardware security keys and passkeys from Path 10.5, which cryptographically bind the login to the specific origin domain and simply refuse to complete on a proxy&#39;s spoofed domain) rather than relying on TOTP codes alone, which an AitM proxy can transparently relay.</p>
+<h2>Defending against MITM, consolidated</h2>
+<ul>
+<li><strong>Always verify HTTPS is in use</strong> and heed certificate warnings rather than clicking through them.</li>
+<li><strong>HSTS</strong> on your own websites/services closes the SSL-stripping gap.</li>
+<li><strong>VPN</strong> (previous lesson) protects traffic confidentiality on untrusted networks (public Wi-Fi) even if an MITM position is achieved at the network layer.</li>
+<li><strong>Avoid sensitive activity on untrusted public Wi-Fi</strong> without a VPN — banking, logins, anything sensitive.</li>
+<li><strong>Static ARP entries</strong> or <strong>dynamic ARP inspection</strong> (on managed switches) can mitigate ARP spoofing specifically within an organisation&#39;s own network.</li>
+<li><strong>Certificate pinning</strong> for high-security mobile/native applications.</li>
+</ul>
+<h2>🧪 Lab — Observe an MITM position yourself, safely</h2>
+<p>You&#39;ve actually already done this in Path 11.2 — Burp Suite <strong>is</strong> a deliberate, consensual MITM setup between your own browser and target servers. Revisit that lesson&#39;s lab with fresh eyes:</p>
+<ol>
+<li>With Burp&#39;s proxy configured and its CA certificate trusted, visit an HTTPS site.</li>
+<li>Notice your browser shows <strong>no warning</strong> — because you explicitly told it to trust Burp&#39;s certificate.</li>
+<li>Now, in a <strong>different</strong> browser profile where you haven&#39;t imported Burp&#39;s CA certificate, configure the same proxy settings and try visiting the same HTTPS site.</li>
+<li>You should see a genuine, unmistakable <strong>certificate warning</strong> — this is exactly the browser protection this lesson describes, catching an MITM attempt in real time, precisely because trust wasn&#39;t established beforehand.</li>
+</ol>
+<p>That contrast — trusted vs. untrusted proxy certificate — is the entire mechanism by which HTTPS defeats real-world MITM attacks, made directly visible using a tool you already know how to use.</p>
+<p>ARP spoofing and MITM techniques against real networks and devices you don&#39;t own or lack explicit written authorization for are illegal, exactly as established throughout Path 01 and reinforced in the previous Wi-Fi lesson. Only practise ARP spoofing techniques within your own isolated lab network (Path 03.7&#39;s Host-only setup), never against production networks, public Wi-Fi, or any device you don&#39;t have clear written authorization to test.</p>
+<p>A victim&#39;s browser displays a certificate warning while connecting to their bank&#39;s website over public Wi-Fi. What should they do, and why does this warning specifically suggest a possible MITM attempt?</p>
+<details><summary>Show answer</summary>They should <strong>not proceed</strong> — close the connection and try again on a trusted network, ideally using cellular data or a VPN instead. The warning means the certificate presented doesn't match what the browser expects/trusts for that domain, which is <em>exactly</em> what happens when an attacker intercepts the connection and presents their own certificate instead of the bank's genuine one — the core mechanism this entire lesson describes. While misconfiguration is a more common innocent cause than an actual attack, the correct response is identical either way: don't proceed until the warning is resolved through a trusted channel.</details><h2>Key terms</h2>
+<ul>
+<li><strong>MITM (man-in-the-middle)</strong> — an attacker secretly intercepting communication between two parties who believe they&#39;re communicating directly.</li>
+<li><strong>ARP spoofing</strong> — forging ARP replies to redirect local network traffic through an attacker&#39;s machine.</li>
+<li><strong>SSL stripping</strong> — downgrading an HTTPS connection to unencrypted HTTP during interception.</li>
+<li><strong>HSTS</strong> — a header forcing browsers to always use HTTPS for a domain, closing the SSL-stripping gap.</li>
+<li><strong>Certificate pinning</strong> — hardcoding trust to a specific certificate/key rather than any generally-trusted CA.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>MITM attacks position an attacker secretly between two communicating parties, via ARP spoofing, evil twin Wi-Fi, DNS spoofing, or compromised infrastructure.</li>
+<li>HTTPS/TLS certificate validation is the primary defence — browser certificate warnings should never be dismissed casually.</li>
+<li>HSTS closes the SSL-stripping attack window by forcing HTTPS-only connections after first contact.</li>
+<li>Burp Suite itself is a deliberate, consensual demonstration of exactly this technique, already familiar from Path 11.</li>
+<li>VPNs protect traffic confidentiality specifically on untrusted networks where an MITM position may already exist.</li>
+</ul>
+<h3>References</h3>
+<ul>
+<li><a href="https://owasp.org/www-community/attacks/Man-in-the-middle_attack">OWASP — Man-in-the-middle attack</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security">MDN — Strict-Transport-Security (HSTS)</a></li>
+<li><a href="https://hstspreload.org/">HSTS Preload List — hstspreload.org</a> — the official browser-maintained preload list submission site.</li>
+<li><a href="https://www.kali.org/tools/dsniff/">dsniff/arpspoof documentation</a> — Kali tool reference.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/12-network-security/netsec-roadmap">Your network security roadmap</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/12-network-security/mitm";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

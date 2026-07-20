@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The page-load journey — Path 05 · KashSec Academy</title>
+<meta name="description" content="Web hacking makes far more sense once you can picture what actually happens when a page loads. In this lesson we trace every step from click to rendered page — the mental model everything else in Path">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/05-web-basics/page-load-journey">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="The page-load journey — Path 05 · KashSec Academy">
+<meta property="og:description" content="Web hacking makes far more sense once you can picture what actually happens when a page loads. In this lesson we trace every step from click to rendered page — the mental model everything else in Path">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/05-web-basics/page-load-journey">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The page-load journey — Path 05 · KashSec Academy">
+<meta name="twitter:description" content="Web hacking makes far more sense once you can picture what actually happens when a page loads. In this lesson we trace every step from click to rendered page — the mental model everything else in Path">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"The page-load journey — Path 05 · KashSec Academy","description":"Web hacking makes far more sense once you can picture what actually happens when a page loads. In this lesson we trace every step from click to rendered page — the mental model everything else in Path","url":"https://kashsec.vercel.app/#/lesson/05-web-basics/page-load-journey","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/05-web-basics/page-load-journey">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 05 — How the Web Works</a> · The page-load journey</div>
+  <article><h1>The page-load journey</h1>
+<p>Web hacking makes far more sense once you can picture what actually happens when a page loads. In this lesson we trace every step from click to rendered page — the mental model everything else in Path 05 (and Path 11) hangs on.</p>
+<h2>Where we&#39;re going</h2>
+<p>You already know a lot of the pieces from Path 02:</p>
+<ul>
+<li><strong>IP addresses</strong> find the server</li>
+<li><strong>Ports</strong> find the service (80 for HTTP, 443 for HTTPS)</li>
+<li><strong>DNS</strong> turns the domain name into an IP</li>
+<li><strong>TCP</strong> delivers reliably; <strong>TLS</strong> encrypts</li>
+<li><strong>HTTP</strong> is the request/response language</li>
+</ul>
+<p>This lesson stitches them into one continuous story.</p>
+<h2>The 8 steps of loading a page</h2>
+<p>You type <code>https://example.com/products?id=42</code> and hit Enter. Behind the scenes:</p>
+<p>Step by step:</p>
+<ol>
+<li><strong>URL parsed.</strong> The browser splits your URL into scheme (<code>https</code>), host (<code>example.com</code>), port (<code>443</code> by default for HTTPS), path (<code>/products</code>), and parameters (<code>id=42</code>).</li>
+<li><strong>DNS lookup.</strong> Browser asks a DNS resolver: <em>what IP is <code>example.com</code>?</em> Answer comes back, often cached from a recent lookup.</li>
+<li><strong>TCP handshake.</strong> The browser opens a TCP connection to the server&#39;s IP on port 443 — the SYN/SYN-ACK/ACK you met in Path 02.</li>
+<li><strong>TLS handshake.</strong> Because it&#39;s HTTPS, the server presents a certificate, they agree on encryption keys, and now the tunnel is private.</li>
+<li><strong>HTTP request.</strong> The browser sends the actual GET, including any cookies for that site and headers describing itself.</li>
+<li><strong>Server processes.</strong> The server routes the URL to the right code, possibly hits a <strong>database</strong>, and builds a response.</li>
+<li><strong>HTTP response.</strong> Server sends back a status code (usually 200), headers, and HTML.</li>
+<li><strong>Assets and rendering.</strong> The browser parses the HTML, discovers references to CSS, JS, and images, requests each of those (often in parallel), then paints the page and runs any JavaScript.</li>
+</ol>
+<h2>Where each of Path 02&#39;s ideas fits</h2>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Path 02 idea</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>2</td>
+<td>DNS</td>
+</tr>
+<tr>
+<td>3</td>
+<td>TCP three-way handshake</td>
+</tr>
+<tr>
+<td>4</td>
+<td>TLS / certificates</td>
+</tr>
+<tr>
+<td>5–7</td>
+<td>HTTP request/response, methods, status codes</td>
+</tr>
+<tr>
+<td>—</td>
+<td>Everything travels as packets over IP</td>
+</tr>
+</tbody></table>
+<p>If any earlier lesson felt abstract, this is where they connect.</p>
+<h2>Where security lives</h2>
+<p>Almost every web vulnerability lives in step 5 (the request as the server sees it), step 6 (how the server processes it), or step 8 (how the browser handles the response). A rough map:</p>
+<table>
+<thead>
+<tr>
+<th>Where</th>
+<th>Class of bug</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>DNS</strong></td>
+<td>Subdomain takeover, DNS spoofing</td>
+</tr>
+<tr>
+<td><strong>TLS</strong></td>
+<td>Weak ciphers, missing HSTS, cert mismatches</td>
+</tr>
+<tr>
+<td><strong>HTTP request</strong></td>
+<td>SQL injection, IDOR, SSRF, command injection</td>
+</tr>
+<tr>
+<td><strong>Session (cookies)</strong></td>
+<td>Session fixation, hijacking, missing flags</td>
+</tr>
+<tr>
+<td><strong>Response HTML/JS</strong></td>
+<td>XSS, clickjacking, CSRF</td>
+</tr>
+<tr>
+<td><strong>Assets</strong></td>
+<td>Subresource integrity issues, supply-chain attacks</td>
+</tr>
+</tbody></table>
+<p>You&#39;ll meet each in Path 11. The point right now is that you can look at any web bug and ask <em>&quot;which step is this abusing?&quot;</em></p>
+<h2>First-party vs third-party requests</h2>
+<p>Modern pages don&#39;t just talk to one server. Loading <code>example.com</code> might trigger requests to <em>dozens</em> of other services — analytics, ad networks, CDNs, fonts, chat widgets. Each is a separate HTTP conversation.</p>
+<p>Two implications for security:</p>
+<ul>
+<li>Compromising a <strong>third-party script</strong> on a page effectively compromises the page itself (see the Magecart supply-chain attacks).</li>
+<li>Content Security Policy (<strong>CSP</strong>) headers let a site restrict <em>where</em> the browser is allowed to fetch assets — a strong defence against XSS and third-party abuse.</li>
+</ul>
+<h2>Caching everywhere</h2>
+<p>Speed is helped by aggressive caching:</p>
+<ul>
+<li>The <strong>DNS cache</strong> avoids repeated lookups.</li>
+<li><strong>Browser cache</strong> stores CSS/JS/images so they don&#39;t reload each time.</li>
+<li><strong>CDN (Content Delivery Network)</strong> caches assets close to users globally.</li>
+<li><strong>HTTP cache headers</strong> (<code>Cache-Control</code>, <code>ETag</code>) tell everyone how long to keep things.</li>
+</ul>
+<p>For security learners, caches matter because <strong>cached content can leak between users</strong> — a classic bug class called <strong>web cache poisoning / deception</strong>, popularised by researcher James Kettle.</p>
+<h2>The critical rendering path — why some resources block the page</h2>
+<p>Not every resource loads and displays equally: the browser must fully download and parse CSS before it can safely paint anything to the screen (since styles can change layout entirely), which is why CSS is called <strong>render-blocking</strong> by default. JavaScript is worse — by default, a <code>&lt;script&gt;</code> tag pauses HTML parsing entirely until that script finishes downloading and executing, since the script might use <code>document.write()</code> to inject more HTML. This is exactly why modern pages use <code>async</code> or <code>defer</code> attributes on script tags, and why this course&#39;s own app.js lazy-loads Markdown/diagram libraries (referenced in this course&#39;s own architecture) rather than blocking the whole page on them. Understanding this <strong>critical rendering path</strong> — which resources genuinely must load before anything appears, versus which can load quietly in the background — explains both real performance engineering and, from a security angle, exactly why a slow or blocked third-party script can sometimes freeze an entire page (a legitimate site reliability concern, and occasionally a deliberate denial-of-service angle).</p>
+<h2>🧪 Lab — Trace a real page load</h2>
+<p>Open Firefox in Kali, then:</p>
+<ol>
+<li>Press <strong>F12</strong> → <strong>Network</strong> tab.</li>
+<li>Enable <strong>Preserve log</strong> and <strong>Disable cache</strong> at the top.</li>
+<li>Type <code>https://example.com</code> in the URL bar and press Enter.</li>
+<li>Study the list of requests. Click the very first one:<ul>
+<li>What method?</li>
+<li>What status code?</li>
+<li>Look at Headers (Request and Response). Familiar words from Path 02?</li>
+<li>Look at Timings — where was the time actually spent?</li>
+</ul>
+</li>
+</ol>
+<p>You&#39;ve just watched every step of the journey with your own eyes.</p>
+<p>When you type <code>example.com</code> in your browser, roughly what&#39;s the <strong>first network activity</strong> that happens after your keystroke?</p>
+<details><summary>Show answer</summary>A <strong>DNS lookup</strong> — the browser needs to translate <code>example.com</code> to an IP address before it can open a TCP connection.</details><h2>Key terms</h2>
+<ul>
+<li><strong>URL parts</strong> — scheme, host, port, path, query.</li>
+<li><strong>DNS lookup / TCP handshake / TLS handshake</strong> — the three &quot;before you ever see HTTP&quot; steps.</li>
+<li><strong>Assets</strong> — CSS, JS, images, fonts, requested after the HTML.</li>
+<li><strong>CDN</strong> — geographically-distributed asset cache.</li>
+<li><strong>First-party / third-party requests</strong> — same-site vs external.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Every page load: URL parse → DNS → TCP → TLS → HTTP request → server processing → response → assets → render.</li>
+<li>Almost every web vulnerability abuses one of the steps in the request/response cycle.</li>
+<li>Modern pages talk to many servers; third-party scripts are a huge attack surface.</li>
+<li>Caching everywhere creates its own class of bugs.</li>
+</ul>
+<h3>References</h3>
+<ul>
+<li><a href="https://hpbn.co/">High Performance Browser Networking (free online book)</a> — Ilya Grigorik&#39;s masterwork; every chapter is gold.</li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Learn/Common_questions/Web_mechanics/How_does_the_Web_work">MDN: How the web works</a></li>
+<li><a href="https://portswigger.net/research/practical-web-cache-poisoning">Web cache deception — James Kettle</a> — the classic research paper.</li>
+<li><a href="https://github.com/alex/what-happens-when">What happens when you type a URL — GitHub gist collection</a> — deep dive.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/05-web-basics/html-css-js">HTML, CSS &amp; JavaScript</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/05-web-basics/page-load-journey";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

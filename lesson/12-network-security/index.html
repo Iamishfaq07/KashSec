@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Path 12: Network Security — KashSec Academy</title>
+<meta name="description" content="Nmap, Wireshark, firewalls, VPNs, IDS/IPS, Wi-Fi attacks, MITM.">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/12-network-security">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Path 12: Network Security — KashSec Academy">
+<meta property="og:description" content="Nmap, Wireshark, firewalls, VPNs, IDS/IPS, Wi-Fi attacks, MITM.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/12-network-security">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Path 12: Network Security — KashSec Academy">
+<meta name="twitter:description" content="Nmap, Wireshark, firewalls, VPNs, IDS/IPS, Wi-Fi attacks, MITM.">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Path 12: Network Security — KashSec Academy","description":"Nmap, Wireshark, firewalls, VPNs, IDS/IPS, Wi-Fi attacks, MITM.","url":"https://kashsec.vercel.app/#/lesson/12-network-security","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/12-network-security">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · Path 12 — Network Security</div>
+  <article><h1>Path 12: Network Security — KashSec Academy</h1><p>Nmap, Wireshark, firewalls, VPNs, IDS/IPS, Wi-Fi attacks, MITM.</p><h2>Sub-lessons</h2><ul><li><a href="/lesson/12-network-security/why-netsec.html">12.1 · Why network security matters</a> — Mapping, watching, filtering — the three activities.</li><li><a href="/lesson/12-network-security/nmap.html">12.2 · Scan networks with Nmap</a> — The classic scanner, from -sV to NSE scripts.</li><li><a href="/lesson/12-network-security/wireshark.html">12.3 · See traffic with Wireshark</a> — Watch real packets flow — plus tcpdump.</li><li><a href="/lesson/12-network-security/firewalls-vpns.html">12.4 · Firewalls, VPNs, proxies</a> — The everyday defensive stack.</li><li><a href="/lesson/12-network-security/ids-ips-siem.html">12.5 · IDS, IPS &amp; SIEM</a> — Modern detection: from Snort to SOC to SOAR.</li><li><a href="/lesson/12-network-security/wifi-security.html">12.6 · Wi-Fi security &amp; attacks</a> — WPA2/3, evil twin, handshake capture.</li><li><a href="/lesson/12-network-security/mitm.html">12.7 · Man-in-the-Middle</a> — How MITMs work, and how HTTPS defeats them.</li><li><a href="/lesson/12-network-security/netsec-roadmap.html">12.8 · Your network-security path</a> — Red, blue, or engineering — pick a track.</li><li><a href="/lesson/12-network-security/nmap-advanced-lab.html">12.9 · Advanced Nmap Lab</a> — Master network scanning like a professional.</li><li><a href="/lesson/12-network-security/wireshark-advanced-lab.html">12.10 · Advanced Wireshark Lab</a> — Go deeper with packet analysis.</li></ul></article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/12-network-security";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

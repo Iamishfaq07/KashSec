@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Digital forensics &amp; IR — Path 16 · KashSec Academy</title>
+<meta name="description" content="Everything so far in this course has largely been offensive — finding and exploiting weaknesses. DFIR flips the perspective: when a real incident happens, how do you figure out exactly what occurred, ">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/16-advanced/dfir">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Digital forensics &amp; IR — Path 16 · KashSec Academy">
+<meta property="og:description" content="Everything so far in this course has largely been offensive — finding and exploiting weaknesses. DFIR flips the perspective: when a real incident happens, how do you figure out exactly what occurred, ">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/16-advanced/dfir">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Digital forensics &amp; IR — Path 16 · KashSec Academy">
+<meta name="twitter:description" content="Everything so far in this course has largely been offensive — finding and exploiting weaknesses. DFIR flips the perspective: when a real incident happens, how do you figure out exactly what occurred, ">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Digital forensics & IR — Path 16 · KashSec Academy","description":"Everything so far in this course has largely been offensive — finding and exploiting weaknesses. DFIR flips the perspective: when a real incident happens, how do you figure out exactly what occurred, ","url":"https://kashsec.vercel.app/#/lesson/16-advanced/dfir","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/16-advanced/dfir">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 16 — Advanced Cyber Topics</a> · Digital forensics &amp; IR</div>
+  <article><h1>Digital forensics &amp; incident response</h1>
+<p>Everything so far in this course has largely been offensive — finding and exploiting weaknesses. <strong>DFIR</strong> flips the perspective: when a real incident happens, how do you figure out exactly what occurred, contain it, and recover — while preserving evidence properly enough to support legal or insurance action if needed?</p>
+<h2>What DFIR actually covers</h2>
+<p><strong>DFIR</strong> combines two closely related disciplines:</p>
+<ul>
+<li><strong>Digital Forensics</strong> — the rigorous, evidence-preserving process of examining digital systems to reconstruct what happened.</li>
+<li><strong>Incident Response (IR)</strong> — the operational process of detecting, containing, eradicating, and recovering from a security incident.</li>
+</ul>
+<p>This six-phase model (based on NIST&#39;s incident response framework) is the DFIR analogue of Path 14&#39;s five-phase penetration testing methodology — a repeatable, professional structure rather than ad-hoc firefighting.</p>
+<h2>Phase 1: Preparation</h2>
+<p>Everything done <strong>before</strong> an incident occurs to make response actually possible:</p>
+<ul>
+<li>Logging properly configured and centralised (recall Path 12.5&#39;s SIEM concepts) — you cannot investigate what wasn&#39;t logged.</li>
+<li>An incident response plan, with clear roles and escalation paths, documented and rehearsed <strong>before</strong> a real crisis.</li>
+<li>Baseline system images/configurations documented, so &quot;what&#39;s different from normal&quot; can actually be determined.</li>
+</ul>
+<h2>Phase 2: Detection &amp; Analysis</h2>
+<p>Recognising that an incident is actually occurring — often via the SIEM alerts and correlation rules from Path 12.5, or an external notification (a customer report, a law enforcement tip, a bug bounty report per Path 15 revealing active exploitation).</p>
+<h3>The forensic principle: preserve, then analyse — never the reverse</h3>
+<p>Never analyse original evidence directly — always work from a <strong>verified forensic copy</strong>, preserving the original completely untouched. Investigating directly on a live, compromised system risks altering timestamps, overwriting deleted-but-recoverable data, or destroying evidence needed for legal proceedings.</p>
+<pre><code class="language-bash"># Creating a forensic disk image with proper integrity verification:
+dd if=/dev/sdb of=evidence-image.dd bs=4M status=progress
+sha256sum /dev/sdb &gt; original-hash.txt
+sha256sum evidence-image.dd &gt; image-hash.txt
+# Compare — they MUST match, proving the image is a perfect, unaltered copy
+</code></pre>
+<p>This hash-verification step directly echoes Path 03.6&#39;s file integrity lesson — here applied with legal, evidentiary weight. A mismatched hash means the image cannot be trusted as an accurate representation of the original evidence.</p>
+<h3>Chain of custody</h3>
+<p>For any incident with potential legal consequences, a documented <strong>chain of custody</strong> records exactly who handled evidence, when, and what was done to it at every step — essential for evidence to remain admissible if a case ever goes to court, and generally good practice even when litigation isn&#39;t anticipated.</p>
+<h3>Memory forensics</h3>
+<p>Live system memory (RAM) contains enormously valuable, entirely <strong>volatile</strong> evidence — running processes, network connections, encryption keys, and malware that may never touch disk at all (recall Path 10.4&#39;s &quot;fileless malware&quot; concept):</p>
+<pre><code class="language-bash"># Capturing memory for later analysis (must happen BEFORE shutting down
+# a potentially-compromised system, since RAM contents are lost on power-off):
+# Using tools like FTK Imager, WinPMEM, or LiME (Linux Memory Extractor)
+
+# Analysing a memory capture with Volatility (the standard memory forensics framework):
+volatility3 -f memory-dump.raw windows.pslist
+volatility3 -f memory-dump.raw windows.netscan
+</code></pre>
+<p><strong>Volatility</strong> lets you reconstruct running processes, network connections, and even extract injected malicious code directly from a memory image — often revealing far more than disk-based analysis alone, especially against sophisticated, memory-resident threats.</p>
+<h3>Timeline analysis</h3>
+<p>Reconstructing <strong>exactly</strong> what happened, in order, across the incident:</p>
+<pre><code class="language-bash"># log2timeline/plaso — builds a unified, chronological timeline from
+# many different log sources and filesystem metadata simultaneously:
+log2timeline.py timeline.plaso /path/to/evidence-image.dd
+psort.py -o l2tcsv -w timeline.csv timeline.plaso
+</code></pre>
+<p>A properly-built timeline directly answers the questions every stakeholder asks first: <em>when did the attacker first gain access? What did they do, and in what order? When were they finally contained?</em> — precisely mapping onto the kill chain concept from Path 10.3, now reconstructed from real evidence rather than theorised in the abstract.</p>
+<h3>Sysmon — Windows endpoint logging that actually helps</h3>
+<p>Default Windows event logging is notoriously thin for real investigative work — <strong>Sysmon (System Monitor)</strong>, a free Sysinternals tool, fills that gap by logging far richer, forensically useful detail: every process creation with its full command line and parent process, every network connection, every file creation of interest, and every registry modification, all with configurable filtering to keep log volume manageable:</p>
+<pre><code class="language-xml">&lt;!-- A minimal Sysmon config snippet logging process creation with command lines --&gt;
+&lt;Sysmon schemaversion=&quot;4.90&quot;&gt;
+  &lt;EventFiltering&gt;
+    &lt;ProcessCreate onmatch=&quot;exclude&quot;&gt;
+      &lt;Image condition=&quot;end with&quot;&gt;svchost.exe&lt;/Image&gt;
+    &lt;/ProcessCreate&gt;
+  &lt;/EventFiltering&gt;
+&lt;/Sysmon&gt;
+</code></pre>
+<p>Once deployed, Sysmon events (visible in Windows Event Viewer or, far more usefully, shipped to a SIEM per Path 12.5) let an investigator answer exactly the kind of question a timeline reconstruction needs: which process spawned <code>powershell.exe</code> with a suspicious base64-encoded argument, and what did that process do next. This is precisely the kind of preparation-phase investment — deploying rich logging <em>before</em> an incident, not scrambling to enable it during one — that separates organisations who can actually investigate an incident from those left guessing.</p>
+<h2>Phase 3: Containment</h2>
+<p>Stopping the incident from causing further damage, <strong>while preserving evidence</strong> wherever possible:</p>
+<ul>
+<li><strong>Short-term containment</strong> — immediate isolation (network segmentation, Path 12.1&#39;s concept, applied urgently) to stop active damage without necessarily destroying evidence.</li>
+<li><strong>Long-term containment</strong> — more thorough measures (rebuilding affected systems from clean images, rotating all potentially-compromised credentials) while a permanent fix is prepared.</li>
+</ul>
+<p>For AD-specific incidents (Path 16.3), this is exactly where the <strong>KRBTGT password rotation (twice)</strong> becomes critical — without it, an attacker who&#39;s forged a Golden Ticket retains persistent access even after every other containment step.</p>
+<h2>Phase 4: Eradication</h2>
+<p>Completely removing the attacker&#39;s presence — every backdoor, every persistence mechanism (recall Path 14.6&#39;s persistence concept, now from the defender&#39;s side), every malicious account created.</p>
+<h2>Phase 5: Recovery</h2>
+<p>Restoring systems to normal operation, ideally from known-clean backups (Path 10.7&#39;s 3-2-1 backup rule proving its full value here), with enhanced monitoring during the recovery period specifically watching for any signs the attacker retained access despite eradication efforts.</p>
+<h2>Phase 6: Lessons Learned</h2>
+<p>A genuinely critical, often-skipped final phase: a <strong>blameless post-incident review</strong> answering:</p>
+<ul>
+<li>How did the attacker actually get in? (Root cause, not just symptoms.)</li>
+<li>What detection gaps allowed this to go unnoticed for as long as it did?</li>
+<li>What specific, concrete changes will prevent a recurrence?</li>
+</ul>
+<p>This feeds directly back into Phase 1&#39;s preparation for the <em>next</em> incident — DFIR is a continuous cycle, not a one-time linear process.</p>
+<h2>Building your own DFIR practice environment</h2>
+<pre><code class="language-bash"># SANS SIFT Workstation — a free, pre-configured Linux distribution
+# with the full standard DFIR toolkit already installed:
+# (Volatility, log2timeline/plaso, Autopsy, and more)
+
+# Autopsy — a free, GUI-based digital forensics platform, good starting
+# point for disk image analysis specifically:
+autopsy
+</code></pre>
+<h2>🧪 Lab — A mini incident timeline exercise</h2>
+<p>Using your Kali VM (treating it as a hypothetical &quot;compromised&quot; system from your earlier Path 14/11 labs):</p>
+<ol>
+<li>Review your own bash history, auth logs, and any files created during previous labs in this course:</li>
+</ol>
+<pre><code class="language-bash">cat ~/.bash_history
+sudo cat /var/log/auth.log 2&gt;/dev/null || sudo journalctl -u ssh
+find / -newer /etc/hostname -type f 2&gt;/dev/null | head -50
+</code></pre>
+<ol start="2">
+<li>Attempt to reconstruct a rough timeline: when did you first gain a foothold in your Metasploitable labs (Path 14.5)? What commands did you run afterward, in what order?</li>
+<li>Write a short &quot;incident summary&quot; as if this were a genuine investigation — what happened, when, and what containment/eradication steps would you recommend if this had been a real, unauthorized compromise.</li>
+</ol>
+<p>This exercise — looking at your <strong>own</strong> prior lab activity through a forensic investigator&#39;s lens — is a genuinely effective way to internalise how much (or how little) evidence ordinary system usage leaves behind, directly informing both your offensive OPSEC awareness and your defensive logging priorities going forward.</p>
+<p>Why must a forensic investigator always work from a verified disk image copy rather than analysing the original, potentially-compromised system directly?</p>
+<details><summary>Show answer</summary>Analysing a live system directly risks <strong>altering evidence</strong> — accessing files changes their access timestamps, running additional processes could overwrite deleted-but-recoverable data in unallocated disk space, and any interaction with a potentially still-active attacker's tooling could trigger anti-forensic or destructive behaviour. Working from a <strong>hash-verified copy</strong> preserves the original completely untouched, ensuring the evidence remains both accurate and legally admissible if the incident ever leads to legal or insurance proceedings, while still allowing thorough, even destructive, analysis techniques on the copy itself.</details><h2>Key terms</h2>
+<ul>
+<li><strong>DFIR</strong> — Digital Forensics and Incident Response, combining evidence-preservation with operational incident handling.</li>
+<li><strong>Chain of custody</strong> — documented record of who handled evidence and when, essential for legal admissibility.</li>
+<li><strong>Memory forensics / Volatility</strong> — analysing volatile RAM contents, revealing evidence that never touches disk.</li>
+<li><strong>Timeline analysis / log2timeline</strong> — reconstructing chronological incident events from multiple log sources.</li>
+<li><strong>IOC (Indicator of Compromise)</strong> — revisited from Path 16.6, the artifacts extracted during DFIR feeding detection efforts elsewhere.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>DFIR&#39;s six-phase model (preparation through lessons learned) mirrors Path 14&#39;s methodology, applied to defensive incident handling.</li>
+<li>The cardinal forensic principle: always work from a verified, hash-matched copy, never the original evidence directly.</li>
+<li>Memory forensics (Volatility) reveals volatile evidence, especially critical against fileless/memory-resident threats.</li>
+<li>Containment must balance stopping active damage against preserving evidence for later analysis.</li>
+<li>The lessons-learned phase closes the loop, feeding directly back into improved preparation for future incidents.</li>
+</ul>
+<h3>References</h3>
+<ul>
+<li><a href="https://csrc.nist.gov/pubs/sp/800/61/r2/final">NIST SP 800-61 — Computer Security Incident Handling Guide</a> — the official US six-phase framework referenced throughout this lesson.</li>
+<li><a href="https://volatilityfoundation.org/">Volatility Foundation</a> — the standard memory forensics framework.</li>
+<li><a href="https://www.sans.org/tools/sift-workstation/">SANS SIFT Workstation</a> — a free, pre-configured DFIR toolkit distribution.</li>
+<li><a href="https://www.autopsy.com/">Autopsy</a> — free, GUI-based digital forensics platform.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/16-advanced/specialise">Choosing your specialisation</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/16-advanced/dfir";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

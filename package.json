@@ -6,9 +6,10 @@
   "type": "module",
   "scripts": {
     "dev": "python3 -m http.server 8000",
-    "build": "node generate-glossary.js && node generate-sw.js",
+    "build": "node generate-glossary.js && node generate-prerender.js && node generate-sw.js",
     "build:sw": "node generate-sw.js",
     "build:glossary": "node generate-glossary.js",
+    "build:prerender": "node generate-prerender.js",
     "test": "echo \"No tests specified\" && exit 0"
   },
   "repository": {

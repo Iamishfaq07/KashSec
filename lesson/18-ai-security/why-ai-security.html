@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Why AI security is new — Path 18 · KashSec Academy</title>
+<meta name="description" content="Path 18.1 gave you the mechanical foundation. This lesson makes explicit exactly how AI security both rhymes with and fundamentally differs from everything you've learned in Paths 11-11 — essential fr">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/18-ai-security/why-ai-security">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Why AI security is new — Path 18 · KashSec Academy">
+<meta property="og:description" content="Path 18.1 gave you the mechanical foundation. This lesson makes explicit exactly how AI security both rhymes with and fundamentally differs from everything you've learned in Paths 11-11 — essential fr">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/18-ai-security/why-ai-security">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Why AI security is new — Path 18 · KashSec Academy">
+<meta name="twitter:description" content="Path 18.1 gave you the mechanical foundation. This lesson makes explicit exactly how AI security both rhymes with and fundamentally differs from everything you've learned in Paths 11-11 — essential fr">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Why AI security is new — Path 18 · KashSec Academy","description":"Path 18.1 gave you the mechanical foundation. This lesson makes explicit exactly how AI security both rhymes with and fundamentally differs from everything you've learned in Paths 11-11 — essential fr","url":"https://kashsec.vercel.app/#/lesson/18-ai-security/why-ai-security","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/18-ai-security/why-ai-security">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 18 — AI & AI Security</a> · Why AI security is new</div>
+  <article><h1>Why AI security is different</h1>
+<p>Path 18.1 gave you the mechanical foundation. This lesson makes explicit exactly how AI security both <strong>rhymes with</strong> and <strong>fundamentally differs from</strong> everything you&#39;ve learned in Paths 11-11 — essential framing before diving into specific attack techniques.</p>
+<h2>The core theme: probabilistic, not deterministic</h2>
+<p>Every vulnerability class in Path 11 has a <strong>deterministic</strong> signature — the same SQL injection payload against the same unpatched code produces the same result, every single time. LLMs are <strong>probabilistic</strong> — the same prompt injection attempt might succeed on one attempt and fail on the next, even against the exact same model and system prompt, because generation involves an element of randomness (often called &quot;temperature&quot;) and because models can be genuinely inconsistent in edge cases.</p>
+<p>This has a direct, practical consequence for how you must test: a single failed jailbreak attempt (Path 18.4) doesn&#39;t prove a model is safe from that attack — and a single successful one doesn&#39;t necessarily mean it will reliably succeed again. AI red-teaming (Path 18.7) therefore requires <strong>statistical thinking</strong> — running many attempts and measuring success <em>rates</em>, not simple binary pass/fail testing the way a traditional penetration test (Path 14) typically operates.</p>
+<h2>No patch, in the traditional sense</h2>
+<p>Recall Path 10.2&#39;s vulnerability/patch cycle — a SQL injection gets fixed by changing the vulnerable code, with a clear, verifiable before/after. LLM &quot;vulnerabilities&quot; (a model that can be jailbroken into producing harmful content, or that&#39;s susceptible to a specific prompt injection pattern) are addressed through <strong>retraining, fine-tuning, or additional safety layers</strong> — processes that are expensive, slow, and don&#39;t offer the same clean, verifiable guarantee that a specific traditional code patch does. A model provider might reduce a specific jailbreak&#39;s success rate from 40% to 2% through additional training, but rarely to a provable, permanent 0%.</p>
+<h2>The trust boundary problem, reinforced</h2>
+<p>Recall Path 18.1&#39;s context window discussion — this deserves direct comparison to Path 11&#39;s web vulnerabilities, since the <em>pattern</em> is genuinely the same even though the <em>mechanism</em> differs:</p>
+<table>
+<thead>
+<tr>
+<th>Web vulnerability (Path 11)</th>
+<th>LLM equivalent</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>SQL injection — user input treated as SQL code</td>
+<td>Prompt injection — untrusted text treated as instructions</td>
+</tr>
+<tr>
+<td>XSS — user input treated as executable JavaScript</td>
+<td>Indirect prompt injection via documents/websites the model processes</td>
+</tr>
+<tr>
+<td>SSRF — tricking a server into making unauthorized requests</td>
+<td>Tricking an agentic LLM into taking unauthorized tool actions</td>
+</tr>
+<tr>
+<td>IDOR — missing authorization checks on direct object access</td>
+<td>Missing authorization checks on what data/tools an LLM can access per-user</td>
+</tr>
+</tbody></table>
+<p>Recognising these parallels is genuinely useful — much of your Path 11 intuition <strong>transfers directly</strong> to reasoning about LLM security, even though the underlying defensive techniques (Path 18.3-12.6) are often quite different in practice.</p>
+<h2>New, genuinely novel risk categories</h2>
+<p>Beyond the direct parallels above, LLM systems introduce risks with <strong>no clean traditional-security analogue</strong>:</p>
+<ul>
+<li><strong>Hallucination</strong> — an LLM confidently generating false information, with no malicious input required at all. This isn&#39;t &quot;exploitation&quot; in the traditional sense — it&#39;s an inherent limitation of how these models generate text, with direct security implications when hallucinated information influences a security decision (e.g., a model incorrectly summarizing a log file&#39;s security-relevant content).</li>
+<li><strong>Training data poisoning</strong> — an attacker who can influence a model&#39;s <em>training data</em> (rather than its runtime input) can embed subtle, hard-to-detect backdoors or biases that activate only under specific, attacker-chosen conditions — a fundamentally different attack surface than anything in Path 11-11, targeting the model-building pipeline itself rather than a deployed application.</li>
+<li><strong>Model extraction/theft</strong> — an attacker systematically querying a model to reconstruct a functionally similar copy, effectively &quot;stealing&quot; the intellectual property and potentially the safety training investment without ever breaching traditional infrastructure at all.</li>
+<li><strong>Emergent, hard-to-predict capabilities</strong> — LLMs sometimes exhibit capabilities or failure modes that weren&#39;t explicitly designed or fully anticipated by their own creators, discovered only through extensive real-world use or dedicated red-teaming — a genuinely unusual property compared to traditional software, where behaviour is at least in principle fully determined by its source code.</li>
+</ul>
+<h2>The defender&#39;s dilemma — safety vs. capability tradeoffs</h2>
+<p>Recall Path 10.1&#39;s CIA triad tension — LLM safety measures face an analogous, often more acute tradeoff: overly restrictive safety filtering makes a model frustratingly unhelpful for legitimate use cases (a security researcher asking about malware behaviour for defensive purposes, a nurse asking about medication overdose thresholds for patient safety), while overly permissive behaviour risks genuine harm. Unlike a firewall rule, which can be precisely scoped, LLM safety behaviour is trained holistically and doesn&#39;t have the same crisp, auditable on/off boundary — a recurring theme you&#39;ll see across Path 18.3-12.6&#39;s specific techniques.</p>
+<h2>Why this matters especially now, for your own career</h2>
+<p>Recall Path 16.8&#39;s closing point about specialisation timing. AI security is a genuinely <strong>young field</strong> — the OWASP LLM Top 10 (Path 18.5) was first published only in 2023, and the practices, tooling, and even terminology are actively evolving as this course is being written. This creates a distinctive opportunity compared to the mature fields in Path 16: fewer established practitioners, rapidly growing organizational demand (as more companies rush to deploy LLM-powered features, per Path 18.8&#39;s career discussion), and genuine room for someone building deep expertise now to become a recognised specialist relatively quickly — directly relevant to Ishfaq&#39;s own active AI evaluation/red-teaming work (Mercor, Alignerr/OpenClaw) referenced throughout this course&#39;s development.</p>
+<h2>The confused deputy problem — an old name for a familiar pattern</h2>
+<p>Much of what makes agentic LLM security hard traces back to a security concept that predates AI entirely by decades: the <strong>confused deputy problem</strong>, first named in classic computer security literature to describe a program that&#39;s tricked into misusing its own legitimate authority on an attacker&#39;s behalf. An agentic LLM with access to a user&#39;s email, file system, or API credentials is exactly this kind of &quot;deputy&quot; — it holds real, legitimate permissions on the user&#39;s behalf, and the entire danger of prompt injection (Path 18.3) in an agentic context is that untrusted input can trick this trusted, permitted actor into misusing its own legitimate access, without ever needing to steal a credential or bypass an authentication check directly. Recognising this as a decades-old, well-studied pattern rather than something entirely unprecedented is genuinely useful — it means the general defensive principle (never let a trusted actor&#39;s authority be redirected by untrusted input) transfers directly, even though the specific mechanism (a probabilistic language model rather than a traditional program) is new.</p>
+<h2>A grounded, non-hyped perspective</h2>
+<p>It&#39;s worth stating directly: LLM security discourse is sometimes prone to hype in both directions — some framing suggests AI systems are recklessly, uniquely dangerous in ways that dwarf all prior technology; other framing dismisses AI security concerns as overblown since &quot;it&#39;s just autocomplete.&quot; Neither extreme is accurate or useful. The genuinely productive framing, and the one this entire path adopts: LLM-integrated systems have <strong>real, specific, learnable security properties</strong> — some genuinely novel, many recognisable variations on patterns you already know from Paths 11-11 — deserving the same rigorous, methodical treatment as any other technology in this course, no more and no less.</p>
+<h2>🧪 Lab — Compare a traditional and an AI vulnerability side by side</h2>
+<p>Pick one vulnerability from Path 11 (e.g., XSS) and write a short comparison table with its closest LLM security analogue (indirect prompt injection, covered fully in Path 18.3):</p>
+<ol>
+<li>What&#39;s the &quot;untrusted input&quot; in each case?</li>
+<li>What&#39;s the &quot;trusted context&quot; each input is incorrectly blended into?</li>
+<li>What&#39;s a traditional defensive technique for the web version (output encoding, for XSS)?</li>
+<li>What might an analogous — but necessarily different — defensive approach look like for the LLM version? (You&#39;ll get the actual answer in Path 18.3/12.6 — this is a genuinely useful exercise in reasoning it through yourself first.)</li>
+</ol>
+<p>Why can&#39;t LLM safety vulnerabilities typically be &quot;patched&quot; with the same clean, verifiable certainty as a traditional software vulnerability like SQL injection?</p>
+<details><summary>Show answer</summary>A SQL injection fix involves changing a <strong>specific, auditable code path</strong> (e.g., switching to parameterised queries) — you can point to the exact line changed and verify, deterministically, that the specific attack no longer works. LLM behaviour emerges from a <strong>probabilistic neural network</strong> shaped by training, not a fixed, line-by-line logic path — addressing a specific jailbreak or unsafe behaviour typically requires additional training or fine-tuning that shifts the model's overall behaviour <em>statistically</em>, reducing the success rate of a given attack without offering the same clean, provable, permanent guarantee that a traditional code patch provides. This is a direct consequence of the probabilistic-vs-deterministic distinction covered at the start of this lesson.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Probabilistic generation</strong> — LLM outputs can vary between attempts even given identical input, unlike deterministic traditional software.</li>
+<li><strong>Hallucination</strong> — an LLM confidently generating false information, an inherent limitation rather than an exploitation technique.</li>
+<li><strong>Training data poisoning</strong> — attacking the model-building pipeline itself, rather than a deployed application&#39;s runtime.</li>
+<li><strong>Model extraction</strong> — reconstructing a functionally similar copy of a model through systematic querying.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>LLM security differs fundamentally from traditional security in being probabilistic rather than deterministic, requiring statistical rather than binary testing approaches.</li>
+<li>Many LLM vulnerabilities directly parallel Path 11&#39;s web vulnerabilities (prompt injection ≈ SQLi/XSS, agentic tool abuse ≈ SSRF), while others (hallucination, training data poisoning, model extraction) have no clean traditional analogue.</li>
+<li>LLM safety fixes come through retraining/fine-tuning rather than clean, verifiable code patches.</li>
+<li>The safety-vs-capability tradeoff is more acute and less crisply scopable than traditional security controls.</li>
+<li>AI security&#39;s youth as a field creates genuine specialisation opportunity, without needing to overstate or understate its risks.</li>
+</ul>
+<h3>References</h3>
+<ul>
+<li><a href="https://owasp.org/www-project-top-10-for-large-language-model-applications/">OWASP Top 10 for LLM Applications</a> — the framework detailed fully in Path 18.5.</li>
+<li><a href="https://www.anthropic.com/news/core-views-on-ai-safety">Anthropic — Core Views on AI Safety</a> — a grounded, non-hyped perspective from a leading AI lab.</li>
+<li><a href="https://www.nist.gov/itl/ai-risk-management-framework">NIST AI Risk Management Framework</a> — official US government guidance on AI-specific risk.</li>
+<li><a href="https://simonwillison.net/series/prompt-injection/">Simon Willison — Prompt injection writing</a> — extensive, grounded, practitioner-level writing on this exact topic, covered technically in Path 18.3.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/18-ai-security/prompt-injection">Prompt injection</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/18-ai-security/why-ai-security";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

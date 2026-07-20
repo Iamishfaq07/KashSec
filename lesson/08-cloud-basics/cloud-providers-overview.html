@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cloud Providers Overview — Path 08 · KashSec Academy</title>
+<meta name="description" content="Path 08's first lesson covered cloud computing conceptually. This lesson gets concrete — the three dominant providers you'll encounter constantly in real security work, their rough equivalent services">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/08-cloud-basics/cloud-providers-overview">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Cloud Providers Overview — Path 08 · KashSec Academy">
+<meta property="og:description" content="Path 08's first lesson covered cloud computing conceptually. This lesson gets concrete — the three dominant providers you'll encounter constantly in real security work, their rough equivalent services">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/08-cloud-basics/cloud-providers-overview">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Cloud Providers Overview — Path 08 · KashSec Academy">
+<meta name="twitter:description" content="Path 08's first lesson covered cloud computing conceptually. This lesson gets concrete — the three dominant providers you'll encounter constantly in real security work, their rough equivalent services">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Cloud Providers Overview — Path 08 · KashSec Academy","description":"Path 08's first lesson covered cloud computing conceptually. This lesson gets concrete — the three dominant providers you'll encounter constantly in real security work, their rough equivalent services","url":"https://kashsec.vercel.app/#/lesson/08-cloud-basics/cloud-providers-overview","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/08-cloud-basics/cloud-providers-overview">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 08 — Cloud Computing Basics</a> · Cloud Providers Overview</div>
+  <article><h1>Cloud Providers Overview</h1>
+<p>Path 08&#39;s first lesson covered cloud computing conceptually. This lesson gets concrete — the three dominant providers you&#39;ll encounter constantly in real security work, their rough equivalent services, and why Path 16&#39;s flAWS lab specifically targets one of them.</p>
+<h2>The &quot;big three&quot;</h2>
+<ul>
+<li><strong>AWS (Amazon Web Services)</strong> — the largest and oldest major provider, with the broadest range of services and, correspondingly, the most extensively documented security research and misconfiguration patterns — exactly why Path 16&#39;s flAWS lab specifically targets AWS: it&#39;s the most common real-world environment you&#39;ll encounter professionally.</li>
+<li><strong>Microsoft Azure</strong> — particularly dominant in enterprises already invested in Microsoft&#39;s ecosystem (Windows Server, Active Directory — directly connecting to Path 16&#39;s Active Directory attacks lesson, since Azure AD/Entra ID extends those same identity concepts into the cloud).</li>
+<li><strong>Google Cloud Platform (GCP)</strong> — strong in data analytics and machine learning workloads, and historically closely tied to Kubernetes (Path 16&#39;s containers lesson), which Google originally developed internally before open-sourcing it.</li>
+</ul>
+<h2>Rosetta stone — the same concepts, different names</h2>
+<p>One of the most disorienting things about learning multiple cloud providers is that they implement nearly identical underlying concepts under completely different names:</p>
+<table>
+<thead>
+<tr>
+<th>Concept</th>
+<th>AWS</th>
+<th>Azure</th>
+<th>GCP</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Virtual machine</td>
+<td>EC2</td>
+<td>Virtual Machines</td>
+<td>Compute Engine</td>
+</tr>
+<tr>
+<td>Object storage</td>
+<td>S3</td>
+<td>Blob Storage</td>
+<td>Cloud Storage</td>
+</tr>
+<tr>
+<td>Identity/access management</td>
+<td>IAM</td>
+<td>Azure AD / Entra ID</td>
+<td>Cloud IAM</td>
+</tr>
+<tr>
+<td>Serverless functions</td>
+<td>Lambda</td>
+<td>Azure Functions</td>
+<td>Cloud Functions</td>
+</tr>
+<tr>
+<td>Managed Kubernetes</td>
+<td>EKS</td>
+<td>AKS</td>
+<td>GKE</td>
+</tr>
+</tbody></table>
+<p>Recognizing this pattern is genuinely useful: once you understand what an &quot;S3 bucket&quot; is and how it can be misconfigured (Path 16&#39;s cloud security lesson), that same conceptual understanding transfers almost directly to Azure&#39;s Blob Storage or GCP&#39;s Cloud Storage, just with different specific commands and console layouts.</p>
+<h2>Why AWS dominates security training material</h2>
+<p>Path 16&#39;s flAWS lab, most free cloud security CTF content, and the majority of published cloud misconconfiguration research specifically target AWS — not because AWS is inherently less secure than its competitors, but because of its market dominance and maturity: more real-world deployments means more documented real-world misconfigurations, more security research attention, and more free training material built specifically around it. This is worth knowing explicitly, since it means your practical hands-on cloud security skills (from Path 16&#39;s lab) will initially be more AWS-specific than provider-agnostic, even though the underlying concepts (IAM, storage exposure, metadata service abuse) generalize well.</p>
+<h2>Multi-cloud and vendor lock-in</h2>
+<p>A strategic consideration worth understanding, since it shapes real organizational decisions: <strong>vendor lock-in</strong> describes the growing difficulty of migrating away from a cloud provider once an organization has deeply integrated with its provider-specific services (a serverless function built specifically for AWS Lambda&#39;s API, a database using AWS-specific extensions) — the deeper the integration, the more expensive and risky switching becomes later. Some organizations deliberately pursue a <strong>multi-cloud</strong> strategy, spreading workloads across two or more providers specifically to avoid this dependency and improve resilience (if one provider has a major outage, only part of the business is affected) — though this comes at real cost in complexity, since security teams must now understand and consistently secure multiple providers&#39; distinct IAM models, logging formats, and configuration patterns simultaneously, rather than mastering just one. This tradeoff — operational simplicity of a single provider versus resilience and negotiating leverage of multiple — is a genuine, ongoing strategic decision many organizations wrestle with, and it directly explains why cloud security job postings increasingly list multiple providers as either required or preferred rather than just one.</p>
+<h2>The console vs. the CLI vs. Infrastructure as Code</h2>
+<p>Every provider offers three ways to interact with their services:</p>
+<ul>
+<li><strong>Web console</strong> — a graphical dashboard, the easiest starting point for learning, and what you used throughout Path 16&#39;s flAWS lab.</li>
+<li><strong>CLI (Command Line Interface)</strong> — each provider ships a free CLI tool (<code>aws</code>, <code>az</code>, <code>gcloud</code>) for scripting and automation — genuinely essential for the automation principles from Path 04, applied to cloud infrastructure.</li>
+<li><strong>Infrastructure as Code (IaC)</strong> — tools like Terraform (provider-agnostic) or CloudFormation (AWS-specific) let you define entire cloud environments in version-controlled configuration files rather than manual clicking — increasingly the standard for real production environments, and worth knowing exists even before you go deep with it, since a misconfigured IaC template can replicate the exact same vulnerability across dozens of environments simultaneously.</li>
+</ul>
+<p>All three major providers offer free tiers with real, limited resource allowances — genuinely useful for building hands-on familiarity beyond Path 16&#39;s flAWS lab, though always set up billing alerts before experimenting, since accidentally exceeding free tier limits can produce a real bill.</p>
+<p>Why might understanding &quot;S3&quot; (AWS&#39;s object storage service) transfer well to Azure&#39;s &quot;Blob Storage&quot; or GCP&#39;s &quot;Cloud Storage,&quot; even though you&#39;ve never used either of the latter two before?</p>
+<details><summary>Show answer</summary>All three services implement the same underlying concept — a scalable object storage system for storing files/data outside of a traditional file system, accessible via API calls, with configurable access permissions determining who can read or write to it. The specific commands, console layout, and exact terminology differ between providers, but the conceptual model (buckets/containers holding objects, with permission policies controlling access, and the exact same class of misconfiguration risk — an accidentally public bucket exposing sensitive data) is essentially identical across all three. This is why cloud security skills, once you understand the underlying concepts rather than just memorizing one provider's specific commands, transfer reasonably well between providers — you're relearning syntax and console navigation, not the fundamental security model.</details><h2>Key terms</h2>
+<ul>
+<li><strong>AWS / Azure / GCP</strong> — the three dominant public cloud providers.</li>
+<li><strong>CLI (Command Line Interface)</strong> — a provider&#39;s command-line tool for scripting cloud interactions.</li>
+<li><strong>Infrastructure as Code (IaC)</strong> — defining cloud infrastructure in version-controlled configuration files rather than manual setup.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>AWS, Azure, and GCP dominate the market, each implementing largely equivalent underlying concepts under different service names.</li>
+<li>AWS&#39;s market dominance is exactly why Path 16&#39;s flAWS lab and most free cloud security training material specifically target it.</li>
+<li>The console, CLI, and Infrastructure as Code represent three different ways to interact with any provider, each with different security implications for consistency and misconfiguration risk.</li>
+<li>Cloud security understanding generally transfers well between providers once you grasp the underlying concepts, not just one provider&#39;s specific syntax.</li>
+</ul>
+<h3>References</h3>
+<ul>
+<li><a href="https://aws.amazon.com/free/">AWS Free Tier</a> · <a href="https://azure.microsoft.com/en-us/free/">Azure Free Account</a> · <a href="https://cloud.google.com/free">Google Cloud Free Tier</a> — free hands-on practice allowances from each major provider.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/08-cloud-basics/cloud-storage-basics">Cloud Storage Basics</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/08-cloud-basics/cloud-providers-overview";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

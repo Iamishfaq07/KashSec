@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>APIs &amp; JSON — Path 05 · KashSec Academy</title>
+<meta name="description" content="Modern web apps are basically two things stitched together: a JavaScript UI in your browser, and a set of APIs on a server. Learn to see the APIs and you see the real attack surface.">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/05-web-basics/apis-json">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="APIs &amp; JSON — Path 05 · KashSec Academy">
+<meta property="og:description" content="Modern web apps are basically two things stitched together: a JavaScript UI in your browser, and a set of APIs on a server. Learn to see the APIs and you see the real attack surface.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/05-web-basics/apis-json">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="APIs &amp; JSON — Path 05 · KashSec Academy">
+<meta name="twitter:description" content="Modern web apps are basically two things stitched together: a JavaScript UI in your browser, and a set of APIs on a server. Learn to see the APIs and you see the real attack surface.">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"APIs & JSON — Path 05 · KashSec Academy","description":"Modern web apps are basically two things stitched together: a JavaScript UI in your browser, and a set of APIs on a server. Learn to see the APIs and you see the real attack surface.","url":"https://kashsec.vercel.app/#/lesson/05-web-basics/apis-json","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/05-web-basics/apis-json">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 05 — How the Web Works</a> · APIs &amp; JSON</div>
+  <article><h1>APIs &amp; JSON</h1>
+<p>Modern web apps are basically two things stitched together: a JavaScript UI in your browser, and a set of <strong>APIs</strong> on a server. Learn to see the APIs and you see the real attack surface.</p>
+<h2>What &quot;API&quot; actually means</h2>
+<p><strong>API</strong> = Application Programming Interface. On the web, it usually means: <strong>a URL that returns data (JSON) instead of a whole HTML page</strong>.</p>
+<p>Compare:</p>
+<ul>
+<li><code>https://example.com/products</code> — returns HTML for a browser to render.</li>
+<li><code>https://example.com/api/products</code> — returns JSON for another program to consume.</li>
+</ul>
+<p>The second is an API. It&#39;s what the site&#39;s own JavaScript calls, what mobile apps call, and what integrations use.</p>
+<h2>JSON in 60 seconds</h2>
+<p>JSON (JavaScript Object Notation) is text that looks like this:</p>
+<pre><code class="language-json">{
+  &quot;user&quot;: {
+    &quot;id&quot;: 42,
+    &quot;username&quot;: &quot;alice&quot;,
+    &quot;roles&quot;: [&quot;user&quot;, &quot;editor&quot;],
+    &quot;is_admin&quot;: false,
+    &quot;email&quot;: &quot;alice@example.com&quot;
+  },
+  &quot;orders&quot;: [
+    { &quot;id&quot;: 101, &quot;total&quot;: 29.99, &quot;status&quot;: &quot;shipped&quot; },
+    { &quot;id&quot;: 102, &quot;total&quot;: 15.00, &quot;status&quot;: &quot;processing&quot; }
+  ]
+}
+</code></pre>
+<p>Six data types: <strong>object</strong> <code>{}</code>, <strong>array</strong> <code>[]</code>, <strong>string</strong> <code>&quot;...&quot;</code>, <strong>number</strong>, <strong>boolean</strong> <code>true/false</code>, <strong>null</strong>. That&#39;s all of JSON. Learn to read this and you can read 99% of modern web APIs.</p>
+<h2>REST — the common style</h2>
+<p>Most public APIs follow a style called <strong>REST</strong>. It uses HTTP methods to mean specific things:</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Meaning</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>GET</strong></td>
+<td>Read</td>
+<td><code>GET /api/users/42</code> — get user 42</td>
+</tr>
+<tr>
+<td><strong>POST</strong></td>
+<td>Create</td>
+<td><code>POST /api/users</code> (body has new user)</td>
+</tr>
+<tr>
+<td><strong>PUT / PATCH</strong></td>
+<td>Update</td>
+<td><code>PATCH /api/users/42</code> (body has changes)</td>
+</tr>
+<tr>
+<td><strong>DELETE</strong></td>
+<td>Delete</td>
+<td><code>DELETE /api/users/42</code></td>
+</tr>
+</tbody></table>
+<p>Resource identifiers appear in the path (<code>/users/42</code>), and data flows in the body as JSON. Learn to read a URL as <em>&quot;which noun, which action?&quot;</em> and you can read most REST APIs at a glance.</p>
+<h2>Anatomy of an API call</h2>
+<pre><code class="language-http">POST /api/orders HTTP/1.1
+Host: shop.example.com
+Authorization: Bearer eyJhbGciOi...
+Content-Type: application/json
+
+{
+  &quot;product_id&quot;: 101,
+  &quot;quantity&quot;: 2,
+  &quot;shipping_address_id&quot;: 7
+}
+</code></pre>
+<p>And the response:</p>
+<pre><code class="language-http">HTTP/1.1 201 Created
+Content-Type: application/json
+
+{
+  &quot;order_id&quot;: 102,
+  &quot;status&quot;: &quot;confirmed&quot;,
+  &quot;total&quot;: 59.98
+}
+</code></pre>
+<p>Three things worth noticing:</p>
+<ol>
+<li><strong>Auth in a header.</strong> Not a form, not a cookie — a <code>Bearer</code> token. Very common on modern APIs.</li>
+<li><strong>Content-Type: application/json</strong> on both sides.</li>
+<li><strong>HTTP status codes</strong> carry real meaning — <code>201 Created</code> isn&#39;t just <code>200</code>, it says &quot;made a new thing.&quot; APIs use status codes richly.</li>
+</ol>
+<h2>Calling an API from Python — the payoff</h2>
+<p>Because APIs are just HTTP, you can call them from any language. Python&#39;s <code>requests</code> library makes it a breeze:</p>
+<pre><code class="language-python">import requests
+
+# Simple GET
+r = requests.get(&quot;https://api.github.com/repos/anthropics/anthropic-sdk-python&quot;)
+print(r.status_code)                      # 200
+data = r.json()                           # parses JSON into a Python dict
+print(data[&quot;name&quot;], data[&quot;stargazers_count&quot;])
+
+# Authenticated POST
+headers = {&quot;Authorization&quot;: &quot;Bearer YOUR_TOKEN&quot;}
+payload = {&quot;title&quot;: &quot;Bug found&quot;, &quot;body&quot;: &quot;Details...&quot;}
+r = requests.post(&quot;https://api.example.com/issues&quot;,
+                  json=payload, headers=headers)
+print(r.status_code, r.json())
+</code></pre>
+<p>This is how nearly every automation tool, integration, and security tool works under the hood.</p>
+<h2>Where API security bugs live</h2>
+<p>APIs deserve their own OWASP top-10 because they have <em>specific</em> recurring bug classes:</p>
+<table>
+<thead>
+<tr>
+<th>Bug class</th>
+<th>Shape</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>BOLA / IDOR</strong> — Broken Object Level Authorization</td>
+<td>You access <code>/api/orders/102</code> and the server doesn&#39;t check whether order 102 belongs to you.</td>
+</tr>
+<tr>
+<td><strong>Broken authentication</strong></td>
+<td>Weak tokens, guessable secrets, JWT <code>alg: none</code>.</td>
+</tr>
+<tr>
+<td><strong>Excessive data exposure</strong></td>
+<td>The API returns the <em>whole user object</em> (email, phone, hashed password) and the UI only shows a name. Client can just read the extras.</td>
+</tr>
+<tr>
+<td><strong>Broken function-level authorization</strong></td>
+<td>Admin endpoint exists at <code>/api/admin/users/42/delete</code> but doesn&#39;t check role.</td>
+</tr>
+<tr>
+<td><strong>Mass assignment</strong></td>
+<td>POST a JSON with an <code>is_admin: true</code> field the server naively accepts.</td>
+</tr>
+<tr>
+<td><strong>Unrestricted resource consumption</strong></td>
+<td>No rate limit → brute force, credential stuffing.</td>
+</tr>
+<tr>
+<td><strong>Server-side request forgery (SSRF)</strong></td>
+<td>An API endpoint fetches a URL you supply, unfiltered.</td>
+</tr>
+</tbody></table>
+<p>You&#39;ll meet each in Path 11. The point today: <strong>APIs are where modern web bugs live, at least as much as the HTML UI.</strong></p>
+<h2>API versioning and forgotten endpoints</h2>
+<p>APIs rarely stay static — as apps evolve, developers introduce <code>/api/v2/...</code> while <code>/api/v1/...</code> often keeps running quietly in the background for older mobile app versions still in the wild. Those old, unmaintained versions are a genuinely rich attack surface: a <code>v1</code> endpoint might lack a security fix that was only ever applied to <code>v2</code>, or might expose a field that <code>v2</code> deliberately hid after a privacy review. This is exactly the kind of thing Path 15&#39;s recon material teaches you to hunt for — trying <code>/api/v1/</code>, <code>/api/v0/</code>, <code>/api/beta/</code>, and similar guesses against any API you find, since forgotten versions are consistently one of the highest-value things to check in bug bounty recon.</p>
+<h2>Rate limiting and pagination — the practical side</h2>
+<p>Two mundane-sounding API behaviours matter a lot in practice. <strong>Rate limiting</strong> caps how many requests a caller can make in a given window (commonly signalled with <code>429 Too Many Requests</code> and headers like <code>X-RateLimit-Remaining</code>) — the same defence discussed in Path 04&#39;s automation lesson, applied from the server&#39;s side this time. <strong>Pagination</strong> controls how much data a single request returns, typically via <code>?page=2&amp;per_page=50</code> or a <code>cursor</code> parameter — an API that returns <em>everything</em> in one unpaginated response isn&#39;t just slow, it can hand an attacker your entire user table in a single request if authorization is also missing. Reading how an API paginates and rate-limits tells you a lot about how seriously its developers thought about abuse.</p>
+<h2>Finding APIs on a site</h2>
+<p>Even sites with no &quot;API documentation&quot; have APIs. Every modern SPA is calling them under the hood. Simple approach:</p>
+<ol>
+<li>Open the site in Firefox → <strong>F12 → Network → XHR/Fetch filter</strong>.</li>
+<li>Click around. Every API call the UI makes lights up in the panel.</li>
+<li>For each: right-click → <strong>Copy → Copy as cURL</strong>. You now have a self-contained command that replicates the request from your terminal.</li>
+</ol>
+<p>That &quot;Copy as cURL&quot; trick is one of the single most useful bits of web-security workflow. Practise it now.</p>
+<h2>Documenting formats you&#39;ll see</h2>
+<ul>
+<li><strong>OpenAPI / Swagger</strong> — the standard way of describing REST APIs. Look for <code>/swagger</code>, <code>/openapi.json</code>, <code>/api-docs</code>. Sometimes accidentally exposed on production 👀</li>
+<li><strong>GraphQL</strong> — a newer style where the client says exactly which fields it wants in a single query. Common bug: enumeration via introspection.</li>
+<li><strong>gRPC</strong> — high-performance binary API style, mostly internal. Sometimes exposed via <code>grpc-web</code>.</li>
+<li><strong>SOAP</strong> — legacy XML style. Rare in new code, common in enterprise.</li>
+</ul>
+<p>REST covers most of what you&#39;ll meet as a beginner.</p>
+<h2>🧪 Lab — Explore a real API</h2>
+<p>Try this in your terminal:</p>
+<pre><code class="language-bash"># 1. A public read-only API
+curl -s https://api.github.com/repos/torvalds/linux | head -30
+
+# 2. Same, but pretty-printed with jq (install: sudo apt install jq)
+curl -s https://api.github.com/repos/torvalds/linux | jq
+
+# 3. Just extract one field
+curl -s https://api.github.com/repos/torvalds/linux | jq &#39;.stargazers_count&#39;
+
+# 4. A Python version:
+python3 -c &quot;
+import requests
+r = requests.get(&#39;https://api.github.com/repos/torvalds/linux&#39;)
+d = r.json()
+print(f\&quot;{d[&#39;name&#39;]}: {d[&#39;stargazers_count&#39;]} stars, {d[&#39;forks_count&#39;]} forks\&quot;)
+&quot;
+</code></pre>
+<p>Then try this on any web app you use (start with your own accounts):</p>
+<ol>
+<li>Firefox → open the app → <strong>F12 → Network → Fetch/XHR</strong>.</li>
+<li>Do something small (open your profile, load a page).</li>
+<li>Right-click a request → <strong>Copy as cURL</strong>.</li>
+<li>Paste into your terminal. Run it. Watch the same API respond.</li>
+</ol>
+<p>That&#39;s you talking to the API directly, bypassing the entire UI. Every serious web attacker and defender does this daily.</p>
+<p>A friend says &quot;our API is secure because our web UI hides the delete button unless you&#39;re an admin.&quot; What one word describes the flaw in that reasoning?</p>
+<details><summary>Show answer</summary><strong>Client-side.</strong> All UI hiding is client-side; the API endpoint itself must also enforce the check server-side. Otherwise an attacker just calls the endpoint directly (via cURL, Postman, or any script).</details><h2>Key terms</h2>
+<ul>
+<li><strong>API</strong> — a URL that returns data (usually JSON) for a program to consume.</li>
+<li><strong>REST</strong> — a common HTTP API style using nouns in the path and HTTP verbs for actions.</li>
+<li><strong>JSON</strong> — the near-universal data format for modern APIs.</li>
+<li><strong>Endpoint</strong> — a specific API URL that does one thing.</li>
+<li><strong>Bearer token / API key</strong> — common ways APIs authenticate callers.</li>
+<li><strong>OpenAPI / Swagger</strong> — standard API description format.</li>
+<li><strong>BOLA / IDOR</strong> — the biggest API bug class: missing per-object authorization.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Modern apps are UIs + APIs; the API is the real interface.</li>
+<li>JSON is a small, boring, universal data format — learn to read it fluently.</li>
+<li>REST uses HTTP methods to mean create/read/update/delete on resources.</li>
+<li>APIs have distinct bug classes (BOLA, mass assignment, excessive exposure).</li>
+<li>Firefox&#39;s &quot;Copy as cURL&quot; is the fastest way to explore any site&#39;s API.</li>
+</ul>
+<h3>References</h3>
+<ul>
+<li><a href="https://owasp.org/API-Security/editions/2023/en/0x11-t10/">OWASP API Security Top 10 (2023)</a> — read this at least twice.</li>
+<li><a href="https://www.freecodecamp.org/news/rest-api-design-best-practices-build-a-rest-api/">RESTful API design — freeCodeCamp</a></li>
+<li><a href="https://jqlang.github.io/jq/manual/">jq manual</a> — indispensable for JSON on the command line.</li>
+<li><a href="https://learning.postman.com/">Postman Learning Center</a> — a friendly UI for exploring APIs.</li>
+<li><a href="https://portswigger.net/web-security/api-testing">PortSwigger — API testing</a></li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/05-web-basics/devtools">Browser DevTools tour</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/05-web-basics/apis-json";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

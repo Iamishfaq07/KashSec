@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mobile Security Fundamentals — Path 13 · KashSec Academy</title>
+<meta name="description" content="Everything you've learned so far — web security, network security, Linux — transfers partially to mobile, but mobile apps live in a genuinely different world: a sandboxed, permission-gated environment">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/13-mobile-security/mobile-security-fundamentals">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Mobile Security Fundamentals — Path 13 · KashSec Academy">
+<meta property="og:description" content="Everything you've learned so far — web security, network security, Linux — transfers partially to mobile, but mobile apps live in a genuinely different world: a sandboxed, permission-gated environment">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/13-mobile-security/mobile-security-fundamentals">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Mobile Security Fundamentals — Path 13 · KashSec Academy">
+<meta name="twitter:description" content="Everything you've learned so far — web security, network security, Linux — transfers partially to mobile, but mobile apps live in a genuinely different world: a sandboxed, permission-gated environment">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Mobile Security Fundamentals — Path 13 · KashSec Academy","description":"Everything you've learned so far — web security, network security, Linux — transfers partially to mobile, but mobile apps live in a genuinely different world: a sandboxed, permission-gated environment","url":"https://kashsec.vercel.app/#/lesson/13-mobile-security/mobile-security-fundamentals","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/13-mobile-security/mobile-security-fundamentals">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 13 — Mobile App Security</a> · Mobile Security Fundamentals</div>
+  <article><h1>Mobile Security Fundamentals</h1>
+<p>Everything you&#39;ve learned so far — web security, network security, Linux — transfers partially to mobile, but mobile apps live in a genuinely different world: a sandboxed, permission-gated environment running on a device the user carries everywhere, constantly handling location, contacts, camera, and payment data. This path adapts everything you know to that specific context.</p>
+<h2>Why mobile security is its own discipline</h2>
+<p>Over half of all internet traffic now originates from mobile devices, and mobile apps routinely handle more sensitive data than their web counterparts — location history, biometric data, contact lists, camera and microphone access. Yet mobile app security testing remains less mature and less consistently practiced than web security testing across the industry, making it a genuinely valuable specialization to build.</p>
+<h2>The two major platforms, at a glance</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>Android</strong></th>
+<th><strong>iOS</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Kernel</strong></td>
+<td>Linux-based</td>
+<td>Darwin (XNU)</td>
+</tr>
+<tr>
+<td><strong>App format</strong></td>
+<td>APK (Android Package)</td>
+<td>IPA (iOS App Store Package)</td>
+</tr>
+<tr>
+<td><strong>Language</strong></td>
+<td>Java / Kotlin (compiled to Dalvik/ART bytecode)</td>
+<td>Swift / Objective-C (compiled to native ARM)</td>
+</tr>
+<tr>
+<td><strong>App store control</strong></td>
+<td>Looser — sideloading allowed</td>
+<td>Strict — Apple&#39;s App Store is the only official channel</td>
+</tr>
+<tr>
+<td><strong>Openness for testing</strong></td>
+<td>Much easier to analyze, root, and instrument</td>
+<td>Requires a jailbroken device for full analysis</td>
+</tr>
+</tbody></table>
+<p>Android&#39;s relative openness is exactly why most of this path&#39;s hands-on labs focus there first — it&#39;s dramatically more accessible for learning without expensive jailbreak tooling, and the underlying security concepts transfer directly to iOS once you understand them.</p>
+<h2>App sandboxing — the core security model</h2>
+<p>Both platforms enforce <strong>app sandboxing</strong>: every app runs in its own isolated environment with its own private storage, and by default cannot read another app&#39;s data or interfere with its execution. This is the mobile equivalent of process isolation and user permissions from Path 03&#39;s Linux material — but enforced far more strictly, since mobile apps come from far less trusted sources (any developer can publish to app stores) than the software most people install on a traditional computer.</p>
+<h2>The permission model</h2>
+<p>Rather than trusting an app with everything by default, both platforms use <strong>runtime permissions</strong> — an app must explicitly request access to sensitive resources (camera, location, contacts, microphone), and the user grants or denies each one, often individually, often at the moment the app first tries to use it rather than all at once at install time. This is a direct, hands-on illustration of the <strong>principle of least privilege</strong> referenced throughout this course: an app should only be granted the specific access it genuinely needs, nothing more.</p>
+<p>Go to your phone&#39;s Settings → Apps → [any app] → Permissions, and look at what it&#39;s been granted. You&#39;ll likely find at least one app with access that seems disproportionate to what it actually needs (a flashlight app requesting contacts access, for instance) — a genuinely common real-world red flag, and exactly the kind of over-permissioning this path&#39;s later lessons teach you to identify and test for deliberately.</p>
+<h2>The mobile attack surface, mapped to what you already know</h2>
+<p>Every mobile app has roughly four distinct layers worth reasoning about separately, and each maps directly onto a concept from earlier in this course. The <strong>client-side code</strong> itself (the compiled app on the device) is analogous to a desktop application&#39;s binary — reverse-engineerable, and never trustworthy to store secrets in, exactly the &quot;never trust the client&quot; principle from Path 05.3, just with the client now living on a device the attacker can physically hold. The <strong>local storage</strong> layer (databases, preference files, cached data sitting on the device) is a genuinely new attack surface with no clean web parallel — a web app&#39;s &quot;storage&quot; mostly lives server-side, while a mobile app routinely persists substantial data directly on a device an attacker might gain physical or rooted access to. The <strong>network layer</strong> (API calls to a backend) is almost entirely familiar territory from Path 11 — the same injection, IDOR, and authentication vulnerabilities apply, just reached via a mobile app&#39;s traffic instead of a browser&#39;s. And the <strong>backend API</strong> itself is, again, just Path 11&#39;s entire web security curriculum, since most mobile apps are ultimately thin clients calling the same kinds of REST or GraphQL APIs a web app would.</p>
+<p>Recognising which of these four layers a given finding belongs to is genuinely useful triage — it tells you immediately which earlier path&#39;s toolkit and mindset to reach for, rather than treating &quot;mobile security&quot; as an entirely foreign discipline requiring completely new first principles.</p>
+<h2>Where mobile vulnerabilities actually come from</h2>
+<p>Despite sandboxing and permissions, mobile apps remain vulnerable in ways this path covers in depth: insecure local data storage (sensitive data saved unencrypted where a rooted/jailbroken device — or a stolen, unlocked one — can read it), weak network communication (skipping certificate validation, allowing traffic interception), reverse-engineerable code (since APKs can be decompiled far more easily than most people expect), and the same web-adjacent vulnerabilities from Path 11 wherever an app embeds a web view or talks to a backend API.</p>
+<p>Why does mobile app sandboxing alone not guarantee an app&#39;s data is actually safe, even though it prevents other apps from directly reading it?</p>
+<details><summary>Show answer</summary>Sandboxing only protects data <em>from other apps</em> on the same device under normal conditions — it says nothing about whether the data itself is stored securely within the app's own sandbox. If an app stores sensitive data in plain text inside its private storage, that data is still exposed to anyone with physical access to an unlocked device, anyone who can extract a backup of the device, or — critically — anyone using a rooted or jailbroken device, where the sandboxing boundary itself can be bypassed entirely. Sandboxing narrows <em>who</em> can normally reach the data; it does nothing to protect the data's confidentiality once that boundary is crossed, which is exactly why proper encryption of sensitive local data (covered later in this path) remains essential regardless of sandboxing.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Sandboxing</strong> — isolating each app&#39;s process and storage from every other app by default.</li>
+<li><strong>Runtime permissions</strong> — explicit, often individually-grantable user consent for sensitive resource access.</li>
+<li><strong>APK / IPA</strong> — the packaged app file formats for Android and iOS respectively.</li>
+<li><strong>Principle of least privilege</strong> — granting only the minimum access genuinely required, applied here to app permissions.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Mobile security adapts core concepts from earlier in this course (sandboxing, least privilege, network security) to a distinct platform context.</li>
+<li>Android and iOS differ significantly in openness, but share the same core sandboxing and permission-based security model.</li>
+<li>Sandboxing isolates apps from each other but doesn&#39;t guarantee the security of data within an app&#39;s own storage.</li>
+<li>The rest of this path focuses primarily on Android for hands-on labs, since it&#39;s far more accessible for learning without specialized jailbreak hardware.</li>
+</ul>
+<h3>References</h3>
+<ul>
+<li><a href="https://owasp.org/www-project-mobile-app-security/">OWASP Mobile Application Security</a> — the definitive, free, industry-standard mobile security resource, referenced throughout this path.</li>
+<li><a href="https://developer.android.com/privacy-and-security/security-tips">Android Developers: App Sandbox</a> — Google&#39;s own security documentation.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/13-mobile-security/mobile-testing-lab-setup">Setting Up a Mobile Testing Lab</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/13-mobile-security/mobile-security-fundamentals";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

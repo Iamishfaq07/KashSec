@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cookies, sessions, logins — Path 05 · KashSec Academy</title>
+<meta name="description" content="HTTP is stateless — every request stands alone, and the server has no memory of who you are between requests. So how does a site know you're logged in on page 5 when you logged in on page 1?">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/05-web-basics/cookies-sessions">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Cookies, sessions, logins — Path 05 · KashSec Academy">
+<meta property="og:description" content="HTTP is stateless — every request stands alone, and the server has no memory of who you are between requests. So how does a site know you're logged in on page 5 when you logged in on page 1?">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/05-web-basics/cookies-sessions">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Cookies, sessions, logins — Path 05 · KashSec Academy">
+<meta name="twitter:description" content="HTTP is stateless — every request stands alone, and the server has no memory of who you are between requests. So how does a site know you're logged in on page 5 when you logged in on page 1?">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Cookies, sessions, logins — Path 05 · KashSec Academy","description":"HTTP is stateless — every request stands alone, and the server has no memory of who you are between requests. So how does a site know you're logged in on page 5 when you logged in on page 1?","url":"https://kashsec.vercel.app/#/lesson/05-web-basics/cookies-sessions","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/05-web-basics/cookies-sessions">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 05 — How the Web Works</a> · Cookies, sessions, logins</div>
+  <article><h1>Cookies &amp; sessions</h1>
+<p>HTTP is <strong>stateless</strong> — every request stands alone, and the server has no memory of who you are between requests. So how does a site know you&#39;re logged in on page 5 when you logged in on page 1?</p>
+<p>The answer: <strong>cookies</strong>. And with cookies come some of the juiciest security bugs on the web.</p>
+<h2>Why cookies exist</h2>
+<p>Imagine every page reload asked you to log in again. Unusable. Servers need a way to say &quot;I know this browser — it&#39;s Alice, logged in three minutes ago.&quot; Cookies are that memory.</p>
+<p>The dance:</p>
+<ol>
+<li>You log in.</li>
+<li>The server sends <code>Set-Cookie: session=abc123</code> in the response.</li>
+<li>The browser stores that cookie.</li>
+<li><strong>Every subsequent request</strong> to that site automatically includes it.</li>
+<li>The server looks up <code>abc123</code> in its session store to know you&#39;re Alice.</li>
+</ol>
+<p>That single stored value is your <strong>session identifier</strong> — the &quot;key to your account&quot; for the rest of your visit.</p>
+<h2>Anatomy of a Set-Cookie header</h2>
+<pre><code class="language-http">Set-Cookie: session=abc123def456; Path=/; Domain=example.com;
+            Expires=Wed, 15 Jan 2027 12:00:00 GMT;
+            HttpOnly; Secure; SameSite=Strict
+</code></pre>
+<p>Each part matters, especially for security:</p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>What it means</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>session=abc123def456</code></td>
+<td>Name and value</td>
+</tr>
+<tr>
+<td><code>Path=/</code></td>
+<td>Sent for requests under this path</td>
+</tr>
+<tr>
+<td><code>Domain=example.com</code></td>
+<td>Sent for this domain (and subdomains if leading dot)</td>
+</tr>
+<tr>
+<td><code>Expires=...</code></td>
+<td>When the browser should delete it</td>
+</tr>
+<tr>
+<td><code>HttpOnly</code></td>
+<td>JavaScript <strong>cannot</strong> read this cookie (defends against XSS stealing sessions)</td>
+</tr>
+<tr>
+<td><code>Secure</code></td>
+<td>Only send over HTTPS</td>
+</tr>
+<tr>
+<td><code>SameSite=Strict|Lax|None</code></td>
+<td>When to send on cross-site requests (CSRF defence)</td>
+</tr>
+</tbody></table>
+<p>The last three are the security-critical flags. Every session cookie should have all three set sensibly.</p>
+<h2>Session vs persistent cookies</h2>
+<ul>
+<li><strong>Session cookie</strong> — no <code>Expires</code>; deleted when the browser closes.</li>
+<li><strong>Persistent cookie</strong> — has an <code>Expires</code> or <code>Max-Age</code>; survives restarts. Used for &quot;remember me.&quot;</li>
+</ul>
+<h2>Where the actual state lives</h2>
+<p>Two broad patterns:</p>
+<h3>1. Server-side sessions (traditional)</h3>
+<p>The cookie is just a random ID — the <em>real</em> data lives on the server:</p>
+<pre><code>Server session store:
+abc123def456 → { user_id: 42, role: &quot;user&quot;, logged_in_at: ..., cart: [...] }
+</code></pre>
+<p>To log someone out server-side, you delete their entry.</p>
+<h3>2. Signed / stateless tokens (JWT etc.)</h3>
+<p>The cookie itself contains the state, cryptographically signed so it can&#39;t be forged:</p>
+<pre><code>eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiYWxpY2UiLCJyb2xlIjoidXNlciJ9.&lt;signature&gt;
+</code></pre>
+<p>That&#39;s a <strong>JWT</strong> (JSON Web Token). Anyone can decode the base64 middle and read your claims — the <em>signature</em> stops them tampering. Convenient, but JWTs have a long, colourful history of bugs (bad algorithms, weak secrets, <code>alg: none</code> tricks). More in Path 11.</p>
+<h2>What can go wrong — attacks worth knowing</h2>
+<h3>Session hijacking</h3>
+<p>The attacker gets a copy of your cookie and uses it. They&#39;re now you.</p>
+<p><em>How they get it:</em> XSS (if <code>HttpOnly</code> isn&#39;t set), HTTP interception (if <code>Secure</code> isn&#39;t set), physical access to your machine, malware.</p>
+<p><em>Defence:</em> <code>HttpOnly</code>, <code>Secure</code>, HTTPS everywhere, rotate the session on privilege change.</p>
+<h3>Session fixation</h3>
+<p>The attacker gives <em>you</em> a session ID they know, tricks you into logging in with it, then reuses the (now-authenticated) ID.</p>
+<p><em>Defence:</em> Rotate the session ID on login. Every framework does this by default; ancient hand-rolled code sometimes doesn&#39;t.</p>
+<h3>CSRF (Cross-Site Request Forgery)</h3>
+<p>The attacker gets your browser to send a state-changing request while you&#39;re logged in. Because cookies attach automatically, the request looks legitimate.</p>
+<p>Example: your bank sits at <code>bank.com</code> and you&#39;re logged in. You visit <code>evil.com</code>, which has:</p>
+<pre><code class="language-html">&lt;img src=&quot;https://bank.com/transfer?to=attacker&amp;amount=1000&quot;&gt;
+</code></pre>
+<p>Your browser fetches the &quot;image&quot; — sending your bank cookie along. If bank.com trusts the request purely because the cookie is valid, money moves.</p>
+<p><em>Defence:</em> <strong><code>SameSite=Lax</code> or <code>Strict</code></strong> on session cookies (huge win, now default in modern browsers), CSRF tokens on state-changing forms, checking the <code>Origin</code>/<code>Referer</code> header.</p>
+<h3>Cookie tossing / subdomain confusion</h3>
+<p>Multiple subdomains sharing cookies can accidentally let one subdomain overwrite/read another&#39;s cookies. Common in complex platforms.</p>
+<p><em>Defence:</em> Careful <code>Domain</code> and <code>Path</code> scoping, <code>__Host-</code> cookie prefix.</p>
+<h3>Session timeout and idle expiry</h3>
+<p>A session that lives forever is a growing liability — every cookie an attacker could ever steal stays valid indefinitely, and a device left logged in at a library or shared computer stays logged in for whoever sits down next. Well-designed sites enforce two separate limits: an <strong>absolute timeout</strong> (the session expires a fixed time after login, e.g. 24 hours, no matter what) and an <strong>idle timeout</strong> (the session expires after a period of <em>inactivity</em>, e.g. 30 minutes with no requests). Sensitive actions — changing a password, viewing payment details — often require <em>re-authentication</em> even within an otherwise-valid session, precisely because a session cookie alone isn&#39;t considered strong enough proof of &quot;this is really the account owner, right now&quot; for high-stakes actions. This same idea — that authentication isn&#39;t binary but has different strength requirements for different actions — reappears directly in Path 10&#39;s authentication material.</p>
+<h2>The __Host- and __Secure- cookie prefixes</h2>
+<p>Browsers support special cookie name prefixes that come with <em>enforced</em> guarantees, closing gaps that the regular flags above leave open:</p>
+<pre><code class="language-http">Set-Cookie: __Host-session=abc123; Path=/; Secure; HttpOnly; SameSite=Strict
+</code></pre>
+<p>A cookie named <code>__Host-...</code> is only accepted by the browser if it also has <code>Secure</code> set, has <code>Path=/</code>, and has <strong>no</strong> <code>Domain</code> attribute at all — which means it can never be sent to a different subdomain, closing exactly the cookie-tossing/subdomain-confusion gap described above. <code>__Secure-</code> is a lighter version that only enforces <code>Secure</code>. These prefixes are a genuinely underused, cheap way to make a cookie&#39;s security properties self-enforcing rather than relying on every developer remembering to configure <code>Domain</code> and <code>Path</code> correctly by hand.</p>
+<h2>Reading cookies as an attacker/defender</h2>
+<p>In Firefox DevTools:</p>
+<ol>
+<li><strong>F12 → Storage → Cookies</strong>.</li>
+<li>You&#39;ll see every cookie the site sets, its value, and its flags.</li>
+</ol>
+<p>Look at some real sites. Some things you&#39;ll notice:</p>
+<ul>
+<li>Big sites almost universally have <code>HttpOnly</code> and <code>Secure</code> set on their session cookies.</li>
+<li>Analytics cookies are typically not <code>HttpOnly</code> (JS needs to read them).</li>
+<li>Some cookies are outright JWTs — you can decode the middle at <a href="https://jwt.io/">jwt.io</a> (never paste a <em>real</em> production JWT there — copy the structure to a fake token for study).</li>
+</ul>
+<h2>The cookie&#39;s less-secure cousins</h2>
+<p>Modern browsers also expose:</p>
+<ul>
+<li><strong><code>localStorage</code></strong> — persistent per-origin key-value store. <strong>Not automatically sent</strong> with requests. Great for app state; <strong>bad for auth tokens</strong> because <em>any</em> JS on the origin can read it (XSS = game over).</li>
+<li><strong><code>sessionStorage</code></strong> — same but wiped on tab close.</li>
+<li><strong>IndexedDB</strong> — larger structured store.</li>
+</ul>
+<p><strong>Rule of thumb:</strong> put session tokens in <strong>HttpOnly cookies</strong>, not localStorage. This is one of the most common modern SPA design mistakes.</p>
+<h2>🧪 Lab — Explore a real session</h2>
+<ol>
+<li>Open Firefox → visit any site you&#39;re logged in to (or make a throwaway account somewhere).</li>
+<li>F12 → <strong>Storage → Cookies</strong>.</li>
+<li>Find the session cookie (often named <code>session</code>, <code>sid</code>, <code>PHPSESSID</code>, <code>connect.sid</code>, <code>_appname_session</code>).</li>
+<li>Note whether <code>HttpOnly</code>, <code>Secure</code>, and <code>SameSite</code> are set.</li>
+<li>Delete the cookie. Refresh the page. You should be logged out.</li>
+<li>(If comfortable) copy the cookie value, log out via the UI, then paste it back in another browser profile. Does the session still work, or did the server invalidate it on logout? A well-designed site kills the server-side session on logout — a lazy one leaves it valid.</li>
+</ol>
+<p>Congratulations — you&#39;ve just done a real session-cookie audit.</p>
+<p>Session cookies are essentially passwords. Never grab or paste someone else&#39;s. Only ever experiment with sessions belonging to accounts you own.</p>
+<p>Which cookie flag would have prevented JavaScript from stealing the session cookie if XSS were present on the site?</p>
+<details><summary>Show answer</summary><code>HttpOnly</code>. When set, the cookie is invisible to <code>document.cookie</code> and thus to any JS running on the page.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Session</strong> — the concept of &quot;who this browser is right now.&quot;</li>
+<li><strong>Cookie</strong> — the mechanism the browser uses to remember state per site.</li>
+<li><strong>Set-Cookie</strong> — the header the server uses to hand out a cookie.</li>
+<li><strong>HttpOnly / Secure / SameSite</strong> — the three cookie security flags.</li>
+<li><strong>JWT</strong> — a self-contained signed token.</li>
+<li><strong>CSRF / session hijacking / fixation</strong> — the three big session-related attacks.</li>
+<li><strong>localStorage</strong> — persistent JS-readable store; unsuitable for tokens.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>HTTP is stateless; cookies give the server a way to remember you across requests.</li>
+<li>Every session cookie should be <code>HttpOnly</code>, <code>Secure</code>, and <code>SameSite</code>.</li>
+<li>Session data is stored server-side by session ID, or client-side via signed JWT.</li>
+<li>Hijacking, fixation, and CSRF are the classic attack classes; modern flags mitigate most.</li>
+<li>Prefer HttpOnly cookies over <code>localStorage</code> for auth tokens.</li>
+</ul>
+<h3>References</h3>
+<ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies">MDN — HTTP cookies</a></li>
+<li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html">OWASP — Session Management Cheat Sheet</a></li>
+<li><a href="https://portswigger.net/web-security/csrf">PortSwigger — CSRF</a></li>
+<li><a href="https://portswigger.net/web-security/jwt">PortSwigger — JWT attacks</a> — the modern reference.</li>
+<li><a href="https://web.dev/articles/samesite-cookies-explained">Web.dev — SameSite cookies explained</a></li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/05-web-basics/apis-json">APIs &amp; JSON</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/05-web-basics/cookies-sessions";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

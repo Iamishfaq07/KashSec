@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Practical Reconnaissance Lab — Path 14 · KashSec Academy</title>
+<meta name="description" content="Reconnaissance is where every real engagement actually begins — this lab practices the OSINT (Open-Source Intelligence) techniques covered in the main Phase 1 lesson, using free tools that professiona">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/14-ethical-hacking/practical-recon-lab">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Practical Reconnaissance Lab — Path 14 · KashSec Academy">
+<meta property="og:description" content="Reconnaissance is where every real engagement actually begins — this lab practices the OSINT (Open-Source Intelligence) techniques covered in the main Phase 1 lesson, using free tools that professiona">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/14-ethical-hacking/practical-recon-lab">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Practical Reconnaissance Lab — Path 14 · KashSec Academy">
+<meta name="twitter:description" content="Reconnaissance is where every real engagement actually begins — this lab practices the OSINT (Open-Source Intelligence) techniques covered in the main Phase 1 lesson, using free tools that professiona">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Practical Reconnaissance Lab — Path 14 · KashSec Academy","description":"Reconnaissance is where every real engagement actually begins — this lab practices the OSINT (Open-Source Intelligence) techniques covered in the main Phase 1 lesson, using free tools that professiona","url":"https://kashsec.vercel.app/#/lesson/14-ethical-hacking/practical-recon-lab","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/14-ethical-hacking/practical-recon-lab">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 14 — Ethical Hacking</a> · Practical Reconnaissance Lab</div>
+  <article><h1>Practical Reconnaissance Lab</h1>
+<p>Reconnaissance is where every real engagement actually begins — this lab practices the OSINT (Open-Source Intelligence) techniques covered in the main Phase 1 lesson, using free tools that professionals rely on daily.</p>
+<h2>Tools to use</h2>
+<ul>
+<li><strong>Google dorks</strong> — advanced search operators (<code>site:</code>, <code>filetype:</code>, <code>intitle:</code>) that surface publicly indexed information most people never think to search for directly.</li>
+<li><strong><a href="https://www.shodan.io/">Shodan</a></strong> — a search engine for internet-connected devices and services, not web pages; free tier available.</li>
+<li><strong><a href="https://github.com/laramies/theHarvester">theHarvester</a></strong> — a free tool that automates gathering emails, subdomains, and names from public sources.</li>
+<li><strong>Maltego Community Edition</strong> — free graphical OSINT tool for visually mapping relationships between people, domains, and infrastructure.</li>
+</ul>
+<h2>Lab tasks</h2>
+<ol>
+<li><p><strong>Find public information about a company.</strong> Use a fictional company, your own test domain, or a real organization that publishes a public bug bounty scope (never target a real company without explicit authorization). Try Google dorks like:</p>
+<pre><code>site:example.com filetype:pdf
+site:example.com intitle:&quot;index of&quot;
+site:linkedin.com &quot;example.com&quot; &quot;security engineer&quot;
+</code></pre>
+<p>Each of these surfaces a different category of information — exposed documents, misconfigured directory listings, and employee/org structure, respectively.</p>
+</li>
+<li><p><strong>Discover subdomains of a target.</strong> Run theHarvester against your target domain:</p>
+<pre><code class="language-bash">theHarvester -d example.com -b all
+</code></pre>
+<p>Cross-reference results against <code>crt.sh</code> (certificate transparency logs, referenced throughout Path 14&#39;s recon lesson) for a second, independent subdomain source — combining multiple sources typically finds more than any single tool alone.</p>
+</li>
+<li><p><strong>Check for leaked credentials, ethically.</strong> Use <a href="https://haveibeenpwned.com/">Have I Been Pwned</a> to check whether email addresses associated with your target domain have appeared in known public breaches — a legitimate, widely used reconnaissance step that requires no special access, only public breach data.</p>
+</li>
+<li><p><strong>Try Shodan on your own infrastructure only.</strong> Search Shodan for a service or IP you own or explicitly control (never someone else&#39;s) to see exactly what information is publicly visible about it — banner information, open ports, sometimes even default login pages, all indexed and searchable by anyone.</p>
+</li>
+<li><p><strong>Search public code repositories for leaked artifacts.</strong> Using your chosen target&#39;s organisation name, search GitHub directly for repositories that might belong to employees or the company itself, looking specifically for configuration files, internal documentation, or accidentally-committed credentials — the same technique covered in the main Phase 1 lesson&#39;s GitHub reconnaissance section, practiced hands-on here. Note how much of this is simply knowing <em>where</em> to look rather than needing any special tooling at all.</p>
+</li>
+</ol>
+<p>Every technique in this lab is passive — querying public data sources, not touching the target directly — which keeps it legal and safe even during genuine reconnaissance practice. Still, only run these against a domain you own, a fictional test domain, or a real organization with an explicit, current bug bounty program covering this kind of activity.</p>
+<p>Pick one target (your own domain is the safest choice) and produce a short report: what subdomains you found, what public documents or exposed information turned up via Google dorking, and — for one specific finding — why it matters from a security perspective (e.g., &quot;an exposed internal wiki subdomain suggests weak access controls on non-production infrastructure&quot;).</p>
+<h2>Key takeaway</h2>
+<p>The vast majority of useful reconnaissance information is entirely public and requires no exploitation at all — just knowing where to look and how to search effectively. This is exactly why OSINT is Phase 1 of every real methodology: it&#39;s low-risk, often surprisingly high-yield, and shapes every decision made in the phases that follow.</p>
+<p><strong>Next up →</strong> <a href="#/lesson/14-ethical-hacking/reporting-lab">Reporting Lab</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/14-ethical-hacking/practical-recon-lab";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

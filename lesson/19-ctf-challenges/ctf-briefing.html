@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Welcome to the CTF Zone — Path 19 · KashSec Academy</title>
+<meta name="description" content="Every other path in this course teaches you a specific skill, one concept at a time. This one is different: it's a standalone practice arena. No new material to learn here — just puzzles that make you">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/19-ctf-challenges/ctf-briefing">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Welcome to the CTF Zone — Path 19 · KashSec Academy">
+<meta property="og:description" content="Every other path in this course teaches you a specific skill, one concept at a time. This one is different: it's a standalone practice arena. No new material to learn here — just puzzles that make you">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/19-ctf-challenges/ctf-briefing">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Welcome to the CTF Zone — Path 19 · KashSec Academy">
+<meta name="twitter:description" content="Every other path in this course teaches you a specific skill, one concept at a time. This one is different: it's a standalone practice arena. No new material to learn here — just puzzles that make you">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Welcome to the CTF Zone — Path 19 · KashSec Academy","description":"Every other path in this course teaches you a specific skill, one concept at a time. This one is different: it's a standalone practice arena. No new material to learn here — just puzzles that make you","url":"https://kashsec.vercel.app/#/lesson/19-ctf-challenges/ctf-briefing","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/19-ctf-challenges/ctf-briefing">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 19 — CTF Challenges</a> · Welcome to the CTF Zone</div>
+  <article><h1>Welcome to the CTF Zone</h1>
+<p>Every other path in this course teaches you a specific skill, one concept at a time. This one is different: it&#39;s a <strong>standalone practice arena</strong>. No new material to learn here — just puzzles that make you <em>apply</em> everything from the paths before, under the same kind of pressure a real CTF competition or bug bounty program puts you under: incomplete information, a specific goal, and no one holding your hand through the steps.</p>
+<h2>What is a CTF?</h2>
+<p><strong>Capture The Flag (CTF)</strong> is the security industry&#39;s dominant competition format — used everywhere from weekend hobbyist competitions to DEF CON&#39;s world championship. The structure is simple: challenges hide a secret string called a <strong>flag</strong>, and your job is to find it using real security techniques. Whoever (or whichever team) collects the most flags first wins.</p>
+<h2>The flag format used in this section</h2>
+<p>Every challenge here uses the same flag format: <strong><code>KASHSEC{...}</code></strong> — the curly braces contain the actual answer, in lowercase-with-hyphens unless a challenge says otherwise. This is a real, universal CTF convention (competitions typically use their own name as the flag prefix), so getting comfortable with it here transfers directly to real platforms.</p>
+<h2>The challenge categories you&#39;ll see</h2>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>What it tests</th>
+<th>Which path taught the foundation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Web</strong></td>
+<td>Finding and exploiting flaws in web applications</td>
+<td>Path 11 — Web Security &amp; Hacking</td>
+</tr>
+<tr>
+<td><strong>Crypto</strong></td>
+<td>Decoding, breaking, or analyzing encoded/encrypted data</td>
+<td>Referenced across Paths 10, 07, 11</td>
+</tr>
+<tr>
+<td><strong>Forensics</strong></td>
+<td>Analyzing logs, artifacts, or captured data for evidence</td>
+<td>Path 12 — Network Security, Path 16 — DFIR</td>
+</tr>
+<tr>
+<td><strong>Misc</strong></td>
+<td>Doesn&#39;t fit a clean category — lateral thinking required</td>
+<td>Everywhere — this is the &quot;creativity&quot; bucket</td>
+</tr>
+<tr>
+<td><strong>Linux/Privesc</strong></td>
+<td>Finding a path from limited access to full control</td>
+<td>Path 03 — Linux, Path 16 — Advanced</td>
+</tr>
+</tbody></table>
+<p>Difficulty is marked on every challenge as <strong>Easy</strong>, <strong>Medium</strong>, or <strong>Hard</strong> — start with Easy regardless of how confident you&#39;re feeling; CTF-style puzzle-solving is its own skill on top of the underlying technical knowledge, and building that muscle gradually pays off.</p>
+<h2>How to actually approach a CTF challenge</h2>
+<p>This is the part most beginners skip, and it&#39;s the actual skill being tested — not just technical knowledge:</p>
+<ol>
+<li><strong>Read the scenario twice before touching anything.</strong> CTF challenges hide clues in the framing, not just the technical data. A detail that seems like flavor text is often load-bearing.</li>
+<li><strong>Enumerate everything you&#39;re given.</strong> List every piece of data provided — headers, encoded strings, log lines — before deciding what to do with any of it. Jumping straight to an attempt usually means missing something.</li>
+<li><strong>Form a hypothesis, then test it cheaply.</strong> Don&#39;t commit to one theory and grind on it for an hour — if a quick test doesn&#39;t support it, move to the next hypothesis.</li>
+<li><strong>Use hints as a last resort, not a first move.</strong> Every challenge in this section includes progressively revealing hints hidden in <code>&lt;details&gt;</code> blocks — try genuinely stuck for at least 10–15 minutes before opening the first one. The struggle is where the actual learning happens.</li>
+<li><strong>Once solved, read the full walkthrough anyway.</strong> Even (especially) if you solved it your own way, the walkthrough often shows a cleaner or more realistic approach — comparing methods is how you actually improve.</li>
+</ol>
+<p>The exact loop above — read carefully, enumerate everything, form and test a hypothesis, iterate — is precisely what a real penetration test or bug bounty hunt looks like day to day. CTF practice isn&#39;t just a game bolted onto this course; it&#39;s rehearsal for the actual job.</p>
+<h2>Jeopardy-style vs attack-defense CTFs</h2>
+<p>The challenges in this section follow the <strong>jeopardy-style</strong> format — a fixed menu of independent challenges, each worth points, solved in any order (much like the TV quiz show it&#39;s named after). This is by far the most common format for beginners and the one every platform mentioned in this lesson&#39;s references uses. A second, more advanced format worth knowing about is <strong>attack-defense</strong>: each team runs an identical set of vulnerable services, and must simultaneously patch their own services against attack while exploiting the same vulnerabilities in every other team&#39;s identical copy — a genuinely different skill, closer to live incident response under active attack than to the puzzle-solving this section practices. Most competitors spend months or years in jeopardy-style CTFs before attack-defense competitions start to feel approachable, so treat jeopardy-style mastery as the deliberate foundation, not a lesser format to graduate past quickly.</p>
+<h2>Dynamic vs static scoring</h2>
+<p>Real CTF platforms typically use one of two scoring models, worth recognizing when you eventually compete live. <strong>Static scoring</strong> assigns each challenge a fixed point value based on its difficulty, unaffected by how many teams solve it. <strong>Dynamic scoring</strong> starts a challenge at a high point value that <em>decreases</em> as more teams solve it — meaning the first team to solve a given challenge earns significantly more than the hundredth team to solve the same one. Dynamic scoring rewards speed and rewards choosing challenges other competitors are avoiding (echoing Path 15.2&#39;s &quot;less-hunted program&quot; strategy from bug bounty, applied to competitive CTF strategy instead) — a genuinely useful mental model even in this section&#39;s fixed practice challenges, where thinking about &quot;what&#39;s the fastest, cleanest path to this flag&quot; builds the same instinct.</p>
+<h2>A note on scope and safety</h2>
+<p>Every challenge in this section is entirely self-contained — you&#39;re working with data provided directly in the lesson (log excerpts, encoded strings, request/response examples), not attacking any live system. This means you can practice freely with zero legal or ethical concerns. When you&#39;re ready to test these same skills against real (legally sanctioned) targets, revisit the <strong>golden rule of permission</strong> from Path 01, and use platforms like TryHackMe, Hack The Box, or PortSwigger&#39;s free labs, all referenced throughout this course.</p>
+<p>Why does &quot;read the scenario twice before touching anything&quot; matter more in CTF challenges than it might seem at first?</p>
+<details><summary>Show answer</summary>CTF challenge authors deliberately embed clues in the framing and context of a scenario, not only in the raw technical data — a mentioned timestamp, an offhand detail about who a fictional user is, or the specific wording of the goal can all be the exact hint needed to narrow down which technique applies. Beginners who skip straight to poking at the technical artifact often miss this context entirely and end up trying techniques essentially at random, which is both slower and less educational than deliberately reading for clues first. This mirrors real security work directly: a client's scope document or a bug bounty program's policy page often contains details that meaningfully change your approach, and skimming past them costs real time later.</details><h2>Recap</h2>
+<ul>
+<li>CTFs test applied security skill through self-contained puzzles that hide a flag (<code>KASHSEC{...}</code> in this section).</li>
+<li>Challenges span Web, Crypto, Forensics, Misc, and Linux/Privesc categories, each tied back to a path earlier in this course.</li>
+<li>The real skill is the approach: read carefully, enumerate everything, hypothesize and test cheaply, use hints sparingly, and review the walkthrough even after solving it yourself.</li>
+<li>Everything here is self-contained and safe to practice freely — no live systems, no legal gray areas.</li>
+</ul>
+<h3>References</h3>
+<ul>
+<li><a href="https://ctftime.org/">CTFtime</a> — the central hub for real, live CTF competitions worldwide, most of them free to join.</li>
+<li><a href="https://picoctf.org/">PicoCTF</a> — a free, beginner-friendly, always-available CTF platform built by Carnegie Mellon University.</li>
+<li><a href="https://overthewire.org/wargames/bandit/">OverTheWire: Bandit</a> — a classic free wargame for building exactly the Linux skills this section&#39;s privesc challenge draws on.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/19-ctf-challenges/web-idor-hunt">Web — The IDOR Hunt</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/19-ctf-challenges/ctf-briefing";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

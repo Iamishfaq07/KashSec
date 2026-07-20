@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Insecure Data Storage — Path 13 · KashSec Academy</title>
+<meta name="description" content="This is OWASP Mobile Top 10 item #9, and consistently one of the most common findings in real mobile security assessments — apps storing sensitive data locally without encryption, trusting the sandbox">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/13-mobile-security/insecure-data-storage">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Insecure Data Storage — Path 13 · KashSec Academy">
+<meta property="og:description" content="This is OWASP Mobile Top 10 item #9, and consistently one of the most common findings in real mobile security assessments — apps storing sensitive data locally without encryption, trusting the sandbox">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/13-mobile-security/insecure-data-storage">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Insecure Data Storage — Path 13 · KashSec Academy">
+<meta name="twitter:description" content="This is OWASP Mobile Top 10 item #9, and consistently one of the most common findings in real mobile security assessments — apps storing sensitive data locally without encryption, trusting the sandbox">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Insecure Data Storage — Path 13 · KashSec Academy","description":"This is OWASP Mobile Top 10 item #9, and consistently one of the most common findings in real mobile security assessments — apps storing sensitive data locally without encryption, trusting the sandbox","url":"https://kashsec.vercel.app/#/lesson/13-mobile-security/insecure-data-storage","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/13-mobile-security/insecure-data-storage">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 13 — Mobile App Security</a> · Insecure Data Storage</div>
+  <article><h1>Insecure Data Storage</h1>
+<p>This is OWASP Mobile Top 10 item #9, and consistently one of the most common findings in real mobile security assessments — apps storing sensitive data locally without encryption, trusting the sandbox alone (Path 13&#39;s fundamentals lesson) to protect it, when the sandbox boundary is exactly what a rooted device or a stolen, unlocked phone bypasses.</p>
+<h2>Where apps store data locally</h2>
+<table>
+<thead>
+<tr>
+<th>Storage mechanism</th>
+<th>Typical use</th>
+<th>Common mistake</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>SharedPreferences</strong> (Android)</td>
+<td>Simple key-value settings</td>
+<td>Storing tokens, passwords, or PII in plain text</td>
+</tr>
+<tr>
+<td><strong>SQLite databases</strong></td>
+<td>Structured local data</td>
+<td>Storing sensitive fields unencrypted</td>
+</tr>
+<tr>
+<td><strong>Internal/external files</strong></td>
+<td>Cached data, logs, exports</td>
+<td>Writing sensitive data to world-readable external storage</td>
+</tr>
+<tr>
+<td><strong>Keystore/Keychain</strong></td>
+<td>The <em>correct</em> place for secrets</td>
+<td>Underused — many apps skip it in favor of simpler (insecure) options</td>
+</tr>
+</tbody></table>
+<h2>Hunting for insecure storage, hands-on</h2>
+<p>Using ADB against a rooted emulator (Path 13&#39;s lab setup lesson) with an app installed:</p>
+<pre><code class="language-bash">adb shell
+run-as com.example.vulnerableapp    # only works on debuggable apps without root
+# or, with root:
+su
+cd /data/data/com.example.vulnerableapp
+
+ls shared_prefs/
+cat shared_prefs/*.xml              # check for plaintext secrets
+
+ls databases/
+sqlite3 databases/app.db &quot;.dump&quot;    # dump the entire local database
+</code></pre>
+<p>On real (non-debug) production apps, <code>run-as</code> won&#39;t work without matching debuggable flags — this is exactly why the earlier lab setup lesson emphasized getting proper root access on your test emulator, which bypasses this restriction entirely.</p>
+<h2>What &quot;bad&quot; looks like</h2>
+<pre><code class="language-xml">&lt;!-- shared_prefs/user_data.xml — a real anti-pattern --&gt;
+&lt;map&gt;
+    &lt;string name=&quot;auth_token&quot;&gt;eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiYWRtaW4ifQ...&lt;/string&gt;
+    &lt;string name=&quot;password&quot;&gt;SuperSecret123&lt;/string&gt;
+&lt;/map&gt;
+</code></pre>
+<p>Anyone with root access to the device (or physical access to a backup, covered below) can read this file directly, in plain text, with no exploitation required at all — this is a <em>configuration</em> failure, not a technical vulnerability requiring exploitation.</p>
+<h2>Backups — an often-overlooked leak path</h2>
+<p>Android&#39;s <code>adb backup</code> feature (and iOS&#39;s iTunes/Finder backups) can capture an app&#39;s local data entirely, including everything covered above, <strong>unless the app explicitly opts out</strong>:</p>
+<pre><code class="language-xml">&lt;!-- AndroidManifest.xml --&gt;
+&lt;application android:allowBackup=&quot;false&quot; ...&gt;
+</code></pre>
+<p>Checking for <code>android:allowBackup=&quot;true&quot;</code> (or its absence, which defaults to allowing backups on many Android versions) during the APK analysis from the previous lesson is a genuinely quick, high-value check — an app storing sensitive unencrypted data with backups enabled can leak that entire dataset to anyone with brief physical access to an unlocked device and a computer.</p>
+<h2>Logs and clipboard — two more overlooked leak paths</h2>
+<p>Beyond persistent storage, two transient data paths regularly leak sensitive information without anyone noticing until it&#39;s flagged. <strong>System logs</strong> (readable via <code>adb logcat</code> on a debug-enabled or rooted device) are a genuinely common accidental leak: developers routinely <code>Log.d(&quot;token&quot;, authToken)</code> during development and forget to strip it before shipping to production, and unlike a crash that would get noticed immediately, a stray debug log line can persist through many release cycles unnoticed since nothing about the app&#39;s visible behavior changes:</p>
+<pre><code class="language-bash">adb logcat | grep -i &quot;token\|password\|secret&quot;
+</code></pre>
+<p>The <strong>clipboard</strong> is the second overlooked path — any app can read whatever&#39;s currently on the system clipboard on many Android versions (more recent versions have added notifications and restrictions, but older or unpatched devices remain exposed), meaning a password manager or banking app that copies a password or OTP code to the clipboard for convenience is briefly exposing that value to any other app on the device that chooses to poll clipboard contents. Checking both of these during an assessment — not just the persistent storage locations covered above — rounds out a genuinely thorough insecure-storage review.</p>
+<h2>The correct approach — using the platform Keystore/Keychain</h2>
+<p>Both platforms provide a hardware-backed secure storage mechanism specifically designed for secrets: the <strong>Android Keystore</strong> and <strong>iOS Keychain</strong>. Data stored here is encrypted using keys that never leave secure hardware (on supporting devices), meaning even root access alone typically can&#39;t directly extract the raw secret the way it can with a plain SharedPreferences file.</p>
+<pre><code class="language-java">// Simplified illustration — using Android&#39;s EncryptedSharedPreferences
+// (built on top of the Keystore) instead of plain SharedPreferences:
+EncryptedSharedPreferences.create(
+    &quot;secure_prefs&quot;,
+    masterKeyAlias,
+    context,
+    EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+    EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+);
+</code></pre>
+<p>Everything in this lesson — reading local storage, checking backup settings — must only be practiced against your own test devices and apps you built or have explicit authorization to test (the vulnerable practice apps referenced throughout this path are ideal). Extracting data from someone else&#39;s device, even one you have brief physical access to, without authorization, is unauthorized access.</p>
+<p>Using DIVA or InsecureBankv2 (installed in the lab setup lesson) on your rooted emulator, find at least one piece of sensitive data stored insecurely — check SharedPreferences and the local SQLite database. Document exactly what you found, where, and what the correct fix would look like (Keystore-backed encrypted storage, or simply not storing that data locally at all).</p>
+<h2>Key takeaway</h2>
+<p>Insecure local storage requires zero exploitation to abuse — just root access or a backup extraction and the willingness to look. This makes it one of the highest-yield, lowest-effort findings in mobile testing, and exactly why checking local storage should be one of the very first things you do in any mobile security assessment.</p>
+<p><strong>Next up →</strong> <a href="#/lesson/13-mobile-security/intercepting-mobile-traffic">Intercepting Mobile Traffic</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/13-mobile-security/insecure-data-storage";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

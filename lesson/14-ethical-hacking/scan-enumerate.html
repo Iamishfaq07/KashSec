@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phase 2: Scan &amp; enumerate — Path 14 · KashSec Academy</title>
+<meta name="description" content="Reconnaissance told you what exists. This phase goes deeper on every discovered system — systematically identifying services, versions, and configuration details that directly feed the exploitation ph">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/14-ethical-hacking/scan-enumerate">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Phase 2: Scan &amp; enumerate — Path 14 · KashSec Academy">
+<meta property="og:description" content="Reconnaissance told you what exists. This phase goes deeper on every discovered system — systematically identifying services, versions, and configuration details that directly feed the exploitation ph">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/14-ethical-hacking/scan-enumerate">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Phase 2: Scan &amp; enumerate — Path 14 · KashSec Academy">
+<meta name="twitter:description" content="Reconnaissance told you what exists. This phase goes deeper on every discovered system — systematically identifying services, versions, and configuration details that directly feed the exploitation ph">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Phase 2: Scan & enumerate — Path 14 · KashSec Academy","description":"Reconnaissance told you what exists. This phase goes deeper on every discovered system — systematically identifying services, versions, and configuration details that directly feed the exploitation ph","url":"https://kashsec.vercel.app/#/lesson/14-ethical-hacking/scan-enumerate","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/14-ethical-hacking/scan-enumerate">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 14 — Ethical Hacking</a> · Phase 2: Scan &amp; enumerate</div>
+  <article><h1>Scanning &amp; enumeration</h1>
+<p>Reconnaissance told you what exists. This phase goes deeper on every discovered system — systematically identifying services, versions, and configuration details that directly feed the exploitation phase. Think of it as turning a rough map into a detailed, actionable blueprint.</p>
+<h2>Scanning vs enumeration — the distinction</h2>
+<ul>
+<li><strong>Scanning</strong> — broad discovery: which hosts are alive, which ports are open (Path 12.2&#39;s Nmap territory).</li>
+<li><strong>Enumeration</strong> — going deeper on each discovered service: what exact software and version, what usernames/shares/configuration details can be extracted, often through direct interaction with the service itself.</li>
+</ul>
+<h2>A systematic scanning workflow, professionally applied</h2>
+<p>Building on Path 12.2&#39;s staged approach, now across an entire in-scope environment:</p>
+<pre><code class="language-bash"># 1. Host discovery across the full scope:
+nmap -sn 203.0.113.0/24 -oA discovery
+
+# 2. Fast scan of live hosts to prioritise:
+nmap -F -iL live-hosts.txt -oA quick-scan
+
+# 3. Full, deep scan with version detection on everything:
+nmap -p- -sV -sC -iL live-hosts.txt -oA full-scan
+
+# 4. Targeted vulnerability scripts against anything interesting:
+nmap --script vuln -iL live-hosts.txt -oA vuln-scan
+</code></pre>
+<p>For larger scopes, <strong>Masscan</strong> (mentioned in Path 12.8) handles the initial fast discovery across huge IP ranges far faster than Nmap alone, with Nmap then used for the detailed follow-up on whatever Masscan finds alive.</p>
+<h2>Service-specific enumeration</h2>
+<p>Once you know <em>what&#39;s</em> running, each service type has its own enumeration techniques:</p>
+<h3>SMB (Windows file sharing)</h3>
+<pre><code class="language-bash"># List shares:
+smbclient -L //target-ip -N
+
+# Enumerate with enum4linux (comprehensive Windows/Samba enumeration):
+enum4linux -a target-ip
+
+# Modern replacement, more actively maintained:
+enum4linux-ng -A target-ip
+</code></pre>
+<p>SMB enumeration frequently reveals share names, usernames, password policies, and sometimes even readable file shares containing genuinely sensitive documents — one of the highest-value enumeration targets in Windows environments, directly relevant to Path 16&#39;s Active Directory content.</p>
+<h3>Web servers (building on Path 11.3)</h3>
+<pre><code class="language-bash">whatweb -a 3 target-ip
+gobuster dir -u http://target-ip -w /usr/share/seclists/Discovery/Web-Content/common.txt
+nikto -h http://target-ip
+</code></pre>
+<h3>FTP</h3>
+<pre><code class="language-bash"># Check for anonymous access (a shockingly common misconfiguration):
+ftp target-ip
+# Username: anonymous
+# Password: (blank or any email-looking string)
+</code></pre>
+<h3>SSH</h3>
+<pre><code class="language-bash"># Banner grab to identify exact version (relevant CVE lookup):
+nc target-ip 22
+ssh -V target-ip
+</code></pre>
+<h3>SNMP (often overlooked, often revealing)</h3>
+<pre><code class="language-bash"># SNMP with default &quot;public&quot; community string is a classic, still-common misconfiguration:
+snmpwalk -v2c -c public target-ip
+</code></pre>
+<p>A surprising number of real internal network assessments still find SNMP configured with the default <code>public</code>/<code>private</code> community strings, sometimes revealing entire network topology, running processes, and configuration details with zero authentication.</p>
+<h2>Cross-referencing versions against known vulnerabilities</h2>
+<p>Once you have exact service versions, cross-reference against public vulnerability databases — echoing the CVE/CVSS concepts from Path 10.2:</p>
+<pre><code class="language-bash"># searchsploit — searches Exploit-DB&#39;s local mirror (pre-installed on Kali):
+searchsploit &quot;OpenSSH 7.2&quot;
+searchsploit &quot;Apache 2.4.49&quot;
+
+# Or check the National Vulnerability Database directly:
+# https://nvd.nist.gov/vuln/search
+</code></pre>
+<pre><code class="language-python">#!/usr/bin/env python3
+&quot;&quot;&quot;
+version-check.py — Cross-reference Nmap XML output against searchsploit.
+&quot;&quot;&quot;
+import subprocess
+import xml.etree.ElementTree as ET
+
+def parse_nmap_xml(path: str) -&gt; list[tuple[str, str]]:
+    &quot;&quot;&quot;Return list of (service, version) tuples from Nmap XML output.&quot;&quot;&quot;
+    tree = ET.parse(path)
+    services = []
+    for host in tree.findall(&quot;.//host&quot;):
+        for port in host.findall(&quot;.//port&quot;):
+            service = port.find(&quot;service&quot;)
+            if service is not None:
+                name = service.get(&quot;product&quot;, &quot;&quot;)
+                version = service.get(&quot;version&quot;, &quot;&quot;)
+                if name:
+                    services.append((name, version))
+    return services
+
+def check_exploits(name: str, version: str):
+    query = f&quot;{name} {version}&quot;.strip()
+    result = subprocess.run(
+        [&quot;searchsploit&quot;, query], capture_output=True, text=True
+    )
+    if &quot;Exploits: No Results&quot; not in result.stdout:
+        print(f&quot;\n[!] Potential match for {query}:&quot;)
+        print(result.stdout)
+
+def main():
+    services = parse_nmap_xml(&quot;full-scan.xml&quot;)
+    for name, version in services:
+        if name and version:
+            check_exploits(name, version)
+
+if __name__ == &quot;__main__&quot;:
+    main()
+</code></pre>
+<p>This is exactly the kind of Python automation from Path 04 applied directly to real penetration testing workflow — parsing tool output and cross-referencing it programmatically rather than manually, at scale.</p>
+<h3>DNS zone-adjacent enumeration and MySQL/database services</h3>
+<p>Two more service categories worth naming, since they show up regularly in real environments. A misconfigured DNS server sometimes still allows a full <strong>zone transfer</strong> (echoing Path 02&#39;s DNS lesson) even when it shouldn&#39;t, dumping every record the server holds in one request — worth an explicit check separate from ordinary subdomain brute-forcing, since it reveals the complete internal DNS picture rather than a wordlist-limited guess:</p>
+<pre><code class="language-bash">dig axfr @ns1.example.com example.com
+</code></pre>
+<p>Database services exposed further than intended (a MySQL or PostgreSQL port reachable from outside its intended network segment) deserve a direct authentication check too — not to brute-force blindly, but to test for default or blank credentials, a genuinely common finding on internal assessments:</p>
+<pre><code class="language-bash">mysql -h target-ip -u root -p     # test for blank/default root password
+</code></pre>
+<h2>Prioritising what to test first</h2>
+<p>A real environment might reveal dozens of services across dozens of hosts — you can&#39;t exhaustively deep-dive everything with equal priority in a time-boxed engagement. Prioritise based on:</p>
+<ul>
+<li><strong>Known CVEs found</strong> for the exact version identified — highest priority, often quick wins.</li>
+<li><strong>Internet-facing vs internal-only</strong> — external attack surface usually takes priority in external engagements.</li>
+<li><strong>Sensitive-sounding names</strong> — shares/services named &quot;finance,&quot; &quot;hr,&quot; &quot;backup,&quot; &quot;admin&quot; warrant closer attention.</li>
+<li><strong>Default/weak configurations</strong> — anonymous FTP, default SNMP community strings, default credentials generally.</li>
+<li><strong>Business context from recon</strong> — if recon revealed the company uses a specific CMS or framework, prioritise testing that stack specifically.</li>
+</ul>
+<h2>Building the enumeration output into a working document</h2>
+<pre><code class="language-markdown">## Scanning &amp; Enumeration Findings — Example Corp
+
+| Host | Port | Service | Version | Notes |
+|------|------|---------|---------|-------|
+| 203.0.113.10 | 445 | SMB | Samba 4.6.2 | Anonymous listing allowed; 2 shares readable |
+| 203.0.113.10 | 22 | SSH | OpenSSH 7.2p2 | CVE-2016-XXXX (user enum) — searchsploit match |
+| 203.0.113.15 | 80 | HTTP | Apache 2.4.49 | CVE-2021-41773 (path traversal) — HIGH PRIORITY |
+| 203.0.113.20 | 161 | SNMP | net-snmp | Default &#39;public&#39; community string works |
+</code></pre>
+<p>This table becomes the direct input for the exploitation phase — a prioritised, evidence-backed target list rather than an undifferentiated pile of scan output.</p>
+<h2>🧪 Lab — Full enumeration pass on your lab environment</h2>
+<p>Using your Kali VM against a second lab VM (Metasploitable is ideal — it&#39;s deliberately packed with exactly these kinds of misconfigurations):</p>
+<pre><code class="language-bash"># Full scan first:
+nmap -p- -sV -sC 192.168.56.20 -oA metasploitable-scan
+
+# Then enumerate whatever services appeared:
+enum4linux-ng -A 192.168.56.20        # if SMB is present
+smbclient -L //192.168.56.20 -N
+ftp 192.168.56.20                      # test anonymous access
+snmpwalk -v2c -c public 192.168.56.20  # if SNMP is present
+
+# Cross-reference any identified versions:
+searchsploit &quot;vsftpd 2.3.4&quot;    # a famously backdoored version, present on Metasploitable
+</code></pre>
+<p>Build a findings table like the example above from what you discover. This exact table structure is what feeds directly into Path 14.5&#39;s exploitation phase.</p>
+<p>Why is enumeration considered a distinct, deeper phase from scanning, rather than just &quot;more scanning&quot;?</p>
+<details><summary>Show answer</summary>Scanning answers <strong>breadth</strong> questions ("what hosts exist, what ports are open") across potentially many systems quickly. Enumeration answers <strong>depth</strong> questions on each specific discovered service — exact software versions, configuration details, usernames, shares, and other artifacts extracted through direct, service-specific interaction. It requires different tools and techniques <em>per service type</em> (SMB enumeration looks nothing like SNMP enumeration), rather than one generic broad sweep.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Enumeration</strong> — deep, service-specific investigation following broad scanning.</li>
+<li><strong>enum4linux / smbclient</strong> — SMB-specific enumeration tools.</li>
+<li><strong>searchsploit</strong> — local Exploit-DB search tool for cross-referencing discovered versions against known exploits.</li>
+<li><strong>Anonymous/null session</strong> — unauthenticated access sometimes still permitted by misconfigured services.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Scanning finds breadth (what&#39;s open); enumeration finds depth (exact versions, configs, artifacts) per service.</li>
+<li>Each service type (SMB, FTP, SNMP, SSH, HTTP) has its own dedicated enumeration techniques and tools.</li>
+<li>Cross-referencing discovered versions against searchsploit/CVE databases directly identifies exploitation candidates.</li>
+<li>Prioritisation (known CVEs, sensitive naming, default configs) is essential given real-world time constraints.</li>
+<li>A clear findings table bridges enumeration output directly into the next phase&#39;s prioritised target list.</li>
+</ul>
+<h3>References</h3>
+<ul>
+<li><a href="https://github.com/cddmp/enum4linux-ng">enum4linux-ng</a> — actively maintained SMB/Samba enumeration tool.</li>
+<li><a href="https://www.exploit-db.com/searchsploit">searchsploit / Exploit-DB</a> — official usage documentation.</li>
+<li><a href="https://www.sans.org/security-resources/">SANS — Enumeration techniques</a> — further reading across service types.</li>
+<li><a href="https://docs.rapid7.com/metasploit/metasploitable-2/">Metasploitable 2 documentation</a> — the deliberately vulnerable practice VM used in this lesson&#39;s lab.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/14-ethical-hacking/exploitation">Exploitation techniques</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/14-ethical-hacking/scan-enumerate";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

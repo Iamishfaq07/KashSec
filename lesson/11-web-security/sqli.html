@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SQL Injection — Path 11 · KashSec Academy</title>
+<meta name="description" content="If XSS is the most famous client-side bug, SQL injection (SQLi) is its server-side counterpart — and arguably the single most damaging vulnerability class in web history, responsible for some of the l">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/11-web-security/sqli">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="SQL Injection — Path 11 · KashSec Academy">
+<meta property="og:description" content="If XSS is the most famous client-side bug, SQL injection (SQLi) is its server-side counterpart — and arguably the single most damaging vulnerability class in web history, responsible for some of the l">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/11-web-security/sqli">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="SQL Injection — Path 11 · KashSec Academy">
+<meta name="twitter:description" content="If XSS is the most famous client-side bug, SQL injection (SQLi) is its server-side counterpart — and arguably the single most damaging vulnerability class in web history, responsible for some of the l">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"SQL Injection — Path 11 · KashSec Academy","description":"If XSS is the most famous client-side bug, SQL injection (SQLi) is its server-side counterpart — and arguably the single most damaging vulnerability class in web history, responsible for some of the l","url":"https://kashsec.vercel.app/#/lesson/11-web-security/sqli","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/11-web-security/sqli">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 11 — Web Security & Hacking</a> · SQL Injection</div>
+  <article><h1>SQL Injection</h1>
+<p>If XSS is the most famous <em>client-side</em> bug, <strong>SQL injection (SQLi)</strong> is its server-side counterpart — and arguably the single most damaging vulnerability class in web history, responsible for some of the largest data breaches ever recorded.</p>
+<h2>The core idea</h2>
+<p>Applications build database queries by combining fixed SQL with user input. If that input isn&#39;t properly separated from the query structure, an attacker can inject their own SQL logic — making the database do things the developer never intended.</p>
+<pre><code class="language-python"># VULNERABLE — user input concatenated directly into the query:
+username = request.form[&quot;username&quot;]
+password = request.form[&quot;password&quot;]
+query = f&quot;SELECT * FROM users WHERE username=&#39;{username}&#39; AND password=&#39;{password}&#39;&quot;
+cursor.execute(query)
+</code></pre>
+<p>If an attacker enters this as the username:</p>
+<pre><code>admin&#39; --
+</code></pre>
+<p>The resulting query becomes:</p>
+<pre><code class="language-sql">SELECT * FROM users WHERE username=&#39;admin&#39; --&#39; AND password=&#39;anything&#39;
+</code></pre>
+<p>In SQL, <code>--</code> starts a comment — everything after it is ignored. The password check is entirely erased. The attacker logs in as <code>admin</code> with <strong>no valid password at all</strong>.</p>
+<h2>The classic OR 1=1 bypass</h2>
+<p>Another timeless classic:</p>
+<pre><code>username: &#39; OR &#39;1&#39;=&#39;1
+password: &#39; OR &#39;1&#39;=&#39;1
+</code></pre>
+<pre><code class="language-sql">SELECT * FROM users WHERE username=&#39;&#39; OR &#39;1&#39;=&#39;1&#39; AND password=&#39;&#39; OR &#39;1&#39;=&#39;1&#39;
+</code></pre>
+<p>Since <code>&#39;1&#39;=&#39;1&#39;</code> is always true, this query matches <strong>every row in the table</strong> — the application typically just logs the attacker in as whichever user happens to be returned first.</p>
+<h2>Beyond login bypass — reading the entire database</h2>
+<p>SQLi isn&#39;t limited to authentication bypass. Using <strong>UNION-based injection</strong>, an attacker can extract arbitrary data:</p>
+<pre><code class="language-sql">-- Original intended query:
+SELECT name, price FROM products WHERE category = &#39;shoes&#39;
+
+-- Attacker input for category:
+&#39; UNION SELECT username, password FROM users --
+</code></pre>
+<pre><code class="language-sql">SELECT name, price FROM products WHERE category = &#39;&#39; UNION SELECT username, password FROM users --&#39;
+</code></pre>
+<p>The application, expecting to display product names and prices, now unknowingly displays <strong>every username and password hash in the database</strong>, formatted exactly like product listings.</p>
+<h2>The main SQLi techniques</h2>
+<table>
+<thead>
+<tr>
+<th>Technique</th>
+<th>How it works</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>In-band / UNION-based</strong></td>
+<td>Attacker directly sees the injected data in the app&#39;s normal response (as above).</td>
+</tr>
+<tr>
+<td><strong>Error-based</strong></td>
+<td>Deliberately triggers database errors that leak data in the error message itself.</td>
+</tr>
+<tr>
+<td><strong>Boolean-based blind</strong></td>
+<td>No data is shown directly, but the app behaves differently (different page content) based on true/false conditions the attacker injects — data is extracted one bit at a time by asking yes/no questions.</td>
+</tr>
+<tr>
+<td><strong>Time-based blind</strong></td>
+<td>Even less feedback — the attacker injects a conditional <code>SLEEP(5)</code> and infers true/false purely from <strong>how long the response takes</strong>.</td>
+</tr>
+<tr>
+<td><strong>Out-of-band</strong></td>
+<td>Data is exfiltrated via a completely different channel (e.g., triggering a DNS lookup to an attacker-controlled domain containing stolen data in the subdomain).</td>
+</tr>
+</tbody></table>
+<p>Blind and time-based techniques are slower (extracting data byte-by-byte) but devastatingly effective when no direct output is available — this is exactly what makes automated tools essential in practice.</p>
+<h2>Automated discovery — sqlmap</h2>
+<p>Manually crafting time-based blind payloads byte-by-byte is tedious; <strong>sqlmap</strong> (mentioned back in Path 04.5) automates the entire process:</p>
+<pre><code class="language-bash"># Basic scan against a URL parameter:
+sqlmap -u &quot;http://testphp.vulnweb.com/listproducts.php?cat=1&quot; --batch
+
+# Testing a POST request captured from Burp:
+sqlmap -r request.txt --batch
+
+# Once a vulnerability is confirmed, enumerate databases:
+sqlmap -u &quot;http://testphp.vulnweb.com/listproducts.php?cat=1&quot; --dbs
+
+# Dump a specific table:
+sqlmap -u &quot;http://testphp.vulnweb.com/listproducts.php?cat=1&quot; -D testdb -T users --dump
+</code></pre>
+<p>sqlmap supports every technique above, handles different database engines (MySQL, PostgreSQL, MSSQL, Oracle, SQLite), and even offers advanced options like reading/writing files on the underlying server or spawning an OS shell in favourable configurations.</p>
+<h2>Manual testing approach</h2>
+<p>Before reaching for sqlmap, understand the basics manually — it&#39;s far more educational and often faster for simple cases:</p>
+<ol>
+<li>Find a parameter that likely touches a database query (search boxes, ID parameters, filters, login forms).</li>
+<li>Try a single quote <code>&#39;</code> — if you get a <strong>database error</strong> in the response, that&#39;s a strong signal of injectability.</li>
+<li>Try <code>&#39; OR &#39;1&#39;=&#39;1</code> and <code>&#39; OR &#39;1&#39;=&#39;1&#39; --</code> to test for authentication bypass scenarios.</li>
+<li>For UNION-based testing, first determine the number of columns:</li>
+</ol>
+<pre><code class="language-sql">&#39; ORDER BY 1--
+&#39; ORDER BY 2--
+&#39; ORDER BY 3--   -- keep incrementing until you get an error; that tells you the column count
+</code></pre>
+<ol start="5">
+<li>Then build your UNION SELECT matching that column count:</li>
+</ol>
+<pre><code class="language-sql">&#39; UNION SELECT NULL, NULL, NULL --
+&#39; UNION SELECT username, password, NULL FROM users --
+</code></pre>
+<h2>The actual fix — parameterised queries</h2>
+<p>The definitive, industry-standard defence is <strong>never</strong> building SQL by string concatenation. Instead, use <strong>parameterised queries (prepared statements)</strong>, where user input is passed <em>separately</em> from the query structure — the database driver handles safe substitution, making injection structurally impossible for that query.</p>
+<pre><code class="language-python"># SAFE — parameterised query:
+username = request.form[&quot;username&quot;]
+password = request.form[&quot;password&quot;]
+cursor.execute(
+    &quot;SELECT * FROM users WHERE username = %s AND password = %s&quot;,
+    (username, password)
+)
+</code></pre>
+<p>The database now treats <code>username</code> and <code>password</code> purely as <strong>data values</strong>, never as executable SQL syntax — no matter what the attacker types, it can never break out of being &quot;just a string.&quot;</p>
+<pre><code class="language-python"># Same idea, in a typical ORM (SQLAlchemy example):
+user = session.query(User).filter_by(username=username, password_hash=hash_pw(password)).first()
+</code></pre>
+<p>Modern ORMs (Object-Relational Mappers) use parameterised queries under the hood by default — another reason SQLi, while still extremely common, is somewhat rarer in modern framework-based codebases than it was in the hand-rolled SQL era.</p>
+<h2>Defence in depth beyond parameterisation</h2>
+<ul>
+<li><strong>Least privilege database accounts</strong> — the application&#39;s DB user shouldn&#39;t have permission to drop tables or read unrelated databases, limiting blast radius even if injection somehow occurs.</li>
+<li><strong>Input validation</strong> — reject obviously malformed input as an additional layer (not a replacement for parameterisation).</li>
+<li><strong>WAF (Web Application Firewall)</strong> — can catch and block many common SQLi patterns, though sophisticated attackers routinely find bypasses (never rely on WAF alone).</li>
+<li><strong>ORMs used correctly</strong> — but beware of &quot;raw query&quot; escape hatches many ORMs still offer, which reintroduce the exact same risk if used carelessly.</li>
+</ul>
+<pre><code class="language-python"># Still vulnerable, even using an ORM&#39;s raw query feature:
+User.objects.raw(f&quot;SELECT * FROM users WHERE username = &#39;{username}&#39;&quot;)
+</code></pre>
+<p>Using an ORM doesn&#39;t automatically guarantee safety — string-formatting your way into any &quot;raw SQL&quot; escape hatch reintroduces the exact same vulnerability. The safety comes from parameterisation, not from which library you&#39;re using.</p>
+<h2>Second-order SQLi — the delayed detonation</h2>
+<p>Every example so far assumes the injected input reaches the database in the <em>same request</em> where it&#39;s typed. <strong>Second-order SQLi</strong> is subtler: the malicious input is safely stored on first submission (perhaps even correctly escaped at that point), but later gets pulled out of the database and used, unsafely, to build a <em>different</em> query — for example, a username containing injection syntax is stored cleanly during registration, then used unsanitised months later when an admin panel builds a &quot;recent activity for this user&quot; report. This delay between injection and detonation makes second-order SQLi genuinely hard to spot with straightforward single-request testing, since the vulnerable query never appears anywhere near the form that actually introduced the malicious data.</p>
+<h2>NoSQL injection — same idea, different syntax</h2>
+<p>Databases like MongoDB don&#39;t use SQL at all, but they&#39;re not immune to the same underlying class of bug — just with a different injection syntax. Where an app builds a MongoDB query directly from user-supplied JSON, an attacker can sometimes inject a query <em>operator</em> instead of a plain value:</p>
+<pre><code class="language-json">// Intended: {&quot;username&quot;: &quot;alice&quot;, &quot;password&quot;: &quot;hunter2&quot;}
+// Attacker sends instead:
+{&quot;username&quot;: &quot;alice&quot;, &quot;password&quot;: {&quot;$ne&quot;: null}}
+</code></pre>
+<p><code>$ne</code> (not-equal) is a legitimate MongoDB query operator — if the backend blindly passes the parsed JSON body into a query, <code>{&quot;$ne&quot;: null}</code> matches <em>any</em> non-null password, authenticating as Alice with no valid password at all. The root cause is identical to classic SQLi — untrusted input treated as query structure instead of pure data — which is exactly why the fix is the same underlying principle: validate and strictly type incoming data rather than passing it straight through to the query layer.</p>
+<h2>🧪 Lab — PortSwigger SQLi labs + sqlmap practice</h2>
+<ol>
+<li>Work through <a href="https://portswigger.net/web-security/sql-injection">PortSwigger&#39;s SQL injection labs</a> — start with the login bypass labs, then move to UNION-based data extraction.</li>
+<li>Against <code>testphp.vulnweb.com</code> (a legal target deliberately built with SQLi flaws), try manual testing first with Burp Repeater, then confirm and automate with sqlmap:</li>
+</ol>
+<pre><code class="language-bash">sqlmap -u &quot;http://testphp.vulnweb.com/artists.php?artist=1&quot; --batch --dbs
+</code></pre>
+<ol start="3">
+<li>Compare what sqlmap found automatically to what you found manually — this comparison is genuinely instructive about both the tool&#39;s power and its limits.</li>
+</ol>
+<p>Why is a parameterised query fundamentally safer than &quot;carefully sanitising&quot; user input by stripping out dangerous characters like quotes before concatenating it into a SQL string?</p>
+<details><summary>Show answer</summary>Sanitisation/blocklisting tries to <em>predict every dangerous pattern</em> in advance — and attackers routinely find encoding tricks, alternate syntax, or edge cases that slip past incomplete filters. Parameterised queries instead make the database engine itself treat the input as <strong>pure data, never as executable SQL syntax</strong>, structurally — there's no filter to bypass because the input can never be interpreted as code in the first place, regardless of its content.</details><h2>Key terms</h2>
+<ul>
+<li><strong>SQL injection (SQLi)</strong> — attacker-controlled input alters the structure/logic of a database query.</li>
+<li><strong>UNION-based / error-based / blind (boolean, time) / out-of-band</strong> — the main SQLi extraction techniques.</li>
+<li><strong>sqlmap</strong> — the industry-standard automated SQLi detection and exploitation tool.</li>
+<li><strong>Parameterised query / prepared statement</strong> — the definitive defence, separating query structure from data.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>SQLi lets attackers alter query logic, bypass authentication, or extract entire databases.</li>
+<li>Techniques range from directly visible (UNION-based) to fully blind (time-based).</li>
+<li>sqlmap automates detection and exploitation across every major database engine.</li>
+<li>The real fix is parameterised queries — never string-concatenate user input into SQL.</li>
+<li>Even ORMs can be misused via raw-query escape hatches — the fix is architectural, not tool-dependent.</li>
+</ul>
+<h3>References</h3>
+<ul>
+<li><a href="https://portswigger.net/web-security/sql-injection">PortSwigger — SQL injection</a> — the definitive free hands-on resource.</li>
+<li><a href="https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html">OWASP SQL Injection Prevention Cheat Sheet</a></li>
+<li><a href="https://github.com/sqlmapproject/sqlmap/wiki">sqlmap documentation</a> — official usage guide.</li>
+<li><a href="http://testphp.vulnweb.com/">testphp.vulnweb.com</a> — legal practice target with real SQLi flaws.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/11-web-security/cmd-and-upload">Command injection &amp; file upload flaws</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/11-web-security/sqli";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

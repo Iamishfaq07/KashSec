@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Users, permissions &amp; sudo — Path 03 · KashSec Academy</title>
+<meta name="description" content="The single most important security concept in any OS is who is allowed to do what. In Linux this is beautifully explicit. Master this and you understand half of Linux security instantly.">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/03-linux/users-permissions">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Users, permissions &amp; sudo — Path 03 · KashSec Academy">
+<meta property="og:description" content="The single most important security concept in any OS is who is allowed to do what. In Linux this is beautifully explicit. Master this and you understand half of Linux security instantly.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/03-linux/users-permissions">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Users, permissions &amp; sudo — Path 03 · KashSec Academy">
+<meta name="twitter:description" content="The single most important security concept in any OS is who is allowed to do what. In Linux this is beautifully explicit. Master this and you understand half of Linux security instantly.">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Users, permissions & sudo — Path 03 · KashSec Academy","description":"The single most important security concept in any OS is who is allowed to do what. In Linux this is beautifully explicit. Master this and you understand half of Linux security instantly.","url":"https://kashsec.vercel.app/#/lesson/03-linux/users-permissions","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/03-linux/users-permissions">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 03 — Operating Systems & Linux</a> · Users, permissions &amp; sudo</div>
+  <article><h1>Users, permissions &amp; sudo</h1>
+<p>The single most important security concept in any OS is <strong>who is allowed to do what</strong>. In Linux this is beautifully explicit. Master this and you understand half of Linux security instantly.</p>
+<h2>Users, root, and groups</h2>
+<p>Every Linux system has:</p>
+<ul>
+<li><strong>Normal users</strong> — accounts for people or services (like <code>kali</code>).</li>
+<li><strong><code>root</code></strong> — the all-powerful superuser. Can do anything to anything.</li>
+<li><strong>Groups</strong> — collections of users, so you can grant rights to a group instead of every user one by one (e.g., the <code>sudo</code> group is allowed to run admin commands).</li>
+</ul>
+<pre><code class="language-bash">whoami           # your username
+id               # your UID, GID, and group memberships
+groups           # groups you belong to
+cat /etc/passwd  # all users on the system
+cat /etc/group   # all groups
+</code></pre>
+<p><code>/etc/passwd</code> is world-readable. Password <em>hashes</em> live in <code>/etc/shadow</code>, which is only readable by root.</p>
+<h2>Sudo — becoming root for one command</h2>
+<p>Modern Linux discourages logging in as root directly. Instead, users with the right (typically in the <code>sudo</code> group) can run a single command with root&#39;s power by prefixing it with <code>sudo</code>:</p>
+<pre><code class="language-bash">apt update              # fails — normal user can&#39;t touch package system
+sudo apt update         # works — you&#39;re temporarily root for this command
+sudo -i                 # open a root shell (careful!)
+</code></pre>
+<p>Sudo asks for <strong>your own password</strong>, not root&#39;s. It&#39;s logged in <code>/var/log/auth.log</code>, so misuse leaves a trail.</p>
+<p>When you&#39;re a normal user, the prompt ends in <code>$</code>. When you&#39;re root (via <code>sudo -i</code> or the root user directly), it ends in <code>#</code>. That single character is a constant reminder: <strong>you can do damage right now — be careful.</strong></p>
+<h2>File permissions — the rwx model</h2>
+<p>Every file and folder has three sets of permissions for three classes of users:</p>
+<pre><code>-rwxr-xr--  1  alice  developers  4096  Jan 10  script.sh
+│└─┬┘└─┬┘└─┬┘  │      │           │     │       └── name
+│  │   │   │   │      │           │     └────────── modified
+│  │   │   │   │      │           └──────────────── size
+│  │   │   │   │      └──────────────────────────── group
+│  │   │   │   └─────────────────────────────────── owner
+│  │   │   └─────────────────────────── others&#39; permissions (r--)
+│  │   └───────────────────────────── group&#39;s permissions   (r-x)
+│  └───────────────────────────── owner&#39;s permissions       (rwx)
+└──────────────────────────── file type (- file, d directory, l link)
+</code></pre>
+<p>The three letters mean:</p>
+<ul>
+<li><strong>r</strong> = read (list a folder&#39;s contents / read a file)</li>
+<li><strong>w</strong> = write (add or delete inside a folder / modify a file)</li>
+<li><strong>x</strong> = execute (enter a folder / run a file as a program)</li>
+</ul>
+<h2>Changing permissions — chmod</h2>
+<p>Two ways to write permissions with <code>chmod</code>:</p>
+<p><strong>Symbolic</strong> (readable):</p>
+<pre><code class="language-bash">chmod u+x script.sh      # give the user (owner) execute
+chmod g-w file           # remove write from the group
+chmod o-r secret.txt     # deny others the ability to read
+chmod a+r public.txt     # everyone can read
+</code></pre>
+<p><strong>Numeric</strong> (each digit is a bitmap: r=4, w=2, x=1):</p>
+<pre><code class="language-bash">chmod 755 script.sh      # rwxr-xr-x — owner all, others read/execute
+chmod 644 file.txt       # rw-r--r-- — owner read/write, others read
+chmod 600 secret.txt     # rw------- — only owner can read/write
+chmod 700 ~/.ssh         # rwx------ — SSH&#39;s private folder
+</code></pre>
+<p>Quick conversion table:</p>
+<table>
+<thead>
+<tr>
+<th>Digit</th>
+<th>Binary</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0</td>
+<td>---</td>
+<td>none</td>
+</tr>
+<tr>
+<td>1</td>
+<td>--x</td>
+<td>execute only</td>
+</tr>
+<tr>
+<td>2</td>
+<td>-w-</td>
+<td>write only</td>
+</tr>
+<tr>
+<td>3</td>
+<td>-wx</td>
+<td>write + execute</td>
+</tr>
+<tr>
+<td>4</td>
+<td>r--</td>
+<td>read only</td>
+</tr>
+<tr>
+<td>5</td>
+<td>r-x</td>
+<td>read + execute</td>
+</tr>
+<tr>
+<td>6</td>
+<td>rw-</td>
+<td>read + write</td>
+</tr>
+<tr>
+<td>7</td>
+<td>rwx</td>
+<td>full</td>
+</tr>
+</tbody></table>
+<p><code>755</code> and <code>644</code> are the two you&#39;ll type most often.</p>
+<h2>Changing owner and group — chown</h2>
+<pre><code class="language-bash">sudo chown alice file.txt              # change owner
+sudo chown alice:developers file.txt   # change owner and group
+sudo chown -R kali:kali ~/project      # recursive on a folder
+</code></pre>
+<p>Changing ownership needs root.</p>
+<h2>SUID, SGID, and the sticky bit — the security clue</h2>
+<p>Beyond rwx there are three special bits:</p>
+<ul>
+<li><strong>SUID</strong> (Set User ID) — when set on an executable, it runs with the <strong>owner&#39;s</strong> privileges regardless of who runs it. Shown as <code>s</code> in the owner&#39;s execute slot: <code>-rwsr-xr-x</code>. Used for programs like <code>passwd</code> (needs to write <code>/etc/shadow</code> even for normal users).</li>
+<li><strong>SGID</strong> (Set Group ID) — same idea but for group. Shown in the group&#39;s execute slot.</li>
+<li><strong>Sticky bit</strong> — on a folder, prevents users from deleting each other&#39;s files. Shown as <code>t</code> in others&#39; execute slot. Set on <code>/tmp</code>.</li>
+</ul>
+<pre><code class="language-bash">ls -l /usr/bin/passwd
+# -rwsr-xr-x  1  root  root  ... /usr/bin/passwd
+#     ^ that s means SUID root
+
+# Find every SUID binary on the system (privesc clue!):
+find / -perm -4000 -type f 2&gt;/dev/null
+</code></pre>
+<p>A SUID binary owned by root that has any exploitable behaviour (like an old version, or one that spawns a shell) can turn a low-privileged user into root. This is huge in Path 16. Sites like <strong>GTFOBins</strong> catalogue every abusable SUID binary. Sneak preview: <code>sudo -l</code> on a target and see if <code>find</code>, <code>vim</code>, or <code>less</code> are in the list.</p>
+<h2>Linux capabilities — a more modern, finer-grained alternative to SUID</h2>
+<p>SUID is genuinely all-or-nothing — a SUID binary runs with the <em>entire</em> privilege set of its owner, even if it only needs one small piece of that power. Modern Linux offers <strong>capabilities</strong> as a more surgical alternative: splitting root&#39;s traditionally monolithic power into dozens of individual, independently grantable privileges (<code>CAP_NET_BIND_SERVICE</code> to bind low-numbered network ports, <code>CAP_DAC_OVERRIDE</code> to bypass file permission checks, and many more). A binary can be granted just the one specific capability it genuinely needs, rather than full root-equivalent power via SUID — a direct, practical application of least privilege at the binary level. Check a binary&#39;s granted capabilities with:</p>
+<pre><code class="language-bash">getcap -r / 2&gt;/dev/null
+</code></pre>
+<p>Just like SUID binaries, an unexpectedly powerful capability grant on the wrong binary is a genuine privilege escalation vector — Path 16&#39;s Linux privilege escalation lesson covers this alongside SUID as part of the same systematic enumeration checklist.</p>
+<h2>Installing software — the package manager</h2>
+<p>Kali (Debian-based) uses <strong><code>apt</code></strong>. This is how you install, remove, and update:</p>
+<pre><code class="language-bash">sudo apt update                     # refresh the list of available packages
+sudo apt upgrade -y                 # apply all upgrades
+sudo apt install nmap -y            # install a package
+sudo apt remove nmap                # uninstall
+sudo apt search &quot;port scanner&quot;      # search for something
+apt show nmap                       # info about a package
+</code></pre>
+<p>Other distros:</p>
+<ul>
+<li><strong>Ubuntu/Debian</strong> → <code>apt</code></li>
+<li><strong>Fedora/RHEL/CentOS</strong> → <code>dnf</code> (or <code>yum</code> on older)</li>
+<li><strong>Arch</strong> → <code>pacman</code></li>
+<li><strong>Alpine</strong> → <code>apk</code></li>
+</ul>
+<p>The commands differ; the <em>concept</em> is identical.</p>
+<h2>🧪 Lab — Practise permissions</h2>
+<pre><code class="language-bash"># 1. Make a private secret file
+echo &quot;my secret notes&quot; &gt; secret.txt
+chmod 600 secret.txt          # only you can read/write
+ls -l secret.txt              # verify: -rw-------
+
+# 2. Make a shared team file
+sudo mkdir /srv/team
+sudo chown kali:kali /srv/team
+chmod 770 /srv/team           # rwxrwx--- — you and group only
+
+# 3. Hunt SUID binaries
+find / -perm -4000 -type f 2&gt;/dev/null | head
+# Read a few. Compare to https://gtfobins.github.io/ — do any look interesting?
+
+# 4. Install a new tool for later paths
+sudo apt install seclists -y
+ls /usr/share/seclists    # a huge wordlist collection you&#39;ll use in Path 11/10
+</code></pre>
+<p>A file&#39;s permissions show as <code>-rwxr-xr--</code>. Which class of users cannot execute it?</p>
+<details><summary>Show answer</summary>Others (people not the owner and not in the group). The "others" triplet is <code>r--</code> — read only, no execute.</details><h2>Key terms</h2>
+<ul>
+<li><strong>root / UID 0</strong> — the all-powerful superuser.</li>
+<li><strong>sudo</strong> — run one command as root, using <em>your</em> password.</li>
+<li><strong>rwx</strong> — read / write / execute.</li>
+<li><strong><code>chmod</code> / <code>chown</code></strong> — change permissions / ownership.</li>
+<li><strong>SUID / SGID / sticky</strong> — special bits with big security implications.</li>
+<li><strong>apt</strong> — Debian&#39;s package manager.</li>
+<li><strong>GTFOBins</strong> — reference of exploitable SUID/sudo binaries.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Every file has an owner, group, and rwx bits for three classes.</li>
+<li>Use <code>sudo</code> for admin actions; you get logged and audited.</li>
+<li>SUID binaries running as root are a classic privesc path — hunt with <code>find / -perm -4000</code>.</li>
+<li><code>apt install</code> adds tools; keep the system updated with <code>apt upgrade</code>.</li>
+</ul>
+<h3>References</h3>
+<ul>
+<li><a href="https://www.redhat.com/sysadmin/linux-file-permissions-explained">Linux file permissions — Red Hat</a> — clear reference with examples.</li>
+<li><a href="https://gtfobins.github.io/">GTFOBins</a> — the essential SUID / sudo abuse database.</li>
+<li><a href="https://www.sudo.ws/docs/">sudo manual</a> — official docs.</li>
+<li><a href="https://explainshell.com/explain?cmd=chmod+755+file">Explainshell — chmod</a> — paste any command, get every flag explained.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/03-linux/bash-scripting">Your first bash script</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/03-linux/users-permissions";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

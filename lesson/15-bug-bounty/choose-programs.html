@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Choosing programs — Path 15 · KashSec Academy</title>
+<meta name="description" content="With thousands of active bug bounty programs available, choosing where to spend your time is arguably as important as your technical skill. This lesson teaches the selection strategy experienced hunte">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/15-bug-bounty/choose-programs">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Choosing programs — Path 15 · KashSec Academy">
+<meta property="og:description" content="With thousands of active bug bounty programs available, choosing where to spend your time is arguably as important as your technical skill. This lesson teaches the selection strategy experienced hunte">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/15-bug-bounty/choose-programs">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Choosing programs — Path 15 · KashSec Academy">
+<meta name="twitter:description" content="With thousands of active bug bounty programs available, choosing where to spend your time is arguably as important as your technical skill. This lesson teaches the selection strategy experienced hunte">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Choosing programs — Path 15 · KashSec Academy","description":"With thousands of active bug bounty programs available, choosing where to spend your time is arguably as important as your technical skill. This lesson teaches the selection strategy experienced hunte","url":"https://kashsec.vercel.app/#/lesson/15-bug-bounty/choose-programs","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/15-bug-bounty/choose-programs">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 15 — Bug Bounty</a> · Choosing programs</div>
+  <article><h1>Choosing programs &amp; scope</h1>
+<p>With thousands of active bug bounty programs available, choosing <em>where</em> to spend your time is arguably as important as your technical skill. This lesson teaches the selection strategy experienced hunters actually use.</p>
+<h2>Why program selection matters so much</h2>
+<p>Recall Path 15.1&#39;s reality check — most bugs get found by <em>someone</em>, and duplicates are common. Choosing a program with <strong>less competition relative to its attack surface</strong> dramatically improves your odds versus randomly picking the most famous, most-hunted programs everyone else is already hammering.</p>
+<h2>Reading a scope document properly</h2>
+<p>Every program publishes a <strong>scope</strong> — exactly what&#39;s in bounds. Read it as carefully as a legal document, because that&#39;s precisely what it is.</p>
+<pre><code class="language-markdown">## Example scope excerpt
+
+IN SCOPE:
+- *.example.com (all subdomains)
+- Example iOS app (App Store, version 4.2+)
+- api.example.com
+
+OUT OF SCOPE:
+- blog.example.com (third-party hosted, WordPress.com)
+- Denial of service testing
+- Social engineering of employees
+- Physical security testing
+- Third-party integrations (Stripe, Auth0) — report to those vendors directly
+
+PROHIBITED ACTIONS:
+- Automated scanning without rate limiting (max 10 req/sec)
+- Testing against production data belonging to real customers
+- Accessing more data than necessary to prove a vulnerability
+</code></pre>
+<p>Notice: <code>*.example.com</code> looks broad, but <code>blog.example.com</code> is explicitly <strong>excluded</strong> despite matching that wildcard pattern — a direct, careful read is essential, not just a glance at the top-line scope statement.</p>
+<h2>Key factors when choosing a program</h2>
+<h3>Program age and popularity</h3>
+<p>A program that just launched, or one that&#39;s relatively unknown, has had <strong>far fewer eyes on it</strong> than a famous, years-old program with a huge, prominent reward table. Newer/smaller programs are often systematically under-hunted relative to their actual attack surface — genuinely valuable bugs are more likely to still be sitting there, unfound.</p>
+<h3>Scope breadth — wildcards are opportunity</h3>
+<p>A program scoping <code>*.example.com</code> (all subdomains) offers vastly more attack surface than one scoping only <code>www.example.com</code>. Recall Path 11.3&#39;s subdomain enumeration techniques — a broad wildcard scope rewards exactly that recon work, since many hunters only test the obvious main domain and never discover the forgotten staging environment or internal tool accidentally exposed on a subdomain.</p>
+<h3>Reward structure alignment</h3>
+<p>Some programs pay generously for critical findings but poorly for mediums; others have flatter, more consistent reward curves. If you&#39;re specialising in a particular bug class (Path 15.5&#39;s IDOR focus, for instance), check whether that program&#39;s reward table actually values that class appropriately relative to your expected time investment.</p>
+<h3>Response time and program reputation</h3>
+<p>Platforms typically show <strong>average response time</strong> and <strong>resolution rate</strong> statistics for each program. A program with a poor track record of slow responses or frequent &quot;informative&quot; (unpaid) closures on valid-seeming reports is a signal to weigh carefully — your time has real value, and a well-run program respects that with prompt, fair triage.</p>
+<h3>Fit with your own skillset</h3>
+<p>If you&#39;ve specialised deeply in web application testing (Path 11&#39;s content), a program primarily focused on mobile app or hardware/IoT testing may not be the best use of your current strengths — though cross-training is valuable long-term, focusing early efforts where your skills are already strongest tends to produce results faster.</p>
+<h2>Building a target shortlist</h2>
+<p>A practical, systematic approach:</p>
+<pre><code class="language-python">#!/usr/bin/env python3
+&quot;&quot;&quot;
+program-shortlist.py — A simple framework for scoring bug bounty programs
+based on the factors discussed in this lesson. Scores are illustrative —
+adjust weights to match your own priorities.
+&quot;&quot;&quot;
+
+programs = [
+    {&quot;name&quot;: &quot;BigTechCorp&quot;, &quot;age_months&quot;: 60, &quot;scope_wildcards&quot;: 2, &quot;avg_reward_high&quot;: 3000, &quot;response_days&quot;: 3},
+    {&quot;name&quot;: &quot;NewFinTechApp&quot;, &quot;age_months&quot;: 4, &quot;scope_wildcards&quot;: 8, &quot;avg_reward_high&quot;: 1500, &quot;response_days&quot;: 5},
+    {&quot;name&quot;: &quot;EstablishedSaaS&quot;, &quot;age_months&quot;: 36, &quot;scope_wildcards&quot;: 1, &quot;avg_reward_high&quot;: 5000, &quot;response_days&quot;: 14},
+]
+
+def score(program: dict) -&gt; float:
+    # Lower age = higher opportunity score (newer, less picked-over)
+    age_score = max(0, 100 - program[&quot;age_months&quot;]) / 100
+    # More wildcards = more attack surface
+    scope_score = min(program[&quot;scope_wildcards&quot;] / 10, 1.0)
+    # Faster response = better experience
+    response_score = max(0, 30 - program[&quot;response_days&quot;]) / 30
+    reward_score = min(program[&quot;avg_reward_high&quot;] / 5000, 1.0)
+
+    return (age_score * 0.3 + scope_score * 0.3 +
+            response_score * 0.2 + reward_score * 0.2)
+
+for p in sorted(programs, key=score, reverse=True):
+    print(f&quot;{p[&#39;name&#39;]}: {score(p):.2f}&quot;)
+</code></pre>
+<p>This is a genuinely realistic example of the kind of small Python tool (Path 04&#39;s skills, directly applied) experienced hunters build to systematically evaluate opportunities rather than picking programs purely by gut feeling or fame.</p>
+<h2>Private vs public programs</h2>
+<ul>
+<li><strong>Public programs</strong> — open to any registered researcher immediately. More competition, but zero barrier to entry.</li>
+<li><strong>Private programs</strong> — invite-only, typically extended to researchers who&#39;ve demonstrated quality work on public programs first. Significantly less competition, since the researcher pool is deliberately limited — often where experienced hunters find their best results.</li>
+</ul>
+<p>Building toward private program invitations is a genuine, achievable milestone — consistently submitting high-quality, well-written reports (Path 14.7&#39;s discipline, applied here) on public programs is exactly how those invitations get extended.</p>
+<h2>Bounty type — pay-per-report vs managed/continuous programs</h2>
+<p>Beyond public/private status, programs also differ in how consistently they pay out. <strong>Pay-per-report</strong> programs reward each individual valid finding on its own merits, which is the default model most beginners picture. Some platforms also offer <strong>managed programs</strong> where the company works with the platform&#39;s own internal triage team before a report ever reaches the client — often resulting in faster, more consistent responses since a professional triager has already validated the report&#39;s quality and severity before the client sees it, compared to <strong>self-managed</strong> programs where the company&#39;s own (sometimes less experienced, sometimes slower) internal team handles every incoming report directly. Checking which model a program uses is a genuinely practical signal worth factoring into the response-time expectations from the scoring framework above — a managed program&#39;s triage overhead can mean a slightly longer initial wait but a more consistent, professional outcome.</p>
+<h2>Reading program policy for legal safety</h2>
+<p>Beyond scope, always check:</p>
+<ul>
+<li><strong>Safe harbor language</strong> — does the program explicitly commit not to pursue legal action against good-faith research within scope? Most reputable programs include this; treat its absence as a serious red flag.</li>
+<li><strong>Data handling requirements</strong> — many programs require you to <strong>stop testing and report immediately</strong> upon accessing real sensitive data, rather than continuing to explore (directly echoing Path 14.6&#39;s &quot;demonstrate, don&#39;t exfiltrate&quot; principle).</li>
+<li><strong>Disclosure policy</strong> — can you ever publish your findings publicly, and if so, after what waiting period and with what approval process?</li>
+</ul>
+<h2>🧪 Lab — Build your own shortlist</h2>
+<ol>
+<li>Browse HackerOne&#39;s and Bugcrowd&#39;s public program directories.</li>
+<li>Identify 5 programs that interest you, and for each, note: scope breadth, program age (if visible), reward range, and response time statistics.</li>
+<li>Read the full scope and policy document for your top 2 choices, specifically checking for safe harbor language and any prohibited actions.</li>
+<li>Using the scoring framework above (or your own weighting), rank your shortlist and pick one program to focus your Path 15 practice on for the remaining lessons in this path.</li>
+</ol>
+<p>A program&#39;s scope lists <code>*.example.com</code> as in-scope. During recon, you discover <code>blog.example.com</code> is hosted entirely on a third-party platform (WordPress.com) with no direct infrastructure connection to Example Corp. Should you test it?</p>
+<details><summary>Show answer</summary>Check the scope document's explicit exclusions <strong>before</strong> assuming a wildcard covers everything — many programs specifically exclude third-party-hosted subdomains exactly like this, even when they technically match the wildcard pattern, precisely because the underlying infrastructure isn't actually owned or controlled by the company running the program (WordPress.com's own security, not Example Corp's, would be responsible for that infrastructure). Always look for an explicit "out of scope" list before testing anything that seems like it might be third-party hosted.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Scope document</strong> — the precise, legally-meaningful definition of what&#39;s authorized for testing.</li>
+<li><strong>Safe harbor</strong> — a program&#39;s explicit commitment not to pursue legal action against good-faith in-scope research.</li>
+<li><strong>Private program</strong> — invite-only, typically extended after demonstrating quality on public programs.</li>
+<li><strong>Wildcard scope</strong> — a broad scope definition (e.g., <code>*.example.com</code>) rewarding thorough subdomain recon.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Program selection is a genuine strategic skill, not just picking the most famous option available.</li>
+<li>Program age, scope breadth, reward structure, and response reputation all factor into smart selection.</li>
+<li>Wildcard scopes reward the subdomain enumeration techniques from Path 11.3.</li>
+<li>Private programs, earned through consistent quality public work, typically offer significantly less competition.</li>
+<li>Always verify safe harbor language and explicit scope exclusions before testing anything.</li>
+</ul>
+<h3>References</h3>
+<ul>
+<li><a href="https://hackerone.com/directory/programs">HackerOne — Directory</a> — browsable public program listings.</li>
+<li><a href="https://www.bugcrowd.com/programs/">Bugcrowd — Programs</a> — browsable public program listings.</li>
+<li><a href="https://disclose.io/">Disclose.io — Safe Harbor project</a> — standardised safe harbor language and legal resources for researchers.</li>
+<li><a href="https://bugcrowd.com/vulnerability-rating-taxonomy">Bugcrowd — Vulnerability Rating Taxonomy</a> — understanding how severity maps to reward expectations.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/15-bug-bounty/recon-pipeline">Building a recon pipeline</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/15-bug-bounty/choose-programs";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

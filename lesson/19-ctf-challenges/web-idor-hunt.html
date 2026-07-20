@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Web — The IDOR Hunt — Path 19 · KashSec Academy</title>
+<meta name="description" content="Category: Web · Difficulty: Easy">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/19-ctf-challenges/web-idor-hunt">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Web — The IDOR Hunt — Path 19 · KashSec Academy">
+<meta property="og:description" content="Category: Web · Difficulty: Easy">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/19-ctf-challenges/web-idor-hunt">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Web — The IDOR Hunt — Path 19 · KashSec Academy">
+<meta name="twitter:description" content="Category: Web · Difficulty: Easy">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Web — The IDOR Hunt — Path 19 · KashSec Academy","description":"Category: Web · Difficulty: Easy","url":"https://kashsec.vercel.app/#/lesson/19-ctf-challenges/web-idor-hunt","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/19-ctf-challenges/web-idor-hunt">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 19 — CTF Challenges</a> · Web — The IDOR Hunt</div>
+  <article><h1>Web — The IDOR Hunt</h1>
+<p><strong>Category:</strong> Web · <strong>Difficulty:</strong> Easy</p>
+<h2>Scenario</h2>
+<p>You&#39;re testing <code>internal-notes.kashsec-labs.test</code>, a note-taking app used by a fictional small company. You&#39;ve registered a free account (user ID <code>1042</code>) and created one note. While using the app normally, you notice the note viewer makes a request that looks like this:</p>
+<pre><code>GET /api/notes/8831 HTTP/1.1
+Host: internal-notes.kashsec-labs.test
+Cookie: session=a91f...redacted
+</code></pre>
+<p>Your own note loaded at ID <code>8831</code>. Curious, you decide to test what happens with a nearby ID.</p>
+<h2>Provided data</h2>
+<p>Here are three responses you captured while manually testing nearby note IDs:</p>
+<pre><code class="language-json">// GET /api/notes/8830
+{
+  &quot;id&quot;: 8830,
+  &quot;owner_id&quot;: 1041,
+  &quot;title&quot;: &quot;Q3 budget draft — DO NOT SHARE&quot;,
+  &quot;body&quot;: &quot;Final board approval numbers: revenue target $4.2M, layoff contingency plan attached separately. Meeting password for board call: KASHSEC{1d0r-1s-2-e4sy}&quot;
+}
+</code></pre>
+<pre><code class="language-json">// GET /api/notes/8829
+{
+  &quot;error&quot;: &quot;Note not found&quot;
+}
+</code></pre>
+<pre><code class="language-json">// GET /api/notes/8832
+{
+  &quot;id&quot;: 8832,
+  &quot;owner_id&quot;: 1043,
+  &quot;title&quot;: &quot;Grocery list&quot;,
+  &quot;body&quot;: &quot;milk, eggs, bread&quot;
+}
+</code></pre>
+<h2>Your task</h2>
+<p>Notice anything about how you accessed note <code>8830</code>? You didn&#39;t create it, and its <code>owner_id</code> (<code>1041</code>) doesn&#39;t match your account (<code>1042</code>) — yet the server returned its full contents without complaint.</p>
+<p><strong>The flag is already visible in the data above.</strong> Your real task is to explain <em>why</em> this happened — that&#39;s the actual skill being tested here, not just spotting the string.</p>
+<details><summary>Hint 1</summary>Compare what identifies "your" note (something tied to your session/cookie) versus what identifies "which note to return" (the number in the URL). Are these the same thing, as far as the server is concerned?</details>
+<details><summary>Hint 2</summary>The server checked "does a note with this ID exist?" — but never checked "does this note belong to the user making the request?" That missing second check has a name.</details>
+<details><summary>Show full answer</summary>This is a textbook <strong>Insecure Direct Object Reference (IDOR)</strong> — part of the broader "Broken Access Control" category, consistently the #1 issue in the OWASP Top 10. The API uses the raw, guessable/enumerable <code>note_id</code> directly from the URL to fetch and return data, without ever verifying that the requesting user's session actually owns (or has permission to view) that specific note. Because IDs are small sequential integers, an attacker doesn't even need to guess — simply incrementing or decrementing the ID from their own note systematically walks through every other user's private data. The fix is an authorization check on every single request: <code>if note.owner_id != current_user.id: return 403</code>, enforced server-side, every time — never inferred from the URL alone.</details><h2>The flag</h2>
+<pre><code>KASHSEC{1d0r-1s-2-e4sy}
+</code></pre>
+<h2>Why this matters beyond the CTF</h2>
+<p>IDOR is one of the most commonly <em>and easily</em> found vulnerability classes in real bug bounty programs — precisely because testing for it requires nothing more than two test accounts and the willingness to change a number in a URL or request body. Path 11&#39;s lesson on <strong>Broken Access &amp; IDOR</strong>, and Path 15&#39;s <strong>Hunting IDOR</strong> lesson, cover the full &quot;two-account method&quot; for finding these systematically in real, authorized testing — this challenge is the compressed, self-contained version of that exact workflow.</p>
+<h2>Bonus round — a disguised variant</h2>
+<p>Before moving on, try this harder variant using the same underlying vulnerability. The app&#39;s export feature makes a different-looking request:</p>
+<pre><code>GET /api/notes/export?token=bm90ZS04ODMw HTTP/1.1
+Host: internal-notes.kashsec-labs.test
+Cookie: session=a91f...redacted
+</code></pre>
+<p>That <code>token</code> value doesn&#39;t look like a plain integer ID — but is it actually any safer? Try decoding <code>bm90ZS04ODMw</code> (it&#39;s a very common, easily-reversible text encoding, not encryption) before checking the hint.</p>
+<details><summary>Hint</summary>The encoding is Base64 — decode it and see what you get. Does obscuring an ID's *appearance* change whether the server performs an ownership check on it?</details>
+<details><summary>Show answer</summary><code>bm90ZS04ODMw</code> decodes to <code>note-8830</code> — the exact same note ID from the main challenge, just wrapped in Base64. This is a classic beginner mistake: encoding an identifier is <strong>not</strong> the same as protecting it. Base64 (like the URL-encoding, hex, and other encodings covered in Path 05's DevTools lesson) is trivially reversible by anyone, and provides zero actual security — the server still needs the exact same ownership check on this endpoint as on the plain <code>/api/notes/{id}</code> one. A disguised IDOR is still an IDOR; only genuine server-side authorization logic fixes it, never obscuring the parameter's format.</details><p>Not every IDOR is equally severe — an IDOR exposing another user&#39;s grocery list (like note <code>8832</code> above) is a low-impact finding; one exposing board meeting passwords or financial data (like note <code>8830</code>) can be critical. Always assess and report the actual <em>impact</em> of what the exposed data allows, not just the mechanical existence of the bug — this is exactly what separates a strong bug bounty report from a weak one.</p>
+<p><strong>Next up →</strong> <a href="#/lesson/19-ctf-challenges/crypto-layered-cipher">Crypto — The Layered Cipher</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/19-ctf-challenges/web-idor-hunt";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

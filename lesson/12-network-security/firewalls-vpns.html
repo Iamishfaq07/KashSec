@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Firewalls, VPNs, proxies — Path 12 · KashSec Academy</title>
+<meta name="description" content="Two of the most fundamental network security controls — one restricts what traffic is allowed, the other protects what traffic can be seen. Every organisation's network relies on both, in various form">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/12-network-security/firewalls-vpns">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Firewalls, VPNs, proxies — Path 12 · KashSec Academy">
+<meta property="og:description" content="Two of the most fundamental network security controls — one restricts what traffic is allowed, the other protects what traffic can be seen. Every organisation's network relies on both, in various form">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/12-network-security/firewalls-vpns">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Firewalls, VPNs, proxies — Path 12 · KashSec Academy">
+<meta name="twitter:description" content="Two of the most fundamental network security controls — one restricts what traffic is allowed, the other protects what traffic can be seen. Every organisation's network relies on both, in various form">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Firewalls, VPNs, proxies — Path 12 · KashSec Academy","description":"Two of the most fundamental network security controls — one restricts what traffic is allowed, the other protects what traffic can be seen. Every organisation's network relies on both, in various form","url":"https://kashsec.vercel.app/#/lesson/12-network-security/firewalls-vpns","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/12-network-security/firewalls-vpns">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 12 — Network Security</a> · Firewalls, VPNs, proxies</div>
+  <article><h1>Firewalls &amp; VPNs</h1>
+<p>Two of the most fundamental network security controls — one restricts <em>what traffic is allowed</em>, the other protects <em>what traffic can be seen</em>. Every organisation&#39;s network relies on both, in various forms.</p>
+<h2>Firewalls — the gatekeeper</h2>
+<p>A <strong>firewall</strong> inspects network traffic and allows or blocks it based on a set of rules. Conceptually, it&#39;s a checkpoint between two zones of differing trust — most commonly, between your internal network and the wider internet.</p>
+<h3>Types of firewalls, by generation</h3>
+<ul>
+<li><strong>Packet-filtering firewalls</strong> — the earliest generation. Inspect individual packets against static rules (source/destination IP, port, protocol) with <strong>no memory</strong> of previous packets. Fast but simplistic.</li>
+<li><strong>Stateful firewalls</strong> — track the state of active connections (recall the TCP handshake). Understands that an incoming packet is a legitimate <em>response</em> to an outbound request you initiated, vs. an unsolicited inbound connection attempt — a massive security improvement over stateless filtering.</li>
+<li><strong>Next-Generation Firewalls (NGFW)</strong> — add application-layer awareness (distinguishing &quot;this is Netflix traffic&quot; from &quot;this is a file transfer,&quot; even on the same port), integrated intrusion prevention, and often deep packet inspection.</li>
+<li><strong>Web Application Firewalls (WAF)</strong> — specifically understand HTTP/HTTPS traffic and application-layer attack patterns (SQLi, XSS signatures from Path 11) — sitting in front of web applications specifically, distinct from network-level firewalls protecting entire infrastructure.</li>
+</ul>
+<h3>Firewall rules — the basic logic</h3>
+<pre><code>ALLOW  tcp  any        -&gt; 10.0.0.5:443   (allow HTTPS to the web server)
+ALLOW  tcp  10.0.0.0/24 -&gt; 10.0.0.10:22  (allow SSH only from the internal subnet)
+DENY   tcp  any        -&gt; 10.0.0.10:22   (block SSH from everywhere else)
+DENY   all  any        -&gt; any            (default deny — the safest default policy)
+</code></pre>
+<p>The <strong>default deny</strong> principle — blocking everything not explicitly allowed, rather than allowing everything not explicitly blocked — is the foundational best practice across nearly all of security, not just firewalls (echoing the &quot;deny by default&quot; idea from Path 11.4&#39;s IDOR defences).</p>
+<h3>A simple Linux firewall — iptables/nftables basics</h3>
+<p>Kali (and most Linux systems) ship with kernel-level firewall capability, configured via <code>iptables</code> (legacy) or <code>nftables</code> (modern):</p>
+<pre><code class="language-bash"># View current rules:
+sudo iptables -L -v
+
+# Allow SSH:
+sudo iptables -A INPUT -p tcp --dport 22 -j ACCEPT
+
+# Allow established/related connections back in (stateful):
+sudo iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+
+# Default deny everything else inbound:
+sudo iptables -P INPUT DROP
+</code></pre>
+<p>Even a personal Linux machine benefits from a properly configured firewall — this is exactly the kind of hardening step from Path 10.7 made concrete at the OS level.</p>
+<h3>UFW — a friendlier front-end</h3>
+<pre><code class="language-bash">sudo apt install ufw -y
+sudo ufw default deny incoming
+sudo ufw default allow outgoing
+sudo ufw allow ssh
+sudo ufw enable
+sudo ufw status verbose
+</code></pre>
+<p><strong>UFW</strong> (&quot;Uncomplicated Firewall&quot;) wraps iptables with a much friendlier syntax — a great starting point for beginners hardening their own Kali VM or a personal Linux server.</p>
+<h2>VPNs — encrypted tunnels</h2>
+<p>A <strong>VPN (Virtual Private Network)</strong> creates an encrypted tunnel between your device and a remote network (or VPN provider), making your traffic:</p>
+<ul>
+<li><strong>Encrypted</strong> in transit, unreadable to anyone intercepting it along the path (recall your own Wireshark experiment from the previous lesson).</li>
+<li><strong>Appear to originate</strong> from the VPN server&#39;s location/IP, rather than your own.</li>
+</ul>
+<h3>Two very different use cases, often confused</h3>
+<ul>
+<li><strong>Corporate/remote-access VPN</strong> — lets employees securely connect to internal company resources (servers, internal tools) as if they were physically on the office network, while working remotely. This is the VPN context most relevant to enterprise security work.</li>
+<li><strong>Consumer/commercial VPN</strong> (NordVPN, ExpressVPN, etc.) — primarily used to mask your IP/location from websites and your own ISP, and to protect traffic on untrusted networks (public Wi-Fi). Provides real privacy benefits, but <strong>does not make you &quot;anonymous&quot; or &quot;untraceable&quot;</strong> in any absolute sense — the VPN provider itself can typically see your traffic, shifting trust rather than eliminating it.</li>
+</ul>
+<h3>Common VPN protocols</h3>
+<table>
+<thead>
+<tr>
+<th>Protocol</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>OpenVPN</strong></td>
+<td>Mature, widely supported, open-source, flexible</td>
+</tr>
+<tr>
+<td><strong>WireGuard</strong></td>
+<td>Modern, much simpler codebase, excellent performance, increasingly the default choice</td>
+</tr>
+<tr>
+<td><strong>IPsec/IKEv2</strong></td>
+<td>Common in enterprise and mobile contexts, good for fast reconnection when switching networks</td>
+</tr>
+</tbody></table>
+<h3>A quick WireGuard config example</h3>
+<pre><code class="language-ini"># /etc/wireguard/wg0.conf (client side)
+[Interface]
+PrivateKey = &lt;your-private-key&gt;
+Address = 10.0.0.2/24
+DNS = 1.1.1.1
+
+[Peer]
+PublicKey = &lt;server-public-key&gt;
+Endpoint = vpn.example.com:51820
+AllowedIPs = 0.0.0.0/0
+</code></pre>
+<pre><code class="language-bash">sudo wg-quick up wg0     # bring the tunnel up
+sudo wg-quick down wg0   # bring it down
+</code></pre>
+<p>WireGuard&#39;s config simplicity (compared to older OpenVPN configs) is a major reason for its rapid adoption industry-wide.</p>
+<h2>Firewalls and VPNs working together — a typical enterprise pattern</h2>
+<p>An employee&#39;s traffic is encrypted via VPN in transit, then the firewall at the gateway enforces exactly which internal resources that authenticated tunnel is allowed to reach — layering encryption (confidentiality) with access control (least privilege), rather than relying on either alone.</p>
+<h2>Forward vs reverse proxies — the other traffic middlemen</h2>
+<p>Beyond firewalls and VPNs, <strong>proxies</strong> are the third major traffic-control primitive, and the two directions are easy to confuse. A <strong>forward proxy</strong> sits in front of <em>clients</em>, making requests on their behalf — Burp Suite (Path 11.2) is literally a forward proxy, and so are corporate web filters that route every employee&#39;s outbound traffic through a central checkpoint for content filtering and logging. A <strong>reverse proxy</strong> sits in front of <em>servers</em> instead, receiving all inbound requests and distributing them to backend systems — this is exactly the load balancer role from Path 05&#39;s web-anatomy lesson, and tools like Nginx and Cloudflare routinely serve as reverse proxies, terminating TLS, caching content, and shielding the real backend server&#39;s IP address from direct exposure to the internet. The one-sentence distinction worth remembering: forward proxies protect and represent <em>clients</em>, reverse proxies protect and represent <em>servers</em>.</p>
+<h2>Split tunneling — a VPN configuration choice worth understanding</h2>
+<p>Not every VPN routes <em>all</em> of a device&#39;s traffic through the tunnel. <strong>Split tunneling</strong> lets an administrator (or user) configure only <em>specific</em> traffic to go through the VPN — say, traffic destined for internal company servers — while everything else (regular internet browsing) goes directly out the normal connection, bypassing the tunnel entirely. This has real tradeoffs: it reduces load on the VPN gateway and can improve performance for non-corporate traffic, but it also means a compromised device connected via split tunneling has one foot in the trusted internal network and one foot in the untrusted open internet simultaneously — a genuine security tradeoff that security teams weigh carefully, and exactly the kind of nuance that shows why &quot;connected via VPN&quot; alone (as the challenge below explores) never tells the whole access-control story.</p>
+<h2>The rise of Zero Trust — a modern evolution</h2>
+<p>Traditional network security assumed &quot;inside the firewall/VPN = trusted.&quot; <strong>Zero Trust</strong> architecture instead assumes <strong>no</strong> implicit trust based on network location alone — every request, from anywhere, must be authenticated and authorised on its own merits, continuously, regardless of whether it originates &quot;inside&quot; the traditional perimeter. This is a significant, ongoing industry shift worth being aware of as you progress — the old &quot;castle and moat&quot; model is increasingly considered insufficient on its own.</p>
+<h2>🧪 Lab — Configure UFW on your Kali VM</h2>
+<pre><code class="language-bash">sudo apt install ufw -y
+
+# Set sensible defaults:
+sudo ufw default deny incoming
+sudo ufw default allow outgoing
+
+# Allow only what you actually need:
+sudo ufw allow ssh
+sudo ufw allow from 192.168.56.0/24    # allow your lab network specifically
+
+# Enable and verify:
+sudo ufw enable
+sudo ufw status verbose
+
+# Try connecting to a port you haven&#39;t allowed from another VM/device
+# and confirm the connection is refused/blocked as expected.
+</code></pre>
+<p>You&#39;ve just hardened your own lab machine using exactly the default-deny principle covered in this lesson.</p>
+<p>An employee&#39;s VPN client successfully establishes an encrypted tunnel to the company network. Does that alone guarantee they can access every internal server? Why or why not?</p>
+<details><summary>Show answer</summary>No. The VPN provides an <strong>encrypted, authenticated path into the network</strong> — but the <strong>firewall</strong> (and any further internal access controls) still determines exactly which specific internal resources that connection is permitted to reach. Encryption and access control are separate, complementary layers; a VPN alone doesn't imply unrestricted internal access, especially under a properly-implemented Zero Trust model.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Firewall</strong> — inspects and allows/blocks traffic based on rules.</li>
+<li><strong>Stateful inspection</strong> — tracking connection state rather than evaluating packets in isolation.</li>
+<li><strong>NGFW / WAF</strong> — application-aware and HTTP-specific firewall variants respectively.</li>
+<li><strong>Default deny</strong> — blocking everything not explicitly allowed; the safest baseline policy.</li>
+<li><strong>VPN</strong> — an encrypted tunnel protecting traffic confidentiality and/or masking origin.</li>
+<li><strong>Zero Trust</strong> — assuming no implicit trust from network location alone; continuous verification everywhere.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Firewalls have evolved from simple packet filters to application-aware NGFWs and HTTP-specific WAFs.</li>
+<li>Default deny is the safest baseline firewall policy, mirroring the &quot;deny by default&quot; principle from Path 11.</li>
+<li>VPNs encrypt traffic in transit and can mask origin — but corporate and consumer use cases serve very different purposes.</li>
+<li>WireGuard&#39;s simplicity is driving rapid industry adoption over older protocols like OpenVPN.</li>
+<li>Zero Trust represents a significant shift away from &quot;inside the perimeter = trusted.&quot;</li>
+</ul>
+<h3>References</h3>
+<ul>
+<li><a href="https://csrc.nist.gov/pubs/sp/800/41/r1/final">NIST SP 800-41 — Guidelines on Firewalls</a> — official US guidance.</li>
+<li><a href="https://www.wireguard.com/">WireGuard official site</a> — protocol documentation and design rationale.</li>
+<li><a href="https://help.ubuntu.com/community/UFW">UFW documentation — Ubuntu/Debian wiki</a></li>
+<li><a href="https://csrc.nist.gov/pubs/sp/800/207/final">NIST SP 800-207 — Zero Trust Architecture</a> — the official Zero Trust reference.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/12-network-security/ids-ips-siem">IDS, IPS &amp; SIEM</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/12-network-security/firewalls-vpns";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

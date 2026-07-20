@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What is an operating system? — Path 03 · KashSec Academy</title>
+<meta name="description" content="You'll spend your whole career working on top of operating systems, and many attacks target them directly. If you don't know what an OS actually does, a lot of security will feel like guesswork.">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/03-linux/what-is-an-os">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="What is an operating system? — Path 03 · KashSec Academy">
+<meta property="og:description" content="You'll spend your whole career working on top of operating systems, and many attacks target them directly. If you don't know what an OS actually does, a lot of security will feel like guesswork.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/03-linux/what-is-an-os">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="What is an operating system? — Path 03 · KashSec Academy">
+<meta name="twitter:description" content="You'll spend your whole career working on top of operating systems, and many attacks target them directly. If you don't know what an OS actually does, a lot of security will feel like guesswork.">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"What is an operating system? — Path 03 · KashSec Academy","description":"You'll spend your whole career working on top of operating systems, and many attacks target them directly. If you don't know what an OS actually does, a lot of security will feel like guesswork.","url":"https://kashsec.vercel.app/#/lesson/03-linux/what-is-an-os","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/03-linux/what-is-an-os">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 03 — Operating Systems & Linux</a> · What is an operating system?</div>
+  <article><h1>What is an operating system?</h1>
+<p>You&#39;ll spend your whole career working <em>on top of</em> operating systems, and many attacks target them directly. If you don&#39;t know what an OS actually does, a lot of security will feel like guesswork.</p>
+<h2>The definition</h2>
+<p>An <strong>operating system</strong> (OS) is the main software that runs a computer. It&#39;s the <strong>manager</strong> sitting between you and the physical hardware, quietly making everything work together.</p>
+<p>When you click an icon, type a key, or save a file, the OS is what actually makes it happen. Without it, a computer is just a lifeless box of parts.</p>
+<p><em>[The OS sits between you and the hardware]</em></p>
+<h2>What the manager actually manages</h2>
+<ul>
+<li><strong>The hardware</strong> — the screen, keyboard, storage, memory, and processor. The OS translates your clicks and keystrokes into instructions the hardware understands.</li>
+<li><strong>Your programs</strong> — it launches your apps, gives each a slice of memory and processor time, and stops them crashing into each other.</li>
+<li><strong>Files</strong> — it organises everything into folders and tracks where each file lives on disk.</li>
+<li><strong>Access and permissions</strong> — the big one for us: the OS decides <strong>who is allowed to do what.</strong> Which user can read which file, who can install software, who has full control. This is a security system built into the very heart of every computer.</li>
+</ul>
+<h2>Why security people care so deeply</h2>
+<p>Because the OS controls access, <strong>taking control of the OS usually means taking control of everything on the machine</strong> — files, data, network connections. A giant portion of hacking is about escalating from limited access to full control.</p>
+<p>When you later hear the phrases &quot;<strong>getting root</strong>&quot; (Linux) or &quot;<strong>getting SYSTEM</strong>&quot; (Windows), it means becoming the all-powerful user the OS answers to.</p>
+<p>Think of the OS as the <strong>building manager who holds every key.</strong> Convince or trick the manager, and every door in the building opens. That&#39;s why attackers target it.</p>
+<h2>What&#39;s inside an OS (a first look)</h2>
+<p>Without going deep, an OS has a few big pieces:</p>
+<ul>
+<li><strong>Kernel</strong> — the innermost, most trusted code. Talks to hardware directly. When you hear &quot;kernel exploit,&quot; it means someone found a bug there → total control.</li>
+<li><strong>User space</strong> — where all your normal programs run. Isolated from each other by the kernel.</li>
+<li><strong>Shell</strong> — the command interface (bash, zsh, PowerShell). What you use in a terminal.</li>
+<li><strong>Filesystem</strong> — how files are laid out on disk.</li>
+<li><strong>Drivers</strong> — small programs that let the kernel talk to specific hardware (Wi-Fi card, GPU).</li>
+</ul>
+<p>You&#39;ll meet all of these more concretely as you go through this path.</p>
+<h2>Kernel mode vs. user mode — the privilege boundary that protects everything</h2>
+<p>Modern CPUs support different privilege levels, often called <strong>rings</strong> — <strong>ring 0</strong> (kernel mode) has unrestricted access to hardware and memory, while <strong>ring 3</strong> (user mode) is deliberately restricted, unable to directly touch hardware or another program&#39;s memory. Your normal applications — a browser, a game, a word processor — all run in user mode; only the kernel itself runs in ring 0. When a user-mode program needs something only the kernel can do (open a file, send network data, allocate memory), it makes a <strong>system call</strong> — a tightly controlled, well-defined request to the kernel, which validates it before acting. This boundary is exactly what a <strong>kernel exploit</strong> breaks through: a bug allowing user-mode code to somehow execute with kernel-mode privileges, instantly escalating from &quot;one restricted program&quot; to &quot;total control of the machine&quot; — precisely the escalation Path 16&#39;s privilege escalation lessons study in depth.</p>
+<h2>The boot process, briefly</h2>
+<p>When you power on a computer, the OS doesn&#39;t appear instantly — it loads through a specific sequence: firmware (BIOS or the more modern UEFI) initializes basic hardware and locates a <strong>bootloader</strong> (GRUB on most Linux systems), which then loads the kernel into memory and hands off control to it. The kernel initializes drivers and core services, then starts the first user-space process, which cascades into starting every other background service and eventually your login screen. This sequence matters for security because it&#39;s a common <strong>persistence</strong> target — malware (or a legitimate but malicious modification) that hooks into an early stage of this boot sequence can potentially load before most security software even starts running, referenced again in Path 17&#39;s rootkit/bootkit discussion.</p>
+<p>Name the OS&#39;s job that is essentially a built-in security system.</p>
+<details><summary>Show answer</summary>Managing <strong>access and permissions</strong> — deciding who is allowed to do what.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Operating system (OS)</strong> — the manager software running a computer.</li>
+<li><strong>Kernel</strong> — the innermost, most trusted part of the OS.</li>
+<li><strong>Shell</strong> — the command-line interface.</li>
+<li><strong>User space</strong> — where normal programs run.</li>
+<li><strong>Root / SYSTEM</strong> — the all-powerful user (Linux / Windows).</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>The OS is the manager between you and the hardware.</li>
+<li>It runs programs, organises files, controls hardware, and enforces permissions.</li>
+<li>Controlling the OS usually means controlling the whole machine — which is why attackers target it.</li>
+<li>The kernel is its innermost, most trusted part.</li>
+</ul>
+<h3>References</h3>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Operating_system">Operating system — Wikipedia</a> — broad overview.</li>
+<li><a href="https://www.kernel.org/">The linux kernel</a> — the official source of the Linux kernel itself.</li>
+<li><a href="https://www.youtube.com/watch?v=Kf3aLQOXbnk">How an OS works — Computerphile (YouTube)</a> — a nice friendly video.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/03-linux/windows-linux-mac">Windows vs Linux vs macOS</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/03-linux/what-is-an-os";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your first bash script — Path 03 · KashSec Academy</title>
+<meta name="description" content="You've learned commands. Now let's chain them into a script — a file the shell runs top to bottom. This is the moment &quot;using Linux&quot; becomes &quot;automating Linux,&quot; and it's genuinely a superpower.">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/03-linux/bash-scripting">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Your first bash script — Path 03 · KashSec Academy">
+<meta property="og:description" content="You've learned commands. Now let's chain them into a script — a file the shell runs top to bottom. This is the moment &quot;using Linux&quot; becomes &quot;automating Linux,&quot; and it's genuinely a superpower.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/03-linux/bash-scripting">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Your first bash script — Path 03 · KashSec Academy">
+<meta name="twitter:description" content="You've learned commands. Now let's chain them into a script — a file the shell runs top to bottom. This is the moment &quot;using Linux&quot; becomes &quot;automating Linux,&quot; and it's genuinely a superpower.">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Your first bash script — Path 03 · KashSec Academy","description":"You've learned commands. Now let's chain them into a script — a file the shell runs top to bottom. This is the moment \"using Linux\" becomes \"automating Linux,\" and it's genuinely a superpower.","url":"https://kashsec.vercel.app/#/lesson/03-linux/bash-scripting","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/03-linux/bash-scripting">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 03 — Operating Systems & Linux</a> · Your first bash script</div>
+  <article><h1>Your first bash script</h1>
+<p>You&#39;ve learned commands. Now let&#39;s chain them into a <strong>script</strong> — a file the shell runs top to bottom. This is the moment &quot;using Linux&quot; becomes &quot;automating Linux,&quot; and it&#39;s genuinely a superpower.</p>
+<h2>What a script is</h2>
+<p>A <strong>shell script</strong> is a text file containing commands, plus a first line that tells Linux which interpreter should run them. For Bash:</p>
+<pre><code class="language-bash">#!/bin/bash
+# This line above is called a &quot;shebang&quot;.
+echo &quot;Hello from your first script!&quot;
+</code></pre>
+<p>Save that as <code>hello.sh</code>, make it executable, run it:</p>
+<pre><code class="language-bash">chmod +x hello.sh
+./hello.sh
+</code></pre>
+<p>That&#39;s it — you wrote and ran a script.</p>
+<h2>Variables</h2>
+<pre><code class="language-bash">name=&quot;Ishfaq&quot;
+echo &quot;Hi, $name&quot;
+
+count=5
+echo &quot;You have $count files&quot;
+
+# Backticks or $() run a command and use its output:
+today=$(date +%Y-%m-%d)
+echo &quot;Today is $today&quot;
+
+# Prompting for input:
+read -p &quot;Enter a target IP: &quot; target
+echo &quot;You entered $target&quot;
+</code></pre>
+<h3>Reading command-line arguments</h3>
+<p>Real scripts take input directly from how they&#39;re invoked, not just interactive prompts — genuinely essential once you start building the recon and automation tools referenced throughout Path 04 and Path 15:</p>
+<pre><code class="language-bash">#!/bin/bash
+# Usage: ./scan.sh target.com
+
+target=$1        # the first argument
+echo &quot;Scanning $target...&quot;
+echo &quot;Total arguments given: $#&quot;
+echo &quot;All arguments: $@&quot;
+</code></pre>
+<p>Run it as <code>./scan.sh target.com</code> and <code>$1</code> holds <code>target.com</code> automatically — this is exactly how every command-line security tool you&#39;ve used so far (<code>nmap</code>, <code>dig</code>, <code>curl</code>) accepts a target, and now you can build tools that work the same way.</p>
+<h2>Conditions</h2>
+<pre><code class="language-bash">#!/bin/bash
+read -p &quot;Enter a number: &quot; n
+if [ &quot;$n&quot; -gt 100 ]; then
+    echo &quot;Big number&quot;
+elif [ &quot;$n&quot; -gt 10 ]; then
+    echo &quot;Medium&quot;
+else
+    echo &quot;Small&quot;
+fi
+</code></pre>
+<p>Common test operators:</p>
+<table>
+<thead>
+<tr>
+<th>Test</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>-eq</code> / <code>-ne</code></td>
+<td>equal / not equal (numbers)</td>
+</tr>
+<tr>
+<td><code>-gt</code> / <code>-lt</code> / <code>-ge</code> / <code>-le</code></td>
+<td>greater / less / … or equal (numbers)</td>
+</tr>
+<tr>
+<td><code>=</code> / <code>!=</code></td>
+<td>string equal / not equal</td>
+</tr>
+<tr>
+<td><code>-z</code></td>
+<td>string is empty</td>
+</tr>
+<tr>
+<td><code>-n</code></td>
+<td>string is non-empty</td>
+</tr>
+<tr>
+<td><code>-f file</code></td>
+<td>file exists</td>
+</tr>
+<tr>
+<td><code>-d dir</code></td>
+<td>directory exists</td>
+</tr>
+<tr>
+<td><code>-r</code>/<code>-w</code>/<code>-x</code></td>
+<td>readable / writable / executable</td>
+</tr>
+</tbody></table>
+<h2>Loops</h2>
+<pre><code class="language-bash"># For each item:
+for host in scanme.nmap.org example.com; do
+    echo &quot;Pinging $host...&quot;
+    ping -c 1 &quot;$host&quot; &gt; /dev/null &amp;&amp; echo &quot;up&quot; || echo &quot;down&quot;
+done
+
+# Read a file line by line:
+while read -r line; do
+    echo &quot;Line: $line&quot;
+done &lt; hosts.txt
+
+# Classic counter:
+for i in {1..10}; do
+    echo &quot;Attempt $i&quot;
+done
+</code></pre>
+<h2>A tiny real security script — port sweep</h2>
+<p>Here&#39;s a script that checks which of a small list of hosts responds on port 80. This is the kind of one-off tool you&#39;ll write constantly.</p>
+<pre><code class="language-bash">#!/bin/bash
+# port-sweep.sh — quick check port 80 on a hosts file
+
+if [ ! -f &quot;$1&quot; ]; then
+    echo &quot;Usage: $0 hosts.txt&quot;
+    exit 1
+fi
+
+while read -r host; do
+    if timeout 2 bash -c &quot;echo &gt; /dev/tcp/$host/80&quot; 2&gt;/dev/null; then
+        echo &quot;[+] $host  port 80 open&quot;
+    else
+        echo &quot;[-] $host  closed/filtered&quot;
+    fi
+done &lt; &quot;$1&quot;
+</code></pre>
+<p>Save, <code>chmod +x port-sweep.sh</code>, make a <code>hosts.txt</code> with a few names, and run:</p>
+<pre><code class="language-bash">./port-sweep.sh hosts.txt
+</code></pre>
+<p>You just built a mini port scanner in ten lines of Bash. This is exactly the kind of throwaway tool professionals write daily.</p>
+<h2>Functions</h2>
+<pre><code class="language-bash">banner() {
+    echo &quot;===============================&quot;
+    echo &quot;  $1&quot;
+    echo &quot;===============================&quot;
+}
+
+banner &quot;Recon starting&quot;
+# do stuff
+banner &quot;Recon complete&quot;
+</code></pre>
+<h2>Exit codes</h2>
+<p>Every command returns an <strong>exit code</strong>: <code>0</code> = success, anything else = failure. The variable <code>$?</code> holds the last one.</p>
+<pre><code class="language-bash">ls /nope
+echo $?    # non-zero
+ls /etc
+echo $?    # 0
+</code></pre>
+<p>You can combine commands based on success:</p>
+<pre><code class="language-bash">apt update &amp;&amp; apt upgrade -y      # run second only if first succeeded
+curl -f http://target/ || echo &quot;target unreachable&quot;  # run second only if first failed
+</code></pre>
+<h2>Cron — schedule scripts to run themselves</h2>
+<pre><code class="language-bash">crontab -e           # edit your scheduled jobs
+</code></pre>
+<p>A line like this runs <code>recon.sh</code> every day at 3am:</p>
+<pre><code>0 3 * * * /home/kali/recon.sh &gt;&gt; /home/kali/recon.log 2&gt;&amp;1
+</code></pre>
+<p>Format: <code>minute hour day-of-month month day-of-week command</code>. In Path 15 you&#39;ll use cron to keep bug-bounty recon fresh while you sleep.</p>
+<h2>Best practices worth adopting now</h2>
+<pre><code class="language-bash">#!/bin/bash
+set -euo pipefail
+# -e  → exit on any error
+# -u  → treat unset variables as error
+# -o pipefail → catch errors mid-pipeline
+
+# Always quote your variables:
+mv &quot;$file&quot; &quot;$destination&quot;
+
+# Store constants at the top:
+readonly TARGET=&quot;scanme.nmap.org&quot;
+readonly OUTDIR=&quot;/tmp/scan&quot;
+
+# Use meaningful names, not one-letter globals.
+</code></pre>
+<p>Following even half of these makes your scripts vastly more robust — and identifiable as &quot;written by someone who knows Bash.&quot;</p>
+<h2>When Bash isn&#39;t enough</h2>
+<p>Bash is perfect for glue and quick automation. When your script grows past ~100 lines, has complex data structures, or needs proper testing — switch to <strong>Python</strong> (that&#39;s Path 04). The rule of thumb: <em>if it needs a data structure more complex than &quot;list of strings,&quot; reach for Python.</em></p>
+<h2>🧪 Lab — A recon skeleton</h2>
+<p>Build this script — you&#39;ll extend it in Paths 14 and 10:</p>
+<pre><code class="language-bash">#!/bin/bash
+# recon.sh — very small recon skeleton
+
+set -euo pipefail
+
+if [ $# -ne 1 ]; then
+    echo &quot;Usage: $0 &lt;target-domain&gt;&quot;
+    exit 1
+fi
+
+target=$1
+outdir=&quot;./recon-$(date +%Y%m%d-%H%M%S)&quot;
+mkdir -p &quot;$outdir&quot;
+
+echo &quot;[*] Recon on $target&quot;
+echo &quot;[*] Output → $outdir&quot;
+
+# Basic DNS
+echo &quot;[*] DNS lookups...&quot;
+dig &quot;$target&quot; +short           &gt; &quot;$outdir/dns-a.txt&quot; 2&gt;&amp;1
+dig &quot;$target&quot; MX +short        &gt; &quot;$outdir/dns-mx.txt&quot; 2&gt;&amp;1
+dig &quot;$target&quot; TXT +short       &gt; &quot;$outdir/dns-txt.txt&quot; 2&gt;&amp;1
+
+# HTTP probe
+echo &quot;[*] HTTP probes...&quot;
+curl -sI &quot;http://$target&quot;   &gt; &quot;$outdir/http-headers.txt&quot;  2&gt;&amp;1 || true
+curl -sI &quot;https://$target&quot;  &gt; &quot;$outdir/https-headers.txt&quot; 2&gt;&amp;1 || true
+
+echo &quot;[+] Done. See $outdir/&quot;
+</code></pre>
+<p>Run it: <code>./recon.sh example.com</code>. Explore the folder it produces. You&#39;ve written a real starter recon tool.</p>
+<p>What does the shebang line <code>#!/bin/bash</code> do at the top of a script?</p>
+<details><summary>Show answer</summary>Tells the system which interpreter to use for the rest of the file — in this case, Bash. Without it, the script may be run by whichever shell you happen to have, which can behave differently.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Shebang</strong> — <code>#!</code> line naming the interpreter.</li>
+<li><strong>Variable / interpolation</strong> — <code>x=1</code>, <code>$x</code>.</li>
+<li><strong>Condition / loop / function</strong> — the building blocks of any script.</li>
+<li><strong>Exit code</strong> — <code>0</code> success, non-zero failure.</li>
+<li><strong>cron / crontab</strong> — schedule scripts to run automatically.</li>
+<li><strong><code>set -euo pipefail</code></strong> — safer-scripts starter kit.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>A script is a text file of commands starting with a shebang.</li>
+<li>Variables, conditions, loops, functions — Bash has all the essentials for glue work.</li>
+<li>Combine commands with <code>&amp;&amp;</code> and <code>||</code> for flow control.</li>
+<li>Cron schedules scripts to run themselves — huge for automation.</li>
+<li>Beyond ~100 lines or complex data, switch to Python (Path 04).</li>
+</ul>
+<h3>References</h3>
+<ul>
+<li><a href="https://devhints.io/bash">Bash cheat sheet — Devhints</a> — printable one-pager.</li>
+<li><a href="https://tldp.org/LDP/abs/html/">Advanced Bash-Scripting Guide (TLDP)</a> — encyclopedic reference.</li>
+<li><a href="https://www.shellcheck.net/">ShellCheck</a> — paste any Bash script; it points out bugs and bad practice. Life-changing.</li>
+<li><a href="https://google.github.io/styleguide/shellguide.html">Google&#39;s Shell Style Guide</a> — a good template for professional habits.</li>
+</ul>
+<h2>🎉 You&#39;ve finished Path 03</h2>
+<p>You now know what an OS is, how Windows/Linux/macOS differ, why security lives on Linux, how to build a lab with VirtualBox and Kali, the terminal, filesystem navigation, permissions and sudo, and how to write real Bash scripts. This is a huge foundation — most beginners never get this far.</p>
+<p><strong>Next up →</strong> <a href="#/lesson/03-linux/advanced-terminal-lab">Advanced Terminal Lab</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/03-linux/bash-scripting";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

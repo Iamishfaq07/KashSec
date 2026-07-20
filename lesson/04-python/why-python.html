@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Why Python for security — Path 04 · KashSec Academy</title>
+<meta name="description" content="You've written a bit of Python now. Let's zoom out: why is Python the language of security tooling, and what shape do real security scripts take?">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/04-python/why-python">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Why Python for security — Path 04 · KashSec Academy">
+<meta property="og:description" content="You've written a bit of Python now. Let's zoom out: why is Python the language of security tooling, and what shape do real security scripts take?">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/04-python/why-python">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Why Python for security — Path 04 · KashSec Academy">
+<meta name="twitter:description" content="You've written a bit of Python now. Let's zoom out: why is Python the language of security tooling, and what shape do real security scripts take?">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Why Python for security — Path 04 · KashSec Academy","description":"You've written a bit of Python now. Let's zoom out: why is Python the language of security tooling, and what shape do real security scripts take?","url":"https://kashsec.vercel.app/#/lesson/04-python/why-python","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/04-python/why-python">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 04 — Programming & Python</a> · Why Python for security</div>
+  <article><h1>Why Python for security</h1>
+<p>You&#39;ve written a bit of Python now. Let&#39;s zoom out: why is Python <em>the</em> language of security tooling, and what shape do real security scripts take?</p>
+<h2>Python&#39;s superpowers for our field</h2>
+<ul>
+<li><strong>Readable.</strong> You can nearly read Python aloud. That matters when you&#39;re revisiting a script months later, or reading someone&#39;s exploit.</li>
+<li><strong>Batteries included.</strong> The standard library ships with everything from HTTP clients to hashing to sockets. You&#39;ll rarely need to install anything for basic work.</li>
+<li><strong>Enormous ecosystem.</strong> For anything else, <code>pip install &lt;thing&gt;</code> gets you battle-tested libraries. Requests, Scapy, BeautifulSoup, Pwntools, Impacket — the security world&#39;s toolbox.</li>
+<li><strong>Cross-platform.</strong> Runs on Windows, macOS, Linux; the same script usually works everywhere.</li>
+<li><strong>Interoperability.</strong> Talks to APIs, shells, C libraries, and databases with ease.</li>
+<li><strong>AI/ML native.</strong> Every modern AI/ML tool lives in Python — matters for Path 18.</li>
+</ul>
+<h2>The tools built in Python you&#39;ll use</h2>
+<p>Almost every serious open-source security tool is either in Python or has a Python binding:</p>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>sqlmap</strong></td>
+<td>Automatic SQL injection</td>
+</tr>
+<tr>
+<td><strong>Scapy</strong></td>
+<td>Craft &amp; sniff raw network packets</td>
+</tr>
+<tr>
+<td><strong>Impacket</strong></td>
+<td>Windows / AD attack primitives</td>
+</tr>
+<tr>
+<td><strong>Pwntools</strong></td>
+<td>Exploit development framework</td>
+</tr>
+<tr>
+<td><strong>Volatility</strong></td>
+<td>Memory forensics</td>
+</tr>
+<tr>
+<td><strong>theHarvester</strong></td>
+<td>OSINT email/name harvesting</td>
+</tr>
+<tr>
+<td><strong>CrackMapExec / NetExec</strong></td>
+<td>AD swiss-army knife</td>
+</tr>
+<tr>
+<td><strong>Requests</strong></td>
+<td>HTTP client (backbone of web tooling)</td>
+</tr>
+<tr>
+<td><strong>BeautifulSoup</strong></td>
+<td>HTML parsing for scrapers</td>
+</tr>
+<tr>
+<td><strong>Frida</strong></td>
+<td>Dynamic instrumentation for reverse engineering</td>
+</tr>
+</tbody></table>
+<p>Being able to read (and eventually modify) their source is a real advantage.</p>
+<h2>Python 2 vs Python 3</h2>
+<p>You&#39;ll occasionally see Python 2 code online. <strong>Ignore it.</strong> Python 2 reached end-of-life in 2020. Only ever use Python 3.</p>
+<pre><code class="language-bash">python3 --version    # should print something like 3.11.x on Kali
+</code></pre>
+<p>If a command online uses just <code>python</code>, replace it with <code>python3</code> to be sure.</p>
+<h2>Virtual environments — keep projects clean</h2>
+<p>As you install libraries, they can conflict between projects. The professional habit is a <strong>virtual environment</strong> — an isolated Python installation for one project.</p>
+<pre><code class="language-bash"># Create a venv in a folder called .venv
+python3 -m venv .venv
+
+# Activate it (Linux/Mac):
+source .venv/bin/activate
+
+# On Windows (PowerShell):
+.venv\Scripts\Activate
+
+# Now pip installs go INTO this venv only:
+pip install requests
+
+# Leave the venv:
+deactivate
+</code></pre>
+<p>Do this per project. Your future you will thank you.</p>
+<h2>pip — installing libraries</h2>
+<pre><code class="language-bash">pip install requests            # install
+pip install &quot;requests&gt;=2.31&quot;    # version constraint
+pip install -r requirements.txt # from a file
+pip list                        # what&#39;s installed
+pip freeze &gt; requirements.txt   # snapshot current versions
+</code></pre>
+<p>Most real Python projects have a <code>requirements.txt</code> listing everything they need. Include one when you ship your own scripts.</p>
+<p>Anyone can publish a package to PyPI (Python&#39;s public package index) — and attackers have repeatedly published malicious packages with names deliberately similar to popular ones (<code>reqeusts</code> instead of <code>requests</code>), banking on typos, exactly the <strong>typosquatting</strong> concept from Path 00&#39;s phishing lesson, applied here to package names instead of domains. Before installing an unfamiliar package, a quick check of its download count, GitHub repo, and recent activity is a cheap, worthwhile habit — directly connecting to the supply chain security material in Path 16&#39;s DevSecOps lab and Path 18&#39;s LLM supply chain lesson.</p>
+<h2>The shape of a real security script</h2>
+<p>Every professional-looking script tends to have this shape. Learn it now:</p>
+<pre><code class="language-python">#!/usr/bin/env python3
+&quot;&quot;&quot;
+port-check.py — Check if a list of ports is open on a target.
+Usage: python3 port-check.py &lt;target&gt; &lt;port1,port2,...&gt;
+&quot;&quot;&quot;
+
+import sys
+import socket
+
+TIMEOUT = 1.0
+
+def check_port(host: str, port: int) -&gt; bool:
+    &quot;&quot;&quot;Return True if TCP port is open on host, False otherwise.&quot;&quot;&quot;
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.settimeout(TIMEOUT)
+        try:
+            s.connect((host, port))
+            return True
+        except (socket.timeout, ConnectionRefusedError, OSError):
+            return False
+
+def main():
+    if len(sys.argv) != 3:
+        print(&quot;Usage: port-check.py &lt;target&gt; &lt;port1,port2,...&gt;&quot;)
+        sys.exit(1)
+
+    target = sys.argv[1]
+    ports = [int(p) for p in sys.argv[2].split(&quot;,&quot;)]
+
+    print(f&quot;[*] Checking {target}...&quot;)
+    for port in ports:
+        status = &quot;OPEN&quot; if check_port(target, port) else &quot;closed&quot;
+        print(f&quot;    {port}: {status}&quot;)
+
+if __name__ == &quot;__main__&quot;:
+    main()
+</code></pre>
+<p>Notice these professional touches — copy them in your own scripts:</p>
+<ol>
+<li><strong>Shebang</strong> on line 1.</li>
+<li><strong>Docstring</strong> at the top explaining what the script is for.</li>
+<li><strong>Constants at the top</strong> (<code>TIMEOUT</code>), variable stuff in functions.</li>
+<li><strong>Type hints</strong> (<code>host: str, port: int -&gt; bool</code>) — self-documenting.</li>
+<li><strong><code>with</code> statement</strong> ensures the socket is closed even on error.</li>
+<li><strong>Specific exceptions caught</strong>, not bare <code>except:</code>.</li>
+<li><strong><code>main()</code> function</strong>, called only if the script is run directly.</li>
+<li>Reads args from <strong><code>sys.argv</code></strong> (or <code>argparse</code> for anything real).</li>
+</ol>
+<h2>argparse — proper command-line arguments</h2>
+<p>For anything beyond the tiniest script, use <code>argparse</code>:</p>
+<pre><code class="language-python">import argparse
+
+parser = argparse.ArgumentParser(description=&quot;Port check tool&quot;)
+parser.add_argument(&quot;target&quot;, help=&quot;hostname or IP&quot;)
+parser.add_argument(&quot;-p&quot;, &quot;--ports&quot;, default=&quot;80,443&quot;, help=&quot;ports to check&quot;)
+parser.add_argument(&quot;-t&quot;, &quot;--timeout&quot;, type=float, default=1.0)
+parser.add_argument(&quot;-v&quot;, &quot;--verbose&quot;, action=&quot;store_true&quot;)
+args = parser.parse_args()
+
+print(args.target, args.ports, args.timeout, args.verbose)
+</code></pre>
+<p>You get free <code>--help</code> output and proper handling of missing/invalid arguments.</p>
+<h2>The Python security learning path</h2>
+<ul>
+<li><strong>Weeks 1–4:</strong> finish this path — comfortable with variables, control flow, functions, files, <code>requests</code>, <code>socket</code>.</li>
+<li><strong>Weeks 5–8:</strong> write small tools: a subdomain resolver, a directory brute-forcer, a hash cracker (against hashes you generated yourself).</li>
+<li><strong>Weeks 9–12:</strong> read the source of a small existing tool (e.g., <code>dnsx</code>, <code>waybackpy</code>). Add a feature. This is how skill compounds.</li>
+<li><strong>Later:</strong> Scapy for packet crafting (Path 12), Impacket for AD (Path 16), custom exploits (Path 14/11).</li>
+</ul>
+<p>Why should you use a virtual environment for each Python project?</p>
+<details><summary>Show answer</summary>To keep each project's dependencies isolated. Two projects may need different versions of the same library; without venvs they conflict globally. Venvs also make projects reproducible via a <code>requirements.txt</code> lock.</details><h2>Key terms</h2>
+<ul>
+<li><strong>pip</strong> — Python&#39;s package installer.</li>
+<li><strong>venv</strong> — isolated per-project Python environment.</li>
+<li><strong><code>requirements.txt</code></strong> — file listing a project&#39;s dependencies.</li>
+<li><strong>Docstring / type hints</strong> — self-documenting code.</li>
+<li><strong>argparse</strong> — the standard library for CLI arguments.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Python is the security world&#39;s default scripting language.</li>
+<li>Use Python 3 only; Python 2 is dead.</li>
+<li>Isolate projects with virtual environments.</li>
+<li>Professional scripts have shebang, docstring, main(), specific exceptions, and argparse.</li>
+<li>Practise by writing small tools and reading source code of real ones.</li>
+</ul>
+<h3>References</h3>
+<ul>
+<li><a href="https://www.python.org/downloads/">Python.org — Downloads &amp; docs</a> — official.</li>
+<li><a href="https://pip.pypa.io/">pip docs</a> — the installer&#39;s reference.</li>
+<li><a href="https://realpython.com/python-virtual-environments-a-primer/">Real Python — venv guide</a></li>
+<li><a href="https://github.com/guardrailsio/awesome-python-security">Awesome Python Security</a> — curated list of Python security tools &amp; libraries.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/04-python/first-program">Your first Python program</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/04-python/why-python";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

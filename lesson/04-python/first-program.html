@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your first Python program — Path 04 · KashSec Academy</title>
+<meta name="description" content="Small, complete, from-scratch: this lesson walks the whole write → save → run → fix cycle for a real program. If you follow along in Kali, by the end you'll have written and run five little programs o">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/04-python/first-program">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Your first Python program — Path 04 · KashSec Academy">
+<meta property="og:description" content="Small, complete, from-scratch: this lesson walks the whole write → save → run → fix cycle for a real program. If you follow along in Kali, by the end you'll have written and run five little programs o">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/04-python/first-program">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Your first Python program — Path 04 · KashSec Academy">
+<meta name="twitter:description" content="Small, complete, from-scratch: this lesson walks the whole write → save → run → fix cycle for a real program. If you follow along in Kali, by the end you'll have written and run five little programs o">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Your first Python program — Path 04 · KashSec Academy","description":"Small, complete, from-scratch: this lesson walks the whole write → save → run → fix cycle for a real program. If you follow along in Kali, by the end you'll have written and run five little programs o","url":"https://kashsec.vercel.app/#/lesson/04-python/first-program","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/04-python/first-program">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 04 — Programming & Python</a> · Your first Python program</div>
+  <article><h1>Your first Python program</h1>
+<p>Small, complete, from-scratch: this lesson walks the whole write → save → run → fix cycle for a real program. If you follow along in Kali, by the end you&#39;ll have written and run five little programs of your own.</p>
+<h2>Step 1 — Where to write</h2>
+<p>Two options in Kali:</p>
+<p><strong>Option A: A terminal editor.</strong></p>
+<pre><code class="language-bash">mkdir ~/python-labs
+cd ~/python-labs
+nano hello.py     # write in nano
+</code></pre>
+<p><strong>Option B: A GUI editor.</strong> Kali ships with <strong>Mousepad</strong>. VS Code is nicer once you install it (<code>sudo apt install code -y</code>).</p>
+<p>Either works. What matters is <em>saving with a <code>.py</code> extension.</em></p>
+<h2>Step 2 — Hello world</h2>
+<p>Type this in your editor and save as <code>hello.py</code>:</p>
+<pre><code class="language-python"># hello.py — the traditional first program
+print(&quot;Hello, KashSec!&quot;)
+</code></pre>
+<p>Save (<code>Ctrl+O</code>, Enter, <code>Ctrl+X</code> in nano). Then run it from the terminal:</p>
+<pre><code class="language-bash">python3 hello.py
+</code></pre>
+<p>You should see:</p>
+<pre><code>Hello, KashSec!
+</code></pre>
+<p><strong>Congratulations — you&#39;re a Python programmer.</strong> No, really. Everything from here is variations on this loop.</p>
+<h2>Step 3 — Input and output</h2>
+<p>Replace hello.py with:</p>
+<pre><code class="language-python">name = input(&quot;What&#39;s your name? &quot;)
+print(f&quot;Nice to meet you, {name}!&quot;)
+</code></pre>
+<p>Run it — the terminal now asks for a name.</p>
+<h2>Step 4 — Comments and doc</h2>
+<pre><code class="language-python"># This is a comment — Python ignores it. Use it to explain code.
+
+&quot;&quot;&quot;
+Triple-quoted strings can span
+multiple lines. When placed at the
+top of a file or function, they become
+a &#39;docstring&#39; — used for documentation.
+&quot;&quot;&quot;
+
+# Good comments explain WHY, not just WHAT:
+timeout = 5   # 5 seconds is long enough for most local checks
+</code></pre>
+<p>Habits worth adopting:</p>
+<ul>
+<li><strong>Every script</strong> starts with a docstring saying what it does and how to use it.</li>
+<li>Comments explain <em>why</em> a piece of code exists, not what a line already clearly does.</li>
+</ul>
+<h2>Step 5 — Errors and how to read them</h2>
+<p>When something breaks, Python tells you what and where. Save this as <code>crash.py</code>:</p>
+<pre><code class="language-python">name = input(&quot;Name: &quot;)
+print(&quot;Age: &quot; + age)   # oops — &#39;age&#39; doesn&#39;t exist
+</code></pre>
+<p>Run it, enter a name, and Python shows you:</p>
+<pre><code>Traceback (most recent call last):
+  File &quot;crash.py&quot;, line 2, in &lt;module&gt;
+    print(&quot;Age: &quot; + age)
+                   ^^^
+NameError: name &#39;age&#39; is not defined
+</code></pre>
+<p>Read a traceback <strong>bottom to top</strong>:</p>
+<ol>
+<li><strong>Type of error</strong> (<code>NameError</code>) — the category.</li>
+<li><strong>Message</strong> (<code>name &#39;age&#39; is not defined</code>) — the specific thing.</li>
+<li><strong>Where</strong> — file and line.</li>
+</ol>
+<p>The three most common early errors:</p>
+<table>
+<thead>
+<tr>
+<th>Error</th>
+<th>Usually means</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>SyntaxError</code></td>
+<td>You typed something Python can&#39;t parse — missing colon, extra bracket, wrong indent</td>
+</tr>
+<tr>
+<td><code>NameError</code></td>
+<td>You used a variable name that doesn&#39;t exist yet</td>
+</tr>
+<tr>
+<td><code>TypeError</code></td>
+<td>You tried to combine wrong types (e.g., <code>str + int</code>)</td>
+</tr>
+<tr>
+<td><code>IndentationError</code></td>
+<td>Your indentation is inconsistent</td>
+</tr>
+<tr>
+<td><code>ModuleNotFoundError</code></td>
+<td>You imported a library that isn&#39;t installed — try <code>pip install X</code></td>
+</tr>
+</tbody></table>
+<p>The oldest trick in programming: sprinkle <code>print()</code> calls to see what&#39;s happening at each step. Not glamorous. Extremely effective. Real professionals do this constantly.</p>
+<h3>Handling errors gracefully with try/except</h3>
+<p>Reading tracebacks helps you <em>fix</em> bugs while writing code — but a finished script often needs to <em>anticipate</em> errors that are expected to sometimes happen (a network request timing out, a file that doesn&#39;t exist) without crashing entirely. Python&#39;s <code>try</code>/<code>except</code> catches an error and lets your script recover instead of dying:</p>
+<pre><code class="language-python">try:
+    response = requests.get(url, timeout=5)
+    print(response.status_code)
+except requests.exceptions.Timeout:
+    print(f&quot;{url} timed out — skipping&quot;)
+except requests.exceptions.ConnectionError:
+    print(f&quot;{url} refused connection — skipping&quot;)
+</code></pre>
+<p>This exact pattern is genuinely essential for any recon or scanning script (Path 04&#39;s automation lesson, Path 15&#39;s recon pipeline) — checking a list of 500 URLs where 10 happen to be offline should skip those 10 gracefully and keep going, not crash the entire run on the first failure.</p>
+<h2>Step 6 — Reading and writing files</h2>
+<p>Files are how your program remembers things between runs. This is the pattern:</p>
+<pre><code class="language-python"># Write to a file:
+with open(&quot;notes.txt&quot;, &quot;w&quot;) as f:
+    f.write(&quot;This is my first Python file write.\n&quot;)
+    f.write(&quot;Second line here.\n&quot;)
+
+# Read it back:
+with open(&quot;notes.txt&quot;) as f:
+    content = f.read()
+print(content)
+
+# Read line by line (memory-friendly for big files):
+with open(&quot;notes.txt&quot;) as f:
+    for line in f:
+        print(line.strip())
+</code></pre>
+<p>The <code>with</code> block automatically closes the file, even if something goes wrong. Always use it.</p>
+<p>File modes:</p>
+<ul>
+<li><code>&quot;r&quot;</code> — read (default)</li>
+<li><code>&quot;w&quot;</code> — write (<strong>overwrites!</strong>)</li>
+<li><code>&quot;a&quot;</code> — append</li>
+<li><code>&quot;rb&quot;</code> / <code>&quot;wb&quot;</code> — binary</li>
+</ul>
+<h2>Step 7 — Modules and imports</h2>
+<p>You don&#39;t have to write everything from scratch. Python&#39;s <strong>standard library</strong> ships with hundreds of modules.</p>
+<pre><code class="language-python">import os
+import sys
+import hashlib
+import socket
+import datetime
+import json
+import random
+
+# Use them:
+print(os.getcwd())              # current directory
+print(sys.version)              # Python version
+print(hashlib.md5(b&quot;hi&quot;).hexdigest())    # MD5 of &quot;hi&quot;
+print(socket.gethostname())     # your hostname
+print(datetime.datetime.now())  # right now
+print(json.dumps({&quot;a&quot;: 1}))     # dict → JSON string
+print(random.randint(1, 100))   # random 1–100
+</code></pre>
+<p>Every one of these is available without installing anything. For libraries not in the standard library, use <code>pip install</code>.</p>
+<h2>Step 8 — A tiny password-hash lookup</h2>
+<p>Try this — save as <code>hash-check.py</code>:</p>
+<pre><code class="language-python"># hash-check.py — hash a password and see what it looks like
+import hashlib
+
+pw = input(&quot;Password: &quot;)
+
+# Bad old ways:
+md5 = hashlib.md5(pw.encode()).hexdigest()
+sha1 = hashlib.sha1(pw.encode()).hexdigest()
+
+# The right way (with a salt):
+salt = &quot;somethingRandomPerUser&quot;
+sha256_salted = hashlib.sha256((salt + pw).encode()).hexdigest()
+
+print(f&quot;\nMD5:            {md5}&quot;)
+print(f&quot;SHA-1:          {sha1}&quot;)
+print(f&quot;SHA-256+salt:   {sha256_salted}&quot;)
+print(&quot;\n(Never store MD5/SHA-1 for passwords. Use bcrypt/argon2 — Path 10.)&quot;)
+</code></pre>
+<p>You just used a real security library. Path 10 explains why MD5 and SHA-1 are unfit for passwords in detail.</p>
+<h2>Common beginner tripwires</h2>
+<ul>
+<li>Forgetting <code>python3 filename.py</code> (running <code>python</code> uses Python 2 on some systems).</li>
+<li>Mixing tabs and spaces in indentation.</li>
+<li>Adding <code>()</code> to <code>input</code> but forgetting them on <code>print</code> (or vice versa).</li>
+<li>Comparing with <code>=</code> instead of <code>==</code>.</li>
+<li>Forgetting <code>.encode()</code> when you pass a string to a hash function (they take <em>bytes</em>).</li>
+</ul>
+<h2>🧪 Lab — Small challenges</h2>
+<p>Work through these one by one. Answers hidden — try first.</p>
+<ol>
+<li><strong>Personalised greeter.</strong> Ask for name and favourite tool. Print <code>Hi &lt;name&gt;! Learn &lt;tool&gt; deeply this week.</code></li>
+<li><strong>Even or odd.</strong> Ask for a number, print &quot;even&quot; or &quot;odd.&quot;</li>
+<li><strong>FizzBuzz.</strong> Print 1 to 30, but for multiples of 3 print <code>Fizz</code>, multiples of 5 <code>Buzz</code>, both <code>FizzBuzz</code>.</li>
+<li><strong>Line counter.</strong> Ask for a filename, print how many lines it has.</li>
+<li><strong>Palindrome check.</strong> Ask for a word, print whether it&#39;s a palindrome.</li>
+</ol>
+<details><summary>Show sample answers</summary><pre><code class="language-python"># 1
+name = input(&quot;Name: &quot;)
+tool = input(&quot;Favourite tool: &quot;)
+print(f&quot;Hi {name}! Learn {tool} deeply this week.&quot;)
+
+# 2
+n = int(input(&quot;Number: &quot;))
+print(&quot;even&quot; if n % 2 == 0 else &quot;odd&quot;)
+
+# 3
+for i in range(1, 31):
+    if i % 15 == 0:
+        print(&quot;FizzBuzz&quot;)
+    elif i % 3 == 0:
+        print(&quot;Fizz&quot;)
+    elif i % 5 == 0:
+        print(&quot;Buzz&quot;)
+    else:
+        print(i)
+
+# 4
+path = input(&quot;File: &quot;)
+with open(path) as f:
+    print(sum(1 for _ in f))
+
+# 5
+w = input(&quot;Word: &quot;).lower()
+print(&quot;palindrome&quot; if w == w[::-1] else &quot;not a palindrome&quot;)
+</code></pre>
+</details><p>Get the whole set working. That&#39;s your Python foundation cemented.</p>
+<p>Which built-in Python function opens a file, and what&#39;s the special block that guarantees the file is closed?</p>
+<details><summary>Show answer</summary><code>open()</code> to open a file, wrapped in a <code>with open(...) as f:</code> block to guarantee closure.</details><h2>Key terms</h2>
+<ul>
+<li><strong><code>.py</code> file</strong> — a Python program on disk.</li>
+<li><strong>Traceback</strong> — Python&#39;s error report, read bottom-up.</li>
+<li><strong>Standard library</strong> — modules shipped with Python (<code>os</code>, <code>sys</code>, <code>hashlib</code>, ...).</li>
+<li><strong><code>with</code> block</strong> — auto-cleanup for files, sockets, etc.</li>
+<li><strong>Docstring</strong> — triple-quoted docs at top of file/function.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Write a <code>.py</code> file, run with <code>python3 file.py</code>.</li>
+<li><code>input()</code> reads, <code>print()</code> writes; comments explain <em>why</em>.</li>
+<li>Read tracebacks bottom-up to find the error type and line.</li>
+<li>Use <code>with open(...) as f:</code> for files.</li>
+<li>Explore the standard library — no install needed.</li>
+</ul>
+<h3>References</h3>
+<ul>
+<li><a href="https://docs.python.org/3/tutorial/index.html">Python.org — Tutorial</a> — official, thorough.</li>
+<li><a href="https://automatetheboringstuff.com/2e/chapter1/">Automate the Boring Stuff — Ch. 1</a> — free, gentle intro.</li>
+<li><a href="https://docs.python.org/3/library/index.html">Python standard library index</a></li>
+<li><a href="https://www.pythoncheatsheet.org/">Python Cheatsheet — pythoncheatsheet.org</a></li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/04-python/lists-functions">Lists &amp; functions</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/04-python/first-program";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

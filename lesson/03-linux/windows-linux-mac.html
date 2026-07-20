@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Windows vs Linux vs macOS — Path 03 · KashSec Academy</title>
+<meta name="description" content="You'll meet all three operating systems as a security professional — as your own workstation, and as systems you defend or test. Knowing their characters helps you pick the right tool and understand y">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/03-linux/windows-linux-mac">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Windows vs Linux vs macOS — Path 03 · KashSec Academy">
+<meta property="og:description" content="You'll meet all three operating systems as a security professional — as your own workstation, and as systems you defend or test. Knowing their characters helps you pick the right tool and understand y">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/03-linux/windows-linux-mac">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Windows vs Linux vs macOS — Path 03 · KashSec Academy">
+<meta name="twitter:description" content="You'll meet all three operating systems as a security professional — as your own workstation, and as systems you defend or test. Knowing their characters helps you pick the right tool and understand y">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Windows vs Linux vs macOS — Path 03 · KashSec Academy","description":"You'll meet all three operating systems as a security professional — as your own workstation, and as systems you defend or test. Knowing their characters helps you pick the right tool and understand y","url":"https://kashsec.vercel.app/#/lesson/03-linux/windows-linux-mac","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/03-linux/windows-linux-mac">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 03 — Operating Systems & Linux</a> · Windows vs Linux vs macOS</div>
+  <article><h1>Windows vs Linux vs macOS</h1>
+<p>You&#39;ll meet all three operating systems as a security professional — as your own workstation, and as systems you defend or test. Knowing their characters helps you pick the right tool and understand your targets.</p>
+<h2>The big three</h2>
+<table>
+<thead>
+<tr>
+<th>OS</th>
+<th>Made by</th>
+<th>Common on</th>
+<th>Command line</th>
+<th>Permission model</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Windows</strong></td>
+<td>Microsoft</td>
+<td>Home &amp; office desktops</td>
+<td>PowerShell / Command Prompt</td>
+<td>Users, groups, SYSTEM</td>
+</tr>
+<tr>
+<td><strong>macOS</strong></td>
+<td>Apple</td>
+<td>MacBooks &amp; iMacs</td>
+<td>Unix-like terminal</td>
+<td>Users, <code>root</code>, SIP</td>
+</tr>
+<tr>
+<td><strong>Linux</strong></td>
+<td>Community</td>
+<td>Servers, cloud, embedded</td>
+<td>Bash / zsh / others</td>
+<td>Users, groups, <code>root</code></td>
+</tr>
+</tbody></table>
+<ul>
+<li><strong>Windows</strong> — by far the most common on home and office desktops. Familiar, huge software library, and therefore a huge target simply because so many people use it. Uses PowerShell and Command Prompt, plus a permission model with users, groups, and a powerful account called <strong>SYSTEM</strong>.</li>
+<li><strong>macOS</strong> — Apple&#39;s system on MacBooks and iMacs. Under the hood it&#39;s built on <strong>Unix</strong>, which makes its terminal feel very similar to Linux — a nice bonus for security work.</li>
+<li><strong>Linux</strong> — free, open, and endlessly customisable. It runs <strong>most of the world&#39;s servers</strong>, most of the internet&#39;s infrastructure, and it is the security professional&#39;s favourite working environment.</li>
+</ul>
+<h2>Why &quot;flavours&quot; of Linux exist</h2>
+<p>Linux isn&#39;t one single product — it comes in many versions called <strong>distributions</strong> (or &quot;distros&quot;), each a different bundling of the same core system.</p>
+<ul>
+<li><strong>Ubuntu</strong> and <strong>Debian</strong> are popular general-purpose ones.</li>
+<li><strong>Kali Linux</strong> and <strong>Parrot OS</strong> are special distros pre-loaded with hundreds of security tools — you&#39;ll install Kali shortly.</li>
+<li><strong>Fedora</strong>, <strong>Arch</strong>, and dozens more — pick your flavour, same kernel underneath.</li>
+</ul>
+<h2>You don&#39;t have to abandon your current system</h2>
+<p>Here&#39;s the reassuring part: you do <strong>not</strong> need to wipe your laptop and switch to Linux. In the next module you&#39;ll run Linux <em>inside</em> your existing Windows or Mac, in a window, using virtualization. You keep everything you have and gain a safe Linux playground on top. Best of both worlds.</p>
+<p>As a beginner: <strong>Kali Linux</strong> in a VM. Later, some prefer <strong>Parrot</strong> or a custom <strong>Ubuntu</strong> with tools they install themselves. There&#39;s no wrong answer — Kali is the friendliest starting point.</p>
+<h2>Market share and why it shapes the threat landscape</h2>
+<p>Windows&#39; dominance on desktops directly explains a huge share of malware statistics you&#39;ll encounter throughout this course: attackers, like any efficient actor, target where the largest number of potential victims are, which is exactly why the overwhelming majority of consumer malware historically targets Windows specifically — not because Windows is inherently less secure architecturally, but because building one exploit that works against the most common target reaches the most victims. Linux&#39;s dominance on <em>servers</em>, by contrast, means Linux-specific attacks tend to focus on web application vulnerabilities and server misconfigurations (Path 11, Path 12) rather than desktop malware. This &quot;attackers follow the numbers&quot; pattern is worth remembering broadly — it explains a lot of asymmetries you&#39;ll notice throughout this course.</p>
+<h2>Open source vs. closed source — a security-relevant distinction</h2>
+<p>Linux&#39;s source code is <strong>open source</strong> — publicly viewable and modifiable by anyone — while Windows and macOS are largely <strong>closed source</strong>, with Microsoft and Apple controlling and hiding their internal code. This has a genuine security implication worth understanding both directions of: open source means vulnerabilities can be found by <em>anyone</em> examining the code (including many independent researchers constantly reviewing widely-used open source projects, often catching issues faster), but it also means attackers can study that same code for weaknesses. Closed source relies more on &quot;you can&#39;t attack what you can&#39;t see&quot; — though determined attackers routinely reverse-engineer closed-source software anyway (exactly the skill built in Path 17), so this protection is weaker than it might first appear. Neither model is definitively &quot;more secure&quot; in the abstract; both have genuine tradeoffs.</p>
+<h2>File systems — a quick comparison</h2>
+<p>Each OS defaults to a different file system, briefly worth knowing by name since you&#39;ll encounter them in forensics contexts (Path 16&#39;s DFIR lab): Windows uses <strong>NTFS</strong>, macOS uses <strong>APFS</strong>, and Linux commonly uses <strong>ext4</strong> (though several alternatives exist). Each has different permission models, journaling behavior (how they recover from a crash without corrupting data), and forensic artifacts left behind — which is exactly why forensic tools are often file-system-aware, extracting meaningfully different evidence depending on which one they&#39;re examining.</p>
+<h2>A quick sense of the differences</h2>
+<table>
+<thead>
+<tr>
+<th>Task</th>
+<th>Windows</th>
+<th>macOS</th>
+<th>Linux</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Install software</td>
+<td>Store / installers</td>
+<td>App Store / brew</td>
+<td>Package manager (apt, dnf, pacman)</td>
+</tr>
+<tr>
+<td>Change hostname</td>
+<td>Settings GUI</td>
+<td>Settings GUI</td>
+<td><code>hostnamectl set-hostname NAME</code></td>
+</tr>
+<tr>
+<td>Show IP</td>
+<td><code>ipconfig</code></td>
+<td><code>ifconfig</code> / <code>ip a</code></td>
+<td><code>ip a</code></td>
+</tr>
+<tr>
+<td>Kill a process</td>
+<td>Task Manager</td>
+<td>Activity Monitor</td>
+<td><code>kill &lt;PID&gt;</code></td>
+</tr>
+<tr>
+<td>Admin escalation</td>
+<td>UAC prompt</td>
+<td><code>sudo</code></td>
+<td><code>sudo</code></td>
+</tr>
+</tbody></table>
+<p>You&#39;ll get comfortable with all of these — but Linux commands are the one you&#39;ll type most.</p>
+<p>What&#39;s the word for a specific version/bundle of Linux, like Ubuntu or Kali?</p>
+<details><summary>Show answer</summary>A <strong>distribution</strong> (or "distro").</details><h2>Key terms</h2>
+<ul>
+<li><strong>Windows / macOS / Linux</strong> — the three major operating systems.</li>
+<li><strong>Unix</strong> — the older family macOS and Linux both descend from.</li>
+<li><strong>Distribution (&quot;distro&quot;)</strong> — a specific version of Linux (Ubuntu, Kali, Parrot).</li>
+<li><strong>Package manager</strong> — the built-in tool for installing/updating software (<code>apt</code>, <code>dnf</code>, <code>pacman</code>).</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Windows is most common on desktops (and a big target); macOS is Unix-based; Linux runs most servers.</li>
+<li>Linux comes in many distributions; Kali and Parrot are security-focused ones.</li>
+<li>You can run Linux alongside your current OS using virtualization — no need to switch.</li>
+</ul>
+<h3>References</h3>
+<ul>
+<li><a href="https://distrowatch.com/">DistroWatch</a> — the who&#39;s-who of Linux distributions.</li>
+<li><a href="https://www.kali.org/">Kali Linux</a> — the security distro you&#39;ll install.</li>
+<li><a href="https://ubuntu.com/">Ubuntu</a> — the beginner-friendly general distro.</li>
+<li><a href="https://en.wikipedia.org/wiki/Comparison_of_operating_systems">Comparison of operating systems — Wikipedia</a></li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/03-linux/why-linux">Why hackers love Linux</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/03-linux/windows-linux-mac";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

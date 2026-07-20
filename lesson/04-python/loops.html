@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Loops: repeat things — Path 04 · KashSec Academy</title>
+<meta name="description" content="Repeating an action many times is how one attacker tries 10,000 passwords in a minute, or how one defender checks 1,000 log lines for a pattern. Loops turn &quot;one&quot; into &quot;many.&quot;">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/04-python/loops">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Loops: repeat things — Path 04 · KashSec Academy">
+<meta property="og:description" content="Repeating an action many times is how one attacker tries 10,000 passwords in a minute, or how one defender checks 1,000 log lines for a pattern. Loops turn &quot;one&quot; into &quot;many.&quot;">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/04-python/loops">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Loops: repeat things — Path 04 · KashSec Academy">
+<meta name="twitter:description" content="Repeating an action many times is how one attacker tries 10,000 passwords in a minute, or how one defender checks 1,000 log lines for a pattern. Loops turn &quot;one&quot; into &quot;many.&quot;">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Loops: repeat things — Path 04 · KashSec Academy","description":"Repeating an action many times is how one attacker tries 10,000 passwords in a minute, or how one defender checks 1,000 log lines for a pattern. Loops turn \"one\" into \"many.\"","url":"https://kashsec.vercel.app/#/lesson/04-python/loops","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/04-python/loops">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 04 — Programming & Python</a> · Loops: repeat things</div>
+  <article><h1>Loops: repeat things</h1>
+<p>Repeating an action many times is how one attacker tries 10,000 passwords in a minute, or how one defender checks 1,000 log lines for a pattern. Loops turn &quot;one&quot; into &quot;many.&quot;</p>
+<h2>for — do X for each item</h2>
+<p>The <code>for</code> loop walks through each item of something and runs a block of code for each one.</p>
+<pre><code class="language-python">ports = [22, 80, 443, 3306]
+for port in ports:
+    print(f&quot;Checking port {port}...&quot;)
+</code></pre>
+<p>Read it in English: &quot;for each port in the list <code>ports</code>, print a message.&quot; Same shape works on:</p>
+<pre><code class="language-python"># Each character of a string:
+for char in &quot;kashsec&quot;:
+    print(char)
+
+# Each line of a file:
+with open(&quot;hosts.txt&quot;) as f:
+    for line in f:
+        print(line.strip())
+
+# Each key/value in a dict:
+user = {&quot;name&quot;: &quot;admin&quot;, &quot;id&quot;: 1}
+for key, value in user.items():
+    print(f&quot;{key} = {value}&quot;)
+</code></pre>
+<h2>range — counting loops</h2>
+<p><code>range(n)</code> gives you the numbers <code>0, 1, 2, ..., n-1</code>. Perfect for &quot;do this N times.&quot;</p>
+<pre><code class="language-python">for i in range(5):
+    print(i)          # 0 1 2 3 4
+
+for i in range(1, 11):     # start, stop
+    print(i)               # 1..10
+
+for i in range(0, 100, 10):   # start, stop, step
+    print(i)                  # 0 10 20 ... 90
+</code></pre>
+<p>Handy pattern for retries:</p>
+<pre><code class="language-python">for attempt in range(1, 4):     # attempts 1, 2, 3
+    print(f&quot;Attempt {attempt}&quot;)
+    # try something...
+</code></pre>
+<h2>while — keep going until a condition changes</h2>
+<p><code>while</code> runs as long as its condition is <code>True</code>.</p>
+<pre><code class="language-python">count = 5
+while count &gt; 0:
+    print(count)
+    count -= 1
+print(&quot;Boom!&quot;)
+
+# Common shape — read input until user says stop:
+answer = &quot;&quot;
+while answer.lower() != &quot;quit&quot;:
+    answer = input(&quot;&gt; &quot;)
+    print(f&quot;You said: {answer}&quot;)
+</code></pre>
+<p><strong>When to use which?</strong></p>
+<ul>
+<li><strong><code>for</code></strong> — you already know what you&#39;re iterating over (a list, a range, a file).</li>
+<li><strong><code>while</code></strong> — you don&#39;t know how many times you&#39;ll loop; you&#39;ll stop when a condition changes.</li>
+</ul>
+<h2>break and continue</h2>
+<p>Two escape hatches inside loops:</p>
+<ul>
+<li><strong><code>break</code></strong> — leave the loop entirely.</li>
+<li><strong><code>continue</code></strong> — skip the rest of this iteration and go to the next one.</li>
+</ul>
+<pre><code class="language-python">for line in open(&quot;emails.txt&quot;):
+    line = line.strip()
+    if not line:
+        continue          # skip empty lines
+    if line == &quot;STOP&quot;:
+        break             # end the loop
+    print(f&quot;Processing: {line}&quot;)
+</code></pre>
+<h3>Avoiding accidental infinite loops</h3>
+<p>A <code>while</code> loop only stops when its condition becomes false — if you forget to actually update the variable the condition depends on, the loop runs forever, freezing your script (and sometimes your terminal):</p>
+<pre><code class="language-python"># BUG: count never changes, this loop never ends
+count = 0
+while count &lt; 5:
+    print(&quot;stuck&quot;)
+    # forgot: count += 1
+
+# FIXED:
+count = 0
+while count &lt; 5:
+    print(count)
+    count += 1   # this line is what actually lets the loop finish
+</code></pre>
+<p>If a script you run seems to hang forever with no output, an infinite loop is one of the first things worth suspecting — <code>Ctrl+C</code> in the terminal force-stops it, and re-reading your loop&#39;s condition (and whether anything inside the loop actually changes it) is the fix.</p>
+<h2>Nested loops</h2>
+<p>You can put a loop inside another loop. Useful for combinations like &quot;every user × every password&quot;:</p>
+<pre><code class="language-python">users = [&quot;admin&quot;, &quot;root&quot;, &quot;user&quot;]
+passwords = [&quot;password&quot;, &quot;123456&quot;, &quot;letmein&quot;]
+
+for user in users:
+    for password in passwords:
+        print(f&quot;Trying {user}:{password}&quot;)
+</code></pre>
+<p>That&#39;s genuinely the shape of a login brute-force script. In Path 11 you&#39;ll build a <em>responsible</em>, in-lab-only version of this against a deliberately-vulnerable target.</p>
+<h2>The security learner&#39;s most-used loop pattern</h2>
+<p>Reading a wordlist, doing something with each entry:</p>
+<pre><code class="language-python">with open(&quot;subdomains.txt&quot;) as f:
+    for name in f:
+        name = name.strip()
+        full = f&quot;{name}.example.com&quot;
+        # try to resolve it, HTTP-probe it, etc.
+        print(full)
+</code></pre>
+<p>If you find yourself doing something 5+ times manually, that&#39;s a signal to write a loop.</p>
+<h2>List comprehensions — a Pythonic shortcut</h2>
+<p>For simple &quot;make a new list from another list&quot; work, Python has a beautiful one-line syntax:</p>
+<pre><code class="language-python"># Regular way:
+squared = []
+for n in [1, 2, 3, 4, 5]:
+    squared.append(n * n)
+
+# Comprehension:
+squared = [n * n for n in [1, 2, 3, 4, 5]]
+
+# With a filter:
+even_ports = [p for p in ports if p % 2 == 0]
+
+# String cleanup pattern you&#39;ll use constantly:
+lines = [line.strip() for line in open(&quot;hosts.txt&quot;) if line.strip()]
+</code></pre>
+<p>Comprehensions are idiomatic Python. Learn to recognise them; use them when they don&#39;t hurt readability.</p>
+<h2>enumerate — index and value together</h2>
+<p>When you need both position and value:</p>
+<pre><code class="language-python">for index, port in enumerate(ports, start=1):
+    print(f&quot;{index}. Port {port}&quot;)
+</code></pre>
+<h2>zip — walk two lists in parallel</h2>
+<pre><code class="language-python">users = [&quot;alice&quot;, &quot;bob&quot;, &quot;carol&quot;]
+scores = [92, 87, 78]
+
+for user, score in zip(users, scores):
+    print(f&quot;{user}: {score}&quot;)
+</code></pre>
+<h2>🧪 Lab — Port sweeper (safe local version)</h2>
+<p>Save as <code>sweep.py</code> and run only against <strong><code>127.0.0.1</code></strong> (your own machine — always in scope!).</p>
+<pre><code class="language-python"># sweep.py — a beginner port sweeper against your own machine
+import socket
+
+TARGET = &quot;127.0.0.1&quot;
+PORTS_TO_CHECK = [22, 80, 139, 443, 445, 3306, 3389, 5432, 8080]
+
+print(f&quot;Sweeping {TARGET}...&quot;)
+open_ports = []
+
+for port in PORTS_TO_CHECK:
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.settimeout(0.5)
+    try:
+        s.connect((TARGET, port))
+        print(f&quot;[+] {port} OPEN&quot;)
+        open_ports.append(port)
+    except (socket.timeout, ConnectionRefusedError):
+        print(f&quot;[-] {port} closed&quot;)
+    finally:
+        s.close()
+
+print(f&quot;\nSummary: {len(open_ports)} open ports: {open_ports}&quot;)
+</code></pre>
+<p>Notice you already have the shape of a real security tool — a loop, a network operation, exception handling, and a summary. You&#39;ll add features throughout Path 04.</p>
+<p><code>127.0.0.1</code> is your own machine, so this is fine. Scanning any other IP, even briefly, without permission is illegal — see Path 01 lesson 4. Use <code>scanme.nmap.org</code> if you want to try against something not yours.</p>
+<p>You want to print the numbers 1 to 100 inclusive. Which is the correct <code>range()</code>?</p>
+<ul>
+<li>A. <code>range(100)</code></li>
+<li>B. <code>range(1, 100)</code></li>
+<li>C. <code>range(1, 101)</code></li>
+</ul>
+<details><summary>Show answer</summary>C — <code>range(1, 101)</code>. <code>range</code> is exclusive at the end, so <code>range(1, 100)</code> stops at 99.</details><h2>Key terms</h2>
+<ul>
+<li><strong><code>for</code> loop</strong> — repeat for each item.</li>
+<li><strong><code>while</code> loop</strong> — repeat while a condition is true.</li>
+<li><strong><code>range()</code></strong> — generate a sequence of numbers.</li>
+<li><strong><code>break</code> / <code>continue</code></strong> — leave / skip an iteration.</li>
+<li><strong>List comprehension</strong> — one-line list construction.</li>
+<li><strong><code>enumerate</code> / <code>zip</code></strong> — index+value / parallel iteration.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li><code>for</code> walks over items; <code>while</code> runs while a condition holds.</li>
+<li><code>range(a, b, step)</code> is your counting loop.</li>
+<li><code>break</code> exits, <code>continue</code> skips.</li>
+<li>List comprehensions turn small loops into one readable line.</li>
+<li>Loops turn &quot;one attempt&quot; into &quot;one thousand attempts&quot; — the heart of a lot of tooling.</li>
+</ul>
+<h3>References</h3>
+<ul>
+<li><a href="https://docs.python.org/3/tutorial/controlflow.html#for-statements">Python docs — for and while</a> — official.</li>
+<li><a href="https://realpython.com/python-for-loop/">Real Python — Loops</a></li>
+<li><a href="https://realpython.com/list-comprehension-python/">Python list comprehensions guide</a></li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/04-python/why-python">Why Python for security</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/04-python/loops";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

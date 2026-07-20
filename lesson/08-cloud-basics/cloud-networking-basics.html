@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cloud Networking Basics — Path 08 · KashSec Academy</title>
+<meta name="description" content="Path 02 built a solid networking foundation — IP addresses, ports, routing. This lesson adapts that foundation to the cloud context, covering the virtual networking concepts that stand in for the phys">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/08-cloud-basics/cloud-networking-basics">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Cloud Networking Basics — Path 08 · KashSec Academy">
+<meta property="og:description" content="Path 02 built a solid networking foundation — IP addresses, ports, routing. This lesson adapts that foundation to the cloud context, covering the virtual networking concepts that stand in for the phys">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/08-cloud-basics/cloud-networking-basics">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Cloud Networking Basics — Path 08 · KashSec Academy">
+<meta name="twitter:description" content="Path 02 built a solid networking foundation — IP addresses, ports, routing. This lesson adapts that foundation to the cloud context, covering the virtual networking concepts that stand in for the phys">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Cloud Networking Basics — Path 08 · KashSec Academy","description":"Path 02 built a solid networking foundation — IP addresses, ports, routing. This lesson adapts that foundation to the cloud context, covering the virtual networking concepts that stand in for the phys","url":"https://kashsec.vercel.app/#/lesson/08-cloud-basics/cloud-networking-basics","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/08-cloud-basics/cloud-networking-basics">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 08 — Cloud Computing Basics</a> · Cloud Networking Basics</div>
+  <article><h1>Cloud Networking Basics</h1>
+<p>Path 02 built a solid networking foundation — IP addresses, ports, routing. This lesson adapts that foundation to the cloud context, covering the virtual networking concepts that stand in for the physical routers and switches Path 02 described, and setting up the network-boundary concepts Path 16&#39;s cloud security lesson references.</p>
+<h2>The Virtual Private Cloud (VPC)</h2>
+<p>A <strong>VPC (Virtual Private Cloud)</strong> — called a &quot;Virtual Network&quot; on Azure, using largely the same concept — is your own logically isolated slice of the provider&#39;s network, within which you define your own IP address ranges, subnets, and routing, exactly as if you owned a private physical network, but implemented entirely in software on shared underlying infrastructure.</p>
+<h2>Public and private subnets</h2>
+<p>Within a VPC, subnets are typically divided by their internet accessibility — directly echoing the network segmentation principle from Path 12&#39;s firewalls lesson:</p>
+<ul>
+<li><strong>Public subnet</strong> — has a route to the internet, typically hosting web servers or anything that genuinely needs to be internet-facing.</li>
+<li><strong>Private subnet</strong> — has no direct internet route, hosting databases and internal services that should never be directly reachable from outside — exactly the architecture pattern that, when violated (a database mistakenly placed in a public subnet, or a firewall rule too permissive), becomes a real finding in a cloud security assessment.</li>
+</ul>
+<h2>Security groups and network ACLs — cloud&#39;s firewall layer</h2>
+<ul>
+<li><strong>Security groups</strong> — attached to individual resources (like a specific virtual machine), acting as a stateful firewall (Path 12&#39;s firewalls lesson) controlling exactly what traffic that specific resource can send/receive, by port, protocol, and source.</li>
+<li><strong>Network ACLs</strong> — applied at the subnet level, providing an additional, stateless layer of filtering.</li>
+</ul>
+<pre><code class="language-bash"># Example: an overly permissive AWS security group rule — a real, common finding
+# Allows SSH (port 22) from ANYWHERE on the internet, not just trusted IPs:
+aws ec2 authorize-security-group-ingress --group-id sg-xxxx --protocol tcp --port 22 --cidr 0.0.0.0/0
+</code></pre>
+<p>That <code>0.0.0.0/0</code> (meaning &quot;any IP address at all&quot;) on a sensitive port like SSH is a genuinely common, genuinely dangerous real-world misconfiguration — directly exposing an administrative interface to brute-force attempts (this course&#39;s CTF Zone forensics challenge) from literally anywhere on the internet, when it should typically be restricted to a specific known, trusted IP range.</p>
+<h2>The Instance Metadata Service (IMDS) — revisited with more context</h2>
+<p>Path 16&#39;s cloud security lesson and lab both flag the <strong>instance metadata service</strong> as a high-value SSRF target. With this lesson&#39;s networking foundation, that finding makes fuller sense: every cloud virtual machine can query a special, non-routable internal address (<code>169.254.169.254</code> on AWS) to retrieve information about itself — including, critically, temporary security credentials for whatever IAM role is attached to that instance. This address is only reachable <em>from the instance itself</em>, by design — which is exactly why an SSRF vulnerability (Path 11) on a web application running inside that instance becomes so much more severe in a cloud context: it gives an external attacker a way to reach an otherwise-unreachable internal-only endpoint and steal live cloud credentials.</p>
+<h2>IMDSv2 — the token-based fix</h2>
+<p>Recall Path 16.4&#39;s brief mention of IMDSv2 — worth explaining fully now that this lesson has built the IMDS foundation. The original metadata service (<strong>IMDSv1</strong>) responds to any simple GET request with no authentication at all, which is exactly why a basic SSRF vulnerability (which typically can only force a target server to make GET requests) can reach it so easily. <strong>IMDSv2</strong> closes this specific gap by requiring a session token, obtained via a <strong>PUT</strong> request with a custom header, before any metadata can be retrieved — and critically, most SSRF vulnerabilities structurally can&#39;t perform this two-step PUT-then-GET dance, since the vulnerable code only ever constructs a single GET request to a URL the attacker controls. This is a genuinely elegant example of a <strong>structural</strong> fix rather than a filtering-based one: instead of trying to detect and block malicious-looking requests (a losing game, per Path 11&#39;s blocklist-versus-allowlist lessons), IMDSv2 changes the protocol itself so that the specific, common attack pattern (basic SSRF) simply can&#39;t complete the required steps. Cloud providers increasingly make IMDSv2 the default for new instances specifically because of how effective this structural change has proven against real-world SSRF-to-credential-theft chains.</p>
+<h2>VPC peering and private endpoints — connecting without the public internet</h2>
+<p>Two more networking concepts worth knowing, since they directly shape a network&#39;s actual attack surface. <strong>VPC peering</strong> connects two separate VPCs (your own two environments, or your VPC and a partner organization&#39;s) so resources in each can communicate directly using private IP addresses, without that traffic ever traversing the public internet — genuinely useful for multi-tier architectures or connecting to a partner&#39;s infrastructure securely. <strong>Private endpoints</strong> (AWS calls this &quot;VPC endpoints,&quot; other providers use similar names) let resources inside a VPC reach a cloud provider&#39;s own managed services (like object storage) without that traffic leaving the provider&#39;s private network backbone at all — meaning a database or application server can talk to cloud storage entirely over private infrastructure, never exposing that traffic to the public internet even briefly. Both patterns reduce attack surface by keeping traffic that has no business being public-facing entirely off the public internet — worth checking for during a cloud network review, since their <em>absence</em> (a resource unnecessarily reaching a managed service over the public internet when a private endpoint was available) is itself a finding worth flagging.</p>
+<h2>Cloud DNS and load balancing, briefly</h2>
+<p>Cloud providers also offer managed DNS (Path 02&#39;s DNS lesson, now cloud-hosted) and load balancers — distributing incoming traffic across multiple backend instances for both performance and availability. These add their own configuration surface: a load balancer&#39;s own security group rules, or a DNS record accidentally left pointing at infrastructure that&#39;s since been decommissioned (a &quot;dangling DNS&quot; misconfiguration, letting an attacker potentially claim that now-orphaned resource themselves).</p>
+<p>The core principle carried directly from Path 12: minimize what&#39;s actually internet-facing. Every resource that doesn&#39;t genuinely need direct internet access should sit in a private subnet, reachable only through the specific, narrow paths that actually require it (a web server proxying to a private database, never the database directly).</p>
+<p>Why does an SSRF vulnerability (Path 11) become dramatically more dangerous specifically when the vulnerable application runs on cloud infrastructure, compared to the same SSRF bug on a traditional on-premises server?</p>
+<details><summary>Show answer</summary>On traditional infrastructure, an SSRF vulnerability typically lets an attacker reach other internal services on the local network — genuinely risky, but the ceiling depends entirely on what else happens to be reachable from that specific network segment. On cloud infrastructure, every instance has access to a special, non-routable metadata endpoint (<code>169.254.169.254</code>) specifically designed to be reachable only from the instance itself — and that endpoint can return live, temporary cloud credentials for whatever IAM role the instance is running under. An SSRF bug gives an external attacker exactly the internal-only access needed to reach that endpoint and steal those credentials, potentially escalating from "read one file the vulnerable app could see" to "full API access to whatever cloud permissions that instance's role has" — a dramatically higher ceiling than SSRF typically reaches in a non-cloud environment, which is precisely why Path 16's cloud security lab treats IMDS access as such a significant milestone.</details><h2>Key terms</h2>
+<ul>
+<li><strong>VPC (Virtual Private Cloud)</strong> — your own logically isolated virtual network within a cloud provider&#39;s infrastructure.</li>
+<li><strong>Security group</strong> — a stateful, resource-level firewall controlling allowed traffic.</li>
+<li><strong>Instance Metadata Service (IMDS)</strong> — a special internal-only endpoint providing an instance&#39;s own metadata, including live cloud credentials.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>VPCs and subnets provide cloud&#39;s equivalent of traditional network segmentation, dividing internet-facing resources from internal-only ones.</li>
+<li>Security groups and network ACLs function as cloud&#39;s firewall layer, and overly permissive rules (<code>0.0.0.0/0</code> on sensitive ports) are a common real-world finding.</li>
+<li>The instance metadata service is a high-value, internal-only endpoint that becomes a severe risk when reachable via an SSRF vulnerability, directly explaining why Path 16&#39;s cloud lab treats IMDS access as such a significant escalation.</li>
+<li>Minimizing what&#39;s genuinely internet-facing, through proper subnet segmentation, remains the core cloud network defense principle.</li>
+</ul>
+<h3>References</h3>
+<ul>
+<li><a href="https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html">AWS: What is a VPC?</a> — official, detailed, free documentation.</li>
+<li><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-metadata.html">AWS: Instance Metadata Service</a> — official documentation on the exact mechanism referenced throughout this lesson.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/08-cloud-basics/cloud-identity-access">Cloud Identity &amp; Access Management</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/08-cloud-basics/cloud-networking-basics";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

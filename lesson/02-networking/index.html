@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Path 02: Networking Fundamentals — KashSec Academy</title>
+<meta name="description" content="Networks, IP, ports, packets, TCP/UDP, DNS, HTTP/HTTPS — the bedrock.">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/02-networking">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Path 02: Networking Fundamentals — KashSec Academy">
+<meta property="og:description" content="Networks, IP, ports, packets, TCP/UDP, DNS, HTTP/HTTPS — the bedrock.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/02-networking">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Path 02: Networking Fundamentals — KashSec Academy">
+<meta name="twitter:description" content="Networks, IP, ports, packets, TCP/UDP, DNS, HTTP/HTTPS — the bedrock.">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Path 02: Networking Fundamentals — KashSec Academy","description":"Networks, IP, ports, packets, TCP/UDP, DNS, HTTP/HTTPS — the bedrock.","url":"https://kashsec.vercel.app/#/lesson/02-networking","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/02-networking">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · Path 02 — Networking Fundamentals</div>
+  <article><h1>Path 02: Networking Fundamentals — KashSec Academy</h1><p>Networks, IP, ports, packets, TCP/UDP, DNS, HTTP/HTTPS — the bedrock.</p><h2>Sub-lessons</h2><ul><li><a href="/lesson/02-networking/what-is-a-network.html">02.1 · What is a network?</a> — The post-office picture that makes it all click.</li><li><a href="/lesson/02-networking/ip-addresses.html">02.2 · IP addresses</a> — Private vs public, IPv4 vs IPv6, and finding yours.</li><li><a href="/lesson/02-networking/ports.html">02.3 · Ports: the doors</a> — Well-known ports and why scanners knock on them.</li><li><a href="/lesson/02-networking/packets.html">02.4 · Packets &amp; the OSI layers</a> — How data is chopped, wrapped, and reassembled.</li><li><a href="/lesson/02-networking/protocols.html">02.5 · What is a protocol?</a> — Rules two computers agree on before talking.</li><li><a href="/lesson/02-networking/tcp-vs-udp.html">02.6 · TCP vs UDP</a> — Registered mail vs postcard — plus the handshake.</li><li><a href="/lesson/02-networking/dns.html">02.7 · DNS: the phonebook</a> — How names become numbers, and what leaks.</li><li><a href="/lesson/02-networking/http-https.html">02.8 · HTTP &amp; HTTPS</a> — The web's language, and why the padlock matters.</li><li><a href="/lesson/02-networking/dns-lab.html">02.9 · DNS Lab</a> — Understand how DNS works and how it can be abused.</li><li><a href="/lesson/02-networking/practical-packet-lab.html">02.10 · Practical Packet Analysis Intro</a> — See how data actually moves, hands-on.</li></ul></article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/02-networking";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

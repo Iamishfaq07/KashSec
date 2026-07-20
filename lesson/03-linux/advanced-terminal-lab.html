@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Advanced Terminal Lab — Path 03 · KashSec Academy</title>
+<meta name="description" content="The earlier lessons in this path got you comfortable navigating and running basic commands. This lab pushes into the terminal skills that separate someone who can use Linux from someone who's genuinel">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/03-linux/advanced-terminal-lab">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Advanced Terminal Lab — Path 03 · KashSec Academy">
+<meta property="og:description" content="The earlier lessons in this path got you comfortable navigating and running basic commands. This lab pushes into the terminal skills that separate someone who can use Linux from someone who's genuinel">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/03-linux/advanced-terminal-lab">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Advanced Terminal Lab — Path 03 · KashSec Academy">
+<meta name="twitter:description" content="The earlier lessons in this path got you comfortable navigating and running basic commands. This lab pushes into the terminal skills that separate someone who can use Linux from someone who's genuinel">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Advanced Terminal Lab — Path 03 · KashSec Academy","description":"The earlier lessons in this path got you comfortable navigating and running basic commands. This lab pushes into the terminal skills that separate someone who can use Linux from someone who's genuinel","url":"https://kashsec.vercel.app/#/lesson/03-linux/advanced-terminal-lab","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/03-linux/advanced-terminal-lab">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 03 — Operating Systems & Linux</a> · Advanced Terminal Lab</div>
+  <article><h1>Advanced Terminal Lab</h1>
+<p>The earlier lessons in this path got you comfortable navigating and running basic commands. This lab pushes into the terminal skills that separate someone who <em>can</em> use Linux from someone who&#39;s genuinely fast and capable in it — text processing, scripting, and persistent sessions.</p>
+<h2>Tasks</h2>
+<ol>
+<li><strong>Process logs with grep, awk, and sed.</strong> Download or create a sample log file (any web server access log format works well) and practice:<pre><code class="language-bash">grep &quot;404&quot; access.log                         # find all 404 errors
+awk &#39;{print $1}&#39; access.log | sort | uniq -c   # count requests per IP
+sed &#39;s/GET/REQUEST/g&#39; access.log               # find-and-replace across the file
+</code></pre>
+These three tools, chained together, are the backbone of fast command-line log analysis — genuinely used daily in real security and DevOps work, not just a classroom exercise.</li>
+<li><strong>Write a bash script that automates something real.</strong> A simple example: a script that pings a list of hosts and reports which are up.<pre><code class="language-bash">#!/bin/bash
+while read host; do
+  if ping -c 1 -W 1 &quot;$host&quot; &amp;&gt; /dev/null; then
+    echo &quot;$host is UP&quot;
+  else
+    echo &quot;$host is DOWN&quot;
+  fi
+done &lt; hosts.txt
+</code></pre>
+Save it, run <code>chmod +x script.sh</code>, and execute it against a small text file of hostnames.</li>
+<li><strong>Practice pipes and redirection deliberately.</strong> Chain at least three commands together with <code>|</code>, and practice all three redirection operators: <code>&gt;</code> (overwrite a file), <code>&gt;&gt;</code> (append to a file), and <code>2&gt;</code> (redirect only error output) — e.g., <code>nmap -p 1-1000 target 2&gt; errors.log | tee results.txt</code>.</li>
+<li><strong>Use tmux for persistent sessions.</strong> Start a <code>tmux</code> session, split it into two panes (<code>Ctrl+B</code> then <code>&quot;</code>), run a long-running command in one, detach (<code>Ctrl+B</code> then <code>D</code>), and reattach later with <code>tmux attach</code> — this is exactly how real remote work sessions survive SSH disconnections, essential once you&#39;re regularly working against remote lab machines.</li>
+<li><strong>Master <code>xargs</code> for chaining find results into actions.</strong> <code>find</code> locates files, but <code>xargs</code> is how you efficiently act on large result sets: <code>find . -name &quot;*.txt&quot; | xargs grep -l &quot;password&quot;</code> runs <code>grep</code> against every matched file in one efficient batch, rather than requiring a slower loop. Compare its speed and simplicity against writing the equivalent as a <code>for</code> loop over <code>find</code>&#39;s output.</li>
+<li><strong>Combine <code>watch</code> with a status command.</strong> Run <code>watch -n 2 &#39;ss -tulnp&#39;</code> to see your machine&#39;s open ports refresh automatically every 2 seconds — genuinely useful for observing a service starting up, or watching a target&#39;s exposed ports change in real time during a lab exercise.</li>
+</ol>
+<p>Every custom recon/automation tool referenced throughout this course (Path 20&#39;s portfolio lesson specifically recommends building one) starts as exactly this: a handful of standard Unix tools chained together in a small script. You don&#39;t need to learn a &quot;real&quot; programming language first — Path 04 covers Python next, but a huge amount of genuinely useful security tooling is just well-composed bash.</p>
+<p>Write a bash script that combines at least 3 different tools/commands (e.g., <code>whois</code>, <code>dig</code>, <code>curl</code>, <code>nmap</code>) against a target you provide as an argument, and saves the combined output to a neatly organized file or set of files. This is a legitimate, portfolio-worthy first project — consider keeping and refining it as you progress through later paths.</p>
+<h2>Key takeaway</h2>
+<p>Fluency in <code>grep</code>/<code>awk</code>/<code>sed</code>, comfortable pipe-and-redirect chaining, and persistent sessions via <code>tmux</code> are what separate &quot;I can technically use a terminal&quot; from genuinely fast, professional command-line work — and every one of these skills compounds directly into the automation and scripting covered next in Path 04.</p>
+<p><strong>Next up →</strong> <a href="#/lesson/03-linux/linux-forensics-lab">Linux Forensics Basics Lab</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/03-linux/advanced-terminal-lab";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

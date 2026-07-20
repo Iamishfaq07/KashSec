@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Advanced Wireshark Lab — Path 12 · KashSec Academy</title>
+<meta name="description" content="Path 02 introduced packet capture at a basic level. This lab, the capstone of Path 12, goes deeper — reconstructing full conversations, extracting files from traffic, and analyzing a capture the way r">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/12-network-security/wireshark-advanced-lab">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Advanced Wireshark Lab — Path 12 · KashSec Academy">
+<meta property="og:description" content="Path 02 introduced packet capture at a basic level. This lab, the capstone of Path 12, goes deeper — reconstructing full conversations, extracting files from traffic, and analyzing a capture the way r">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/12-network-security/wireshark-advanced-lab">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Advanced Wireshark Lab — Path 12 · KashSec Academy">
+<meta name="twitter:description" content="Path 02 introduced packet capture at a basic level. This lab, the capstone of Path 12, goes deeper — reconstructing full conversations, extracting files from traffic, and analyzing a capture the way r">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Advanced Wireshark Lab — Path 12 · KashSec Academy","description":"Path 02 introduced packet capture at a basic level. This lab, the capstone of Path 12, goes deeper — reconstructing full conversations, extracting files from traffic, and analyzing a capture the way r","url":"https://kashsec.vercel.app/#/lesson/12-network-security/wireshark-advanced-lab","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/12-network-security/wireshark-advanced-lab">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 12 — Network Security</a> · Advanced Wireshark Lab</div>
+  <article><h1>Advanced Wireshark Lab</h1>
+<p>Path 02 introduced packet capture at a basic level. This lab, the capstone of Path 12, goes deeper — reconstructing full conversations, extracting files from traffic, and analyzing a capture the way real incident responders and network defenders actually work.</p>
+<h2>Lab tasks</h2>
+<ol>
+<li><p><strong>Capture traffic during a login and hunt for credentials.</strong> On an intentionally unencrypted test site or lab app (never a real site you don&#39;t own — this only works meaningfully against plaintext HTTP anyway), capture while logging in, then filter with <code>http.request.method == &quot;POST&quot;</code> and inspect the request body for the submitted credentials in plain text. This is the single most visceral demonstration of why HTTPS exists.</p>
+</li>
+<li><p><strong>Follow TCP streams to reconstruct a full conversation.</strong> Right-click any packet in a conversation and choose <strong>Follow → TCP Stream</strong> — Wireshark reassembles every fragment of that conversation into one readable view, showing both directions (client requests in one color, server responses in another). This is dramatically faster than manually piecing together dozens of individual packets.</p>
+</li>
+<li><p><strong>Use display filters effectively.</strong> Beyond the basics, practice combining filters:</p>
+<pre><code>http and ip.addr == 192.168.1.50
+tcp.flags.syn == 1 and tcp.flags.ack == 0    # only initial SYN packets, no handshake noise
+dns.qry.name contains &quot;example&quot;
+</code></pre>
+<p>Efficient filtering is what separates someone who can technically use Wireshark from someone who can actually find what they need in a capture with thousands of packets.</p>
+</li>
+<li><p><strong>Export objects from a capture.</strong> Under <strong>File → Export Objects → HTTP</strong>, Wireshark can extract every file (image, document, executable) transferred in plain HTTP traffic directly from the capture — genuinely useful both offensively (recovering files from intercepted traffic in an authorized test) and defensively (extracting a suspicious downloaded file for malware analysis, tying directly into Path 16&#39;s malware analysis lab).</p>
+</li>
+<li><p><strong>Analyze a provided capture for anomalies.</strong> Several free sample <code>.pcap</code> files exist specifically for training (search &quot;malware traffic analysis pcap&quot; for legitimate, widely used training captures from security research sites). Load one and hunt for anything unusual: unexpected destination ports, repeated connections to the same external IP at regular intervals (a classic beaconing pattern for command-and-control malware), or DNS queries to unusual-looking domains.</p>
+</li>
+<li><p><strong>Apply a capture filter, then compare to filtering after the fact.</strong> Start a fresh capture with a capture filter set to <code>port 443</code> (Capture → Options → Capture filter), generate a mix of HTTP and HTTPS traffic, then stop and confirm only port 443 traffic was ever recorded at all — no amount of display filtering afterward can bring back the HTTP packets that were never captured in the first place. Compare this to capturing everything with no capture filter and using a display filter instead; note how the second approach preserves your ability to change your mind about what to look at, at the cost of a larger capture file.</p>
+</li>
+</ol>
+<p>Wireshark&#39;s <strong>Statistics → Conversations</strong> and <strong>Statistics → Protocol Hierarchy</strong> menus give you an instant high-level summary of an entire capture — which hosts talked to which, how much traffic each protocol represents — genuinely useful for quickly orienting yourself in a large, unfamiliar capture before diving into individual packets.</p>
+<p>Using a sample capture (your own from Task 1/5, or a public training <code>.pcap</code>), identify and explain at least 3 interesting things you find — this could be plaintext credentials, an unusual destination, a suspicious repeated connection pattern, or an extracted file. For each, explain in plain language what it means and why it matters.</p>
+<h2>Key takeaway</h2>
+<p>Wireshark&#39;s TCP stream reconstruction and object export turn raw packet noise into readable conversations and recoverable files — this is precisely the capability that makes packet capture such a powerful tool for both attackers (intercepting unencrypted data) and defenders (spotting malicious traffic patterns), which is exactly why HTTPS and encrypted protocols generally matter so much.</p>
+<p><strong>Explore more →</strong> <a href="#/lesson/14-ethical-hacking">Path 14 — Ethical Hacking</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/12-network-security/wireshark-advanced-lab";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bug Bounty Hunting Challenges — Path 15 · KashSec Academy</title>
+<meta name="description" content="This lab bridges everything you've learned across Path 11 (web security) and this path's earlier lessons into real hunting practice — starting with beginner-friendly vulnerability classes before pushi">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/15-bug-bounty/bounty-hunting-challenges">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Bug Bounty Hunting Challenges — Path 15 · KashSec Academy">
+<meta property="og:description" content="This lab bridges everything you've learned across Path 11 (web security) and this path's earlier lessons into real hunting practice — starting with beginner-friendly vulnerability classes before pushi">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/15-bug-bounty/bounty-hunting-challenges">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Bug Bounty Hunting Challenges — Path 15 · KashSec Academy">
+<meta name="twitter:description" content="This lab bridges everything you've learned across Path 11 (web security) and this path's earlier lessons into real hunting practice — starting with beginner-friendly vulnerability classes before pushi">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Bug Bounty Hunting Challenges — Path 15 · KashSec Academy","description":"This lab bridges everything you've learned across Path 11 (web security) and this path's earlier lessons into real hunting practice — starting with beginner-friendly vulnerability classes before pushi","url":"https://kashsec.vercel.app/#/lesson/15-bug-bounty/bounty-hunting-challenges","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/15-bug-bounty/bounty-hunting-challenges">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 15 — Bug Bounty</a> · Bug Bounty Hunting Challenges</div>
+  <article><h1>Bug Bounty Hunting Challenges</h1>
+<p>This lab bridges everything you&#39;ve learned across Path 11 (web security) and this path&#39;s earlier lessons into real hunting practice — starting with beginner-friendly vulnerability classes before pushing you toward an actual submission.</p>
+<h2>Beginner challenges</h2>
+<ol>
+<li><p><strong>Find IDOR on a test program.</strong> Using the two-account method from this path&#39;s IDOR lesson, register two accounts on a public bug bounty program&#39;s test/staging environment (many programs explicitly welcome this) or a dedicated practice platform, and systematically test every endpoint that references an ID for access control failures.</p>
+</li>
+<li><p><strong>Hunt for open redirects.</strong> Look for any parameter that controls a redirect destination (<code>?redirect=</code>, <code>?next=</code>, <code>?returnUrl=</code>) and test whether it accepts an arbitrary external URL:</p>
+<pre><code>https://target.com/login?redirect=https://evil-example.com
+</code></pre>
+<p>Open redirects are frequently underestimated but genuinely useful in phishing chains — a link to the real, trusted domain that silently redirects to an attacker-controlled page is far more convincing than an obviously fake URL.</p>
+</li>
+<li><p><strong>Test for XSS in comments.</strong> Revisit the techniques from Path 11&#39;s XSS practical lab against a real (in-scope) bug bounty target — comment fields, review sections, and profile bios are consistently among the highest-yield places to find stored XSS in real applications.</p>
+</li>
+<li><p><strong>Check for missing security headers.</strong> A quick, low-effort but genuinely useful first pass on any new target: check the response headers for <code>Content-Security-Policy</code>, <code>X-Frame-Options</code>, and <code>Strict-Transport-Security</code> (all covered in Path 05 and Path 12) using <code>curl -sI &lt;target&gt;</code>. Missing headers alone are usually low severity on their own, but they&#39;re fast to check, help you build a quick risk profile of a target before deeper testing, and occasionally combine with another finding into something more severe (a missing <code>X-Frame-Options</code> header enabling a clickjacking chain, for instance).</p>
+</li>
+<li><p><strong>Look for exposed version control or backup files.</strong> Try requesting <code>/.git/config</code>, <code>/.env</code>, <code>/backup.sql</code>, and similar common accidentally-exposed paths directly — a shockingly common, embarrassingly simple finding that requires no special tooling, just knowing which paths are worth trying on every new target.</p>
+</li>
+</ol>
+<h2>Tools you should know</h2>
+<ul>
+<li><strong>Burp Suite</strong> — your primary interception and testing tool, covered throughout Path 11.</li>
+<li><strong><a href="https://github.com/projectdiscovery/nuclei">Nuclei</a></strong> — a free, fast vulnerability scanner using community-maintained templates, referenced in this path&#39;s automation lesson.</li>
+<li><strong><a href="https://github.com/projectdiscovery/subfinder">Subfinder</a></strong> — fast subdomain enumeration, the starting point of the recon pipeline covered next in this path.</li>
+</ul>
+<h2>Building good hunting habits</h2>
+<p>Every bug bounty program defines exactly what&#39;s in scope (which domains, which vulnerability types) and what&#39;s explicitly disallowed (often things like automated scanning at high volume, social engineering, or physical testing). Reading this document fully, every time, before testing a new program is non-negotiable — testing outside scope, even accidentally, can get your account banned or, in rare cases, cross into legal risk.</p>
+<p>Pick one program on <strong>HackerOne</strong> or <strong>Intigriti</strong> (both host large numbers of legitimate, well-run programs, many with generous scope for beginners), read its policy fully, and submit at least one valid, well-written report using the structure from Path 14&#39;s Reporting lab — even a low-severity, informational finding is a genuine, real accomplishment worth completing and documenting in your GitHub portfolio (Path 20).</p>
+<h2>Key takeaway</h2>
+<p>The beginner-friendly vulnerability classes covered here — IDOR, open redirects, stored XSS — remain consistently among the most commonly <em>found and paid</em> bug bounty categories precisely because they require careful, methodical testing rather than exotic technique, which is exactly the skill this lab (and this entire course) has been building toward.</p>
+<p><strong>Next up →</strong> <a href="#/lesson/15-bug-bounty/logic-bug-hunting-lab">Logic Bug Hunting Lab</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/15-bug-bounty/bounty-hunting-challenges";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

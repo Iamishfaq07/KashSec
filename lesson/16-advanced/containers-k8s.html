@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Containers &amp; Kubernetes — Path 16 · KashSec Academy</title>
+<meta name="description" content="Modern applications increasingly run in containers, orchestrated by Kubernetes — introducing an entirely new layer of infrastructure with its own distinct security model, building directly on the Linu">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/16-advanced/containers-k8s">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Containers &amp; Kubernetes — Path 16 · KashSec Academy">
+<meta property="og:description" content="Modern applications increasingly run in containers, orchestrated by Kubernetes — introducing an entirely new layer of infrastructure with its own distinct security model, building directly on the Linu">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/16-advanced/containers-k8s">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Containers &amp; Kubernetes — Path 16 · KashSec Academy">
+<meta name="twitter:description" content="Modern applications increasingly run in containers, orchestrated by Kubernetes — introducing an entirely new layer of infrastructure with its own distinct security model, building directly on the Linu">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Containers & Kubernetes — Path 16 · KashSec Academy","description":"Modern applications increasingly run in containers, orchestrated by Kubernetes — introducing an entirely new layer of infrastructure with its own distinct security model, building directly on the Linu","url":"https://kashsec.vercel.app/#/lesson/16-advanced/containers-k8s","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/16-advanced/containers-k8s">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 16 — Advanced Cyber Topics</a> · Containers &amp; Kubernetes</div>
+  <article><h1>Containers &amp; Kubernetes security</h1>
+<p>Modern applications increasingly run in containers, orchestrated by Kubernetes — introducing an entirely new layer of infrastructure with its own distinct security model, building directly on the Linux fundamentals from Path 03 and the cloud concepts from the previous lesson.</p>
+<h2>What containers actually are, security-wise</h2>
+<p>Recall Path 03.4&#39;s virtualization lesson — a container is <strong>not</strong> a full virtual machine. Containers share the <strong>host machine&#39;s kernel</strong>, isolated from each other via Linux kernel features (namespaces, cgroups) rather than full hardware virtualization. This distinction has a direct security consequence: a container escape can potentially compromise the <strong>host itself</strong>, not just &quot;another VM&quot; — the isolation boundary is fundamentally thinner than full virtualization.</p>
+<h2>Common Docker misconfigurations</h2>
+<h3>Running containers as root</h3>
+<p>By default, many container images run their main process as <strong>root</strong> inside the container — if an attacker achieves code execution within that container and then finds an escape vector, they escape as root on the host too.</p>
+<pre><code class="language-dockerfile"># VULNERABLE — runs as root by default:
+FROM ubuntu:22.04
+COPY app /app
+CMD [&quot;/app&quot;]
+
+# BETTER — explicitly run as a non-root user:
+FROM ubuntu:22.04
+RUN useradd -m appuser
+COPY app /app
+USER appuser
+CMD [&quot;/app&quot;]
+</code></pre>
+<h3>Exposed Docker daemon socket</h3>
+<p>The Docker daemon socket (<code>/var/run/docker.sock</code>) grants <strong>full control</strong> over the Docker host — accidentally mounting it into a container, or exposing the Docker API over the network without authentication, is equivalent to granting root access on the entire host:</p>
+<pre><code class="language-bash"># If a container has the Docker socket mounted, it can control ALL
+# containers on the host, including spinning up new privileged ones:
+docker -H unix:///var/run/docker.sock run -v /:/host -it alpine chroot /host sh
+# This escapes to a full root shell on the underlying host
+</code></pre>
+<h3>Privileged containers</h3>
+<pre><code class="language-bash"># DANGEROUS — grants the container nearly all host kernel capabilities:
+docker run --privileged -it ubuntu
+
+# A privileged container can, among other things, directly access host
+# devices and, in many configurations, mount the host filesystem:
+docker run --privileged -it ubuntu chroot /host_mount sh
+</code></pre>
+<p><code>--privileged</code> should be treated as an emergency-only escape hatch, essentially equivalent to disabling container isolation almost entirely — a huge red flag in any security review.</p>
+<h3>Vulnerable base images and dependencies</h3>
+<p>Directly connecting to Path 11.1&#39;s A06 (Vulnerable and Outdated Components) — container images built from outdated base images inherit <strong>every</strong> unpatched vulnerability in that base layer:</p>
+<pre><code class="language-bash"># Scan a container image for known vulnerabilities — Ishfaq&#39;s own
+# professional toolchain includes exactly this tool:
+trivy image example-app:latest
+
+# Scan a Dockerfile itself for misconfigurations:
+trivy config Dockerfile
+</code></pre>
+<p><strong>Trivy</strong> (mentioned in Ishfaq&#39;s own professional context around the trivy-action supply-chain incident referenced earlier in this course&#39;s development) is a widely-used open-source scanner checking both known CVEs in image layers and misconfigurations in the Dockerfile/Kubernetes manifests themselves — directly relevant to the SCA (Software Composition Analysis) concept from Path 11.1.</p>
+<h2>Kubernetes — orchestrating containers at scale, and its own attack surface</h2>
+<p><strong>Kubernetes (K8s)</strong> manages large numbers of containers across many machines — introducing its own control plane, API, and permission model on top of the container concepts above.</p>
+<h3>RBAC misconfigurations — the Kubernetes IAM equivalent</h3>
+<p>Directly analogous to the cloud IAM concepts from the previous lesson, Kubernetes uses <strong>RBAC (Role-Based Access Control)</strong> to govern what each user/service account can do within the cluster:</p>
+<pre><code class="language-yaml"># DANGEROUS — grants full cluster-admin-equivalent permissions:
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: overly-permissive-binding
+subjects:
+- kind: ServiceAccount
+  name: my-app-service-account
+  namespace: default
+roleRef:
+  kind: ClusterRole
+  name: cluster-admin
+  apiGroup: rbac.authorization.k8s.io
+</code></pre>
+<p>A compromised pod running with an overly-permissive service account can potentially control the <strong>entire cluster</strong> — precisely mirroring the cloud IAM privilege escalation concerns from the previous lesson, just scoped to the Kubernetes control plane instead.</p>
+<h3>Exposed Kubernetes dashboard/API</h3>
+<p>An unauthenticated or weakly-authenticated Kubernetes API server exposed to the internet is a critical, often actively-scanned-for misconfiguration:</p>
+<pre><code class="language-bash"># Shodan search for exposed Kubernetes API servers (Path 11.3&#39;s technique,
+# applied to this specific service):
+shodan search &quot;product:kubernetes&quot;
+
+# Checking your own cluster&#39;s exposure (only against authorized clusters):
+kubectl cluster-info
+</code></pre>
+<h3>Container escape techniques</h3>
+<p>Beyond the Docker-level escapes above, Kubernetes-specific escape vectors include:</p>
+<ul>
+<li><strong>hostPath volume mounts</strong> — mounting sensitive host directories directly into a pod, similar in spirit to the Docker socket mount issue above.</li>
+<li><strong>Privileged pods</strong> (the Kubernetes equivalent of <code>docker run --privileged</code>).</li>
+<li><strong>Node compromise via kubelet API</strong> — an exposed, unauthenticated kubelet API can allow direct command execution on the underlying node.</li>
+</ul>
+<h2>Kubernetes Secrets — less secret than the name suggests</h2>
+<p>A common source of misplaced confidence: Kubernetes <strong>Secrets</strong> are, by default, only <strong>base64-encoded</strong>, not encrypted — anyone with API access to read a Secret object (or with <code>etcd</code> access, since Secrets are stored there) can trivially decode it back to plaintext:</p>
+<pre><code class="language-bash">kubectl get secret my-secret -o jsonpath=&#39;{.data.password}&#39; | base64 -d
+</code></pre>
+<p>This matters directly for the RBAC discussion above — a service account with overly broad read permissions on Secrets across namespaces effectively has read access to every credential stored in the cluster, base64 encoding providing essentially zero real protection against anyone who already has that access. Production clusters should enable <strong>encryption at rest</strong> for etcd specifically, and increasingly, teams route secrets through a dedicated external secrets manager (the same AWS Secrets Manager / HashiCorp Vault tools from the previous lesson) rather than relying on native Kubernetes Secrets as the sole protection layer.</p>
+<h2>Image signing and supply chain integrity</h2>
+<p>Beyond scanning an image&#39;s <em>contents</em> for known vulnerabilities (Trivy&#39;s job above), a separate and increasingly important question is whether an image is genuinely the one your team built at all, or whether it&#39;s been tampered with somewhere in the registry/pull chain. Tools like <strong>cosign</strong> (part of the Sigstore project) let teams cryptographically sign container images at build time and verify that signature before ever deploying them:</p>
+<pre><code class="language-bash">cosign sign --key cosign.key example-registry/example-app:latest
+cosign verify --key cosign.pub example-registry/example-app:latest
+</code></pre>
+<p>This directly extends the software supply-chain security theme threaded throughout this course (the trivy-action incident referenced above, Path 04&#39;s PyPI typosquatting mention) — a perfectly scanned, vulnerability-free image is still a risk if there&#39;s no cryptographic guarantee it&#39;s actually the image your CI/CD pipeline produced, rather than a substituted one injected somewhere between build and deployment.</p>
+<h2>The defender&#39;s view</h2>
+<ul>
+<li><strong>Never run containers as root</strong> unless there&#39;s a specific, well-understood reason — set an explicit non-root <code>USER</code> in every Dockerfile.</li>
+<li><strong>Never mount the Docker socket</strong> into a container unless absolutely necessary, and treat any container that does as equivalent to full host root access.</li>
+<li><strong>Avoid <code>--privileged</code></strong> entirely in production; use specific, minimal Linux capabilities instead if elevated access is genuinely required.</li>
+<li><strong>Scan images continuously</strong> with Trivy (or similar) integrated directly into CI/CD pipelines — exactly the kind of SAST/DAST/SCA pipeline integration work central to Ishfaq&#39;s own professional role.</li>
+<li><strong>Apply least-privilege RBAC</strong> — avoid <code>cluster-admin</code> bindings for application service accounts; scope permissions to exactly what each workload needs.</li>
+<li><strong>Never expose the Kubernetes API or dashboard</strong> without strong authentication and network restriction (recall Path 12.4&#39;s firewall/VPN concepts, applied here).</li>
+<li><strong>Use Pod Security Standards</strong> (Kubernetes&#39; built-in mechanism for restricting privileged/risky pod configurations cluster-wide).</li>
+</ul>
+<h2>🧪 Lab — Container security practice</h2>
+<pre><code class="language-bash"># 1. Scan a public image with Trivy:
+trivy image nginx:1.18   # a deliberately older version, likely to show known CVEs
+
+# 2. Experiment with container escape concepts in an isolated lab
+#    (never against production systems):
+docker run --rm -it --privileged alpine sh
+# Inside the container, explore what host-level access --privileged actually grants:
+ls /dev
+mount
+
+# 3. If you have access to a personal/learning Kubernetes cluster (minikube
+#    or kind are free, local options), review the default RBAC bindings:
+kubectl get clusterrolebindings -o wide
+kubectl auth can-i --list --as=system:serviceaccount:default:default
+</code></pre>
+<p>Also revisit Path 03.4&#39;s Docker installation from earlier in this course, and try building a genuinely hardened Dockerfile (non-root user, minimal base image, explicit least-privilege) for any small project you&#39;ve built during this course — directly applying this lesson&#39;s defensive guidance.</p>
+<p>A container has the host&#39;s Docker socket (<code>/var/run/docker.sock</code>) mounted inside it &quot;for convenience,&quot; so the application can manage other containers programmatically. Why does this effectively grant the container full root access to the entire host, not just to Docker itself?</p>
+<details><summary>Show answer</summary>The Docker socket provides <strong>full control over the Docker daemon</strong>, which itself runs with root privileges on the host. A process with access to this socket can instruct Docker to start a <em>new</em> container with the host's entire root filesystem mounted inside it (e.g., <code>-v /:/host</code>) and then <code>chroot</code> into that mount — effectively achieving a full root shell on the underlying host machine, entirely bypassing container isolation. This is why mounting the Docker socket into any container is functionally equivalent to granting that container unrestricted root access to the host itself, regardless of how limited the container's own explicit permissions appear.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Container escape</strong> — breaking out of container isolation to access or control the underlying host.</li>
+<li><strong>Docker socket</strong> — the Docker daemon&#39;s control interface; access to it is equivalent to host root access.</li>
+<li><strong>Trivy</strong> — the widely-used open-source container image and configuration vulnerability scanner.</li>
+<li><strong>Kubernetes RBAC</strong> — the cluster-level, Kubernetes-native access control system, analogous to cloud IAM.</li>
+<li><strong>Pod Security Standards</strong> — Kubernetes&#39; built-in mechanism restricting privileged/risky pod configurations.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Containers share the host kernel — a thinner isolation boundary than full virtual machines, making escapes more consequential.</li>
+<li>Root-running containers, exposed Docker sockets, and <code>--privileged</code> flags are the most common, most severe Docker misconfigurations.</li>
+<li>Trivy scans both image vulnerabilities (SCA) and configuration misconfigurations, directly relevant to real CI/CD pipeline security work.</li>
+<li>Kubernetes RBAC mirrors cloud IAM concerns — overly-permissive service account bindings can compromise entire clusters.</li>
+<li>Defensive practice directly mirrors every offensive technique in this lesson — non-root users, minimal privileges, continuous scanning, least-privilege RBAC.</li>
+</ul>
+<h3>References</h3>
+<ul>
+<li><a href="https://trivy.dev/">Trivy official documentation</a> — comprehensive scanning tool reference.</li>
+<li><a href="https://docs.docker.com/engine/security/">Docker Security documentation</a> — official best practices.</li>
+<li><a href="https://kubernetes.io/docs/concepts/security/pod-security-standards/">Kubernetes — Pod Security Standards</a> — official documentation.</li>
+<li><a href="https://book.hacktricks.xyz/pentesting/pentesting-docker">HackTricks — Docker/Kubernetes Security</a> — extensive practical escape/attack technique reference.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/16-advanced/malware-analysis">Malware analysis basics</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/16-advanced/containers-k8s";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Misc — Hidden in Plain Sight — Path 19 · KashSec Academy</title>
+<meta name="description" content="Category: Misc · Difficulty: Medium">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/19-ctf-challenges/misc-hidden-headers">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Misc — Hidden in Plain Sight — Path 19 · KashSec Academy">
+<meta property="og:description" content="Category: Misc · Difficulty: Medium">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/19-ctf-challenges/misc-hidden-headers">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Misc — Hidden in Plain Sight — Path 19 · KashSec Academy">
+<meta name="twitter:description" content="Category: Misc · Difficulty: Medium">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Misc — Hidden in Plain Sight — Path 19 · KashSec Academy","description":"Category: Misc · Difficulty: Medium","url":"https://kashsec.vercel.app/#/lesson/19-ctf-challenges/misc-hidden-headers","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/19-ctf-challenges/misc-hidden-headers">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 19 — CTF Challenges</a> · Misc — Hidden in Plain Sight</div>
+  <article><h1>Misc — Hidden in Plain Sight</h1>
+<p><strong>Category:</strong> Misc · <strong>Difficulty:</strong> Medium</p>
+<h2>Scenario</h2>
+<p>While inspecting network traffic in your browser&#39;s DevTools (Path 05&#39;s <strong>Browser DevTools Lab</strong> should feel very relevant right about now), you notice <code>api.kashsec-labs.test</code> returns a few nonstandard response headers on every request — the kind most people scroll straight past without a second look.</p>
+<h2>Provided data</h2>
+<p>Full response headers captured from a single request:</p>
+<pre><code>HTTP/1.1 200 OK
+Content-Type: application/json
+Cache-Control: no-store
+X-Request-Id: 8f2c1a90-44b1
+X-Debug-Trace-A: S0FTSFNFQ3toMzRkZXJzX2M0bl9oMW
+X-Debug-Trace-B: RlX3NlY3JldHN9
+Server: nginx
+</code></pre>
+<p>Something about those two <code>X-Debug-Trace</code> headers seems out of place compared to the routine ones around them.</p>
+<h2>Your task</h2>
+<p>Find the flag hidden across these headers.</p>
+<details><summary>Hint 1</summary>Standard headers like <code>Content-Type</code>, <code>Cache-Control</code>, and <code>Server</code> follow well-known, documented formats. <code>X-Debug-Trace-A</code> and <code>X-Debug-Trace-B</code> aren't real standard headers at all — the <code>X-</code> prefix is a longstanding (if deprecated) convention for custom, non-standard headers, often left behind by developers during debugging and forgotten before shipping to production.</details>
+<details><summary>Hint 2</summary>Look closely at the character set inside both values — letters, numbers, no spaces or unusual symbols. That's the same encoding signature from the earlier Crypto challenge in this section. Try concatenating the two values together, in header order (A then B), before decoding anything.</details>
+<details><summary>Show full answer</summary>The two nonstandard <code>X-Debug-Trace</code> headers each hold one half of a Base64-encoded string, split across two headers specifically to make it slightly less obvious at a glance than a single long value would be. Concatenating <code>X-Debug-Trace-A</code> directly followed by <code>X-Debug-Trace-B</code> gives the full Base64 string <code>S0FTSFNFQ3toMzRkZXJzX2M0bl9oMWRlX3NlY3JldHN9</code>, which decodes directly to the flag.</details><h2>The flag</h2>
+<pre><code>KASHSEC{h34ders_c4n_h1de_secrets}
+</code></pre>
+<h2>Bonus round — a second data point, from a different response</h2>
+<p>You capture headers from a completely different endpoint on the same target, this time on a request that errored out:</p>
+<pre><code>HTTP/1.1 500 Internal Server Error
+Content-Type: application/json
+X-Powered-By: Express/4.18.2
+X-Internal-Host: prod-api-worker-07.internal.kashsec-labs.local
+Set-Cookie: debug_session=eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiYWRtaW4ifQ.abc123signature; HttpOnly
+</code></pre>
+<details><summary>Hint</summary>Compare what a "normal," properly-behaving production server should reveal to an outside client versus what these specific header values actually disclose about the server's internals — and consider why an error response, specifically, is a common place for this kind of unintentional leak.</details>
+<details><summary>Show answer</summary>Three separate disclosures here, each worth flagging as a distinct finding in a real report: <code>X-Powered-By</code> reveals the exact backend framework and version (Express/4.18.2) — directly useful to an attacker for searching known CVEs, exactly the technology-fingerprinting risk from Path 11.1's tech-fingerprinting lesson. <code>X-Internal-Host</code> leaks an <strong>internal-only hostname</strong> (<code>prod-api-worker-07.internal...</code>) that should never be visible outside the company's own network — a classic sign of a load balancer or internal service passing through headers it should have stripped before the response reaches the public internet. And the <code>debug_session</code> cookie contains what looks like a JWT with a suspiciously named <code>debug_session</code> — worth decoding with the same technique from this section's JWT challenge, since a debug-labeled auth cookie left active in production is exactly the kind of forgotten artifact that becomes a serious vulnerability. Error responses (like this <code>500</code>) are a classic place for exactly this kind of leak, since they're generated by less-tested code paths than the application's normal happy path, and developers debugging a crash often add verbose internal detail they forget to strip before shipping.</details><h2>Why this matters beyond the CTF</h2>
+<p>Debug headers, verbose error responses, and forgotten <code>X-</code> prefixed headers are a genuinely common real-world information disclosure vector — internal hostnames, framework versions, stack traces, and even authentication debug tokens have all shown up in production response headers left over from a development or QA build. Path 11&#39;s <strong>web recon</strong> lesson specifically calls out checking every response header during reconnaissance, not just the body — this challenge is a compressed illustration of exactly why that habit pays off. Tools like Burp Suite&#39;s Proxy history (Path 11) make scanning every header across an entire session dramatically faster than manually inspecting each response in DevTools one at a time.</p>
+<p>When testing any web application (with proper authorization), get in the habit of reviewing full raw HTTP responses — not just what renders on the page — for every request type: normal pages, API calls, error responses, and redirects. Debug artifacts like this challenge&#39;s headers tend to survive precisely because they&#39;re invisible unless someone deliberately looks.</p>
+<p><strong>Next up →</strong> <a href="#/lesson/19-ctf-challenges/crypto-xor-cipher">Crypto — Break the XOR Cipher</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/19-ctf-challenges/misc-hidden-headers";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

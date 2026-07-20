@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Browser DevTools Lab — Path 05 · KashSec Academy</title>
+<meta name="description" content="DevTools is, genuinely, your very first hacking tool — free, built into every modern browser, and capable of far more than most casual users ever realize. This lab is the capstone of Path 05, tying to">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/05-web-basics/devtools-lab">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Browser DevTools Lab — Path 05 · KashSec Academy">
+<meta property="og:description" content="DevTools is, genuinely, your very first hacking tool — free, built into every modern browser, and capable of far more than most casual users ever realize. This lab is the capstone of Path 05, tying to">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/05-web-basics/devtools-lab">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Browser DevTools Lab — Path 05 · KashSec Academy">
+<meta name="twitter:description" content="DevTools is, genuinely, your very first hacking tool — free, built into every modern browser, and capable of far more than most casual users ever realize. This lab is the capstone of Path 05, tying to">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Browser DevTools Lab — Path 05 · KashSec Academy","description":"DevTools is, genuinely, your very first hacking tool — free, built into every modern browser, and capable of far more than most casual users ever realize. This lab is the capstone of Path 05, tying to","url":"https://kashsec.vercel.app/#/lesson/05-web-basics/devtools-lab","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/05-web-basics/devtools-lab">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 05 — How the Web Works</a> · Browser DevTools Lab</div>
+  <article><h1>Browser DevTools Lab</h1>
+<p>DevTools is, genuinely, your very first hacking tool — free, built into every modern browser, and capable of far more than most casual users ever realize. This lab is the capstone of Path 05, tying together everything from page structure to cookies into one hands-on session.</p>
+<h2>Tasks</h2>
+<ol>
+<li><p><strong>Open DevTools and explore every tab.</strong> Press <code>F12</code> (or right-click → Inspect) on any website. Spend two minutes just clicking through each tab — <strong>Elements</strong>, <strong>Console</strong>, <strong>Network</strong>, <strong>Application</strong>, <strong>Sources</strong> — before doing anything else, to build a mental map of what lives where.</p>
+</li>
+<li><p><strong>Inspect and modify elements live.</strong> In the <strong>Elements</strong> tab, double-click any text on the page and edit it directly — change a headline, a price, a name. This only changes what <em>you</em> see locally (nothing is actually sent to the server), but it&#39;s a genuinely useful trick for testing how a page would look with different content, and a common (harmless) prank format online is built entirely on this misunderstanding.</p>
+</li>
+<li><p><strong>Watch the Network tab while loading a page.</strong> Open the <strong>Network</strong> tab, then reload the page. Watch every request fire in order — the HTML document first, then CSS, JavaScript, images, and often several API calls. Click on any request to see its full headers, response body, and timing — this is exactly the view Path 11&#39;s web reconnaissance lesson relies on constantly.</p>
+</li>
+<li><p><strong>Check Cookies and Storage.</strong> In the <strong>Application</strong> tab, review Cookies (covered in the previous lab), plus <code>localStorage</code> and <code>sessionStorage</code> — many modern apps (including this very course site) store data client-side here instead of, or alongside, cookies.</p>
+</li>
+<li><p><strong>Run JavaScript in the Console.</strong> Type <code>document.title</code> and press Enter — you&#39;ll see the page&#39;s title returned instantly. Try <code>document.cookie</code> to see (non-HttpOnly) cookies as a raw string. The Console is a live JavaScript environment running in the context of the current page — exactly what makes XSS (Path 11) so powerful: an attacker-controlled script running here has the same access you just demonstrated to yourself.</p>
+</li>
+<li><p><strong>Search across every loaded source file.</strong> In the <strong>Sources</strong> (or <strong>Debugger</strong>) panel, use the global search feature (often <code>Ctrl+Shift+F</code> inside DevTools) to search every JavaScript file the page has loaded for a keyword like <code>api</code> or <code>token</code>. Note how much internal structure — endpoint names, feature flags, sometimes even comments left by developers — is sitting in plain, downloadable client-side code that any visitor can read.</p>
+</li>
+<li><p><strong>Throttle your connection.</strong> In the Network tab&#39;s throttling dropdown, switch from &quot;No throttling&quot; to &quot;Slow 3G&quot; and reload the page. Watch how the loading order changes and which resources block the page longest — a direct hands-on look at the critical rendering path concept from this path&#39;s very first lesson, now visible as an actual timeline instead of an abstract idea.</p>
+</li>
+</ol>
+<p>This entire lab works on virtually any website — you don&#39;t need a special vulnerable lab environment for these particular exercises (though never submit forms, modify persisted server-side data, or attempt anything beyond passive inspection on a site without authorization). Practicing comfort with DevTools itself, on ordinary sites, is the actual goal here.</p>
+<p>Find a way to make a page&#39;s visible content say something different using only DevTools element editing, and take a screenshot as a simple proof-of-concept. Then, separately, use the Network tab to find one API call a page makes that you didn&#39;t expect, and note what data it sends or receives — many sites reveal more than intended in these background calls, exactly the kind of &quot;always check every request&quot; habit Path 11&#39;s recon lesson builds on.</p>
+<h2>Key takeaway</h2>
+<p>DevTools removes the mystery from &quot;how does this website actually work&quot; — every request, every cookie, every line of rendered HTML is fully inspectable, and comfort navigating it fluidly is a genuine prerequisite for effective web security testing in every path that follows.</p>
+<p><strong>Explore more →</strong> <a href="#/lesson/10-fundamentals">Path 10 — Cybersecurity Fundamentals</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/05-web-basics/devtools-lab";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

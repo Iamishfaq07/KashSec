@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Security Scripting Lab — Path 04 · KashSec Academy</title>
+<meta name="description" content="This is the capstone lab for Path 04 — turning everything from variables and loops through to the password checker project into genuinely useful security tools, the same category of small custom scrip">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/04-python/security-scripting-lab">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Security Scripting Lab — Path 04 · KashSec Academy">
+<meta property="og:description" content="This is the capstone lab for Path 04 — turning everything from variables and loops through to the password checker project into genuinely useful security tools, the same category of small custom scrip">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/04-python/security-scripting-lab">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Security Scripting Lab — Path 04 · KashSec Academy">
+<meta name="twitter:description" content="This is the capstone lab for Path 04 — turning everything from variables and loops through to the password checker project into genuinely useful security tools, the same category of small custom scrip">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Security Scripting Lab — Path 04 · KashSec Academy","description":"This is the capstone lab for Path 04 — turning everything from variables and loops through to the password checker project into genuinely useful security tools, the same category of small custom scrip","url":"https://kashsec.vercel.app/#/lesson/04-python/security-scripting-lab","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/04-python/security-scripting-lab">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 04 — Programming & Python</a> · Security Scripting Lab</div>
+  <article><h1>Security Scripting Lab</h1>
+<p>This is the capstone lab for Path 04 — turning everything from variables and loops through to the password checker project into genuinely useful security tools, the same category of small custom scripts referenced throughout Path 03&#39;s Advanced Terminal Lab and Path 20&#39;s portfolio advice.</p>
+<h2>Lab tasks</h2>
+<ol>
+<li><p><strong>A URL status checker.</strong> Write a script that reads a list of URLs and reports the HTTP status code for each:</p>
+<pre><code class="language-python">import requests
+
+with open(&quot;urls.txt&quot;) as f:
+    urls = [line.strip() for line in f]
+
+for url in urls:
+    try:
+        r = requests.get(url, timeout=5)
+        print(f&quot;{url} -&gt; {r.status_code}&quot;)
+    except requests.exceptions.RequestException as e:
+        print(f&quot;{url} -&gt; ERROR ({e})&quot;)
+</code></pre>
+<p>This exact pattern — reading a list, trying each item, handling failures gracefully — is the backbone of most real recon automation.</p>
+</li>
+<li><p><strong>A simple port scanner using <code>socket</code>.</strong> No external libraries required — Python&#39;s built-in <code>socket</code> module is enough for a basic scanner:</p>
+<pre><code class="language-python">import socket
+
+target = &quot;127.0.0.1&quot;
+for port in range(1, 1025):
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.settimeout(0.3)
+    result = s.connect_ex((target, port))
+    if result == 0:
+        print(f&quot;Port {port} is open&quot;)
+    s.close()
+</code></pre>
+<p>Run it against <code>127.0.0.1</code> (your own machine) first — never against a target you don&#39;t have permission to scan.</p>
+</li>
+<li><p><strong>Extend your earlier password checker.</strong> Go back to the password-strength checker you built earlier in this path and add one real improvement: check the password against a small list of the most common leaked passwords (several free &quot;top 10,000 passwords&quot; lists exist for exactly this kind of exercise) and flag an immediate fail if it matches, regardless of length/complexity — a genuinely important real-world check, since attackers try these lists first, before any brute-forcing.</p>
+</li>
+<li><p><strong>Automate something with <code>requests</code> and <code>BeautifulSoup</code>.</strong> If you have <code>beautifulsoup4</code> installed (<code>pip install beautifulsoup4</code>), write a small script that fetches a page and extracts every link on it:</p>
+<pre><code class="language-python">import requests
+from bs4 import BeautifulSoup
+
+r = requests.get(&quot;https://example.com&quot;)
+soup = BeautifulSoup(r.text, &quot;html.parser&quot;)
+for link in soup.find_all(&quot;a&quot;):
+    print(link.get(&quot;href&quot;))
+</code></pre>
+<p>This exact technique — fetch, parse, extract — underlies real reconnaissance tools that map out a site&#39;s structure automatically.</p>
+</li>
+<li><p><strong>Multi-threaded port scanning.</strong> Task 2&#39;s scanner checks ports one at a time, sequentially — genuinely slow across a wide range. Use Python&#39;s <code>concurrent.futures.ThreadPoolExecutor</code> to check many ports simultaneously instead:</p>
+<pre><code class="language-python">import socket
+from concurrent.futures import ThreadPoolExecutor
+
+def check_port(port, target=&quot;127.0.0.1&quot;):
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.settimeout(0.3)
+    if s.connect_ex((target, port)) == 0:
+        print(f&quot;Port {port} is open&quot;)
+    s.close()
+
+with ThreadPoolExecutor(max_workers=50) as executor:
+    executor.map(check_port, range(1, 1025))
+</code></pre>
+<p>Time both versions against your own machine and compare — the speed difference is genuinely dramatic, and this exact threading pattern underlies why real tools like Nmap and Nuclei can scan large ranges in a reasonable time.</p>
+</li>
+<li><p><strong>Add rate limiting to your URL checker.</strong> Revisit Task 1&#39;s URL status checker and add a small <code>time.sleep()</code> delay between requests, per this path&#39;s automation lesson — practice the responsible-automation habit now, on your own small script, before it matters on a real authorized engagement.</p>
+</li>
+</ol>
+<p>Each of these four scripts does one thing well — the real skill, and the direction Path 15&#39;s recon pipeline lesson goes next, is chaining small single-purpose tools together into a pipeline, exactly like real tools such as <code>subfinder → httpx → gau → nuclei</code> do.</p>
+<p>Write one script that takes a domain as input, checks whether it responds on port 80 and 443 using your port-scanning knowledge, and — if it does — fetches the page and prints its <code>&lt;title&gt;</code> tag using BeautifulSoup. This &quot;open ports + HTTP title&quot; pattern is a genuinely useful, portfolio-worthy mini recon tool, and a great addition to the GitHub portfolio Path 20 recommends building.</p>
+<h2>Key takeaway</h2>
+<p>Every one of these scripts is short — 10 to 20 lines — but each one automates something that would take minutes to do by hand, and minutes saved per target compounds fast once you&#39;re testing dozens or hundreds of hosts. This is exactly why scripting ability, even at a modest level, is such a consistent multiplier across every offensive and defensive security role.</p>
+<p><strong>Explore more →</strong> <a href="#/lesson/05-web-basics">Path 05 — How the Web Works</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/04-python/security-scripting-lab";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

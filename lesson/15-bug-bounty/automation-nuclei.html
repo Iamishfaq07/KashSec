@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Automation &amp; nuclei — Path 15 · KashSec Academy</title>
+<meta name="description" content="Path 15.3's pipeline introduced Nuclei as one stage among many. This lesson goes deep specifically on Nuclei — writing custom templates, understanding template categories properly, and integrating fin">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/15-bug-bounty/automation-nuclei">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Automation &amp; nuclei — Path 15 · KashSec Academy">
+<meta property="og:description" content="Path 15.3's pipeline introduced Nuclei as one stage among many. This lesson goes deep specifically on Nuclei — writing custom templates, understanding template categories properly, and integrating fin">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/15-bug-bounty/automation-nuclei">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Automation &amp; nuclei — Path 15 · KashSec Academy">
+<meta name="twitter:description" content="Path 15.3's pipeline introduced Nuclei as one stage among many. This lesson goes deep specifically on Nuclei — writing custom templates, understanding template categories properly, and integrating fin">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Automation & nuclei — Path 15 · KashSec Academy","description":"Path 15.3's pipeline introduced Nuclei as one stage among many. This lesson goes deep specifically on Nuclei — writing custom templates, understanding template categories properly, and integrating fin","url":"https://kashsec.vercel.app/#/lesson/15-bug-bounty/automation-nuclei","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/15-bug-bounty/automation-nuclei">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 15 — Bug Bounty</a> · Automation &amp; nuclei</div>
+  <article><h1>Automation with Nuclei</h1>
+<p>Path 15.3&#39;s pipeline introduced Nuclei as one stage among many. This lesson goes deep specifically on Nuclei — writing custom templates, understanding template categories properly, and integrating findings cleanly into your reporting workflow from Path 15.4.</p>
+<h2>Why Nuclei specifically deserves deeper study</h2>
+<p>Unlike most scanners, Nuclei&#39;s entire detection logic is defined in <strong>readable, editable YAML templates</strong> — not compiled, closed-source scanning logic. This means you can read exactly what any check does, and more importantly, <strong>write your own</strong> the moment you discover a new vulnerability pattern worth checking for at scale across your entire target list.</p>
+<h2>Anatomy of a Nuclei template</h2>
+<pre><code class="language-yaml">id: exposed-env-file
+
+info:
+  name: Exposed .env File
+  author: kashsec
+  severity: high
+  description: &gt;
+    Detects publicly accessible .env files which commonly contain
+    database credentials, API keys, and other secrets.
+  tags: exposure,config,env
+
+http:
+  - method: GET
+    path:
+      - &quot;{{BaseURL}}/.env&quot;
+
+    matchers:
+      - type: dsl
+        dsl:
+          - &quot;status_code == 200&quot;
+          - &quot;contains(body, &#39;DB_PASSWORD&#39;) || contains(body, &#39;API_KEY&#39;) || contains(body, &#39;SECRET&#39;)&quot;
+        condition: and
+</code></pre>
+<pre><code class="language-bash"># Run this single custom template against your target list:
+nuclei -l live-hosts.txt -t exposed-env-file.yaml
+</code></pre>
+<p>Breaking this down:</p>
+<ul>
+<li><strong><code>info</code></strong> — metadata: name, severity, description, tags. This is what appears in your scan output and eventual report.</li>
+<li><strong><code>http</code></strong> — the actual check: which path(s) to request.</li>
+<li><strong><code>matchers</code></strong> — the logic determining a genuine &quot;hit.&quot; Here, using Nuclei&#39;s <strong>DSL (Domain Specific Language)</strong> to combine two conditions: a 200 status code AND the response body containing telltale secret-related strings.</li>
+</ul>
+<h2>Writing a template for something you found manually</h2>
+<p>The real power: once you manually discover a vulnerability pattern (say, an exposed admin panel at a specific path that a client&#39;s dev team apparently forgets to remove across many of their subdomains), <strong>codify it</strong> as a template and sweep your <em>entire</em> target list for the same pattern instantly:</p>
+<pre><code class="language-yaml">id: exposed-admin-panel-custom
+
+info:
+  name: Custom Exposed Admin Panel Pattern
+  author: kashsec
+  severity: medium
+  tags: exposure,panel,custom
+
+http:
+  - method: GET
+    path:
+      - &quot;{{BaseURL}}/internal-admin-v2/&quot;
+      - &quot;{{BaseURL}}/admin-legacy/&quot;
+      - &quot;{{BaseURL}}/_internal/dashboard&quot;
+
+    matchers:
+      - type: word
+        words:
+          - &quot;Internal Dashboard&quot;
+          - &quot;Employee Portal&quot;
+        part: body
+</code></pre>
+<pre><code class="language-bash">nuclei -l all-subdomains.txt -t exposed-admin-panel-custom.yaml -severity medium
+</code></pre>
+<p>This is precisely the workflow that turns a single lucky manual discovery into <strong>repeatable, scalable coverage</strong> across every asset in scope — a genuine force multiplier that separates systematic hunters from one-off luck.</p>
+<h2>Understanding template categories properly</h2>
+<pre><code class="language-bash"># The official template repository is organised by category:
+ls ~/nuclei-templates/
+# cves/           — checks for specific, named CVEs
+# exposures/      — exposed configs, panels, files, tokens
+# misconfiguration/ — general security misconfigurations
+# vulnerabilities/ — broader vulnerability classes (SSRF, XSS patterns, etc.)
+# takeovers/      — subdomain takeover detection (see below)
+# default-logins/ — checks for unchanged default credentials
+</code></pre>
+<h3>CVE-specific templates — matching Path 14.4&#39;s searchsploit workflow</h3>
+<pre><code class="language-bash"># Run only CVE templates, cross-referencing your tech-fingerprinted targets:
+nuclei -l live-hosts.txt -t cves/ -severity high,critical
+</code></pre>
+<p>This directly parallels Path 14.4&#39;s <code>searchsploit</code> cross-referencing technique, just automated across your entire live-host list rather than checked one service at a time manually.</p>
+<h3>Subdomain takeover — a distinct, high-value Nuclei use case</h3>
+<p><strong>Subdomain takeover</strong> happens when a subdomain&#39;s DNS record (a CNAME) points to a third-party service (like a cloud storage bucket, a hosting platform, or a SaaS tool) that&#39;s since been <strong>deprovisioned</strong> — but the DNS record was never cleaned up. An attacker can then claim that same resource on the third-party service themselves, effectively taking control of the organisation&#39;s own subdomain.</p>
+<pre><code class="language-bash">nuclei -l all-subdomains.txt -t takeovers/ -severity medium,high
+</code></pre>
+<pre><code>Example: staging-old.example.com  CNAME  →  some-app.herokuapp.com
+         (but the Heroku app was deleted months ago)
+         Attacker registers &quot;some-app&quot; on Heroku themselves →
+         staging-old.example.com now serves THE ATTACKER&#39;S content
+</code></pre>
+<p>Subdomain takeovers are a genuinely popular, high-reward finding category precisely because they&#39;re so mechanically detectable (a specific DNS/response pattern) yet frequently missed by organisations managing large numbers of subdomains over time — exactly the kind of &quot;stale infrastructure&quot; finding a broad-scope, wildcard program (Path 15.2) makes newly discoverable.</p>
+<h2>Integrating Nuclei output into your reporting workflow</h2>
+<pre><code class="language-python">#!/usr/bin/env python3
+&quot;&quot;&quot;
+nuclei-to-report.py — Parse Nuclei&#39;s JSON output and generate
+draft report skeletons for each finding, following Path 15.4&#39;s structure.
+&quot;&quot;&quot;
+import json
+
+def load_findings(path: str) -&gt; list[dict]:
+    findings = []
+    with open(path) as f:
+        for line in f:
+            if line.strip():
+                findings.append(json.loads(line))
+    return findings
+
+def draft_report(finding: dict) -&gt; str:
+    info = finding.get(&quot;info&quot;, {})
+    return f&quot;&quot;&quot;
+## Title
+{info.get(&#39;name&#39;, &#39;Untitled finding&#39;)}
+
+## Summary
+Detected via automated scanning at: {finding.get(&#39;matched-at&#39;, &#39;unknown URL&#39;)}
+Severity: {info.get(&#39;severity&#39;, &#39;unknown&#39;)}
+Tags: {&#39;, &#39;.join(info.get(&#39;tags&#39;, []))}
+
+## Steps to Reproduce
+1. Send a request to: {finding.get(&#39;matched-at&#39;, &#39;&#39;)}
+2. Observe: {info.get(&#39;description&#39;, &#39;See template logic for match conditions&#39;)}
+
+## Suggested Fix
+(Manually add specific remediation guidance based on the finding type)
+&quot;&quot;&quot;
+
+def main():
+    findings = load_findings(&quot;nuclei-results.jsonl&quot;)
+    for i, finding in enumerate(findings):
+        report = draft_report(finding)
+        with open(f&quot;draft-report-{i}.md&quot;, &quot;w&quot;) as out:
+            out.write(report)
+    print(f&quot;[+] Drafted {len(findings)} report skeletons&quot;)
+
+if __name__ == &quot;__main__&quot;:
+    main()
+</code></pre>
+<pre><code class="language-bash">nuclei -l live-hosts.txt -t cves/,exposures/ -jsonl -o nuclei-results.jsonl
+python3 nuclei-to-report.py
+</code></pre>
+<p>This is a direct, practical extension of Path 04&#39;s Python automation skills — turning raw scanner output into <strong>draft report skeletons</strong>, ready for you to manually verify (never submit an unverified automated finding, per Path 15.4&#39;s warning), add a proper PoC, and refine before submission.</p>
+<h2>Critical discipline: automated findings still require manual verification</h2>
+<p>Recall Path 15.4&#39;s explicit warning against &quot;spamming low-quality/automated-scanner output.&quot; Nuclei is a phenomenal <strong>discovery</strong> tool but produces false positives, and even true positives often need manual investigation to determine <em>actual</em> exploitability and impact before they&#39;re submission-ready. Always manually verify every automated finding — confirm it with Burp, understand the real impact, and write a proper PoC — before ever submitting it as a report.</p>
+<h2>Detecting blind vulnerabilities with Interactsh</h2>
+<p>Nuclei&#39;s built-in <strong>Interactsh</strong> integration extends its detection well beyond simple response-matching, directly addressing the blind SSRF and blind command injection scenarios from Path 11&#39;s lessons. Rather than checking a response body for a specific string, a template can inject a unique, per-scan callback URL into a request and then watch a free, hosted out-of-band service for any resulting DNS or HTTP interaction — proving execution happened even when the vulnerable response never shows any visible sign of it:</p>
+<pre><code class="language-yaml">id: blind-ssrf-check
+info:
+  name: Blind SSRF via webhook parameter
+  severity: high
+http:
+  - method: POST
+    path:
+      - &quot;{{BaseURL}}/api/webhook-test&quot;
+    body: &#39;{&quot;url&quot;: &quot;http://{{interactsh-url}}&quot;}&#39;
+    matchers:
+      - type: word
+        part: interactsh_protocol
+        words:
+          - &quot;http&quot;
+</code></pre>
+<p>This is the exact same detection principle as manually setting up a Burp Collaborator listener (Path 14&#39;s advanced exploitation lab) — just automated and scalable across an entire target list rather than one manual check at a time, making it possible to sweep hundreds of endpoints for blind vulnerabilities that would otherwise require painstaking one-by-one manual confirmation.</p>
+<h2>Keeping your template library updated</h2>
+<pre><code class="language-bash"># Update the official community template repository regularly —
+# new templates are added constantly as new vulnerability patterns emerge:
+nuclei -update-templates
+
+# Check what&#39;s new since your last update:
+nuclei -tl | wc -l    # count total available templates
+</code></pre>
+<h2>🧪 Lab — Write and deploy your own custom template</h2>
+<ol>
+<li>Recall any manual finding pattern you&#39;ve noticed across your labs so far in this course (an exposed <code>.git/</code> directory, a specific error page pattern, a default login page).</li>
+<li>Write a Nuclei YAML template detecting that exact pattern, following the structure shown in this lesson.</li>
+<li>Test it against <code>testphp.vulnweb.com</code> or your own lab environment first to confirm it works as expected, with no false positives.</li>
+<li>If you have access to your shortlisted program&#39;s in-scope assets (Path 15.2), run your custom template across the full live-host list generated by Path 15.3&#39;s pipeline.</li>
+</ol>
+<p>Building even one working custom template is a genuinely significant milestone — it demonstrates you understand detection logic deeply enough to codify it yourself, not just run tools others have built.</p>
+<p>A Nuclei scan flags a &quot;high severity&quot; finding on one of your targets. What&#39;s the correct next step before drafting a bug bounty submission?</p>
+<details><summary>Show answer</summary><strong>Manually verify the finding first.</strong> Confirm the vulnerability is genuinely exploitable (not a false positive), understand its actual real-world impact on this specific target, and construct a proper, concrete Proof of Concept (per Path 15.4's guidance) — never submit raw automated scanner output directly as a report. Automated tools are discovery aids, not submission-ready evidence on their own.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Nuclei template</strong> — a YAML-defined detection check specifying request logic and match conditions.</li>
+<li><strong>DSL (Domain Specific Language)</strong> — Nuclei&#39;s expression syntax for combining match conditions.</li>
+<li><strong>Subdomain takeover</strong> — claiming control of a subdomain via a stale DNS record pointing to a deprovisioned third-party service.</li>
+<li><strong>Template categories</strong> — cves/, exposures/, misconfiguration/, vulnerabilities/, takeovers/, default-logins/.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Nuclei&#39;s open, readable YAML templates let you codify manually-discovered patterns into scalable, repeatable checks.</li>
+<li>Template categories map directly onto different discovery goals — CVE matching, exposure detection, subdomain takeovers.</li>
+<li>Subdomain takeover is a mechanically detectable, high-reward finding category well-suited to broad wildcard scopes.</li>
+<li>Integrating Nuclei&#39;s JSON output into Python-based report drafting (Path 04&#39;s skills) streamlines the workflow from discovery to submission.</li>
+<li>Every automated finding requires manual verification before submission — Nuclei accelerates discovery, not final validation.</li>
+</ul>
+<h3>References</h3>
+<ul>
+<li><a href="https://docs.projectdiscovery.io/tools/nuclei/overview">Nuclei official documentation</a> — comprehensive template writing guide.</li>
+<li><a href="https://github.com/projectdiscovery/nuclei-templates">Nuclei Templates repository</a> — the full community template library.</li>
+<li><a href="https://github.com/EdOverflow/can-i-take-over-xyz">Can I Take Over XYZ?</a> — the definitive reference for subdomain takeover patterns by service provider.</li>
+<li><a href="https://docs.projectdiscovery.io/templates/introduction">ProjectDiscovery — Nuclei template writing guide</a> — official deep-dive documentation.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/15-bug-bounty/bb-career">Building a bug bounty career</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/15-bug-bounty/automation-nuclei";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

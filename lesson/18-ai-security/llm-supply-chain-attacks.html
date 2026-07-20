@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LLM Supply Chain Attacks — Path 18 · KashSec Academy</title>
+<meta name="description" content="Every other lesson in this path largely assumes the model itself is trustworthy and focuses on how it's manipulated at runtime. This lesson questions that assumption directly: what if the model — or t">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/18-ai-security/llm-supply-chain-attacks">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="LLM Supply Chain Attacks — Path 18 · KashSec Academy">
+<meta property="og:description" content="Every other lesson in this path largely assumes the model itself is trustworthy and focuses on how it's manipulated at runtime. This lesson questions that assumption directly: what if the model — or t">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/18-ai-security/llm-supply-chain-attacks">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="LLM Supply Chain Attacks — Path 18 · KashSec Academy">
+<meta name="twitter:description" content="Every other lesson in this path largely assumes the model itself is trustworthy and focuses on how it's manipulated at runtime. This lesson questions that assumption directly: what if the model — or t">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"LLM Supply Chain Attacks — Path 18 · KashSec Academy","description":"Every other lesson in this path largely assumes the model itself is trustworthy and focuses on how it's manipulated at runtime. This lesson questions that assumption directly: what if the model — or t","url":"https://kashsec.vercel.app/#/lesson/18-ai-security/llm-supply-chain-attacks","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/18-ai-security/llm-supply-chain-attacks">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 18 — AI & AI Security</a> · LLM Supply Chain Attacks</div>
+  <article><h1>LLM Supply Chain Attacks</h1>
+<p>Every other lesson in this path largely assumes the model itself is trustworthy and focuses on how it&#39;s manipulated at runtime. This lesson questions that assumption directly: what if the model — or the data and components that built it — was compromised before you ever sent it a single prompt?</p>
+<h2>The AI supply chain, mapped</h2>
+<p>Every stage in this chain is a potential compromise point — and this is directly the AI-specific version of the general software supply chain risk referenced throughout this course (Path 18&#39;s OWASP LLM Top 10 lesson already flags this category briefly; this lesson goes deeper).</p>
+<h2>Poisoned training and fine-tuning data</h2>
+<p>Path 18&#39;s poisoning &amp; adversarial ML lesson already covered the mechanics of data poisoning as an attack technique. The <em>supply chain</em> angle specifically concerns <strong>where that data comes from</strong>: models trained or fine-tuned on large-scale scraped internet data, crowdsourced datasets, or third-party data vendors all inherit whatever was quietly embedded in that data by anyone with the ability to influence it upstream — including, in documented research demonstrations, deliberately planted poisoned examples designed to survive into the final trained model&#39;s behavior.</p>
+<h2>Malicious model weights</h2>
+<p>Pre-trained and fine-tuned model files are increasingly distributed through public hubs (similar in spirit to how npm/PyPI distribute code packages) — and, exactly like a malicious npm package, a model file itself can be tampered with. Certain model file formats have historically supported embedded executable code that runs on load (a direct parallel to a malicious software dependency), and even without that specific mechanism, there&#39;s no inherent guarantee that a downloaded model&#39;s actual behavior matches its advertised description without independent verification.</p>
+<h2>Compromised or malicious plugins and tools</h2>
+<p>Once an LLM is wired into an <strong>agentic</strong> system (Path 18&#39;s agentic AI risks lesson), every tool/plugin it&#39;s granted access to becomes part of its effective trust boundary. A compromised or intentionally malicious third-party plugin can act on the agent&#39;s behalf with whatever access that plugin has been granted — independent of any prompt injection or jailbreak at all, since the compromise lives in trusted, already-integrated code rather than in adversarial input.</p>
+<h2>Pickle deserialization — a concrete, well-documented model-file risk</h2>
+<p>Worth naming the specific mechanism behind &quot;certain model file formats have historically supported embedded executable code&quot; above, since it&#39;s a genuinely instructive, concrete example rather than an abstract concern. Python&#39;s <strong>pickle</strong> format — historically a common way to serialize and share trained model objects — doesn&#39;t just store data, it can store instructions for <em>reconstructing arbitrary Python objects</em>, including one that executes shell commands the moment the file is loaded. A malicious actor can craft a <code>.pkl</code> file that looks like a normal trained model but, the instant a victim calls <code>pickle.load()</code> on it, silently executes attacker-chosen code on the loading machine — directly analogous to Path 10&#39;s insecure deserialization concept, just applied specifically to the ML ecosystem&#39;s most historically common model-sharing format. This is exactly why newer, purpose-built formats like <strong>Safetensors</strong> were developed specifically to store model weights as pure data with no code-execution capability at all — a structural fix rather than a scanning-based mitigation, worth preferring wherever a model source supports it.</p>
+<h2>MCP servers and tool integrations — a newer supply chain surface</h2>
+<p>Recall this course&#39;s own use of MCP (Model Context Protocol) servers to extend what an AI assistant can do — third-party MCP servers and tool integrations are a genuinely new, rapidly growing category of the AI supply chain, distinct from the plugin risk above mainly in how new and under-scrutinized the ecosystem still is. An MCP server is, functionally, a piece of third-party code granted direct access to whatever an agent can see and do — installing one from an unverified source carries the exact same fundamental risk as installing an unverified npm package or browser extension (Path 04&#39;s PyPI typosquatting mention, applied to this newer distribution channel), except the &quot;package&quot; in question can now take actions with an AI agent&#39;s full context and tool access rather than just running isolated application code. As this ecosystem matures, expect the same verification discipline that eventually developed for traditional package registries — signing, provenance tracking, security review — to become standard practice here too; today, treating any third-party MCP server or agent tool with the same skepticism as an unreviewed dependency is the responsible default.</p>
+<h2>Insecure dependencies and frameworks</h2>
+<p>LLM applications are still, underneath the AI-specific layer, regular software — built on Python libraries, JavaScript frameworks, and orchestration tools (LangChain and similar), all of which carry the exact same dependency-vulnerability risk covered in Path 16&#39;s DevSecOps lab. A vulnerable dependency in the <em>orchestration layer</em> around a perfectly secure model can still fully compromise the application.</p>
+<h2>Compromised hosting/inference infrastructure</h2>
+<p>If a model is served through a third-party inference API or hosting provider, a breach of <em>that</em> infrastructure could expose the prompts and responses flowing through it (a direct confidentiality risk for anything sensitive sent to the model) or allow an attacker to substitute a different, malicious model behind the same API endpoint entirely undetected by the calling application.</p>
+<h2>Defense strategies</h2>
+<ul>
+<li><strong>Verify data provenance</strong> — know where training/fine-tuning data actually came from, and prefer sources with some accountability over anonymous scraped or crowdsourced data for anything security-sensitive.</li>
+<li><strong>Scan dependencies</strong> — apply the same dependency scanning discipline from Path 16&#39;s DevSecOps lab to the orchestration frameworks and libraries surrounding the model, not just the model itself.</li>
+<li><strong>Use trusted, verified model sources</strong> — prefer models from reputable providers with some form of integrity verification, and be skeptical of unverified community model files, exactly the caution Path 04&#39;s programming lessons apply to unreviewed code.</li>
+<li><strong>Model signing and integrity checks</strong> — where supported, verify a model file&#39;s cryptographic signature before deployment, the AI equivalent of code signing (Path 17&#39;s static analysis lesson covers the same concept for traditional executables).</li>
+<li><strong>Monitor production behavior for anomalies</strong> — a model behaving subtly differently than expected post-deployment can be a signal of a supply chain compromise, not just normal model drift (Path 18&#39;s governance lesson).</li>
+</ul>
+<p>Find one documented real-world LLM/ML supply chain incident, or a close analog from traditional software supply chain attacks (Path 16&#39;s DevSecOps lab references this broader category), and summarize: what was compromised, how, and what specific defense from this lesson could have prevented or caught it.</p>
+<h2>Key terms</h2>
+<ul>
+<li><strong>AI supply chain</strong> — the full pipeline from training data through fine-tuning, plugins, and hosting to a deployed application.</li>
+<li><strong>Model provenance</strong> — verifiable information about where a model or its training data actually originated.</li>
+<li><strong>Model signing</strong> — cryptographically signing a model file to verify its integrity and source before use.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Every stage of the AI supply chain — training data, fine-tuning data, model weights, plugins, hosting infrastructure — is a distinct potential compromise point, independent of runtime attacks like prompt injection.</li>
+<li>This is the AI-specific instance of the broader software supply chain risk covered elsewhere in this course, requiring the same verification discipline (provenance, scanning, signing).</li>
+<li>Defense requires securing the entire pipeline, not just hardening the final deployed application against runtime manipulation.</li>
+</ul>
+<h3>References</h3>
+<ul>
+<li><a href="https://owasp.org/www-project-top-10-for-large-language-model-applications/">OWASP Top 10 for LLM Applications — Supply Chain Vulnerabilities</a> — the official category this lesson expands on.</li>
+<li><a href="https://huggingface.co/docs/hub/security">Hugging Face: Security</a> — practical guidance on model provenance and scanning from a major model hosting platform.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/18-ai-security/practical-ai-labs">Practical AI Red Teaming Labs</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/18-ai-security/llm-supply-chain-attacks";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

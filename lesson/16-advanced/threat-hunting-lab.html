@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Threat Hunting Lab — Path 16 · KashSec Academy</title>
+<meta name="description" content="Threat hunting flips the usual security posture on its head: instead of waiting for an alert, you proactively assume a breach has already happened somewhere in your environment and go looking for evid">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/16-advanced/threat-hunting-lab">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Threat Hunting Lab — Path 16 · KashSec Academy">
+<meta property="og:description" content="Threat hunting flips the usual security posture on its head: instead of waiting for an alert, you proactively assume a breach has already happened somewhere in your environment and go looking for evid">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/16-advanced/threat-hunting-lab">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Threat Hunting Lab — Path 16 · KashSec Academy">
+<meta name="twitter:description" content="Threat hunting flips the usual security posture on its head: instead of waiting for an alert, you proactively assume a breach has already happened somewhere in your environment and go looking for evid">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Threat Hunting Lab — Path 16 · KashSec Academy","description":"Threat hunting flips the usual security posture on its head: instead of waiting for an alert, you proactively assume a breach has already happened somewhere in your environment and go looking for evid","url":"https://kashsec.vercel.app/#/lesson/16-advanced/threat-hunting-lab","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/16-advanced/threat-hunting-lab">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 16 — Advanced Cyber Topics</a> · Threat Hunting Lab</div>
+  <article><h1>Threat Hunting Lab</h1>
+<p>Threat hunting flips the usual security posture on its head: instead of waiting for an alert, you proactively assume a breach has already happened somewhere in your environment and go looking for evidence of it. This lab practices that hypothesis-driven mindset directly, using the same log-analysis skill this course&#39;s CTF Zone forensics challenge introduced.</p>
+<h2>Lab approach</h2>
+<p>You&#39;ll need sample log data to hunt through — reuse the <code>auth.log</code> style data from this course&#39;s <strong>CTF Zone forensics challenge</strong>, or generate your own by setting up a small lab VM, deliberately performing a few &quot;attacker-like&quot; actions on it yourself (a brute-force attempt, an unusual login time, a new user account creation), and then hunting through the resulting logs cold, as if you didn&#39;t already know what you&#39;d find.</p>
+<h2>Tasks</h2>
+<ol>
+<li><p><strong>Hunt for lateral movement.</strong> Lateral movement — an attacker moving from one compromised system to another inside a network — often leaves telltale signs: unusual authentication patterns between internal hosts, a service account logging in interactively (which it normally never does), or a login from a host that doesn&#39;t typically communicate with the target. Scan your log sample for any login events between systems/accounts that seem unusual given normal patterns.</p>
+</li>
+<li><p><strong>Look for unusual authentication patterns.</strong> Beyond lateral movement specifically: logins at unusual hours (2am from an account that normally only logs in during business hours), impossible travel (the same account authenticating from geographically distant locations within a short window), or a sudden spike in authentication volume from one account.</p>
+</li>
+<li><p><strong>Detect living-off-the-land techniques.</strong> Modern attackers increasingly avoid dropping obvious malware, instead abusing legitimate, pre-installed system tools (PowerShell, <code>certutil</code>, <code>wmic</code> on Windows; <code>curl</code>, <code>base64</code>, <code>cron</code> on Linux) to carry out malicious actions — this is called <strong>living off the land (LOTL)</strong>, and it&#39;s specifically designed to blend into normal administrative activity. Look through your sample data for any legitimate tool being used in a context that doesn&#39;t fit normal usage (e.g., <code>curl</code> downloading and immediately executing a file, rather than just fetching a page).</p>
+</li>
+<li><p><strong>Create simple detection rules or queries.</strong> Turn at least one of your findings into a reusable rule — even a plain-language description like &quot;alert if the same account has 5+ failed logins across 3+ different usernames within 2 minutes&quot; is a legitimate first draft of a real SIEM correlation rule.</p>
+</li>
+<li><p><strong>Baseline &quot;normal&quot; before hunting for &quot;unusual.&quot;</strong> Before flagging anything as suspicious, spend time establishing what routine activity actually looks like in your sample data — what times do legitimate logins normally cluster around, which accounts normally use <code>sudo</code>, which processes normally spawn from a web server. Without this baseline, &quot;unusual&quot; is just a guess; with it, an anomaly-based hunt (echoing Path 12.5&#39;s anomaly-detection concept) becomes a genuinely defensible, evidence-grounded finding rather than a hunch dressed up as analysis.</p>
+</li>
+</ol>
+<p>Real threat hunting doesn&#39;t mean scrolling through logs hoping something looks wrong — it starts with a specific, testable hypothesis: &quot;if an attacker has compromised our web server, I&#39;d expect to see outbound connections to unusual destinations from that host.&quot; You then go verify or disprove that specific hypothesis against the data. Structure your hunt this way rather than browsing aimlessly.</p>
+<p>Before touching any data, write three specific, testable hypotheses about what a compromise might look like in your environment (e.g., &quot;if credential stuffing succeeded against any account, I&#39;d expect a burst of failures immediately followed by a success from the same source&quot;). Then go validate each one against your sample data — for each, state clearly whether it was confirmed, disproven, or inconclusive, and why.</p>
+<h2>Key takeaway</h2>
+<p>Threat hunting is a mindset shift as much as a technique: <strong>assume compromise, then go look for evidence, rather than waiting for a tool to tell you something&#39;s wrong.</strong> This proactive posture catches slow, careful attackers — the kind who deliberately avoid tripping automated alerts — that purely reactive detection consistently misses.</p>
+<p><strong>Next up →</strong> <a href="#/lesson/16-advanced/threat-modeling-lab">Threat Modeling Lab</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/16-advanced/threat-hunting-lab";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

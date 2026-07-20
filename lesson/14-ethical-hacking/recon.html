@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phase 1: Reconnaissance — Path 14 · KashSec Academy</title>
+<meta name="description" content="Path 11.3 taught web-focused recon techniques. This lesson broadens that into the fuller reconnaissance discipline used across an entire professional engagement — covering people, infrastructure, and ">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/14-ethical-hacking/recon">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Phase 1: Reconnaissance — Path 14 · KashSec Academy">
+<meta property="og:description" content="Path 11.3 taught web-focused recon techniques. This lesson broadens that into the fuller reconnaissance discipline used across an entire professional engagement — covering people, infrastructure, and ">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/14-ethical-hacking/recon">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Phase 1: Reconnaissance — Path 14 · KashSec Academy">
+<meta name="twitter:description" content="Path 11.3 taught web-focused recon techniques. This lesson broadens that into the fuller reconnaissance discipline used across an entire professional engagement — covering people, infrastructure, and ">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Phase 1: Reconnaissance — Path 14 · KashSec Academy","description":"Path 11.3 taught web-focused recon techniques. This lesson broadens that into the fuller reconnaissance discipline used across an entire professional engagement — covering people, infrastructure, and ","url":"https://kashsec.vercel.app/#/lesson/14-ethical-hacking/recon","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/14-ethical-hacking/recon">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 14 — Ethical Hacking</a> · Phase 1: Reconnaissance</div>
+  <article><h1>Reconnaissance in practice</h1>
+<p>Path 11.3 taught web-focused recon techniques. This lesson broadens that into the fuller reconnaissance discipline used across an entire professional engagement — covering people, infrastructure, and organisational context, not just a single web application.</p>
+<h2>OSINT — Open Source Intelligence</h2>
+<p><strong>OSINT</strong> is the practice of gathering intelligence entirely from publicly available sources — no direct interaction with the target&#39;s systems required, echoing &quot;passive recon&quot; from Path 11.3, now applied organisation-wide.</p>
+<h3>People-focused OSINT</h3>
+<p>Relevant especially when social engineering (Path 10.6) is in scope:</p>
+<ul>
+<li><strong>LinkedIn</strong> — employee names, roles, org structure, technologies mentioned in job postings (a company hiring for &quot;Kubernetes experience&quot; tells you their infrastructure stack).</li>
+<li><strong>Company websites</strong> — &quot;About us&quot; and team pages, press releases, case studies mentioning specific vendors/technologies.</li>
+<li><strong>Social media</strong> — employees&#39; public posts sometimes reveal internal tool names, office locations, travel schedules (useful for physical security assessments), or technology complaints (&quot;ugh, our VPN is so slow again&quot;).</li>
+<li><strong>Breach databases</strong> — checking whether employee emails appear in known breaches (Have I Been Pwned, Path 10.5) — a compromised personal password reused at work is a realistic initial-access vector many real attackers exploit.</li>
+</ul>
+<h3>Infrastructure-focused OSINT</h3>
+<p>Direct extensions of Path 11.3&#39;s techniques, now systematically covering an entire organisation:</p>
+<pre><code class="language-bash"># Subdomain enumeration across the whole company, not just one app:
+subfinder -d example.com -all
+
+# Certificate transparency for the full picture:
+curl -s &quot;https://crt.sh/?q=%.example.com&amp;output=json&quot; | jq -r &#39;.[].name_value&#39; | sort -u
+
+# ASN and IP range discovery — what does this company actually own?
+whois -h whois.radb.net -- &#39;-i origin AS64512&#39;
+
+# Shodan for exposed infrastructure across all discovered IP ranges:
+shodan search net:203.0.113.0/24
+</code></pre>
+<h3>Document metadata — an often-overlooked goldmine</h3>
+<p>Publicly posted PDFs, Word documents, and images frequently contain <strong>metadata</strong> revealing usernames, software versions, internal file paths, and sometimes even printer/device names:</p>
+<pre><code class="language-bash"># Download some public PDFs from the target&#39;s site, then:
+exiftool document.pdf
+
+# Or use a dedicated metadata harvesting tool:
+metagoofil -d example.com -t pdf,doc,xls -l 20 -o metadata-results
+</code></pre>
+<p>Finding real internal usernames (<code>jsmith</code>, <code>a.patel</code>) via document metadata is a classic, quietly effective recon technique — those usernames become the basis for later password-spraying attempts (within agreed RoE) in the exploitation phase.</p>
+<h2>Combining OSINT with active recon</h2>
+<p>Recall the passive/active distinction from Path 11.3. A full professional recon phase layers both:</p>
+<p>The output of this phase is a genuinely comprehensive picture: every subdomain, every employee name that could inform password guessing or phishing simulation (if in scope), every technology in use and its likely CVEs, and every publicly-exposed document that might contain something sensitive.</p>
+<h2>Building a recon report — even at this early stage</h2>
+<p>Professional recon doesn&#39;t just collect data — it&#39;s organised into something the next phases (and eventually the client) can act on:</p>
+<pre><code class="language-markdown">## Reconnaissance Summary — Example Corp
+
+### Infrastructure
+- 47 subdomains identified, 12 resolving to live hosts
+- Primary tech stack: nginx, PHP 7.4 (EOL — flag as finding), MySQL
+- 3 IP ranges owned (ASN lookup), all in AWS us-east-1
+
+### People
+- 340 employees identified via LinkedIn
+- 15 employee emails found in prior public breach datasets (2019 Collection #1)
+- Engineering team job postings mention Kubernetes, Terraform, Jenkins
+
+### Documents
+- 8 public PDFs analysed; metadata revealed 4 internal usernames
+  and confirmed Microsoft Office 2016 in use internally
+
+### Preliminary observations
+- PHP 7.4 reached end-of-life in Nov 2022 — no further security patches (A06)
+- Multiple employee emails in breach data suggest credential-stuffing risk
+</code></pre>
+<p>Even this early-stage document is genuinely valuable — some organisations commission <strong>recon-only</strong> engagements specifically to understand their own external footprint, without any active exploitation at all.</p>
+<h2>Recon-specific ethical considerations</h2>
+<ul>
+<li><strong>Passive OSINT is generally lower legal risk</strong> (you&#39;re querying third-party public records, not the target), but always respect the RoE&#39;s boundaries around what&#39;s considered fair game — some clients explicitly exclude employee social-engineering-style OSINT even in an otherwise broad engagement.</li>
+<li><strong>Never contact employees directly</strong> during recon unless social engineering testing is explicitly authorized in the RoE — casual &quot;just checking&quot; outreach can itself constitute an unauthorized action.</li>
+<li><strong>Document everything as you go</strong> — which source, what you found, when — both for the eventual report and to maintain a clear record if any scope question arises later.</li>
+</ul>
+<h2>GitHub and code-hosting reconnaissance</h2>
+<p>Public code repositories are consistently one of the highest-value, most overlooked recon sources — developers routinely commit things they shouldn&#39;t, and even after deletion, Git&#39;s history often preserves them permanently unless the repository is fully rewritten. Worth checking systematically: an organisation&#39;s public GitHub org for repos with internal-sounding names accidentally left public, commit history for hardcoded API keys or credentials (tools like <strong>TruffleHog</strong> and <strong>Gitleaks</strong> automate scanning entire commit histories for exactly this pattern), and even individual employees&#39; personal repositories, which sometimes contain internal scripts, config file templates, or infrastructure-as-code snippets referencing real internal hostnames. This directly extends the JavaScript source-mining technique from Path 11.3 — the same &quot;developers leave more in public artifacts than they realise&quot; principle, applied to source control instead of shipped client-side code.</p>
+<pre><code class="language-bash"># Scanning a public repo&#39;s full commit history for leaked secrets:
+trufflehog git https://github.com/example-org/example-repo
+</code></pre>
+<h2>Automating recon with your Python skills</h2>
+<p>Recall Path 04&#39;s tool-building lessons — professional recon is very often partially automated:</p>
+<pre><code class="language-python">#!/usr/bin/env python3
+&quot;&quot;&quot;
+recon-aggregator.py — Pull together subdomain enum, live-host check,
+and basic tech fingerprinting into one summary report.
+&quot;&quot;&quot;
+import subprocess
+import json
+
+def get_subdomains(domain: str) -&gt; list[str]:
+    result = subprocess.run(
+        [&quot;subfinder&quot;, &quot;-d&quot;, domain, &quot;-silent&quot;],
+        capture_output=True, text=True
+    )
+    return result.stdout.strip().splitlines()
+
+def check_alive(subdomains: list[str]) -&gt; list[dict]:
+    # httpx checks which hosts actually respond and grabs basic info
+    result = subprocess.run(
+        [&quot;httpx&quot;, &quot;-silent&quot;, &quot;-json&quot;, &quot;-tech-detect&quot;],
+        input=&quot;\n&quot;.join(subdomains), capture_output=True, text=True
+    )
+    return [json.loads(line) for line in result.stdout.strip().splitlines() if line]
+
+def main():
+    domain = &quot;example.com&quot;
+    subs = get_subdomains(domain)
+    print(f&quot;[*] Found {len(subs)} subdomains&quot;)
+    alive = check_alive(subs)
+    print(f&quot;[*] {len(alive)} hosts responded&quot;)
+    for host in alive:
+        print(f&quot;  {host.get(&#39;url&#39;)} — {host.get(&#39;tech&#39;, [])}&quot;)
+
+if __name__ == &quot;__main__&quot;:
+    main()
+</code></pre>
+<p>This is a genuinely realistic starting point for the kind of recon automation Path 15 (Bug Bounty) will build much further.</p>
+<h2>🧪 Lab — A full OSINT pass on a company you&#39;re comfortable researching</h2>
+<p>Pick a public company (not for testing — purely OSINT research, which is legal against any public information). Spend 30 minutes building a small recon summary:</p>
+<ol>
+<li>How many subdomains can you find via crt.sh?</li>
+<li>What technologies does their careers page mention needing?</li>
+<li>Search for any of their public PDFs/documents — any interesting metadata?</li>
+<li>Compile a short summary in the format shown above.</li>
+</ol>
+<p>This is a genuinely safe way to practise the <em>research and synthesis</em> skill of recon without any active-technique legal concerns at all.</p>
+<p>A tester finds an employee&#39;s personal email address in a public breach dataset during OSINT recon. Is directly emailing that employee to &quot;test&quot; whether they&#39;d click a phishing link an appropriate next step?</p>
+<details><summary>Show answer</summary>Only if <strong>social engineering testing of employees is explicitly authorized</strong> in the signed Rules of Engagement. Absent that specific authorization, contacting employees directly — even with good intentions, even using legitimately-found public information — falls outside the recon phase's passive/OSINT boundary and could constitute an unauthorized action. This finding should instead be documented as a <em>risk observation</em> ("credential reuse risk identified") for the report, not acted upon directly without explicit separate approval.</details><h2>Key terms</h2>
+<ul>
+<li><strong>OSINT</strong> — intelligence gathered entirely from publicly available sources.</li>
+<li><strong>Document metadata</strong> — hidden data embedded in files, often revealing usernames or internal software versions.</li>
+<li><strong>ASN (Autonomous System Number)</strong> — identifies which organisation owns a block of IP address space.</li>
+<li><strong>Recon report</strong> — the organised output of the reconnaissance phase, actionable even before any exploitation begins.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Full professional recon covers people, infrastructure, and documents — not just a single web application&#39;s surface.</li>
+<li>OSINT (passive) and active recon (within RoE) combine into a comprehensive attack surface map.</li>
+<li>Document metadata is an often-overlooked but genuinely valuable recon source.</li>
+<li>Recon output should be organised into a clear summary, valuable even as a standalone deliverable.</li>
+<li>Employee-focused OSINT requires explicit separate authorization before any direct action — recon findings about people are documented as risk, not acted upon without permission.</li>
+</ul>
+<h3>References</h3>
+<ul>
+<li><a href="https://osintframework.com/">OSINT Framework</a> — a categorised index of OSINT tools and techniques.</li>
+<li><a href="https://haveibeenpwned.com/">Have I Been Pwned</a> — checking for employee credential exposure in breach data.</li>
+<li><a href="https://exiftool.org/">ExifTool</a> — the standard tool for extracting file metadata.</li>
+<li><a href="https://github.com/projectdiscovery/httpx">ProjectDiscovery — httpx</a> — fast, scriptable live-host probing and tech detection.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/14-ethical-hacking/scan-enumerate">Scanning &amp; enumeration</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/14-ethical-hacking/recon";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>See traffic with Wireshark — Path 12 · KashSec Academy</title>
+<meta name="description" content="If Nmap tells you what's on a network, Wireshark shows you exactly what's happening on the wire, packet by packet. It's the microscope of network security — indispensable for both attackers and defend">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/12-network-security/wireshark">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="See traffic with Wireshark — Path 12 · KashSec Academy">
+<meta property="og:description" content="If Nmap tells you what's on a network, Wireshark shows you exactly what's happening on the wire, packet by packet. It's the microscope of network security — indispensable for both attackers and defend">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/12-network-security/wireshark">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="See traffic with Wireshark — Path 12 · KashSec Academy">
+<meta name="twitter:description" content="If Nmap tells you what's on a network, Wireshark shows you exactly what's happening on the wire, packet by packet. It's the microscope of network security — indispensable for both attackers and defend">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"See traffic with Wireshark — Path 12 · KashSec Academy","description":"If Nmap tells you what's on a network, Wireshark shows you exactly what's happening on the wire, packet by packet. It's the microscope of network security — indispensable for both attackers and defend","url":"https://kashsec.vercel.app/#/lesson/12-network-security/wireshark","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/12-network-security/wireshark">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 12 — Network Security</a> · See traffic with Wireshark</div>
+  <article><h1>Wireshark &amp; packet analysis</h1>
+<p>If Nmap tells you <em>what&#39;s</em> on a network, <strong>Wireshark</strong> shows you <em>exactly what&#39;s happening on the wire</em>, packet by packet. It&#39;s the microscope of network security — indispensable for both attackers and defenders.</p>
+<h2>What Wireshark actually does</h2>
+<p>Wireshark <strong>captures</strong> raw network traffic passing through a network interface and displays it in human-readable form, letting you inspect every layer of every packet — from the Ethernet frame up through IP, TCP/UDP, all the way to the application-layer protocol itself (HTTP, DNS, etc).</p>
+<h2>Starting a capture</h2>
+<pre><code class="language-bash"># Launch Wireshark (needs elevated privileges to capture):
+sudo wireshark
+</code></pre>
+<ol>
+<li>On launch, you&#39;ll see a list of available network interfaces (eth0, wlan0, etc.), each showing live traffic activity as a little heartbeat graph.</li>
+<li>Double-click an interface to start capturing immediately.</li>
+<li>Generate some traffic (browse a site, ping something) and watch packets flood in.</li>
+<li>Click the red square (■) to stop the capture.</li>
+</ol>
+<h2>Reading the packet list</h2>
+<pre><code>No.  Time      Source           Destination      Protocol  Length  Info
+1    0.000000  192.168.1.5      93.184.216.34    TCP       74      54123 → 443 [SYN]
+2    0.021340  93.184.216.34    192.168.1.5      TCP       74      443 → 54123 [SYN, ACK]
+3    0.021390  192.168.1.5      93.184.216.34    TCP       66      54123 → 443 [ACK]
+</code></pre>
+<p>Recognise that? It&#39;s the <strong>TCP three-way handshake</strong> from Path 02, now visible with your own eyes, packet by packet, exactly as it happens.</p>
+<h2>The three-pane view</h2>
+<p>Clicking any packet in the top pane populates the middle pane with an <strong>expandable tree</strong> — click the arrow next to &quot;Transmission Control Protocol&quot; to see every TCP field (source port, destination port, flags, sequence numbers) exactly as they exist in the real packet. This is the single best way to <em>actually</em> internalise the protocol concepts from Path 02, rather than just reading about them.</p>
+<h2>Display filters — finding the needle in the haystack</h2>
+<p>A live capture can have thousands of packets in seconds. <strong>Display filters</strong> narrow what you see:</p>
+<pre><code>http                          # only HTTP traffic
+dns                           # only DNS queries/responses
+tcp.port == 443               # only traffic on port 443
+ip.addr == 192.168.1.5        # only traffic to/from this IP
+tcp.flags.syn == 1 &amp;&amp; tcp.flags.ack == 0   # only SYN packets (connection attempts)
+http.request.method == &quot;POST&quot; # only HTTP POST requests
+frame contains &quot;password&quot;      # packets containing this string anywhere
+</code></pre>
+<p>Type these directly into the filter bar at the top. Wireshark&#39;s filter language is powerful and precise — you&#39;ll build fluency with regular practice.</p>
+<h2>Following a TCP stream</h2>
+<p>Right-click any packet → <strong>Follow → TCP Stream</strong> reassembles an entire conversation (all the packets belonging to one connection) into a single readable view — showing exactly what was sent and received, in order, both directions colour-coded.</p>
+<p>This is enormously useful for understanding <strong>unencrypted</strong> protocols — HTTP, FTP, Telnet, plain SMTP — where you can literally read the entire conversation, including any credentials sent in plaintext.</p>
+<h2>The critical lesson: why encryption matters, made visceral</h2>
+<pre><code class="language-bash"># Set up a deliberately unencrypted FTP or HTTP login form test (in your own lab)
+# then capture the traffic and Follow → TCP Stream
+</code></pre>
+<p>If you capture traffic to an HTTP (not HTTPS) login form, or a plain FTP login, you will see the <strong>actual username and password in cleartext</strong>, sitting right there in the packet bytes. This single exercise makes Path 02&#39;s &quot;why TLS/HTTPS matters&quot; lesson concrete in a way no explanation ever fully achieves — seeing a real password sitting unencrypted in a packet capture is a formative moment for most security learners.</p>
+<p>Capturing traffic on a network you don&#39;t own or lack authorization to monitor is illegal in most places — exactly the legal boundary from Path 01. Always practise on your own lab traffic, your own home network, or explicitly-provided training captures (like the sample <code>.pcap</code> files linked below).</p>
+<h2>Analysing pre-captured files (.pcap)</h2>
+<p>You don&#39;t always need to capture live — Wireshark opens saved capture files (<code>.pcap</code>/<code>.pcapng</code>) from anywhere, including ones shared for training, or evidence from a real incident (a core skill in digital forensics, Path 16.7):</p>
+<pre><code class="language-bash">wireshark suspicious-traffic.pcap
+</code></pre>
+<p>Numerous sites provide free, legal sample captures specifically for learning — including deliberately malicious traffic samples for practising detection (linked below).</p>
+<h2>Common things security analysts look for in captures</h2>
+<ul>
+<li><strong>Plaintext credentials</strong> in unencrypted protocols (as above).</li>
+<li><strong>Unusual destination IPs/domains</strong> — traffic to known-malicious infrastructure, or simply unexpected countries/ASNs for a given organisation&#39;s normal traffic pattern.</li>
+<li><strong>DNS requests for suspicious domains</strong> — malware often uses DNS for command-and-control communication (Path 10.3&#39;s &quot;C2&quot; concept, now visible in a capture).</li>
+<li><strong>Large, unusual data transfers</strong> — potential data exfiltration.</li>
+<li><strong>ARP anomalies</strong> — signs of ARP spoofing (next lesson&#39;s MITM territory).</li>
+<li><strong>Repeated connection attempts</strong> — potential scanning or brute-force activity, visible as unusually repetitive SYN packets.</li>
+</ul>
+<h2>Capture filters vs display filters — a distinction that trips up beginners</h2>
+<p>It&#39;s easy to conflate these, but they operate at fundamentally different points: a <strong>capture filter</strong> (set before you start capturing, using tcpdump-style syntax like <code>port 80</code>) decides which packets Wireshark records <em>at all</em> — packets that don&#39;t match are discarded before ever touching disk or the packet list. A <strong>display filter</strong> (typed into the filter bar after capturing, using Wireshark&#39;s own richer syntax like <code>tcp.port == 443</code>) only decides which <em>already-captured</em> packets are currently shown — nothing is discarded, you can always clear the display filter and see everything again. The practical implication: capture filters are for controlling capture <em>volume</em> on a busy interface (avoid recording gigabytes of irrelevant traffic), while display filters are for <em>analysis</em> after the fact — when in doubt, capture broadly and filter narrowly during display, since you can&#39;t display-filter your way back to packets a capture filter already threw away.</p>
+<h2>Statistics menu — the bird&#39;s-eye view</h2>
+<p>Beyond packet-by-packet inspection, Wireshark&#39;s <strong>Statistics</strong> menu offers several aggregate views that reveal patterns invisible in the raw packet list. <strong>Statistics → Conversations</strong> summarises every distinct connection in the capture (by IP pair or port pair) along with total bytes and duration — an efficient way to spot a single host that transferred unusually large amounts of data, a classic exfiltration signal. <strong>Statistics → Protocol Hierarchy</strong> breaks down the entire capture by protocol as a percentage tree, useful for quickly answering &quot;what kind of traffic is even in this capture&quot; before diving into individual packets. <strong>Statistics → I/O Graph</strong> plots traffic volume over time, making sudden spikes (a possible DoS attempt, a large exfiltration burst) visually obvious at a glance rather than requiring you to scroll through thousands of rows.</p>
+<h2>Command-line packet capture — tshark and tcpdump</h2>
+<p>For automation, scripting, or headless servers without a GUI:</p>
+<pre><code class="language-bash"># tcpdump — classic, always available, great for quick captures:
+sudo tcpdump -i eth0 -w capture.pcap
+sudo tcpdump -i eth0 port 80
+sudo tcpdump -i eth0 host 192.168.1.5
+
+# tshark — Wireshark&#39;s command-line sibling, supports the same filter syntax:
+tshark -i eth0 -f &quot;port 443&quot;
+tshark -r capture.pcap -Y &quot;http.request.method == GET&quot;
+</code></pre>
+<p>These are the tools you&#39;d actually use in a Python-driven automation pipeline (Path 04) or on a remote server where a GUI isn&#39;t available.</p>
+<h2>🧪 Lab — Capture and analyse your own traffic</h2>
+<ol>
+<li>Start a Wireshark capture on your primary network interface.</li>
+<li>In another window, visit an <strong>HTTP</strong> (not HTTPS) site — try <code>http://testphp.vulnweb.com</code> again.</li>
+<li>Stop the capture. Filter for <code>http</code>.</li>
+<li>Right-click a request → <strong>Follow → HTTP Stream</strong>. Read the entire raw request and response.</li>
+<li>Now visit an <strong>HTTPS</strong> site with a fresh capture, filter for <code>tls</code>, and try the same &quot;Follow&quot; trick — notice you can see the TLS handshake metadata, but <strong>not</strong> the actual encrypted content. That contrast is the entire point of encryption made visible.</li>
+<li>Try filtering for <code>dns</code> and watch every domain name your machine resolves during normal browsing — often surprisingly revealing of background app activity you didn&#39;t realise was happening.</li>
+</ol>
+<p>You capture traffic to a plain HTTP login form and successfully read the submitted username and password directly in the packet bytes. What single change to the website would have prevented this specific exposure?</p>
+<details><summary>Show answer</summary>Serving the login form over <strong>HTTPS instead of HTTP</strong> — TLS encryption (Path 02, Path 05.1) would mean the packet capture still shows the connection exists, but the actual credential data inside would be encrypted ciphertext, unreadable without the private key.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Wireshark</strong> — the standard GUI tool for capturing and analysing network traffic.</li>
+<li><strong>Display filter</strong> — a query narrowing which packets are shown from a capture.</li>
+<li><strong>Follow TCP Stream</strong> — reassembling an entire conversation into readable form.</li>
+<li><strong>.pcap/.pcapng</strong> — the standard packet capture file formats.</li>
+<li><strong>tcpdump / tshark</strong> — command-line packet capture tools for automation and headless use.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Wireshark captures and displays raw network traffic at every protocol layer, packet by packet.</li>
+<li>Display filters and &quot;Follow TCP Stream&quot; are the two most-used features for real analysis.</li>
+<li>Capturing unencrypted traffic makes the value of HTTPS/TLS immediately, viscerally clear.</li>
+<li>tcpdump and tshark bring the same capabilities to the command line for scripting and headless environments.</li>
+<li>Only ever capture traffic you own or are explicitly authorised to monitor.</li>
+</ul>
+<h3>References</h3>
+<ul>
+<li><a href="https://www.wireshark.org/docs/">Wireshark official documentation</a> — the definitive reference.</li>
+<li><a href="https://wiki.wireshark.org/SampleCaptures">Wireshark sample captures</a> — free, legal <code>.pcap</code> files for practice, including malicious traffic samples.</li>
+<li><a href="https://www.malware-traffic-analysis.org/">Malware Traffic Analysis</a> — real, legal, deliberately-provided malicious traffic captures with full write-ups, excellent for advanced practice.</li>
+<li><a href="https://www.tcpdump.org/manpages/tcpdump.1.html">tcpdump manual</a> — official reference.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/12-network-security/firewalls-vpns">Firewalls &amp; VPNs</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/12-network-security/wireshark";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Files &amp; folders — Path 03 · KashSec Academy</title>
+<meta name="description" content="You navigate, read, and search files constantly during real work. This lesson is the toolbelt: the small handful of commands that cover 90% of what you'll ever do to files in Linux.">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/03-linux/files-and-folders">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Files &amp; folders — Path 03 · KashSec Academy">
+<meta property="og:description" content="You navigate, read, and search files constantly during real work. This lesson is the toolbelt: the small handful of commands that cover 90% of what you'll ever do to files in Linux.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/03-linux/files-and-folders">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Files &amp; folders — Path 03 · KashSec Academy">
+<meta name="twitter:description" content="You navigate, read, and search files constantly during real work. This lesson is the toolbelt: the small handful of commands that cover 90% of what you'll ever do to files in Linux.">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Files & folders — Path 03 · KashSec Academy","description":"You navigate, read, and search files constantly during real work. This lesson is the toolbelt: the small handful of commands that cover 90% of what you'll ever do to files in Linux.","url":"https://kashsec.vercel.app/#/lesson/03-linux/files-and-folders","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/03-linux/files-and-folders">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 03 — Operating Systems & Linux</a> · Files &amp; folders</div>
+  <article><h1>Files &amp; folders</h1>
+<p>You navigate, read, and search files constantly during real work. This lesson is the toolbelt: the small handful of commands that cover 90% of what you&#39;ll ever do to files in Linux.</p>
+<h2>The Linux filesystem shape</h2>
+<p>Everything in Linux lives under a single root, written as <code>/</code>. There are no &quot;C:&quot; or &quot;D:&quot; drives — extra drives get <strong>mounted</strong> into the tree at specific folders.</p>
+<pre><code>/
+├── bin      → essential command binaries (ls, cat, cp)
+├── boot     → boot loader files
+├── dev      → device files (disks, terminals)
+├── etc      → system configuration
+├── home     → user home folders (/home/kali)
+├── lib      → shared libraries
+├── media    → mount points for removable media
+├── mnt      → mount points for manual mounts
+├── opt      → optional software
+├── proc     → live info about the kernel and processes
+├── root     → the root user&#39;s home
+├── sbin     → system binaries (need root)
+├── tmp      → temporary files (wiped on reboot)
+├── usr      → user programs and data
+└── var      → variable data: logs, mail spool, databases
+</code></pre>
+<p>You don&#39;t need to memorise this — but three folders matter constantly:</p>
+<ul>
+<li><strong><code>/etc</code></strong> — where config lives. Attackers and defenders both dig here.</li>
+<li><strong><code>/home/&lt;you&gt;</code></strong> — your personal folder. Where your work goes.</li>
+<li><strong><code>/var/log</code></strong> — where nearly all system logs live. First stop when investigating.</li>
+</ul>
+<h2>Navigation — pwd, cd, ls</h2>
+<pre><code class="language-bash">pwd            # where am I?
+cd /etc        # go to /etc
+cd             # jump home (~) with no arguments
+cd ..          # go up one folder
+cd ../..       # go up two folders
+cd -           # go to the previous folder you were in
+ls             # list files here
+ls -l          # long format: permissions, size, date
+ls -la         # include hidden files (start with .)
+ls -lh         # human-friendly sizes (K, M, G)
+ls /etc/ssh    # list a specific folder
+</code></pre>
+<p><strong>Paths</strong> come in two flavours:</p>
+<ul>
+<li><strong>Absolute</strong> — starts with <code>/</code>, meaning &quot;from the root.&quot; Example: <code>/etc/ssh/sshd_config</code>.</li>
+<li><strong>Relative</strong> — starts from where you are. Example: <code>notes/day1.md</code>.</li>
+</ul>
+<h2>Creating, moving, copying, deleting</h2>
+<pre><code class="language-bash">mkdir project           # make folder
+mkdir -p a/b/c/d        # make nested folders in one go
+touch file.txt          # create empty file (or update its timestamp)
+cp file.txt copy.txt    # copy
+cp -r folder1 folder2   # copy a folder and its contents (recursive)
+mv old.txt new.txt      # rename or move
+mv file.txt /tmp/       # move into another folder
+rm file.txt             # delete a file (careful — no recycle bin!)
+rm -r folder            # delete a folder and everything in it
+rm -rf folder           # forceful. Genuinely dangerous. Read on.
+</code></pre>
+<p><code>rm -rf /</code> (or <code>rm -rf ~</code>) will happily delete everything you have. There is no undo in Linux. Modern shells warn on <code>/</code>, but not always on subfolders or scripts using variables that resolve to empty strings.</p>
+<p><strong>Habit:</strong> double-check the target before running <code>rm -r</code>, and never run destructive commands as root without pausing.</p>
+<h2>Reading files</h2>
+<pre><code class="language-bash">cat file.txt              # dump whole file to screen
+less file.txt             # scrollable view (q to quit, / to search)
+head -n 20 file.txt       # first 20 lines
+tail -n 20 file.txt       # last 20 lines
+tail -f /var/log/syslog   # follow a log live (Ctrl+C to stop)
+wc -l file.txt            # count lines
+file mystery.bin          # tell me what kind of file this is
+</code></pre>
+<h2>Finding things</h2>
+<p>Two commands do most of what you need:</p>
+<pre><code class="language-bash">find / -name &quot;*.conf&quot; 2&gt;/dev/null
+# find files by name; 2&gt;/dev/null hides &quot;permission denied&quot; noise
+
+find /home -type f -mtime -1
+# files modified in the last day
+
+find / -perm -4000 -type f 2&gt;/dev/null
+# SUID binaries — huge for privesc (Path 16!)
+
+locate sshd_config
+# instant search using a pre-built index; run &#39;sudo updatedb&#39; first
+</code></pre>
+<h3>find&#39;s -exec flag — a preview of something important later</h3>
+<p>Beyond just locating files, <code>find</code> can run a command against every result it finds using <code>-exec</code>:</p>
+<pre><code class="language-bash">find /home -name &quot;*.log&quot; -exec grep -l &quot;error&quot; {} \;
+# find every .log file, then grep each one for &quot;error&quot;
+</code></pre>
+<p>This is genuinely powerful for legitimate administration — but it&#39;s also exactly the mechanism this course&#39;s CTF Zone privesc challenge and Path 16&#39;s privilege escalation lab exploit: if <code>find</code> itself is ever run with elevated privileges (via <code>sudo</code>), whatever <code>-exec</code> launches inherits that same elevated privilege. Filing this pattern away now will make that later material click immediately instead of feeling like a brand-new trick.</p>
+<h2>grep — the search command you&#39;ll live in</h2>
+<p><code>grep</code> finds text <em>inside</em> files or streams. It is the single most-used security tool that isn&#39;t in the security toolbox.</p>
+<pre><code class="language-bash">grep &quot;password&quot; file.txt              # lines containing &quot;password&quot;
+grep -i &quot;PASSWORD&quot; file.txt           # case-insensitive
+grep -r &quot;api_key&quot; /home/kali/         # recursive through a folder
+grep -n &quot;error&quot; /var/log/syslog       # show line numbers
+grep -v &quot;info&quot; /var/log/syslog        # invert: lines WITHOUT &quot;info&quot;
+grep -E &quot;user|admin&quot; file.txt         # extended regex; OR
+</code></pre>
+<h2>Pipes and redirection — where the power lives</h2>
+<p>The single Unix idea that changes everything: <strong>the output of one command can be the input of the next</strong>, joined by <code>|</code> (pipe).</p>
+<pre><code class="language-bash"># Show only ssh-related lines from a big log:
+cat /var/log/auth.log | grep sshd
+
+# Count them:
+cat /var/log/auth.log | grep sshd | wc -l
+
+# Top-10 IPs that tried to log in as root:
+grep &quot;Failed password for root&quot; /var/log/auth.log \
+  | awk &#39;{print $(NF-3)}&#39; | sort | uniq -c | sort -rn | head
+</code></pre>
+<p>Redirection sends output to files instead of the screen:</p>
+<pre><code class="language-bash">ls &gt; list.txt        # save output to file (overwrite)
+ls &gt;&gt; list.txt       # append instead
+command 2&gt; err.log   # send errors to a file
+command &gt; out 2&gt;&amp;1   # send both to the same file
+command &lt; input.txt  # read stdin from a file
+</code></pre>
+<p><em>[Pipes and redirects visualised]</em></p>
+<p>Pipes are what let a Linux user do enormous work in one line. Every serious security workflow you&#39;ll see uses them heavily.</p>
+<h2>Compression &amp; archives</h2>
+<pre><code class="language-bash">tar cvf out.tar folder/          # create tar archive
+tar xvf archive.tar              # extract tar
+tar czvf out.tar.gz folder/      # create gzipped tar
+tar xzvf archive.tar.gz          # extract .tar.gz
+unzip file.zip                   # extract zip
+zip -r out.zip folder/           # create zip
+</code></pre>
+<h2>🧪 Lab — Navigate, search, and save</h2>
+<p>Run this in your Kali VM:</p>
+<pre><code class="language-bash"># 1. Poke around /etc
+cd /etc
+ls -la | head
+cat /etc/os-release      # what OS is this?
+
+# 2. Search for password mentions in configs
+sudo grep -ri &quot;password&quot; /etc/ 2&gt;/dev/null | head -20
+# (You&#39;ll see lots of legit config; look at what shows up.)
+
+# 3. Chain some pipes
+history | grep grep | wc -l     # how many times have you used grep already?
+
+# 4. Save a session log:
+uname -a &gt; ~/kashsec-notes/system-info.txt
+lsblk &gt;&gt; ~/kashsec-notes/system-info.txt
+cat ~/kashsec-notes/system-info.txt
+</code></pre>
+<p>You&#39;ve just done a real recon-style flow with basic commands.</p>
+<p>What does the pipe symbol <code>|</code> do between two commands? Give a one-sentence answer.</p>
+<details><summary>Show answer</summary>It sends the standard output of the first command as the standard input of the second command.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Absolute vs relative path</strong> — <code>/etc/passwd</code> vs <code>./notes/day1.md</code>.</li>
+<li><strong><code>grep</code></strong> — search for text inside files or streams.</li>
+<li><strong><code>find</code> / <code>locate</code></strong> — search for files by attributes.</li>
+<li><strong>Pipe (<code>|</code>)</strong> — feed output into another command.</li>
+<li><strong>Redirect (<code>&gt;</code>, <code>&gt;&gt;</code>, <code>&lt;</code>, <code>2&gt;</code>)</strong> — send streams to/from files.</li>
+<li><strong><code>tar</code>, <code>zip</code>, <code>unzip</code></strong> — archives and compression.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Everything in Linux lives under <code>/</code>; key dirs are <code>/etc</code>, <code>/home/&lt;you&gt;</code>, <code>/var/log</code>.</li>
+<li><code>pwd</code>, <code>cd</code>, <code>ls</code>, <code>cat</code>, <code>less</code> cover most everyday navigation and reading.</li>
+<li><code>grep</code>, <code>find</code>, and pipes are the search-and-filter workhorses.</li>
+<li><code>rm -rf</code> has no undo — think twice before running it.</li>
+</ul>
+<h3>References</h3>
+<ul>
+<li><a href="https://refspecs.linuxfoundation.org/FHS_3.0/fhs/index.html">Linux Filesystem Hierarchy Standard</a> — the official spec.</li>
+<li><a href="https://www.gnu.org/software/grep/manual/grep.html">grep manual</a> — the definitive grep reference.</li>
+<li><a href="https://ferd.ca/awk-in-20-minutes.html">Awk in 20 minutes</a> — the natural next step after grep.</li>
+<li><a href="https://missing.csail.mit.edu/">The Missing Semester of Your CS Education (MIT)</a> — free lectures on the command line and tooling.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/03-linux/users-permissions">Users, permissions &amp; sudo</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/03-linux/files-and-folders";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

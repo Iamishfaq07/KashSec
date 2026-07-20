@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Web recon — Path 11 · KashSec Academy</title>
+<meta name="description" content="Before you can find a bug, you need to understand what you're actually looking at. Recon is the unglamorous, essential first phase of every real web assessment — and where a huge fraction of eventual ">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/11-web-security/web-recon">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Web recon — Path 11 · KashSec Academy">
+<meta property="og:description" content="Before you can find a bug, you need to understand what you're actually looking at. Recon is the unglamorous, essential first phase of every real web assessment — and where a huge fraction of eventual ">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/11-web-security/web-recon">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Web recon — Path 11 · KashSec Academy">
+<meta name="twitter:description" content="Before you can find a bug, you need to understand what you're actually looking at. Recon is the unglamorous, essential first phase of every real web assessment — and where a huge fraction of eventual ">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Web recon — Path 11 · KashSec Academy","description":"Before you can find a bug, you need to understand what you're actually looking at. Recon is the unglamorous, essential first phase of every real web assessment — and where a huge fraction of eventual ","url":"https://kashsec.vercel.app/#/lesson/11-web-security/web-recon","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/11-web-security/web-recon">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 11 — Web Security & Hacking</a> · Web recon</div>
+  <article><h1>Web reconnaissance</h1>
+<p>Before you can find a bug, you need to understand what you&#39;re actually looking at. Recon is the unglamorous, essential first phase of every real web assessment — and where a huge fraction of eventual findings actually originate.</p>
+<h2>Passive vs active recon</h2>
+<ul>
+<li><strong>Passive recon</strong> — gathering information <em>without ever touching the target directly</em>. Search engines, public records, cached pages. Invisible to the target.</li>
+<li><strong>Active recon</strong> — directly interacting with the target (visiting pages, sending requests, using tools). Detectable in logs, and requires you to be in-scope/authorised.</li>
+</ul>
+<p>Always start passive, then move to active once you understand the landscape.</p>
+<h2>Passive recon techniques</h2>
+<h3>WHOIS and DNS</h3>
+<p>From Path 02, now applied purposefully:</p>
+<pre><code class="language-bash">whois example.com
+dig example.com ANY
+dig example.com MX
+dig example.com TXT      # often reveals SPF/DKIM, verification tokens, sometimes internal hints
+</code></pre>
+<h3>Subdomain enumeration</h3>
+<p>Most organisations have far more subdomains than their main site suggests — old staging environments, forgotten admin panels, internal tools accidentally exposed.</p>
+<pre><code class="language-bash"># Certificate transparency logs reveal EVERY subdomain that&#39;s ever had a TLS cert issued:
+curl -s &quot;https://crt.sh/?q=%.example.com&amp;output=json&quot; | jq -r &#39;.[].name_value&#39; | sort -u
+
+# Tool-based (installed on Kali or via go install):
+subfinder -d example.com
+amass enum -passive -d example.com
+</code></pre>
+<p><strong>Certificate Transparency (CT) logs</strong> are a goldmine — every publicly-trusted TLS certificate ever issued is logged permanently and publicly, which means every subdomain that ever got HTTPS also got logged, forever, even if it&#39;s since been taken down.</p>
+<h3>Search engine dorking</h3>
+<p>Specially crafted search queries reveal indexed content the site owner may not realise is public:</p>
+<pre><code>site:example.com filetype:pdf
+site:example.com inurl:admin
+site:example.com &quot;index of /&quot;
+site:example.com ext:sql | ext:env | ext:log
+</code></pre>
+<p>This technique — called <strong>Google dorking</strong> — has its own curated database of powerful queries.</p>
+<h3>Wayback Machine / archive.org</h3>
+<p>Historical snapshots of a site can reveal old endpoints, removed features, or leaked info that&#39;s since been &quot;fixed&quot; on the live site but still indexed in history:</p>
+<pre><code class="language-bash">pip install waybackpy --break-system-packages
+python3 -c &quot;
+from waybackpy import WaybackMachineCDXServerAPI
+cdx = WaybackMachineCDXServerAPI(&#39;example.com&#39;)
+for snap in list(cdx.snapshots())[:10]:
+    print(snap.archive_url)
+&quot;
+</code></pre>
+<h3>Shodan and Censys</h3>
+<p>Search engines that continuously scan the <em>entire internet</em> and index what they find — open ports, banners, exposed services, even default login pages, all searchable.</p>
+<pre><code>shodan search hostname:example.com
+</code></pre>
+<h2>Active recon techniques</h2>
+<h3>Directory and file brute-forcing</h3>
+<p>Trying common paths against the live target to find pages that aren&#39;t linked anywhere:</p>
+<pre><code class="language-bash">gobuster dir -u https://example.com -w /usr/share/seclists/Discovery/Web-Content/common.txt
+
+# Or with ffuf (faster, more flexible):
+ffuf -u https://example.com/FUZZ -w /usr/share/seclists/Discovery/Web-Content/common.txt
+</code></pre>
+<p>This is exactly why the <strong>SecLists</strong> wordlists you installed back in Path 03 matter — <code>/usr/share/seclists/Discovery/Web-Content/</code> has curated lists specifically for this.</p>
+<h3>Technology fingerprinting</h3>
+<p>Identifying the frameworks, CMS, and libraries in use — each with its own known vulnerability history:</p>
+<pre><code class="language-bash">whatweb https://example.com
+# Or check headers manually:
+curl -sI https://example.com
+</code></pre>
+<p>Look for <code>Server</code>, <code>X-Powered-By</code>, cookie names (<code>PHPSESSID</code> implies PHP, <code>JSESSIONID</code> implies Java), and JS library version strings in page source.</p>
+<h3>Crawling</h3>
+<p>Systematically following every link to map the entire application:</p>
+<pre><code class="language-bash">katana -u https://example.com -d 3 -o urls.txt
+</code></pre>
+<p>Burp&#39;s <strong>Target → Site map</strong>, built passively as you browse (Path 11.2), is a form of crawling too.</p>
+<h3>robots.txt and sitemap.xml</h3>
+<p>Often overlooked, sometimes genuinely revealing:</p>
+<pre><code class="language-bash">curl -s https://example.com/robots.txt
+curl -s https://example.com/sitemap.xml
+</code></pre>
+<p><code>robots.txt</code> in particular has a long history of accidentally telling attackers exactly which paths the site owner <em>doesn&#39;t want indexed</em> — often because those paths are sensitive.</p>
+<h3>Parameter discovery</h3>
+<p>Finding hidden parameters an endpoint quietly accepts — beyond what&#39;s visible in the UI — is its own valuable recon subtask, since apps frequently support debug flags, legacy parameters, or admin-only options that were never removed from the code even after the corresponding UI was:</p>
+<pre><code class="language-bash"># Fuzz for hidden GET parameters against a known endpoint:
+ffuf -u &quot;https://example.com/profile?FUZZ=1&quot; -w /usr/share/seclists/Discovery/Web-Content/burp-parameter-names.txt -fs &lt;baseline-response-size&gt;
+
+# Or the purpose-built tool:
+arjun -u https://example.com/profile
+</code></pre>
+<p>A parameter like <code>?debug=true</code>, <code>?admin=1</code>, or <code>?format=xml</code> that the UI never sends can sometimes unlock behaviour the developers assumed was safely hidden simply because nothing in the visible interface exposed it.</p>
+<h2>Building a recon pipeline</h2>
+<p>Professional recon chains multiple tools together, each feeding the next:</p>
+<p>You&#39;ll build a real, automated version of this exact pipeline in Path 15 (Bug Bounty) using your Python and Bash skills from Paths 03–04.</p>
+<h2>What you&#39;re actually looking for</h2>
+<p>Recon isn&#39;t just &quot;collect data&quot; — it&#39;s collecting data <strong>with specific questions in mind</strong>:</p>
+<ul>
+<li>What subdomains exist that the &quot;main&quot; site doesn&#39;t link to? (staging, dev, admin, api, internal tools accidentally exposed)</li>
+<li>What technologies are in use, and do any have known CVEs?</li>
+<li>What parameters and endpoints exist that aren&#39;t obvious from clicking around the UI?</li>
+<li>What did the site look like historically that might reveal old, forgotten functionality still technically live?</li>
+<li>Are there any exposed files that shouldn&#39;t be (<code>.git/</code>, <code>.env</code>, backup files like <code>.sql</code>, <code>.bak</code>)?</li>
+</ul>
+<h2>JavaScript source mining</h2>
+<p>Modern SPAs (Path 05&#39;s web-anatomy lesson) ship most of their logic as downloadable JavaScript bundles — which means those bundles are, functionally, a map of the entire application handed directly to anyone who looks. Downloading and searching every JS file a site loads for API endpoint strings, feature-flag names, and even leftover comments is a distinct, high-value recon step:</p>
+<pre><code class="language-bash"># Download every JS file a site references, then grep for interesting strings:
+katana -u https://example.com -jc -o urls.txt
+grep -oE &#39;&quot;/api/[a-zA-Z0-9/_-]+&quot;&#39; *.js | sort -u
+</code></pre>
+<p>Tools like <strong>LinkFinder</strong> and <strong>SecretFinder</strong> automate exactly this — scanning JS for endpoint-shaped strings and accidentally-committed API keys/tokens respectively. This is the automated, at-scale version of the manual Sources-panel searching from Path 05&#39;s DevTools lab, and it consistently turns up endpoints the site&#39;s own visible navigation never links to.</p>
+<h2>🧪 Lab — Full recon pass on a legal target</h2>
+<p>Run this full chain against <code>testphp.vulnweb.com</code> (a legal public target) or a target you&#39;re authorised to test:</p>
+<pre><code class="language-bash"># 1. DNS and WHOIS
+whois testphp.vulnweb.com
+dig testphp.vulnweb.com ANY
+
+# 2. Robots and sitemap
+curl -s http://testphp.vulnweb.com/robots.txt
+
+# 3. Tech fingerprint
+whatweb http://testphp.vulnweb.com
+
+# 4. Directory brute-force
+gobuster dir -u http://testphp.vulnweb.com \
+  -w /usr/share/seclists/Discovery/Web-Content/common.txt \
+  -o gobuster-results.txt
+
+# 5. Review findings
+cat gobuster-results.txt
+</code></pre>
+<p>Write a short summary of what you learned: technologies detected, interesting paths found, anything that surprised you. This is exactly the kind of summary that opens a real penetration test report.</p>
+<p>Active recon tools generate real traffic against real servers. Only ever run active techniques (brute-forcing, crawling, scanning) against targets you explicitly own or have written authorization to test — like the practice targets linked throughout this course. Passive recon (WHOIS, crt.sh, Wayback Machine, Shodan searches) is generally lower-risk since you&#39;re querying third-party public records, not the target directly — but always respect each service&#39;s own terms of use.</p>
+<p>Why are Certificate Transparency logs (crt.sh) such a powerful passive subdomain enumeration technique?</p>
+<details><summary>Show answer</summary>Every publicly-trusted TLS certificate issued by any Certificate Authority is <strong>permanently and publicly logged</strong> as part of the CT system (designed to prevent fraudulently-issued certificates). Since getting HTTPS on a subdomain requires a certificate, this means virtually every subdomain that's ever had HTTPS enabled — including old, forgotten, or supposedly "hidden" ones — is discoverable in these logs, with zero direct interaction with the target required.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Passive / active recon</strong> — without vs with direct interaction with the target.</li>
+<li><strong>Certificate Transparency (CT) logs</strong> — public, permanent record of issued TLS certificates.</li>
+<li><strong>Google dorking</strong> — crafted search queries revealing indexed sensitive content.</li>
+<li><strong>Directory brute-forcing</strong> — trying wordlists of paths against a live target.</li>
+<li><strong>Technology fingerprinting</strong> — identifying frameworks/CMS/libraries in use.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Recon splits into passive (invisible, third-party sources) and active (direct interaction).</li>
+<li>Subdomain enumeration via CT logs is one of the highest-value passive techniques.</li>
+<li>Directory brute-forcing and crawling reveal content not linked from the visible UI.</li>
+<li>Real recon chains many tools into a pipeline, each feeding the next.</li>
+<li>Always respect scope — active techniques require explicit authorization.</li>
+</ul>
+<h3>References</h3>
+<ul>
+<li><a href="https://owasp.org/www-project-web-security-testing-guide/">OWASP Testing Guide — Information Gathering</a> — the methodical reference.</li>
+<li><a href="https://crt.sh/">crt.sh</a> — the essential Certificate Transparency search tool.</li>
+<li><a href="https://github.com/danielmiessler/SecLists">SecLists</a> — the wordlists behind most brute-forcing.</li>
+<li><a href="https://github.com/projectdiscovery">ProjectDiscovery tools</a> — subfinder, httpx, katana, and more, all built for exactly this pipeline.</li>
+<li><a href="https://www.exploit-db.com/google-hacking-database">Google Hacking Database (GHDB)</a> — curated dork queries.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/11-web-security/idor">IDOR — Broken Access Control</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/11-web-security/web-recon";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

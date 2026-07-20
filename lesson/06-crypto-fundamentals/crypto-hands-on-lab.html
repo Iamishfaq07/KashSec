@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crypto Hands-On Lab — Path 06 · KashSec Academy</title>
+<meta name="description" content="This capstone lab turns every concept from this path — encoding vs. encryption vs. hashing, symmetric and asymmetric encryption, digital certificates — into hands-on practice using free, beginner-frie">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/06-crypto-fundamentals/crypto-hands-on-lab">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Crypto Hands-On Lab — Path 06 · KashSec Academy">
+<meta property="og:description" content="This capstone lab turns every concept from this path — encoding vs. encryption vs. hashing, symmetric and asymmetric encryption, digital certificates — into hands-on practice using free, beginner-frie">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/06-crypto-fundamentals/crypto-hands-on-lab">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Crypto Hands-On Lab — Path 06 · KashSec Academy">
+<meta name="twitter:description" content="This capstone lab turns every concept from this path — encoding vs. encryption vs. hashing, symmetric and asymmetric encryption, digital certificates — into hands-on practice using free, beginner-frie">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Crypto Hands-On Lab — Path 06 · KashSec Academy","description":"This capstone lab turns every concept from this path — encoding vs. encryption vs. hashing, symmetric and asymmetric encryption, digital certificates — into hands-on practice using free, beginner-frie","url":"https://kashsec.vercel.app/#/lesson/06-crypto-fundamentals/crypto-hands-on-lab","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/06-crypto-fundamentals/crypto-hands-on-lab">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 06 — Cryptography Fundamentals</a> · Crypto Hands-On Lab</div>
+  <article><h1>Crypto Hands-On Lab</h1>
+<p>This capstone lab turns every concept from this path — encoding vs. encryption vs. hashing, symmetric and asymmetric encryption, digital certificates — into hands-on practice using free, beginner-friendly tools.</p>
+<h2>The main tool — CyberChef</h2>
+<p><strong><a href="https://gchq.github.io/CyberChef/">CyberChef</a></strong> (free, built by GCHQ, runs entirely in your browser with no installation) is the single best tool for building intuition across every topic in this path — a drag-and-drop interface for encoding, decoding, encrypting, decrypting, and hashing data, letting you chain operations together and watch the output change in real time.</p>
+<h2>Tasks</h2>
+<ol>
+<li><p><strong>Encoding vs. encryption, hands-on.</strong> In CyberChef, drag &quot;To Base64&quot; onto a piece of text, then drag &quot;From Base64&quot; right after it — confirm it round-trips perfectly with zero secret involved. Now try &quot;AES Encrypt&quot; with a key of your choice, followed by &quot;AES Decrypt&quot; using the <em>same</em> key — confirm it also round-trips, but this time try decrypting with a <em>different</em> key and observe the failure. This hands-on contrast is the fastest way to cement Path 06&#39;s opening distinction.</p>
+</li>
+<li><p><strong>Hash a few things and observe the avalanche effect.</strong> Use CyberChef&#39;s &quot;SHA2&quot; operation (256-bit) on the string <code>KashSec</code>, then change just one character to <code>Kashsec</code> and hash again — compare the two outputs side by side and confirm they share no visible resemblance, despite the tiny input change.</p>
+</li>
+<li><p><strong>Break a Caesar cipher.</strong> Encode a short message with &quot;ROT13&quot; (a special case of the Caesar cipher shifting by 13), then use CyberChef&#39;s &quot;Brute Force&quot; or manually try each of the 25 possible shifts using &quot;ROT13 Brute Force&quot; — confirm how trivially fast this classical cipher falls, directly connecting back to Path 06&#39;s opening lesson.</p>
+</li>
+<li><p><strong>Generate and inspect an RSA key pair.</strong> Using a terminal with OpenSSL installed (pre-installed on most Linux/macOS systems):</p>
+<pre><code class="language-bash">openssl genrsa -out private.pem 2048
+openssl rsa -in private.pem -pubout -out public.pem
+cat public.pem
+</code></pre>
+<p>Open both files and notice: the public key is genuinely safe to share (paste it anywhere), while the private key must never leave your control — exactly the asymmetric distinction from this path&#39;s second lesson.</p>
+</li>
+<li><p><strong>Encrypt a message with your RSA key pair.</strong></p>
+<pre><code class="language-bash">echo &quot;Test message for KashSec crypto lab&quot; &gt; message.txt
+openssl pkeyutl -encrypt -pubin -inkey public.pem -in message.txt -out encrypted.bin
+openssl pkeyutl -decrypt -inkey private.pem -in encrypted.bin -out decrypted.txt
+cat decrypted.txt
+</code></pre>
+<p>Confirm the message round-trips correctly — and try decrypting <code>encrypted.bin</code> with a <em>different</em> private key you generate, confirming it fails, exactly as expected from this path&#39;s asymmetric encryption lesson.</p>
+</li>
+<li><p><strong>Inspect a real website&#39;s certificate.</strong> Visit any HTTPS site, click the padlock icon in your browser&#39;s address bar, and view the certificate details — find the issuing Certificate Authority, the domain(s) it&#39;s valid for, and its expiration date, connecting directly to this path&#39;s digital signatures &amp; certificates lesson.</p>
+</li>
+<li><p><strong>Demonstrate ECB mode&#39;s pattern leakage.</strong> In CyberChef, take a repetitive piece of text (e.g., the same short phrase repeated 20 times) and encrypt it with &quot;AES Encrypt&quot; using ECB mode versus CBC mode — compare the two ciphertext outputs and notice the ECB output shows an obvious repeating structure that CBC&#39;s output doesn&#39;t, a text-based echo of the classic &quot;ECB penguin&quot; image referenced in Path 06&#39;s symmetric encryption lesson.</p>
+</li>
+<li><p><strong>Sign and verify a message with HMAC.</strong> In CyberChef, drag &quot;HMAC&quot; onto a short message using SHA256 and a key of your choice, then change a single character in the original message and recompute the HMAC — confirm the output changes completely. This is a direct, hands-on demonstration of Path 06.4&#39;s HMAC discussion: without the correct key, an attacker modifying the message has no way to produce a matching HMAC tag, which is exactly the integrity+authenticity guarantee that makes it useful for verifying JWTs and webhook payloads.</p>
+</li>
+<li><p><strong>Generate a certificate signing request (CSR).</strong> Using OpenSSL, generate a fresh key pair and a CSR — the exact artifact a real website operator submits to a CA when requesting a certificate:</p>
+<pre><code class="language-bash">openssl req -new -newkey rsa:2048 -nodes -keyout lab.key -out lab.csr \
+  -subj &quot;/CN=lab.kashsec-labs.test&quot;
+openssl req -in lab.csr -noout -text
+</code></pre>
+<p>Reading the CSR&#39;s decoded output (the last command) shows exactly the identity information — the domain name in <code>CN</code>, the public key — that a CA would review and sign, connecting directly to this path&#39;s certificate-issuance diagram.</p>
+</li>
+</ol>
+<p>Using everything from this lab, create your own one-page cheat sheet: when to use encoding vs. encryption vs. hashing, when to use symmetric vs. asymmetric encryption, and the 8 crypto mistakes from the previous lesson, each with a one-line &quot;how to avoid it.&quot; Save it in your notes — this is exactly the kind of reference that pays off constantly across the rest of this course.</p>
+<h2>Where crypto concepts show up throughout this course</h2>
+<p>Now that you&#39;ve built this foundation, revisit (or look forward to) exactly where it applies: Path 02&#39;s HTTPS discussion, Path 11&#39;s JWT lessons and labs, Path 13&#39;s mobile Keystore/Keychain lessons, Path 17&#39;s ransomware mechanics and static analysis entropy checks, and this course&#39;s CTF Zone&#39;s layered-cipher and XOR challenges — every one of these now has real conceptual grounding behind it, rather than being isolated vocabulary.</p>
+<h2>Key takeaway</h2>
+<p>Cryptography stops feeling like abstract math the moment you actually manipulate real ciphertext, hashes, and keys yourself — the CyberChef and OpenSSL exercises in this lab are exactly the kind of hands-on repetition that turns &quot;I&#39;ve heard of AES&quot; into genuine, applicable understanding.</p>
+<h2>🎓 Path complete</h2>
+<p>You&#39;ve now covered the encoding/encryption/hashing distinction, symmetric encryption (AES, modes of operation), asymmetric encryption (RSA, hybrid encryption, digital signatures), hashing and password storage, the certificate infrastructure behind HTTPS, the eight recurring real-world crypto mistakes, and hands-on practice with CyberChef and OpenSSL. Every crypto reference throughout the rest of this course should now make genuine sense.</p>
+<h3>References</h3>
+<ul>
+<li><a href="https://gchq.github.io/CyberChef/">CyberChef</a> — the free, browser-based tool used throughout this lab.</li>
+<li><a href="https://www.feistyduck.com/library/openssl-cookbook/">OpenSSL Cookbook</a> — a free, practical reference for OpenSSL command-line usage.</li>
+</ul>
+<p><strong>Explore more →</strong> <a href="#/course">Back to all paths</a> · <a href="#/lesson/19-ctf-challenges">CTF Zone</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/06-crypto-fundamentals/crypto-hands-on-lab";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

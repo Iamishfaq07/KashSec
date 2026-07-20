@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Symmetric Encryption — Path 06 · KashSec Academy</title>
+<meta name="description" content="The previous lesson introduced encryption as &quot;scrambling data with a recoverable key.&quot; This lesson covers the first of the two major families: symmetric encryption, where the exact same key both locks">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/06-crypto-fundamentals/symmetric-encryption">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Symmetric Encryption — Path 06 · KashSec Academy">
+<meta property="og:description" content="The previous lesson introduced encryption as &quot;scrambling data with a recoverable key.&quot; This lesson covers the first of the two major families: symmetric encryption, where the exact same key both locks">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/06-crypto-fundamentals/symmetric-encryption">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Symmetric Encryption — Path 06 · KashSec Academy">
+<meta name="twitter:description" content="The previous lesson introduced encryption as &quot;scrambling data with a recoverable key.&quot; This lesson covers the first of the two major families: symmetric encryption, where the exact same key both locks">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Symmetric Encryption — Path 06 · KashSec Academy","description":"The previous lesson introduced encryption as \"scrambling data with a recoverable key.\" This lesson covers the first of the two major families: symmetric encryption, where the exact same key both locks","url":"https://kashsec.vercel.app/#/lesson/06-crypto-fundamentals/symmetric-encryption","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/06-crypto-fundamentals/symmetric-encryption">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 06 — Cryptography Fundamentals</a> · Symmetric Encryption</div>
+  <article><h1>Symmetric Encryption</h1>
+<p>The previous lesson introduced encryption as &quot;scrambling data with a recoverable key.&quot; This lesson covers the first of the two major families: <strong>symmetric encryption</strong>, where the exact same key both locks and unlocks the data — the type of encryption you&#39;ve already seen mentioned throughout this course, from ransomware&#39;s file encryption (Path 17) to HTTPS&#39;s actual data transfer (Path 02).</p>
+<h2>The core idea — one shared key</h2>
+<p>Symmetric encryption is fast and efficient — genuinely fast enough to encrypt large files or entire network connections in real time, which is exactly why it&#39;s used for the actual bulk data transfer in HTTPS, disk encryption, and file encryption generally. The tradeoff is the <strong>key distribution problem</strong>: both parties need the exact same secret key beforehand, and getting that key safely from one party to the other, without anyone intercepting it along the way, is genuinely difficult — this exact problem is what the next lesson&#39;s asymmetric encryption elegantly solves.</p>
+<h2>AES — the modern standard</h2>
+<p><strong>AES (Advanced Encryption Standard)</strong> is the algorithm actually used almost everywhere symmetric encryption appears today — it&#39;s fast, extremely well-studied by cryptographers worldwide, and, when used correctly, has no known practical weaknesses. You&#39;ve already encountered it by name: Path 17&#39;s ransomware lesson described exactly how AES encrypts victim files, and Path 13&#39;s mobile security lessons referenced AES-based encrypted storage.</p>
+<p>AES works on fixed-size chunks of data called <strong>blocks</strong> (128 bits at a time), repeatedly scrambling each block through multiple rounds of substitution and mixing, controlled by the key. You don&#39;t need to understand the internal math to use AES correctly — but you absolutely need to understand the ways it&#39;s commonly misused, covered below.</p>
+<h2>The XOR cipher — a simple, breakable illustration</h2>
+<p>This course&#39;s CTF Zone already had you break a repeating-key XOR cipher using a known-plaintext attack — worth revisiting here as a genuine (if weak) symmetric cipher: the same key repeatedly combined with plaintext via the XOR operation, and that identical key reverses it. It illustrates the core symmetric idea perfectly while also demonstrating exactly <em>why</em> real symmetric ciphers need to be far more sophisticated than simple repeating-key XOR — the CTF challenge&#39;s entire solve relied on XOR&#39;s structural weakness against known-plaintext attacks, a weakness AES is specifically engineered to resist.</p>
+<h2>Modes of operation — where real mistakes happen</h2>
+<p>AES itself only defines how to scramble a single 128-bit block. Real data is almost always larger than one block, so a <strong>mode of operation</strong> defines how to chain many blocks together — and this is where a huge share of real-world symmetric encryption mistakes actually happen, not in AES itself.</p>
+<p><strong>ECB (Electronic Codebook) mode</strong> encrypts each block completely independently, with no connection between them. This means identical plaintext blocks always produce identical ciphertext blocks — so patterns in the original data remain visible in the encrypted output. The canonical demonstration: encrypting an image with ECB mode still shows the image&#39;s outline, because large uniform color areas (identical blocks) encrypt to identical (still uniform-looking) ciphertext blocks. <strong>CBC</strong> and <strong>GCM</strong> modes fix this by chaining each block&#39;s encryption to the previous one (or using a unique value per encryption), eliminating this pattern-preservation entirely. Never use ECB mode for anything beyond a single block.</p>
+<h2>GCM mode — authenticated encryption, and why it&#39;s the modern default</h2>
+<p>CBC mode (mentioned above) fixes ECB&#39;s pattern-leakage problem, but it has its own quieter gap worth understanding: CBC alone provides confidentiality (the data is scrambled) but not <strong>authenticity</strong> — nothing stops an attacker from tampering with the ciphertext in transit in ways that produce predictable, exploitable changes to the decrypted plaintext, even without knowing the key. <strong>GCM (Galois/Counter Mode)</strong>, increasingly the default recommendation for new systems, solves this by combining encryption with a built-in <strong>authentication tag</strong> — a short, cryptographically-computed value appended to the ciphertext that lets the receiving side verify the data hasn&#39;t been tampered with at all before ever trusting the decrypted result. This combined property is called <strong>authenticated encryption</strong>, and it directly closes a class of real, historically-exploited attacks (padding oracle attacks against CBC being the classic example) where an attacker who can send crafted, tampered ciphertext to a system and observe how it responds can sometimes decrypt data without ever knowing the key at all — a genuinely subtle, non-obvious failure mode that GCM&#39;s built-in integrity check eliminates by design rather than requiring developers to bolt on a separate integrity check themselves (which, historically, was itself a common source of real-world mistakes).</p>
+<h2>Key size matters — but bigger isn&#39;t always better</h2>
+<p>AES is typically used with 128-bit, 192-bit, or 256-bit keys — longer keys resist brute-force attacks more thoroughly (echoing the length-over-complexity password principle from Path 00), but AES-128 is already considered computationally infeasible to brute-force with any foreseeable technology; the difference between AES-128 and AES-256 matters far less in practice than <em>how</em> the encryption is actually implemented (correct mode of operation, unique values per encryption, secure key storage).</p>
+<p>When a &quot;AES-encrypted&quot; system gets broken in practice, the cause is overwhelmingly implementation error, not a flaw in AES itself: a hardcoded key baked into an app (Path 13&#39;s mobile insecure storage lesson), a reused &quot;nonce&quot; (a value meant to be unique per encryption, referenced in secure implementations), or ECB mode&#39;s pattern leakage above. This is exactly why &quot;never roll your own crypto&quot; (Path 11, Path 17) extends beyond just the algorithm choice to every detail of how it&#39;s actually implemented.</p>
+<p>Why does ECB mode leak patterns in the original data, while CBC mode does not, even though both use the exact same underlying AES algorithm on each block?</p>
+<details><summary>Show answer</summary>ECB mode encrypts every block completely independently using only the key — meaning two identical plaintext blocks anywhere in the data will always produce two identical ciphertext blocks, since the encryption process for each block has no awareness of any other block. CBC (Cipher Block Chaining) mode instead XORs each plaintext block with the <em>previous block's ciphertext</em> before encrypting it, meaning the encryption of any given block depends on everything that came before it in the data. Two identical plaintext blocks appearing at different points in a CBC-encrypted message will almost certainly produce completely different ciphertext, because each is combined with a different preceding ciphertext block before encryption — eliminating the pattern leakage that makes ECB mode visually and structurally insecure for anything beyond a single isolated block.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Symmetric encryption</strong> — encryption where the same key both encrypts and decrypts.</li>
+<li><strong>AES</strong> — the modern standard symmetric encryption algorithm.</li>
+<li><strong>Block / mode of operation</strong> — the fixed-size chunk AES processes at a time, and the scheme for chaining many blocks together.</li>
+<li><strong>ECB / CBC / GCM</strong> — specific modes of operation, with ECB being the classic insecure choice for multi-block data.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Symmetric encryption uses one shared key for both encryption and decryption — fast, but requiring secure key distribution beforehand.</li>
+<li>AES is the modern standard, extremely well-studied and secure when implemented correctly.</li>
+<li>The mode of operation (how multiple blocks chain together) is a common real-world failure point — ECB mode leaks data patterns and should never be used for multi-block data.</li>
+<li>Real-world symmetric encryption breaks almost always come from implementation mistakes, not flaws in AES itself.</li>
+</ul>
+<h3>References</h3>
+<ul>
+<li><a href="https://www.nist.gov/publications/advanced-encryption-standard-aes">NIST: Advanced Encryption Standard (AES)</a> — the official standard specification.</li>
+<li><a href="https://blog.filippo.io/the-ecb-penguin/">The ECB Penguin</a> — the famous, genuinely illustrative visual demonstration of ECB&#39;s pattern leakage.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/06-crypto-fundamentals/asymmetric-encryption">Asymmetric Encryption</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/06-crypto-fundamentals/symmetric-encryption";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

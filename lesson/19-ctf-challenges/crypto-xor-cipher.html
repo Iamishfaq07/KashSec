@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crypto — Break the XOR Cipher — Path 19 · KashSec Academy</title>
+<meta name="description" content="Category: Crypto · Difficulty: Hard">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/19-ctf-challenges/crypto-xor-cipher">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Crypto — Break the XOR Cipher — Path 19 · KashSec Academy">
+<meta property="og:description" content="Category: Crypto · Difficulty: Hard">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/19-ctf-challenges/crypto-xor-cipher">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Crypto — Break the XOR Cipher — Path 19 · KashSec Academy">
+<meta name="twitter:description" content="Category: Crypto · Difficulty: Hard">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Crypto — Break the XOR Cipher — Path 19 · KashSec Academy","description":"Category: Crypto · Difficulty: Hard","url":"https://kashsec.vercel.app/#/lesson/19-ctf-challenges/crypto-xor-cipher","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/19-ctf-challenges/crypto-xor-cipher">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 19 — CTF Challenges</a> · Crypto — Break the XOR Cipher</div>
+  <article><h1>Crypto — Break the XOR Cipher</h1>
+<p><strong>Category:</strong> Crypto · <strong>Difficulty:</strong> Hard</p>
+<h2>Scenario</h2>
+<p>You&#39;ve intercepted a message encrypted with a <strong>repeating-key XOR cipher</strong> — a genuinely weak but historically common encryption scheme where a short secret key is repeated over and over and XORed byte-by-byte against the plaintext. This challenge is harder than the others in this section: no encoding-format shortcuts, just a real (if classic) known-plaintext cryptanalysis technique.</p>
+<h2>Provided data</h2>
+<p>The ciphertext, as hex bytes:</p>
+<pre><code>2838317b21263a194b421126100002504d16402d044814562d520d3d070557001f
+</code></pre>
+<p>Remember from the briefing lesson: every flag in this section starts with the exact same 8 characters — <code>KASHSEC{</code>.</p>
+<h2>Your task</h2>
+<p>Recover the encryption key, then decrypt the full message.</p>
+<h2>Background — how repeating-key XOR works</h2>
+<p>XOR (exclusive-or) has a property that makes it perfectly reversible with the same key: <code>plaintext XOR key = ciphertext</code>, and <code>ciphertext XOR key = plaintext</code> again. With a <strong>repeating</strong> key shorter than the message, the key is just cycled: byte 0 of the plaintext is XORed with byte 0 of the key, byte 1 with byte 1 of the key, and once the key runs out, it wraps back to byte 0 again.</p>
+<p>This repetition is exactly the cipher&#39;s fatal weakness, and exactly what makes it breakable with a <strong>known-plaintext attack</strong>: if you already know (or can guess) even a small chunk of the plaintext, XORing that known plaintext against the corresponding ciphertext bytes recovers the key directly — because <code>ciphertext XOR known_plaintext = key</code>.</p>
+<details><summary>Hint 1 — the crib</summary>You already know the first 8 plaintext bytes with certainty: <code>KASHSEC{</code>. That's your "known plaintext," or <strong>crib</strong>, in cryptanalysis terms. Convert both the first 8 bytes of the ciphertext and the string <code>KASHSEC{</code> to their raw byte values, and XOR them together, position by position.</details>
+<details><summary>Hint 2 — spotting the key length</summary>Once you XOR the first 8 ciphertext bytes against <code>KASHSEC{</code>, write out the resulting 8 bytes as characters. You should see a short, readable sequence start repeating partway through — that repetition tells you exactly how long the real key is, and the non-repeating portion before it starts over <em>is</em> the key.</details>
+<details><summary>Hint 3 — decrypting the rest</summary>Once you have the key (it should be a short, readable word), XOR it — repeating it to match length — against the <em>entire</em> ciphertext, not just the first 8 bytes, to recover the complete plaintext message.</details>
+<details><summary>Show full answer</summary>XORing the first 8 ciphertext bytes against the known crib <code>KASHSEC{</code> recovers the byte sequence <code>c y b 3 r c y b</code> — and the repetition of <code>c-y-b</code> starting at position 5 makes it clear the actual key is just the first 5 bytes: <strong><code>cyb3r</code></strong>. Repeating that 5-byte key across the <em>entire</em> ciphertext (cycling <code>c-y-b-3-r-c-y-b-3-r...</code> for as many bytes as the message is long) and XORing it against every ciphertext byte recovers the full original plaintext.</details><h2>The flag</h2>
+<pre><code>KASHSEC{x0r_r3p34ts_g1ve_1t_4w4y}
+</code></pre>
+<h2>Bonus round — what if you didn&#39;t have a crib?</h2>
+<p>This challenge was solvable quickly because you knew the plaintext started with <code>KASHSEC{</code> — a genuine, guaranteed crib. Real-world ciphertext-only attacks against repeating-key XOR rarely hand you that certainty, so it&#39;s worth understanding the general technique that works even without one.</p>
+<details><summary>Hint</summary>Think about what repeating a key does structurally to the ciphertext, independent of what the plaintext actually says. If you XOR two ciphertext bytes that were encrypted with the *same* key byte (because they're exactly one key-length apart), what cancels out?</details>
+<details><summary>Show answer</summary>The standard technique is called the <strong>Kasiski examination</strong> (or a statistical variant using the <strong>index of coincidence</strong): you test candidate key lengths by splitting the ciphertext into that many interleaved streams (all the bytes encrypted with key-byte 0, all the bytes encrypted with key-byte 1, and so on) and checking each stream's byte-frequency distribution against what's expected for normal English text (or whatever the plaintext's language/format is). The <em>correct</em> key length produces streams where each one was XORed with a single, consistent byte — meaning each stream is really just a simple single-byte XOR cipher, which is trivially breakable via frequency analysis (English text has a very distinctive letter-frequency fingerprint, and the single XOR byte that best reproduces that fingerprint when reversed is almost certainly the correct key byte). Wrong candidate key lengths produce streams that look statistically like random noise instead. This is exactly the technique CryptoPals' classic "Break repeating-key XOR" challenge teaches in full, referenced below — genuinely worth working through once this section's simpler crib-based version feels comfortable.</details><h2>Why this matters beyond the CTF</h2>
+<p>Known-plaintext attacks against repeating-key XOR are a genuine, historically significant cryptanalysis technique — this exact class of weakness broke real ciphers long before modern cryptography existed, and it&#39;s a staple beginner exercise on platforms like CryptoPals for exactly this reason: it teaches the core insight that <strong>any predictable structure in your ciphertext (a known or guessable prefix, letter-frequency patterns, repeated blocks) can be leveraged to attack it.</strong> This is precisely why modern, properly designed encryption (AES in an authenticated mode, for instance) is built specifically to resist these categories of structural attack — repeating-key XOR predates that generation of cryptographic engineering by decades and shows exactly what it was designed to fix.</p>
+<p>This challenge exists to build attacker intuition, not to suggest XOR ciphers belong anywhere near real systems. If you ever need real confidentiality in a project, use established, audited libraries and algorithms (AES-GCM, ChaCha20-Poly1305) — never a custom scheme, no matter how &quot;obfuscated&quot; it seems. This exact principle is echoed throughout Path 10 and Path 11&#39;s discussions of cryptography done wrong.</p>
+<p><strong>Next up →</strong> <a href="#/lesson/19-ctf-challenges/linux-privesc-challenge">Linux — The Privesc Puzzle</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/19-ctf-challenges/crypto-xor-cipher";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

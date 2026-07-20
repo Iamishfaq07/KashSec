@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Decisions with if/else — Path 04 · KashSec Academy</title>
+<meta name="description" content="Every login check, every password strength test, every &quot;did this scan find something?&quot; is really the same shape: if this is true, do that. Time to write that in Python.">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/04-python/if-else">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Decisions with if/else — Path 04 · KashSec Academy">
+<meta property="og:description" content="Every login check, every password strength test, every &quot;did this scan find something?&quot; is really the same shape: if this is true, do that. Time to write that in Python.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/04-python/if-else">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Decisions with if/else — Path 04 · KashSec Academy">
+<meta name="twitter:description" content="Every login check, every password strength test, every &quot;did this scan find something?&quot; is really the same shape: if this is true, do that. Time to write that in Python.">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Decisions with if/else — Path 04 · KashSec Academy","description":"Every login check, every password strength test, every \"did this scan find something?\" is really the same shape: if this is true, do that. Time to write that in Python.","url":"https://kashsec.vercel.app/#/lesson/04-python/if-else","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/04-python/if-else">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 04 — Programming & Python</a> · Decisions with if/else</div>
+  <article><h1>Decisions with if/else</h1>
+<p>Every login check, every password strength test, every &quot;did this scan find something?&quot; is really the same shape: <strong>if this is true, do that.</strong> Time to write that in Python.</p>
+<h2>The basic if</h2>
+<pre><code class="language-python">password = input(&quot;Password: &quot;)
+
+if password == &quot;hunter2&quot;:
+    print(&quot;Access granted&quot;)
+else:
+    print(&quot;Access denied&quot;)
+</code></pre>
+<p>Three things to notice:</p>
+<ol>
+<li><code>if condition:</code> — a <em>condition</em> that resolves to <code>True</code> or <code>False</code>.</li>
+<li>The <strong>colon</strong> at the end of the line.</li>
+<li>The next lines are <strong>indented</strong> (4 spaces is standard). Python uses indentation, not braces, to group code.</li>
+</ol>
+<p>In Python, indentation isn&#39;t cosmetic — it&#39;s how the language groups blocks. Mixing tabs and spaces, or unequal indentation, will crash your program with an <code>IndentationError</code>. Configure your editor to insert 4 spaces on Tab.</p>
+<h2>if / elif / else — choose one branch</h2>
+<pre><code class="language-python">score = int(input(&quot;Score: &quot;))
+
+if score &gt;= 90:
+    grade = &quot;A&quot;
+elif score &gt;= 75:
+    grade = &quot;B&quot;
+elif score &gt;= 50:
+    grade = &quot;C&quot;
+else:
+    grade = &quot;F&quot;
+
+print(f&quot;Grade: {grade}&quot;)
+</code></pre>
+<p><code>elif</code> is Python&#39;s shorthand for &quot;else if.&quot; Only one branch runs — the first one whose condition is <code>True</code>.</p>
+<h2>Combining conditions</h2>
+<pre><code class="language-python">age = int(input(&quot;Age: &quot;))
+has_licence = input(&quot;Licence? y/n: &quot;) == &quot;y&quot;
+
+if age &gt;= 18 and has_licence:
+    print(&quot;You may drive&quot;)
+elif age &gt;= 18 and not has_licence:
+    print(&quot;Get a licence first&quot;)
+else:
+    print(&quot;Too young&quot;)
+</code></pre>
+<ul>
+<li><code>and</code> — both must be true</li>
+<li><code>or</code> — either can be true</li>
+<li><code>not</code> — flip a boolean</li>
+</ul>
+<p>Common comparison operators:</p>
+<table>
+<thead>
+<tr>
+<th>Op</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>==</code></td>
+<td>equal (never <code>=</code> — that&#39;s assignment!)</td>
+</tr>
+<tr>
+<td><code>!=</code></td>
+<td>not equal</td>
+</tr>
+<tr>
+<td><code>&gt;</code>, <code>&lt;</code>, <code>&gt;=</code>, <code>&lt;=</code></td>
+<td>ordering</td>
+</tr>
+<tr>
+<td><code>in</code></td>
+<td>is a value in a collection?</td>
+</tr>
+<tr>
+<td><code>is</code></td>
+<td>is this the exact same object? (usually just <code>is None</code>)</td>
+</tr>
+</tbody></table>
+<h3>Short-circuit evaluation — a subtle but useful behavior</h3>
+<p>Python&#39;s <code>and</code>/<code>or</code> operators <strong>short-circuit</strong> — they stop evaluating as soon as the overall result is already determined, without checking the remaining conditions at all. This isn&#39;t just an efficiency detail; it&#39;s genuinely useful for writing safe checks:</p>
+<pre><code class="language-python"># If &#39;data&#39; is empty, len(data) == 0 is checked first and is False,
+# so Python never even attempts data[0] — avoiding a crash on empty input:
+if len(data) &gt; 0 and data[0] == &quot;admin&quot;:
+    print(&quot;First entry is admin&quot;)
+</code></pre>
+<p>Reversing the order (<code>data[0] == &quot;admin&quot; and len(data) &gt; 0</code>) would crash on an empty list, since Python would try to access <code>data[0]</code> before ever checking the length — a genuinely common beginner bug, and a useful pattern to recognize once you start validating untrusted input (Path 11&#39;s entire premise) rather than clean, well-formed data.</p>
+<h2>A real-world check: is a port &quot;well-known&quot;?</h2>
+<pre><code class="language-python">port = int(input(&quot;Port: &quot;))
+
+if 0 &lt; port &lt;= 1023:
+    print(f&quot;{port} is a well-known port&quot;)
+elif 1024 &lt;= port &lt;= 49151:
+    print(f&quot;{port} is registered&quot;)
+elif 49152 &lt;= port &lt;= 65535:
+    print(f&quot;{port} is dynamic/private&quot;)
+else:
+    print(f&quot;{port} is out of range&quot;)
+</code></pre>
+<p>Notice <strong>chained comparisons</strong> (<code>0 &lt; port &lt;= 1023</code>) — a Python nicety that reads like maths.</p>
+<h2>Truthiness — which values count as False?</h2>
+<p>Python treats several values as False when used in an <code>if</code>:</p>
+<ul>
+<li><code>False</code></li>
+<li><code>None</code></li>
+<li><code>0</code>, <code>0.0</code></li>
+<li><code>&quot;&quot;</code> (empty string)</li>
+<li><code>[]</code>, <code>{}</code>, <code>()</code> (empty collections)</li>
+</ul>
+<p>Everything else is True. So:</p>
+<pre><code class="language-python">name = input(&quot;Name: &quot;)
+if not name:                # empty string → False → not False → True
+    print(&quot;You didn&#39;t enter anything.&quot;)
+</code></pre>
+<p>That&#39;s more Pythonic than <code>if name == &quot;&quot;:</code>.</p>
+<h2>The <code>in</code> operator — checking membership</h2>
+<p>Handy for security work:</p>
+<pre><code class="language-python">common_weak = [&quot;password&quot;, &quot;123456&quot;, &quot;admin&quot;, &quot;qwerty&quot;]
+
+pw = input(&quot;Choose password: &quot;)
+if pw in common_weak:
+    print(&quot;That password is on the blocklist.&quot;)
+else:
+    print(&quot;OK, checking strength...&quot;)
+
+# On strings, &#39;in&#39; checks for a substring:
+if &quot;sql&quot; in input(&quot;Query: &quot;).lower():
+    print(&quot;Warning: query contains &#39;sql&#39;&quot;)
+</code></pre>
+<h2>The ternary shortcut</h2>
+<p>For one-line simple choices:</p>
+<pre><code class="language-python">age = 20
+category = &quot;adult&quot; if age &gt;= 18 else &quot;minor&quot;
+</code></pre>
+<p>Use sparingly — it&#39;s beautiful for simple cases, unreadable for complex ones.</p>
+<h2>match / case — modern Python&#39;s switch</h2>
+<p>Since Python 3.10, there&#39;s a <code>match</code> statement for cleaner multi-way branches:</p>
+<pre><code class="language-python">status_code = 404
+
+match status_code:
+    case 200:
+        print(&quot;OK&quot;)
+    case 301 | 302:
+        print(&quot;Redirect&quot;)
+    case 400 | 401 | 403 | 404:
+        print(&quot;Client error&quot;)
+    case 500 | 502 | 503:
+        print(&quot;Server error&quot;)
+    case _:
+        print(&quot;Unknown status&quot;)
+</code></pre>
+<p>The <code>_</code> case is &quot;everything else&quot; (like <code>default:</code> in other languages).</p>
+<h2>🧪 Lab — Write a login validator</h2>
+<p>Save as <code>login.py</code> and run with <code>python3 login.py</code>:</p>
+<pre><code class="language-python"># login.py — small login flow
+
+MAX_TRIES = 3
+CORRECT_USER = &quot;admin&quot;
+CORRECT_PASS = &quot;kashSec@2026&quot;
+
+tries = 0
+while tries &lt; MAX_TRIES:
+    user = input(&quot;Username: &quot;)
+    pw = input(&quot;Password: &quot;)
+
+    if not user or not pw:
+        print(&quot;Both fields are required.\n&quot;)
+        tries += 1
+        continue
+
+    if user == CORRECT_USER and pw == CORRECT_PASS:
+        print(f&quot;Welcome, {user}!&quot;)
+        break
+    else:
+        tries += 1
+        remaining = MAX_TRIES - tries
+        if remaining &gt; 0:
+            print(f&quot;Wrong. {remaining} tries left.\n&quot;)
+        else:
+            print(&quot;Locked out.&quot;)
+</code></pre>
+<p>Run it. Try correct creds, wrong ones, and empty ones. Notice how the flow feels — this is the same shape as real login logic in any web app.</p>
+<p>Now — as a security thinker — what&#39;s wrong with this code from an <strong>attacker&#39;s perspective</strong>? Answer at the end of the lab section.</p>
+<details><summary>Show answer</summary>
+Several things beginners will spot:<ul>
+<li>Credentials are <strong>hardcoded</strong> in the source (fine for a lab, catastrophic in real code).</li>
+<li>Passwords are compared in plaintext (no hashing).</li>
+<li>After lockout, running the script again resets the counter (no persistence).</li>
+<li>Error messages differ between &quot;wrong user&quot; and &quot;wrong password&quot; in more elaborate versions — a classic <strong>user enumeration</strong> flaw.</li>
+</ul>
+<p>You&#39;ll fix these ideas as you go through the course.</p>
+</details><p>Which comparison operator do beginners most often confuse with the assignment <code>=</code>?</p>
+<details><summary>Show answer</summary><code>==</code> — assignment is <code>=</code>, equality check is <code>==</code>. Writing <code>if x = 5:</code> in Python is a <code>SyntaxError</code>.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Condition</strong> — an expression that resolves to <code>True</code> or <code>False</code>.</li>
+<li><strong><code>if</code> / <code>elif</code> / <code>else</code></strong> — branching statements.</li>
+<li><strong><code>and</code> / <code>or</code> / <code>not</code></strong> — boolean operators.</li>
+<li><strong>Truthiness</strong> — which non-boolean values count as False in an <code>if</code>.</li>
+<li><strong><code>in</code></strong> — membership check.</li>
+<li><strong><code>match</code></strong> — modern multi-way branch (Python 3.10+).</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li><code>if</code> runs a block when a condition is true; <code>elif</code> for extra cases; <code>else</code> for the fallback.</li>
+<li>Indentation, not braces, groups Python code — be consistent.</li>
+<li>Combine conditions with <code>and</code>, <code>or</code>, <code>not</code>.</li>
+<li>Empty strings, empty lists, <code>0</code>, and <code>None</code> are all &quot;falsy.&quot;</li>
+<li><code>in</code> checks membership on lists and substrings.</li>
+</ul>
+<h3>References</h3>
+<ul>
+<li><a href="https://docs.python.org/3/tutorial/controlflow.html">Python docs — Control flow</a> — official reference.</li>
+<li><a href="https://realpython.com/python-conditional-statements/">Real Python — Conditional statements</a></li>
+<li><a href="https://peps.python.org/pep-0636/">PEP 636 — Structural Pattern Matching Tutorial</a> — the <code>match</code> statement.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/04-python/loops">Loops: repeat things</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/04-python/if-else";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

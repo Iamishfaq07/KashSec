@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Securing a Windows Machine — Path 07 · KashSec Academy</title>
+<meta name="description" content="This lesson pulls together everything from this path so far into a single, practical hardening checklist — exactly the kind of concrete deliverable a junior IT security role or a home-network security">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/07-windows-security/securing-a-windows-machine">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Securing a Windows Machine — Path 07 · KashSec Academy">
+<meta property="og:description" content="This lesson pulls together everything from this path so far into a single, practical hardening checklist — exactly the kind of concrete deliverable a junior IT security role or a home-network security">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/07-windows-security/securing-a-windows-machine">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Securing a Windows Machine — Path 07 · KashSec Academy">
+<meta name="twitter:description" content="This lesson pulls together everything from this path so far into a single, practical hardening checklist — exactly the kind of concrete deliverable a junior IT security role or a home-network security">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Securing a Windows Machine — Path 07 · KashSec Academy","description":"This lesson pulls together everything from this path so far into a single, practical hardening checklist — exactly the kind of concrete deliverable a junior IT security role or a home-network security","url":"https://kashsec.vercel.app/#/lesson/07-windows-security/securing-a-windows-machine","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/07-windows-security/securing-a-windows-machine">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 07 — Windows Security Basics</a> · Securing a Windows Machine</div>
+  <article><h1>Securing a Windows Machine</h1>
+<p>This lesson pulls together everything from this path so far into a single, practical hardening checklist — exactly the kind of concrete deliverable a junior IT security role or a home-network security review actually requires.</p>
+<h2>The hardening checklist</h2>
+<h3>1. Updates and patching</h3>
+<p>Confirm Windows Update is set to install automatically (this path&#39;s security settings lesson) — and don&#39;t stop at the OS itself: third-party software (browsers, PDF readers, and similar) is a genuinely common attack vector precisely because it&#39;s easy to forget updating, unlike Windows itself, which nags visibly.</p>
+<h3>2. Account hygiene</h3>
+<p>Per this path&#39;s user accounts lesson: ensure day-to-day use happens under a standard user account, confirm only necessary accounts exist and have administrator privileges (<code>net localgroup administrators</code>), disable the built-in Guest account if it&#39;s active, and enable an account lockout policy to blunt brute-force attempts.</p>
+<h3>3. Defender and Firewall configuration</h3>
+<p>Confirm real-time protection and controlled folder access are enabled (anti-ransomware), review Windows Firewall&#39;s advanced rules for anything unexpectedly permissive, and enable SmartScreen — all covered in this path&#39;s security settings lesson.</p>
+<h3>4. Encryption</h3>
+<p>Enable BitLocker on any machine that could be physically lost or stolen (laptops especially) — this single control eliminates data confidentiality risk from theft entirely, since the disk is unreadable without the recovery key even if physically removed.</p>
+<h3>5. Logging and audit policy</h3>
+<p>Enable Advanced Audit Policy settings (this path&#39;s Event Viewer lesson) <em>before</em> an incident, not after — and if the environment genuinely warrants it, install Sysmon for dramatically richer logging detail than Windows&#39; defaults provide.</p>
+<h3>6. Remove unnecessary services and software</h3>
+<p>Every installed application and running service is additional <strong>attack surface</strong> — a concept referenced throughout this course (Path 13&#39;s mobile permissions discussion, Path 11&#39;s web recon lesson). Review installed programs (<code>Settings → Apps</code>) and running services (<code>services.msc</code>) for anything genuinely unneeded, and disable or uninstall it. A service that isn&#39;t running can&#39;t be exploited, regardless of whether it happens to have a vulnerability.</p>
+<h3>7. Network protocol hardening</h3>
+<p>Beyond the firewall configuration in step 3, a few specific legacy protocols deserve deliberate attention since they carry known, well-documented weaknesses. <strong>SMBv1</strong>, an old file-sharing protocol version, was the exact vulnerability WannaCry&#39;s EternalBlue exploit targeted (Path 17&#39;s malware families lesson) — it should be disabled entirely on any modern machine (<code>Disable-WindowsOptionalFeature -Online -FeatureName SMB1Protocol</code>) unless a specific, unavoidable legacy device requires it. <strong>NetBIOS</strong> and <strong>LLMNR</strong> (Link-Local Multicast Name Resolution), both older name-resolution fallback protocols, are frequently abused for credential-capture attacks (a rogue device on the same network responding to name-resolution broadcasts and harvesting the authentication attempt that follows) — disabling both where DNS-based resolution is reliably available closes off a genuinely common internal-network attack vector that many organizations leave open purely by never having reviewed it.</p>
+<h3>8. Application allowlisting</h3>
+<p>The most restrictive, highest-assurance control on this list: rather than trying to block known-bad software (the antivirus/Defender approach), <strong>application allowlisting</strong> (via <strong>AppLocker</strong> or the more modern <strong>Windows Defender Application Control</strong>) flips the model entirely — only explicitly approved applications are permitted to run at all, with everything else blocked by default, regardless of whether it&#39;s recognized as malicious. This directly defeats an enormous share of real-world attack techniques in one stroke, including most &quot;living off the land&quot; abuse (Path 07.5&#39;s PowerShell discussion) and unauthorized tool execution, since an attacker&#39;s downloaded payload simply won&#39;t be on the approved list. The tradeoff is real operational overhead — every legitimate new tool or update needs to be added to the allowlist before it can run — which is exactly why this control is more common in high-security environments (regulated industries, critical infrastructure) than on ordinary consumer or small-business machines, but worth knowing as the ceiling of what&#39;s achievable when the operational cost is justified.</p>
+<h2>A quick PowerShell security audit script</h2>
+<p>Combining several commands from this path&#39;s earlier lessons into a single triage pass:</p>
+<pre><code class="language-powershell">Write-Host &quot;=== Local Administrators ===&quot;
+Get-LocalGroupMember -Group &quot;Administrators&quot;
+
+Write-Host &quot;=== Recent Failed Logons ===&quot;
+Get-WinEvent -FilterHashtable @{LogName=&#39;Security&#39;; ID=4625} -MaxEvents 10
+
+Write-Host &quot;=== Startup Programs ===&quot;
+Get-CimInstance Win32_StartupCommand | Select-Object Name, Command, Location
+
+Write-Host &quot;=== Windows Update Status ===&quot;
+Get-WmiObject -Class Win32_QuickFixEngineering | Sort-Object InstalledOn -Descending | Select-Object -First 5
+</code></pre>
+<p>This kind of small, purpose-built script is exactly the &quot;automate the tedious, repetitive part&quot; philosophy from Path 04&#39;s automation lesson, applied here to a recurring Windows security review rather than a recon pipeline.</p>
+<p>Everything in this checklist is straightforward to configure on a single machine manually — but in a real organization with hundreds or thousands of Windows machines, <strong>Group Policy</strong> (or modern cloud-based equivalents like Microsoft Intune) lets administrators push these same settings consistently across an entire fleet from one central location, rather than configuring each machine by hand.</p>
+<p>On a test VM (never a machine you depend on, in case something needs undoing), work through all 8 checklist categories above, documenting exactly what you changed and why. Then run the PowerShell audit script and interpret its output — does everything look as expected for a machine you just hardened?</p>
+<h2>Key takeaway</h2>
+<p>Windows security hardening is fundamentally a checklist discipline, not a single silver-bullet setting — updates, account hygiene, Defender/Firewall configuration, encryption, logging, and reduced attack surface each close off a different category of risk, and real security comes from consistently applying all of them together, not from any single control alone.</p>
+<p><strong>Next up →</strong> <a href="#/lesson/07-windows-security/windows-security-lab">Windows Security Lab</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/07-windows-security/securing-a-windows-machine";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

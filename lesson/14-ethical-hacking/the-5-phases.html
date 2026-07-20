@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The 5 phases — Path 14 · KashSec Academy</title>
+<meta name="description" content="Every professional penetration test follows a broadly consistent structure. Understanding this framework turns scattered technique knowledge (Paths 11-08) into a repeatable, professional methodology.">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/14-ethical-hacking/the-5-phases">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="The 5 phases — Path 14 · KashSec Academy">
+<meta property="og:description" content="Every professional penetration test follows a broadly consistent structure. Understanding this framework turns scattered technique knowledge (Paths 11-08) into a repeatable, professional methodology.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/14-ethical-hacking/the-5-phases">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The 5 phases — Path 14 · KashSec Academy">
+<meta name="twitter:description" content="Every professional penetration test follows a broadly consistent structure. Understanding this framework turns scattered technique knowledge (Paths 11-08) into a repeatable, professional methodology.">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"The 5 phases — Path 14 · KashSec Academy","description":"Every professional penetration test follows a broadly consistent structure. Understanding this framework turns scattered technique knowledge (Paths 11-08) into a repeatable, professional methodology.","url":"https://kashsec.vercel.app/#/lesson/14-ethical-hacking/the-5-phases","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/14-ethical-hacking/the-5-phases">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 14 — Ethical Hacking</a> · The 5 phases</div>
+  <article><h1>The 5 phases of penetration testing</h1>
+<p>Every professional penetration test follows a broadly consistent structure. Understanding this framework turns scattered technique knowledge (Paths 11-08) into a repeatable, professional methodology.</p>
+<h2>The five phases</h2>
+<p>This lesson gives the overview of all five; the next lessons in this path go deep on Recon, Scanning/Enumeration, Exploitation, and Post-Exploitation/Reporting individually.</p>
+<h2>Phase 1: Pre-engagement &amp; Scoping</h2>
+<p>Before any technical activity begins, the tester and client agree on:</p>
+<ul>
+<li><strong>Scope</strong> — exactly which systems, IP ranges, domains, and applications are in bounds. Equally important: what&#39;s explicitly <strong>out of scope</strong> (e.g., &quot;do not test the payment processor&#39;s actual production systems, use the sandbox&quot;).</li>
+<li><strong>Rules of Engagement (RoE)</strong> — testing windows (business hours only? 24/7?), prohibited techniques (no DoS testing without prior approval), emergency contact procedures if something breaks.</li>
+<li><strong>Type of test</strong> — black box (tester has zero prior knowledge, simulating an external attacker), grey box (some information provided, like valid credentials, simulating an insider or post-phishing scenario), or white box (full source code and architecture access, simulating the deepest possible review).</li>
+<li><strong>Legal authorization</strong> — the signed contract and explicit written permission from Path 14.1.</li>
+</ul>
+<pre><code>Example scope excerpt:
+IN SCOPE:      *.example.com, 203.0.113.0/24
+OUT OF SCOPE:  payments.example.com (third-party PCI processor)
+TESTING WINDOW: Mon-Fri, 09:00-18:00 UTC only
+PROHIBITED:    Denial-of-service testing, social engineering of employees
+                without separate written approval
+EMERGENCY CONTACT: security-oncall@example.com, +1-555-0100
+</code></pre>
+<p>Skipping or rushing this phase is the single most common cause of legal and professional problems in this field — a huge fraction of &quot;accidental&quot; scope violations trace back to ambiguous or poorly-documented pre-engagement agreements.</p>
+<h2>Phase 2: Reconnaissance</h2>
+<p>Exactly what you practised in Path 11.3 — gathering information about the target, both passively (OSINT, DNS, certificate transparency) and actively (within the agreed RoE). The next lesson in this path goes deeper specifically on recon in the context of a <em>formal, scoped</em> engagement, including social-engineering-adjacent OSINT relevant to Path 14.3.</p>
+<h2>Phase 3: Scanning &amp; Enumeration</h2>
+<p>Building directly on Path 12&#39;s Nmap skills — systematically discovering live hosts, open ports, running services, and their versions across the <em>entire</em> in-scope environment (not just one target, as in earlier single-lesson labs). <strong>Enumeration</strong> goes a level deeper than scanning: actively querying discovered services for more detail — listing shares on an SMB server, usernames from an SNMP service, directories on a web server (Path 11.3&#39;s brute-forcing). This phase produces the <strong>attack surface map</strong> that the exploitation phase will actually work against.</p>
+<h2>Phase 4: Exploitation</h2>
+<p>Actively attempting to leverage discovered vulnerabilities to gain access, exactly as practised throughout Path 11 (SQLi, XSS, IDOR) and touched on in Path 12 (Wi-Fi cracking, MITM). In a professional engagement, this phase is disciplined and <strong>methodical</strong> — every attempted exploit, successful or not, is logged with a timestamp, exactly what was tried, and the result, both for the eventual report and in case anything needs to be traced back or explained later.</p>
+<h2>Phase 5: Post-Exploitation &amp; Reporting</h2>
+<p>Once access is gained, professional testers typically go further than &quot;I got in&quot; — demonstrating <strong>real business impact</strong> (what data could actually be accessed, could you escalate privileges, could you pivot to other systems) within the agreed scope and RoE, then <strong>clean up</strong> (removing any tools, backdoors, or test accounts created during testing), and finally produce a <strong>clear, actionable report</strong> — covered in full depth in Path 14.7.</p>
+<h2>A worked example, phase by phase</h2>
+<p>Imagine a scoped web application test:</p>
+<ol>
+<li><strong>Pre-engagement:</strong> Client signs SOW; scope is <code>app.example.com</code> only, testing window is next two weeks, grey-box with one low-privilege test account provided.</li>
+<li><strong>Recon:</strong> Subdomain enum finds <code>staging.example.com</code> accidentally also resolving — flagged to the client as a potential scope question before touching it further (proper professional judgment, not assumed permission).</li>
+<li><strong>Scanning/Enumeration:</strong> Nmap identifies the web server, an exposed API on a non-standard port, and outdated jQuery version via tech fingerprinting.</li>
+<li><strong>Exploitation:</strong> Using the provided low-privilege account, an IDOR is found (Path 11.4) allowing access to other users&#39; data; further testing finds a stored XSS (Path 11.5) in a comment field.</li>
+<li><strong>Post-exploitation/Reporting:</strong> The IDOR is chained with the XSS to demonstrate a realistic attack: a malicious comment steals another user&#39;s session cookie, then that stolen session is used to access their private data via the IDOR — a much stronger, more business-relevant finding than either bug reported in isolation. This chained scenario, along with clear remediation guidance for each issue, becomes the centerpiece of the report.</li>
+</ol>
+<p>That chaining — connecting multiple individually &quot;medium&quot; findings into one higher-impact scenario — is a hallmark of experienced, high-quality penetration testing versus a purely automated scan.</p>
+<h2>Assumed breach — starting from &quot;the attacker is already inside&quot;</h2>
+<p>A distinct engagement model worth knowing about: rather than starting from zero external access and working through all five phases to gain a foothold, an <strong>assumed breach</strong> test deliberately hands the tester a foothold from the start — a low-privilege domain account, a workstation on the internal network — and skips straight to phases 3 through 5 from that internal starting point. The reasoning is pragmatic: real breaches very often <em>do</em> start from a successful phishing email or a single compromised credential, so testing &quot;what happens after that inevitable first foothold&quot; produces more realistic, more useful findings about lateral movement and privilege escalation (Path 16&#39;s dedicated territory) than spending the entire engagement&#39;s limited time budget on the initial-access phase alone. Many mature organisations run assumed-breach tests specifically <em>because</em> they&#39;ve already invested heavily in perimeter defence and want to know what happens if — not if, but when — that perimeter is eventually bypassed.</p>
+<h2>Purple teaming — collaboration instead of pure adversary simulation</h2>
+<p>Where a traditional penetration test (or the more adversarial &quot;red team&quot; from Path 14.1&#39;s discipline comparison) deliberately withholds its findings until the final report, <strong>purple teaming</strong> takes a fundamentally collaborative approach: the offensive tester (red) and the defensive SOC team (blue) work together in real time, with the red side narrating each technique as they execute it so the blue side can immediately check whether their detection tooling actually caught it. The explicit goal isn&#39;t &quot;did we get in&quot; — it&#39;s &quot;did our detection and response actually work, and if not, exactly which specific rule or process needs fixing.&quot; This tight feedback loop, directly building on the SIEM/detection-coverage concepts from Path 12.5, tends to improve an organisation&#39;s actual defensive posture faster than a traditional report-and-wait engagement, precisely because gaps get identified and understood in the moment rather than discovered weeks later in a PDF.</p>
+<h2>Why methodology matters more than tool knowledge alone</h2>
+<p>A beginner with deep tool knowledge but no methodology tends to jump randomly between techniques, missing systematic coverage and losing track of what&#39;s already been tried. A professional with strong methodology, even with more modest tool depth, produces <strong>complete, reliable, defensible</strong> results — because the process itself ensures nothing is skipped and everything is properly documented. This is precisely why this path exists as a distinct topic from Paths 11-08&#39;s technique-focused content.</p>
+<h2>🧪 Lab — Draft a mini scope document</h2>
+<p>For a hypothetical engagement (invent a small fictional company, or use one of the legal practice targets from Path 11/08 as your &quot;client&quot;), draft a short scope document covering:</p>
+<ol>
+<li>What&#39;s explicitly in scope and out of scope.</li>
+<li>Testing window and any prohibited techniques.</li>
+<li>Black box, grey box, or white box — and why you chose that approach for this scenario.</li>
+<li>An emergency contact process (invented, but realistic).</li>
+</ol>
+<p>This exercise — thinking like the <em>client</em> defining boundaries, not just the tester executing techniques — is genuinely valuable perspective-building for anyone entering this field professionally.</p>
+<p>During reconnaissance, a tester discovers a subdomain that appears to belong to the target company but wasn&#39;t explicitly listed in the agreed scope document. What&#39;s the correct professional action?</p>
+<details><summary>Show answer</summary><strong>Pause and clarify with the client before testing it further.</strong> Scope documents are the legal and ethical boundary of the entire engagement — an unlisted subdomain might be intentionally excluded (third-party hosted, a different business unit, explicitly out of bounds for a specific reason), or it might simply be an oversight the client would want added. Either way, assuming permission and proceeding without clarification is exactly the kind of scope-boundary mistake that turns legitimate work into a serious professional and legal problem.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Scope</strong> — the explicitly defined systems/applications authorized for testing.</li>
+<li><strong>Rules of Engagement (RoE)</strong> — the formal document defining testing windows, prohibited techniques, and procedures.</li>
+<li><strong>Black box / grey box / white box</strong> — testing approaches differing by how much prior information the tester is given.</li>
+<li><strong>Enumeration</strong> — actively querying discovered services for deeper detail beyond simple scanning.</li>
+<li><strong>Chaining</strong> — combining multiple individual findings into one higher-impact, realistic attack scenario.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>The 5 phases — pre-engagement, recon, scanning/enumeration, exploitation, post-exploitation/reporting — structure every professional penetration test.</li>
+<li>Pre-engagement scoping and RoE are the most legally and professionally critical phase, despite being the least &quot;technical.&quot;</li>
+<li>Methodology, not just tool knowledge, is what separates professional-quality results from ad-hoc technique application.</li>
+<li>Chaining multiple findings into one realistic scenario demonstrates far greater business impact than reporting bugs in isolation.</li>
+<li>Encountering unscoped systems during testing always requires pausing for clarification, never assumed permission.</li>
+</ul>
+<h3>References</h3>
+<ul>
+<li><a href="http://www.pentest-standard.org/">PTES — Penetration Testing Execution Standard</a> — the detailed methodology this lesson&#39;s structure is based on.</li>
+<li><a href="https://csrc.nist.gov/pubs/sp/800/115/final">NIST SP 800-115 — Technical Guide to Information Security Testing and Assessment</a> — official US methodology guidance.</li>
+<li><a href="https://owasp.org/www-project-web-security-testing-guide/">OWASP Testing Guide</a> — detailed phase-by-phase web-specific methodology.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/14-ethical-hacking/recon">Reconnaissance in practice</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/14-ethical-hacking/the-5-phases";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

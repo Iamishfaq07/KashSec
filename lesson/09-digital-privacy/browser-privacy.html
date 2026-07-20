@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Browser Privacy — Path 09 · KashSec Academy</title>
+<meta name="description" content="Path 05's cookies-and-sessions lesson covered cookies from a web-security angle — how they authenticate you. This lesson covers the privacy angle: how the same underlying mechanisms, plus several othe">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/09-digital-privacy/browser-privacy">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Browser Privacy — Path 09 · KashSec Academy">
+<meta property="og:description" content="Path 05's cookies-and-sessions lesson covered cookies from a web-security angle — how they authenticate you. This lesson covers the privacy angle: how the same underlying mechanisms, plus several othe">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/09-digital-privacy/browser-privacy">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Browser Privacy — Path 09 · KashSec Academy">
+<meta name="twitter:description" content="Path 05's cookies-and-sessions lesson covered cookies from a web-security angle — how they authenticate you. This lesson covers the privacy angle: how the same underlying mechanisms, plus several othe">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Browser Privacy — Path 09 · KashSec Academy","description":"Path 05's cookies-and-sessions lesson covered cookies from a web-security angle — how they authenticate you. This lesson covers the privacy angle: how the same underlying mechanisms, plus several othe","url":"https://kashsec.vercel.app/#/lesson/09-digital-privacy/browser-privacy","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/09-digital-privacy/browser-privacy">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 09 — Digital Privacy & Personal Security</a> · Browser Privacy</div>
+  <article><h1>Browser Privacy</h1>
+<p>Path 05&#39;s cookies-and-sessions lesson covered cookies from a web-security angle — how they authenticate you. This lesson covers the privacy angle: how the same underlying mechanisms, plus several others, are used to track your browsing behavior across the entire web, often without your awareness.</p>
+<h2>First-party vs. third-party cookies</h2>
+<p>Path 05 established what a cookie is. The privacy-relevant distinction is <em>who sets it</em>:</p>
+<p>A <strong>first-party cookie</strong> is set by the site you&#39;re actually visiting, typically for legitimate functionality (staying logged in, remembering your cart). A <strong>third-party cookie</strong> is set by a different domain embedded within the page you&#39;re visiting — usually an advertising or analytics network — and because that same third party is embedded across thousands of unrelated websites, it can recognize your browser across all of them, building a cross-site profile of your browsing habits from many different sites, not just the one you&#39;re currently viewing.</p>
+<h2>Browser fingerprinting — tracking without cookies at all</h2>
+<p>Even with all cookies blocked entirely, sites can still often identify and track your browser through <strong>fingerprinting</strong> — combining details like your exact browser version, installed fonts, screen resolution, timezone, and dozens of other subtle characteristics into a combination unique (or nearly unique) enough to identify your specific device across visits, with no cookie required at all.</p>
+<p><a href="https://coveryourtracks.eff.org/">Cover Your Tracks</a> (a free tool from the Electronic Frontier Foundation) tests your specific browser&#39;s fingerprint uniqueness and shows exactly which characteristics contribute most — a genuinely eye-opening exercise most people find surprising.</p>
+<h2>Practical browser privacy settings</h2>
+<ul>
+<li><strong>Block third-party cookies</strong> — available in every modern browser&#39;s privacy settings, this alone eliminates a huge share of cross-site tracking while leaving normal site functionality (which relies on first-party cookies) intact.</li>
+<li><strong>Private/incognito browsing</strong> — prevents your <em>local device</em> from retaining history and cookies after the session ends, but provides essentially zero protection from tracking <em>during</em> the session itself — your ISP, the sites you visit, and any VPN you&#39;re not using can all still see and track that traffic exactly as normal. This is a genuinely common, important misconception worth correcting explicitly.</li>
+<li><strong>Browser extensions</strong> — tools like <strong>uBlock Origin</strong> (free, open-source, widely regarded as effective) block many trackers and ads at the network request level, before they ever load.</li>
+<li><strong>DNS-level filtering</strong> — services and router-level tools can block known tracker/ad domains at the DNS resolution step (Path 02&#39;s DNS lesson), providing protection across every application on a device, not just the browser.</li>
+</ul>
+<h2>Tracking pixels and supercookies — beyond ordinary cookies</h2>
+<p>Third-party cookies and fingerprinting aren&#39;t the only tracking mechanisms worth knowing by name. A <strong>tracking pixel</strong> is a tiny (often literally 1x1, invisible) image embedded in an email or webpage — the moment your client loads it, a request fires to the tracker&#39;s server, confirming exactly when (and often from what IP and device) you opened that specific email or page, which is precisely how marketers know whether you&#39;ve actually read a newsletter. <strong>Supercookies</strong> and similar persistent-identifier techniques go further than ordinary cookies specifically to survive attempts to delete them — storing tracking data in less obvious browser storage locations (like <code>localStorage</code>, Path 05.4&#39;s discussion of its non-cookie persistence, or even browser cache mechanisms) that ordinary &quot;clear cookies&quot; actions don&#39;t always touch, meaning a user who diligently clears cookies but not every other storage mechanism can still be re-identified. Modern browsers and privacy tools increasingly target these broader storage mechanisms specifically because cookie-blocking alone no longer fully addresses the tracking landscape — worth knowing these exist so &quot;I cleared my cookies&quot; isn&#39;t mistaken for &quot;I&#39;m no longer trackable.&quot;</p>
+<h2>HTTPS-only and Do Not Track</h2>
+<p>Modern browsers can be configured to refuse plain HTTP connections entirely, forcing HTTPS wherever available (directly reinforcing Path 02&#39;s HTTPS lesson) — a meaningful security improvement, separate from tracking specifically. The &quot;Do Not Track&quot; browser signal, by contrast, is worth knowing is <strong>not legally binding</strong> on most sites — it&#39;s a polite request most trackers simply ignore, unlike the technical blocking mechanisms above which actually prevent tracking regardless of a site&#39;s cooperation.</p>
+<p>This is worth repeating with emphasis, since it&#39;s such a widespread misconception: incognito/private mode only affects what&#39;s stored <em>locally on your own device</em> after you close the window. It provides zero protection against your ISP seeing which sites you visited, zero protection against the sites themselves tracking you during that session, and zero protection on a shared/work computer against sufficiently privileged network-level monitoring. For genuine protection from your ISP or local network observers, you need the encryption a VPN or HTTPS provides (this path&#39;s previous lesson), not private browsing mode.</p>
+<p>Using Cover Your Tracks, test your own browser&#39;s fingerprint uniqueness. Then review your browser&#39;s privacy settings: confirm whether third-party cookies are blocked, whether HTTPS-only mode is enabled, and install uBlock Origin if you don&#39;t already have a tracker-blocking extension. Re-test with Cover Your Tracks afterward and compare the results.</p>
+<h2>Key terms</h2>
+<ul>
+<li><strong>Third-party cookie</strong> — a cookie set by a domain other than the one you&#39;re visiting, typically enabling cross-site tracking.</li>
+<li><strong>Browser fingerprinting</strong> — identifying a device through the unique combination of its browser/system characteristics, without requiring cookies.</li>
+<li><strong>Private/incognito browsing</strong> — prevents local storage of history/cookies after the session, but provides no network-level tracking protection.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Third-party cookies embedded across many unrelated sites are the primary mechanism behind cross-site advertising tracking.</li>
+<li>Fingerprinting can track your browser even with all cookies fully blocked, using combinations of browser/device characteristics.</li>
+<li>Private/incognito browsing only affects local storage on your device — it provides no protection against ISP or website-level tracking during the session itself.</li>
+<li>Blocking third-party cookies, using a tracker-blocking extension, and enabling HTTPS-only mode together form a genuinely effective, practical browser privacy baseline.</li>
+</ul>
+<h3>References</h3>
+<ul>
+<li><a href="https://coveryourtracks.eff.org/">Cover Your Tracks (EFF)</a> — free browser fingerprinting and tracker-blocking test, referenced throughout this lesson.</li>
+<li><a href="https://ublockorigin.com/">uBlock Origin</a> — free, open-source, widely-regarded tracker/ad blocking extension.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/09-digital-privacy/secure-communications">Secure Communications</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/09-digital-privacy/browser-privacy";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

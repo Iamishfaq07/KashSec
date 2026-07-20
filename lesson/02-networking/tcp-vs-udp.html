@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TCP vs UDP — Path 02 · KashSec Academy</title>
+<meta name="description" content="Almost everything on the internet is carried by one of two protocols: TCP or UDP. They make opposite trade-offs, and scanning, attacks, and defences behave differently on each. Learn the difference de">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/02-networking/tcp-vs-udp">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="TCP vs UDP — Path 02 · KashSec Academy">
+<meta property="og:description" content="Almost everything on the internet is carried by one of two protocols: TCP or UDP. They make opposite trade-offs, and scanning, attacks, and defences behave differently on each. Learn the difference de">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/02-networking/tcp-vs-udp">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="TCP vs UDP — Path 02 · KashSec Academy">
+<meta name="twitter:description" content="Almost everything on the internet is carried by one of two protocols: TCP or UDP. They make opposite trade-offs, and scanning, attacks, and defences behave differently on each. Learn the difference de">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"TCP vs UDP — Path 02 · KashSec Academy","description":"Almost everything on the internet is carried by one of two protocols: TCP or UDP. They make opposite trade-offs, and scanning, attacks, and defences behave differently on each. Learn the difference de","url":"https://kashsec.vercel.app/#/lesson/02-networking/tcp-vs-udp","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/02-networking/tcp-vs-udp">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 02 — Networking Fundamentals</a> · TCP vs UDP</div>
+  <article><h1>TCP vs UDP</h1>
+<p>Almost everything on the internet is carried by one of two protocols: <strong>TCP</strong> or <strong>UDP</strong>. They make opposite trade-offs, and scanning, attacks, and defences behave differently on each. Learn the difference deeply and you&#39;ll understand a huge amount of what tools like Nmap and Wireshark are actually doing.</p>
+<h2>TCP — the careful, reliable one</h2>
+<p><strong>TCP</strong> (Transmission Control Protocol) is like <strong>registered mail</strong> with delivery confirmation. It makes sure every packet arrives, in the right order, and automatically re-sends anything lost. Nothing is lost; everything arrives complete and correct. The trade-off: all that checking makes it slightly slower.</p>
+<p>Because it&#39;s reliable, TCP is used whenever <strong>every bit matters</strong>: websites, email, file downloads, remote logins. You wouldn&#39;t want half a downloaded file or an email with random missing words.</p>
+<h2>UDP — the fast, no-fuss one</h2>
+<p><strong>UDP</strong> (User Datagram Protocol) is like <strong>dropping a postcard in the box</strong>. Write it, send it, move on. No confirmation, no re-sending, no guarantee it arrives — but it&#39;s extremely fast because it skips the checking.</p>
+<p>This is perfect when <strong>speed beats perfection</strong>: live video calls, online games, DNS queries. If one video frame is lost, you&#39;d rather the call keep going than freeze while it re-sends an old frame. A tiny glitch beats a delay.</p>
+<h2>The TCP three-way handshake</h2>
+<p>Before TCP sends any real data, the two computers do a quick three-step greeting to agree to talk, called the <strong>three-way handshake</strong>:</p>
+<ul>
+<li><strong>SYN</strong> — &quot;Hello, can we talk?&quot;</li>
+<li><strong>SYN-ACK</strong> — &quot;Yes, can you hear me?&quot;</li>
+<li><strong>ACK</strong> — &quot;Yes — let&#39;s begin.&quot;</li>
+</ul>
+<p>You&#39;ll hear these terms constantly. Every TCP connection begins with this ritual.</p>
+<p>Port scanners (like Nmap) work by <em>starting</em> this handshake with each port to see which answer — a door that completes the handshake is &quot;open.&quot; Attackers can also <em>abuse</em> it: flooding a server with endless SYN &quot;hello&quot; requests it must try to answer is an attack called a <strong>SYN flood</strong> (a type of denial-of-service).</p>
+<h2>Ending a TCP connection — the teardown</h2>
+<p>Just as TCP opens carefully with a three-way handshake, it closes carefully too, using <strong>FIN</strong> (finish) and <strong>ACK</strong> packets exchanged by both sides — a graceful four-step process ensuring both computers agree the conversation is genuinely over before either discards its connection state, rather than one side abruptly vanishing mid-conversation. An abrupt, ungraceful termination instead uses a <strong>RST (reset)</strong> packet — immediately killing the connection with no negotiation, normally used to signal an error condition (like connecting to a closed port, referenced in the previous ports lesson) rather than a normal, planned goodbye. This distinction between a clean FIN-based close and an abrupt RST matters directly in Path 12&#39;s Wireshark labs, since it&#39;s one of the first things worth checking when a captured connection looks unusual — a graceful close suggests normal application behavior, while an unexpected RST often signals something worth investigating further.</p>
+<h2>Connection states — a brief preview</h2>
+<p>Throughout a TCP connection&#39;s life, both sides track which &quot;state&quot; the connection is currently in — <code>LISTEN</code> (a server waiting for a connection), <code>SYN_SENT</code>/<code>SYN_RECEIVED</code> (mid-handshake), <code>ESTABLISHED</code> (actively exchanging data), and several teardown states. You&#39;ll see these exact state names appear directly in tools like <code>netstat</code> and <code>ss</code> output (Path 07&#39;s Windows networking commands, and their Linux equivalents) — recognizing them as literally the handshake and teardown steps you just learned, rather than mysterious jargon, makes reading that output far less intimidating.</p>
+<h2>Side by side</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>TCP</strong></th>
+<th><strong>UDP</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Reliability</td>
+<td>Guaranteed, ordered</td>
+<td>None</td>
+</tr>
+<tr>
+<td>Speed</td>
+<td>Slightly slower</td>
+<td>Very fast</td>
+</tr>
+<tr>
+<td>Handshake</td>
+<td>Yes (SYN / SYN-ACK / ACK)</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Ordering</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Retransmission</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Header size</td>
+<td>20 bytes</td>
+<td>8 bytes</td>
+</tr>
+<tr>
+<td>Analogy</td>
+<td>Registered mail</td>
+<td>Postcard</td>
+</tr>
+<tr>
+<td>Used for</td>
+<td>Web, email, downloads, SSH</td>
+<td>Video calls, games, DNS, DHCP</td>
+</tr>
+<tr>
+<td>Nmap scan flag</td>
+<td><code>-sS</code> or <code>-sT</code></td>
+<td><code>-sU</code></td>
+</tr>
+</tbody></table>
+<h2>Real-world example: a video call</h2>
+<p>A typical video call actually uses <strong>both</strong>:</p>
+<ul>
+<li><strong>Signalling</strong> (setup, &quot;who&#39;s calling whom&quot;) uses TCP or WebRTC over TCP — reliability matters.</li>
+<li><strong>The video/audio stream itself</strong> uses UDP — speed matters more than perfection.</li>
+</ul>
+<p>This is why the setup can seem fine but audio glitches: different layers, different protocols, different failure modes.</p>
+<h2>Attacks specific to each</h2>
+<ul>
+<li><strong>On TCP:</strong><ul>
+<li><strong>SYN flood</strong> — send endless SYN packets, exhausting the server&#39;s connection table.</li>
+<li><strong>RST injection</strong> — forge a &quot;reset&quot; packet to kill a connection you don&#39;t own.</li>
+<li><strong>Session hijacking</strong> — predict sequence numbers to inject data into someone&#39;s connection (much harder on modern TCP but conceptually important).</li>
+</ul>
+</li>
+<li><strong>On UDP:</strong><ul>
+<li><strong>UDP flood / amplification attacks</strong> — send small requests that generate large replies to a victim (DNS/NTP amplification).</li>
+<li><strong>UDP spoofing</strong> — trivial to spoof source IPs on UDP because there&#39;s no handshake.</li>
+</ul>
+</li>
+</ul>
+<p>You&#39;ll see these in detail in Path 12.</p>
+<p>Open Wireshark (Path 12 covers install). Start a capture. In a browser, visit <code>http://example.com</code>. Stop the capture. Filter for <code>tcp.flags.syn == 1</code>. You&#39;ll see the three-way handshake in the first three packets — SYN, SYN-ACK, ACK — before the actual HTTP request. Magic made visible.</p>
+<p>Which protocol re-sends any lost pieces and guarantees delivery — TCP or UDP?</p>
+<details><summary>Show answer</summary>TCP — the "registered mail" one that checks everything arrives.</details><h2>Key terms</h2>
+<ul>
+<li><strong>TCP</strong> — reliable, ordered delivery (registered mail).</li>
+<li><strong>UDP</strong> — fast, unchecked delivery (postcard).</li>
+<li><strong>Three-way handshake</strong> — SYN, SYN-ACK, ACK to start a TCP conversation.</li>
+<li><strong>SYN flood</strong> — abusing the handshake to overwhelm a server.</li>
+<li><strong>Amplification attack</strong> — abusing UDP to bounce large replies at a victim.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>TCP is reliable and ordered (web, email, downloads); UDP is fast and unchecked (video, games, DNS).</li>
+<li>TCP starts with a three-way handshake: SYN, SYN-ACK, ACK.</li>
+<li>Scanners use the handshake to find open ports; attackers can abuse it with SYN floods.</li>
+<li>Each protocol has its own attacks — SYN flood on TCP, amplification on UDP.</li>
+</ul>
+<h3>References</h3>
+<ul>
+<li><a href="https://www.cloudflare.com/learning/ddos/glossary/tcp-ip/">Cloudflare: What is TCP?</a> — clear beginner intro.</li>
+<li><a href="https://www.cloudflare.com/learning/ddos/glossary/user-datagram-protocol-udp/">Cloudflare: What is UDP?</a> — same for UDP.</li>
+<li><a href="https://www.rfc-editor.org/rfc/rfc9293">RFC 9293 — TCP</a> — the current authoritative spec.</li>
+<li><a href="https://www.cloudflare.com/learning/ddos/syn-flood-ddos-attack/">CloudflareLearning: SYN flood</a> — the classic attack.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/02-networking/dns">DNS: the phonebook</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/02-networking/tcp-vs-udp";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

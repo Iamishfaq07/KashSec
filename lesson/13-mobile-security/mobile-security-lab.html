@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mobile Security Capstone Lab — Path 13 · KashSec Academy</title>
+<meta name="description" content="This lab pulls together every lesson in this path — static analysis, insecure storage, traffic interception, and exported components — into one full assessment against a real, deliberately vulnerable ">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/13-mobile-security/mobile-security-lab">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Mobile Security Capstone Lab — Path 13 · KashSec Academy">
+<meta property="og:description" content="This lab pulls together every lesson in this path — static analysis, insecure storage, traffic interception, and exported components — into one full assessment against a real, deliberately vulnerable ">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/13-mobile-security/mobile-security-lab">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Mobile Security Capstone Lab — Path 13 · KashSec Academy">
+<meta name="twitter:description" content="This lab pulls together every lesson in this path — static analysis, insecure storage, traffic interception, and exported components — into one full assessment against a real, deliberately vulnerable ">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Mobile Security Capstone Lab — Path 13 · KashSec Academy","description":"This lab pulls together every lesson in this path — static analysis, insecure storage, traffic interception, and exported components — into one full assessment against a real, deliberately vulnerable ","url":"https://kashsec.vercel.app/#/lesson/13-mobile-security/mobile-security-lab","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/13-mobile-security/mobile-security-lab">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 13 — Mobile App Security</a> · Mobile Security Capstone Lab</div>
+  <article><h1>Mobile Security Capstone Lab</h1>
+<p>This lab pulls together every lesson in this path — static analysis, insecure storage, traffic interception, and exported components — into one full assessment against a real, deliberately vulnerable app, mirroring how an actual mobile security engagement unfolds.</p>
+<h2>Recommended targets</h2>
+<ul>
+<li><strong><a href="https://github.com/payatu/diva-android">DIVA (Damn Insecure and Vulnerable App)</a></strong> — free, open-source, built specifically as a structured set of mobile vulnerability challenges, an excellent first target.</li>
+<li><strong><a href="https://github.com/dineshshetty/Android-InsecureBankv2">InsecureBankv2</a></strong> — free, open-source, simulates a banking app with realistic, chained vulnerabilities across storage, network, and authentication.</li>
+<li><strong><a href="https://github.com/OWASP/owasp-mastg/tree/master/Crackmes">OWASP MASTG&#39;s Crackmes</a></strong> — free, official OWASP practice targets specifically built alongside the Mobile Top 10 and testing guide referenced throughout this path.</li>
+</ul>
+<h2>The full assessment workflow</h2>
+<h2>Tasks</h2>
+<ol>
+<li><strong>Static analysis pass.</strong> Decompile the APK with jadx (from the APK analysis lesson) and review the manifest for exported components, requested permissions, and <code>allowBackup</code> status. Grep the decompiled source for hardcoded secrets.</li>
+<li><strong>Local storage review.</strong> Using root access, inspect <code>shared_prefs/</code> and any local SQLite databases (from the insecure data storage lesson) for sensitive data stored without encryption — DIVA and InsecureBankv2 both have deliberately planted findings here.</li>
+<li><strong>Dynamic traffic analysis.</strong> Configure Burp per the lab setup lesson, install its certificate, and use the app normally while capturing traffic — check for plaintext HTTP, missing authorization checks on API calls (the mobile equivalent of Path 11&#39;s IDOR), and any sensitive data visible in requests or responses. If certificate pinning is present, apply the Frida bypass technique from the traffic interception lesson.</li>
+<li><strong>Exported component testing.</strong> Use <code>dumpsys package</code> and <code>adb shell am start</code> (from the privesc/root-detection lesson) to identify and attempt to directly launch any exported activities, bypassing the app&#39;s intended flow.</li>
+<li><strong>Assemble a full report.</strong> For every finding across all four tasks, use the same reporting structure from Path 14: title, severity (justify using OWASP Mobile Top 10 category and real-world impact), steps to reproduce, and a specific fix.</li>
+</ol>
+<p>Working through a full target app (DIVA is the recommended starting point — it&#39;s structured as a numbered set of specific challenges, making it easy to track progress), find and document at least 4 distinct vulnerabilities spanning at least 3 different categories from this path (storage, network, exported components, hardcoded secrets). Present your findings as a complete report, sorted by severity.</p>
+<h2>Using MobSF to cross-check your manual findings</h2>
+<p>Before finalizing your report, run the target APK through <strong>MobSF</strong> (introduced in Path 13.4) and compare its automated report against what you found manually across all four tasks. This comparison exercise is genuinely instructive in both directions: MobSF will likely flag a few things your manual pass missed (it systematically checks dozens of pattern-based rules no human reliably remembers to check every single time), while you&#39;ll likely notice MobSF flags some findings as more severe than they actually are in context, or misses a business-logic-flavored issue (like the exported Activity bypassing an authentication flow) that requires understanding what the app is <em>supposed</em> to do, not just pattern-matching against known-bad code shapes. This exact &quot;automated tool vs. manual understanding&quot; comparison directly echoes Path 11.6&#39;s sqlmap-versus-manual-testing discussion and Path 15.7&#39;s Nuclei-versus-manual-verification lesson — the same underlying lesson about automation being a discovery accelerant rather than a replacement for genuine understanding, now demonstrated concretely in the mobile context.</p>
+<h2>Where to go from here</h2>
+<p>Mobile security is a genuinely deep specialization on its own — this path covers the essential foundation, but platforms like <strong>TryHackMe</strong> and <strong>Hack The Box</strong> now host dedicated mobile security learning tracks, and the free <strong>OWASP MASTG</strong> goes considerably deeper into both Android and iOS technique than this path&#39;s scope allows. If mobile security specifically resonates with you, it pairs naturally with the web security skills from Path 11 (since most mobile apps talk to web-style APIs) and the reverse engineering foundations from Path 16&#39;s malware analysis material.</p>
+<h2>Key takeaway</h2>
+<p>A complete mobile security assessment isn&#39;t any single technique — it&#39;s systematically working through static analysis, local storage, network traffic, and inter-app communication, exactly the four-part structure this lab just walked you through, and exactly how real mobile security engagements are actually scoped and delivered.</p>
+<h2>🎓 Path complete</h2>
+<p>You&#39;ve now covered Android and iOS security fundamentals, static APK analysis, insecure storage, traffic interception with certificate pinning bypass, root detection, exported component vulnerabilities, and completed a full assessment against a real vulnerable app. Combined with Path 11&#39;s web security foundation, you have a genuinely solid base for mobile-focused security work.</p>
+<h3>References</h3>
+<ul>
+<li><a href="https://mas.owasp.org/MASTG/">OWASP MASTG</a> — the definitive, free, comprehensive mobile testing guide for going deeper than this path&#39;s scope.</li>
+<li><a href="https://github.com/payatu/diva-android">DIVA Android</a> and <a href="https://github.com/dineshshetty/Android-InsecureBankv2">InsecureBankv2</a> — the free practice targets used throughout this lab.</li>
+</ul>
+<p><strong>Explore more →</strong> <a href="#/course">Back to all paths</a> · <a href="#/lesson/19-ctf-challenges">CTF Zone</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/13-mobile-security/mobile-security-lab";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

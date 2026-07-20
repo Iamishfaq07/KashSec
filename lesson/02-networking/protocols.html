@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What is a protocol? — Path 02 · KashSec Academy</title>
+<meta name="description" content="Computers &quot;talk,&quot; but talking only works if both sides follow the same rules. Those rules are protocols, and the rest of this path is about the specific ones that run the internet.">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/02-networking/protocols">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="What is a protocol? — Path 02 · KashSec Academy">
+<meta property="og:description" content="Computers &quot;talk,&quot; but talking only works if both sides follow the same rules. Those rules are protocols, and the rest of this path is about the specific ones that run the internet.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/02-networking/protocols">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="What is a protocol? — Path 02 · KashSec Academy">
+<meta name="twitter:description" content="Computers &quot;talk,&quot; but talking only works if both sides follow the same rules. Those rules are protocols, and the rest of this path is about the specific ones that run the internet.">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"What is a protocol? — Path 02 · KashSec Academy","description":"Computers \"talk,\" but talking only works if both sides follow the same rules. Those rules are protocols, and the rest of this path is about the specific ones that run the internet.","url":"https://kashsec.vercel.app/#/lesson/02-networking/protocols","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/02-networking/protocols">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 02 — Networking Fundamentals</a> · What is a protocol?</div>
+  <article><h1>What is a protocol?</h1>
+<p>Computers &quot;talk,&quot; but talking only works if both sides follow the same rules. Those rules are <strong>protocols</strong>, and the rest of this path is about the specific ones that run the internet.</p>
+<h2>Just an agreed set of rules</h2>
+<p>Think about a phone call. You both follow unspoken rules: one says &quot;hello&quot; first, you take turns, you speak a shared language, and someone says &quot;goodbye&quot; to end it. Without those rules, chaos.</p>
+<p>A <strong>protocol</strong> is exactly that for computers: an agreed set of rules for how two machines communicate — how they start, what format messages take, how they confirm receipt, and how they end.</p>
+<p><strong>Both machines must use the same protocol.</strong> Just as two people must share a language, a Windows machine speaking HTTP can talk to a Linux server speaking HTTP — but neither can suddenly understand a machine speaking a random invented protocol.</p>
+<h2>Why there are many protocols</h2>
+<p>Different jobs have different needs, and rules perfect for one job are clumsy for another.</p>
+<p>Loading a web page, sending an email, and running a live video call all need different rules. So we have many specialised protocols, each tuned to its purpose.</p>
+<p>Over the next three lessons you&#39;ll meet the ones that matter most:</p>
+<ul>
+<li><strong>TCP and UDP</strong> — how data is carried</li>
+<li><strong>DNS</strong> — how names become numbers</li>
+<li><strong>HTTP and HTTPS</strong> — how websites load</li>
+</ul>
+<p>You&#39;ve already met them without realising — port 80 is HTTP, port 443 is HTTPS, port 53 is DNS. Those port numbers are the <em>doors</em> where each protocol listens.</p>
+<h2>Watching a protocol&#39;s rules in action</h2>
+<p>Protocols aren&#39;t abstract — you can watch their actual back-and-forth &quot;conversation&quot; directly. A classic, genuinely educational example is <strong>SMTP</strong> (the email-sending protocol), which is simple enough to speak by hand using a raw text connection:</p>
+<pre><code>telnet smtp.example.com 25
+220 smtp.example.com ESMTP ready
+HELO mytest.com
+250 smtp.example.com Hello mytest.com
+MAIL FROM:&lt;you@mytest.com&gt;
+250 OK
+RCPT TO:&lt;friend@example.com&gt;
+250 OK
+DATA
+354 Start mail input
+Subject: Test
+This is a test message.
+.
+250 OK: queued
+QUIT
+</code></pre>
+<p>Notice the strict back-and-forth structure: the server greets first (<code>220</code>), you introduce yourself (<code>HELO</code>), then a rigid sequence of <code>MAIL FROM</code> → <code>RCPT TO</code> → <code>DATA</code> → a message body ending with a lone <code>.</code> on its own line. Neither side can skip a step or respond out of order — this rigid structure <em>is</em> the protocol, and it&#39;s exactly why the same sequence works identically whether you&#39;re a Windows machine, a Linux server, or (as in this example) a human typing commands directly over a raw connection.</p>
+<h2>Protocol versions — rules evolve too</h2>
+<p>Protocols aren&#39;t fixed forever — they get revised over time as weaknesses are found or better approaches emerge, and both sides of a connection typically negotiate which version to actually use. TLS (the encryption protocol underlying HTTPS, covered in the next lesson) is a good example: TLS 1.0 and 1.1 are now considered insecure and deprecated, while TLS 1.2 and 1.3 are the current, recommended versions — and during connection setup, client and server briefly negotiate the highest mutually-supported version before actual communication begins. Path 06&#39;s cryptography material and Path 11&#39;s web security lessons both reference this negotiation process directly, since forcing a connection down to an older, weaker protocol version (a technique called a <strong>downgrade attack</strong>) has historically been a real attack vector.</p>
+<h2>Where protocols are defined</h2>
+<p>Real internet protocols are described in documents called <strong>RFCs</strong> (Request For Comments), published by the IETF. They&#39;re free, technical, and dense — but they&#39;re the actual standard everyone builds against. When you eventually want to know exactly how HTTP or TLS <em>should</em> behave, an RFC is your source of truth.</p>
+<p>Examples:</p>
+<ul>
+<li><strong>RFC 9110</strong> — HTTP semantics</li>
+<li><strong>RFC 1035</strong> — DNS</li>
+<li><strong>RFC 793</strong> — TCP (superseded by RFC 9293)</li>
+</ul>
+<p>As a beginner, just <strong>recognise the main ones and know what each is for.</strong> Recognition, not memorisation. That&#39;s enough to understand what&#39;s happening in any packet capture or scan output.</p>
+<p>Why do we have TCP <em>and</em> UDP instead of one universal transport protocol?</p>
+<details><summary>Show answer</summary>Because different jobs have different needs. Some (web, email) need every bit to arrive reliably in order; others (video calls, games) prioritise speed over perfect delivery. One-size-fits-all would be worse at both.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Protocol</strong> — an agreed set of rules for how computers communicate.</li>
+<li><strong>RFC</strong> — the formal specification document for a protocol.</li>
+<li><strong>IETF</strong> — the Internet Engineering Task Force; the body that publishes RFCs.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>A protocol is a set of rules for how machines talk.</li>
+<li>Both machines must use the same one.</li>
+<li>Many protocols exist because different jobs (web, email, video) have different needs.</li>
+<li>You only need to recognise the main ones and what each is for.</li>
+</ul>
+<h3>References</h3>
+<ul>
+<li><a href="https://www.cloudflare.com/learning/network-layer/what-is-a-protocol/">What is a protocol? — Cloudflare</a> — beginner-friendly.</li>
+<li><a href="https://www.rfc-editor.org/rfc-index.html">RFC index — IETF</a> — the actual standards.</li>
+<li><a href="https://en.wikipedia.org/wiki/Internet_protocol_suite">Wikipedia: Internet protocol suite</a> — the big picture.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/02-networking/tcp-vs-udp">TCP vs UDP</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/02-networking/protocols";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

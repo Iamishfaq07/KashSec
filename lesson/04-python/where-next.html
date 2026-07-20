@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Where to go next — Path 04 · KashSec Academy</title>
+<meta name="description" content="You've written real code. Here's a compact tour of the Python you'll want next — the libraries and idioms that turn &quot;beginner&quot; into &quot;self-sufficient security scripter.&quot;">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/04-python/where-next">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Where to go next — Path 04 · KashSec Academy">
+<meta property="og:description" content="You've written real code. Here's a compact tour of the Python you'll want next — the libraries and idioms that turn &quot;beginner&quot; into &quot;self-sufficient security scripter.&quot;">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/04-python/where-next">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Where to go next — Path 04 · KashSec Academy">
+<meta name="twitter:description" content="You've written real code. Here's a compact tour of the Python you'll want next — the libraries and idioms that turn &quot;beginner&quot; into &quot;self-sufficient security scripter.&quot;">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Where to go next — Path 04 · KashSec Academy","description":"You've written real code. Here's a compact tour of the Python you'll want next — the libraries and idioms that turn \"beginner\" into \"self-sufficient security scripter.\"","url":"https://kashsec.vercel.app/#/lesson/04-python/where-next","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/04-python/where-next">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 04 — Programming & Python</a> · Where to go next</div>
+  <article><h1>Where to go next with Python</h1>
+<p>You&#39;ve written real code. Here&#39;s a compact tour of the Python you&#39;ll want <em>next</em> — the libraries and idioms that turn &quot;beginner&quot; into &quot;self-sufficient security scripter.&quot;</p>
+<h2>The big three libraries for security</h2>
+<p>If you learn only three third-party libraries, make them these:</p>
+<h3>1. <code>requests</code> — HTTP that just works</h3>
+<p>The de facto standard for talking to web services in Python.</p>
+<pre><code class="language-python">import requests
+
+r = requests.get(&quot;https://api.github.com&quot;)
+print(r.status_code)         # 200
+print(r.json()[&quot;current_user_url&quot;])
+
+# Send data:
+r = requests.post(&quot;https://httpbin.org/post&quot;,
+                  json={&quot;user&quot;: &quot;admin&quot;},
+                  headers={&quot;X-Auth&quot;: &quot;token&quot;})
+print(r.json())
+
+# Sessions keep cookies across requests:
+s = requests.Session()
+s.post(&quot;https://target/login&quot;, data={&quot;u&quot;: &quot;admin&quot;, &quot;p&quot;: &quot;secret&quot;})
+r = s.get(&quot;https://target/admin&quot;)  # session cookie sent automatically
+</code></pre>
+<p>You&#39;ll live in <code>requests</code> for anything web-related (Paths 11, 10, 12).</p>
+<h3>2. <code>socket</code> — raw TCP/UDP</h3>
+<p>Built-in — for connecting directly to services.</p>
+<pre><code class="language-python">import socket
+
+with socket.create_connection((&quot;scanme.nmap.org&quot;, 22), timeout=2) as s:
+    banner = s.recv(1024)
+    print(banner.decode(errors=&quot;replace&quot;))
+</code></pre>
+<p>Grabbing a service banner in three lines. This is how port-scanners and banner-grabbers start.</p>
+<h3>3. <code>argparse</code> — proper CLI tools</h3>
+<p>Built-in — turn scripts into professional CLI tools.</p>
+<pre><code class="language-python">import argparse
+
+def main():
+    p = argparse.ArgumentParser(description=&quot;Do the thing&quot;)
+    p.add_argument(&quot;target&quot;, help=&quot;hostname or IP&quot;)
+    p.add_argument(&quot;-p&quot;, &quot;--ports&quot;, default=&quot;80,443&quot;)
+    p.add_argument(&quot;-t&quot;, &quot;--timeout&quot;, type=float, default=1.0)
+    args = p.parse_args()
+    print(args.target, args.ports, args.timeout)
+
+if __name__ == &quot;__main__&quot;:
+    main()
+</code></pre>
+<p>Free <code>--help</code>, error handling, and type coercion. Never write ad-hoc <code>sys.argv</code> parsing again.</p>
+<h2>Handy libraries by task</h2>
+<table>
+<thead>
+<tr>
+<th>Task</th>
+<th>Library</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>HTTP requests</td>
+<td><strong>requests</strong> or <strong>httpx</strong> (async)</td>
+</tr>
+<tr>
+<td>HTML parsing</td>
+<td><strong>beautifulsoup4</strong>, <strong>lxml</strong></td>
+</tr>
+<tr>
+<td>Network packets</td>
+<td><strong>scapy</strong> — sniff &amp; craft raw packets</td>
+</tr>
+<tr>
+<td>Web automation</td>
+<td><strong>playwright</strong>, <strong>selenium</strong></td>
+</tr>
+<tr>
+<td>SSH sessions</td>
+<td><strong>paramiko</strong></td>
+</tr>
+<tr>
+<td>DNS</td>
+<td><strong>dnspython</strong></td>
+</tr>
+<tr>
+<td>JWT</td>
+<td><strong>PyJWT</strong></td>
+</tr>
+<tr>
+<td>Cryptography</td>
+<td><strong>cryptography</strong> (modern), <strong>pycryptodome</strong></td>
+</tr>
+<tr>
+<td>Password hashing</td>
+<td><strong>passlib</strong> (bcrypt/argon2)</td>
+</tr>
+<tr>
+<td>Windows / AD</td>
+<td><strong>impacket</strong></td>
+</tr>
+<tr>
+<td>Regex on steroids</td>
+<td><strong>regex</strong></td>
+</tr>
+<tr>
+<td>Data analysis</td>
+<td><strong>pandas</strong></td>
+</tr>
+<tr>
+<td>CLI eye candy</td>
+<td><strong>rich</strong>, <strong>click</strong>, <strong>typer</strong></td>
+</tr>
+<tr>
+<td>Threading &amp; speed</td>
+<td><strong>concurrent.futures</strong> (stdlib), <strong>asyncio</strong></td>
+</tr>
+</tbody></table>
+<p>You won&#39;t need most of these on day one, but knowing they exist saves you months of reinventing.</p>
+<h2>Error handling — a professional habit</h2>
+<p>Use <code>try</code>/<code>except</code> around anything that can fail:</p>
+<pre><code class="language-python">try:
+    r = requests.get(url, timeout=5)
+    r.raise_for_status()
+except requests.Timeout:
+    print(&quot;Timeout&quot;)
+except requests.HTTPError as e:
+    print(f&quot;HTTP {e.response.status_code}&quot;)
+except requests.RequestException as e:
+    print(f&quot;Network error: {e}&quot;)
+</code></pre>
+<p>Rules:</p>
+<ul>
+<li>Catch <strong>specific</strong> exceptions, not bare <code>except:</code>.</li>
+<li>Prefer letting exceptions bubble up during dev — surprises are how you find bugs.</li>
+<li>Only swallow errors when you <em>know</em> how to recover.</li>
+</ul>
+<h2>Speed: threading and concurrency</h2>
+<p>Scanning 10,000 hosts one at a time takes forever. Threads run many at once. The simplest good pattern uses <code>concurrent.futures</code>:</p>
+<pre><code class="language-python">from concurrent.futures import ThreadPoolExecutor, as_completed
+
+def check(host):
+    # your slow network call
+    return host, True
+
+hosts = [&quot;h1&quot;, &quot;h2&quot;, &quot;h3&quot;]  # imagine 1,000 of these
+
+with ThreadPoolExecutor(max_workers=50) as pool:
+    futures = [pool.submit(check, h) for h in hosts]
+    for future in as_completed(futures):
+        host, result = future.result()
+        print(host, result)
+</code></pre>
+<p>For heavier work or huge concurrency, look into <strong>asyncio + httpx</strong>. Both are worth learning once you&#39;re comfortable.</p>
+<h2>Type hints — a modern habit worth adopting early</h2>
+<p>Modern Python supports optional <strong>type hints</strong>, documenting what type a function expects and returns directly in its signature:</p>
+<pre><code class="language-python">def scan_port(host: str, port: int, timeout: float = 1.0) -&gt; bool:
+    &quot;&quot;&quot;Return True if the port is open.&quot;&quot;&quot;
+    ...
+</code></pre>
+<p>Python doesn&#39;t actually <em>enforce</em> these at runtime — you can still pass the wrong type and Python won&#39;t stop you — but tools like <code>mypy</code> can check your code against them, and most modern code editors use them to catch mistakes and offer better autocomplete as you type. Reading real-world Python code (including the tools listed below), you&#39;ll see type hints constantly; adopting them in your own scripts, even loosely, is a genuinely good habit that pays off as scripts grow past a few dozen lines.</p>
+<h2>Reading someone else&#39;s code</h2>
+<p>The single fastest way to level up is reading real tools. Pick something small and dig in:</p>
+<ul>
+<li><strong><a href="https://github.com/projectdiscovery/dnsx">dnsx</a></strong> — DNS toolkit (Go, but great structure).</li>
+<li><strong><a href="https://github.com/akamhy/waybackpy">waybackpy</a></strong> — Wayback Machine Python client, small and neat.</li>
+<li><strong><a href="https://github.com/aboul3la/Sublist3r">sublist3r</a></strong> — subdomain enumerator. Read the source; understand each function.</li>
+<li><strong><a href="https://github.com/maurosoria/dirsearch">dirsearch</a></strong> — directory brute-forcer.</li>
+</ul>
+<p>Try to add a small feature to one of them. That&#39;s how open source works — and how your name lands in commit histories.</p>
+<h2>Testing your code</h2>
+<p>For anything you&#39;ll rely on, write tests. Python&#39;s built-in <code>pytest</code> (via pip) is delightful:</p>
+<pre><code class="language-python"># strength.py has: def score_length(pw: str) -&gt; int:
+
+# test_strength.py
+from strength import score_length
+
+def test_short():
+    assert score_length(&quot;abc&quot;) == 0
+
+def test_medium():
+    assert score_length(&quot;abcdef&quot;) == 1
+
+def test_long():
+    assert score_length(&quot;abcdefghijklmnop&quot;) == 4
+</code></pre>
+<p>Run: <code>pytest</code>. Tests take 30 seconds to write and save hours of debugging over the life of a project.</p>
+<h2>A &quot;portfolio-worthy&quot; tool checklist</h2>
+<p>Turn any script into a portfolio piece with these:</p>
+<ul>
+<li><input disabled="" type="checkbox"> Shebang and docstring on top</li>
+<li><input disabled="" type="checkbox"> <code>argparse</code> for CLI</li>
+<li><input disabled="" type="checkbox"> Small, single-purpose functions with type hints</li>
+<li><input disabled="" type="checkbox"> Specific exception handling</li>
+<li><input disabled="" type="checkbox"> <code>requirements.txt</code> with pinned versions</li>
+<li><input disabled="" type="checkbox"> A README with install, usage, examples, and a screenshot</li>
+<li><input disabled="" type="checkbox"> Basic tests (<code>pytest</code>)</li>
+<li><input disabled="" type="checkbox"> Pushed to GitHub</li>
+</ul>
+<p>Even a small tool with all these boxes ticked screams &quot;real developer.&quot;</p>
+<h2>The Python + security career loop</h2>
+<p>This loop is how careers compound in security. Every small tool becomes a portfolio piece, a conversation starter, and — often — a job lead.</p>
+<p>Name one <strong>specific tiny tool</strong> you&#39;ll build in the next two weeks using what you&#39;ve learned. Write it in your notes now.</p>
+<details><summary>Show some ideas</summary>
+- A CLI that resolves a list of subdomains and prints the ones with a specific HTTP status code.<br>
+- A password-strength API server (Flask, tiny).<br>
+- A log-file grep tool with coloured output using <code>rich</code>.<br>
+- A tiny recon aggregator that runs whois, dig, and curl -I on a target.<br>
+- A HIBP-check email tool that reads a list and prints breach counts.
+</details><h2>Key terms</h2>
+<ul>
+<li><strong>requests</strong> — Python&#39;s standard HTTP client.</li>
+<li><strong>argparse</strong> — build proper command-line interfaces.</li>
+<li><strong><code>concurrent.futures</code></strong> — simple threading for speed.</li>
+<li><strong>asyncio / httpx</strong> — async concurrency, powerful next step.</li>
+<li><strong>pytest</strong> — friendly test runner.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li><code>requests</code>, <code>socket</code>, <code>argparse</code> cover most day-one security scripting needs.</li>
+<li>Handle exceptions specifically; use threading to scale.</li>
+<li>Read real tools to learn how professionals structure code.</li>
+<li>Turn small scripts into portfolio-worthy repos.</li>
+<li>Build tiny things, publish them, share them — this loop grows careers.</li>
+</ul>
+<h3>References</h3>
+<ul>
+<li><a href="https://requests.readthedocs.io/">Requests docs</a> — the classic.</li>
+<li><a href="https://docs.python.org/3/library/argparse.html">argparse docs</a></li>
+<li><a href="https://github.com/projectdiscovery">ProjectDiscovery</a> — many great tools worth reading (Go + Python).</li>
+<li><a href="https://github.com/vinta/awesome-python">Awesome Python — curated</a> — categorised libraries.</li>
+<li><a href="https://docs.pytest.org/">pytest</a> — the friendly testing framework.</li>
+</ul>
+<h2>🎉 You&#39;ve finished Path 04</h2>
+<p>You now know Python well enough to write real tools. Variables, control flow, functions, files, standard library, <code>requests</code>, exception handling, threading, project structure — everything you need for the rest of the course and beyond.</p>
+<p><strong>Next up →</strong> <a href="#/lesson/04-python/automation-for-security">Automation for Security</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/04-python/where-next";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

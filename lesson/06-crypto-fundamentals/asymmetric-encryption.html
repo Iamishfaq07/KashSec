@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Asymmetric Encryption — Path 06 · KashSec Academy</title>
+<meta name="description" content="The previous lesson ended on symmetric encryption's core weakness: both parties need the same secret key beforehand, and safely getting that key to both sides is genuinely hard — especially over the i">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/06-crypto-fundamentals/asymmetric-encryption">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Asymmetric Encryption — Path 06 · KashSec Academy">
+<meta property="og:description" content="The previous lesson ended on symmetric encryption's core weakness: both parties need the same secret key beforehand, and safely getting that key to both sides is genuinely hard — especially over the i">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/06-crypto-fundamentals/asymmetric-encryption">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Asymmetric Encryption — Path 06 · KashSec Academy">
+<meta name="twitter:description" content="The previous lesson ended on symmetric encryption's core weakness: both parties need the same secret key beforehand, and safely getting that key to both sides is genuinely hard — especially over the i">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Asymmetric Encryption — Path 06 · KashSec Academy","description":"The previous lesson ended on symmetric encryption's core weakness: both parties need the same secret key beforehand, and safely getting that key to both sides is genuinely hard — especially over the i","url":"https://kashsec.vercel.app/#/lesson/06-crypto-fundamentals/asymmetric-encryption","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/06-crypto-fundamentals/asymmetric-encryption">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 06 — Cryptography Fundamentals</a> · Asymmetric Encryption</div>
+  <article><h1>Asymmetric Encryption</h1>
+<p>The previous lesson ended on symmetric encryption&#39;s core weakness: both parties need the same secret key beforehand, and safely getting that key to both sides is genuinely hard — especially over the internet, between two people who&#39;ve never met. <strong>Asymmetric encryption</strong> solves this elegantly, and understanding it makes HTTPS (Path 02), JWTs (Path 11), and ransomware&#39;s key mechanics (Path 17) all click into place at once.</p>
+<h2>The core idea — two mathematically linked keys</h2>
+<p>Asymmetric (or &quot;public-key&quot;) encryption uses a <strong>key pair</strong>: a <strong>public key</strong>, which can be shared with literally anyone, and a <strong>private key</strong>, which must never leave its owner&#39;s control. The two are mathematically linked in a specific way: data encrypted with the public key can <em>only</em> be decrypted with the matching private key.</p>
+<p>This directly solves the key distribution problem: Alice never needs to secretly share anything with Bob beforehand — she just needs Bob&#39;s public key, which Bob can publish openly, since it&#39;s useless for decryption without the matching private key.</p>
+<h2>RSA — the classic algorithm</h2>
+<p><strong>RSA</strong> (named after its inventors: Rivest, Shamir, Adleman) is the most widely known asymmetric algorithm, and it&#39;s exactly what appeared in Path 17&#39;s ransomware mechanics: files get encrypted quickly with symmetric AES, and <em>that</em> AES key gets encrypted with the attacker&#39;s RSA public key — meaning only the attacker&#39;s private key can ever recover it. This combination is called <strong>hybrid encryption</strong>, and it&#39;s genuinely how most real-world systems actually work, for a specific reason covered below.</p>
+<p>RSA&#39;s security rests on a genuinely elegant mathematical fact: multiplying two large prime numbers together is fast, but factoring the resulting large product back into its two original primes is, for sufficiently large numbers, computationally infeasible with current technology — even for powerful computers, given how large the numbers involved actually are.</p>
+<h2>Why hybrid encryption, not asymmetric alone</h2>
+<p>Asymmetric encryption is significantly slower than symmetric encryption — computationally expensive enough that using it to encrypt large amounts of data directly would be impractically slow. This is exactly why real systems use <strong>hybrid encryption</strong>: symmetric AES handles the actual bulk data (fast), while asymmetric RSA only encrypts the small AES key itself (the one operation that genuinely needs asymmetric&#39;s key-distribution property). HTTPS itself works this way — the TLS handshake uses asymmetric techniques briefly to securely agree on a shared symmetric key, and the actual page data that follows is encrypted with fast symmetric encryption using that agreed key.</p>
+<h2>Digital signatures — asymmetric encryption in reverse</h2>
+<p>A genuinely elegant additional use of the same key pair: <strong>digital signatures</strong>, which flip the encryption direction to prove authorship instead of confidentiality. The signer encrypts a hash (Path 06&#39;s previous crypto lesson) of their message using their own <em>private</em> key — and since only their matching <em>public</em> key can successfully decrypt it, anyone can verify the signature came from that specific key pair&#39;s owner, without the signer ever revealing their private key. This is exactly the mechanism behind code signing (Path 17&#39;s static analysis lesson) and the certificates that make HTTPS trustworthy — covered in full in this path&#39;s next lesson.</p>
+<h2>Elliptic Curve Cryptography — RSA&#39;s faster modern sibling</h2>
+<p>RSA isn&#39;t the only asymmetric algorithm in wide use today — <strong>Elliptic Curve Cryptography (ECC)</strong> achieves the same fundamental public/private key properties through entirely different underlying mathematics (the difficulty of solving a specific problem involving points on an elliptic curve, rather than factoring large primes), and it&#39;s increasingly the default choice for new systems for one very practical reason: <strong>ECC achieves equivalent security with dramatically smaller keys</strong>. A 256-bit ECC key provides roughly the same real-world security strength as a 3072-bit RSA key — meaning ECC operations are faster and the keys/signatures themselves are far more compact, genuinely significant advantages for anything resource-constrained (mobile devices, IoT hardware, high-volume TLS handshakes on a busy web server). You&#39;ll see ECC by name as <strong>ECDSA</strong> (Elliptic Curve Digital Signature Algorithm, for signing) and <strong>ECDH</strong> (Elliptic Curve Diffie-Hellman, for key exchange) throughout modern TLS configurations and SSH key generation — both are direct ECC-based replacements for the RSA-based equivalents, chosen by most modern systems specifically for the size and speed advantage described here.</p>
+<p><strong>Encrypt with the recipient&#39;s public key</strong> (so only they can read it with their private key) for <strong>confidentiality</strong>. <strong>Sign with your own private key</strong> (so anyone can verify it with your public key) for <strong>authenticity</strong>. Mixing these two up is one of the most common beginner confusions in cryptography — the direction of &quot;which key does what&quot; flips depending on which property you&#39;re trying to achieve.</p>
+<p>Why can&#39;t Bob&#39;s public key be used to decrypt a message Alice encrypted with it, and why is that exact property actually the whole point?</p>
+<details><summary>Show answer</summary>RSA's key pair is deliberately designed so that whatever is encrypted with the public key can <em>only</em> be decrypted with the mathematically matching private key — the public key itself has no decryption capability at all, by design. This is precisely the property that makes public-key distribution safe: Bob can publish his public key anywhere, entirely openly, because possessing it only lets someone <em>encrypt</em> a message intended for Bob, never <em>decrypt</em> anything — decryption capability exists solely with Bob's carefully guarded private key. If the public key could also decrypt, publishing it openly would defeat the entire purpose, since anyone holding it could then read every message encrypted with it.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Asymmetric encryption / public-key cryptography</strong> — encryption using a mathematically linked public/private key pair.</li>
+<li><strong>RSA</strong> — the classic, widely used asymmetric encryption algorithm, based on the difficulty of factoring large numbers.</li>
+<li><strong>Hybrid encryption</strong> — combining fast symmetric encryption for bulk data with asymmetric encryption to protect just the symmetric key.</li>
+<li><strong>Digital signature</strong> — using a private key to sign data so anyone with the matching public key can verify authenticity.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Asymmetric encryption uses a public/private key pair, solving symmetric encryption&#39;s key distribution problem — the public key can be shared openly.</li>
+<li>RSA&#39;s security relies on the practical difficulty of factoring the product of two large prime numbers.</li>
+<li>Real systems use hybrid encryption — symmetric for bulk data, asymmetric only for the small symmetric key — since asymmetric encryption alone is too slow for large data.</li>
+<li>Digital signatures flip the key direction: sign with your private key, verify with your public key, proving authorship without ever revealing the private key.</li>
+</ul>
+<h3>References</h3>
+<ul>
+<li><a href="https://www.di-mgt.com.au/rsa_alg.html">RSA Algorithm — a visual explanation</a> — a solid, freely available walkthrough of the actual math.</li>
+<li><a href="https://www.cloudflare.com/learning/ssl/how-does-public-key-encryption-work/">Cloudflare: What is public key cryptography?</a> — an excellent, free, plain-language explainer.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/06-crypto-fundamentals/hashing-explained">Hashing Explained</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/06-crypto-fundamentals/asymmetric-encryption";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

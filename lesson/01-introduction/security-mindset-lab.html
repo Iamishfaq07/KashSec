@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Security Mindset Lab — Path 01 · KashSec Academy</title>
+<meta name="description" content="Every lesson in the rest of this course teaches specific attacks and defenses. This one is different — it's about building the underlying mental habit that makes all of that stick: the reflex to ask &quot;">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/01-introduction/security-mindset-lab">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Security Mindset Lab — Path 01 · KashSec Academy">
+<meta property="og:description" content="Every lesson in the rest of this course teaches specific attacks and defenses. This one is different — it's about building the underlying mental habit that makes all of that stick: the reflex to ask &quot;">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/01-introduction/security-mindset-lab">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Security Mindset Lab — Path 01 · KashSec Academy">
+<meta name="twitter:description" content="Every lesson in the rest of this course teaches specific attacks and defenses. This one is different — it's about building the underlying mental habit that makes all of that stick: the reflex to ask &quot;">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Security Mindset Lab — Path 01 · KashSec Academy","description":"Every lesson in the rest of this course teaches specific attacks and defenses. This one is different — it's about building the underlying mental habit that makes all of that stick: the reflex to ask \"","url":"https://kashsec.vercel.app/#/lesson/01-introduction/security-mindset-lab","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/01-introduction/security-mindset-lab">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 01 — Introduction to Cybersecurity</a> · Security Mindset Lab</div>
+  <article><h1>Security Mindset Lab</h1>
+<p>Every lesson in the rest of this course teaches specific attacks and defenses. This one is different — it&#39;s about building the underlying <strong>mental habit</strong> that makes all of that stick: the reflex to ask &quot;how could this be abused?&quot; about literally everything, not just the systems you&#39;re explicitly told to test.</p>
+<h2>Why this matters before anything else</h2>
+<p>Security professionals don&#39;t develop their instincts by memorizing a vulnerability list — they develop it by practicing a specific way of looking at ordinary things. A locked door isn&#39;t just &quot;secure&quot; or &quot;insecure&quot; in the abstract; it has a specific lock type, a specific set of people with keys, a specific window nearby, and a specific set of assumptions about who&#39;s allowed through it. Every one of those specifics is a potential angle. This lab trains that lens deliberately, using everyday objects before you ever touch a computer.</p>
+<h2>Two complementary lenses: attacker and defender</h2>
+<p>Real security work requires holding two different perspectives, often in the same afternoon: the <strong>attacker&#39;s lens</strong> (&quot;if I wanted to break this, where would I start, and what would I actually gain?&quot;) and the <strong>defender&#39;s lens</strong> (&quot;given limited time and budget, what&#39;s the highest-impact thing I can fix first?&quot;). Beginners often default to only the attacker&#39;s lens, since it&#39;s the more exciting one — but the defender&#39;s lens is equally important, and arguably the more commonly hired-for skill early in a career (Path 12&#39;s SOC analyst and Path 16&#39;s DFIR material both live almost entirely in this second lens). This lab deliberately exercises both.</p>
+<h2>&quot;Assume breach&quot; — a mindset worth adopting early</h2>
+<p>A genuinely useful professional habit, worth planting now: rather than only asking &quot;how do I keep attackers out entirely,&quot; experienced defenders also ask <strong>&quot;if an attacker is already inside, what would limit the damage?&quot;</strong> — a mindset called <strong>assume breach</strong>. This isn&#39;t pessimism; it&#39;s realism, since perfect prevention is impossible (Path 01&#39;s earlier &quot;security is a process, not a product&quot; lesson). It&#39;s exactly why concepts like network segmentation (Path 12), least privilege (referenced throughout this entire course), and detailed logging (Path 16&#39;s DFIR and threat hunting labs) matter so much — they all assume a determined attacker eventually gets some foothold, and focus on limiting what that foothold can actually accomplish.</p>
+<h2>Exercises</h2>
+<ol>
+<li><strong>List 10 everyday objects and find 3 ways each could be attacked or misused.</strong> Don&#39;t limit yourself to digital things — a physical mailbox (mail theft, a fake &quot;moved, please forward&quot; notice), a office key card (cloning, tailgating through a door), a home Wi-Fi router (default password, WPS PIN attacks), a parking garage gate (tailgating, following a car in). For each, ask: who is this control supposed to stop, and what assumption does it rely on that might not always hold?</li>
+<li><strong>Analyze a recent, real breach.</strong> Pick any well-documented breach (search &quot;[year] data breach post-mortem&quot; for detailed public write-ups — many companies and researchers publish these). Identify: what was the <em>root cause</em> (not just &quot;hackers got in,&quot; but specifically what control failed), and — critically — was it a technical failure, a process failure, or a human failure? Most real breaches are a chain of several small failures, not one dramatic exploit.</li>
+<li><strong>Audit your own devices.</strong> For your phone, laptop, and router, list the three biggest realistic risks each faces, and one simple, concrete fix for each — this is the exact same threat-and-mitigation thinking Path 16&#39;s Threat Modeling Lab formalizes later, just applied here to things you already own.</li>
+<li><strong>Practice the &quot;assume breach&quot; mindset on something familiar.</strong> Pick any system you use daily (your workplace&#39;s office building, your family&#39;s home network, a school you attended) and imagine an attacker has already gained some small foothold — a stolen employee badge, a compromised guest Wi-Fi password. What would limit how much further damage they could do from there? List at least 2 concrete limiting factors (or their absence).</li>
+<li><strong>Switch lenses on one exercise.</strong> Revisit exercise 1 or 3, and for one specific item, write both an attacker&#39;s view (&quot;here&#39;s exactly how I&#39;d exploit this&quot;) and a defender&#39;s view (&quot;here&#39;s the highest-impact, lowest-effort fix, given limited time&quot;). Notice how differently the two questions make you think about the same object.</li>
+</ol>
+<p>Whenever you encounter any system — physical, digital, organizational — ask: <strong>&quot;What is this control assuming, and what happens if that assumption is false?&quot;</strong> A password assumes only the legitimate owner knows it. A locked door assumes no one can pick the lock or find another way in. A &quot;trusted internal network&quot; assumes no attacker is already inside it. Naming the assumption is almost always the fastest way to find the weakness.</p>
+<p>Write a short, personal &quot;security mindset checklist&quot; — 5 to 8 questions you&#39;ll ask yourself whenever you use or build anything digital going forward (e.g., &quot;What happens if this input is something I didn&#39;t expect?&quot; &quot;Who else could see this data, and should they be able to?&quot; &quot;What&#39;s the worst thing that happens if this fails?&quot;). Keep it somewhere you&#39;ll actually revisit — this course&#39;s built-in Notes feature is a good home for it, and you&#39;ll find yourself refining it constantly as you progress through later paths.</p>
+<h2>Key takeaway</h2>
+<p>Every technical skill in the rest of this course — SQL injection, IDOR, privilege escalation — is really just this same mindset applied to a specific technology. Building the habit of questioning assumptions now, on ordinary objects, means the later technical material clicks faster because you&#39;re not learning a new <em>way of thinking</em>, only a new set of <em>places to apply thinking you already have</em>.</p>
+<p><strong>Congratulations!</strong> You&#39;ve completed Path 01. You now have the foundation to move into Path 02 — Networking Fundamentals, where the technical material begins in earnest.</p>
+<p><strong>Next up →</strong> <a href="#/lesson/02-networking">Path 02 — Networking Fundamentals</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/01-introduction/security-mindset-lab";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

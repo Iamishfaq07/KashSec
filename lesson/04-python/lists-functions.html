@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lists &amp; functions — Path 04 · KashSec Academy</title>
+<meta name="description" content="Two of Python's most useful ideas: lists for handling collections of things (like wordlists and scan results), and functions for packaging code you'll reuse.">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/04-python/lists-functions">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Lists &amp; functions — Path 04 · KashSec Academy">
+<meta property="og:description" content="Two of Python's most useful ideas: lists for handling collections of things (like wordlists and scan results), and functions for packaging code you'll reuse.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/04-python/lists-functions">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Lists &amp; functions — Path 04 · KashSec Academy">
+<meta name="twitter:description" content="Two of Python's most useful ideas: lists for handling collections of things (like wordlists and scan results), and functions for packaging code you'll reuse.">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Lists & functions — Path 04 · KashSec Academy","description":"Two of Python's most useful ideas: lists for handling collections of things (like wordlists and scan results), and functions for packaging code you'll reuse.","url":"https://kashsec.vercel.app/#/lesson/04-python/lists-functions","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/04-python/lists-functions">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 04 — Programming & Python</a> · Lists &amp; functions</div>
+  <article><h1>Lists &amp; functions</h1>
+<p>Two of Python&#39;s most useful ideas: <strong>lists</strong> for handling collections of things (like wordlists and scan results), and <strong>functions</strong> for packaging code you&#39;ll reuse.</p>
+<h2>Lists — deeper look</h2>
+<p>You met lists briefly. Now let&#39;s actually use them.</p>
+<pre><code class="language-python">tools = [&quot;nmap&quot;, &quot;burp&quot;, &quot;sqlmap&quot;, &quot;hydra&quot;]
+
+# Read:
+print(tools[0])            # &#39;nmap&#39;
+print(tools[-1])           # &#39;hydra&#39; (last)
+print(tools[1:3])          # [&#39;burp&#39;, &#39;sqlmap&#39;] (slice)
+print(len(tools))          # 4
+print(&quot;burp&quot; in tools)     # True
+
+# Modify:
+tools.append(&quot;wireshark&quot;)  # add to end
+tools.insert(0, &quot;nikto&quot;)   # add at position
+tools.remove(&quot;hydra&quot;)      # remove a value
+tools.pop()                # remove &amp; return last
+tools[1] = &quot;Burp Suite&quot;    # replace by index
+tools.sort()               # sort in place
+tools.reverse()            # reverse in place
+sorted_copy = sorted(tools)  # sorted copy (leaves original)
+</code></pre>
+<h2>The list operations you&#39;ll use most</h2>
+<pre><code class="language-python"># Loop over items:
+for tool in tools:
+    print(f&quot;- {tool}&quot;)
+
+# Loop with index:
+for i, tool in enumerate(tools, start=1):
+    print(f&quot;{i}. {tool}&quot;)
+
+# Build a new list from another (comprehension):
+uppercased = [t.upper() for t in tools]
+
+# Filter:
+short_names = [t for t in tools if len(t) &lt; 6]
+
+# Combine:
+attack_tools = [&quot;hydra&quot;, &quot;sqlmap&quot;]
+defence_tools = [&quot;snort&quot;, &quot;suricata&quot;]
+all_tools = attack_tools + defence_tools
+
+# Split a string into a list:
+&quot;a,b,c&quot;.split(&quot;,&quot;)         # [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;]
+
+# Join a list back into a string:
+&quot;,&quot;.join([&quot;a&quot;, &quot;b&quot;, &quot;c&quot;])  # &#39;a,b,c&#39;
+</code></pre>
+<p>The <strong>split/join</strong> pattern shows up in nearly every script — reading a CSV, parsing IPs from output, building headers.</p>
+<h2>Reading a wordlist into a list</h2>
+<p>Very common security pattern:</p>
+<pre><code class="language-python">with open(&quot;subdomains.txt&quot;) as f:
+    subs = [line.strip() for line in f if line.strip()]
+
+print(f&quot;Loaded {len(subs)} candidate subdomains&quot;)
+for s in subs[:5]:
+    print(f&quot;  {s}&quot;)
+</code></pre>
+<h2>Tuples — like lists but immutable</h2>
+<p>Occasionally you&#39;ll see round brackets instead of square. Those are <strong>tuples</strong> — like lists, but cannot be changed after creation. Great for fixed pairs like coordinates or (host, port).</p>
+<pre><code class="language-python">target = (&quot;scanme.nmap.org&quot;, 80)
+host, port = target                # unpacking
+print(host, port)
+</code></pre>
+<h2>Sets — for unique things</h2>
+<pre><code class="language-python">seen = set()
+seen.add(&quot;hello&quot;)
+seen.add(&quot;hello&quot;)   # duplicates silently dropped
+print(seen)         # {&#39;hello&#39;}
+
+# Convert a list to a set to deduplicate:
+subs_unique = list(set(subs))
+
+# Set operations you&#39;ll like:
+found_ports = {22, 80, 443}
+allowed_ports = {22, 443}
+extra = found_ports - allowed_ports   # {80} — ports open but not allowed
+</code></pre>
+<h2>Functions — the building blocks of maintainable code</h2>
+<p>A <strong>function</strong> packages code so you can call it many times without repeating yourself. Every professional script is a collection of small functions.</p>
+<pre><code class="language-python">def greet(name):
+    &quot;&quot;&quot;Return a friendly greeting.&quot;&quot;&quot;
+    return f&quot;Hello, {name}!&quot;
+
+message = greet(&quot;Ishfaq&quot;)
+print(message)
+</code></pre>
+<ul>
+<li><code>def</code> — &quot;define a function&quot;</li>
+<li><code>name</code> — the parameter (input)</li>
+<li><code>return</code> — the value the function sends back</li>
+</ul>
+<p>Call it as many times as you want.</p>
+<h2>Default and keyword arguments</h2>
+<pre><code class="language-python">def scan(host, port=80, timeout=1.0):
+    print(f&quot;Scanning {host}:{port} (timeout={timeout}s)&quot;)
+
+scan(&quot;scanme.nmap.org&quot;)                 # uses defaults
+scan(&quot;scanme.nmap.org&quot;, 443)            # override port
+scan(&quot;scanme.nmap.org&quot;, timeout=0.5)    # override just timeout by name
+</code></pre>
+<p>Naming arguments (<code>timeout=0.5</code>) makes calls self-documenting.</p>
+<h3>*args and **kwargs — accepting a flexible number of arguments</h3>
+<p>Sometimes you don&#39;t know in advance how many arguments a function needs to accept — <code>*args</code> collects any number of extra positional arguments into a tuple, and <code>**kwargs</code> collects any number of extra named arguments into a dictionary:</p>
+<pre><code class="language-python">def scan_multiple(*hosts, **options):
+    for host in hosts:
+        print(f&quot;Scanning {host} with options: {options}&quot;)
+
+scan_multiple(&quot;host1.com&quot;, &quot;host2.com&quot;, &quot;host3.com&quot;, timeout=2, verbose=True)
+# hosts = (&quot;host1.com&quot;, &quot;host2.com&quot;, &quot;host3.com&quot;)
+# options = {&quot;timeout&quot;: 2, &quot;verbose&quot;: True}
+</code></pre>
+<p>You&#39;ll see <code>*args</code>/<code>**kwargs</code> constantly when reading other people&#39;s code (many real libraries use this pattern to stay flexible) — recognizing the pattern on sight matters more at this stage than writing it yourself often.</p>
+<h2>Multiple return values</h2>
+<p>Functions can return multiple values (as a tuple):</p>
+<pre><code class="language-python">def analyse(host):
+    port = 22
+    is_open = True
+    banner = &quot;OpenSSH 8.4p1&quot;
+    return port, is_open, banner
+
+p, o, b = analyse(&quot;myserver&quot;)
+print(p, o, b)
+</code></pre>
+<h2>The magic <code>if __name__ == &quot;__main__&quot;:</code> line</h2>
+<p>You&#39;ll see this at the bottom of professional Python scripts:</p>
+<pre><code class="language-python">def do_work():
+    ...
+
+if __name__ == &quot;__main__&quot;:
+    do_work()
+</code></pre>
+<p>It means &quot;only run <code>do_work()</code> if this file is executed directly, not if someone else <em>imports</em> it as a module.&quot; That way your file can be <em>both</em> a runnable script and a reusable library.</p>
+<h2>Scope — where names live</h2>
+<p>Variables inside a function are local to it:</p>
+<pre><code class="language-python">def double(x):
+    result = x * 2   # &#39;result&#39; only exists inside this function
+    return result
+
+print(double(5))     # 10
+print(result)        # NameError — &#39;result&#39; doesn&#39;t exist out here
+</code></pre>
+<p>The way to share data cleanly is via return values and function arguments — not global variables. Globals become a mess quickly.</p>
+<h2>A real, clean security tool</h2>
+<p>Let&#39;s rewrite the port sweeper using functions:</p>
+<pre><code class="language-python">#!/usr/bin/env python3
+&quot;&quot;&quot;
+sweep.py — Simple TCP port sweep against your own machine.
+Usage: python3 sweep.py &lt;host&gt; [port1,port2,...]
+&quot;&quot;&quot;
+
+import socket
+import sys
+
+TIMEOUT = 0.5
+DEFAULT_PORTS = [22, 80, 139, 443, 445, 3306, 3389, 5432, 8080]
+
+
+def check_port(host: str, port: int, timeout: float = TIMEOUT) -&gt; bool:
+    &quot;&quot;&quot;Return True if TCP port is open on host.&quot;&quot;&quot;
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.settimeout(timeout)
+        try:
+            s.connect((host, port))
+            return True
+        except (socket.timeout, ConnectionRefusedError, OSError):
+            return False
+
+
+def sweep(host: str, ports: list[int]) -&gt; list[int]:
+    &quot;&quot;&quot;Return the list of open ports on host.&quot;&quot;&quot;
+    open_ports = []
+    for port in ports:
+        if check_port(host, port):
+            print(f&quot;[+] {port} OPEN&quot;)
+            open_ports.append(port)
+        else:
+            print(f&quot;[-] {port} closed&quot;)
+    return open_ports
+
+
+def main():
+    if len(sys.argv) &lt; 2:
+        print(&quot;Usage: sweep.py &lt;host&gt; [port1,port2,...]&quot;)
+        sys.exit(1)
+    host = sys.argv[1]
+    ports = (
+        [int(p) for p in sys.argv[2].split(&quot;,&quot;)]
+        if len(sys.argv) &gt; 2
+        else DEFAULT_PORTS
+    )
+    print(f&quot;[*] Sweeping {host}...&quot;)
+    opens = sweep(host, ports)
+    print(f&quot;\nSummary: {len(opens)} open ports: {opens}&quot;)
+
+
+if __name__ == &quot;__main__&quot;:
+    main()
+</code></pre>
+<p>Every function has one clear job. Every function has a docstring. This is now a genuinely maintainable script — the shape you&#39;ll build every future tool around.</p>
+<p>Each function should do <em>one</em> thing well. If you can&#39;t summarise it in a single sentence, split it into smaller functions. This one habit makes code far cleaner over time.</p>
+<h2>🧪 Lab — Build a subdomain resolver</h2>
+<p>Save as <code>resolve.py</code>. Reads names from a wordlist, tries to resolve each, prints the ones that exist:</p>
+<pre><code class="language-python">#!/usr/bin/env python3
+&quot;&quot;&quot;resolve.py — Resolve subdomains from a wordlist.&quot;&quot;&quot;
+
+import socket
+import sys
+
+
+def resolve(name: str) -&gt; str | None:
+    &quot;&quot;&quot;Return IP for name, or None if it doesn&#39;t resolve.&quot;&quot;&quot;
+    try:
+        return socket.gethostbyname(name)
+    except socket.gaierror:
+        return None
+
+
+def main():
+    if len(sys.argv) != 3:
+        print(&quot;Usage: resolve.py &lt;domain&gt; &lt;wordlist&gt;&quot;)
+        sys.exit(1)
+
+    domain = sys.argv[1]
+    wordlist = sys.argv[2]
+
+    with open(wordlist) as f:
+        names = [line.strip() for line in f if line.strip()]
+
+    print(f&quot;[*] Trying {len(names)} names against {domain}...&quot;)
+    for name in names:
+        full = f&quot;{name}.{domain}&quot;
+        ip = resolve(full)
+        if ip:
+            print(f&quot;[+] {full}  →  {ip}&quot;)
+
+
+if __name__ == &quot;__main__&quot;:
+    main()
+</code></pre>
+<p>Try it: create a tiny wordlist like <code>wl.txt</code> with a few names (<code>www</code>, <code>mail</code>, <code>test</code>), then:</p>
+<pre><code class="language-bash">python3 resolve.py example.com wl.txt
+</code></pre>
+<p>You just wrote a real subdomain enumerator. In Path 15, you&#39;ll extend this with wildcards, threading, and API-based recon.</p>
+<p>In the code below, what does <code>[t for t in tools if len(t) &lt; 6]</code> produce, given <code>tools = [&quot;nmap&quot;, &quot;burp&quot;, &quot;sqlmap&quot;]</code>?</p>
+<details><summary>Show answer</summary><code>['nmap', 'burp']</code> — <code>sqlmap</code> has 6 characters, so it fails the <code>&lt; 6</code> check.</details><h2>Key terms</h2>
+<ul>
+<li><strong>List / tuple / set</strong> — mutable ordered / immutable ordered / unordered unique.</li>
+<li><strong>Comprehension</strong> — one-line list building.</li>
+<li><strong><code>split</code> / <code>join</code></strong> — string ↔ list conversion.</li>
+<li><strong>Function</strong> — reusable named block of code.</li>
+<li><strong><code>return</code> / parameters / default arguments</strong> — how functions communicate.</li>
+<li><strong>Scope</strong> — where a variable is visible.</li>
+<li><strong><code>if __name__ == &quot;__main__&quot;:</code></strong> — run-if-executed idiom.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Lists are your go-to collection; sets deduplicate; tuples are immutable pairs.</li>
+<li>Comprehensions build lists in one readable line.</li>
+<li>Functions package reusable code; one job each, with a docstring.</li>
+<li>Real Python tools are a <code>main()</code> plus small helpers.</li>
+</ul>
+<h3>References</h3>
+<ul>
+<li><a href="https://docs.python.org/3/tutorial/datastructures.html">Python docs — Data structures</a> — lists, tuples, sets, dicts.</li>
+<li><a href="https://realpython.com/defining-your-own-python-function/">Real Python — Defining functions</a></li>
+<li><a href="https://peps.python.org/pep-0257/">PEP 257 — Docstring conventions</a></li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/04-python/password-checker">Build a password checker</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/04-python/lists-functions";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

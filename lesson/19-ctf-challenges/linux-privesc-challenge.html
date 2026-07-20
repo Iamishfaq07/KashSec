@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Linux — The Privesc Puzzle — Path 19 · KashSec Academy</title>
+<meta name="description" content="Category: Linux/Privesc · Difficulty: Medium">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/19-ctf-challenges/linux-privesc-challenge">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Linux — The Privesc Puzzle — Path 19 · KashSec Academy">
+<meta property="og:description" content="Category: Linux/Privesc · Difficulty: Medium">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/19-ctf-challenges/linux-privesc-challenge">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Linux — The Privesc Puzzle — Path 19 · KashSec Academy">
+<meta name="twitter:description" content="Category: Linux/Privesc · Difficulty: Medium">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Linux — The Privesc Puzzle — Path 19 · KashSec Academy","description":"Category: Linux/Privesc · Difficulty: Medium","url":"https://kashsec.vercel.app/#/lesson/19-ctf-challenges/linux-privesc-challenge","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/19-ctf-challenges/linux-privesc-challenge">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 19 — CTF Challenges</a> · Linux — The Privesc Puzzle</div>
+  <article><h1>Linux — The Privesc Puzzle</h1>
+<p><strong>Category:</strong> Linux/Privesc · <strong>Difficulty:</strong> Medium</p>
+<h2>Scenario</h2>
+<p>You have low-privileged SSH access to a training box as user <code>analyst</code>. Your goal, as in a real privilege escalation scenario, is to find a path from this limited account to <code>root</code> — and read the flag sitting in <code>/root/flag.txt</code>, which only <code>root</code> can access.</p>
+<h2>Provided data</h2>
+<p>The very first thing any privesc checklist tells you to run — and exactly what you did:</p>
+<pre><code>analyst@kashsec-box:~$ sudo -l
+Matching Defaults entries for analyst on kashsec-box:
+    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin
+
+User analyst may run the following commands on kashsec-box:
+    (root) NOPASSWD: /usr/bin/find
+</code></pre>
+<pre><code>analyst@kashsec-box:~$ cat /root/flag.txt
+cat: /root/flag.txt: Permission denied
+</code></pre>
+<h2>Your task</h2>
+<p>You&#39;re allowed to run exactly one binary as root, with no password required: <code>/usr/bin/find</code>. <code>find</code> is not an obvious &quot;hacking tool&quot; — but it has a well-documented feature that turns this into full root access.</p>
+<details><summary>Hint 1</summary>This exact scenario — a seemingly harmless binary allowed via passwordless <code>sudo</code> that turns out to grant full root access — is common enough in real environments that there's an entire public database cataloging which common Unix binaries can be abused this way, and exactly how. Path 16's Linux privesc lesson mentions this resource by name.</details>
+<details><summary>Hint 2</summary><code>find</code> supports an <code>-exec</code> flag, letting it run an arbitrary command against every file it matches. Since you're allowed to run <code>find</code> itself as root via <code>sudo</code>, any command you chain onto it with <code>-exec</code> also runs as root.</details>
+<details><summary>Hint 3</summary>You don't need to actually search for anything meaningful — <code>find</code> just needs *a* starting point to search from before its <code>-exec</code> clause fires. A common pattern is pointing it at a small, guaranteed-to-exist location, then using <code>-exec</code> to spawn a shell instead of doing anything with the found files.</details>
+<details><summary>Show full answer</summary>The classic GTFOBins technique for <code>find</code> is:
+<pre>sudo find /etc/hostname -exec /bin/sh \; -quit</pre>
+This tells <code>find</code> to "search" starting at <code>/etc/hostname</code> (a file guaranteed to exist on virtually any Linux system, used here purely as a valid starting argument) and, for the match it finds, <code>-exec</code> a shell (<code>/bin/sh</code>) instead of doing anything file-related — <code>-quit</code> stops after the first result so it doesn't loop. Because the entire <code>find</code> process (including everything it spawns via <code>-exec</code>) is running as <code>root</code> thanks to the passwordless sudo rule, the spawned shell is <em>also</em> root. From that root shell, <code>cat /root/flag.txt</code> now succeeds.</details><h2>The flag</h2>
+<pre><code>KASHSEC{f1nd_3xec_1s_a_r00t_sh3ll}
+</code></pre>
+<h2>Why this matters beyond the CTF</h2>
+<p>This is not a contrived puzzle — <code>find</code>, <code>vim</code>, <code>less</code>, <code>awk</code>, <code>python</code>, and dozens of other everyday Unix binaries have documented <code>sudo</code>-abuse techniques exactly like this one, catalogued publicly on <strong>GTFOBins</strong>, a resource you&#39;ll see referenced repeatedly throughout Path 03 and Path 16. The underlying lesson generalizes far beyond <code>find</code> specifically: <strong>any binary granted elevated privilege inherits the full power of every feature that binary has</strong> — including features (like arbitrary command execution via <code>-exec</code>) that have nothing to do with the reason it was granted <code>sudo</code> access in the first place. Real system hardening means auditing <code>sudo -l</code> output against GTFOBins during every privilege review, not just trusting that a &quot;safe-sounding&quot; binary is actually safe in a privileged context.</p>
+<p>Running <code>sudo -l</code> the moment you land on any Linux box — as this challenge opened with — is one of the single highest-value, lowest-effort privilege escalation checks that exists. Automated enumeration tools like <strong>LinPEAS</strong> (covered in Path 03&#39;s Advanced Terminal Lab) run this check automatically alongside dozens of others, but understanding what to do with the result manually, as you just did, is the skill that actually matters.</p>
+<h2>Bonus round — a second sudo rule, no GTFOBins entry needed</h2>
+<p>Suppose the box instead gave you this <code>sudo -l</code> output:</p>
+<pre><code>User analyst may run the following commands on kashsec-box:
+    (root) NOPASSWD: /usr/bin/systemctl restart backup-agent.service
+</code></pre>
+<p>No file-search flags, no obvious <code>-exec</code>-style feature — <code>systemctl</code> restarting one specific service doesn&#39;t look like an escalation path at all.</p>
+<details><summary>Hint</summary>What determines <em>what</em> actually runs when that service restarts? Is that something the sudo rule controls, or something defined somewhere else entirely — somewhere <code>analyst</code> might have write access to?</details>
+<details><summary>Show answer</summary>It depends entirely on <strong>who can write to the service's unit file</strong> (typically under <code>/etc/systemd/system/</code>) or whatever script/binary that unit file points to. <code>sudo</code> only restricts <em>which command</em> <code>analyst</code> can run as root — it says nothing about the <em>contents</em> of <code>backup-agent.service</code> itself. If <code>analyst</code> can write to that unit file (check with <code>ls -la /etc/systemd/system/backup-agent.service</code>) or to the script it executes, they can point it at anything — including <code>ExecStart=/bin/sh -c "chmod u+s /bin/bash"</code> — then trigger it with the permitted <code>sudo systemctl restart</code> command, and it runs as root. This is exactly the same underlying lesson as the main challenge, generalized: <strong>a narrowly-scoped sudo rule is only as safe as everything that command's execution actually depends on</strong> — file permissions, environment variables, config file contents — not just the command name itself. Real privesc enumeration checks all of these layers, not just the sudoers entry in isolation.</details><h2>🎓 Section complete</h2>
+<p>You&#39;ve now worked through all seven challenges in the CTF Zone — Web (IDOR and JWT forgery), Crypto (layered encoding and known-plaintext XOR cryptanalysis), Forensics (log analysis), Misc (hidden data), and Linux privilege escalation. This is genuinely representative of what a real CTF competition or authorized penetration test day-to-day looks like: methodical enumeration, hypothesis testing, and applying concrete technical knowledge under uncertainty. When you&#39;re ready for the next level, TryHackMe and Hack The Box (referenced throughout this course) offer hundreds more challenges across exactly these same categories.</p>
+<h3>References</h3>
+<ul>
+<li><a href="https://gtfobins.github.io/">GTFOBins</a> — the definitive, community-maintained database of Unix binary privesc techniques.</li>
+<li><a href="https://cryptopals.com/">CryptoPals</a> — the gold-standard free cryptography challenge set, including the exact known-plaintext XOR technique used in this section.</li>
+<li><a href="https://picoctf.org/">PicoCTF</a> and <a href="https://tryhackme.com/">TryHackMe</a> — continue practicing across all of these categories and more.</li>
+</ul>
+<p><strong>Explore more →</strong> <a href="#/course">Back to all paths</a> · <a href="#/progress">Your progress &amp; certificate</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/19-ctf-challenges/linux-privesc-challenge";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

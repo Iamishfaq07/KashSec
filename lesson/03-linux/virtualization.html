@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What is virtualization? — Path 03 · KashSec Academy</title>
+<meta name="description" content="You need a place to practise where breaking things is safe and legal. Virtualization gives you exactly that: a disposable second computer you fully own, living inside your real one.">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/03-linux/virtualization">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="What is virtualization? — Path 03 · KashSec Academy">
+<meta property="og:description" content="You need a place to practise where breaking things is safe and legal. Virtualization gives you exactly that: a disposable second computer you fully own, living inside your real one.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/03-linux/virtualization">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="What is virtualization? — Path 03 · KashSec Academy">
+<meta name="twitter:description" content="You need a place to practise where breaking things is safe and legal. Virtualization gives you exactly that: a disposable second computer you fully own, living inside your real one.">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"What is virtualization? — Path 03 · KashSec Academy","description":"You need a place to practise where breaking things is safe and legal. Virtualization gives you exactly that: a disposable second computer you fully own, living inside your real one.","url":"https://kashsec.vercel.app/#/lesson/03-linux/virtualization","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/03-linux/virtualization">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 03 — Operating Systems & Linux</a> · What is virtualization?</div>
+  <article><h1>What is virtualization?</h1>
+<p>You need a place to practise where breaking things is safe and legal. <strong>Virtualization</strong> gives you exactly that: a disposable second computer you fully own, living inside your real one.</p>
+<h2>The core idea</h2>
+<p><strong>Virtualization</strong> is a clever trick: running a whole second computer <em>inside</em> your real one, in a window. That simulated computer is called a <strong>virtual machine</strong> (VM). It has its own operating system, its own files, its own network settings — but it&#39;s really just software running on your actual machine.</p>
+<p><em>[Host, hypervisor, and guest VMs]</em></p>
+<h2>Why this is perfect for learning security</h2>
+<ul>
+<li><strong>It&#39;s safe.</strong> If you break the VM — infect it, misconfigure it, delete everything — your real computer is untouched. You just reset the VM.</li>
+<li><strong>It&#39;s isolated.</strong> Attacks and tools stay <em>inside</em> the VM&#39;s window and can&#39;t reach your real files (as long as you set the network correctly, which we&#39;ll cover).</li>
+<li><strong>It&#39;s free.</strong> The software that creates VMs costs nothing.</li>
+<li><strong>It&#39;s disposable and repeatable.</strong> Take a <strong>snapshot</strong> (a saved state) and jump back to it instantly, or throw a VM away and make a fresh one in minutes.</li>
+</ul>
+<h2>The vocabulary</h2>
+<ul>
+<li><strong>Hypervisor</strong> — the software that creates and runs virtual machines. The beginner-friendly free one is <strong>VirtualBox</strong> (by Oracle). Alternatives: VMware Workstation Player (free for personal use), Parallels (Mac), Hyper-V (Windows Pro), KVM (Linux).</li>
+<li><strong>Host</strong> — your real computer (the one running VirtualBox).</li>
+<li><strong>Guest</strong> — the virtual machine running inside it (your Kali, in a moment).</li>
+<li><strong>Snapshot</strong> — a saved photo of a VM&#39;s state you can restore later.</li>
+<li><strong>VM image</strong> — a downloadable pre-built VM (like the Kali OVA you&#39;ll use).</li>
+</ul>
+<h2>Type 1 vs Type 2 hypervisors</h2>
+<ul>
+<li><strong>Type 1 (bare-metal)</strong> — runs directly on the hardware, no host OS underneath. VMware ESXi, Hyper-V Server. Used in data centres.</li>
+<li><strong>Type 2 (hosted)</strong> — runs as an app on top of your normal OS. <strong>VirtualBox is Type 2.</strong> This is what you&#39;ll use.</li>
+</ul>
+<p>Type 2 is much easier to set up; Type 1 is more efficient but industrial.</p>
+<h2>Virtual networking modes — a preview of a setting you&#39;ll configure soon</h2>
+<p>When you create a VM, you&#39;ll choose how it connects to networks — a setting worth understanding conceptually now, since Path 16&#39;s cloud networking lesson and this course&#39;s own lab setups reference it constantly:</p>
+<ul>
+<li><strong>NAT</strong> — the VM can reach the internet, but your host and other devices can&#39;t directly reach <em>into</em> the VM. The default, and the safest choice for most learning labs.</li>
+<li><strong>Bridged</strong> — the VM appears as its own independent device directly on your physical network, with its own IP address, as if it were a separate physical computer plugged into your router.</li>
+<li><strong>Host-only</strong> — the VM can only talk to your host machine (and other host-only VMs), completely cut off from the wider internet — exactly the isolated setup Path 17&#39;s malware analysis lessons insist on for safely running untrusted samples.</li>
+</ul>
+<p>Choosing the right mode for the right task is a genuinely important habit: host-only for anything potentially dangerous (malware analysis), NAT for general safe practice, and bridged only when you specifically need the VM to look like an independent device on your real network.</p>
+<h2>Containers vs. virtual machines — a term you&#39;ll hear constantly later</h2>
+<p>You&#39;ll frequently hear &quot;containers&quot; (Docker, referenced throughout Path 16&#39;s containers/Kubernetes lab) mentioned alongside VMs — worth distinguishing now even briefly. A VM virtualizes an entire computer, including its own full operating system kernel, making it heavier but very strongly isolated. A <strong>container</strong> instead shares the host machine&#39;s kernel, packaging just an application and its dependencies — much lighter and faster to start, but with a thinner isolation boundary between container and host than a full VM provides. This tradeoff — VMs prioritize strong isolation, containers prioritize speed and efficiency — is exactly why Path 16&#39;s container security lab spends real time on container <em>escape</em> techniques: the isolation boundary, while real, is genuinely weaker than a full VM&#39;s.</p>
+<h2>The professional habit</h2>
+<p>Real security professionals <em>never</em> run risky tools or open suspicious files on their real machine. They always use a VM. You&#39;re about to learn the exact same setup the pros use daily. <strong>Building this lab is a genuine milestone.</strong></p>
+<p>A VM is a sealed, transparent box on your desk. You can do anything inside the box — even set off a firework — and your desk stays clean. If the box gets wrecked, you grab a fresh identical box. That safety is what makes fearless learning possible.</p>
+<h2>System requirements to check</h2>
+<p>Before you install VirtualBox, make sure your machine can handle it:</p>
+<ul>
+<li><strong>RAM:</strong> 8 GB or more is comfortable. 4 GB works but tight.</li>
+<li><strong>Disk:</strong> 30–40 GB free.</li>
+<li><strong>CPU:</strong> must support hardware virtualization (VT-x on Intel, AMD-V on AMD) — nearly all modern CPUs do. May need to enable in BIOS (we cover this next lesson).</li>
+<li>If you have less: use <strong>TryHackMe</strong> or <strong>Hack The Box</strong> in your browser instead. The whole course still works.</li>
+</ul>
+<p>In virtualization terms, what do we call your <em>real</em> computer, and what do we call the virtual machine running inside it?</p>
+<details><summary>Show answer</summary>Your real computer is the <strong>host</strong>; the virtual machine is the <strong>guest</strong>.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Virtualization</strong> — running a computer inside a computer.</li>
+<li><strong>Virtual machine (VM)</strong> — the simulated computer.</li>
+<li><strong>Hypervisor</strong> — software that runs VMs (e.g., VirtualBox).</li>
+<li><strong>Host / guest</strong> — your real machine vs the VM.</li>
+<li><strong>Snapshot</strong> — a restorable saved state of a VM.</li>
+<li><strong>Type 1 / Type 2</strong> — bare-metal vs hosted hypervisor.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Virtualization runs a second computer (a VM) inside your real one.</li>
+<li>It&#39;s safe, isolated, free, and disposable — perfect for practice.</li>
+<li>VirtualBox (Type 2 hypervisor) runs the VM; your machine is the host, the VM is the guest.</li>
+<li>Pros always test in VMs — you&#39;re about to do the same.</li>
+</ul>
+<h3>References</h3>
+<ul>
+<li><a href="https://www.virtualbox.org/">Oracle VirtualBox</a> — download &amp; docs.</li>
+<li><a href="https://www.vmware.com/products/workstation-player.html">VMware Workstation Player</a> — free alternative.</li>
+<li><a href="https://www.redhat.com/en/topics/virtualization/what-is-a-hypervisor">What is a hypervisor? — Red Hat</a></li>
+<li><a href="https://www.vulnhub.com/">Vulnhub</a> — free vulnerable VMs to practise on.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/03-linux/install-virtualbox">Install VirtualBox</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/03-linux/virtualization";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

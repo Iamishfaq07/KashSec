@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Client vs server — Path 05 · KashSec Academy</title>
+<meta name="description" content="Half of web security comes down to one question: whose machine is this running on, and can I trust it? Let's make that distinction concrete.">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/05-web-basics/client-vs-server">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Client vs server — Path 05 · KashSec Academy">
+<meta property="og:description" content="Half of web security comes down to one question: whose machine is this running on, and can I trust it? Let's make that distinction concrete.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/05-web-basics/client-vs-server">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Client vs server — Path 05 · KashSec Academy">
+<meta name="twitter:description" content="Half of web security comes down to one question: whose machine is this running on, and can I trust it? Let's make that distinction concrete.">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Client vs server — Path 05 · KashSec Academy","description":"Half of web security comes down to one question: whose machine is this running on, and can I trust it? Let's make that distinction concrete.","url":"https://kashsec.vercel.app/#/lesson/05-web-basics/client-vs-server","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/05-web-basics/client-vs-server">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 05 — How the Web Works</a> · Client vs server</div>
+  <article><h1>Client vs server</h1>
+<p>Half of web security comes down to one question: <em>whose machine is this running on, and can I trust it?</em> Let&#39;s make that distinction concrete.</p>
+<h2>The two sides</h2>
+<ul>
+<li><strong>Client</strong> — the user&#39;s browser. Runs HTML, CSS, JavaScript. Fully visible and modifiable by the user.</li>
+<li><strong>Server</strong> — the machine on the internet the client talks to. Runs the business logic, has the database, holds the secrets.</li>
+</ul>
+<p>Every HTTP conversation has both ends. The words &quot;front-end&quot; and &quot;back-end&quot; are the same distinction from a developer&#39;s angle.</p>
+<h2>The unshakeable rule</h2>
+<p><strong>Never trust anything the client sends.</strong></p>
+<p>The user controls the browser. They can:</p>
+<ul>
+<li>Open DevTools and change any value on the page.</li>
+<li>Intercept and modify every request with a proxy (Burp Suite — Path 11).</li>
+<li>Skip your JavaScript entirely and craft a raw HTTP request in <code>curl</code> or Python.</li>
+<li>Replay old requests, tamper with cookies, remove headers.</li>
+</ul>
+<p>Anything you decide &quot;at the client&quot; — a price on a page, a role in a hidden field, an allowed action grayed-out in the UI — the user can flip. <strong>All security decisions must happen on the server.</strong></p>
+<h2>Classic beginner &quot;security&quot; bugs</h2>
+<p>Every one of these is a real, common bug beginners write:</p>
+<h3>1. &quot;Admin&quot; checkbox in the request body</h3>
+<pre><code class="language-html">&lt;form action=&quot;/create-user&quot; method=&quot;POST&quot;&gt;
+  &lt;input type=&quot;text&quot; name=&quot;username&quot;&gt;
+  &lt;input type=&quot;hidden&quot; name=&quot;is_admin&quot; value=&quot;false&quot;&gt;
+  &lt;button&gt;Create&lt;/button&gt;
+&lt;/form&gt;
+</code></pre>
+<p>The server <em>reads</em> <code>is_admin</code> from the form and stores it. But the client controls that field — the attacker just changes <code>false</code> to <code>true</code> and creates themselves as admin. The <code>type=&quot;hidden&quot;</code> fools no one.</p>
+<p><strong>Fix:</strong> The server decides admin-ness. Never trust the client&#39;s word for it.</p>
+<h3>2. Price on the cart</h3>
+<pre><code class="language-html">&lt;input type=&quot;hidden&quot; name=&quot;price&quot; value=&quot;299.99&quot;&gt;
+</code></pre>
+<p>Same problem. If the server accepts the price the client sends, users buy things for <code>0.01</code>. Real e-commerce breaches have looked exactly like this.</p>
+<p><strong>Fix:</strong> The server looks up the price from its own database.</p>
+<h3>3. &quot;Access denied&quot; only in the UI</h3>
+<pre><code class="language-javascript">if (user.role !== &quot;admin&quot;) {
+    hideAdminButton();
+}
+</code></pre>
+<p>The button is hidden — but the <em>endpoint</em> is still there. The attacker just calls it directly:</p>
+<pre><code class="language-bash">curl -X POST https://target/admin/delete-user?id=42 \
+     -H &quot;Cookie: session=...&quot;
+</code></pre>
+<p>If the server doesn&#39;t recheck the role, boom.</p>
+<p><strong>Fix:</strong> Every sensitive endpoint checks authorisation on the server, every single request.</p>
+<h3>4. Client-side validation as security</h3>
+<pre><code class="language-javascript">if (email.length &gt; 100) return false;   // client check
+</code></pre>
+<p>Great for user experience. Zero security value — the attacker just skips it. You must revalidate on the server.</p>
+<p><strong>Fix:</strong> Validate on the client for UX; <strong>re-validate</strong> on the server for security.</p>
+<h3>5. Trusting the client&#39;s math</h3>
+<pre><code class="language-javascript">const total = quantity * unitPrice - discount;
+fetch(&quot;/checkout&quot;, { method: &quot;POST&quot;, body: JSON.stringify({ total }) });
+</code></pre>
+<p>The client computed <code>total</code> and simply <em>told</em> the server what to charge. Whatever formula ran in the browser is invisible from the server&#39;s side — the attacker can open DevTools, edit <code>total</code> to <code>0.01</code> before the request fires, and the server has no way to know the number didn&#39;t come from the real calculation. This exact pattern — trusting a client-computed total, tax amount, or shipping cost — has caused real financial losses at real companies.</p>
+<p><strong>Fix:</strong> The server recomputes the total itself from trusted server-side prices; it never accepts a final number from the client for anything that involves money or permissions.</p>
+<h2>What lives where — the honest picture</h2>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Runs on</th>
+<th>Attacker can</th>
+<th>Suitable for</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>HTML</strong></td>
+<td>Client</td>
+<td>Read + edit freely</td>
+<td>Structure only</td>
+</tr>
+<tr>
+<td><strong>CSS</strong></td>
+<td>Client</td>
+<td>Read + edit freely</td>
+<td>Style only</td>
+</tr>
+<tr>
+<td><strong>JavaScript</strong></td>
+<td>Client</td>
+<td>Read + edit + replace</td>
+<td>UX, no security</td>
+</tr>
+<tr>
+<td><strong>Server code</strong></td>
+<td>Server</td>
+<td>Only affect via HTTP</td>
+<td>Business logic, security</td>
+</tr>
+<tr>
+<td><strong>Database</strong></td>
+<td>Server (usually)</td>
+<td>Never directly</td>
+<td>Persistent data</td>
+</tr>
+</tbody></table>
+<p>That fourth row is the security boundary. Everything protecting your users must live on the server.</p>
+<h2>The API/UI split — same story</h2>
+<p>Modern apps have a JavaScript UI that calls JSON APIs on the server. Attackers skip your beautiful UI entirely and hit the API directly. They&#39;ll find endpoints your UI doesn&#39;t even <em>use</em> — old ones, admin ones, forgotten ones.</p>
+<p>That&#39;s why in Path 15 (Bug Bounty) recon focuses heavily on <strong>enumerating APIs</strong>, not just clicking through the UI.</p>
+<h2>Cases where the browser IS the target</h2>
+<p>There&#39;s a whole class of attacks where the <em>client</em> is the victim, not the server:</p>
+<ul>
+<li><strong>XSS</strong> — attacker gets their JS running in your victim&#39;s browser.</li>
+<li><strong>CSRF</strong> — attacker tricks the victim&#39;s browser into sending a state-changing request.</li>
+<li><strong>Clickjacking</strong> — attacker embeds your page in a hidden frame and hijacks clicks.</li>
+<li><strong>Malicious extensions / supply-chain compromised JS</strong> — attacker owns the client via a script you unknowingly loaded.</li>
+</ul>
+<p>For these, the <em>server</em> is well-behaved; the <em>browser</em> is the battleground. You&#39;ll defend with headers like CSP, X-Frame-Options, and cookie flags. All covered in Path 11.</p>
+<h2>Server-side vs client-side rendering — quick note</h2>
+<p>You&#39;ll hear the terms &quot;server-side rendered&quot; (SSR) and &quot;single-page app&quot; (SPA).</p>
+<ul>
+<li><strong>SSR:</strong> the server builds the full HTML on every request and ships it. Old-school and a lot of enterprise sites. Bugs skew towards traditional injection.</li>
+<li><strong>SPA:</strong> the server ships a JS app once; the app then talks JSON APIs. Bugs skew towards DOM-XSS, insecure client-side routing, API auth issues.</li>
+</ul>
+<p>Both have plenty of bugs — the <em>shape</em> just differs.</p>
+<h2>Mobile apps and desktop clients — the same rule, less obvious</h2>
+<p>It&#39;s tempting to think &quot;client vs server&quot; is only about web browsers, but the exact same rule applies to a mobile app talking to an API, or a desktop client talking to a backend. Path 13&#39;s mobile security material covers this directly: a mobile app is just as fully in the attacker&#39;s control as a browser is — they can decompile it, intercept its traffic with a proxy, and send whatever requests they want directly to the API, completely bypassing the app&#39;s own UI and its client-side checks. The lesson generalises far beyond &quot;web pages&quot;: <strong>any code running on a device you don&#39;t control is a client, and the server must never trust it.</strong></p>
+<h2>🧪 Lab — Change reality in your own browser</h2>
+<ol>
+<li>Open <a href="https://example.com">example.com</a> in Firefox → F12 → <strong>Inspector</strong>.</li>
+<li>Find the <code>&lt;h1&gt;Example Domain&lt;/h1&gt;</code> element. Double-click, change to <code>&lt;h1&gt;Hacked&lt;/h1&gt;</code>. Press Enter.</li>
+<li>Take a screenshot. Show a friend.</li>
+</ol>
+<p>You didn&#39;t hack anything — you edited <em>your own copy</em> of the page. The server is untouched. If you reload, your change is gone.</p>
+<p><strong>Point of the lab:</strong> what you see in DevTools is <em>your</em> browser&#39;s state. Attackers changing &quot;their&quot; copy of a page changes <em>nothing</em> about a server; that would be pointless. Attacks that matter always involve making the <em>server</em> do something wrong (steal data, change state, run code).</p>
+<p>The dangerous thing they <em>can</em> do in DevTools is change what their browser <em>sends back</em> to the server. That&#39;s the boundary the server has to defend.</p>
+<p>A developer says &quot;I made this action safe — the button is hidden if you&#39;re not an admin.&quot; What&#39;s the missing sentence you&#39;d add?</p>
+<details><summary>Show answer</summary>"And the server also checks the user's role before performing the action." UI hiding is UX, not security. Without a server-side check, the attacker just calls the endpoint directly.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Client / server</strong> — user&#39;s machine / the internet-facing service machine.</li>
+<li><strong>Front-end / back-end</strong> — same distinction from a dev&#39;s angle.</li>
+<li><strong>API / UI</strong> — machine-callable / human-facing surfaces.</li>
+<li><strong>SSR / SPA</strong> — server-rendered / single-page app.</li>
+<li><strong>Trust boundary</strong> — the point across which data becomes untrusted.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Client = the user&#39;s browser and everything they can modify.</li>
+<li>Server = the trusted machine that must enforce security decisions.</li>
+<li>Never trust the client. Validate, authorise, and price on the server.</li>
+<li>Attackers routinely skip the UI and hit APIs directly.</li>
+<li>Some attack classes target the client itself — defended with browser security headers.</li>
+</ul>
+<h3>References</h3>
+<ul>
+<li><a href="https://owasp.org/Top10/A04_2021-Insecure_Design/">OWASP — Insecure Design</a> — top-10 category that captures many of these mistakes.</li>
+<li><a href="https://owasp.org/API-Security/editions/2023/en/0x11-t10/">OWASP API Security Top 10</a> — the API-side parallel.</li>
+<li><a href="https://portswigger.net/web-security/logic-flaws">PortSwigger — Business logic vulnerabilities</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/Security">Mozilla — Web security basics</a></li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/05-web-basics/cookies-sessions">Cookies &amp; sessions</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/05-web-basics/client-vs-server";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

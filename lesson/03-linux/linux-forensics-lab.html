@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Linux Forensics Basics Lab — Path 03 · KashSec Academy</title>
+<meta name="description" content="This lab is a first, gentler pass at the same skill Path 16's DFIR Lab covers in depth later: investigating a Linux system for signs of compromise. Everything here uses only commands built into virtua">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/03-linux/linux-forensics-lab">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Linux Forensics Basics Lab — Path 03 · KashSec Academy">
+<meta property="og:description" content="This lab is a first, gentler pass at the same skill Path 16's DFIR Lab covers in depth later: investigating a Linux system for signs of compromise. Everything here uses only commands built into virtua">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/03-linux/linux-forensics-lab">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Linux Forensics Basics Lab — Path 03 · KashSec Academy">
+<meta name="twitter:description" content="This lab is a first, gentler pass at the same skill Path 16's DFIR Lab covers in depth later: investigating a Linux system for signs of compromise. Everything here uses only commands built into virtua">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Linux Forensics Basics Lab — Path 03 · KashSec Academy","description":"This lab is a first, gentler pass at the same skill Path 16's DFIR Lab covers in depth later: investigating a Linux system for signs of compromise. Everything here uses only commands built into virtua","url":"https://kashsec.vercel.app/#/lesson/03-linux/linux-forensics-lab","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/03-linux/linux-forensics-lab">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 03 — Operating Systems & Linux</a> · Linux Forensics Basics Lab</div>
+  <article><h1>Linux Forensics Basics Lab</h1>
+<p>This lab is a first, gentler pass at the same skill Path 16&#39;s DFIR Lab covers in depth later: investigating a Linux system for signs of compromise. Everything here uses only commands built into virtually every Linux system — no special tools required.</p>
+<h2>Tasks</h2>
+<ol>
+<li><p><strong>Check running processes and network connections.</strong></p>
+<pre><code class="language-bash">ps aux                    # every running process, with owner and command
+ss -tulpn                 # listening ports and the process bound to each
+</code></pre>
+<p>Look specifically for anything unfamiliar: a process you don&#39;t recognize running as <code>root</code>, or a listening port you can&#39;t account for.</p>
+</li>
+<li><p><strong>Look at user accounts and login history.</strong></p>
+<pre><code class="language-bash">cat /etc/passwd            # every account on the system
+last                       # recent login history
+lastb                      # recent failed login attempts (if logged)
+</code></pre>
+<p>An unfamiliar account in <code>/etc/passwd</code>, or a login history entry from an unexpected time or source, are both classic first indicators worth investigating further.</p>
+</li>
+<li><p><strong>Examine logs in /var/log.</strong> Focus especially on <code>/var/log/auth.log</code> (Debian/Ubuntu) or <code>/var/log/secure</code> (RHEL/CentOS) for authentication events — this is the same file format used in this course&#39;s CTF Zone forensics challenge, so the brute-force pattern you learned to spot there applies directly here.</p>
+<pre><code class="language-bash">grep &quot;Failed password&quot; /var/log/auth.log | tail -20
+grep &quot;Accepted password&quot; /var/log/auth.log | tail -20
+</code></pre>
+</li>
+<li><p><strong>Find recently modified or suspicious files.</strong></p>
+<pre><code class="language-bash">find / -mtime -1 -type f 2&gt;/dev/null    # files modified in the last 24 hours
+find / -perm -4000 -type f 2&gt;/dev/null  # SUID binaries (from the privesc lesson)
+</code></pre>
+<p>A recently modified system binary, or a new SUID binary you didn&#39;t create, both warrant close attention.</p>
+</li>
+<li><p><strong>Check cron jobs and scheduled persistence.</strong> A system&#39;s own scheduler is a common place for malicious persistence to hide, running quietly on its own schedule:</p>
+<pre><code class="language-bash">crontab -l                        # current user&#39;s scheduled jobs
+sudo crontab -l -u root           # root&#39;s scheduled jobs
+ls -la /etc/cron.d/ /etc/cron.daily/
+</code></pre>
+<p>An unfamiliar entry here — especially one downloading and executing something from a remote URL — is a strong persistence indicator, directly echoing the living-off-the-land pattern from Path 16&#39;s threat hunting lab.</p>
+</li>
+<li><p><strong>Check shell history for command evidence.</strong> <code>cat ~/.bash_history</code> (or the equivalent for the shell in use) shows every command a user has typed — genuinely revealing during an investigation, though be aware a careful attacker may have cleared or disabled this file, which is itself a suspicious finding worth noting.</p>
+</li>
+</ol>
+<p>Real incident response is far easier when you already know what &quot;normal&quot; looks like for a given system — the processes that always run, the accounts that should exist, the typical login pattern. Run through these same four commands on your own everyday machine right now (nothing suspicious expected), just to build the habit of noticing what a &quot;clean&quot; baseline actually looks like before you ever need to spot an anomaly against it.</p>
+<p>Imagine you&#39;ve been asked to investigate a Linux server after a report of &quot;unusual activity.&quot; Using the four task categories above (processes/connections, users/logins, logs, modified files) as your checklist, write a short summary of what you&#39;d check and, for at least one category, what a genuinely suspicious finding would look like versus a benign one.</p>
+<h2>Key takeaway</h2>
+<p>Linux forensics fundamentals don&#39;t require exotic tools — <code>ps</code>, <code>ss</code>, <code>last</code>, <code>grep</code>, and <code>find</code> cover an enormous amount of ground, and knowing exactly what &quot;normal&quot; looks like on a system you&#39;re responsible for is often more valuable than any single tool, because it&#39;s what lets you actually recognize when something&#39;s wrong.</p>
+<p><strong>Explore more →</strong> <a href="#/lesson/04-python">Path 04 — Programming &amp; Python</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/03-linux/linux-forensics-lab";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

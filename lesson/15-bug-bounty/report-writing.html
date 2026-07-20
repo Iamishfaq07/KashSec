@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reports that get paid — Path 15 · KashSec Academy</title>
+<meta name="description" content="Path 14.7 taught the professional pentest report structure. Bug bounty reporting uses the same underlying discipline, adapted for a faster-moving, higher-volume, triage-driven context. Getting this ri">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/15-bug-bounty/report-writing">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Reports that get paid — Path 15 · KashSec Academy">
+<meta property="og:description" content="Path 14.7 taught the professional pentest report structure. Bug bounty reporting uses the same underlying discipline, adapted for a faster-moving, higher-volume, triage-driven context. Getting this ri">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/15-bug-bounty/report-writing">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Reports that get paid — Path 15 · KashSec Academy">
+<meta name="twitter:description" content="Path 14.7 taught the professional pentest report structure. Bug bounty reporting uses the same underlying discipline, adapted for a faster-moving, higher-volume, triage-driven context. Getting this ri">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Reports that get paid — Path 15 · KashSec Academy","description":"Path 14.7 taught the professional pentest report structure. Bug bounty reporting uses the same underlying discipline, adapted for a faster-moving, higher-volume, triage-driven context. Getting this ri","url":"https://kashsec.vercel.app/#/lesson/15-bug-bounty/report-writing","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/15-bug-bounty/report-writing">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 15 — Bug Bounty</a> · Reports that get paid</div>
+  <article><h1>Writing effective bug bounty reports</h1>
+<p>Path 14.7 taught the professional pentest report structure. Bug bounty reporting uses the same underlying discipline, adapted for a faster-moving, higher-volume, triage-driven context. Getting this right directly determines whether you get paid, and how quickly.</p>
+<h2>Why bug bounty reports have their own conventions</h2>
+<p>Unlike a formal pentest report (written once, for one client relationship), a bug bounty report is read by a <strong>triager</strong> — often reviewing dozens of submissions across many researchers and programs — who needs to validate your finding <strong>fast</strong>. A report that takes 30 seconds to understand and reproduce gets triaged (and paid) far faster than one requiring back-and-forth clarification.</p>
+<h2>The core structure, bug-bounty-optimised</h2>
+<pre><code class="language-markdown">## Title
+Reflected XSS in search parameter allows session token theft
+
+## Summary
+The `q` parameter on `/search` is reflected into the page without
+proper output encoding, allowing arbitrary JavaScript execution in
+the context of any user who visits a crafted link.
+
+## Steps to Reproduce
+1. Navigate to: `https://example.com/search?q=&lt;script&gt;alert(document.domain)&lt;/script&gt;`
+2. Observe the JavaScript executes, confirming the injection point
+
+## Proof of Concept
+```html
+https://example.com/search?q=&lt;script&gt;alert(document.domain)&lt;/script&gt;
+</code></pre>
+<p>[Screenshot/video showing the alert firing]</p>
+<h2>Impact</h2>
+<p>An attacker could craft a malicious link that, when clicked by a
+victim, executes arbitrary JavaScript in their session — enabling
+session cookie theft (if not HttpOnly), account takeover, or
+further phishing within the trusted domain context.</p>
+<h2>Suggested Fix</h2>
+<p>Apply context-appropriate output encoding to the <code>q</code> parameter
+before reflecting it into the HTML response. See OWASP&#39;s XSS
+Prevention Cheat Sheet: [link]</p>
+<h2>Severity</h2>
+<p>Medium — reflected XSS requiring user interaction (link click)
+CVSS 3.1: 6.1 (AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N)</p>
+<pre><code>
+This mirrors Path 14.7&#39;s four-part structure exactly (title/summary, reproduction, impact, remediation) — just formatted for fast triage rather than an executive audience.
+
+## The single most impactful habit: a working Proof of Concept
+
+Recall Path 11&#39;s hands-on labs — every technique you practised produced something concrete: a request in Burp Repeater, a specific payload, a specific URL. A bug bounty report&#39;s PoC should be **exactly that** — something a triager can literally copy, paste, and immediately observe the same result themselves, with **zero ambiguity**.
+
+```bash
+# A genuinely excellent PoC — copy-pasteable, self-contained:
+curl -s &quot;https://example.com/api/user?id=1024&quot; \
+  -H &quot;Cookie: session=YOUR_TEST_SESSION_HERE&quot; | jq
+
+# Compare to a vague, unhelpful PoC:
+# &quot;I found that if you change the ID in the URL you can see other people&#39;s data&quot;
+</code></pre>
+<p>The <code>curl</code> version above requires zero interpretation — a triager runs it, sees the leaked data structure, and validates the finding in seconds. The vague description requires them to reconstruct your exact steps themselves, adding delay and frustration on both sides.</p>
+<h2>Video PoCs — increasingly expected for complex bugs</h2>
+<p>For anything involving multiple steps, timing, or UI interaction (a race condition, a multi-step business logic flaw covered in the next lesson), a short screen recording is often far more convincing and faster to triage than a purely written description:</p>
+<pre><code class="language-bash"># Simple screen recording on Kali using ffmpeg:
+ffmpeg -f x11grab -s 1920x1080 -i :0.0 -f pulse -i default poc-video.mp4
+</code></pre>
+<p>Many programs explicitly note in their submission guidelines whether video PoCs are preferred for certain vulnerability classes — always check.</p>
+<h2>Severity justification — don&#39;t just assert it, show your work</h2>
+<p>Recall Path 14.7&#39;s CVSS discipline. In bug bounty specifically, triagers frequently <strong>downgrade</strong> severity if the report doesn&#39;t clearly justify the claimed impact:</p>
+<pre><code class="language-markdown">❌ Weak: &quot;This is critical because it&#39;s a security vulnerability.&quot;
+
+✅ Strong: &quot;This IDOR allows any authenticated user (even a free-tier
+account) to read the full billing history — including partial credit
+card numbers and billing addresses — of any other user by
+incrementing a sequential integer ID, with zero rate limiting
+observed during testing. Given the sensitivity of financial PII
+and the trivial exploitability (no special tooling required, just
+URL manipulation), I&#39;ve rated this Critical per your program&#39;s
+vulnerability rating taxonomy.&quot;
+</code></pre>
+<p>Explicitly referencing the <strong>specific program&#39;s own published severity taxonomy</strong> (many programs, like Bugcrowd, publish one — see Path 15.1&#39;s reference) when justifying your rating shows the triager you&#39;ve done your homework and are arguing from their own stated criteria, not just your personal opinion.</p>
+<h2>What NOT to do — common mistakes that hurt your submission</h2>
+<ul>
+<li><strong>Spamming low-quality/automated-scanner output</strong> without manual verification — most programs explicitly prohibit this, and it damages your reputation on the platform (some platforms track and penalise a poor &quot;signal ratio&quot;).</li>
+<li><strong>Submitting theoretical findings without a working PoC</strong> (&quot;this endpoint might be vulnerable to X, you should check&quot;) — a huge fraction of programs will close these as &quot;not applicable&quot; or &quot;needs more info,&quot; costing you response cycles even if you&#39;re technically correct.</li>
+<li><strong>Testing against real user data unnecessarily</strong> — recall Path 14.6&#39;s &quot;demonstrate, don&#39;t exfiltrate&quot; principle, doubly important here since you don&#39;t have a direct contractual relationship softening any misstep.</li>
+<li><strong>Re-submitting a &quot;won&#39;t fix&quot; finding repeatedly</strong> without new information — if a triager has made a considered decision, respectfully accept it (or use the platform&#39;s formal appeal/mediation process if one exists) rather than resubmitting the same report.</li>
+<li><strong>Public disclosure before authorization</strong> — nearly every program requires explicit permission before you publish any details publicly, even after the bug is fixed; violating this can result in program bans and, in serious cases, legal consequences.</li>
+</ul>
+<h2>Understanding a report&#39;s lifecycle states</h2>
+<p>A submitted report moves through a series of named states on most platforms, and understanding what each one actually means avoids a lot of unnecessary anxiety and misjudged follow-up. <strong>New/Pending</strong> means it hasn&#39;t been triaged yet — normal to sit here for hours to days depending on program volume. <strong>Triaged</strong> means a human has validated the finding and it&#39;s now in the client&#39;s queue for fixing — this is the meaningful &quot;yes, this is real&quot; milestone, even before payment is finalised. <strong>Informative</strong> means the report was read but doesn&#39;t meet the bar for a paid finding (often correct-but-low-impact, or already-known behaviour) — worth reading the triager&#39;s reasoning carefully rather than assuming a mistake. <strong>Duplicate</strong> and <strong>Not Applicable</strong> are self-explanatory but worth the same careful reading — sometimes a &quot;duplicate&quot; marking references an internal issue you had no way of knowing about, which is a legitimate, if frustrating, outcome rather than an error to dispute. Knowing this vocabulary means you can track your own submissions&#39; health across a program without needing to ask &quot;what does this status mean&quot; every time.</p>
+<h2>Handling triager questions and disagreements professionally</h2>
+<pre><code class="language-markdown">Triager: &quot;We&#39;re unable to reproduce this. Can you provide more detail?&quot;
+
+Good response:
+&quot;Thanks for looking into this! Here&#39;s a fresh recording showing the
+exact steps: [new video link]. I tested this again just now on
+2026-07-13 at 14:30 UTC using Firefox 128 — happy to hop on a call
+or provide additional detail if useful.&quot;
+
+Poor response:
+&quot;It clearly works, did you even try it?&quot;
+</code></pre>
+<p>Recall Path 14&#39;s professional discipline, applied here just as much — triagers are humans doing a high-volume job, and a collaborative, patient tone consistently produces better outcomes (faster resolution, fairer severity assessment, future private program invitations per Path 15.2) than an adversarial one, even when you&#39;re confident you&#39;re right.</p>
+<h2>🧪 Lab — Rewrite a real report</h2>
+<p>Go back to 3 disclosed reports you read in Path 15.1&#39;s lab (HackerOne Hacktivity). For each:</p>
+<ol>
+<li>Identify whether it followed the structure in this lesson (title, summary, PoC, impact, fix, severity justification).</li>
+<li>Note specifically what made the PoC section effective (or not).</li>
+<li>Pick your weakest-structured example and <strong>rewrite</strong> just its PoC and impact sections to match the standard in this lesson, using only information visible in the original report.</li>
+</ol>
+<p>This rewriting exercise builds the exact muscle memory needed to write your own reports quickly and effectively once you find a real, valid bug of your own.</p>
+<p>A researcher submits: &quot;The login page might be vulnerable to SQL injection, you should check the username field.&quot; Why is this likely to be closed quickly as &quot;needs more info&quot; or &quot;not applicable,&quot; even if the vulnerability might genuinely exist?</p>
+<details><summary>Show answer</summary>There's no <strong>working proof of concept</strong> — no specific payload tried, no specific observed result (an error message, a timing difference, a data leak), nothing the triager can directly verify themselves. A report asserting a vulnerability <em>might</em> exist without demonstrating that it <em>does</em> exist, concretely and reproducibly, places the burden of actually finding and confirming the bug back on the triager — which most programs' guidelines explicitly discourage and will decline to reward, regardless of whether the underlying hunch was technically correct.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Triager</strong> — the person (or team) reviewing and validating bug bounty submissions.</li>
+<li><strong>Proof of Concept (PoC)</strong> — a concrete, reproducible demonstration of the vulnerability, ideally copy-pasteable.</li>
+<li><strong>Signal ratio</strong> — a researcher&#39;s ratio of valid-to-invalid submissions, tracked by some platforms and affecting reputation.</li>
+<li><strong>Vulnerability Rating Taxonomy</strong> — a program&#39;s published severity classification standard (Path 15.1).</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Bug bounty reports use the same four-part structure as formal pentest reports, optimised for fast triager validation.</li>
+<li>A concrete, copy-pasteable Proof of Concept is the single highest-impact element of any report.</li>
+<li>Justify severity by referencing the specific program&#39;s own published taxonomy, not just personal assertion.</li>
+<li>Avoid theoretical findings, unnecessary real-data access, unauthorized disclosure, and adversarial communication with triagers.</li>
+<li>Professional, patient communication consistently produces better long-term outcomes than confrontation.</li>
+</ul>
+<h3>References</h3>
+<ul>
+<li><a href="https://www.hackerone.com/vulnerability-management/how-write-great-vulnerability-report">HackerOne — How to Write a Great Vulnerability Report</a> — the platform&#39;s own official guidance.</li>
+<li><a href="https://bugcrowd.com/vulnerability-rating-taxonomy">Bugcrowd — Vulnerability Rating Taxonomy</a> — referenced severity standard.</li>
+<li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Vulnerability_Disclosure_Cheat_Sheet.html">OWASP — Vulnerability Disclosure Cheat Sheet</a></li>
+<li><a href="https://disclose.io/">Disclose.io</a> — standardised disclosure and safe harbor resources.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/15-bug-bounty/hunting-idor">Hunting for IDOR &amp; access control bugs</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/15-bug-bounty/report-writing";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

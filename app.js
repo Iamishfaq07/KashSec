@@ -188,7 +188,8 @@ function defaultState(){
     achievements:{},     // { achievementId: timestamp }
     visitDays:{},        // { "YYYY-MM-DD": true }
     usedSearch:false,
-    flashcards:{known:{}} // { known: { "pathId/subId/term": timestamp } }
+    flashcards:{known:{}, reviews:{}} // known: legacy "seen once"; reviews: SR state
+    // reviews entries: { term_key: { due: ISO_date, interval: days, ease: 2.5, streak: N, lastPerf: 'again|good|easy' } }
   };
 }
 function loadState(){
@@ -285,18 +286,43 @@ function refreshStreakBadge(){
 }
 
 /* ---------- Theme ---------- */
+/* STATE.theme values:
+   - null / undefined  → auto-system: follow the OS's prefers-color-scheme
+   - 'auto-time'       → auto-time-of-day: light 7:00-19:00 local, dark otherwise
+   - 'light' / 'dark'  → hard override */
 function currentTheme(){
   return document.documentElement.getAttribute('data-theme') || 'dark';
 }
+function resolveTheme(){
+  const t = STATE.theme;
+  if(t === 'light' || t === 'dark') return t;
+  if(t === 'auto-time'){
+    const h = new Date().getHours();
+    return (h >= 7 && h < 19) ? 'light' : 'dark';
+  }
+  return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+}
 function applyTheme(){
-  const theme = STATE.theme || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+  const theme = resolveTheme();
   document.documentElement.setAttribute('data-theme', theme);
   document.getElementById('themeToggle')?.setAttribute('aria-pressed', theme === 'light' ? 'true' : 'false');
   const meta = document.querySelector('meta[name="theme-color"]');
   if(meta) meta.setAttribute('content', theme === 'light' ? '#F6F7FA' : '#0A0E13');
 }
+/* Clicking the toggle cycles through: current-resolved → opposite hard →
+   auto-time → auto-system → repeat. Users who just want dark forever land
+   on 'dark' first click; users who want it to change on its own reach auto
+   after one more click. */
 function toggleTheme(){
-  STATE.theme = currentTheme() === 'light' ? 'dark' : 'light';
+  const t = STATE.theme;
+  const now = currentTheme();
+  if(t === 'light' || t === 'dark' || t == null){
+    STATE.theme = now === 'light' ? 'dark' : 'light';
+  } else if(t === 'auto-time'){
+    STATE.theme = null; // -> auto-system
+  } else {
+    STATE.theme = 'light';
+  }
   saveState();
   applyTheme();
   STATE.achievements['theme-explorer-seen-dark'] = STATE.achievements['theme-explorer-seen-dark'] || (currentTheme()==='dark');
@@ -304,6 +330,13 @@ function toggleTheme(){
   checkAchievements();
 }
 applyTheme();
+/* Re-resolve on OS scheme change (auto-system mode) and hourly (auto-time
+   mode) so the theme catches up without needing a manual refresh. */
+if(window.matchMedia){
+  const mql = window.matchMedia('(prefers-color-scheme: light)');
+  mql.addEventListener?.('change', ()=>{ if(STATE.theme == null) applyTheme(); });
+}
+setInterval(()=>{ if(STATE.theme === 'auto-time') applyTheme(); }, 60*1000);
 
 /* ---------- Achievements ---------- */
 const ACHIEVEMENTS = [
@@ -676,6 +709,118 @@ const PATHS = [
 
 ];
 
+/* Practice tracks — curated cross-path sequences per career, so a learner
+   aiming at (say) SOC work has an ordered list of exactly which lessons
+   from which paths to hit, without needing to plan it themselves. Each
+   step is either a whole path (id only) or a specific lesson (id + sub).
+   Path 00 (fresher basics) is included in every track since it's baseline. */
+const TRACKS = [
+  {
+    id:'soc-analyst', ico:'📡', title:'SOC Analyst Track', desc:'Detect and respond to attacks in real time. The most common security entry-level role.',
+    steps:[
+      {pathId:'00-fresher-basics'},
+      {pathId:'01-introduction'},
+      {pathId:'02-networking'},
+      {pathId:'03-linux'},
+      {pathId:'07-windows-security'},
+      {pathId:'10-fundamentals'},
+      {pathId:'12-network-security'},
+      {pathId:'16-advanced', subs:['dfir','dfir-lab','threat-hunting-lab','malware-analysis','malware-analysis-lab']},
+      {pathId:'17-malware-re'},
+      {pathId:'20-career-prep'}
+    ]
+  },
+  {
+    id:'pentester', ico:'⚔️', title:'Penetration Tester Track', desc:'Legally break into systems and write the reports that fix them.',
+    steps:[
+      {pathId:'00-fresher-basics'},
+      {pathId:'01-introduction'},
+      {pathId:'02-networking'},
+      {pathId:'03-linux'},
+      {pathId:'05-web-basics'},
+      {pathId:'06-crypto-fundamentals'},
+      {pathId:'11-web-security'},
+      {pathId:'12-network-security'},
+      {pathId:'14-ethical-hacking'},
+      {pathId:'16-advanced', subs:['linux-privesc','practical-linux-privesc-lab','windows-privesc','windows-privesc-lab','active-directory']},
+      {pathId:'20-career-prep'}
+    ]
+  },
+  {
+    id:'bug-hunter', ico:'🎯', title:'Bug Bounty Hunter Track', desc:'Find real bugs in real programs for cash. Web + logic-focused.',
+    steps:[
+      {pathId:'00-fresher-basics'},
+      {pathId:'01-introduction'},
+      {pathId:'02-networking'},
+      {pathId:'04-python'},
+      {pathId:'05-web-basics'},
+      {pathId:'11-web-security'},
+      {pathId:'15-bug-bounty'},
+      {pathId:'13-mobile-security'},
+      {pathId:'19-ctf-challenges'},
+      {pathId:'20-career-prep'}
+    ]
+  },
+  {
+    id:'cloud-sec', ico:'☁️', title:'Cloud Security Engineer Track', desc:'Secure AWS, Azure, and GCP — the fastest-growing security specialty.',
+    steps:[
+      {pathId:'00-fresher-basics'},
+      {pathId:'01-introduction'},
+      {pathId:'02-networking'},
+      {pathId:'03-linux'},
+      {pathId:'04-python'},
+      {pathId:'08-cloud-basics'},
+      {pathId:'10-fundamentals'},
+      {pathId:'16-advanced', subs:['cloud-security','cloud-security-lab','containers-k8s','containers-k8s-lab','devsecops-lab']},
+      {pathId:'20-career-prep'}
+    ]
+  },
+  {
+    id:'appsec', ico:'🛠', title:'AppSec Engineer Track', desc:'Help developers ship safe software. The bridge between security and engineering.',
+    steps:[
+      {pathId:'00-fresher-basics'},
+      {pathId:'01-introduction'},
+      {pathId:'04-python'},
+      {pathId:'05-web-basics'},
+      {pathId:'06-crypto-fundamentals'},
+      {pathId:'11-web-security'},
+      {pathId:'16-advanced', subs:['devsecops-lab','threat-modeling-lab']},
+      {pathId:'18-ai-security', subs:['securing-llm-apps','llm-top-10','agentic-ai-risks']},
+      {pathId:'20-career-prep'}
+    ]
+  },
+  {
+    id:'ai-red-team', ico:'🤖', title:'AI Red Teamer Track', desc:'Adversarially test AI systems for safety and security. A brand-new field.',
+    steps:[
+      {pathId:'00-fresher-basics'},
+      {pathId:'01-introduction'},
+      {pathId:'04-python'},
+      {pathId:'05-web-basics'},
+      {pathId:'11-web-security', subs:['owasp-top-10','xss','sqli','ssrf-and-auth']},
+      {pathId:'18-ai-security'},
+      {pathId:'20-career-prep'}
+    ]
+  }
+];
+
+/* Flatten a track's steps into a concrete ordered lesson list. A step that
+   only names a pathId expands to all of that path's sub-lessons. */
+function trackLessons(track){
+  const out = [];
+  for(const step of track.steps){
+    const p = findPath(step.pathId);
+    if(!p) continue;
+    const subs = step.subs ? p.subs.filter(s => step.subs.includes(s.id)) : p.subs;
+    for(const s of subs) out.push({pathId:p.id, subId:s.id, path:p, sub:s});
+  }
+  return out;
+}
+function trackProgress(track){
+  const lessons = trackLessons(track);
+  const done = lessons.filter(l => isComplete(l.pathId, l.subId)).length;
+  return {done, total: lessons.length, pct: lessons.length ? Math.round(done/lessons.length*100) : 0};
+}
+
 const CAREERS = [
   {role:"SOC Analyst",             desc:"Watch for and respond to attacks in real time.", follow:"02 → 10 → 12"},
   {role:"Penetration Tester",      desc:"Legally break into systems and report how.",     follow:"03 → 14 → 11"},
@@ -763,6 +908,11 @@ function route(){
   else if(hash === '#/roadmap') renderRoadmap();
   else if(hash === '#/glossary') renderGlossary();
   else if(hash === '#/review') renderReview();
+  else if(hash === '#/tracks') renderTracks();
+  else if(hash === '#/labs') renderLabsIndex();
+  else if(hash === '#/labs/terminal') renderLabTerminal();
+  else if(hash === '#/labs/webapp') renderLabWebapp();
+  else if(hash === '#/labs/pcap') renderLabPcap();
   else if(hash === '#/progress') renderProgressHub();
   else if(hash === '#/certificate') renderCertificate();
   else if(hash === '#/quiz/final') renderQuiz('final');
@@ -770,9 +920,11 @@ function route(){
     const partsQuiz = hash.match(/^#\/quiz\/([^/]+)$/);
     const partsSub = hash.match(/^#\/lesson\/([^/]+)\/([^/]+)$/);
     const partsPath = hash.match(/^#\/lesson\/([^/]+)$/);
+    const partsTrack = hash.match(/^#\/track\/([^/]+)$/);
     if(partsQuiz) renderQuiz(partsQuiz[1]);
     else if(partsSub) renderSubLesson(partsSub[1], partsSub[2]);
     else if(partsPath) renderPathOverview(partsPath[1]);
+    else if(partsTrack) renderTrack(partsTrack[1]);
     else renderNotFound();
   }
   afterRender();
@@ -922,9 +1074,30 @@ function countUp(){
 }
 
 /* --- Views --- */
+/* Random unfinished lesson (falls back to any lesson if all are done).
+   Uses Math.random — it's a "surprise me" button, not a shuffle. */
+function pickRandomLesson(){
+  const flat = [];
+  PATHS.forEach(p => p.subs.forEach(s => flat.push({pathId:p.id, subId:s.id})));
+  const pool = flat.filter(f => !isComplete(f.pathId, f.subId));
+  const src = pool.length ? pool : flat;
+  return src[Math.floor(Math.random()*src.length)];
+}
+/* Deterministic "lesson of the day" — same result for every visitor on the
+   same date, so it's a shared talking point rather than random. */
+function dailyLesson(){
+  const flat = [];
+  PATHS.forEach(p => p.subs.forEach(s => flat.push({pathId:p.id, subId:s.id, pathN:p.n, subN:s.n, pathTitle:p.title, subTitle:s.title})));
+  const day = new Date().toISOString().slice(0,10);
+  let h = 0;
+  for(const c of day) h = (h*31 + c.charCodeAt(0)) >>> 0;
+  return flat[h % flat.length];
+}
+
 function renderHome(){
   const total = totalSubLessons();
   const continueCtx = STATE.lastVisited ? findSubContext(STATE.lastVisited.pathId, STATE.lastVisited.subId) : null;
+  const daily = dailyLesson();
   app.innerHTML = `
     <section class="hero">
       <div class="hero-inner">
@@ -942,6 +1115,11 @@ function renderHome(){
             ? `<a class="btn-amber" href="#/lesson/${continueCtx.path.id}/${continueCtx.sub.id}">Continue learning →</a>`
             : `<a class="btn-amber" href="#/lesson/01-introduction/what-is-cybersecurity">Begin lesson 1 →</a>`}
           <a class="btn-ghost" href="#/roadmap">See the roadmap</a>
+        </div>
+        <div class="daily-lesson" data-reveal style="--i:3">
+          <span class="daily-tag">📅 Lesson of the day</span>
+          <a class="daily-link" href="#/lesson/${daily.pathId}/${daily.subId}">${daily.pathN}.${daily.subN} · ${daily.subTitle}</a>
+          <span class="daily-src">Path ${daily.pathN} — ${daily.pathTitle}</span>
         </div>
         <div class="hero-stats" data-reveal style="--i:4">
           <div><div class="hstat-n" data-count="${PATHS.length}">${PATHS.length}</div><div class="hstat-l">learning paths</div></div>
@@ -1545,41 +1723,89 @@ async function renderReview(){
     return;
   }
   if(myGen !== renderGeneration) return;
-  if(!STATE.flashcards || !STATE.flashcards.known) STATE.flashcards = {known:{}};
+  if(!STATE.flashcards) STATE.flashcards = {known:{}, reviews:{}};
+  if(!STATE.flashcards.known) STATE.flashcards.known = {};
+  if(!STATE.flashcards.reviews) STATE.flashcards.reviews = {};
 
   const termKey = e => `${e.pathId}/${e.subId}/${e.term}`;
+  const todayStr = () => new Date().toISOString().slice(0,10);
+  const dateAdd = (iso, days) => { const d = new Date(iso+'T00:00:00Z'); d.setUTCDate(d.getUTCDate()+days); return d.toISOString().slice(0,10); };
+
+  /* SM-2 lite: three buttons instead of six.
+     - again: reset interval, ease drops slightly, due today
+     - good:  interval * ease, ease unchanged
+     - easy:  interval * ease * 1.3, ease bumps up */
+  function schedule(key, perf){
+    const r = STATE.flashcards.reviews[key] || {interval:0, ease:2.5, streak:0};
+    let interval, ease = r.ease, streak = r.streak;
+    if(perf === 'again'){
+      interval = 1;
+      ease = Math.max(1.3, ease - 0.2);
+      streak = 0;
+    } else if(perf === 'good'){
+      streak++;
+      interval = streak === 1 ? 1 : streak === 2 ? 3 : Math.round(r.interval * ease);
+    } else { // easy
+      streak++;
+      ease = Math.min(3.0, ease + 0.15);
+      interval = streak === 1 ? 3 : Math.round(r.interval * ease * 1.3);
+    }
+    STATE.flashcards.reviews[key] = {interval, ease, streak, due: dateAdd(todayStr(), interval), lastPerf: perf, ts: Date.now()};
+    STATE.flashcards.known[key] = Date.now();
+    saveState();
+  }
+
   let pathFilter = 'all';
+  let mode = 'due'; // 'due' | 'all' | 'new'
   let deck = [];
   let di = 0;
   let flipped = false;
   let sessionSeen = 0, sessionKnew = 0;
 
-  function buildDeck(){
-    const pool = GLOSSARY.filter(e => pathFilter==='all' || e.pathId===pathFilter);
-    const unknown = pool.filter(e => !STATE.flashcards.known[termKey(e)]);
-    const known = pool.filter(e => STATE.flashcards.known[termKey(e)]);
-    // Unknown terms first (shuffled), then known ones as a refresher.
-    for(const arr of [unknown, known]){
-      for(let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; }
+  function pool(){
+    return GLOSSARY.filter(e => pathFilter==='all' || e.pathId===pathFilter);
+  }
+  function counts(){
+    const p = pool();
+    const today = todayStr();
+    let due = 0, learning = 0, mastered = 0, newT = 0;
+    for(const e of p){
+      const r = STATE.flashcards.reviews[termKey(e)];
+      if(!r){ newT++; continue; }
+      if(r.due <= today){ due++; continue; }
+      if(r.interval >= 21) mastered++; else learning++;
     }
-    deck = unknown.concat(known);
+    return {due, learning, mastered, new: newT, total: p.length};
+  }
+  function buildDeck(){
+    const p = pool();
+    const today = todayStr();
+    let src;
+    if(mode === 'due'){
+      // due today + up to 20 new terms as a filler, so a fresh user isn't
+      // told "0 due" on their first visit
+      const due = p.filter(e => { const r = STATE.flashcards.reviews[termKey(e)]; return r && r.due <= today; });
+      const news = p.filter(e => !STATE.flashcards.reviews[termKey(e)]).slice(0, 20);
+      src = due.concat(news);
+    } else if(mode === 'new'){
+      src = p.filter(e => !STATE.flashcards.reviews[termKey(e)]);
+    } else {
+      src = p.slice();
+    }
+    for(let i=src.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [src[i],src[j]]=[src[j],src[i]]; }
+    deck = src;
     di = 0; flipped = false; sessionSeen = 0; sessionKnew = 0;
   }
 
-  function knownCount(){
-    const pool = GLOSSARY.filter(e => pathFilter==='all' || e.pathId===pathFilter);
-    return {known: pool.filter(e=>STATE.flashcards.known[termKey(e)]).length, total: pool.length};
-  }
-
   function paint(){
-    const {known, total} = knownCount();
+    const c = counts();
     const card = deck[di];
     app.innerHTML = `
       <section class="sec">
         <div class="sec-head" data-reveal>
-          <div class="sec-eyebrow">Flashcards</div>
+          <div class="sec-eyebrow">Flashcards · spaced repetition</div>
           <h2>Active recall practice</h2>
-          <p class="sec-lead">Read the term, recall the meaning out loud, then flip. Terms you mark "knew it" are remembered across visits.</p>
+          <p class="sec-lead">Read the term, recall the meaning, then flip and grade yourself. Cards come back on a schedule based on how well you knew them — hard ones return tomorrow, easy ones in weeks.</p>
         </div>
         <div class="fc-tools" data-reveal style="--i:1">
           <select id="fcPathFilter" class="fc-select" aria-label="Filter by path">
@@ -1589,11 +1815,21 @@ async function renderReview(){
               return n ? `<option value="${p.id}" ${pathFilter===p.id?'selected':''}>Path ${p.n} — ${p.title} (${n})</option>` : '';
             }).join('')}
           </select>
-          <div class="fc-progress">✅ ${known}/${total} known${sessionSeen?` · this session: ${sessionKnew}/${sessionSeen}`:''}</div>
-          ${known>0?`<button class="btn-ghost sm" id="fcResetBtn" type="button">Reset known</button>`:''}
+          <div class="fc-mode-toggle" role="tablist" aria-label="Deck mode">
+            <button class="fc-mode ${mode==='due'?'active':''}" data-mode="due" type="button">📅 Due today (${c.due + Math.min(c.new,20)})</button>
+            <button class="fc-mode ${mode==='new'?'active':''}" data-mode="new" type="button">✨ New (${c.new})</button>
+            <button class="fc-mode ${mode==='all'?'active':''}" data-mode="all" type="button">🗂 All</button>
+          </div>
+        </div>
+        <div class="fc-stats" data-reveal style="--i:2">
+          <span class="fc-stat"><b>${c.mastered}</b> mastered</span>
+          <span class="fc-stat"><b>${c.learning}</b> learning</span>
+          <span class="fc-stat"><b>${c.due}</b> due today</span>
+          <span class="fc-stat"><b>${c.new}</b> unseen</span>
+          ${sessionSeen ? `<span class="fc-stat session">this session ${sessionKnew}/${sessionSeen}</span>` : ''}
         </div>
         ${card ? `
-          <div class="fc-card ${flipped?'flipped':''}" id="fcCard" data-reveal style="--i:2" role="button" tabindex="0" aria-label="Flashcard — click to flip">
+          <div class="fc-card ${flipped?'flipped':''}" id="fcCard" data-reveal style="--i:3" role="button" tabindex="0" aria-label="Flashcard — click to flip">
             <div class="fc-face fc-front">
               <div class="fc-hint">TERM ${di+1} / ${deck.length}</div>
               <div class="fc-term">${escapeHtml(card.term)}</div>
@@ -1604,23 +1840,28 @@ async function renderReview(){
               <a class="fc-src" href="#/lesson/${card.pathId}/${card.subId}">from Path ${card.pathN} · ${escapeHtml(card.subTitle)} →</a>
             </div>
           </div>
-          <div class="fc-actions ${flipped?'':'hidden-until-flip'}" data-reveal style="--i:3">
-            <button class="btn-ghost" id="fcAgainBtn" type="button">↻ Review again</button>
-            <button class="btn-amber" id="fcKnewBtn" type="button">✓ I knew it</button>
+          <div class="fc-actions ${flipped?'':'hidden-until-flip'}" data-reveal style="--i:4">
+            <button class="btn-ghost fc-btn-again" id="fcAgainBtn" type="button">↻ Again <small>~1 day</small></button>
+            <button class="btn-ghost fc-btn-good" id="fcGoodBtn" type="button">✓ Good <small>~${nextInterval(card,'good')} days</small></button>
+            <button class="btn-amber fc-btn-easy" id="fcEasyBtn" type="button">⚡ Easy <small>~${nextInterval(card,'easy')} days</small></button>
           </div>
         ` : `
-          <div class="sec-head"><p class="sec-lead">🎉 No cards in this deck — pick another path, or reset your known terms to practice everything again.</p></div>
+          <div class="fc-empty">
+            <div class="fc-empty-ico">🎉</div>
+            <div class="fc-empty-t">${mode==='due' ? 'Nothing due today — nice work.' : 'Deck empty for this filter.'}</div>
+            <div class="fc-empty-d">Come back tomorrow, switch to <b>New</b> for unseen cards, or reset progress below.</div>
+            <button class="btn-ghost sm" id="fcResetBtn" type="button">Reset progress for this filter</button>
+          </div>
         `}
       </section>
     `;
     setupReveal();
 
-    document.getElementById('fcPathFilter').addEventListener('change', e=>{
-      pathFilter = e.target.value; buildDeck(); paint();
-    });
+    document.getElementById('fcPathFilter').addEventListener('change', e=>{ pathFilter = e.target.value; buildDeck(); paint(); });
+    app.querySelectorAll('.fc-mode').forEach(btn=>btn.addEventListener('click', ()=>{ mode = btn.getAttribute('data-mode'); buildDeck(); paint(); }));
     document.getElementById('fcResetBtn')?.addEventListener('click', ()=>{
-      const pool = GLOSSARY.filter(e => pathFilter==='all' || e.pathId===pathFilter);
-      pool.forEach(e => delete STATE.flashcards.known[termKey(e)]);
+      if(!confirm('Reset review history for this filter?')) return;
+      pool().forEach(e => { const k = termKey(e); delete STATE.flashcards.known[k]; delete STATE.flashcards.reviews[k]; });
       saveState(); buildDeck(); paint();
     });
     const cardEl = document.getElementById('fcCard');
@@ -1629,28 +1870,469 @@ async function renderReview(){
       cardEl.addEventListener('click', e=>{ if(e.target.closest('a')) return; flip(); });
       cardEl.addEventListener('keydown', e=>{ if(e.key===' '||e.key==='Enter'){ e.preventDefault(); flip(); } });
     }
-    const next = (knew)=>{
+    const grade = (perf)=>{
       const card = deck[di];
       sessionSeen++;
-      if(knew){
-        sessionKnew++;
-        STATE.flashcards.known[termKey(card)] = Date.now();
-        saveState();
-      } else {
-        delete STATE.flashcards.known[termKey(card)];
-        saveState();
-        deck.push(card); // come back around later this session
-      }
+      if(perf !== 'again') sessionKnew++;
+      schedule(termKey(card), perf);
+      if(perf === 'again') deck.push(card); // circle back this session
       di++;
       flipped = false;
       if(di >= deck.length){ buildDeck(); }
       paint();
     };
-    document.getElementById('fcKnewBtn')?.addEventListener('click', ()=>next(true));
-    document.getElementById('fcAgainBtn')?.addEventListener('click', ()=>next(false));
+    document.getElementById('fcAgainBtn')?.addEventListener('click', ()=>grade('again'));
+    document.getElementById('fcGoodBtn')?.addEventListener('click', ()=>grade('good'));
+    document.getElementById('fcEasyBtn')?.addEventListener('click', ()=>grade('easy'));
+  }
+  function nextInterval(card, perf){
+    const r = STATE.flashcards.reviews[termKey(card)] || {interval:0, ease:2.5, streak:0};
+    if(perf === 'good') return r.streak === 0 ? 1 : r.streak === 1 ? 3 : Math.max(1, Math.round(r.interval * r.ease));
+    if(perf === 'easy') return r.streak === 0 ? 3 : Math.max(1, Math.round(r.interval * r.ease * 1.3));
+    return 1;
   }
 
   buildDeck();
+  paint();
+}
+
+/* ============================================================
+   Practice tracks — curated cross-path sequences per career.
+   ============================================================ */
+function renderTracks(){
+  app.innerHTML = `
+    <section class="sec">
+      <div class="sec-head" data-reveal>
+        <div class="sec-eyebrow">Practice tracks</div>
+        <h2>A curated route for the job you actually want</h2>
+        <p class="sec-lead">The 21-path course covers everything. A track picks the exact lessons for a specific role and puts them in the right order — so you're not learning bug-bounty recon when you want to be a SOC analyst.</p>
+      </div>
+      <div class="tracks-grid" data-reveal style="--i:1">
+        ${TRACKS.map(t=>{
+          const pr = trackProgress(t);
+          const nextIdx = trackLessons(t).findIndex(l => !isComplete(l.pathId, l.subId));
+          const nextL = nextIdx >= 0 ? trackLessons(t)[nextIdx] : null;
+          return `
+            <a class="track-card" href="#/track/${t.id}">
+              <div class="track-head">
+                <span class="track-ico">${t.ico}</span>
+                <span class="track-title">${t.title}</span>
+              </div>
+              <p class="track-desc">${escapeHtml(t.desc)}</p>
+              <div class="track-progress">
+                <div class="track-bar"><div class="track-bar-fill" style="width:${pr.pct}%"></div></div>
+                <div class="track-meta"><b>${pr.done}/${pr.total}</b> lessons · ${pr.pct}%</div>
+              </div>
+              <div class="track-next">${nextL ? `Next: ${nextL.path.n}.${nextL.sub.n} · ${escapeHtml(nextL.sub.title)}` : '✅ Track complete'}</div>
+            </a>`;
+        }).join('')}
+      </div>
+    </section>
+  `;
+  setupReveal();
+}
+
+function renderTrack(id){
+  const track = TRACKS.find(t=>t.id===id);
+  if(!track) return renderNotFound();
+  const lessons = trackLessons(track);
+  const pr = trackProgress(track);
+  const nextIdx = lessons.findIndex(l => !isComplete(l.pathId, l.subId));
+  const nextL = nextIdx >= 0 ? lessons[nextIdx] : null;
+  app.innerHTML = `
+    <section class="sec">
+      <a href="#/tracks" class="back-link" data-reveal>← All tracks</a>
+      <div class="sec-head" data-reveal style="--i:1">
+        <div class="sec-eyebrow">${track.ico} Practice track</div>
+        <h2>${escapeHtml(track.title)}</h2>
+        <p class="sec-lead">${escapeHtml(track.desc)}</p>
+      </div>
+      <div class="track-hero" data-reveal style="--i:2">
+        <div class="track-hero-stat"><div class="hstat-n">${pr.pct}%</div><div class="hstat-l">complete</div></div>
+        <div class="track-hero-stat"><div class="hstat-n">${pr.done}/${pr.total}</div><div class="hstat-l">lessons done</div></div>
+        <div class="track-hero-stat"><div class="hstat-n">${new Set(track.steps.map(s=>s.pathId)).size}</div><div class="hstat-l">paths involved</div></div>
+        ${nextL ? `<a class="btn-amber" href="#/lesson/${nextL.pathId}/${nextL.subId}">▶ Continue: ${nextL.path.n}.${nextL.sub.n}</a>`
+                : `<span class="btn-amber" style="opacity:.7;pointer-events:none">🎉 Track complete</span>`}
+      </div>
+      <div class="track-lessons" data-reveal style="--i:3">
+        ${lessons.map((l,i)=>{
+          const done = isComplete(l.pathId, l.subId);
+          const isNext = i === nextIdx;
+          return `
+            <a class="track-lesson ${done?'done':''} ${isNext?'next':''}" href="#/lesson/${l.pathId}/${l.subId}">
+              <span class="tl-check">${done?'✓':(isNext?'▶':(i+1))}</span>
+              <span class="tl-body">
+                <span class="tl-title">${l.path.n}.${l.sub.n} · ${escapeHtml(l.sub.title)}</span>
+                <span class="tl-src">Path ${l.path.n} — ${escapeHtml(l.path.title)}</span>
+              </span>
+            </a>`;
+        }).join('')}
+      </div>
+    </section>
+  `;
+  setupReveal();
+}
+
+/* ============================================================
+   Interactive labs — three in-browser simulators. All state and
+   evaluation runs client-side; there's no real backend involved.
+   ============================================================ */
+function renderLabsIndex(){
+  const labs = [
+    {id:'terminal', ico:'🖥', title:'Terminal Simulator', desc:'A safe, in-browser Linux terminal with a fake filesystem. Practice ls, cd, cat, grep, find, whoami and more without spinning up a VM.', related:'Path 03 — Linux'},
+    {id:'webapp', ico:'🕸', title:'Vulnerable Web App', desc:'A tiny deliberately-broken app for practicing XSS and login-bypass. Runs entirely in-browser; no server to attack, nothing to install.', related:'Path 11 — Web Security'},
+    {id:'pcap', ico:'📡', title:'Packet Capture Viewer', desc:'Load a sample capture and explore protocols, IPs, and payloads — the same "read the traffic" muscle Wireshark builds.', related:'Path 12 — Network Security'}
+  ];
+  app.innerHTML = `
+    <section class="sec">
+      <div class="sec-head" data-reveal>
+        <div class="sec-eyebrow">Interactive labs</div>
+        <h2>Practise inside the browser</h2>
+        <p class="sec-lead">Real security work is hands-on. These labs run entirely client-side — nothing to install, no VMs, no risk of hitting anything you shouldn't.</p>
+      </div>
+      <div class="labs-grid" data-reveal style="--i:1">
+        ${labs.map(l=>`
+          <a class="lab-card" href="#/labs/${l.id}">
+            <div class="lab-ico">${l.ico}</div>
+            <h3>${l.title}</h3>
+            <p>${escapeHtml(l.desc)}</p>
+            <div class="lab-related">Pairs with: <b>${l.related}</b></div>
+          </a>
+        `).join('')}
+      </div>
+    </section>
+  `;
+  setupReveal();
+}
+
+/* --- Lab 1: terminal simulator ------------------------------ */
+/* Minimal fake FS with a handful of directories/files that make sense
+   for beginner Linux practice. Each entry is either a string (file
+   contents) or an object (directory). */
+function makeFakeFs(){
+  return {
+    home: { user: {
+      'welcome.txt': 'Welcome to the KashSec terminal sandbox.\nTry: ls, cd, cat, pwd, whoami, grep, find, echo, help\n',
+      'notes.md':    "# Terminal notes\n\n- ls lists files\n- cd changes directories\n- cat prints a file\n- grep searches inside files\n",
+      documents: {
+        'passwords.txt': "# DO NOT store real passwords like this in real life.\n" +
+                         "banking: hunter2\nemail: p@ssw0rd\nvpn: correct-horse-battery-staple\n",
+        'todo.txt': "1. Learn grep\n2. Learn find\n3. Take the Path 03 quiz\n"
+      },
+      '.bash_history': "ls\ncd documents\ngrep -i password *\nfind / -name '*.log'\n"
+    }},
+    etc: {
+      passwd: "root:x:0:0:root:/root:/bin/bash\nuser:x:1000:1000:demo user:/home/user:/bin/bash\n",
+      hostname: "kashsec-sandbox\n"
+    },
+    var: { log: {
+      'auth.log': "Jan 12 08:14:22 kashsec sshd[3341]: Failed password for user from 10.0.0.42\n" +
+                  "Jan 12 08:14:24 kashsec sshd[3341]: Failed password for user from 10.0.0.42\n" +
+                  "Jan 12 08:14:31 kashsec sshd[3341]: Accepted password for user from 10.0.0.42\n"
+    }}
+  };
+}
+function renderLabTerminal(){
+  const fs = makeFakeFs();
+  let cwd = ['home','user'];
+  const history = [];
+  let hi = 0;
+
+  function resolveNode(pathStr){
+    let parts;
+    if(pathStr === '~') parts = ['home','user'];
+    else if(pathStr === undefined || pathStr === '' || pathStr === '.') parts = cwd.slice();
+    else if(pathStr.startsWith('/')) parts = pathStr.split('/').filter(Boolean);
+    else parts = cwd.concat(pathStr.split('/'));
+    const stack = [];
+    for(const p of parts){
+      if(p === '' || p === '.') continue;
+      if(p === '..') stack.pop();
+      else stack.push(p);
+    }
+    let node = fs;
+    for(const p of stack){
+      if(node && typeof node === 'object' && p in node) node = node[p];
+      else return {found:false, parts:stack};
+    }
+    return {found:true, node, parts:stack};
+  }
+  function pathStr(parts){ return '/' + parts.join('/'); }
+  function isDir(n){ return n && typeof n === 'object'; }
+
+  const OUTPUT_ID = 'termOut';
+  function print(html){ const out = document.getElementById(OUTPUT_ID); out.insertAdjacentHTML('beforeend', html); out.scrollTop = out.scrollHeight; }
+  function prompt(){ return `<span class="tp-user">user@kashsec</span>:<span class="tp-path">${pathStr(cwd) || '/'}</span>$ `; }
+
+  const cmds = {
+    help: ()=>`Available: help, ls [path], cd [path], pwd, cat &lt;file&gt;, echo &lt;text&gt;, grep &lt;str&gt; &lt;file&gt;, find [path] [-name PATTERN], whoami, hostname, history, clear\n`,
+    pwd:  ()=>pathStr(cwd) + '\n',
+    whoami: ()=>'user\n',
+    hostname: ()=>'kashsec-sandbox\n',
+    clear: ()=>{ document.getElementById(OUTPUT_ID).innerHTML = ''; return ''; },
+    history: ()=>history.map((h,i)=>`  ${i+1}  ${h}`).join('\n') + '\n',
+    echo: (args)=>args.join(' ') + '\n',
+    ls: (args)=>{
+      const target = args.filter(a=>!a.startsWith('-'))[0];
+      const {found, node} = resolveNode(target);
+      if(!found) return `ls: cannot access '${target}': No such file or directory\n`;
+      if(!isDir(node)) return (target||'') + '\n';
+      const keys = Object.keys(node).sort();
+      return keys.map(k => isDir(node[k]) ? `<span class="tp-dir">${k}/</span>` : k).join('  ') + (keys.length?'\n':'');
+    },
+    cd: (args)=>{
+      const target = args[0] === undefined ? '~' : args[0]; // bare cd → home
+      const {found, node, parts} = resolveNode(target);
+      if(!found || !isDir(node)) return `cd: ${target}: No such directory\n`;
+      cwd = parts;
+      return '';
+    },
+    cat: (args)=>{
+      if(!args[0]) return 'cat: missing file operand\n';
+      const {found, node} = resolveNode(args[0]);
+      if(!found) return `cat: ${args[0]}: No such file or directory\n`;
+      if(isDir(node)) return `cat: ${args[0]}: Is a directory\n`;
+      return escapeHtml(node);
+    },
+    grep: (args)=>{
+      if(args.length < 2) return 'usage: grep [-i] PATTERN FILE\n';
+      let insensitive = false;
+      if(args[0] === '-i'){ insensitive = true; args = args.slice(1); }
+      const [pat, file] = args;
+      const {found, node} = resolveNode(file);
+      if(!found || isDir(node)) return `grep: ${file}: No such file\n`;
+      const re = new RegExp(pat.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'), insensitive?'i':'');
+      return node.split('\n').filter(l => re.test(l)).map(l=>escapeHtml(l)).join('\n') + '\n';
+    },
+    find: (args)=>{
+      // Strip shell-style quotes so `find / -name "*.log"` behaves the same
+      // as `find / -name *.log` (users copy-paste from Path 03 examples).
+      args = args.map(a => a.replace(/^["'](.+)["']$/,'$1'));
+      const start = args.find(a=>!a.startsWith('-') && args.indexOf(a) === 0) || '.';
+      const nameIdx = args.indexOf('-name');
+      const pat = nameIdx >= 0 ? args[nameIdx+1] : null;
+      const re = pat ? new RegExp('^' + pat.replace(/[.+^${}()|[\]\\]/g,'\\$&').replace(/\*/g,'.*') + '$') : null;
+      const results = [];
+      function walk(node, parts){
+        results.push('/' + parts.join('/'));
+        if(isDir(node)) for(const k of Object.keys(node)) walk(node[k], parts.concat(k));
+      }
+      const {found, node, parts} = resolveNode(start === '.' ? '' : start);
+      if(!found) return `find: '${start}': No such file or directory\n`;
+      walk(node, parts);
+      return (re ? results.filter(p => re.test(p.split('/').pop())) : results).join('\n') + '\n';
+    }
+  };
+  function run(line){
+    const [cmd, ...rest] = line.trim().split(/\s+/);
+    if(!cmd) return '';
+    if(!cmds[cmd]) return `${cmd}: command not found — try \`help\`\n`;
+    return cmds[cmd](rest);
+  }
+
+  app.innerHTML = `
+    <section class="sec">
+      <a href="#/labs" class="back-link" data-reveal>← All labs</a>
+      <div class="sec-head" data-reveal style="--i:1">
+        <div class="sec-eyebrow">Interactive lab</div>
+        <h2>🖥 Terminal Simulator</h2>
+        <p class="sec-lead">A safe fake Linux shell. Try: <code>ls</code>, <code>cd documents</code>, <code>cat notes.md</code>, <code>grep -i password /home/user/documents/passwords.txt</code>, <code>find / -name "*.log"</code>. Nothing here is real; nothing you type touches anything outside this page.</p>
+      </div>
+      <div class="term-wrap" data-reveal style="--i:2">
+        <div class="term-out" id="${OUTPUT_ID}">${prompt()}Type <code>help</code> to see available commands.\n${prompt()}</div>
+        <form class="term-input" id="termForm">
+          <span class="term-prefix" id="termPrefix">${prompt()}</span>
+          <input type="text" id="termInput" autocomplete="off" spellcheck="false" autofocus>
+        </form>
+      </div>
+    </section>
+  `;
+  setupReveal();
+
+  const input = document.getElementById('termInput');
+  const form = document.getElementById('termForm');
+  form.addEventListener('submit', e=>{
+    e.preventDefault();
+    const line = input.value;
+    history.push(line); hi = history.length;
+    print(`<span class="tp-cmd">${escapeHtml(line)}</span>\n`);
+    const output = run(line);
+    if(output) print(output.endsWith('\n') ? output : output + '\n');
+    print(prompt());
+    document.getElementById('termPrefix').innerHTML = prompt();
+    input.value = '';
+  });
+  input.addEventListener('keydown', e=>{
+    if(e.key === 'ArrowUp' && history.length){ e.preventDefault(); hi = Math.max(0, hi-1); input.value = history[hi] || ''; }
+    else if(e.key === 'ArrowDown' && history.length){ e.preventDefault(); hi = Math.min(history.length, hi+1); input.value = history[hi] || ''; }
+  });
+}
+
+/* --- Lab 2: fake vulnerable web app -------------------------- */
+/* Two mini-apps in one page: a search box with reflected XSS, and a
+   login form with SQLi-style auth bypass. Both are simulated — the
+   XSS renders inside a sandboxed <iframe srcdoc> so it can never
+   touch the parent page's DOM/cookies, and the "SQL" is a fake
+   evaluator that looks for the same patterns real injections use. */
+function renderLabWebapp(){
+  app.innerHTML = `
+    <section class="sec">
+      <a href="#/labs" class="back-link" data-reveal>← All labs</a>
+      <div class="sec-head" data-reveal style="--i:1">
+        <div class="sec-eyebrow">Interactive lab</div>
+        <h2>🕸 Vulnerable Web App Playground</h2>
+        <p class="sec-lead">Two deliberately-broken mini-apps for safe practice. Nothing here is real — the "XSS" fires inside an isolated iframe, the "SQL" is a fake evaluator. See if you can break each one.</p>
+      </div>
+
+      <div class="lab-panel" data-reveal style="--i:2">
+        <h3>1) Reflected XSS demo</h3>
+        <p class="sec-lead">This search box echoes your input into the results page <em>without escaping it</em>. Try a normal search first (<code>hello</code>), then try injecting JavaScript.</p>
+        <details class="lab-hint"><summary>💡 Hint (open only if stuck)</summary><p>The classic first payload: <code>&lt;script&gt;alert('xss')&lt;/script&gt;</code>. If that gets filtered, try <code>&lt;img src=x onerror="alert('xss')"&gt;</code>.</p></details>
+        <form id="xssForm" class="lab-form">
+          <input type="text" id="xssQuery" placeholder="Search…" autocomplete="off">
+          <button type="submit" class="btn-amber sm">Search</button>
+        </form>
+        <div class="lab-frame-wrap"><iframe id="xssFrame" sandbox="allow-scripts" title="XSS demo output"></iframe></div>
+        <div id="xssHit" class="lab-hit" hidden>🚩 Nice — you triggered an alert. That's a reflected XSS. In a real app this means an attacker could steal your session, run actions as you, or redirect you elsewhere. Path 11's <a href="#/lesson/11-web-security/xss">XSS lesson</a> explains defenses.</div>
+      </div>
+
+      <div class="lab-panel" data-reveal style="--i:3">
+        <h3>2) Login form with SQLi-style bypass</h3>
+        <p class="sec-lead">This "login" builds its query as <code>SELECT * FROM users WHERE username='<b>&lt;input&gt;</b>' AND password='<b>&lt;input&gt;</b>'</code>. Valid users: <code>admin</code>, <code>alice</code>. You don't know the passwords — but you don't need to.</p>
+        <details class="lab-hint"><summary>💡 Hint</summary><p>Try username <code>admin' --</code> and any password. Or username <code>' OR 1=1 --</code>. The <code>--</code> starts a SQL comment, killing the rest of the query.</p></details>
+        <form id="sqliForm" class="lab-form">
+          <input type="text" id="sqliUser" placeholder="Username" autocomplete="off">
+          <input type="text" id="sqliPass" placeholder="Password" autocomplete="off">
+          <button type="submit" class="btn-amber sm">Log in</button>
+        </form>
+        <pre id="sqliQuery" class="lab-query"></pre>
+        <div id="sqliResult" class="lab-hit" hidden></div>
+      </div>
+    </section>
+  `;
+  setupReveal();
+
+  const xssForm = document.getElementById('xssForm');
+  const xssFrame = document.getElementById('xssFrame');
+  const xssHit = document.getElementById('xssHit');
+  window.__xssTriggered = ()=>{ xssHit.hidden = false; };
+  xssForm.addEventListener('submit', e=>{
+    e.preventDefault();
+    const q = document.getElementById('xssQuery').value;
+    // Deliberately unescaped concatenation — that's the whole point of the demo.
+    const doc = `<!doctype html><html><body style="font-family:system-ui;color:#1a1a1a;padding:1rem;margin:0">
+      <script>const _a = window.alert; window.alert = function(m){ _a(m); parent.postMessage({xss:true},'*'); };<\/script>
+      <div style="color:#666;font-size:.85rem">Search results for:</div>
+      <div style="font-size:1.1rem;margin-top:.3rem">${q}</div>
+      <hr style="margin:1rem 0;border:none;border-top:1px solid #ddd">
+      <div style="color:#999;font-size:.8rem">(no matching entries in this demo database)</div>
+    </body></html>`;
+    xssFrame.srcdoc = doc;
+  });
+  window.addEventListener('message', ev=>{ if(ev.data && ev.data.xss) window.__xssTriggered(); });
+
+  const sqliForm = document.getElementById('sqliForm');
+  sqliForm.addEventListener('submit', e=>{
+    e.preventDefault();
+    const u = document.getElementById('sqliUser').value;
+    const p = document.getElementById('sqliPass').value;
+    const q = `SELECT * FROM users WHERE username='${u}' AND password='${p}'`;
+    document.getElementById('sqliQuery').textContent = q;
+    const users = {admin:'s3cret-adm1n-p@ss', alice:'wonderland99'};
+    const res = document.getElementById('sqliResult');
+    let ok = false, why = '';
+    if(users[u] !== undefined && users[u] === p){ ok = true; why = `Logged in as <b>${escapeHtml(u)}</b> (legitimately).`; }
+    else if(/--/.test(u) || /--/.test(p)){
+      // Fake evaluator: if the user tries a comment-out, treat as bypass.
+      const target = /^\s*admin/i.test(u) ? 'admin' : (u.match(/^([a-z0-9_]+)/i)?.[1] || 'admin');
+      ok = true; why = `🚩 Bypass successful — logged in as <b>${escapeHtml(target)}</b> without a password. Real fix: never concatenate SQL, use parameterised queries. See Path 11's <a href="#/lesson/11-web-security/sqli">SQL Injection lesson</a>.`;
+    } else if(/OR\s*['"]?1['"]?\s*=\s*['"]?1/i.test(u) || /OR\s*['"]?1['"]?\s*=\s*['"]?1/i.test(p)){
+      ok = true; why = `🚩 Bypass successful via <code>OR 1=1</code>. That trick makes the WHERE clause always-true. Same fix: parameterised queries.`;
+    } else {
+      why = 'Login failed — invalid credentials.';
+    }
+    res.hidden = false;
+    res.className = 'lab-hit' + (ok ? ' ok' : ' fail');
+    res.innerHTML = why;
+  });
+}
+
+/* --- Lab 3: packet capture viewer ---------------------------- */
+function samplePcap(){
+  return [
+    {t:0.000, src:'192.168.1.42', dst:'8.8.8.8',      proto:'DNS',  info:'Standard query A example.com', payload:'example.com. IN A'},
+    {t:0.023, src:'8.8.8.8',      dst:'192.168.1.42', proto:'DNS',  info:'Standard query response A 93.184.216.34', payload:'example.com. 3600 IN A 93.184.216.34'},
+    {t:0.041, src:'192.168.1.42', dst:'93.184.216.34',proto:'TCP',  info:'50421 → 80 [SYN] Seq=0 Win=64240', payload:''},
+    {t:0.089, src:'93.184.216.34',dst:'192.168.1.42', proto:'TCP',  info:'80 → 50421 [SYN, ACK] Seq=0 Ack=1', payload:''},
+    {t:0.090, src:'192.168.1.42', dst:'93.184.216.34',proto:'TCP',  info:'50421 → 80 [ACK] Seq=1 Ack=1', payload:''},
+    {t:0.091, src:'192.168.1.42', dst:'93.184.216.34',proto:'HTTP', info:'GET /login.php HTTP/1.1', payload:'GET /login.php HTTP/1.1\r\nHost: example.com\r\nUser-Agent: Mozilla/5.0\r\n\r\n'},
+    {t:0.180, src:'93.184.216.34',dst:'192.168.1.42', proto:'HTTP', info:'HTTP/1.1 200 OK  (text/html)',   payload:'HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n<html><form action="/auth" method="post">…</form></html>'},
+    {t:2.410, src:'192.168.1.42', dst:'93.184.216.34',proto:'HTTP', info:'POST /auth HTTP/1.1  (form-encoded)', payload:'POST /auth HTTP/1.1\r\nHost: example.com\r\nContent-Type: application/x-www-form-urlencoded\r\n\r\nusername=admin&password=hunter2'},
+    {t:2.512, src:'93.184.216.34',dst:'192.168.1.42', proto:'HTTP', info:'HTTP/1.1 302 Found  Location: /dashboard', payload:'HTTP/1.1 302 Found\r\nSet-Cookie: session=eyJhbGciOi…\r\nLocation: /dashboard\r\n\r\n'},
+    {t:3.800, src:'192.168.1.42', dst:'10.0.0.1',      proto:'ARP',  info:'Who has 10.0.0.1? Tell 192.168.1.42', payload:''},
+    {t:3.812, src:'10.0.0.1',      dst:'192.168.1.42', proto:'ARP',  info:'10.0.0.1 is at 00:11:22:33:44:55', payload:''}
+  ];
+}
+function renderLabPcap(){
+  const pkts = samplePcap();
+  let filter = '';
+  let sel = 0;
+
+  function paint(){
+    const visible = pkts
+      .map((p,i)=>({p,i}))
+      .filter(({p}) => !filter || [p.src,p.dst,p.proto,p.info].some(f=>f.toLowerCase().includes(filter.toLowerCase())));
+    const selPkt = pkts[sel];
+    app.innerHTML = `
+      <section class="sec">
+        <a href="#/labs" class="back-link" data-reveal>← All labs</a>
+        <div class="sec-head" data-reveal style="--i:1">
+          <div class="sec-eyebrow">Interactive lab</div>
+          <h2>📡 Packet Capture Viewer</h2>
+          <p class="sec-lead">A sample capture from a fake host visiting a fake site. Filter by protocol or IP, click any packet to inspect its payload. Same reading-the-wire skill Wireshark trains, in a browser tab.</p>
+        </div>
+        <div class="pcap-tools" data-reveal style="--i:2">
+          <input type="search" id="pcapFilter" placeholder="Filter (e.g. HTTP, 192.168.1.42, dns)…" value="${escapeHtml(filter)}">
+          <span class="fc-progress">${visible.length} of ${pkts.length} packets</span>
+        </div>
+        <div class="pcap-wrap" data-reveal style="--i:3">
+          <div class="pcap-list">
+            <div class="pcap-row pcap-head"><span>#</span><span>Time</span><span>Source</span><span>Destination</span><span>Proto</span><span>Info</span></div>
+            ${visible.map(({p,i})=>`
+              <button class="pcap-row ${i===sel?'sel':''} pcap-${p.proto.toLowerCase()}" data-i="${i}" type="button">
+                <span>${i+1}</span>
+                <span>${p.t.toFixed(3)}</span>
+                <span>${p.src}</span>
+                <span>${p.dst}</span>
+                <span class="pcap-proto">${p.proto}</span>
+                <span>${escapeHtml(p.info)}</span>
+              </button>
+            `).join('')}
+          </div>
+          <div class="pcap-detail">
+            <div class="pcap-detail-head">Packet #${sel+1}</div>
+            <div class="pcap-kv"><b>Time</b><span>${selPkt.t.toFixed(3)} s</span></div>
+            <div class="pcap-kv"><b>Source</b><span>${selPkt.src}</span></div>
+            <div class="pcap-kv"><b>Destination</b><span>${selPkt.dst}</span></div>
+            <div class="pcap-kv"><b>Protocol</b><span>${selPkt.proto}</span></div>
+            <div class="pcap-kv"><b>Info</b><span>${escapeHtml(selPkt.info)}</span></div>
+            ${selPkt.payload ? `<div class="pcap-payload-title">Payload</div><pre class="pcap-payload">${escapeHtml(selPkt.payload)}</pre>` : `<div class="pcap-detail-hint">No application-layer payload (transport handshake).</div>`}
+          </div>
+        </div>
+        <details class="lab-hint" data-reveal style="--i:4"><summary>💡 What to look for</summary>
+          <ul>
+            <li><b>DNS</b> shows the name-to-IP lookup happening <em>before</em> any real traffic.</li>
+            <li>The <b>TCP handshake</b> (SYN, SYN-ACK, ACK) sets up the connection.</li>
+            <li>The <b>POST /auth</b> packet carries the login body in <b>plaintext</b> — that's exactly why HTTPS matters (Path 02).</li>
+            <li>Payload of that packet reveals <code>username=admin&amp;password=hunter2</code>. Any observer on the network can read it.</li>
+          </ul>
+        </details>
+      </section>
+    `;
+    setupReveal();
+    document.getElementById('pcapFilter').addEventListener('input', e=>{ filter = e.target.value; paint(); });
+    app.querySelectorAll('.pcap-row[data-i]').forEach(btn=>btn.addEventListener('click', ()=>{ sel = parseInt(btn.dataset.i,10); paint(); }));
+  }
   paint();
 }
 
@@ -2282,6 +2964,19 @@ function renderProgressHub(){
         `).join('') : `<div class="hub-empty">No notes yet — jot one down from the notes panel on any lesson.</div>`}
       </div>
 
+      <div class="hub-section" data-reveal style="--i:7">
+        <div class="hub-section-head"><h3 style="font-family:'Space Grotesk';font-size:1.15rem">🎨 Appearance</h3></div>
+        <div class="hub-list-item" style="cursor:default">
+          <div><div class="hli-t">Theme</div><div class="hli-d">"Auto: system" follows your OS setting. "Auto: time of day" switches to light 7am–7pm local, dark otherwise.</div></div>
+          <select class="fc-select" id="themePicker" aria-label="Theme">
+            <option value="auto-system" ${STATE.theme == null ? 'selected' : ''}>Auto: system</option>
+            <option value="auto-time" ${STATE.theme === 'auto-time' ? 'selected' : ''}>Auto: time of day</option>
+            <option value="light" ${STATE.theme === 'light' ? 'selected' : ''}>Light</option>
+            <option value="dark" ${STATE.theme === 'dark' ? 'selected' : ''}>Dark</option>
+          </select>
+        </div>
+      </div>
+
       <div class="hub-section" data-reveal style="--i:8">
         <div class="hub-section-head"><h3 style="font-family:'Space Grotesk';font-size:1.15rem">💾 Backup</h3></div>
         <div class="hub-list-item" style="cursor:default">
@@ -2299,6 +2994,12 @@ function renderProgressHub(){
       </div>
     </section>
   `;
+
+  document.getElementById('themePicker')?.addEventListener('change', (e)=>{
+    STATE.theme = e.target.value === 'auto-system' ? null : e.target.value;
+    saveState();
+    applyTheme();
+  });
 
   document.getElementById('exportProgressBtn')?.addEventListener('click', ()=>{
     const blob = new Blob([JSON.stringify(STATE, null, 2)], {type:'application/json'});
@@ -2377,6 +3078,10 @@ onScroll();
 
 /* Theme toggle */
 document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+document.getElementById('randomLessonBtn')?.addEventListener('click', ()=>{
+  const {pathId, subId} = pickRandomLesson();
+  location.hash = `#/lesson/${pathId}/${subId}`;
+});
 
 /* Progress ring: reflects overall completion, links to the progress hub */
 refreshProgressRing();
@@ -2521,6 +3226,7 @@ function toggleKbdOverlay(force){
         <div class="kbd-row"><span><kbd>Ctrl</kbd>+<kbd>K</kbd></span><span>Search lessons</span></div>
         <div class="kbd-row"><span><kbd>[</kbd></span><span>Previous lesson</span></div>
         <div class="kbd-row"><span><kbd>]</kbd></span><span>Next lesson</span></div>
+        <div class="kbd-row"><span><kbd>R</kbd></span><span>Jump to a random lesson</span></div>
         <div class="kbd-row"><span><kbd>?</kbd></span><span>Show / hide this cheatsheet</span></div>
         <div class="kbd-row"><span><kbd>Esc</kbd></span><span>Close dialogs</span></div>
       </div>`;
@@ -2550,6 +3256,11 @@ window.addEventListener('keydown', (e)=>{
     if(!ctx) return;
     const dest = e.key === '[' ? ctx.prev : ctx.next;
     if(dest) location.hash = `#/lesson/${dest.pathId}/${dest.subId}`;
+    return;
+  }
+  if(e.key === 'r' || e.key === 'R'){
+    const {pathId, subId} = pickRandomLesson();
+    location.hash = `#/lesson/${pathId}/${subId}`;
   }
 });
 

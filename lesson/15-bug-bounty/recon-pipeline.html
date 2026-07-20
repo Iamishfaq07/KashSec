@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The recon pipeline — Path 15 · KashSec Academy</title>
+<meta name="description" content="Path 11.3 and Path 14.3 taught recon concepts and tools individually. This lesson builds them into a genuine, automated pipeline — the exact kind of tooling that separates hobbyist bug hunting from se">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/15-bug-bounty/recon-pipeline">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="The recon pipeline — Path 15 · KashSec Academy">
+<meta property="og:description" content="Path 11.3 and Path 14.3 taught recon concepts and tools individually. This lesson builds them into a genuine, automated pipeline — the exact kind of tooling that separates hobbyist bug hunting from se">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/15-bug-bounty/recon-pipeline">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The recon pipeline — Path 15 · KashSec Academy">
+<meta name="twitter:description" content="Path 11.3 and Path 14.3 taught recon concepts and tools individually. This lesson builds them into a genuine, automated pipeline — the exact kind of tooling that separates hobbyist bug hunting from se">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"The recon pipeline — Path 15 · KashSec Academy","description":"Path 11.3 and Path 14.3 taught recon concepts and tools individually. This lesson builds them into a genuine, automated pipeline — the exact kind of tooling that separates hobbyist bug hunting from se","url":"https://kashsec.vercel.app/#/lesson/15-bug-bounty/recon-pipeline","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/15-bug-bounty/recon-pipeline">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 15 — Bug Bounty</a> · The recon pipeline</div>
+  <article><h1>Building a recon pipeline</h1>
+<p>Path 11.3 and Path 14.3 taught recon concepts and tools individually. This lesson builds them into a genuine, automated <strong>pipeline</strong> — the exact kind of tooling that separates hobbyist bug hunting from serious, sustained practice, and directly mirrors Ishfaq&#39;s own real Burp Suite + MCP + Cline automation setup.</p>
+<h2>Why automation is essential in bug bounty specifically</h2>
+<p>Recall Path 15.2 — a broad-scope program (<code>*.example.com</code>) might have hundreds of subdomains. Manually running each recon step from Path 11.3 against every one of them, repeatedly, as the target changes over time, simply doesn&#39;t scale. Serious hunters build <strong>automated pipelines</strong> that run continuously or on a schedule, surfacing new attack surface and changes automatically.</p>
+<h2>The pipeline architecture</h2>
+<h2>Step-by-step build</h2>
+<h3>1. Subdomain enumeration, combined from multiple sources</h3>
+<pre><code class="language-bash"># Combine several tools for maximum coverage — no single source finds everything:
+subfinder -d example.com -silent &gt; subs1.txt
+amass enum -passive -d example.com &gt; subs2.txt
+curl -s &quot;https://crt.sh/?q=%.example.com&amp;output=json&quot; | jq -r &#39;.[].name_value&#39; &gt; subs3.txt
+
+cat subs1.txt subs2.txt subs3.txt | sort -u &gt; all-subs.txt
+</code></pre>
+<h3>2. Resolve and filter to live hosts</h3>
+<pre><code class="language-bash"># httpx checks which subdomains actually respond, and grabs useful metadata:
+cat all-subs.txt | httpx -silent -status-code -title -tech-detect -o live-hosts.txt
+</code></pre>
+<h3>3. Visual triage — screenshot everything</h3>
+<p>When you have hundreds of live hosts, screenshots let you rapidly spot interesting targets (admin panels, error pages, forgotten dev environments) without manually visiting each one:</p>
+<pre><code class="language-bash">cat live-hosts.txt | gowitness file -f - --screenshot-path ./screenshots
+</code></pre>
+<h3>4. Crawl for endpoints and parameters</h3>
+<pre><code class="language-bash">cat live-hosts.txt | katana -d 3 -jc -o all-urls.txt
+# -jc also crawls JavaScript files for additional embedded endpoints/URLs
+</code></pre>
+<h3>5. Directory and parameter fuzzing</h3>
+<pre><code class="language-bash"># For each live host, fuzz common paths:
+ffuf -u https://FUZZ_HOST/FUZZ -w /usr/share/seclists/Discovery/Web-Content/common.txt \
+  -recursion -recursion-depth 2 -o fuzz-results.json -of json
+</code></pre>
+<h3>6. Automated vulnerability scanning with Nuclei</h3>
+<p><strong>Nuclei</strong> (mentioned in Path 11.9 and Path 12.8) runs thousands of community-maintained, YAML-defined templates checking for known vulnerability patterns, misconfigurations, and exposed panels:</p>
+<pre><code class="language-bash">cat all-urls.txt | nuclei -t ~/nuclei-templates/ -severity medium,high,critical -o nuclei-results.txt
+
+# Or targeted at a specific category:
+nuclei -l live-hosts.txt -t exposures/ -o exposure-findings.txt
+</code></pre>
+<h3>7. Diffing — the key to sustainable, ongoing hunting</h3>
+<p>The single highest-leverage automation technique: comparing <strong>today&#39;s</strong> recon results against <strong>yesterday&#39;s</strong>, and only alerting on what&#39;s genuinely <strong>new</strong>.</p>
+<pre><code class="language-python">#!/usr/bin/env python3
+&quot;&quot;&quot;
+diff-recon.py — Compare today&#39;s subdomain list against the previous run,
+alerting only on genuinely new discoveries.
+&quot;&quot;&quot;
+import sys
+
+def load_set(path: str) -&gt; set[str]:
+    with open(path) as f:
+        return set(line.strip() for line in f if line.strip())
+
+def main():
+    if len(sys.argv) != 3:
+        print(&quot;Usage: diff-recon.py &lt;previous.txt&gt; &lt;current.txt&gt;&quot;)
+        sys.exit(1)
+
+    previous = load_set(sys.argv[1])
+    current = load_set(sys.argv[2])
+
+    new_items = current - previous
+    removed_items = previous - current
+
+    if new_items:
+        print(f&quot;[+] {len(new_items)} NEW subdomains found:&quot;)
+        for item in sorted(new_items):
+            print(f&quot;    {item}&quot;)
+    if removed_items:
+        print(f&quot;[-] {len(removed_items)} subdomains no longer resolving:&quot;)
+        for item in sorted(removed_items):
+            print(f&quot;    {item}&quot;)
+
+if __name__ == &quot;__main__&quot;:
+    main()
+</code></pre>
+<pre><code class="language-bash">python3 diff-recon.py subs-yesterday.txt subs-today.txt
+</code></pre>
+<p>A newly-appeared subdomain is disproportionately likely to be an under-tested, freshly-deployed system — often the single highest-value signal in an entire ongoing recon pipeline, precisely because it hasn&#39;t yet been picked over by other hunters.</p>
+<h2>Wrapping it all into a scheduled pipeline</h2>
+<pre><code class="language-bash">#!/bin/bash
+# recon-pipeline.sh — Full daily recon pipeline for a target domain
+
+set -euo pipefail
+TARGET=$1
+DATE=$(date +%Y%m%d)
+OUTDIR=&quot;recon-$TARGET-$DATE&quot;
+mkdir -p &quot;$OUTDIR&quot;
+
+echo &quot;[*] Subdomain enumeration...&quot;
+subfinder -d &quot;$TARGET&quot; -silent &gt; &quot;$OUTDIR/subs.txt&quot;
+
+echo &quot;[*] Resolving live hosts...&quot;
+httpx -l &quot;$OUTDIR/subs.txt&quot; -silent -o &quot;$OUTDIR/live.txt&quot;
+
+echo &quot;[*] Crawling...&quot;
+katana -list &quot;$OUTDIR/live.txt&quot; -jc -o &quot;$OUTDIR/urls.txt&quot;
+
+echo &quot;[*] Nuclei scan...&quot;
+nuclei -l &quot;$OUTDIR/live.txt&quot; -severity medium,high,critical -o &quot;$OUTDIR/nuclei.txt&quot;
+
+echo &quot;[*] Diffing against previous run...&quot;
+PREV=$(ls -d recon-&quot;$TARGET&quot;-* 2&gt;/dev/null | sort | tail -2 | head -1)
+if [ -n &quot;$PREV&quot; ] &amp;&amp; [ -f &quot;$PREV/subs.txt&quot; ]; then
+    python3 diff-recon.py &quot;$PREV/subs.txt&quot; &quot;$OUTDIR/subs.txt&quot;
+fi
+
+echo &quot;[+] Done. Results in $OUTDIR/&quot;
+</code></pre>
+<pre><code class="language-bash"># Run daily via cron (recall Path 03.11&#39;s cron lesson):
+0 3 * * * /home/kali/recon-pipeline.sh example.com &gt;&gt; /home/kali/recon.log 2&gt;&amp;1
+</code></pre>
+<p>This exact pattern — cron-scheduled, diffed, alerting only on genuine change — is precisely how experienced hunters (and Ishfaq&#39;s own real Burp Suite + MCP + Cline automation setup) sustain ongoing coverage across multiple programs without manually re-running everything from scratch every single day.</p>
+<h2>Notification integration — closing the loop without babysitting a terminal</h2>
+<p>A pipeline that only writes results to a text file still requires you to remember to go look at it — the final piece that makes automation genuinely sustainable is pushing new findings somewhere you&#39;ll actually notice them, without needing to manually check in:</p>
+<pre><code class="language-bash"># Send a Slack/Discord webhook notification only when the diff script finds something new:
+if [ -s new-findings.txt ]; then
+    curl -s -X POST -H &#39;Content-type: application/json&#39; \
+      --data &quot;{\&quot;text\&quot;:\&quot;New recon findings for $TARGET: $(cat new-findings.txt | wc -l) items\&quot;}&quot; \
+      &quot;$WEBHOOK_URL&quot;
+fi
+</code></pre>
+<p>This closes the loop the diffing step opened: subdomain enumeration finds candidates, diffing filters down to what&#39;s genuinely new, and a notification makes sure that signal actually reaches you promptly rather than sitting silently in a log file on a cron-scheduled machine you only check once a week. For a target with real time-sensitivity — a newly-deployed subdomain is at its most under-tested in the first few days after appearing — the gap between &quot;the pipeline found it&quot; and &quot;a human actually looked at it&quot; is exactly where competitive advantage over other hunters lives.</p>
+<h2>Respecting scope and rate limits in automation</h2>
+<p>Recall Path 15.2&#39;s scope discipline — automation makes it dangerously easy to accidentally exceed a program&#39;s authorized scope or rate limits:</p>
+<pre><code class="language-bash"># Always filter discovered subdomains against the EXACT program scope
+# before running any active tooling against them:
+grep -f allowed-scope-patterns.txt all-subs.txt &gt; in-scope-subs.txt
+
+# Respect stated rate limits explicitly (recall Path 15.2&#39;s example: max 10 req/sec):
+ffuf -u https://FUZZ_HOST/FUZZ -w wordlist.txt -rate 10
+nuclei -l live.txt -rate-limit 10
+</code></pre>
+<p>Automated tools have no judgment of their own — the discipline and scope-awareness must be built into the pipeline itself, or enforced by careful manual review before any automated step runs against newly-discovered assets.</p>
+<h2>🧪 Lab — Build your own mini pipeline</h2>
+<p>Using the program you shortlisted in Path 15.2&#39;s lab (only if its scope and policy explicitly permit automated scanning — always check this first):</p>
+<ol>
+<li>Run subdomain enumeration and combine results from at least two sources.</li>
+<li>Filter to live hosts with httpx.</li>
+<li>Run Nuclei with a conservative rate limit against the <code>exposures/</code> and <code>misconfiguration/</code> template categories specifically (lower risk, high signal categories to start with).</li>
+<li>Save today&#39;s results, and write the diff script above so tomorrow&#39;s run only shows you what&#39;s new.</li>
+</ol>
+<p>Even this modest pipeline represents genuine, sustainable bug bounty infrastructure — far beyond what most beginning hunters ever build, and a real differentiator in practice.</p>
+<p>Why is the &quot;diff against previous run&quot; step considered one of the highest-value parts of an ongoing recon pipeline, rather than just a nice-to-have convenience feature?</p>
+<details><summary>Show answer</summary>A newly-appeared subdomain or endpoint is disproportionately likely to be <strong>freshly deployed and under-tested</strong> — precisely the kind of target other hunters haven't yet discovered or picked over. Re-scanning the same, already-stable attack surface repeatedly wastes time rediscovering what's already been tested (by you or others); diffing surfaces exactly the new, high-opportunity signal automatically, letting you focus limited manual testing time where it's most likely to find something genuinely new.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Recon pipeline</strong> — an automated, often scheduled sequence of recon tools feeding into each other.</li>
+<li><strong>Nuclei</strong> — a template-driven automated vulnerability scanner with thousands of community templates.</li>
+<li><strong>Diffing</strong> — comparing successive recon runs to surface only new discoveries.</li>
+<li><strong>Rate limiting</strong> — deliberately throttling automated tools to respect program policy and avoid disruption.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Broad-scope bug bounty programs require automation to achieve sustainable, ongoing coverage.</li>
+<li>A full pipeline chains subdomain enum → resolution → screenshotting → crawling → fuzzing → Nuclei scanning.</li>
+<li>Diffing successive runs surfaces newly-appeared, under-tested attack surface — often the highest-value signal available.</li>
+<li>Cron scheduling (Path 03.11) turns a one-off pipeline into sustained, continuous coverage.</li>
+<li>Automated tooling must respect scope and rate limits explicitly — it has no judgment of its own.</li>
+</ul>
+<h3>References</h3>
+<ul>
+<li><a href="https://github.com/projectdiscovery">ProjectDiscovery tools</a> — subfinder, httpx, katana, nuclei, and the full ecosystem used throughout this lesson.</li>
+<li><a href="https://github.com/projectdiscovery/nuclei-templates">Nuclei Templates repository</a> — thousands of community-maintained detection templates.</li>
+<li><a href="https://github.com/sensepost/gowitness">gowitness</a> — the screenshotting tool referenced in step 3.</li>
+<li><a href="https://github.com/vavkamil/awesome-bugbounty-tools">Awesome Bug Bounty Tools (GitHub)</a> — a comprehensive, curated tool list beyond what&#39;s covered here.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/15-bug-bounty/report-writing">Writing effective bug bounty reports</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/15-bug-bounty/recon-pipeline";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

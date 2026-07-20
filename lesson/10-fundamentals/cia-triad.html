@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The CIA triad — Path 10 · KashSec Academy</title>
+<meta name="description" content="Every security concept you'll ever learn — every vulnerability, every control, every risk conversation — traces back to three words: Confidentiality, Integrity, Availability. This is the foundational ">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/10-fundamentals/cia-triad">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="The CIA triad — Path 10 · KashSec Academy">
+<meta property="og:description" content="Every security concept you'll ever learn — every vulnerability, every control, every risk conversation — traces back to three words: Confidentiality, Integrity, Availability. This is the foundational ">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/10-fundamentals/cia-triad">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The CIA triad — Path 10 · KashSec Academy">
+<meta name="twitter:description" content="Every security concept you'll ever learn — every vulnerability, every control, every risk conversation — traces back to three words: Confidentiality, Integrity, Availability. This is the foundational ">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"The CIA triad — Path 10 · KashSec Academy","description":"Every security concept you'll ever learn — every vulnerability, every control, every risk conversation — traces back to three words: Confidentiality, Integrity, Availability. This is the foundational ","url":"https://kashsec.vercel.app/#/lesson/10-fundamentals/cia-triad","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/10-fundamentals/cia-triad">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 10 — Cybersecurity Fundamentals</a> · The CIA triad</div>
+  <article><h1>The CIA Triad</h1>
+<p>Every security concept you&#39;ll ever learn — every vulnerability, every control, every risk conversation — traces back to three words: <strong>Confidentiality, Integrity, Availability</strong>. This is the foundational model of the entire field.</p>
+<h2>The three pillars</h2>
+<h3>Confidentiality</h3>
+<p><strong>Only authorised people can see the data.</strong> The classic &quot;keeping secrets&quot; pillar.</p>
+<ul>
+<li><em>Protects against:</em> eavesdropping, data breaches, unauthorised access.</li>
+<li><em>Controls:</em> encryption, access controls, authentication.</li>
+<li><em>Real example:</em> Your medical records shouldn&#39;t be readable by a random hospital employee who has no reason to look at them.</li>
+<li><em>Broken example:</em> An attacker steals a database of unencrypted passwords.</li>
+</ul>
+<h3>Integrity</h3>
+<p><strong>Data is accurate and hasn&#39;t been tampered with — by accident or on purpose.</strong></p>
+<ul>
+<li><em>Protects against:</em> unauthorised modification, corruption, tampering.</li>
+<li><em>Controls:</em> hashing, digital signatures, checksums, version control, access controls.</li>
+<li><em>Real example:</em> When you download software, the publisher&#39;s hash lets you verify the file wasn&#39;t modified in transit (you did exactly this in Path 03!).</li>
+<li><em>Broken example:</em> An attacker changes the destination account number in a pending bank transfer.</li>
+</ul>
+<h3>Availability</h3>
+<p><strong>Authorised people can access the data/system when they need to.</strong></p>
+<ul>
+<li><em>Protects against:</em> outages, denial-of-service, ransomware, hardware failure.</li>
+<li><em>Controls:</em> redundancy, backups, DDoS protection, disaster recovery plans.</li>
+<li><em>Real example:</em> A hospital&#39;s patient record system needs to be up during an emergency — a few minutes of downtime can be life-threatening.</li>
+<li><em>Broken example:</em> A DDoS attack takes an e-commerce site offline during its biggest sale of the year.</li>
+</ul>
+<h2>Why this model, and not something fancier?</h2>
+<p>It&#39;s simple enough to reason with quickly, yet it captures almost every security decision you&#39;ll make:</p>
+<ul>
+<li>Choosing to encrypt a database → protecting <strong>confidentiality</strong>.</li>
+<li>Adding a checksum to a file transfer → protecting <strong>integrity</strong>.</li>
+<li>Building redundant servers across regions → protecting <strong>availability</strong>.</li>
+</ul>
+<p>When something goes wrong, you can classify it in seconds: <em>&quot;Was data exposed (C), altered (I), or made unavailable (A)?&quot;</em> — and often it&#39;s more than one at once.</p>
+<h2>The tension between the three</h2>
+<p>Here&#39;s the part beginners miss: <strong>these three pillars often pull against each other.</strong></p>
+<ul>
+<li>Lock a system down hard for confidentiality (multi-factor auth, strict firewalls) and you risk hurting availability (legitimate users locked out, slower access).</li>
+<li>Maximise availability (public access, no friction) and you often hurt confidentiality.</li>
+<li>Heavy integrity checks (approval workflows, signing) can slow down legitimate operations.</li>
+</ul>
+<p>Security work is constantly about finding the right <strong>balance</strong> for the specific system and its risk profile — not maximising all three blindly. A public news website prioritises availability and cares less about confidentiality (the content is meant to be public). A defence contractor&#39;s classified database prioritises confidentiality above nearly everything else, accepting that access will be slow and cumbersome.</p>
+<h2>Mapping real incidents to the triad</h2>
+<table>
+<thead>
+<tr>
+<th>Incident</th>
+<th>Primarily breaks</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Hacker steals a customer database</td>
+<td>Confidentiality</td>
+</tr>
+<tr>
+<td>Attacker modifies grades in a school system</td>
+<td>Integrity</td>
+</tr>
+<tr>
+<td>Ransomware encrypts all files, demands payment</td>
+<td>Availability (and often Confidentiality if they also steal data first)</td>
+</tr>
+<tr>
+<td>Website defaced with attacker&#39;s message</td>
+<td>Integrity (and often Availability if it also crashes)</td>
+</tr>
+<tr>
+<td>DDoS attack floods a bank&#39;s servers</td>
+<td>Availability</td>
+</tr>
+<tr>
+<td>Employee accidentally emails a spreadsheet to the wrong person</td>
+<td>Confidentiality</td>
+</tr>
+<tr>
+<td>SQL injection lets an attacker delete records</td>
+<td>Integrity + Availability</td>
+</tr>
+</tbody></table>
+<p>Notice many real incidents hit <strong>more than one pillar at once</strong> — ransomware is the classic example, hitting both C and A simultaneously.</p>
+<h2>Extended models — DAD and the Parkerian Hexad</h2>
+<p>Some frameworks flip CIA around to talk about the <em>attacker&#39;s</em> goals instead of the defender&#39;s — this is sometimes called <strong>DAD</strong>:</p>
+<ul>
+<li><strong>Disclosure</strong> — the attacker&#39;s version of breaking confidentiality.</li>
+<li><strong>Alteration</strong> — the attacker&#39;s version of breaking integrity.</li>
+<li><strong>Destruction</strong> (or Denial) — the attacker&#39;s version of breaking availability.</li>
+</ul>
+<p>There&#39;s also the more detailed <strong>Parkerian Hexad</strong>, which adds three more properties: <strong>Possession/Control</strong>, <strong>Authenticity</strong>, and <strong>Utility</strong>. You don&#39;t need to memorise it, but knowing it exists shows you the CIA triad is a simplification, not the final word — useful for job interviews where someone asks &quot;what&#39;s beyond CIA?&quot;</p>
+<h2>Non-repudiation — the property people forget</h2>
+<p>Closely related to, but distinct from, the CIA triad&#39;s three pillars is <strong>non-repudiation</strong>: the guarantee that someone who performed an action can&#39;t later credibly deny having done it. A digital signature (covered properly in Path 06&#39;s cryptography material) is the classic mechanism — if a document is signed with someone&#39;s private key, they can&#39;t plausibly claim &quot;that wasn&#39;t me,&quot; because only their key could have produced that signature. Non-repudiation matters most in situations with real accountability stakes: financial transactions, contract signing, audit logs of who accessed what. It&#39;s easy to see why it doesn&#39;t fit neatly into C, I, or A — it&#39;s less about protecting the data itself and more about being able to <em>prove</em>, after the fact, who did what.</p>
+<h2>CIA in the cloud — the shared responsibility angle</h2>
+<p>Path 08&#39;s cloud security material introduces the <strong>shared responsibility model</strong>: in a cloud environment, the cloud provider (AWS, Azure, GCP) and the customer each own different slices of C-I-A. The provider typically guarantees the <em>availability</em> of the underlying infrastructure (their data centres, their network), while the customer remains fully responsible for <em>confidentiality</em> of their own data (did they leave an S3 bucket public?) and often <em>integrity</em> of their own application logic. A huge fraction of real cloud security incidents trace back to someone misunderstanding this split — assuming the provider handles a piece of the triad that was actually the customer&#39;s job all along.</p>
+<h2>🧪 Lab — Classify real headlines</h2>
+<p>Search the web for three recent security incidents (use the terms &quot;data breach 2026&quot;, &quot;ransomware attack 2026&quot;, &quot;DDoS attack 2026&quot;). For each one, write down:</p>
+<ol>
+<li>Which pillar(s) of the CIA triad were broken?</li>
+<li>What control, if it had existed or worked properly, might have prevented it?</li>
+</ol>
+<p>This is exactly the kind of thinking you&#39;ll do constantly as a security professional — mapping a messy real-world event back onto the model.</p>
+<p>An attacker doesn&#39;t steal or change any data — they simply flood a company&#39;s servers with traffic until the website goes down for six hours. Which pillar of the CIA triad is primarily violated?</p>
+<details><summary>Show answer</summary><strong>Availability.</strong> No data was disclosed (Confidentiality) or altered (Integrity) — the system was simply made inaccessible to legitimate users.</details><h2>Key terms</h2>
+<ul>
+<li><strong>CIA Triad</strong> — Confidentiality, Integrity, Availability.</li>
+<li><strong>Confidentiality</strong> — only authorised access.</li>
+<li><strong>Integrity</strong> — data is accurate and untampered.</li>
+<li><strong>Availability</strong> — systems accessible when needed.</li>
+<li><strong>DAD</strong> — the attacker&#39;s-eye mirror of CIA (Disclosure, Alteration, Destruction).</li>
+<li><strong>Parkerian Hexad</strong> — an extended six-property model.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Nearly every security concept maps back to Confidentiality, Integrity, or Availability.</li>
+<li>The three pillars often trade off against each other — security is about balance, not maximising all three.</li>
+<li>Real incidents frequently break more than one pillar at once.</li>
+<li>This model is your fastest tool for quickly classifying any security event.</li>
+</ul>
+<h3>References</h3>
+<ul>
+<li><a href="https://csrc.nist.gov/glossary/term/cia_triad">NIST — Glossary: CIA Triad</a> — the official US government definition.</li>
+<li><a href="https://www.kaspersky.com/resource-center/definitions/the-cia-triad">Kaspersky — The CIA Triad explained</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Parkerian_Hexad">Parkerian Hexad — overview</a></li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/10-fundamentals/threats-risk">Threats, vulnerabilities &amp; risk</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/10-fundamentals/cia-triad";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

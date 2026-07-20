@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Windows User Accounts &amp; UAC — Path 07 · KashSec Academy</title>
+<meta name="description" content="Path 03's Linux lesson covered users, groups, and sudo in depth. This lesson covers Windows' parallel — but meaningfully different — account and privilege model, directly setting up the exported-compo">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/07-windows-security/windows-user-accounts">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Windows User Accounts &amp; UAC — Path 07 · KashSec Academy">
+<meta property="og:description" content="Path 03's Linux lesson covered users, groups, and sudo in depth. This lesson covers Windows' parallel — but meaningfully different — account and privilege model, directly setting up the exported-compo">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/07-windows-security/windows-user-accounts">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Windows User Accounts &amp; UAC — Path 07 · KashSec Academy">
+<meta name="twitter:description" content="Path 03's Linux lesson covered users, groups, and sudo in depth. This lesson covers Windows' parallel — but meaningfully different — account and privilege model, directly setting up the exported-compo">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Windows User Accounts & UAC — Path 07 · KashSec Academy","description":"Path 03's Linux lesson covered users, groups, and sudo in depth. This lesson covers Windows' parallel — but meaningfully different — account and privilege model, directly setting up the exported-compo","url":"https://kashsec.vercel.app/#/lesson/07-windows-security/windows-user-accounts","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/07-windows-security/windows-user-accounts">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 07 — Windows Security Basics</a> · Windows User Accounts &amp; UAC</div>
+  <article><h1>Windows User Accounts &amp; UAC</h1>
+<p>Path 03&#39;s Linux lesson covered users, groups, and <code>sudo</code> in depth. This lesson covers Windows&#39; parallel — but meaningfully different — account and privilege model, directly setting up the exported-component-style and privilege-escalation concepts referenced throughout Path 16&#39;s Windows privesc material.</p>
+<h2>Local accounts vs. Microsoft accounts</h2>
+<p>Windows machines can use either <strong>local accounts</strong> (credentials stored only on that specific machine, exactly like a traditional Linux user account) or <strong>Microsoft accounts</strong> (a cloud-linked identity, tied to Microsoft&#39;s online services, syncing settings across devices). This distinction matters for security assessments: a local account&#39;s credentials, if compromised, only grant access to that one machine; a Microsoft account, if compromised, potentially exposes a much wider blast radius across every service and device linked to it.</p>
+<h2>Standard users vs. Administrators</h2>
+<p>Every Windows account belongs to a group determining its baseline privilege level:</p>
+<ul>
+<li><strong>Standard user</strong> — can run most everyday applications but cannot install software, modify system files, or change security settings without explicit elevation. This is Windows&#39; version of the principle of least privilege from Path 13&#39;s mobile fundamentals lesson, applied to desktop accounts.</li>
+<li><strong>Administrator</strong> — has full system control, but even administrator accounts still trigger <strong>UAC</strong> (covered in the previous lesson) before performing genuinely privileged actions — a deliberate design choice preventing a single compromised process from silently escalating, even when running under an admin&#39;s own session.</li>
+</ul>
+<p>A genuinely important, widely-recommended real-world practice: use a standard user account for everyday work, even on a machine where you have administrator credentials, and only elevate (via UAC&#39;s prompt, entering admin credentials) when genuinely needed. This limits the damage a compromised browser tab or malicious document (Path 00&#39;s phishing lesson) can do — malware running under a standard user&#39;s limited privileges can&#39;t silently modify system-wide settings the way it could running under a full admin session by default.</p>
+<h2>Local Users and Groups management</h2>
+<p>Access via <code>lusrmgr.msc</code> (Pro/Enterprise editions) or <code>net user</code> from the command line — this is where you review exactly which accounts exist on a machine and which groups (Administrators, Remote Desktop Users, and others) each belongs to.</p>
+<pre><code class="language-powershell">net user                        # list all local accounts
+net user administrator          # details on a specific account
+net localgroup administrators   # who&#39;s actually in the Administrators group
+</code></pre>
+<p>An unfamiliar account, or a standard user unexpectedly added to the Administrators group, is exactly the kind of finding Event ID 4720/4732 (Path 07&#39;s Event Viewer lesson) would also flag in the Security log — the two techniques (live enumeration and log review) corroborate each other.</p>
+<h2>Local Security Policy and account lockout</h2>
+<p><code>secpol.msc</code> exposes granular security settings beyond basic account management: password complexity requirements, account lockout thresholds (how many failed login attempts before an account temporarily locks — a direct defense against the brute-force pattern from this course&#39;s CTF Zone forensics challenge), and audit policy configuration (referenced in the previous Event Viewer lesson).</p>
+<h2>The built-in Administrator and Guest accounts — a quiet risk</h2>
+<p>Every Windows installation ships with a built-in <strong>Administrator</strong> account (disabled by default on modern consumer editions, but frequently still present and sometimes re-enabled by IT scripts or older configurations) and a <strong>Guest</strong> account. The built-in Administrator is a genuinely attractive target precisely because its name and SID (Security Identifier) are predictable and identical across virtually every Windows machine on the planet, meaning an attacker doesn&#39;t need to first discover which account has administrative rights — they already know, and only need to find or brute-force its password. This is exactly why security hardening guidance consistently recommends either keeping this account disabled or, where it must remain enabled for compatibility reasons, renaming it to something non-default and enforcing an exceptionally strong, unique password on it specifically. The Guest account, similarly, should always remain disabled — it exists purely for anonymous, minimally-authenticated access, and its very existence violates the audit-trail principle behind every other account-security practice in this lesson: an action taken under Guest can&#39;t be meaningfully attributed to a specific individual.</p>
+<h2>Windows Hello and modern authentication</h2>
+<p>Modern Windows supports <strong>Windows Hello</strong> — biometric (fingerprint, facial recognition) or PIN-based authentication as an alternative to typing a full password. Genuinely worth understanding: a PIN, despite feeling &quot;weaker&quot; than a password, is actually tied to the specific device&#39;s hardware (via a security chip) and can&#39;t be used to authenticate anywhere else even if somehow obtained — a meaningfully different (and in some ways stronger, for this specific device) security model than a traditional password, which is often reused across services (Path 00&#39;s passwords lesson).</p>
+<p>On a VM or test machine, use <code>net user</code> and <code>net localgroup administrators</code> to list every account and confirm exactly who has administrative privileges. For any account you don&#39;t recognize or that seems unnecessarily privileged, note it as a finding — exactly the same audit discipline as Path 16&#39;s privesc labs, applied here defensively rather than offensively.</p>
+<h2>Key terms</h2>
+<ul>
+<li><strong>Local account</strong> — credentials stored only on a specific machine, versus a cloud-linked Microsoft account.</li>
+<li><strong>UAC elevation</strong> — the explicit confirmation step required before a process gains administrator-level privileges, even under an admin&#39;s own session.</li>
+<li><strong>Account lockout policy</strong> — a defense automatically locking an account after repeated failed login attempts.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Local accounts limit compromise blast radius to one machine; Microsoft accounts extend it across every linked service.</li>
+<li>Standard users should be the default for everyday use, even on machines where admin access exists — UAC elevation is the deliberate friction point limiting silent privilege escalation.</li>
+<li><code>lusrmgr.msc</code>/<code>net user</code>/<code>net localgroup</code> let you directly audit exactly which accounts and privileges exist on a machine, corroborating what Event Viewer&#39;s logs reveal.</li>
+<li>Account lockout policy is a direct, configurable defense against brute-force login attempts.</li>
+</ul>
+<h3>References</h3>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/windows/security/application-security/application-control/user-account-control/">Microsoft: User Account Control overview</a> — official documentation on UAC&#39;s design and configuration.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/07-windows-security/windows-command-line-basics">Windows Command Line Basics</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/07-windows-security/windows-user-accounts";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

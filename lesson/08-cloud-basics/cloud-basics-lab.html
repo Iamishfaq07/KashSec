@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cloud Basics Hands-On Lab — Path 08 · KashSec Academy</title>
+<meta name="description" content="This capstone lab gets you hands-on with a real, free-tier cloud account before Path 16's more advanced cloud security lab — building comfort with the console and CLI first, so that lab's security-foc">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/08-cloud-basics/cloud-basics-lab">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Cloud Basics Hands-On Lab — Path 08 · KashSec Academy">
+<meta property="og:description" content="This capstone lab gets you hands-on with a real, free-tier cloud account before Path 16's more advanced cloud security lab — building comfort with the console and CLI first, so that lab's security-foc">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/08-cloud-basics/cloud-basics-lab">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Cloud Basics Hands-On Lab — Path 08 · KashSec Academy">
+<meta name="twitter:description" content="This capstone lab gets you hands-on with a real, free-tier cloud account before Path 16's more advanced cloud security lab — building comfort with the console and CLI first, so that lab's security-foc">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Cloud Basics Hands-On Lab — Path 08 · KashSec Academy","description":"This capstone lab gets you hands-on with a real, free-tier cloud account before Path 16's more advanced cloud security lab — building comfort with the console and CLI first, so that lab's security-foc","url":"https://kashsec.vercel.app/#/lesson/08-cloud-basics/cloud-basics-lab","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/08-cloud-basics/cloud-basics-lab">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 08 — Cloud Computing Basics</a> · Cloud Basics Hands-On Lab</div>
+  <article><h1>Cloud Basics Hands-On Lab</h1>
+<p>This capstone lab gets you hands-on with a real, free-tier cloud account before Path 16&#39;s more advanced cloud security lab — building comfort with the console and CLI first, so that lab&#39;s security-focused content lands on a solid practical foundation.</p>
+<h2>Setting up a free-tier account</h2>
+<p>Create a free account with <strong><a href="https://aws.amazon.com/free/">AWS Free Tier</a></strong> (the most widely referenced provider throughout this path and Path 16) — it provides genuinely usable, if limited, resource allowances for 12 months, sufficient for every task in this lab.</p>
+<p>Before doing anything else, go to <strong>Billing → Budgets</strong> and set up a free billing alert (e.g., notify if spend exceeds $1). Free tier limits are generous but finite, and accidentally exceeding them produces a real charge — a billing alert is a simple, essential safety net worth setting up in your very first five minutes with any cloud account.</p>
+<h2>Tasks</h2>
+<ol>
+<li><p><strong>Launch a virtual machine (IaaS, hands-on).</strong> Using the EC2 console, launch a free-tier-eligible virtual machine instance. Connect to it via SSH (Path 03&#39;s terminal skills apply directly), and confirm you can run basic commands on it — this is IaaS in practice: you&#39;re responsible for everything from the OS upward, per this path&#39;s shared responsibility lesson.</p>
+</li>
+<li><p><strong>Create a storage bucket and test its access policy.</strong> Create an S3 bucket, upload a test file, and — critically — practice <em>both</em> configurations: first confirm it&#39;s private by default (attempting an unauthenticated access should fail), then deliberately make it briefly public to observe the difference, and revert it back to private immediately afterward. This hands-on before/after is the clearest way to internalize Path 08&#39;s cloud storage lesson.</p>
+</li>
+<li><p><strong>Set up a VPC and security group.</strong> Create a VPC with a public and private subnet (per this path&#39;s networking lesson&#39;s diagram), and configure a security group for your Task 1 instance — first testing an overly permissive rule (<code>0.0.0.0/0</code> on a port), observing what that allows, then tightening it to a specific, narrow rule.</p>
+</li>
+<li><p><strong>Create an IAM user with a least-privilege policy.</strong> Create a new IAM user (not your root account — never use root credentials for day-to-day work) with a custom policy granting access to <em>only</em> the S3 bucket from Task 2, nothing else. Confirm using the CLI that this user genuinely cannot access other services.</p>
+</li>
+<li><p><strong>Audit your own account.</strong> Using <code>aws iam list-users</code>, <code>aws s3api get-bucket-acl</code>, and <code>aws ec2 describe-security-groups</code>, produce a summary of every identity, storage policy, and network rule you&#39;ve created in this lab — exactly the kind of self-audit that should become habitual before ever considering any cloud environment &quot;done.&quot;</p>
+</li>
+<li><p><strong>Clean up.</strong> Terminate your EC2 instance, delete your test bucket, and remove the IAM user you created — cloud resources left running unintentionally is itself a real, common source of unexpected billing.</p>
+</li>
+<li><p><strong>Test IMDSv2 enforcement on your instance.</strong> From inside your Task 1 EC2 instance (via SSH), try querying the metadata service both the old way (a plain GET with no token) and the IMDSv2 way (a PUT request for a token, then a GET using that token as a header) — confirm whether your instance&#39;s default configuration requires the token-based flow, and if it doesn&#39;t, explicitly enable &quot;IMDSv2 required&quot; in the instance&#39;s settings and re-test. This hands-on comparison makes Path 08.4&#39;s IMDSv2 explanation concrete rather than abstract.</p>
+</li>
+<li><p><strong>Deliberately trigger and find an IAM privilege escalation gap.</strong> Using the IAM user from Task 4, attempt to grant that user permission to attach policies to itself (<code>iam:AttachUserPolicy</code> on its own ARN), then reason through — without actually exploiting it — exactly how that single additional permission would let the user escalate to full account access, directly applying Path 08.5&#39;s IAM privilege escalation discussion to a real policy you configured yourself.</p>
+</li>
+</ol>
+<p>For everything you built in this lab (the EC2 instance, the S3 bucket, the IAM user, the security group), write out — using the framework from this path&#39;s shared responsibility lesson — exactly what AWS was responsible for securing versus what you were responsible for configuring correctly. Be specific about what could have gone wrong at each layer if you&#39;d misconfigured it.</p>
+<h2>Where this connects forward</h2>
+<p>You&#39;re now ready for Path 16&#39;s cloud security lesson and flAWS lab with genuine hands-on context behind every concept it references — buckets, IAM roles, security groups, and the instance metadata service will all be concrete, not abstract, the moment you encounter them there.</p>
+<h2>Key takeaway</h2>
+<p>Cloud security concepts remain abstract until you&#39;ve actually clicked through a console, run a CLI command, and watched a misconfiguration produce a real (if contained, free-tier) consequence yourself — this lab&#39;s deliberate &quot;create it correctly, then briefly misconfigure it, then fix it again&quot; pattern across storage and networking is exactly the hands-on repetition that makes Path 16&#39;s more advanced material land immediately rather than requiring a second pass.</p>
+<h2>🎓 Path complete</h2>
+<p>You&#39;ve now covered what cloud computing actually is and the IaaS/PaaS/SaaS spectrum, the major providers and their equivalent services, object storage and bucket misconfiguration risk, VPCs/subnets/security groups and the instance metadata service, IAM and the principle of least privilege applied to cloud identities, the shared responsibility model, and hands-on practice with a real free-tier account. You&#39;re now genuinely prepared for Path 16&#39;s cloud security material.</p>
+<h3>References</h3>
+<ul>
+<li><a href="https://aws.amazon.com/free/">AWS Free Tier</a> — the free account tier used throughout this lab.</li>
+<li><a href="https://docs.aws.amazon.com/wellarchitected/latest/security-pillar/welcome.html">AWS Well-Architected Framework — Security Pillar</a> — free, official, comprehensive guidance for going beyond this lab&#39;s scope.</li>
+</ul>
+<p><strong>Explore more →</strong> <a href="#/lesson/16-advanced">Path 16 — Advanced Cyber Topics</a> · <a href="#/course">Back to all paths</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/08-cloud-basics/cloud-basics-lab";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

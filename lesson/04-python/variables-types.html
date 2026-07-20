@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Variables &amp; data types — Path 04 · KashSec Academy</title>
+<meta name="description" content="You can't write programs without a way to store and label information. That's what variables and types are for.">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/04-python/variables-types">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Variables &amp; data types — Path 04 · KashSec Academy">
+<meta property="og:description" content="You can't write programs without a way to store and label information. That's what variables and types are for.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/04-python/variables-types">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Variables &amp; data types — Path 04 · KashSec Academy">
+<meta name="twitter:description" content="You can't write programs without a way to store and label information. That's what variables and types are for.">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Variables & data types — Path 04 · KashSec Academy","description":"You can't write programs without a way to store and label information. That's what variables and types are for.","url":"https://kashsec.vercel.app/#/lesson/04-python/variables-types","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/04-python/variables-types">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 04 — Programming & Python</a> · Variables &amp; data types</div>
+  <article><h1>Variables &amp; data types</h1>
+<p>You can&#39;t write programs without a way to store and label information. That&#39;s what <strong>variables</strong> and <strong>types</strong> are for.</p>
+<h2>Variables — labelled boxes</h2>
+<p>A <strong>variable</strong> is a labelled box you put a value into. You give it a name, put a value in, and later use the name to get the value back.</p>
+<pre><code class="language-python">name = &quot;Ishfaq&quot;      # a text value
+age = 32             # a whole number
+is_admin = False     # a yes/no value
+score = 87.5         # a decimal number
+</code></pre>
+<p>Every one of those lines follows the same shape: <strong><code>name = value</code></strong>. The name is on the left, the value on the right, the <code>=</code> puts the value into the box.</p>
+<h2>Reading and changing values</h2>
+<pre><code class="language-python">name = &quot;Ishfaq&quot;
+print(name)             # → Ishfaq
+
+name = &quot;Alice&quot;          # replace the value
+print(name)             # → Alice
+
+age = 32
+age = age + 1           # bump age by 1
+print(age)              # → 33
+
+# Shorthand for common changes:
+age += 1        # same as age = age + 1
+score *= 2      # score = score * 2
+</code></pre>
+<h2>The main data types</h2>
+<p>Python has a handful of built-in types you&#39;ll use daily:</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Looks like</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong><code>str</code></strong> (string)</td>
+<td>text in quotes</td>
+<td><code>&quot;password123&quot;</code>, <code>&#39;hello&#39;</code></td>
+</tr>
+<tr>
+<td><strong><code>int</code></strong> (integer)</td>
+<td>whole numbers</td>
+<td><code>42</code>, <code>-7</code>, <code>0</code></td>
+</tr>
+<tr>
+<td><strong><code>float</code></strong></td>
+<td>decimals</td>
+<td><code>3.14</code>, <code>-0.5</code></td>
+</tr>
+<tr>
+<td><strong><code>bool</code></strong></td>
+<td>True/False</td>
+<td><code>True</code>, <code>False</code></td>
+</tr>
+<tr>
+<td><strong><code>list</code></strong></td>
+<td>ordered sequence</td>
+<td><code>[&quot;nmap&quot;, &quot;burp&quot;, &quot;sqlmap&quot;]</code></td>
+</tr>
+<tr>
+<td><strong><code>dict</code></strong></td>
+<td>key/value pairs</td>
+<td><code>{&quot;user&quot;: &quot;admin&quot;, &quot;id&quot;: 42}</code></td>
+</tr>
+<tr>
+<td><strong><code>None</code></strong></td>
+<td>&quot;nothing&quot;</td>
+<td><code>None</code></td>
+</tr>
+</tbody></table>
+<p>You can always check a type with <code>type()</code>:</p>
+<pre><code class="language-python">type(&quot;hello&quot;)     # → &lt;class &#39;str&#39;&gt;
+type(42)          # → &lt;class &#39;int&#39;&gt;
+type(True)        # → &lt;class &#39;bool&#39;&gt;
+</code></pre>
+<h2>Strings — the security worker&#39;s bread and butter</h2>
+<p>Text is where nearly all security work happens: URLs, headers, payloads, tokens, logs.</p>
+<pre><code class="language-python">url = &quot;https://example.com/login&quot;
+print(url.upper())               # HTTPS://EXAMPLE.COM/LOGIN
+print(url.lower())               # https://example.com/login
+print(url.startswith(&quot;https&quot;))   # True
+print(url.endswith(&quot;.com/login&quot;))# True
+print(len(url))                  # 27
+print(&quot;example&quot; in url)          # True
+
+# Slicing — grab pieces of a string:
+print(url[:5])       # &quot;https&quot;
+print(url[8:])       # &quot;example.com/login&quot;
+print(url[-5:])      # &quot;login&quot;
+
+# Concatenation and formatting:
+user = &quot;admin&quot;
+print(&quot;Welcome, &quot; + user)                 # concatenation
+print(f&quot;Welcome, {user}&quot;)                 # f-string (best modern way)
+print(&quot;Welcome, {}&quot;.format(user))         # older .format()
+</code></pre>
+<p><strong>F-strings</strong> (the <code>f&quot;...&quot;</code> style) are the modern, readable way to inject values into text. Use them.</p>
+<h2>Numbers</h2>
+<pre><code class="language-python">a = 10
+b = 3
+print(a + b)   # 13
+print(a - b)   # 7
+print(a * b)   # 30
+print(a / b)   # 3.3333... (always float)
+print(a // b)  # 3   (integer division)
+print(a % b)   # 1   (remainder — great for &quot;every 5th item&quot;)
+print(a ** b)  # 1000 (a to the power of b)
+</code></pre>
+<h2>Booleans and comparisons</h2>
+<pre><code class="language-python">print(5 == 5)   # True
+print(5 != 3)   # True
+print(5 &gt; 10)   # False
+print(5 &gt;= 5)   # True
+
+# Combining:
+age = 25
+print(age &gt; 18 and age &lt; 65)    # True
+print(age &lt; 18 or age &gt; 65)     # False
+print(not True)                 # False
+</code></pre>
+<h3>Dynamic typing — no need to declare a type upfront</h3>
+<p>Unlike some languages (Java, C), Python never requires you to declare a variable&#39;s type in advance — you just assign a value, and Python figures out the type automatically:</p>
+<pre><code class="language-python">x = 5          # Python infers: this is an integer
+x = &quot;hello&quot;    # now the SAME variable holds a string instead — totally legal
+print(type(x)) # &lt;class &#39;str&#39;&gt;
+</code></pre>
+<p>This flexibility (called <strong>dynamic typing</strong>) is a big part of why Python reads so cleanly for beginners — but it&#39;s also a real source of subtle bugs once scripts grow larger, since nothing stops you from accidentally reassigning a variable to an unexpected type partway through a script. The <code>type()</code> function, used above, is your go-to tool whenever you&#39;re unsure what a variable currently holds — genuinely useful during debugging.</p>
+<h2>Type conversion</h2>
+<pre><code class="language-python">n = &quot;42&quot;        # a string!
+n = int(n)      # now an int: 42
+print(n + 1)    # 43
+
+pi = &quot;3.14&quot;
+pi = float(pi)  # 3.14 as float
+
+x = 42
+s = str(x)      # &quot;42&quot; as string
+
+# Common gotcha:
+count = input(&quot;How many? &quot;)   # input() ALWAYS returns a string!
+count = int(count)            # convert before doing maths
+</code></pre>
+<p><code>input()</code> gives you back a string, always. If you try <code>input(&quot;Number: &quot;) + 1</code>, Python complains it can&#39;t add a string to an int. Convert first with <code>int(...)</code> or <code>float(...)</code>.</p>
+<h2>Variable naming conventions</h2>
+<p>Naming matters more than beginners realise — future-you (and code reviewers) read your code far more often than you write it.</p>
+<pre><code class="language-python"># Good
+target_url = &quot;https://example.com&quot;
+password_hash = &quot;5f4dcc3b...&quot;
+open_ports = [22, 80, 443]
+
+# Bad
+u = &quot;https://example.com&quot;
+p = &quot;5f4dcc3b...&quot;
+op = [22, 80, 443]
+
+# Terrible
+x1 = &quot;https://example.com&quot;
+data = &quot;5f4dcc3b...&quot;
+list1 = [22, 80, 443]
+</code></pre>
+<p>Python style (PEP 8) uses <strong><code>snake_case</code></strong> for variables and functions. Constants use <strong><code>ALL_CAPS</code></strong>.</p>
+<h2>Lists — an ordered collection</h2>
+<pre><code class="language-python">ports = [22, 80, 443, 3306]
+
+print(ports[0])       # 22 (indexes start at 0)
+print(ports[-1])      # 3306 (last item)
+print(len(ports))     # 4
+print(80 in ports)    # True
+
+ports.append(8080)    # add to end
+ports.remove(22)      # remove a value
+ports.sort()          # sort in place
+print(ports)          # [80, 443, 3306, 8080]
+
+# Loop through:
+for port in ports:
+    print(f&quot;Checking port {port}...&quot;)
+</code></pre>
+<h2>Dictionaries — key/value pairs</h2>
+<pre><code class="language-python">user = {
+    &quot;username&quot;: &quot;admin&quot;,
+    &quot;id&quot;: 1,
+    &quot;is_admin&quot;: True
+}
+
+print(user[&quot;username&quot;])           # admin
+print(user.get(&quot;email&quot;, &quot;n/a&quot;))   # n/a (with default)
+
+user[&quot;email&quot;] = &quot;admin@example.com&quot;    # add a new key
+user[&quot;is_admin&quot;] = False               # update a key
+
+for key, value in user.items():
+    print(f&quot;{key}: {value}&quot;)
+</code></pre>
+<p>Dicts are how you&#39;ll represent things like an HTTP response, an API user, or a scan result.</p>
+<h2>None — the &quot;nothing&quot; value</h2>
+<pre><code class="language-python">result = None       # placeholder for &quot;not yet set&quot;
+if result is None:
+    print(&quot;no result yet&quot;)
+</code></pre>
+<h2>🧪 Lab — Play with types in the REPL</h2>
+<p>Python has an interactive mode called the <strong>REPL</strong> (Read-Eval-Print Loop). In a terminal, just type <code>python3</code> and press Enter. You get a prompt <code>&gt;&gt;&gt;</code> where every line runs immediately.</p>
+<pre><code class="language-python">&gt;&gt;&gt; name = &quot;world&quot;
+&gt;&gt;&gt; greeting = f&quot;Hello, {name}!&quot;
+&gt;&gt;&gt; greeting
+&#39;Hello, world!&#39;
+&gt;&gt;&gt; greeting.upper()
+&#39;HELLO, WORLD!&#39;
+&gt;&gt;&gt; len(greeting)
+13
+&gt;&gt;&gt; exit()
+</code></pre>
+<p>Type <code>exit()</code> or press Ctrl+D to leave. The REPL is where you&#39;ll experiment throughout learning Python — always open a second terminal with <code>python3</code> running.</p>
+<p><code>age = input(&quot;How old? &quot;)</code>; then you write <code>age + 1</code>. Python errors. What&#39;s the fix?</p>
+<details><summary>Show answer</summary><code>input()</code> always returns a string. Convert with <code>age = int(input("How old? "))</code> before doing arithmetic.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Variable</strong> — a labelled box for a value.</li>
+<li><strong>Type</strong> — the kind of value (<code>str</code>, <code>int</code>, <code>bool</code>, <code>list</code>, <code>dict</code>, ...).</li>
+<li><strong>String / int / float / bool / list / dict / None</strong> — the main built-in types.</li>
+<li><strong>f-string</strong> — modern string formatting with <code>f&quot;...&quot;</code>.</li>
+<li><strong>REPL</strong> — Python&#39;s interactive mode (<code>python3</code>).</li>
+<li><strong>PEP 8</strong> — Python&#39;s style guide; use <code>snake_case</code>.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Variables hold labelled values you refer to by name.</li>
+<li>The main types are string, int, float, bool, list, dict, None.</li>
+<li>Convert types explicitly: <code>int()</code>, <code>str()</code>, <code>float()</code>.</li>
+<li>Use f-strings for readable formatting.</li>
+<li>Play in the REPL — it&#39;s the fastest way to learn.</li>
+</ul>
+<h3>References</h3>
+<ul>
+<li><a href="https://docs.python.org/3/library/stdtypes.html">Python docs — Data types</a> — the official reference.</li>
+<li><a href="https://peps.python.org/pep-0008/">PEP 8 — Style Guide</a> — the naming and formatting standard.</li>
+<li><a href="https://realpython.com/python-f-strings/">Real Python — f-strings guide</a></li>
+<li><a href="https://www.learnpython.org/">Learn Python interactively — LearnPython.org</a> — free browser-based exercises.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/04-python/if-else">Decisions with if/else</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/04-python/variables-types";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

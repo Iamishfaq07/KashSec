@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Windows Event Viewer — Path 07 · KashSec Academy</title>
+<meta name="description" content="Path 03's Linux forensics lab and Path 16's DFIR lab both leaned heavily on /var/log/auth.log for investigating a Linux system. Windows has its own, differently-structured equivalent — the Event Viewe">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/07-windows-security/windows-event-viewer">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Windows Event Viewer — Path 07 · KashSec Academy">
+<meta property="og:description" content="Path 03's Linux forensics lab and Path 16's DFIR lab both leaned heavily on /var/log/auth.log for investigating a Linux system. Windows has its own, differently-structured equivalent — the Event Viewe">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/07-windows-security/windows-event-viewer">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Windows Event Viewer — Path 07 · KashSec Academy">
+<meta name="twitter:description" content="Path 03's Linux forensics lab and Path 16's DFIR lab both leaned heavily on /var/log/auth.log for investigating a Linux system. Windows has its own, differently-structured equivalent — the Event Viewe">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Windows Event Viewer — Path 07 · KashSec Academy","description":"Path 03's Linux forensics lab and Path 16's DFIR lab both leaned heavily on /var/log/auth.log for investigating a Linux system. Windows has its own, differently-structured equivalent — the Event Viewe","url":"https://kashsec.vercel.app/#/lesson/07-windows-security/windows-event-viewer","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/07-windows-security/windows-event-viewer">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 07 — Windows Security Basics</a> · Windows Event Viewer</div>
+  <article><h1>Windows Event Viewer</h1>
+<p>Path 03&#39;s Linux forensics lab and Path 16&#39;s DFIR lab both leaned heavily on <code>/var/log/auth.log</code> for investigating a Linux system. Windows has its own, differently-structured equivalent — the <strong>Event Viewer</strong> — and this lesson is where you learn to actually read it, directly transferring the log-analysis mindset built earlier in this course to a Windows context.</p>
+<h2>Opening and navigating Event Viewer</h2>
+<p>Launch it via <code>eventvwr.msc</code>, or search &quot;Event Viewer&quot; in the Start menu. The main logs worth knowing:</p>
+<p>The <strong>Security</strong> log is the one most relevant to security work — it&#39;s the direct Windows equivalent of Linux&#39;s <code>auth.log</code>, recording login attempts, permission changes, and (if configured) detailed audit events.</p>
+<h2>Reading Security log entries — Event IDs</h2>
+<p>Every logged event has a numeric <strong>Event ID</strong> identifying exactly what happened — memorizing the most security-relevant ones is genuinely useful, the same way recognizing common <code>auth.log</code> patterns (Path 16&#39;s forensics lessons, this course&#39;s CTF Zone forensics challenge) pays off on Linux:</p>
+<table>
+<thead>
+<tr>
+<th>Event ID</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>4624</strong></td>
+<td>Successful logon</td>
+</tr>
+<tr>
+<td><strong>4625</strong></td>
+<td>Failed logon attempt</td>
+</tr>
+<tr>
+<td><strong>4634</strong></td>
+<td>Logoff</td>
+</tr>
+<tr>
+<td><strong>4720</strong></td>
+<td>A new user account was created</td>
+</tr>
+<tr>
+<td><strong>4732</strong></td>
+<td>A member was added to a security-enabled local group (e.g., added to Administrators)</td>
+</tr>
+<tr>
+<td><strong>1102</strong></td>
+<td>The audit log itself was cleared — a major red flag, often an attacker covering tracks</td>
+</tr>
+</tbody></table>
+<p>A burst of <strong>4625</strong> events for the same account, followed by a <strong>4624</strong> success — this is the exact Windows equivalent of the brute-force pattern you already learned to spot in this course&#39;s CTF Zone forensics challenge, just represented through Event IDs instead of <code>auth.log</code> text lines.</p>
+<h2>Filtering effectively</h2>
+<p>Event Viewer&#39;s raw log volume can be overwhelming — use <strong>Filter Current Log</strong> (right-click any log) to narrow by Event ID, time range, or specific user, exactly the same filtering discipline Path 12&#39;s Wireshark lessons taught for network captures, applied here to event logs instead of packets.</p>
+<pre><code># A quick way to check recent failed logons via PowerShell instead of the GUI:
+Get-WinEvent -FilterHashtable @{LogName=&#39;Security&#39;; ID=4625} -MaxEvents 20
+</code></pre>
+<h2>The 1102 event — a critical incident response signal</h2>
+<p>Event ID <strong>1102</strong> (&quot;The audit log was cleared&quot;) is one of the single most important entries to watch for in incident response — a legitimate administrator rarely has reason to clear the security log, and an attacker attempting to cover their tracks after gaining access very often does exactly this. Its <em>presence</em> (even though the surrounding evidence it might reveal is now gone) is itself a strong indicator something happened worth investigating immediately, connecting directly to the anti-forensics awareness from Path 14&#39;s advanced exploitation lab discussion.</p>
+<h2>More Event IDs worth recognizing on sight</h2>
+<p>Beyond the core logon/account events above, a few more Event IDs come up constantly enough in real investigations to be worth memorizing alongside them. <strong>4648</strong> (logon attempted using explicit credentials) can reveal lateral movement — a process on one machine authenticating to another using a <em>different</em> account&#39;s credentials than the one currently logged in, exactly the pattern Path 16&#39;s Active Directory lesson describes when an attacker moves between compromised machines. <strong>4688</strong> (a new process was created) is the process-creation equivalent of the logon events, and — critically, only when Advanced Audit Policy&#39;s command-line auditing is enabled — includes the full command line the process was launched with, letting an investigator see exactly what arguments a suspicious <code>powershell.exe</code> invocation actually used. <strong>5140</strong> (a network share object was accessed) helps trace whether an attacker browsed or copied data from shared folders, directly relevant to detecting the kind of data staging that typically precedes exfiltration.</p>
+<h2>PowerShell-specific logging — where a lot of real attacks hide</h2>
+<p>Recall Path 10.3&#39;s &quot;living off the land&quot; concept and Path 16&#39;s Windows privesc material — a huge share of real intrusions rely heavily on PowerShell precisely because it&#39;s a legitimate, always-present, deeply capable tool. Windows offers dedicated PowerShell logging beyond the generic process-creation event above: <strong>Script Block Logging</strong> (Event ID 4104) records the actual <em>content</em> of PowerShell commands and scripts as they execute — including scripts that were deliberately obfuscated or encoded before execution, since Windows logs the content after PowerShell&#39;s own engine has decoded it internally. Enabling this specific logging (via Group Policy → PowerShell settings) is widely considered one of the single highest-value logging changes a Windows environment can make, precisely because so much real attacker activity — credential harvesting scripts, download-and-execute one-liners, lateral movement tooling — happens through PowerShell rather than a compiled executable that would show up more obviously in traditional antivirus scanning.</p>
+<h2>Sysmon — going beyond the built-in logs</h2>
+<p>Microsoft&#39;s free <strong>Sysmon</strong> (System Monitor, part of the Sysinternals suite referenced in this path&#39;s fundamentals lesson) provides dramatically more detailed logging than Windows&#39; default configuration — process creation with full command lines, network connections, and file creation events, all with much richer detail than the default Security log captures out of the box. Path 16&#39;s threat hunting and DFIR labs both assume this level of visibility is available; Sysmon is exactly how real Windows environments achieve it.</p>
+<p>By default, Windows&#39; Security log configuration is relatively minimal — enabling &quot;Advanced Audit Policy&quot; settings (via <code>secpol.msc</code> or Group Policy) for object access, process creation, and privilege use dramatically increases the log detail available <em>later</em>, during an actual investigation. Configuring this proactively, before an incident happens, is a genuinely important real-world practice — you cannot retroactively generate logs for events that already happened without adequate logging enabled at the time.</p>
+<p>Open Event Viewer on your own machine, navigate to the Security log, and filter for Event ID 4624 (successful logons) over the past week. Note the pattern of your own normal login times and methods — this &quot;know your own baseline&quot; exercise mirrors exactly the baseline-building practice from Path 16&#39;s Linux forensics lab, just applied to Windows.</p>
+<h2>Key terms</h2>
+<ul>
+<li><strong>Event Viewer</strong> — Windows&#39; built-in log viewing and management tool.</li>
+<li><strong>Event ID</strong> — a numeric identifier for a specific type of logged event.</li>
+<li><strong>Sysmon</strong> — a free Microsoft tool providing dramatically more detailed system event logging than Windows&#39; defaults.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>The Security log is Windows&#39; direct equivalent of Linux&#39;s auth.log, recording logon events and permission changes.</li>
+<li>Specific Event IDs (4624/4625 for logon success/failure, 4720/4732 for account/group changes, 1102 for cleared logs) are worth recognizing on sight.</li>
+<li>A cleared audit log (Event ID 1102) is itself a major red flag, often indicating an attacker covering their tracks.</li>
+<li>Sysmon dramatically expands default logging detail and is standard in real, security-mature Windows environments.</li>
+</ul>
+<h3>References</h3>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/windows/security/threat-protection/auditing/">Microsoft: Windows Security Event IDs reference</a> — the official, comprehensive event ID reference.</li>
+<li><a href="https://learn.microsoft.com/en-us/sysinternals/downloads/sysmon">Sysmon documentation</a> — official docs for the free, widely-used detailed logging tool.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/07-windows-security/windows-user-accounts">Windows User Accounts &amp; UAC</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/07-windows-security/windows-event-viewer";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

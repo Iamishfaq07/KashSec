@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IP addresses — Path 02 · KashSec Academy</title>
+<meta name="description" content="A letter needs an address. On a network, that address is the IP address. Almost everything in hacking starts with finding the right address to look at — so this concept is foundational.">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/02-networking/ip-addresses">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="IP addresses — Path 02 · KashSec Academy">
+<meta property="og:description" content="A letter needs an address. On a network, that address is the IP address. Almost everything in hacking starts with finding the right address to look at — so this concept is foundational.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/02-networking/ip-addresses">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="IP addresses — Path 02 · KashSec Academy">
+<meta name="twitter:description" content="A letter needs an address. On a network, that address is the IP address. Almost everything in hacking starts with finding the right address to look at — so this concept is foundational.">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"IP addresses — Path 02 · KashSec Academy","description":"A letter needs an address. On a network, that address is the IP address. Almost everything in hacking starts with finding the right address to look at — so this concept is foundational.","url":"https://kashsec.vercel.app/#/lesson/02-networking/ip-addresses","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/02-networking/ip-addresses">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 02 — Networking Fundamentals</a> · IP addresses</div>
+  <article><h1>IP addresses</h1>
+<p>A letter needs an address. On a network, that address is the <strong>IP address</strong>. Almost everything in hacking starts with finding the right address to look at — so this concept is foundational.</p>
+<h2>What an IP address looks like</h2>
+<p>Every device on a network gets an <strong>IP address</strong> (IP = &quot;Internet Protocol&quot;) so the network knows where to deliver its letters. The common kind looks like four numbers separated by dots:</p>
+<pre><code>192.168.1.20
+</code></pre>
+<p>Each number ranges from <strong>0 to 255</strong>, so addresses run from <code>0.0.0.0</code> to <code>255.255.255.255</code>. That&#39;s about four billion possibilities — sounds huge, but the world actually ran out, which is why a newer, much larger system called <strong>IPv6</strong> exists. Those addresses are longer, full of letters and colons like <code>2001:db8::1</code>.</p>
+<p>For learning, the four-number style (called <strong>IPv4</strong>) is all you need.</p>
+<p>Both are in active use — most home networks still use IPv4 internally. If you see an address with colons like <code>fe80::1</code>, that&#39;s IPv6. You&#39;ll meet it more as you progress.</p>
+<h2>Private vs public — the building analogy</h2>
+<p>This trips up many beginners, so let&#39;s nail it with an apartment-building analogy.</p>
+<p><em>[Private and public IP addresses]</em></p>
+<p>Imagine a large apartment building on a street:</p>
+<ul>
+<li><strong>Private IP</strong> — your <strong>flat number inside the building</strong>. It only makes sense <em>inside</em> your home network. Your phone might be <code>192.168.1.20</code>, your laptop <code>192.168.1.21</code>. These same numbers are reused in millions of homes because they never leave the building.</li>
+<li><strong>Public IP</strong> — the <strong>building&#39;s street address</strong> that the postal service uses. The whole internet sees this single address for your entire home. Your router holds the public IP and cleverly sorts incoming mail to the right flat inside using a process called <strong>NAT</strong> (Network Address Translation).</li>
+</ul>
+<h3>The private IP ranges</h3>
+<p>There are three &quot;private&quot; address ranges you&#39;ll see everywhere:</p>
+<table>
+<thead>
+<tr>
+<th>Range</th>
+<th>Common use</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>10.0.0.0</code> – <code>10.255.255.255</code></td>
+<td>Big companies</td>
+</tr>
+<tr>
+<td><code>172.16.0.0</code> – <code>172.31.255.255</code></td>
+<td>Medium networks</td>
+</tr>
+<tr>
+<td><code>192.168.0.0</code> – <code>192.168.255.255</code></td>
+<td>Home networks (very common)</td>
+</tr>
+</tbody></table>
+<h2>Subnet masks and CIDR notation — describing a range of addresses</h2>
+<p>You&#39;ll constantly see addresses written like <code>192.168.1.0/24</code> throughout later paths (Path 12&#39;s Nmap lessons, Path 08&#39;s cloud networking lesson) — that <code>/24</code> is <strong>CIDR notation</strong>, and it&#39;s worth understanding now rather than treating it as magic later. It describes how many addresses belong to one network: <code>/24</code> means the first 24 bits (the first three of the four numbers) identify the network, leaving the last 8 bits free to number individual devices — giving you <code>192.168.1.0</code> through <code>192.168.1.255</code>, 256 addresses total. A smaller number after the slash means a <em>larger</em> range of addresses (<code>/16</code> covers 65,536 addresses), which can feel backwards at first but becomes intuitive with practice. This notation is exactly how a penetration test&#39;s scope document (Path 14) specifies which entire ranges of addresses are authorized for testing, rather than listing every individual IP by hand.</p>
+<h2>Static vs. dynamic IPs — and DHCP</h2>
+<p>Most devices on a home network don&#39;t have a permanently fixed private IP — instead, your router runs a service called <strong>DHCP (Dynamic Host Configuration Protocol)</strong>, automatically assigning each device an available address from its private range whenever it joins the network. This is called a <strong>dynamic IP</strong>, and it can change over time (e.g., after your device reconnects). A <strong>static IP</strong> is manually configured to never change — commonly used for servers, printers, or anything else that other devices need to reliably find at the same address every time. Understanding this distinction matters directly for Path 12&#39;s network scanning material: a device you scanned yesterday at <code>192.168.1.20</code> might genuinely be a different physical device today if it&#39;s using a dynamic IP and simply reconnected.</p>
+<h2>Special addresses worth knowing</h2>
+<ul>
+<li><code>127.0.0.1</code> — called <strong>localhost</strong> or the <strong>loopback</strong> address. It always means &quot;this very computer.&quot; When you build something and test it &quot;on localhost,&quot; you&#39;re talking to your own machine.</li>
+<li>Addresses ending in <code>.255</code> are often <strong>broadcast</strong> addresses (a message to everyone on the local network).</li>
+<li><code>0.0.0.0</code> can mean &quot;all addresses&quot; in some settings.</li>
+</ul>
+<p>When you install a web server and visit <code>http://127.0.0.1</code> or <code>http://localhost</code>, you&#39;re testing your own machine. That&#39;s how you develop and test safely without touching the internet.</p>
+<h2>Try it yourself</h2>
+<p>You can view your device&#39;s IP with a single command:</p>
+<pre><code class="language-bash"># Linux or Mac — open a terminal:
+ip a
+
+# An older command that also works:
+ifconfig
+
+# Windows — open Command Prompt:
+ipconfig
+</code></pre>
+<h2>🧪 Lab — Find your addresses</h2>
+<ol>
+<li>Open a terminal (Linux/Mac) or Command Prompt (Windows).</li>
+<li>Run <code>ip a</code> (or <code>ipconfig</code> on Windows) and press Enter.</li>
+<li>The output looks busy — that&#39;s normal. Find a line with a number like <code>192.168.x.x</code> or <code>10.x.x.x</code>. <strong>That&#39;s your device&#39;s private IP.</strong></li>
+<li>Now open a browser and search <strong>&quot;what is my IP&quot;</strong>. The number shown is your <strong>public IP</strong> — the street address the internet sees for your whole home.</li>
+<li>Notice that ten devices in your home might have ten <em>private</em> IPs but only one <em>public</em> IP.</li>
+</ol>
+<h2>Why attackers care about IPs</h2>
+<p>To attack or scan a machine, you first need its address — just as a burglar needs to know which house. A huge part of hacking (which you&#39;ll learn in the recon lessons) is simply <em>finding</em> the right addresses to look at.</p>
+<ul>
+<li><strong>On a pentest:</strong> you receive a list of IP ranges as your scope.</li>
+<li><strong>In bug bounty:</strong> you resolve subdomains to IPs and enumerate what&#39;s exposed.</li>
+<li><strong>In defence:</strong> you monitor which IPs your systems talk to — outbound connections to unusual addresses are red flags.</li>
+</ul>
+<p>Which IP address always means &quot;this very computer I&#39;m sitting at&quot;?</p>
+<details><summary>Show answer</summary><code>127.0.0.1</code> — known as localhost or the loopback address.</details><h2>Key terms</h2>
+<ul>
+<li><strong>IP address</strong> — a device&#39;s address on a network.</li>
+<li><strong>IPv4 / IPv6</strong> — the older 4-number system and the newer larger one.</li>
+<li><strong>Private IP</strong> — works only inside your local network (like a flat number).</li>
+<li><strong>Public IP</strong> — the single address the internet sees for your home.</li>
+<li><strong>localhost / 127.0.0.1</strong> — &quot;this computer.&quot;</li>
+<li><strong>NAT</strong> — how your router maps between private and public addresses.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>IPv4 addresses are four numbers 0–255 separated by dots.</li>
+<li>Private IPs work only inside your home; public IPs face the internet.</li>
+<li><code>127.0.0.1</code> (localhost) always means your own machine.</li>
+<li>NAT lets many devices behind one public IP.</li>
+</ul>
+<h3>References</h3>
+<ul>
+<li><a href="https://www.cloudflare.com/learning/dns/glossary/what-is-my-ip-address/">What is an IP address? — Cloudflare</a> — clean beginner explanation.</li>
+<li><a href="https://www.comparitech.com/net-admin/ipv4-vs-ipv6/">IPv4 vs IPv6 — Comparitech</a> — the differences and why we&#39;re moving.</li>
+<li><a href="https://en.wikipedia.org/wiki/Private_network">Private IP address ranges — Wikipedia (RFC 1918)</a> — the standards.</li>
+<li><a href="https://whatismyipaddress.com/">whatismyipaddress.com</a> — quick public IP + location lookup.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/02-networking/ports">Ports: the doors of a computer</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/02-networking/ip-addresses";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

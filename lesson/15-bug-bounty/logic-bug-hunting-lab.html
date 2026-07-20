@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Logic Bug Hunting Lab — Path 15 · KashSec Academy</title>
+<meta name="description" content="Business logic vulnerabilities are, in many ways, harder to find than technical bugs like SQLi or XSS — no scanner catches them, because there's no malformed input involved at all, only a legitimate r">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/15-bug-bounty/logic-bug-hunting-lab">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Logic Bug Hunting Lab — Path 15 · KashSec Academy">
+<meta property="og:description" content="Business logic vulnerabilities are, in many ways, harder to find than technical bugs like SQLi or XSS — no scanner catches them, because there's no malformed input involved at all, only a legitimate r">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/15-bug-bounty/logic-bug-hunting-lab">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Logic Bug Hunting Lab — Path 15 · KashSec Academy">
+<meta name="twitter:description" content="Business logic vulnerabilities are, in many ways, harder to find than technical bugs like SQLi or XSS — no scanner catches them, because there's no malformed input involved at all, only a legitimate r">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Logic Bug Hunting Lab — Path 15 · KashSec Academy","description":"Business logic vulnerabilities are, in many ways, harder to find than technical bugs like SQLi or XSS — no scanner catches them, because there's no malformed input involved at all, only a legitimate r","url":"https://kashsec.vercel.app/#/lesson/15-bug-bounty/logic-bug-hunting-lab","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/15-bug-bounty/logic-bug-hunting-lab">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 15 — Bug Bounty</a> · Logic Bug Hunting Lab</div>
+  <article><h1>Logic Bug Hunting Lab</h1>
+<p>Business logic vulnerabilities are, in many ways, harder to find than technical bugs like SQLi or XSS — no scanner catches them, because there&#39;s no malformed input involved at all, only a <em>legitimate</em> request made in a sequence or context the developer never anticipated. This lab practices the specific mindset that finds them.</p>
+<h2>Focus areas</h2>
+<ul>
+<li><p><strong>Race conditions</strong> — exploiting the tiny time window between an action being checked and being completed (e.g., submitting the same &quot;redeem coupon&quot; request twice, simultaneously, before the server marks it as used).</p>
+</li>
+<li><p><strong>Payment bypasses</strong> — manipulating price, quantity, or currency parameters client-side before a request reaches the server, or exploiting a checkout flow that trusts a client-supplied total instead of recalculating it server-side.</p>
+</li>
+<li><p><strong>IDOR with business impact</strong> — beyond simply viewing another user&#39;s data (Path 11&#39;s IDOR lesson), IDOR that lets you <em>modify</em> another user&#39;s data or <em>act as</em> them carries far greater real-world severity.</p>
+</li>
+<li><p><strong>Workflow bypasses</strong> — skipping a required step by directly navigating to a later step&#39;s URL or API endpoint (e.g., reaching an order confirmation page without ever completing payment).</p>
+</li>
+<li><p><strong>Price manipulation</strong> — modifying a hidden price field, a discount code&#39;s underlying value, or a quantity that goes negative to produce an unintended (often favorable-to-the-attacker) total.</p>
+</li>
+<li><p><strong>Authentication/authorization logic flaws</strong> — a password reset flow that doesn&#39;t properly bind the reset token to the specific account requesting it, or a permission check that verifies a role client-side but not server-side.</p>
+</li>
+<li><p><strong>State desynchronization across multiple sessions/tabs</strong> — opening the same workflow (a shopping cart, a multi-step form) in two browser tabs simultaneously and making conflicting changes in each, checking whether the server correctly resolves the conflict or silently corrupts state by trusting whichever request happened to arrive last.</p>
+</li>
+</ul>
+<h2>Lab approach</h2>
+<p>Use a deliberately vulnerable app (several free options exist for business-logic-specific practice, or a wide-scope real bug bounty program) and, critically, spend real time <em>understanding the intended workflow first</em> — read through the checkout flow, the coupon redemption flow, the account settings flow, end to end, as a normal user would use it — before trying to break any assumption within it. This is the actual methodology, not a shortcut you can skip.</p>
+<p>This is the exact same core question from Path 01&#39;s Security Mindset Lab, applied specifically to application workflows: does this checkout flow assume the price sent by the client matches what was actually displayed? Does this coupon-redeem endpoint assume it can only be called once? Does this password reset assume the token can only be used by the person who requested it? Every assumption is a hypothesis worth testing directly.</p>
+<p>As you work through an application&#39;s workflows, write down every assumption you notice the moment you notice it — even ones you haven&#39;t tested yet — in a simple running list. Revisiting this log after finishing your first pass often surfaces two or three assumptions you noted but forgot to actually go back and test, which is a genuinely common way real findings slip through even careful manual testing.</p>
+<p>In a test environment (or, if you have a specific wide-scope program&#39;s explicit permission, a real target), find at least one business logic flaw and document it: what the intended workflow was supposed to enforce, exactly what assumption broke, how you exploited it, and — critically — the <strong>business impact</strong> in plain terms (e.g., &quot;an attacker could redeem the same one-time discount code unlimited times,&quot; not just &quot;found a race condition&quot;).</p>
+<h2>Key takeaway</h2>
+<p>Logic bugs require genuinely understanding how an application is <em>supposed</em> to work before you can find where that intention breaks down — no automated scanner replaces this understanding, which is exactly why skilled logic-bug hunters remain in high demand even as automated tooling improves at finding technical vulnerability classes.</p>
+<p><strong>Next up →</strong> <a href="#/lesson/15-bug-bounty/recon-pipeline-lab">Recon Pipeline Lab</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/15-bug-bounty/logic-bug-hunting-lab";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

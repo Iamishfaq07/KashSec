@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HTTP &amp; HTTPS — Path 02 · KashSec Academy</title>
+<meta name="description" content="This is the protocol you'll spend the most time with, because most modern hacking is web hacking. Every time you open a website, your browser and the site's server have a conversation using a protocol">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/02-networking/http-https">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="HTTP &amp; HTTPS — Path 02 · KashSec Academy">
+<meta property="og:description" content="This is the protocol you'll spend the most time with, because most modern hacking is web hacking. Every time you open a website, your browser and the site's server have a conversation using a protocol">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/02-networking/http-https">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="HTTP &amp; HTTPS — Path 02 · KashSec Academy">
+<meta name="twitter:description" content="This is the protocol you'll spend the most time with, because most modern hacking is web hacking. Every time you open a website, your browser and the site's server have a conversation using a protocol">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"HTTP & HTTPS — Path 02 · KashSec Academy","description":"This is the protocol you'll spend the most time with, because most modern hacking is web hacking. Every time you open a website, your browser and the site's server have a conversation using a protocol","url":"https://kashsec.vercel.app/#/lesson/02-networking/http-https","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/02-networking/http-https">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 02 — Networking Fundamentals</a> · HTTP &amp; HTTPS</div>
+  <article><h1>HTTP &amp; HTTPS</h1>
+<p>This is the protocol you&#39;ll spend the most time with, because most modern hacking is <em>web</em> hacking. Every time you open a website, your browser and the site&#39;s <strong>server</strong> have a conversation using a protocol called <strong>HTTP</strong> — the HyperText Transfer Protocol. It&#39;s the language of the web.</p>
+<h2>Request and response</h2>
+<p>HTTP is a simple back-and-forth. Your browser sends a <strong>request</strong> (&quot;please give me this page&quot;), and the server sends back a <strong>response</strong> (the page).</p>
+<p><strong>Request</strong> and <strong>response.</strong> Almost all web hacking is crafting clever requests and studying the responses. Burn these two words into memory.</p>
+<h2>Anatomy of a request</h2>
+<pre><code class="language-http">GET /products?id=42 HTTP/1.1
+Host: shop.example.com
+User-Agent: Mozilla/5.0
+Accept: text/html
+Cookie: session=abc123
+</code></pre>
+<ul>
+<li><strong><code>GET</code></strong> — the <em>method</em> (the action).</li>
+<li><strong><code>/products?id=42</code></strong> — the <em>path</em>, plus a <em>parameter</em> named <code>id</code> with value <code>42</code>.</li>
+<li>The lines below are <strong>headers</strong> — extra info like who you are (<code>Cookie</code>) and what browser you use.</li>
+</ul>
+<h3>The most common methods</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>What it means</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>GET</strong></td>
+<td>&quot;Give me something&quot; — load a page</td>
+</tr>
+<tr>
+<td><strong>POST</strong></td>
+<td>&quot;Here&#39;s some data for you&quot; — submit a form, log in</td>
+</tr>
+<tr>
+<td><strong>PUT</strong></td>
+<td>&quot;Replace this resource&quot;</td>
+</tr>
+<tr>
+<td><strong>PATCH</strong></td>
+<td>&quot;Update part of this resource&quot;</td>
+</tr>
+<tr>
+<td><strong>DELETE</strong></td>
+<td>&quot;Delete this resource&quot;</td>
+</tr>
+<tr>
+<td><strong>OPTIONS</strong></td>
+<td>&quot;What can I do here?&quot; — used by browsers for CORS</td>
+</tr>
+<tr>
+<td><strong>HEAD</strong></td>
+<td>Like GET but response has no body</td>
+</tr>
+</tbody></table>
+<p>GET and POST cover most of what you&#39;ll meet early on.</p>
+<h2>Anatomy of a response</h2>
+<pre><code class="language-http">HTTP/1.1 200 OK
+Content-Type: text/html
+Content-Length: 4218
+Set-Cookie: session=xyz789; HttpOnly; Secure
+
+&lt;html&gt;
+  &lt;body&gt;...&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p>The first line has a <strong>status code</strong> telling you how it went.</p>
+<h3>Status code families — learn these!</h3>
+<p>You&#39;ll watch these constantly during testing:</p>
+<table>
+<thead>
+<tr>
+<th>Family</th>
+<th>Meaning</th>
+<th>Common ones</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>1xx</strong></td>
+<td>Info (rare)</td>
+<td>100 Continue</td>
+</tr>
+<tr>
+<td><strong>2xx</strong></td>
+<td>✅ Success</td>
+<td><strong>200 OK</strong>, 201 Created, 204 No Content</td>
+</tr>
+<tr>
+<td><strong>3xx</strong></td>
+<td>↪ Redirect</td>
+<td>301 Moved, <strong>302 Found</strong>, 304 Not Modified</td>
+</tr>
+<tr>
+<td><strong>4xx</strong></td>
+<td>❌ Your error</td>
+<td><strong>400 Bad Request</strong>, <strong>401 Unauthorized</strong>, <strong>403 Forbidden</strong>, <strong>404 Not Found</strong>, <strong>429 Too Many Requests</strong></td>
+</tr>
+<tr>
+<td><strong>5xx</strong></td>
+<td>💥 Server error</td>
+<td><strong>500 Internal Server Error</strong>, 502 Bad Gateway, 503 Service Unavailable</td>
+</tr>
+</tbody></table>
+<p>When you see a 500 during testing, it often means the server crashed on your input — a big hint that a bug might live there. 403 says &quot;you&#39;re not allowed&quot; (interesting: it means something IS there). 404 usually means &quot;not there at all.&quot;</p>
+<h2>HTTP versions</h2>
+<ul>
+<li><strong>HTTP/1.1</strong> — the classic, still very common.</li>
+<li><strong>HTTP/2</strong> — binary, multiplexed, faster; widely deployed.</li>
+<li><strong>HTTP/3</strong> — over QUIC (UDP under the hood!), even newer, growing fast.</li>
+</ul>
+<p>Modern browsers pick the best version automatically. Same <em>semantics</em> (methods, headers, status codes) across all three.</p>
+<h2>The &#39;S&#39; is for Secure</h2>
+<p>Plain HTTP sends everything in <strong>plain text</strong>. Remember packets travel shared roads where others might read them? With plain HTTP, anyone in the middle — on the same Wi-Fi or along the route — could read everything, including your password as you type it.</p>
+<p><strong>HTTPS</strong> fixes this. The &#39;S&#39; stands for <strong>Secure</strong>: the whole conversation is <strong>encrypted</strong> using <strong>TLS</strong> — scrambled into gibberish only your browser and the real server can unscramble.</p>
+<p><em>[HTTP vs HTTPS on the wire]</em></p>
+<ul>
+<li><strong>HTTP</strong> — plain text; anyone in the middle can read it. Never for anything private.</li>
+<li><strong>HTTPS</strong> — encrypted; safe from eavesdroppers. What virtually all real sites use today.</li>
+</ul>
+<h2>The TLS handshake (in one paragraph)</h2>
+<p>When you connect over HTTPS, the browser and server perform a <strong>TLS handshake</strong> first: the server presents a <strong>certificate</strong> proving its identity (signed by a trusted Certificate Authority), they agree on a session key, and then all future traffic is encrypted with that key. If the certificate is missing, expired, or from an untrusted CA — the browser shows a scary red warning.</p>
+<p>On a real site, a certificate warning often means someone is trying to intercept your connection (a <strong>man-in-the-middle</strong> attack). Don&#39;t click &quot;proceed anyway&quot; on sites where you&#39;ll enter passwords or personal data.</p>
+<h2>Idempotency and &quot;safe&quot; methods — a distinction that matters for testing</h2>
+<p>Two properties worth understanding about HTTP methods, since they directly affect how you test safely: a method is <strong>safe</strong> if it&#39;s not supposed to change anything on the server (GET, HEAD — just retrieving data), and a method is <strong>idempotent</strong> if calling it multiple times has the same effect as calling it once (GET, PUT, DELETE all qualify — deleting the same resource twice leaves it deleted either way; POST notably does <em>not</em> qualify, since submitting the same form twice might create two separate orders). This matters directly in testing: automated scanners and tools like Burp&#39;s Intruder (Path 11) are generally safe to run against GET requests repeatedly, but running the same destructive POST request many times during testing can have real, compounding side effects on the target application — worth being deliberate about, especially during authorized testing where causing unintended damage reflects poorly regardless of your actual intentions.</p>
+<h2>HTTP headers worth knowing</h2>
+<p>You&#39;ll live in these when testing:</p>
+<table>
+<thead>
+<tr>
+<th>Header</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>Host</code></td>
+<td>Which domain you&#39;re asking (a server may host many)</td>
+</tr>
+<tr>
+<td><code>Cookie</code> / <code>Set-Cookie</code></td>
+<td>Session state</td>
+</tr>
+<tr>
+<td><code>User-Agent</code></td>
+<td>What browser you claim to be</td>
+</tr>
+<tr>
+<td><code>Content-Type</code></td>
+<td>Format of the body (<code>application/json</code>, etc.)</td>
+</tr>
+<tr>
+<td><code>Authorization</code></td>
+<td>Auth tokens (e.g., <code>Bearer &lt;JWT&gt;</code>)</td>
+</tr>
+<tr>
+<td><code>Referer</code></td>
+<td>Where you came from</td>
+</tr>
+<tr>
+<td><code>X-Forwarded-For</code></td>
+<td>Original IP through proxies (sometimes trusted, always risky)</td>
+</tr>
+<tr>
+<td><code>Strict-Transport-Security</code> (HSTS)</td>
+<td>Force HTTPS from now on</td>
+</tr>
+<tr>
+<td><code>Content-Security-Policy</code> (CSP)</td>
+<td>Restricts what a page can load and run</td>
+</tr>
+</tbody></table>
+<h2>🧪 Lab — Watch requests happen</h2>
+<ol>
+<li>Open any website in your browser.</li>
+<li>Press <strong>F12</strong> to open Developer Tools, and click the <strong>Network</strong> tab.</li>
+<li><strong>Refresh</strong> the page and watch the list of requests appear.</li>
+<li>Click one request and explore: its <strong>method</strong> (GET/POST), its <strong>status code</strong>, its <strong>headers</strong>, and the <strong>response</strong>. You&#39;re now looking at raw HTTP — the exact thing web hackers study.</li>
+</ol>
+<p>We go deep on DevTools in <strong>Path 05</strong>.</p>
+<p>You send a request and get back a <strong>500 Internal Server Error</strong>. What does that suggest as a tester?</p>
+<details><summary>Show answer</summary>The server crashed on your input — you *touched something*. That's often a hint that a bug may live in that endpoint. Investigate what specifically caused it.</details><h2>Key terms</h2>
+<ul>
+<li><strong>HTTP</strong> — the web&#39;s request/response protocol.</li>
+<li><strong>Request / response</strong> — what your browser sends and the server returns.</li>
+<li><strong>GET / POST / PUT / DELETE</strong> — different HTTP methods.</li>
+<li><strong>Header</strong> — extra info attached to a request or response.</li>
+<li><strong>Status code</strong> — the 2xx / 3xx / 4xx / 5xx result of a request.</li>
+<li><strong>HTTPS / TLS</strong> — encrypted HTTP (the padlock).</li>
+<li><strong>HSTS</strong> — forces future HTTPS connections.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>HTTP is the web&#39;s language: your browser requests, the server responds.</li>
+<li>Requests have methods, paths, parameters, and headers; responses have status codes.</li>
+<li>Plain HTTP is readable in the middle; HTTPS encrypts everything with TLS.</li>
+<li>Request-and-response is the heart of web hacking — you&#39;ll build on this constantly.</li>
+</ul>
+<h3>References</h3>
+<ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview">MDN: HTTP overview</a> — the definitive friendly reference.</li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Status">HTTP status codes explained</a> — bookmark it.</li>
+<li><a href="https://howhttps.works/">How HTTPS actually works — HowHTTPS.works</a> — comic-style TLS explainer.</li>
+<li><a href="https://www.ssllabs.com/ssltest/">SSL Labs test</a> — check the HTTPS quality of any site.</li>
+</ul>
+<h2>🎉 You&#39;ve finished Path 02</h2>
+<p>You now understand networks, IP addresses, ports, packets &amp; OSI layers, protocols, TCP vs UDP, DNS, and HTTP/HTTPS. This is the true foundation under every attack and defence — you can picture how data moves and where an attacker fits in.</p>
+<p><strong>Next up →</strong> <a href="#/lesson/02-networking/dns-lab">DNS Lab</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/02-networking/http-https";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

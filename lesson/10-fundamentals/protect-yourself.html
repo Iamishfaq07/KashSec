@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MFA, updates, backups — Path 10 · KashSec Academy</title>
+<meta name="description" content="Time for the practical payoff of this entire path. Here's a genuinely thorough personal security checklist — the exact set of changes worth making to your own devices and accounts this week.">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/10-fundamentals/protect-yourself">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="MFA, updates, backups — Path 10 · KashSec Academy">
+<meta property="og:description" content="Time for the practical payoff of this entire path. Here's a genuinely thorough personal security checklist — the exact set of changes worth making to your own devices and accounts this week.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/10-fundamentals/protect-yourself">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="MFA, updates, backups — Path 10 · KashSec Academy">
+<meta name="twitter:description" content="Time for the practical payoff of this entire path. Here's a genuinely thorough personal security checklist — the exact set of changes worth making to your own devices and accounts this week.">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"MFA, updates, backups — Path 10 · KashSec Academy","description":"Time for the practical payoff of this entire path. Here's a genuinely thorough personal security checklist — the exact set of changes worth making to your own devices and accounts this week.","url":"https://kashsec.vercel.app/#/lesson/10-fundamentals/protect-yourself","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/10-fundamentals/protect-yourself">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 10 — Cybersecurity Fundamentals</a> · MFA, updates, backups</div>
+  <article><h1>Protect yourself: practical hardening</h1>
+<p>Time for the practical payoff of this entire path. Here&#39;s a genuinely thorough personal security checklist — the exact set of changes worth making to your own devices and accounts this week.</p>
+<h2>Defense in depth — the core philosophy</h2>
+<p>No single control is perfect. <strong>Defense in depth</strong> means layering multiple, independent controls so that if one fails, others still protect you — the same principle as the kill chain lesson, applied to your personal life.</p>
+<h2>1. Passwords — the foundation</h2>
+<ul>
+<li><strong>Install a password manager today</strong> if you don&#39;t have one: Bitwarden (free, open-source) or 1Password are excellent choices.</li>
+<li>Let it <strong>generate</strong> long, random, unique passwords for every account — you should not know most of your own passwords.</li>
+<li>Set one very strong, memorable <strong>master password</strong> (a long passphrase) for the manager itself, and enable MFA on the manager account.</li>
+<li>Run your existing passwords through <a href="https://haveibeenpwned.com/">Have I Been Pwned</a> — change anything flagged as breached, especially if reused elsewhere.</li>
+</ul>
+<h2>2. Multi-factor authentication — turn it on everywhere</h2>
+<p>Priority order for enabling MFA:</p>
+<ol>
+<li><strong>Email accounts first</strong> — email is the &quot;master key&quot; that can reset almost everything else.</li>
+<li><strong>Password manager.</strong></li>
+<li><strong>Banking and financial accounts.</strong></li>
+<li><strong>Social media</strong> (account takeovers are used for scams against your contacts).</li>
+<li><strong>Work accounts.</strong></li>
+</ol>
+<p>Prefer, in order of strength: <strong>hardware key (FIDO2/YubiKey)</strong> &gt; <strong>authenticator app (TOTP)</strong> &gt; <strong>SMS</strong> (better than nothing, but vulnerable to SIM-swapping — avoid if better options exist).</p>
+<h2>3. Updates — patch promptly</h2>
+<p>Most real-world exploitation targets <strong>known, already-patched</strong> vulnerabilities that victims simply hadn&#39;t installed yet — not exotic zero-days. Turn on automatic updates for:</p>
+<ul>
+<li>Your OS (Windows Update, macOS Software Update, Linux <code>apt upgrade</code>)</li>
+<li>Your browser (usually auto-updates already — verify it&#39;s not disabled)</li>
+<li>Apps, especially anything internet-facing (browsers, PDF readers, messaging apps)</li>
+<li>Router/IoT firmware (commonly neglected — check manually every few months)</li>
+</ul>
+<h2>4. Device hardening basics</h2>
+<ul>
+<li><strong>Full-disk encryption</strong> — BitLocker (Windows), FileVault (macOS), LUKS (Linux). Protects your data if a device is lost or stolen.</li>
+<li><strong>Screen lock</strong> with a real PIN/password/biometric, short auto-lock timeout.</li>
+<li><strong>Firewall enabled</strong> (on by default on most modern OSes — verify it hasn&#39;t been disabled).</li>
+<li><strong>Uninstall unused software</strong> — every installed app is potential attack surface, even if you never open it.</li>
+<li><strong>Review app permissions</strong> periodically (camera, mic, location) — revoke anything that doesn&#39;t need it.</li>
+</ul>
+<h2>5. Network hardening at home</h2>
+<ul>
+<li>Change the router&#39;s <strong>default admin password</strong> immediately — this is one of the most common real-world compromises (Mirai botnet territory from the malware lesson).</li>
+<li>Use <strong>WPA3</strong> (or WPA2 at minimum) for Wi-Fi, never WEP or open networks.</li>
+<li>Consider a <strong>separate guest network</strong> for visitors and IoT devices, isolated from your main devices.</li>
+<li>Disable <strong>WPS</strong> (WiFi Protected Setup) — historically riddled with vulnerabilities.</li>
+</ul>
+<h2>6. Backups — your availability insurance</h2>
+<p>Follow the <strong>3-2-1 rule</strong>: <strong>3</strong> copies of important data, on <strong>2</strong> different types of media, with <strong>1</strong> copy off-site (cloud or physically elsewhere).</p>
+<ul>
+<li>Automate backups so you don&#39;t rely on remembering.</li>
+<li><strong>Test restoring</strong> from backup occasionally — an untested backup is a hope, not a plan.</li>
+<li>This is your single best defence against ransomware: if your files are safely backed up elsewhere, an encryption attack loses most of its leverage over you.</li>
+</ul>
+<h2>7. Awareness habits — becoming &quot;phishing-resistant&quot;</h2>
+<ul>
+<li>Apply the verification checklist from the previous lesson to anything urgent, financial, or credential-related.</li>
+<li>Hover over links before clicking; check the actual domain, not just the display text.</li>
+<li>Be suspicious of <strong>any</strong> unexpected attachment, even from known contacts (their account may be compromised).</li>
+<li>When in doubt, navigate to the site <strong>directly</strong> (type the URL or use a bookmark) rather than clicking a link in an email.</li>
+</ul>
+<h2>8. Social media and OSINT self-hygiene</h2>
+<p>Recall Path 10&#39;s kill chain — reconnaissance often starts with public social media. A quick self-audit:</p>
+<ul>
+<li>Search your own name; see what a stranger (or attacker) would find in 5 minutes.</li>
+<li>Review privacy settings on Facebook/Instagram/LinkedIn — who can see your posts, friends list, phone number?</li>
+<li>Be mindful of oversharing real-time location, travel plans, and workplace details publicly.</li>
+<li>Consider what a spear-phisher could learn about you from public info alone — that&#39;s exactly the reconnaissance an attacker would do (Path 14 teaches this from the offensive side).</li>
+</ul>
+<h2>9. Mobile-specific hardening</h2>
+<p>Phones deserve their own quick pass beyond &quot;device hardening basics&quot; above, since they carry a different risk profile — always-on location, a payment method, and typically far more accounts logged in simultaneously than a laptop. Worth doing specifically on mobile: review which apps have background location access (most don&#39;t need it), disable Bluetooth and Wi-Fi auto-connect to unknown networks (a classic public-space attack vector), install apps only from official stores rather than sideloaded APKs/IPAs, and check for a &quot;Find My Device&quot; / remote-wipe feature being active in case of loss or theft. Path 13&#39;s mobile security material goes considerably deeper into the attacker&#39;s side of this — worth returning to once you&#39;re comfortable here.</p>
+<h2>10. Digital privacy beyond security</h2>
+<p>Security (keeping attackers out) and privacy (limiting what&#39;s collected and shared about you even by legitimate parties) overlap but aren&#39;t identical — you can be perfectly secure against hackers while still leaking enormous amounts of personal data to advertisers, data brokers, and the services you use every day. A few starting habits: review and trim third-party app permissions connected to your Google/Microsoft/Apple account (many people have dozens of forgotten OAuth grants from apps they used once years ago), consider a privacy-respecting browser or extension that blocks third-party trackers, and periodically check what a basic people-search site reveals about you publicly. Path 09&#39;s digital privacy path is dedicated entirely to this adjacent, equally important topic.</p>
+<h2>A prioritised action list for this week</h2>
+<p>If you do nothing else from this lesson, do these five things, roughly in this order:</p>
+<ol>
+<li>Install a password manager, start migrating your most important accounts.</li>
+<li>Enable MFA on your email account (the master key to everything else).</li>
+<li>Check Have I Been Pwned for your main email; act on any hits.</li>
+<li>Turn on automatic OS/browser updates.</li>
+<li>Set up one automated, tested backup for anything you couldn&#39;t bear to lose.</li>
+</ol>
+<h2>Security is a practice, not a product</h2>
+<p>No single purchase or checklist makes you &quot;done.&quot; Security is an ongoing practice — reviewing settings periodically, staying aware of new scam patterns, and maintaining healthy scepticism without becoming paranoid or paralysed. The goal is <strong>reasonable, sustainable</strong> protection, not perfection.</p>
+<h2>🧪 Lab — Personal security audit</h2>
+<p>Go through this checklist against your own real accounts and devices, right now:</p>
+<ul>
+<li><input disabled="" type="checkbox"> Password manager installed and in active use</li>
+<li><input disabled="" type="checkbox"> MFA enabled on email</li>
+<li><input disabled="" type="checkbox"> MFA enabled on at least 2 other important accounts</li>
+<li><input disabled="" type="checkbox"> Checked Have I Been Pwned for your main email</li>
+<li><input disabled="" type="checkbox"> Automatic updates confirmed on for OS and browser</li>
+<li><input disabled="" type="checkbox"> Router admin password changed from default</li>
+<li><input disabled="" type="checkbox"> Full-disk encryption confirmed on</li>
+<li><input disabled="" type="checkbox"> At least one automated backup configured</li>
+<li><input disabled="" type="checkbox"> Searched your own name to see your public footprint</li>
+</ul>
+<p>Whatever&#39;s unchecked, pick one to actually complete before moving to the next lesson. Small, real action beats a perfect plan you never start.</p>
+<p>Why is enabling MFA on your <strong>email account</strong> specifically considered higher priority than almost any other account?</p>
+<details><summary>Show answer</summary>Email is typically the <strong>account recovery mechanism</strong> for nearly everything else — banking, social media, work accounts. If an attacker controls your email, they can usually trigger "forgot password" resets to take over most of your other accounts too. It's the single highest-leverage account to protect.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Defense in depth</strong> — layering multiple independent controls.</li>
+<li><strong>3-2-1 backup rule</strong> — 3 copies, 2 media types, 1 off-site.</li>
+<li><strong>Password manager</strong> — tool that generates/stores unique strong passwords per account.</li>
+<li><strong>FIDO2 / TOTP / SMS MFA</strong> — in decreasing order of security strength.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Layer multiple defences; no single control is perfect.</li>
+<li>Password manager + MFA on email first are the two highest-leverage actions.</li>
+<li>Keep systems updated; most real attacks exploit already-patched vulnerabilities.</li>
+<li>Back up important data following the 3-2-1 rule, and actually test restores.</li>
+<li>Security is an ongoing practice, not a one-time checklist.</li>
+</ul>
+<h3>References</h3>
+<ul>
+<li><a href="https://www.cisa.gov/secure-our-world">CISA — Cybersecurity for individuals</a> — official US guidance for personal security.</li>
+<li><a href="https://haveibeenpwned.com/">Have I Been Pwned</a> — check your accounts against known breaches.</li>
+<li><a href="https://bitwarden.com/">Bitwarden</a> — free, open-source password manager.</li>
+<li><a href="https://ssd.eff.org/">EFF Surveillance Self-Defense</a> — excellent deep-dive personal security guide.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/10-fundamentals/frameworks">Security frameworks &amp; standards</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/10-fundamentals/protect-yourself";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

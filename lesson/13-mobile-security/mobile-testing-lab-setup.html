@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Setting Up a Mobile Testing Lab — Path 13 · KashSec Academy</title>
+<meta name="description" content="Before testing a single app, you need a proper lab — a controlled, safe environment where you can install, inspect, and intercept traffic from mobile apps without risking a real device or real account">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/13-mobile-security/mobile-testing-lab-setup">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Setting Up a Mobile Testing Lab — Path 13 · KashSec Academy">
+<meta property="og:description" content="Before testing a single app, you need a proper lab — a controlled, safe environment where you can install, inspect, and intercept traffic from mobile apps without risking a real device or real account">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/13-mobile-security/mobile-testing-lab-setup">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Setting Up a Mobile Testing Lab — Path 13 · KashSec Academy">
+<meta name="twitter:description" content="Before testing a single app, you need a proper lab — a controlled, safe environment where you can install, inspect, and intercept traffic from mobile apps without risking a real device or real account">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Setting Up a Mobile Testing Lab — Path 13 · KashSec Academy","description":"Before testing a single app, you need a proper lab — a controlled, safe environment where you can install, inspect, and intercept traffic from mobile apps without risking a real device or real account","url":"https://kashsec.vercel.app/#/lesson/13-mobile-security/mobile-testing-lab-setup","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/13-mobile-security/mobile-testing-lab-setup">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 13 — Mobile App Security</a> · Setting Up a Mobile Testing Lab</div>
+  <article><h1>Setting Up a Mobile Testing Lab</h1>
+<p>Before testing a single app, you need a proper lab — a controlled, safe environment where you can install, inspect, and intercept traffic from mobile apps without risking a real device or real accounts. This lesson gets that environment fully working.</p>
+<h2>The core components</h2>
+<h2>1. An Android emulator</h2>
+<p><strong>Android Studio&#39;s built-in emulator</strong> (free, from <a href="https://developer.android.com/studio">developer.android.com/studio</a>) is the standard starting point — it lets you create virtual Android devices (AVDs) of any Android version, with root access available on emulator images without Google Play Services (choose a &quot;Google APIs&quot; image, not a &quot;Google Play&quot; image, specifically because the Play Store variant blocks root access by design).</p>
+<pre><code class="language-bash"># List available emulators once set up:
+emulator -list-avds
+# Launch one:
+emulator -avd Pixel_6_API_33
+</code></pre>
+<p><a href="https://www.genymotion.com/">Genymotion</a> offers a free personal-use tier with generally faster performance than the stock Android Studio emulator, and is popular specifically among security testers for this reason.</p>
+<h2>2. ADB — Android Debug Bridge</h2>
+<p><strong>ADB</strong> is the command-line bridge between your computer and an Android device (emulated or physical) — it&#39;s how you&#39;ll install apps, pull files off the device, and run shell commands, and it ships with Android Studio&#39;s SDK tools.</p>
+<pre><code class="language-bash">adb devices                          # confirm your emulator/device is connected
+adb install path/to/app.apk          # install an APK for testing
+adb shell                            # get an interactive shell on the device
+adb pull /data/data/com.example.app/ ./extracted/   # pull an app&#39;s private data (requires root)
+</code></pre>
+<h2>3. Burp Suite configured for mobile traffic</h2>
+<p>Intercepting mobile app traffic uses the exact same Burp Suite skills from Path 11 — the only new part is routing the <em>device&#39;s</em> traffic through Burp&#39;s proxy instead of a desktop browser&#39;s:</p>
+<ol>
+<li>In your emulator&#39;s Wi-Fi settings, set a manual proxy pointing to your host machine&#39;s IP and Burp&#39;s listening port (default <code>8080</code>).</li>
+<li>Install Burp&#39;s CA certificate on the device so it can intercept HTTPS traffic without triggering certificate errors — visit <code>http://burp</code> from the emulator&#39;s browser and download the certificate, then install it under the device&#39;s security settings.</li>
+<li>On modern Android (7+), apps by default only trust <em>system</em>-installed certificates for network security, not user-installed ones — you may need to install Burp&#39;s cert as a <strong>system</strong> certificate (requires root) rather than a user certificate for it to work against apps targeting recent Android API levels.</li>
+</ol>
+<h2>4. A rooted environment for deeper analysis</h2>
+<p>Root access lets you read any app&#39;s private storage, bypass certain protections, and install tools like <strong>Frida</strong> (covered later in this path) for runtime instrumentation. On an emulator, use a non-Play-Store system image and run:</p>
+<pre><code class="language-bash">adb root
+adb remount
+</code></pre>
+<p>On a genuinely dedicated physical test device (never your primary phone), tools like <strong>Magisk</strong> provide root access while keeping the modification cleanly manageable and reversible.</p>
+<p>Everything in this path should be practiced against apps you&#39;ve built yourself, deliberately vulnerable practice apps (covered in this path&#39;s capstone lab), or apps with an explicit, current bug bounty program covering mobile testing. The same golden rule from Path 01 applies here without exception — mobile app testing against apps you don&#39;t have authorization for is unauthorized access, full stop.</p>
+<h2>Snapshotting your lab state, the same discipline as Path 03</h2>
+<p>Recall Path 03.7&#39;s VM snapshot habit — apply the exact same discipline to your mobile lab. Before installing an unfamiliar or deliberately vulnerable app, snapshot your emulator&#39;s clean state (<code>emulator -avd Pixel_6_API_33 -snapshot-name clean</code>), so you can instantly revert if a test app misbehaves, corrupts the emulator&#39;s storage, or you simply want to re-run a test from a known-clean starting point rather than manually uninstalling and resetting app data by hand. This matters more in mobile testing than you might expect: some deliberately-vulnerable practice apps intentionally leave persistent artifacts (planted &quot;flags,&quot; modified system settings, root-detection bypass hooks) specifically to simulate a compromised device state, and reverting cleanly between exercises keeps your results for each individual lesson&#39;s lab genuinely isolated from whatever you tested previously.</p>
+<h2>Frida and Objection — instrumentation you&#39;ll need soon</h2>
+<p>Two tools worth installing now, even though later lessons cover their actual use in depth: <strong>Frida</strong> is a dynamic instrumentation toolkit that lets you inject JavaScript into a running app&#39;s process to hook functions, bypass checks, and observe behavior in real time — the mobile-security equivalent of attaching a debugger, but far more scriptable. <strong>Objection</strong> is a Frida-powered CLI wrapper specifically built for mobile security testing, automating many of the most common tasks (bypassing SSL pinning, dumping keychain/keystore data, exploring an app&#39;s file system) without requiring you to write raw Frida scripts for routine tasks:</p>
+<pre><code class="language-bash">pip install frida-tools objection --break-system-packages
+frida-ps -U   # list running processes on a connected USB device/emulator
+</code></pre>
+<p>Getting these installed and confirmed working now — rather than mid-lesson later in this path — means the certificate-pinning bypass and root-detection lessons ahead can focus entirely on the actual technique instead of troubleshooting a fresh tool installation under time pressure.</p>
+<h2>5. A deliberately vulnerable practice app</h2>
+<p>Install <strong>DIVA (Damn Insecure and Vulnerable App)</strong> or <strong>InsecureBankv2</strong> — both free, open-source, deliberately flawed Android apps built specifically for learning mobile security hands-on, referenced again in this path&#39;s capstone lab.</p>
+<p>Set up an emulator, confirm ADB can see and shell into it, configure Burp&#39;s proxy and certificate, and install one of the deliberately vulnerable practice apps. Capture and inspect one piece of network traffic from that app in Burp as a confirmation your full pipeline works.</p>
+<h2>Key takeaway</h2>
+<p>A properly configured mobile lab — emulator, ADB, Burp with its certificate installed, and root access — is the foundation every other lesson in this path builds on. Getting this right once, carefully, saves significant frustration in every hands-on exercise that follows.</p>
+<p><strong>Next up →</strong> <a href="#/lesson/13-mobile-security/owasp-mobile-top-10">OWASP Mobile Top 10</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/13-mobile-security/mobile-testing-lab-setup";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

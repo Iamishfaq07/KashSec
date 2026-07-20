@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Path 13: Mobile App Security — KashSec Academy</title>
+<meta name="description" content="Android &amp; iOS security from the ground up — APK analysis, insecure storage, traffic interception, certificate pinning bypass, and exported component vulnerabilities.">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/13-mobile-security">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Path 13: Mobile App Security — KashSec Academy">
+<meta property="og:description" content="Android &amp; iOS security from the ground up — APK analysis, insecure storage, traffic interception, certificate pinning bypass, and exported component vulnerabilities.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/13-mobile-security">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Path 13: Mobile App Security — KashSec Academy">
+<meta name="twitter:description" content="Android &amp; iOS security from the ground up — APK analysis, insecure storage, traffic interception, certificate pinning bypass, and exported component vulnerabilities.">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Path 13: Mobile App Security — KashSec Academy","description":"Android & iOS security from the ground up — APK analysis, insecure storage, traffic interception, certificate pinning bypass, and exported component vulnerabilities.","url":"https://kashsec.vercel.app/#/lesson/13-mobile-security","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/13-mobile-security">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · Path 13 — Mobile App Security</div>
+  <article><h1>Path 13: Mobile App Security — KashSec Academy</h1><p>Android &amp; iOS security from the ground up — APK analysis, insecure storage, traffic interception, certificate pinning bypass, and exported component vulnerabilities.</p><h2>Sub-lessons</h2><ul><li><a href="/lesson/13-mobile-security/mobile-security-fundamentals.html">13.1 · Mobile Security Fundamentals</a> — Sandboxing, permissions, and how Android/iOS differ.</li><li><a href="/lesson/13-mobile-security/mobile-testing-lab-setup.html">13.2 · Setting Up a Mobile Testing Lab</a> — Emulator, ADB, Burp, and root access — all wired together.</li><li><a href="/lesson/13-mobile-security/owasp-mobile-top-10.html">13.3 · OWASP Mobile Top 10</a> — The shared checklist for mobile application security.</li><li><a href="/lesson/13-mobile-security/android-apk-analysis.html">13.4 · Android APK Analysis</a> — Decompile and read an app's code without ever running it.</li><li><a href="/lesson/13-mobile-security/insecure-data-storage.html">13.5 · Insecure Data Storage</a> — The most common real-world mobile finding, hands-on.</li><li><a href="/lesson/13-mobile-security/intercepting-mobile-traffic.html">13.6 · Intercepting Mobile Traffic</a> — Certificate pinning, and bypassing it with Frida.</li><li><a href="/lesson/13-mobile-security/ios-security-basics.html">13.7 · iOS App Security Basics</a> — IPA structure, ATS, and the Keychain.</li><li><a href="/lesson/13-mobile-security/mobile-privesc-root-detection.html">13.8 · Mobile Privilege Escalation &amp; Root Detection</a> — Root/jailbreak detection bypass and exported component attacks.</li><li><a href="/lesson/13-mobile-security/mobile-security-lab.html">13.9 · Mobile Security Capstone Lab</a> — A full assessment against a real vulnerable app.</li></ul></article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/13-mobile-security";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

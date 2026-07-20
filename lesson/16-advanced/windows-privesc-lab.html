@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Windows Privilege Escalation Lab — Path 16 · KashSec Academy</title>
+<meta name="description" content="This final lab of Path 16 mirrors the earlier Linux privesc lab, but for Windows — a genuinely different attack surface (services, tokens, the registry) worth practicing separately, since Windows envi">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/16-advanced/windows-privesc-lab">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Windows Privilege Escalation Lab — Path 16 · KashSec Academy">
+<meta property="og:description" content="This final lab of Path 16 mirrors the earlier Linux privesc lab, but for Windows — a genuinely different attack surface (services, tokens, the registry) worth practicing separately, since Windows envi">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/16-advanced/windows-privesc-lab">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Windows Privilege Escalation Lab — Path 16 · KashSec Academy">
+<meta name="twitter:description" content="This final lab of Path 16 mirrors the earlier Linux privesc lab, but for Windows — a genuinely different attack surface (services, tokens, the registry) worth practicing separately, since Windows envi">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Windows Privilege Escalation Lab — Path 16 · KashSec Academy","description":"This final lab of Path 16 mirrors the earlier Linux privesc lab, but for Windows — a genuinely different attack surface (services, tokens, the registry) worth practicing separately, since Windows envi","url":"https://kashsec.vercel.app/#/lesson/16-advanced/windows-privesc-lab","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/16-advanced/windows-privesc-lab">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 16 — Advanced Cyber Topics</a> · Windows Privilege Escalation Lab</div>
+  <article><h1>Windows Privilege Escalation Lab</h1>
+<p>This final lab of Path 16 mirrors the earlier Linux privesc lab, but for Windows — a genuinely different attack surface (services, tokens, the registry) worth practicing separately, since Windows environments dominate most corporate networks.</p>
+<h2>Recommended lab</h2>
+<p>Use a <strong>TryHackMe or Hack The Box Windows privilege escalation room</strong> (both platforms have several beginner-friendly ones specifically built for this, often named things like &quot;Windows PrivEsc&quot; or similar) — these provide a legal, ready-to-go vulnerable Windows target with none of the setup overhead of building your own. Alternatively, build your own vulnerable Windows VM (a free Windows evaluation ISO from Microsoft plus a deliberately misconfigured service is a legitimate, if more time-consuming, option).</p>
+<h2>Key areas to practice</h2>
+<ol>
+<li><p><strong>Unquoted service paths.</strong> If a Windows service&#39;s executable path contains spaces and isn&#39;t wrapped in quotes (e.g., <code>C:\Program Files\My App\service.exe</code> written unquoted), Windows will try each space-separated segment as a potential executable in order — meaning a writable <code>C:\Program.exe</code> could get executed instead of the intended service. Enumerate services and their paths:</p>
+<pre><code class="language-powershell">wmic service get name,pathname,startmode | findstr /i /v &quot;C:\Windows&quot;
+</code></pre>
+<p>Look for any unquoted path containing spaces.</p>
+</li>
+<li><p><strong>Weak service permissions.</strong> Even with a properly quoted path, if the service&#39;s binary file (or the service configuration itself) is writable by your low-privileged user, you can replace it with a malicious payload that runs with the service&#39;s (often SYSTEM-level) privileges the next time it starts. Tools like <strong><a href="https://github.com/peass-ng/PEASS-ng">WinPEAS</a></strong> (the Windows equivalent of LinPEAS, referenced in the Linux privesc lesson) automate this entire enumeration process.</p>
+</li>
+<li><p><strong>Token impersonation (Potato attacks).</strong> A family of well-documented techniques (RoguePotato, JuicyPotato, PrintSpoofer, and others) abuse specific Windows service account privileges (<code>SeImpersonatePrivilege</code> in particular) to escalate from a service account to full SYSTEM. Check for this privilege with <code>whoami /priv</code> — if present and enabled, a Potato-family tool is very likely a fast path to SYSTEM.</p>
+</li>
+<li><p><strong>Scheduled tasks and autoruns.</strong> Enumerate scheduled tasks (<code>schtasks /query /fo LIST /v</code>) and startup items for anything running with elevated privileges that points to a file or script your low-privileged user can modify — the same &quot;writable + runs elevated&quot; pattern as weak service permissions, just via a different mechanism.</p>
+</li>
+<li><p><strong>DLL hijacking.</strong> If a privileged application loads a DLL from a directory your low-privileged user can write to (and Windows&#39; DLL search order looks there before the legitimate system directory), placing a malicious DLL with the expected name can get your code executed with that application&#39;s privileges the next time it runs.</p>
+</li>
+<li><p><strong>AlwaysInstallElevated check.</strong> Query both registry locations that together enable this misconfiguration:</p>
+<pre><code class="language-powershell">reg query HKCU\Software\Policies\Microsoft\Windows\Installer
+reg query HKLM\Software\Policies\Microsoft\Windows\Installer
+</code></pre>
+<p>If both keys are set to <code>1</code>, generate a malicious MSI with <code>msfvenom</code> and install it directly with <code>msiexec /quiet /qn /i malicious.msi</code> — no admin rights required at all if this specific misconfiguration is present, making it one of the fastest possible wins when it shows up.</p>
+</li>
+</ol>
+<p>Running WinPEAS is the fast way to <em>find</em> candidates across all of these categories at once — but make sure you understand <em>why</em> each flagged item is exploitable well enough to explain it without the tool, exactly as this lab&#39;s manual commands demonstrate. Interviewers (Path 20) and real engagements both expect this depth, not just &quot;I ran a tool.&quot;</p>
+<p>Using your practice target, successfully escalate privileges using <strong>at least three different techniques</strong> from the list above, documenting each: the specific misconfiguration found, the exact commands/tool used, and the resulting privilege level gained.</p>
+<h2>Key takeaway</h2>
+<p>Windows privilege escalation, like its Linux counterpart, comes down to <strong>systematic enumeration against a known checklist</strong> — services, tokens, scheduled tasks, DLL search order — rather than any single dramatic exploit. This lab, combined with the earlier Linux privesc lab, gives you a working methodology for privilege escalation on both major operating systems.</p>
+<p><strong>Explore more →</strong> <a href="#/lesson/18-ai-security">Path 18 — AI &amp; AI Security</a> · <a href="#/lesson/19-ctf-challenges">CTF Zone</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/16-advanced/windows-privesc-lab";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

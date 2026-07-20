@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Path 18: AI &amp; AI Security — KashSec Academy</title>
+<meta name="description" content="How LLMs work, prompt injection, OWASP LLM Top 10, AI red teaming.">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/18-ai-security">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Path 18: AI &amp; AI Security — KashSec Academy">
+<meta property="og:description" content="How LLMs work, prompt injection, OWASP LLM Top 10, AI red teaming.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/18-ai-security">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Path 18: AI &amp; AI Security — KashSec Academy">
+<meta name="twitter:description" content="How LLMs work, prompt injection, OWASP LLM Top 10, AI red teaming.">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Path 18: AI & AI Security — KashSec Academy","description":"How LLMs work, prompt injection, OWASP LLM Top 10, AI red teaming.","url":"https://kashsec.vercel.app/#/lesson/18-ai-security","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/18-ai-security">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · Path 18 — AI &amp; AI Security</div>
+  <article><h1>Path 18: AI &amp; AI Security — KashSec Academy</h1><p>How LLMs work, prompt injection, OWASP LLM Top 10, AI red teaming.</p><h2>Sub-lessons</h2><ul><li><a href="/lesson/18-ai-security/how-llms-work.html">18.1 · How LLMs actually work</a> — A friendly primer without the mystique.</li><li><a href="/lesson/18-ai-security/why-ai-security.html">18.2 · Why AI security is new</a> — What makes AI attacks unlike any before.</li><li><a href="/lesson/18-ai-security/prompt-injection.html">18.3 · Prompt injection</a> — The SQL injection of AI — direct and indirect.</li><li><a href="/lesson/18-ai-security/jailbreaks.html">18.4 · Jailbreaks &amp; bypasses</a> — Bypassing policy, not just instructions.</li><li><a href="/lesson/18-ai-security/llm-top-10.html">18.5 · OWASP LLM Top 10</a> — The shared checklist for AI application security.</li><li><a href="/lesson/18-ai-security/poisoning-adv-ml.html">18.6 · Poisoning &amp; adversarial ML</a> — Backdoors, extraction, adversarial examples.</li><li><a href="/lesson/18-ai-security/ai-red-teaming.html">18.7 · AI red teaming</a> — Methodology, harms taxonomy, ethics.</li><li><a href="/lesson/18-ai-security/ai-career.html">18.8 · Your AI-security career</a> — The 12-month plan for a new frontier.</li><li><a href="/lesson/18-ai-security/agentic-ai-risks.html">18.9 · Agentic AI Risks</a> — As AI agents become more powerful, new risks emerge.</li><li><a href="/lesson/18-ai-security/llm-attack-taxonomy.html">18.10 · LLM Attack Taxonomy</a> — A clear map of the different ways attackers try to break AI systems.</li><li><a href="/lesson/18-ai-security/llm-governance.html">18.11 · LLM Governance &amp; Compliance</a> — Managing AI systems responsibly at scale.</li><li><a href="/lesson/18-ai-security/llm-red-teaming-playbooks.html">18.12 · LLM Red Teaming Playbooks</a> — Structured approaches to systematically test LLM applications.</li><li><a href="/lesson/18-ai-security/llm-supply-chain-attacks.html">18.13 · LLM Supply Chain Attacks</a> — Attacks that target the components and data used to build and run LLMs.</li><li><a href="/lesson/18-ai-security/practical-ai-labs.html">18.14 · Practical AI Red Teaming Labs</a> — Hands-on challenges you can do safely with free or low-cost LLMs.</li><li><a href="/lesson/18-ai-security/securing-llm-apps.html">18.15 · Securing LLM Applications</a> — How to build and deploy LLMs more securely.</li></ul></article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/18-ai-security";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

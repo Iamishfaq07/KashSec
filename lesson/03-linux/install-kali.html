@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Install Kali Linux — Path 03 · KashSec Academy</title>
+<meta name="description" content="Kali is the security-focused Linux distribution most professionals learn on. It comes pre-loaded with hundreds of security tools — Nmap, Burp Suite, Metasploit, Wireshark, John the Ripper, and more — ">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/03-linux/install-kali">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Install Kali Linux — Path 03 · KashSec Academy">
+<meta property="og:description" content="Kali is the security-focused Linux distribution most professionals learn on. It comes pre-loaded with hundreds of security tools — Nmap, Burp Suite, Metasploit, Wireshark, John the Ripper, and more — ">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/03-linux/install-kali">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Install Kali Linux — Path 03 · KashSec Academy">
+<meta name="twitter:description" content="Kali is the security-focused Linux distribution most professionals learn on. It comes pre-loaded with hundreds of security tools — Nmap, Burp Suite, Metasploit, Wireshark, John the Ripper, and more — ">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Install Kali Linux — Path 03 · KashSec Academy","description":"Kali is the security-focused Linux distribution most professionals learn on. It comes pre-loaded with hundreds of security tools — Nmap, Burp Suite, Metasploit, Wireshark, John the Ripper, and more — ","url":"https://kashsec.vercel.app/#/lesson/03-linux/install-kali","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/03-linux/install-kali">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 03 — Operating Systems & Linux</a> · Install Kali Linux</div>
+  <article><h1>Install Kali Linux</h1>
+<p>Kali is the security-focused Linux distribution most professionals learn on. It comes pre-loaded with hundreds of security tools — Nmap, Burp Suite, Metasploit, Wireshark, John the Ripper, and more — all ready to use. In this lesson you&#39;ll add it as a VM inside VirtualBox.</p>
+<h2>Two ways to install (pick the easy one)</h2>
+<p>There are two paths:</p>
+<ul>
+<li><strong>Pre-built VirtualBox image (recommended for beginners).</strong> Download a Kali VM someone else already built, import it, done. About 15 minutes.</li>
+<li><strong>ISO from scratch.</strong> Download an installer ISO, create an empty VM, walk through the installer. About 40 minutes. Useful later for practice; skip for now.</li>
+</ul>
+<p>We&#39;ll do the pre-built image.</p>
+<h2>Step 1 — Download the Kali VirtualBox image</h2>
+<ol>
+<li>Go to <a href="https://www.kali.org/get-kali/#kali-virtual-machines">kali.org/get-kali/#kali-virtual-machines</a>.</li>
+<li>Choose <strong>Kali Linux VirtualBox 64-bit</strong> (or 32-bit if you&#39;re on very old hardware).</li>
+<li>Download the file. It&#39;s ~3–4 GB — grab a drink.</li>
+</ol>
+<p>You&#39;ll also see a <strong>SHA256 hash</strong> on the download page. This is a fingerprint that proves the file wasn&#39;t tampered with. We use hashes constantly in security — first taste right here.</p>
+<pre><code class="language-bash"># Verify the download matches Kali&#39;s published hash:
+# On Linux / macOS:
+shasum -a 256 kali-linux-*.7z
+
+# On Windows PowerShell:
+Get-FileHash kali-linux-*.7z -Algorithm SHA256
+</code></pre>
+<p>Compare the output to the hash on kali.org. Match = good file. Mismatch = re-download.</p>
+<p>If an attacker replaced the file on a mirror with a malicious one, the hash would be different. Verifying hashes is a cheap habit that has caught real supply-chain attacks. Do it every time you download tools.</p>
+<h2>Step 2 — Extract the archive</h2>
+<p>The download is a <code>.7z</code> archive. Extract it with <strong>7-Zip</strong> (Windows), <strong>The Unarchiver</strong> (Mac), or <code>7z x kali-linux-*.7z</code> on Linux.</p>
+<p>Inside you&#39;ll find a folder with <code>.vbox</code> and <code>.vmdk</code> files — that&#39;s the pre-built VM.</p>
+<h2>Step 3 — Import into VirtualBox</h2>
+<ol>
+<li>Open VirtualBox.</li>
+<li>Double-click the <code>.vbox</code> file (or <strong>Machine → Add</strong> in VirtualBox and select it).</li>
+<li>The Kali VM appears in your list.</li>
+<li>Before starting it, click <strong>Settings</strong> and adjust:<ul>
+<li><strong>System → Base Memory:</strong> 4096 MB minimum (2048 works but sluggish). More = smoother.</li>
+<li><strong>System → Processor:</strong> 2 CPUs minimum.</li>
+<li><strong>Display → Video Memory:</strong> 128 MB.</li>
+<li><strong>Network → Adapter 1:</strong> for now leave as <strong>NAT</strong> — it gets internet without exposing your host.</li>
+</ul>
+</li>
+</ol>
+<p>Click <strong>OK</strong> and start the VM.</p>
+<h2>Step 4 — Log in</h2>
+<p>Default credentials for the pre-built image are:</p>
+<pre><code>Username: kali
+Password: kali
+</code></pre>
+<p><strong>Change the password immediately</strong> with the <code>passwd</code> command after logging in (next lesson).</p>
+<p><em>[Your first Kali desktop]</em></p>
+<p>You should see the Kali desktop — a dark theme, a menu with dozens of security tools, and a terminal you can open. Congratulations: <strong>you now own a hacker&#39;s workstation.</strong></p>
+<h2>Step 5 — First updates</h2>
+<p>Open a terminal (top-left menu, or Ctrl+Alt+T) and run:</p>
+<pre><code class="language-bash"># Update package lists and install updates
+sudo apt update &amp;&amp; sudo apt upgrade -y
+</code></pre>
+<p>You&#39;ll be asked for your password (the one you&#39;ll change next lesson). This takes 10–30 minutes on first run. Do it, get coffee.</p>
+<h2>Common install issues</h2>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>VM won&#39;t start: &quot;VT-x is disabled&quot;</td>
+<td>Enable VT-x/AMD-V in BIOS</td>
+</tr>
+<tr>
+<td>Screen tiny, doesn&#39;t resize</td>
+<td>Install <strong>Guest Additions</strong> (Devices → Insert Guest Additions CD → run installer inside Kali)</td>
+</tr>
+<tr>
+<td>No internet in Kali</td>
+<td>Network adapter should be NAT; try <code>sudo dhclient</code> inside Kali</td>
+</tr>
+<tr>
+<td>Keyboard layout wrong</td>
+<td><code>sudo dpkg-reconfigure keyboard-configuration</code></td>
+</tr>
+<tr>
+<td>Time drifts</td>
+<td>Guest Additions usually fixes it</td>
+</tr>
+<tr>
+<td>Slow performance</td>
+<td>Give more RAM and CPUs in VM Settings</td>
+</tr>
+</tbody></table>
+<h2>A quick tour of what&#39;s already installed</h2>
+<p>Kali ships with hundreds of tools pre-installed, organized into categories accessible from its applications menu — worth a brief browse now, even though you won&#39;t use most of them for a while:</p>
+<ul>
+<li><strong>Information Gathering</strong> — recon tools (Path 14), including <code>nmap</code>, <code>theHarvester</code>.</li>
+<li><strong>Web Application Analysis</strong> — Burp Suite, <code>sqlmap</code> (Path 11).</li>
+<li><strong>Password Attacks</strong> — <code>hashcat</code>, <code>john</code> (referenced in Path 06&#39;s crypto material).</li>
+<li><strong>Exploitation Tools</strong> — Metasploit Framework (Path 14).</li>
+<li><strong>Sniffing &amp; Spoofing</strong> — Wireshark (Path 12).</li>
+<li><strong>Forensics</strong> — Autopsy, Volatility (Path 16&#39;s DFIR lab).</li>
+</ul>
+<p>You&#39;ll formally meet most of these tools by name throughout the rest of this course — this browse is just so the menu feels familiar rather than overwhelming the first time you actually need something from it.</p>
+<p>Older Kali versions ran everything as <code>root</code> by default — a convenient but genuinely risky default, since any tool you ran (or any mistake you made) had full system privileges automatically. Modern Kali defaults to a standard, non-root <code>kali</code> user instead, requiring explicit <code>sudo</code> for privileged actions — directly applying the principle of least privilege from Path 00&#39;s fundamentals, now to your own primary security workstation.</p>
+<h2>Alternative — Kali in Docker or WSL</h2>
+<p>For lighter footprints:</p>
+<ul>
+<li><strong>Kali in WSL:</strong> <code>wsl --install -d kali-linux</code> on Windows — command-line only, no GUI, but very fast.</li>
+<li><strong>Kali in Docker:</strong> <code>docker run -it --rm kalilinux/kali-rolling</code> — a throwaway Kali container in seconds.</li>
+</ul>
+<p>Both are useful <em>supplements</em> to a real VM, not full replacements. Some tools need the VM&#39;s graphical apps (Burp, Wireshark).</p>
+<h2>🧪 Lab — Take your first snapshot</h2>
+<p>Snapshots are your safety net. Take one right now before you touch anything.</p>
+<ol>
+<li>Shut down the VM cleanly (top-left menu → Power Off).</li>
+<li>In VirtualBox Manager, select Kali → click the <strong>Snapshots</strong> button (top right).</li>
+<li>Click <strong>Take</strong> and name it <strong><code>fresh-install</code></strong>.</li>
+</ol>
+<p>Now if you ever break Kali beyond repair, you can restore this snapshot in seconds. We&#39;ll use snapshots deliberately in the next lesson.</p>
+<p>What single command updates the package lists and applies all available updates in Kali?</p>
+<details><summary>Show answer</summary><code>sudo apt update && sudo apt upgrade -y</code></details><h2>Key terms</h2>
+<ul>
+<li><strong>Kali Linux</strong> — Debian-based security distro pre-loaded with tools.</li>
+<li><strong>VirtualBox image (OVA/VMDK)</strong> — pre-built VM you import instead of installing.</li>
+<li><strong>SHA256 hash</strong> — fingerprint proving a file wasn&#39;t tampered with.</li>
+<li><strong>Snapshot</strong> — a saved VM state you can restore.</li>
+<li><strong>Guest Additions</strong> — VirtualBox add-ons for smooth display, clipboard, and shared folders.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Download the pre-built Kali VirtualBox image; verify its SHA256 hash.</li>
+<li>Import into VirtualBox, give it 4 GB RAM and 2 CPUs.</li>
+<li>Default login is <code>kali</code> / <code>kali</code> — change immediately.</li>
+<li>Update everything with <code>sudo apt update &amp;&amp; sudo apt upgrade -y</code>.</li>
+<li>Take a <strong>fresh-install</strong> snapshot before touching anything.</li>
+</ul>
+<h3>References</h3>
+<ul>
+<li><a href="https://www.kali.org/get-kali/#kali-virtual-machines">Kali VM images</a> — official downloads.</li>
+<li><a href="https://www.kali.org/docs/">Kali Docs</a> — installation help and tips.</li>
+<li><a href="https://www.virtualbox.org/manual/ch04.html">Guest Additions guide</a> — install for smooth VM experience.</li>
+<li><a href="https://www.kali.org/tools/">Kali tools list</a> — every pre-installed tool with docs.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/03-linux/snapshots-safety">Snapshots &amp; lab safety</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/03-linux/install-kali";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

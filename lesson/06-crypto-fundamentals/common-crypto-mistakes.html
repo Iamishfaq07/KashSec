@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Common Crypto Mistakes — Path 06 · KashSec Academy</title>
+<meta name="description" content="This path has repeatedly emphasized &quot;never roll your own crypto&quot; — but that principle only becomes actionable once you can actually recognize what a crypto mistake looks like in the wild. This lesson ">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/06-crypto-fundamentals/common-crypto-mistakes">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Common Crypto Mistakes — Path 06 · KashSec Academy">
+<meta property="og:description" content="This path has repeatedly emphasized &quot;never roll your own crypto&quot; — but that principle only becomes actionable once you can actually recognize what a crypto mistake looks like in the wild. This lesson ">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/06-crypto-fundamentals/common-crypto-mistakes">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Common Crypto Mistakes — Path 06 · KashSec Academy">
+<meta name="twitter:description" content="This path has repeatedly emphasized &quot;never roll your own crypto&quot; — but that principle only becomes actionable once you can actually recognize what a crypto mistake looks like in the wild. This lesson ">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Common Crypto Mistakes — Path 06 · KashSec Academy","description":"This path has repeatedly emphasized \"never roll your own crypto\" — but that principle only becomes actionable once you can actually recognize what a crypto mistake looks like in the wild. This lesson ","url":"https://kashsec.vercel.app/#/lesson/06-crypto-fundamentals/common-crypto-mistakes","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/06-crypto-fundamentals/common-crypto-mistakes">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 06 — Cryptography Fundamentals</a> · Common Crypto Mistakes</div>
+  <article><h1>Common Crypto Mistakes</h1>
+<p>This path has repeatedly emphasized &quot;never roll your own crypto&quot; — but that principle only becomes actionable once you can actually recognize what a crypto mistake looks like in the wild. This lesson catalogs the recurring failure patterns referenced piecemeal throughout this course, gathered in one place.</p>
+<h2>Mistake 1: Confusing encoding with encryption</h2>
+<p>Path 06&#39;s very first lesson in this path drew this line sharply, and this course&#39;s CTF Zone crypto challenges demonstrated it directly: Base64, hex, and URL-encoding provide <strong>zero confidentiality</strong>. Storing or transmitting sensitive data &quot;encoded&quot; and calling it secure is a genuinely common real-world mistake — Path 13&#39;s mobile insecure storage lesson flagged exactly this pattern when hunting through app data.</p>
+<h2>Mistake 2: Hardcoded keys and secrets</h2>
+<p>An encryption scheme is only as secure as its key management — and a key hardcoded directly into application source code (Path 13&#39;s APK analysis lesson, Path 17&#39;s static analysis lesson both cover finding exactly this via decompilation) means anyone who can read the compiled binary can extract the key and decrypt everything it protects, regardless of how strong the underlying algorithm is.</p>
+<h2>Mistake 3: Weak or outdated algorithms</h2>
+<p>Using MD5 or SHA-1 for anything security-relevant (Path 06&#39;s hashing lesson covered why both are now considered broken), or a genuinely custom, unreviewed cipher — this course&#39;s CTF Zone&#39;s XOR challenge exists specifically to build intuition for exactly why homegrown symmetric ciphers fail so easily against basic cryptanalysis. Always prefer well-established, widely-reviewed algorithms (AES, RSA, SHA-256, bcrypt) over anything invented in-house or chosen simply because it&#39;s unfamiliar to attackers (&quot;security through obscurity,&quot; a principle that fails reliably once an algorithm&#39;s details become known — and they usually do).</p>
+<h2>Mistake 4: Reusing values that must be unique</h2>
+<p>Many encryption schemes require a value (often called a <strong>nonce</strong> or <strong>IV — initialization vector</strong>) that must be unique <em>every single time</em> data is encrypted with a given key, even though it doesn&#39;t need to be secret. Reusing this value — a genuinely common implementation bug — can catastrophically weaken or completely break the encryption&#39;s security guarantees, depending on the specific mode of operation involved (Path 06&#39;s symmetric encryption lesson covered ECB mode&#39;s related but distinct pattern-leakage problem).</p>
+<h2>Mistake 5: Insufficient randomness</h2>
+<p>Cryptographic keys, nonces, and salts (Path 06&#39;s hashing lesson) all depend on genuine unpredictability. Using a weak, predictable random number generator — or worse, a fixed/hardcoded &quot;random&quot; seed — for anything cryptographic means an attacker who can predict or guess that supposedly-random value can potentially reconstruct keys or bypass protections entirely. Always use your platform&#39;s dedicated cryptographically-secure random number generator (never a general-purpose one meant for things like game logic or shuffling a playlist) for anything security-relevant.</p>
+<h2>Mistake 6: No integrity protection alongside encryption</h2>
+<p>Encryption alone protects <strong>confidentiality</strong> (no one can read the data) but not necessarily <strong>integrity</strong> (no one can tamper with it undetected) — these are genuinely separate properties. Modern authenticated encryption modes like <strong>AES-GCM</strong> provide both simultaneously; using an older mode that only provides confidentiality, without a separate integrity check, can let an attacker modify ciphertext in ways that produce predictable, exploitable changes to the decrypted plaintext, even without ever learning the encryption key itself.</p>
+<h2>Mistake 7: Trusting client-supplied crypto metadata</h2>
+<p>This is exactly the root cause behind Path 11&#39;s <code>alg: none</code> JWT vulnerability, revisited here in its general form: never let untrusted input dictate <em>how</em> to verify or decrypt that same input. A server that reads an <code>algorithm</code> field from a client-supplied token and dynamically decides which verification method to use, based on what the client itself claims, hands an attacker direct control over their own verification process — the fix, as established in Path 11, is always hardcoding the expected algorithm/scheme server-side and rejecting anything else outright.</p>
+<h2>Mistake 8: Trusting a library&#39;s insecure defaults without checking</h2>
+<p>A subtler variant worth calling out on its own: many cryptography libraries, especially older ones, ship with historically weak options as their <strong>default</strong> setting purely for backward compatibility — a library&#39;s default cipher mode might still be ECB (Path 06.2&#39;s classic mistake), its default key derivation might use far too few iterations for modern hardware, or its default random number source might not actually be cryptographically secure on every platform it runs on. Developers who call an encryption library&#39;s most obvious, simplest function — assuming &quot;it&#39;s a security library, so it must be secure by default&quot; — can end up with exactly the mistakes catalogued above, not because they made an active bad choice, but because they never overrode a bad default they didn&#39;t know existed. This is precisely why reading a cryptography library&#39;s documentation specifically for its default parameters, rather than assuming sane-by-default behavior, is a genuinely important habit — and why modern, well-designed libraries (like libsodium/NaCl, which deliberately expose almost no configurable parameters at all) increasingly try to make the <em>only</em> easily-reachable option the secure one, removing the &quot;insecure default&quot; failure mode by design rather than relying on developers to read documentation carefully every time.</p>
+<p>Every single mistake in this lesson has the same underlying shape: <strong>implementation and key management failures, not flaws in the underlying cryptographic algorithms themselves.</strong> AES, RSA, and SHA-256 are all, when used correctly, genuinely unbroken — the enormous majority of real-world &quot;crypto failures&quot; you&#39;ll encounter in security work come from exactly the eight categories above, not from anyone actually breaking the math.</p>
+<p>Revisit Path 13&#39;s mobile APK analysis lesson and Path 17&#39;s static analysis lesson — both taught you to grep decompiled code for strings and suspicious patterns. Using that same skill, list which of this lesson&#39;s 8 mistakes each technique would most directly help you find in a real app or binary, and why.</p>
+<h2>Key terms</h2>
+<ul>
+<li><strong>Nonce / IV (initialization vector)</strong> — a value required to be unique per encryption operation, though not necessarily secret.</li>
+<li><strong>Authenticated encryption</strong> — an encryption mode (like AES-GCM) providing both confidentiality and integrity protection together.</li>
+<li><strong>Security through obscurity</strong> — relying on an algorithm or method&#39;s secrecy rather than genuine cryptographic strength, an approach that fails once details become known.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Nearly every real-world &quot;crypto broke&quot; story traces back to implementation and key management mistakes, not flaws in the underlying algorithms.</li>
+<li>The eight recurring patterns — encoding confused with encryption, hardcoded keys, weak algorithms, reused nonces, weak randomness, missing integrity protection, trusting client-supplied crypto metadata, and blindly trusting insecure library defaults — cover the overwhelming majority of real-world crypto vulnerabilities.</li>
+<li>This lesson ties together crypto-adjacent findings from across this entire course (Path 11&#39;s JWT lesson, Path 13&#39;s mobile storage lesson, Path 17&#39;s static analysis lesson) as instances of these same seven patterns.</li>
+</ul>
+<h3>References</h3>
+<ul>
+<li><a href="https://owasp.org/Top10/A02_2021-Cryptographic_Failures/">OWASP Cryptographic Failures (Top 10 category)</a> — the official category covering this exact territory in real web applications.</li>
+<li><a href="https://gist.github.com/tqbf/be58d2d39690c3b366ad">Cryptographic Right Answers</a> — a widely-referenced, practical &quot;what to actually use&quot; cheat sheet.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/06-crypto-fundamentals/crypto-hands-on-lab">Crypto Hands-On Lab</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/06-crypto-fundamentals/common-crypto-mistakes";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

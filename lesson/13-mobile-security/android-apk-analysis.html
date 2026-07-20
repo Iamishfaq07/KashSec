@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Android APK Analysis — Path 13 · KashSec Academy</title>
+<meta name="description" content="An APK is far more inspectable than most people — including many developers — realize. This lesson covers static analysis: examining an app's code and structure without ever running it, often revealin">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/13-mobile-security/android-apk-analysis">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Android APK Analysis — Path 13 · KashSec Academy">
+<meta property="og:description" content="An APK is far more inspectable than most people — including many developers — realize. This lesson covers static analysis: examining an app's code and structure without ever running it, often revealin">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/13-mobile-security/android-apk-analysis">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Android APK Analysis — Path 13 · KashSec Academy">
+<meta name="twitter:description" content="An APK is far more inspectable than most people — including many developers — realize. This lesson covers static analysis: examining an app's code and structure without ever running it, often revealin">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Android APK Analysis — Path 13 · KashSec Academy","description":"An APK is far more inspectable than most people — including many developers — realize. This lesson covers static analysis: examining an app's code and structure without ever running it, often revealin","url":"https://kashsec.vercel.app/#/lesson/13-mobile-security/android-apk-analysis","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/13-mobile-security/android-apk-analysis">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 13 — Mobile App Security</a> · Android APK Analysis</div>
+  <article><h1>Android APK Analysis</h1>
+<p>An APK is far more inspectable than most people — including many developers — realize. This lesson covers <strong>static analysis</strong>: examining an app&#39;s code and structure without ever running it, often revealing hardcoded secrets, weak security controls, and a full map of the app&#39;s behavior before you write a single test request.</p>
+<h2>What&#39;s actually inside an APK</h2>
+<p>An APK is, structurally, just a ZIP file. Rename any <code>.apk</code> to <code>.zip</code> and extract it, and you&#39;ll find:</p>
+<pre><code>app.apk (unzipped)
+├── AndroidManifest.xml   ← permissions, components, entry points
+├── classes.dex           ← compiled app code (Dalvik bytecode)
+├── res/                  ← resources: layouts, strings, images
+├── assets/               ← raw files bundled by the developer
+└── lib/                  ← native (C/C++) libraries, if any
+</code></pre>
+<h2>Tools for decompiling</h2>
+<ul>
+<li><strong><a href="https://github.com/skylot/jadx">jadx</a></strong> — free, open-source, decompiles <code>classes.dex</code> bytecode back into readable (if imperfect) Java source code. This is your primary tool for actually reading an app&#39;s logic.</li>
+<li><strong><a href="https://apktool.org/">apktool</a></strong> — free, decodes resources and disassembles code into a readable intermediate format (Smali), and — importantly — can also <em>rebuild</em> a modified APK, useful for testing patches to an app&#39;s behavior.</li>
+<li><strong><a href="https://github.com/MobSF/Mobile-Security-Framework-MobSF">MobSF (Mobile Security Framework)</a></strong> — a free, all-in-one automated static (and dynamic) analysis platform that runs many of these checks automatically and produces a structured report — an excellent way to get a fast first pass before manual review.</li>
+</ul>
+<h2>The AndroidManifest.xml — read this first</h2>
+<p>Every APK contains this file, declaring every permission the app requests, every activity/service/component it exposes, and critically, whether any of those components are marked <code>exported=&quot;true&quot;</code> — meaning <em>other apps on the device</em> can potentially interact with them directly, bypassing the app&#39;s own UI entirely.</p>
+<pre><code class="language-bash"># Using apktool to decode the manifest into readable XML:
+apktool d app.apk -o app_decoded
+cat app_decoded/AndroidManifest.xml
+</code></pre>
+<p>Look specifically for: permissions that seem disproportionate to the app&#39;s purpose (echoing Path 13&#39;s fundamentals lesson), and any exported component with no matching permission requirement — a classic real-world Android vulnerability class, since an exported, unprotected component can sometimes be triggered by any other app installed on the device.</p>
+<h2>Decompiling and reading the code</h2>
+<pre><code class="language-bash">jadx app.apk -d app_source
+</code></pre>
+<p>Once decompiled, search the resulting Java source systematically for the same categories the OWASP Mobile Top 10 flags:</p>
+<pre><code class="language-bash">grep -r &quot;password&quot; app_source/ --include=&quot;*.java&quot; -i
+grep -r &quot;api_key\|apikey\|secret&quot; app_source/ --include=&quot;*.java&quot; -i
+grep -r &quot;http://&quot; app_source/ --include=&quot;*.java&quot;    # plaintext HTTP endpoints
+</code></pre>
+<p>Hardcoded API keys and credentials found this way are a genuinely, surprisingly common real-world finding — developers frequently embed secrets directly in app code, not realizing that &quot;compiled&quot; doesn&#39;t mean &quot;unreadable.&quot;</p>
+<p>Sensitive values are sometimes stored in <code>res/values/strings.xml</code> rather than directly in code — always grep both locations when hunting for hardcoded secrets.</p>
+<h2>Reading Smali when Java decompilation fails</h2>
+<p>Occasionally, jadx&#39;s decompiler chokes on a specific method — heavily obfuscated code, unusual bytecode patterns, or unsupported language features can produce broken or missing output for select methods, even though the surrounding app decompiles fine. When this happens, <strong>Smali</strong> (apktool&#39;s disassembly format, mentioned above) is the fallback: a human-readable assembly-like representation of Dalvik bytecode that, unlike Java decompilation, works reliably on essentially anything, at the cost of being far more verbose and considerably less pleasant to read line by line:</p>
+<pre><code class="language-smali">.method private checkLicense()Z
+    .locals 2
+    invoke-static {}, Lcom/example/app/LicenseValidator;-&gt;isValid()Z
+    move-result v0
+    return v0
+.end method
+</code></pre>
+<p>Even without deep Smali fluency, pattern-matching is usually enough — spotting a method name like <code>checkLicense</code> or <code>isRooted</code>, noting what it calls and what it returns, and tracing callers of that method elsewhere in the disassembly. This is exactly the &quot;trace logic by behavior, not by name&quot; skill mentioned below, just at one level lower than decompiled Java — a genuinely useful fallback skill for the rare cases where jadx&#39;s higher-level output isn&#39;t available or trustworthy.</p>
+<h2>Certificate and signing information — a quick provenance check</h2>
+<p>Beyond code and manifest analysis, an APK&#39;s signing certificate is worth a quick check in its own right, since it answers a distinct question: is this actually the genuine app, or a repackaged/modified copy?</p>
+<pre><code class="language-bash">apksigner verify --print-certs app.apk
+# or, for a quick look with standard tools:
+keytool -printcert -jarfile app.apk
+</code></pre>
+<p>A mismatch between the certificate fingerprint and the developer&#39;s officially published one (many legitimate developers publish their signing key&#39;s fingerprint for exactly this verification purpose) is a strong signal the APK you&#39;re analyzing has been repackaged — potentially by a malware author who decompiled the original, inserted malicious code, and re-signed it with their own key, a genuinely common real-world Android malware distribution pattern worth checking for before investing significant time analyzing an APK&#39;s behavior as if it were the trusted original.</p>
+<h2>What decompiled code can&#39;t fully recover</h2>
+<p>Decompilation reconstructs readable-ish source, but variable and method names are often mangled or generic if the app was obfuscated (via tools like ProGuard/R8, common in production Android builds) — you&#39;ll frequently need to trace logic by <em>behavior</em> (what does this method call, what does it return) rather than relying on self-explanatory names, a genuinely useful close-reading skill this lesson starts building.</p>
+<p>Download any free, legitimate app&#39;s APK (via a tool like <code>apk-mirror</code> alternatives, or pull one directly off your own device with <code>adb pull</code>), decompile it with jadx, and answer: how many permissions does it request, are any exported components present in the manifest, and can you find any hardcoded strings that look like they shouldn&#39;t be there (URLs, keys, or debug flags)?</p>
+<h2>Key takeaway</h2>
+<p>Compiled doesn&#39;t mean unreadable — with free, widely available tools, an APK&#39;s structure, permissions, and a substantial portion of its actual logic are all directly inspectable, which is exactly why hardcoded secrets and exported components remain such consistently common real-world Android findings.</p>
+<p><strong>Next up →</strong> <a href="#/lesson/13-mobile-security/insecure-data-storage">Insecure Data Storage</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/13-mobile-security/android-apk-analysis";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

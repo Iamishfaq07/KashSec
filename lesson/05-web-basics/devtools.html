@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Browser DevTools — Path 05 · KashSec Academy</title>
+<meta name="description" content="DevTools is the single most-used &quot;tool&quot; in web security — and it's already sitting in every browser, free. This lesson is a proper tour so you're fluent before Path 11's hands-on labs.">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/05-web-basics/devtools">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Browser DevTools — Path 05 · KashSec Academy">
+<meta property="og:description" content="DevTools is the single most-used &quot;tool&quot; in web security — and it's already sitting in every browser, free. This lesson is a proper tour so you're fluent before Path 11's hands-on labs.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/05-web-basics/devtools">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Browser DevTools — Path 05 · KashSec Academy">
+<meta name="twitter:description" content="DevTools is the single most-used &quot;tool&quot; in web security — and it's already sitting in every browser, free. This lesson is a proper tour so you're fluent before Path 11's hands-on labs.">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Browser DevTools — Path 05 · KashSec Academy","description":"DevTools is the single most-used \"tool\" in web security — and it's already sitting in every browser, free. This lesson is a proper tour so you're fluent before Path 11's hands-on labs.","url":"https://kashsec.vercel.app/#/lesson/05-web-basics/devtools","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/05-web-basics/devtools">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 05 — How the Web Works</a> · Browser DevTools</div>
+  <article><h1>Browser DevTools tour</h1>
+<p>DevTools is the single most-used &quot;tool&quot; in web security — and it&#39;s already sitting in every browser, free. This lesson is a proper tour so you&#39;re fluent before Path 11&#39;s hands-on labs.</p>
+<h2>Opening DevTools</h2>
+<ul>
+<li><strong>F12</strong> or <strong>Ctrl+Shift+I</strong> (Windows/Linux), <strong>Cmd+Opt+I</strong> (Mac)</li>
+<li>Right-click any element → <strong>Inspect</strong></li>
+</ul>
+<p>We&#39;ll use Firefox (pre-installed on Kali), but Chrome&#39;s DevTools are nearly identical.</p>
+<h2>The panels that matter</h2>
+<h3>Inspector — the DOM, live</h3>
+<p>Right-click any element → <strong>Inspect</strong>. You&#39;ll see the HTML tree with that element highlighted. Click any tag to select it; edit text or attributes by double-clicking. Changes are <strong>local only</strong> — refresh and they vanish (you learned why in Path 05.3).</p>
+<p>Useful sub-panel: the <strong>Rules</strong> view on the right shows every CSS rule affecting the selected element, in priority order — invaluable for understanding <em>why</em> something looks the way it does.</p>
+<h3>Console — run JavaScript and see logs</h3>
+<p>Type any JS and press Enter — it runs immediately, in the page&#39;s own context.</p>
+<pre><code class="language-javascript">document.cookie                     // see all non-HttpOnly cookies
+document.querySelectorAll(&quot;input&quot;)  // find all input fields
+localStorage                        // inspect local storage
+fetch(&quot;/api/me&quot;).then(r =&gt; r.json()).then(console.log)  // call an API from console
+</code></pre>
+<p>Console also shows JavaScript <strong>errors</strong> and any <code>console.log()</code> calls the page&#39;s own code makes — sometimes developers leave debug info here that&#39;s genuinely useful for recon.</p>
+<h3>Network — every request, inspectable</h3>
+<p>The panel you&#39;ll live in during Path 11. Shows every request the page makes: method, URL, status, size, timing. Click any request to see:</p>
+<ul>
+<li><strong>Headers</strong> — request and response, including cookies and auth tokens</li>
+<li><strong>Payload/Request</strong> — what was sent (form data or JSON body)</li>
+<li><strong>Response</strong> — what came back</li>
+<li><strong>Timing</strong> — where time was spent (DNS, TLS, waiting, downloading)</li>
+</ul>
+<p>Filter by type (<strong>XHR/Fetch</strong> to see only API calls), right-click any request → <strong>Copy as cURL</strong> (as you practised last lesson).</p>
+<p>Enable <strong>Preserve log</strong> at the top of the Network panel before you navigate — otherwise the list clears on every page load, and you&#39;ll lose the request that mattered.</p>
+<h3>Storage (or &quot;Application&quot; in Chrome)</h3>
+<p>Shows <strong>Cookies</strong>, <strong>Local Storage</strong>, <strong>Session Storage</strong>, <strong>IndexedDB</strong>, and <strong>Cache</strong>. This is where you did your cookie audit last lesson. Also useful: <strong>Service Workers</strong> (offline caching logic) if a site uses them.</p>
+<h3>Debugger — step through JavaScript</h3>
+<p>Set <strong>breakpoints</strong> by clicking a line number in any loaded script; the page pauses there so you can inspect variables, step line by line, and understand exactly what the code does. Useful when reverse-engineering minified/obfuscated client-side logic (common in Path 15 recon).</p>
+<h3>Security / info panel</h3>
+<p>Firefox: click the padlock icon → <strong>More Information</strong>. Shows the TLS certificate details, whether the connection is secure, and any mixed-content warnings (HTTP resources loaded on an HTTPS page — a real bug class).</p>
+<h3>Sources panel — reading a site&#39;s actual JavaScript files</h3>
+<p>Distinct from the Debugger&#39;s breakpoint view, the <strong>Sources</strong> (Firefox: <strong>Debugger</strong>) panel&#39;s file tree lets you browse every JS, CSS, and asset file the page has loaded, organised by domain and path. Two habits worth building here: first, checking for <strong>source maps</strong> — a <code>//# sourceMappingURL=</code> comment at the bottom of a minified <code>.js</code> file that, if the map file is accidentally left accessible on the server, lets DevTools reconstruct the <em>original</em>, human-readable source code, variable names and all, straight from production; second, using <strong>Ctrl+F inside a specific file</strong> to search minified code for strings like <code>api_key</code>, <code>admin</code>, or <code>/internal/</code> — developers frequently leave revealing strings in client-side JS even after minification, since minification obscures logic but not string literals.</p>
+<h2>View Source vs Inspector — know the difference</h2>
+<ul>
+<li><strong>Ctrl+U (View Source)</strong> shows the <em>original</em> HTML the server sent, before any JavaScript ran.</li>
+<li><strong>Inspector</strong> shows the <em>current</em> DOM, after JavaScript has modified it.</li>
+</ul>
+<p>On modern SPAs these can look wildly different — View Source might show almost nothing (<code>&lt;div id=&quot;root&quot;&gt;&lt;/div&gt;</code>) while the Inspector shows a fully-built page. Both views matter for different reasons: View Source for what the server actually sent; Inspector for what&#39;s actually rendered.</p>
+<h2>Copying values without breaking formatting</h2>
+<p>Two small DevTools habits save real time during recon: <strong>right-click → Copy → Copy object</strong> on any Console result serialises a full JavaScript object as JSON, ready to paste into a notes file or a Python script&#39;s test fixtures; and <strong><code>console.table(data)</code></strong> renders an array of objects as an actual sortable table in the Console, far easier to scan than a wall of nested <code>{ }</code> when you&#39;re eyeballing dozens of API results at once. Small as these sound, spending five minutes learning DevTools&#39; own convenience features consistently pays back across hundreds of future recon sessions.</p>
+<h2>Responsive Design Mode</h2>
+<p>Toolbar icon (phone/tablet icon) or <strong>Ctrl+Shift+M</strong>. Simulates different screen sizes and even touch input — useful for testing how a site behaves on mobile, and occasionally reveals mobile-only UI paths that have their own bugs.</p>
+<h2>Useful console tricks for recon</h2>
+<pre><code class="language-javascript">// List every link on the page:
+[...document.querySelectorAll(&quot;a&quot;)].map(a =&gt; a.href)
+
+// List every form and its action:
+[...document.querySelectorAll(&quot;form&quot;)].map(f =&gt; ({action: f.action, method: f.method}))
+
+// Find hidden inputs (often reveal internal field names):
+[...document.querySelectorAll(&#39;input[type=&quot;hidden&quot;]&#39;)].map(i =&gt; `${i.name}=${i.value}`)
+
+// Dump all comments in the HTML (developers sometimes leave secrets!):
+document.evaluate(&quot;//comment()&quot;, document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null)
+</code></pre>
+<p>These little one-liners are the start of manual web recon — you&#39;ll formalise this in Path 11.</p>
+<h2>Disabling things to see what breaks</h2>
+<ul>
+<li><strong>Network → Throttling</strong> — simulate slow 3G to test loading states.</li>
+<li><strong>Disable cache</strong> checkbox — forces fresh requests every time (turn on when testing).</li>
+<li><strong>Console → block a specific request URL</strong> (right-click a request → Block) — see how a page behaves if a resource fails to load, sometimes reveals fallback logic worth studying.</li>
+</ul>
+<h2>🧪 Lab — Full DevTools sweep</h2>
+<p>On any site you&#39;re allowed to test (your own accounts, or a lab target like <code>testphp.vulnweb.com</code> — a legally-practicable target):</p>
+<ol>
+<li><strong>Inspector:</strong> find the main navigation <code>&lt;nav&gt;</code> element, note its structure.</li>
+<li><strong>Console:</strong> run the &quot;list every link&quot; one-liner above. How many links does the page have?</li>
+<li><strong>Network:</strong> reload with Preserve log on. Count how many distinct <em>domains</em> the page talks to (first-party + third-party).</li>
+<li><strong>Storage:</strong> list every cookie. Which have <code>HttpOnly</code>? Which don&#39;t?</li>
+<li><strong>View Source vs Inspector:</strong> compare the two. Are they identical or very different? What does that tell you about how the site is built (SSR vs SPA)?</li>
+</ol>
+<p>Write down your five answers. You&#39;ve just performed a genuine reconnaissance pass using nothing but a browser.</p>
+<p>You want to see the <em>exact</em> raw HTML your server sent, before any JavaScript touched it. Which keyboard shortcut do you use?</p>
+<details><summary>Show answer</summary><strong>Ctrl+U</strong> — View Source. The Inspector panel shows the live, JS-modified DOM instead.</details><h2>Key terms</h2>
+<ul>
+<li><strong>DevTools</strong> — the browser&#39;s built-in inspection suite.</li>
+<li><strong>Inspector</strong> — live DOM tree viewer/editor.</li>
+<li><strong>Console</strong> — run JS, view logs/errors.</li>
+<li><strong>Network panel</strong> — every HTTP request/response, inspectable.</li>
+<li><strong>View Source</strong> — the original server-sent HTML.</li>
+<li><strong>Breakpoint</strong> — a paused point in JS execution for debugging.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>DevTools (F12) is free, built-in, and the backbone of manual web testing.</li>
+<li>Inspector shows live DOM; View Source shows the original HTML.</li>
+<li>Network panel is where you&#39;ll spend the most time — filter, inspect, &quot;Copy as cURL.&quot;</li>
+<li>Storage panel reveals cookies and client-side data stores.</li>
+<li>Small console one-liners turn manual browsing into real recon.</li>
+</ul>
+<h3>References</h3>
+<ul>
+<li><a href="https://firefox-source-docs.mozilla.org/devtools-user/">Firefox DevTools documentation</a> — official, thorough.</li>
+<li><a href="https://developer.chrome.com/docs/devtools/">Chrome DevTools documentation</a> — near-identical concepts.</li>
+<li><a href="http://testphp.vulnweb.com/">testphp.vulnweb.com</a> — Acunetix&#39;s public, legal practice target.</li>
+<li><a href="https://portswigger.net/burp/documentation">PortSwigger — Using Burp alongside browser DevTools</a></li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/05-web-basics/web-anatomy">Anatomy of a modern web app</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/05-web-basics/devtools";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

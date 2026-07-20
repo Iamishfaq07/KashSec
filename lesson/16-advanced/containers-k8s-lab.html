@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Containers &amp; Kubernetes Lab — Path 16 · KashSec Academy</title>
+<meta name="description" content="Container escapes and Kubernetes misconfigurations are an increasingly common finding in real-world assessments as more infrastructure moves to containerized deployments. This lab builds hands-on intu">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/16-advanced/containers-k8s-lab">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Containers &amp; Kubernetes Lab — Path 16 · KashSec Academy">
+<meta property="og:description" content="Container escapes and Kubernetes misconfigurations are an increasingly common finding in real-world assessments as more infrastructure moves to containerized deployments. This lab builds hands-on intu">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/16-advanced/containers-k8s-lab">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Containers &amp; Kubernetes Lab — Path 16 · KashSec Academy">
+<meta name="twitter:description" content="Container escapes and Kubernetes misconfigurations are an increasingly common finding in real-world assessments as more infrastructure moves to containerized deployments. This lab builds hands-on intu">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Containers & Kubernetes Lab — Path 16 · KashSec Academy","description":"Container escapes and Kubernetes misconfigurations are an increasingly common finding in real-world assessments as more infrastructure moves to containerized deployments. This lab builds hands-on intu","url":"https://kashsec.vercel.app/#/lesson/16-advanced/containers-k8s-lab","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/16-advanced/containers-k8s-lab">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 16 — Advanced Cyber Topics</a> · Containers &amp; Kubernetes Lab</div>
+  <article><h1>Containers &amp; Kubernetes Lab</h1>
+<p>Container escapes and Kubernetes misconfigurations are an increasingly common finding in real-world assessments as more infrastructure moves to containerized deployments. This lab builds hands-on intuition for the most common issues, safely, on your own machine.</p>
+<h2>Lab environment</h2>
+<p>You&#39;ll need <strong>Docker</strong> installed (on your Kali VM, your host machine, or via Docker Desktop). No Kubernetes cluster is required for the first three tasks — a local <code>kind</code> (Kubernetes in Docker) or <code>minikube</code> cluster is only needed for Task 3, and both are free and quick to spin up if you want to go further.</p>
+<h2>Tasks</h2>
+<ol>
+<li><p><strong>Enumerate from inside a container.</strong> Run a basic vulnerable container (many exist on Docker Hub explicitly for training — search &quot;vulnerable container lab&quot; or use a plain <code>ubuntu</code> image with intentionally weak permissions you configure yourself) and, once inside, check what you can see: <code>whoami</code>, <code>id</code>, environment variables (<code>env</code>), and mounted volumes (<code>mount</code>). Note how much of the host&#39;s information leaks into the container by default.</p>
+</li>
+<li><p><strong>Check for Docker socket exposure</strong> — a classic, extremely dangerous misconfiguration. If a container has <code>/var/run/docker.sock</code> mounted inside it, anything running in that container can control the <em>entire host&#39;s Docker daemon</em>, effectively escaping the container. Test this safely in your own lab:</p>
+<pre><code class="language-bash">docker run -it -v /var/run/docker.sock:/var/run/docker.sock docker:cli sh
+# From inside, list host containers — proof you&#39;ve broken out of your own container&#39;s boundary:
+docker ps
+</code></pre>
+<p>If that succeeds, you&#39;ve just demonstrated a full container-to-host escape.</p>
+</li>
+<li><p><strong>Explore Kubernetes RBAC (optional, if you set up a local cluster).</strong> Spin up a <code>kind</code> cluster, create a service account with overly broad permissions, and use <code>kubectl auth can-i --list --as=system:serviceaccount:default:your-sa</code> to see exactly what that identity can do — this mirrors exactly how real Kubernetes privilege escalation assessments start.</p>
+</li>
+<li><p><strong>Hunt for secrets in plain sight.</strong> Run <code>docker inspect &lt;container&gt;</code> on a running container and check the <code>Env</code> section, and separately check any <code>ConfigMap</code>/<code>Secret</code> objects if using Kubernetes — misconfigured environments regularly leak API keys and database credentials this way, in both container and Kubernetes environments.</p>
+</li>
+<li><p><strong>Scan your own test images with Trivy.</strong> Pull a deliberately outdated image (<code>docker pull nginx:1.18</code>) and scan it: <code>trivy image nginx:1.18</code>. Compare the results against scanning a current image (<code>nginx:latest</code>) — note how many known CVEs the older image carries versus the current one, a direct, hands-on demonstration of why base-image freshness matters as much as application-level code security.</p>
+</li>
+</ol>
+<p>Everything above must be run against your own local Docker/Kubernetes setup — never against infrastructure you don&#39;t have explicit authorization to test, exactly as with every other lab in this course.</p>
+<p>Pick one issue you found (Docker socket exposure is the most dramatic and recommended starting point) and write it up: what the misconfiguration was, exactly how you exploited it step by step, what access it granted, and the specific fix (e.g., &quot;never mount the Docker socket into untrusted containers; use rootless Docker or a dedicated sidecar if socket access is genuinely required&quot;).</p>
+<h2>Key takeaway</h2>
+<p>Container and Kubernetes security failures are almost always <strong>configuration failures</strong>, not flaws in Docker or Kubernetes themselves — mounted sockets, overly broad RBAC roles, and secrets stored as plain environment variables are the recurring root causes behind the vast majority of real container escapes reported in the wild.</p>
+<p><strong>Next up →</strong> <a href="#/lesson/16-advanced/devsecops-lab">DevSecOps Lab</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/16-advanced/containers-k8s-lab";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

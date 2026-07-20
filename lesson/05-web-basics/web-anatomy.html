@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anatomy of a web app — Path 05 · KashSec Academy</title>
+<meta name="description" content="Let's zoom all the way out and assemble every piece from Path 05 into one map. By the end you'll be able to look at any website and mentally sketch its architecture — the skill that makes every later ">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/05-web-basics/web-anatomy">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Anatomy of a web app — Path 05 · KashSec Academy">
+<meta property="og:description" content="Let's zoom all the way out and assemble every piece from Path 05 into one map. By the end you'll be able to look at any website and mentally sketch its architecture — the skill that makes every later ">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/05-web-basics/web-anatomy">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Anatomy of a web app — Path 05 · KashSec Academy">
+<meta name="twitter:description" content="Let's zoom all the way out and assemble every piece from Path 05 into one map. By the end you'll be able to look at any website and mentally sketch its architecture — the skill that makes every later ">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Anatomy of a web app — Path 05 · KashSec Academy","description":"Let's zoom all the way out and assemble every piece from Path 05 into one map. By the end you'll be able to look at any website and mentally sketch its architecture — the skill that makes every later ","url":"https://kashsec.vercel.app/#/lesson/05-web-basics/web-anatomy","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/05-web-basics/web-anatomy">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 05 — How the Web Works</a> · Anatomy of a web app</div>
+  <article><h1>Anatomy of a modern web app</h1>
+<p>Let&#39;s zoom all the way out and assemble every piece from Path 05 into one map. By the end you&#39;ll be able to look at <em>any</em> website and mentally sketch its architecture — the skill that makes every later path click faster.</p>
+<h2>The full stack, layer by layer</h2>
+<p>Not every site has all of this — a small blog might just be CDN → single server → database. A large SaaS platform has every layer and more. But this is the mental map to reach for.</p>
+<h2>What each layer does — and its typical bug class</h2>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Job</th>
+<th>Typical bug class</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>CDN</strong></td>
+<td>Serve static files fast, absorb traffic spikes</td>
+<td>Cache poisoning, misconfigured CORS</td>
+</tr>
+<tr>
+<td><strong>WAF</strong></td>
+<td>Block obviously malicious requests (SQLi patterns, known bad bots)</td>
+<td>Bypasses via encoding, HTTP smuggling</td>
+</tr>
+<tr>
+<td><strong>Load balancer</strong></td>
+<td>Spread traffic across servers</td>
+<td>Request smuggling, inconsistent routing</td>
+</tr>
+<tr>
+<td><strong>App server</strong></td>
+<td>Runs your business logic</td>
+<td>Nearly everything — SQLi, XSS, IDOR, auth bugs</td>
+</tr>
+<tr>
+<td><strong>Cache</strong></td>
+<td>Speed up repeated data</td>
+<td>Cache poisoning, stale-data leaks</td>
+</tr>
+<tr>
+<td><strong>Database</strong></td>
+<td>Persistent storage</td>
+<td>SQL injection, weak access controls</td>
+</tr>
+<tr>
+<td><strong>Queue / worker</strong></td>
+<td>Async / background jobs (emails, reports)</td>
+<td>Insecure deserialization, injection via job data</td>
+</tr>
+<tr>
+<td><strong>Third-party APIs</strong></td>
+<td>Payments, email, analytics</td>
+<td>SSRF pivoting, leaked keys, supply-chain compromise</td>
+</tr>
+</tbody></table>
+<h2>Monolith vs microservices</h2>
+<ul>
+<li><strong>Monolith</strong> — one application does everything (auth, orders, emails, all in one codebase/server). Simpler to reason about; a single bug can expose everything.</li>
+<li><strong>Microservices</strong> — many small services, each doing one job, talking over the network (often internal APIs). More resilient to a single bug, but the <em>internal</em> network between services becomes its own attack surface (Path 16 covers this in cloud/container contexts).</li>
+</ul>
+<p>Most companies you&#39;ll test are somewhere in between — a big monolith with a few newer microservices bolted on.</p>
+<h2>Where &quot;the front-end&quot; actually runs</h2>
+<p>Modern front-ends fall into three broad camps:</p>
+<ul>
+<li><strong>Server-rendered (SSR/MPA)</strong> — every page navigation is a full server round-trip. Older style, still hugely common (WordPress, Django templates, Rails views).</li>
+<li><strong>Single-page app (SPA)</strong> — one HTML shell, JavaScript takes over routing and fetches JSON. React, Vue, Angular apps.</li>
+<li><strong>Hybrid (SSR + hydration)</strong> — server renders the first page for speed/SEO, then JavaScript &quot;hydrates&quot; it into a full SPA. Next.js, Nuxt, SvelteKit.</li>
+</ul>
+<p>You can usually tell which is which with the View Source vs Inspector trick from last lesson.</p>
+<h2>Authentication vs authorization — don&#39;t confuse these</h2>
+<p>Two words that sound similar and get conflated constantly, but mean very different things:</p>
+<ul>
+<li><strong>Authentication (AuthN)</strong> — <em>&quot;who are you?&quot;</em> Logging in, proving identity.</li>
+<li><strong>Authorization (AuthZ)</strong> — <em>&quot;what are you allowed to do?&quot;</em> Checking permissions on every action.</li>
+</ul>
+<p>A huge fraction of real-world bugs are <strong>authorization</strong> failures on systems with <em>perfectly fine</em> authentication — you&#39;re definitely logged in as yourself, the app just forgot to check whether <em>you</em> should see <em>this</em> particular resource. That&#39;s IDOR (Path 11), and it&#39;s one of the most commonly found bugs in bug bounty (Path 15).</p>
+<h2>Staging, development, and internal environments</h2>
+<p>Production isn&#39;t the only environment a company runs — most maintain <code>staging.example.com</code>, <code>dev.example.com</code>, or <code>internal.example.com</code> copies of the same application, used for testing changes before they ship to real users. These environments are consistently a rich hunting ground precisely <em>because</em> they&#39;re treated as less important: weaker passwords, verbose debug error pages left enabled, outdated software versions not yet patched, or sometimes no authentication at all because &quot;no one will find it.&quot; Subdomain enumeration (Path 02&#39;s DNS lesson, formalised properly in Path 15&#39;s recon pipeline) is largely a hunt for exactly these forgotten, lower-guard copies of the real application.</p>
+<h2>Reading a site&#39;s architecture in 5 minutes</h2>
+<p>A practical checklist you can run on any target:</p>
+<ol>
+<li><strong><code>curl -I</code> the homepage.</strong> Look at <code>Server</code>, <code>X-Powered-By</code>, and any framework-specific headers.</li>
+<li><strong>View Source vs Inspector.</strong> SSR, SPA, or hybrid?</li>
+<li><strong>F12 → Network → filter by domain.</strong> How many third parties does it load?</li>
+<li><strong>Check for a CDN.</strong> <code>dig</code> the domain — Cloudflare/Akamai/Fastly IP ranges and headers (<code>CF-Ray</code>, <code>X-Cache</code>) are giveaways.</li>
+<li><strong>Look for API docs.</strong> Try <code>/api</code>, <code>/api/docs</code>, <code>/swagger</code>, <code>/graphql</code>.</li>
+<li><strong>Check robots.txt and sitemap.xml.</strong> Often reveal hidden or forgotten paths.</li>
+</ol>
+<pre><code class="language-bash">curl -sI https://example.com
+curl -s https://example.com/robots.txt
+curl -s https://example.com/sitemap.xml
+dig example.com
+</code></pre>
+<p>This exact checklist is the opening move of Path 11&#39;s recon lesson and Path 15&#39;s bug bounty methodology — you&#39;re getting a head start right now.</p>
+<h2>🧪 Lab — Architect-sketch three real sites</h2>
+<p>Pick three websites you use regularly. For each, spend five minutes with the checklist above and sketch (on paper or in a notes app) your best guess at their architecture: CDN? WAF? SSR or SPA? Third parties loaded? Any exposed API docs?</p>
+<p>Compare your sketches. You&#39;ll likely notice big, well-funded sites have more defensive layers (WAF, CDN, strict CSP) than small ones — a pattern that holds broadly across the industry and matters when you&#39;re prioritising targets in Path 15.</p>
+<p>A tester finds that Alice, logged in normally, can view Bob&#39;s private invoice by changing an ID in the URL. Is this an authentication bug or an authorization bug?</p>
+<details><summary>Show answer</summary><strong>Authorization.</strong> Alice's identity is correctly authenticated — the app knows she's Alice. The bug is that it fails to check whether Alice is <em>allowed</em> to view that specific invoice. This is the classic IDOR pattern.</details><h2>Key terms</h2>
+<ul>
+<li><strong>CDN / WAF / load balancer</strong> — the layers in front of your app server.</li>
+<li><strong>Monolith / microservices</strong> — one big app vs many small ones.</li>
+<li><strong>SSR / SPA / hybrid</strong> — where rendering happens.</li>
+<li><strong>Authentication vs Authorization</strong> — who you are vs what you can do.</li>
+<li><strong>IDOR</strong> — the classic authorization failure (full detail in Path 11).</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Real web apps are layered: CDN, WAF, load balancer, app servers, cache, database, queues, third parties.</li>
+<li>Each layer has characteristic bug classes.</li>
+<li>Authentication and authorization are different — most real bugs are authorization failures.</li>
+<li>A 5-minute recon checklist (headers, source, network, robots.txt) reveals a lot about any site&#39;s architecture.</li>
+</ul>
+<h3>References</h3>
+<ul>
+<li><a href="https://owasp.org/www-community/Broken_Access_Control">OWASP — Authentication vs Authorization</a> — the difference, explained properly.</li>
+<li><a href="https://hpbn.co/">High Performance Browser Networking</a> — the architecture chapters especially.</li>
+<li><a href="https://www.cloudflare.com/learning/">Cloudflare Learning Center</a> — excellent plain-English explainers on CDN, WAF, DDoS.</li>
+<li><a href="https://portswigger.net/web-security/access-control">PortSwigger — Access control vulnerabilities</a></li>
+</ul>
+<h2>🎉 You&#39;ve finished Path 05</h2>
+<p>You can now trace a full page load, distinguish HTML/CSS/JS, reason about client vs server trust boundaries, understand cookies and sessions, read and call JSON APIs, navigate DevTools fluently, and sketch the architecture of any real website. This is the complete mental model Path 11 (Web Security) builds directly on top of.</p>
+<p><strong>Next up →</strong> <a href="#/lesson/05-web-basics/cookies-sessions-lab">Cookies &amp; Sessions Lab</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/05-web-basics/web-anatomy";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

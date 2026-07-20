@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phase 5: Reporting — Path 14 · KashSec Academy</title>
+<meta name="description" content="Here's an uncomfortable truth every professional tester eventually learns: a brilliant finding that's poorly communicated helps no one. The report is the actual deliverable a client pays for — not the">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/14-ethical-hacking/reporting">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Phase 5: Reporting — Path 14 · KashSec Academy">
+<meta property="og:description" content="Here's an uncomfortable truth every professional tester eventually learns: a brilliant finding that's poorly communicated helps no one. The report is the actual deliverable a client pays for — not the">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/14-ethical-hacking/reporting">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Phase 5: Reporting — Path 14 · KashSec Academy">
+<meta name="twitter:description" content="Here's an uncomfortable truth every professional tester eventually learns: a brilliant finding that's poorly communicated helps no one. The report is the actual deliverable a client pays for — not the">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Phase 5: Reporting — Path 14 · KashSec Academy","description":"Here's an uncomfortable truth every professional tester eventually learns: a brilliant finding that's poorly communicated helps no one. The report is the actual deliverable a client pays for — not the","url":"https://kashsec.vercel.app/#/lesson/14-ethical-hacking/reporting","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/14-ethical-hacking/reporting">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 14 — Ethical Hacking</a> · Phase 5: Reporting</div>
+  <article><h1>Writing a penetration test report</h1>
+<p>Here&#39;s an uncomfortable truth every professional tester eventually learns: <strong>a brilliant finding that&#39;s poorly communicated helps no one.</strong> The report is the actual deliverable a client pays for — not the exploitation itself. This lesson teaches you to write one properly.</p>
+<h2>Why the report matters more than beginners expect</h2>
+<p>The client didn&#39;t hire you to have fun hacking their systems — they hired you to <strong>understand their risk and know how to fix it</strong>. A report that&#39;s technically impressive but unclear, poorly prioritised, or missing remediation guidance fails the actual purpose of the entire engagement, no matter how skilled the underlying testing was.</p>
+<h2>The anatomy of a professional report</h2>
+<h3>Executive Summary</h3>
+<p>Written for <strong>non-technical leadership</strong> — the people who read one page and make budget/priority decisions based on it. No jargon, no CVE numbers, no code snippets. Answer three questions: <em>What did we test? What did we find, in business terms? What should you do about it, urgently or otherwise?</em></p>
+<pre><code class="language-markdown">## Executive Summary
+
+Between June 1–14, 2026, KashSec Security conducted an authorized penetration
+test of Example Corp&#39;s customer portal (app.example.com). We identified 3
+critical, 5 high, and 8 medium-severity findings.
+
+The most significant issue allows any authenticated user to access other
+customers&#39; private financial records without authorization (a critical
+access-control flaw), representing substantial regulatory and reputational
+risk given the sensitivity of the data involved. We recommend this be
+remediated immediately, ahead of the other findings in this report.
+
+Overall, the application demonstrates [reasonable/concerning/poor] baseline
+security practices, with the majority of findings falling into [access
+control / injection] categories.
+</code></pre>
+<h3>Scope &amp; Methodology</h3>
+<p>A factual record of what was actually tested, when, by whom, and how — directly drawing from Path 14.2&#39;s pre-engagement documentation and the phase-by-phase work of this entire path.</p>
+<h3>Detailed Findings — the core of the report</h3>
+<p>Each individual finding should consistently answer four things, echoing the structure introduced back in Path 11.9:</p>
+<pre><code class="language-markdown">### Finding #3: IDOR in Invoice Retrieval Endpoint
+
+**Severity:** Critical
+**CVSS 3.1 Score:** 8.2 (High) — AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N
+**OWASP Category:** A01:2021 - Broken Access Control
+
+**Description:**
+The `/api/invoices/{id}` endpoint does not verify that the requesting
+user owns the requested invoice ID, allowing any authenticated user to
+retrieve any other user&#39;s invoice data by simply modifying the ID
+parameter.
+
+**Steps to Reproduce:**
+1. Log in as a low-privilege test account (user_a@test.com)
+2. Navigate to &quot;My Invoices&quot; and note your own invoice ID (e.g., 1024)
+3. Using Burp Repeater, change the request to `/api/invoices/1025`
+4. Observe the response returns another user&#39;s invoice data in full
+
+**Evidence:**
+[Screenshot of Burp Repeater request/response showing the data leak]
+
+**Impact:**
+An attacker with any valid account could enumerate and access every
+customer&#39;s financial invoice data, including names, addresses, and
+billing details — a severe privacy and potentially regulatory
+(GDPR/PCI) violation.
+
+**Remediation:**
+Implement server-side authorization checks on every invoice retrieval,
+verifying the requesting user&#39;s ID matches the invoice&#39;s owner_id
+before returning data. See OWASP&#39;s Access Control Cheat Sheet for
+detailed guidance: [link]
+</code></pre>
+<p>This four-part structure — <strong>description, steps to reproduce, impact, remediation</strong> — plus severity/scoring, is the industry-standard skeleton for every individual finding, regardless of report template or company.</p>
+<h2>Severity ratings — using CVSS properly</h2>
+<p>Recall Path 10.2&#39;s introduction to CVSS. Real reports use it (or a similarly structured internal rating scale) to give findings an objective, comparable severity score rather than relying purely on subjective &quot;this seems bad&quot; judgment:</p>
+<table>
+<thead>
+<tr>
+<th>CVSS Score</th>
+<th>Severity</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>9.0–10.0</td>
+<td>Critical</td>
+</tr>
+<tr>
+<td>7.0–8.9</td>
+<td>High</td>
+</tr>
+<tr>
+<td>4.0–6.9</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>0.1–3.9</td>
+<td>Low</td>
+</tr>
+</tbody></table>
+<p>Use the <a href="https://www.first.org/cvss/calculator/3.1">official CVSS calculator</a> to generate both the score and the vector string (<code>AV:N/AC:L/...</code>) shown in the example above — this gives clients (and any auditors reviewing the report later) a transparent, reproducible basis for the assigned severity, not just your personal opinion.</p>
+<h2>Writing for two very different audiences, simultaneously</h2>
+<p>A single report typically needs to satisfy both:</p>
+<ul>
+<li><strong>Executives/management</strong> — care about business risk, regulatory exposure, and &quot;how much will this cost to fix, and how urgently.&quot; Read the Executive Summary only, most of the time.</li>
+<li><strong>Engineers/developers</strong> — need exact technical detail, reproduction steps, and specific remediation guidance to actually <em>fix</em> the issue. Read the Detailed Findings section closely.</li>
+</ul>
+<p>Writing findings that satisfy both audiences (a clear one-paragraph business-impact statement, followed by precise technical reproduction steps) is a genuinely valuable, learnable skill — and one of the biggest differentiators between junior and senior testers in practice.</p>
+<h2>Common reporting mistakes to avoid</h2>
+<ul>
+<li><strong>Vague reproduction steps</strong> (&quot;try some SQL injection payloads&quot;) instead of the exact request/payload that worked.</li>
+<li><strong>Missing business impact</strong> — a CVE number and a CVSS score alone don&#39;t tell a non-technical stakeholder <em>why they should care</em>.</li>
+<li><strong>Inconsistent severity ratings</strong> across findings — always ground severity in a consistent methodology (CVSS or an internally documented equivalent), not gut feeling that varies finding to finding.</li>
+<li><strong>No remediation guidance</strong>, or generic, unhelpful guidance (&quot;fix the vulnerability&quot;) instead of specific, actionable direction.</li>
+<li><strong>Overwhelming the reader with raw tool output</strong> in the main body — raw Nmap/Burp/sqlmap output belongs in an <strong>appendix</strong>, referenced from the finding, not pasted inline disrupting the narrative.</li>
+</ul>
+<h2>The readout call — the report isn&#39;t the final step</h2>
+<p>A written report is rarely the last thing a client receives — most professional engagements close with a <strong>readout call</strong>, where the tester walks through the findings live with both the executive and engineering audiences together, in real time. This matters because reports get skimmed, misread, or shelved, while a live conversation lets a client ask &quot;wait, does this affect our payment system too?&quot; and get an immediate, precise answer — the kind of nuance a static document can&#39;t anticipate for every reader. Being able to explain a critical finding clearly out loud, adjusting your language on the fly for whoever&#39;s actually in the room, is a genuinely distinct skill from writing the report itself, and it&#39;s exactly the kind of communication ability that separates testers clients want to hire again from those who technically did fine work nobody remembers fondly.</p>
+<h2>Retesting — closing the loop on remediation</h2>
+<p>The engagement doesn&#39;t truly end at report delivery either — most contracts include a <strong>retest window</strong>, typically 30-90 days later, where the tester specifically re-verifies that each reported finding was actually fixed, rather than just trusting the client&#39;s word for it. A retest report is much shorter than the original, structured simply as a per-finding status: <strong>Fixed</strong> (re-attempted and confirmed no longer exploitable), <strong>Not Fixed</strong> (still exploitable exactly as before), or <strong>Partially Fixed</strong> (the original exact reproduction steps no longer work, but a related, weaker variant of the issue remains). This closing-the-loop step is precisely what turns a one-time snapshot of risk into genuine risk <em>reduction</em> — a report full of findings that never get verified as fixed provides far less real security value than the same report followed by a rigorous retest.</p>
+<h2>Responsible disclosure — reporting outside a formal contract</h2>
+<p>The reporting discipline in this lesson applies just as directly to <strong>bug bounty submissions</strong> (Path 15) and <strong>responsible disclosure</strong> to vendors without a formal contract — the same four-part structure (description, reproduction, impact, remediation) is exactly what a well-written bug bounty report or CVE submission needs, just typically shorter and without the Executive Summary/Scope sections meant for a formal client relationship.</p>
+<h2>🧪 Lab — Write a real finding from your own lab work</h2>
+<p>Using any vulnerability you successfully exploited in your Metasploitable labs across Paths 14.4–09.6 (the vsftpd backdoor, an SMB misconfiguration, whatever you found), write a <strong>complete finding</strong> following the exact template in this lesson:</p>
+<ol>
+<li>Title and severity (look up a real or reasonable CVSS score if applicable)</li>
+<li>Description</li>
+<li>Steps to reproduce (precise enough that someone else could follow them exactly)</li>
+<li>Impact (in both technical and business terms)</li>
+<li>Remediation guidance (specific, actionable)</li>
+</ol>
+<p>This single exercise — writing one finding properly — is more valuable practice than reading ten more pages of theory, and directly transferable to real bug bounty submissions in the very next path.</p>
+<p>A report states: &quot;SQL injection was found in the login form. This is bad and should be fixed.&quot; What&#39;s missing that would make this a professional-quality finding?</p>
+<details><summary>Show answer</summary>Nearly everything from the four-part structure: <strong>exact reproduction steps</strong> (which field, what payload, what request), <strong>concrete impact</strong> (what could actually be accessed/done — full database dump? authentication bypass?), a <strong>severity rating</strong> grounded in a consistent methodology like CVSS, and <strong>specific remediation guidance</strong> (parameterised queries, not just "fix it"). "This is bad and should be fixed" is an opinion, not a professional finding — it gives the reader no way to verify, prioritise, or act on it.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Executive Summary</strong> — the non-technical, business-focused opening section for leadership readers.</li>
+<li><strong>CVSS score/vector</strong> — the standardised severity scoring system (Path 10.2), giving objective comparability across findings.</li>
+<li><strong>Four-part finding structure</strong> — description, reproduction steps, impact, remediation — the universal skeleton for any professional finding.</li>
+<li><strong>Responsible disclosure</strong> — reporting vulnerabilities outside a formal contract, following the same core reporting discipline.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>The report is the actual deliverable clients pay for — technical skill without clear communication fails the engagement&#39;s real purpose.</li>
+<li>Every finding should include description, exact reproduction steps, business and technical impact, and specific remediation guidance.</li>
+<li>CVSS scoring grounds severity ratings in a consistent, defensible methodology rather than subjective judgment.</li>
+<li>Reports must serve both executive and engineering audiences simultaneously — a skill that distinguishes senior testers.</li>
+<li>This exact reporting discipline transfers directly to bug bounty submissions and responsible vendor disclosure.</li>
+</ul>
+<h3>References</h3>
+<ul>
+<li><a href="https://owasp.org/www-project-web-security-testing-guide/">OWASP Testing Guide — Reporting</a> — methodology-aligned reporting guidance.</li>
+<li><a href="https://www.first.org/cvss/calculator/3.1">FIRST — CVSS 3.1 Calculator</a> — the official scoring tool used throughout this lesson.</li>
+<li><a href="https://www.sans.org/security-resources/">SANS — Sample penetration test report templates</a> — real-world template examples.</li>
+<li><a href="https://www.hackerone.com/blog/introduction-writing-great-bug-bounty-reports">HackerOne — How to write a great vulnerability report</a> — directly applicable to Path 15&#39;s bug bounty context.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/14-ethical-hacking/eh-roadmap">Your ethical hacking roadmap</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/14-ethical-hacking/reporting";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>
