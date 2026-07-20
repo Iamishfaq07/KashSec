@@ -7,6 +7,9 @@
 [![Live Site](https://img.shields.io/badge/live-kashsec.academy-EFA43A?style=for-the-badge)](https://kashsec.vercel.app/)
 
 ## What's new
+- **Glossary & flashcards** — all 600+ Key Terms from every lesson in one searchable A–Z glossary (`#/glossary`), plus an active-recall flashcard mode (`#/review`) that remembers which terms you already know
+- **Better lesson reading** — reading-time estimates, an "On this page" table of contents on longer lessons, one-click copy buttons and syntax highlighting on code blocks
+- **Streaks, backups & shortcuts** — a visible day-streak counter, JSON export/import of all your progress (no account needed), quiz "review your last attempt", and keyboard shortcuts (`[` / `]` between lessons, `?` for the cheatsheet)
 - **Installable & works offline** — KashSec is a full PWA now. Install it from the browser (or "Add to Home Screen" on mobile) and the entire course — app shell plus all 205 lessons — is available with zero network connection. See [Offline / PWA support](#offline--pwa-support) below.
 - **Four new beginner-friendly paths**: **Cryptography Fundamentals** (encoding vs. encryption vs. hashing, from zero), **Windows Security Basics** (Path 03's Linux depth, now for Windows), **Cloud Computing Basics** (the foundation Path 16's cloud security assumes), and **Digital Privacy & Personal Security** (your footprint, VPNs, secure messaging, identity theft)
 - **Path 17 — Malware & Reverse Engineering**: PE internals, hands-on Ghidra disassembly, dynamic analysis and sandboxing, unpacking/obfuscation, and writing YARA detection rules, capped with a full analysis pipeline lab

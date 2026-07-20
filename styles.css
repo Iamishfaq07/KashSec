@@ -690,3 +690,90 @@ mark{background:rgba(239,164,58,.35);color:inherit;border-radius:3px;padding:0 1
   .reveal-ready [data-reveal]{opacity:1;transform:none}
   .path-card:hover,.career-card:hover,.feature-card:hover,.sublesson-card:hover{transform:none}
 }
+
+/* ---------- Reading time ---------- */
+.read-time{color:var(--muted);font-size:.78rem;white-space:nowrap}
+
+/* ---------- In-page TOC ---------- */
+.toc{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1rem 1.2rem;margin:0 0 1.6rem}
+.toc-title{font-family:'JetBrains Mono';font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--amber);margin-bottom:.55rem}
+.toc ul{list-style:none;margin:0;padding:0;columns:2;column-gap:2rem}
+.toc li{margin:0 0 .35rem;break-inside:avoid}
+.toc a{color:var(--text);text-decoration:none;font-size:.88rem;opacity:.85}
+.toc a:hover{color:var(--teal-2);opacity:1}
+@media(max-width:640px){.toc ul{columns:1}}
+
+/* ---------- Code copy button + highlighting ---------- */
+.md pre{position:relative}
+.code-copy{position:absolute;top:.55rem;right:.55rem;background:var(--surface2);color:var(--muted);
+  border:1px solid var(--border);border-radius:8px;padding:.28rem .6rem;font-size:.7rem;font-family:'JetBrains Mono';
+  cursor:pointer;opacity:0;transition:opacity .18s var(--ease),color .18s var(--ease)}
+.md pre:hover .code-copy,.code-copy:focus-visible{opacity:1}
+.code-copy:hover{color:var(--text)}
+.code-copy.copied{color:var(--teal-2);border-color:rgba(63,182,168,.4);opacity:1}
+@media(hover:none){.code-copy{opacity:.75}}
+.hljs-comment,.hljs-quote{color:var(--muted);font-style:italic}
+.hljs-keyword,.hljs-selector-tag,.hljs-literal,.hljs-section{color:var(--amber-2)}
+.hljs-string,.hljs-attr,.hljs-template-tag,.hljs-regexp{color:var(--teal-2)}
+.hljs-number,.hljs-symbol,.hljs-bullet,.hljs-meta{color:#C792EA}
+.hljs-title,.hljs-name,.hljs-built_in,.hljs-type{color:#82AAFF}
+.hljs-variable,.hljs-template-variable,.hljs-subst{color:var(--code-text)}
+.hljs-emphasis{font-style:italic}.hljs-strong{font-weight:700}
+:root[data-theme="light"] .hljs-number,:root[data-theme="light"] .hljs-symbol,:root[data-theme="light"] .hljs-bullet,:root[data-theme="light"] .hljs-meta{color:#8331B2}
+:root[data-theme="light"] .hljs-title,:root[data-theme="light"] .hljs-name,:root[data-theme="light"] .hljs-built_in,:root[data-theme="light"] .hljs-type{color:#1A56C4}
+
+/* ---------- Streak badge ---------- */
+.streak-badge[hidden]{display:none}
+.streak-badge{display:inline-flex;align-items:center;gap:.28rem;font-family:'JetBrains Mono';font-size:.78rem;
+  color:var(--text);background:var(--surface);border:1px solid rgba(239,164,58,.35);border-radius:999px;
+  padding:.3rem .65rem;white-space:nowrap}
+.streak-badge b{color:var(--amber)}
+@media(max-width:760px){.streak-badge{display:none}}
+
+/* ---------- Glossary ---------- */
+.glossary-tools{display:flex;gap:.8rem;align-items:center;flex-wrap:wrap;margin-bottom:1.6rem}
+.glossary-search{flex:1;min-width:230px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);
+  color:var(--text);padding:.75rem 1rem;font-size:.95rem;font-family:inherit}
+.glossary-search:focus{outline:2px solid var(--amber);outline-offset:2px}
+.glossary-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:.8rem}
+.glossary-letter{grid-column:1/-1;font-family:'Space Grotesk';font-size:1.3rem;font-weight:700;color:var(--amber);
+  border-bottom:1px solid var(--border);padding:.9rem 0 .35rem}
+.glossary-item{display:block;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);
+  padding:.9rem 1rem;text-decoration:none;color:var(--text);transition:border-color .18s var(--ease),transform .18s var(--ease)}
+.glossary-item:hover{border-color:rgba(63,182,168,.45);transform:translateY(-2px)}
+.gi-term{font-weight:600;margin-bottom:.3rem}
+.gi-def{font-size:.85rem;color:var(--muted);line-height:1.55;margin-bottom:.45rem}
+.gi-src{font-family:'JetBrains Mono';font-size:.66rem;color:var(--teal-2)}
+
+/* ---------- Flashcards ---------- */
+.fc-tools{display:flex;gap:.8rem;align-items:center;flex-wrap:wrap;margin-bottom:1.6rem}
+.fc-select{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);color:var(--text);
+  padding:.65rem .9rem;font-size:.88rem;font-family:inherit;max-width:100%}
+.fc-progress{font-family:'JetBrains Mono';font-size:.78rem;color:var(--muted)}
+.fc-card{position:relative;max-width:640px;margin:0 auto;min-height:280px;cursor:pointer;perspective:1200px}
+.fc-face{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg,18px);padding:2rem;
+  backface-visibility:hidden;transition:transform .5s var(--ease);text-align:center}
+.fc-front{transform:rotateY(0)}
+.fc-back{transform:rotateY(180deg)}
+.fc-card.flipped .fc-front{transform:rotateY(-180deg)}
+.fc-card.flipped .fc-back{transform:rotateY(0)}
+.fc-term{font-family:'Space Grotesk';font-size:clamp(1.3rem,3.5vw,1.9rem);font-weight:700}
+.fc-def{font-size:1rem;line-height:1.7;color:var(--text)}
+.fc-hint{font-family:'JetBrains Mono';font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.fc-src{font-family:'JetBrains Mono';font-size:.7rem;color:var(--teal-2);text-decoration:none}
+.fc-src:hover{text-decoration:underline}
+.fc-actions{display:flex;gap:.8rem;justify-content:center;margin-top:1.4rem}
+.fc-actions.hidden-until-flip{visibility:hidden}
+@media(prefers-reduced-motion:reduce){.fc-face{transition:none}}
+
+/* ---------- Keyboard shortcuts overlay ---------- */
+.kbd-overlay{position:fixed;inset:0;z-index:400;background:rgba(4,6,10,.6);backdrop-filter:blur(4px);
+  display:none;align-items:center;justify-content:center;padding:1rem}
+.kbd-overlay.open{display:flex}
+.kbd-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1.4rem 1.6rem;
+  min-width:min(340px,90vw);box-shadow:var(--shadow-md)}
+.kbd-title{font-family:'Space Grotesk';font-weight:700;font-size:1.05rem;margin-bottom:1rem}
+.kbd-row{display:flex;justify-content:space-between;gap:2rem;padding:.4rem 0;font-size:.88rem;color:var(--muted)}
+.kbd-row kbd{font-family:'JetBrains Mono';font-size:.72rem;background:var(--surface2);border:1px solid var(--border);
+  border-bottom-width:2px;border-radius:6px;padding:.14rem .45rem;color:var(--text)}

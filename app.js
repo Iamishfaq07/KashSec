@@ -50,6 +50,28 @@ function ensureMarkdownLibs(){
   return libsPromise;
 }
 
+/* highlight.js is a nice-to-have on top of the required renderer libs —
+   lesson content must still render fine if it fails to load. */
+let hljsPromise = null;
+function ensureHljs(){
+  if(typeof hljs !== 'undefined') return Promise.resolve();
+  if(hljsPromise) return hljsPromise;
+  hljsPromise = loadScript('https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11/highlight.min.js')
+    .catch(()=>{ hljsPromise = null; });
+  return hljsPromise;
+}
+
+/* glossary.js is ~170KB of term data only the Glossary and Flashcards
+   pages need — loaded on demand rather than on every visit. */
+let glossaryPromise = null;
+function ensureGlossary(){
+  if(typeof GLOSSARY !== 'undefined') return Promise.resolve();
+  if(glossaryPromise) return glossaryPromise;
+  glossaryPromise = withTimeout(loadScript('glossary.js'), 12000, 'Loading the glossary')
+    .catch(err=>{ glossaryPromise = null; throw err; });
+  return glossaryPromise;
+}
+
 /* ============================================================
    PWA — service worker registration, install prompt, and
    offline/update indicators. Once installed, sw.js has already
@@ -165,7 +187,8 @@ function defaultState(){
     certName:'',         // last name used for the certificate
     achievements:{},     // { achievementId: timestamp }
     visitDays:{},        // { "YYYY-MM-DD": true }
-    usedSearch:false
+    usedSearch:false,
+    flashcards:{known:{}} // { known: { "pathId/subId/term": timestamp } }
   };
 }
 function loadState(){
@@ -227,6 +250,39 @@ function recordVisit(pathId,subId){
   checkAchievements();
 }
 function quizPassCount(){ return Object.values(STATE.quizScores).filter(q=>q.passed).length; }
+
+/* ---------- Streaks (computed from visitDays; days are UTC ISO dates) ---------- */
+function shiftDay(dayStr, delta){
+  const d = new Date(dayStr + 'T00:00:00Z');
+  d.setUTCDate(d.getUTCDate() + delta);
+  return d.toISOString().slice(0,10);
+}
+function streakInfo(){
+  const set = new Set(Object.keys(STATE.visitDays));
+  if(!set.size) return {current:0, longest:0};
+  let longest = 0;
+  for(const d of set){
+    if(set.has(shiftDay(d,-1))) continue; // not the start of a run
+    let len = 1, cur = d;
+    while(set.has(shiftDay(cur,1))){ len++; cur = shiftDay(cur,1); }
+    longest = Math.max(longest, len);
+  }
+  // Current streak counts back from today, or from yesterday if today has
+  // no visit yet — so a streak isn't shown as broken before the day is over.
+  const today = new Date().toISOString().slice(0,10);
+  let anchor = set.has(today) ? today : shiftDay(today,-1);
+  let current = 0;
+  while(set.has(anchor)){ current++; anchor = shiftDay(anchor,-1); }
+  return {current, longest};
+}
+function refreshStreakBadge(){
+  const badge = document.getElementById('streakBadge');
+  if(!badge) return;
+  const {current} = streakInfo();
+  badge.hidden = current < 2;
+  const n = document.getElementById('streakN');
+  if(n) n.textContent = current;
+}
 
 /* ---------- Theme ---------- */
 function currentTheme(){
@@ -705,6 +761,8 @@ function route(){
   else if(hash === '#/careers') renderCareers();
   else if(hash === '#/faq') renderFAQ();
   else if(hash === '#/roadmap') renderRoadmap();
+  else if(hash === '#/glossary') renderGlossary();
+  else if(hash === '#/review') renderReview();
   else if(hash === '#/progress') renderProgressHub();
   else if(hash === '#/certificate') renderCertificate();
   else if(hash === '#/quiz/final') renderQuiz('final');
@@ -731,6 +789,7 @@ function afterRender(){
   countUp();
   playRouteTransition();
   animateProgressBars();
+  refreshStreakBadge();
 }
 
 /* Whole-view fade+slide whenever a route renders. Purely a CSS class
@@ -1197,6 +1256,18 @@ async function renderSubLesson(pathId, subId){
     const contentEl = document.getElementById('content');
     if(!contentEl) return;
     contentEl.innerHTML = enrichMarkdown(md);
+
+    // Reading time — shown in the breadcrumb (~200 wpm)
+    const mins = Math.max(1, Math.round(md.split(/\s+/).length / 200));
+    const crumb = document.querySelector('.reader-crumb');
+    if(crumb) crumb.insertAdjacentHTML('beforeend', ` &nbsp;·&nbsp; <span class="read-time">⏱ ~${mins} min read</span>`);
+
+    // In-page table of contents for longer lessons (3+ sections)
+    buildLessonToc(contentEl);
+
+    // Copy buttons + syntax highlighting on code blocks
+    enhanceCodeBlocks(contentEl);
+
     // Render Mermaid diagrams
     if(typeof mermaid !== 'undefined'){
       try{ await mermaid.run({querySelector:'.mermaid'}); }catch(e){}
@@ -1296,6 +1367,66 @@ function enrichMarkdown(md){
   return html;
 }
 
+/* In-page "On this page" nav, injected after the lesson h1 when a lesson
+   has at least 3 h2 sections. Skips utility sections readers don't jump to. */
+function buildLessonToc(contentEl){
+  const skip = new Set(['key terms','recap','key takeaway']);
+  const heads = [...contentEl.querySelectorAll('h2')];
+  const seen = {};
+  heads.forEach(h=>{
+    let id = h.textContent.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+    if(seen[id]) id += '-' + (++seen[id]); else seen[id] = 1;
+    h.id = id;
+  });
+  const tocable = heads.filter(h=>!skip.has(h.textContent.trim().toLowerCase()));
+  if(tocable.length < 3) return;
+  const h1 = contentEl.querySelector('h1');
+  if(!h1) return;
+  const toc = document.createElement('nav');
+  toc.className = 'toc';
+  toc.setAttribute('aria-label','On this page');
+  toc.innerHTML = `<div class="toc-title">On this page</div><ul>${
+    tocable.map(h=>`<li><a href="#${h.id}" data-toc>${escapeHtml(h.textContent)}</a></li>`).join('')
+  }</ul>`;
+  h1.insertAdjacentElement('afterend', toc);
+  // Hash routing owns the URL fragment, so scroll manually instead of
+  // letting the anchor rewrite the #/lesson/... hash.
+  toc.querySelectorAll('a[data-toc]').forEach(a=>{
+    a.addEventListener('click', e=>{
+      e.preventDefault();
+      document.getElementById(a.getAttribute('href').slice(1))?.scrollIntoView({behavior:'smooth', block:'start'});
+    });
+  });
+}
+
+/* Copy-to-clipboard buttons + best-effort syntax highlighting on all real
+   code blocks (mermaid fences were already converted to .mermaid divs). */
+function enhanceCodeBlocks(contentEl){
+  contentEl.querySelectorAll('pre > code').forEach(code=>{
+    const pre = code.parentElement;
+    const btn = document.createElement('button');
+    btn.className = 'code-copy';
+    btn.type = 'button';
+    btn.setAttribute('aria-label','Copy code');
+    btn.textContent = 'Copy';
+    btn.addEventListener('click', async ()=>{
+      try{
+        await navigator.clipboard.writeText(code.textContent);
+        btn.textContent = '✓ Copied';
+        btn.classList.add('copied');
+        setTimeout(()=>{ btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 1600);
+      }catch(err){ btn.textContent = 'Press Ctrl+C'; }
+    });
+    pre.appendChild(btn);
+  });
+  ensureHljs().then(()=>{
+    if(typeof hljs === 'undefined') return;
+    contentEl.querySelectorAll('pre > code').forEach(code=>{
+      try{ hljs.highlightElement(code); }catch(e){}
+    });
+  });
+}
+
 function decodeHtml(s){
   const t = document.createElement('textarea');
   t.innerHTML = s;
@@ -1329,6 +1460,201 @@ function renderNotFound(){
 }
 
 /* ============================================================
+   Glossary — every "Key terms" entry across all 205 lessons, in one
+   searchable A-Z reference. Data comes from generated glossary.js.
+   ============================================================ */
+async function renderGlossary(){
+  const myGen = renderGeneration;
+  app.innerHTML = `<div class="loading">Loading glossary…</div>`;
+  try{ await ensureGlossary(); }
+  catch(e){
+    if(myGen !== renderGeneration) return;
+    app.innerHTML = `<section class="sec"><div class="sec-head"><h2>Couldn't load the glossary</h2>
+      <p class="sec-lead">Check your connection and try again.</p>
+      <button class="btn-amber" onclick="renderGlossary()" type="button">Retry</button></div></section>`;
+    return;
+  }
+  if(myGen !== renderGeneration) return;
+
+  app.innerHTML = `
+    <section class="sec">
+      <div class="sec-head" data-reveal>
+        <div class="sec-eyebrow">Glossary</div>
+        <h2>Every term, one place</h2>
+        <p class="sec-lead">${GLOSSARY.length} terms collected from the Key Terms of all ${totalSubLessons()} lessons. Click any term to jump to the lesson that teaches it.</p>
+      </div>
+      <div class="glossary-tools" data-reveal style="--i:1">
+        <input type="search" id="glossarySearch" class="glossary-search" placeholder="Filter terms… (e.g. hashing, XSS, IAM)" autocomplete="off" spellcheck="false">
+        <a class="btn-ghost sm" href="#/review">🃏 Practice as flashcards →</a>
+      </div>
+      <div id="glossaryList" class="glossary-list" data-reveal style="--i:2"></div>
+    </section>
+  `;
+
+  const listEl = document.getElementById('glossaryList');
+  function paint(filter){
+    const f = (filter||'').trim().toLowerCase();
+    const shown = f
+      ? GLOSSARY.filter(e => e.term.toLowerCase().includes(f) || e.def.toLowerCase().includes(f))
+      : GLOSSARY;
+    if(!shown.length){
+      listEl.innerHTML = `<p class="sec-lead">No terms match "${escapeHtml(filter)}".</p>`;
+      return;
+    }
+    let currentLetter = '';
+    let html = '';
+    for(const e of shown){
+      const letter = (e.term.match(/[a-zA-Z0-9]/)||['#'])[0].toUpperCase();
+      const group = /[0-9]/.test(letter) ? '0-9' : letter;
+      if(group !== currentLetter){
+        currentLetter = group;
+        html += `<div class="glossary-letter">${group}</div>`;
+      }
+      html += `
+        <a class="glossary-item" href="#/lesson/${e.pathId}/${e.subId}">
+          <div class="gi-term">${escapeHtml(e.term)}</div>
+          <div class="gi-def">${escapeHtml(e.def)}</div>
+          <div class="gi-src">Path ${e.pathN} · ${escapeHtml(e.subTitle)}</div>
+        </a>`;
+    }
+    listEl.innerHTML = html;
+  }
+  paint('');
+  setupReveal(); // content arrived after route()'s afterRender — reveal it now
+  let t = null;
+  document.getElementById('glossarySearch').addEventListener('input', e=>{
+    clearTimeout(t);
+    t = setTimeout(()=>paint(e.target.value), 120);
+  });
+}
+
+/* ============================================================
+   Flashcards — active-recall review over the same glossary data.
+   "I knew it" is remembered (STATE.flashcards.known); unknown cards
+   keep coming back in later sessions.
+   ============================================================ */
+async function renderReview(){
+  const myGen = renderGeneration;
+  app.innerHTML = `<div class="loading">Loading flashcards…</div>`;
+  try{ await ensureGlossary(); }
+  catch(e){
+    if(myGen !== renderGeneration) return;
+    app.innerHTML = `<section class="sec"><div class="sec-head"><h2>Couldn't load the flashcards</h2>
+      <p class="sec-lead">Check your connection and try again.</p>
+      <button class="btn-amber" onclick="renderReview()" type="button">Retry</button></div></section>`;
+    return;
+  }
+  if(myGen !== renderGeneration) return;
+  if(!STATE.flashcards || !STATE.flashcards.known) STATE.flashcards = {known:{}};
+
+  const termKey = e => `${e.pathId}/${e.subId}/${e.term}`;
+  let pathFilter = 'all';
+  let deck = [];
+  let di = 0;
+  let flipped = false;
+  let sessionSeen = 0, sessionKnew = 0;
+
+  function buildDeck(){
+    const pool = GLOSSARY.filter(e => pathFilter==='all' || e.pathId===pathFilter);
+    const unknown = pool.filter(e => !STATE.flashcards.known[termKey(e)]);
+    const known = pool.filter(e => STATE.flashcards.known[termKey(e)]);
+    // Unknown terms first (shuffled), then known ones as a refresher.
+    for(const arr of [unknown, known]){
+      for(let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; }
+    }
+    deck = unknown.concat(known);
+    di = 0; flipped = false; sessionSeen = 0; sessionKnew = 0;
+  }
+
+  function knownCount(){
+    const pool = GLOSSARY.filter(e => pathFilter==='all' || e.pathId===pathFilter);
+    return {known: pool.filter(e=>STATE.flashcards.known[termKey(e)]).length, total: pool.length};
+  }
+
+  function paint(){
+    const {known, total} = knownCount();
+    const card = deck[di];
+    app.innerHTML = `
+      <section class="sec">
+        <div class="sec-head" data-reveal>
+          <div class="sec-eyebrow">Flashcards</div>
+          <h2>Active recall practice</h2>
+          <p class="sec-lead">Read the term, recall the meaning out loud, then flip. Terms you mark "knew it" are remembered across visits.</p>
+        </div>
+        <div class="fc-tools" data-reveal style="--i:1">
+          <select id="fcPathFilter" class="fc-select" aria-label="Filter by path">
+            <option value="all" ${pathFilter==='all'?'selected':''}>All paths (${GLOSSARY.length} terms)</option>
+            ${PATHS.map(p=>{
+              const n = GLOSSARY.filter(e=>e.pathId===p.id).length;
+              return n ? `<option value="${p.id}" ${pathFilter===p.id?'selected':''}>Path ${p.n} — ${p.title} (${n})</option>` : '';
+            }).join('')}
+          </select>
+          <div class="fc-progress">✅ ${known}/${total} known${sessionSeen?` · this session: ${sessionKnew}/${sessionSeen}`:''}</div>
+          ${known>0?`<button class="btn-ghost sm" id="fcResetBtn" type="button">Reset known</button>`:''}
+        </div>
+        ${card ? `
+          <div class="fc-card ${flipped?'flipped':''}" id="fcCard" data-reveal style="--i:2" role="button" tabindex="0" aria-label="Flashcard — click to flip">
+            <div class="fc-face fc-front">
+              <div class="fc-hint">TERM ${di+1} / ${deck.length}</div>
+              <div class="fc-term">${escapeHtml(card.term)}</div>
+              <div class="fc-hint">click / space to flip</div>
+            </div>
+            <div class="fc-face fc-back">
+              <div class="fc-def">${escapeHtml(card.def)}</div>
+              <a class="fc-src" href="#/lesson/${card.pathId}/${card.subId}">from Path ${card.pathN} · ${escapeHtml(card.subTitle)} →</a>
+            </div>
+          </div>
+          <div class="fc-actions ${flipped?'':'hidden-until-flip'}" data-reveal style="--i:3">
+            <button class="btn-ghost" id="fcAgainBtn" type="button">↻ Review again</button>
+            <button class="btn-amber" id="fcKnewBtn" type="button">✓ I knew it</button>
+          </div>
+        ` : `
+          <div class="sec-head"><p class="sec-lead">🎉 No cards in this deck — pick another path, or reset your known terms to practice everything again.</p></div>
+        `}
+      </section>
+    `;
+    setupReveal();
+
+    document.getElementById('fcPathFilter').addEventListener('change', e=>{
+      pathFilter = e.target.value; buildDeck(); paint();
+    });
+    document.getElementById('fcResetBtn')?.addEventListener('click', ()=>{
+      const pool = GLOSSARY.filter(e => pathFilter==='all' || e.pathId===pathFilter);
+      pool.forEach(e => delete STATE.flashcards.known[termKey(e)]);
+      saveState(); buildDeck(); paint();
+    });
+    const cardEl = document.getElementById('fcCard');
+    if(cardEl){
+      const flip = ()=>{ flipped = !flipped; paint(); };
+      cardEl.addEventListener('click', e=>{ if(e.target.closest('a')) return; flip(); });
+      cardEl.addEventListener('keydown', e=>{ if(e.key===' '||e.key==='Enter'){ e.preventDefault(); flip(); } });
+    }
+    const next = (knew)=>{
+      const card = deck[di];
+      sessionSeen++;
+      if(knew){
+        sessionKnew++;
+        STATE.flashcards.known[termKey(card)] = Date.now();
+        saveState();
+      } else {
+        delete STATE.flashcards.known[termKey(card)];
+        saveState();
+        deck.push(card); // come back around later this session
+      }
+      di++;
+      flipped = false;
+      if(di >= deck.length){ buildDeck(); }
+      paint();
+    };
+    document.getElementById('fcKnewBtn')?.addEventListener('click', ()=>next(true));
+    document.getElementById('fcAgainBtn')?.addEventListener('click', ()=>next(false));
+  }
+
+  buildDeck();
+  paint();
+}
+
+/* ============================================================
    Quiz engine — used for both per-path quizzes and the Final Exam.
    Question-by-question, locks in an answer before revealing it,
    then a results screen with a full review.
@@ -1340,8 +1666,10 @@ function renderQuiz(id){
   if(!quiz || (!isFinal && !path)) return renderNotFound();
 
   let qi = 0;
-  const answers = new Array(quiz.questions.length).fill(null);
+  let answers = new Array(quiz.questions.length).fill(null);
   let finished = false;
+  const saved = isFinal ? STATE.finalQuiz : STATE.quizScores[id];
+  const canReviewSaved = !!(saved && Array.isArray(saved.answers) && saved.answers.length === quiz.questions.length);
 
   function scoreNow(){
     const total = quiz.questions.length;
@@ -1381,6 +1709,8 @@ function renderQuiz(id){
           </div>
           <div class="quiz-nav">
             ${answered ? `<button class="btn-amber" id="quizNextBtn" type="button">${qi < quiz.questions.length-1 ? 'Next question →' : 'See results →'}</button>` : ''}
+            ${!answered && qi===0 && canReviewSaved && answers.every(a=>a===null)
+              ? `<button class="btn-ghost" id="quizReviewSavedBtn" type="button">Review last attempt (${saved.pct}%) →</button>` : ''}
           </div>
         </div>
       </section>
@@ -1397,12 +1727,18 @@ function renderQuiz(id){
       if(qi < quiz.questions.length-1){ qi++; window.scrollTo(0,0); paintQuestion(); }
       else finish();
     });
+    document.getElementById('quizReviewSavedBtn')?.addEventListener('click', ()=>{
+      answers = [...saved.answers];
+      finished = true;
+      window.scrollTo(0,0);
+      paintResult();
+    });
   }
 
   function finish(){
     const {score,total,pct} = scoreNow();
     const passed = pct >= quiz.passPct;
-    const result = {score,total,pct,passed,ts:Date.now()};
+    const result = {score,total,pct,passed,ts:Date.now(),answers:[...answers]};
     if(isFinal) STATE.finalQuiz = result; else STATE.quizScores[id] = result;
     saveState();
     checkAchievements();
@@ -1886,6 +2222,8 @@ function renderProgressHub(){
         <div class="hub-stat"><div class="hub-stat-n">${overall.done}/${overall.total}</div><div class="hub-stat-l">Lessons done</div></div>
         <div class="hub-stat"><div class="hub-stat-n">${quizPassCount()}/${PATHS.length}</div><div class="hub-stat-l">Quizzes passed</div></div>
         <div class="hub-stat"><div class="hub-stat-n">${unlockedCount}/${ACHIEVEMENTS.length}</div><div class="hub-stat-l">Achievements</div></div>
+        <div class="hub-stat"><div class="hub-stat-n">🔥 ${streakInfo().current}</div><div class="hub-stat-l">Day streak</div></div>
+        <div class="hub-stat"><div class="hub-stat-n">${streakInfo().longest}</div><div class="hub-stat-l">Longest streak</div></div>
       </div>
 
       <div class="hub-section" data-reveal style="--i:3">
@@ -1945,10 +2283,56 @@ function renderProgressHub(){
       </div>
 
       <div class="hub-section" data-reveal style="--i:8">
+        <div class="hub-section-head"><h3 style="font-family:'Space Grotesk';font-size:1.15rem">💾 Backup</h3></div>
+        <div class="hub-list-item" style="cursor:default">
+          <div><div class="hli-t">Download or restore your progress</div><div class="hli-d">Everything (progress, notes, bookmarks, quiz scores) as a JSON file — works without an account.</div></div>
+          <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+            <button class="btn-ghost sm" id="exportProgressBtn" type="button">⬇ Export</button>
+            <button class="btn-ghost sm" id="importProgressBtn" type="button">⬆ Import</button>
+            <input type="file" id="importProgressFile" accept="application/json,.json" hidden>
+          </div>
+        </div>
+      </div>
+
+      <div class="hub-section" data-reveal style="--i:9">
         <button class="btn-ghost sm" id="resetProgressBtn" type="button">Reset all local progress</button>
       </div>
     </section>
   `;
+
+  document.getElementById('exportProgressBtn')?.addEventListener('click', ()=>{
+    const blob = new Blob([JSON.stringify(STATE, null, 2)], {type:'application/json'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `kashsec-backup-${new Date().toISOString().slice(0,10)}.json`;
+    a.click();
+    URL.revokeObjectURL(a.href);
+  });
+  document.getElementById('importProgressBtn')?.addEventListener('click', ()=>{
+    document.getElementById('importProgressFile').click();
+  });
+  document.getElementById('importProgressFile')?.addEventListener('change', async (e)=>{
+    const file = e.target.files && e.target.files[0];
+    if(!file) return;
+    try{
+      const data = JSON.parse(await file.text());
+      // Minimal shape check so a random JSON file can't wipe real progress.
+      if(typeof data !== 'object' || !data || typeof data.completed !== 'object' || typeof data.quizScores !== 'object'){
+        alert('That file doesn\'t look like a KashSec backup.');
+        return;
+      }
+      if(!confirm('Replace the progress in this browser with the backup? Your current local progress will be overwritten.')) return;
+      STATE = Object.assign(defaultState(), data);
+      saveState();
+      applyTheme();
+      refreshProgressRing();
+      checkAchievements();
+      renderProgressHub();
+      afterRender();
+    }catch(err){
+      alert('Couldn\'t read that file as a backup (invalid JSON).');
+    }
+  });
 
   document.getElementById('hubSignInBtn')?.addEventListener('click', openAuth);
   document.getElementById('hubSignOutBtn')?.addEventListener('click', async ()=>{
@@ -2119,6 +2503,53 @@ window.addEventListener('keydown', (e)=>{
   if((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k'){
     e.preventDefault();
     openSearch();
+  }
+});
+
+/* ============================================================
+   Keyboard shortcuts — [ / ] move between lessons, ? shows the
+   cheatsheet. Never fires while typing in an input or textarea.
+   ============================================================ */
+let kbdOverlay = null;
+function toggleKbdOverlay(force){
+  if(!kbdOverlay){
+    kbdOverlay = document.createElement('div');
+    kbdOverlay.className = 'kbd-overlay';
+    kbdOverlay.innerHTML = `
+      <div class="kbd-panel" role="dialog" aria-label="Keyboard shortcuts">
+        <div class="kbd-title">Keyboard shortcuts</div>
+        <div class="kbd-row"><span><kbd>Ctrl</kbd>+<kbd>K</kbd></span><span>Search lessons</span></div>
+        <div class="kbd-row"><span><kbd>[</kbd></span><span>Previous lesson</span></div>
+        <div class="kbd-row"><span><kbd>]</kbd></span><span>Next lesson</span></div>
+        <div class="kbd-row"><span><kbd>?</kbd></span><span>Show / hide this cheatsheet</span></div>
+        <div class="kbd-row"><span><kbd>Esc</kbd></span><span>Close dialogs</span></div>
+      </div>`;
+    kbdOverlay.addEventListener('click', e=>{ if(e.target===kbdOverlay) toggleKbdOverlay(false); });
+    document.body.appendChild(kbdOverlay);
+  }
+  const show = force !== undefined ? force : !kbdOverlay.classList.contains('open');
+  kbdOverlay.classList.toggle('open', show);
+}
+window.addEventListener('keydown', (e)=>{
+  if(e.metaKey || e.ctrlKey || e.altKey) return;
+  const t = e.target;
+  if(t && (t.tagName==='INPUT' || t.tagName==='TEXTAREA' || t.tagName==='SELECT' || t.isContentEditable)) return;
+  if(e.key === '?'){
+    e.preventDefault();
+    toggleKbdOverlay();
+    return;
+  }
+  if(e.key === 'Escape' && kbdOverlay?.classList.contains('open')){
+    toggleKbdOverlay(false);
+    return;
+  }
+  if(e.key === '[' || e.key === ']'){
+    const m = location.hash.match(/^#\/lesson\/([^/]+)\/([^/]+)$/);
+    if(!m) return;
+    const ctx = findSubContext(m[1], m[2]);
+    if(!ctx) return;
+    const dest = e.key === '[' ? ctx.prev : ctx.next;
+    if(dest) location.hash = `#/lesson/${dest.pathId}/${dest.subId}`;
   }
 });
 
