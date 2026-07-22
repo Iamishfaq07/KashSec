@@ -1,82 +1,78 @@
 # API Security Capstone Lab
 
-This lab pulls together everything from the path. You will practice the core skills on a realistic (but safe) target.
+This lab pulls together everything from the path. You will systematically test an API using the techniques you have learned.
 
-## Goal
+:::lab
+**Goal**: Find and document at least three distinct API issues (BOLA, auth weakness, excess data, mass assignment, missing rate limit, etc.).
+:::
 
-Find and document at least **three** distinct authorization or data-exposure issues.
+## Recommended targets (legal & free)
 
-## Recommended targets (pick one)
+- [crAPI](https://github.com/OWASP/crAPI) — intentionally vulnerable API from OWASP
+- [vAPI](https://github.com/roottusk/vapi)
+- [Damn Vulnerable GraphQL Application](https://github.com/dolevf/Damn-Vulnerable-GraphQL-Application)
+- PortSwigger Web Security Academy API / GraphQL labs
+- Your own local lab if you have one
 
-- [OWASP crAPI](https://github.com/OWASP/crAPI) — modern API-heavy application designed for this exact training
-- [vAPI](https://github.com/roottusk/vapi) — intentionally vulnerable API
-- PortSwigger Web Security Academy — API and GraphQL labs
-- Any local lab you have already set up from earlier paths
+**Only test systems you own or have explicit permission to test.**
 
-## Required tasks
+## Suggested methodology
 
-### 1. Surface mapping (30–45 min)
+### 1. Recon
 
-- Create two separate user accounts
-- Browse the application normally while proxying traffic
-- List every API endpoint you can find (method + path + what it does)
-- Note which ones take an object identifier
+- Map all endpoints (Burp sitemap, OpenAPI/Swagger if available, JS files, mobile traffic).
+- Note authentication method (JWT, API key, session, OAuth).
+- Identify object identifiers (IDs, UUIDs, emails).
 
-### 2. Object-level authorization testing
+### 2. Authentication tests
 
-For every endpoint that accepts an ID:
+- Rate-limit login / reset.
+- JWT attacks if JWTs are used (`alg:none`, weak secret, claim tampering).
+- Token lifetime and logout behaviour.
 
-- Capture a request as User A
-- Replay it as User B with User A’s object ID
-- Record whether access was granted
+### 3. BOLA / IDOR
 
-### 3. Function-level & mass-assignment testing
+- Two-account testing on every object reference.
+- Horizontal and vertical checks.
+- Different HTTP methods on the same resource.
 
-- Try privileged actions with the low-privilege account
-- On any create/update endpoint, add fields such as `isAdmin`, `role`, `balance`, `verified`, `price`
-- Observe what sticks
+### 4. Property-level issues
 
-### 4. Data exposure review
+- Mass assignment on update endpoints.
+- Excessive data in responses.
 
-- Examine the raw JSON of profile, order, and list endpoints
-- Note any fields that should not be visible to the current user
+### 5. GraphQL (if present)
 
-### 5. Write-up
+- Introspection.
+- Nested query depth.
+- Field-level authorization.
 
-For each finding write:
+### 6. Business logic & rate limits
 
-```markdown
-## Finding title
-**Severity:** 
-**Endpoint:** 
-**Description:** 
-**Steps to reproduce:** 
-**Impact:** 
-**Remediation:** 
-```
+- High-value flows (purchase, invite, vote, coupon).
+- Absence of rate limits on expensive operations.
+
+## Deliverable
+
+Write a short report for each finding:
+
+1. **Title** (e.g. "BOLA on GET /api/orders/{id}")
+2. **Request / response** (sanitised)
+3. **Impact**
+4. **Remediation**
+
+This is exactly the skill that turns into bug-bounty reports and professional AppSec write-ups.
 
 ## Stretch goals
 
-- Find an SSRF or injection point
-- Bypass a rate limit
-- Discover a hidden or undocumented endpoint
-- Turn one finding into a short Nuclei template
+- Chain two issues (e.g. excess data exposure → account takeover).
+- Produce a one-page executive summary as if you were reporting to a client.
 
-## Reflection questions
+## Recap
 
-1. Which class of issue was easiest to find? Why?
-2. Did the application use sequential IDs, UUIDs, or something else? Did that help or hinder you?
-3. Where would you add the authorization check in the code if you were the developer?
-
-## Key takeaway
-
-You now have a repeatable process: map → dual-account testing → object & function authorization → mass assignment → data exposure. This process finds the majority of high-impact API vulnerabilities in the wild.
-
-:::tip
-Save your notes and the list of endpoints. The same workflow works on real bug-bounty programs and professional assessments.
-:::
+You now have a repeatable API testing process. Use it on every new API you meet — labs, bug-bounty programs, or (with permission) real products.
 
 ???refs
-- [OWASP API Security Top 10 (2023)](https://owasp.org/API-Security/)
-- [crAPI walkthroughs & write-ups](https://github.com/OWASP/crAPI)
+- [OWASP crAPI](https://github.com/OWASP/crAPI)
+- [PortSwigger API testing](https://portswigger.net/web-security/api-testing)
 ???
