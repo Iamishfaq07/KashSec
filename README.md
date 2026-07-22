@@ -7,6 +7,8 @@
 [![Live Site](https://img.shields.io/badge/live-kashsec.academy-EFA43A?style=for-the-badge)](https://kashsec.vercel.app/)
 
 ## What's new
+- **Tools** — a suite of in-browser security utilities (`#/tools`): encoder/decoder, hash generator, JWT decoder, CVSS 3.1 calculator, subnet calculator, password-strength meter, and a cipher playground. All client-side; nothing leaves the browser.
+- **Full-text search** — search now matches the body of every lesson, not just titles. Plus an activity heatmap on your progress page, reading preferences (text size, width, legibility boost), Markdown export of your notes, an interview question bank (`#/interview`), a changelog (`#/changelog`) with RSS feed, and a "suggest an edit" link on every lesson.
 - **Glossary & flashcards** — all 600+ Key Terms from every lesson in one searchable A–Z glossary (`#/glossary`), plus an active-recall flashcard mode (`#/review`) that remembers which terms you already know
 - **Better lesson reading** — reading-time estimates, an "On this page" table of contents on longer lessons, one-click copy buttons and syntax highlighting on code blocks
 - **Streaks, backups & shortcuts** — a visible day-streak counter, JSON export/import of all your progress (no account needed), quiz "review your last attempt", and keyboard shortcuts (`[` / `]` between lessons, `?` for the cheatsheet)

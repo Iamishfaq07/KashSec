@@ -1,5 +1,9 @@
 /* KashSec Academy v2 — two-level structure, Mermaid, callouts, external refs */
 
+/* Repo coordinates for "suggest an edit" deep-links into GitHub's editor. */
+const REPO_SLUG = 'Iamishfaq07/KashSec';
+const REPO_BRANCH = 'main';
+
 document.getElementById('year').textContent = new Date().getFullYear();
 document.body.classList.add('reveal-ready');
 
@@ -70,6 +74,17 @@ function ensureGlossary(){
   glossaryPromise = withTimeout(loadScript('glossary.js'), 12000, 'Loading the glossary')
     .catch(err=>{ glossaryPromise = null; throw err; });
   return glossaryPromise;
+}
+
+/* search-index.js (~530KB of lesson body text) is only needed for full-text
+   search — loaded the first time the user opens search, then cached. Title
+   search works instantly without it; body results fill in once it arrives. */
+let searchContentPromise = null;
+function ensureSearchContent(){
+  if(typeof SEARCH_CONTENT !== 'undefined') return Promise.resolve();
+  if(searchContentPromise) return searchContentPromise;
+  searchContentPromise = loadScript('search-index.js').catch(err=>{ searchContentPromise = null; throw err; });
+  return searchContentPromise;
 }
 
 /* ============================================================
@@ -188,8 +203,9 @@ function defaultState(){
     achievements:{},     // { achievementId: timestamp }
     visitDays:{},        // { "YYYY-MM-DD": true }
     usedSearch:false,
-    flashcards:{known:{}, reviews:{}} // known: legacy "seen once"; reviews: SR state
+    flashcards:{known:{}, reviews:{}}, // known: legacy "seen once"; reviews: SR state
     // reviews entries: { term_key: { due: ISO_date, interval: days, ease: 2.5, streak: N, lastPerf: 'again|good|easy' } }
+    readingPrefs:{size:'normal', width:'normal', legible:false} // size: normal|large|xlarge; width: normal|wide
   };
 }
 function loadState(){
@@ -285,6 +301,52 @@ function refreshStreakBadge(){
   if(n) n.textContent = current;
 }
 
+/* GitHub-style activity heatmap HTML from visitDays. Shows the trailing
+   `weeks` weeks (default ~20), ending on the current week, one column per
+   week (Sun→Sat), coloured by whether that day was visited. */
+function heatmapHtml(weeks=20){
+  const today = new Date();
+  const dow = today.getUTCDay(); // 0=Sun
+  // Last cell is today; walk back to the Sunday that starts today's column,
+  // then back `weeks-1` more weeks to find the first column's Sunday.
+  const endSunday = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate() - dow));
+  const start = new Date(endSunday);
+  start.setUTCDate(start.getUTCDate() - (weeks-1)*7);
+
+  const todayStr = today.toISOString().slice(0,10);
+  const monthLabels = [];
+  let cols = '';
+  for(let w=0; w<weeks; w++){
+    let cells = '';
+    let colFirstMonth = null;
+    for(let d=0; d<7; d++){
+      const cur = new Date(start);
+      cur.setUTCDate(start.getUTCDate() + w*7 + d);
+      const ds = cur.toISOString().slice(0,10);
+      const future = ds > todayStr;
+      const on = !!STATE.visitDays[ds];
+      if(d===0) colFirstMonth = cur.getUTCMonth();
+      const cls = future ? 'hm-cell hm-future' : (on ? 'hm-cell hm-on' : 'hm-cell');
+      const label = future ? '' : `${ds}${on?' · visited':' · no visit'}`;
+      cells += `<div class="${cls}"${label?` title="${label}"`:''}></div>`;
+    }
+    // Month label above the column where a new month first appears
+    const prevMonth = w>0 ? new Date(Date.UTC(start.getUTCFullYear(), start.getUTCMonth(), start.getUTCDate()+(w-1)*7)).getUTCMonth() : -1;
+    const mLabel = (colFirstMonth !== prevMonth) ? ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][colFirstMonth] : '';
+    monthLabels.push(`<span class="hm-month">${mLabel}</span>`);
+    cols += `<div class="hm-col">${cells}</div>`;
+  }
+  const total = Object.keys(STATE.visitDays).length;
+  return `
+    <div class="heatmap-wrap">
+      <div class="hm-months">${monthLabels.join('')}</div>
+      <div class="hm-grid">${cols}</div>
+      <div class="hm-legend"><span>${total} active day${total===1?'':'s'} all-time</span>
+        <span class="hm-key">less <i class="hm-cell"></i><i class="hm-cell hm-on" style="opacity:.55"></i><i class="hm-cell hm-on"></i> more</span>
+      </div>
+    </div>`;
+}
+
 /* ---------- Theme ---------- */
 /* STATE.theme values:
    - null / undefined  → auto-system: follow the OS's prefers-color-scheme
@@ -330,6 +392,18 @@ function toggleTheme(){
   checkAchievements();
 }
 applyTheme();
+
+/* ---------- Reading preferences ---------- */
+/* Applied as data-attributes on <html> so lesson CSS can respond. Purely
+   cosmetic and per-device; stored in STATE like the theme. */
+function applyReadingPrefs(){
+  const rp = STATE.readingPrefs || {};
+  const el = document.documentElement;
+  el.setAttribute('data-reading-size', rp.size || 'normal');
+  el.setAttribute('data-reading-width', rp.width || 'normal');
+  el.setAttribute('data-legible', rp.legible ? 'true' : 'false');
+}
+applyReadingPrefs();
 /* Re-resolve on OS scheme change (auto-system mode) and hourly (auto-time
    mode) so the theme catches up without needing a manual refresh. */
 if(window.matchMedia){
@@ -909,6 +983,10 @@ function route(){
   else if(hash === '#/glossary') renderGlossary();
   else if(hash === '#/review') renderReview();
   else if(hash === '#/tracks') renderTracks();
+  else if(hash === '#/tools') renderToolsIndex();
+  else if(hash.startsWith('#/tools/')) renderTool(hash.slice(8));
+  else if(hash === '#/changelog') renderChangelog();
+  else if(hash === '#/interview') renderInterview();
   else if(hash === '#/labs') renderLabsIndex();
   else if(hash === '#/labs/terminal') renderLabTerminal();
   else if(hash === '#/labs/webapp') renderLabWebapp();
@@ -1367,6 +1445,12 @@ async function renderSubLesson(pathId, subId){
           ${ctx.next
             ? `<a class="btn-amber sm" href="#/lesson/${ctx.next.pathId}/${ctx.next.subId}">${ctx.next.pathN}.${ctx.next.subN} ${ctx.next.subTitle} →</a>`
             : `<span></span>`}
+        </div>
+        <div class="reader-foot">
+          <a class="suggest-edit" href="https://github.com/${REPO_SLUG}/edit/${REPO_BRANCH}/course/${pathId}/${subId}.md" target="_blank" rel="noopener noreferrer">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            Spotted a typo or something to improve? Suggest an edit on GitHub
+          </a>
         </div>
       </div>
     </div>
@@ -2337,6 +2421,460 @@ function renderLabPcap(){
 }
 
 /* ============================================================
+   Changelog — hand-maintained release notes. Also the source for the
+   RSS feed (generate-feed.js reads this array).
+   ============================================================ */
+const CHANGELOG = [
+  {date:'2026-07-22', title:'Tools, glossary search, activity heatmap & more', items:[
+    'New Tools section: encoder/decoder, hash generator, JWT decoder, CVSS 3.1 calculator, subnet calculator, password-strength meter, and a cipher playground.',
+    'Search now covers full lesson text, not just titles.',
+    'Activity heatmap on your progress page, plus reading preferences (text size, width, and a legibility boost).',
+    'Notes can now be exported as a single Markdown file, and every lesson has a "suggest an edit" link.',
+    'New interview question bank and a changelog page (this one).'
+  ]},
+  {date:'2026-07-20', title:'Glossary, flashcards & study tools', items:[
+    'A searchable glossary of every key term across all 205 lessons.',
+    'Flashcard review mode with spaced repetition to lock terms into memory.',
+    'Reading time, in-page tables of contents, code-copy buttons, and syntax highlighting on lessons.',
+    'Day-streak tracking, quiz review, progress backup/restore, and keyboard shortcuts.'
+  ]},
+  {date:'2026-07-18', title:'Installable & offline', items:[
+    'KashSec is now a full Progressive Web App — install it and the whole course works offline.',
+    'Interactive labs: an in-browser Linux terminal, a vulnerable-web-app playground, and a packet-capture viewer.',
+    'Career practice tracks and static per-lesson pages so search engines can index every lesson.'
+  ]},
+  {date:'2026-07-16', title:'21 paths, reordered beginner-first', items:[
+    'Four fresher-focused paths added (Cryptography, Windows, Cloud, Digital Privacy) and every lesson deepened.',
+    'Paths reordered from absolute basics up to advanced, so the numbering tracks difficulty.'
+  ]}
+];
+
+function renderChangelog(){
+  app.innerHTML = `
+    <section class="sec">
+      <div class="sec-head" data-reveal>
+        <div class="sec-eyebrow">Changelog</div>
+        <h2>What's new</h2>
+        <p class="sec-lead">KashSec is free and actively improved. Here's what's changed recently.</p>
+      </div>
+      <div class="changelog" data-reveal style="--i:1">
+        ${CHANGELOG.map(c=>`
+          <div class="cl-entry">
+            <div class="cl-date">${c.date}</div>
+            <div class="cl-body">
+              <h3>${escapeHtml(c.title)}</h3>
+              <ul>${c.items.map(i=>`<li>${escapeHtml(i)}</li>`).join('')}</ul>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </section>
+  `;
+  setupReveal();
+}
+
+/* ============================================================
+   Interview question bank — grouped, with reveal-on-click answers.
+   ============================================================ */
+const INTERVIEW = [
+  {cat:'Fundamentals', qs:[
+    {q:'Explain the CIA triad.', a:'Confidentiality (only authorised parties can read data), Integrity (data isn\'t tampered with undetected), and Availability (systems are up when needed). Almost every control maps to protecting one of these three.'},
+    {q:'What\'s the difference between a vulnerability, a threat, and a risk?', a:'A vulnerability is a weakness; a threat is something that could exploit it; risk is the likelihood and impact of that happening. Risk ≈ threat × vulnerability × impact.'},
+    {q:'Symmetric vs asymmetric encryption — when do you use each?', a:'Symmetric (one shared key, e.g. AES) is fast, used for bulk data. Asymmetric (public/private key, e.g. RSA/ECC) solves key exchange and signatures but is slow. Real systems combine them: asymmetric to exchange a symmetric session key (TLS).'},
+    {q:'Why is hashing not encryption?', a:'Hashing is one-way — you can\'t reverse a hash back to the input. Encryption is reversible with a key. Passwords should be salted and hashed with a slow algorithm (bcrypt/argon2), never encrypted or stored plainly.'},
+    {q:'What is defense in depth?', a:'Layering independent controls so no single failure is catastrophic — e.g. a firewall AND host hardening AND MFA AND monitoring. If one layer fails, others still stand.'}
+  ]},
+  {cat:'Networking', qs:[
+    {q:'Walk me through what happens when you type a URL and press Enter.', a:'DNS resolves the domain to an IP; a TCP connection (and TLS handshake for HTTPS) is established; an HTTP request is sent; the server responds; the browser renders HTML and fetches sub-resources. Great place to mention caching, CDNs, and the TLS handshake.'},
+    {q:'TCP vs UDP?', a:'TCP is connection-oriented and reliable (handshake, ordering, retransmission) — used for web, email. UDP is connectionless and fast with no delivery guarantee — used for DNS, VoIP, games.'},
+    {q:'What does a firewall actually do, and what are its limits?', a:'It filters traffic by rules (ports, IPs, sometimes app-layer). Limits: it can\'t inspect encrypted payloads without interception, doesn\'t stop allowed-but-malicious traffic, and does nothing against threats already inside the perimeter.'},
+    {q:'How does HTTPS protect against a man-in-the-middle?', a:'TLS encrypts the channel and, crucially, authenticates the server via a certificate signed by a trusted CA — so an attacker can\'t silently impersonate the site or read/modify traffic without a cert your browser trusts.'}
+  ]},
+  {cat:'Web security', qs:[
+    {q:'What is XSS and how do you prevent it?', a:'Cross-Site Scripting: attacker-controlled input is reflected/stored and executed as script in a victim\'s browser. Prevent with context-aware output encoding, a strong Content-Security-Policy, and framework auto-escaping — not input blocklists.'},
+    {q:'Explain SQL injection and the proper fix.', a:'Untrusted input is concatenated into a SQL query, letting an attacker alter its logic. The real fix is parameterised queries / prepared statements (never string concatenation); least-privilege DB accounts and input validation are defence in depth.'},
+    {q:'What is IDOR?', a:'Insecure Direct Object Reference — the app exposes an object identifier (e.g. /invoice?id=123) and doesn\'t check the requester is authorised for it, so changing the ID reveals someone else\'s data. Fix with per-request authorization checks.'},
+    {q:'Why is "alg:none" a JWT vulnerability?', a:'If a server accepts a JWT whose header says the signature algorithm is "none", it skips signature verification — so anyone can forge a token with any claims (e.g. admin:true). Always pin expected algorithms and verify signatures server-side.'}
+  ]},
+  {cat:'Linux & systems', qs:[
+    {q:'What do the permission bits rwxr-xr-- mean?', a:'Owner: read+write+execute; group: read+execute; others: read only. On directories, execute means "can enter/traverse". SUID/SGID bits change the effective user/group at execution — a classic privesc hunting ground.'},
+    {q:'How would you find recently modified files or large files on a box?', a:'find / -mtime -1 for files changed in the last day; find / -size +100M for large files; du -sh * to size directories. Mention being careful with / on production and redirecting errors.'},
+    {q:'What is SUID and why does it matter for privilege escalation?', a:'A SUID binary runs with the file owner\'s privileges (often root) regardless of who launches it. A misconfigured or exploitable SUID-root binary can hand an attacker root — GTFOBins catalogs which binaries are abusable.'}
+  ]},
+  {cat:'Blue team / SOC', qs:[
+    {q:'Walk through how you\'d triage a suspected phishing email.', a:'Preserve it; examine headers (SPF/DKIM/DMARC, real sender, reply-to); analyse links/attachments in a sandbox, not by clicking; check if anyone clicked/entered creds; contain (block sender/URL, reset creds); and hunt for similar mails org-wide.'},
+    {q:'What is the difference between IDS and IPS?', a:'An IDS detects and alerts on suspicious traffic (passive); an IPS sits inline and can block it (active). IPS trades the risk of false-positive blocking for prevention.'},
+    {q:'What\'s the first thing you do when you suspect a host is compromised?', a:'Don\'t panic-wipe. Scope and contain (often isolate from the network while preserving volatile evidence), then follow IR process: identify, contain, eradicate, recover, lessons learned. Preserving evidence and a timeline matters for root-cause.'}
+  ]},
+  {cat:'Behavioural', qs:[
+    {q:'How do you keep your security knowledge current?', a:'Concrete beats vague: name what you actually do — follow specific researchers/newsletters, do CTFs or a home lab, read writeups/CVEs, and practise a skill hands-on. Show genuine curiosity, not just "I read the news".'},
+    {q:'You find a critical vuln but fixing it will slip the release. What do you do?', a:'Communicate risk clearly and early to the decision-makers with impact and likelihood, propose options (fix, mitigate, accept with a plan), and let the business own the risk decision with full information. Security advises; it rarely unilaterally blocks.'},
+    {q:'Describe a time you explained something technical to a non-technical person.', a:'Use a real example, an analogy, and the outcome. Interviewers are checking you can translate risk into business language — a huge part of real security work.'}
+  ]}
+];
+
+function renderInterview(){
+  app.innerHTML = `
+    <section class="sec">
+      <div class="sec-head" data-reveal>
+        <div class="sec-eyebrow">Career</div>
+        <h2>Interview question bank</h2>
+        <p class="sec-lead">Common entry-level cybersecurity interview questions, grouped by topic. Try to answer out loud first, then reveal a model answer. Pairs with Path 20 — Career Prep.</p>
+      </div>
+      ${INTERVIEW.map((g,gi)=>`
+        <div class="hub-section" data-reveal style="--i:${gi+1}">
+          <div class="hub-section-head"><h3 style="font-family:'Space Grotesk';font-size:1.15rem">${escapeHtml(g.cat)}</h3></div>
+          ${g.qs.map(item=>`
+            <details class="iv-item">
+              <summary>${escapeHtml(item.q)}</summary>
+              <div class="iv-answer">${escapeHtml(item.a)}</div>
+            </details>
+          `).join('')}
+        </div>
+      `).join('')}
+    </section>
+  `;
+  setupReveal();
+}
+
+/* ============================================================
+   Tools — self-contained, client-side security utilities. No network,
+   no data leaves the browser. Each also doubles as an SEO landing page.
+   ============================================================ */
+const TOOLS = [
+  {id:'encoder',  ico:'🔤', title:'Encoder / Decoder',     desc:'Base64, URL, and Hex — encode or decode text both ways.', related:'Path 06 — Cryptography'},
+  {id:'hash',     ico:'#️⃣', title:'Hash Generator',         desc:'SHA-1, SHA-256, SHA-384, SHA-512 of any text, via the browser\'s crypto engine.', related:'Path 06 — Cryptography'},
+  {id:'jwt',      ico:'🎫', title:'JWT Decoder',            desc:'Decode a JSON Web Token\'s header and payload and read its claims. No signature verification.', related:'Path 11 — Web Security'},
+  {id:'cvss',     ico:'📊', title:'CVSS 3.1 Calculator',    desc:'Turn the base metrics of a vulnerability into a 0–10 severity score.', related:'Path 10 — Fundamentals'},
+  {id:'subnet',   ico:'🌐', title:'Subnet Calculator',      desc:'IPv4 CIDR → network, broadcast, host range, mask, and host count.', related:'Path 02 — Networking'},
+  {id:'password', ico:'🔑', title:'Password Strength',      desc:'Rough entropy and crack-time estimate for a password, with feedback.', related:'Path 06 — Cryptography'},
+  {id:'cipher',   ico:'🔐', title:'Cipher Playground',      desc:'Caesar/ROT, XOR, and Vigenère — the classic ciphers from the CTF zone.', related:'Path 19 — CTF Zone'}
+];
+
+function renderToolsIndex(){
+  app.innerHTML = `
+    <section class="sec">
+      <div class="sec-head" data-reveal>
+        <div class="sec-eyebrow">Tools</div>
+        <h2>Handy security utilities</h2>
+        <p class="sec-lead">Everyday tools you'll reach for while learning and working — encoders, hashing, JWT, CVSS, subnetting, and more. Everything runs entirely in your browser; nothing you type is ever sent anywhere.</p>
+      </div>
+      <div class="labs-grid" data-reveal style="--i:1">
+        ${TOOLS.map(t=>`
+          <a class="lab-card" href="#/tools/${t.id}">
+            <div class="lab-ico">${t.ico}</div>
+            <h3>${t.title}</h3>
+            <p>${escapeHtml(t.desc)}</p>
+            <div class="lab-related">Pairs with: <b>${t.related}</b></div>
+          </a>
+        `).join('')}
+      </div>
+    </section>
+  `;
+  setupReveal();
+}
+
+function renderTool(id){
+  const meta = TOOLS.find(t=>t.id===id);
+  if(!meta) return renderNotFound();
+  app.innerHTML = `
+    <section class="sec tool-page">
+      <div class="sec-head" data-reveal>
+        <div class="sec-eyebrow"><a href="#/tools" style="color:inherit;text-decoration:none">Tools</a> · ${meta.title}</div>
+        <h2>${meta.ico} ${meta.title}</h2>
+        <p class="sec-lead">${escapeHtml(meta.desc)} <span class="tool-privacy">🔒 Runs locally — nothing leaves your browser.</span></p>
+      </div>
+      <div id="toolBody" data-reveal style="--i:1"></div>
+    </section>
+  `;
+  const body = document.getElementById('toolBody');
+  ({encoder:toolEncoder, hash:toolHash, jwt:toolJwt, cvss:toolCvss, subnet:toolSubnet, password:toolPassword, cipher:toolCipher}[id])(body);
+  setupReveal();
+}
+
+/* --- shared helpers --- */
+function u8ToHex(bytes){ return [...bytes].map(b=>b.toString(16).padStart(2,'0')).join(''); }
+function textToBytes(s){ return new TextEncoder().encode(s); }
+function b64EncodeUtf8(s){ return btoa(String.fromCharCode(...textToBytes(s))); }
+function b64DecodeUtf8(s){ return new TextDecoder().decode(Uint8Array.from(atob(s), c=>c.charCodeAt(0))); }
+function b64UrlDecode(s){ s = s.replace(/-/g,'+').replace(/_/g,'/'); while(s.length%4) s+='='; return b64DecodeUtf8(s); }
+
+/* --- Encoder / Decoder --- */
+function toolEncoder(el){
+  el.innerHTML = `
+    <div class="tool-controls">
+      <label>Mode
+        <select id="encMode" class="fc-select">
+          <option value="base64">Base64</option>
+          <option value="url">URL</option>
+          <option value="hex">Hex</option>
+        </select>
+      </label>
+    </div>
+    <label class="tool-field">Input<textarea id="encIn" class="tool-textarea" placeholder="Type or paste text…"></textarea></label>
+    <div class="tool-btnrow">
+      <button class="btn-amber sm" id="encEncode" type="button">Encode ↓</button>
+      <button class="btn-ghost sm" id="encDecode" type="button">Decode ↑</button>
+      <button class="btn-ghost sm" id="encSwap" type="button">⇅ Move output to input</button>
+    </div>
+    <label class="tool-field">Output<textarea id="encOut" class="tool-textarea" readonly placeholder="Result appears here…"></textarea></label>
+  `;
+  const inp = el.querySelector('#encIn'), out = el.querySelector('#encOut'), mode = el.querySelector('#encMode');
+  const enc = ()=>{
+    const v = inp.value;
+    try{
+      if(mode.value==='base64') out.value = b64EncodeUtf8(v);
+      else if(mode.value==='url') out.value = encodeURIComponent(v);
+      else out.value = u8ToHex(textToBytes(v));
+    }catch(e){ out.value = '⚠ ' + e.message; }
+  };
+  const dec = ()=>{
+    const v = inp.value.trim();
+    try{
+      if(mode.value==='base64') out.value = b64DecodeUtf8(v);
+      else if(mode.value==='url') out.value = decodeURIComponent(v);
+      else out.value = new TextDecoder().decode(Uint8Array.from(v.replace(/\s+/g,'').match(/.{1,2}/g)||[], h=>parseInt(h,16)));
+    }catch(e){ out.value = '⚠ Not valid ' + mode.value + ': ' + e.message; }
+  };
+  el.querySelector('#encEncode').addEventListener('click', enc);
+  el.querySelector('#encDecode').addEventListener('click', dec);
+  el.querySelector('#encSwap').addEventListener('click', ()=>{ inp.value = out.value; out.value=''; });
+  inp.addEventListener('input', enc);
+}
+
+/* --- Hash generator --- */
+function toolHash(el){
+  el.innerHTML = `
+    <label class="tool-field">Text to hash<textarea id="hashIn" class="tool-textarea" placeholder="Type anything…"></textarea></label>
+    <div class="tool-out-list" id="hashOut"></div>
+    <p class="tool-note">Uses the browser's built-in Web Crypto engine. MD5 isn't offered — it's cryptographically broken and the platform deliberately omits it (see Path 06's hashing lesson).</p>
+  `;
+  const inp = el.querySelector('#hashIn'), outEl = el.querySelector('#hashOut');
+  const algos = ['SHA-1','SHA-256','SHA-384','SHA-512'];
+  async function run(){
+    const bytes = textToBytes(inp.value);
+    const rows = await Promise.all(algos.map(async a=>{
+      const digest = new Uint8Array(await crypto.subtle.digest(a, bytes));
+      return `<div class="hash-row"><span class="hash-algo">${a}</span><code class="hash-val">${u8ToHex(digest)}</code></div>`;
+    }));
+    outEl.innerHTML = rows.join('');
+  }
+  inp.addEventListener('input', run);
+  run();
+}
+
+/* --- JWT decoder --- */
+function toolJwt(el){
+  el.innerHTML = `
+    <label class="tool-field">Paste a JWT<textarea id="jwtIn" class="tool-textarea" placeholder="eyJhbGciOi..."></textarea></label>
+    <div id="jwtOut" class="tool-out-list"></div>
+  `;
+  const inp = el.querySelector('#jwtIn'), outEl = el.querySelector('#jwtOut');
+  const fmtTime = (v)=>{ const d = new Date(v*1000); return isNaN(d)?'':` (${d.toISOString().replace('T',' ').slice(0,19)} UTC)`; };
+  function run(){
+    const t = inp.value.trim();
+    if(!t){ outEl.innerHTML=''; return; }
+    const parts = t.split('.');
+    if(parts.length < 2){ outEl.innerHTML = `<div class="tool-warn">⚠ A JWT has three dot-separated parts (header.payload.signature).</div>`; return; }
+    let out = '';
+    try{
+      const header = JSON.parse(b64UrlDecode(parts[0]));
+      out += `<div class="jwt-block jwt-h"><div class="jwt-lbl">Header</div><pre>${escapeHtml(JSON.stringify(header,null,2))}</pre></div>`;
+    }catch(e){ out += `<div class="tool-warn">⚠ Couldn't decode header.</div>`; }
+    try{
+      const payload = JSON.parse(b64UrlDecode(parts[1]));
+      let claims = '';
+      for(const k of ['iat','nbf','exp']) if(payload[k]) claims += `<div class="jwt-claim"><b>${k}</b>: ${payload[k]}${fmtTime(payload[k])}</div>`;
+      if(payload.exp) claims += `<div class="jwt-claim">${payload.exp*1000 < Date.now() ? '⛔ Expired' : '✅ Not expired'}</div>`;
+      out += `<div class="jwt-block jwt-p"><div class="jwt-lbl">Payload</div><pre>${escapeHtml(JSON.stringify(payload,null,2))}</pre>${claims}</div>`;
+    }catch(e){ out += `<div class="tool-warn">⚠ Couldn't decode payload.</div>`; }
+    out += `<div class="jwt-block jwt-s"><div class="jwt-lbl">Signature</div><code>${escapeHtml(parts[2]||'(none)')}</code><p class="tool-note">Signatures are <b>not</b> verified here — that needs the secret/key. An <code>alg:none</code> token or a tampered payload will still "decode" fine. That's exactly the JWT attack surface from Path 11.</p></div>`;
+    outEl.innerHTML = out;
+  }
+  inp.addEventListener('input', run);
+}
+
+/* --- CVSS 3.1 base score --- */
+function toolCvss(el){
+  const metrics = [
+    {k:'AV', label:'Attack Vector', opts:[['N','Network'],['A','Adjacent'],['L','Local'],['P','Physical']]},
+    {k:'AC', label:'Attack Complexity', opts:[['L','Low'],['H','High']]},
+    {k:'PR', label:'Privileges Required', opts:[['N','None'],['L','Low'],['H','High']]},
+    {k:'UI', label:'User Interaction', opts:[['N','None'],['R','Required']]},
+    {k:'S',  label:'Scope', opts:[['U','Unchanged'],['C','Changed']]},
+    {k:'C',  label:'Confidentiality', opts:[['N','None'],['L','Low'],['H','High']]},
+    {k:'I',  label:'Integrity', opts:[['N','None'],['L','Low'],['H','High']]},
+    {k:'A',  label:'Availability', opts:[['N','None'],['L','Low'],['H','High']]}
+  ];
+  const sel = {AV:'N',AC:'L',PR:'N',UI:'N',S:'U',C:'H',I:'H',A:'H'};
+  el.innerHTML = `
+    <div class="cvss-grid">
+      ${metrics.map(m=>`
+        <div class="cvss-metric">
+          <div class="cvss-mlabel">${m.label} <span class="cvss-key">${m.k}</span></div>
+          <div class="cvss-opts" data-k="${m.k}">
+            ${m.opts.map(o=>`<button type="button" class="cvss-opt ${sel[m.k]===o[0]?'on':''}" data-v="${o[0]}">${o[1]}</button>`).join('')}
+          </div>
+        </div>
+      `).join('')}
+    </div>
+    <div class="cvss-result" id="cvssResult"></div>
+    <div class="cvss-vector" id="cvssVector"></div>
+  `;
+  function roundup(x){ const i = Math.round(x*100000); return (i%10000===0) ? i/100000 : (Math.floor(i/10000)+1)/10; }
+  function score(){
+    const AVv={N:0.85,A:0.62,L:0.55,P:0.2}[sel.AV];
+    const ACv={L:0.77,H:0.44}[sel.AC];
+    const PRv=(sel.S==='C'?{N:0.85,L:0.68,H:0.5}:{N:0.85,L:0.62,H:0.27})[sel.PR];
+    const UIv={N:0.85,R:0.62}[sel.UI];
+    const imp={N:0,L:0.22,H:0.56};
+    const isc = 1-((1-imp[sel.C])*(1-imp[sel.I])*(1-imp[sel.A]));
+    const impact = sel.S==='C' ? 7.52*(isc-0.029)-3.25*Math.pow(isc-0.02,15) : 6.42*isc;
+    const expl = 8.22*AVv*ACv*PRv*UIv;
+    let base;
+    if(impact<=0) base=0;
+    else base = sel.S==='C' ? roundup(Math.min(1.08*(impact+expl),10)) : roundup(Math.min(impact+expl,10));
+    return base;
+  }
+  function severity(s){ return s===0?['None','sev-none']:s<4?['Low','sev-low']:s<7?['Medium','sev-med']:s<9?['High','sev-high']:['Critical','sev-crit']; }
+  function paint(){
+    const s = score(); const [label,cls]=severity(s);
+    el.querySelector('#cvssResult').innerHTML = `<div class="cvss-score ${cls}"><span class="cvss-num">${s.toFixed(1)}</span><span class="cvss-sev">${label}</span></div>`;
+    el.querySelector('#cvssVector').innerHTML = `<code>CVSS:3.1/${['AV','AC','PR','UI','S','C','I','A'].map(k=>k+':'+sel[k]).join('/')}</code>`;
+  }
+  el.querySelectorAll('.cvss-opts').forEach(row=>{
+    row.querySelectorAll('.cvss-opt').forEach(btn=>btn.addEventListener('click', ()=>{
+      sel[row.dataset.k] = btn.dataset.v;
+      row.querySelectorAll('.cvss-opt').forEach(b=>b.classList.toggle('on', b===btn));
+      paint();
+    }));
+  });
+  paint();
+}
+
+/* --- Subnet calculator (IPv4) --- */
+function toolSubnet(el){
+  el.innerHTML = `
+    <div class="tool-controls">
+      <label class="tool-field" style="flex:1">IPv4 address / CIDR<input id="subIn" class="tool-input" value="192.168.1.10/24" placeholder="e.g. 10.0.0.5/22"></label>
+    </div>
+    <div id="subOut" class="tool-out-list"></div>
+  `;
+  const inp = el.querySelector('#subIn'), outEl = el.querySelector('#subOut');
+  const toInt = (ip)=>ip.split('.').reduce((a,o)=>(a<<8)+ (+o),0)>>>0;
+  const toIp = (n)=>[24,16,8,0].map(s=>(n>>>s)&255).join('.');
+  function run(){
+    const mm = inp.value.trim().match(/^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})(?:\/(\d{1,2}))?$/);
+    if(!mm){ outEl.innerHTML = `<div class="tool-warn">⚠ Enter an IPv4 address, optionally with /prefix (e.g. 192.168.1.0/24).</div>`; return; }
+    const octets=[mm[1],mm[2],mm[3],mm[4]].map(Number);
+    if(octets.some(o=>o>255)){ outEl.innerHTML = `<div class="tool-warn">⚠ Each octet must be 0–255.</div>`; return; }
+    const prefix = mm[5]===undefined?32:+mm[5];
+    if(prefix>32){ outEl.innerHTML = `<div class="tool-warn">⚠ Prefix must be 0–32.</div>`; return; }
+    const ip = toInt(octets.join('.'));
+    const mask = prefix===0?0:(0xffffffff << (32-prefix))>>>0;
+    const network = (ip & mask)>>>0;
+    const broadcast = (network | (~mask>>>0))>>>0;
+    const total = Math.pow(2, 32-prefix);
+    const usable = prefix>=31 ? (prefix===32?1:2) : total-2;
+    const firstHost = prefix>=31?network:network+1;
+    const lastHost = prefix>=31?broadcast:broadcast-1;
+    const rows = [
+      ['Network address', toIp(network)+'/'+prefix],
+      ['Netmask', toIp(mask)],
+      ['Wildcard', toIp(~mask>>>0)],
+      ['Broadcast', prefix>=31?'—':toIp(broadcast)],
+      ['Host range', prefix===32?toIp(network):`${toIp(firstHost)} – ${toIp(lastHost)}`],
+      ['Usable hosts', usable.toLocaleString()],
+      ['Total addresses', total.toLocaleString()]
+    ];
+    outEl.innerHTML = rows.map(r=>`<div class="hash-row"><span class="hash-algo">${r[0]}</span><code class="hash-val">${r[1]}</code></div>`).join('');
+  }
+  inp.addEventListener('input', run);
+  run();
+}
+
+/* --- Password strength (rough) --- */
+function toolPassword(el){
+  el.innerHTML = `
+    <label class="tool-field">Password (never sent anywhere)<input id="pwIn" class="tool-input" type="text" placeholder="Try a passphrase…" autocomplete="off"></label>
+    <div id="pwOut"></div>
+    <p class="tool-note">A rough estimate from character variety and length only — it can't catch dictionary words, l33t-speak, or known-breached passwords, which real crackers try first. Treat it as a floor, not a guarantee. See Path 06's hashing lesson and Path 10 on passwords.</p>
+  `;
+  const inp = el.querySelector('#pwIn'), outEl = el.querySelector('#pwOut');
+  function run(){
+    const p = inp.value;
+    if(!p){ outEl.innerHTML=''; return; }
+    let pool = 0;
+    if(/[a-z]/.test(p)) pool+=26;
+    if(/[A-Z]/.test(p)) pool+=26;
+    if(/[0-9]/.test(p)) pool+=10;
+    if(/[^a-zA-Z0-9]/.test(p)) pool+=33;
+    const entropy = p.length * Math.log2(pool||1);
+    // At 1e11 guesses/sec (fast offline GPU on weak hashing).
+    const seconds = Math.pow(2, entropy) / 1e11;
+    const human = (s)=>{
+      if(s<1) return 'instant';
+      const u=[['year',31557600],['day',86400],['hour',3600],['minute',60],['second',1]];
+      for(const [name,secs] of u){ if(s>=secs){ const n=s/secs; return (n>1e9?(n.toExponential(1)):Math.round(n).toLocaleString())+' '+name+(Math.round(n)===1?'':'s'); } }
+      return 'instant';
+    };
+    const label = entropy<28?['Very weak','sev-crit']:entropy<40?['Weak','sev-high']:entropy<60?['Reasonable','sev-med']:entropy<80?['Strong','sev-low']:['Very strong','sev-none'];
+    const pct = Math.min(100, Math.round(entropy/90*100));
+    outEl.innerHTML = `
+      <div class="pw-meter"><div class="pw-meter-fill ${label[1]}" style="width:${pct}%"></div></div>
+      <div class="pw-stats">
+        <div><b>${Math.round(entropy)}</b> bits of entropy</div>
+        <div class="cvss-sev ${label[1]}">${label[0]}</div>
+      </div>
+      <div class="pw-crack">Est. offline crack time: <b>${human(seconds)}</b> <span class="tool-note" style="display:inline">(at 100 billion guesses/sec)</span></div>
+    `;
+  }
+  inp.addEventListener('input', run);
+}
+
+/* --- Cipher playground --- */
+function toolCipher(el){
+  el.innerHTML = `
+    <div class="tool-controls">
+      <label>Cipher
+        <select id="cipMode" class="fc-select">
+          <option value="caesar">Caesar / ROT (shift)</option>
+          <option value="vigenere">Vigenère (keyword)</option>
+          <option value="xor">XOR (key → hex out)</option>
+        </select>
+      </label>
+      <label id="cipKeyWrap">Key<input id="cipKey" class="tool-input" value="13" style="width:9rem"></label>
+    </div>
+    <label class="tool-field">Input<textarea id="cipIn" class="tool-textarea" placeholder="Text to transform…">Hello, KashSec!</textarea></label>
+    <div class="tool-btnrow">
+      <button class="btn-amber sm" id="cipEnc" type="button">Encrypt / encode ↓</button>
+      <button class="btn-ghost sm" id="cipDec" type="button">Decrypt / decode ↑</button>
+    </div>
+    <label class="tool-field">Output<textarea id="cipOut" class="tool-textarea" readonly></textarea></label>
+    <p class="tool-note">These are the exact ciphers behind the Path 19 CTF crypto challenges — great for building intuition, useless for real secrecy.</p>
+  `;
+  const mode=el.querySelector('#cipMode'), key=el.querySelector('#cipKey'), inp=el.querySelector('#cipIn'), out=el.querySelector('#cipOut');
+  const caesar=(s,sh)=>s.replace(/[a-z]/gi,c=>{const b=c<='Z'?65:97;return String.fromCharCode((c.charCodeAt(0)-b+(sh%26)+26)%26+b);});
+  const vig=(s,k,dec)=>{ if(!k) return s; let j=0; return s.replace(/[a-z]/gi,c=>{const b=c<='Z'?65:97;const kc=k[j%k.length].toLowerCase().charCodeAt(0)-97;j++;const sh=dec?-kc:kc;return String.fromCharCode((c.charCodeAt(0)-b+sh+26)%26+b);}); };
+  const xorEnc=(s,k)=>{ if(!k) return s; let o=''; for(let i=0;i<s.length;i++) o+=(s.charCodeAt(i)^k.charCodeAt(i%k.length)).toString(16).padStart(2,'0'); return o; };
+  const xorDec=(hex,k)=>{ if(!k) return hex; const bytes=(hex.replace(/\s+/g,'').match(/.{1,2}/g)||[]); return bytes.map((h,i)=>String.fromCharCode(parseInt(h,16)^k.charCodeAt(i%k.length))).join(''); };
+  function go(dec){
+    const v=inp.value, k=key.value;
+    try{
+      if(mode.value==='caesar'){ const sh=parseInt(k,10)||0; out.value=caesar(v, dec?-sh:sh); }
+      else if(mode.value==='vigenere'){ out.value=vig(v,k.replace(/[^a-z]/gi,''),dec); }
+      else { out.value = dec ? xorDec(v,k) : xorEnc(v,k); }
+    }catch(e){ out.value='⚠ '+e.message; }
+  }
+  const syncKeyLabel=()=>{ el.querySelector('#cipKeyWrap').firstChild.textContent = mode.value==='caesar'?'Shift ':'Key '; };
+  mode.addEventListener('change', ()=>{ syncKeyLabel(); if(mode.value==='caesar'&&isNaN(parseInt(key.value,10))) key.value='13'; go(false); });
+  el.querySelector('#cipEnc').addEventListener('click',()=>go(false));
+  el.querySelector('#cipDec').addEventListener('click',()=>go(true));
+  inp.addEventListener('input',()=>go(false));
+  syncKeyLabel(); go(false);
+}
+
+/* ============================================================
    Quiz engine — used for both per-path quizzes and the Final Exam.
    Question-by-question, locks in an answer before revealing it,
    then a results screen with a full review.
@@ -2908,6 +3446,11 @@ function renderProgressHub(){
         <div class="hub-stat"><div class="hub-stat-n">${streakInfo().longest}</div><div class="hub-stat-l">Longest streak</div></div>
       </div>
 
+      <div class="hub-section" data-reveal style="--i:2">
+        <div class="hub-section-head"><h3 style="font-family:'Space Grotesk';font-size:1.15rem">📅 Activity</h3></div>
+        ${heatmapHtml()}
+      </div>
+
       <div class="hub-section" data-reveal style="--i:3">
         <div class="hub-section-head">
           <h3 style="font-family:'Space Grotesk';font-size:1.15rem">📜 Certificate</h3>
@@ -2955,7 +3498,10 @@ function renderProgressHub(){
       </div>
 
       <div class="hub-section" data-reveal style="--i:7">
-        <div class="hub-section-head"><h3 style="font-family:'Space Grotesk';font-size:1.15rem">✍️ Notes</h3></div>
+        <div class="hub-section-head" style="display:flex;justify-content:space-between;align-items:center;gap:1rem">
+          <h3 style="font-family:'Space Grotesk';font-size:1.15rem">✍️ Notes</h3>
+          ${noteEntries.length ? `<button class="btn-ghost sm" id="exportNotesBtn" type="button">⬇ Export as Markdown</button>` : ''}
+        </div>
         ${noteEntries.length ? noteEntries.map(ctx=>`
           <a class="hub-list-item" href="#/lesson/${ctx.path.id}/${ctx.sub.id}">
             <div><div class="hli-t">${ctx.path.n}.${ctx.sub.n} · ${ctx.sub.title}</div><div class="hli-d">${escapeHtml(getNote(ctx.path.id,ctx.sub.id)).slice(0,80)}${getNote(ctx.path.id,ctx.sub.id).length>80?'…':''}</div></div>
@@ -2974,6 +3520,25 @@ function renderProgressHub(){
             <option value="light" ${STATE.theme === 'light' ? 'selected' : ''}>Light</option>
             <option value="dark" ${STATE.theme === 'dark' ? 'selected' : ''}>Dark</option>
           </select>
+        </div>
+        <div class="hub-list-item" style="cursor:default">
+          <div><div class="hli-t">Reading — text size</div><div class="hli-d">Applies to lesson pages. Great for small screens or long study sessions.</div></div>
+          <select class="fc-select" id="readingSizePicker" aria-label="Lesson text size">
+            <option value="normal" ${(STATE.readingPrefs?.size||'normal')==='normal'?'selected':''}>Normal</option>
+            <option value="large" ${STATE.readingPrefs?.size==='large'?'selected':''}>Large</option>
+            <option value="xlarge" ${STATE.readingPrefs?.size==='xlarge'?'selected':''}>Extra large</option>
+          </select>
+        </div>
+        <div class="hub-list-item" style="cursor:default">
+          <div><div class="hli-t">Reading — column width</div><div class="hli-d">"Wide" fills more of the screen; "Normal" keeps a comfortable line length.</div></div>
+          <select class="fc-select" id="readingWidthPicker" aria-label="Lesson column width">
+            <option value="normal" ${(STATE.readingPrefs?.width||'normal')==='normal'?'selected':''}>Normal</option>
+            <option value="wide" ${STATE.readingPrefs?.width==='wide'?'selected':''}>Wide</option>
+          </select>
+        </div>
+        <div class="hub-list-item" style="cursor:default">
+          <div><div class="hli-t">Legibility boost</div><div class="hli-d">Switches lessons to a high-legibility font with extra letter and line spacing — easier for dyslexic readers.</div></div>
+          <label class="switch"><input type="checkbox" id="legibleToggle" ${STATE.readingPrefs?.legible?'checked':''}><span class="switch-track"></span></label>
         </div>
       </div>
 
@@ -2999,6 +3564,34 @@ function renderProgressHub(){
     STATE.theme = e.target.value === 'auto-system' ? null : e.target.value;
     saveState();
     applyTheme();
+  });
+
+  const rpChange = (key, val)=>{
+    STATE.readingPrefs = Object.assign({size:'normal',width:'normal',legible:false}, STATE.readingPrefs, {[key]:val});
+    saveState();
+    applyReadingPrefs();
+  };
+  document.getElementById('readingSizePicker')?.addEventListener('change', e=>rpChange('size', e.target.value));
+  document.getElementById('readingWidthPicker')?.addEventListener('change', e=>rpChange('width', e.target.value));
+  document.getElementById('legibleToggle')?.addEventListener('change', e=>rpChange('legible', e.target.checked));
+
+  document.getElementById('exportNotesBtn')?.addEventListener('click', ()=>{
+    let md = `# KashSec Academy — my lesson notes\n\n_Exported ${new Date().toISOString().slice(0,10)}_\n\n`;
+    // Group notes by path, in course order.
+    for(const p of PATHS){
+      const rows = p.subs.filter(s=>getNote(p.id,s.id).trim());
+      if(!rows.length) continue;
+      md += `## Path ${p.n} — ${p.title}\n\n`;
+      for(const s of rows){
+        md += `### ${p.n}.${s.n} ${s.title}\n\n${getNote(p.id,s.id).trim()}\n\n`;
+      }
+    }
+    const blob = new Blob([md], {type:'text/markdown'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `kashsec-notes-${new Date().toISOString().slice(0,10)}.md`;
+    a.click();
+    URL.revokeObjectURL(a.href);
   });
 
   document.getElementById('exportProgressBtn')?.addEventListener('click', ()=>{
@@ -3139,11 +3732,11 @@ function runSearch(q){
   q = q.trim();
   if(!q){
     searchCurrentResults = [];
-    resultsEl.innerHTML = `<div class="search-empty">Type to search lesson titles and topics — or press <kbd>↵</kbd> on a result to jump in.</div>`;
+    resultsEl.innerHTML = `<div class="search-empty">Search lesson titles, topics, and full lesson text — press <kbd>↵</kbd> on a result to jump in.</div>`;
     return;
   }
   const ql = q.toLowerCase();
-  searchCurrentResults = SEARCH_INDEX
+  const titleHits = SEARCH_INDEX
     .map(item=>{
       const t = item.title.toLowerCase(), d = item.desc.toLowerCase();
       let score = -1;
@@ -3152,20 +3745,39 @@ function runSearch(q){
       else if(d.includes(ql)) score = 30;
       return {...item, score};
     })
-    .filter(item=>item.score > -1)
+    .filter(item=>item.score > -1);
+
+  const matchedUrls = new Set(titleHits.map(r=>r.url));
+  let bodyHits = [];
+  // Full-text body matches, if the content index has loaded. Only add lessons
+  // not already matched by title/desc, and attach a snippet around the hit.
+  if(typeof SEARCH_CONTENT !== 'undefined' && ql.length >= 2){
+    for(const c of SEARCH_CONTENT){
+      const url = `#/lesson/${c.p}/${c.s}`;
+      if(matchedUrls.has(url)) continue;
+      const idx = c.b.toLowerCase().indexOf(ql);
+      if(idx === -1) continue;
+      const from = Math.max(0, idx - 40);
+      const snippet = (from>0?'…':'') + c.b.slice(from, idx + ql.length + 60) + '…';
+      bodyHits.push({type:'lesson', title:c.t, desc:snippet, url, context:`${c.n} · ${c.pt}`, score:15, _body:true});
+    }
+  }
+
+  searchCurrentResults = titleHits.concat(bodyHits)
     .sort((a,b)=>b.score-a.score)
-    .slice(0,30);
+    .slice(0,40);
 
   searchActiveIndex = searchCurrentResults.length ? 0 : -1;
   if(!searchCurrentResults.length){
-    resultsEl.innerHTML = `<div class="search-empty">No lessons matched "${escapeHtml(q)}".</div>`;
+    const loading = (typeof SEARCH_CONTENT === 'undefined');
+    resultsEl.innerHTML = `<div class="search-empty">No lesson titles matched "${escapeHtml(q)}".${loading?' Searching lesson text…':''}</div>`;
     return;
   }
   resultsEl.innerHTML = searchCurrentResults.map((r,i)=>`
     <a class="search-result ${i===0?'active':''}" href="${r.url}" data-idx="${i}">
-      <div class="sr-path">${r.context}${r.type==='path'?' · Path overview':''}</div>
+      <div class="sr-path">${r.context}${r.type==='path'?' · Path overview':r._body?' · in lesson text':''}</div>
       <div class="sr-title">${highlightMatch(r.title, q)}</div>
-      <div class="sr-desc">${highlightMatch(r.desc, q)}</div>
+      <div class="sr-desc">${r._body ? highlightMatch(escapeHtml(r.desc), q) : highlightMatch(r.desc, q)}</div>
     </a>
   `).join('');
   resultsEl.querySelectorAll('.search-result').forEach(el=>{
@@ -3198,6 +3810,11 @@ function openSearch(){
   input.value = '';
   runSearch('');
   setTimeout(()=>input.focus(), 30);
+  // Pull in the full-text index in the background; re-run once it lands so
+  // body matches appear without the user retyping.
+  ensureSearchContent().then(()=>{
+    if(overlay.classList.contains('open') && input.value.trim()) runSearch(input.value);
+  }).catch(()=>{});
 }
 function closeSearch(){
   searchOverlay?.classList.remove('open');
