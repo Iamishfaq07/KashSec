@@ -205,7 +205,8 @@ function defaultState(){
     usedSearch:false,
     flashcards:{known:{}, reviews:{}}, // known: legacy "seen once"; reviews: SR state
     // reviews entries: { term_key: { due: ISO_date, interval: days, ease: 2.5, streak: N, lastPerf: 'again|good|easy' } }
-    readingPrefs:{size:'normal', width:'normal', legible:false} // size: normal|large|xlarge; width: normal|wide
+    readingPrefs:{size:'normal', width:'normal', legible:false}, // size: normal|large|xlarge; width: normal|wide
+    daily:{} // { "YYYY-MM-DD": { qi, chosen, correct } }
   };
 }
 function loadState(){
@@ -392,6 +393,33 @@ function toggleTheme(){
   checkAchievements();
 }
 applyTheme();
+
+/* ---------- Listen mode (text-to-speech) ---------- */
+const TTS = {
+  supported: typeof window !== 'undefined' && 'speechSynthesis' in window,
+  speaking: false,
+  stop(){
+    if(!this.supported) return;
+    try{ window.speechSynthesis.cancel(); }catch(e){}
+    this.speaking = false;
+  },
+  /* Speak text in chunks (some engines choke on very long utterances).
+     onEnd fires when the whole thing finishes or is cancelled. */
+  speak(text, onEnd){
+    if(!this.supported) return;
+    this.stop();
+    const chunks = text.replace(/\s+/g,' ').match(/[^.!?]+[.!?]*\s*/g) || [text];
+    let i = 0;
+    this.speaking = true;
+    const next = ()=>{
+      if(!this.speaking || i >= chunks.length){ this.speaking = false; onEnd && onEnd(); return; }
+      const u = new SpeechSynthesisUtterance(chunks[i++]);
+      u.rate = 1; u.onend = next; u.onerror = ()=>{ this.speaking=false; onEnd && onEnd(); };
+      window.speechSynthesis.speak(u);
+    };
+    next();
+  }
+};
 
 /* ---------- Reading preferences ---------- */
 /* Applied as data-attributes on <html> so lesson CSS can respond. Purely
@@ -964,6 +992,7 @@ let renderGeneration = 0;
 
 function route(){
   renderGeneration++;
+  if(typeof TTS !== 'undefined') TTS.stop(); // stop any read-aloud when navigating
   // Magic-link / OAuth redirects land back on the site with auth tokens
   // riding in the URL (e.g. #access_token=...). That's not a real route —
   // show a brief loading state and let the auth bootstrap below redirect
@@ -991,6 +1020,9 @@ function route(){
   else if(hash === '#/labs/terminal') renderLabTerminal();
   else if(hash === '#/labs/webapp') renderLabWebapp();
   else if(hash === '#/labs/pcap') renderLabPcap();
+  else if(hash === '#/labs/sqli') renderLabSqli();
+  else if(hash === '#/labs/phishing') renderLabPhishing();
+  else if(hash === '#/daily') renderDaily();
   else if(hash === '#/progress') renderProgressHub();
   else if(hash === '#/certificate') renderCertificate();
   else if(hash === '#/quiz/final') renderQuiz('final');
@@ -1420,6 +1452,9 @@ async function renderSubLesson(pathId, subId){
             &nbsp;·&nbsp; Sub-lesson ${ctx.path.n}.${ctx.sub.n}
           </div>
           <div class="reader-actions">
+            <button class="icon-btn" id="listenBtn" type="button" aria-label="Listen to this lesson" title="Listen (read aloud)" hidden>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+            </button>
             <button class="icon-btn ${isBookmarked(pathId,subId)?'active':''}" id="bookmarkBtn" type="button" aria-label="Bookmark this lesson" aria-pressed="${isBookmarked(pathId,subId)}">
               <svg viewBox="0 0 24 24" fill="${isBookmarked(pathId,subId)?'currentColor':'none'}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
             </button>
@@ -1529,6 +1564,9 @@ async function renderSubLesson(pathId, subId){
 
     // Copy buttons + syntax highlighting on code blocks
     enhanceCodeBlocks(contentEl);
+
+    // Listen mode (read-aloud), only where the browser supports it.
+    wireListenButton(contentEl);
 
     // Render Mermaid diagrams
     if(typeof mermaid !== 'undefined'){
@@ -1663,6 +1701,29 @@ function buildLessonToc(contentEl){
 
 /* Copy-to-clipboard buttons + best-effort syntax highlighting on all real
    code blocks (mermaid fences were already converted to .mermaid divs). */
+/* Wire the read-aloud button once a lesson's content is in the DOM.
+   Reads the visible article text (skipping code blocks and diagrams). */
+function wireListenButton(contentEl){
+  const btn = document.getElementById('listenBtn');
+  if(!btn || !TTS.supported) return; // stays hidden where unsupported
+  btn.hidden = false;
+  const setPlaying = (on)=>{
+    btn.classList.toggle('active', on);
+    btn.setAttribute('aria-label', on ? 'Stop reading' : 'Listen to this lesson');
+    btn.setAttribute('title', on ? 'Stop' : 'Listen (read aloud)');
+  };
+  const gatherText = ()=>{
+    const clone = contentEl.cloneNode(true);
+    clone.querySelectorAll('pre, .mermaid, .code-copy, .toc').forEach(n=>n.remove());
+    return clone.innerText;
+  };
+  btn.addEventListener('click', ()=>{
+    if(TTS.speaking){ TTS.stop(); setPlaying(false); return; }
+    setPlaying(true);
+    TTS.speak(gatherText(), ()=>setPlaying(false));
+  });
+}
+
 function enhanceCodeBlocks(contentEl){
   contentEl.querySelectorAll('pre > code').forEach(code=>{
     const pre = code.parentElement;
@@ -2065,6 +2126,8 @@ function renderLabsIndex(){
   const labs = [
     {id:'terminal', ico:'🖥', title:'Terminal Simulator', desc:'A safe, in-browser Linux terminal with a fake filesystem. Practice ls, cd, cat, grep, find, whoami and more without spinning up a VM.', related:'Path 03 — Linux'},
     {id:'webapp', ico:'🕸', title:'Vulnerable Web App', desc:'A tiny deliberately-broken app for practicing XSS and login-bypass. Runs entirely in-browser; no server to attack, nothing to install.', related:'Path 11 — Web Security'},
+    {id:'sqli', ico:'💉', title:'SQL Injection Sandbox', desc:'A fake login backed by a simulated database. Watch your input become SQL, then bypass the login with a classic injection.', related:'Path 11 — Web Security'},
+    {id:'phishing', ico:'🎣', title:'Phishing Spotter', desc:'Real email or phish? Call each one, then see the exact red flags you spotted (or missed). Trains the instinct that stops most attacks.', related:'Path 10 — Fundamentals'},
     {id:'pcap', ico:'📡', title:'Packet Capture Viewer', desc:'Load a sample capture and explore protocols, IPs, and payloads — the same "read the traffic" muscle Wireshark builds.', related:'Path 12 — Network Security'}
   ];
   app.innerHTML = `
@@ -2420,11 +2483,150 @@ function renderLabPcap(){
   paint();
 }
 
+/* --- Lab: SQL injection sandbox ------------------------------
+   A fully client-side simulation. There is no real database — a tiny
+   in-memory user list and a naive "query builder" that concatenates input
+   exactly like vulnerable code would, so the classic ' OR '1'='1 bypass
+   works and the learner SEES why. */
+function renderLabSqli(){
+  const USERS = [{u:'admin',p:'s3cr3t-admin-pw'},{u:'alice',p:'hunter2'}];
+  app.innerHTML = `
+    <section class="sec">
+      <div class="sec-head" data-reveal>
+        <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · SQL Injection Sandbox</div>
+        <h2>💉 SQL Injection Sandbox</h2>
+        <p class="sec-lead">This login builds its SQL query by <b>gluing your input straight into the string</b> — exactly the bug behind real SQL injection. Log in as <code>admin</code> without knowing the password. <span class="tool-privacy">🔒 Simulated locally — no real database.</span></p>
+      </div>
+      <div class="sqli-wrap" data-reveal style="--i:1">
+        <form class="sqli-form" id="sqliForm" autocomplete="off">
+          <label class="tool-field">Username<input class="tool-input" id="sqU" value="admin"></label>
+          <label class="tool-field">Password<input class="tool-input" id="sqP" value=""></label>
+          <button class="btn-amber" type="submit">Log in</button>
+        </form>
+        <div class="sqli-query"><div class="tool-note">The query your input produces:</div><pre id="sqQuery"></pre></div>
+        <div id="sqResult"></div>
+        <details class="sqli-hint"><summary>Stuck? Show the trick</summary>
+          <div class="iv-answer">Put this in the <b>password</b> box: <code>' OR '1'='1</code> — the query becomes <code>… AND password='' OR '1'='1'</code>, and since <code>'1'='1'</code> is always true, it returns the first user (admin). The real fix is <b>parameterised queries</b>, which keep data and code separate so input can never change the query's logic (Path 11's SQLi lesson).</div>
+        </details>
+      </div>
+    </section>
+  `;
+  const uEl=document.getElementById('sqU'), pEl=document.getElementById('sqP'), qEl=document.getElementById('sqQuery'), res=document.getElementById('sqResult');
+  function buildQuery(){ return `SELECT * FROM users\nWHERE username='${uEl.value}' AND password='${pEl.value}';`; }
+  function refreshQuery(){ qEl.textContent = buildQuery(); }
+  // The "vulnerable engine": we emulate how the naive concatenated query
+  // would evaluate, so a tautology injection actually authenticates.
+  function runVulnerableQuery(u,p){
+    // Exact-match path (what the developer intended).
+    const exact = USERS.find(x=>x.u===u && x.p===p);
+    if(exact) return [exact];
+    // Injection path: a password containing an unescaped quote + OR tautology.
+    const tautology = /'\s*or\s*('?\d'?='?\d'?|'[^']*'='[^']*'|true)/i;
+    if(/'/.test(p) && tautology.test(p)){
+      // Query logic collapses to WHERE username='u' AND (false) OR (true) => all rows.
+      return USERS.slice();
+    }
+    if(/'/.test(u) && tautology.test(u)) return USERS.slice();
+    return [];
+  }
+  document.getElementById('sqliForm').addEventListener('submit', (e)=>{
+    e.preventDefault();
+    refreshQuery();
+    const rows = runVulnerableQuery(uEl.value, pEl.value);
+    const injected = /'/.test(uEl.value+pEl.value);
+    if(rows.length && (rows[0].u==='admin')){
+      res.innerHTML = `<div class="sqli-ok">✅ Logged in as <b>${escapeHtml(rows[0].u)}</b>${injected?' — via SQL injection! The tautology made the WHERE clause always true.':' with valid credentials.'}</div>`;
+      if(injected) fireConfetti({count:70});
+    } else if(rows.length){
+      res.innerHTML = `<div class="sqli-ok">✅ Logged in as <b>${escapeHtml(rows[0].u)}</b>.</div>`;
+    } else {
+      res.innerHTML = `<div class="sqli-bad">❌ Login failed. (Hint: you don't need the real password — you need to break the query.)</div>`;
+    }
+  });
+  uEl.addEventListener('input', refreshQuery);
+  pEl.addEventListener('input', refreshQuery);
+  refreshQuery();
+  setupReveal();
+}
+
+/* --- Lab: phishing spotter game ------------------------------ */
+function renderLabPhishing(){
+  const ROUNDS = [
+    {from:'security@paypa1.com', subject:'Your account has been limited', body:'We detected unusual activity. Click here within 24 hours to verify your identity or your account will be permanently suspended.', phish:true, flags:['Look-alike domain: "paypa1" (with a 1) is not "paypal"','Urgency + threat ("within 24 hours", "permanently suspended")','Generic greeting, asks you to click to "verify identity"']},
+    {from:'no-reply@github.com', subject:'[GitHub] A new SSH key was added', body:'A new SSH key was added to your account. If this was you, no action is needed. If not, review your security settings from github.com directly.', phish:false, flags:['Legitimate domain','No pressure; tells you to go to the site directly rather than clicking a link','Informational, not asking for credentials']},
+    {from:'hr@yourcompany-payroll.net', subject:'Updated direct deposit form', body:'Please download and complete the attached form to keep receiving your salary. Enable macros to view it correctly.', phish:true, flags:['"Enable macros" is a classic malware delivery trick','Odd external domain for internal HR','Money/salary lure + attachment']},
+    {from:'billing@amazon.com', subject:'Your order #112-8829 has shipped', body:'Your recent order has shipped and will arrive Tuesday. Track your package in Your Orders on the Amazon app or website.', phish:false, flags:['Legitimate domain','References a specific order, no credential request','Directs you to the official app/site, not a link']},
+    {from:'it-support@0ffice365-secure.com', subject:'Mailbox full — reactivate now', body:'Your mailbox is full and will stop receiving email. Reactivate immediately by logging in here with your email and password.', phish:true, flags:['Look-alike domain with a zero: "0ffice365"','Asks you to log in with email AND password via a link','Urgency + service-disruption threat']}
+  ];
+  let i=0, score=0;
+  app.innerHTML = `
+    <section class="sec">
+      <div class="sec-head" data-reveal>
+        <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Phishing Spotter</div>
+        <h2>🎣 Phishing Spotter</h2>
+        <p class="sec-lead">Real email or phishing attempt? Make the call, then see the red flags. This is the instinct that stops most real-world attacks (Path 10).</p>
+      </div>
+      <div id="phGame" data-reveal style="--i:1"></div>
+    </section>
+  `;
+  const game=document.getElementById('phGame');
+  function paintRound(){
+    if(i>=ROUNDS.length){
+      const pct=Math.round(score/ROUNDS.length*100);
+      game.innerHTML = `<div class="ph-done">
+        <div class="cvss-score ${pct>=80?'sev-none':pct>=50?'sev-med':'sev-crit'}"><span class="cvss-num">${score}/${ROUNDS.length}</span><span class="cvss-sev">${pct}%</span></div>
+        <p class="sec-lead" style="margin-top:1rem">${pct>=80?'Sharp eye — you\'d catch most real phishing.':pct>=50?'Not bad — keep drilling the red flags.':'Worth reviewing Path 10\'s phishing lesson, then try again.'}</p>
+        <button class="btn-amber" id="phRestart" type="button">Play again</button>
+      </div>`;
+      if(pct>=80) fireConfetti({count:90});
+      document.getElementById('phRestart').addEventListener('click', ()=>{ i=0; score=0; paintRound(); });
+      return;
+    }
+    const r=ROUNDS[i];
+    game.innerHTML = `
+      <div class="ph-progress">Email ${i+1} of ${ROUNDS.length} · Score ${score}</div>
+      <div class="ph-email">
+        <div class="ph-hdr"><span class="ph-lbl">From</span> <code>${escapeHtml(r.from)}</code></div>
+        <div class="ph-hdr"><span class="ph-lbl">Subject</span> ${escapeHtml(r.subject)}</div>
+        <div class="ph-body">${escapeHtml(r.body)}</div>
+      </div>
+      <div class="ph-actions">
+        <button class="btn-ghost" id="phLegit" type="button">✅ Legitimate</button>
+        <button class="btn-amber" id="phPhish" type="button">🎣 Phishing</button>
+      </div>
+      <div id="phFeedback"></div>
+    `;
+    const answer=(guessPhish)=>{
+      const correct = guessPhish===r.phish;
+      if(correct) score++;
+      const fb=document.getElementById('phFeedback');
+      fb.innerHTML = `
+        <div class="ph-verdict ${correct?'ph-right':'ph-wrong'}">${correct?'✅ Correct':'❌ Not quite'} — this was <b>${r.phish?'phishing':'legitimate'}</b>.</div>
+        <div class="ph-flags"><div class="tool-note">${r.phish?'Red flags:':'Why it\'s okay:'}</div><ul>${r.flags.map(f=>`<li>${escapeHtml(f)}</li>`).join('')}</ul></div>
+        <button class="btn-amber sm" id="phNext" type="button">${i+1>=ROUNDS.length?'See results →':'Next email →'}</button>
+      `;
+      document.getElementById('phLegit').disabled=true; document.getElementById('phPhish').disabled=true;
+      document.getElementById('phNext').addEventListener('click', ()=>{ i++; paintRound(); });
+    };
+    document.getElementById('phLegit').addEventListener('click', ()=>answer(false));
+    document.getElementById('phPhish').addEventListener('click', ()=>answer(true));
+  }
+  paintRound();
+  setupReveal();
+}
+
 /* ============================================================
    Changelog — hand-maintained release notes. Also the source for the
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
+  {date:'2026-07-23', title:'Listen mode, daily challenge, more labs & tools', items:[
+    'Listen mode: lessons can now be read aloud (where your browser supports speech).',
+    'Daily challenge (#/daily): one question a day from across the course, and it counts toward your streak.',
+    'Two new labs — a SQL-injection sandbox and a phishing-spotter game.',
+    'Three new tools — a regex tester, a hash identifier, and an HTTP security-header analyzer.',
+    'A shareable progress card you can download/post, and a command palette (Ctrl/Cmd+K) that jumps to any page, tool, or lab.'
+  ]},
   {date:'2026-07-22', title:'Tools, glossary search, activity heatmap & more', items:[
     'New Tools section: encoder/decoder, hash generator, JWT decoder, CVSS 3.1 calculator, subnet calculator, password-strength meter, and a cipher playground.',
     'Search now covers full lesson text, not just titles.',
@@ -2548,7 +2750,10 @@ const TOOLS = [
   {id:'cvss',     ico:'📊', title:'CVSS 3.1 Calculator',    desc:'Turn the base metrics of a vulnerability into a 0–10 severity score.', related:'Path 10 — Fundamentals'},
   {id:'subnet',   ico:'🌐', title:'Subnet Calculator',      desc:'IPv4 CIDR → network, broadcast, host range, mask, and host count.', related:'Path 02 — Networking'},
   {id:'password', ico:'🔑', title:'Password Strength',      desc:'Rough entropy and crack-time estimate for a password, with feedback.', related:'Path 06 — Cryptography'},
-  {id:'cipher',   ico:'🔐', title:'Cipher Playground',      desc:'Caesar/ROT, XOR, and Vigenère — the classic ciphers from the CTF zone.', related:'Path 19 — CTF Zone'}
+  {id:'cipher',   ico:'🔐', title:'Cipher Playground',      desc:'Caesar/ROT, XOR, and Vigenère — the classic ciphers from the CTF zone.', related:'Path 19 — CTF Zone'},
+  {id:'regex',    ico:'✳️', title:'Regex Tester',           desc:'Test a regular expression against sample text with live match highlighting and capture groups.', related:'Path 04 — Python'},
+  {id:'hashid',   ico:'🕵️', title:'Hash Identifier',        desc:'Paste a hash and get likely algorithms, guessed from its length and character set.', related:'Path 06 — Cryptography'},
+  {id:'headers',  ico:'🛡', title:'Security Header Analyzer', desc:'Paste HTTP response headers and get a graded report on the security headers present and missing.', related:'Path 11 — Web Security'}
 ];
 
 function renderToolsIndex(){
@@ -2588,7 +2793,7 @@ function renderTool(id){
     </section>
   `;
   const body = document.getElementById('toolBody');
-  ({encoder:toolEncoder, hash:toolHash, jwt:toolJwt, cvss:toolCvss, subnet:toolSubnet, password:toolPassword, cipher:toolCipher}[id])(body);
+  ({encoder:toolEncoder, hash:toolHash, jwt:toolJwt, cvss:toolCvss, subnet:toolSubnet, password:toolPassword, cipher:toolCipher, regex:toolRegex, hashid:toolHashId, headers:toolHeaders}[id])(body);
   setupReveal();
 }
 
@@ -2872,6 +3077,191 @@ function toolCipher(el){
   el.querySelector('#cipDec').addEventListener('click',()=>go(true));
   inp.addEventListener('input',()=>go(false));
   syncKeyLabel(); go(false);
+}
+
+/* --- Regex tester --- */
+function toolRegex(el){
+  el.innerHTML = `
+    <div class="tool-controls">
+      <label class="tool-field" style="flex:2;min-width:220px">Pattern
+        <div class="regex-row"><span class="regex-slash">/</span><input id="reIn" class="tool-input" value="\\b\\w+@\\w+\\.\\w+\\b" spellcheck="false"><span class="regex-slash">/</span><input id="reFlags" class="tool-input" value="gi" style="width:5rem" spellcheck="false"></div>
+      </label>
+    </div>
+    <label class="tool-field">Test text<textarea id="reText" class="tool-textarea">Contact us at hello@kashsec.dev or admin@example.com — not sales_at_example.</textarea></label>
+    <div id="reStatus" class="tool-note"></div>
+    <div class="tool-field">Matches<div id="reHighlight" class="regex-highlight"></div></div>
+    <div id="reGroups" class="tool-out-list"></div>
+  `;
+  const pat=el.querySelector('#reIn'), flags=el.querySelector('#reFlags'), text=el.querySelector('#reText');
+  const status=el.querySelector('#reStatus'), hl=el.querySelector('#reHighlight'), groups=el.querySelector('#reGroups');
+  function run(){
+    let re;
+    try{ re = new RegExp(pat.value, flags.value); status.textContent=''; status.className='tool-note'; }
+    catch(e){ status.textContent = '⚠ '+e.message; status.className='tool-warn'; hl.innerHTML=''; groups.innerHTML=''; return; }
+    const s = text.value;
+    const g = flags.value.includes('g');
+    let out='', last=0, count=0, groupHtml='', m, guard=0;
+    const rx = g ? re : new RegExp(re.source, re.flags+'g');
+    while((m = rx.exec(s)) !== null){
+      if(guard++ > 5000) break;
+      if(m.index >= last){
+        out += escapeHtml(s.slice(last, m.index));
+        out += `<mark>${escapeHtml(m[0]||'')}</mark>`;
+        last = m.index + (m[0].length||0);
+        count++;
+        if(m.length>1) groupHtml += `<div class="hash-row"><span class="hash-algo">Match ${count}</span><code class="hash-val">${m.slice(1).map((x,i)=>`$${i+1}=${x===undefined?'∅':escapeHtml(x)}`).join('  ')}</code></div>`;
+      }
+      if(m[0].length===0) rx.lastIndex++;
+      if(!g) break;
+    }
+    out += escapeHtml(s.slice(last));
+    hl.innerHTML = out || '<span class="tool-note">No text</span>';
+    status.textContent = `${count} match${count===1?'':'es'}`;
+    groups.innerHTML = groupHtml;
+  }
+  [pat,flags,text].forEach(e=>e.addEventListener('input', run));
+  run();
+}
+
+/* --- Hash identifier --- */
+function toolHashId(el){
+  el.innerHTML = `
+    <label class="tool-field">Paste a hash<input id="hidIn" class="tool-input" placeholder="e.g. 5f4dcc3b5aa765d61d8327deb882cf99" spellcheck="false"></label>
+    <div id="hidOut" class="tool-out-list"></div>
+    <p class="tool-note">Guesses from length and character set only — it can't be certain (many algorithms share a length). Prefixed formats like bcrypt (<code>$2b$</code>) and Argon2 (<code>$argon2</code>) are the reliable ones. Pairs with Path 06's hashing lesson.</p>
+  `;
+  const inp=el.querySelector('#hidIn'), out=el.querySelector('#hidOut');
+  function identify(h){
+    h=h.trim();
+    if(!h) return [];
+    if(/^\$2[aby]\$\d\d\$[./A-Za-z0-9]{53}$/.test(h)) return [['bcrypt','high']];
+    if(/^\$argon2(id|i|d)\$/.test(h)) return [['Argon2','high']];
+    if(/^\$6\$/.test(h)) return [['sha512crypt (Unix)','high']];
+    if(/^\$5\$/.test(h)) return [['sha256crypt (Unix)','high']];
+    if(/^\$1\$/.test(h)) return [['md5crypt (Unix)','high']];
+    if(/^[0-9a-f]+$/i.test(h)){
+      const map={32:['MD5','NTLM','MD4'],40:['SHA-1','RIPEMD-160'],56:['SHA-224'],64:['SHA-256','SHA3-256','BLAKE2s'],96:['SHA-384'],128:['SHA-512','SHA3-512','BLAKE2b']};
+      if(map[h.length]) return map[h.length].map(n=>[n,'med']);
+      return [[`Unknown hex hash (${h.length} hex chars = ${h.length*4} bits)`,'low']];
+    }
+    if(/^[0-9a-f]+$/i.test(h)===false && /^[A-Za-z0-9+/=]+$/.test(h)) return [['Possibly Base64-encoded (decode first)','low']];
+    return [['Unrecognised format','low']];
+  }
+  function run(){
+    const res = identify(inp.value);
+    if(!res.length){ out.innerHTML=''; return; }
+    out.innerHTML = res.map(([name,conf])=>`<div class="hash-row"><span class="hash-algo">${conf==='high'?'✅':conf==='med'?'🔸':'❔'} ${conf} confidence</span><code class="hash-val">${escapeHtml(name)}</code></div>`).join('');
+  }
+  inp.addEventListener('input', run);
+}
+
+/* --- Security header analyzer --- */
+function toolHeaders(el){
+  el.innerHTML = `
+    <label class="tool-field">Paste raw HTTP response headers<textarea id="hdrIn" class="tool-textarea" placeholder="Content-Security-Policy: default-src 'self'\nStrict-Transport-Security: max-age=63072000\nX-Frame-Options: DENY\n...">Content-Type: text/html
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+X-Content-Type-Options: nosniff
+Server: nginx</textarea></label>
+    <div class="tool-btnrow"><button class="btn-amber sm" id="hdrGo" type="button">Analyze headers</button></div>
+    <div id="hdrGrade"></div>
+    <div id="hdrOut" class="tool-out-list"></div>
+    <p class="tool-note">Tip: get real headers with <code>curl -I https://example.com</code>. Pairs with Path 11's web-security path.</p>
+  `;
+  const inp=el.querySelector('#hdrIn'), gradeEl=el.querySelector('#hdrGrade'), out=el.querySelector('#hdrOut');
+  const CHECKS = [
+    {name:'Strict-Transport-Security', good:'Forces HTTPS, defeating downgrade/MITM attacks.', bad:'Missing — browsers may connect over plain HTTP first.'},
+    {name:'Content-Security-Policy', good:'Restricts what can load/run — the strongest defence against XSS.', bad:'Missing — no CSP means far more room for injected scripts.'},
+    {name:'X-Content-Type-Options', good:'nosniff stops MIME-type confusion attacks.', bad:'Missing — browser may sniff content types.'},
+    {name:'X-Frame-Options', good:'Blocks the page being framed — anti-clickjacking (or use CSP frame-ancestors).', bad:'Missing — page can be framed for clickjacking.'},
+    {name:'Referrer-Policy', good:'Controls how much referrer data leaks to other sites.', bad:'Missing — full URLs may leak in the Referer header.'},
+    {name:'Permissions-Policy', good:'Limits powerful browser features (camera, geolocation, etc.).', bad:'Missing — features aren\'t explicitly restricted.'}
+  ];
+  const LEAKY = ['Server','X-Powered-By','X-AspNet-Version'];
+  function run(){
+    const lines = inp.value.split('\n');
+    const present = {};
+    for(const l of lines){ const i=l.indexOf(':'); if(i>0) present[l.slice(0,i).trim().toLowerCase()] = l.slice(i+1).trim(); }
+    let score=0; let rows='';
+    for(const c of CHECKS){
+      const has = present[c.name.toLowerCase()] !== undefined;
+      if(has) score++;
+      rows += `<div class="hdr-row ${has?'hdr-ok':'hdr-miss'}"><span class="hdr-ico">${has?'✅':'❌'}</span><div><div class="hdr-name">${c.name}</div><div class="hdr-desc">${has? escapeHtml(c.good)+(present[c.name.toLowerCase()]?` <code>${escapeHtml(present[c.name.toLowerCase()].slice(0,80))}</code>`:'') : escapeHtml(c.bad)}</div></div></div>`;
+    }
+    for(const h of LEAKY){ if(present[h.toLowerCase()]!==undefined) rows += `<div class="hdr-row hdr-warn"><span class="hdr-ico">⚠️</span><div><div class="hdr-name">${h}</div><div class="hdr-desc">Leaks version/tech info that helps attackers — consider removing. <code>${escapeHtml(present[h.toLowerCase()].slice(0,60))}</code></div></div></div>`; }
+    const pct = Math.round(score/CHECKS.length*100);
+    const grade = pct>=84?['A','sev-none']:pct>=67?['B','sev-low']:pct>=50?['C','sev-med']:pct>=34?['D','sev-high']:['F','sev-crit'];
+    gradeEl.innerHTML = `<div class="cvss-score ${grade[1]}" style="margin:0 0 1rem"><span class="cvss-num">${grade[0]}</span><span class="cvss-sev">${score}/${CHECKS.length} key headers present</span></div>`;
+    out.innerHTML = rows;
+  }
+  el.querySelector('#hdrGo').addEventListener('click', run);
+  inp.addEventListener('input', run);
+  run();
+}
+
+/* ============================================================
+   Daily challenge — one deterministic question per day drawn from the
+   whole quiz bank, so everyone gets the same question on a given date.
+   ============================================================ */
+function dailyPool(){
+  const pool = [];
+  if(typeof QUIZZES !== 'undefined') for(const pid in QUIZZES){
+    const p = findPath(pid);
+    (QUIZZES[pid].questions||[]).forEach(q=>pool.push({q, src: p?`Path ${p.n} — ${p.title}`:pid, pid}));
+  }
+  return pool;
+}
+function dayHash(str){ let h=0; for(let i=0;i<str.length;i++){ h=(h*31 + str.charCodeAt(i))>>>0; } return h; }
+
+function renderDaily(){
+  const pool = dailyPool();
+  const today = new Date().toISOString().slice(0,10);
+  if(!STATE.daily) STATE.daily = {};
+  const saved = STATE.daily[today];
+  const qi = pool.length ? dayHash(today) % pool.length : 0;
+  const item = pool[qi];
+  if(!item){ app.innerHTML = `<section class="sec"><div class="sec-head"><h2>Daily challenge</h2><p class="sec-lead">No questions available.</p></div></section>`; return; }
+  const q = item.q;
+
+  const answered = !!saved;
+  app.innerHTML = `
+    <section class="sec">
+      <div class="quiz-wrap">
+        <div class="quiz-head" data-reveal>
+          <div class="sec-eyebrow">Daily challenge · ${today}</div>
+          <h2>One question a day</h2>
+          <p class="sec-lead">A fresh question every day from across the whole course — a quick way to keep your streak alive. From ${escapeHtml(item.src)}.</p>
+        </div>
+        <div class="quiz-card" data-reveal style="--i:1">
+          <div class="quiz-q">${escapeHtml(q.q)}</div>
+          <div class="quiz-options" id="dailyOpts">
+            ${q.options.map((opt,oi)=>{
+              let cls='';
+              if(answered){ if(oi===q.correct) cls='correct'; else if(oi===saved.chosen) cls='wrong'; }
+              return `<button class="quiz-opt ${cls}" data-oi="${oi}" ${answered?'disabled':''} type="button"><span class="opt-letter">${String.fromCharCode(65+oi)}</span><span>${escapeHtml(opt)}</span></button>`;
+            }).join('')}
+          </div>
+          ${answered ? `<div class="quiz-explain"><strong>${saved.chosen===q.correct?'Correct — ':'Not quite — '}</strong>${escapeHtml(q.explain||'')}</div>
+            <div class="hero-btns" style="margin-top:1.2rem"><a class="btn-ghost sm" href="#/lesson/${item.pid}">Review ${escapeHtml(item.src)} →</a> <a class="btn-amber sm" href="#/review">Practise flashcards →</a></div>
+            <p class="tool-note" style="margin-top:1rem">Come back tomorrow for a new question.</p>` : ''}
+        </div>
+      </div>
+    </section>
+  `;
+  setupReveal();
+  if(!answered){
+    app.querySelectorAll('#dailyOpts .quiz-opt').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const chosen = parseInt(btn.dataset.oi,10);
+        STATE.daily[today] = { qi, chosen, correct: chosen===q.correct };
+        STATE.visitDays[today] = true; // counts toward the streak/heatmap
+        saveState();
+        checkAchievements();
+        if(chosen===q.correct) fireConfetti({count:60});
+        renderDaily();
+        afterRender();
+      });
+    });
+  }
 }
 
 /* ============================================================
@@ -3175,6 +3565,64 @@ function drawCertificate(canvas, name){
   ctx.fillText(`Certificate ID: ${certId(name)}  ·  Verify at kashsec.academy`, cx, H-40);
 }
 
+/* Branded shareable progress card (dark, on-brand). Drawn on a 1000x525
+   canvas — roughly the Twitter/LinkedIn card ratio. */
+function drawShareCard(canvas){
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  ctx.fillStyle = '#080A0F'; ctx.fillRect(0,0,W,H);
+  // faint dot grid
+  ctx.fillStyle = 'rgba(255,255,255,0.035)';
+  for(let y=40;y<H;y+=40) for(let x=40;x<W;x+=40){ ctx.beginPath(); ctx.arc(x,y,1.4,0,Math.PI*2); ctx.fill(); }
+  // brand glow corners
+  const g1 = ctx.createRadialGradient(W-60,-40,20,W-60,-40,420); g1.addColorStop(0,'rgba(239,164,58,0.28)'); g1.addColorStop(1,'rgba(239,164,58,0)'); ctx.fillStyle=g1; ctx.fillRect(0,0,W,H);
+  const g2 = ctx.createRadialGradient(-40,H+40,20,-40,H+40,460); g2.addColorStop(0,'rgba(63,182,168,0.24)'); g2.addColorStop(1,'rgba(63,182,168,0)'); ctx.fillStyle=g2; ctx.fillRect(0,0,W,H);
+  // top brand bar
+  const bar = ctx.createLinearGradient(0,0,W,0); bar.addColorStop(0,'#EFA43A'); bar.addColorStop(0.5,'#FFC369'); bar.addColorStop(1,'#5FE0CF');
+  ctx.fillStyle = bar; ctx.fillRect(0,0,W,7);
+
+  // brand mark
+  ctx.textBaseline = 'alphabetic';
+  ctx.fillStyle = '#EFA43A'; ctx.font = '700 34px "JetBrains Mono", monospace';
+  ctx.fillText('>_', 60, 92);
+  ctx.fillStyle = '#EAEFF5'; ctx.font = '800 34px "Space Grotesk", system-ui, sans-serif';
+  ctx.fillText('KashSec', 108, 92);
+  ctx.fillStyle = '#EFA43A'; ctx.fillText('.', 108 + ctx.measureText('KashSec').width, 92);
+
+  // headline
+  const overall = overallProgress();
+  const st = streakInfo();
+  ctx.fillStyle = '#EAEFF5'; ctx.font = '800 52px "Space Grotesk", system-ui, sans-serif';
+  ctx.fillText('My cybersecurity journey', 60, 168);
+  ctx.fillStyle = '#94A3B2'; ctx.font = '400 24px Inter, system-ui, sans-serif';
+  ctx.fillText('Learning for free at KashSec Academy', 60, 205);
+
+  // stat tiles
+  const tiles = [
+    ['🔥 ' + st.current, 'day streak'],
+    [overall.pct + '%', 'course complete'],
+    [overall.done + '/' + overall.total, 'lessons done'],
+    [quizPassCount() + '/' + PATHS.length, 'quizzes passed']
+  ];
+  const tw = 205, th = 150, gap = 20, x0 = 60, y0 = 250;
+  tiles.forEach((t,i)=>{
+    const x = x0 + i*(tw+gap);
+    ctx.fillStyle = '#111927'; ctx.strokeStyle = 'rgba(239,164,58,0.35)'; ctx.lineWidth = 1.5;
+    roundRect(ctx, x, y0, tw, th, 16); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = '#FFC369'; ctx.font = '800 46px "Space Grotesk", system-ui, sans-serif'; ctx.textAlign='center';
+    ctx.fillText(t[0], x+tw/2, y0+82);
+    ctx.fillStyle = '#94A3B2'; ctx.font = '600 18px Inter, system-ui, sans-serif';
+    ctx.fillText(t[1], x+tw/2, y0+118);
+    ctx.textAlign='left';
+  });
+
+  // footer url
+  ctx.fillStyle = '#5FE0CF'; ctx.font = '600 22px "JetBrains Mono", monospace';
+  ctx.fillText('kashsec.vercel.app', 60, 480);
+  ctx.fillStyle = '#5D6E7D'; ctx.font = '400 20px Inter, system-ui, sans-serif'; ctx.textAlign='right';
+  ctx.fillText('Start from zero · always free', W-60, 480); ctx.textAlign='left';
+}
+
 function drawShieldPath(ctx, cx, cy, w, h){
   const hw = w/2;
   ctx.beginPath();
@@ -3451,6 +3899,17 @@ function renderProgressHub(){
         ${heatmapHtml()}
       </div>
 
+      <div class="hub-section" data-reveal style="--i:2">
+        <div class="hub-section-head" style="display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap">
+          <h3 style="font-family:'Space Grotesk';font-size:1.15rem">📣 Share your progress</h3>
+          <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+            <button class="btn-ghost sm" id="shareCardDownload" type="button">⬇ Download card</button>
+            <button class="btn-amber sm" id="shareCardShare" type="button" hidden>Share…</button>
+          </div>
+        </div>
+        <div class="share-card-wrap"><canvas id="shareCard" width="1000" height="525" aria-label="Your progress card"></canvas></div>
+      </div>
+
       <div class="hub-section" data-reveal style="--i:3">
         <div class="hub-section-head">
           <h3 style="font-family:'Space Grotesk';font-size:1.15rem">📜 Certificate</h3>
@@ -3559,6 +4018,36 @@ function renderProgressHub(){
       </div>
     </section>
   `;
+
+  // Progress share card
+  const shareCanvas = document.getElementById('shareCard');
+  if(shareCanvas){
+    try{ drawShareCard(shareCanvas); }catch(e){}
+    document.getElementById('shareCardDownload')?.addEventListener('click', ()=>{
+      shareCanvas.toBlob((blob)=>{
+        if(!blob) return;
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'kashsec-progress.png';
+        a.click();
+        URL.revokeObjectURL(a.href);
+      }, 'image/png');
+    });
+    const shareBtn = document.getElementById('shareCardShare');
+    // Only offer native share where the browser can share image files.
+    if(shareBtn && navigator.canShare){
+      shareBtn.hidden = false;
+      shareBtn.addEventListener('click', ()=>{
+        shareCanvas.toBlob(async (blob)=>{
+          if(!blob) return;
+          const file = new File([blob], 'kashsec-progress.png', {type:'image/png'});
+          if(navigator.canShare({files:[file]})){
+            try{ await navigator.share({files:[file], title:'My KashSec progress', text:'Learning cybersecurity for free at KashSec Academy — kashsec.vercel.app'}); }catch(e){}
+          }
+        }, 'image/png');
+      });
+    }
+  }
 
   document.getElementById('themePicker')?.addEventListener('change', (e)=>{
     STATE.theme = e.target.value === 'auto-system' ? null : e.target.value;
@@ -3702,7 +4191,7 @@ function buildSearchOverlay(){
     <div class="search-modal" role="dialog" aria-modal="true" aria-label="Search lessons">
       <div class="search-input-row">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" id="searchInput" placeholder="Search ${totalSubLessons()} lessons across ${PATHS.length} paths…" autocomplete="off" spellcheck="false">
+        <input type="text" id="searchInput" placeholder="Search lessons or jump to a page, tool, or lab…" autocomplete="off" spellcheck="false">
         <kbd>Esc</kbd>
       </div>
       <div class="search-results" id="searchResults"></div>
@@ -3727,15 +4216,48 @@ function highlightMatch(text, q){
   return text.replace(new RegExp('(' + escapeRegex(q) + ')', 'ig'), '<mark>$1</mark>');
 }
 
+/* Command-palette actions: navigation, tools, labs, and a couple of toggles.
+   Built fresh each call so tool/lab lists stay in sync. */
+function getCommands(){
+  const nav = [
+    ['Home','#/','🏠'],['Course','#/course','📚'],['Roadmap','#/roadmap','🗺️'],
+    ['Practice tracks','#/tracks','🧭'],['Labs','#/labs','🧪'],['Tools','#/tools','🛠️'],
+    ['Glossary','#/glossary','📖'],['Flashcards','#/review','🃏'],['Daily challenge','#/daily','📅'],
+    ['Interview bank','#/interview','💼'],['Careers','#/careers','🎯'],['FAQ','#/faq','❓'],
+    ['My Progress','#/progress','📈'],['Changelog','#/changelog','📣'],['Take the Final Exam','#/quiz/final','🎓']
+  ].map(([t,u,i])=>({title:t, url:u, icon:i, ctx:'Go to', keywords:t.toLowerCase()}));
+  const tools = (typeof TOOLS!=='undefined'?TOOLS:[]).map(t=>({title:'Tool: '+t.title, url:`#/tools/${t.id}`, icon:t.ico, ctx:'Tool', keywords:(t.title+' '+t.desc).toLowerCase()}));
+  const labs = [
+    {title:'Lab: Terminal Simulator', url:'#/labs/terminal', icon:'🖥', kw:'terminal linux bash'},
+    {title:'Lab: Vulnerable Web App', url:'#/labs/webapp', icon:'🕸', kw:'xss web login'},
+    {title:'Lab: SQL Injection Sandbox', url:'#/labs/sqli', icon:'💉', kw:'sql injection sqli'},
+    {title:'Lab: Phishing Spotter', url:'#/labs/phishing', icon:'🎣', kw:'phishing email'},
+    {title:'Lab: Packet Capture Viewer', url:'#/labs/pcap', icon:'📡', kw:'pcap wireshark packets'}
+  ].map(l=>({title:l.title, url:l.url, icon:l.icon, ctx:'Lab', keywords:(l.title+' '+l.kw).toLowerCase()}));
+  const actions = [
+    {title:'Random lesson', icon:'🎲', ctx:'Action', keywords:'random surprise lesson', run:()=>{ const r=pickRandomLesson(); location.hash=`#/lesson/${r.pathId}/${r.subId}`; }},
+    {title:'Toggle light / dark theme', icon:'🌓', ctx:'Action', keywords:'theme dark light mode', run:()=>toggleTheme()}
+  ];
+  return nav.concat(tools, labs, actions).map(c=>({...c, type:'command'}));
+}
+
 function runSearch(q){
   const resultsEl = document.getElementById('searchResults');
   q = q.trim();
   if(!q){
-    searchCurrentResults = [];
-    resultsEl.innerHTML = `<div class="search-empty">Search lesson titles, topics, and full lesson text — press <kbd>↵</kbd> on a result to jump in.</div>`;
+    // Empty query → command palette: show quick actions to jump anywhere.
+    const cmds = getCommands();
+    searchCurrentResults = cmds;
+    searchActiveIndex = -1;
+    resultsEl.innerHTML = `<div class="search-hint">Jump to a page, open a tool, or search all lessons — start typing.</div>` +
+      cmds.map((r,i)=>renderCmdRow(r,i)).join('');
+    wireSearchRows(resultsEl);
     return;
   }
   const ql = q.toLowerCase();
+  const cmdHits = getCommands()
+    .map(c=>{ let score=-1; const t=c.title.toLowerCase(); if(t.startsWith(ql)||t.replace(/^(tool|lab): /,'').startsWith(ql)) score=95; else if(c.keywords.includes(ql)) score=60; return {...c, score}; })
+    .filter(c=>c.score>-1);
   const titleHits = SEARCH_INDEX
     .map(item=>{
       const t = item.title.toLowerCase(), d = item.desc.toLowerCase();
@@ -3763,23 +4285,38 @@ function runSearch(q){
     }
   }
 
-  searchCurrentResults = titleHits.concat(bodyHits)
+  searchCurrentResults = cmdHits.concat(titleHits, bodyHits)
     .sort((a,b)=>b.score-a.score)
     .slice(0,40);
 
   searchActiveIndex = searchCurrentResults.length ? 0 : -1;
   if(!searchCurrentResults.length){
     const loading = (typeof SEARCH_CONTENT === 'undefined');
-    resultsEl.innerHTML = `<div class="search-empty">No lesson titles matched "${escapeHtml(q)}".${loading?' Searching lesson text…':''}</div>`;
+    resultsEl.innerHTML = `<div class="search-empty">Nothing matched "${escapeHtml(q)}".${loading?' Searching lesson text…':''}</div>`;
     return;
   }
-  resultsEl.innerHTML = searchCurrentResults.map((r,i)=>`
-    <a class="search-result ${i===0?'active':''}" href="${r.url}" data-idx="${i}">
-      <div class="sr-path">${r.context}${r.type==='path'?' · Path overview':r._body?' · in lesson text':''}</div>
-      <div class="sr-title">${highlightMatch(r.title, q)}</div>
-      <div class="sr-desc">${r._body ? highlightMatch(escapeHtml(r.desc), q) : highlightMatch(r.desc, q)}</div>
-    </a>
-  `).join('');
+  resultsEl.innerHTML = searchCurrentResults.map((r,i)=> r.type==='command'
+    ? renderCmdRow(r,i,q)
+    : `<a class="search-result ${i===0?'active':''}" href="${r.url}" data-idx="${i}">
+        <div class="sr-path">${r.context}${r.type==='path'?' · Path overview':r._body?' · in lesson text':''}</div>
+        <div class="sr-title">${highlightMatch(r.title, q)}</div>
+        <div class="sr-desc">${r._body ? highlightMatch(escapeHtml(r.desc), q) : highlightMatch(r.desc, q)}</div>
+      </a>`
+  ).join('');
+  wireSearchRows(resultsEl);
+}
+
+function renderCmdRow(r, i, q){
+  return `<a class="search-result cmd-row ${i===0?'active':''}" href="${r.url||'#'}" data-idx="${i}">
+    <span class="cmd-ico">${r.icon||'▶'}</span>
+    <div style="min-width:0">
+      <div class="sr-title">${q?highlightMatch(escapeHtml(r.title),q):escapeHtml(r.title)}</div>
+      <div class="sr-path">${r.ctx}</div>
+    </div>
+  </a>`;
+}
+
+function wireSearchRows(resultsEl){
   resultsEl.querySelectorAll('.search-result').forEach(el=>{
     el.addEventListener('click', (e)=>{ e.preventDefault(); goToSearchResult(searchCurrentResults[parseInt(el.getAttribute('data-idx'),10)]); });
     el.addEventListener('mouseenter', ()=>{ searchActiveIndex = parseInt(el.getAttribute('data-idx'),10); updateSearchActiveClass(); });
@@ -3796,11 +4333,13 @@ function updateSearchActiveClass(){
   document.querySelectorAll('.search-result').forEach((el,i)=> el.classList.toggle('active', i===searchActiveIndex));
 }
 function goToSearchResult(r){
+  if(!r) return;
   STATE.usedSearch = true;
   saveState();
   checkAchievements();
   closeSearch();
-  location.hash = r.url;
+  if(r.run){ r.run(); return; } // command action (e.g. toggle theme)
+  if(r.url && r.url !== '#') location.hash = r.url;
 }
 
 function openSearch(){

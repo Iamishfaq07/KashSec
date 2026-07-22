@@ -1000,3 +1000,53 @@ mark{background:rgba(239,164,58,.35);color:inherit;border-radius:3px;padding:0 1
 .iv-item summary::after{content:"＋";color:var(--amber);font-family:'JetBrains Mono';flex:none}
 .iv-item[open] summary::after{content:"−"}
 .iv-answer{padding:0 1.1rem 1rem;color:var(--muted);font-size:.9rem;line-height:1.7}
+
+/* ============ Listen button (active state) ============ */
+#listenBtn.active{color:#160f02;background:var(--amber);border-color:var(--amber)}
+
+/* ============ Command palette rows ============ */
+.search-hint{padding:.7rem 1rem;font-size:.78rem;color:var(--muted);border-bottom:1px solid var(--border)}
+.search-result.cmd-row{display:flex;align-items:center;gap:.8rem}
+.cmd-ico{font-size:1.2rem;flex:none;width:1.6rem;text-align:center}
+.cmd-row .sr-path{margin-top:.1rem}
+
+/* ============ Share card ============ */
+.share-card-wrap{overflow-x:auto;border-radius:var(--r);border:1px solid var(--border);background:var(--surface2)}
+#shareCard{display:block;width:100%;max-width:600px;height:auto;margin:0 auto}
+
+/* ============ SQLi lab ============ */
+.sqli-wrap{max-width:680px}
+.sqli-form{display:flex;flex-direction:column;gap:.9rem;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1.3rem;margin-bottom:1.2rem}
+.sqli-query{margin-bottom:1rem}
+.sqli-query pre{background:var(--code-bg);border:1px solid var(--border);border-radius:var(--r);padding:1rem;overflow-x:auto;color:var(--code-text);font-size:.86rem;white-space:pre-wrap;word-break:break-word}
+.sqli-ok{background:rgba(63,182,168,.12);border:1px solid rgba(63,182,168,.4);color:var(--text);padding:.9rem 1.1rem;border-radius:var(--r);margin-bottom:1rem}
+.sqli-bad{background:rgba(224,85,72,.1);border:1px solid rgba(224,85,72,.3);color:var(--text);padding:.9rem 1.1rem;border-radius:var(--r);margin-bottom:1rem}
+.sqli-hint summary{cursor:pointer;color:var(--teal-2);font-size:.9rem}
+
+/* ============ Phishing lab ============ */
+.ph-progress{font-family:'JetBrains Mono';font-size:.78rem;color:var(--muted);margin-bottom:.8rem}
+.ph-email{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1.2rem;margin-bottom:1.1rem;max-width:640px}
+.ph-hdr{font-size:.9rem;margin-bottom:.5rem;color:var(--text)}
+.ph-lbl{font-family:'JetBrains Mono';font-size:.68rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted2);margin-right:.5rem}
+.ph-body{margin-top:.8rem;padding-top:.8rem;border-top:1px solid var(--border);color:var(--md-text);line-height:1.7;font-size:.95rem}
+.ph-actions{display:flex;gap:.7rem;flex-wrap:wrap;margin-bottom:1rem}
+.ph-verdict{padding:.8rem 1rem;border-radius:var(--r);margin-bottom:.8rem;font-size:.95rem}
+.ph-verdict.ph-right{background:rgba(63,182,168,.12);border:1px solid rgba(63,182,168,.4)}
+.ph-verdict.ph-wrong{background:rgba(224,85,72,.1);border:1px solid rgba(224,85,72,.3)}
+.ph-flags ul{margin:.4rem 0 1rem;padding-left:1.2rem;color:var(--muted);font-size:.9rem;line-height:1.7}
+.ph-done{text-align:center;padding:1.5rem 0}
+.ph-done .cvss-score{margin:0 auto}
+
+/* ============ Regex / headers tools ============ */
+.regex-row{display:flex;align-items:center;gap:.3rem}
+.regex-slash{color:var(--muted2);font-family:'JetBrains Mono';font-size:1.1rem}
+.regex-highlight{background:var(--code-bg);border:1px solid var(--border);border-radius:var(--r);padding:1rem;white-space:pre-wrap;word-break:break-word;font-family:'JetBrains Mono';font-size:.9rem;line-height:1.7;color:var(--code-text);min-height:3rem}
+.regex-highlight mark,.md-body mark{background:var(--amber);color:#160f02;border-radius:3px;padding:0 2px}
+.hdr-row{display:flex;gap:.8rem;align-items:flex-start;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:.7rem .9rem}
+.hdr-row.hdr-ok{border-color:rgba(63,182,168,.35)}
+.hdr-row.hdr-miss{border-color:rgba(224,85,72,.3)}
+.hdr-row.hdr-warn{border-color:rgba(239,164,58,.4)}
+.hdr-ico{flex:none;font-size:1rem}
+.hdr-name{font-weight:600;font-size:.9rem;margin-bottom:.2rem}
+.hdr-desc{font-size:.82rem;color:var(--muted);line-height:1.55}
+.hdr-desc code{font-size:.76rem}
