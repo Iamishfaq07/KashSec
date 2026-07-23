@@ -24,10 +24,10 @@
  * layout.
  */
 const ADS_CONFIG = {
-  clientId: '', // e.g. 'ca-pub-1234567890123456' — empty = disabled
+  clientId: 'ca-pub-7042949574293510',
   slots: {
-    sidebar: '',      // ad unit slot ID for the lesson-sidebar placement
-    lessonBottom: ''  // ad unit slot ID for the end-of-lesson placement
+    sidebar: '',      // ad unit slot ID for the lesson-sidebar placement — still needed
+    lessonBottom: ''  // ad unit slot ID for the end-of-lesson placement — still needed
   }
 };
 window.ADS_CONFIG = ADS_CONFIG;
