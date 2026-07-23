@@ -208,7 +208,8 @@ function defaultState(){
     readingPrefs:{size:'normal', width:'normal', legible:false}, // size: normal|large|xlarge; width: normal|wide
     daily:{}, // { "YYYY-MM-DD": { qi, chosen, correct } }
     leaderboardOptIn:false,
-    leaderboardName:''
+    leaderboardName:'',
+    certTracker:{} // { certId: 'not-started'|'studying'|'scheduled'|'passed' }
   };
 }
 function loadState(){
@@ -1029,6 +1030,7 @@ function route(){
   if(typeof TTS !== 'undefined') TTS.stop(); // stop any read-aloud when navigating
   currentTocObserver?.disconnect();
   document.getElementById('tocFloat')?.remove();
+  clearInterval(mockInterviewTimer);
   // Magic-link / OAuth redirects land back on the site with auth tokens
   // riding in the URL (e.g. #access_token=...). That's not a real route —
   // show a brief loading state and let the auth bootstrap below redirect
@@ -1062,15 +1064,22 @@ function route(){
   else if(hash === '#/progress') renderProgressHub();
   else if(hash === '#/certificate') renderCertificate();
   else if(hash === '#/quiz/final') renderQuiz('final');
+  else if(hash === '#/labs/idor') renderLabIdor();
+  else if(hash === '#/labs/jwt') renderLabJwt();
+  else if(hash === '#/interview/mock') renderMockInterview();
+  else if(hash === '#/certs') renderCertTracker();
+  else if(hash === '#/skilltree') renderSkillTree();
   else {
     const partsQuiz = hash.match(/^#\/quiz\/([^/]+)$/);
     const partsSub = hash.match(/^#\/lesson\/([^/]+)\/([^/]+)$/);
     const partsPath = hash.match(/^#\/lesson\/([^/]+)$/);
     const partsTrack = hash.match(/^#\/track\/([^/]+)$/);
+    const partsProfile = hash.match(/^#\/u\/([^/]+)$/);
     if(partsQuiz) renderQuiz(partsQuiz[1]);
     else if(partsSub) renderSubLesson(partsSub[1], partsSub[2]);
     else if(partsPath) renderPathOverview(partsPath[1]);
     else if(partsTrack) renderTrack(partsTrack[1]);
+    else if(partsProfile) renderPublicProfile(partsProfile[1]);
     else renderNotFound();
   }
   afterRender();
@@ -1349,6 +1358,91 @@ ${pathCardHTML(p,i)}
   `;
 }
 
+/* ---------- Minimal in-browser ZIP writer (store only, no deps) ----------
+   Just enough of the ZIP format to bundle a handful of small text files
+   for the "offline path pack" download — no compression, no external
+   library, so it works even with jsdelivr blocked/offline. */
+const CRC32_TABLE = (()=>{
+  const table = new Uint32Array(256);
+  for(let n=0;n<256;n++){
+    let c = n;
+    for(let k=0;k<8;k++) c = (c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1);
+    table[n] = c >>> 0;
+  }
+  return table;
+})();
+function crc32(bytes){
+  let crc = 0xFFFFFFFF;
+  for(let i=0;i<bytes.length;i++) crc = CRC32_TABLE[(crc ^ bytes[i]) & 0xFF] ^ (crc >>> 8);
+  return (crc ^ 0xFFFFFFFF) >>> 0;
+}
+function buildZip(files){
+  const enc = new TextEncoder();
+  const parts = [];
+  const central = [];
+  let offset = 0;
+  const dosTime = 0, dosDate = 0x21; // fixed placeholder date/time — fine for a static export
+  for(const f of files){
+    const nameBytes = enc.encode(f.name);
+    const dataBytes = enc.encode(f.content);
+    const crc = crc32(dataBytes);
+    const localHeader = new Uint8Array(30 + nameBytes.length);
+    const dv = new DataView(localHeader.buffer);
+    dv.setUint32(0, 0x04034b50, true);
+    dv.setUint16(4, 20, true);
+    dv.setUint16(6, 0, true);
+    dv.setUint16(8, 0, true);
+    dv.setUint16(10, dosTime, true);
+    dv.setUint16(12, dosDate, true);
+    dv.setUint32(14, crc, true);
+    dv.setUint32(18, dataBytes.length, true);
+    dv.setUint32(22, dataBytes.length, true);
+    dv.setUint16(26, nameBytes.length, true);
+    dv.setUint16(28, 0, true);
+    localHeader.set(nameBytes, 30);
+    parts.push(localHeader, dataBytes);
+
+    const centralHeader = new Uint8Array(46 + nameBytes.length);
+    const cdv = new DataView(centralHeader.buffer);
+    cdv.setUint32(0, 0x02014b50, true);
+    cdv.setUint16(4, 20, true);
+    cdv.setUint16(6, 20, true);
+    cdv.setUint16(8, 0, true);
+    cdv.setUint16(10, 0, true);
+    cdv.setUint16(12, dosTime, true);
+    cdv.setUint16(14, dosDate, true);
+    cdv.setUint32(16, crc, true);
+    cdv.setUint32(20, dataBytes.length, true);
+    cdv.setUint32(24, dataBytes.length, true);
+    cdv.setUint16(28, nameBytes.length, true);
+    cdv.setUint16(30, 0, true);
+    cdv.setUint16(32, 0, true);
+    cdv.setUint16(34, 0, true);
+    cdv.setUint16(36, 0, true);
+    cdv.setUint32(38, 0, true);
+    cdv.setUint32(42, offset, true);
+    centralHeader.set(nameBytes, 46);
+    central.push(centralHeader);
+
+    offset += localHeader.length + dataBytes.length;
+  }
+  const centralStart = offset;
+  let centralSize = 0;
+  for(const c of central){ parts.push(c); centralSize += c.length; }
+  const end = new Uint8Array(22);
+  const edv = new DataView(end.buffer);
+  edv.setUint32(0, 0x06054b50, true);
+  edv.setUint16(4, 0, true);
+  edv.setUint16(6, 0, true);
+  edv.setUint16(8, files.length, true);
+  edv.setUint16(10, files.length, true);
+  edv.setUint32(12, centralSize, true);
+  edv.setUint32(16, centralStart, true);
+  edv.setUint16(20, 0, true);
+  parts.push(end);
+  return new Blob(parts, {type:'application/zip'});
+}
+
 function renderPathOverview(pathId){
   const p = findPath(pathId);
   if(!p) return renderNotFound();
@@ -1371,6 +1465,7 @@ function renderPathOverview(pathId){
           <div class="hero-btns" style="justify-content:flex-start;margin-bottom:0">
             <a class="btn-amber" href="#/lesson/${p.id}/${firstUnfinished.id}">${startLabel} →</a>
             ${quiz ? `<a class="btn-ghost" href="#/quiz/${p.id}">${quizResult ? (quizResult.passed?'✅ Retake quiz':'Retake quiz') : '📝 Take the path quiz'}</a>` : ''}
+            <button class="btn-ghost" id="downloadPackBtn" type="button">⬇ Download offline pack (.zip)</button>
           </div>
         </div>
         <div class="sublesson-grid">
@@ -1389,6 +1484,103 @@ function renderPathOverview(pathId){
       </div>
     </section>
   `;
+
+  document.getElementById('downloadPackBtn')?.addEventListener('click', async (e)=>{
+    const btn = e.currentTarget;
+    const original = btn.textContent;
+    btn.textContent = 'Building…';
+    btn.disabled = true;
+    try{
+      const files = [];
+      let index = `# Path ${p.n} — ${p.title}\n\n${p.desc}\n\n## Contents\n\n`;
+      for(const s of p.subs){
+        const res = await fetch(`course/${p.id}/${s.id}.md`);
+        const md = res.ok ? await res.text() : `# ${s.title}\n\n_(Not available offline yet.)_\n`;
+        files.push({name:`${p.n}.${s.n}-${s.id}.md`, content: md});
+        index += `- ${p.n}.${s.n} [${s.title}](./${p.n}.${s.n}-${s.id}.md)\n`;
+      }
+      files.unshift({name:'00-index.md', content: index});
+      const blob = buildZip(files);
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `kashsec-${p.id}.zip`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(()=>URL.revokeObjectURL(a.href), 1000);
+    }catch(err){
+      alert('Could not build the offline pack — check your connection and try again.');
+    }finally{
+      btn.textContent = original;
+      btn.disabled = false;
+    }
+  });
+}
+
+/* ============================================================
+   Certification Roadmap Tracker — a reference list of common entry
+   to mid-level security certs, with a per-cert status you can track.
+   Purely informational (no external calls); status stored locally
+   (and synced, if signed in) like everything else in STATE.
+   ============================================================ */
+const CERTS = [
+  {id:'security-plus', name:'CompTIA Security+', org:'CompTIA', level:'Entry', desc:'The most common "prove you know the fundamentals" cert for entry-level roles. Broad, vendor-neutral, multiple choice.', prep:'Paths 01–02, 10, 12'},
+  {id:'ejpt', name:'eJPT (Junior Penetration Tester)', org:'INE', level:'Entry', desc:'Hands-on, affordable, practical intro to pentesting — a good first hands-on cert before OSCP.', prep:'Paths 03–05, 11–12, 19'},
+  {id:'pnpt', name:'PNPT (Practical Network Penetration Tester)', org:'TCM Security', level:'Intermediate', desc:'A full practical pentest engagement against a live network, including a real written report — closely mirrors real consulting work.', prep:'Paths 05, 11–13, 19'},
+  {id:'oscp', name:'OSCP (Offensive Security Certified Professional)', org:'OffSec', level:'Intermediate', desc:'The industry-recognized "can you actually hack things" cert — a 24-hour hands-on exam. Widely respected, genuinely hard.', prep:'Paths 05, 11–13, 19'},
+  {id:'cysa-plus', name:'CompTIA CySA+', org:'CompTIA', level:'Entry-Intermediate', desc:'Blue-team focused: SOC analysis, threat detection, incident response fundamentals.', prep:'Paths 12–15, 22'},
+  {id:'ceh', name:'CEH (Certified Ethical Hacker)', org:'EC-Council', level:'Entry-Intermediate', desc:'Broad, theory-heavy overview of hacking tools and methodology — widely known, though many employers weight practical certs higher.', prep:'Paths 10–13, 19'},
+  {id:'security-plus-adv', name:'CompTIA PenTest+', org:'CompTIA', level:'Intermediate', desc:'A middle ground between Security+ and OSCP — pentesting methodology, tools, and reporting, mixed multiple-choice and performance-based questions.', prep:'Paths 11–13, 19'}
+];
+
+function renderCertTracker(){
+  const statusMeta = {
+    'not-started':{label:'Not started', cls:''},
+    'studying':{label:'Studying', cls:'active'},
+    'scheduled':{label:'Exam scheduled', cls:'active'},
+    'passed':{label:'Passed ✅', cls:'done'}
+  };
+  const passedCount = CERTS.filter(c=>STATE.certTracker[c.id]==='passed').length;
+  app.innerHTML = `
+    <section class="sec">
+      <div class="sec-head" data-reveal>
+        <div class="sec-eyebrow">Career</div>
+        <h2>Certification roadmap</h2>
+        <p class="sec-lead">Common certs on the entry-to-mid path, with which KashSec paths prepare you for each. Track your own progress — nothing here is verified or official, it's just a personal planner.</p>
+        <div class="mini-progress" style="max-width:22rem;margin-top:1.2rem">
+          <div class="mini-progress-track"><div class="mini-progress-fill" style="width:0%" data-pct="${Math.round(passedCount/CERTS.length*100)}"></div></div>
+          <div class="mini-progress-label"><span>${passedCount}/${CERTS.length} passed</span></div>
+        </div>
+      </div>
+      <div class="labs-grid" data-reveal style="--i:1">
+        ${CERTS.map(c=>{
+          const status = STATE.certTracker[c.id] || 'not-started';
+          return `
+          <div class="lab-card cert-track-card ${statusMeta[status].cls}" style="cursor:default">
+            <div class="lab-ico">🎓</div>
+            <h3>${escapeHtml(c.name)}</h3>
+            <p>${escapeHtml(c.desc)}</p>
+            <div class="lab-related">${escapeHtml(c.org)} · ${escapeHtml(c.level)}</div>
+            <div class="lab-related">Prep with: <b>${escapeHtml(c.prep)}</b></div>
+            <select class="fc-select cert-status-select" data-cert="${c.id}" aria-label="Status for ${escapeHtml(c.name)}" style="margin-top:.8rem">
+              ${Object.entries(statusMeta).map(([k,m])=>`<option value="${k}" ${status===k?'selected':''}>${m.label}</option>`).join('')}
+            </select>
+          </div>
+        `;}).join('')}
+      </div>
+    </section>
+  `;
+  document.querySelectorAll('.cert-status-select').forEach(sel=>{
+    sel.addEventListener('change', (e)=>{
+      e.stopPropagation();
+      STATE.certTracker[sel.dataset.cert] = sel.value;
+      checkAchievements();
+      saveState();
+      renderCertTracker();
+    });
+    sel.addEventListener('click', e=>e.stopPropagation());
+  });
+  setupReveal();
 }
 
 function renderCareers(){
@@ -1809,6 +2001,7 @@ function buildTocFloat(tocable){
   currentTocObserver = observer;
 }
 let currentTocObserver = null;
+let mockInterviewTimer = null;
 
 /* Copy-to-clipboard buttons + best-effort syntax highlighting on all real
    code blocks (mermaid fences were already converted to .mermaid divs). */
@@ -1903,6 +2096,61 @@ function pushAdSlots(container){
 
 function defaultLabel(kind){
   return ({tip:'TIP',warn:'WARNING',danger:'DANGER',lab:'🧪 LAB',challenge:'🚩 CHALLENGE',note:'NOTE'})[kind] || kind;
+}
+
+/* ============================================================
+   Public learning profile — a shareable, read-only card for anyone
+   who's opted into the leaderboard (see the Progress hub). Backed by
+   the same public "leaderboard" Supabase table; safely shows a
+   friendly empty state if sync isn't configured or the user hasn't
+   opted in.
+   ============================================================ */
+async function renderPublicProfile(userId){
+  app.innerHTML = `<div class="loading">Loading profile…</div>`;
+  if(typeof SupabaseSync === 'undefined' || !SupabaseSync.CONFIGURED){
+    app.innerHTML = `
+      <section class="sec">
+        <div class="sec-head" data-reveal>
+          <div class="sec-eyebrow">Profile</div>
+          <h2>Profile not available</h2>
+          <p class="sec-lead">Public profiles aren't set up on this deployment.</p>
+          <div class="hero-btns" style="justify-content:flex-start"><a class="btn-amber" href="#/">← Back home</a></div>
+        </div>
+      </section>
+    `;
+    return;
+  }
+  const profile = await SupabaseSync.fetchProfile(userId);
+  if(location.hash !== `#/u/${userId}`) return; // navigated away while loading
+  if(!profile){
+    app.innerHTML = `
+      <section class="sec">
+        <div class="sec-head" data-reveal>
+          <div class="sec-eyebrow">Profile</div>
+          <h2>This learner hasn't made their profile public</h2>
+          <p class="sec-lead">Or the link is out of date. Everyone's progress on KashSec is private by default — this page only shows something for accounts that explicitly opted into the public leaderboard.</p>
+          <div class="hero-btns" style="justify-content:flex-start"><a class="btn-amber" href="#/">← Back home</a></div>
+        </div>
+      </section>
+    `;
+    return;
+  }
+  app.innerHTML = `
+    <section class="sec">
+      <div class="sec-head" data-reveal>
+        <div class="sec-eyebrow">Public profile</div>
+        <h2>${escapeHtml(profile.display_name)}</h2>
+        <p class="sec-lead">Learning cybersecurity for free at KashSec Academy.</p>
+      </div>
+      <div class="hub-grid" data-reveal style="--i:1;max-width:24rem">
+        <div class="hub-stat"><div class="hub-stat-n">${profile.lessons_done}</div><div class="hub-stat-l">Lessons completed</div></div>
+      </div>
+      <div class="hero-btns" data-reveal style="--i:2;justify-content:flex-start;margin-top:1.4rem">
+        <a class="btn-amber" href="#/">Start learning free →</a>
+      </div>
+    </section>
+  `;
+  setupReveal();
 }
 
 function renderNotFound(){
@@ -2266,7 +2514,9 @@ const LABS = [
   {id:'webapp', ico:'🕸', title:'Vulnerable Web App', desc:'A tiny deliberately-broken app for practicing XSS and login-bypass. Runs entirely in-browser; no server to attack, nothing to install.', related:'Path 11 — Web Security'},
   {id:'sqli', ico:'💉', title:'SQL Injection Sandbox', desc:'A fake login backed by a simulated database. Watch your input become SQL, then bypass the login with a classic injection.', related:'Path 11 — Web Security'},
   {id:'phishing', ico:'🎣', title:'Phishing Spotter', desc:'Real email or phish? Call each one, then see the exact red flags you spotted (or missed). Trains the instinct that stops most attacks.', related:'Path 10 — Fundamentals'},
-  {id:'pcap', ico:'📡', title:'Packet Capture Viewer', desc:'Load a sample capture and explore protocols, IPs, and payloads — the same "read the traffic" muscle Wireshark builds.', related:'Path 12 — Network Security'}
+  {id:'pcap', ico:'📡', title:'Packet Capture Viewer', desc:'Load a sample capture and explore protocols, IPs, and payloads — the same "read the traffic" muscle Wireshark builds.', related:'Path 12 — Network Security'},
+  {id:'idor', ico:'🔓', title:'IDOR Playground', desc:'A fake "my invoices" page. Change one number in the URL and see whose data you were never supposed to see.', related:'Path 11 — Web Security'},
+  {id:'jwt', ico:'🪪', title:'JWT Forgery Lab', desc:'Tamper with a JSON Web Token — strip the signature, flip a claim, and watch a vulnerable "verify" endpoint accept it anyway.', related:'Path 11 — Web Security'}
 ];
 function renderLabsIndex(){
   const labs = LABS;
@@ -2689,6 +2939,118 @@ function renderLabSqli(){
   setupReveal();
 }
 
+/* --- Lab: IDOR playground -------------------------------------- */
+function renderLabIdor(){
+  const INVOICES = {
+    1041:{owner:'You', total:'$42.00', item:'KashSec Pro sticker pack'},
+    1042:{owner:'You', total:'$129.00', item:'Annual security newsletter'},
+    1043:{owner:'Priya Sharma', total:'$980.00', item:'Consulting retainer — Jan'},
+    1044:{owner:'Marcus Webb', total:'$54.00', item:'Home VPN subscription'},
+    1045:{owner:'Aiko Tanaka', total:'$15,200.00', item:'Enterprise pen test — Q3'}
+  };
+  const MINE = [1041, 1042];
+  app.innerHTML = `
+    <section class="sec">
+      <div class="sec-head" data-reveal>
+        <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · IDOR Playground</div>
+        <h2>🔓 IDOR Playground</h2>
+        <p class="sec-lead">This "my invoices" page trusts whatever ID you ask for and never checks it's actually yours. Try loading an invoice number that isn't listed below. <span class="tool-privacy">🔒 Simulated locally — no real API.</span></p>
+      </div>
+      <div class="idor-wrap" data-reveal style="--i:1">
+        <div class="idor-mine">
+          <div class="tool-note">Your invoices:</div>
+          ${MINE.map(id=>`<button class="btn-ghost sm idor-quick" data-id="${id}" type="button">#${id}</button>`).join('')}
+        </div>
+        <form class="idor-form" id="idorForm" autocomplete="off">
+          <label class="tool-field">GET /api/invoices/<input class="tool-input" id="idorId" value="${MINE[0]}" inputmode="numeric"></label>
+          <button class="btn-amber sm" type="submit">Fetch invoice</button>
+        </form>
+        <div id="idorResult"></div>
+        <details class="sqli-hint"><summary>Stuck? Show the trick</summary>
+          <div class="iv-answer">Just change the number — try <code>1043</code>, <code>1044</code>, or <code>1045</code>. There's no ownership check on the server, so any authenticated user can read anyone's invoice by guessing or incrementing the ID. The fix: every request must verify the requester actually owns (or is authorized for) the specific object ID, not just that they're logged in at all (Path 21's BOLA/IDOR lesson).</div>
+        </details>
+      </div>
+    </section>
+  `;
+  const idEl = document.getElementById('idorId'), resEl = document.getElementById('idorResult');
+  function fetchInvoice(id){
+    const inv = INVOICES[id];
+    if(!inv){
+      resEl.innerHTML = `<div class="sqli-bad">❌ 404 — no invoice #${escapeHtml(String(id))}.</div>`;
+      return;
+    }
+    const isMine = MINE.includes(Number(id));
+    resEl.innerHTML = `
+      <div class="${isMine?'sqli-ok':'sqli-bad'}">
+        ${isMine ? '✅' : '⚠️ IDOR!'} Invoice #${id} — <b>${escapeHtml(inv.owner)}</b> — ${inv.item} — ${inv.total}
+        ${isMine ? '' : '<br><small>This isn\'t your invoice. A real API should have returned 403 Forbidden here.</small>'}
+      </div>`;
+    if(!isMine) fireConfetti({count:70});
+  }
+  document.getElementById('idorForm').addEventListener('submit', e=>{ e.preventDefault(); fetchInvoice(idEl.value.trim()); });
+  document.querySelectorAll('.idor-quick').forEach(b=>b.addEventListener('click', ()=>{ idEl.value = b.dataset.id; fetchInvoice(b.dataset.id); }));
+  setupReveal();
+}
+
+/* --- Lab: JWT forgery -------------------------------------------- */
+function renderLabJwt(){
+  const SECRET_HINT = 'the server never checks the signature when alg is "none"';
+  function b64url(obj){ return btoa(JSON.stringify(obj)).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,''); }
+  const header = {alg:'HS256', typ:'JWT'};
+  const payload = {sub:'guest-4821', role:'guest', iat:1700000000};
+  const fakeSig = 'x'.repeat(24);
+  const startToken = `${b64url(header)}.${b64url(payload)}.${fakeSig}`;
+
+  app.innerHTML = `
+    <section class="sec">
+      <div class="sec-head" data-reveal>
+        <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · JWT Forgery Lab</div>
+        <h2>🪪 JWT Forgery Lab</h2>
+        <p class="sec-lead">You're logged in as a guest. This app's "verify" endpoint has a classic bug: it accepts tokens with <code>alg:"none"</code> and skips signature verification entirely. Edit the header/payload below to become an admin. <span class="tool-privacy">🔒 Simulated locally — no real server.</span></p>
+      </div>
+      <div class="idor-wrap" data-reveal style="--i:1">
+        <label class="tool-field">Header (JSON)<textarea class="tool-textarea" id="jwtHeader" rows="3">${JSON.stringify(header,null,2)}</textarea></label>
+        <label class="tool-field">Payload (JSON)<textarea class="tool-textarea" id="jwtPayload" rows="4">${JSON.stringify(payload,null,2)}</textarea></label>
+        <div class="tool-note">Resulting token:</div>
+        <pre id="jwtToken" style="overflow-wrap:anywhere;white-space:pre-wrap">${startToken}</pre>
+        <div class="tool-btnrow">
+          <button class="btn-amber sm" id="jwtSubmit" type="button">POST /api/verify →</button>
+        </div>
+        <div id="jwtResult"></div>
+        <details class="sqli-hint"><summary>Stuck? Show the trick</summary>
+          <div class="iv-answer">Change the header's <code>"alg"</code> to <code>"none"</code>, change the payload's <code>"role"</code> to <code>"admin"</code>, then submit. This vulnerable endpoint only reads the claims — it never re-verifies the signature — so ${SECRET_HINT}. Real servers must pin the expected algorithm and always verify the signature server-side, never trust the header's claim about which algorithm was used (Path 21's JWT-attacks lesson).</div>
+        </details>
+      </div>
+    </section>
+  `;
+  const hEl = document.getElementById('jwtHeader'), pEl = document.getElementById('jwtPayload'), tokEl = document.getElementById('jwtToken'), resEl = document.getElementById('jwtResult');
+  function refreshToken(){
+    try{
+      const h = JSON.parse(hEl.value), p = JSON.parse(pEl.value);
+      const sig = (h.alg||'').toLowerCase() === 'none' ? '' : fakeSig;
+      tokEl.textContent = `${b64url(h)}.${b64url(p)}${sig ? '.'+sig : '.'}`;
+    }catch(e){ tokEl.textContent = '⚠ invalid JSON'; }
+  }
+  hEl.addEventListener('input', refreshToken);
+  pEl.addEventListener('input', refreshToken);
+  document.getElementById('jwtSubmit').addEventListener('click', ()=>{
+    let h, p;
+    try{ h = JSON.parse(hEl.value); p = JSON.parse(pEl.value); }
+    catch(e){ resEl.innerHTML = `<div class="sqli-bad">❌ Invalid JSON.</div>`; return; }
+    const algNone = (h.alg||'').toLowerCase() === 'none';
+    const isAdmin = (p.role||'').toLowerCase() === 'admin';
+    if(algNone && isAdmin){
+      resEl.innerHTML = `<div class="sqli-bad">⚠️ Forged! The server accepted an unsigned token and granted <b>admin</b> access to "${escapeHtml(p.sub||'unknown')}".</div>`;
+      fireConfetti({count:90});
+    } else if(algNone){
+      resEl.innerHTML = `<div class="sqli-ok">✅ Accepted (alg:none bypasses the signature check) but your role is still "${escapeHtml(p.role||'')}" — not admin yet.</div>`;
+    } else {
+      resEl.innerHTML = `<div class="sqli-ok">✅ Accepted as a normal, signed token — role "${escapeHtml(p.role||'')}". This is the safe path; nothing to exploit here.</div>`;
+    }
+  });
+  setupReveal();
+}
+
 /* --- Lab: phishing spotter game ------------------------------ */
 function renderLabPhishing(){
   const ROUNDS = [
@@ -2760,6 +3122,15 @@ function renderLabPhishing(){
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
+  {date:'2026-07-23', title:'Labs, career tools, skill tree & offline path packs', items:[
+    'Two new labs: an IDOR playground and a JWT forgery lab (tamper the header/payload and slip past a vulnerable "verify" endpoint).',
+    'New tool: Vulnerability Report Writer — a guided form that exports a clean Markdown or printable report.',
+    'Mock Technical Interview mode: timed random questions from the interview bank, self-scored.',
+    'Certification roadmap tracker (#/certs): OSCP, eJPT, PNPT, Security+, and more, with your own status and which paths prep you for each.',
+    'Skill tree view (#/skilltree): the course as three tiers instead of one line.',
+    'Offline path packs: download any path as a self-contained .zip of its lesson files.',
+    'Optional public learning profile page for anyone who opts into the leaderboard.'
+  ]},
   {date:'2026-07-23', title:'Leaderboard, printable lessons, mini-map & more', items:[
     'Optional community leaderboard: opt in from your Progress page to show up on a public top-10 by lessons completed.',
     'Lessons now have a proper print/PDF view (📄 icon) — clean, chrome-free, black-on-white.',
@@ -2868,6 +3239,99 @@ const INTERVIEW = [
   ]}
 ];
 
+/* ============================================================
+   Mock Technical Interview — timed random questions from the bank
+   above, self-scored (no server, no AI — you judge your own answer
+   against the model answer, honestly).
+   ============================================================ */
+function renderMockInterview(){
+  const ALL = INTERVIEW.flatMap(g=>g.qs.map(item=>({cat:g.cat, ...item})));
+  const ROUND_SIZE = Math.min(8, ALL.length);
+  const shuffled = [...ALL].sort(()=>Math.random()-0.5).slice(0, ROUND_SIZE);
+  let i = 0;
+  const results = []; // {verdict: 'nailed'|'partial'|'missed'}
+  const TIME_LIMIT = 90;
+  let timeLeft = TIME_LIMIT;
+
+  function renderQuestion(){
+    clearInterval(mockInterviewTimer);
+    timeLeft = TIME_LIMIT;
+    const item = shuffled[i];
+    app.innerHTML = `
+      <section class="sec">
+        <div class="sec-head" data-reveal>
+          <div class="sec-eyebrow"><a href="#/interview" style="color:inherit;text-decoration:none">Interview bank</a> · Mock Interview</div>
+          <h2>Question ${i+1} of ${shuffled.length}</h2>
+          <p class="sec-lead">${escapeHtml(item.cat)} · Answer out loud or type it below, then reveal the model answer and score yourself honestly.</p>
+        </div>
+        <div class="mock-wrap" data-reveal style="--i:1">
+          <div class="mock-timer" id="mockTimer">⏱ ${TIME_LIMIT}s</div>
+          <div class="mock-q">${escapeHtml(item.q)}</div>
+          <textarea class="tool-textarea" id="mockAnswer" rows="5" placeholder="Type your answer here (optional — you can just answer out loud)…"></textarea>
+          <div class="tool-btnrow"><button class="btn-amber sm" id="mockReveal" type="button">Reveal model answer →</button></div>
+          <div id="mockAnswerArea"></div>
+        </div>
+      </section>
+    `;
+    setupReveal();
+    const timerEl = document.getElementById('mockTimer');
+    mockInterviewTimer = setInterval(()=>{
+      timeLeft--;
+      if(timerEl) timerEl.textContent = `⏱ ${Math.max(0,timeLeft)}s`;
+      if(timeLeft <= 0){ clearInterval(mockInterviewTimer); reveal(); }
+    }, 1000);
+    document.getElementById('mockReveal').addEventListener('click', reveal);
+
+    function reveal(){
+      clearInterval(mockInterviewTimer);
+      document.getElementById('mockReveal')?.remove();
+      document.getElementById('mockAnswerArea').innerHTML = `
+        <div class="iv-answer" style="margin-top:1rem">${escapeHtml(item.a)}</div>
+        <div class="tool-btnrow" style="margin-top:1rem">
+          <button class="btn-amber sm" id="mockNailed" type="button">✅ Nailed it</button>
+          <button class="btn-ghost sm" id="mockPartial" type="button">➗ Partial</button>
+          <button class="btn-ghost sm" id="mockMissed" type="button">❌ Missed it</button>
+        </div>
+      `;
+      const score = (verdict)=>{
+        results.push({verdict});
+        i++;
+        if(i < shuffled.length) renderQuestion(); else renderSummary();
+      };
+      document.getElementById('mockNailed').addEventListener('click', ()=>score('nailed'));
+      document.getElementById('mockPartial').addEventListener('click', ()=>score('partial'));
+      document.getElementById('mockMissed').addEventListener('click', ()=>score('missed'));
+    }
+  }
+
+  function renderSummary(){
+    const nailed = results.filter(r=>r.verdict==='nailed').length;
+    const partial = results.filter(r=>r.verdict==='partial').length;
+    const missed = results.filter(r=>r.verdict==='missed').length;
+    app.innerHTML = `
+      <section class="sec">
+        <div class="sec-head" data-reveal>
+          <div class="sec-eyebrow">Mock Interview</div>
+          <h2>Round complete</h2>
+          <p class="sec-lead">${nailed}/${shuffled.length} nailed, ${partial} partial, ${missed} missed. Nobody's grading you but you — the point is reps.</p>
+        </div>
+        <div class="hero-btns" data-reveal style="--i:1">
+          <a class="btn-amber" href="#/interview/mock" id="mockRetry">Run another round →</a>
+          <a class="btn-ghost" href="#/interview">Back to the full bank</a>
+        </div>
+      </section>
+    `;
+    document.getElementById('mockRetry').addEventListener('click', (e)=>{
+      e.preventDefault();
+      route(); // hash unchanged, so force a fresh shuffle
+    });
+    setupReveal();
+    if(nailed === shuffled.length) fireConfetti({count:120});
+  }
+
+  renderQuestion();
+}
+
 function renderInterview(){
   app.innerHTML = `
     <section class="sec">
@@ -2875,6 +3339,9 @@ function renderInterview(){
         <div class="sec-eyebrow">Career</div>
         <h2>Interview question bank</h2>
         <p class="sec-lead">Common entry-level cybersecurity interview questions, grouped by topic. Try to answer out loud first, then reveal a model answer. Pairs with Path 20 — Career Prep.</p>
+        <div class="hero-btns" style="justify-content:flex-start;margin-top:1rem">
+          <a class="btn-amber" href="#/interview/mock">⏱ Start a timed mock interview →</a>
+        </div>
       </div>
       ${INTERVIEW.map((g,gi)=>`
         <div class="hub-section" data-reveal style="--i:${gi+1}">
@@ -2906,7 +3373,8 @@ const TOOLS = [
   {id:'cipher',   ico:'🔐', title:'Cipher Playground',      desc:'Caesar/ROT, XOR, and Vigenère — the classic ciphers from the CTF zone.', related:'Path 19 — CTF Zone'},
   {id:'regex',    ico:'✳️', title:'Regex Tester',           desc:'Test a regular expression against sample text with live match highlighting and capture groups.', related:'Path 04 — Python'},
   {id:'hashid',   ico:'🕵️', title:'Hash Identifier',        desc:'Paste a hash and get likely algorithms, guessed from its length and character set.', related:'Path 06 — Cryptography'},
-  {id:'headers',  ico:'🛡', title:'Security Header Analyzer', desc:'Paste HTTP response headers and get a graded report on the security headers present and missing.', related:'Path 11 — Web Security'}
+  {id:'headers',  ico:'🛡', title:'Security Header Analyzer', desc:'Paste HTTP response headers and get a graded report on the security headers present and missing.', related:'Path 11 — Web Security'},
+  {id:'vulnreport', ico:'📝', title:'Vulnerability Report Writer', desc:'A guided form that forces good structure — title, severity, steps to reproduce, impact, remediation — then exports clean Markdown or a printable PDF.', related:'Path 09 — Bug Bounty'}
 ];
 
 function renderToolsIndex(){
@@ -2946,7 +3414,7 @@ function renderTool(id){
     </section>
   `;
   const body = document.getElementById('toolBody');
-  ({encoder:toolEncoder, hash:toolHash, jwt:toolJwt, cvss:toolCvss, subnet:toolSubnet, password:toolPassword, cipher:toolCipher, regex:toolRegex, hashid:toolHashId, headers:toolHeaders}[id])(body);
+  ({encoder:toolEncoder, hash:toolHash, jwt:toolJwt, cvss:toolCvss, subnet:toolSubnet, password:toolPassword, cipher:toolCipher, regex:toolRegex, hashid:toolHashId, headers:toolHeaders, vulnreport:toolVulnReport}[id])(body);
   setupReveal();
 }
 
@@ -3349,6 +3817,71 @@ Server: nginx</textarea></label>
   el.querySelector('#hdrGo').addEventListener('click', run);
   inp.addEventListener('input', run);
   run();
+}
+
+/* --- Vulnerability Report Writer --- */
+function toolVulnReport(el){
+  el.innerHTML = `
+    <div class="vr-grid">
+      <label class="tool-field">Title<input class="tool-input" id="vrTitle" placeholder="Stored XSS in profile bio field"></label>
+      <label class="tool-field">Severity
+        <select class="fc-select" id="vrSeverity">
+          <option>Critical</option><option>High</option><option selected>Medium</option><option>Low</option><option>Informational</option>
+        </select>
+      </label>
+      <label class="tool-field">Affected component / URL<input class="tool-input" id="vrComponent" placeholder="https://example.com/settings/profile"></label>
+      <label class="tool-field">Steps to reproduce<textarea class="tool-textarea" id="vrSteps" rows="4" placeholder="1. Log in as a normal user&#10;2. Go to Settings → Profile&#10;3. Set bio to &lt;script&gt;alert(1)&lt;/script&gt;&#10;4. Save, then view the profile as another user"></textarea></label>
+      <label class="tool-field">Impact<textarea class="tool-textarea" id="vrImpact" rows="3" placeholder="An attacker can run arbitrary JavaScript in the browser of anyone who views the profile — session hijacking, credential theft, or forced actions."></textarea></label>
+      <label class="tool-field">Remediation<textarea class="tool-textarea" id="vrRemediation" rows="3" placeholder="Encode the bio field on output (context-aware HTML escaping) and add a Content-Security-Policy that blocks inline scripts."></textarea></label>
+      <label class="tool-field">Reporter (optional)<input class="tool-input" id="vrReporter" placeholder="Your name / handle"></label>
+    </div>
+    <div class="tool-btnrow">
+      <button class="btn-amber sm" id="vrDownload" type="button">⬇ Download as Markdown</button>
+      <button class="btn-ghost sm" id="vrPrint" type="button">🖨 Print / Save as PDF</button>
+    </div>
+    <div class="tool-note">Everything here stays in your browser — nothing is uploaded anywhere. Great for bug bounty submissions and CTF writeups.</div>
+    <div class="vr-preview" id="vrPreview"></div>
+    <div id="vrPrintArea" class="vr-print-area"></div>
+  `;
+  const ids = ['vrTitle','vrSeverity','vrComponent','vrSteps','vrImpact','vrRemediation','vrReporter'];
+  const fields = Object.fromEntries(ids.map(id=>[id, el.querySelector('#'+id)]));
+  const previewEl = el.querySelector('#vrPreview');
+  const printArea = el.querySelector('#vrPrintArea');
+
+  function buildMarkdown(){
+    const title = fields.vrTitle.value.trim() || 'Untitled finding';
+    const sev = fields.vrSeverity.value;
+    const comp = fields.vrComponent.value.trim();
+    const steps = fields.vrSteps.value.trim();
+    const impact = fields.vrImpact.value.trim();
+    const rem = fields.vrRemediation.value.trim();
+    const reporter = fields.vrReporter.value.trim();
+    let md = `# ${title}\n\n**Severity:** ${sev}\n`;
+    if(comp) md += `**Affected component:** ${comp}\n`;
+    if(reporter) md += `**Reported by:** ${reporter}\n`;
+    md += `\n## Steps to Reproduce\n\n${steps || '_(not filled in)_'}\n\n## Impact\n\n${impact || '_(not filled in)_'}\n\n## Remediation\n\n${rem || '_(not filled in)_'}\n`;
+    return md;
+  }
+  function refreshPreview(){
+    const md = buildMarkdown();
+    previewEl.innerHTML = `<div class="tool-note">Live preview</div><pre class="vr-preview-pre">${escapeHtml(md)}</pre>`;
+  }
+  ids.forEach(id=>fields[id].addEventListener('input', refreshPreview));
+  refreshPreview();
+
+  el.querySelector('#vrDownload').addEventListener('click', ()=>{
+    const md = buildMarkdown();
+    const blob = new Blob([md], {type:'text/markdown'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `vuln-report-${(fields.vrTitle.value.trim()||'untitled').toLowerCase().replace(/[^a-z0-9]+/g,'-').slice(0,50)}.md`;
+    a.click();
+    URL.revokeObjectURL(a.href);
+  });
+  el.querySelector('#vrPrint').addEventListener('click', ()=>{
+    printArea.innerHTML = `<pre>${escapeHtml(buildMarkdown())}</pre>`;
+    window.print();
+  });
 }
 
 /* ============================================================
@@ -3951,6 +4484,65 @@ function paintCertOutput(name){
 }
 
 /* ============================================================
+   Skill tree — an alternate, non-linear view of the roadmap: paths
+   grouped into three tiers by difficulty, so you can see the shape of
+   the course instead of just a single line.
+   ============================================================ */
+function skillTier(level){
+  if(/advanced/i.test(level)) return 'Advanced';
+  if(/intermediate/i.test(level)) return 'Intermediate';
+  return 'Beginner';
+}
+function renderSkillTree(){
+  const tiers = ['Beginner','Intermediate','Advanced'];
+  const byTier = Object.fromEntries(tiers.map(t=>[t, PATHS.filter(p=>skillTier(p.level)===t)]));
+  const tierPct = t=>{
+    const paths = byTier[t];
+    if(!paths.length) return 0;
+    return Math.round(paths.reduce((s,p)=>s+pathProgress(p.id).pct,0) / paths.length);
+  };
+  app.innerHTML = `
+    <section class="sec">
+      <div class="sec-head" data-reveal>
+        <div class="sec-eyebrow">Roadmap</div>
+        <h2>Skill tree</h2>
+        <p class="sec-lead">The same course, seen as three tiers instead of one line. Nothing is actually locked — jump anywhere — but later tiers build on earlier ones.</p>
+        <div class="hero-btns" style="justify-content:flex-start;margin-top:1rem">
+          <a class="btn-ghost sm" href="#/roadmap">← Linear roadmap view</a>
+        </div>
+      </div>
+      <div class="skilltree">
+        ${tiers.map((t,ti)=>`
+          <div class="st-tier" data-reveal style="--i:${ti}">
+            <div class="st-tier-head">
+              <h3>${t}</h3>
+              <div class="mini-progress" style="max-width:14rem">
+                <div class="mini-progress-track"><div class="mini-progress-fill" style="width:0%" data-pct="${tierPct(t)}"></div></div>
+                <div class="mini-progress-label"><span>${tierPct(t)}% avg</span></div>
+              </div>
+            </div>
+            <div class="st-nodes">
+              ${byTier[t].map(p=>{
+                const prog = pathProgress(p.id);
+                const done = prog.pct >= 100;
+                return `
+                  <a class="st-node ${done?'done':prog.done>0?'active':''}" href="#/lesson/${p.id}">
+                    <div class="st-node-n">${p.n}</div>
+                    <div class="st-node-t">${p.title}</div>
+                    <div class="st-node-pct">${prog.pct}%</div>
+                  </a>
+                `;
+              }).join('')}
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </section>
+  `;
+  setupReveal();
+}
+
+/* ============================================================
    Roadmap — a visual, clickable timeline of all paths with your
    progress overlaid: done, in-progress, or not started.
    ============================================================ */
@@ -3967,6 +4559,9 @@ function renderRoadmap(){
         <div class="mini-progress" style="max-width:26rem;margin-top:1.3rem">
           <div class="mini-progress-track"><div class="mini-progress-fill" style="width:0%" data-pct="${overall.pct}"></div></div>
           <div class="mini-progress-label"><span>${overall.done}/${overall.total} lessons complete</span><span>${overall.pct}%</span></div>
+        </div>
+        <div class="hero-btns" style="justify-content:flex-start;margin-top:1rem">
+          <a class="btn-ghost sm" href="#/skilltree">🌳 Skill tree view →</a>
         </div>
       </div>
       <div class="roadmap-wrap">
@@ -4140,6 +4735,10 @@ function renderProgressHub(){
             <div><div class="hli-t">Display name</div><div class="hli-d">Shown on the public leaderboard — use a nickname if you'd rather not use your real name.</div></div>
             <input type="text" id="leaderboardNameInput" class="fc-select" maxlength="40" placeholder="Your name" value="${escapeHtml(STATE.leaderboardName || '')}" style="max-width:12rem">
           </div>
+          <div class="hub-list-item" style="cursor:default" id="publicProfileRow" ${STATE.leaderboardOptIn ? '' : 'hidden'}>
+            <div><div class="hli-t">Public profile link</div><div class="hli-d">A shareable, read-only page showing your display name and lessons completed.</div></div>
+            <button class="btn-ghost sm" id="copyProfileLinkBtn" type="button">🔗 Copy link</button>
+          </div>
         ` : `<div class="hub-empty">Sign in to opt into the public leaderboard.</div>`}
         <div id="leaderboardList"><div class="hub-empty">Loading leaderboard…</div></div>
       </div>
@@ -4253,6 +4852,7 @@ function renderProgressHub(){
     const optInEl = document.getElementById('leaderboardOptIn');
     const nameRow = document.getElementById('leaderboardNameRow');
     const nameInput = document.getElementById('leaderboardNameInput');
+    const profileRow = document.getElementById('publicProfileRow');
     const syncLeaderboardEntry = async ()=>{
       if(!STATE.leaderboardOptIn){ await SupabaseSync.removeLeaderboardEntry(); return; }
       const name = (STATE.leaderboardName || SupabaseSync.userEmail() || 'Anonymous').trim().slice(0,40);
@@ -4263,6 +4863,7 @@ function renderProgressHub(){
       STATE.leaderboardOptIn = e.target.checked;
       saveState();
       nameRow.hidden = !STATE.leaderboardOptIn;
+      if(profileRow) profileRow.hidden = !STATE.leaderboardOptIn;
       await syncLeaderboardEntry();
     });
     let nameTimer = null;
@@ -4271,6 +4872,16 @@ function renderProgressHub(){
       saveState();
       clearTimeout(nameTimer);
       nameTimer = setTimeout(syncLeaderboardEntry, 800);
+    });
+    document.getElementById('copyProfileLinkBtn')?.addEventListener('click', async (btnEvt)=>{
+      const link = `${location.origin}${location.pathname}#/u/${SupabaseSync.currentUser.id}`;
+      const btn = btnEvt.currentTarget;
+      try{
+        await navigator.clipboard.writeText(link);
+        const original = btn.textContent;
+        btn.textContent = 'Copied!';
+        setTimeout(()=>{ btn.textContent = original; }, 1600);
+      }catch(e){ prompt('Copy your profile link:', link); }
     });
   }
 
@@ -4449,7 +5060,8 @@ function getCommands(){
     ['Practice tracks','#/tracks','🧭'],['Labs','#/labs','🧪'],['Tools','#/tools','🛠️'],
     ['Glossary','#/glossary','📖'],['Flashcards','#/review','🃏'],['Daily challenge','#/daily','📅'],
     ['Interview bank','#/interview','💼'],['Careers','#/careers','🎯'],['FAQ','#/faq','❓'],
-    ['My Progress','#/progress','📈'],['Changelog','#/changelog','📣'],['Take the Final Exam','#/quiz/final','🎓']
+    ['My Progress','#/progress','📈'],['Changelog','#/changelog','📣'],['Take the Final Exam','#/quiz/final','🎓'],
+    ['Mock interview','#/interview/mock','⏱'],['Certification roadmap','#/certs','🎓'],['Skill tree','#/skilltree','🌳']
   ].map(([t,u,i])=>({title:t, url:u, icon:i, ctx:'Go to', keywords:t.toLowerCase()}));
   const tools = (typeof TOOLS!=='undefined'?TOOLS:[]).map(t=>({title:'Tool: '+t.title, url:`#/tools/${t.id}`, icon:t.ico, ctx:'Tool', keywords:(t.title+' '+t.desc).toLowerCase()}));
   const labs = [
@@ -4457,7 +5069,9 @@ function getCommands(){
     {title:'Lab: Vulnerable Web App', url:'#/labs/webapp', icon:'🕸', kw:'xss web login'},
     {title:'Lab: SQL Injection Sandbox', url:'#/labs/sqli', icon:'💉', kw:'sql injection sqli'},
     {title:'Lab: Phishing Spotter', url:'#/labs/phishing', icon:'🎣', kw:'phishing email'},
-    {title:'Lab: Packet Capture Viewer', url:'#/labs/pcap', icon:'📡', kw:'pcap wireshark packets'}
+    {title:'Lab: Packet Capture Viewer', url:'#/labs/pcap', icon:'📡', kw:'pcap wireshark packets'},
+    {title:'Lab: IDOR Playground', url:'#/labs/idor', icon:'🔓', kw:'idor bola access control'},
+    {title:'Lab: JWT Forgery Lab', url:'#/labs/jwt', icon:'🪪', kw:'jwt token alg none forgery'}
   ].map(l=>({title:l.title, url:l.url, icon:l.icon, ctx:'Lab', keywords:(l.title+' '+l.kw).toLowerCase()}));
   const actions = [
     {title:'Random lesson', icon:'🎲', ctx:'Action', keywords:'random surprise lesson', run:()=>{ const r=pickRandomLesson(); location.hash=`#/lesson/${r.pathId}/${r.subId}`; }},

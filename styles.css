@@ -619,6 +619,22 @@ a{color:inherit}
 }
 
 /* ============================================================
+   Skill tree
+   ============================================================ */
+.skilltree{display:flex;flex-direction:column;gap:2rem;max-width:64rem;margin:0 auto}
+.st-tier-head{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:1rem}
+.st-tier-head h3{font-family:'Space Grotesk';font-size:1.2rem;margin:0}
+.st-nodes{display:grid;grid-template-columns:repeat(auto-fill,minmax(13rem,1fr));gap:.9rem}
+.st-node{display:block;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1rem 1.1rem;
+  text-decoration:none;color:var(--text);transition:border-color .18s var(--ease),transform .18s var(--ease)}
+.st-node:hover{border-color:rgba(63,182,168,.5);transform:translateY(-2px)}
+.st-node.active{border-color:rgba(239,164,58,.4)}
+.st-node.done{border-color:rgba(63,182,168,.5);background:rgba(63,182,168,.06)}
+.st-node-n{font-family:'JetBrains Mono';font-size:.7rem;color:var(--muted2);margin-bottom:.3rem}
+.st-node-t{font-family:'Space Grotesk';font-weight:600;font-size:.95rem;margin-bottom:.4rem}
+.st-node-pct{font-family:'JetBrains Mono';font-size:.72rem;color:var(--teal-2)}
+
+/* ============================================================
    Roadmap
    ============================================================ */
 .roadmap-wrap{max-width:56rem;margin:0 auto;position:relative}
@@ -887,6 +903,8 @@ mark{background:rgba(239,164,58,.35);color:inherit;border-radius:3px;padding:0 1
 .lab-card h3{font-family:'Space Grotesk';font-size:1.1rem;margin:0 0 .5rem}
 .lab-card p{color:var(--muted);font-size:.87rem;line-height:1.55;margin:0 0 .8rem}
 .lab-related{font-family:'JetBrains Mono';font-size:.68rem;color:var(--teal-2)}
+.cert-track-card.active{border-color:rgba(239,164,58,.4)}
+.cert-track-card.done{border-color:rgba(63,182,168,.5);background:rgba(63,182,168,.06)}
 .lab-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1.4rem;margin-bottom:1.6rem}
 .lab-panel h3{font-family:'Space Grotesk';margin:0 0 .5rem}
 .lab-hint{margin:.6rem 0 1rem;background:var(--surface2);border-left:3px solid var(--amber);padding:.6rem .9rem;border-radius:6px}
@@ -1071,6 +1089,25 @@ mark{background:rgba(239,164,58,.35);color:inherit;border-radius:3px;padding:0 1
 .sqli-ok{background:rgba(63,182,168,.12);border:1px solid rgba(63,182,168,.4);color:var(--text);padding:.9rem 1.1rem;border-radius:var(--r);margin-bottom:1rem}
 .sqli-bad{background:rgba(224,85,72,.1);border:1px solid rgba(224,85,72,.3);color:var(--text);padding:.9rem 1.1rem;border-radius:var(--r);margin-bottom:1rem}
 .sqli-hint summary{cursor:pointer;color:var(--teal-2);font-size:.9rem}
+.idor-wrap{max-width:680px}
+.idor-mine{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;margin-bottom:1rem}
+.idor-form{display:flex;gap:.8rem;align-items:flex-end;flex-wrap:wrap;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1.3rem;margin-bottom:1.2rem}
+.idor-form .tool-field{flex:1;min-width:12rem}
+.vr-grid{display:grid;gap:0 1.2rem;grid-template-columns:1fr 1fr}
+.vr-grid label:nth-child(4),.vr-grid label:nth-child(5),.vr-grid label:nth-child(6){grid-column:1/-1}
+@media(max-width:640px){.vr-grid{grid-template-columns:1fr}}
+.vr-preview{margin-top:1.2rem}
+.vr-preview-pre{background:var(--code-bg);border:1px solid var(--border);border-radius:var(--r);padding:1rem;overflow-x:auto;color:var(--code-text);font-size:.82rem;white-space:pre-wrap;word-break:break-word;max-height:24rem;overflow-y:auto}
+.vr-print-area{display:none}
+.mock-wrap{max-width:680px}
+.mock-timer{font-family:'JetBrains Mono';font-size:.85rem;color:var(--amber);margin-bottom:.6rem}
+.mock-q{font-family:'Space Grotesk';font-size:1.2rem;font-weight:600;margin-bottom:1rem}
+@media print{
+  body:has(.vr-print-area) *{visibility:hidden}
+  .vr-print-area,.vr-print-area *{visibility:visible}
+  .vr-print-area{display:block;position:fixed;inset:0;padding:2rem;background:#fff;color:#000}
+  .vr-print-area pre{white-space:pre-wrap;word-break:break-word;font-family:'JetBrains Mono',monospace}
+}
 
 /* ============ Phishing lab ============ */
 .ph-progress{font-family:'JetBrains Mono';font-size:.78rem;color:var(--muted);margin-bottom:.8rem}

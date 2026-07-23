@@ -113,6 +113,7 @@ const SupabaseSync = (function(){
     unionFlat('notes');
     unionFlat('achievements');
     unionFlat('visitDays');
+    unionFlat('certTracker');
 
     merged.quizScores = Object.assign({}, remote.quizScores||{});
     Object.entries(local.quizScores||{}).forEach(([pathId, score])=>{
@@ -206,6 +207,21 @@ const SupabaseSync = (function(){
     }
   }
 
+  async function fetchProfile(userId){
+    if(!CONFIGURED) return null;
+    try{
+      const sb = await loadClientLib();
+      const { data, error } = await sb.from('leaderboard')
+        .select('display_name, lessons_done')
+        .eq('user_id', userId)
+        .maybeSingle();
+      if(error) throw error;
+      return data;
+    }catch(e){
+      return null;
+    }
+  }
+
   async function fetchLeaderboard(limit){
     if(!CONFIGURED) return null;
     try{
@@ -225,7 +241,7 @@ const SupabaseSync = (function(){
     CONFIGURED, init, onAuthChange, isAuthCallbackUrl,
     signInWithEmail, signInWithGoogle, signOut,
     isSignedIn, userEmail, pullAndMerge, pushState, pushNow,
-    pushLeaderboardEntry, removeLeaderboardEntry, fetchLeaderboard,
+    pushLeaderboardEntry, removeLeaderboardEntry, fetchLeaderboard, fetchProfile,
     get currentUser(){ return currentUser; }
   };
 })();
