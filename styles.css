@@ -53,6 +53,23 @@
   --shadow-glow:0 20px 60px -22px var(--glow-amber);
 }
 
+/* High-contrast mode — an independent toggle layered on top of either
+   theme (see the Progress hub's Appearance section). Strengthens text
+   and border contrast; doesn't change layout. */
+:root.hc{
+  --border:var(--border-strong);
+  --muted:var(--text);
+  --overlay-1:transparent; --overlay-2:transparent; --overlay-3:transparent;
+}
+:root[data-theme="dark"].hc{
+  --text:#FFFFFF; --bg:#000000; --surface:#0A0A0A; --surface2:#141414;
+  --border-strong:rgba(255,255,255,.35); --muted2:#C7CFD8;
+}
+:root[data-theme="light"].hc{
+  --text:#000000; --bg:#FFFFFF; --surface:#FFFFFF; --surface2:#F4F4F4;
+  --border-strong:rgba(0,0,0,.5); --muted2:#2B2F36;
+}
+
 :root[data-theme="light"]{
   --bg:#F6F7FA; --bg2:#EEF0F4; --surface:#FFFFFF; --surface2:#F2F4F8;
   --line:#E1E5EC; --line-soft:#E9EBF1;
@@ -672,6 +689,12 @@ a{color:inherit}
 .badge-ico{font-size:1.8rem;margin-bottom:.5rem}
 .badge-t{font-weight:600;font-size:.86rem;margin-bottom:.2rem}
 .badge-d{font-size:.76rem;color:var(--muted)}
+.badge-tier{display:inline-block;margin-top:.5rem;font-family:'JetBrains Mono';font-size:.62rem;letter-spacing:.06em;text-transform:uppercase;
+  padding:.15rem .5rem;border-radius:99px;border:1px solid var(--border)}
+.badge-tier-common{color:var(--muted2)}
+.badge-tier-uncommon{color:var(--teal-2);border-color:rgba(63,182,168,.35)}
+.badge-tier-rare{color:var(--amber);border-color:rgba(239,164,58,.4)}
+.badge-tier-legendary{color:#fff;background:var(--grad-brand);border-color:transparent}
 .hub-empty{color:var(--muted);font-size:.9rem;padding:1.5rem;text-align:center;border:1px dashed var(--border);border-radius:var(--r)}
 .leaderboard-list{display:flex;flex-direction:column;gap:.4rem}
 .leaderboard-row{display:flex;align-items:center;gap:.9rem;padding:.6rem .9rem;background:var(--surface);border:1px solid var(--border);border-radius:var(--r)}
@@ -903,6 +926,8 @@ mark{background:rgba(239,164,58,.35);color:inherit;border-radius:3px;padding:0 1
 .lab-card h3{font-family:'Space Grotesk';font-size:1.1rem;margin:0 0 .5rem}
 .lab-card p{color:var(--muted);font-size:.87rem;line-height:1.55;margin:0 0 .8rem}
 .lab-related{font-family:'JetBrains Mono';font-size:.68rem;color:var(--teal-2)}
+.lab-card.is-complete{border-color:rgba(63,182,168,.5);background:rgba(63,182,168,.06)}
+.lab-done-badge{font-size:.8rem}
 .cert-track-card.active{border-color:rgba(239,164,58,.4)}
 .cert-track-card.done{border-color:rgba(63,182,168,.5);background:rgba(63,182,168,.06)}
 .lab-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1.4rem;margin-bottom:1.6rem}
@@ -1093,6 +1118,7 @@ mark{background:rgba(239,164,58,.35);color:inherit;border-radius:3px;padding:0 1
 .idor-mine{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;margin-bottom:1rem}
 .idor-form{display:flex;gap:.8rem;align-items:flex-end;flex-wrap:wrap;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1.3rem;margin-bottom:1.2rem}
 .idor-form .tool-field{flex:1;min-width:12rem}
+.osint-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(15rem,1fr));gap:1rem}
 .vr-grid{display:grid;gap:0 1.2rem;grid-template-columns:1fr 1fr}
 .vr-grid label:nth-child(4),.vr-grid label:nth-child(5),.vr-grid label:nth-child(6){grid-column:1/-1}
 @media(max-width:640px){.vr-grid{grid-template-columns:1fr}}
@@ -1102,6 +1128,9 @@ mark{background:rgba(239,164,58,.35);color:inherit;border-radius:3px;padding:0 1
 .mock-wrap{max-width:680px}
 .mock-timer{font-family:'JetBrains Mono';font-size:.85rem;color:var(--amber);margin-bottom:.6rem}
 .mock-q{font-family:'Space Grotesk';font-size:1.2rem;font-weight:600;margin-bottom:1rem}
+.pomodoro-widget{display:flex;align-items:center;gap:.7rem;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);padding:.6rem 1rem;margin:0 0 1rem}
+.pomodoro-time{font-family:'JetBrains Mono';font-weight:700;font-size:1.1rem;min-width:3.2rem}
+.pomodoro-count{font-size:.78rem;color:var(--muted);margin-left:auto}
 @media print{
   body:has(.vr-print-area) *{visibility:hidden}
   .vr-print-area,.vr-print-area *{visibility:visible}

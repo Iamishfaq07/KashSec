@@ -2,7 +2,7 @@
 
 **A completely free cybersecurity course, from absolute zero to job-ready.**
 
-23 learning paths · 226 sub-lessons · diagrams, labs, a hands-on CTF zone & challenges · always free
+24 learning paths · 235 sub-lessons · diagrams, labs, a hands-on CTF zone & challenges · always free
 
 [![Live Site](https://img.shields.io/badge/live-kashsec.academy-EFA43A?style=for-the-badge)](https://kashsec.vercel.app/)
 
@@ -54,7 +54,7 @@ KashSec/
     └── ...22-devsecops-appsec/
 ```
 
-## 🗺️ The 23 paths
+## 🗺️ The 24 paths
 
 `00` Computer Basics & Security Mindset · `01` Introduction · `02` Networking · `03` Linux & Operating Systems · `04` Programming & Python · `05` How the Web Works · `06` Cryptography Fundamentals · `07` Windows Security Basics · `08` Cloud Computing Basics · `09` Digital Privacy & Personal Security · `10` Cybersecurity Fundamentals · `11` Web Security & Hacking · `12` Network Security · `13` Mobile App Security · `14` Ethical Hacking · `15` Bug Bounty · `16` Advanced Topics · `17` Malware & Reverse Engineering · `18` AI & AI Security · `19` CTF Challenges · `20` Career Prep · `21` API Security · `22` DevSecOps & AppSec Program
 

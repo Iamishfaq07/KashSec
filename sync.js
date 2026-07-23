@@ -114,6 +114,9 @@ const SupabaseSync = (function(){
     unionFlat('achievements');
     unionFlat('visitDays');
     unionFlat('certTracker');
+    unionFlat('labsCompleted');
+    unionFlat('weeklyChain');
+    unionFlat('pomodoroSessions');
 
     merged.quizScores = Object.assign({}, remote.quizScores||{});
     Object.entries(local.quizScores||{}).forEach(([pathId, score])=>{
