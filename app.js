@@ -206,7 +206,9 @@ function defaultState(){
     flashcards:{known:{}, reviews:{}}, // known: legacy "seen once"; reviews: SR state
     // reviews entries: { term_key: { due: ISO_date, interval: days, ease: 2.5, streak: N, lastPerf: 'again|good|easy' } }
     readingPrefs:{size:'normal', width:'normal', legible:false}, // size: normal|large|xlarge; width: normal|wide
-    daily:{} // { "YYYY-MM-DD": { qi, chosen, correct } }
+    daily:{}, // { "YYYY-MM-DD": { qi, chosen, correct } }
+    leaderboardOptIn:false,
+    leaderboardName:''
   };
 }
 function loadState(){
@@ -1025,6 +1027,8 @@ let renderGeneration = 0;
 function route(){
   renderGeneration++;
   if(typeof TTS !== 'undefined') TTS.stop(); // stop any read-aloud when navigating
+  currentTocObserver?.disconnect();
+  document.getElementById('tocFloat')?.remove();
   // Magic-link / OAuth redirects land back on the site with auth tokens
   // riding in the URL (e.g. #access_token=...). That's not a real route —
   // show a brief loading state and let the auth bootstrap below redirect
@@ -1266,7 +1270,8 @@ function renderHome(){
         <div class="hero-stats" data-reveal style="--i:4">
           <div><div class="hstat-n" data-count="${PATHS.length}">${PATHS.length}</div><div class="hstat-l">learning paths</div></div>
           <div><div class="hstat-n" data-count="${total}" data-suffix="+">${total}+</div><div class="hstat-l">sub-lessons</div></div>
-          <div><div class="hstat-n">Labs</div><div class="hstat-l">+ challenges</div></div>
+          <div><div class="hstat-n" data-count="${LABS.length}">${LABS.length}</div><div class="hstat-l">interactive labs</div></div>
+          <div><div class="hstat-n" data-count="${TOOLS.length}">${TOOLS.length}</div><div class="hstat-l">security tools</div></div>
           <div><div class="hstat-n">₹0</div><div class="hstat-l">forever</div></div>
         </div>
       </div>
@@ -1495,6 +1500,9 @@ async function renderSubLesson(pathId, subId){
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
               <span id="completeBtnLabel">${isComplete(pathId,subId) ? 'Completed' : 'Mark complete'}</span>
             </button>
+            <button class="icon-btn" id="printLessonBtn" type="button" aria-label="Print or save this lesson as PDF" title="Print / Save as PDF">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+            </button>
             <button class="btn-ghost sm mobile-only" id="menuBtn" aria-label="Open lesson menu">☰ Lessons</button>
           </div>
         </div>
@@ -1519,7 +1527,18 @@ async function renderSubLesson(pathId, subId){
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
             Spotted a typo or something to improve? Suggest an edit on GitHub
           </a>
+          <button class="suggest-edit report-mistake-btn" id="reportMistakeBtn" type="button">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+            Report a mistake
+          </button>
         </div>
+        <form class="report-mistake-form" id="reportMistakeForm" hidden>
+          <textarea id="reportMistakeText" placeholder="What's wrong with this lesson? (a sentence is plenty — this opens a GitHub issue, pre-filled)" maxlength="500"></textarea>
+          <div class="report-mistake-actions">
+            <button class="btn-amber sm" type="submit">Open GitHub issue →</button>
+            <button class="btn-ghost sm" id="reportMistakeCancel" type="button">Cancel</button>
+          </div>
+        </form>
         ${adSlotHtml('lessonBottom')}
       </div>
     </div>
@@ -1529,6 +1548,25 @@ async function renderSubLesson(pathId, subId){
   pushAdSlots(app);
   document.getElementById('menuBtn')?.addEventListener('click',()=>{
     document.getElementById('sidebar').classList.toggle('open');
+  });
+  document.getElementById('printLessonBtn')?.addEventListener('click',()=>window.print());
+
+  const reportBtn = document.getElementById('reportMistakeBtn');
+  const reportForm = document.getElementById('reportMistakeForm');
+  reportBtn?.addEventListener('click', ()=>{
+    reportForm.hidden = !reportForm.hidden;
+    if(!reportForm.hidden) document.getElementById('reportMistakeText').focus();
+  });
+  document.getElementById('reportMistakeCancel')?.addEventListener('click', ()=>{ reportForm.hidden = true; });
+  reportForm?.addEventListener('submit', (e)=>{
+    e.preventDefault();
+    const note = document.getElementById('reportMistakeText').value.trim();
+    const title = `[Lesson report] ${ctx.path.n}.${ctx.sub.n} ${ctx.sub.title}`;
+    const body = `${note ? note + '\n\n' : ''}---\nLesson: \`course/${pathId}/${subId}.md\`\nURL: ${location.href}`;
+    const url = `https://github.com/${REPO_SLUG}/issues/new?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`;
+    window.open(url, '_blank', 'noopener,noreferrer');
+    reportForm.hidden = true;
+    document.getElementById('reportMistakeText').value = '';
   });
 
   recordVisit(pathId, subId);
@@ -1732,7 +1770,45 @@ function buildLessonToc(contentEl){
       document.getElementById(a.getAttribute('href').slice(1))?.scrollIntoView({behavior:'smooth', block:'start'});
     });
   });
+
+  buildTocFloat(tocable);
 }
+
+/* Floating scroll-spy mini-map — desktop only, mirrors the in-page TOC
+   but stays visible while reading and highlights the current section. */
+function buildTocFloat(tocable){
+  document.getElementById('tocFloat')?.remove();
+  if(window.matchMedia('(max-width: 1200px)').matches) return;
+  const float = document.createElement('nav');
+  float.id = 'tocFloat';
+  float.className = 'toc-float';
+  float.setAttribute('aria-label', 'Section mini-map');
+  float.innerHTML = `<ul>${
+    tocable.map(h=>`<li><a href="#${h.id}" data-tocf title="${escapeHtml(h.textContent)}"><span class="tocf-dot"></span><span class="tocf-label">${escapeHtml(h.textContent)}</span></a></li>`).join('')
+  }</ul>`;
+  document.body.appendChild(float);
+
+  float.querySelectorAll('a[data-tocf]').forEach(a=>{
+    a.addEventListener('click', e=>{
+      e.preventDefault();
+      document.getElementById(a.getAttribute('href').slice(1))?.scrollIntoView({behavior:'smooth', block:'start'});
+    });
+  });
+
+  const links = [...float.querySelectorAll('a[data-tocf]')];
+  const observer = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      const link = float.querySelector(`a[href="#${entry.target.id}"]`);
+      if(!link) return;
+      if(entry.isIntersecting) link.classList.add('active'); else link.classList.remove('active');
+    });
+    if(!links.some(l=>l.classList.contains('active')) && links.length) links[0].classList.add('active');
+  }, { rootMargin: '-15% 0px -70% 0px' });
+  tocable.forEach(h=>observer.observe(h));
+  currentTocObserver?.disconnect();
+  currentTocObserver = observer;
+}
+let currentTocObserver = null;
 
 /* Copy-to-clipboard buttons + best-effort syntax highlighting on all real
    code blocks (mermaid fences were already converted to .mermaid divs). */
@@ -2185,14 +2261,15 @@ function renderTrack(id){
    Interactive labs — three in-browser simulators. All state and
    evaluation runs client-side; there's no real backend involved.
    ============================================================ */
+const LABS = [
+  {id:'terminal', ico:'🖥', title:'Terminal Simulator', desc:'A safe, in-browser Linux terminal with a fake filesystem. Practice ls, cd, cat, grep, find, whoami and more without spinning up a VM.', related:'Path 03 — Linux'},
+  {id:'webapp', ico:'🕸', title:'Vulnerable Web App', desc:'A tiny deliberately-broken app for practicing XSS and login-bypass. Runs entirely in-browser; no server to attack, nothing to install.', related:'Path 11 — Web Security'},
+  {id:'sqli', ico:'💉', title:'SQL Injection Sandbox', desc:'A fake login backed by a simulated database. Watch your input become SQL, then bypass the login with a classic injection.', related:'Path 11 — Web Security'},
+  {id:'phishing', ico:'🎣', title:'Phishing Spotter', desc:'Real email or phish? Call each one, then see the exact red flags you spotted (or missed). Trains the instinct that stops most attacks.', related:'Path 10 — Fundamentals'},
+  {id:'pcap', ico:'📡', title:'Packet Capture Viewer', desc:'Load a sample capture and explore protocols, IPs, and payloads — the same "read the traffic" muscle Wireshark builds.', related:'Path 12 — Network Security'}
+];
 function renderLabsIndex(){
-  const labs = [
-    {id:'terminal', ico:'🖥', title:'Terminal Simulator', desc:'A safe, in-browser Linux terminal with a fake filesystem. Practice ls, cd, cat, grep, find, whoami and more without spinning up a VM.', related:'Path 03 — Linux'},
-    {id:'webapp', ico:'🕸', title:'Vulnerable Web App', desc:'A tiny deliberately-broken app for practicing XSS and login-bypass. Runs entirely in-browser; no server to attack, nothing to install.', related:'Path 11 — Web Security'},
-    {id:'sqli', ico:'💉', title:'SQL Injection Sandbox', desc:'A fake login backed by a simulated database. Watch your input become SQL, then bypass the login with a classic injection.', related:'Path 11 — Web Security'},
-    {id:'phishing', ico:'🎣', title:'Phishing Spotter', desc:'Real email or phish? Call each one, then see the exact red flags you spotted (or missed). Trains the instinct that stops most attacks.', related:'Path 10 — Fundamentals'},
-    {id:'pcap', ico:'📡', title:'Packet Capture Viewer', desc:'Load a sample capture and explore protocols, IPs, and payloads — the same "read the traffic" muscle Wireshark builds.', related:'Path 12 — Network Security'}
-  ];
+  const labs = LABS;
   app.innerHTML = `
     <section class="sec">
       <div class="sec-head" data-reveal>
@@ -2683,6 +2760,14 @@ function renderLabPhishing(){
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
+  {date:'2026-07-23', title:'Leaderboard, printable lessons, mini-map & more', items:[
+    'Optional community leaderboard: opt in from your Progress page to show up on a public top-10 by lessons completed.',
+    'Lessons now have a proper print/PDF view (📄 icon) — clean, chrome-free, black-on-white.',
+    'A floating scroll-spy mini-map on wide screens shows which section of a long lesson you\'re in.',
+    '"Report a mistake" on every lesson — opens a pre-filled GitHub issue in one click, no account needed.',
+    'Certificates can now be shared to X (in addition to LinkedIn).',
+    'Optional ads (Google AdSense) — minimal, off by default, only in the lesson sidebar and below lesson content.'
+  ]},
   {date:'2026-07-23', title:'Two new advanced paths: API Security & DevSecOps', items:[
     'Path 21 — API Security: OWASP API Top 10, BOLA/BFLA, JWT attacks, GraphQL security, rate limiting & mass assignment, and a capstone lab against a real vulnerable API.',
     'Path 22 — DevSecOps & AppSec Program: SAST/DAST/SCA, CI/CD pipeline security, secrets & supply chain, threat modeling, metrics, and building an AppSec program from scratch.',
@@ -3814,6 +3899,7 @@ function paintCertOutput(name){
       <button class="btn-amber" id="dlPngBtn" type="button">⬇ Download PNG</button>
       <button class="btn-ghost" id="printBtn" type="button">🖨 Print / Save as PDF</button>
       <button class="btn-ghost" id="linkedinBtn" type="button">Share on LinkedIn</button>
+      <button class="btn-ghost" id="twitterBtn" type="button">Share on X</button>
       <button class="btn-ghost" id="copyCaptionBtn" type="button">Copy caption</button>
     </div>
   `;
@@ -3842,6 +3928,12 @@ function paintCertOutput(name){
   document.getElementById('linkedinBtn').addEventListener('click', ()=>{
     const url = encodeURIComponent(location.href.split('#')[0]);
     window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}`, '_blank', 'noopener,noreferrer,width=600,height=600');
+  });
+
+  document.getElementById('twitterBtn').addEventListener('click', ()=>{
+    const url = encodeURIComponent(location.href.split('#')[0]);
+    const text = encodeURIComponent(`I just completed the KashSec Academy cybersecurity course — free, self-paced, ${PATHS.length} paths and ${totalSubLessons()}+ lessons. 🎓🛡️`);
+    window.open(`https://twitter.com/intent/tweet?url=${url}&text=${text}`, '_blank', 'noopener,noreferrer,width=600,height=600');
   });
 
   document.getElementById('copyCaptionBtn').addEventListener('click', async ()=>{
@@ -3911,6 +4003,28 @@ function renderRoadmap(){
       </div>
     </section>
   `;
+}
+
+async function refreshLeaderboardList(){
+  const el = document.getElementById('leaderboardList');
+  if(!el) return;
+  const rows = await SupabaseSync.fetchLeaderboard(10);
+  if(!el.isConnected) return; // navigated away while the request was in flight
+  if(rows === null){
+    el.innerHTML = ''; // table not set up yet — hide silently, no error shown to visitors
+    return;
+  }
+  if(!rows.length){
+    el.innerHTML = `<div class="hub-empty">No one's opted in yet — be the first!</div>`;
+    return;
+  }
+  el.innerHTML = `<div class="leaderboard-list">${rows.map((r,i)=>`
+    <div class="leaderboard-row">
+      <span class="lb-rank">${i+1}</span>
+      <span class="lb-name">${escapeHtml(r.display_name)}</span>
+      <span class="lb-count">${r.lessons_done} lessons</span>
+    </div>
+  `).join('')}</div>`;
 }
 
 /* ============================================================
@@ -4014,6 +4128,23 @@ function renderProgressHub(){
         </div>
       </div>
 
+      ${typeof SupabaseSync !== 'undefined' && SupabaseSync.CONFIGURED ? `
+      <div class="hub-section" data-reveal style="--i:6">
+        <div class="hub-section-head"><h3 style="font-family:'Space Grotesk';font-size:1.15rem">🏆 Community leaderboard</h3></div>
+        ${SupabaseSync.isSignedIn() ? `
+          <div class="hub-list-item" style="cursor:default">
+            <div><div class="hli-t">Show me on the public leaderboard</div><div class="hli-d">Ranked by lessons completed. Only your display name and count are visible — nothing else.</div></div>
+            <label class="switch"><input type="checkbox" id="leaderboardOptIn" ${STATE.leaderboardOptIn ? 'checked' : ''}><span class="switch-track"></span></label>
+          </div>
+          <div class="hub-list-item" style="cursor:default" id="leaderboardNameRow" ${STATE.leaderboardOptIn ? '' : 'hidden'}>
+            <div><div class="hli-t">Display name</div><div class="hli-d">Shown on the public leaderboard — use a nickname if you'd rather not use your real name.</div></div>
+            <input type="text" id="leaderboardNameInput" class="fc-select" maxlength="40" placeholder="Your name" value="${escapeHtml(STATE.leaderboardName || '')}" style="max-width:12rem">
+          </div>
+        ` : `<div class="hub-empty">Sign in to opt into the public leaderboard.</div>`}
+        <div id="leaderboardList"><div class="hub-empty">Loading leaderboard…</div></div>
+      </div>
+      ` : ''}
+
       <div class="hub-section" data-reveal style="--i:6">
         <div class="hub-section-head"><h3 style="font-family:'Space Grotesk';font-size:1.15rem">🔖 Bookmarks</h3></div>
         ${bookmarkEntries.length ? bookmarkEntries.map(ctx=>`
@@ -4115,6 +4246,32 @@ function renderProgressHub(){
         }, 'image/png');
       });
     }
+  }
+
+  if(typeof SupabaseSync !== 'undefined' && SupabaseSync.CONFIGURED){
+    refreshLeaderboardList();
+    const optInEl = document.getElementById('leaderboardOptIn');
+    const nameRow = document.getElementById('leaderboardNameRow');
+    const nameInput = document.getElementById('leaderboardNameInput');
+    const syncLeaderboardEntry = async ()=>{
+      if(!STATE.leaderboardOptIn){ await SupabaseSync.removeLeaderboardEntry(); return; }
+      const name = (STATE.leaderboardName || SupabaseSync.userEmail() || 'Anonymous').trim().slice(0,40);
+      await SupabaseSync.pushLeaderboardEntry(name, overall.done);
+      refreshLeaderboardList();
+    };
+    optInEl?.addEventListener('change', async (e)=>{
+      STATE.leaderboardOptIn = e.target.checked;
+      saveState();
+      nameRow.hidden = !STATE.leaderboardOptIn;
+      await syncLeaderboardEntry();
+    });
+    let nameTimer = null;
+    nameInput?.addEventListener('input', (e)=>{
+      STATE.leaderboardName = e.target.value;
+      saveState();
+      clearTimeout(nameTimer);
+      nameTimer = setTimeout(syncLeaderboardEntry, 800);
+    });
   }
 
   document.getElementById('themePicker')?.addEventListener('change', (e)=>{

@@ -177,10 +177,55 @@ const SupabaseSync = (function(){
     pushTimer = setTimeout(()=>pushNow(stateObj), 900);
   }
 
+  /* Optional public leaderboard — a user opts in explicitly (see the
+     Progress hub). If the leaderboard table hasn't been created yet
+     (see SUPABASE_SETUP.md), these just fail silently and the UI
+     hides the section — same no-op-safe pattern as the rest of sync. */
+  async function pushLeaderboardEntry(displayName, lessonsDone){
+    if(!CONFIGURED || !currentUser) return false;
+    try{
+      const sb = await loadClientLib();
+      const { error } = await sb.from('leaderboard').upsert({
+        user_id: currentUser.id, display_name: displayName, lessons_done: lessonsDone
+      }, { onConflict:'user_id' });
+      if(error) throw error;
+      return true;
+    }catch(e){
+      console.warn('[Sync] leaderboard push failed', e);
+      return false;
+    }
+  }
+
+  async function removeLeaderboardEntry(){
+    if(!CONFIGURED || !currentUser) return;
+    try{
+      const sb = await loadClientLib();
+      await sb.from('leaderboard').delete().eq('user_id', currentUser.id);
+    }catch(e){
+      console.warn('[Sync] leaderboard remove failed', e);
+    }
+  }
+
+  async function fetchLeaderboard(limit){
+    if(!CONFIGURED) return null;
+    try{
+      const sb = await loadClientLib();
+      const { data, error } = await sb.from('leaderboard')
+        .select('display_name, lessons_done')
+        .order('lessons_done', { ascending:false })
+        .limit(limit || 10);
+      if(error) throw error;
+      return data;
+    }catch(e){
+      return null; // table likely not created yet — caller hides the section
+    }
+  }
+
   return {
     CONFIGURED, init, onAuthChange, isAuthCallbackUrl,
     signInWithEmail, signInWithGoogle, signOut,
     isSignedIn, userEmail, pullAndMerge, pushState, pushNow,
+    pushLeaderboardEntry, removeLeaderboardEntry, fetchLeaderboard,
     get currentUser(){ return currentUser; }
   };
 })();

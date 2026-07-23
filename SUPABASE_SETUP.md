@@ -122,6 +122,46 @@ automatically once these two values are non-empty; it stays hidden
 otherwise. Everyone who doesn't sign in keeps using the site exactly as
 before, purely offline.
 
+## 8. Optional: community leaderboard
+
+The Progress hub has an opt-in "join the leaderboard" toggle that shows a
+public top-10 of lessons completed, by display name. It's off until you
+run this SQL — until then the leaderboard section just doesn't render
+(the site detects the missing table and hides it, no error shown to
+visitors).
+
+```sql
+create table if not exists public.leaderboard (
+  user_id uuid primary key references auth.users(id) on delete cascade,
+  display_name text not null check (char_length(display_name) between 1 and 40),
+  lessons_done int not null default 0,
+  updated_at timestamptz not null default now()
+);
+
+alter table public.leaderboard enable row level security;
+
+create policy "Anyone can view the leaderboard"
+  on public.leaderboard for select
+  using (true);
+
+create policy "Users can insert their own leaderboard row"
+  on public.leaderboard for insert
+  with check (auth.uid() = user_id);
+
+create policy "Users can update their own leaderboard row"
+  on public.leaderboard for update
+  using (auth.uid() = user_id);
+
+create policy "Users can delete their own leaderboard row"
+  on public.leaderboard for delete
+  using (auth.uid() = user_id);
+```
+
+Note this table is intentionally public-readable (`display_name` and
+`lessons_done` only) since that's the whole point of a leaderboard —
+nobody's email, notes, or other progress details are ever in it, and a
+user only appears here at all if they explicitly opt in.
+
 ## How merging works
 
 When someone signs in for the first time on a given browser, the app
