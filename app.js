@@ -1476,6 +1476,7 @@ async function renderSubLesson(pathId, subId){
       <aside class="sidebar" id="sidebar">
         <div class="sb-head">All paths</div>
         <div id="sbNav"></div>
+        ${adSlotHtml('sidebar')}
       </aside>
       <div class="reader">
         <div class="reader-nav-top">
@@ -1519,11 +1520,13 @@ async function renderSubLesson(pathId, subId){
             Spotted a typo or something to improve? Suggest an edit on GitHub
           </a>
         </div>
+        ${adSlotHtml('lessonBottom')}
       </div>
     </div>
   `;
 
   renderSidebar(pathId, subId);
+  pushAdSlots(app);
   document.getElementById('menuBtn')?.addEventListener('click',()=>{
     document.getElementById('sidebar').classList.toggle('open');
   });
@@ -1792,6 +1795,34 @@ function escapeHtml(s){
   const d = document.createElement('div');
   d.textContent = s || '';
   return d.innerHTML;
+}
+
+/* ---------- Ad slots (see ads.js) ---------- */
+/* Renders nothing at all — not even an empty container — unless both a
+   publisher client ID and that specific slot's ID are configured. A course
+   site with zero ads by default should look and behave exactly like one. */
+function adSlotHtml(slotKey){
+  const cfg = window.ADS_CONFIG;
+  if(!cfg || !cfg.clientId || !cfg.slots || !cfg.slots[slotKey]) return '';
+  return `
+    <div class="ad-slot" data-ad-slot-key="${slotKey}">
+      <div class="ad-label">Advertisement</div>
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="${cfg.clientId}"
+           data-ad-slot="${cfg.slots[slotKey]}"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+    </div>`;
+}
+/* Call once after inserting adSlotHtml() output into the DOM. One push()
+   per <ins> — that's the standard AdSense pattern for multiple ad units on
+   one page/render, not a bug. */
+function pushAdSlots(container){
+  if(!window.ADS_CONFIG || !window.ADS_CONFIG.clientId || !navigator.onLine) return;
+  (container || document).querySelectorAll('ins.adsbygoogle').forEach(()=>{
+    try{ (window.adsbygoogle = window.adsbygoogle || []).push({}); }catch(e){}
+  });
 }
 
 function defaultLabel(kind){

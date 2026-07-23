@@ -1050,3 +1050,15 @@ mark{background:rgba(239,164,58,.35);color:inherit;border-radius:3px;padding:0 1
 .hdr-name{font-weight:600;font-size:.9rem;margin-bottom:.2rem}
 .hdr-desc{font-size:.82rem;color:var(--muted);line-height:1.55}
 .hdr-desc code{font-size:.76rem}
+
+/* ============ Ad slots ============ */
+/* Reserved min-height matches the placement's typical rendered size so ads
+   don't cause layout shift once they load in. Dashed border + label keep
+   it visually distinct from real content, for reader trust. */
+.ad-slot{margin:1.2rem 0;padding:.7rem;border:1px dashed var(--border);border-radius:var(--r);
+  background:var(--surface2);text-align:center;overflow:hidden}
+.ad-slot .ad-label{font-family:'JetBrains Mono';font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted2);margin-bottom:.5rem}
+.sidebar .ad-slot{min-height:250px;display:flex;flex-direction:column}
+.sidebar .ad-slot ins{flex:1}
+.reader-foot + .ad-slot{min-height:100px}

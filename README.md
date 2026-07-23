@@ -119,6 +119,18 @@ KashSec is an installable Progressive Web App. A service worker (`sw.js`) precac
 - **Update flow**: when a new version deploys, the site shows a "Refresh" toast instead of silently swapping content under you mid-session.
 - Supabase auth/sync calls are never cached and always go straight to the network — sync only ever reflects live, current data.
 
+## 💰 Ads (optional, off by default)
+
+The site can carry Google AdSense ads to help cover costs. Ads are **fully disabled** until configured — no script loads, no ad slot renders, nothing shifts layout. To turn them on:
+
+1. Apply at [adsense.google.com](https://adsense.google.com) with this site and get approved (Google reviews the site first — usually a few days).
+2. Open `ads.js` and set `ADS_CONFIG.clientId` to your publisher ID (`ca-pub-...`).
+3. Update `/ads.txt` at the repo root with the same publisher ID — Google requires this file to actually pay out on impressions.
+4. In the AdSense dashboard, create two manual ad units (one for the lesson sidebar, one for below lesson content) and copy each unit's slot ID into `ADS_CONFIG.slots` in `ads.js`.
+5. In the AdSense dashboard under **Privacy & messaging**, enable Google's built-in consent tool. That's the actual GDPR/UK consent requirement for serving ads to EU/UK visitors — it's a dashboard toggle, not code, and works automatically with the loader already in place. Don't build a custom consent banner instead; ad consent has to come from a certified CMP, and Google's own tool already is one.
+
+Placement is deliberately minimal — one slot in the lesson sidebar, one below lesson content — so ads don't get in the way of actually finishing a lesson. Tool pages, labs, quizzes, and the homepage stay ad-free.
+
 ## 🤝 Contributing
 
 Found a typo, a broken link, or want to write a missing sub-lesson? PRs are welcome — the whole point of this project is that free security education should keep getting better.
