@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mass Assignment &amp; Excessive Data Exposure — Path 21 · KashSec Academy</title>
+<meta name="description" content="Two related (and extremely common) problems that appear when APIs accept or return more than they should.">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/21-api-security/mass-assignment">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Mass Assignment &amp; Excessive Data Exposure — Path 21 · KashSec Academy">
+<meta property="og:description" content="Two related (and extremely common) problems that appear when APIs accept or return more than they should.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/21-api-security/mass-assignment">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Mass Assignment &amp; Excessive Data Exposure — Path 21 · KashSec Academy">
+<meta name="twitter:description" content="Two related (and extremely common) problems that appear when APIs accept or return more than they should.">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Mass Assignment & Excessive Data Exposure — Path 21 · KashSec Academy","description":"Two related (and extremely common) problems that appear when APIs accept or return more than they should.","url":"https://kashsec.vercel.app/#/lesson/21-api-security/mass-assignment","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/21-api-security/mass-assignment">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 21 — API Security</a> · Mass Assignment &amp; Excessive Data Exposure</div>
+  <article><h1>Mass Assignment &amp; Excessive Data Exposure</h1>
+<p>Two related (and extremely common) problems that appear when APIs accept or return more than they should.</p>
+<h2>Mass Assignment</h2>
+<p><strong>Definition:</strong> The API automatically binds client-supplied fields to internal objects without an allow-list, letting an attacker set properties they should never control.</p>
+<h3>Classic example</h3>
+<p>Registration endpoint expects:</p>
+<pre><code class="language-json">{ &quot;email&quot;: &quot;user@example.com&quot;, &quot;password&quot;: &quot;...&quot; }
+</code></pre>
+<p>Attacker sends:</p>
+<pre><code class="language-json">{ &quot;email&quot;: &quot;user@example.com&quot;, &quot;password&quot;: &quot;...&quot;, &quot;isAdmin&quot;: true, &quot;role&quot;: &quot;admin&quot; }
+</code></pre>
+<p>If the framework or code does <code>User.create(req.body)</code> (or equivalent), the attacker just became an admin.</p>
+<h3>Where it appears</h3>
+<ul>
+<li>ORMs and frameworks that auto-bind request bodies (Rails, Laravel, Node ORMs, etc.)</li>
+<li>“Update profile” endpoints that accept any field</li>
+<li>GraphQL mutations that expose too many writable fields</li>
+</ul>
+<h3>How to prevent it</h3>
+<ol>
+<li><strong>Allow-list</strong> the fields that may be set from the client</li>
+<li>Never pass the raw request body straight into a model create/update</li>
+<li>Use DTOs / explicit input types</li>
+<li>Mark sensitive fields as non-writable at the model layer</li>
+</ol>
+<h2>Excessive Data Exposure</h2>
+<p><strong>Definition:</strong> The API returns more data than the client needs (or should be allowed to see), relying on the front-end to hide it.</p>
+<h3>Classic example</h3>
+<pre><code class="language-json">GET /api/users/me
+{
+  &quot;id&quot;: 42,
+  &quot;name&quot;: &quot;Alice&quot;,
+  &quot;email&quot;: &quot;alice@example.com&quot;,
+  &quot;passwordHash&quot;: &quot;$2b$10$...&quot;,          // 💥
+  &quot;internalNotes&quot;: &quot;VIP - do not ban&quot;,  // 💥
+  &quot;ssn&quot;: &quot;123-45-6789&quot;                  // 💥
+}
+</code></pre>
+<p>The mobile app only displays name and email, but the extra fields are still in the response for anyone who looks.</p>
+<h3>Why it happens</h3>
+<ul>
+<li>“We’ll filter it on the client”</li>
+<li>Re-using the same serializer for admin and user views</li>
+<li>Returning entire database rows for convenience</li>
+</ul>
+<h3>How to prevent it</h3>
+<ul>
+<li>Explicit response schemas / serializers per use-case</li>
+<li>Never return password hashes, tokens, internal flags, or PII that isn’t required</li>
+<li>Review every new field added to a response</li>
+</ul>
+<h2>Quick testing tips</h2>
+<p><strong>Mass assignment:</strong></p>
+<ul>
+<li>Intercept a legitimate create/update request</li>
+<li>Add extra fields (<code>isAdmin</code>, <code>role</code>, <code>balance</code>, <code>verified</code>, etc.)</li>
+<li>See if they stick</li>
+</ul>
+<p><strong>Excessive data exposure:</strong></p>
+<ul>
+<li>Look at the raw JSON of every response</li>
+<li>Compare what the UI shows versus what the API returned</li>
+<li>Check for fields that sound sensitive</li>
+</ul>
+<h2>Key takeaway</h2>
+<p>Both problems come from the same root: <strong>the server trusted the client too much and was too generous with data</strong>. Explicit allow-lists for input and explicit schemas for output fix the large majority of cases.</p>
+<h3>References</h3>
+<ul>
+<li><a href="https://owasp.org/API-Security/editions/2023/en/0xa3-broken-object-property-level-authorization/">OWASP API3:2023 Broken Object Property Level Authorization</a></li>
+<li><a href="https://owasp.org/API-Security/editions/2023/en/0xa6-unrestricted-access-to-sensitive-business-flows/">OWASP API6:2023 Unrestricted Access to Sensitive Business Flows</a></li>
+</ul>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/21-api-security/mass-assignment";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

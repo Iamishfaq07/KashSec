@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAST, DAST &amp; SCA — The Core Scanning Trio — Path 22 · KashSec Academy</title>
+<meta name="description" content="Three families of tools form the backbone of most AppSec programs.">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/22-devsecops-appsec/sast-dast-sca">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="SAST, DAST &amp; SCA — The Core Scanning Trio — Path 22 · KashSec Academy">
+<meta property="og:description" content="Three families of tools form the backbone of most AppSec programs.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/22-devsecops-appsec/sast-dast-sca">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="SAST, DAST &amp; SCA — The Core Scanning Trio — Path 22 · KashSec Academy">
+<meta name="twitter:description" content="Three families of tools form the backbone of most AppSec programs.">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"SAST, DAST & SCA — The Core Scanning Trio — Path 22 · KashSec Academy","description":"Three families of tools form the backbone of most AppSec programs.","url":"https://kashsec.vercel.app/#/lesson/22-devsecops-appsec/sast-dast-sca","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/22-devsecops-appsec/sast-dast-sca">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 22 — DevSecOps & AppSec Program</a> · SAST, DAST &amp; SCA — The Core Scanning Trio</div>
+  <article><h1>SAST, DAST &amp; SCA — The Core Scanning Trio</h1>
+<p>Three families of tools form the backbone of most AppSec programs.</p>
+<h2>SAST — Static Application Security Testing</h2>
+<p>Analyses source code or bytecode <em>without running the application</em>.</p>
+<p><strong>Strengths</strong></p>
+<ul>
+<li>Finds issues early (in the IDE or pull request)</li>
+<li>Can reach code paths that are hard to hit dynamically</li>
+<li>Good for injection, crypto misuse, hardcoded secrets, etc.</li>
+</ul>
+<p><strong>Weaknesses</strong></p>
+<ul>
+<li>Higher false-positive rate</li>
+<li>Needs language / framework support</li>
+<li>Cannot see runtime configuration or environment issues</li>
+</ul>
+<p><strong>Examples</strong>: CodeQL, Semgrep, SonarQube, Checkmarx, Fortify, GitHub Advanced Security</p>
+<h2>DAST — Dynamic Application Security Testing</h2>
+<p>Tests the <em>running</em> application from the outside, like an attacker.</p>
+<p><strong>Strengths</strong></p>
+<ul>
+<li>No source code required</li>
+<li>Finds issues that only appear at runtime (misconfig, auth flaws, some injection)</li>
+<li>Good complement to SAST</li>
+</ul>
+<p><strong>Weaknesses</strong></p>
+<ul>
+<li>Needs a working environment and realistic coverage</li>
+<li>Can be noisy or slow</li>
+<li>Blind to untriggered code paths</li>
+</ul>
+<p><strong>Examples</strong>: OWASP ZAP, Burp Suite Enterprise, Nuclei, various commercial DAST platforms</p>
+<h2>SCA — Software Composition Analysis</h2>
+<p>Looks at third-party dependencies (npm, Maven, pip, Go modules, etc.) and flags known vulnerabilities (CVEs), license risk, and outdated packages.</p>
+<p><strong>Strengths</strong></p>
+<ul>
+<li>High signal for known CVEs</li>
+<li>Essential because modern apps are mostly dependencies</li>
+<li>Can block builds on critical vulnerabilities</li>
+</ul>
+<p><strong>Weaknesses</strong></p>
+<ul>
+<li>Does not find vulnerabilities in <em>your</em> code</li>
+<li>Reachability analysis is still maturing (is the vulnerable function actually called?)</li>
+</ul>
+<p><strong>Examples</strong>: Dependabot, Snyk, Black Duck, OWASP Dependency-Check, GitHub Advisory + Dependabot</p>
+<h2>How they work together</h2>
+<pre><code>Developer commit
+      ↓
+SAST + SCA on the PR   ← fast feedback
+      ↓
+Build &amp; unit tests
+      ↓
+DAST / API tests in staging
+      ↓
+Release
+</code></pre>
+<h2>Practical advice</h2>
+<ol>
+<li>Start with SCA — highest ROI, lowest noise when configured well.</li>
+<li>Add SAST with a small set of high-confidence rules; expand gradually.</li>
+<li>Introduce DAST once you have stable staging environments and auth handling.</li>
+<li>Always pair tools with triage process and developer education — otherwise findings rot.</li>
+</ol>
+<p>In GitHub, a practical starter stack is: Dependabot + CodeQL + secret scanning (GitHub Advanced Security).</p>
+<h2>Key terms</h2>
+<ul>
+<li><strong>SAST</strong> — static analysis of code</li>
+<li><strong>DAST</strong> — dynamic testing of a running app</li>
+<li><strong>SCA</strong> — analysis of third-party components</li>
+<li><strong>False positive</strong> — a finding that is not a real issue</li>
+</ul>
+<h2>Recap</h2>
+<p>SAST, DAST and SCA cover different angles. Mature programs use all three, tuned so developers trust the results.</p>
+<h3>References</h3>
+<ul>
+<li><a href="https://owasp.org/www-community/Source_Code_Analysis_Tools">OWASP Source Code Analysis Tools</a></li>
+<li><a href="https://codeql.github.com/">GitHub CodeQL</a></li>
+</ul>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/22-devsecops-appsec/sast-dast-sca";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

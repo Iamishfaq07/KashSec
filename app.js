@@ -807,6 +807,35 @@ const PATHS = [
      {n:"5", id:"interview-prep",        title:"Interview preparation",   desc:"Technical and soft skills that win jobs."},
      {n:"6", id:"networking-community",  title:"Networking & community",  desc:"Connections often matter as much as skills."},
      {n:"7", id:"first-90-days",         title:"Your first 90 days in a security job", desc:"How to succeed once you land the role."}
+   ]},
+  {n:"21", id:"21-api-security", title:"API Security", level:"Advanced",
+   desc:"APIs are the real backend of almost every modern app — the OWASP API Top 10, BOLA/BFLA, JWT attacks, GraphQL security, and a hands-on capstone lab against a real vulnerable API.",
+   subs:[
+     {n:"1", id:"why-api-security",       title:"Why API Security Matters", desc:"APIs are the real backend now — and where most real-world breaches actually happen."},
+     {n:"2", id:"what-are-apis",          title:"What are APIs and why do they matter for security?", desc:"The contract behind almost everything modern software does."},
+     {n:"3", id:"owasp-api-top-10",       title:"OWASP API Top 10 (2023)", desc:"The shared checklist for API risk, ten categories at a glance."},
+     {n:"4", id:"authn-authz-apis",       title:"Authentication & Authorization in APIs", desc:"Who are you vs. what are you allowed to do — the distinction that matters most."},
+     {n:"5", id:"broken-auth-jwt",        title:"Broken Authentication & JWT Attacks", desc:"alg:none, algorithm confusion, and weak secrets — how tokens get forged."},
+     {n:"6", id:"bola-and-bfla",          title:"BOLA & BFLA — the two most common API authorization failures", desc:"Object-level and function-level authorization, the #1 real-world API risk."},
+     {n:"7", id:"mass-assignment",        title:"Mass Assignment & Excessive Data Exposure", desc:"When the API accepts — or returns — more than it should."},
+     {n:"8", id:"rate-limiting-injection", title:"Rate Limiting, Injection & Resource Abuse", desc:"SSRF, classic injection, and business-logic abuse when limits are missing."},
+     {n:"9", id:"rest-vs-graphql",        title:"REST vs GraphQL — security differences that matter", desc:"Same goals, different attack surface — one endpoint changes everything."},
+     {n:"10", id:"graphql-security",      title:"GraphQL Security", desc:"Introspection, nested queries, and field-level authorization."},
+     {n:"11", id:"api-testing",           title:"How to actually test APIs", desc:"A battle-tested recon-to-report workflow for bug bounty and pentests."},
+     {n:"12", id:"api-security-lab",      title:"API Security Capstone Lab", desc:"Put it all together against a real vulnerable API — crAPI, vAPI, or your own."},
+     {n:"13", id:"api-roadmap",           title:"Your API Security Roadmap", desc:"Where to go next, and how to keep growing this specialisation."}
+   ]},
+  {n:"22", id:"22-devsecops-appsec", title:"DevSecOps & AppSec Program", level:"Advanced",
+   desc:"Move from finding individual bugs to building the program that prevents them at scale — SAST/DAST/SCA, CI/CD security, secrets & supply chain, threat modeling, and the metrics that earn leadership buy-in.",
+   subs:[
+     {n:"1", id:"what-is-devsecops",        title:"What is DevSecOps?", desc:"Security folded into every stage of delivery, not bolted on at the end."},
+     {n:"2", id:"sast-dast-sca",            title:"SAST, DAST & SCA — The Core Scanning Trio", desc:"Static analysis, dynamic testing, and dependency scanning — how they fit together."},
+     {n:"3", id:"cicd-security",            title:"Securing the CI/CD Pipeline", desc:"The pipeline itself is a target: secrets, permissions, and supply-chain trust."},
+     {n:"4", id:"secrets-supply-chain",     title:"Secrets Management & Software Supply Chain", desc:"Where credentials leak, and how typosquatting and dependency confusion work."},
+     {n:"5", id:"threat-modeling-sdlc",     title:"Threat Modeling in the SDLC", desc:"Finding design flaws before you write the code that has them."},
+     {n:"6", id:"metrics-that-matter",      title:"Metrics That Matter", desc:"Coverage, backlog health, and the numbers that actually earn budget."},
+     {n:"7", id:"building-appsec-program",  title:"Building an AppSec Program from Scratch", desc:"The maturity ladder from ad hoc to optimising, and a concrete first 90 days."},
+     {n:"8", id:"appsec-program-lab",       title:"AppSec Program Capstone Lab", desc:"Design a lightweight AppSec program for a real-shaped organisation."}
    ]}
 
 ];
@@ -858,6 +887,7 @@ const TRACKS = [
       {pathId:'05-web-basics'},
       {pathId:'11-web-security'},
       {pathId:'15-bug-bounty'},
+      {pathId:'21-api-security'},
       {pathId:'13-mobile-security'},
       {pathId:'19-ctf-challenges'},
       {pathId:'20-career-prep'}
@@ -886,7 +916,9 @@ const TRACKS = [
       {pathId:'05-web-basics'},
       {pathId:'06-crypto-fundamentals'},
       {pathId:'11-web-security'},
+      {pathId:'21-api-security'},
       {pathId:'16-advanced', subs:['devsecops-lab','threat-modeling-lab']},
+      {pathId:'22-devsecops-appsec'},
       {pathId:'18-ai-security', subs:['securing-llm-apps','llm-top-10','agentic-ai-risks']},
       {pathId:'20-career-prep'}
     ]
@@ -926,7 +958,7 @@ function trackProgress(track){
 const CAREERS = [
   {role:"SOC Analyst",             desc:"Watch for and respond to attacks in real time.", follow:"02 → 10 → 12"},
   {role:"Penetration Tester",      desc:"Legally break into systems and report how.",     follow:"03 → 14 → 11"},
-  {role:"AppSec Engineer",         desc:"Help developers ship safe software.",             follow:"04 → 05 → 11"},
+  {role:"AppSec Engineer",         desc:"Help developers ship safe software.",             follow:"04 → 05 → 11 → 21 → 22"},
   {role:"Bug Bounty Hunter",       desc:"Find bugs in real companies for cash rewards.",   follow:"05 → 11 → 15"},
   {role:"Cloud Security Engineer", desc:"Secure AWS, Azure, and Google Cloud.",            follow:"10 → 16"},
   {role:"Digital Forensics / IR",  desc:"Investigate incidents and evict attackers.",      follow:"03 → 12 → 16"},
@@ -2620,6 +2652,11 @@ function renderLabPhishing(){
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
+  {date:'2026-07-23', title:'Two new advanced paths: API Security & DevSecOps', items:[
+    'Path 21 — API Security: OWASP API Top 10, BOLA/BFLA, JWT attacks, GraphQL security, rate limiting & mass assignment, and a capstone lab against a real vulnerable API.',
+    'Path 22 — DevSecOps & AppSec Program: SAST/DAST/SCA, CI/CD pipeline security, secrets & supply chain, threat modeling, metrics, and building an AppSec program from scratch.',
+    'Both paths are now woven into the AppSec Engineer and Bug Bounty Hunter practice tracks.'
+  ]},
   {date:'2026-07-23', title:'Listen mode, daily challenge, more labs & tools', items:[
     'Listen mode: lessons can now be read aloud (where your browser supports speech).',
     'Daily challenge (#/daily): one question a day from across the course, and it counts toward your streak.',

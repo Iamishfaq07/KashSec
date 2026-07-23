@@ -40,6 +40,15 @@ const GLOSSARY = [
   "subTitle": "Files & folders"
  },
  {
+  "term": "Abuse case",
+  "def": "a use case written from the attacker's point of view",
+  "pathId": "22-devsecops-appsec",
+  "pathN": "22",
+  "pathTitle": "DevSecOps & AppSec Program",
+  "subId": "threat-modeling-sdlc",
+  "subTitle": "Threat Modeling in the SDLC"
+ },
+ {
   "term": "Access token / SeImpersonatePrivilege",
   "def": "Windows's identity/privilege representation and the specific privilege enabling Potato-family exploits.",
   "pathId": "16-advanced",
@@ -184,6 +193,24 @@ const GLOSSARY = [
   "subTitle": "LLM Supply Chain Attacks"
  },
  {
+  "term": "alg:none",
+  "def": "the signature-bypass algorithm",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "broken-auth-jwt",
+  "subTitle": "Broken Authentication & JWT Attacks"
+ },
+ {
+  "term": "Algorithm confusion",
+  "def": "tricking RS256 verification into using HS256",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "broken-auth-jwt",
+  "subTitle": "Broken Authentication & JWT Attacks"
+ },
+ {
   "term": "AlwaysInstallElevated",
   "def": "a registry misconfiguration allowing any user to install MSI packages with SYSTEM privileges.",
   "pathId": "16-advanced",
@@ -236,6 +263,15 @@ const GLOSSARY = [
   "pathTitle": "How the Web Works",
   "subId": "apis-json",
   "subTitle": "APIs & JSON"
+ },
+ {
+  "term": "API",
+  "def": "the interface clients use to talk to a server",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "why-api-security",
+  "subTitle": "Why API Security Matters"
  },
  {
   "term": "API / UI",
@@ -308,6 +344,15 @@ const GLOSSARY = [
   "pathTitle": "Network Security",
   "subId": "mitm",
   "subTitle": "Man-in-the-Middle"
+ },
+ {
+  "term": "Artifact signing",
+  "def": "cryptographic proof of who built a binary/image",
+  "pathId": "22-devsecops-appsec",
+  "pathN": "22",
+  "pathTitle": "DevSecOps & AppSec Program",
+  "subId": "cicd-security",
+  "subTitle": "Securing the CI/CD Pipeline"
  },
  {
   "term": "ASCII / Unicode",
@@ -607,6 +652,24 @@ const GLOSSARY = [
   "subTitle": "Broken access & IDOR"
  },
  {
+  "term": "BOLA",
+  "def": "Broken Object Level Authorization (the #1 API risk)",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "why-api-security",
+  "subTitle": "Why API Security Matters"
+ },
+ {
+  "term": "BOLA",
+  "def": "Broken Object Level Authorization",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "owasp-api-top-10",
+  "subTitle": "OWASP API Top 10 (2023)"
+ },
+ {
   "term": "BOLA / IDOR",
   "def": "the biggest API bug class: missing per-object authorization.",
   "pathId": "05-web-basics",
@@ -830,6 +893,15 @@ const GLOSSARY = [
   "pathTitle": "Career Prep",
   "subId": "interview-prep",
   "subTitle": "Interview preparation"
+ },
+ {
+  "term": "CI/CD",
+  "def": "Continuous Integration / Continuous Delivery (or Deployment)",
+  "pathId": "22-devsecops-appsec",
+  "pathN": "22",
+  "pathTitle": "DevSecOps & AppSec Program",
+  "subId": "what-is-devsecops",
+  "subTitle": "What is DevSecOps?"
  },
  {
   "term": "CISSP",
@@ -1208,6 +1280,15 @@ const GLOSSARY = [
   "pathTitle": "Cybersecurity Fundamentals",
   "subId": "cia-triad",
   "subTitle": "The CIA triad"
+ },
+ {
+  "term": "DAST",
+  "def": "dynamic testing of a running app",
+  "pathId": "22-devsecops-appsec",
+  "pathN": "22",
+  "pathTitle": "DevSecOps & AppSec Program",
+  "subId": "sast-dast-sca",
+  "subTitle": "SAST, DAST & SCA — The Core Scanning Trio"
  },
  {
   "term": "Data",
@@ -1678,6 +1759,15 @@ const GLOSSARY = [
   "subTitle": "Your first 90 days in a security job"
  },
  {
+  "term": "Escape rate",
+  "def": "defects that reach production or external discovery",
+  "pathId": "22-devsecops-appsec",
+  "pathN": "22",
+  "pathTitle": "DevSecOps & AppSec Program",
+  "subId": "metrics-that-matter",
+  "subTitle": "Metrics That Matter"
+ },
+ {
   "term": "Ethical hacking / penetration testing",
   "def": "authorized simulation of real attacks to find vulnerabilities before malicious actors do.",
   "pathId": "14-ethical-hacking",
@@ -1757,6 +1847,15 @@ const GLOSSARY = [
   "pathTitle": "Operating Systems & Linux",
   "subId": "install-virtualbox",
   "subTitle": "Install VirtualBox"
+ },
+ {
+  "term": "False positive",
+  "def": "a finding that is not a real issue",
+  "pathId": "22-devsecops-appsec",
+  "pathN": "22",
+  "pathTitle": "DevSecOps & AppSec Program",
+  "subId": "sast-dast-sca",
+  "subTitle": "SAST, DAST & SCA — The Core Scanning Trio"
  },
  {
   "term": "Federation",
@@ -1928,6 +2027,15 @@ const GLOSSARY = [
   "pathTitle": "Programming & Python",
   "subId": "lists-functions",
   "subTitle": "Lists & functions"
+ },
+ {
+  "term": "Function Level Authorization",
+  "def": "checking the *action*, not just the object",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "owasp-api-top-10",
+  "subTitle": "OWASP API Top 10 (2023)"
  },
  {
   "term": "Garak / PyRIT",
@@ -2542,6 +2650,15 @@ const GLOSSARY = [
   "subTitle": "What is programming?"
  },
  {
+  "term": "Introspection",
+  "def": "the ability to query the schema itself",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "graphql-security",
+  "subTitle": "GraphQL Security"
+ },
+ {
   "term": "Intruder",
   "def": "Burp's tool for automated request fuzzing.",
   "pathId": "11-web-security",
@@ -2648,6 +2765,24 @@ const GLOSSARY = [
   "pathTitle": "How the Web Works",
   "subId": "cookies-sessions",
   "subTitle": "Cookies, sessions, logins"
+ },
+ {
+  "term": "JWT",
+  "def": "JSON Web Token, a common way to carry identity",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "why-api-security",
+  "subTitle": "Why API Security Matters"
+ },
+ {
+  "term": "JWT",
+  "def": "JSON Web Token",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "broken-auth-jwt",
+  "subTitle": "Broken Authentication & JWT Attacks"
  },
  {
   "term": "JWT `alg: none` / algorithm confusion",
@@ -2884,6 +3019,15 @@ const GLOSSARY = [
   "subTitle": "How the internet works"
  },
  {
+  "term": "Mass assignment",
+  "def": "accepting more fields than the developer intended",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "why-api-security",
+  "subTitle": "Why API Security Matters"
+ },
+ {
   "term": "`match`",
   "def": "modern multi-way branch (Python 3.10+).",
   "pathId": "04-python",
@@ -3044,6 +3188,24 @@ const GLOSSARY = [
   "pathTitle": "How the Web Works",
   "subId": "web-anatomy",
   "subTitle": "Anatomy of a web app"
+ },
+ {
+  "term": "MTTR",
+  "def": "mean time to remediate",
+  "pathId": "22-devsecops-appsec",
+  "pathN": "22",
+  "pathTitle": "DevSecOps & AppSec Program",
+  "subId": "metrics-that-matter",
+  "subTitle": "Metrics That Matter"
+ },
+ {
+  "term": "MTTR",
+  "def": "Mean Time To Remediate",
+  "pathId": "22-devsecops-appsec",
+  "pathN": "22",
+  "pathTitle": "DevSecOps & AppSec Program",
+  "subId": "building-appsec-program",
+  "subTitle": "Building an AppSec Program from Scratch"
  },
  {
   "term": "Multi-account testing methodology",
@@ -3224,6 +3386,15 @@ const GLOSSARY = [
   "pathTitle": "Cloud Computing Basics",
   "subId": "cloud-storage-basics",
   "subTitle": "Cloud Storage Basics"
+ },
+ {
+  "term": "OIDC federation",
+  "def": "exchanging a short-lived pipeline identity for cloud credentials",
+  "pathId": "22-devsecops-appsec",
+  "pathN": "22",
+  "pathTitle": "DevSecOps & AppSec Program",
+  "subId": "cicd-security",
+  "subTitle": "Securing the CI/CD Pipeline"
  },
  {
   "term": "Onboarding",
@@ -3604,6 +3775,15 @@ const GLOSSARY = [
   "subTitle": "Phishing & social eng."
  },
  {
+  "term": "Pinned action",
+  "def": "referencing a GitHub Action by commit SHA, not a moving tag",
+  "pathId": "22-devsecops-appsec",
+  "pathN": "22",
+  "pathTitle": "DevSecOps & AppSec Program",
+  "subId": "cicd-security",
+  "subTitle": "Securing the CI/CD Pipeline"
+ },
+ {
   "term": "pip",
   "def": "Python's package installer.",
   "pathId": "04-python",
@@ -3647,6 +3827,15 @@ const GLOSSARY = [
   "pathTitle": "Advanced Cyber Topics",
   "subId": "containers-k8s",
   "subTitle": "Containers & Kubernetes"
+ },
+ {
+  "term": "Policy as code",
+  "def": "encoding security rules so pipelines can enforce them automatically",
+  "pathId": "22-devsecops-appsec",
+  "pathN": "22",
+  "pathTitle": "DevSecOps & AppSec Program",
+  "subId": "building-appsec-program",
+  "subTitle": "Building an AppSec Program from Scratch"
  },
  {
   "term": "Port",
@@ -3847,6 +4036,15 @@ const GLOSSARY = [
   "subTitle": "What is a protocol?"
  },
  {
+  "term": "Provenance",
+  "def": "metadata that describes how an artifact was built",
+  "pathId": "22-devsecops-appsec",
+  "pathN": "22",
+  "pathTitle": "DevSecOps & AppSec Program",
+  "subId": "secrets-supply-chain",
+  "subTitle": "Secrets Management & Software Supply Chain"
+ },
+ {
   "term": "Proxy",
   "def": "an intermediary that requests pass through before reaching their destination.",
   "pathId": "11-web-security",
@@ -3899,6 +4097,15 @@ const GLOSSARY = [
   "pathTitle": "Programming & Python",
   "subId": "where-next",
   "subTitle": "Where to go next"
+ },
+ {
+  "term": "Query complexity",
+  "def": "a score used to reject expensive queries",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "graphql-security",
+  "subTitle": "GraphQL Security"
  },
  {
   "term": "Quick win",
@@ -4153,6 +4360,15 @@ const GLOSSARY = [
   "subTitle": "Why Python for security"
  },
  {
+  "term": "Resolver",
+  "def": "the function that returns data for a field",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "graphql-security",
+  "subTitle": "GraphQL Security"
+ },
+ {
   "term": "Responsible disclosure",
   "def": "reporting vulnerabilities outside a formal contract, following the same core reporting discipline.",
   "pathId": "14-ethical-hacking",
@@ -4360,6 +4576,24 @@ const GLOSSARY = [
   "subTitle": "Mobile Security Fundamentals"
  },
  {
+  "term": "SAST",
+  "def": "static analysis of code",
+  "pathId": "22-devsecops-appsec",
+  "pathN": "22",
+  "pathTitle": "DevSecOps & AppSec Program",
+  "subId": "sast-dast-sca",
+  "subTitle": "SAST, DAST & SCA — The Core Scanning Trio"
+ },
+ {
+  "term": "SCA",
+  "def": "analysis of third-party components",
+  "pathId": "22-devsecops-appsec",
+  "pathN": "22",
+  "pathTitle": "DevSecOps & AppSec Program",
+  "subId": "sast-dast-sca",
+  "subTitle": "SAST, DAST & SCA — The Core Scanning Trio"
+ },
+ {
   "term": "SCA (Software Composition Analysis)",
   "def": "tooling for finding known-vulnerable dependencies (A06).",
   "pathId": "11-web-security",
@@ -4432,6 +4666,15 @@ const GLOSSARY = [
   "subTitle": "Phase 2: Scan & enumerate"
  },
  {
+  "term": "Secret scanning",
+  "def": "automated detection of credentials in code and history",
+  "pathId": "22-devsecops-appsec",
+  "pathN": "22",
+  "pathTitle": "DevSecOps & AppSec Program",
+  "subId": "secrets-supply-chain",
+  "subTitle": "Secrets Management & Software Supply Chain"
+ },
+ {
   "term": "Secrets manager",
   "def": "dedicated services (AWS Secrets Manager, Azure Key Vault) avoiding hardcoded credentials.",
   "pathId": "16-advanced",
@@ -4448,6 +4691,24 @@ const GLOSSARY = [
   "pathTitle": "Career Prep",
   "subId": "certifications-roadmap",
   "subTitle": "Certifications that actually help"
+ },
+ {
+  "term": "Security champion",
+  "def": "a developer who is the security point person for their team",
+  "pathId": "22-devsecops-appsec",
+  "pathN": "22",
+  "pathTitle": "DevSecOps & AppSec Program",
+  "subId": "what-is-devsecops",
+  "subTitle": "What is DevSecOps?"
+ },
+ {
+  "term": "Security champion",
+  "def": "developer who is the security liaison for their team",
+  "pathId": "22-devsecops-appsec",
+  "pathN": "22",
+  "pathTitle": "DevSecOps & AppSec Program",
+  "subId": "building-appsec-program",
+  "subTitle": "Building an AppSec Program from Scratch"
  },
  {
   "term": "Security group",
@@ -4567,6 +4828,15 @@ const GLOSSARY = [
   "subTitle": "Install Kali Linux"
  },
  {
+  "term": "Shadow API",
+  "def": "an undocumented or forgotten endpoint still reachable",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "owasp-api-top-10",
+  "subTitle": "OWASP API Top 10 (2023)"
+ },
+ {
   "term": "Shared responsibility model",
   "def": "the framework defining which security responsibilities belong to the cloud provider versus the customer.",
   "pathId": "08-cloud-basics",
@@ -4612,6 +4882,15 @@ const GLOSSARY = [
   "subTitle": "Command inj. & uploads"
  },
  {
+  "term": "Shift left",
+  "def": "moving security earlier in the lifecycle",
+  "pathId": "22-devsecops-appsec",
+  "pathN": "22",
+  "pathTitle": "DevSecOps & AppSec Program",
+  "subId": "what-is-devsecops",
+  "subTitle": "What is DevSecOps?"
+ },
+ {
   "term": "SIEM",
   "def": "centralises and correlates security logs from across an organisation.",
   "pathId": "12-network-security",
@@ -4646,6 +4925,15 @@ const GLOSSARY = [
   "pathTitle": "Computer Basics & Security Mindset",
   "subId": "passwords-accounts",
   "subTitle": "Passwords & accounts basics"
+ },
+ {
+  "term": "SLA",
+  "def": "service level agreement for fixing findings by severity",
+  "pathId": "22-devsecops-appsec",
+  "pathN": "22",
+  "pathTitle": "DevSecOps & AppSec Program",
+  "subId": "metrics-that-matter",
+  "subTitle": "Metrics That Matter"
  },
  {
   "term": "Smishing / vishing",
@@ -4952,6 +5240,15 @@ const GLOSSARY = [
   "pathTitle": "Computer Basics & Security Mindset",
   "subId": "what-is-a-computer",
   "subTitle": "What is a computer really?"
+ },
+ {
+  "term": "STRIDE",
+  "def": "a common threat-classification mnemonic",
+  "pathId": "22-devsecops-appsec",
+  "pathN": "22",
+  "pathTitle": "DevSecOps & AppSec Program",
+  "subId": "threat-modeling-sdlc",
+  "subTitle": "Threat Modeling in the SDLC"
  },
  {
   "term": "String / int / float / bool / list / dict / None",
@@ -5314,6 +5611,15 @@ const GLOSSARY = [
   "subTitle": "Client vs server"
  },
  {
+  "term": "Trust boundary",
+  "def": "a place where the level of trust changes",
+  "pathId": "22-devsecops-appsec",
+  "pathN": "22",
+  "pathTitle": "DevSecOps & AppSec Program",
+  "subId": "threat-modeling-sdlc",
+  "subTitle": "Threat Modeling in the SDLC"
+ },
+ {
   "term": "Truthiness",
   "def": "which non-boolean values count as False in an `if`.",
   "pathId": "04-python",
@@ -5357,6 +5663,15 @@ const GLOSSARY = [
   "pathTitle": "Operating Systems & Linux",
   "subId": "virtualization",
   "subTitle": "What is virtualization?"
+ },
+ {
+  "term": "Typosquatting",
+  "def": "publishing a malicious package with a name close to a popular one",
+  "pathId": "22-devsecops-appsec",
+  "pathN": "22",
+  "pathTitle": "DevSecOps & AppSec Program",
+  "subId": "secrets-supply-chain",
+  "subTitle": "Secrets Management & Software Supply Chain"
  },
  {
   "term": "Typosquatting / homograph attack",

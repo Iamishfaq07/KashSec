@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OWASP API Top 10 (2023) — Path 21 · KashSec Academy</title>
+<meta name="description" content="The OWASP API Security Top 10 is the shared checklist the industry uses for API risk. Learn these ten categories and you can systematically assess almost any modern API.">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/21-api-security/owasp-api-top-10">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="OWASP API Top 10 (2023) — Path 21 · KashSec Academy">
+<meta property="og:description" content="The OWASP API Security Top 10 is the shared checklist the industry uses for API risk. Learn these ten categories and you can systematically assess almost any modern API.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/21-api-security/owasp-api-top-10">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="OWASP API Top 10 (2023) — Path 21 · KashSec Academy">
+<meta name="twitter:description" content="The OWASP API Security Top 10 is the shared checklist the industry uses for API risk. Learn these ten categories and you can systematically assess almost any modern API.">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"OWASP API Top 10 (2023) — Path 21 · KashSec Academy","description":"The OWASP API Security Top 10 is the shared checklist the industry uses for API risk. Learn these ten categories and you can systematically assess almost any modern API.","url":"https://kashsec.vercel.app/#/lesson/21-api-security/owasp-api-top-10","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/21-api-security/owasp-api-top-10">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 21 — API Security</a> · OWASP API Top 10 (2023)</div>
+  <article><h1>OWASP API Top 10 (2023)</h1>
+<p>The OWASP API Security Top 10 is the shared checklist the industry uses for API risk. Learn these ten categories and you can systematically assess almost any modern API.</p>
+<p>:::</p>
+<h2>The list at a glance</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Risk</th>
+<th>One-line summary</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>API1</td>
+<td>Broken Object Level Authorization</td>
+<td>User can access objects they shouldn&#39;t</td>
+</tr>
+<tr>
+<td>API2</td>
+<td>Broken Authentication</td>
+<td>Weak or broken login / token handling</td>
+</tr>
+<tr>
+<td>API3</td>
+<td>Broken Object Property Level Authorization</td>
+<td>User can read or write sensitive fields</td>
+</tr>
+<tr>
+<td>API4</td>
+<td>Unrestricted Resource Consumption</td>
+<td>No rate limits → DoS or expensive abuse</td>
+</tr>
+<tr>
+<td>API5</td>
+<td>Broken Function Level Authorization</td>
+<td>Regular user can call admin endpoints</td>
+</tr>
+<tr>
+<td>API6</td>
+<td>Unrestricted Access to Sensitive Business Flows</td>
+<td>Automation of high-value actions (buy, vote, etc.)</td>
+</tr>
+<tr>
+<td>API7</td>
+<td>Server Side Request Forgery</td>
+<td>API fetches attacker-controlled URLs</td>
+</tr>
+<tr>
+<td>API8</td>
+<td>Security Misconfiguration</td>
+<td>Default configs, verbose errors, open CORS</td>
+</tr>
+<tr>
+<td>API9</td>
+<td>Improper Inventory Management</td>
+<td>Shadow / zombie APIs still running</td>
+</tr>
+<tr>
+<td>API10</td>
+<td>Unsafe Consumption of APIs</td>
+<td>Trusting data from third-party APIs blindly</td>
+</tr>
+</tbody></table>
+<h2>API1 — Broken Object Level Authorization (BOLA)</h2>
+<p>The classic IDOR, but for APIs.</p>
+<pre><code class="language-http">GET /api/v1/orders/1042
+Authorization: Bearer &lt;alice-token&gt;
+</code></pre>
+<p>If Alice can change <code>1042</code> to <code>1043</code> and see Bob&#39;s order, that is BOLA.</p>
+<p><strong>Fix</strong>: every request that touches an object must check that the authenticated user is allowed to access <em>that specific object</em>.</p>
+<h2>API2 — Broken Authentication</h2>
+<ul>
+<li>Weak password policies</li>
+<li>No rate limiting on login / password reset</li>
+<li>JWT with <code>alg:none</code> or weak secrets</li>
+<li>Tokens that never expire</li>
+<li>Predictable password-reset tokens</li>
+</ul>
+<h2>API3 — Broken Object Property Level Authorization</h2>
+<p>Even if the user is allowed to see the <em>object</em>, they may not be allowed to see or change every <em>property</em>.</p>
+<p>Example: a user can update their profile, but the API also accepts <code>&quot;isAdmin&quot;: true</code> or returns the full internal user object including password hashes.</p>
+<h2>API4 — Unrestricted Resource Consumption</h2>
+<p>No rate limits, no payload size limits, no pagination limits. Attackers can:</p>
+<ul>
+<li>Brute-force tokens</li>
+<li>Exhaust CPU with expensive GraphQL queries</li>
+<li>Fill storage with large uploads</li>
+</ul>
+<h2>API5 — Broken Function Level Authorization</h2>
+<p>A normal user discovers <code>/api/admin/users</code> or <code>/api/v1/export-all</code> and the endpoint only checks that <em>someone</em> is logged in, not that they are an admin.</p>
+<h2>API6 — Unrestricted Access to Sensitive Business Flows</h2>
+<p>Buying limited items, booking seats, submitting votes, claiming coupons — anything that has business value and can be automated. Rate limits and CAPTCHAs help, but design-level controls are better.</p>
+<h2>API7 — Server Side Request Forgery (SSRF)</h2>
+<p>The API takes a URL (or a host) from the user and fetches it. Classic targets: cloud metadata (<code>169.254.169.254</code>), internal admin panels, Redis, etc.</p>
+<h2>API8 — Security Misconfiguration</h2>
+<p>Verbose error messages, open CORS (<code>Access-Control-Allow-Origin: *</code> with credentials), default credentials, unnecessary HTTP methods enabled, missing security headers.</p>
+<h2>API9 — Improper Inventory Management</h2>
+<p>Old API versions (<code>/v1</code>, <code>/v2</code>, <code>/internal</code>) still running, undocumented endpoints, debug endpoints left open in production.</p>
+<h2>API10 — Unsafe Consumption of APIs</h2>
+<p>Your service calls a third-party API and trusts the response completely — no validation, no size limits, no schema checks. A compromised or malicious upstream can poison your system.</p>
+<p>:::lab
+Take any public or lab API you have access to and map each endpoint against this list. Even a simple mental checklist already surfaces the highest-risk places.</p>
+<h2>Key terms</h2>
+<ul>
+<li><strong>BOLA</strong> — Broken Object Level Authorization</li>
+<li><strong>Function Level Authorization</strong> — checking the <em>action</em>, not just the object</li>
+<li><strong>Shadow API</strong> — an undocumented or forgotten endpoint still reachable</li>
+</ul>
+<h2>Recap</h2>
+<p>Memorise these ten categories. When you test an API, walk through them deliberately. Most real findings fall into API1, API2, API3, or API5.</p>
+<h3>References</h3>
+<ul>
+<li><a href="https://owasp.org/API-Security/">OWASP API Security Project</a></li>
+<li><a href="https://owasp.org/API-Security/editions/2023/en/0x00-header/">API Security Top 10 2023 PDF</a></li>
+</ul>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/21-api-security/owasp-api-top-10";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

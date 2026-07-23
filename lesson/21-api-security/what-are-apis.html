@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What are APIs and why do they matter for security? — Path 21 · KashSec Academy</title>
+<meta name="description" content="APIs (Application Programming Interfaces) are how modern software talks to other software. When your phone app shows your bank balance, when a website loads comments, when one microservice asks anothe">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/21-api-security/what-are-apis">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="What are APIs and why do they matter for security? — Path 21 · KashSec Academy">
+<meta property="og:description" content="APIs (Application Programming Interfaces) are how modern software talks to other software. When your phone app shows your bank balance, when a website loads comments, when one microservice asks anothe">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/21-api-security/what-are-apis">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="What are APIs and why do they matter for security? — Path 21 · KashSec Academy">
+<meta name="twitter:description" content="APIs (Application Programming Interfaces) are how modern software talks to other software. When your phone app shows your bank balance, when a website loads comments, when one microservice asks anothe">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"What are APIs and why do they matter for security? — Path 21 · KashSec Academy","description":"APIs (Application Programming Interfaces) are how modern software talks to other software. When your phone app shows your bank balance, when a website loads comments, when one microservice asks anothe","url":"https://kashsec.vercel.app/#/lesson/21-api-security/what-are-apis","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/21-api-security/what-are-apis">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 21 — API Security</a> · What are APIs and why do they matter for security?</div>
+  <article><h1>What are APIs and why do they matter for security?</h1>
+<p>APIs (Application Programming Interfaces) are how modern software talks to other software. When your phone app shows your bank balance, when a website loads comments, when one microservice asks another for user data — an API is doing the work.</p>
+<p>In 2026, <strong>most of the attack surface of a modern application is its APIs</strong>, not the classic HTML forms of the 2000s.</p>
+<h2>The simple picture</h2>
+<p>Think of a restaurant:</p>
+<ul>
+<li>The <strong>kitchen</strong> is the server / database / business logic</li>
+<li>The <strong>menu</strong> is the API documentation</li>
+<li>The <strong>waiter</strong> is the API itself — it takes your order (request), talks to the kitchen, and brings back the food (response)</li>
+</ul>
+<p>If the waiter never checks whether you’re allowed to order the expensive wine, or if they shout your credit card number across the room, that’s an API security problem.</p>
+<h2>Why APIs are different (and often more dangerous)</h2>
+<table>
+<thead>
+<tr>
+<th>Classic web page</th>
+<th>Modern API</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Returns HTML meant for humans</td>
+<td>Returns JSON/XML meant for machines</td>
+</tr>
+<tr>
+<td>Browser helps enforce some rules</td>
+<td>Client is often a mobile app or another service you don’t control</td>
+</tr>
+<tr>
+<td>Session cookies are common</td>
+<td>Tokens (JWT, API keys, OAuth) are common</td>
+</tr>
+<tr>
+<td>One request → one page</td>
+<td>One request can return or change a lot of data</td>
+</tr>
+</tbody></table>
+<p>Attackers love APIs because:</p>
+<ol>
+<li><strong>They are machine-readable</strong> — easy to script and fuzz</li>
+<li><strong>They often expose more data</strong> than the UI shows</li>
+<li><strong>Authorization is frequently incomplete</strong> (the classic BOLA/IDOR problem)</li>
+<li><strong>They are everywhere</strong> — mobile apps, SPAs, microservices, third-party integrations, IoT</li>
+</ol>
+<h2>Core terms you’ll see everywhere</h2>
+<ul>
+<li><strong>Endpoint</strong> — a specific URL + method combination (e.g. <code>GET /api/v1/users/42</code>)</li>
+<li><strong>Request</strong> — what the client sends (method, path, headers, body)</li>
+<li><strong>Response</strong> — what the server sends back (status code, headers, body)</li>
+<li><strong>Authentication</strong> — proving who you are</li>
+<li><strong>Authorization</strong> — proving you’re allowed to do this particular thing</li>
+<li><strong>Schema</strong> — the expected shape of the data (OpenAPI/Swagger is the most common way to describe it)</li>
+</ul>
+<h2>The security mindset for APIs</h2>
+<p>When you look at any API, ask:</p>
+<ol>
+<li>Who is allowed to call this endpoint?</li>
+<li>What data can they see or change?</li>
+<li>What happens if I change the ID in the URL?</li>
+<li>What happens if I send unexpected fields or types?</li>
+<li>Is there any rate limiting or abuse protection?</li>
+<li>Does the response leak more information than the UI would?</li>
+</ol>
+<p>We’ll answer these systematically in the rest of this path.</p>
+<h2>Key takeaway</h2>
+<p>APIs are the new front door. Most real-world breaches in the last few years involved API-level authorization failures, excessive data exposure, or broken authentication — not sophisticated zero-days.</p>
+<p>If you only remember one thing: <strong>never trust the client</strong>. The mobile app or SPA can be modified. All real security decisions must happen on the server.</p>
+<h3>References</h3>
+<ul>
+<li><a href="https://owasp.org/API-Security/">OWASP API Security Top 10</a> — the industry checklist we’ll follow throughout this path</li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Introduction">What is an API? (Mozilla)</a></li>
+</ul>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/21-api-security/what-are-apis";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

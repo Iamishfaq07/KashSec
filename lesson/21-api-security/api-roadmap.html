@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your API Security Roadmap — Path 21 · KashSec Academy</title>
+<meta name="description" content="You now have the mental models and a practical testing process. Here’s how to keep growing.">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/21-api-security/api-roadmap">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Your API Security Roadmap — Path 21 · KashSec Academy">
+<meta property="og:description" content="You now have the mental models and a practical testing process. Here’s how to keep growing.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/21-api-security/api-roadmap">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Your API Security Roadmap — Path 21 · KashSec Academy">
+<meta name="twitter:description" content="You now have the mental models and a practical testing process. Here’s how to keep growing.">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Your API Security Roadmap — Path 21 · KashSec Academy","description":"You now have the mental models and a practical testing process. Here’s how to keep growing.","url":"https://kashsec.vercel.app/#/lesson/21-api-security/api-roadmap","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/21-api-security/api-roadmap">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 21 — API Security</a> · Your API Security Roadmap</div>
+  <article><h1>Your API Security Roadmap</h1>
+<p>You now have the mental models and a practical testing process. Here’s how to keep growing.</p>
+<h2>Immediate next steps (next 2–4 weeks)</h2>
+<ol>
+<li>Finish the capstone lab on crAPI or an equivalent vulnerable API</li>
+<li>Re-test one of your own projects (or a friend’s) with the dual-account method</li>
+<li>Read the full <a href="https://owasp.org/API-Security/">OWASP API Security Top 10</a> and map every item to a concrete test you can perform</li>
+<li>Add API testing to your bug-bounty or personal lab routine</li>
+</ol>
+<h2>Skills to deepen</h2>
+<table>
+<thead>
+<tr>
+<th>Skill</th>
+<th>Why it matters</th>
+<th>How to practice</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>GraphQL security</strong></td>
+<td>Growing rapidly; different attack surface</td>
+<td>Damn Vulnerable GraphQL Application + InQL</td>
+</tr>
+<tr>
+<td><strong>OAuth / OIDC flows</strong></td>
+<td>Most modern auth is built on them</td>
+<td>PortSwigger OAuth labs + reading real provider docs</td>
+</tr>
+<tr>
+<td><strong>gRPC &amp; non-HTTP APIs</strong></td>
+<td>Common in internal microservice environments</td>
+<td>Learn protobuf basics and grpcurl</td>
+</tr>
+<tr>
+<td><strong>API gateways &amp; WAFs</strong></td>
+<td>Real production defenses</td>
+<td>Experiment with rate-limit bypasses and header tricks</td>
+</tr>
+<tr>
+<td><strong>Automation</strong></td>
+<td>Scale your testing</td>
+<td>Write Nuclei templates and small Python/Go tools</td>
+</tr>
+</tbody></table>
+<h2>Career angles</h2>
+<ul>
+<li><strong>AppSec / Product Security</strong> — API reviews are a core part of the job</li>
+<li><strong>Bug Bounty</strong> — API bugs (especially BOLA) pay consistently</li>
+<li><strong>Penetration Testing</strong> — almost every modern assessment includes APIs</li>
+<li><strong>Cloud / Platform Security</strong> — service-to-service APIs and IAM</li>
+</ul>
+<h2>Recommended resources</h2>
+<ul>
+<li>OWASP API Security Project</li>
+<li>PortSwigger Web Security Academy (API &amp; GraphQL paths)</li>
+<li>“Hacking APIs” by Corey Ball (book)</li>
+<li>crAPI + vAPI for continuous practice</li>
+<li>Real bug-bounty write-ups that mention BOLA / IDOR / mass assignment</li>
+</ul>
+<h2>Final mindset</h2>
+<p>Every time you see an API call, ask:</p>
+<blockquote>
+<p>“If I change the ID, or replay this as another user, or add an extra field — what happens?”</p>
+</blockquote>
+<p>That single habit will find more real vulnerabilities than most automated scanners.</p>
+<p>You now have the foundation. Go break (authorized) things safely and build the muscle memory.</p>
+<hr>
+<p><strong>Path complete.</strong><br>Return to the <a href="#/roadmap">course roadmap</a> or jump into a <a href="#/tracks">practice track</a>.</p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/21-api-security/api-roadmap";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>
