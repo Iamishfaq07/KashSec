@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Risk Management Fundamentals — Path 23 · KashSec Academy</title>
+<meta name="description" content="Risk management is the engine room of GRC: deciding what to worry about, how much, and what — if anything — to do about it.">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/23-grc-compliance/risk-management-fundamentals">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Risk Management Fundamentals — Path 23 · KashSec Academy">
+<meta property="og:description" content="Risk management is the engine room of GRC: deciding what to worry about, how much, and what — if anything — to do about it.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/23-grc-compliance/risk-management-fundamentals">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Risk Management Fundamentals — Path 23 · KashSec Academy">
+<meta name="twitter:description" content="Risk management is the engine room of GRC: deciding what to worry about, how much, and what — if anything — to do about it.">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Risk Management Fundamentals — Path 23 · KashSec Academy","description":"Risk management is the engine room of GRC: deciding what to worry about, how much, and what — if anything — to do about it.","url":"https://kashsec.vercel.app/#/lesson/23-grc-compliance/risk-management-fundamentals","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/23-grc-compliance/risk-management-fundamentals">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 23 — GRC & Compliance</a> · Risk Management Fundamentals</div>
+  <article><h1>Risk Management Fundamentals</h1>
+<p>Risk management is the engine room of GRC: deciding what to worry about, how much, and what — if anything — to do about it.</p>
+<h2>The core formula</h2>
+<p>You&#39;ve likely seen this earlier in the course: <strong>Risk ≈ Likelihood × Impact</strong>. Everything in this lesson is just building real process around that simple idea.</p>
+<h2>The risk register</h2>
+<p>A <strong>risk register</strong> is the master list: every identified risk, with an owner, a likelihood/impact score, and a plan. A simplified row might look like:</p>
+<table>
+<thead>
+<tr>
+<th>Risk</th>
+<th>Likelihood</th>
+<th>Impact</th>
+<th>Score</th>
+<th>Owner</th>
+<th>Treatment</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Unpatched internet-facing server</td>
+<td>High</td>
+<td>High</td>
+<td>Critical</td>
+<td>IT Ops</td>
+<td>Mitigate — patch within 30 days</td>
+</tr>
+<tr>
+<td>Employee laptop theft</td>
+<td>Medium</td>
+<td>Low</td>
+<td>Low</td>
+<td>IT</td>
+<td>Accept — disk encryption already mitigates</td>
+</tr>
+<tr>
+<td>Vendor with weak security posture</td>
+<td>Medium</td>
+<td>High</td>
+<td>High</td>
+<td>Procurement</td>
+<td>Mitigate — require SOC 2 report</td>
+</tr>
+</tbody></table>
+<h2>The four ways to treat a risk</h2>
+<ol>
+<li><strong>Accept</strong> — the cost of fixing it exceeds the cost of the risk; document the decision and move on. (This is a legitimate, common choice — not laziness.)</li>
+<li><strong>Mitigate</strong> — reduce likelihood or impact (patch the server, add MFA, train staff).</li>
+<li><strong>Transfer</strong> — shift the financial impact elsewhere, usually via cyber insurance or a vendor contract with liability clauses.</li>
+<li><strong>Avoid</strong> — stop doing the risky thing entirely (e.g. don&#39;t collect data you don&#39;t need).</li>
+</ol>
+<p>&quot;Accept&quot; is often the correct answer for low-value risks — a mature risk program <em>stops</em> people from gold-plating security on things that don&#39;t matter, as much as it pushes fixes where they do.</p>
+<h2>Qualitative vs quantitative risk</h2>
+<ul>
+<li><strong>Qualitative</strong> — High/Medium/Low scoring, fast, subjective, good for most day-to-day prioritisation. What most companies actually use.</li>
+<li><strong>Quantitative</strong> — tries to put a real dollar figure on risk (e.g. FAIR — Factor Analysis of Information Risk). More rigorous, more work, used for big-ticket decisions (cyber insurance sizing, major investment justification).</li>
+</ul>
+<h2>Inherent risk vs residual risk</h2>
+<ul>
+<li><strong>Inherent risk</strong> — how bad this would be with <em>no controls at all</em>.</li>
+<li><strong>Residual risk</strong> — how bad it still is <em>after</em> your existing controls.</li>
+</ul>
+<p>Auditors and risk committees care almost entirely about residual risk — the number after you&#39;ve already done something about it. This distinction shows up constantly in real risk assessments.</p>
+<h2>A worked example</h2>
+<p><em>Risk</em>: &quot;A developer accidentally commits an AWS secret key to a public GitHub repo.&quot;</p>
+<ul>
+<li><strong>Inherent risk</strong>: High likelihood (developers make mistakes), High impact (full account compromise) → Critical.</li>
+<li><strong>Existing controls</strong>: pre-commit secret scanning, GitHub secret scanning alerts, IAM keys scoped to least privilege.</li>
+<li><strong>Residual risk</strong>: Low likelihood (caught before/soon after commit), Medium impact (scoped key limits blast radius) → Medium.</li>
+<li><strong>Treatment decision</strong>: Mitigate further — rotate to short-lived credentials (OIDC instead of static keys) to push residual risk to Low.</li>
+</ul>
+<p>This is the actual shape of a professional risk assessment — not a vibe, a documented chain of reasoning someone else can review and challenge.</p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/23-grc-compliance/risk-management-fundamentals";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>
