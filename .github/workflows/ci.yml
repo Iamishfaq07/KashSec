@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci || npm install
+
+      - name: Syntax check hand-written JS
+        run: |
+          for f in app.js quizzes.js sync.js ads.js analytics.js lesson-hashes.js; do
+            [ -f "$f" ] && node --check "$f"
+          done
+
+      # Runs before the build so it fails loudly when someone edits app.js's
+      # PATHS array (or a lesson file) and forgets to regenerate artifacts —
+      # which is exactly how sw.js and the search index have drifted before.
+      - name: Data integrity (committed state)
+        run: npm run test:data
+
+      - name: Rebuild generated artifacts
+        run: npm run build
+
+      - name: Fail if generated artifacts were not committed
+        run: |
+          if ! git diff --quiet; then
+            echo "::error::Generated files are out of date. Run 'npm run build' and commit the result."
+            git --no-pager diff --stat
+            exit 1
+          fi
+
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Serve the site
+        run: |
+          python3 -m http.server 8000 --bind 127.0.0.1 &
+          for i in $(seq 1 30); do
+            curl -sf http://127.0.0.1:8000/index.html >/dev/null && break
+            sleep 1
+          done
+
+      - name: Smoke test all routes
+        run: npm run test:smoke
+        env:
+          BASE: http://127.0.0.1:8000

@@ -117,6 +117,8 @@ const SupabaseSync = (function(){
     unionFlat('labsCompleted');
     unionFlat('weeklyChain');
     unionFlat('pomodoroSessions');
+    unionFlat('lessonRatings');
+    unionFlat('missedQuestions');
 
     merged.quizScores = Object.assign({}, remote.quizScores||{});
     Object.entries(local.quizScores||{}).forEach(([pathId, score])=>{
@@ -210,6 +212,32 @@ const SupabaseSync = (function(){
     }
   }
 
+  /* Lesson feedback. Ratings are stored per-user so someone can change
+     their mind, but the point is the aggregate: the site owner queries
+     this table to find which lessons are consistently rated unhelpful.
+     Nothing here is publicly readable — see SUPABASE_SETUP.md §9. */
+  async function pushLessonRating(lessonKey, rating){
+    if(!CONFIGURED || !currentUser) return false;
+    try{
+      const sb = await loadClientLib();
+      if(rating){
+        const { error } = await sb.from('lesson_ratings').upsert(
+          { user_id: currentUser.id, lesson_key: lessonKey, rating },
+          { onConflict: 'user_id,lesson_key' });
+        if(error) throw error;
+      } else {
+        // Rating cleared — remove the row rather than storing a null.
+        const { error } = await sb.from('lesson_ratings').delete()
+          .eq('user_id', currentUser.id).eq('lesson_key', lessonKey);
+        if(error) throw error;
+      }
+      return true;
+    }catch(e){
+      console.warn('[Sync] lesson rating push failed', e);
+      return false;
+    }
+  }
+
   async function fetchProfile(userId){
     if(!CONFIGURED) return null;
     try{
@@ -245,6 +273,7 @@ const SupabaseSync = (function(){
     signInWithEmail, signInWithGoogle, signOut,
     isSignedIn, userEmail, pullAndMerge, pushState, pushNow,
     pushLeaderboardEntry, removeLeaderboardEntry, fetchLeaderboard, fetchProfile,
+    pushLessonRating,
     get currentUser(){ return currentUser; }
   };
 })();

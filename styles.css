@@ -634,6 +634,7 @@ a{color:inherit}
   body:has(.reader-wrap) .reader-foot,
   body:has(.reader-wrap) .lesson-rating,
   body:has(.reader-wrap) .micro-check,
+  body:has(.reader-wrap) .updated-banner,
   body:has(.reader-wrap) .notes-panel,
   body:has(.reader-wrap) .ad-slot,
   body:has(.reader-wrap) .toc-float{display:none !important}
@@ -719,6 +720,13 @@ a{color:inherit}
 .prereq-hint b{color:var(--text)}
 .prereq-hint a{color:var(--teal-2)}
 .prereq-ico{flex:none}
+
+/* "Updated since you read it" banner */
+.updated-banner{display:flex;gap:.7rem;align-items:center;margin:0 0 1.4rem;padding:.8rem 1.05rem;
+  background:var(--surface2);border:1px solid rgba(63,182,168,.35);border-left:3px solid var(--teal);
+  border-radius:var(--r);font-size:.87rem;color:var(--muted);flex-wrap:wrap}
+.updated-banner b{color:var(--text)}
+.updated-banner>div{flex:1;min-width:12rem}
 
 /* ============================================================
    Transcript

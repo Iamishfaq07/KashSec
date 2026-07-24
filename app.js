@@ -217,7 +217,11 @@ function defaultState(){
     zenMode:false,
     lessonRatings:{}, // { "pathId/subId": 'up'|'down' }
     tourSeen:false,
-    notifyStreak:false
+    notifyStreak:false,
+    // Questions you got wrong, scheduled to come back. Keyed "pathId#index".
+    // { due: "YYYY-MM-DD", interval: days, streak: N, misses: N }
+    missedQuestions:{},
+    readHashes:{} // { "pathId/subId": contentHash at time of completion }
   };
 }
 function loadState(){
@@ -238,10 +242,51 @@ function isComplete(pathId,subId){ return !!STATE.completed[lessonKey(pathId,sub
 function toggleComplete(pathId,subId){
   const k = lessonKey(pathId,subId);
   const nowComplete = !STATE.completed[k];
-  if(nowComplete) STATE.completed[k] = Date.now(); else delete STATE.completed[k];
+  if(nowComplete){
+    STATE.completed[k] = Date.now();
+    // Remember which version of the lesson was read, so a later edit can
+    // be surfaced as "this changed since you read it".
+    if(!STATE.readHashes) STATE.readHashes = {};
+    const h = (typeof LESSON_HASHES !== 'undefined') ? LESSON_HASHES[k] : null;
+    if(h) STATE.readHashes[k] = h;
+  } else {
+    delete STATE.completed[k];
+    if(STATE.readHashes) delete STATE.readHashes[k];
+  }
   saveState();
   checkAchievements();
   return nowComplete;
+}
+/* True when a lesson was completed against a different version of the
+   file than the one now being served. Lessons completed before hashing
+   existed have no stored hash and are deliberately never flagged —
+   better silent than a false "updated" badge on the whole course. */
+function lessonChangedSinceRead(pathId, subId){
+  const k = lessonKey(pathId, subId);
+  if(!STATE.completed[k]) return false;
+  const seen = STATE.readHashes && STATE.readHashes[k];
+  const now = (typeof LESSON_HASHES !== 'undefined') ? LESSON_HASHES[k] : null;
+  return !!(seen && now && seen !== now);
+}
+function changedLessonList(){
+  const out = [];
+  for(const k of Object.keys(STATE.completed || {})){
+    const i = k.indexOf('/');
+    if(i < 0) continue;
+    const pathId = k.slice(0, i), subId = k.slice(i + 1);
+    if(lessonChangedSinceRead(pathId, subId)){
+      const ctx = findSubContext(pathId, subId);
+      if(ctx) out.push(ctx);
+    }
+  }
+  return out;
+}
+/* Acknowledging re-reads: store the current hash so it stops flagging. */
+function markLessonReRead(pathId, subId){
+  const k = lessonKey(pathId, subId);
+  if(!STATE.readHashes) STATE.readHashes = {};
+  const now = (typeof LESSON_HASHES !== 'undefined') ? LESSON_HASHES[k] : null;
+  if(now){ STATE.readHashes[k] = now; saveState(); }
 }
 function isBookmarked(pathId,subId){ return !!STATE.bookmarks[lessonKey(pathId,subId)]; }
 function markLabComplete(labId){
@@ -1229,6 +1274,7 @@ function route(){
   else if(hash === '#/certificate') renderCertificate();
   else if(hash === '#/quiz/final') renderQuiz('final');
   else if(hash === '#/quiz/shuffle') renderShuffleQuiz();
+  else if(hash === '#/quiz/missed') renderMissedReview();
   else if(hash === '#/labs/idor') renderLabIdor();
   else if(hash === '#/labs/jwt') renderLabJwt();
   else if(hash === '#/labs/traversal') renderLabTraversal();
@@ -2091,6 +2137,12 @@ async function renderSubLesson(pathId, subId){
           <button class="btn-ghost sm" id="pomodoroReset" type="button">Reset</button>
           <span class="pomodoro-count" id="pomodoroCount"></span>
         </div>
+        ${lessonChangedSinceRead(pathId, subId) ? `
+        <div class="updated-banner" id="updatedBanner">
+          <span>✏️</span>
+          <div>This lesson has been <b>updated</b> since you marked it complete — worth a skim.</div>
+          <button class="btn-ghost sm" id="dismissUpdated" type="button">Got it</button>
+        </div>` : ''}
         <div class="md" id="content"><div class="loading">Loading…</div></div>
         <div id="microCheck"></div>
         <details class="notes-panel">
@@ -2142,6 +2194,10 @@ async function renderSubLesson(pathId, subId){
     document.getElementById('sidebar').classList.toggle('open');
   });
   document.getElementById('printLessonBtn')?.addEventListener('click',()=>window.print());
+  document.getElementById('dismissUpdated')?.addEventListener('click', ()=>{
+    markLessonReRead(pathId, subId);
+    document.getElementById('updatedBanner')?.remove();
+  });
   wirePomodoro();
   document.body.classList.toggle('zen-mode', !!STATE.zenMode);
   document.getElementById('zenModeBtn')?.addEventListener('click', ()=>{
@@ -2185,6 +2241,12 @@ async function renderSubLesson(pathId, subId){
     lrUp.setAttribute('aria-pressed', STATE.lessonRatings[k]==='up');
     lrDown.setAttribute('aria-pressed', STATE.lessonRatings[k]==='down');
     lrThanks.textContent = STATE.lessonRatings[k] ? 'Thanks for the feedback!' : '';
+    // Send the signal somewhere it can actually be read. Local-only
+    // feedback is useless to whoever has to fix the lesson — this needs
+    // sync configured and the user signed in, and no-ops otherwise.
+    if(typeof SupabaseSync !== 'undefined' && SupabaseSync.CONFIGURED && SupabaseSync.isSignedIn()){
+      SupabaseSync.pushLessonRating(k, STATE.lessonRatings[k] || null);
+    }
   };
   lrUp?.addEventListener('click', ()=>setRating('up'));
   lrDown?.addEventListener('click', ()=>setRating('down'));
@@ -4093,6 +4155,13 @@ function renderLabPhishing(){
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
+  {date:'2026-07-24', title:'Faster first load, missed-question review & update flags', items:[
+    'Roughly half a megabyte less to download on first visit — the glossary and search index no longer block the offline installer, they load in the background instead.',
+    'Missed-question review (#/quiz/missed): questions you get wrong now come back on a spaced schedule until you\'ve answered each correctly three times.',
+    '"Updated since you read it" — lessons edited after you completed them are now flagged, so you know what\'s worth a second look.',
+    'Lesson 👍/👎 feedback now reaches the site owner (when signed in) instead of only ever sitting in your own browser.',
+    'Added an automated test suite and CI so content and routing regressions get caught before they ship.'
+  ]},
   {date:'2026-07-24', title:'Full quiz coverage, onboarding tour, transcripts & SEO', items:[
     'Every path now has a quiz — API Security, DevSecOps, and GRC were missing one entirely, so "quizzes passed" could never reach 100%.',
     'All quiz banks doubled from 5 to 10 questions (240 questions total), which also means weekly chains now deliver the full seven they promise.',
@@ -5277,6 +5346,164 @@ function renderWeeklyChain(chainId){
    then a results screen with a full review.
    ============================================================ */
 /* ============================================================
+   Missed-question review — questions you got WRONG are the highest
+   signal material you have, but until now they vanished the moment a
+   quiz ended. These get scheduled back using the same expanding
+   interval idea as the flashcards: miss it again and it resets to
+   tomorrow; get it right and it backs off 1 → 3 → 7 → 16 → 30+ days.
+   Retired once answered correctly three times running.
+   ============================================================ */
+const MISSED_KEY = (pathId, index) => `${pathId}#${index}`;
+function todayISO(){ return new Date().toISOString().slice(0,10); }
+function addDaysISO(iso, days){
+  const d = new Date(iso + 'T00:00:00Z');
+  d.setUTCDate(d.getUTCDate() + days);
+  return d.toISOString().slice(0,10);
+}
+function recordMissedQuestion(pathId, index){
+  if(!STATE.missedQuestions) STATE.missedQuestions = {};
+  const k = MISSED_KEY(pathId, index);
+  const prev = STATE.missedQuestions[k];
+  STATE.missedQuestions[k] = {
+    due: addDaysISO(todayISO(), 1),
+    interval: 1,
+    streak: 0,
+    misses: (prev ? prev.misses : 0) + 1
+  };
+}
+function gradeMissedQuestion(pathId, index, correct){
+  if(!STATE.missedQuestions) return;
+  const k = MISSED_KEY(pathId, index);
+  const r = STATE.missedQuestions[k];
+  if(!r) return;
+  if(!correct){
+    r.streak = 0; r.interval = 1; r.due = addDaysISO(todayISO(), 1); r.misses++;
+  } else {
+    r.streak++;
+    if(r.streak >= 3){ delete STATE.missedQuestions[k]; saveState(); return; } // learned
+    r.interval = r.streak === 1 ? 3 : Math.min(60, Math.round(r.interval * 2.4));
+    r.due = addDaysISO(todayISO(), r.interval);
+  }
+  saveState();
+}
+/* Resolves stored keys back to real questions, dropping any whose path
+   or index no longer exists (quiz banks do get edited). */
+function missedQuestionList(dueOnly){
+  const out = [];
+  const today = todayISO();
+  for(const [k, r] of Object.entries(STATE.missedQuestions || {})){
+    const hash = k.lastIndexOf('#');
+    if(hash < 0) continue;
+    const pathId = k.slice(0, hash);
+    const index = parseInt(k.slice(hash + 1), 10);
+    const bank = (typeof QUIZZES !== 'undefined' && QUIZZES[pathId] && QUIZZES[pathId].questions) || null;
+    if(!bank || !bank[index]) continue;
+    if(dueOnly && r.due > today) continue;
+    out.push({ key:k, pathId, index, q: bank[index], rec: r, path: findPath(pathId) });
+  }
+  return out;
+}
+
+function renderMissedReview(){
+  const due = missedQuestionList(true);
+  const all = missedQuestionList(false);
+
+  if(!all.length){
+    app.innerHTML = `
+      <section class="sec">
+        <div class="sec-head" data-reveal>
+          <div class="sec-eyebrow">Review</div>
+          <h2>Nothing to review yet</h2>
+          <p class="sec-lead">Questions you get wrong in a path quiz land here automatically, then come back on a spaced schedule until you've answered them correctly three times running.</p>
+          <div class="hero-btns" style="justify-content:flex-start;margin-top:1rem">
+            <a class="btn-amber" href="#/course">Browse paths</a>
+            <a class="btn-ghost" href="#/quiz/shuffle">🔀 Shuffle quiz</a>
+          </div>
+        </div>
+      </section>`;
+    setupReveal();
+    return;
+  }
+  if(!due.length){
+    const next = all.map(x=>x.rec.due).sort()[0];
+    app.innerHTML = `
+      <section class="sec">
+        <div class="sec-head" data-reveal>
+          <div class="sec-eyebrow">Review</div>
+          <h2>All caught up</h2>
+          <p class="sec-lead">${all.length} question${all.length===1?'':'s'} still being tracked, but none are due yet — the next comes back on <b>${next}</b>. Spacing them out is what makes them stick.</p>
+          <div class="hero-btns" style="justify-content:flex-start;margin-top:1rem">
+            <a class="btn-amber" href="#/quiz/shuffle">🔀 Practise anyway</a>
+            <a class="btn-ghost" href="#/progress">Back to progress</a>
+          </div>
+        </div>
+      </section>`;
+    setupReveal();
+    return;
+  }
+
+  let i = 0, right = 0;
+  function paint(){
+    if(i >= due.length){
+      app.innerHTML = `
+        <section class="sec">
+          <div class="sec-head" data-reveal>
+            <div class="sec-eyebrow">Review complete</div>
+            <h2>${right}/${due.length} correct</h2>
+            <p class="sec-lead">Anything you missed comes back tomorrow. Anything you got right backs off to a longer interval — and retires completely after three correct answers in a row.</p>
+            <div class="hero-btns" style="justify-content:flex-start;margin-top:1rem">
+              <a class="btn-amber" href="#/progress">Back to progress</a>
+            </div>
+          </div>
+        </section>`;
+      setupReveal();
+      if(right === due.length) fireConfetti({count:100});
+      return;
+    }
+    const item = due[i];
+    const q = item.q;
+    app.innerHTML = `
+      <section class="sec">
+        <div class="quiz-wrap">
+          <div class="quiz-head" data-reveal>
+            <div class="sec-eyebrow">🔁 Missed-question review · ${i+1} of ${due.length}</div>
+            <h2>${escapeHtml(q.q)}</h2>
+            <p class="sec-lead">From ${item.path ? `Path ${item.path.n} — ${escapeHtml(item.path.title)}` : escapeHtml(item.pathId)} · missed ${item.rec.misses} time${item.rec.misses===1?'':'s'} before</p>
+          </div>
+          <div class="quiz-card" data-reveal style="--i:1">
+            <div class="quiz-options" id="mrOptions">
+              ${q.options.map((opt,oi)=>`<button class="quiz-opt" data-oi="${oi}" type="button"><span class="opt-letter">${String.fromCharCode(65+oi)}</span><span>${escapeHtml(opt)}</span></button>`).join('')}
+            </div>
+            <div id="mrFeedback"></div>
+          </div>
+        </div>
+      </section>`;
+    setupReveal();
+    let answered = false;
+    document.querySelectorAll('#mrOptions .quiz-opt').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        if(answered) return;
+        answered = true;
+        const chosen = parseInt(btn.dataset.oi, 10);
+        const correct = chosen === q.correct;
+        if(correct) right++;
+        document.querySelectorAll('#mrOptions .quiz-opt').forEach(b=>{
+          const oi = parseInt(b.dataset.oi, 10);
+          if(oi === q.correct) b.classList.add('correct'); else if(oi === chosen) b.classList.add('wrong');
+          b.disabled = true;
+        });
+        gradeMissedQuestion(item.pathId, item.index, correct);
+        document.getElementById('mrFeedback').innerHTML = `
+          <div class="quiz-explain"><strong>${correct?'Correct — ':'Not quite — '}</strong>${escapeHtml(q.explain||'')}</div>
+          <div class="hero-btns" style="margin-top:1.2rem"><button class="btn-amber sm" id="mrNext" type="button">${i+1<due.length?'Next →':'See results →'}</button></div>`;
+        document.getElementById('mrNext').addEventListener('click', ()=>{ i++; paint(); });
+      });
+    });
+  }
+  paint();
+}
+
+/* ============================================================
    Shuffle quiz — a random, no-stakes N-question quiz drawn from every
    path's question bank at once. Nothing is saved to quiz scores or
    achievements tied to a specific path; purely for casual practice.
@@ -5442,6 +5669,13 @@ function renderQuiz(id){
   function paintResult(){
     const {score,total,pct} = scoreNow();
     const passed = pct >= quiz.passPct;
+    // Schedule every wrong answer to come back later. Only for real path
+    // quizzes — the Final Exam draws from its own separate bank.
+    if(!isFinal){
+      let scheduled = 0;
+      answers.forEach((a,i)=>{ if(a !== null && a !== quiz.questions[i].correct){ recordMissedQuestion(id, i); scheduled++; } });
+      if(scheduled) saveState();
+    }
     const R = 66, C = 2*Math.PI*R;
     app.innerHTML = `
       <section class="sec">
@@ -5462,6 +5696,8 @@ function renderQuiz(id){
               ? (passed ? `<a class="btn-ghost" href="#/certificate">Get your certificate →</a>` : `<a class="btn-ghost" href="#/progress">Back to progress</a>`)
               : `<a class="btn-ghost" href="#/lesson/${id}">Back to path</a>`}
           </div>
+          ${!isFinal && score < total ? `
+            <p class="tool-note" data-reveal style="--i:4">🔁 The ${total-score} question${total-score===1?'':'s'} you missed ${total-score===1?'has':'have'} been scheduled to come back — <a href="#/quiz/missed">review them here</a> once they're due.</p>` : ''}
           ${!isFinal && pct === 100 && pathProgress(id).pct < 100 ? `
             <div class="testout-box" data-reveal style="--i:4">
               <div class="testout-t">🎓 Perfect score — already know this path?</div>
@@ -6225,6 +6461,38 @@ function renderProgressHub(){
         <div class="hub-stat"><div class="hub-stat-n">${labScoreboard().points}</div><div class="hub-stat-l">Lab points</div></div>
       </div>
 
+      ${(()=>{
+        const changed = changedLessonList();
+        if(!changed.length) return '';
+        return `
+      <div class="hub-section" data-reveal style="--i:2">
+        <div class="hub-section-head"><h3 style="font-family:'Space Grotesk';font-size:1.15rem">✏️ Updated since you read them</h3></div>
+        ${changed.slice(0,10).map(ctx=>`
+          <a class="hub-list-item" href="#/lesson/${ctx.path.id}/${ctx.sub.id}">
+            <div><div class="hli-t">${ctx.path.n}.${ctx.sub.n} · ${escapeHtml(ctx.sub.title)}</div><div class="hli-d">${escapeHtml(ctx.path.title)}</div></div>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+          </a>`).join('')}
+        ${changed.length > 10 ? `<div class="hub-empty">…and ${changed.length-10} more</div>` : ''}
+      </div>`;
+      })()}
+
+      ${(()=>{
+        const dueN = missedQuestionList(true).length;
+        const allN = missedQuestionList(false).length;
+        if(!allN) return '';
+        return `
+      <div class="hub-section" data-reveal style="--i:2">
+        <div class="hub-section-head"><h3 style="font-family:'Space Grotesk';font-size:1.15rem">🔁 Questions to revisit</h3></div>
+        <a class="hub-list-item" href="#/quiz/missed">
+          <div>
+            <div class="hli-t">${dueN ? `${dueN} question${dueN===1?'':'s'} due for review` : 'All caught up'}</div>
+            <div class="hli-d">${allN} question${allN===1?'':'s'} you've missed ${dueN ? 'are being tracked — answer each correctly three times to retire it' : 'tracked; nothing due right now'}</div>
+          </div>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </a>
+      </div>`;
+      })()}
+
       <div class="hub-section" data-reveal style="--i:2">
         <div class="hub-section-head"><h3 style="font-family:'Space Grotesk';font-size:1.15rem">📅 Activity</h3></div>
         ${heatmapHtml()}
@@ -6670,7 +6938,7 @@ function getCommands(){
     ['Mock interview','#/interview/mock','⏱'],['Certification roadmap','#/certs','🎓'],['Skill tree','#/skilltree','🌳'],
     ['Capstone attack chain','#/capstone','⛓️'],['Weekly challenge chains','#/weekly','📆'],
     ['Career-fit quiz','#/career-quiz','🧭'],['Shuffle quiz','#/quiz/shuffle','🔀'],
-    ['Learning transcript','#/transcript','📄']
+    ['Learning transcript','#/transcript','📄'],['Review missed questions','#/quiz/missed','🔁']
   ].map(([t,u,i])=>({title:t, url:u, icon:i, ctx:'Go to', keywords:t.toLowerCase()}));
   const tools = (typeof TOOLS!=='undefined'?TOOLS:[]).map(t=>({title:'Tool: '+t.title, url:`#/tools/${t.id}`, icon:t.ico, ctx:'Tool', keywords:(t.title+' '+t.desc).toLowerCase()}));
   const labs = [

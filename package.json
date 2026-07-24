@@ -6,13 +6,16 @@
   "type": "module",
   "scripts": {
     "dev": "python3 -m http.server 8000",
-    "build": "node generate-glossary.js && node generate-search-index.js && node generate-feed.js && node generate-prerender.js && node generate-sw.js",
+    "build": "node generate-glossary.js && node generate-search-index.js && node generate-lesson-hashes.js && node generate-feed.js && node generate-prerender.js && node generate-sw.js",
     "build:sw": "node generate-sw.js",
     "build:glossary": "node generate-glossary.js",
     "build:search": "node generate-search-index.js",
     "build:feed": "node generate-feed.js",
     "build:prerender": "node generate-prerender.js",
-    "test": "echo \"No tests specified\" && exit 0"
+    "test": "node tests/data-integrity.test.js && npm run test:smoke",
+    "build:hashes": "node generate-lesson-hashes.js",
+    "test:data": "node tests/data-integrity.test.js",
+    "test:smoke": "node tests/smoke.spec.js"
   },
   "repository": {
     "type": "git",
@@ -30,6 +33,7 @@
     "@vercel/speed-insights": "^2.0.0"
   },
   "devDependencies": {
-    "marked": "^18.0.6"
+    "marked": "^18.0.6",
+    "playwright": "^1.49.0"
   }
 }

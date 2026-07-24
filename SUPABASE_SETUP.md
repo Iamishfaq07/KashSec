@@ -162,6 +162,60 @@ Note this table is intentionally public-readable (`display_name` and
 nobody's email, notes, or other progress details are ever in it, and a
 user only appears here at all if they explicitly opt in.
 
+## 9. Optional: lesson feedback (👍 / 👎)
+
+Every lesson has a helpful / not-helpful control. Without this table those
+ratings only ever live in the reader's own browser — which means **you can
+never see them**, and the feature is decoration. Run this to make the
+signal reach you.
+
+```sql
+create table if not exists public.lesson_ratings (
+  user_id uuid not null references auth.users(id) on delete cascade,
+  lesson_key text not null,
+  rating text not null check (rating in ('up','down')),
+  updated_at timestamptz not null default now(),
+  primary key (user_id, lesson_key)
+);
+
+alter table public.lesson_ratings enable row level security;
+
+-- Readers can only ever see and change their own rating. There is no
+-- public read policy: individual votes stay private, and you read the
+-- aggregate as the project owner via the SQL editor below.
+create policy "Users manage their own lesson ratings"
+  on public.lesson_ratings for all
+  using (auth.uid() = user_id)
+  with check (auth.uid() = user_id);
+```
+
+### Reading the results
+
+In **SQL Editor**, this gives you the lessons most in need of a rewrite —
+worst ratio first, ignoring lessons with too little feedback to mean
+anything:
+
+```sql
+select
+  lesson_key,
+  count(*) filter (where rating = 'up')   as helpful,
+  count(*) filter (where rating = 'down') as not_helpful,
+  round(100.0 * count(*) filter (where rating = 'down') / count(*), 1) as pct_negative
+from public.lesson_ratings
+group by lesson_key
+having count(*) >= 5
+order by pct_negative desc, not_helpful desc;
+```
+
+`lesson_key` is `pathId/subId`, so `11-web-security/xss` maps to
+`course/11-web-security/xss.md`.
+
+Two honest caveats: ratings only reach this table for readers who are
+**signed in** (anonymous visitors still rate, but it stays on their
+device), and a `having count(*) >= 5` floor exists because three votes
+tell you nothing. Expect this to be useful only once you have real
+traffic.
+
 ## How merging works
 
 When someone signs in for the first time on a given browser, the app
