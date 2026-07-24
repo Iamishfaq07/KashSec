@@ -213,7 +213,9 @@ function defaultState(){
     labsCompleted:{}, // { labId: timestamp }
     weeklyChain:{}, // { chainId: {answers:[{chosen,correct}]} }
     pomodoroSessions:{}, // { "YYYY-MM-DD": count }
-    highContrast:false
+    highContrast:false,
+    zenMode:false,
+    lessonRatings:{} // { "pathId/subId": 'up'|'down' }
   };
 }
 function loadState(){
@@ -1092,6 +1094,9 @@ function route(){
   document.getElementById('tocFloat')?.remove();
   clearInterval(mockInterviewTimer);
   clearInterval(pomodoroInterval);
+  if(playlistActive && !(location.hash || '').startsWith(`#/lesson/${playlistPathId}/`)){
+    playlistActive = false; playlistPathId = null; // user navigated off the playlist's path
+  }
   // Magic-link / OAuth redirects land back on the site with auth tokens
   // riding in the URL (e.g. #access_token=...). That's not a real route —
   // show a brief loading state and let the auth bootstrap below redirect
@@ -1125,6 +1130,7 @@ function route(){
   else if(hash === '#/progress') renderProgressHub();
   else if(hash === '#/certificate') renderCertificate();
   else if(hash === '#/quiz/final') renderQuiz('final');
+  else if(hash === '#/quiz/shuffle') renderShuffleQuiz();
   else if(hash === '#/labs/idor') renderLabIdor();
   else if(hash === '#/labs/jwt') renderLabJwt();
   else if(hash === '#/labs/traversal') renderLabTraversal();
@@ -1565,6 +1571,7 @@ function renderPathOverview(pathId){
             <a class="btn-amber" href="#/lesson/${p.id}/${firstUnfinished.id}">${startLabel} →</a>
             ${quiz ? `<a class="btn-ghost" href="#/quiz/${p.id}">${quizResult ? (quizResult.passed?'✅ Retake quiz':'Retake quiz') : '📝 Take the path quiz'}</a>` : ''}
             <button class="btn-ghost" id="downloadPackBtn" type="button">⬇ Download offline pack (.zip)</button>
+            ${TTS.supported ? `<button class="btn-ghost" id="playlistStartBtn" type="button">🎧 Listen to this path</button>` : ''}
           </div>
         </div>
         <div class="sublesson-grid">
@@ -1613,6 +1620,12 @@ function renderPathOverview(pathId){
       btn.textContent = original;
       btn.disabled = false;
     }
+  });
+
+  document.getElementById('playlistStartBtn')?.addEventListener('click', ()=>{
+    playlistActive = true;
+    playlistPathId = p.id;
+    location.hash = `#/lesson/${p.id}/${p.subs[0].id}`;
   });
 }
 
@@ -1884,6 +1897,7 @@ async function renderSubLesson(pathId, subId){
             <button class="icon-btn" id="listenBtn" type="button" aria-label="Listen to this lesson" title="Listen (read aloud)" hidden>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
             </button>
+            <button class="icon-btn ${playlistActive?'active':''}" id="playlistBtn" type="button" aria-label="${playlistActive?'Stop playlist mode':'Play this path back-to-back like a podcast'}" title="${playlistActive?'Stop playlist':'Playlist mode — auto-advance through the path'}" hidden>🎧</button>
             <button class="icon-btn ${isBookmarked(pathId,subId)?'active':''}" id="bookmarkBtn" type="button" aria-label="Bookmark this lesson" aria-pressed="${isBookmarked(pathId,subId)}">
               <svg viewBox="0 0 24 24" fill="${isBookmarked(pathId,subId)?'currentColor':'none'}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
             </button>
@@ -1895,6 +1909,7 @@ async function renderSubLesson(pathId, subId){
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
             </button>
             <button class="icon-btn" id="pomodoroBtn" type="button" aria-label="Start a focus timer" title="Focus timer">🍅</button>
+            <button class="icon-btn ${STATE.zenMode?'active':''}" id="zenModeBtn" type="button" aria-label="${STATE.zenMode?'Exit focus reading mode':'Enter focus reading mode'}" aria-pressed="${STATE.zenMode}" title="Focus reading mode — hide everything but the lesson">🧘</button>
             <button class="btn-ghost sm mobile-only" id="menuBtn" aria-label="Open lesson menu">☰ Lessons</button>
           </div>
         </div>
@@ -1912,6 +1927,12 @@ async function renderSubLesson(pathId, subId){
             <div class="notes-status" id="notesStatus"></div>
           </div>
         </details>
+        <div class="lesson-rating" id="lessonRating">
+          <span class="lr-label">Was this lesson helpful?</span>
+          <button class="lr-btn ${STATE.lessonRatings[lessonKey(pathId,subId)]==='up'?'active':''}" id="lrUp" type="button" aria-pressed="${STATE.lessonRatings[lessonKey(pathId,subId)]==='up'}" aria-label="Yes, helpful">👍</button>
+          <button class="lr-btn ${STATE.lessonRatings[lessonKey(pathId,subId)]==='down'?'active':''}" id="lrDown" type="button" aria-pressed="${STATE.lessonRatings[lessonKey(pathId,subId)]==='down'}" aria-label="No, not helpful">👎</button>
+          <span class="lr-thanks" id="lrThanks">${STATE.lessonRatings[lessonKey(pathId,subId)] ? 'Thanks for the feedback!' : ''}</span>
+        </div>
         <div class="reader-nav">
           ${ctx.prev
             ? `<a class="btn-ghost sm" href="#/lesson/${ctx.prev.pathId}/${ctx.prev.subId}">← ${ctx.prev.pathN}.${ctx.prev.subN} ${ctx.prev.subTitle}</a>`
@@ -1949,6 +1970,16 @@ async function renderSubLesson(pathId, subId){
   });
   document.getElementById('printLessonBtn')?.addEventListener('click',()=>window.print());
   wirePomodoro();
+  document.body.classList.toggle('zen-mode', !!STATE.zenMode);
+  document.getElementById('zenModeBtn')?.addEventListener('click', ()=>{
+    STATE.zenMode = !STATE.zenMode;
+    saveState();
+    document.body.classList.toggle('zen-mode', STATE.zenMode);
+    const btn = document.getElementById('zenModeBtn');
+    btn.classList.toggle('active', STATE.zenMode);
+    btn.setAttribute('aria-pressed', STATE.zenMode);
+    btn.setAttribute('aria-label', STATE.zenMode ? 'Exit focus reading mode' : 'Enter focus reading mode');
+  });
 
   const reportBtn = document.getElementById('reportMistakeBtn');
   const reportForm = document.getElementById('reportMistakeForm');
@@ -1969,6 +2000,21 @@ async function renderSubLesson(pathId, subId){
   });
 
   recordVisit(pathId, subId);
+
+  const lrUp = document.getElementById('lrUp'), lrDown = document.getElementById('lrDown'), lrThanks = document.getElementById('lrThanks');
+  const setRating = (val)=>{
+    const k = lessonKey(pathId, subId);
+    STATE.lessonRatings[k] = STATE.lessonRatings[k] === val ? null : val; // click again to un-rate
+    if(!STATE.lessonRatings[k]) delete STATE.lessonRatings[k];
+    saveState();
+    lrUp.classList.toggle('active', STATE.lessonRatings[k]==='up');
+    lrDown.classList.toggle('active', STATE.lessonRatings[k]==='down');
+    lrUp.setAttribute('aria-pressed', STATE.lessonRatings[k]==='up');
+    lrDown.setAttribute('aria-pressed', STATE.lessonRatings[k]==='down');
+    lrThanks.textContent = STATE.lessonRatings[k] ? 'Thanks for the feedback!' : '';
+  };
+  lrUp?.addEventListener('click', ()=>setRating('up'));
+  lrDown?.addEventListener('click', ()=>setRating('down'));
 
   document.getElementById('bookmarkBtn').addEventListener('click', ()=>{
     const saved = toggleBookmark(pathId, subId);
@@ -2039,6 +2085,7 @@ async function renderSubLesson(pathId, subId){
 
     // Listen mode (read-aloud), only where the browser supports it.
     wireListenButton(contentEl);
+    wirePlaylist(ctx, contentEl);
 
     // Render Mermaid diagrams
     if(typeof mermaid !== 'undefined'){
@@ -2210,6 +2257,8 @@ function buildTocFloat(tocable){
 let currentTocObserver = null;
 let mockInterviewTimer = null;
 let pomodoroInterval = null;
+let playlistActive = false;
+let playlistPathId = null;
 
 /* Focus timer (Pomodoro) — 25-minute countdown on lesson pages. Purely
    client-side; a completed session logs to STATE.pomodoroSessions,
@@ -2291,6 +2340,50 @@ function wireListenButton(contentEl){
     setPlaying(true);
     TTS.speak(gatherText(), ()=>setPlaying(false));
   });
+}
+
+/* Playlist mode — auto-advances through every remaining sub-lesson in
+   the current path, reading each aloud back-to-back (podcast-style).
+   Reuses TTS.speak's onEnd callback to chain into the next lesson;
+   route() clears playlistActive if the user navigates off this path. */
+function wirePlaylist(ctx, contentEl){
+  const btn = document.getElementById('playlistBtn');
+  if(!btn || !TTS.supported) return;
+  btn.hidden = false;
+  const gatherText = ()=>{
+    const clone = contentEl.cloneNode(true);
+    clone.querySelectorAll('pre, .mermaid, .code-copy, .toc').forEach(n=>n.remove());
+    return clone.innerText;
+  };
+  const setUi = (on)=>{
+    btn.classList.toggle('active', on);
+    btn.setAttribute('aria-label', on ? 'Stop playlist mode' : 'Play this path back-to-back like a podcast');
+    btn.setAttribute('title', on ? 'Stop playlist' : 'Playlist mode — auto-advance through the path');
+  };
+  const startSpeaking = ()=>{
+    TTS.speak(gatherText(), ()=>{
+      if(!playlistActive) return; // stopped mid-lesson
+      if(ctx.next && ctx.next.pathId === ctx.path.id){
+        location.hash = `#/lesson/${ctx.next.pathId}/${ctx.next.subId}`;
+      } else {
+        playlistActive = false; playlistPathId = null; setUi(false);
+      }
+    });
+  };
+  setUi(playlistActive);
+  btn.addEventListener('click', ()=>{
+    if(playlistActive){
+      playlistActive = false; playlistPathId = null;
+      TTS.stop();
+      setUi(false);
+      return;
+    }
+    playlistActive = true; playlistPathId = ctx.path.id;
+    setUi(true);
+    startSpeaking();
+  });
+  // Resuming an already-active playlist after auto-navigating here.
+  if(playlistActive && playlistPathId === ctx.path.id) startSpeaking();
 }
 
 function enhanceCodeBlocks(contentEl){
@@ -2617,6 +2710,7 @@ async function renderReview(){
             <button class="fc-mode ${mode==='new'?'active':''}" data-mode="new" type="button">✨ New (${c.new})</button>
             <button class="fc-mode ${mode==='all'?'active':''}" data-mode="all" type="button">🗂 All</button>
           </div>
+          <button class="btn-ghost sm" id="ankiExportBtn" type="button">⬇ Export to Anki (.csv)</button>
         </div>
         <div class="fc-stats" data-reveal style="--i:2">
           <span class="fc-stat"><b>${c.mastered}</b> mastered</span>
@@ -2656,6 +2750,19 @@ async function renderReview(){
 
     document.getElementById('fcPathFilter').addEventListener('change', e=>{ pathFilter = e.target.value; buildDeck(); paint(); });
     app.querySelectorAll('.fc-mode').forEach(btn=>btn.addEventListener('click', ()=>{ mode = btn.getAttribute('data-mode'); buildDeck(); paint(); }));
+    document.getElementById('ankiExportBtn')?.addEventListener('click', ()=>{
+      const csvEscape = s => `"${String(s).replace(/"/g,'""').replace(/\n/g,'<br>')}"`;
+      const rows = pool().map(e => `${csvEscape(e.term)},${csvEscape(e.def)}`);
+      const csv = rows.join('\n');
+      const blob = new Blob([csv], {type:'text/csv'});
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `kashsec-flashcards-${pathFilter}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(()=>URL.revokeObjectURL(a.href), 1000);
+    });
     document.getElementById('fcResetBtn')?.addEventListener('click', ()=>{
       if(!confirm('Reset review history for this filter?')) return;
       pool().forEach(e => { const k = termKey(e); delete STATE.flashcards.known[k]; delete STATE.flashcards.reviews[k]; });
@@ -3766,6 +3873,14 @@ function renderLabPhishing(){
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
+  {date:'2026-07-24', title:'Playlist mode, shuffle quiz, zen mode & more', items:[
+    'Playlist mode: listen to an entire path back-to-back, podcast-style — auto-advances lesson to lesson using your browser\'s text-to-speech.',
+    'Shuffle quiz (#/quiz/shuffle): 10 random, no-stakes questions pulled from every path at once.',
+    'Anki-compatible flashcard export on the Flashcards page — download your deck as a .csv Anki can import directly.',
+    'Pace-based time-to-finish estimate on the Roadmap, based on your own recent completion rate.',
+    'Zen/focus reading mode (🧘): hides everything but the lesson text.',
+    'Lesson helpful/not-helpful rating (👍/👎) on every lesson.'
+  ]},
   {date:'2026-07-23', title:'GRC path, 5 new labs, capstone chain & a dozen new tools', items:[
     'New Path 23 — GRC & Compliance: governance, risk management, ISO 27001, NIST CSF, SOC 2, vendor risk, and how to break into a non-coding security career.',
     'Five new labs: Path Traversal, SSRF, and XXE playgrounds, a Log Analysis / Incident Response lab, and an OSINT Sandbox.',
@@ -4789,7 +4904,7 @@ function renderDaily(){
             }).join('')}
           </div>
           ${answered ? `<div class="quiz-explain"><strong>${saved.chosen===q.correct?'Correct — ':'Not quite — '}</strong>${escapeHtml(q.explain||'')}</div>
-            <div class="hero-btns" style="margin-top:1.2rem"><a class="btn-ghost sm" href="#/lesson/${item.pid}">Review ${escapeHtml(item.src)} →</a> <a class="btn-amber sm" href="#/review">Practise flashcards →</a></div>
+            <div class="hero-btns" style="margin-top:1.2rem"><a class="btn-ghost sm" href="#/lesson/${item.pid}">Review ${escapeHtml(item.src)} →</a> <a class="btn-amber sm" href="#/review">Practise flashcards →</a> <a class="btn-ghost sm" href="#/quiz/shuffle">🔀 Want more? Try a shuffle quiz →</a></div>
             <p class="tool-note" style="margin-top:1rem">Come back tomorrow for a new question.</p>` : ''}
         </div>
       </div>
@@ -4931,6 +5046,81 @@ function renderWeeklyChain(chainId){
    Question-by-question, locks in an answer before revealing it,
    then a results screen with a full review.
    ============================================================ */
+/* ============================================================
+   Shuffle quiz — a random, no-stakes N-question quiz drawn from every
+   path's question bank at once. Nothing is saved to quiz scores or
+   achievements tied to a specific path; purely for casual practice.
+   ============================================================ */
+function renderShuffleQuiz(){
+  const SHUFFLE_SIZE = 10;
+  const pool = dailyPool();
+  const deck = [...pool].sort(()=>Math.random()-0.5).slice(0, Math.min(SHUFFLE_SIZE, pool.length));
+  let qi = 0, correctCount = 0;
+
+  function paint(){
+    if(qi >= deck.length){
+      app.innerHTML = `
+        <section class="sec">
+          <div class="sec-head" data-reveal>
+            <div class="sec-eyebrow">Shuffle quiz</div>
+            <h2>${correctCount}/${deck.length} correct</h2>
+            <p class="sec-lead">Random questions, no stakes — this doesn't count toward any path's quiz score or your final exam.</p>
+            <div class="hero-btns" style="justify-content:flex-start;margin-top:1rem">
+              <a class="btn-amber" href="#/quiz/shuffle" id="shuffleAgain">🔀 Shuffle again →</a>
+              <a class="btn-ghost" href="#/course">Back to paths</a>
+            </div>
+          </div>
+        </section>
+      `;
+      setupReveal();
+      document.getElementById('shuffleAgain').addEventListener('click', (e)=>{ e.preventDefault(); route(); });
+      if(correctCount === deck.length) fireConfetti({count:100});
+      return;
+    }
+    const item = deck[qi];
+    const q = item.q;
+    app.innerHTML = `
+      <section class="sec">
+        <div class="quiz-wrap">
+          <div class="quiz-head" data-reveal>
+            <div class="sec-eyebrow">🔀 Shuffle quiz · Question ${qi+1} of ${deck.length}</div>
+            <h2>${escapeHtml(q.q)}</h2>
+            <p class="sec-lead">From ${escapeHtml(item.src)}.</p>
+          </div>
+          <div class="quiz-card" data-reveal style="--i:1">
+            <div class="quiz-options" id="shuffleOpts">
+              ${q.options.map((opt,oi)=>`<button class="quiz-opt" data-oi="${oi}" type="button"><span class="opt-letter">${String.fromCharCode(65+oi)}</span><span>${escapeHtml(opt)}</span></button>`).join('')}
+            </div>
+            <div id="shuffleFeedback"></div>
+          </div>
+        </div>
+      </section>
+    `;
+    setupReveal();
+    let answered = false;
+    document.querySelectorAll('#shuffleOpts .quiz-opt').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        if(answered) return;
+        answered = true;
+        const chosen = parseInt(btn.dataset.oi,10);
+        const correct = chosen === q.correct;
+        if(correct) correctCount++;
+        document.querySelectorAll('#shuffleOpts .quiz-opt').forEach(b=>{
+          const oi = parseInt(b.dataset.oi,10);
+          if(oi===q.correct) b.classList.add('correct'); else if(oi===chosen) b.classList.add('wrong');
+          b.disabled = true;
+        });
+        document.getElementById('shuffleFeedback').innerHTML = `
+          <div class="quiz-explain"><strong>${correct?'Correct — ':'Not quite — '}</strong>${escapeHtml(q.explain||'')}</div>
+          <div class="hero-btns" style="margin-top:1.2rem"><button class="btn-amber sm" id="shuffleNext" type="button">${qi+1<deck.length?'Next question →':'See results →'}</button></div>
+        `;
+        document.getElementById('shuffleNext').addEventListener('click', ()=>{ qi++; paint(); });
+      });
+    });
+  }
+  paint();
+}
+
 function renderQuiz(id){
   const isFinal = id === 'final';
   const quiz = isFinal ? FINAL_QUIZ : QUIZZES[id];
@@ -5522,9 +5712,29 @@ function renderSkillTree(){
    Roadmap — a visual, clickable timeline of all paths with your
    progress overlaid: done, in-progress, or not started.
    ============================================================ */
+/* Pace estimate — lessons/day based on when the first lesson was
+   completed vs. how many are done now. Needs at least a few days of
+   real history and 2+ completions, otherwise there's no signal. */
+function learnerPace(){
+  const timestamps = Object.values(STATE.completed || {});
+  if(timestamps.length < 2) return null;
+  const earliest = Math.min(...timestamps);
+  const daysSinceStart = Math.max(1, (Date.now() - earliest) / 86400000);
+  if(daysSinceStart < 1.5) return null; // not enough history to trust yet
+  const pace = timestamps.length / daysSinceStart;
+  return pace > 0 ? pace : null;
+}
+function daysToFinishPath(pathId, pace){
+  const prog = pathProgress(pathId);
+  const remaining = prog.total - prog.done;
+  if(remaining <= 0 || !pace) return null;
+  return Math.max(1, Math.ceil(remaining / pace));
+}
+
 function renderRoadmap(){
   const overall = overallProgress();
   const activePathId = STATE.lastVisited ? STATE.lastVisited.pathId : (PATHS.find(p=>pathProgress(p.id).pct<100)||PATHS[0]).id;
+  const pace = learnerPace();
 
   app.innerHTML = `
     <section class="sec">
@@ -5536,6 +5746,7 @@ function renderRoadmap(){
           <div class="mini-progress-track"><div class="mini-progress-fill" style="width:0%" data-pct="${overall.pct}"></div></div>
           <div class="mini-progress-label"><span>${overall.done}/${overall.total} lessons complete</span><span>${overall.pct}%</span></div>
         </div>
+        ${pace ? `<p class="tool-note" style="margin-top:.8rem">At your current pace (~${pace.toFixed(1)} lessons/day), the whole course is about ${Math.ceil((overall.total-overall.done)/pace)} days out.</p>` : ''}
         <div class="hero-btns" style="justify-content:flex-start;margin-top:1rem">
           <a class="btn-ghost sm" href="#/skilltree">🌳 Skill tree view →</a>
         </div>
@@ -5558,6 +5769,7 @@ function renderRoadmap(){
                   <div class="mini-progress-track"><div class="mini-progress-fill" style="width:0%" data-pct="${prog.pct}"></div></div>
                   <div class="mini-progress-label"><span>${prog.done}/${prog.total} done</span><span>${p.level}</span></div>
                 </div>
+                ${!done && prog.done>0 ? (()=>{ const d = daysToFinishPath(p.id, pace); return d ? `<div class="roadmap-eta">~${d} day${d>1?'s':''} at your pace</div>` : ''; })() : ''}
               </div>
             </a>
           `;
@@ -6050,7 +6262,7 @@ function getCommands(){
     ['My Progress','#/progress','📈'],['Changelog','#/changelog','📣'],['Take the Final Exam','#/quiz/final','🎓'],
     ['Mock interview','#/interview/mock','⏱'],['Certification roadmap','#/certs','🎓'],['Skill tree','#/skilltree','🌳'],
     ['Capstone attack chain','#/capstone','⛓️'],['Weekly challenge chains','#/weekly','📆'],
-    ['Career-fit quiz','#/career-quiz','🧭']
+    ['Career-fit quiz','#/career-quiz','🧭'],['Shuffle quiz','#/quiz/shuffle','🔀']
   ].map(([t,u,i])=>({title:t, url:u, icon:i, ctx:'Go to', keywords:t.toLowerCase()}));
   const tools = (typeof TOOLS!=='undefined'?TOOLS:[]).map(t=>({title:'Tool: '+t.title, url:`#/tools/${t.id}`, icon:t.ico, ctx:'Tool', keywords:(t.title+' '+t.desc).toLowerCase()}));
   const labs = [

@@ -394,6 +394,12 @@ a{color:inherit}
 .md img{max-width:100%;border-radius:8px}
 
 /* Reader nav bottom */
+.lesson-rating{display:flex;align-items:center;gap:.7rem;margin-top:2.2rem;flex-wrap:wrap}
+.lr-label{font-size:.85rem;color:var(--muted)}
+.lr-btn{background:var(--surface);border:1px solid var(--border);border-radius:99px;width:2.2rem;height:2.2rem;font-size:1rem;cursor:pointer;transition:border-color .18s var(--ease),transform .18s var(--ease)}
+.lr-btn:hover{transform:translateY(-2px);border-color:rgba(63,182,168,.4)}
+.lr-btn.active{border-color:var(--amber);background:rgba(239,164,58,.1)}
+.lr-thanks{font-size:.8rem;color:var(--teal-2)}
 .reader-nav{display:flex;justify-content:space-between;gap:1rem;margin-top:2.6rem;padding-top:1.5rem;border-top:1px solid var(--line-soft);flex-wrap:wrap}
 .reader-nav .btn-ghost,.reader-nav .btn-amber{max-width:48%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 
@@ -623,8 +629,10 @@ a{color:inherit}
   body:has(.reader-wrap) .sidebar,
   body:has(.reader-wrap) .reader-progress,
   body:has(.reader-wrap) .reader-nav-top,
+  body:has(.reader-wrap) .pomodoro-widget,
   body:has(.reader-wrap) .reader-nav,
   body:has(.reader-wrap) .reader-foot,
+  body:has(.reader-wrap) .lesson-rating,
   body:has(.reader-wrap) .notes-panel,
   body:has(.reader-wrap) .ad-slot,
   body:has(.reader-wrap) .toc-float{display:none !important}
@@ -667,6 +675,20 @@ a{color:inherit}
 .roadmap-node:hover .roadmap-card{border-color:rgba(239,164,58,.4);transform:translateX(4px)}
 .roadmap-card-title{font-family:'Space Grotesk';font-weight:600;font-size:1.02rem;margin-bottom:.25rem}
 .roadmap-card-desc{color:var(--muted);font-size:.85rem;margin-bottom:.5rem}
+.roadmap-eta{font-family:'JetBrains Mono';font-size:.7rem;color:var(--teal-2);margin-top:.4rem}
+
+/* Zen / focus reading mode — hides everything but the lesson body and
+   the reader's own controls (so the toggle to exit stays reachable).
+   Scoped with :has() so the class only ever does anything on a lesson
+   page, even if it's left set in STATE while browsing elsewhere. */
+body.zen-mode:has(.reader-wrap) .nav,
+body.zen-mode:has(.reader-wrap) .footer,
+body.zen-mode:has(.reader-wrap) .sidebar,
+body.zen-mode:has(.reader-wrap) .ad-slot,
+body.zen-mode:has(.reader-wrap) .toc-float,
+body.zen-mode:has(.reader-wrap) .skip{display:none !important}
+body.zen-mode:has(.reader-wrap) .reader-wrap{grid-template-columns:1fr;padding-top:2.5rem}
+body.zen-mode:has(.reader-wrap) .reader{max-width:44rem;margin:0 auto}
 
 /* ============================================================
    Progress hub
