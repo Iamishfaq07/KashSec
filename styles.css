@@ -633,6 +633,7 @@ a{color:inherit}
   body:has(.reader-wrap) .reader-nav,
   body:has(.reader-wrap) .reader-foot,
   body:has(.reader-wrap) .lesson-rating,
+  body:has(.reader-wrap) .micro-check,
   body:has(.reader-wrap) .notes-panel,
   body:has(.reader-wrap) .ad-slot,
   body:has(.reader-wrap) .toc-float{display:none !important}
@@ -676,6 +677,87 @@ a{color:inherit}
 .roadmap-card-title{font-family:'Space Grotesk';font-weight:600;font-size:1.02rem;margin-bottom:.25rem}
 .roadmap-card-desc{color:var(--muted);font-size:.85rem;margin-bottom:.5rem}
 .roadmap-eta{font-family:'JetBrains Mono';font-size:.7rem;color:var(--teal-2);margin-top:.4rem}
+
+/* ============================================================
+   Onboarding tour
+   ============================================================ */
+.tour-overlay{position:fixed;inset:0;background:rgba(0,0,0,.62);z-index:900;backdrop-filter:blur(1px)}
+.tour-card{position:fixed;width:min(21rem,calc(100vw - 2rem));background:var(--surface);border:1px solid var(--border-strong);
+  border-radius:var(--r-lg);padding:1.2rem 1.3rem;box-shadow:var(--shadow-md);z-index:902}
+.tour-step-count{font-family:'JetBrains Mono';font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--amber);margin-bottom:.4rem}
+.tour-card h3{font-family:'Space Grotesk';font-size:1.05rem;margin:0 0 .45rem}
+.tour-card p{color:var(--muted);font-size:.88rem;line-height:1.55;margin:0 0 1rem}
+.tour-actions{display:flex;gap:.6rem;justify-content:flex-end}
+.tour-highlight{position:relative;z-index:901;box-shadow:0 0 0 3px var(--amber),0 0 0 9px rgba(239,164,58,.28);border-radius:10px}
+
+/* Test-out prompt on a perfect path-quiz score */
+.testout-box{max-width:34rem;margin:1.6rem auto 0;background:var(--surface2);border:1px solid rgba(239,164,58,.35);border-radius:var(--r);padding:1.2rem 1.3rem;text-align:left}
+.testout-t{font-family:'Space Grotesk';font-weight:600;margin-bottom:.5rem}
+.testout-box p{color:var(--muted);font-size:.87rem;line-height:1.55;margin:0 0 1rem}
+
+/* End-of-lesson micro-check */
+.micro-check{margin-top:2.4rem;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);padding:1.3rem}
+.mc-eyebrow{font-family:'JetBrains Mono';font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--amber);margin-bottom:.5rem}
+.mc-q{font-family:'Space Grotesk';font-weight:600;font-size:1.02rem;margin-bottom:.9rem}
+.mc-options{display:flex;flex-direction:column;gap:.5rem}
+.mc-note{font-size:.75rem;color:var(--muted2);margin-top:.9rem}
+
+/* Lessons-per-week trend chart */
+.trend-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1rem 1.1rem}
+.trend-svg{width:100%;height:auto;display:block}
+.trend-axis{stroke:var(--border-strong);stroke-width:1}
+.trend-tick{fill:var(--muted2);font-family:'JetBrains Mono';font-size:10px}
+.trend-area{fill:rgba(239,164,58,.14);stroke:none}
+.trend-line{fill:none;stroke:var(--amber);stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.trend-dot{fill:var(--amber)}
+.trend-legend{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-top:.6rem;font-size:.78rem;color:var(--muted)}
+
+/* Prerequisite heads-up on a path overview */
+.prereq-hint{display:flex;gap:.7rem;align-items:flex-start;max-width:42rem;margin:0 0 1.4rem;padding:.85rem 1.1rem;
+  background:var(--surface2);border:1px solid rgba(239,164,58,.3);border-left:3px solid var(--amber);border-radius:var(--r);
+  font-size:.87rem;line-height:1.55;color:var(--muted)}
+.prereq-hint b{color:var(--text)}
+.prereq-hint a{color:var(--teal-2)}
+.prereq-ico{flex:none}
+
+/* ============================================================
+   Transcript
+   ============================================================ */
+.transcript-doc{max-width:48rem;margin:0 auto;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:2rem}
+.tr-head{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;align-items:flex-start;
+  padding-bottom:1.1rem;margin-bottom:1.4rem;border-bottom:2px solid var(--amber)}
+.tr-brand{font-family:'Space Grotesk';font-weight:700;font-size:1.4rem}
+.tr-sub{color:var(--muted);font-size:.88rem}
+.tr-meta{font-size:.82rem;color:var(--muted);text-align:right}
+.tr-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(8rem,1fr));gap:1rem;margin-bottom:1.4rem}
+.tr-summary>div{display:flex;flex-direction:column;gap:.15rem}
+.tr-n{font-family:'JetBrains Mono';font-weight:700;font-size:1.25rem;color:var(--amber)}
+.tr-l{font-size:.75rem;color:var(--muted)}
+.tr-final{padding:.75rem 1rem;border-radius:var(--r);background:rgba(63,182,168,.12);border:1px solid rgba(63,182,168,.4);margin-bottom:1.6rem;font-weight:600}
+.tr-final-pending{background:var(--surface2);border-color:var(--border);color:var(--muted);font-weight:400}
+.tr-h{font-family:'Space Grotesk';font-size:1.05rem;margin:1.6rem 0 .7rem}
+.tr-table{width:100%;border-collapse:collapse;font-size:.85rem}
+.tr-table th,.tr-table td{border:1px solid var(--border);padding:.45rem .6rem;text-align:left}
+.tr-table th{background:var(--surface2);font-weight:600}
+.tr-list{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(16rem,1fr));gap:.4rem;font-size:.85rem}
+.tr-empty{color:var(--muted);font-size:.87rem}
+.tr-foot{margin-top:2rem;padding-top:1rem;border-top:1px solid var(--border);font-size:.75rem;color:var(--muted2);line-height:1.55}
+
+@media print{
+  body:has(.transcript-doc) .nav,
+  body:has(.transcript-doc) .footer,
+  body:has(.transcript-doc) .skip,
+  body:has(.transcript-doc) .offline-badge,
+  body:has(.transcript-doc) .no-print,
+  body:has(.transcript-doc) .ad-slot{display:none !important}
+  body:has(.transcript-doc) .transcript-doc{border:none;border-radius:0;padding:0;max-width:100%;background:#fff;color:#000}
+  body:has(.transcript-doc) .tr-brand,
+  body:has(.transcript-doc) .tr-table td,
+  body:has(.transcript-doc) .tr-list{color:#000}
+  body:has(.transcript-doc) .tr-table th{background:#f2f2f2;color:#000}
+  body:has(.transcript-doc) .tr-table th,
+  body:has(.transcript-doc) .tr-table td{border-color:#ccc}
+}
 
 /* Zen / focus reading mode — hides everything but the lesson body and
    the reader's own controls (so the toggle to exit stays reachable).

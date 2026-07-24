@@ -215,7 +215,9 @@ function defaultState(){
     pomodoroSessions:{}, // { "YYYY-MM-DD": count }
     highContrast:false,
     zenMode:false,
-    lessonRatings:{} // { "pathId/subId": 'up'|'down' }
+    lessonRatings:{}, // { "pathId/subId": 'up'|'down' }
+    tourSeen:false,
+    notifyStreak:false
   };
 }
 function loadState(){
@@ -326,6 +328,51 @@ function refreshStreakBadge(){
 /* GitHub-style activity heatmap HTML from visitDays. Shows the trailing
    `weeks` weeks (default ~20), ending on the current week, one column per
    week (Sun→Sat), coloured by whether that day was visited. */
+/* Lessons-completed-per-week trend, as a small inline SVG line chart.
+   The heatmap next to it shows *whether* you showed up; this shows how
+   much you actually finished, which is a different question. Returns ''
+   when there's nothing meaningful to plot yet. */
+function trendChartHtml(weeks=12){
+  const stamps = Object.values(STATE.completed || {}).filter(Boolean);
+  if(stamps.length < 2) return '';
+  const MS_WEEK = 7 * 86400000;
+  const now = Date.now();
+  // Bucket index 0 = oldest week shown, weeks-1 = current week.
+  const buckets = new Array(weeks).fill(0);
+  for(const t of stamps){
+    const weeksAgo = Math.floor((now - t) / MS_WEEK);
+    if(weeksAgo < 0 || weeksAgo >= weeks) continue;
+    buckets[weeks - 1 - weeksAgo]++;
+  }
+  if(buckets.reduce((a,b)=>a+b,0) === 0) return '';
+
+  const W = 640, H = 150, PAD_L = 28, PAD_B = 20, PAD_T = 10;
+  const max = Math.max(...buckets, 1);
+  const stepX = (W - PAD_L - 10) / Math.max(1, weeks - 1);
+  const yFor = v => PAD_T + (H - PAD_T - PAD_B) * (1 - v / max);
+  const pts = buckets.map((v,i)=>[PAD_L + i*stepX, yFor(v)]);
+  const line = pts.map((p,i)=>`${i?'L':'M'}${p[0].toFixed(1)},${p[1].toFixed(1)}`).join(' ');
+  const area = `${line} L${pts[pts.length-1][0].toFixed(1)},${(H-PAD_B).toFixed(1)} L${pts[0][0].toFixed(1)},${(H-PAD_B).toFixed(1)} Z`;
+  const best = Math.max(...buckets);
+  const total = buckets.reduce((a,b)=>a+b,0);
+
+  return `
+    <div class="trend-wrap">
+      <svg viewBox="0 0 ${W} ${H}" class="trend-svg" role="img" aria-label="Lessons completed per week over the last ${weeks} weeks">
+        <line x1="${PAD_L}" y1="${H-PAD_B}" x2="${W-10}" y2="${H-PAD_B}" class="trend-axis"/>
+        <line x1="${PAD_L}" y1="${PAD_T}" x2="${PAD_L}" y2="${H-PAD_B}" class="trend-axis"/>
+        <text x="${PAD_L-6}" y="${yFor(max)+4}" class="trend-tick" text-anchor="end">${max}</text>
+        <text x="${PAD_L-6}" y="${H-PAD_B+4}" class="trend-tick" text-anchor="end">0</text>
+        <path d="${area}" class="trend-area"/>
+        <path d="${line}" class="trend-line"/>
+        ${pts.map((p,i)=>`<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="3" class="trend-dot"><title>${buckets[i]} lesson${buckets[i]===1?'':'s'} · ${i===weeks-1?'this week':(weeks-1-i)+' week'+(weeks-1-i===1?'':'s')+' ago'}</title></circle>`).join('')}
+        <text x="${PAD_L}" y="${H-4}" class="trend-tick">${weeks} weeks ago</text>
+        <text x="${W-10}" y="${H-4}" class="trend-tick" text-anchor="end">now</text>
+      </svg>
+      <div class="trend-legend"><span>${total} lesson${total===1?'':'s'} in the last ${weeks} weeks</span><span>best week: ${best}</span></div>
+    </div>`;
+}
+
 function heatmapHtml(weeks=20){
   const today = new Date();
   const dow = today.getUTCDay(); // 0=Sun
@@ -443,6 +490,55 @@ const TTS = {
   }
 };
 
+/* ============================================================
+   Streak reminders (local notifications)
+   ------------------------------------------------------------
+   Deliberately NOT web push: real push needs a server holding VAPID
+   keys to deliver messages while the site is closed, and this site is
+   static with no backend. What we can honestly do is a local
+   notification — shown when the site is open, or on the next visit if
+   the streak is about to lapse. The UI says exactly that so nobody
+   expects a phone buzz at 8pm on a day they never opened the site.
+   ============================================================ */
+const StreakNotify = {
+  supported: typeof window !== 'undefined' && 'Notification' in window,
+  timer: null,
+  permission(){ return this.supported ? Notification.permission : 'denied'; },
+  async request(){
+    if(!this.supported) return 'denied';
+    try{ return await Notification.requestPermission(); }
+    catch(e){ return 'denied'; }
+  },
+  show(title, body){
+    if(!this.supported || Notification.permission !== 'granted') return;
+    try{ new Notification(title, {body, icon:'icons/icon-192.png', tag:'kashsec-streak'}); }
+    catch(e){ /* some browsers block constructor-based notifications */ }
+  },
+  /* Called on load: if the user opted in, has a live streak, and hasn't
+     studied today, nudge them now — and again later if they leave the
+     tab open past the evening. */
+  init(){
+    if(!STATE.notifyStreak || !this.supported || Notification.permission !== 'granted') return;
+    const today = new Date().toISOString().slice(0,10);
+    const studiedToday = !!STATE.visitDays[today];
+    const streak = streakInfo().current;
+    if(!studiedToday && streak >= 2){
+      this.show(`🔥 ${streak}-day streak on the line`, 'One lesson today keeps it alive.');
+    }
+    clearTimeout(this.timer);
+    // If the tab stays open, re-check at 8pm local.
+    const now = new Date();
+    const evening = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 20, 0, 0);
+    const delay = evening.getTime() - now.getTime();
+    if(delay > 0 && delay < 86400000){
+      this.timer = setTimeout(()=>{
+        const d = new Date().toISOString().slice(0,10);
+        if(!STATE.visitDays[d]) this.show('🔥 Your KashSec streak', 'Still time to keep it going today.');
+      }, delay);
+    }
+  }
+};
+
 /* ---------- Reading preferences ---------- */
 /* Applied as data-attributes on <html> so lesson CSS can respond. Purely
    cosmetic and per-device; stored in STATE like the theme. */
@@ -454,6 +550,8 @@ function applyReadingPrefs(){
   el.setAttribute('data-legible', rp.legible ? 'true' : 'false');
 }
 applyReadingPrefs();
+// Streak nudge runs once per page load, after STATE is available.
+try{ StreakNotify.init(); }catch(e){}
 /* Re-resolve on OS scheme change (auto-system mode) and hourly (auto-time
    mode) so the theme catches up without needing a manual refresh. */
 if(window.matchMedia){
@@ -1141,6 +1239,7 @@ function route(){
   else if(hash === '#/capstone') renderCapstone();
   else if(hash === '#/weekly') renderWeeklyIndex();
   else if(hash === '#/career-quiz') renderCareerQuiz();
+  else if(hash === '#/transcript') renderTranscript();
   else if(hash === '#/interview/mock') renderMockInterview();
   else if(hash === '#/certs') renderCertTracker();
   else if(hash === '#/skilltree') renderSkillTree();
@@ -1174,6 +1273,71 @@ function afterRender(){
   playRouteTransition();
   animateProgressBars();
   refreshStreakBadge();
+  maybeStartTour();
+}
+
+/* ============================================================
+   First-visit onboarding tour — a short spotlight walkthrough of the
+   features people otherwise never find. Fires once, only on the
+   homepage, only for genuinely new visitors, and is fully skippable.
+   ============================================================ */
+const TOUR_STEPS = [
+  {sel:'#searchBtn',        title:'Search everything',      body:'Press Ctrl/Cmd + K anywhere to search all 235 lessons — or jump straight to any tool, lab, or page.'},
+  {sel:'a[href="#/tracks"]',title:'Follow a career track',  body:'Not sure where to start? Tracks give you an ordered path for a specific job — SOC analyst, pentester, GRC, and more.'},
+  {sel:'a[href="#/labs"]',  title:'Practise in the browser', body:'12 hands-on labs — SQL injection, XSS, IDOR, JWT forgery and more. All simulated, all safe, nothing to install.'},
+  {sel:'#progressRingBtn',  title:'Your progress lives here', body:'Everything you complete is saved automatically in this browser. No account needed — but you can sign in to sync across devices.'}
+];
+let tourIndex = 0;
+function maybeStartTour(){
+  if(STATE.tourSeen) return;
+  if((location.hash || '#/') !== '#/' && location.hash !== '#') return;
+  // A returning user with real progress shouldn't be tour-bombed.
+  if(Object.keys(STATE.completed).length > 0){ STATE.tourSeen = true; saveState(); return; }
+  if(document.getElementById('tourOverlay')) return;
+  tourIndex = 0;
+  setTimeout(()=>paintTourStep(), 700); // let the hero animation settle first
+}
+function endTour(){
+  STATE.tourSeen = true;
+  saveState();
+  document.getElementById('tourOverlay')?.remove();
+  document.querySelector('.tour-highlight')?.classList.remove('tour-highlight');
+}
+function paintTourStep(){
+  document.getElementById('tourOverlay')?.remove();
+  document.querySelector('.tour-highlight')?.classList.remove('tour-highlight');
+  const step = TOUR_STEPS[tourIndex];
+  if(!step) return endTour();
+  const target = document.querySelector(step.sel);
+  if(!target){ tourIndex++; return paintTourStep(); } // skip steps whose target isn't on screen
+  target.classList.add('tour-highlight');
+
+  const overlay = document.createElement('div');
+  overlay.id = 'tourOverlay';
+  overlay.className = 'tour-overlay';
+  overlay.innerHTML = `
+    <div class="tour-card" role="dialog" aria-modal="true" aria-labelledby="tourTitle">
+      <div class="tour-step-count">Step ${tourIndex+1} of ${TOUR_STEPS.length}</div>
+      <h3 id="tourTitle">${escapeHtml(step.title)}</h3>
+      <p>${escapeHtml(step.body)}</p>
+      <div class="tour-actions">
+        <button class="btn-ghost sm" id="tourSkip" type="button">Skip tour</button>
+        <button class="btn-amber sm" id="tourNext" type="button">${tourIndex+1 < TOUR_STEPS.length ? 'Next →' : 'Got it'}</button>
+      </div>
+    </div>`;
+  document.body.appendChild(overlay);
+
+  // Anchor the card near its target, clamped inside the viewport.
+  const card = overlay.querySelector('.tour-card');
+  const r = target.getBoundingClientRect();
+  const top = Math.min(window.innerHeight - card.offsetHeight - 16, r.bottom + 12);
+  const left = Math.max(12, Math.min(window.innerWidth - card.offsetWidth - 12, r.left + r.width/2 - card.offsetWidth/2));
+  card.style.top = Math.max(12, top) + 'px';
+  card.style.left = left + 'px';
+
+  document.getElementById('tourSkip').addEventListener('click', endTour);
+  document.getElementById('tourNext').addEventListener('click', ()=>{ tourIndex++; paintTourStep(); });
+  overlay.addEventListener('click', (e)=>{ if(e.target === overlay) endTour(); });
 }
 
 /* Whole-view fade+slide whenever a route renders. Purely a CSS class
@@ -1562,6 +1726,14 @@ function renderPathOverview(pathId){
         <div class="path-tag" data-reveal>Path ${p.n} · ${p.level}</div>
         <h1 data-reveal style="--i:1">${p.title}</h1>
         <p class="lead" data-reveal style="--i:2">${p.desc}</p>
+        ${(()=>{ const un = unmetPrereqs(p.id); return un.length ? `
+          <div class="prereq-hint" data-reveal style="--i:2">
+            <span class="prereq-ico">💡</span>
+            <div>
+              <b>Heads up:</b> this path builds on ${un.map(x=>`<a href="#/lesson/${x.id}">Path ${x.n} — ${escapeHtml(x.title)}</a>`).join(' and ')},
+              which you haven't started yet. Nothing is locked — but those come first if you get stuck here.
+            </div>
+          </div>` : ''; })()}
         <div data-reveal style="--i:3">
           <div class="mini-progress" style="max-width:22rem;margin:0 0 1.4rem">
             <div class="mini-progress-track"><div class="mini-progress-fill" style="width:0%" data-pct="${prog.pct}"></div></div>
@@ -1920,6 +2092,7 @@ async function renderSubLesson(pathId, subId){
           <span class="pomodoro-count" id="pomodoroCount"></span>
         </div>
         <div class="md" id="content"><div class="loading">Loading…</div></div>
+        <div id="microCheck"></div>
         <details class="notes-panel">
           <summary>✍️ My notes on this lesson</summary>
           <div class="notes-panel-body">
@@ -2086,6 +2259,9 @@ async function renderSubLesson(pathId, subId){
     // Listen mode (read-aloud), only where the browser supports it.
     wireListenButton(contentEl);
     wirePlaylist(ctx, contentEl);
+
+    // End-of-lesson quick check, drawn from this path's quiz bank.
+    renderMicroCheck(ctx);
 
     // Render Mermaid diagrams
     if(typeof mermaid !== 'undefined'){
@@ -2339,6 +2515,50 @@ function wireListenButton(contentEl){
     if(TTS.speaking){ TTS.stop(); setPlaying(false); return; }
     setPlaying(true);
     TTS.speak(gatherText(), ()=>setPlaying(false));
+  });
+}
+
+/* End-of-lesson micro-check — one quick question so a lesson ends with
+   active recall instead of passive reading. Questions come from the
+   path's existing quiz bank, picked deterministically by sub-lesson
+   index so a given lesson always shows the same one (and, across a
+   path, they spread evenly rather than repeating). Answering here does
+   NOT affect path quiz scores — it's practice, not assessment. */
+function renderMicroCheck(ctx){
+  const host = document.getElementById('microCheck');
+  if(!host) return;
+  const bank = (typeof QUIZZES !== 'undefined' && QUIZZES[ctx.path.id] && QUIZZES[ctx.path.id].questions) || [];
+  if(!bank.length){ host.innerHTML = ''; return; }
+  const subIndex = ctx.path.subs.findIndex(s => s.id === ctx.sub.id);
+  const q = bank[(subIndex < 0 ? 0 : subIndex) % bank.length];
+
+  host.innerHTML = `
+    <div class="micro-check">
+      <div class="mc-eyebrow">⚡ Quick check</div>
+      <div class="mc-q">${escapeHtml(q.q)}</div>
+      <div class="mc-options" id="mcOptions">
+        ${q.options.map((opt,i)=>`<button class="quiz-opt" data-oi="${i}" type="button"><span class="opt-letter">${String.fromCharCode(65+i)}</span><span>${escapeHtml(opt)}</span></button>`).join('')}
+      </div>
+      <div id="mcFeedback"></div>
+      <div class="mc-note">Practice only — this doesn't affect your path quiz score.</div>
+    </div>`;
+
+  let answered = false;
+  host.querySelectorAll('#mcOptions .quiz-opt').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      if(answered) return;
+      answered = true;
+      const chosen = parseInt(btn.dataset.oi, 10);
+      const correct = chosen === q.correct;
+      host.querySelectorAll('#mcOptions .quiz-opt').forEach(b=>{
+        const i = parseInt(b.dataset.oi, 10);
+        if(i === q.correct) b.classList.add('correct'); else if(i === chosen) b.classList.add('wrong');
+        b.disabled = true;
+      });
+      document.getElementById('mcFeedback').innerHTML =
+        `<div class="quiz-explain"><strong>${correct ? 'Correct — ' : 'Not quite — '}</strong>${escapeHtml(q.explain || '')}</div>`;
+      if(correct) fireConfetti({count:30});
+    });
   });
 }
 
@@ -3873,6 +4093,16 @@ function renderLabPhishing(){
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
+  {date:'2026-07-24', title:'Full quiz coverage, onboarding tour, transcripts & SEO', items:[
+    'Every path now has a quiz — API Security, DevSecOps, and GRC were missing one entirely, so "quizzes passed" could never reach 100%.',
+    'All quiz banks doubled from 5 to 10 questions (240 questions total), which also means weekly chains now deliver the full seven they promise.',
+    'End-of-lesson quick checks: one question at the end of every lesson, drawn from that path\'s bank. Practice only — it never affects your quiz score.',
+    'Test out of a path: score 100% on a path quiz and you can mark the whole path complete in one click.',
+    'First-visit tour pointing new visitors at search, tracks, labs, and progress.',
+    'Printable learning transcript (#/transcript) — an itemised record of every lesson, quiz, and lab.',
+    'Lessons-per-week trend chart and prerequisite heads-up on advanced paths.',
+    'Opt-in local streak reminders, and all 16 tools plus 12 labs are now search-engine indexable.'
+  ]},
   {date:'2026-07-24', title:'Playlist mode, shuffle quiz, zen mode & more', items:[
     'Playlist mode: listen to an entire path back-to-back, podcast-style — auto-advances lesson to lesson using your browser\'s text-to-speech.',
     'Shuffle quiz (#/quiz/shuffle): 10 random, no-stakes questions pulled from every path at once.',
@@ -5232,6 +5462,12 @@ function renderQuiz(id){
               ? (passed ? `<a class="btn-ghost" href="#/certificate">Get your certificate →</a>` : `<a class="btn-ghost" href="#/progress">Back to progress</a>`)
               : `<a class="btn-ghost" href="#/lesson/${id}">Back to path</a>`}
           </div>
+          ${!isFinal && pct === 100 && pathProgress(id).pct < 100 ? `
+            <div class="testout-box" data-reveal style="--i:4">
+              <div class="testout-t">🎓 Perfect score — already know this path?</div>
+              <p>You answered every question correctly. If you've worked with this material before, you can mark all ${pathProgress(id).total} lessons in <b>${escapeHtml(path.title)}</b> as complete and move on.</p>
+              <button class="btn-amber sm" id="testOutBtn" type="button">Mark this path complete →</button>
+            </div>` : ''}
           <div class="quiz-review" data-reveal style="--i:5">
             ${quiz.questions.map((q,i)=>{
               const right = answers[i]===q.correct;
@@ -5248,6 +5484,16 @@ function renderQuiz(id){
     `;
     setupReveal();
     if(passed) fireConfetti({count: isFinal ? 140 : 80});
+    document.getElementById('testOutBtn')?.addEventListener('click', ()=>{
+      if(!confirm(`Mark all ${pathProgress(id).total} lessons in "${path.title}" as complete?\n\nYou can still read them any time, and you can undo this per-lesson.`)) return;
+      const now = Date.now();
+      path.subs.forEach(s=>{ STATE.completed[lessonKey(id, s.id)] = STATE.completed[lessonKey(id, s.id)] || now; });
+      saveState();
+      checkAchievements();
+      refreshProgressRing();
+      fireConfetti({count:120});
+      location.hash = `#/lesson/${id}`;
+    });
     document.getElementById('retakeBtn')?.addEventListener('click', ()=>{
       qi = 0; answers.fill(null); finished = false;
       window.scrollTo(0,0);
@@ -5712,6 +5958,36 @@ function renderSkillTree(){
    Roadmap — a visual, clickable timeline of all paths with your
    progress overlaid: done, in-progress, or not started.
    ============================================================ */
+/* ============================================================
+   Prerequisite hints — which earlier paths a path leans on. Nothing is
+   locked; this only surfaces a heads-up when a learner opens something
+   that assumes material they have not started yet.
+   ============================================================ */
+const PATH_PREREQS = {
+  '11-web-security':   ['05-web-basics','02-networking'],
+  '12-network-security':['02-networking','10-fundamentals'],
+  '13-mobile-security':['05-web-basics','11-web-security'],
+  '14-ethical-hacking':['03-linux','02-networking','10-fundamentals'],
+  '15-bug-bounty':     ['05-web-basics','11-web-security'],
+  '16-advanced':       ['03-linux','12-network-security','14-ethical-hacking'],
+  '17-malware-re':     ['03-linux','07-windows-security'],
+  '18-ai-security':    ['04-python','05-web-basics'],
+  '19-ctf-challenges': ['03-linux','06-crypto-fundamentals','11-web-security'],
+  '21-api-security':   ['05-web-basics','11-web-security'],
+  '22-devsecops-appsec':['04-python','11-web-security'],
+  '10-fundamentals':   ['01-introduction'],
+  '06-crypto-fundamentals':['01-introduction'],
+  '08-cloud-basics':   ['02-networking']
+};
+/* Returns only the prerequisites the learner hasn't started at all —
+   partial progress counts as "under way", so we don't nag. */
+function unmetPrereqs(pathId){
+  return (PATH_PREREQS[pathId] || [])
+    .filter(id => pathProgress(id).done === 0)
+    .map(id => findPath(id))
+    .filter(Boolean);
+}
+
 /* Pace estimate — lessons/day based on when the first lesson was
    completed vs. how many are done now. Needs at least a few days of
    real history and 2+ completions, otherwise there's no signal. */
@@ -5811,6 +6087,95 @@ async function refreshLeaderboardList(){
 }
 
 /* ============================================================
+   Transcript — a printable, report-card style record of everything
+   completed. Distinct from the certificate (which is a single award
+   for passing the Final Exam); this is the itemised detail behind it.
+   ============================================================ */
+function renderTranscript(){
+  const overall = overallProgress();
+  const sb = labScoreboard();
+  const unlocked = ACHIEVEMENTS.filter(a=>STATE.achievements[a.id]);
+  const issued = new Date().toISOString().slice(0,10);
+  const name = (STATE.certName || '').trim();
+
+  app.innerHTML = `
+    <section class="sec">
+      <div class="sec-head no-print" data-reveal>
+        <div class="sec-eyebrow">Transcript</div>
+        <h2>Your learning record</h2>
+        <p class="sec-lead">An itemised record of everything you've completed — print it, save it as PDF, or attach it to an application. Generated from your local progress; nothing is uploaded.</p>
+        <div class="hero-btns" style="justify-content:flex-start;margin-top:1rem">
+          <button class="btn-amber" id="printTranscriptBtn" type="button">🖨 Print / Save as PDF</button>
+          <a class="btn-ghost" href="#/progress">Back to progress</a>
+        </div>
+        <label class="tool-field" style="max-width:22rem;margin-top:1.2rem">Name on transcript (optional)
+          <input class="tool-input" id="transcriptName" value="${escapeHtml(name)}" placeholder="Your full name">
+        </label>
+      </div>
+
+      <div class="transcript-doc" id="transcriptDoc">
+        <div class="tr-head">
+          <div>
+            <div class="tr-brand">KashSec Academy</div>
+            <div class="tr-sub">Learning transcript</div>
+          </div>
+          <div class="tr-meta">
+            <div><b>Issued:</b> ${issued}</div>
+            <div id="trNameLine">${name ? `<b>Learner:</b> ${escapeHtml(name)}` : ''}</div>
+          </div>
+        </div>
+
+        <div class="tr-summary">
+          <div><span class="tr-n">${overall.done}/${overall.total}</span><span class="tr-l">Lessons completed</span></div>
+          <div><span class="tr-n">${overall.pct}%</span><span class="tr-l">Course progress</span></div>
+          <div><span class="tr-n">${quizPassCount()}/${PATHS.length}</span><span class="tr-l">Path quizzes passed</span></div>
+          <div><span class="tr-n">${sb.done}/${sb.total}</span><span class="tr-l">Labs solved</span></div>
+        </div>
+
+        ${STATE.finalQuiz && STATE.finalQuiz.passed
+          ? `<div class="tr-final">✅ Final Exam passed — ${STATE.finalQuiz.pct}%</div>`
+          : `<div class="tr-final tr-final-pending">Final Exam not yet passed</div>`}
+
+        <h3 class="tr-h">Path detail</h3>
+        <table class="tr-table">
+          <thead><tr><th>Path</th><th>Level</th><th>Lessons</th><th>Quiz</th></tr></thead>
+          <tbody>
+            ${PATHS.map(p=>{
+              const prog = pathProgress(p.id);
+              const qs = STATE.quizScores[p.id];
+              return `<tr>
+                <td>${p.n} · ${escapeHtml(p.title)}</td>
+                <td>${escapeHtml(p.level)}</td>
+                <td>${prog.done}/${prog.total}${prog.pct>=100?' ✅':''}</td>
+                <td>${qs ? `${qs.pct}%${qs.passed?' ✅':''}` : '—'}</td>
+              </tr>`;
+            }).join('')}
+          </tbody>
+        </table>
+
+        <h3 class="tr-h">Achievements earned (${unlocked.length}/${ACHIEVEMENTS.length})</h3>
+        ${unlocked.length
+          ? `<ul class="tr-list">${unlocked.map(a=>`<li>${a.ico} <b>${escapeHtml(a.t)}</b> — ${escapeHtml(a.d)}</li>`).join('')}</ul>`
+          : `<p class="tr-empty">No achievements earned yet.</p>`}
+
+        <div class="tr-foot">
+          This transcript reflects self-directed progress recorded in the learner's own browser on KashSec Academy
+          (kashsec.vercel.app), a free, open cybersecurity course. It is a record of study, not a proctored qualification.
+        </div>
+      </div>
+    </section>
+  `;
+  setupReveal();
+  document.getElementById('transcriptName')?.addEventListener('input', (e)=>{
+    const v = e.target.value.trim();
+    STATE.certName = v;      // shared with the certificate, so you only type it once
+    saveState();
+    document.getElementById('trNameLine').innerHTML = v ? `<b>Learner:</b> ${escapeHtml(v)}` : '';
+  });
+  document.getElementById('printTranscriptBtn')?.addEventListener('click', ()=>window.print());
+}
+
+/* ============================================================
    Progress hub — the personal dashboard: overall stats, per-path
    progress, achievements, bookmarks, notes, and the certificate CTA.
    ============================================================ */
@@ -5865,6 +6230,12 @@ function renderProgressHub(){
         ${heatmapHtml()}
       </div>
 
+      ${(()=>{ const t = trendChartHtml(); return t ? `
+      <div class="hub-section" data-reveal style="--i:2">
+        <div class="hub-section-head"><h3 style="font-family:'Space Grotesk';font-size:1.15rem">📈 Lessons per week</h3></div>
+        ${t}
+      </div>` : ''; })()}
+
       <div class="hub-section" data-reveal style="--i:2">
         <div class="hub-section-head" style="display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap">
           <h3 style="font-family:'Space Grotesk';font-size:1.15rem">📣 Share your progress</h3>
@@ -5883,6 +6254,10 @@ function renderProgressHub(){
         ${STATE.finalQuiz && STATE.finalQuiz.passed
           ? `<div class="hub-list-item" style="cursor:default"><div><div class="hli-t">Final Exam passed — ${STATE.finalQuiz.pct}%</div><div class="hli-d">Your certificate is ready</div></div><a class="btn-amber sm" href="#/certificate">View certificate →</a></div>`
           : `<div class="hub-list-item" style="cursor:default"><div><div class="hli-t">Not yet unlocked</div><div class="hli-d">Pass the Final Exam to earn your certificate</div></div><a class="btn-ghost sm" href="#/quiz/final">Take Final Exam →</a></div>`}
+        <a class="hub-list-item" href="#/transcript">
+          <div><div class="hli-t">📄 Learning transcript</div><div class="hli-d">A printable, itemised record of every lesson, quiz, and lab you've completed</div></div>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </a>
       </div>
 
       <div class="hub-section" data-reveal style="--i:4">
@@ -5991,6 +6366,14 @@ function renderProgressHub(){
           <div><div class="hli-t">High-contrast mode</div><div class="hli-d">Stronger colour contrast site-wide, on top of your dark/light choice — for low-vision or bright-room reading.</div></div>
           <label class="switch"><input type="checkbox" id="highContrastToggle" ${STATE.highContrast?'checked':''}><span class="switch-track"></span></label>
         </div>
+        ${StreakNotify.supported ? `
+        <div class="hub-list-item" style="cursor:default">
+          <div>
+            <div class="hli-t">🔥 Streak reminders</div>
+            <div class="hli-d">Nudges you when your streak is about to lapse. These are <b>local</b> notifications — they appear when KashSec is open or when you next visit, not while the site is closed (that would need a server this free site doesn't run).</div>
+          </div>
+          <label class="switch"><input type="checkbox" id="notifyStreakToggle" ${STATE.notifyStreak?'checked':''}><span class="switch-track"></span></label>
+        </div>` : ''}
       </div>
 
       <div class="hub-section" data-reveal style="--i:8">
@@ -6097,6 +6480,30 @@ function renderProgressHub(){
     STATE.highContrast = e.target.checked;
     saveState();
     applyTheme();
+  });
+
+  document.getElementById('notifyStreakToggle')?.addEventListener('change', async (e)=>{
+    const el = e.target;
+    if(!el.checked){
+      STATE.notifyStreak = false;
+      saveState();
+      clearTimeout(StreakNotify.timer);
+      return;
+    }
+    const perm = StreakNotify.permission() === 'granted'
+      ? 'granted'
+      : await StreakNotify.request();
+    if(perm !== 'granted'){
+      el.checked = false;
+      STATE.notifyStreak = false;
+      saveState();
+      alert('Your browser blocked notification permission, so reminders can\'t be enabled. You can re-allow notifications for this site in your browser settings and try again.');
+      return;
+    }
+    STATE.notifyStreak = true;
+    saveState();
+    StreakNotify.show('🔥 Streak reminders on', 'We\'ll nudge you here when your streak is about to lapse.');
+    StreakNotify.init();
   });
 
   document.getElementById('exportNotesBtn')?.addEventListener('click', ()=>{
@@ -6262,7 +6669,8 @@ function getCommands(){
     ['My Progress','#/progress','📈'],['Changelog','#/changelog','📣'],['Take the Final Exam','#/quiz/final','🎓'],
     ['Mock interview','#/interview/mock','⏱'],['Certification roadmap','#/certs','🎓'],['Skill tree','#/skilltree','🌳'],
     ['Capstone attack chain','#/capstone','⛓️'],['Weekly challenge chains','#/weekly','📆'],
-    ['Career-fit quiz','#/career-quiz','🧭'],['Shuffle quiz','#/quiz/shuffle','🔀']
+    ['Career-fit quiz','#/career-quiz','🧭'],['Shuffle quiz','#/quiz/shuffle','🔀'],
+    ['Learning transcript','#/transcript','📄']
   ].map(([t,u,i])=>({title:t, url:u, icon:i, ctx:'Go to', keywords:t.toLowerCase()}));
   const tools = (typeof TOOLS!=='undefined'?TOOLS:[]).map(t=>({title:'Tool: '+t.title, url:`#/tools/${t.id}`, icon:t.ico, ctx:'Tool', keywords:(t.title+' '+t.desc).toLowerCase()}));
   const labs = [

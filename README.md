@@ -56,7 +56,7 @@ KashSec/
 
 ## 🗺️ The 24 paths
 
-`00` Computer Basics & Security Mindset · `01` Introduction · `02` Networking · `03` Linux & Operating Systems · `04` Programming & Python · `05` How the Web Works · `06` Cryptography Fundamentals · `07` Windows Security Basics · `08` Cloud Computing Basics · `09` Digital Privacy & Personal Security · `10` Cybersecurity Fundamentals · `11` Web Security & Hacking · `12` Network Security · `13` Mobile App Security · `14` Ethical Hacking · `15` Bug Bounty · `16` Advanced Topics · `17` Malware & Reverse Engineering · `18` AI & AI Security · `19` CTF Challenges · `20` Career Prep · `21` API Security · `22` DevSecOps & AppSec Program
+`00` Computer Basics & Security Mindset · `01` Introduction · `02` Networking · `03` Linux & Operating Systems · `04` Programming & Python · `05` How the Web Works · `06` Cryptography Fundamentals · `07` Windows Security Basics · `08` Cloud Computing Basics · `09` Digital Privacy & Personal Security · `10` Cybersecurity Fundamentals · `11` Web Security & Hacking · `12` Network Security · `13` Mobile App Security · `14` Ethical Hacking · `15` Bug Bounty · `16` Advanced Topics · `17` Malware & Reverse Engineering · `18` AI & AI Security · `19` CTF Challenges · `20` Career Prep · `21` API Security · `22` DevSecOps & AppSec Program · `23` GRC & Compliance
 
 ## ✍️ Writing a lesson
 

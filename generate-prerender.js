@@ -28,6 +28,17 @@ const m = appJs.match(/const PATHS = \[[\s\S]*?\n\];/);
 if (!m) throw new Error('Could not find PATHS array in app.js');
 const PATHS = new Function(m[0] + '; return PATHS;')();
 
+// Tools and labs are SPA-only routes, so they need their own crawlable
+// stubs — several of them (JWT decoder, CVSS calculator, subnet
+// calculator) target real search demand and were previously invisible.
+function extractArray(name) {
+  const match = appJs.match(new RegExp('const ' + name + ' = \\[[\\s\\S]*?\\n\\];'));
+  if (!match) throw new Error('Could not find ' + name + ' array in app.js');
+  return new Function(match[0] + '; return ' + name + ';')();
+}
+const TOOLS = extractArray('TOOLS');
+const LABS = extractArray('LABS');
+
 // `marked` is a devDependency (npm install marked) — only needed at build
 // time to prerender lesson HTML; the live site still loads it from CDN in
 // the browser (app.js's ensureMarkdownLibs), this is a separate copy.
@@ -164,9 +175,54 @@ for (const p of PATHS) {
   sitemapUrls.push(`${SITE}/lesson/${p.id}/`);
 }
 
-// Regenerate sitemap.xml with all URLs (home + every lesson + every path).
+/* Crawlable stubs for each tool and lab. These are interactive
+   client-side pages, so there's no body content to prerender — the stub
+   carries the title, description, and context a search engine needs,
+   then hands real visitors to the SPA like the lesson stubs do. */
+function writeStubSet(items, urlPrefix, dirName, kindLabel, indexTitle, indexDesc) {
+  const outDir = path.join(ROOT, dirName);
+  fs.mkdirSync(outDir, { recursive: true });
+  for (const it of items) {
+    const canonical = `${SITE}/#/${urlPrefix}/${it.id}`;
+    const title = `${it.title} — Free online ${kindLabel} · KashSec Academy`;
+    const desc = it.desc || '';
+    const contentHtml =
+      `<h1>${escapeAttr(it.title)}</h1>` +
+      `<p>${escapeAttr(desc)}</p>` +
+      (it.related ? `<p><strong>Pairs with:</strong> ${escapeAttr(it.related)}</p>` : '') +
+      `<p>This ${kindLabel} runs entirely in your browser — nothing is uploaded, and it's free to use with no account.</p>` +
+      `<h2>More free security ${kindLabel}s</h2><ul>` +
+      items.filter(o => o.id !== it.id)
+           .map(o => `<li><a href="/${dirName}/${o.id}.html">${escapeAttr(o.title)}</a> — ${escapeAttr(o.desc || '')}</li>`)
+           .join('') + '</ul>';
+    fs.writeFileSync(path.join(outDir, it.id + '.html'),
+      template({ title, desc, canonical, ogUrl: canonical, contentHtml, pathId: '', subId: '',
+                 breadcrumb: `<a href="/${dirName}/">${kindLabel[0].toUpperCase() + kindLabel.slice(1)}s</a> · ${escapeAttr(it.title)}` }));
+    sitemapUrls.push(`${SITE}/${dirName}/${it.id}.html`);
+  }
+  // Index stub for the section itself.
+  const canonical = `${SITE}/#/${dirName}`;
+  const contentHtml = `<h1>${escapeAttr(indexTitle)}</h1><p>${escapeAttr(indexDesc)}</p><ul>` +
+    items.map(o => `<li><a href="/${dirName}/${o.id}.html">${escapeAttr(o.title)}</a> — ${escapeAttr(o.desc || '')}</li>`).join('') + '</ul>';
+  fs.writeFileSync(path.join(outDir, 'index.html'),
+    template({ title: indexTitle + ' · KashSec Academy', desc: indexDesc, canonical, ogUrl: canonical,
+               contentHtml, pathId: '', subId: '', breadcrumb: escapeAttr(indexTitle) }));
+  sitemapUrls.push(`${SITE}/${dirName}/`);
+  return items.length;
+}
+
+const toolsWritten = writeStubSet(
+  TOOLS, 'tools', 'tools', 'security tool',
+  'Free online security tools',
+  'Encoders, hash tools, a JWT decoder, CVSS and subnet calculators, and more — all free, all running locally in your browser.');
+const labsWritten = writeStubSet(
+  LABS, 'labs', 'labs', 'security lab',
+  'Free interactive security labs',
+  'Practise SQL injection, XSS, IDOR, JWT forgery, SSRF, XXE, path traversal, log analysis and more — safe, simulated, and entirely in your browser.');
+
+// Regenerate sitemap.xml with all URLs (home + lessons + paths + tools + labs).
 const smXml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
   sitemapUrls.map(u => `  <url><loc>${u}</loc><changefreq>weekly</changefreq></url>`).join('\n') + '\n</urlset>\n';
 fs.writeFileSync(path.join(ROOT, 'sitemap.xml'), smXml);
 
-console.log(`Prerender complete: ${written} lesson pages + ${PATHS.length} path overviews. sitemap.xml updated (${sitemapUrls.length} URLs).`);
+console.log(`Prerender complete: ${written} lesson pages + ${PATHS.length} path overviews + ${toolsWritten} tools + ${labsWritten} labs. sitemap.xml updated (${sitemapUrls.length} URLs).`);
