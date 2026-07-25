@@ -51,15 +51,52 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
   <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 23 — GRC & Compliance</a> · ISO 27001 Overview</div>
   <article><h1>ISO 27001 Overview</h1>
 <p>ISO/IEC 27001 is the world&#39;s most widely recognised information security management standard. Getting &quot;ISO 27001 certified&quot; is a common ask from enterprise customers and a common GRC career milestone.</p>
+<p>:::</p>
 <h2>What it actually is</h2>
 <p>ISO 27001 isn&#39;t a checklist of technical controls — it&#39;s a standard for building an <strong>Information Security Management System (ISMS)</strong>: the ongoing process of identifying risks, choosing controls, and continuously improving. The certification proves you <em>run a system</em>, not just that you own a firewall.</p>
-<p>This is the single most important thing to understand about ISO 27001: it certifies a <em>process</em>, not a snapshot. An auditor checks that your ISMS is alive and operating, not just that a policy document exists.</p>
+<p>A useful way to explain this to a skeptical engineer: ISO 27001 doesn&#39;t tell you &quot;you must use this specific firewall&quot; — it tells you &quot;you must have a documented, repeatable process for deciding what controls you need, implementing them, checking they work, and improving them.&quot; The standard is about the <em>system that produces good security decisions over time</em>, not any single decision.</p>
 <h2>The core structure</h2>
 <ul>
 <li><strong>Clauses 4–10</strong> — the management-system requirements: context, leadership, planning, support, operation, performance evaluation, improvement. This is the &quot;how you run security as a program&quot; half.</li>
 <li><strong>Annex A</strong> — a reference set of 93 controls (in the 2022 revision) grouped into four themes: Organisational, People, Physical, Technological. This is the &quot;what controls exist&quot; half.</li>
 </ul>
 <p>You don&#39;t have to implement every Annex A control — you formally justify which ones apply to your organisation in a document called the <strong>Statement of Applicability (SoA)</strong>, and justify excluding the rest.</p>
+<table>
+<thead>
+<tr>
+<th>Clause 4-10 area</th>
+<th>Roughly answers</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Context (4)</td>
+<td>What&#39;s the scope of our ISMS? What are our internal/external issues?</td>
+</tr>
+<tr>
+<td>Leadership (5)</td>
+<td>Is management genuinely committed, with resources and a policy?</td>
+</tr>
+<tr>
+<td>Planning (6)</td>
+<td>What risks did we identify, and what&#39;s our treatment plan?</td>
+</tr>
+<tr>
+<td>Support (7)</td>
+<td>Do we have the competence, awareness, and documentation to run this?</td>
+</tr>
+<tr>
+<td>Operation (8)</td>
+<td>Are we actually executing the risk treatment plan day to day?</td>
+</tr>
+<tr>
+<td>Performance evaluation (9)</td>
+<td>Are we measuring whether it&#39;s working — internal audits, management review?</td>
+</tr>
+<tr>
+<td>Improvement (10)</td>
+<td>When we find gaps, do we fix them and feed lessons back in?</td>
+</tr>
+</tbody></table>
 <h2>The PDCA cycle</h2>
 <p>ISO 27001 is built on <strong>Plan–Do–Check–Act</strong>, the same continuous-improvement loop used across quality-management standards:</p>
 <ol>
@@ -68,6 +105,8 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <li><strong>Check</strong> — internal audits, management review, monitor if controls are working.</li>
 <li><strong>Act</strong> — fix gaps, improve, repeat the cycle.</li>
 </ol>
+<p>:::warn
+The most common reason organisations fail their first certification attempt isn&#39;t missing technical controls — it&#39;s a weak &quot;Check&quot; phase. Auditors specifically look for evidence of internal audits and management reviews that actually happened, with real findings, not a rubber-stamped &quot;everything is fine&quot; report produced the week before the external audit.</p>
 <h2>What the certification process looks like</h2>
 <ol>
 <li>Gap assessment against the standard.</li>
@@ -77,6 +116,8 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <li><strong>Stage 2 audit</strong> — external auditor tests whether controls are actually operating.</li>
 <li>Certification issued (valid 3 years), with annual <strong>surveillance audits</strong> in between.</li>
 </ol>
+<h3>What Stage 2 actually looks like in practice</h3>
+<p>A Stage 2 auditor doesn&#39;t just read your access control policy — they&#39;ll pull a sample of employees, ask for evidence their access was reviewed on the schedule your policy specifies, and check whether any terminated employees still had active accounts past your own offboarding SLA. This is the difference between Stage 1 (does the paperwork exist and make sense?) and Stage 2 (is the paperwork actually true?) — and it&#39;s why organisations that &quot;write the ISMS the week before the audit&quot; almost always fail Stage 2 even after passing Stage 1.</p>
 <h2>Examples of Annex A controls</h2>
 <ul>
 <li>A.5.1 — Policies for information security</li>
@@ -88,6 +129,39 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <p>Notice these span policy, technical, and people controls — ISO 27001 deliberately doesn&#39;t let you &quot;solve&quot; security with only one type of control.</p>
 <h2>Why it matters for your career</h2>
 <p>ISO 27001 knowledge is directly useful for GRC analyst, security manager, and compliance roles — and the certification process itself is a great way to learn how a real security program is documented end-to-end, even if you never sit the Lead Implementer/Auditor exam.</p>
+<h2>🧪 Hands-on lab — build a mini Statement of Applicability</h2>
+<ol>
+<li><p>Pick a small hypothetical company (a 15-person SaaS startup is a good default).</p>
+</li>
+<li><p>From the Annex A control list (search &quot;ISO 27001:2022 Annex A controls&quot; for the full list), select 8 controls you think are clearly applicable, and 2 you think could reasonably be excluded.</p>
+</li>
+<li><p>For each applicable control, write one sentence on how the company would actually implement it (concrete, not &quot;we will comply&quot;).</p>
+</li>
+<li><p>For each excluded control, write the justification an auditor would need to see (e.g. &quot;A.7.x physical server room controls — excluded, we are fully cloud-hosted with no on-premises data center&quot;).</p>
+</li>
+<li><p>Pick one control and sketch what Stage 2 evidence an auditor would ask for to verify it&#39;s actually operating, not just documented.</p>
+</li>
+<li><p>Why does ISO 27001 certify a process rather than a fixed set of technical controls?</p>
+</li>
+<li><p>What&#39;s the difference between what a Stage 1 auditor checks and what a Stage 2 auditor checks?</p>
+</li>
+<li><p>A company excludes an Annex A control from their Statement of Applicability. Is that automatically a red flag? Why or why not?</p>
+</li>
+</ol>
+<h2>Key terms</h2>
+<ul>
+<li><strong>ISMS</strong> — Information Security Management System, the ongoing process ISO 27001 certifies</li>
+<li><strong>Statement of Applicability (SoA)</strong> — the document justifying which Annex A controls apply and which are excluded</li>
+<li><strong>PDCA</strong> — Plan-Do-Check-Act, the continuous improvement cycle underlying the standard</li>
+<li><strong>Surveillance audit</strong> — the annual check-in audit between full 3-year recertification cycles</li>
+</ul>
+<h2>Recap</h2>
+<p>ISO 27001 certifies that an organisation runs a genuine, continuously-operating security management system — risk-driven, documented, and independently verified — not that it owns any specific set of tools. The Statement of Applicability and the PDCA cycle are the two concepts worth knowing cold, because they&#39;re what every auditor conversation comes back to.</p>
+<h3>References</h3>
+<ul>
+<li><a href="https://www.iso.org/standard/27001">ISO/IEC 27001 official page</a> — the standard itself</li>
+<li><a href="https://www.isms.online/iso-27001/annex-a/">ISO 27001 Annex A controls overview</a> — a practical breakdown of the 93 controls</li>
+</ul>
 </article>
   <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
 </main>

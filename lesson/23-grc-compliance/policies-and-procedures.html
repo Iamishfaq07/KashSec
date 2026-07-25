@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Writing Policies People Actually Follow — Path 23 · KashSec Academy</title>
-<meta name="description" content="Writing a security policy is easy. Writing one that survives contact with a busy engineering team is the actual skill.">
+<meta name="description" content="Writing a security policy is easy. Writing one that survives contact with a busy engineering team is the actual skill — and it's a skill that separates GRC professionals whose programs actually work f">
 <link rel="canonical" href="https://kashsec.vercel.app/#/lesson/23-grc-compliance/policies-and-procedures">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Writing Policies People Actually Follow — Path 23 · KashSec Academy">
-<meta property="og:description" content="Writing a security policy is easy. Writing one that survives contact with a busy engineering team is the actual skill.">
+<meta property="og:description" content="Writing a security policy is easy. Writing one that survives contact with a busy engineering team is the actual skill — and it's a skill that separates GRC professionals whose programs actually work f">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/#/lesson/23-grc-compliance/policies-and-procedures">
 <meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
@@ -16,11 +16,11 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Writing Policies People Actually Follow — Path 23 · KashSec Academy">
-<meta name="twitter:description" content="Writing a security policy is easy. Writing one that survives contact with a busy engineering team is the actual skill.">
+<meta name="twitter:description" content="Writing a security policy is easy. Writing one that survives contact with a busy engineering team is the actual skill — and it's a skill that separates GRC professionals whose programs actually work f">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Writing Policies People Actually Follow — Path 23 · KashSec Academy","description":"Writing a security policy is easy. Writing one that survives contact with a busy engineering team is the actual skill.","url":"https://kashsec.vercel.app/#/lesson/23-grc-compliance/policies-and-procedures","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Writing Policies People Actually Follow — Path 23 · KashSec Academy","description":"Writing a security policy is easy. Writing one that survives contact with a busy engineering team is the actual skill — and it's a skill that separates GRC professionals whose programs actually work f","url":"https://kashsec.vercel.app/#/lesson/23-grc-compliance/policies-and-procedures","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
 </script>
 <style>
 :root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
@@ -50,7 +50,8 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
   <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/23-grc-compliance/policies-and-procedures">continue here →</a></div>
   <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 23 — GRC & Compliance</a> · Writing Policies People Actually Follow</div>
   <article><h1>Writing Policies People Actually Follow</h1>
-<p>Writing a security policy is easy. Writing one that survives contact with a busy engineering team is the actual skill.</p>
+<p>Writing a security policy is easy. Writing one that survives contact with a busy engineering team is the actual skill — and it&#39;s a skill that separates GRC professionals whose programs actually work from ones whose policies are decoration.</p>
+<p>:::</p>
 <h2>Why most security policies fail</h2>
 <ul>
 <li><strong>Too vague to act on</strong> (&quot;Use strong passwords&quot; — how strong, enforced how?)</li>
@@ -58,7 +59,8 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <li><strong>No owner</strong> — nobody&#39;s job to keep it updated as the business changes.</li>
 <li><strong>No enforcement mechanism</strong> — a rule with no consequence or technical control behind it is a suggestion.</li>
 </ul>
-<p>A policy that contradicts how people actually work will simply get ignored — and worse, it becomes evidence in an incident post-mortem that &quot;the policy existed but wasn&#39;t followed,&quot; which looks far worse than having no policy at all.</p>
+<p>:::warn
+A policy that contradicts how people actually work will simply get ignored — and worse, it becomes evidence in an incident post-mortem that &quot;the policy existed but wasn&#39;t followed,&quot; which looks far worse than having no policy at all.</p>
 <h2>The anatomy of a good policy document</h2>
 <ol>
 <li><strong>Purpose</strong> — why this policy exists, in one or two sentences.</li>
@@ -69,16 +71,76 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <li><strong>Enforcement</strong> — what happens on violation.</li>
 <li><strong>Review cadence</strong> — when this gets revisited (annually is standard).</li>
 </ol>
+<table>
+<thead>
+<tr>
+<th>Section</th>
+<th>Bad example</th>
+<th>Good example</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Purpose</td>
+<td>&quot;Security matters.&quot;</td>
+<td>&quot;This policy defines how the organisation protects customer PII across its systems.&quot;</td>
+</tr>
+<tr>
+<td>Scope</td>
+<td>(missing entirely)</td>
+<td>&quot;Applies to all full-time employees, contractors, and any system processing customer data.&quot;</td>
+</tr>
+<tr>
+<td>Enforcement</td>
+<td>&quot;Violations may be addressed.&quot;</td>
+<td>&quot;First violation: manager notification and retraining. Repeat violations: escalation to HR per the employee handbook.&quot;</td>
+</tr>
+</tbody></table>
 <h2>A before/after example</h2>
 <p><strong>Before</strong>: &quot;Employees must use secure passwords.&quot;</p>
 <p><strong>After</strong>: &quot;All employee accounts must be protected by a password meeting the organisation&#39;s password standard (minimum 12 characters, or a passphrase) <em>and</em> multi-factor authentication, enforced automatically through the identity provider (Okta/Azure AD). Exceptions require written approval from the CISO and expire after 90 days.&quot;</p>
 <p>The second version is specific, testable by an auditor, and tells an engineer exactly what to build.</p>
+<h2>A second before/after: an incident response policy statement</h2>
+<p><strong>Before</strong>: &quot;The company will respond appropriately to security incidents.&quot;</p>
+<p><strong>After</strong>: &quot;Any employee who suspects a security incident must report it to <a href="mailto:security@company.com">security@company.com</a> or the #security-incidents Slack channel within one hour of discovery. The on-call security engineer will triage and classify the incident within 30 minutes of report, per the Incident Response Procedure. Incidents classified as Critical trigger the Incident Commander process defined in that procedure.&quot;</p>
+<p>Notice the second version has concrete timeframes, a specific reporting channel, and a pointer to a separate procedure document rather than trying to cram the entire response process into the policy itself.</p>
 <h2>Policy vs. procedure — keep them separate</h2>
 <p>Bundling &quot;why we do this&quot; (policy) with &quot;exactly how to do it&quot; (procedure) makes a document that goes stale fast — the how-to steps change constantly (a new tool, a new UI), but the underlying commitment doesn&#39;t. Keep the policy short and stable; put the step-by-step instructions in a separate, more frequently updated procedure or runbook.</p>
+<p>This mirrors the policy hierarchy from the governance lesson earlier in this path: policy → standard → procedure → guideline. A policy document that tries to also be a procedure document usually ends up unable to serve either purpose well.</p>
 <h2>Getting buy-in before you publish</h2>
 <p>The best practical technique: draft the policy, then walk it past the team who&#39;ll actually have to follow it <em>before</em> it&#39;s finalised. Their pushback (&quot;this will break our on-call process&quot;) usually reveals real problems that a purely top-down policy would have missed — and reviewing with them turns the policy from &quot;something imposed on us&quot; into something they helped shape, which massively improves real-world compliance.</p>
 <h2>Core policies almost every organisation needs</h2>
 <p>Acceptable Use, Access Control, Data Classification &amp; Handling, Incident Response, Vendor/Third-Party Risk, Business Continuity &amp; Disaster Recovery, and an Information Security Policy that ties them all together at the top.</p>
+<h2>🧪 Hands-on lab — rewrite a vague policy statement</h2>
+<ol>
+<li><p>Pick one of these deliberately vague policy statements (or write your own): &quot;Data must be protected appropriately,&quot; &quot;Access should be limited to those who need it,&quot; &quot;Vendors must have adequate security.&quot;</p>
+</li>
+<li><p>Rewrite it following the before/after pattern above: specific, testable, with a clear enforcement mechanism.</p>
+</li>
+<li><p>Draft the full seven-section anatomy (purpose through review cadence) for your rewritten statement.</p>
+</li>
+<li><p>Imagine presenting this to the engineering team who has to implement it. Write down one piece of pushback you&#39;d realistically expect, and how you&#39;d revise the policy in response.</p>
+</li>
+<li><p>Why is &quot;Employees must use secure passwords&quot; untestable by an auditor, while the rewritten version is?</p>
+</li>
+<li><p>Explain why bundling policy and procedure into one document tends to make the whole document go stale faster.</p>
+</li>
+<li><p>A team pushes back that a new access-control policy will break their on-call rotation. What should happen next, and why is dismissing the pushback usually a mistake?</p>
+</li>
+</ol>
+<h2>Key terms</h2>
+<ul>
+<li><strong>Policy</strong> — a high-level, stable statement of organisational commitment</li>
+<li><strong>Procedure</strong> — the specific, frequently-updated steps that implement a policy</li>
+<li><strong>Exceptions process</strong> — the defined path for requesting an approved deviation from policy</li>
+<li><strong>Enforcement mechanism</strong> — the technical control or consequence that gives a policy statement teeth</li>
+</ul>
+<h2>Recap</h2>
+<p>A good policy is specific, testable, owned, and reviewed on a cadence — and it&#39;s written with the people who&#39;ll actually follow it, not just handed down to them. The gap between a policy that exists and a policy that&#39;s followed is almost always closed by concreteness and buy-in, not by stricter wording.</p>
+<h3>References</h3>
+<ul>
+<li><a href="https://www.sans.org/information-security-policy/">SANS Information Security Policy Templates</a> — a widely used free starting point</li>
+<li><a href="https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final">NIST SP 800-53 — Policy and Procedures family</a> — the federal controls catalog&#39;s take on policy structure</li>
+</ul>
 </article>
   <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
 </main>

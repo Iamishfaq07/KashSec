@@ -229,13 +229,13 @@ const LESSON_HASHES = {
  "22-devsecops-appsec/metrics-that-matter": "4454b66720",
  "22-devsecops-appsec/building-appsec-program": "e2d378d2d4",
  "22-devsecops-appsec/appsec-program-lab": "e302a7bbf6",
- "23-grc-compliance/what-is-grc": "357800d5d7",
- "23-grc-compliance/governance-basics": "622ebb69d2",
- "23-grc-compliance/risk-management-fundamentals": "16f2fcab1f",
- "23-grc-compliance/iso27001-overview": "0ce5ef53b2",
- "23-grc-compliance/nist-csf-overview": "47a9e6f787",
- "23-grc-compliance/soc2-and-audits": "c00cb1dc75",
- "23-grc-compliance/policies-and-procedures": "51bba64cde",
- "23-grc-compliance/third-party-vendor-risk": "a6c8e36b8b",
- "23-grc-compliance/grc-tools-and-careers": "4d75c127a4"
+ "23-grc-compliance/what-is-grc": "16f72f7700",
+ "23-grc-compliance/governance-basics": "ce6c2933cf",
+ "23-grc-compliance/risk-management-fundamentals": "e525a1daf7",
+ "23-grc-compliance/iso27001-overview": "5cc1f8c78d",
+ "23-grc-compliance/nist-csf-overview": "ac04b09b29",
+ "23-grc-compliance/soc2-and-audits": "14c9b38bd4",
+ "23-grc-compliance/policies-and-procedures": "280a97ca8d",
+ "23-grc-compliance/third-party-vendor-risk": "dfc576abbe",
+ "23-grc-compliance/grc-tools-and-careers": "925444a69e"
 };

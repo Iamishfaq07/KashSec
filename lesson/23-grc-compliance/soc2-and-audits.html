@@ -51,6 +51,7 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
   <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 23 — GRC & Compliance</a> · SOC 2 and Audits</div>
   <article><h1>SOC 2 and Audits</h1>
 <p>If ISO 27001 is the international standard, <strong>SOC 2</strong> is the one you&#39;ll hear about constantly if you work at (or sell software to) a US-based SaaS company.</p>
+<p>:::</p>
 <h2>What SOC 2 actually is</h2>
 <p>SOC 2 (System and Organization Controls 2) is an audit report — not a certification — issued under AICPA standards by a licensed CPA firm. It proves an organisation&#39;s controls meet the <strong>Trust Services Criteria</strong>:</p>
 <ul>
@@ -61,12 +62,41 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <li><strong>Privacy</strong></li>
 </ul>
 <p>Most companies only pursue Security, plus maybe Availability and Confidentiality, since the others are less commonly demanded by customers.</p>
-<p>&quot;We&#39;re SOC 2 compliant&quot; is a common phrase, but technically imprecise — you don&#39;t &quot;pass&quot; or &quot;fail&quot; SOC 2 the way you certify against ISO 27001. You receive a <em>report</em>, and its content (not a pass/fail stamp) is what customers actually read.</p>
 <h2>Type I vs Type II</h2>
 <ul>
 <li><strong>Type I</strong> — a point-in-time snapshot: &quot;were these controls designed appropriately as of this date?&quot; Faster and cheaper, but weaker evidence.</li>
 <li><strong>Type II</strong> — evaluates whether controls <strong>operated effectively over a period</strong> (typically 3–12 months). This is what serious enterprise customers actually want to see, because it proves controls didn&#39;t just exist for the auditor&#39;s visit.</li>
 </ul>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Type I</th>
+<th>Type II</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Question answered</td>
+<td>Were controls designed correctly, right now?</td>
+<td>Did controls actually operate correctly, over months?</td>
+</tr>
+<tr>
+<td>Typical timeline</td>
+<td>A few weeks</td>
+<td>3–12 months of evidence, then the audit</td>
+</tr>
+<tr>
+<td>Evidence needed</td>
+<td>A snapshot</td>
+<td>Continuous evidence across the whole period</td>
+</tr>
+<tr>
+<td>Enterprise customer confidence</td>
+<td>Lower — &quot;looked right on the day&quot;</td>
+<td>Higher — &quot;actually worked all year&quot;</td>
+</tr>
+</tbody></table>
+<p>Many companies do a Type I first (faster to get <em>something</em> to show customers), then move to Type II for their next audit cycle once they have a track record to prove.</p>
 <h2>What an auditor actually does</h2>
 <p>For Type II, the auditor picks a sample of evidence across the audit period and checks it&#39;s real:</p>
 <ul>
@@ -76,6 +106,9 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <li>Reviews vulnerability scan results → confirms findings were tracked and remediated on schedule.</li>
 </ul>
 <p>This is why &quot;having a policy&quot; isn&#39;t enough — you need the <em>evidence trail</em> that the policy was followed, consistently, for the whole audit window.</p>
+<h2>A worked example: a Type II sample walkthrough</h2>
+<p>An auditor reviewing a 6-month Type II audit period pulls 15 of the ~40 employees who left the company during that window. For each, they check: was the offboarding ticket created the same day as the termination date in HR records? Was account access revoked within the policy&#39;s stated window (say, 24 hours)? Was the laptop marked as returned or wiped?</p>
+<p>If 14 of 15 pass cleanly and one shows access revoked 3 days late due to a manager forgetting to submit the offboarding ticket promptly, that single case becomes a documented <strong>exception</strong> — not an automatic failure, but a finding the report will note, along with the company&#39;s explanation and any remediation taken (e.g. &quot;we&#39;ve since automated offboarding tickets to trigger from the HR system directly, removing the manual step that caused this delay&quot;).</p>
 <h2>Common findings (&quot;exceptions&quot;)</h2>
 <ul>
 <li>Access reviews that were supposed to happen quarterly, but only happened twice.</li>
@@ -83,8 +116,41 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <li>Missing evidence for a specific control (nobody kept the ticket).</li>
 </ul>
 <p>An exception doesn&#39;t automatically fail the report — auditors document it, and the company responds with a remediation plan. What kills deals is a <em>pattern</em> of exceptions suggesting the control isn&#39;t real.</p>
+<p>:::warn
+A single exception in a Type II report is normal — audits exist precisely because organisations aren&#39;t perfect, and a report with zero exceptions across an entire year sometimes makes sophisticated customers <em>more</em> suspicious, not less, because it can suggest a sample too small or too friendly to catch real gaps. What matters is the pattern and the quality of the remediation response, not a fantasy of zero findings.</p>
 <h2>GRC&#39;s day-to-day role around audits</h2>
 <p>In practice, a GRC analyst spends a lot of time on <strong>evidence collection</strong> — gathering screenshots, exports, and tickets that prove controls operated, often using a compliance automation platform (Vanta, Drata, Secureframe) that continuously pulls evidence from AWS, GitHub, Okta, etc. Knowing these tools exist — and roughly what they automate — is genuinely useful for interviews in this field.</p>
+<h2>🧪 Hands-on lab — design an evidence collection plan</h2>
+<ol>
+<li><p>Pick three controls a SaaS company would need for a SOC 2 Security audit (e.g. &quot;MFA enforced on all admin accounts,&quot; &quot;quarterly access reviews,&quot; &quot;vulnerability scans run monthly&quot;).</p>
+</li>
+<li><p>For each control, write down: what specific evidence would prove it operated, not just that it exists as a policy?</p>
+</li>
+<li><p>For each, decide: could this evidence realistically be automated (pulled continuously from a tool like Okta or AWS), or does it require a manual step (someone filling out a form, taking a screenshot)?</p>
+</li>
+<li><p>Sketch a rough calendar for a 6-month Type II audit period: what evidence would need to be collected monthly vs. quarterly vs. just once?</p>
+</li>
+<li><p>Why does a Type II report generally carry more weight with enterprise customers than a Type I report?</p>
+</li>
+<li><p>In the offboarding example, why is the auditor&#39;s finding recorded as an &quot;exception&quot; rather than an automatic failure of the whole report?</p>
+</li>
+<li><p>Why might a SOC 2 report with zero exceptions across an entire year actually raise suspicion for a sophisticated customer reviewing it?</p>
+</li>
+</ol>
+<h2>Key terms</h2>
+<ul>
+<li><strong>SOC 2</strong> — an AICPA audit report (not a pass/fail certification) proving controls meet the Trust Services Criteria</li>
+<li><strong>Trust Services Criteria</strong> — the five categories a SOC 2 report can cover: Security, Availability, Processing Integrity, Confidentiality, Privacy</li>
+<li><strong>Exception</strong> — a documented instance where a control didn&#39;t operate as designed, noted in the audit report along with remediation</li>
+<li><strong>Compliance automation platform</strong> — tools (Vanta, Drata, Secureframe) that continuously pull evidence from cloud/IT systems to reduce manual audit prep</li>
+</ul>
+<h2>Recap</h2>
+<p>SOC 2 is a report, not a certificate, and its real value lies in the evidence trail proving controls operated consistently — especially in a Type II audit spanning months, not a single point in time. A handful of well-explained exceptions is normal and expected; what matters to a customer reading the report is the pattern of findings and the quality of the company&#39;s response, not a fantasy of perfection.</p>
+<h3>References</h3>
+<ul>
+<li><a href="https://www.aicpa-cima.com/topic/audit-assurance/audit-and-assurance-greater-than-soc-2">AICPA SOC 2 overview</a> — the official source for the Trust Services Criteria</li>
+<li><a href="https://www.vanta.com/resources/soc-2">Vanta&#39;s SOC 2 guide</a> — a practical, vendor-written but widely referenced explainer</li>
+</ul>
 </article>
   <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
 </main>

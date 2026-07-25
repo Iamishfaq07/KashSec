@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Security Governance Basics — Path 23 · KashSec Academy</title>
-<meta name="description" content="Governance is the &quot;who decides, and how&quot; layer of security. Without it, even good technical controls drift — nobody owns keeping them alive.">
+<meta name="description" content="Governance is the &quot;who decides, and how&quot; layer of security. Without it, even good technical controls drift — nobody owns keeping them alive, and the moment the person who built a control leaves, so do">
 <link rel="canonical" href="https://kashsec.vercel.app/#/lesson/23-grc-compliance/governance-basics">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Security Governance Basics — Path 23 · KashSec Academy">
-<meta property="og:description" content="Governance is the &quot;who decides, and how&quot; layer of security. Without it, even good technical controls drift — nobody owns keeping them alive.">
+<meta property="og:description" content="Governance is the &quot;who decides, and how&quot; layer of security. Without it, even good technical controls drift — nobody owns keeping them alive, and the moment the person who built a control leaves, so do">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/#/lesson/23-grc-compliance/governance-basics">
 <meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
@@ -16,11 +16,11 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Security Governance Basics — Path 23 · KashSec Academy">
-<meta name="twitter:description" content="Governance is the &quot;who decides, and how&quot; layer of security. Without it, even good technical controls drift — nobody owns keeping them alive.">
+<meta name="twitter:description" content="Governance is the &quot;who decides, and how&quot; layer of security. Without it, even good technical controls drift — nobody owns keeping them alive, and the moment the person who built a control leaves, so do">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Security Governance Basics — Path 23 · KashSec Academy","description":"Governance is the \"who decides, and how\" layer of security. Without it, even good technical controls drift — nobody owns keeping them alive.","url":"https://kashsec.vercel.app/#/lesson/23-grc-compliance/governance-basics","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Security Governance Basics — Path 23 · KashSec Academy","description":"Governance is the \"who decides, and how\" layer of security. Without it, even good technical controls drift — nobody owns keeping them alive, and the moment the person who built a control leaves, so do","url":"https://kashsec.vercel.app/#/lesson/23-grc-compliance/governance-basics","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
 </script>
 <style>
 :root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
@@ -50,7 +50,8 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
   <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/23-grc-compliance/governance-basics">continue here →</a></div>
   <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 23 — GRC & Compliance</a> · Security Governance Basics</div>
   <article><h1>Security Governance Basics</h1>
-<p>Governance is the &quot;who decides, and how&quot; layer of security. Without it, even good technical controls drift — nobody owns keeping them alive.</p>
+<p>Governance is the &quot;who decides, and how&quot; layer of security. Without it, even good technical controls drift — nobody owns keeping them alive, and the moment the person who built a control leaves, so does the institutional knowledge of why it exists.</p>
+<p>:::</p>
 <h2>What governance actually covers</h2>
 <ul>
 <li><strong>Ownership</strong> — who is accountable for security outcomes? (Often a CISO, but in smaller companies it might be a single engineering lead wearing many hats.)</li>
@@ -58,7 +59,8 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <li><strong>Structure</strong> — committees, review boards, and reporting lines that make sure security decisions get made and don&#39;t just live in one person&#39;s head.</li>
 <li><strong>Oversight</strong> — how leadership (and sometimes the board) gets visibility into security posture and risk.</li>
 </ul>
-<p>A policy that exists only as a PDF nobody reads isn&#39;t governance — it&#39;s paperwork. Real governance means the policy is followed, reviewed, and enforced.</p>
+<p>:::warn
+A policy that exists only as a PDF nobody reads isn&#39;t governance — it&#39;s paperwork. Real governance means the policy is followed, reviewed, and enforced. Auditors are increasingly good at spotting the difference: ask for the last three access-review tickets, not just the access-review policy document.</p>
 <h2>The governance hierarchy</h2>
 <p>Most mature security programs have a layered structure:</p>
 <ol>
@@ -68,6 +70,36 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <li><strong>Guideline</strong> — recommended (not mandatory) advice (&quot;Consider rotating keys every 90 days&quot;).</li>
 </ol>
 <p>This hierarchy matters because auditors and regulators ask for exactly this structure — and because it lets you change <em>how</em> you do something (procedure) without rewriting <em>what</em> you&#39;re committed to (policy).</p>
+<table>
+<thead>
+<tr>
+<th>Level</th>
+<th>Changes how often</th>
+<th>Who approves it</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Policy</td>
+<td>Rarely (annually, or on major change)</td>
+<td>Leadership / security committee</td>
+</tr>
+<tr>
+<td>Standard</td>
+<td>Occasionally (as technology changes)</td>
+<td>Security team</td>
+</tr>
+<tr>
+<td>Procedure</td>
+<td>Frequently (as tools and processes evolve)</td>
+<td>Team implementing it</td>
+</tr>
+<tr>
+<td>Guideline</td>
+<td>As needed</td>
+<td>Anyone with relevant expertise</td>
+</tr>
+</tbody></table>
+<p>Notice the pattern: the higher up the hierarchy, the harder it should be to change, and the more people should be involved in changing it. A procedure that changes weekly as a team refines its tooling is healthy. A policy that changes weekly means either the policy was written too specifically, or nobody&#39;s actually enforcing stability at that level.</p>
 <h2>Who&#39;s actually in the room</h2>
 <ul>
 <li><strong>CISO / Head of Security</strong> — owns the program, reports risk to leadership.</li>
@@ -77,8 +109,44 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 </ul>
 <h2>A governance red flag worth knowing</h2>
 <p>If the same team designs a control, implements it, <em>and</em> audits itself with no independent check, that&#39;s a segregation-of-duties failure — one of the most common findings in real audits. Governance exists partly to prevent exactly this.</p>
+<h3>Worked example</h3>
+<p>An engineering team implements a code-review requirement (every PR needs a second approver before merge) and is also the team that reports &quot;100% compliance&quot; with this policy to leadership every quarter, based on their own internal tracking. No one outside the team ever samples actual PRs to verify the number. Six months later, an incident review discovers a pattern of self-approved emergency merges that were never counted in the compliance number, because the team&#39;s own tracking script silently excluded anything tagged &quot;hotfix.&quot; This is exactly the failure segregation of duties exists to catch: the team measuring its own compliance had every incentive, even unintentionally, to under-report gaps.</p>
 <h2>Why this matters even if you&#39;re not &quot;in GRC&quot;</h2>
 <p>Every engineer eventually runs into governance: the security review that blocks a launch, the policy that says production access requires MFA, the change-management process before a deploy. Understanding <em>why</em> these exist — not just that they&#39;re annoying — makes you far more effective working within (or around, safely) a security program.</p>
+<h2>🧪 Hands-on lab — build a policy hierarchy</h2>
+<p>Pick a security topic you care about (e.g. &quot;how we handle laptops that get lost or stolen&quot;).</p>
+<ol>
+<li><p>Write one sentence at the <strong>policy</strong> level — the high-level commitment.</p>
+</li>
+<li><p>Write one sentence at the <strong>standard</strong> level — the specific measurable rule.</p>
+</li>
+<li><p>Write a short numbered <strong>procedure</strong> — the actual steps someone follows.</p>
+</li>
+<li><p>Write one optional <strong>guideline</strong> — a recommendation, not a requirement.</p>
+</li>
+<li><p>Identify: who should approve each level, and how often should each realistically be reviewed?</p>
+</li>
+<li><p>Why does putting a policy change through a heavier approval process than a procedure change make sense operationally?</p>
+</li>
+<li><p>In the self-reporting compliance example, what&#39;s the simplest governance fix that would have caught the &quot;hotfix&quot; exclusion sooner?</p>
+</li>
+<li><p>Name one security control at your own job (or a hypothetical one) and answer: who would notice if it silently broke?</p>
+</li>
+</ol>
+<h2>Key terms</h2>
+<ul>
+<li><strong>Policy hierarchy</strong> — the layered structure of policy → standard → procedure → guideline</li>
+<li><strong>Segregation of duties</strong> — ensuring no single person or team both performs and self-verifies a control</li>
+<li><strong>CISO</strong> — Chief Information Security Officer, typically the senior accountable owner for a security program</li>
+<li><strong>Oversight</strong> — the mechanism by which leadership gets independent visibility into security posture</li>
+</ul>
+<h2>Recap</h2>
+<p>Governance is the structural layer that keeps security decisions accountable, documented, and independently checked — without it, even well-designed controls quietly decay because nobody owns keeping them alive. The policy hierarchy and segregation of duties are the two governance concepts you&#39;ll see referenced in nearly every audit framework covered later in this path.</p>
+<h3>References</h3>
+<ul>
+<li><a href="https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final">NIST SP 800-53 — Governance controls</a> — a comprehensive federal controls catalog including governance</li>
+<li><a href="https://www.isaca.org/resources/isaca-journal">ISACA — Segregation of Duties</a> — professional body covering governance and audit practice</li>
+</ul>
 </article>
   <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
 </main>

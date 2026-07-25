@@ -985,6 +985,15 @@ const GLOSSARY = [
   "subTitle": "What is DevSecOps?"
  },
  {
+  "term": "CISO",
+  "def": "Chief Information Security Officer, typically the senior accountable owner for a security program",
+  "pathId": "23-grc-compliance",
+  "pathN": "23",
+  "pathTitle": "GRC & Compliance",
+  "subId": "governance-basics",
+  "subTitle": "Security Governance Basics"
+ },
+ {
   "term": "CISSP",
   "def": "broad, management-adjacent certification, typically more valuable later in a career.",
   "pathId": "20-career-prep",
@@ -1093,6 +1102,33 @@ const GLOSSARY = [
   "subTitle": "What is a computer really?"
  },
  {
+  "term": "Compliance automation platform",
+  "def": "tools (Vanta, Drata, Secureframe) that continuously pull evidence from cloud/IT systems to reduce manual audit prep",
+  "pathId": "23-grc-compliance",
+  "pathN": "23",
+  "pathTitle": "GRC & Compliance",
+  "subId": "soc2-and-audits",
+  "subTitle": "SOC 2 and Audits"
+ },
+ {
+  "term": "Compliance automation platform",
+  "def": "a tool (Vanta, Drata, Secureframe) that continuously pulls evidence for audit purposes",
+  "pathId": "23-grc-compliance",
+  "pathN": "23",
+  "pathTitle": "GRC & Compliance",
+  "subId": "grc-tools-and-careers",
+  "subTitle": "GRC Tools, Certifications & Careers"
+ },
+ {
+  "term": "Compliance framework",
+  "def": "a defined set of controls an organisation attests to following (ISO 27001, SOC 2, NIST CSF, etc.)",
+  "pathId": "23-grc-compliance",
+  "pathN": "23",
+  "pathTitle": "GRC & Compliance",
+  "subId": "what-is-grc",
+  "subTitle": "What is GRC?"
+ },
+ {
   "term": "Comprehension",
   "def": "one-line list building.",
   "pathId": "04-python",
@@ -1199,6 +1235,15 @@ const GLOSSARY = [
   "pathTitle": "Programming & Python",
   "subId": "automation-for-security",
   "subTitle": "Automation for Security"
+ },
+ {
+  "term": "Control",
+  "def": "a specific, checkable measure implemented to reduce a risk (e.g. \"MFA is required for all admin accounts\")",
+  "pathId": "23-grc-compliance",
+  "pathN": "23",
+  "pathTitle": "GRC & Compliance",
+  "subId": "what-is-grc",
+  "subTitle": "What is GRC?"
  },
  {
   "term": "Controlled folder access",
@@ -1831,6 +1876,15 @@ const GLOSSARY = [
   "subTitle": "Secure Communications"
  },
  {
+  "term": "Enforcement mechanism",
+  "def": "the technical control or consequence that gives a policy statement teeth",
+  "pathId": "23-grc-compliance",
+  "pathN": "23",
+  "pathTitle": "GRC & Compliance",
+  "subId": "policies-and-procedures",
+  "subTitle": "Writing Policies People Actually Follow"
+ },
+ {
   "term": "Entropy",
   "def": "a measure of data randomness, used to detect packed or encrypted code sections.",
   "pathId": "17-malware-re",
@@ -1948,6 +2002,24 @@ const GLOSSARY = [
   "subTitle": "Wi-Fi security & attacks"
  },
  {
+  "term": "Exception",
+  "def": "a documented instance where a control didn't operate as designed, noted in the audit report along with remediation",
+  "pathId": "23-grc-compliance",
+  "pathN": "23",
+  "pathTitle": "GRC & Compliance",
+  "subId": "soc2-and-audits",
+  "subTitle": "SOC 2 and Audits"
+ },
+ {
+  "term": "Exceptions process",
+  "def": "the defined path for requesting an approved deviation from policy",
+  "pathId": "23-grc-compliance",
+  "pathN": "23",
+  "pathTitle": "GRC & Compliance",
+  "subId": "policies-and-procedures",
+  "subTitle": "Writing Policies People Actually Follow"
+ },
+ {
   "term": "Excessive Agency",
   "def": "granting an AI system more autonomy/permissions than its task genuinely requires.",
   "pathId": "18-ai-security",
@@ -2009,6 +2081,15 @@ const GLOSSARY = [
   "pathTitle": "API Security",
   "subId": "authn-authz-apis",
   "subTitle": "Authentication & Authorization in APIs"
+ },
+ {
+  "term": "FAIR",
+  "def": "Factor Analysis of Information Risk, a common quantitative risk methodology",
+  "pathId": "23-grc-compliance",
+  "pathN": "23",
+  "pathTitle": "GRC & Compliance",
+  "subId": "risk-management-fundamentals",
+  "subTitle": "Risk Management Fundamentals"
  },
  {
   "term": "False positive",
@@ -2200,6 +2281,15 @@ const GLOSSARY = [
   "subTitle": "OWASP API Top 10 (2023)"
  },
  {
+  "term": "Gap analysis",
+  "def": "comparing current maturity against target maturity to produce a prioritised roadmap",
+  "pathId": "23-grc-compliance",
+  "pathN": "23",
+  "pathTitle": "GRC & Compliance",
+  "subId": "nist-csf-overview",
+  "subTitle": "NIST Cybersecurity Framework Overview"
+ },
+ {
   "term": "Garak / PyRIT",
   "def": "open-source AI red-teaming automation frameworks.",
   "pathId": "18-ai-security",
@@ -2272,6 +2362,24 @@ const GLOSSARY = [
   "subTitle": "Web recon"
  },
  {
+  "term": "Governance",
+  "def": "the structure and accountability behind security decision-making",
+  "pathId": "23-grc-compliance",
+  "pathN": "23",
+  "pathTitle": "GRC & Compliance",
+  "subId": "what-is-grc",
+  "subTitle": "What is GRC?"
+ },
+ {
+  "term": "Govern (GV)",
+  "def": "the function added in CSF 2.0 tying the framework directly to organisational governance",
+  "pathId": "23-grc-compliance",
+  "pathN": "23",
+  "pathTitle": "GRC & Compliance",
+  "subId": "nist-csf-overview",
+  "subTitle": "NIST Cybersecurity Framework Overview"
+ },
+ {
   "term": "Gradual escalation",
   "def": "walking a multi-turn conversation incrementally toward a harmful endpoint.",
   "pathId": "18-ai-security",
@@ -2297,6 +2405,15 @@ const GLOSSARY = [
   "pathTitle": "Introduction to Cybersecurity",
   "subId": "types-of-hackers",
   "subTitle": "Types of hackers & careers"
+ },
+ {
+  "term": "GRC Analyst",
+  "def": "the most common entry-level title in this field, focused on evidence collection and audit support",
+  "pathId": "23-grc-compliance",
+  "pathN": "23",
+  "pathTitle": "GRC & Compliance",
+  "subId": "grc-tools-and-careers",
+  "subTitle": "GRC Tools, Certifications & Careers"
  },
  {
   "term": "`grep`",
@@ -2767,6 +2884,15 @@ const GLOSSARY = [
   "subTitle": "Cloud Providers Overview"
  },
  {
+  "term": "Inherent risk",
+  "def": "the risk level assuming no controls exist",
+  "pathId": "23-grc-compliance",
+  "pathN": "23",
+  "pathTitle": "GRC & Compliance",
+  "subId": "risk-management-fundamentals",
+  "subTitle": "Risk Management Fundamentals"
+ },
+ {
   "term": "Insecure Output Handling",
   "def": "the AI-era descendant of XSS/SQLi, when LLM output is trusted blindly downstream.",
   "pathId": "18-ai-security",
@@ -2918,6 +3044,24 @@ const GLOSSARY = [
   "pathTitle": "Networking Fundamentals",
   "subId": "ip-addresses",
   "subTitle": "IP addresses"
+ },
+ {
+  "term": "ISACA",
+  "def": "the professional body behind CISA, CRISC, and CGEIT certifications",
+  "pathId": "23-grc-compliance",
+  "pathN": "23",
+  "pathTitle": "GRC & Compliance",
+  "subId": "grc-tools-and-careers",
+  "subTitle": "GRC Tools, Certifications & Careers"
+ },
+ {
+  "term": "ISMS",
+  "def": "Information Security Management System, the ongoing process ISO 27001 certifies",
+  "pathId": "23-grc-compliance",
+  "pathN": "23",
+  "pathTitle": "GRC & Compliance",
+  "subId": "iso27001-overview",
+  "subTitle": "ISO 27001 Overview"
  },
  {
   "term": "ISO 27001",
@@ -3262,6 +3406,15 @@ const GLOSSARY = [
   "subTitle": "Building an AppSec Program from Scratch"
  },
  {
+  "term": "Maturity tier",
+  "def": "CSF's four-level scale (Partial, Risk Informed, Repeatable, Adaptive) for scoring program maturity",
+  "pathId": "23-grc-compliance",
+  "pathN": "23",
+  "pathTitle": "GRC & Compliance",
+  "subId": "nist-csf-overview",
+  "subTitle": "NIST Cybersecurity Framework Overview"
+ },
+ {
   "term": "Memory forensics / Volatility",
   "def": "analysing volatile RAM contents, revealing evidence that never touches disk.",
   "pathId": "16-advanced",
@@ -3523,6 +3676,15 @@ const GLOSSARY = [
   "subTitle": "Frameworks & compliance"
  },
  {
+  "term": "NIST CSF",
+  "def": "the Cybersecurity Framework, a voluntary six-function model for organising a security program",
+  "pathId": "23-grc-compliance",
+  "pathN": "23",
+  "pathTitle": "GRC & Compliance",
+  "subId": "nist-csf-overview",
+  "subTitle": "NIST Cybersecurity Framework Overview"
+ },
+ {
   "term": "Nmap",
   "def": "the standard network scanning and host/service discovery tool.",
   "pathId": "12-network-security",
@@ -3748,6 +3910,15 @@ const GLOSSARY = [
   "subTitle": "OWASP LLM Top 10"
  },
  {
+  "term": "Oversight",
+  "def": "the mechanism by which leadership gets independent visibility into security posture",
+  "pathId": "23-grc-compliance",
+  "pathN": "23",
+  "pathTitle": "GRC & Compliance",
+  "subId": "governance-basics",
+  "subTitle": "Security Governance Basics"
+ },
+ {
   "term": "OWASP",
   "def": "the non-profit behind the Top 10 and many other free security resources.",
   "pathId": "11-web-security",
@@ -3937,6 +4108,15 @@ const GLOSSARY = [
   "subTitle": "Frameworks & compliance"
  },
  {
+  "term": "PDCA",
+  "def": "Plan-Do-Check-Act, the continuous improvement cycle underlying the standard",
+  "pathId": "23-grc-compliance",
+  "pathN": "23",
+  "pathTitle": "GRC & Compliance",
+  "subId": "iso27001-overview",
+  "subTitle": "ISO 27001 Overview"
+ },
+ {
   "term": "Pentester",
   "def": "a professional who legally breaks in and reports how.",
   "pathId": "01-introduction",
@@ -4072,6 +4252,15 @@ const GLOSSARY = [
   "subTitle": "Containers & Kubernetes"
  },
  {
+  "term": "Policy",
+  "def": "a high-level, stable statement of organisational commitment",
+  "pathId": "23-grc-compliance",
+  "pathN": "23",
+  "pathTitle": "GRC & Compliance",
+  "subId": "policies-and-procedures",
+  "subTitle": "Writing Policies People Actually Follow"
+ },
+ {
   "term": "Policy as code",
   "def": "encoding security rules so pipelines can enforce them automatically",
   "pathId": "22-devsecops-appsec",
@@ -4079,6 +4268,15 @@ const GLOSSARY = [
   "pathTitle": "DevSecOps & AppSec Program",
   "subId": "building-appsec-program",
   "subTitle": "Building an AppSec Program from Scratch"
+ },
+ {
+  "term": "Policy hierarchy",
+  "def": "the layered structure of policy → standard → procedure → guideline",
+  "pathId": "23-grc-compliance",
+  "pathN": "23",
+  "pathTitle": "GRC & Compliance",
+  "subId": "governance-basics",
+  "subTitle": "Security Governance Basics"
  },
  {
   "term": "Port",
@@ -4097,6 +4295,15 @@ const GLOSSARY = [
   "pathTitle": "Networking Fundamentals",
   "subId": "ports",
   "subTitle": "Ports: the doors"
+ },
+ {
+  "term": "Portfolio project",
+  "def": "a self-built artifact (mock policy, mock gap analysis) demonstrating GRC skill without requiring prior job experience",
+  "pathId": "23-grc-compliance",
+  "pathN": "23",
+  "pathTitle": "GRC & Compliance",
+  "subId": "grc-tools-and-careers",
+  "subTitle": "GRC Tools, Certifications & Careers"
  },
  {
   "term": "Post-exploitation",
@@ -4205,6 +4412,15 @@ const GLOSSARY = [
   "pathTitle": "AI & AI Security",
   "subId": "why-ai-security",
   "subTitle": "Why AI security is new"
+ },
+ {
+  "term": "Procedure",
+  "def": "the specific, frequently-updated steps that implement a policy",
+  "pathId": "23-grc-compliance",
+  "pathN": "23",
+  "pathTitle": "GRC & Compliance",
+  "subId": "policies-and-procedures",
+  "subTitle": "Writing Policies People Actually Follow"
  },
  {
   "term": "Profile README",
@@ -4675,6 +4891,15 @@ const GLOSSARY = [
   "subTitle": "Threat Modeling in the SDLC"
  },
  {
+  "term": "Residual risk",
+  "def": "the risk level remaining after existing controls are accounted for",
+  "pathId": "23-grc-compliance",
+  "pathN": "23",
+  "pathTitle": "GRC & Compliance",
+  "subId": "risk-management-fundamentals",
+  "subTitle": "Risk Management Fundamentals"
+ },
+ {
   "term": "Resolver",
   "def": "the GraphQL function responsible for fetching the data for one specific field",
   "pathId": "21-api-security",
@@ -4738,6 +4963,15 @@ const GLOSSARY = [
   "subTitle": "What is a protocol?"
  },
  {
+  "term": "Right-to-audit clause",
+  "def": "a contract term allowing the customer to audit a vendor's security practices",
+  "pathId": "23-grc-compliance",
+  "pathN": "23",
+  "pathTitle": "GRC & Compliance",
+  "subId": "third-party-vendor-risk",
+  "subTitle": "Third-Party & Vendor Risk"
+ },
+ {
   "term": "Risk",
   "def": "the combined likelihood and impact of a threat exploiting a vulnerability.",
   "pathId": "10-fundamentals",
@@ -4745,6 +4979,33 @@ const GLOSSARY = [
   "pathTitle": "Cybersecurity Fundamentals",
   "subId": "threats-risk",
   "subTitle": "Threats, vulns & risk"
+ },
+ {
+  "term": "Risk register",
+  "def": "a living document tracking identified risks, their severity, and their treatment",
+  "pathId": "23-grc-compliance",
+  "pathN": "23",
+  "pathTitle": "GRC & Compliance",
+  "subId": "what-is-grc",
+  "subTitle": "What is GRC?"
+ },
+ {
+  "term": "Risk register",
+  "def": "the master tracked list of identified risks, scores, owners, and treatments",
+  "pathId": "23-grc-compliance",
+  "pathN": "23",
+  "pathTitle": "GRC & Compliance",
+  "subId": "risk-management-fundamentals",
+  "subTitle": "Risk Management Fundamentals"
+ },
+ {
+  "term": "Risk treatment",
+  "def": "the chosen response to a risk: accept, mitigate, transfer, or avoid",
+  "pathId": "23-grc-compliance",
+  "pathN": "23",
+  "pathTitle": "GRC & Compliance",
+  "subId": "risk-management-fundamentals",
+  "subTitle": "Risk Management Fundamentals"
  },
  {
   "term": "RLHF",
@@ -5062,6 +5323,15 @@ const GLOSSARY = [
   "subTitle": "The Shared Responsibility Model"
  },
  {
+  "term": "Security rating service",
+  "def": "a tool (BitSight, SecurityScorecard) providing continuous outside-in risk scoring of vendors",
+  "pathId": "23-grc-compliance",
+  "pathN": "23",
+  "pathTitle": "GRC & Compliance",
+  "subId": "third-party-vendor-risk",
+  "subTitle": "Third-Party & Vendor Risk"
+ },
+ {
   "term": "Security through obscurity",
   "def": "relying on an algorithm or method's secrecy rather than genuine cryptographic strength, an approach that fails once details become known.",
   "pathId": "06-crypto-fundamentals",
@@ -5087,6 +5357,15 @@ const GLOSSARY = [
   "pathTitle": "Network Security",
   "subId": "why-netsec",
   "subTitle": "Why network security matters"
+ },
+ {
+  "term": "Segregation of duties",
+  "def": "ensuring no single person or team both performs and self-verifies a control",
+  "pathId": "23-grc-compliance",
+  "pathN": "23",
+  "pathTitle": "GRC & Compliance",
+  "subId": "governance-basics",
+  "subTitle": "Security Governance Basics"
  },
  {
   "term": "Serializer",
@@ -5368,6 +5647,15 @@ const GLOSSARY = [
   "subTitle": "Frameworks & compliance"
  },
  {
+  "term": "SOC 2",
+  "def": "an AICPA audit report (not a pass/fail certification) proving controls meet the Trust Services Criteria",
+  "pathId": "23-grc-compliance",
+  "pathN": "23",
+  "pathTitle": "GRC & Compliance",
+  "subId": "soc2-and-audits",
+  "subTitle": "SOC 2 and Audits"
+ },
+ {
   "term": "Social engineering",
   "def": "manipulating people (rather than exploiting technical flaws) to gain access or information.",
   "pathId": "00-fresher-basics",
@@ -5557,6 +5845,15 @@ const GLOSSARY = [
   "subTitle": "Firewalls, VPNs, proxies"
  },
  {
+  "term": "Statement of Applicability (SoA)",
+  "def": "the document justifying which Annex A controls apply and which are excluded",
+  "pathId": "23-grc-compliance",
+  "pathN": "23",
+  "pathTitle": "GRC & Compliance",
+  "subId": "iso27001-overview",
+  "subTitle": "ISO 27001 Overview"
+ },
+ {
   "term": "Static / dynamic analysis",
   "def": "examining a file without executing it vs observing its actual runtime behaviour.",
   "pathId": "16-advanced",
@@ -5647,6 +5944,15 @@ const GLOSSARY = [
   "subTitle": "Automation & nuclei"
  },
  {
+  "term": "Subprocessor",
+  "def": "a third party a vendor itself relies on, sometimes called a \"fourth party\" from the original company's perspective",
+  "pathId": "23-grc-compliance",
+  "pathN": "23",
+  "pathTitle": "GRC & Compliance",
+  "subId": "third-party-vendor-risk",
+  "subTitle": "Third-Party & Vendor Risk"
+ },
+ {
   "term": "Success rate",
   "def": "the statistical measure (successes/total attempts) central to AI red-teaming findings, replacing binary pass/fail.",
   "pathId": "18-ai-security",
@@ -5690,6 +5996,15 @@ const GLOSSARY = [
   "pathTitle": "Mobile App Security",
   "subId": "owasp-mobile-top-10",
   "subTitle": "OWASP Mobile Top 10"
+ },
+ {
+  "term": "Surveillance audit",
+  "def": "the annual check-in audit between full 3-year recertification cycles",
+  "pathId": "23-grc-compliance",
+  "pathN": "23",
+  "pathTitle": "GRC & Compliance",
+  "subId": "iso27001-overview",
+  "subTitle": "ISO 27001 Overview"
  },
  {
   "term": "Symmetric encryption",
@@ -5989,6 +6304,15 @@ const GLOSSARY = [
   "subTitle": "Threat Modeling in the SDLC"
  },
  {
+  "term": "Trust Services Criteria",
+  "def": "the five categories a SOC 2 report can cover: Security, Availability, Processing Integrity, Confidentiality, Privacy",
+  "pathId": "23-grc-compliance",
+  "pathN": "23",
+  "pathTitle": "GRC & Compliance",
+  "subId": "soc2-and-audits",
+  "subTitle": "SOC 2 and Audits"
+ },
+ {
   "term": "Truthiness",
   "def": "which non-boolean values count as False in an `if`.",
   "pathId": "04-python",
@@ -6167,6 +6491,15 @@ const GLOSSARY = [
   "pathTitle": "Operating Systems & Linux",
   "subId": "bash-scripting",
   "subTitle": "Your first bash script"
+ },
+ {
+  "term": "Vendor tiering",
+  "def": "categorising vendors by risk level to apply proportionate scrutiny",
+  "pathId": "23-grc-compliance",
+  "pathN": "23",
+  "pathTitle": "GRC & Compliance",
+  "subId": "third-party-vendor-risk",
+  "subTitle": "Third-Party & Vendor Risk"
  },
  {
   "term": "venv",
