@@ -66,4 +66,4 @@ Revisit Path 13's mobile APK analysis lesson and Path 17's static analysis lesso
 - [Cryptographic Right Answers](https://gist.github.com/tqbf/be58d2d39690c3b366ad) — a widely-referenced, practical "what to actually use" cheat sheet.
 ???
 
-**Next up →** [Crypto Hands-On Lab](#/lesson/06-crypto-fundamentals/crypto-hands-on-lab)
+**Next up →** [Applied Cryptography: Choosing and Using It Correctly](#/lesson/06-crypto-fundamentals/applied-crypto-in-practice)

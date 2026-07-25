@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blockchain &amp; Cryptocurrency Cryptography — Path 06 · KashSec Academy</title>
+<meta name="description" content="Cryptocurrency is, underneath the hype and the price charts, one of the most direct real-world applications of nearly everything this path has taught. This lesson connects the dots — not as investment">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/06-crypto-fundamentals/blockchain-cryptocurrency-crypto">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Blockchain &amp; Cryptocurrency Cryptography — Path 06 · KashSec Academy">
+<meta property="og:description" content="Cryptocurrency is, underneath the hype and the price charts, one of the most direct real-world applications of nearly everything this path has taught. This lesson connects the dots — not as investment">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/06-crypto-fundamentals/blockchain-cryptocurrency-crypto">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Blockchain &amp; Cryptocurrency Cryptography — Path 06 · KashSec Academy">
+<meta name="twitter:description" content="Cryptocurrency is, underneath the hype and the price charts, one of the most direct real-world applications of nearly everything this path has taught. This lesson connects the dots — not as investment">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Blockchain & Cryptocurrency Cryptography — Path 06 · KashSec Academy","description":"Cryptocurrency is, underneath the hype and the price charts, one of the most direct real-world applications of nearly everything this path has taught. This lesson connects the dots — not as investment","url":"https://kashsec.vercel.app/#/lesson/06-crypto-fundamentals/blockchain-cryptocurrency-crypto","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/06-crypto-fundamentals/blockchain-cryptocurrency-crypto">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 06 — Cryptography Fundamentals</a> · Blockchain &amp; Cryptocurrency Cryptography</div>
+  <article><h1>Blockchain &amp; Cryptocurrency Cryptography</h1>
+<p>Cryptocurrency is, underneath the hype and the price charts, one of the most direct real-world applications of nearly everything this path has taught. This lesson connects the dots — not as investment advice, but as a genuinely useful case study in applied cryptography.</p>
+<p>:::</p>
+<h2>Hash chains: the &quot;chain&quot; in blockchain</h2>
+<p>A <strong>blockchain</strong> is, structurally, a chain of data blocks where each block contains a cryptographic hash (from the hashing-explained lesson) of the <em>previous</em> block. This single design choice has a powerful consequence: changing any block, even slightly, changes its hash — which no longer matches what the next block recorded, breaking the chain from that point forward and making the tampering immediately detectable. This is the exact same hash-chain principle used in Path 16&#39;s forensics and log-integrity material, applied at massive, decentralized scale.</p>
+<h2>Public/private keys as identity and ownership</h2>
+<p>Cryptocurrency wallets are, at their core, an asymmetric key pair (from the asymmetric-encryption lesson) — your <strong>public key</strong> (or an address derived from it) is where funds are sent, and your <strong>private key</strong> is what proves you&#39;re authorized to spend them. There&#39;s no username or password in the traditional sense; ownership <em>is</em> possession of the private key, which is exactly why &quot;not your keys, not your coins&quot; is such a common phrase in that community, and why private key loss is unrecoverable by design — there&#39;s no &quot;forgot password&quot; flow, because there&#39;s no central authority to ask.</p>
+<h2>Digital signatures: authorizing a transaction</h2>
+<p>Every cryptocurrency transaction is cryptographically signed (using ECDSA, from the elliptic-curve-cryptography lesson, in Bitcoin and Ethereum specifically) with the sender&#39;s private key. Anyone on the network can verify the signature using the sender&#39;s public key, confirming the transaction was genuinely authorized by whoever controls that address, without ever needing to see or trust the private key itself — precisely the same signature-verification principle the digital-signatures-certificates lesson introduced, applied to authorizing a financial transfer instead of authenticating a website.</p>
+<h2>Consensus: how a decentralized network agrees on the truth</h2>
+<p>Beyond individual transactions, a blockchain network needs mechanisms to agree on the <em>order</em> of transactions without a central authority — this is what <strong>consensus mechanisms</strong> like Proof of Work (Bitcoin) and Proof of Stake (modern Ethereum) actually solve, and it&#39;s a genuinely separate problem from the cryptography covered elsewhere in this path. Understanding that &quot;blockchain security&quot; involves both the cryptographic primitives <em>and</em> the consensus mechanism is important — a flaw in either layer can compromise the system, even if the other layer is perfectly sound.</p>
+<h2>Where crypto (cryptography) meets crypto (cryptocurrency) security incidents, in practice</h2>
+<p>Real cryptocurrency security incidents rarely come from someone breaking ECDSA or SHA-256 mathematically — they overwhelmingly come from the same categories covered elsewhere in this course: phishing for private keys (Path 00), smart contract logic bugs (a specialized area related to Path 11&#39;s web application security), and exchange platforms suffering conventional breaches unrelated to the underlying blockchain cryptography itself. The math tends to hold; the systems and humans around it are where real losses happen — a pattern that should feel familiar by now.</p>
+<p>:::challenge Diagnose a real incident category
+A cryptocurrency exchange loses millions of dollars in user funds after attackers compromise an employee&#39;s laptop through a phishing email and use their access to move funds out of the exchange&#39;s wallets.</p>
+<details><summary>Hint</summary>Was the underlying blockchain cryptography (hashing, digital signatures, ECDSA) broken here, or was something else entirely the actual failure?</details>
+<details><summary>Show answer</summary>The underlying cryptography was never touched — the actual signatures, hashes, and consensus mechanism all worked exactly as designed. This is a <strong>phishing and access-control failure</strong> (covered in Path 00 and Path 14), not a cryptographic one: the attacker obtained legitimate access to keys or systems that were authorized to move funds, rather than breaking any mathematical guarantee. This pattern — the crypto math holding perfectly while the surrounding human and system security fails — is genuinely the dominant cause of real cryptocurrency losses, which is exactly why this lesson emphasizes it directly rather than leaving it as an assumption.</details><h2>🧪 Hands-on lab — trace a real transaction</h2>
+<p>Using a public blockchain explorer (a search for &quot;Bitcoin block explorer&quot; or &quot;Etherscan&quot; will surface options), look up any recent transaction and identify: the sending address, the receiving address, and the transaction hash. Note how this maps directly onto the public-key-as-identity and hash-chain concepts from this lesson.</p>
+<ol>
+<li>What specific cryptographic concept from earlier in this path does &quot;each block contains the previous block&#39;s hash&quot; directly build on?</li>
+<li>Why does losing a private key mean permanently losing access to cryptocurrency funds, with no recovery option?</li>
+<li>Why do most real cryptocurrency thefts not actually involve breaking any cryptographic algorithm?</li>
+</ol>
+<h2>Key terms</h2>
+<ul>
+<li><strong>Blockchain</strong> — a chain of data blocks, each cryptographically linked to the previous one via a hash, making tampering detectable.</li>
+<li><strong>Consensus mechanism</strong> — the method a decentralized network uses to agree on transaction order and validity (e.g., Proof of Work, Proof of Stake).</li>
+<li><strong>Private key (in cryptocurrency)</strong> — the cryptographic secret that proves ownership and authorizes spending, with no recovery mechanism if lost.</li>
+</ul>
+<h2>Recap</h2>
+<p>Cryptocurrency and blockchain technology are, structurally, a real-world composition of concepts already covered in this path — hash chains for tamper-evidence, asymmetric key pairs for ownership, and digital signatures for authorizing transactions — combined with a separate consensus layer to achieve agreement without a central authority. Real-world losses overwhelmingly come from phishing, access-control failures, and smart contract bugs rather than the underlying cryptographic math breaking, a pattern worth remembering well beyond this specific application.</p>
+<h3>References</h3>
+<ul>
+<li><a href="https://bitcoin.org/bitcoin.pdf">Bitcoin Whitepaper (Satoshi Nakamoto)</a> — the original document describing how these pieces combine</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/06-crypto-fundamentals/post-quantum-cryptography">Post-Quantum Cryptography</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/06-crypto-fundamentals/blockchain-cryptocurrency-crypto";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

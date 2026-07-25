@@ -760,6 +760,15 @@ const GLOSSARY = [
   "subTitle": "Command inj. & uploads"
  },
  {
+  "term": "Blockchain",
+  "def": "a chain of data blocks, each cryptographically linked to the previous one via a hash, making tampering detectable.",
+  "pathId": "06-crypto-fundamentals",
+  "pathN": "06",
+  "pathTitle": "Cryptography Fundamentals",
+  "subId": "blockchain-cryptocurrency-crypto",
+  "subTitle": "Blockchain & Cryptocurrency Cryptography"
+ },
+ {
   "term": "Blocklist / commonlist",
   "def": "pre-known bad passwords.",
   "pathId": "04-python",
@@ -1111,6 +1120,15 @@ const GLOSSARY = [
   "subTitle": "What is DevSecOps?"
  },
  {
+  "term": "Cipher suite",
+  "def": "a specific combination of algorithms (key exchange, encryption, and integrity check) used for a TLS connection.",
+  "pathId": "06-crypto-fundamentals",
+  "pathN": "06",
+  "pathTitle": "Cryptography Fundamentals",
+  "subId": "tls-handshake-explained",
+  "subTitle": "The TLS Handshake, Step by Step"
+ },
+ {
   "term": "CISA ICS advisory",
   "def": "a vulnerability advisory specific to industrial control system products, published separately from general CVE feeds",
   "pathId": "25-ot-ics-security",
@@ -1361,6 +1379,15 @@ const GLOSSARY = [
   "pathTitle": "Digital Privacy & Personal Security",
   "subId": "privacy-settings-audit",
   "subTitle": "Privacy Settings Audit"
+ },
+ {
+  "term": "Consensus mechanism",
+  "def": "the method a decentralized network uses to agree on transaction order and validity (e.g., Proof of Work, Proof of Stake).",
+  "pathId": "06-crypto-fundamentals",
+  "pathN": "06",
+  "pathTitle": "Cryptography Fundamentals",
+  "subId": "blockchain-cryptocurrency-crypto",
+  "subTitle": "Blockchain & Cryptocurrency Cryptography"
  },
  {
   "term": "Console",
@@ -1615,6 +1642,15 @@ const GLOSSARY = [
   "subTitle": "Your ethical-hacking path"
  },
  {
+  "term": "Curve25519",
+  "def": "a widely trusted, well-vetted elliptic curve designed to avoid common implementation pitfalls.",
+  "pathId": "06-crypto-fundamentals",
+  "pathN": "06",
+  "pathTitle": "Cryptography Fundamentals",
+  "subId": "elliptic-curve-cryptography",
+  "subTitle": "Elliptic Curve Cryptography"
+ },
+ {
   "term": "CVE / CVSS / CWE",
   "def": "public identifiers and scoring for known vulnerabilities.",
   "pathId": "10-fundamentals",
@@ -1867,6 +1903,15 @@ const GLOSSARY = [
   "subTitle": "Digital forensics & IR"
  },
  {
+  "term": "Diffie-Hellman key exchange",
+  "def": "a method for two parties to agree on a shared secret over a public channel without transmitting the secret itself.",
+  "pathId": "06-crypto-fundamentals",
+  "pathN": "06",
+  "pathTitle": "Cryptography Fundamentals",
+  "subId": "key-exchange-diffie-hellman",
+  "subTitle": "Key Exchange & Diffie-Hellman"
+ },
+ {
   "term": "Diffing",
   "def": "comparing successive recon runs to surface only new discoveries.",
   "pathId": "15-bug-bounty",
@@ -2092,6 +2137,15 @@ const GLOSSARY = [
   "subTitle": "Digital Signatures & Certificates"
  },
  {
+  "term": "Downgrade attack",
+  "def": "tricking parties into using a weaker protocol or algorithm than they'd normally negotiate.",
+  "pathId": "06-crypto-fundamentals",
+  "pathN": "06",
+  "pathTitle": "Cryptography Fundamentals",
+  "subId": "cryptographic-attacks-overview",
+  "subTitle": "Common Cryptographic Attacks"
+ },
+ {
   "term": "Doxxing",
   "def": "maliciously publishing someone's private information publicly.",
   "pathId": "09-digital-privacy",
@@ -2137,6 +2191,24 @@ const GLOSSARY = [
   "subTitle": "Symmetric Encryption"
  },
  {
+  "term": "ECDHE",
+  "def": "Elliptic-curve Diffie-Hellman Ephemeral, the variant used in modern TLS.",
+  "pathId": "06-crypto-fundamentals",
+  "pathN": "06",
+  "pathTitle": "Cryptography Fundamentals",
+  "subId": "key-exchange-diffie-hellman",
+  "subTitle": "Key Exchange & Diffie-Hellman"
+ },
+ {
+  "term": "ECDSA / EdDSA",
+  "def": "elliptic-curve digital signature algorithms.",
+  "pathId": "06-crypto-fundamentals",
+  "pathN": "06",
+  "pathTitle": "Cryptography Fundamentals",
+  "subId": "elliptic-curve-cryptography",
+  "subTitle": "Elliptic Curve Cryptography"
+ },
+ {
   "term": "EDR",
   "def": "modern endpoint detection and response tooling.",
   "pathId": "10-fundamentals",
@@ -2153,6 +2225,15 @@ const GLOSSARY = [
   "pathTitle": "Cloud Computing Basics",
   "subId": "what-is-cloud-computing",
   "subTitle": "What is Cloud Computing?"
+ },
+ {
+  "term": "Elliptic Curve Cryptography (ECC)",
+  "def": "a public-key cryptography approach based on the algebraic structure of elliptic curves over finite fields.",
+  "pathId": "06-crypto-fundamentals",
+  "pathN": "06",
+  "pathTitle": "Cryptography Fundamentals",
+  "subId": "elliptic-curve-cryptography",
+  "subTitle": "Elliptic Curve Cryptography"
  },
  {
   "term": "Encapsulation",
@@ -2587,6 +2668,15 @@ const GLOSSARY = [
   "subTitle": "Loops: repeat things"
  },
  {
+  "term": "Forward secrecy",
+  "def": "a property ensuring that past communications stay secure even if a long-term key is compromised later.",
+  "pathId": "06-crypto-fundamentals",
+  "pathN": "06",
+  "pathTitle": "Cryptography Fundamentals",
+  "subId": "key-exchange-diffie-hellman",
+  "subTitle": "Key Exchange & Diffie-Hellman"
+ },
+ {
   "term": "Four-part finding structure",
   "def": "description, reproduction steps, impact, remediation — the universal skeleton for any professional finding.",
   "pathId": "14-ethical-hacking",
@@ -2873,6 +2963,15 @@ const GLOSSARY = [
   "pathTitle": "Computer Basics & Security Mindset",
   "subId": "what-is-a-computer",
   "subTitle": "What is a computer really?"
+ },
+ {
+  "term": "Harvest now, decrypt later",
+  "def": "the strategy of capturing encrypted data today to decrypt once quantum computers become capable enough.",
+  "pathId": "06-crypto-fundamentals",
+  "pathN": "06",
+  "pathTitle": "Cryptography Fundamentals",
+  "subId": "post-quantum-cryptography",
+  "subTitle": "Post-Quantum Cryptography"
  },
  {
   "term": "Hash collision",
@@ -3748,6 +3847,15 @@ const GLOSSARY = [
   "subTitle": "iOS App Security Basics"
  },
  {
+  "term": "Key rotation",
+  "def": "periodically replacing cryptographic keys to limit the impact of an undetected compromise.",
+  "pathId": "06-crypto-fundamentals",
+  "pathN": "06",
+  "pathTitle": "Cryptography Fundamentals",
+  "subId": "applied-crypto-in-practice",
+  "subTitle": "Applied Cryptography: Choosing and Using It Correctly"
+ },
+ {
   "term": "Keyword matching",
   "def": "aligning your resume's terminology with the job description's language.",
   "pathId": "20-career-prep",
@@ -3818,6 +3926,15 @@ const GLOSSARY = [
   "pathTitle": "OT/ICS & Critical Infrastructure Security",
   "subId": "ot-ics-capstone-lab",
   "subTitle": "Capstone: Secure a Realistic Industrial Network"
+ },
+ {
+  "term": "libsodium",
+  "def": "a widely recommended, easy-to-use cryptography library designed to make secure defaults the easy path.",
+  "pathId": "06-crypto-fundamentals",
+  "pathN": "06",
+  "pathTitle": "Cryptography Fundamentals",
+  "subId": "applied-crypto-in-practice",
+  "subTitle": "Applied Cryptography: Choosing and Using It Correctly"
  },
  {
   "term": "LinPEAS",
@@ -4684,6 +4801,15 @@ const GLOSSARY = [
   "subTitle": "Packets & the OSI layers"
  },
  {
+  "term": "Padding oracle attack",
+  "def": "decrypting ciphertext by repeatedly exploiting a system that leaks whether decrypted padding was valid.",
+  "pathId": "06-crypto-fundamentals",
+  "pathN": "06",
+  "pathTitle": "Cryptography Fundamentals",
+  "subId": "cryptographic-attacks-overview",
+  "subTitle": "Common Cryptographic Attacks"
+ },
+ {
   "term": "Parameterised query / prepared statement",
   "def": "the definitive defence, separating query structure from data.",
   "pathId": "11-web-security",
@@ -5080,6 +5206,15 @@ const GLOSSARY = [
   "subTitle": "Phase 4: Post-exploitation"
  },
  {
+  "term": "Post-quantum cryptography (PQC)",
+  "def": "cryptographic algorithms designed to remain secure against quantum computers, standardized by NIST beginning in 2024.",
+  "pathId": "06-crypto-fundamentals",
+  "pathN": "06",
+  "pathTitle": "Cryptography Fundamentals",
+  "subId": "post-quantum-cryptography",
+  "subTitle": "Post-Quantum Cryptography"
+ },
+ {
   "term": "Predictable identifier",
   "def": "sequential or guessable IDs that lower the bar for exploitation even absent a confirmed bypass.",
   "pathId": "15-bug-bounty",
@@ -5159,6 +5294,15 @@ const GLOSSARY = [
   "pathTitle": "Networking Fundamentals",
   "subId": "ip-addresses",
   "subTitle": "IP addresses"
+ },
+ {
+  "term": "Private key (in cryptocurrency)",
+  "def": "the cryptographic secret that proves ownership and authorizes spending, with no recovery mechanism if lost.",
+  "pathId": "06-crypto-fundamentals",
+  "pathN": "06",
+  "pathTitle": "Cryptography Fundamentals",
+  "subId": "blockchain-cryptocurrency-crypto",
+  "subTitle": "Blockchain & Cryptocurrency Cryptography"
  },
  {
   "term": "Private program",
@@ -5375,6 +5519,15 @@ const GLOSSARY = [
   "pathTitle": "Programming & Python",
   "subId": "where-next",
   "subTitle": "Where to go next"
+ },
+ {
+  "term": "Quantum computer",
+  "def": "a computer exploiting quantum mechanical properties to solve certain problems dramatically faster than classical computers.",
+  "pathId": "06-crypto-fundamentals",
+  "pathN": "06",
+  "pathTitle": "Cryptography Fundamentals",
+  "subId": "post-quantum-cryptography",
+  "subTitle": "Post-Quantum Cryptography"
  },
  {
   "term": "Query complexity",
@@ -5672,6 +5825,15 @@ const GLOSSARY = [
   "pathTitle": "Programming & Python",
   "subId": "variables-types",
   "subTitle": "Variables & data types"
+ },
+ {
+  "term": "Replay attack",
+  "def": "resending a captured, validly-encrypted message to trick a system into accepting it again.",
+  "pathId": "06-crypto-fundamentals",
+  "pathN": "06",
+  "pathTitle": "Cryptography Fundamentals",
+  "subId": "cryptographic-attacks-overview",
+  "subTitle": "Common Cryptographic Attacks"
  },
  {
   "term": "Request / response",
@@ -6161,6 +6323,15 @@ const GLOSSARY = [
  },
  {
   "term": "Secrets manager",
+  "def": "a dedicated system for storing and controlling access to cryptographic keys and other sensitive credentials.",
+  "pathId": "06-crypto-fundamentals",
+  "pathN": "06",
+  "pathTitle": "Cryptography Fundamentals",
+  "subId": "applied-crypto-in-practice",
+  "subTitle": "Applied Cryptography: Choosing and Using It Correctly"
+ },
+ {
+  "term": "Secrets manager",
   "def": "dedicated services (AWS Secrets Manager, Azure Key Vault) avoiding hardcoded credentials.",
   "pathId": "16-advanced",
   "pathN": "16",
@@ -6484,6 +6655,15 @@ const GLOSSARY = [
   "subTitle": "What is DevSecOps?"
  },
  {
+  "term": "Shor's algorithm",
+  "def": "a quantum algorithm capable of efficiently solving the factoring and discrete logarithm problems RSA and Diffie-Hellman/ECC depend on.",
+  "pathId": "06-crypto-fundamentals",
+  "pathN": "06",
+  "pathTitle": "Cryptography Fundamentals",
+  "subId": "post-quantum-cryptography",
+  "subTitle": "Post-Quantum Cryptography"
+ },
+ {
   "term": "Short-lived credential",
   "def": "a secret that expires quickly (minutes to hours), limiting the value of theft",
   "pathId": "22-devsecops-appsec",
@@ -6491,6 +6671,15 @@ const GLOSSARY = [
   "pathTitle": "DevSecOps & AppSec Program",
   "subId": "secrets-supply-chain",
   "subTitle": "Secrets Management & Software Supply Chain"
+ },
+ {
+  "term": "Side-channel attack",
+  "def": "extracting secret information from implementation details (timing, power) rather than breaking the algorithm's math.",
+  "pathId": "06-crypto-fundamentals",
+  "pathN": "06",
+  "pathTitle": "Cryptography Fundamentals",
+  "subId": "cryptographic-attacks-overview",
+  "subTitle": "Common Cryptographic Attacks"
  },
  {
   "term": "SIEM",
@@ -7301,6 +7490,24 @@ const GLOSSARY = [
   "pathTitle": "Cryptography Fundamentals",
   "subId": "digital-signatures-certificates",
   "subTitle": "Digital Signatures & Certificates"
+ },
+ {
+  "term": "TLS handshake",
+  "def": "the negotiation process that establishes a secure connection before any application data is exchanged.",
+  "pathId": "06-crypto-fundamentals",
+  "pathN": "06",
+  "pathTitle": "Cryptography Fundamentals",
+  "subId": "tls-handshake-explained",
+  "subTitle": "The TLS Handshake, Step by Step"
+ },
+ {
+  "term": "TLS (Transport Layer Security)",
+  "def": "the protocol underlying HTTPS that provides encryption, authentication, and integrity.",
+  "pathId": "06-crypto-fundamentals",
+  "pathN": "06",
+  "pathTitle": "Cryptography Fundamentals",
+  "subId": "tls-handshake-explained",
+  "subTitle": "The TLS Handshake, Step by Step"
  },
  {
   "term": "Token",

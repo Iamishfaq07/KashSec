@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Elliptic Curve Cryptography — Path 06 · KashSec Academy</title>
+<meta name="description" content="The asymmetric-encryption lesson covered RSA, built on the hardness of factoring large numbers. This lesson covers the other major approach in wide modern use — Elliptic Curve Cryptography (ECC) — bui">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/06-crypto-fundamentals/elliptic-curve-cryptography">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Elliptic Curve Cryptography — Path 06 · KashSec Academy">
+<meta property="og:description" content="The asymmetric-encryption lesson covered RSA, built on the hardness of factoring large numbers. This lesson covers the other major approach in wide modern use — Elliptic Curve Cryptography (ECC) — bui">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/06-crypto-fundamentals/elliptic-curve-cryptography">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Elliptic Curve Cryptography — Path 06 · KashSec Academy">
+<meta name="twitter:description" content="The asymmetric-encryption lesson covered RSA, built on the hardness of factoring large numbers. This lesson covers the other major approach in wide modern use — Elliptic Curve Cryptography (ECC) — bui">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Elliptic Curve Cryptography — Path 06 · KashSec Academy","description":"The asymmetric-encryption lesson covered RSA, built on the hardness of factoring large numbers. This lesson covers the other major approach in wide modern use — Elliptic Curve Cryptography (ECC) — bui","url":"https://kashsec.vercel.app/#/lesson/06-crypto-fundamentals/elliptic-curve-cryptography","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/06-crypto-fundamentals/elliptic-curve-cryptography">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 06 — Cryptography Fundamentals</a> · Elliptic Curve Cryptography</div>
+  <article><h1>Elliptic Curve Cryptography</h1>
+<p>The asymmetric-encryption lesson covered RSA, built on the hardness of factoring large numbers. This lesson covers the other major approach in wide modern use — <strong>Elliptic Curve Cryptography (ECC)</strong> — built on a completely different hard math problem, and increasingly the default choice for new systems.</p>
+<p>:::</p>
+<h2>What an elliptic curve actually is, at a glance</h2>
+<p>An <strong>elliptic curve</strong> is a specific type of mathematical curve with a special property: given any two points on the curve, there&#39;s a well-defined way to &quot;add&quot; them together to get a third point, also on the curve. This &quot;point addition&quot; operation, repeated many times starting from a fixed public point, is easy to compute forward but extremely hard to reverse — you can easily compute &quot;start at point G, add it to itself 47 times&quot; but given only the starting point and the final result, recovering &quot;47&quot; is computationally infeasible at real-world key sizes. That asymmetry — easy forward, hard to reverse — is the exact same shape of hard problem RSA relies on with factoring, just built from different math.</p>
+<h2>Why smaller keys matter in practice</h2>
+<p>A 256-bit ECC key provides roughly the same real-world security as a 3072-bit RSA key. This isn&#39;t a minor efficiency detail — smaller keys mean:</p>
+<ul>
+<li><strong>Faster computation</strong> — meaningfully less CPU work for every handshake, signature, and verification, which matters enormously at the scale of a server handling millions of connections</li>
+<li><strong>Smaller data to transmit</strong> — smaller certificates, smaller handshake messages, genuinely faster page loads at scale</li>
+<li><strong>Practical for constrained devices</strong> — IoT devices, smart cards, and mobile devices with limited processing power can run ECC where full-size RSA would be noticeably slower</li>
+</ul>
+<h2>Where you&#39;ll actually encounter ECC</h2>
+<ul>
+<li><strong>ECDHE</strong> — the ephemeral Diffie-Hellman key exchange from the previous lesson, built on elliptic curves rather than the original modular-exponentiation approach, and now the standard in modern TLS</li>
+<li><strong>ECDSA / EdDSA</strong> — elliptic-curve digital signature algorithms, an alternative to RSA signatures covered in the digital-signatures lesson, used throughout SSH keys and increasingly TLS certificates</li>
+<li><strong>Passkeys</strong> — the passwordless authentication method from Path 00 generates elliptic-curve key pairs by default on most modern platforms</li>
+<li><strong>Cryptocurrency</strong> — Bitcoin and Ethereum both use ECDSA (specifically the secp256k1 curve) to sign transactions, which the blockchain-and-cryptocurrency lesson later in this path covers directly</li>
+</ul>
+<h2>A word on curve choice — not all curves are equal</h2>
+<p>Not every elliptic curve is equally trustworthy. Some curves have publicly known, well-vetted parameters with no evidence of manipulation (<strong>Curve25519</strong> is widely regarded as one of the most trusted, designed specifically to avoid the kind of subtle implementation pitfalls older curves were vulnerable to); others, historically, have drawn suspicion over how their specific parameters were chosen, without full public justification. This is exactly why the applied-crypto lesson later in this path repeats a recurring theme: <strong>use well-vetted, standard, widely-reviewed implementations rather than choosing obscure parameters yourself.</strong></p>
+<p>:::challenge Compare key sizes
+A colleague argues that a system using 2048-bit RSA keys is automatically more secure than one using 256-bit ECC keys, purely because the number is bigger.</p>
+<details><summary>Hint</summary>Does "number of bits" mean the same thing across two completely different underlying mathematical problems?</details>
+<details><summary>Show answer</summary>This reasoning is incorrect, and it's a genuinely common misconception. Key size only makes sense as a security comparison *within* the same underlying algorithm family — RSA's hardness comes from factoring, ECC's comes from the elliptic curve discrete logarithm problem, and these problems don't get harder at the same rate as key size grows. In practice, a 256-bit ECC key provides security roughly comparable to a 3072-bit RSA key — meaning the 2048-bit RSA key in this scenario is actually somewhat *weaker*, not stronger, despite having a "bigger" number attached to it. Comparing raw bit counts across different algorithms is a meaningless comparison on its own.</details><h2>🧪 Hands-on lab — inspect real ECC usage</h2>
+<p>Using a browser&#39;s developer tools (or an online SSL checker), inspect the certificate details of an HTTPS website you visit regularly, and identify whether it&#39;s using an RSA or ECC (often labeled ECDSA) key, and if ECC, which curve.</p>
+<ol>
+<li>What hard mathematical problem underlies elliptic curve cryptography&#39;s security?</li>
+<li>Why does a smaller ECC key provide comparable security to a much larger RSA key?</li>
+<li>Why does curve choice matter, and what does Curve25519 specifically get right?</li>
+</ol>
+<h2>Key terms</h2>
+<ul>
+<li><strong>Elliptic Curve Cryptography (ECC)</strong> — a public-key cryptography approach based on the algebraic structure of elliptic curves over finite fields.</li>
+<li><strong>ECDSA / EdDSA</strong> — elliptic-curve digital signature algorithms.</li>
+<li><strong>Curve25519</strong> — a widely trusted, well-vetted elliptic curve designed to avoid common implementation pitfalls.</li>
+</ul>
+<h2>Recap</h2>
+<p>ECC provides equivalent security to RSA using dramatically smaller keys, built on a completely different hard math problem (the elliptic curve discrete logarithm problem, rather than factoring). That efficiency is exactly why it&#39;s become the modern default across TLS, SSH, passkeys, and cryptocurrency — but, as with all cryptography, curve choice matters: well-vetted, standard curves like Curve25519 are the safe default, and rolling your own curve parameters is squarely in &quot;don&#39;t do this yourself&quot; territory.</p>
+<h3>References</h3>
+<ul>
+<li><a href="https://www.cloudflare.com/learning/ssl/how-does-public-key-cryptography-work/">Cloudflare — A (Relatively Easy To Understand) Primer on Elliptic Curve Cryptography</a> — an accessible deeper dive into the underlying math</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/06-crypto-fundamentals/hashing-explained">Hashing Explained</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/06-crypto-fundamentals/elliptic-curve-cryptography";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

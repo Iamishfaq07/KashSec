@@ -68,4 +68,4 @@ Why can't Bob's public key be used to decrypt a message Alice encrypted with it,
 - [Cloudflare: What is public key cryptography?](https://www.cloudflare.com/learning/ssl/how-does-public-key-encryption-work/) — an excellent, free, plain-language explainer.
 ???
 
-**Next up →** [Hashing Explained](#/lesson/06-crypto-fundamentals/hashing-explained)
+**Next up →** [Key Exchange & Diffie-Hellman](#/lesson/06-crypto-fundamentals/key-exchange-diffie-hellman)

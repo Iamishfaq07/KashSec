@@ -775,10 +775,17 @@ const PATHS = [
      {n:"1", id:"what-is-cryptography",          title:"What is cryptography?", desc:"Encoding vs. encryption vs. hashing — the distinction that unlocks everything else."},
      {n:"2", id:"symmetric-encryption",          title:"Symmetric Encryption", desc:"One shared key, AES, and why ECB mode is a classic mistake."},
      {n:"3", id:"asymmetric-encryption",         title:"Asymmetric Encryption", desc:"Public/private keys, RSA, hybrid encryption, and digital signatures."},
-     {n:"4", id:"hashing-explained",             title:"Hashing Explained", desc:"SHA-256, why passwords need bcrypt not SHA-256, and salting."},
-     {n:"5", id:"digital-signatures-certificates", title:"Digital Signatures & Certificates", desc:"How the padlock icon actually works, and what it doesn't promise."},
-     {n:"6", id:"common-crypto-mistakes",        title:"Common Crypto Mistakes", desc:"Seven recurring real-world failure patterns, gathered in one place."},
-     {n:"7", id:"crypto-hands-on-lab",           title:"Crypto Hands-On Lab", desc:"CyberChef and OpenSSL — encode, encrypt, hash, and inspect real certificates."}
+     {n:"4", id:"key-exchange-diffie-hellman",   title:"Key Exchange & Diffie-Hellman", desc:"How two strangers agree on a shared secret over a channel an attacker is watching."},
+     {n:"5", id:"elliptic-curve-cryptography",   title:"Elliptic Curve Cryptography", desc:"The other hard math problem behind modern crypto, and why smaller keys win."},
+     {n:"6", id:"hashing-explained",             title:"Hashing Explained", desc:"SHA-256, why passwords need bcrypt not SHA-256, and salting."},
+     {n:"7", id:"digital-signatures-certificates", title:"Digital Signatures & Certificates", desc:"How the padlock icon actually works, and what it doesn't promise."},
+     {n:"8", id:"tls-handshake-explained",       title:"The TLS Handshake, Step by Step", desc:"How every earlier lesson in this path assembles into the padlock icon."},
+     {n:"9", id:"cryptographic-attacks-overview", title:"Common Cryptographic Attacks", desc:"Padding oracle, replay, downgrade, and side-channel attacks, named and explained."},
+     {n:"10", id:"common-crypto-mistakes",        title:"Common Crypto Mistakes", desc:"Seven recurring real-world failure patterns, gathered in one place."},
+     {n:"11", id:"applied-crypto-in-practice",   title:"Applied Cryptography: Choosing and Using It Correctly", desc:"Libraries over primitives, key management, and a practical decision guide."},
+     {n:"12", id:"blockchain-cryptocurrency-crypto", title:"Blockchain & Cryptocurrency Cryptography", desc:"Hash chains, wallets, and signatures — this path's concepts in a real-world system."},
+     {n:"13", id:"post-quantum-cryptography",    title:"Post-Quantum Cryptography", desc:"Shor's algorithm, harvest-now-decrypt-later, and why NIST already standardized the fix."},
+     {n:"14", id:"crypto-hands-on-lab",           title:"Crypto Hands-On Lab", desc:"CyberChef and OpenSSL — encode, encrypt, hash, and inspect real certificates."}
    ]},
   {n:"07", id:"07-windows-security", title:"Windows Security Basics", level:"Beginner",
    desc:"Path 03 went deep on Linux — this path does the same for Windows: architecture, the Registry, Event Viewer, PowerShell, and a full hardening checklist.",
@@ -4738,6 +4745,11 @@ function renderLabPhishing(){
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
+  {date:'2026-07-25', title:'Path 06 doubled to 14 lessons', items:[
+    'Fifth batch of the course-wide content-doubling effort: Path 06 (Cryptography Fundamentals) grows from 7 to 14 lessons.',
+    'New lessons: Key Exchange & Diffie-Hellman, Elliptic Curve Cryptography, The TLS Handshake Step by Step, Common Cryptographic Attacks, Applied Cryptography, Blockchain & Cryptocurrency Cryptography, and Post-Quantum Cryptography.',
+    'Lesson order re-sequenced so the new material builds naturally on what came before it, all the way to the hands-on lab at the end.'
+  ]},
   {date:'2026-07-25', title:'Path 01 doubled to 12 lessons', items:[
     'Fourth batch of the course-wide content-doubling effort: Path 01 (Introduction to Cybersecurity) grows from 6 to 12 lessons.',
     'New lessons: The CIA Triad, A Tour of Common Cyberattacks, Cybersecurity Laws & Ethics, Security Frameworks: A Beginner\'s Map, Building Your First Home Lab, and Joining the Security Community.',

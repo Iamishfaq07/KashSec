@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Common Cryptographic Attacks — Path 06 · KashSec Academy</title>
+<meta name="description" content="The common-crypto-mistakes lesson (later in this path) covers implementation-level errors. This lesson is different — a tour of specific, named attack techniques against cryptographic systems, so you ">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/06-crypto-fundamentals/cryptographic-attacks-overview">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Common Cryptographic Attacks — Path 06 · KashSec Academy">
+<meta property="og:description" content="The common-crypto-mistakes lesson (later in this path) covers implementation-level errors. This lesson is different — a tour of specific, named attack techniques against cryptographic systems, so you ">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/06-crypto-fundamentals/cryptographic-attacks-overview">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Common Cryptographic Attacks — Path 06 · KashSec Academy">
+<meta name="twitter:description" content="The common-crypto-mistakes lesson (later in this path) covers implementation-level errors. This lesson is different — a tour of specific, named attack techniques against cryptographic systems, so you ">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Common Cryptographic Attacks — Path 06 · KashSec Academy","description":"The common-crypto-mistakes lesson (later in this path) covers implementation-level errors. This lesson is different — a tour of specific, named attack techniques against cryptographic systems, so you ","url":"https://kashsec.vercel.app/#/lesson/06-crypto-fundamentals/cryptographic-attacks-overview","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/06-crypto-fundamentals/cryptographic-attacks-overview">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 06 — Cryptography Fundamentals</a> · Common Cryptographic Attacks</div>
+  <article><h1>Common Cryptographic Attacks</h1>
+<p>The common-crypto-mistakes lesson (later in this path) covers implementation-level errors. This lesson is different — a tour of specific, named attack techniques against cryptographic systems, so you recognize them by name when you encounter them in later paths and real-world security news.</p>
+<p>:::</p>
+<h2>Padding oracle attacks</h2>
+<p>Block ciphers (from the symmetric-encryption lesson) that don&#39;t neatly divide data into exact block sizes use <strong>padding</strong> to fill out the last block. A <strong>padding oracle attack</strong> exploits a system that reveals — even indirectly, through subtly different error messages or response times — whether decrypted padding was valid or invalid. An attacker who can repeatedly probe this &quot;oracle&quot; can, through many careful queries, decrypt an entire ciphertext without ever knowing the key, purely by exploiting what the padding-validity signal leaks.</p>
+<h2>Length extension attacks</h2>
+<p>Some older hash constructions (naive uses of MD5 or SHA-256 in certain modes) let an attacker who knows <code>hash(secret + message)</code> compute <code>hash(secret + message + extra_data)</code> — extending the original message and producing a <em>valid</em> hash for the extended version, without ever knowing the secret itself. This is exactly why modern systems use <strong>HMAC</strong> (a specific, properly constructed way of combining a hash function with a secret key) rather than naively hashing a secret and message together.</p>
+<h2>Replay attacks</h2>
+<p>A <strong>replay attack</strong> doesn&#39;t break the cryptography at all — it simply captures a legitimate, validly-encrypted or validly-signed message and resends it later, hoping the system accepts it again as if it were new. A captured, perfectly valid &quot;transfer $100&quot; authorization message, replayed five times, becomes a $500 transfer if nothing prevents reuse. Defenses include <strong>nonces</strong> (numbers used once, rejected if seen again) and timestamps with a short validity window.</p>
+<h2>Downgrade attacks</h2>
+<p>A <strong>downgrade attack</strong> tricks two parties into using a weaker, older cryptographic protocol or algorithm than they&#39;d normally negotiate — exploiting backward-compatibility support for the sake of forcing a genuinely breakable configuration. This is precisely why the TLS-handshake lesson noted that TLS 1.3 removed support for older, weaker cipher suites entirely — every optional weak fallback is a potential downgrade target.</p>
+<h2>Side-channel attacks</h2>
+<p>A <strong>side-channel attack</strong> doesn&#39;t attack the mathematics at all — it extracts secret information from <em>how</em> an implementation runs: precisely how long an operation takes (<strong>timing attacks</strong>), how much power a device draws, or even sounds a chip makes during computation. These are notoriously hard to defend against because the leak isn&#39;t a flaw in the cryptographic algorithm itself, it&#39;s in physical implementation details most developers never think to consider.</p>
+<h2>Birthday attacks</h2>
+<p>Named after the counterintuitive &quot;birthday paradox&quot; (in a room of just 23 people, there&#39;s better than even odds two share a birthday), a <strong>birthday attack</strong> exploits the same math to find hash collisions (from the hashing-explained lesson) far faster than naive brute force would suggest — this is precisely why hash output length matters so much for collision resistance, and why older, shorter hashes like MD5 became practically breakable well before their theoretical maximum strength would suggest.</p>
+<p>:::challenge Diagnose the attack
+A web application&#39;s error messages differ subtly depending on whether decrypted ciphertext padding was valid: &quot;Invalid request&quot; for bad padding, &quot;Access denied&quot; for good padding but a wrong key. An attacker notices this difference and starts sending thousands of slightly modified ciphertexts, tracking which error message comes back each time.</p>
+<details><summary>Hint</summary>What specific attack from this lesson exploits exactly this kind of subtle, indirect signal about padding validity?</details>
+<details><summary>Show answer</summary>This is a textbook <strong>padding oracle attack</strong>. The application never intended to leak information about padding validity — but the subtly different error messages act as an "oracle" the attacker can repeatedly query, and through enough carefully chosen queries, an attacker can decrypt the original ciphertext entirely without ever recovering the actual encryption key. The fix isn't stronger encryption — it's eliminating the observable difference entirely: using the exact same generic error message and response time regardless of *why* decryption failed, so there's no signal left to exploit.</details><h2>🧪 Hands-on lab — match the defense to the attack</h2>
+<p>For each attack in this lesson, write one sentence naming the specific defense that closes it (some are named directly in this lesson — HMAC, nonces, removing weak cipher suite support, constant-time comparison for side-channels, longer hash outputs for birthday attacks).</p>
+<ol>
+<li>What makes a padding oracle attack possible, even when the underlying encryption algorithm itself is secure?</li>
+<li>Why doesn&#39;t a replay attack require breaking any cryptography at all?</li>
+<li>Why are side-channel attacks considered especially hard to defend against?</li>
+</ol>
+<h2>Key terms</h2>
+<ul>
+<li><strong>Padding oracle attack</strong> — decrypting ciphertext by repeatedly exploiting a system that leaks whether decrypted padding was valid.</li>
+<li><strong>Replay attack</strong> — resending a captured, validly-encrypted message to trick a system into accepting it again.</li>
+<li><strong>Downgrade attack</strong> — tricking parties into using a weaker protocol or algorithm than they&#39;d normally negotiate.</li>
+<li><strong>Side-channel attack</strong> — extracting secret information from implementation details (timing, power) rather than breaking the algorithm&#39;s math.</li>
+</ul>
+<h2>Recap</h2>
+<p>This lesson&#39;s five named attacks — padding oracle, length extension, replay, downgrade, and side-channel/birthday attacks — share a common thread with the common-crypto-mistakes lesson coming up next: the underlying cryptographic algorithms are usually sound, but the systems built around them leak information, allow reuse, or permit weaker fallback configurations that a careful attacker can exploit. Recognizing these attacks by name is exactly what turns &quot;I know what encryption is&quot; into genuine practical crypto literacy.</p>
+<h3>References</h3>
+<ul>
+<li><a href="https://owasp.org/Top10/A02_2021-Cryptographic_Failures/">OWASP — Cryptographic Failures</a> — the OWASP Top 10 category covering these exact failure patterns in real applications</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/06-crypto-fundamentals/common-crypto-mistakes">Common Crypto Mistakes</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/06-crypto-fundamentals/cryptographic-attacks-overview";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

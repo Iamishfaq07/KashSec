@@ -68,4 +68,4 @@ A phishing site presents a perfectly valid, CA-signed HTTPS certificate — the 
 - [Cloudflare: What happens in a TLS handshake?](https://www.cloudflare.com/learning/ssl/what-happens-in-a-tls-handshake/) — an excellent, free, detailed walkthrough.
 ???
 
-**Next up →** [Common Crypto Mistakes](#/lesson/06-crypto-fundamentals/common-crypto-mistakes)
+**Next up →** [The TLS Handshake, Step by Step](#/lesson/06-crypto-fundamentals/tls-handshake-explained)
