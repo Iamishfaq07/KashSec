@@ -1255,6 +1255,10 @@ function route(){
   else if(hash === '#/labs/xxe') renderLabXxe();
   else if(hash === '#/labs/loganalysis') renderLabLogAnalysis();
   else if(hash === '#/labs/osint') renderLabOsint();
+  else if(hash === '#/labs/bola-bfla') renderLabBolaBfla();
+  else if(hash === '#/labs/graphql-introspection') renderLabGraphQLIntrospection();
+  else if(hash === '#/labs/mass-assignment') renderLabMassAssignment();
+  else if(hash === '#/labs/rate-limit-bypass') renderLabRateLimitBypass();
   else if(hash === '#/capstone') renderCapstone();
   else if(hash === '#/weekly') renderWeeklyIndex();
   else if(hash === '#/career-quiz') renderCareerQuiz();
@@ -3065,7 +3069,11 @@ const LABS = [
   {id:'ssrf', ico:'🌐', title:'SSRF Playground', desc:'A "fetch this URL for me" feature with no allowlist. Point it at internal-looking addresses and see what it leaks.', related:'Path 11 — Web Security', points:20},
   {id:'xxe', ico:'📄', title:'XXE Playground', desc:'An XML upload feature that expands external entities. Smuggle a local file read through a "harmless" XML document.', related:'Path 11 — Web Security', points:20},
   {id:'loganalysis', ico:'📜', title:'Log Analysis / IR Lab', desc:'A messy auth.log dump from a compromised box. Reconstruct the timeline and find the breach — blue-team skills, not exploitation.', related:'Path 12 — Network Security', points:15},
-  {id:'osint', ico:'🔍', title:'OSINT Sandbox', desc:'A safe, fake company profile — practise open-source recon technique without touching anything real.', related:'Path 14 — Ethical Hacking', points:10}
+  {id:'osint', ico:'🔍', title:'OSINT Sandbox', desc:'A safe, fake company profile — practise open-source recon technique without touching anything real.', related:'Path 14 — Ethical Hacking', points:10},
+  {id:'bola-bfla', ico:'🗂', title:'BOLA/BFLA Playground', desc:'A fake employee-directory API. Read a record that isn\'t yours, then call an admin-only action with no admin role at all.', related:'Path 21 — API Security', points:20},
+  {id:'graphql-introspection', ico:'🕸', title:'GraphQL Introspection Abuse', desc:'A single /graphql endpoint. Use introspection to map the full schema, then query a field the UI never shows you.', related:'Path 21 — API Security', points:20},
+  {id:'mass-assignment', ico:'🧩', title:'Mass Assignment Toy', desc:'A "update my profile" endpoint that binds whatever JSON you send straight to your account. Find the field that shouldn\'t be writable.', related:'Path 21 — API Security', points:15},
+  {id:'rate-limit-bypass', ico:'🚦', title:'Rate-Limit Bypass Simulator', desc:'A login endpoint that blocks you after 3 bad guesses — but trusts a header you control to decide who "you" are.', related:'Path 21 — API Security', points:20}
 ];
 /* ============================================================
    Capstone attack-chain — a narrative wrapper around four existing
@@ -3974,6 +3982,244 @@ function renderLabOsint(){
   paint();
 }
 
+/* --- Lab: BOLA/BFLA Playground --------------------------------
+   Two API vulnerability classes in one fake "employee directory":
+   BOLA -- read a record that isn't yours by changing the ID.
+   BFLA -- call an admin-only action while you're just a regular user.
+   Both must be triggered once to complete the lab (Path 21). */
+function renderLabBolaBfla(){
+  const ME = 7;
+  const EMPLOYEES = {
+    7:{name:'You (Alice Chen)', role:'Employee', dept:'Support', salary:'$68,000', ssn:'•••-••-1187', active:true},
+    1:{name:'Diane Okafor', role:'CEO', dept:'Executive', salary:'$410,000', ssn:'•••-••-2290', active:true},
+    2:{name:'Marcus Webb', role:'CFO', dept:'Finance', salary:'$275,000', ssn:'•••-••-5541', active:true},
+    9:{name:'Priya Sharma', role:'Employee', dept:'Engineering', salary:'$134,000', ssn:'•••-••-8823', active:true}
+  };
+  let bolaFound = false, bflaFound = false;
+  app.innerHTML = `
+    <section class="sec">
+      <div class="sec-head" data-reveal>
+        <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · BOLA/BFLA Playground</div>
+        <h2>🗂 BOLA/BFLA Playground</h2>
+        <p class="sec-lead">You're logged in as employee #${ME}, nothing more. This fake HR API has two separate bugs — find both. <span class="tool-privacy">🔒 Simulated locally — no real API, no real people.</span></p>
+      </div>
+      <div class="idor-wrap" data-reveal style="--i:1">
+        <div class="tool-note">1. Object-level check — <code>GET /api/v2/employees/{id}</code></div>
+        <form class="idor-form" id="bbGetForm" autocomplete="off">
+          <label class="tool-field">GET /api/v2/employees/<input class="tool-input" id="bbGetId" value="${ME}" inputmode="numeric"></label>
+          <button class="btn-amber sm" type="submit">Fetch record</button>
+        </form>
+        <div id="bbGetResult"></div>
+        <div class="tool-note" style="margin-top:1.6rem">2. Function-level check — <code>DELETE /api/v2/employees/{id}</code> (meant for admins only)</div>
+        <form class="idor-form" id="bbDelForm" autocomplete="off">
+          <label class="tool-field">DELETE /api/v2/employees/<input class="tool-input" id="bbDelId" value="9" inputmode="numeric"></label>
+          <button class="btn-amber sm" type="submit">Deactivate employee</button>
+        </form>
+        <div id="bbDelResult"></div>
+        <details class="sqli-hint"><summary>Stuck? Show the trick</summary>
+          <div class="iv-answer">
+            <b>BOLA:</b> fetch id <code>1</code> or <code>2</code> — the endpoint checks you're logged in, but never checks the record actually belongs to you, so you can read the CEO's salary and SSN just by changing a number.<br><br>
+            <b>BFLA:</b> submit the DELETE form as-is — there's no role check at all, so a regular employee (you) can deactivate anyone, an action that should be restricted to admins. The fix for both: check <i>this specific object</i> and <i>this specific action</i> against the caller's actual permissions, every time — never assume "logged in" is enough (Path 21's BOLA/BFLA lesson).
+          </div>
+        </details>
+      </div>
+    </section>
+  `;
+  const getIdEl = document.getElementById('bbGetId'), getResEl = document.getElementById('bbGetResult');
+  const delIdEl = document.getElementById('bbDelId'), delResEl = document.getElementById('bbDelResult');
+  function checkDone(){
+    if(bolaFound && bflaFound) fireConfetti({count:90}), markLabComplete('bola-bfla');
+  }
+  document.getElementById('bbGetForm').addEventListener('submit', e=>{
+    e.preventDefault();
+    const id = Number(getIdEl.value.trim());
+    const emp = EMPLOYEES[id];
+    if(!emp){ getResEl.innerHTML = `<div class="sqli-bad">❌ 404 — no employee #${escapeHtml(String(id))}.</div>`; return; }
+    const isMine = id === ME;
+    getResEl.innerHTML = `
+      <div class="${isMine?'sqli-ok':'sqli-bad'}">
+        ${isMine ? '✅' : '⚠️ BOLA!'} #${id} — <b>${escapeHtml(emp.name)}</b> — ${escapeHtml(emp.role)}, ${escapeHtml(emp.dept)} — salary ${emp.salary} — SSN ${emp.ssn}
+        ${isMine ? '' : '<br><small>Not your record. A real API should have returned 403 Forbidden here.</small>'}
+      </div>`;
+    if(!isMine){ bolaFound = true; checkDone(); }
+  });
+  document.getElementById('bbDelForm').addEventListener('submit', e=>{
+    e.preventDefault();
+    const id = Number(delIdEl.value.trim());
+    const emp = EMPLOYEES[id];
+    if(!emp){ delResEl.innerHTML = `<div class="sqli-bad">❌ 404 — no employee #${escapeHtml(String(id))}.</div>`; return; }
+    delResEl.innerHTML = `<div class="sqli-bad">⚠️ BFLA! 200 OK — <b>${escapeHtml(emp.name)}</b> deactivated. You hold no admin role, but the server only checked that you were logged in, never <i>which</i> actions you're allowed to perform.</div>`;
+    bflaFound = true; checkDone();
+  });
+  setupReveal();
+}
+
+/* --- Lab: GraphQL Introspection Abuse --------------------------
+   A single fake /graphql endpoint. Introspection reveals the full
+   schema (including a field the app's UI never displays); querying
+   that field directly leaks it, since there's no field-level
+   authorization at all (Path 21). */
+function renderLabGraphQLIntrospection(){
+  const USERS = {
+    7:{name:'Alice Chen', email:'alice@corp.example', internalNotes:'Nothing notable.'},
+    1:{name:'Diane Okafor', email:'diane@corp.example', internalNotes:'Flagged for expense review — do not discuss externally.'}
+  };
+  const EXAMPLE = 'query {\n  user(id: 7) {\n    name\n    email\n  }\n}';
+  const INTROSPECTION = '{ __schema { types { name fields { name } } } }';
+  let introspected = false, leaked = false;
+  app.innerHTML = `
+    <section class="sec">
+      <div class="sec-head" data-reveal>
+        <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · GraphQL Introspection Abuse</div>
+        <h2>🕸 GraphQL Introspection Abuse</h2>
+        <p class="sec-lead">One endpoint, <code>POST /graphql</code>. Introspection is left on in production, and every field is readable by anyone — nothing is authorized per-field. <span class="tool-privacy">🔒 Simulated locally — a tiny fake schema, not a real server.</span></p>
+      </div>
+      <div class="idor-wrap" data-reveal style="--i:1">
+        <label class="tool-field">Query<textarea class="tool-textarea" id="gqlQuery" rows="6" spellcheck="false">${escapeHtml(EXAMPLE)}</textarea></label>
+        <div class="tool-btnrow">
+          <button class="btn-amber sm" id="gqlRun" type="button">Run query →</button>
+          <button class="btn-ghost sm" id="gqlIntrospect" type="button">Try introspection</button>
+        </div>
+        <div id="gqlResult"></div>
+        <details class="sqli-hint"><summary>Stuck? Show the trick</summary>
+          <div class="iv-answer">
+            Click "Try introspection" — it runs <code>{ __schema { types { fields } } }</code> and the server happily returns every type and field, including <code>internalNotes</code> on <code>User</code>, which the real app's UI never queries. Now edit the query to add <code>internalNotes</code> inside the <code>user(id: 7) { }</code> block and run it — the server returns it without any check that this field should be restricted. The fix: enforce authorization inside every resolver, not just at the top-level query, and disable introspection in production (Path 21's GraphQL lesson).
+          </div>
+        </details>
+      </div>
+    </section>
+  `;
+  const qEl = document.getElementById('gqlQuery'), resEl = document.getElementById('gqlResult');
+  function runQuery(q){
+    if(/__schema|__type/i.test(q)){
+      introspected = true;
+      resEl.innerHTML = `<div class="sqli-ok">✅ Schema dumped:</div><pre style="white-space:pre-wrap">type User {
+  id: ID
+  name: String
+  email: String
+  internalNotes: String   # ← not shown anywhere in the app's UI
+}</pre>`;
+      return;
+    }
+    const m = q.match(/user\s*\(\s*id\s*:\s*(\d+)\s*\)\s*\{([^}]*)\}/i);
+    if(!m){ resEl.innerHTML = `<div class="sqli-bad">❌ Cannot parse that query — try the example, or click "Try introspection".</div>`; return; }
+    const id = Number(m[1]);
+    const user = USERS[id];
+    if(!user){ resEl.innerHTML = `<div class="sqli-bad">❌ No user with id ${id}.</div>`; return; }
+    const requested = m[2].split(/\s+/).map(f=>f.trim()).filter(Boolean);
+    const allFields = {name:user.name, email:user.email, internalNotes:user.internalNotes};
+    const out = {};
+    let hitHidden = false;
+    requested.forEach(f=>{ if(f in allFields){ out[f] = allFields[f]; if(f === 'internalNotes') hitHidden = true; } });
+    resEl.innerHTML = `<div class="${hitHidden?'sqli-bad':'sqli-ok'}">${hitHidden?'⚠️ Field-level auth missing!':'✅'} <pre style="white-space:pre-wrap;display:inline">${escapeHtml(JSON.stringify(out, null, 2))}</pre></div>`;
+    if(hitHidden){ leaked = true; fireConfetti({count:90}); markLabComplete('graphql-introspection'); }
+  }
+  document.getElementById('gqlRun').addEventListener('click', ()=>runQuery(qEl.value));
+  document.getElementById('gqlIntrospect').addEventListener('click', ()=>{ qEl.value = INTROSPECTION; runQuery(INTROSPECTION); });
+  setupReveal();
+}
+
+/* --- Lab: Mass Assignment Toy -----------------------------------
+   A "PATCH /api/v2/account/me" endpoint that binds whatever JSON
+   fields you send straight onto your account, with no allow-list.
+   Escalate your own role to admin (Path 21). */
+function renderLabMassAssignment(){
+  let account = {displayName:'alice_chen', bio:'Support engineer.', role:'user', verified:false, accountBalance:0};
+  const DEFAULT_BODY = '{\n  "displayName": "alice_chen",\n  "bio": "Support engineer, ex-retail."\n}';
+  app.innerHTML = `
+    <section class="sec">
+      <div class="sec-head" data-reveal>
+        <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Mass Assignment Toy</div>
+        <h2>🧩 Mass Assignment Toy</h2>
+        <p class="sec-lead">This "update my profile" endpoint does <code>Object.assign(account, req.body)</code> — whatever fields you send get written, no allow-list. Your account record also has fields the UI never lets you edit. <span class="tool-privacy">🔒 Simulated locally — no real account.</span></p>
+      </div>
+      <div class="idor-wrap" data-reveal style="--i:1">
+        <div class="tool-note">Your account record right now:</div>
+        <pre id="maAccount" style="white-space:pre-wrap">${escapeHtml(JSON.stringify(account, null, 2))}</pre>
+        <label class="tool-field">PATCH /api/v2/account/me<textarea class="tool-textarea" id="maBody" rows="5" spellcheck="false">${escapeHtml(DEFAULT_BODY)}</textarea></label>
+        <div class="tool-btnrow"><button class="btn-amber sm" id="maSubmit" type="button">Submit update →</button></div>
+        <div id="maResult"></div>
+        <details class="sqli-hint"><summary>Stuck? Show the trick</summary>
+          <div class="iv-answer">Add <code>"role": "admin"</code> to the JSON body and submit. The endpoint never checks which fields are allowed to change — it just merges the whole request body onto your record — so a field the UI would never expose becomes attacker-controlled. The fix: allow-list exactly which fields a client may set, and never bind a raw request body straight onto a model (Path 21's mass assignment lesson).</div>
+        </details>
+      </div>
+    </section>
+  `;
+  const bodyEl = document.getElementById('maBody'), resEl = document.getElementById('maResult'), acctEl = document.getElementById('maAccount');
+  document.getElementById('maSubmit').addEventListener('click', ()=>{
+    let body;
+    try{ body = JSON.parse(bodyEl.value); }
+    catch(e){ resEl.innerHTML = `<div class="sqli-bad">❌ Invalid JSON.</div>`; return; }
+    const before = account.role;
+    account = Object.assign({}, account, body);
+    acctEl.textContent = JSON.stringify(account, null, 2);
+    const escalated = before !== 'admin' && account.role === 'admin';
+    if(escalated){
+      resEl.innerHTML = `<div class="sqli-bad">⚠️ Mass assignment! You just set your own <code>role</code> to <b>admin</b> through a "profile update" endpoint.</div>`;
+      fireConfetti({count:90});
+      markLabComplete('mass-assignment');
+    } else {
+      resEl.innerHTML = `<div class="sqli-ok">✅ 200 OK — record updated.</div>`;
+    }
+  });
+  setupReveal();
+}
+
+/* --- Lab: Rate-Limit Bypass Simulator ----------------------------
+   A login endpoint blocks after 3 failed attempts — but decides
+   "who's asking" from a client-supplied X-Forwarded-For header
+   instead of the real connection source, so the limiter is trivially
+   spoofable (Path 21's resource-consumption lesson). */
+function renderLabRateLimitBypass(){
+  const REAL_PASSWORD = 'Winter2025!';
+  const attemptsByIp = {};
+  let blockedOnce = false;
+  app.innerHTML = `
+    <section class="sec">
+      <div class="sec-head" data-reveal>
+        <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Rate-Limit Bypass Simulator</div>
+        <h2>🚦 Rate-Limit Bypass Simulator</h2>
+        <p class="sec-lead">POST /api/login blocks an IP after 3 wrong passwords. It just trusts the client-supplied <code>X-Forwarded-For</code> header to decide which "IP" you are. <span class="tool-privacy">🔒 Simulated locally — no real login, no real brute force.</span></p>
+      </div>
+      <div class="idor-wrap" data-reveal style="--i:1">
+        <label class="tool-field">Username<input class="tool-input" id="rlUser" value="admin" disabled></label>
+        <label class="tool-field">Password<input class="tool-input" id="rlPass" placeholder="try a guess…"></label>
+        <label class="tool-field">X-Forwarded-For<input class="tool-input" id="rlXff" value="203.0.113.42"></label>
+        <div class="tool-btnrow"><button class="btn-amber sm" id="rlSubmit" type="button">Attempt login →</button></div>
+        <div id="rlResult"></div>
+        <details class="sqli-hint"><summary>Stuck? Show the trick</summary>
+          <div class="iv-answer">Guess a password wrong 3 times and you'll get blocked — but only for that exact <code>X-Forwarded-For</code> value. Change it to any new fake value (e.g. <code>10.0.0.99</code>) and you get 3 fresh attempts, because the server rate-limits by a header the client fully controls instead of the real connection source. Try: <code>Password1</code>, <code>Summer2024!</code>, <code>Winter2025!</code>, <code>Admin@123</code>, <code>CompanyName1</code> — rotate the X-Forwarded-For value whenever you get blocked. The fix: rate-limit by the actual authenticated connection, and only trust <code>X-Forwarded-For</code> from a proxy you control (Path 21's resource-consumption lesson).</div>
+        </details>
+      </div>
+    </section>
+  `;
+  const passEl = document.getElementById('rlPass'), xffEl = document.getElementById('rlXff'), resEl = document.getElementById('rlResult');
+  document.getElementById('rlSubmit').addEventListener('click', ()=>{
+    const xff = xffEl.value.trim() || 'unknown';
+    const guess = passEl.value;
+    const rec = attemptsByIp[xff] || {fails:0, blocked:false};
+    if(rec.blocked){
+      resEl.innerHTML = `<div class="sqli-bad">🚫 429 Too Many Requests — blocked for X-Forwarded-For: ${escapeHtml(xff)}. Try a different X-Forwarded-For value.</div>`;
+      return;
+    }
+    if(guess === REAL_PASSWORD){
+      resEl.innerHTML = `<div class="${blockedOnce?'sqli-bad':'sqli-ok'}">${blockedOnce ? '⚠️ Bypassed! ' : '✅ '}200 OK — logged in as admin${blockedOnce ? ', after rotating past a block by spoofing X-Forwarded-For.' : '.'}</div>`;
+      if(blockedOnce){ fireConfetti({count:90}); markLabComplete('rate-limit-bypass'); }
+      return;
+    }
+    rec.fails++;
+    if(rec.fails >= 3){
+      rec.blocked = true;
+      blockedOnce = true;
+      resEl.innerHTML = `<div class="sqli-bad">🚫 429 Too Many Requests — 3 failed attempts from X-Forwarded-For: ${escapeHtml(xff)}. Blocked for 15 minutes.</div>`;
+    } else {
+      resEl.innerHTML = `<div class="sqli-bad">❌ 401 Unauthorized (${rec.fails}/3 attempts used for this X-Forwarded-For value).</div>`;
+    }
+    attemptsByIp[xff] = rec;
+  });
+  setupReveal();
+}
+
 /* --- Lab: phishing spotter game ------------------------------ */
 function renderLabPhishing(){
   const ROUNDS = [
@@ -4045,6 +4291,12 @@ function renderLabPhishing(){
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
+  {date:'2026-07-25', title:'4 new API Security labs', items:[
+    'BOLA/BFLA Playground: a fake employee-directory API with two separate bugs to find — read someone else\'s record, then call an admin-only action with no admin role at all.',
+    'GraphQL Introspection Abuse: a single /graphql endpoint where introspection is left on and no field is authorized — map the schema, then pull a field the UI never shows.',
+    'Mass Assignment Toy: a "update my profile" endpoint that binds your whole JSON body onto your account with no allow-list. Find the field that shouldn\'t be writable.',
+    'Rate-Limit Bypass Simulator: a login endpoint that blocks after 3 bad guesses, but trusts a client-supplied header to decide who "you" are.'
+  ]},
   {date:'2026-07-25', title:'Removed Listen mode, fixed navigation not scrolling to top', items:[
     'Removed Listen mode and Playlist mode — the browser text-to-speech read-aloud feature was unreliable across Chrome and Safari (silent playback, stalled mid-lesson) and has been pulled rather than patched further.',
     'Fixed a real bug: clicking a nav or footer link (Paths, Careers, Tracks, etc.) could leave the page scrolled wherever you already were instead of jumping to the top of the new page — a site-wide smooth-scroll style was getting cut off by the page content swapping in.'
@@ -6847,7 +7099,11 @@ function getCommands(){
     {title:'Lab: SSRF Playground', url:'#/labs/ssrf', icon:'🌐', kw:'ssrf server side request forgery metadata'},
     {title:'Lab: XXE Playground', url:'#/labs/xxe', icon:'📄', kw:'xxe xml external entity'},
     {title:'Lab: Log Analysis / IR', url:'#/labs/loganalysis', icon:'📜', kw:'log analysis incident response soc'},
-    {title:'Lab: OSINT Sandbox', url:'#/labs/osint', icon:'🔍', kw:'osint recon reconnaissance'}
+    {title:'Lab: OSINT Sandbox', url:'#/labs/osint', icon:'🔍', kw:'osint recon reconnaissance'},
+    {title:'Lab: BOLA/BFLA Playground', url:'#/labs/bola-bfla', icon:'🗂', kw:'bola bfla api authorization idor'},
+    {title:'Lab: GraphQL Introspection Abuse', url:'#/labs/graphql-introspection', icon:'🕸', kw:'graphql introspection api schema'},
+    {title:'Lab: Mass Assignment Toy', url:'#/labs/mass-assignment', icon:'🧩', kw:'mass assignment api json allow-list'},
+    {title:'Lab: Rate-Limit Bypass Simulator', url:'#/labs/rate-limit-bypass', icon:'🚦', kw:'rate limit bypass api brute force x-forwarded-for'}
   ].map(l=>({title:l.title, url:l.url, icon:l.icon, ctx:'Lab', keywords:(l.title+' '+l.kw).toLowerCase()}));
   const actions = [
     {title:'Random lesson', icon:'🎲', ctx:'Action', keywords:'random surprise lesson', run:()=>{ const r=pickRandomLesson(); location.hash=`#/lesson/${r.pathId}/${r.subId}`; }},
