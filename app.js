@@ -509,31 +509,26 @@ function toggleTheme(){
 applyTheme();
 
 /* ---------- Listen mode (text-to-speech) ---------- */
-/* Chrome (desktop and Android) has a long-standing bug where
-   speechSynthesis silently stops mid-queue after ~15s, most often on
-   longer content or when the tab loses focus — the utterance queue just
-   goes quiet with no error and no onend. The standard workaround is a
-   periodic pause()/resume() "kick" while speaking. See
-   https://bugs.chromium.org/p/chromium/issues/detail?id=679437 */
+/* Two well-documented speechSynthesis engine quirks, both of which
+   produce the same symptom — the UI shows "speaking" but no sound ever
+   comes out:
+     1. Calling speak() in the same tick as a preceding cancel() gets
+        silently dropped by Chrome/WebKit — the fix is a short delay
+        between cancel() and the next speak().
+     2. Proactively calling pause() (a common "workaround" for Chrome's
+        ~15s auto-stall bug, chromium.org/p/chromium/issues/detail?id=679437)
+        can leave Safari's engine stuck silent afterwards. So: never call
+        pause() ourselves — only resume() if the engine reports itself
+        paused on its own. */
 const TTS = {
   supported: typeof window !== 'undefined' && 'speechSynthesis' in window,
   speaking: false,
   _keepAlive: null,
-  _startKeepAlive(){
-    clearInterval(this._keepAlive);
-    this._keepAlive = setInterval(()=>{
-      if(!this.speaking){ clearInterval(this._keepAlive); return; }
-      try{
-        if(window.speechSynthesis.speaking && !window.speechSynthesis.paused){
-          window.speechSynthesis.pause();
-          window.speechSynthesis.resume();
-        }
-      }catch(e){}
-    }, 5000);
-  },
+  _startTimer: null,
   stop(){
     if(!this.supported) return;
     clearInterval(this._keepAlive);
+    clearTimeout(this._startTimer);
     this.speaking = false;
     try{ window.speechSynthesis.cancel(); }catch(e){}
   },
@@ -547,7 +542,6 @@ const TTS = {
     const chunks = text.replace(/\s+/g,' ').match(/[^.!?]+[.!?]*\s*/g) || [text];
     let i = 0;
     this.speaking = true;
-    this._startKeepAlive();
     const finish = ()=>{ this.speaking = false; clearInterval(this._keepAlive); onEnd && onEnd(); };
     const next = ()=>{
       if(!this.speaking || i >= chunks.length){ finish(); return; }
@@ -563,7 +557,16 @@ const TTS = {
       try{ window.speechSynthesis.speak(u); }
       catch(e){ advance(); }
     };
-    next();
+    // Give the engine a beat after cancel() before the first speak() —
+    // issuing them back-to-back is what causes silent playback (quirk 1).
+    clearTimeout(this._startTimer);
+    this._startTimer = setTimeout(next, 80);
+    // Passive keep-alive for quirk 2: only ever resume(), never pause().
+    clearInterval(this._keepAlive);
+    this._keepAlive = setInterval(()=>{
+      if(!this.speaking){ clearInterval(this._keepAlive); return; }
+      try{ if(window.speechSynthesis.paused) window.speechSynthesis.resume(); }catch(e){}
+    }, 4000);
   }
 };
 
