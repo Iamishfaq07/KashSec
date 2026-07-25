@@ -50,21 +50,22 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
   <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/21-api-security/why-api-security">continue here →</a></div>
   <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 21 — API Security</a> · Why API Security Matters</div>
   <article><h1>Why API Security Matters</h1>
-<p>Modern applications are built on APIs. Mobile apps, single-page web apps, microservices, partner integrations, and AI agents all talk through APIs. When an API is broken, the impact is rarely limited to one page — it can expose entire databases, user data, or internal systems.</p>
+<p>Modern applications are built on APIs. Mobile apps, single-page web apps, microservices, partner integrations, and AI agents all talk through APIs. When an API is broken, the impact is rarely limited to one page — it can expose entire databases, user data, or internal systems, often in a single automated request.</p>
 <p>:::</p>
 <h2>What is an API, really?</h2>
-<p>An API (Application Programming Interface) is a contract: &quot;send me this request in this shape, and I will return this data.&quot;<br>Most modern APIs use HTTP and return JSON.</p>
+<p>An API (Application Programming Interface) is a contract: &quot;send me this request in this shape, and I will return this data.&quot;
+Most modern APIs use HTTP and return JSON.</p>
 <pre><code class="language-http">GET /api/v1/users/42 HTTP/1.1
 Host: api.example.com
 Authorization: Bearer eyJhbGciOi...
 </code></pre>
-<p>The server replies with JSON. That simple pattern is how almost everything works now.</p>
+<p>The server replies with JSON. That simple pattern is how almost everything works now — the same endpoint that serves the official mobile app will happily serve a curl script from anyone who read the API contract off the app&#39;s traffic.</p>
 <h2>Why APIs are a bigger attack surface</h2>
 <ol>
-<li><strong>They are the real backend</strong> — the browser UI is just a client. Attackers go straight to the API.</li>
-<li><strong>They often lack the same defenses</strong> as traditional web pages (no CSRF tokens, weaker rate limits, weaker authorization checks).</li>
-<li><strong>They return structured data</strong> — perfect for automated enumeration and data extraction.</li>
-<li><strong>Mobile and third-party clients</strong> force the API to be the only security boundary.</li>
+<li><strong>They are the real backend</strong> — the browser or app UI is just a client. Attackers go straight to the API and skip the UI entirely, along with any client-side validation the UI happened to enforce.</li>
+<li><strong>They often lack the same defenses</strong> as traditional web pages (no CSRF tokens, weaker rate limits, weaker authorization checks) — a lot of &quot;we secured the website&quot; effort historically stopped at the HTML layer.</li>
+<li><strong>They return structured data</strong> — perfect for automated enumeration and data extraction. A vulnerable web page leaks one record per click; a vulnerable API endpoint leaks one record per request, and a script can send thousands per minute.</li>
+<li><strong>Mobile and third-party clients</strong> force the API to be the only security boundary, since there&#39;s no server-rendered page enforcing anything on the way out.</li>
 </ol>
 <h2>The mental model shift</h2>
 <p>In classic web apps you worried about:</p>
@@ -75,21 +76,75 @@ Authorization: Bearer eyJhbGciOi...
 </ul>
 <p>In APIs you worry about:</p>
 <ul>
-<li><strong>Authorization</strong> (can this user access <em>this</em> object?)</li>
+<li><strong>Authorization</strong> (can this user access <em>this</em> object?) — this single question is behind the #1 API vulnerability class, covered in depth two lessons from now</li>
 <li><strong>Authentication</strong> (is this token valid and not stolen?)</li>
 <li><strong>Input validation</strong> of JSON bodies and query parameters</li>
-<li><strong>Business logic</strong> flaws that only appear when you call endpoints in unexpected order or combinations</li>
+<li><strong>Business logic</strong> flaws that only appear when you call endpoints in unexpected order or combinations — for example, calling &quot;apply discount&quot; twice, or calling &quot;confirm order&quot; before &quot;add payment method&quot; finishes</li>
 </ul>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Classic web app</th>
+<th>API</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Primary client</td>
+<td>Browser rendering HTML</td>
+<td>Any HTTP client — app, script, curl</td>
+</tr>
+<tr>
+<td>Client-side validation</td>
+<td>Often partially trusted</td>
+<td>Never trusted; server must recheck everything</td>
+</tr>
+<tr>
+<td>Typical attack surface</td>
+<td>Forms, cookies, rendered pages</td>
+<td>Every documented (and undocumented) endpoint</td>
+</tr>
+<tr>
+<td>Enumeration risk</td>
+<td>Moderate — UI friction slows it</td>
+<td>High — structured JSON is trivial to script against</td>
+</tr>
+<tr>
+<td>Common blind spot</td>
+<td>XSS, CSRF</td>
+<td>BOLA, mass assignment, business logic</td>
+</tr>
+</tbody></table>
 <h2>Real-world impact</h2>
 <p>High-profile breaches in the last few years almost always involved API flaws:</p>
 <ul>
-<li>Broken Object Level Authorization (BOLA) letting anyone read other users&#39; data</li>
-<li>Overly permissive tokens or long-lived JWTs</li>
-<li>GraphQL introspection + deep queries that exhaust resources</li>
-<li>Mass assignment letting users set <code>role=admin</code></li>
+<li>Broken Object Level Authorization (BOLA) letting anyone read other users&#39; data by changing an ID</li>
+<li>Overly permissive tokens or long-lived JWTs that stay valid long after a session should have ended</li>
+<li>GraphQL introspection + deep queries that exhaust resources or reveal the entire private schema</li>
+<li>Mass assignment letting users set <code>role=admin</code> on their own account, simply because the API accepted a field the client wasn&#39;t supposed to send</li>
 </ul>
 <p>:::danger
-Never assume &quot;the mobile app will only call the API correctly.&quot;<br>Anything the mobile app can do, an attacker with Burp or curl can also do — often better.</p>
+Never assume &quot;the mobile app will only call the API correctly.&quot;
+Anything the mobile app can do, an attacker with Burp or curl can also do — often better, because they aren&#39;t constrained by the app&#39;s UI at all. Decompile the app or intercept its traffic once, and every endpoint it calls is now available to script directly, in any order, with any parameters.</p>
+<h2>A concrete scenario</h2>
+<p>An e-commerce app&#39;s mobile client calls <code>PATCH /api/v1/orders/8841</code> to let a user cancel their own pending order. The mobile UI only ever sends <code>{&quot;status&quot;: &quot;cancelled&quot;}</code>. But the API accepts any field in the order object, because the developer built the endpoint generically and never restricted what could be updated. An attacker intercepts one request, notices the endpoint also accepts a <code>total_price</code> field, and sends <code>{&quot;total_price&quot;: 0.01}</code> on an order they haven&#39;t paid for yet. The UI never offered this option — but the API never checked, either. This single pattern (accepting more than the client is supposed to send) recurs constantly in API security and gets its own dedicated lesson later in this path.</p>
+<h2>🧪 Hands-on lab — see the API behind an app</h2>
+<ol>
+<li><p>Pick any web app you use regularly (or use the browser DevTools on a site you&#39;re allowed to test).</p>
+</li>
+<li><p>Open the Network tab, perform a normal action (search, add to cart, view a profile), and find the underlying API request.</p>
+</li>
+<li><p>Note: what does the request look like without the UI wrapped around it? What parameters does it accept that the UI never exposes as options?</p>
+</li>
+<li><p>Try changing one parameter value (e.g., an ID) to something adjacent (like <code>42</code> → <code>43</code>) in a tool like Burp&#39;s repeater or curl, on an app you&#39;re authorized to test, and observe the response. This is the exact technique behind BOLA testing, which you&#39;ll formalize in a later lesson.</p>
+</li>
+<li><p>Why is &quot;the mobile app enforces this rule&quot; not a security control at all?</p>
+</li>
+<li><p>Name one thing a browser-rendered web page can enforce that an API, called directly, cannot.</p>
+</li>
+<li><p>In the order-cancellation scenario above, what&#39;s the one-sentence fix a developer should apply to the <code>PATCH</code> endpoint?</p>
+</li>
+</ol>
 <h2>What you will learn in this path</h2>
 <ul>
 <li>The OWASP API Top 10 (2023)</li>
@@ -105,9 +160,10 @@ Never assume &quot;the mobile app will only call the API correctly.&quot;<br>Any
 <li><strong>BOLA</strong> — Broken Object Level Authorization (the #1 API risk)</li>
 <li><strong>JWT</strong> — JSON Web Token, a common way to carry identity</li>
 <li><strong>Mass assignment</strong> — accepting more fields than the developer intended</li>
+<li><strong>Enumeration</strong> — systematically trying many values (IDs, usernames) to extract or discover data at scale</li>
 </ul>
 <h2>Recap</h2>
-<p>APIs are the real application. Treating them as a second-class citizen is how large data breaches happen. This path gives you the checklist and the hands-on skills that modern AppSec and bug-bounty roles expect.</p>
+<p>APIs are the real application. Treating them as a second-class citizen is how large data breaches happen — the browser UI was never the security boundary, the API was, and it&#39;s the API that has to enforce every rule the UI merely suggests. This path gives you the checklist and the hands-on skills that modern AppSec and bug-bounty roles expect.</p>
 <h3>References</h3>
 <ul>
 <li><a href="https://owasp.org/API-Security/">OWASP API Security Top 10</a></li>

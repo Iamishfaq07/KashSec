@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mass Assignment &amp; Excessive Data Exposure — Path 21 · KashSec Academy</title>
-<meta name="description" content="Two related (and extremely common) problems that appear when APIs accept or return more than they should.">
+<meta name="description" content="Two related (and extremely common) problems that appear when APIs accept or return more than they should. Together they make up OWASP's API3 category — &quot;broken object property level authorization&quot; — b">
 <link rel="canonical" href="https://kashsec.vercel.app/#/lesson/21-api-security/mass-assignment">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Mass Assignment &amp; Excessive Data Exposure — Path 21 · KashSec Academy">
-<meta property="og:description" content="Two related (and extremely common) problems that appear when APIs accept or return more than they should.">
+<meta property="og:description" content="Two related (and extremely common) problems that appear when APIs accept or return more than they should. Together they make up OWASP's API3 category — &quot;broken object property level authorization&quot; — b">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/#/lesson/21-api-security/mass-assignment">
 <meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
@@ -16,11 +16,11 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Mass Assignment &amp; Excessive Data Exposure — Path 21 · KashSec Academy">
-<meta name="twitter:description" content="Two related (and extremely common) problems that appear when APIs accept or return more than they should.">
+<meta name="twitter:description" content="Two related (and extremely common) problems that appear when APIs accept or return more than they should. Together they make up OWASP's API3 category — &quot;broken object property level authorization&quot; — b">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Mass Assignment & Excessive Data Exposure — Path 21 · KashSec Academy","description":"Two related (and extremely common) problems that appear when APIs accept or return more than they should.","url":"https://kashsec.vercel.app/#/lesson/21-api-security/mass-assignment","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Mass Assignment & Excessive Data Exposure — Path 21 · KashSec Academy","description":"Two related (and extremely common) problems that appear when APIs accept or return more than they should. Together they make up OWASP's API3 category — \"broken object property level authorization\" — b","url":"https://kashsec.vercel.app/#/lesson/21-api-security/mass-assignment","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
 </script>
 <style>
 :root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
@@ -50,7 +50,8 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
   <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/21-api-security/mass-assignment">continue here →</a></div>
   <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 21 — API Security</a> · Mass Assignment &amp; Excessive Data Exposure</div>
   <article><h1>Mass Assignment &amp; Excessive Data Exposure</h1>
-<p>Two related (and extremely common) problems that appear when APIs accept or return more than they should.</p>
+<p>Two related (and extremely common) problems that appear when APIs accept or return more than they should. Together they make up OWASP&#39;s API3 category — &quot;broken object property level authorization&quot; — because both are, at heart, a missing check on which <em>fields</em> a caller is allowed to touch, rather than which <em>object</em>.</p>
+<p>:::</p>
 <h2>Mass Assignment</h2>
 <p><strong>Definition:</strong> The API automatically binds client-supplied fields to internal objects without an allow-list, letting an attacker set properties they should never control.</p>
 <h3>Classic example</h3>
@@ -64,7 +65,7 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <h3>Where it appears</h3>
 <ul>
 <li>ORMs and frameworks that auto-bind request bodies (Rails, Laravel, Node ORMs, etc.)</li>
-<li>“Update profile” endpoints that accept any field</li>
+<li>&quot;Update profile&quot; endpoints that accept any field</li>
 <li>GraphQL mutations that expose too many writable fields</li>
 </ul>
 <h3>How to prevent it</h3>
@@ -74,6 +75,14 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <li>Use DTOs / explicit input types</li>
 <li>Mark sensitive fields as non-writable at the model layer</li>
 </ol>
+<h3>A second worked example: mass assignment through a &quot;harmless&quot; field</h3>
+<p>Not every mass-assignment bug is as obvious as <code>isAdmin</code>. Consider a &quot;submit expense report&quot; endpoint:</p>
+<pre><code class="language-json">{ &quot;amount&quot;: 45.00, &quot;category&quot;: &quot;meals&quot;, &quot;status&quot;: &quot;pending_review&quot; }
+</code></pre>
+<p>The frontend only ever sends <code>amount</code> and <code>category</code> — <code>status</code> is meant to be set exclusively by the approval workflow. But the endpoint accepts and stores any field present in the body, so a user submits:</p>
+<pre><code class="language-json">{ &quot;amount&quot;: 4500.00, &quot;category&quot;: &quot;meals&quot;, &quot;status&quot;: &quot;approved&quot; }
+</code></pre>
+<p>...and their own expense report is instantly self-approved. Nothing about this looks like a classic &quot;admin&quot; field — which is exactly why mass assignment bugs are so easy to miss in code review. Any field that represents workflow state, ownership, or a value the server is supposed to compute is a candidate.</p>
 <h2>Excessive Data Exposure</h2>
 <p><strong>Definition:</strong> The API returns more data than the client needs (or should be allowed to see), relying on the front-end to hide it.</p>
 <h3>Classic example</h3>
@@ -90,35 +99,68 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <p>The mobile app only displays name and email, but the extra fields are still in the response for anyone who looks.</p>
 <h3>Why it happens</h3>
 <ul>
-<li>“We’ll filter it on the client”</li>
+<li>&quot;We&#39;ll filter it on the client&quot;</li>
 <li>Re-using the same serializer for admin and user views</li>
 <li>Returning entire database rows for convenience</li>
 </ul>
 <h3>How to prevent it</h3>
 <ul>
 <li>Explicit response schemas / serializers per use-case</li>
-<li>Never return password hashes, tokens, internal flags, or PII that isn’t required</li>
+<li>Never return password hashes, tokens, internal flags, or PII that isn&#39;t required</li>
 <li>Review every new field added to a response</li>
 </ul>
+<p>:::warn
+&quot;We&#39;ll filter it on the client&quot; is the single most common excuse behind excessive data exposure, and it fails every time someone bypasses the client entirely — which any attacker with Burp or curl does as a matter of routine. If a field shouldn&#39;t be visible, it shouldn&#39;t be sent.</p>
 <h2>Quick testing tips</h2>
 <p><strong>Mass assignment:</strong></p>
 <ul>
 <li>Intercept a legitimate create/update request</li>
-<li>Add extra fields (<code>isAdmin</code>, <code>role</code>, <code>balance</code>, <code>verified</code>, etc.)</li>
-<li>See if they stick</li>
+<li>Add extra fields (<code>isAdmin</code>, <code>role</code>, <code>balance</code>, <code>verified</code>, <code>status</code>, <code>ownerId</code>, etc.)</li>
+<li>See if they stick — check the object afterward, not just the immediate response, since some endpoints silently ignore extra fields in the response but still persist them</li>
 </ul>
 <p><strong>Excessive data exposure:</strong></p>
 <ul>
-<li>Look at the raw JSON of every response</li>
+<li>Look at the raw JSON of every response, not the rendered UI</li>
 <li>Compare what the UI shows versus what the API returned</li>
-<li>Check for fields that sound sensitive</li>
+<li>Check for fields that sound sensitive (<code>hash</code>, <code>internal</code>, <code>debug</code>, <code>notes</code>, <code>raw</code>, <code>token</code>)</li>
 </ul>
+<h2>🧪 Hands-on lab — hunt both bugs in one flow</h2>
+<ol>
+<li><p>Pick a &quot;create&quot; or &quot;update&quot; action in an app you&#39;re authorized to test (profile update, comment creation, expense submission, etc.).</p>
+</li>
+<li><p>Capture the legitimate request in a proxy.</p>
+</li>
+<li><p>Guess and add 5–10 plausible extra fields based on what the object probably has internally (<code>role</code>, <code>status</code>, <code>verified</code>, <code>price</code>, <code>ownerId</code>, <code>approved</code>). Resend and check whether any stuck.</p>
+</li>
+<li><p>Separately, capture a &quot;read&quot; response for the same type of object (e.g. your own user profile) and list every field in the raw JSON.</p>
+</li>
+<li><p>For each field, ask: does the UI display this anywhere? If not, is there a legitimate reason the API still needs to send it to this client?</p>
+</li>
+<li><p>Write a short report: which fields (if any) were writable that shouldn&#39;t have been, and which fields (if any) were exposed that shouldn&#39;t have been.</p>
+</li>
+<li><p>In the expense-report example, what&#39;s the one-sentence fix that prevents the <code>status</code> field from being attacker-controlled?</p>
+</li>
+<li><p>Why does &quot;the mobile app never displays <code>passwordHash</code>&quot; not make it safe to include in the API response?</p>
+</li>
+<li><p>A developer says allow-listing writable fields is &quot;extra work for every endpoint.&quot; What&#39;s the argument for doing it anyway?</p>
+</li>
+</ol>
 <h2>Key takeaway</h2>
-<p>Both problems come from the same root: <strong>the server trusted the client too much and was too generous with data</strong>. Explicit allow-lists for input and explicit schemas for output fix the large majority of cases.</p>
+<p>Both problems come from the same root: <strong>the server trusted the client too much and was too generous with data</strong>. Explicit allow-lists for input and explicit schemas for output fix the large majority of cases — and both are cheap to build in from the start, expensive to retrofit once dozens of endpoints already auto-bind and auto-serialize everything.</p>
+<h2>Key terms</h2>
+<ul>
+<li><strong>Mass assignment</strong> — accepting more input fields than intended, letting a client set properties it shouldn&#39;t control</li>
+<li><strong>Excessive data exposure</strong> — returning more response fields than intended, relying on the client to hide the rest</li>
+<li><strong>Allow-list</strong> — an explicit list of permitted fields, safer than trying to block a list of forbidden ones</li>
+<li><strong>Serializer</strong> — the layer responsible for converting an internal object into the JSON actually sent to a client</li>
+</ul>
+<h2>Recap</h2>
+<p>Mass assignment and excessive data exposure are two sides of the same missing discipline: never bind raw client input straight to internal objects, and never serialize entire internal objects straight into a response. An explicit allow-list on the way in and an explicit schema on the way out closes both.</p>
 <h3>References</h3>
 <ul>
 <li><a href="https://owasp.org/API-Security/editions/2023/en/0xa3-broken-object-property-level-authorization/">OWASP API3:2023 Broken Object Property Level Authorization</a></li>
 <li><a href="https://owasp.org/API-Security/editions/2023/en/0xa6-unrestricted-access-to-sensitive-business-flows/">OWASP API6:2023 Unrestricted Access to Sensitive Business Flows</a></li>
+<li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Mass_Assignment_Cheat_Sheet.html">OWASP Mass Assignment Cheat Sheet</a></li>
 </ul>
 </article>
   <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>

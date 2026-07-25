@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>API Security Capstone Lab — Path 21 · KashSec Academy</title>
-<meta name="description" content="This lab pulls together everything from the path. You will systematically test an API using the techniques you have learned.">
+<meta name="description" content="This lab pulls together everything from the path. You will systematically test an API using the techniques you have learned — BOLA, BFLA, JWT attacks, mass assignment, excessive data exposure, GraphQL">
 <link rel="canonical" href="https://kashsec.vercel.app/#/lesson/21-api-security/api-security-lab">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="API Security Capstone Lab — Path 21 · KashSec Academy">
-<meta property="og:description" content="This lab pulls together everything from the path. You will systematically test an API using the techniques you have learned.">
+<meta property="og:description" content="This lab pulls together everything from the path. You will systematically test an API using the techniques you have learned — BOLA, BFLA, JWT attacks, mass assignment, excessive data exposure, GraphQL">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/#/lesson/21-api-security/api-security-lab">
 <meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
@@ -16,11 +16,11 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="API Security Capstone Lab — Path 21 · KashSec Academy">
-<meta name="twitter:description" content="This lab pulls together everything from the path. You will systematically test an API using the techniques you have learned.">
+<meta name="twitter:description" content="This lab pulls together everything from the path. You will systematically test an API using the techniques you have learned — BOLA, BFLA, JWT attacks, mass assignment, excessive data exposure, GraphQL">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"API Security Capstone Lab — Path 21 · KashSec Academy","description":"This lab pulls together everything from the path. You will systematically test an API using the techniques you have learned.","url":"https://kashsec.vercel.app/#/lesson/21-api-security/api-security-lab","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+{"@context":"https://schema.org","@type":"LearningResource","name":"API Security Capstone Lab — Path 21 · KashSec Academy","description":"This lab pulls together everything from the path. You will systematically test an API using the techniques you have learned — BOLA, BFLA, JWT attacks, mass assignment, excessive data exposure, GraphQL","url":"https://kashsec.vercel.app/#/lesson/21-api-security/api-security-lab","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
 </script>
 <style>
 :root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
@@ -50,8 +50,10 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
   <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/21-api-security/api-security-lab">continue here →</a></div>
   <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 21 — API Security</a> · API Security Capstone Lab</div>
   <article><h1>API Security Capstone Lab</h1>
-<p>This lab pulls together everything from the path. You will systematically test an API using the techniques you have learned.</p>
-<p><strong>Goal</strong>: Find and document at least three distinct API issues (BOLA, auth weakness, excess data, mass assignment, missing rate limit, etc.).</p>
+<p>This lab pulls together everything from the path. You will systematically test an API using the techniques you have learned — BOLA, BFLA, JWT attacks, mass assignment, excessive data exposure, GraphQL risks, rate limiting, and business logic abuse — against a real, deliberately vulnerable target.</p>
+<p>:::</p>
+<p>:::tip
+Resist the urge to jump straight to the &quot;interesting&quot; endpoints. Run the full methodology below against <em>every</em> endpoint you find, even boring ones — some of the best findings in real assessments come from the endpoint everyone assumed was too minor to matter.</p>
 <h2>Recommended targets (legal &amp; free)</h2>
 <ul>
 <li><a href="https://github.com/OWASP/crAPI">crAPI</a> — intentionally vulnerable API from OWASP</li>
@@ -96,6 +98,16 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <li>High-value flows (purchase, invite, vote, coupon).</li>
 <li>Absence of rate limits on expensive operations.</li>
 </ul>
+<h2>A worked example against crAPI</h2>
+<p>crAPI (Completely Ridiculous API) models a vehicle marketplace and deliberately contains bugs from most of this path&#39;s categories. A typical first session might look like:</p>
+<ol>
+<li><strong>Recon</strong>: register two accounts (attacker + victim), map the mobile app&#39;s traffic through Burp, and note the API uses JWT bearer tokens.</li>
+<li><strong>BOLA test</strong>: browse to &quot;my vehicles&quot; as the victim account, capture the <code>GET /identity/api/v2/vehicle/{vehicleId}/location</code> request, then replay it as the attacker account with the victim&#39;s vehicle ID. If it returns location data — confirmed BOLA, and a genuinely serious one (physical location leak).</li>
+<li><strong>JWT check</strong>: decode the bearer token, confirm the algorithm and check whether the signing secret is weak enough to crack offline.</li>
+<li><strong>Mass assignment</strong>: on the profile update endpoint, add an unexpected field (e.g. a role or verification flag) and check whether it persists.</li>
+<li><strong>Business logic</strong>: crAPI includes a coupon/discount feature — test whether the same coupon code can be applied more than once, or whether the discount amount itself can be manipulated client-side.</li>
+</ol>
+<p>Each of these maps directly to a lesson earlier in this path — this lab is where that theory becomes muscle memory.</p>
 <h2>Deliverable</h2>
 <p>Write a short report for each finding:</p>
 <ol>
@@ -105,17 +117,37 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <li><strong>Remediation</strong></li>
 </ol>
 <p>This is exactly the skill that turns into bug-bounty reports and professional AppSec write-ups.</p>
+<h2>🧪 Extended hands-on lab — full capstone run</h2>
+<ol>
+<li><p>Spin up crAPI locally (its GitHub repo includes docker-compose instructions) or use another target from the list above.</p>
+</li>
+<li><p>Run the full six-section methodology against it, keeping notes as you go — don&#39;t skip sections even if you find something early.</p>
+</li>
+<li><p>Document at least three distinct findings using the four-part report format above.</p>
+</li>
+<li><p>For your best finding, write the &quot;chain&quot; stretch goal below even if you don&#39;t have a second bug to chain it with — describe hypothetically what a chained attack could look like.</p>
+</li>
+<li><p>Time-box the exercise to roughly 3–4 hours. Real assessments have deadlines; practicing under a rough time constraint builds the right instincts.</p>
+</li>
+<li><p>In the crAPI vehicle-location example, why is this BOLA finding rated as more serious than a typical &quot;read someone else&#39;s profile name&quot; BOLA?</p>
+</li>
+<li><p>If a coupon can be applied twice due to a race condition, which lesson topic does that map to, and why is it not simply &quot;another BOLA&quot;?</p>
+</li>
+<li><p>Your report has a finding with no clear remediation suggestion yet. What should you do before submitting it?</p>
+</li>
+</ol>
 <h2>Stretch goals</h2>
 <ul>
 <li>Chain two issues (e.g. excess data exposure → account takeover).</li>
 <li>Produce a one-page executive summary as if you were reporting to a client.</li>
 </ul>
 <h2>Recap</h2>
-<p>You now have a repeatable API testing process. Use it on every new API you meet — labs, bug-bounty programs, or (with permission) real products.</p>
+<p>You now have a repeatable API testing process. Use it on every new API you meet — labs, bug-bounty programs, or (with permission) real products. The methodology matters more than any single vulnerability class: recon, authentication, object-level authorization, property-level authorization, GraphQL-specific checks, and business logic — run through in that order, on every target, every time.</p>
 <h3>References</h3>
 <ul>
 <li><a href="https://github.com/OWASP/crAPI">OWASP crAPI</a></li>
 <li><a href="https://portswigger.net/web-security/api-testing">PortSwigger API testing</a></li>
+<li><a href="https://github.com/roottusk/vapi">vAPI</a> — an alternative vulnerable API lab covering many of the same categories</li>
 </ul>
 </article>
   <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>

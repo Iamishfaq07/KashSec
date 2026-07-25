@@ -220,6 +220,15 @@ const GLOSSARY = [
   "subTitle": "Broken Authentication & JWT Attacks"
  },
  {
+  "term": "Allow-list",
+  "def": "an explicit list of permitted fields, safer than trying to block a list of forbidden ones",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "mass-assignment",
+  "subTitle": "Mass Assignment & Excessive Data Exposure"
+ },
+ {
   "term": "AlwaysInstallElevated",
   "def": "a registry misconfiguration allowing any user to install MSI packages with SYSTEM privileges.",
   "pathId": "16-advanced",
@@ -463,6 +472,15 @@ const GLOSSARY = [
   "subTitle": "Threats, vulns & risk"
  },
  {
+  "term": "Attack surface mapping",
+  "def": "the discovery phase of identifying every reachable endpoint before testing begins",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "api-testing",
+  "subTitle": "How to actually test APIs"
+ },
+ {
   "term": "Authenticated encryption",
   "def": "an encryption mode (like AES-GCM) providing both confidentiality and integrity protection together.",
   "pathId": "06-crypto-fundamentals",
@@ -470,6 +488,15 @@ const GLOSSARY = [
   "pathTitle": "Cryptography Fundamentals",
   "subId": "common-crypto-mistakes",
   "subTitle": "Common Crypto Mistakes"
+ },
+ {
+  "term": "Authentication",
+  "def": "proving who you are",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "authn-authz-apis",
+  "subTitle": "Authentication & Authorization in APIs"
  },
  {
   "term": "Authentication vs Authorization",
@@ -488,6 +515,15 @@ const GLOSSARY = [
   "pathTitle": "Introduction to Cybersecurity",
   "subId": "the-golden-rule",
   "subTitle": "The golden rule: permission"
+ },
+ {
+  "term": "Authorization",
+  "def": "proving you're allowed to do a specific action to a specific object",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "authn-authz-apis",
+  "subTitle": "Authentication & Authorization in APIs"
  },
  {
   "term": "Automation / scripting",
@@ -535,6 +571,15 @@ const GLOSSARY = [
   "subTitle": "Poisoning & adversarial ML"
  },
  {
+  "term": "Batching",
+  "def": "sending multiple GraphQL operations in a single HTTP request",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "graphql-security",
+  "subTitle": "GraphQL Security"
+ },
+ {
   "term": "bcrypt / Argon2",
   "def": "purpose-built, deliberately slow password hashing algorithms.",
   "pathId": "06-crypto-fundamentals",
@@ -551,6 +596,15 @@ const GLOSSARY = [
   "pathTitle": "Cybersecurity Fundamentals",
   "subId": "passwords-hashing",
   "subTitle": "Passwords & hashing"
+ },
+ {
+  "term": "Bearer token",
+  "def": "a token that grants access to whoever \"bears\" (presents) it, with no further proof required",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "authn-authz-apis",
+  "subTitle": "Authentication & Authorization in APIs"
  },
  {
   "term": "Bearer token / API key",
@@ -776,6 +830,15 @@ const GLOSSARY = [
   "pathTitle": "Computer Basics & Security Mindset",
   "subId": "staying-safe-online",
   "subTitle": "Staying safe online"
+ },
+ {
+  "term": "Business flow abuse",
+  "def": "automated exploitation of a legitimate feature for illegitimate scale (API6)",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "owasp-api-top-10",
+  "subTitle": "OWASP API Top 10 (2023)"
  },
  {
   "term": "Business logic flaw",
@@ -1111,6 +1174,15 @@ const GLOSSARY = [
   "subTitle": "Containers & Kubernetes"
  },
  {
+  "term": "Content discovery",
+  "def": "using wordlists and tools (ffuf, gobuster) to find undocumented paths",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "api-testing",
+  "subTitle": "How to actually test APIs"
+ },
+ {
   "term": "Context window",
   "def": "the complete set of text (instructions, history, current input) fed into the model for a single generation.",
   "pathId": "18-ai-security",
@@ -1417,6 +1489,15 @@ const GLOSSARY = [
   "subTitle": "Broken access & IDOR"
  },
  {
+  "term": "Deny by default",
+  "def": "a design principle where access is refused unless explicitly granted, rather than allowed unless explicitly refused",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "bola-and-bfla",
+  "subTitle": "BOLA & BFLA — the two most common API authorization failures"
+ },
+ {
   "term": "Dependency confusion",
   "def": "tricking a package manager into installing a public malicious package instead of an intended private one, by name collision",
   "pathId": "22-devsecops-appsec",
@@ -1559,6 +1640,15 @@ const GLOSSARY = [
   "pathTitle": "How the Web Works",
   "subId": "page-load-journey",
   "subTitle": "The page-load journey"
+ },
+ {
+  "term": "DNS rebinding",
+  "def": "changing what a hostname resolves to between validation time and use time, bypassing naive URL allow-lists",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "rate-limiting-injection",
+  "subTitle": "Rate Limiting, Injection & Resource Abuse"
  },
  {
   "term": "DNS resolver",
@@ -1786,6 +1876,15 @@ const GLOSSARY = [
   "subTitle": "Phase 2: Scan & enumerate"
  },
  {
+  "term": "Enumeration",
+  "def": "systematically trying many values (IDs, usernames) to extract or discover data at scale",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "why-api-security",
+  "subTitle": "Why API Security Matters"
+ },
+ {
   "term": "Escalation path",
   "def": "the defined process for who to contact and how, for time-sensitive or critical issues.",
   "pathId": "20-career-prep",
@@ -1858,6 +1957,15 @@ const GLOSSARY = [
   "subTitle": "OWASP LLM Top 10"
  },
  {
+  "term": "Excessive data exposure",
+  "def": "returning more response fields than intended, relying on the client to hide the rest",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "mass-assignment",
+  "subTitle": "Mass Assignment & Excessive Data Exposure"
+ },
+ {
   "term": "Execution policy",
   "def": "Windows' PowerShell script-execution safety restriction, bypassable and not a genuine security boundary.",
   "pathId": "07-windows-security",
@@ -1892,6 +2000,15 @@ const GLOSSARY = [
   "pathTitle": "Operating Systems & Linux",
   "subId": "install-virtualbox",
   "subTitle": "Install VirtualBox"
+ },
+ {
+  "term": "Fail closed",
+  "def": "denying access by default when authorization is uncertain, rather than allowing it",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "authn-authz-apis",
+  "subTitle": "Authentication & Authorization in APIs"
  },
  {
   "term": "False positive",
@@ -2326,6 +2443,15 @@ const GLOSSARY = [
   "subTitle": "Frameworks & compliance"
  },
  {
+  "term": "Horizontal privilege escalation",
+  "def": "gaining access to another user's data at the same privilege level (BOLA's typical impact)",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "bola-and-bfla",
+  "subTitle": "BOLA & BFLA — the two most common API authorization failures"
+ },
+ {
   "term": "Horizontal / vertical IDOR",
   "def": "same-level vs cross-privilege-level unauthorized access (Path 11.4, revisited).",
   "pathId": "15-bug-bounty",
@@ -2533,6 +2659,15 @@ const GLOSSARY = [
   "subTitle": "Broken access & IDOR"
  },
  {
+  "term": "IDOR",
+  "def": "Insecure Direct Object Reference, the older/broader term BOLA is the API-specific version of",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "bola-and-bfla",
+  "subTitle": "BOLA & BFLA — the two most common API authorization failures"
+ },
+ {
   "term": "IDS / IPS",
   "def": "detect-only vs detect-and-block network/host monitoring systems.",
   "pathId": "12-network-security",
@@ -2705,6 +2840,15 @@ const GLOSSARY = [
  },
  {
   "term": "Introspection",
+  "def": "a GraphQL feature letting a client query the schema itself",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "rest-vs-graphql",
+  "subTitle": "REST vs GraphQL — security differences that matter"
+ },
+ {
+  "term": "Introspection",
   "def": "the ability to query the schema itself",
   "pathId": "21-api-security",
   "pathN": "21",
@@ -2810,6 +2954,15 @@ const GLOSSARY = [
   "pathTitle": "How the Web Works",
   "subId": "apis-json",
   "subTitle": "APIs & JSON"
+ },
+ {
+  "term": "JWKS",
+  "def": "JSON Web Key Set, the endpoint that publishes an API's public signing keys",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "broken-auth-jwt",
+  "subTitle": "Broken Authentication & JWT Attacks"
  },
  {
   "term": "JWT",
@@ -3080,6 +3233,15 @@ const GLOSSARY = [
   "pathTitle": "API Security",
   "subId": "why-api-security",
   "subTitle": "Why API Security Matters"
+ },
+ {
+  "term": "Mass assignment",
+  "def": "accepting more input fields than intended, letting a client set properties it shouldn't control",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "mass-assignment",
+  "subTitle": "Mass Assignment & Excessive Data Exposure"
  },
  {
   "term": "`match`",
@@ -3568,6 +3730,15 @@ const GLOSSARY = [
   "subTitle": "Securing LLM Applications"
  },
  {
+  "term": "Over-fetching",
+  "def": "a response containing more data than the client actually needed, common in REST when endpoints return whole objects",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "rest-vs-graphql",
+  "subTitle": "REST vs GraphQL — security differences that matter"
+ },
+ {
   "term": "Overreliance",
   "def": "a human/organisational risk of trusting LLM output without adequate verification.",
   "pathId": "18-ai-security",
@@ -3791,6 +3962,15 @@ const GLOSSARY = [
   "pathTitle": "Malware & Reverse Engineering",
   "subId": "static-analysis-deep-dive",
   "subTitle": "Static Analysis Deep Dive"
+ },
+ {
+  "term": "Persisted query",
+  "def": "a pre-registered, allow-listed query the client references by ID instead of sending arbitrary query text",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "graphql-security",
+  "subTitle": "GraphQL Security"
  },
  {
   "term": "Persistence",
@@ -4117,6 +4297,15 @@ const GLOSSARY = [
   "subTitle": "Burp Suite & PortSwigger"
  },
  {
+  "term": "Proxy (Burp/Caido)",
+  "def": "a tool that sits between client and server, letting you inspect and modify every request",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "api-testing",
+  "subTitle": "How to actually test APIs"
+ },
+ {
   "term": "PSK vs Enterprise (802.1X)",
   "def": "shared-password vs individual-credential Wi-Fi authentication modes.",
   "pathId": "12-network-security",
@@ -4180,6 +4369,15 @@ const GLOSSARY = [
   "subTitle": "GraphQL Security"
  },
  {
+  "term": "Query depth",
+  "def": "how many levels of nested fields a GraphQL query requests",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "rest-vs-graphql",
+  "subTitle": "REST vs GraphQL — security differences that matter"
+ },
+ {
   "term": "Quick win",
   "def": "a small, achievable early contribution that builds credibility without requiring deep tenure.",
   "pathId": "20-career-prep",
@@ -4205,6 +4403,15 @@ const GLOSSARY = [
   "pathTitle": "Bug Bounty",
   "subId": "logic-and-chains",
   "subTitle": "Business logic & chains"
+ },
+ {
+  "term": "Race condition",
+  "def": "a bug where the outcome depends on the timing of concurrent operations, often exploitable via near-simultaneous requests",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "rate-limiting-injection",
+  "subTitle": "Rate Limiting, Injection & Resource Abuse"
  },
  {
   "term": "RAG (Retrieval-Augmented Generation) poisoning",
@@ -4277,6 +4484,15 @@ const GLOSSARY = [
   "pathTitle": "Bug Bounty",
   "subId": "recon-pipeline",
   "subTitle": "The recon pipeline"
+ },
+ {
+  "term": "Rate limiting",
+  "def": "restricting how many requests a client can make in a given time window",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "rate-limiting-injection",
+  "subTitle": "Rate Limiting, Injection & Resource Abuse"
  },
  {
   "term": "Reachability",
@@ -4369,6 +4585,15 @@ const GLOSSARY = [
   "subTitle": "Cross-Site Scripting"
  },
  {
+  "term": "Refresh token",
+  "def": "a longer-lived token used to obtain new short-lived access tokens, often the only practical place to implement revocation",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "broken-auth-jwt",
+  "subTitle": "Broken Authentication & JWT Attacks"
+ },
+ {
   "term": "Register",
   "def": "a CPU's small, extremely fast internal storage location (`eax`, `ebx`, etc.).",
   "pathId": "17-malware-re",
@@ -4448,6 +4673,15 @@ const GLOSSARY = [
   "pathTitle": "DevSecOps & AppSec Program",
   "subId": "threat-modeling-sdlc",
   "subTitle": "Threat Modeling in the SDLC"
+ },
+ {
+  "term": "Resolver",
+  "def": "the GraphQL function responsible for fetching the data for one specific field",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "rest-vs-graphql",
+  "subTitle": "REST vs GraphQL — security differences that matter"
  },
  {
   "term": "Resolver",
@@ -4855,6 +5089,15 @@ const GLOSSARY = [
   "subTitle": "Why network security matters"
  },
  {
+  "term": "Serializer",
+  "def": "the layer responsible for converting an internal object into the JSON actually sent to a client",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "mass-assignment",
+  "subTitle": "Mass Assignment & Excessive Data Exposure"
+ },
+ {
   "term": "Server",
   "def": "a computer that runs websites, apps, or services behind the scenes.",
   "pathId": "01-introduction",
@@ -5258,6 +5501,15 @@ const GLOSSARY = [
   "pathTitle": "Web Security & Hacking",
   "subId": "ssrf-and-auth",
   "subTitle": "SSRF & auth attacks"
+ },
+ {
+  "term": "SSRF",
+  "def": "Server-Side Request Forgery, where the server is tricked into making requests on the attacker's behalf",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "rate-limiting-injection",
+  "subTitle": "Rate Limiting, Injection & Resource Abuse"
  },
  {
   "term": "SSR / SPA",
@@ -5746,6 +5998,15 @@ const GLOSSARY = [
   "subTitle": "Decisions with if/else"
  },
  {
+  "term": "Two-account testing",
+  "def": "the core technique behind finding BOLA/BFLA: perform an action as one user, replay as another",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "api-testing",
+  "subTitle": "How to actually test APIs"
+ },
+ {
   "term": "Two-adapter setup",
   "def": "Host-only for targets + NAT for internet.",
   "pathId": "03-linux",
@@ -5924,6 +6185,15 @@ const GLOSSARY = [
   "pathTitle": "Cloud Computing Basics",
   "subId": "cloud-storage-basics",
   "subTitle": "Cloud Storage Basics"
+ },
+ {
+  "term": "Vertical privilege escalation",
+  "def": "gaining a higher privilege level than intended (BFLA's typical impact)",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "bola-and-bfla",
+  "subTitle": "BOLA & BFLA — the two most common API authorization failures"
  },
  {
   "term": "View Source",
@@ -6257,5 +6527,14 @@ const GLOSSARY = [
   "pathTitle": "Network Security",
   "subId": "firewalls-vpns",
   "subTitle": "Firewalls, VPNs, proxies"
+ },
+ {
+  "term": "Zombie API",
+  "def": "a deprecated API version still running and still reachable, often with weaker security than its replacement",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "owasp-api-top-10",
+  "subTitle": "OWASP API Top 10 (2023)"
  }
 ];

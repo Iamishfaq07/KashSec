@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Your API Security Roadmap — Path 21 · KashSec Academy</title>
-<meta name="description" content="You now have the mental models and a practical testing process. Here’s how to keep growing.">
+<meta name="description" content="You now have the mental models and a practical testing process. Here's how to keep growing — API security is one of the fastest-moving specialties in AppSec, and the gap between &quot;knows the OWASP list&quot;">
 <link rel="canonical" href="https://kashsec.vercel.app/#/lesson/21-api-security/api-roadmap">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Your API Security Roadmap — Path 21 · KashSec Academy">
-<meta property="og:description" content="You now have the mental models and a practical testing process. Here’s how to keep growing.">
+<meta property="og:description" content="You now have the mental models and a practical testing process. Here's how to keep growing — API security is one of the fastest-moving specialties in AppSec, and the gap between &quot;knows the OWASP list&quot;">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/#/lesson/21-api-security/api-roadmap">
 <meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
@@ -16,11 +16,11 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Your API Security Roadmap — Path 21 · KashSec Academy">
-<meta name="twitter:description" content="You now have the mental models and a practical testing process. Here’s how to keep growing.">
+<meta name="twitter:description" content="You now have the mental models and a practical testing process. Here's how to keep growing — API security is one of the fastest-moving specialties in AppSec, and the gap between &quot;knows the OWASP list&quot;">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Your API Security Roadmap — Path 21 · KashSec Academy","description":"You now have the mental models and a practical testing process. Here’s how to keep growing.","url":"https://kashsec.vercel.app/#/lesson/21-api-security/api-roadmap","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Your API Security Roadmap — Path 21 · KashSec Academy","description":"You now have the mental models and a practical testing process. Here's how to keep growing — API security is one of the fastest-moving specialties in AppSec, and the gap between \"knows the OWASP list\"","url":"https://kashsec.vercel.app/#/lesson/21-api-security/api-roadmap","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
 </script>
 <style>
 :root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
@@ -50,11 +50,12 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
   <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/21-api-security/api-roadmap">continue here →</a></div>
   <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 21 — API Security</a> · Your API Security Roadmap</div>
   <article><h1>Your API Security Roadmap</h1>
-<p>You now have the mental models and a practical testing process. Here’s how to keep growing.</p>
+<p>You now have the mental models and a practical testing process. Here&#39;s how to keep growing — API security is one of the fastest-moving specialties in AppSec, and the gap between &quot;knows the OWASP list&quot; and &quot;finds real bugs quickly&quot; is almost entirely built through repetition.</p>
+<p>:::</p>
 <h2>Immediate next steps (next 2–4 weeks)</h2>
 <ol>
 <li>Finish the capstone lab on crAPI or an equivalent vulnerable API</li>
-<li>Re-test one of your own projects (or a friend’s) with the dual-account method</li>
+<li>Re-test one of your own projects (or a friend&#39;s) with the dual-account method</li>
 <li>Read the full <a href="https://owasp.org/API-Security/">OWASP API Security Top 10</a> and map every item to a concrete test you can perform</li>
 <li>Add API testing to your bug-bounty or personal lab routine</li>
 </ol>
@@ -93,6 +94,8 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <td>Write Nuclei templates and small Python/Go tools</td>
 </tr>
 </tbody></table>
+<h3>Why OAuth deserves special attention next</h3>
+<p>Everything in this path assumed the token was already issued correctly. OAuth 2.0 / OIDC is the machinery that actually issues those tokens across most modern systems — and misconfigured redirect URIs, weak state parameters, and implicit-flow leftovers are their own well-documented, high-impact bug class. If you found BOLA and JWT attacks interesting, OAuth flow abuse is the natural next specialty, because it sits one layer earlier in the same trust chain.</p>
 <h2>Career angles</h2>
 <ul>
 <li><strong>AppSec / Product Security</strong> — API reviews are a core part of the job</li>
@@ -104,19 +107,40 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <ul>
 <li>OWASP API Security Project</li>
 <li>PortSwigger Web Security Academy (API &amp; GraphQL paths)</li>
-<li>“Hacking APIs” by Corey Ball (book)</li>
+<li>&quot;Hacking APIs&quot; by Corey Ball (book)</li>
 <li>crAPI + vAPI for continuous practice</li>
 <li>Real bug-bounty write-ups that mention BOLA / IDOR / mass assignment</li>
 </ul>
+<h2>🧪 Hands-on lab — build a personal API testing checklist</h2>
+<p>Before moving on, consolidate everything from this path into one artifact you&#39;ll actually reuse:</p>
+<ol>
+<li>Write out, from memory, the six-question mental model from the &quot;what are APIs&quot; lesson.</li>
+<li>Under it, list the ten OWASP API Top 10 categories with one test technique each, in your own words — not copied from the lesson.</li>
+<li>Add your own &quot;first five minutes on a new target&quot; checklist: what do you do the moment you get a new API to test?</li>
+<li>Save this somewhere you&#39;ll actually open again (a notes app, a personal repo) — the goal is a living document you refine every time you test a new API, not a one-time exercise.</li>
+</ol>
+<p>:::challenge Test yourself</p>
+<ol>
+<li>Name the single habit from this lesson that &quot;finds more real vulnerabilities than most automated scanners.&quot;</li>
+<li>Why does OAuth/OIDC sit &quot;one layer earlier&quot; than the JWT attacks covered earlier in this path?</li>
+<li>Pick one skill from the table above you don&#39;t yet have, and write one sentence on how you&#39;d start practicing it this week.</li>
+</ol>
 <h2>Final mindset</h2>
 <p>Every time you see an API call, ask:</p>
 <blockquote>
-<p>“If I change the ID, or replay this as another user, or add an extra field — what happens?”</p>
+<p>&quot;If I change the ID, or replay this as another user, or add an extra field — what happens?&quot;</p>
 </blockquote>
 <p>That single habit will find more real vulnerabilities than most automated scanners.</p>
 <p>You now have the foundation. Go break (authorized) things safely and build the muscle memory.</p>
+<h3>References</h3>
+<ul>
+<li><a href="https://owasp.org/API-Security/">OWASP API Security Top 10</a></li>
+<li><a href="https://portswigger.net/web-security/api-testing">PortSwigger Web Security Academy — API testing</a></li>
+<li><a href="https://github.com/OWASP/crAPI">crAPI (OWASP)</a> — the main lab referenced throughout this path</li>
+</ul>
 <hr>
-<p><strong>Path complete.</strong><br>Return to the <a href="#/roadmap">course roadmap</a> or jump into a <a href="#/tracks">practice track</a>.</p>
+<p><strong>Path complete.</strong>
+Return to the <a href="#/roadmap">course roadmap</a> or jump into a <a href="#/tracks">practice track</a>.</p>
 </article>
   <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
 </main>

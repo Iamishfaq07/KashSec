@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Broken Authentication &amp; JWT Attacks — Path 21 · KashSec Academy</title>
-<meta name="description" content="Authentication in APIs usually means tokens — most commonly JWTs. When token handling is weak, an attacker can become any user.">
+<meta name="description" content="Authentication in APIs usually means tokens — most commonly JWTs. When token handling is weak, an attacker can become any user, including an admin, without ever guessing a password.">
 <link rel="canonical" href="https://kashsec.vercel.app/#/lesson/21-api-security/broken-auth-jwt">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Broken Authentication &amp; JWT Attacks — Path 21 · KashSec Academy">
-<meta property="og:description" content="Authentication in APIs usually means tokens — most commonly JWTs. When token handling is weak, an attacker can become any user.">
+<meta property="og:description" content="Authentication in APIs usually means tokens — most commonly JWTs. When token handling is weak, an attacker can become any user, including an admin, without ever guessing a password.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/#/lesson/21-api-security/broken-auth-jwt">
 <meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
@@ -16,11 +16,11 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Broken Authentication &amp; JWT Attacks — Path 21 · KashSec Academy">
-<meta name="twitter:description" content="Authentication in APIs usually means tokens — most commonly JWTs. When token handling is weak, an attacker can become any user.">
+<meta name="twitter:description" content="Authentication in APIs usually means tokens — most commonly JWTs. When token handling is weak, an attacker can become any user, including an admin, without ever guessing a password.">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Broken Authentication & JWT Attacks — Path 21 · KashSec Academy","description":"Authentication in APIs usually means tokens — most commonly JWTs. When token handling is weak, an attacker can become any user.","url":"https://kashsec.vercel.app/#/lesson/21-api-security/broken-auth-jwt","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Broken Authentication & JWT Attacks — Path 21 · KashSec Academy","description":"Authentication in APIs usually means tokens — most commonly JWTs. When token handling is weak, an attacker can become any user, including an admin, without ever guessing a password.","url":"https://kashsec.vercel.app/#/lesson/21-api-security/broken-auth-jwt","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
 </script>
 <style>
 :root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
@@ -50,7 +50,8 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
   <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/21-api-security/broken-auth-jwt">continue here →</a></div>
   <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 21 — API Security</a> · Broken Authentication &amp; JWT Attacks</div>
   <article><h1>Broken Authentication &amp; JWT Attacks</h1>
-<p>Authentication in APIs usually means tokens — most commonly JWTs. When token handling is weak, an attacker can become any user.</p>
+<p>Authentication in APIs usually means tokens — most commonly JWTs. When token handling is weak, an attacker can become any user, including an admin, without ever guessing a password.</p>
+<p>:::</p>
 <h2>Common authentication failures</h2>
 <ul>
 <li>No rate limiting on login or password-reset endpoints</li>
@@ -60,6 +61,30 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <li>Accepting tokens over HTTP</li>
 <li>Weak or default signing secrets</li>
 </ul>
+<table>
+<thead>
+<tr>
+<th>Failure</th>
+<th>Real-world consequence</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>No rate limit on login</td>
+<td>Credential stuffing / password spraying at scale</td>
+</tr>
+<tr>
+<td>Long-lived reset token</td>
+<td>A leaked or intercepted reset link stays exploitable for days</td>
+</tr>
+<tr>
+<td>No token expiry</td>
+<td>A stolen token is valid forever, not just until the next login</td>
+</tr>
+<tr>
+<td>No logout invalidation</td>
+<td>&quot;Logging out&quot; is cosmetic — the token still works if replayed</td>
+</tr>
+</tbody></table>
 <h2>JWT crash course</h2>
 <p>A JWT has three Base64url parts:</p>
 <pre><code>header.payload.signature
@@ -70,22 +95,36 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <p>Example payload:</p>
 <pre><code class="language-json">{&quot;sub&quot;:&quot;42&quot;,&quot;role&quot;:&quot;user&quot;,&quot;exp&quot;:1735689600}
 </code></pre>
-<p>The signature proves the token was issued by someone who knows the secret (or private key).</p>
+<p>The signature proves the token was issued by someone who knows the secret (or private key). Critically: the <em>client</em> can decode and read the header and payload trivially — they&#39;re just Base64, not encryption. The only thing protecting the payload from tampering is the signature check the server is supposed to perform on every request.</p>
 <h2>High-impact JWT attacks</h2>
 <h3>1. <code>alg: none</code></h3>
-<p>Some libraries accept a token whose header says <code>&quot;alg&quot;:&quot;none&quot;</code> and skip signature verification.<br>Attacker forges:</p>
+<p>Some libraries accept a token whose header says <code>&quot;alg&quot;:&quot;none&quot;</code> and skip signature verification.
+Attacker forges:</p>
 <pre><code class="language-json">{&quot;alg&quot;:&quot;none&quot;,&quot;typ&quot;:&quot;JWT&quot;}
 .{&quot;sub&quot;:&quot;1&quot;,&quot;role&quot;:&quot;admin&quot;}
 .
 </code></pre>
+<p>This works because some JWT libraries, by default or through misconfiguration, treat <code>none</code> as a legitimate algorithm rather than rejecting it outright.</p>
 <h3>2. Algorithm confusion (RS256 → HS256)</h3>
-<p>If the server uses asymmetric keys (RS256) but the library is tricked into verifying with the <em>public key</em> as an HMAC secret, the attacker can sign tokens with the public key.</p>
+<p>If the server uses asymmetric keys (RS256) but the library is tricked into verifying with the <em>public key</em> as an HMAC secret, the attacker can sign tokens with the public key. This works because RS256&#39;s public key is, by design, public — anyone can fetch it from the API&#39;s own JWKS endpoint. If a server&#39;s code says &quot;verify this token&quot; without pinning the <em>algorithm</em> it expects, and the attacker sends a token claiming <code>alg:HS256</code> signed using the public RSA key as if it were an HMAC secret, some libraries will happily verify it as valid.</p>
 <h3>3. Weak HMAC secret</h3>
-<p>HS256 with a short or common secret can be cracked offline (hashcat, jwt-cracker).</p>
+<p>HS256 with a short or common secret can be cracked offline (hashcat, jwt-cracker). A secret like <code>&quot;secret123&quot;</code> can be brute-forced in seconds; once an attacker has the secret, they can sign arbitrary tokens with any claims they want, including <code>&quot;role&quot;:&quot;admin&quot;</code>.</p>
 <h3>4. Kid injection / path traversal</h3>
-<p>If the <code>kid</code> (key ID) header is used to load a key from the filesystem without sanitisation, an attacker can point it at a known file or inject SQL/command content.</p>
+<p>If the <code>kid</code> (key ID) header is used to load a key from the filesystem without sanitisation, an attacker can point it at a known file or inject SQL/command content. Example: <code>&quot;kid&quot;: &quot;../../../../dev/null&quot;</code> might make the server &quot;verify&quot; a signature against an empty key, which some implementations then treat as a valid empty-string signature match.</p>
 <h3>5. Claim tampering when signature is not verified</h3>
-<p>Classic: change <code>&quot;role&quot;:&quot;user&quot;</code> → <code>&quot;role&quot;:&quot;admin&quot;</code> when the server forgets to verify the signature.</p>
+<p>Classic: change <code>&quot;role&quot;:&quot;user&quot;</code> → <code>&quot;role&quot;:&quot;admin&quot;</code> when the server forgets to verify the signature at all — it decodes the token, reads the claims, and trusts them without ever calling the verification function. This is the simplest and most common of all the attacks here, because it requires no cryptographic trickery whatsoever, just a server that skipped a step.</p>
+<h2>A worked example, end to end</h2>
+<p>An API&#39;s login endpoint issues:</p>
+<pre><code class="language-json">{&quot;sub&quot;:&quot;42&quot;,&quot;role&quot;:&quot;user&quot;,&quot;exp&quot;:1798761600}
+</code></pre>
+<p>signed with HS256 and the secret <code>&quot;changeme&quot;</code>. An attacker who obtains any valid token (their own account is enough) can:</p>
+<ol>
+<li>Decode the token to see the exact claim structure</li>
+<li>Run it through a cracking tool against a common-password wordlist — <code>&quot;changeme&quot;</code> is exactly the kind of secret that gets cracked in under a minute</li>
+<li>Once the secret is recovered, forge a new token: <code>{&quot;sub&quot;:&quot;1&quot;,&quot;role&quot;:&quot;admin&quot;,&quot;exp&quot;:9999999999}</code></li>
+<li>Sign it with the recovered secret and use it to call any endpoint that trusts the JWT&#39;s <code>role</code> claim</li>
+</ol>
+<p>No password was guessed. No vulnerability in the application logic was needed. The entire authentication scheme collapsed because of one weak secret.</p>
 <h2>Practical checklist</h2>
 <p>When you meet a JWT:</p>
 <ol>
@@ -97,27 +136,45 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <li>If RS256, test algorithm confusion.</li>
 <li>Look for sensitive data in the payload (it is only Base64, not encrypted).</li>
 </ol>
-<p>Use the JWT tool in KashSec (<code>#/tools/jwt</code>) to decode tokens you capture in labs. Then try the PortSwigger JWT labs.</p>
+<p>:::lab
+Use the JWT tool in KashSec (<code>#/tools/jwt</code>) to decode tokens you capture in labs. Then try the PortSwigger JWT labs.</p>
 <h2>Defenses</h2>
 <ul>
-<li>Always verify the signature with a strict allow-list of algorithms.</li>
-<li>Use strong, rotated secrets or proper asymmetric keys.</li>
+<li>Always verify the signature with a strict allow-list of algorithms — reject anything not on that list, including <code>none</code>, explicitly.</li>
+<li>Use strong, rotated secrets or proper asymmetric keys — a randomly generated 256-bit secret, not a memorable phrase.</li>
 <li>Keep lifetimes short; use refresh tokens carefully.</li>
 <li>Never put secrets or passwords in the payload.</li>
-<li>Invalidate tokens on logout / password change when possible.</li>
+<li>Invalidate tokens on logout / password change when possible — a short-lived access token plus a server-side check on the refresh token is the common practical answer to &quot;how do I revoke a JWT.&quot;</li>
 </ul>
+<p>:::</p>
+<h2>🧪 Hands-on lab — attack a JWT</h2>
+<ol>
+<li>Use the KashSec JWT tool (<code>#/tools/jwt</code>) or jwt.io to decode a sample JWT and identify its algorithm and claims.</li>
+<li>Try constructing an <code>alg:none</code> version of the token by hand: same header (with <code>alg</code> changed to <code>none</code>) and payload, base64url-encoded, with an empty signature section.</li>
+<li>If you have access to a lab environment with a known weak secret, use a tool like <code>hashcat</code> or <code>jwt_tool</code> to attempt to crack it, then forge a token with elevated claims.</li>
+<li>Complete at least two of the PortSwigger JWT attack labs linked below, which walk through algorithm confusion and <code>kid</code> injection in a safe, legal environment.</li>
+</ol>
+<p>:::challenge Test yourself</p>
+<ol>
+<li>Why is &quot;the payload is Base64-encoded&quot; not a security control, and what should never go inside a JWT payload as a result?</li>
+<li>Explain algorithm confusion (RS256 → HS256) in your own words — why does the public key being public matter here?</li>
+<li>A team says &quot;we don&#39;t need to check token expiry server-side, the client won&#39;t send an expired token.&quot; What&#39;s wrong with trusting that?</li>
+</ol>
 <h2>Key terms</h2>
 <ul>
 <li><strong>JWT</strong> — JSON Web Token</li>
 <li><strong>alg:none</strong> — the signature-bypass algorithm</li>
 <li><strong>Algorithm confusion</strong> — tricking RS256 verification into using HS256</li>
+<li><strong>JWKS</strong> — JSON Web Key Set, the endpoint that publishes an API&#39;s public signing keys</li>
+<li><strong>Refresh token</strong> — a longer-lived token used to obtain new short-lived access tokens, often the only practical place to implement revocation</li>
 </ul>
 <h2>Recap</h2>
-<p>Most JWT attacks succeed because verification is missing, incomplete, or too permissive. Treat every token as untrusted until the signature and claims are fully validated.</p>
+<p>Most JWT attacks succeed because verification is missing, incomplete, or too permissive — not because of exotic cryptography breaks. Treat every token as untrusted until the signature and claims are fully validated, pin the expected algorithm explicitly, and never assume a client-supplied claim like <code>role</code> can be trusted without that verification happening first.</p>
 <h3>References</h3>
 <ul>
 <li><a href="https://portswigger.net/web-security/jwt">PortSwigger JWT attacks</a></li>
 <li><a href="https://jwt.io">jwt.io</a></li>
+<li><a href="https://auth0.com/blog/a-look-at-the-latest-draft-for-jwt-bcp/">JWT security best practices (Auth0)</a> — practical guidance for implementers</li>
 </ul>
 </article>
   <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>

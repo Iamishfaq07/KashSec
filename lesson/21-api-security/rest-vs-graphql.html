@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>REST vs GraphQL — security differences that matter — Path 21 · KashSec Academy</title>
-<meta name="description" content="Most APIs you’ll meet fall into two camps: REST and GraphQL. They look different, and their security failure modes are different too.">
+<meta name="description" content="Most APIs you'll meet fall into two camps: REST and GraphQL. They look different, and their security failure modes are different too — knowing which style you're facing changes exactly which questions">
 <link rel="canonical" href="https://kashsec.vercel.app/#/lesson/21-api-security/rest-vs-graphql">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="REST vs GraphQL — security differences that matter — Path 21 · KashSec Academy">
-<meta property="og:description" content="Most APIs you’ll meet fall into two camps: REST and GraphQL. They look different, and their security failure modes are different too.">
+<meta property="og:description" content="Most APIs you'll meet fall into two camps: REST and GraphQL. They look different, and their security failure modes are different too — knowing which style you're facing changes exactly which questions">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/#/lesson/21-api-security/rest-vs-graphql">
 <meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
@@ -16,11 +16,11 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="REST vs GraphQL — security differences that matter — Path 21 · KashSec Academy">
-<meta name="twitter:description" content="Most APIs you’ll meet fall into two camps: REST and GraphQL. They look different, and their security failure modes are different too.">
+<meta name="twitter:description" content="Most APIs you'll meet fall into two camps: REST and GraphQL. They look different, and their security failure modes are different too — knowing which style you're facing changes exactly which questions">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"REST vs GraphQL — security differences that matter — Path 21 · KashSec Academy","description":"Most APIs you’ll meet fall into two camps: REST and GraphQL. They look different, and their security failure modes are different too.","url":"https://kashsec.vercel.app/#/lesson/21-api-security/rest-vs-graphql","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+{"@context":"https://schema.org","@type":"LearningResource","name":"REST vs GraphQL — security differences that matter — Path 21 · KashSec Academy","description":"Most APIs you'll meet fall into two camps: REST and GraphQL. They look different, and their security failure modes are different too — knowing which style you're facing changes exactly which questions","url":"https://kashsec.vercel.app/#/lesson/21-api-security/rest-vs-graphql","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
 </script>
 <style>
 :root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
@@ -50,7 +50,8 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
   <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/21-api-security/rest-vs-graphql">continue here →</a></div>
   <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 21 — API Security</a> · REST vs GraphQL — security differences that matter</div>
   <article><h1>REST vs GraphQL — security differences that matter</h1>
-<p>Most APIs you’ll meet fall into two camps: <strong>REST</strong> and <strong>GraphQL</strong>. They look different, and their security failure modes are different too.</p>
+<p>Most APIs you&#39;ll meet fall into two camps: <strong>REST</strong> and <strong>GraphQL</strong>. They look different, and their security failure modes are different too — knowing which style you&#39;re facing changes exactly which questions you ask first.</p>
+<p>:::</p>
 <h2>REST in one minute</h2>
 <p>REST treats the API as a collection of <strong>resources</strong> identified by URLs:</p>
 <pre><code>GET    /api/users/42          → get user 42
@@ -78,7 +79,7 @@ GET    /api/users/42/orders   → list orders for user 42
   }
 }
 </code></pre>
-<p>The server returns only what was requested. This is powerful for clients and dangerous if authorization is not applied at every field.</p>
+<p>The server returns only what was requested. This is powerful for clients and dangerous if authorization is not applied at every field — because the query shape is entirely up to the caller, not the server.</p>
 <h2>Security comparison</h2>
 <table>
 <thead>
@@ -121,19 +122,39 @@ GET    /api/users/42/orders   → list orders for user 42
 </tbody></table>
 <h2>Classic REST problems</h2>
 <ul>
-<li>Changing the ID in the path (<code>/users/42</code> → <code>/users/43</code>) and getting another user’s data (<strong>BOLA / IDOR</strong>)</li>
-<li>Sending extra fields the server didn’t expect (<strong>mass assignment</strong>)</li>
+<li>Changing the ID in the path (<code>/users/42</code> → <code>/users/43</code>) and getting another user&#39;s data (<strong>BOLA / IDOR</strong>)</li>
+<li>Sending extra fields the server didn&#39;t expect (<strong>mass assignment</strong>)</li>
 <li>Missing rate limits on expensive endpoints</li>
 <li>Verbose error messages that leak stack traces or internal IDs</li>
 </ul>
 <h2>Classic GraphQL problems</h2>
 <ul>
-<li><strong>Nested query attacks</strong> — a query that expands exponentially and kills the server</li>
-<li><strong>Field-level authorization missing</strong> — you can request <code>user { salary }</code> even if the UI never shows it</li>
-<li><strong>Introspection left on in production</strong> — attackers get the full schema for free</li>
-<li><strong>Batching</strong> — many operations in one HTTP request bypass simple rate limits</li>
+<li><strong>Nested query attacks</strong> — a query that expands exponentially and kills the server, because a small amount of query text can request an enormous amount of nested data</li>
+<li><strong>Field-level authorization missing</strong> — you can request <code>user { salary }</code> even if the UI never shows it, because the field exists in the schema and nothing stops a client from asking for it directly</li>
+<li><strong>Introspection left on in production</strong> — attackers get the full schema for free, including field names and types for parts of the API the UI never uses</li>
+<li><strong>Batching</strong> — many operations in one HTTP request bypass simple rate limits built around &quot;one request per action&quot;</li>
 </ul>
-<p>In GraphQL, “the endpoint is authorized” is not enough. Every sensitive field needs its own authorization check.</p>
+<p>:::danger
+In GraphQL, &quot;the endpoint is authorized&quot; is not enough. Every sensitive field needs its own authorization check. A resolver for <code>user.orders</code> might correctly check that you&#39;re allowed to see this user&#39;s orders, while the resolver for <code>user.paymentMethods</code>, added later by a different developer, forgets to.</p>
+<h2>A worked example: the nested query attack</h2>
+<pre><code class="language-graphql">query {
+  users {
+    friends {
+      friends {
+        friends {
+          friends { name }
+        }
+      }
+    }
+  }
+}
+</code></pre>
+<p>A query like this, five levels of <code>friends</code> deep, can ask the database to compute a combinatorial explosion of relationships — potentially millions of rows of work — from a query that&#39;s a few dozen characters long. A REST API has no equivalent: each endpoint does a fixed, predictable amount of work, so this style of attack simply doesn&#39;t exist in the same form. This is exactly why GraphQL APIs need depth and complexity limits that REST APIs generally don&#39;t.</p>
+<h2>Introspection: convenience for developers, gift to attackers</h2>
+<p>GraphQL&#39;s introspection feature lets a client ask the server &quot;what&#39;s your entire schema?&quot; — every type, every field, every mutation, all at once. It&#39;s genuinely useful during development. Left enabled in production, it hands an attacker the complete map of your API&#39;s data model, including fields never exposed anywhere in the UI:</p>
+<pre><code class="language-graphql">query { __schema { types { name fields { name } } } }
+</code></pre>
+<p>A single request like this can reveal internal field names such as <code>internalNotes</code>, <code>isTestAccount</code>, or <code>debugFlags</code> — fields that were never meant to be queried by a real client, but exist in the schema all the same.</p>
 <h2>What you should do in practice</h2>
 <p><strong>For REST:</strong></p>
 <ul>
@@ -148,12 +169,37 @@ GET    /api/users/42/orders   → list orders for user 42
 <li>Apply authorization inside resolvers, not just at the HTTP layer</li>
 <li>Consider query cost analysis / rate limiting by complexity</li>
 </ul>
+<h2>🧪 Hands-on lab — compare the two styles hands-on</h2>
+<ol>
+<li><p>Find (or spin up) a small public GraphQL API — many &quot;awesome-graphql&quot; lists on GitHub link to safe public playgrounds — and try the introspection query above. Note how much of the schema is exposed.</p>
+</li>
+<li><p>Using the same target (or a REST API you&#39;re authorized to test), compare: how many separate endpoints would it take to build the equivalent of one moderately nested GraphQL query?</p>
+</li>
+<li><p>Write down, for each style, one sentence answering: &quot;where would a missing authorization check hide, and how would you find it?&quot;</p>
+</li>
+<li><p>Why does a REST API rarely need &quot;query depth limits&quot; the way a GraphQL API does?</p>
+</li>
+<li><p>An attacker runs an introspection query against a production GraphQL endpoint and finds a field called <code>adminNotes</code> on the <code>User</code> type. What should you check next?</p>
+</li>
+<li><p>Explain in one sentence why &quot;the resolver for one field is authorized&quot; doesn&#39;t guarantee the resolver for a related field is too.</p>
+</li>
+</ol>
 <h2>Key takeaway</h2>
-<p>REST and GraphQL fail in different places, but the root cause is usually the same: <strong>authorization was implemented at the wrong layer or not at all</strong>.</p>
+<p>REST and GraphQL fail in different places, but the root cause is usually the same: <strong>authorization was implemented at the wrong layer or not at all</strong>. REST&#39;s many small endpoints hide the missing check in plain sight, one at a time; GraphQL&#39;s single flexible endpoint hides it inside a resolver tree that&#39;s easy to under-review.</p>
+<h2>Key terms</h2>
+<ul>
+<li><strong>Resolver</strong> — the GraphQL function responsible for fetching the data for one specific field</li>
+<li><strong>Introspection</strong> — a GraphQL feature letting a client query the schema itself</li>
+<li><strong>Query depth</strong> — how many levels of nested fields a GraphQL query requests</li>
+<li><strong>Over-fetching</strong> — a response containing more data than the client actually needed, common in REST when endpoints return whole objects</li>
+</ul>
+<h2>Recap</h2>
+<p>REST spreads authorization decisions across many endpoints; GraphQL concentrates them behind resolvers on a single endpoint. Both fail the same way in the end — a check that someone assumed happened somewhere else, but didn&#39;t happen anywhere.</p>
 <h3>References</h3>
 <ul>
 <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/GraphQL_Cheat_Sheet.html">OWASP GraphQL Cheat Sheet</a></li>
 <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/REST_Security_Cheat_Sheet.html">REST Security Cheat Sheet</a></li>
+<li><a href="https://graphql.org/learn/introspection/">GraphQL introspection explained</a> — the official docs for the feature discussed above</li>
 </ul>
 </article>
   <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>

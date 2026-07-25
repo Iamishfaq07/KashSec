@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GraphQL Security — Path 21 · KashSec Academy</title>
-<meta name="description" content="GraphQL gives clients the power to ask for exactly the data they need. That power is also an attack surface.">
+<meta name="description" content="GraphQL gives clients the power to ask for exactly the data they need. That power is also an attack surface — everything that made GraphQL attractive to developers (one endpoint, client-shaped queries">
 <link rel="canonical" href="https://kashsec.vercel.app/#/lesson/21-api-security/graphql-security">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="GraphQL Security — Path 21 · KashSec Academy">
-<meta property="og:description" content="GraphQL gives clients the power to ask for exactly the data they need. That power is also an attack surface.">
+<meta property="og:description" content="GraphQL gives clients the power to ask for exactly the data they need. That power is also an attack surface — everything that made GraphQL attractive to developers (one endpoint, client-shaped queries">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/#/lesson/21-api-security/graphql-security">
 <meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
@@ -16,11 +16,11 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="GraphQL Security — Path 21 · KashSec Academy">
-<meta name="twitter:description" content="GraphQL gives clients the power to ask for exactly the data they need. That power is also an attack surface.">
+<meta name="twitter:description" content="GraphQL gives clients the power to ask for exactly the data they need. That power is also an attack surface — everything that made GraphQL attractive to developers (one endpoint, client-shaped queries">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"GraphQL Security — Path 21 · KashSec Academy","description":"GraphQL gives clients the power to ask for exactly the data they need. That power is also an attack surface.","url":"https://kashsec.vercel.app/#/lesson/21-api-security/graphql-security","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+{"@context":"https://schema.org","@type":"LearningResource","name":"GraphQL Security — Path 21 · KashSec Academy","description":"GraphQL gives clients the power to ask for exactly the data they need. That power is also an attack surface — everything that made GraphQL attractive to developers (one endpoint, client-shaped queries","url":"https://kashsec.vercel.app/#/lesson/21-api-security/graphql-security","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
 </script>
 <style>
 :root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
@@ -50,7 +50,8 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
   <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/21-api-security/graphql-security">continue here →</a></div>
   <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 21 — API Security</a> · GraphQL Security</div>
   <article><h1>GraphQL Security</h1>
-<p>GraphQL gives clients the power to ask for exactly the data they need. That power is also an attack surface.</p>
+<p>GraphQL gives clients the power to ask for exactly the data they need. That power is also an attack surface — everything that made GraphQL attractive to developers (one endpoint, client-shaped queries, self-documenting schema) is exactly what a tester or attacker leans on first.</p>
+<p>:::</p>
 <h2>Why GraphQL is different</h2>
 <p>Instead of many fixed REST endpoints, there is usually one endpoint (<code>/graphql</code>) that accepts queries and mutations. The client decides the shape of the response.</p>
 <pre><code class="language-graphql">query {
@@ -63,6 +64,7 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
   }
 }
 </code></pre>
+<p>This single endpoint model has a security consequence worth internalizing: there&#39;s no equivalent of &quot;list the app&#39;s endpoints by crawling its routes.&quot; The entire attack surface is described by the schema, and the schema is either exposed to you via introspection or it isn&#39;t.</p>
 <h2>Common GraphQL risks</h2>
 <h3>1. Introspection left on in production</h3>
 <pre><code class="language-graphql">query {
@@ -71,7 +73,7 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
   }
 }
 </code></pre>
-<p>This reveals the entire schema — every type, field, and relationship. Turn introspection off (or restrict it) in production.</p>
+<p>This reveals the entire schema — every type, field, and relationship. Turn introspection off (or restrict it) in production. Even without introspection, some servers can be probed field-by-field using suggestion errors (&quot;Did you mean <code>internalNotes</code>?&quot;), so disabling introspection is a mitigation, not a complete fix.</p>
 <h3>2. Nested / expensive queries (DoS)</h3>
 <pre><code class="language-graphql">query {
   posts {
@@ -86,12 +88,14 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 }
 </code></pre>
 <p>Deep or wide queries can exhaust CPU and memory. Mitigations: query depth limits, complexity scoring, timeouts, persisted queries.</p>
+<p><strong>Why this matters more than it looks</strong>: a REST API doing the equivalent nested fetch would require the client to make several separate round-trip requests, each individually rate-limitable. A single GraphQL query can express the same nested fetch in one request, which is exactly why depth/complexity limiting has to exist as its own control — normal rate limiting (requests per second) doesn&#39;t catch &quot;one enormous request.&quot;</p>
 <h3>3. Broken authorization at field level</h3>
 <p>Even if a user can query <code>user(id:)</code>, they may not be allowed to see <code>ssn</code> or <code>internalNotes</code>. Authorization must be enforced per field / per resolver, not only at the query entrance.</p>
+<p><strong>Worked example</strong>: the <code>user</code> query&#39;s top-level resolver correctly checks &quot;is the caller allowed to view this user at all?&quot; But <code>user.paymentMethods</code> is resolved by a separate function, written by a different engineer six months later, that just returns whatever&#39;s in the database without re-checking permission. Since the top-level query passed its check, the nested field never gets asked the question at all. Every additional level of nesting is a fresh opportunity for exactly this gap.</p>
 <h3>4. Batching attacks</h3>
-<p>Some servers allow arrays of operations in one HTTP request, multiplying the effect of a single BOLA or brute-force attempt.</p>
+<p>Some servers allow arrays of operations in one HTTP request, multiplying the effect of a single BOLA or brute-force attempt. A login mutation that would normally be rate-limited per HTTP request can be sent as an array of 500 login attempts inside one request, testing 500 password guesses while looking to a naive rate limiter like a single call.</p>
 <h3>5. Injections via GraphQL</h3>
-<p>Arguments that end up in SQL, LDAP, OS commands, etc. still need the same parameterised / safe handling you use everywhere else.</p>
+<p>Arguments that end up in SQL, LDAP, OS commands, etc. still need the same parameterised / safe handling you use everywhere else. GraphQL is a query language for the API, not a substitute for safe handling of whatever the resolver does with an argument internally — a resolver that builds a raw SQL string from a GraphQL argument is exactly as vulnerable as a REST handler doing the same thing.</p>
 <h2>Testing tips</h2>
 <ol>
 <li>Run introspection (if enabled) and map the schema.</li>
@@ -100,7 +104,8 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <li>Test mutations the same way you test state-changing REST endpoints.</li>
 <li>Check whether suggestions / error messages leak schema details.</li>
 </ol>
-<p>Tools: GraphQL Voyager, InQL (Burp), Altair, GraphiQL, and the browser network tab are enough to get started.</p>
+<p>:::tip
+Tools: GraphQL Voyager, InQL (Burp), Altair, GraphiQL, and the browser network tab are enough to get started.</p>
 <h2>Defenses (summary)</h2>
 <ul>
 <li>Disable or protect introspection in production</li>
@@ -109,18 +114,36 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <li>Use persisted / allow-listed queries for public clients when possible</li>
 <li>Apply the same input validation and output encoding you would for REST</li>
 </ul>
+<p>:::</p>
+<h2>🧪 Hands-on lab — map and probe a GraphQL API</h2>
+<ol>
+<li>Find a GraphQL playground or lab endpoint (many public &quot;awesome-graphql&quot; repos link to intentionally practice-friendly targets, or use a course lab if available).</li>
+<li>Send an introspection query and record every type and field returned. Note any field names that sound sensitive or internal.</li>
+<li>Pick an object-returning query with an ID argument and test BOLA the same way you would on REST: authenticate as two different accounts and swap IDs.</li>
+<li>Construct a deeply nested query (4–5 levels) against a relational field, if one exists, and observe response time as depth increases.</li>
+<li>If a mutation exists, test whether it accepts unexpected fields, mirroring the mass-assignment testing approach from the earlier lesson.</li>
+</ol>
+<p>:::challenge Test yourself</p>
+<ol>
+<li>Why doesn&#39;t disabling introspection fully close off schema discovery?</li>
+<li>Explain, using the <code>user.paymentMethods</code> example, why authorization at the top-level query is not sufficient in GraphQL.</li>
+<li>What single technique lets an attacker bypass a rate limiter that only counts &quot;requests per second&quot; against a login mutation?</li>
+</ol>
 <h2>Key terms</h2>
 <ul>
 <li><strong>Introspection</strong> — the ability to query the schema itself</li>
 <li><strong>Resolver</strong> — the function that returns data for a field</li>
 <li><strong>Query complexity</strong> — a score used to reject expensive queries</li>
+<li><strong>Persisted query</strong> — a pre-registered, allow-listed query the client references by ID instead of sending arbitrary query text</li>
+<li><strong>Batching</strong> — sending multiple GraphQL operations in a single HTTP request</li>
 </ul>
 <h2>Recap</h2>
-<p>GraphQL moves a lot of power to the client. That power must be matched by depth limits, field-level authorization, and careful schema exposure.</p>
+<p>GraphQL moves a lot of power to the client. That power must be matched by depth limits, field-level authorization enforced in every resolver (not just the top-level query), and careful schema exposure — the same authorization discipline REST needs, applied at a finer grain because one query can touch many objects and fields at once.</p>
 <h3>References</h3>
 <ul>
 <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/GraphQL_Cheat_Sheet.html">OWASP GraphQL Cheat Sheet</a></li>
 <li><a href="https://portswigger.net/web-security/graphql">PortSwigger GraphQL</a></li>
+<li><a href="https://graphql.org/learn/introspection/">GraphQL introspection docs</a> — official reference for the feature discussed above</li>
 </ul>
 </article>
   <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
