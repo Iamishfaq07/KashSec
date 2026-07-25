@@ -1263,6 +1263,7 @@ function route(){
   else if(hash === '#/labs/jailbreak') renderLabJailbreak();
   else if(hash === '#/labs/indirect-injection') renderLabIndirectInjection();
   else if(hash === '#/labs/agentic-risk') renderLabAgenticRisk();
+  else if(hash === '#/labs/ad-attack') renderLabADAttack();
   else if(hash === '#/capstone') renderCapstone();
   else if(hash === '#/weekly') renderWeeklyIndex();
   else if(hash === '#/career-quiz') renderCareerQuiz();
@@ -3081,7 +3082,8 @@ const LABS = [
   {id:'prompt-injection', ico:'💬', title:'Prompt Injection Simulator', desc:'Chat with a support bot that\'s told to never reveal its system prompt. Get it to reveal it anyway.', related:'Path 18 — AI & AI Security', points:15},
   {id:'jailbreak', ico:'🔓', title:'Jailbreak Playground', desc:'An assistant refuses to share a secret code directly. Find a roleplay or hypothetical framing that gets it to comply anyway.', related:'Path 18 — AI & AI Security', points:20},
   {id:'indirect-injection', ico:'🪤', title:'Indirect Prompt Injection Challenge', desc:'You control a job posting an AI assistant is about to summarize for someone else. Plant an instruction it\'ll follow instead.', related:'Path 18 — AI & AI Security', points:20},
-  {id:'agentic-risk', ico:'🤖', title:'Agentic Risk Scenario', desc:'An AI agent with email tool-access is about to process an inbox. Spot and quarantine the malicious email before it acts on it.', related:'Path 18 — AI & AI Security', points:20}
+  {id:'agentic-risk', ico:'🤖', title:'Agentic Risk Scenario', desc:'An AI agent with email tool-access is about to process an inbox. Spot and quarantine the malicious email before it acts on it.', related:'Path 18 — AI & AI Security', points:20},
+  {id:'ad-attack', ico:'🏰', title:'Active Directory Attack Lab', desc:'A guided walkthrough of BloodHound-style graph recon, Kerberoasting a weak service account, and forging a Golden Ticket.', related:'Path 16 — Advanced', points:30}
 ];
 /* ============================================================
    Capstone attack-chain — a narrative wrapper around four existing
@@ -4441,6 +4443,162 @@ function renderLabAgenticRisk(){
   paint();
 }
 
+/* --- Lab: Active Directory Attack Lab --------------------------------
+   A guided, simplified three-stage walkthrough of the classic AD
+   attack chain: BloodHound-style graph recon to find a misconfigured
+   ACL path to Domain Admin, Kerberoasting a service account whose
+   password leaked into its own description field, and forging a
+   Golden Ticket once the krbtgt hash is obtained (Path 16). All three
+   stages must complete to finish the lab. */
+function renderLabADAttack(){
+  const NODES = {
+    alice: {label:'alice (you)', kind:'user', edges:[
+      {type:'CanRDP', target:'wkst01'},
+      {type:'MemberOf', target:'helpdesk'}
+    ]},
+    wkst01: {label:'WKST01', kind:'computer', edges:[]},
+    helpdesk: {label:'HelpDesk (group)', kind:'group', edges:[
+      {type:'GenericAll', target:'svcsql'}
+    ]},
+    svcsql: {label:'svc-sql (service account)', kind:'user', edges:[
+      {type:'MemberOf', target:'domainadmins'}
+    ]},
+    domainadmins: {label:'Domain Admins (group)', kind:'group', edges:[]}
+  };
+  const SPNS = [
+    {id:'svcsql2', name:'svc-sql', spn:'MSSQLSvc/db01.corp.local:1433', desc:'', weak:false},
+    {id:'svcbackup', name:'svc-backup', spn:'HOST/backup01.corp.local', desc:'Backup2024! — temp until Q3 rotation', weak:true},
+    {id:'svcweb', name:'svc-web', spn:'HTTP/web01.corp.local', desc:'owned by webteam, do not touch', weak:false}
+  ];
+  const discovered = new Set(['alice']);
+  const investigated = new Set();
+  let stage1Done = false, stage2Done = false, stage3Done = false;
+  let krbtgtDumped = false;
+  const crackResults = {};
+  let goldenResult = '';
+
+  function checkAllDone(){
+    if(stage1Done && stage2Done && stage3Done){
+      fireConfetti({count:120});
+      markLabComplete('ad-attack');
+    }
+  }
+
+  function paint(){
+    const doneCount = [stage1Done, stage2Done, stage3Done].filter(Boolean).length;
+    app.innerHTML = `
+      <section class="sec">
+        <div class="sec-head" data-reveal>
+          <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Active Directory Attack Lab</div>
+          <h2>🏰 Active Directory Attack Lab</h2>
+          <p class="sec-lead">A guided walkthrough of the classic AD chain: find a path to Domain Admin with BloodHound-style graph recon, Kerberoast a weak service account, then forge a Golden Ticket. <span class="tool-privacy">🔒 Simulated locally — a small fake domain, no real AD environment.</span></p>
+          <div class="mini-progress" style="max-width:22rem;margin-top:1.2rem">
+            <div class="mini-progress-track"><div class="mini-progress-fill" style="width:0%" data-pct="${Math.round(doneCount/3*100)}"></div></div>
+            <div class="mini-progress-label"><span>${doneCount}/3 stages complete</span></div>
+          </div>
+        </div>
+
+        <div class="hub-section" data-reveal style="--i:1">
+          <div class="hub-section-head"><h3 style="font-family:'Space Grotesk';font-size:1.15rem">${stage1Done?'✅':'1️⃣'} Stage 1 — BloodHound recon: find a path to Domain Admin</h3></div>
+          <p class="sec-lead">You're logged in as <b>alice</b>, a standard user. Click "Investigate" on each discovered node to reveal its outbound relationships — the same thing BloodHound does automatically by collecting AD data.</p>
+          <div class="labs-grid">
+            ${[...discovered].map(id=>{
+              const n = NODES[id];
+              const done = investigated.has(id);
+              return `
+              <div class="lab-panel">
+                <h3>${n.kind==='user'?'👤':n.kind==='group'?'👥':'🖥'} ${escapeHtml(n.label)}</h3>
+                ${done ? `<p class="sec-lead">${n.edges.length ? n.edges.map(e=>`↳ <code>${e.type}</code> → ${escapeHtml(NODES[e.target].label)}`).join('<br>') : 'No further outbound relationships — dead end.'}</p>` : `<button class="btn-ghost sm ad-investigate" data-id="${id}" type="button">🔍 Investigate</button>`}
+              </div>`;
+            }).join('')}
+          </div>
+          ${stage1Done ? `<div class="sqli-bad" style="margin-top:1rem">🎯 Path found: <b>alice</b> —(MemberOf)→ <b>HelpDesk</b> —(GenericAll, reset password)→ <b>svc-sql</b> —(MemberOf)→ <b>Domain Admins</b>. HelpDesk was granted GenericAll on a service account that was later added to Domain Admins — a single misconfigured ACL turned a helpdesk group into a path straight to full domain compromise.</div>` : ''}
+        </div>
+
+        <div class="hub-section" data-reveal style="--i:2">
+          <div class="hub-section-head"><h3 style="font-family:'Space Grotesk';font-size:1.15rem">${stage2Done?'✅':'2️⃣'} Stage 2 — Kerberoast a service account</h3></div>
+          <p class="sec-lead">Any account with a Service Principal Name (SPN) can have a ticket requested for it by any authenticated user — no elevated privilege required. Request a ticket for each, then decide which one is realistically crackable.</p>
+          <div class="labs-grid">
+            ${SPNS.map(s=>`
+              <div class="lab-panel">
+                <h3>🎫 ${escapeHtml(s.name)}</h3>
+                <p class="sec-lead">SPN: <code>${escapeHtml(s.spn)}</code><br>Description (AD attribute): <i>${s.desc ? escapeHtml(s.desc) : '(empty)'}</i></p>
+                <button class="btn-ghost sm ad-crack" data-id="${s.id}" type="button">Request TGS + attempt offline crack</button>
+                <div id="adCrack-${s.id}">${crackResults[s.id] || ''}</div>
+              </div>`).join('')}
+          </div>
+          ${stage2Done ? `<div class="sqli-bad" style="margin-top:1rem">🎯 svc-backup cracked: password was <b>Backup2024!</b> — and honestly, you didn't even need to crack the hash. It was sitting in plain text in the account's description field, a shockingly common real-world AD misconfiguration.</div>` : ''}
+        </div>
+
+        <div class="hub-section" data-reveal style="--i:3">
+          <div class="hub-section-head"><h3 style="font-family:'Space Grotesk';font-size:1.15rem">${stage3Done?'✅':'3️⃣'} Stage 3 — Forge a Golden Ticket</h3></div>
+          <p class="sec-lead">You've reached Domain Admin (via svc-sql from Stage 1). Dump the krbtgt account's hash from the domain controller, then forge a ticket for any identity you like — even one that doesn't exist.</p>
+          ${!krbtgtDumped ? `<button class="btn-amber sm" id="adDumpKrbtgt" type="button">Run: lsadump::dcsync /user:krbtgt</button>` : `
+            <pre style="white-space:pre-wrap">krbtgt NTLM hash: 8846f7eaee8fb117ad06bdd830b7586c</pre>
+            <form class="idor-form" id="adGoldenForm" autocomplete="off">
+              <label class="tool-field">Forge ticket for username<input class="tool-input" id="adGoldenUser" placeholder="e.g. backdoor_user (doesn't need to exist)"></label>
+              <label class="tool-field">Impersonate group<select class="tool-input" id="adGoldenGroup">
+                <option>Domain Admins</option>
+                <option>Enterprise Admins</option>
+                <option>Domain Users</option>
+              </select></label>
+              <button class="btn-amber sm" type="submit">Forge & present ticket to \\\\DC01\\C$ →</button>
+            </form>
+          `}
+          <div id="adGoldenResult">${goldenResult}</div>
+          ${stage3Done ? `<div class="sqli-bad" style="margin-top:1rem">🎯 Ticket accepted — full access to \\\\DC01\\C$. A Golden Ticket works for any username (real or fabricated), grants membership in any group you claim, and stays valid until the krbtgt password is reset <i>twice</i> (its key history holds one prior hash). Even revoking the compromised admin account's password doesn't touch it.</div>` : ''}
+        </div>
+      </section>
+    `;
+    setupReveal();
+
+    document.querySelectorAll('.ad-investigate').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const id = btn.dataset.id;
+        investigated.add(id);
+        NODES[id].edges.forEach(e=>discovered.add(e.target));
+        if(id === 'svcsql' && NODES[id].edges.some(e=>e.target === 'domainadmins')){
+          stage1Done = true;
+          checkAllDone();
+        }
+        paint();
+      });
+    });
+
+    document.querySelectorAll('.ad-crack').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const s = SPNS.find(x=>x.id === btn.dataset.id);
+        if(s.weak){
+          crackResults[s.id] = `<div class="sqli-bad">✅ Cracked in 4 seconds: <b>Backup2024!</b> — pulled straight from the wordlist (which included the password visible in the description field above).</div>`;
+          if(!stage2Done) stage2Done = true;
+        } else {
+          crackResults[s.id] = `<div class="sqli-ok">❌ Not cracked — password too complex for a reasonable wordlist/rule-based attack within a sane timeframe.</div>`;
+        }
+        checkAllDone();
+        paint();
+      });
+    });
+
+    document.getElementById('adDumpKrbtgt')?.addEventListener('click', ()=>{
+      krbtgtDumped = true;
+      paint();
+    });
+
+    document.getElementById('adGoldenForm')?.addEventListener('submit', e=>{
+      e.preventDefault();
+      const user = document.getElementById('adGoldenUser').value.trim();
+      const group = document.getElementById('adGoldenGroup').value;
+      const resEl = document.getElementById('adGoldenResult');
+      if(!user){ resEl.innerHTML = `<div class="sqli-bad">Enter a username first — any value works, it doesn't need to be real.</div>`; return; }
+      goldenResult = `<div class="sqli-bad">⚠️ Forged a ticket for "${escapeHtml(user)}" claiming membership in <b>${escapeHtml(group)}</b>, signed with the krbtgt hash. The domain controller has no way to tell this apart from a legitimate ticket — it trusts anything signed with krbtgt by definition.</div>`;
+      if(!stage3Done) stage3Done = true;
+      checkAllDone();
+      paint();
+    });
+  }
+  paint();
+}
+
 /* --- Lab: phishing spotter game ------------------------------ */
 function renderLabPhishing(){
   const ROUNDS = [
@@ -4512,6 +4670,9 @@ function renderLabPhishing(){
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
+  {date:'2026-07-25', title:'New Active Directory Attack Lab', items:[
+    'A guided, three-stage walkthrough of the classic AD attack chain: BloodHound-style graph recon to find a misconfigured-ACL path to Domain Admin, Kerberoasting a service account whose password leaked into its own description field, and forging a Golden Ticket once the krbtgt hash is obtained.'
+  ]},
   {date:'2026-07-25', title:'4 new AI Red Teaming labs', items:[
     'Prompt Injection Simulator: a support bot with a hidden system prompt it\'s told never to reveal — get it to reveal it anyway.',
     'Jailbreak Playground: a direct ask gets refused; find the roleplay or hypothetical framing that gets the same secret out.',
@@ -7334,7 +7495,8 @@ function getCommands(){
     {title:'Lab: Prompt Injection Simulator', url:'#/labs/prompt-injection', icon:'💬', kw:'prompt injection ai llm chatbot system prompt'},
     {title:'Lab: Jailbreak Playground', url:'#/labs/jailbreak', icon:'🔓', kw:'jailbreak ai llm roleplay dan bypass'},
     {title:'Lab: Indirect Prompt Injection Challenge', url:'#/labs/indirect-injection', icon:'🪤', kw:'indirect prompt injection ai agent llm'},
-    {title:'Lab: Agentic Risk Scenario', url:'#/labs/agentic-risk', icon:'🤖', kw:'agentic ai agent risk tool access injection'}
+    {title:'Lab: Agentic Risk Scenario', url:'#/labs/agentic-risk', icon:'🤖', kw:'agentic ai agent risk tool access injection'},
+    {title:'Lab: Active Directory Attack Lab', url:'#/labs/ad-attack', icon:'🏰', kw:'active directory bloodhound kerberoast golden ticket krbtgt domain admin'}
   ].map(l=>({title:l.title, url:l.url, icon:l.icon, ctx:'Lab', keywords:(l.title+' '+l.kw).toLowerCase()}));
   const actions = [
     {title:'Random lesson', icon:'🎲', ctx:'Action', keywords:'random surprise lesson', run:()=>{ const r=pickRandomLesson(); location.hash=`#/lesson/${r.pathId}/${r.subId}`; }},
