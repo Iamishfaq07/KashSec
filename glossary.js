@@ -1039,6 +1039,15 @@ const GLOSSARY = [
   "subTitle": "What is DevSecOps?"
  },
  {
+  "term": "CISA ICS advisory",
+  "def": "a vulnerability advisory specific to industrial control system products, published separately from general CVE feeds",
+  "pathId": "25-ot-ics-security",
+  "pathN": "25",
+  "pathTitle": "OT/ICS & Critical Infrastructure Security",
+  "subId": "ics-vulnerability-management",
+  "subTitle": "ICS Vulnerability Management"
+ },
+ {
   "term": "CISO",
   "def": "Chief Information Security Officer, typically the senior accountable owner for a security program",
   "pathId": "23-grc-compliance",
@@ -1334,6 +1343,24 @@ const GLOSSARY = [
   "pathTitle": "Windows Security Basics",
   "subId": "windows-security-settings",
   "subTitle": "Windows Security Settings"
+ },
+ {
+  "term": "Controlled shutdown",
+  "def": "a planned, process-aware sequence for safely bringing a system offline, as opposed to an abrupt disconnect",
+  "pathId": "25-ot-ics-security",
+  "pathN": "25",
+  "pathTitle": "OT/ICS & Critical Infrastructure Security",
+  "subId": "ics-incident-response",
+  "subTitle": "ICS Incident Response"
+ },
+ {
+  "term": "Convergence",
+  "def": "the increasing connection between OT data and IT/cloud systems, valuable for analytics but risky if it bypasses existing security architecture",
+  "pathId": "25-ot-ics-security",
+  "pathN": "25",
+  "pathTitle": "OT/ICS & Critical Infrastructure Security",
+  "subId": "iiot-cloud-convergence",
+  "subTitle": "IIoT & Cloud Convergence"
  },
  {
   "term": "Cookie",
@@ -2200,6 +2227,15 @@ const GLOSSARY = [
   "subTitle": "Your first bash script"
  },
  {
+  "term": "Exposure-based prioritization",
+  "def": "ranking vulnerabilities by realistic reachability and impact in your specific environment, not raw CVSS score alone",
+  "pathId": "25-ot-ics-security",
+  "pathN": "25",
+  "pathTitle": "OT/ICS & Critical Infrastructure Security",
+  "subId": "ics-vulnerability-management",
+  "subTitle": "ICS Vulnerability Management"
+ },
+ {
   "term": "Extension Pack",
   "def": "optional add-on with USB support and extras.",
   "pathId": "03-linux",
@@ -2477,6 +2513,15 @@ const GLOSSARY = [
   "pathTitle": "Networking Fundamentals",
   "subId": "http-https",
   "subTitle": "HTTP & HTTPS"
+ },
+ {
+  "term": "GICSP",
+  "def": "Global Industrial Cyber Security Professional, the most widely recognized OT/ICS-specific security certification",
+  "pathId": "25-ot-ics-security",
+  "pathN": "25",
+  "pathTitle": "OT/ICS & Critical Infrastructure Security",
+  "subId": "ot-ics-careers-and-certifications",
+  "subTitle": "OT/ICS Careers & Certifications"
  },
  {
   "term": "`.gitignore`",
@@ -2938,6 +2983,15 @@ const GLOSSARY = [
   "subTitle": "What is OT/ICS Security?"
  },
  {
+  "term": "ICS supply chain risk",
+  "def": "the risk that equipment, firmware, or software is compromised before or during delivery, rather than after deployment",
+  "pathId": "25-ot-ics-security",
+  "pathN": "25",
+  "pathTitle": "OT/ICS & Critical Infrastructure Security",
+  "subId": "ics-supply-chain-risk",
+  "subTitle": "ICS Supply Chain Risk"
+ },
+ {
   "term": "Identity Provider (IdP)",
   "def": "the central system that authenticates users and issues identity for other applications to trust",
   "pathId": "24-zero-trust",
@@ -3017,6 +3071,15 @@ const GLOSSARY = [
   "pathTitle": "Programming & Python",
   "subId": "lists-functions",
   "subTitle": "Lists & functions"
+ },
+ {
+  "term": "IIoT (Industrial Internet of Things)",
+  "def": "network-connected sensors and devices deployed on industrial equipment, often independently of traditional OT/IT architecture",
+  "pathId": "25-ot-ics-security",
+  "pathN": "25",
+  "pathTitle": "OT/ICS & Critical Infrastructure Security",
+  "subId": "iiot-cloud-convergence",
+  "subTitle": "IIoT & Cloud Convergence"
  },
  {
   "term": "IMDSv2",
@@ -3287,6 +3350,15 @@ const GLOSSARY = [
   "pathTitle": "Cybersecurity Fundamentals",
   "subId": "frameworks",
   "subTitle": "Frameworks & compliance"
+ },
+ {
+  "term": "Isolation erosion",
+  "def": "the gradual, often well-intentioned weakening of a safety system's network separation through convenience features and shared equipment",
+  "pathId": "25-ot-ics-security",
+  "pathN": "25",
+  "pathTitle": "OT/ICS & Critical Infrastructure Security",
+  "subId": "safety-instrumented-systems",
+  "subTitle": "Safety Instrumented Systems"
  },
  {
   "term": "Jailbreaking",
@@ -4342,6 +4414,15 @@ const GLOSSARY = [
   "subTitle": "Web recon"
  },
  {
+  "term": "Passive asset discovery",
+  "def": "building a device inventory purely from observed network traffic, without sending any probe packets",
+  "pathId": "25-ot-ics-security",
+  "pathN": "25",
+  "pathTitle": "OT/ICS & Critical Infrastructure Security",
+  "subId": "ot-asset-inventory",
+  "subTitle": "OT Asset Inventory & Visibility"
+ },
+ {
   "term": "Passive monitoring",
   "def": "observing network traffic without injecting any traffic onto the monitored network, avoiding the risk of disrupting fragile equipment",
   "pathId": "25-ot-ics-security",
@@ -4799,6 +4880,15 @@ const GLOSSARY = [
   "pathTitle": "GRC & Compliance",
   "subId": "policies-and-procedures",
   "subTitle": "Writing Policies People Actually Follow"
+ },
+ {
+  "term": "Process engineer",
+  "def": "a specialist who understands the physical behavior and safe operating sequences of a specific industrial process, essential to real ICS incident decisions",
+  "pathId": "25-ot-ics-security",
+  "pathN": "25",
+  "pathTitle": "OT/ICS & Critical Infrastructure Security",
+  "subId": "ics-incident-response",
+  "subTitle": "ICS Incident Response"
  },
  {
   "term": "Profile README",
@@ -5566,6 +5656,15 @@ const GLOSSARY = [
   "subTitle": "Real-World ICS Attacks: What They Actually Teach Us"
  },
  {
+  "term": "Safety Instrumented System (SIS)",
+  "def": "an independent control system whose sole function is forcing a process into a safe state when it detects dangerous conditions, regardless of the primary control system's state",
+  "pathId": "25-ot-ics-security",
+  "pathN": "25",
+  "pathTitle": "OT/ICS & Critical Infrastructure Security",
+  "subId": "safety-instrumented-systems",
+  "subTitle": "Safety Instrumented Systems"
+ },
+ {
   "term": "Salt",
   "def": "a unique random value per user, combined with a password before hashing to defeat precomputed lookup attacks.",
   "pathId": "06-crypto-fundamentals",
@@ -5924,6 +6023,15 @@ const GLOSSARY = [
   "pathTitle": "API Security",
   "subId": "owasp-api-top-10",
   "subTitle": "OWASP API Top 10 (2023)"
+ },
+ {
+  "term": "Shadow connection",
+  "def": "an undocumented device or link, often left behind after temporary vendor or maintenance access",
+  "pathId": "25-ot-ics-security",
+  "pathN": "25",
+  "pathTitle": "OT/ICS & Critical Infrastructure Security",
+  "subId": "ot-asset-inventory",
+  "subTitle": "OT Asset Inventory & Visibility"
  },
  {
   "term": "Shared responsibility model",
@@ -6563,6 +6671,24 @@ const GLOSSARY = [
   "pathTitle": "Introduction to Cybersecurity",
   "subId": "what-is-cybersecurity",
   "subTitle": "What is cybersecurity?"
+ },
+ {
+  "term": "System integrator",
+  "def": "a third-party firm that configures and deploys ICS equipment on a customer's behalf, often with deep temporary access",
+  "pathId": "25-ot-ics-security",
+  "pathN": "25",
+  "pathTitle": "OT/ICS & Critical Infrastructure Security",
+  "subId": "ics-supply-chain-risk",
+  "subTitle": "ICS Supply Chain Risk"
+ },
+ {
+  "term": "System integrator role",
+  "def": "a common entry point into hands-on ICS exposure, deploying and configuring real industrial equipment for clients",
+  "pathId": "25-ot-ics-security",
+  "pathN": "25",
+  "pathTitle": "OT/ICS & Critical Infrastructure Security",
+  "subId": "ot-ics-careers-and-certifications",
+  "subTitle": "OT/ICS Careers & Certifications"
  },
  {
   "term": "Tab completion / history",

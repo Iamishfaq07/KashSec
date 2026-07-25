@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ICS Incident Response — Path 25 · KashSec Academy</title>
+<meta name="description" content="Path 16's general incident response lesson covers the standard IT-focused lifecycle. This lesson covers what changes when the &quot;system&quot; being responded to also controls a physical process — where the u">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/25-ot-ics-security/ics-incident-response">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="ICS Incident Response — Path 25 · KashSec Academy">
+<meta property="og:description" content="Path 16's general incident response lesson covers the standard IT-focused lifecycle. This lesson covers what changes when the &quot;system&quot; being responded to also controls a physical process — where the u">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/25-ot-ics-security/ics-incident-response">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="ICS Incident Response — Path 25 · KashSec Academy">
+<meta name="twitter:description" content="Path 16's general incident response lesson covers the standard IT-focused lifecycle. This lesson covers what changes when the &quot;system&quot; being responded to also controls a physical process — where the u">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"ICS Incident Response — Path 25 · KashSec Academy","description":"Path 16's general incident response lesson covers the standard IT-focused lifecycle. This lesson covers what changes when the \"system\" being responded to also controls a physical process — where the u","url":"https://kashsec.vercel.app/#/lesson/25-ot-ics-security/ics-incident-response","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/25-ot-ics-security/ics-incident-response">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 25 — OT/ICS & Critical Infrastructure Security</a> · ICS Incident Response</div>
+  <article><h1>ICS Incident Response</h1>
+<p>Path 16&#39;s general incident response lesson covers the standard IT-focused lifecycle. This lesson covers what changes when the &quot;system&quot; being responded to also controls a physical process — where the usual first instinct in IT IR, isolate and contain immediately, can itself cause the exact physical harm the response is trying to prevent.</p>
+<p>:::</p>
+<h2>Why &quot;pull the plug&quot; isn&#39;t automatically the right move</h2>
+<p>Standard IT incident response often defaults to isolating a compromised host immediately. Applied naively to OT, this can:</p>
+<ul>
+<li>Trigger an <strong>uncontrolled shutdown</strong> of a physical process that needs to be brought down gracefully — a chemical process stopped mid-reaction, or a turbine spun down incorrectly, can cause real physical damage or danger that has nothing to do with the original cyber incident</li>
+<li>Cause a <strong>worse safety outcome</strong> than continuing to run under close monitoring while a controlled shutdown is prepared, particularly if a Safety Instrumented System (previous lesson) is still functioning independently and can catch genuinely dangerous conditions</li>
+<li><strong>Destroy forensic evidence</strong> needed to understand the incident, if isolation involves powering equipment off entirely rather than isolating network connectivity</li>
+</ul>
+<h2>Who&#39;s actually in the room for an ICS incident</h2>
+<p>Real ICS incident response involves people a typical IT incident response team never needs: <strong>process engineers</strong> who understand what a &quot;safe&quot; shutdown sequence for this specific equipment actually looks like, and often <strong>safety officers</strong> with authority over decisions that could affect physical safety. The security team&#39;s job shifts from &quot;make the isolation call&quot; to &quot;provide the threat information the people with physical-process authority need to make that call correctly.&quot;</p>
+<h2>A realistic incident timeline</h2>
+<ol>
+<li><strong>Detection</strong> — often from the anomaly-based monitoring covered in the practical controls lesson, flagging traffic or commands that don&#39;t match the established baseline</li>
+<li><strong>Triage with process engineering, not just security</strong> — is the anomaly consistent with a safety-relevant condition, or is it isolated to non-critical systems that can be handled with a standard IT-style response?</li>
+<li><strong>Controlled response</strong> — a graceful, planned shutdown sequence if the affected system needs to come offline, coordinated by the people who know that specific process, not an immediate network disconnect</li>
+<li><strong>Forensics that respects availability</strong> — collecting logs and evidence in ways that don&#39;t require extended downtime on systems that need to keep running</li>
+<li><strong>Recovery, tested before returning to production</strong> — exactly like the patching constraints from the practical controls lesson, a compromised system doesn&#39;t go back into live production without being verified safe first</li>
+</ol>
+<p>:::challenge Make the call
+A monitoring alert flags unusual command traffic reaching a PLC that controls a chemical mixing process. The traffic pattern resembles the reconnaissance stage seen in a past real-world ICS attack. The process is currently mid-batch.</p>
+<details><summary>Hint</summary>What determines whether the correct move is an immediate hard stop versus a coordinated, closely-monitored shutdown — and who needs to be involved in that decision that a pure security team wouldn't normally include?</details>
+<details><summary>Show answer</summary>This is exactly the scenario where process engineers and (if applicable) safety officers need to be looped in immediately, alongside the security team, rather than security making a unilateral isolation call. An uncontrolled stop mid-batch could itself create a hazardous condition depending on the specific chemistry involved — information the security team has no way to evaluate on its own. The realistic response is heightened monitoring plus an urgent, jointly-made decision: either a controlled shutdown sequence specific to this process, or continued closely-watched operation while containment measures (like tightening segmentation around that PLC's segment) are put in place — with the Safety Instrumented System, if present and unaffected, providing a real backstop either way.</details><h2>🧪 Hands-on lab — draft an ICS IR escalation path</h2>
+<p>Sketch a simple escalation flowchart for a hypothetical facility: who gets notified first when OT-specific monitoring fires an alert, in what order, and at what point (if any) does the decision authority shift from the security team to process engineering or safety officers.</p>
+<ol>
+<li>Why can an immediate, IT-style isolation response sometimes be more dangerous in OT than the incident itself?</li>
+<li>Who does ICS incident response typically involve that standard IT incident response doesn&#39;t?</li>
+<li>Why does ICS incident forensics need to account for availability constraints in a way IT forensics usually doesn&#39;t?</li>
+</ol>
+<h2>Key terms</h2>
+<ul>
+<li><strong>Controlled shutdown</strong> — a planned, process-aware sequence for safely bringing a system offline, as opposed to an abrupt disconnect</li>
+<li><strong>Process engineer</strong> — a specialist who understands the physical behavior and safe operating sequences of a specific industrial process, essential to real ICS incident decisions</li>
+</ul>
+<h2>Recap</h2>
+<p>ICS incident response inherits every constraint this path has already established — safety and availability outrank the &quot;contain immediately&quot; instinct that dominates IT response — and it requires people (process engineers, safety officers) that a standard IT incident response team doesn&#39;t typically include. The security team&#39;s role shifts from making isolation calls unilaterally to feeding accurate threat information to the people with the physical-process expertise to make that call safely, which is precisely the collaborative model real ICS environments run on.</p>
+<h3>References</h3>
+<ul>
+<li><a href="https://www.sans.org/white-papers/">SANS ICS Incident Response</a> — search SANS&#39;s ICS-specific incident response guidance</li>
+</ul>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/25-ot-ics-security/ics-incident-response";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

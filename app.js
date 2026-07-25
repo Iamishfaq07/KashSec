@@ -1047,7 +1047,14 @@ const PATHS = [
      {n:"4", id:"purdue-model",                       title:"The Purdue Model: Segmenting IT from OT", desc:"The standard reference architecture, and why the DMZ is the whole point."},
      {n:"5", id:"real-world-ics-attacks",             title:"Real-World ICS Attacks: What They Actually Teach Us", desc:"Stuxnet, the Ukraine grid attacks, Oldsmar, and Triton — mapped back to the lessons that predicted them."},
      {n:"6", id:"practical-ot-security-controls",     title:"Practical OT Security Controls", desc:"Segmentation, passive monitoring, jump hosts, and compensating controls for unpatchable legacy gear."},
-     {n:"7", id:"ot-ics-capstone-lab",                title:"Capstone: Secure a Realistic Industrial Network", desc:"A full assessment exercise applying everything in this path to one fictional facility."}
+     {n:"7", id:"ot-asset-inventory",                 title:"OT Asset Inventory & Visibility", desc:"Passive discovery for the equipment you don't even know you have."},
+     {n:"8", id:"ics-vulnerability-management",       title:"ICS Vulnerability Management", desc:"Exposure-based prioritization when active scanning itself is the risk."},
+     {n:"9", id:"safety-instrumented-systems",        title:"Safety Instrumented Systems", desc:"The independent last line of defense against physical harm — and the exact target of Triton/Trisis."},
+     {n:"10", id:"ics-incident-response",             title:"ICS Incident Response", desc:"Why 'isolate immediately' can be more dangerous than the incident itself."},
+     {n:"11", id:"ics-supply-chain-risk",             title:"ICS Supply Chain Risk", desc:"Compromised firmware, infected removable media, and third-party integrator access."},
+     {n:"12", id:"iiot-cloud-convergence",            title:"IIoT & Cloud Convergence", desc:"How a single cellular sensor can quietly bypass the entire Purdue Model."},
+     {n:"13", id:"ot-ics-careers-and-certifications", title:"OT/ICS Careers & Certifications", desc:"GICSP, realistic entry paths, and how to build demonstrable experience without plant access."},
+     {n:"14", id:"ot-ics-capstone-lab",                title:"Capstone: Secure a Realistic Industrial Network", desc:"A full assessment exercise applying everything in this path to one fictional facility."}
    ]}
 
 ];
@@ -4710,6 +4717,11 @@ function renderLabPhishing(){
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
+  {date:'2026-07-25', title:'OT/ICS path doubled to 14 lessons', items:[
+    'First batch of a course-wide content-doubling effort: Path 25 (OT/ICS & Critical Infrastructure Security) grows from 7 to 14 lessons.',
+    'New lessons: OT Asset Inventory & Visibility, ICS Vulnerability Management, Safety Instrumented Systems, ICS Incident Response, ICS Supply Chain Risk, IIoT & Cloud Convergence, and OT/ICS Careers & Certifications.',
+    'More paths will be doubled in upcoming batches.'
+  ]},
   {date:'2026-07-25', title:'CTF Zone expanded to 24 challenges', items:[
     '16 new self-contained CTF puzzles across API Security (BOLA, mass assignment, rate-limit bypass), a JWT chain (weak-secret brute force, algorithm confusion, kid header injection), business logic bugs (price tampering, coupon-replay race condition, step-skipping), AI Red Teaming (prompt leak, indirect injection, jailbreak-the-judge), plus Crypto (small-prime RSA factoring), Forensics (EXIF metadata trail), and Linux privesc (SUID interpreter abuse).',
     'Every challenge now carries an explicit difficulty tier (Easy/Medium/Hard) and progressive hints.',

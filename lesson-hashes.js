@@ -269,5 +269,12 @@ const LESSON_HASHES = {
  "25-ot-ics-security/purdue-model": "984ab71615",
  "25-ot-ics-security/real-world-ics-attacks": "75e9634897",
  "25-ot-ics-security/practical-ot-security-controls": "6c39a867a9",
+ "25-ot-ics-security/ot-asset-inventory": "d2101621c8",
+ "25-ot-ics-security/ics-vulnerability-management": "14a2942d5c",
+ "25-ot-ics-security/safety-instrumented-systems": "ad4caffbf6",
+ "25-ot-ics-security/ics-incident-response": "312526f697",
+ "25-ot-ics-security/ics-supply-chain-risk": "f7c263c978",
+ "25-ot-ics-security/iiot-cloud-convergence": "fb6c3af8c3",
+ "25-ot-ics-security/ot-ics-careers-and-certifications": "365e509eb3",
  "25-ot-ics-security/ot-ics-capstone-lab": "e735696b5f"
 };

@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Safety Instrumented Systems — Path 25 · KashSec Academy</title>
+<meta name="description" content="Every lesson so far has treated &quot;availability&quot; as OT's top priority above IT's usual confidentiality-first thinking. This lesson covers the layer above even availability: safety — the systems whose en">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/25-ot-ics-security/safety-instrumented-systems">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Safety Instrumented Systems — Path 25 · KashSec Academy">
+<meta property="og:description" content="Every lesson so far has treated &quot;availability&quot; as OT's top priority above IT's usual confidentiality-first thinking. This lesson covers the layer above even availability: safety — the systems whose en">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/25-ot-ics-security/safety-instrumented-systems">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Safety Instrumented Systems — Path 25 · KashSec Academy">
+<meta name="twitter:description" content="Every lesson so far has treated &quot;availability&quot; as OT's top priority above IT's usual confidentiality-first thinking. This lesson covers the layer above even availability: safety — the systems whose en">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Safety Instrumented Systems — Path 25 · KashSec Academy","description":"Every lesson so far has treated \"availability\" as OT's top priority above IT's usual confidentiality-first thinking. This lesson covers the layer above even availability: safety — the systems whose en","url":"https://kashsec.vercel.app/#/lesson/25-ot-ics-security/safety-instrumented-systems","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/25-ot-ics-security/safety-instrumented-systems">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 25 — OT/ICS & Critical Infrastructure Security</a> · Safety Instrumented Systems</div>
+  <article><h1>Safety Instrumented Systems</h1>
+<p>Every lesson so far has treated &quot;availability&quot; as OT&#39;s top priority above IT&#39;s usual confidentiality-first thinking. This lesson covers the layer above even availability: <strong>safety</strong> — the systems whose entire job is preventing a process from harming people, even if the process itself fails.</p>
+<p>:::</p>
+<h2>What a Safety Instrumented System actually does</h2>
+<p>A Safety Instrumented System (SIS) is a separate, independent control system whose only job is detecting dangerous conditions and forcing the process into a safe state — venting pressure, shutting a valve, cutting power — regardless of what the primary control system (the DCS or PLCs covered in the fundamentals lesson) is doing. The independence is the entire point: if the primary control system is compromised, malfunctioning, or simply wrong, the SIS is designed to catch the dangerous outcome anyway.</p>
+<h2>Why SIS independence gets undermined in practice</h2>
+<p>The theoretical design calls for full separation between the SIS and the primary control network. In real deployments, that separation erodes for understandable operational reasons:</p>
+<ul>
+<li><strong>Convenience remote access</strong> — an engineer wants to check SIS status without physically walking to the safety system, so a network connection gets added</li>
+<li><strong>Shared engineering workstations</strong> — the same laptop used to program the DCS also gets used to program the SIS, because buying and securing a second dedicated machine is inconvenient</li>
+<li><strong>Vendor &quot;helpful&quot; integration</strong> — some SIS vendors sell integration features that bridge the safety network to the process network for easier monitoring, trading the isolation for convenience</li>
+</ul>
+<p>Triton/Trisis specifically exploited this kind of eroded separation: the attackers reached the SIS network at all, which the system&#39;s design was never supposed to permit.</p>
+<h2>The core control: genuine independence</h2>
+<p>The single highest-value SIS-specific control is maintaining <strong>real, physical or airtight-logical separation</strong> from the process network — not a firewall rule that could someday be misconfigured, but architecture that makes bridging the two networks difficult by design. Where remote visibility into SIS status is genuinely needed, a unidirectional gateway (the data diode from the practical controls lesson) is the right tool: it lets status data flow <em>out</em> for monitoring while making it physically impossible for anything to flow <em>in</em> and touch the safety logic.</p>
+<p>:::challenge Evaluate a proposed change
+A facility wants to add a new feature: an app that lets an on-call engineer check SIS status from their phone, from anywhere, at any time.</p>
+<details><summary>Hint</summary>What does "check status from anywhere" actually require in terms of network connectivity between the SIS and the outside world — and is that requirement compatible with everything this lesson has said about SIS independence?</details>
+<details><summary>Show answer</summary>This is exactly the kind of "helpful" convenience feature that erodes SIS isolation. Remote-from-anywhere access requires *some* path from the SIS network out to the internet-reachable systems the phone app talks to — and every such path is a potential route back in, regardless of how carefully it's designed. The safer version of this feature uses a unidirectional gateway: SIS status data flows one-way out to a reporting system the phone app reads from, with the SIS network itself remaining physically incapable of receiving anything back. The convenience feature is achievable — but only if it's built to preserve one-way isolation rather than create a new bidirectional path into the safety system.</details><h2>🧪 Hands-on lab — audit a hypothetical SIS deployment</h2>
+<p>List three specific ways SIS isolation commonly erodes in real facilities (three are named in this lesson). For each, write one sentence describing a control that would prevent that specific erosion without eliminating the operational need it was solving.</p>
+<ol>
+<li>What makes a Safety Instrumented System fundamentally different from any other OT asset covered in this path?</li>
+<li>Why did the Triton/Trisis attack specifically target the SIS rather than the primary DCS?</li>
+<li>Why is a unidirectional gateway a better fit than a standard firewall rule for exposing SIS status data externally?</li>
+</ol>
+<h2>Key terms</h2>
+<ul>
+<li><strong>Safety Instrumented System (SIS)</strong> — an independent control system whose sole function is forcing a process into a safe state when it detects dangerous conditions, regardless of the primary control system&#39;s state</li>
+<li><strong>Isolation erosion</strong> — the gradual, often well-intentioned weakening of a safety system&#39;s network separation through convenience features and shared equipment</li>
+</ul>
+<h2>Recap</h2>
+<p>A Safety Instrumented System sits above even availability in the OT priority stack — it&#39;s the last line of defense against physical harm, and it&#39;s the specific category of asset the Triton/Trisis attack targeted by exploiting eroded network separation. Real SIS security means treating independence as non-negotiable architecture, using tools like unidirectional gateways for any genuinely needed external visibility rather than accepting bidirectional convenience connections that undermine the entire point of having a separate safety system.</p>
+<h3>References</h3>
+<ul>
+<li><a href="https://www.cisa.gov/news-events/ics-advisories/icsa-17-347-01">CISA — Triton/Trisis Malware Analysis</a> — the incident this lesson builds directly on</li>
+</ul>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/25-ot-ics-security/safety-instrumented-systems";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>
