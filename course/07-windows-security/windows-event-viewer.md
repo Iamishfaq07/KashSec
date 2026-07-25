@@ -85,4 +85,4 @@ Open Event Viewer on your own machine, navigate to the Security log, and filter 
 - [Sysmon documentation](https://learn.microsoft.com/en-us/sysinternals/downloads/sysmon) — official docs for the free, widely-used detailed logging tool.
 ???
 
-**Next up →** [Windows User Accounts & UAC](#/lesson/07-windows-security/windows-user-accounts)
+**Next up →** [Recognizing a Compromised Windows Machine](#/lesson/07-windows-security/recognizing-windows-compromise)

@@ -87,4 +87,4 @@ Using PowerShell, write a single chained command that lists all currently runnin
 - [MITRE ATT&CK: PowerShell (T1059.001)](https://attack.mitre.org/techniques/T1059/001/) — real-world adversary use of PowerShell, cataloged in detail.
 ???
 
-**Next up →** [Securing a Windows Machine](#/lesson/07-windows-security/securing-a-windows-machine)
+**Next up →** [Windows Services & Task Manager, for Security](#/lesson/07-windows-security/windows-services-and-task-manager)

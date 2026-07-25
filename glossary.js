@@ -94,6 +94,15 @@ const GLOSSARY = [
   "subTitle": "Why it matters to you"
  },
  {
+  "term": "Active Directory (AD)",
+  "def": "Microsoft's centralized directory service managing users, computers, groups, and policy across an organization.",
+  "pathId": "07-windows-security",
+  "pathN": "07",
+  "pathTitle": "Windows Security Basics",
+  "subId": "windows-active-directory-basics",
+  "subTitle": "Windows Active Directory: The Basics"
+ },
+ {
   "term": "Active Directory (AD) / Domain Controller (DC)",
   "def": "Microsoft's centralised directory and identity service for Windows networks.",
   "pathId": "16-advanced",
@@ -353,6 +362,15 @@ const GLOSSARY = [
   "pathTitle": "Career Prep",
   "subId": "job-search",
   "subTitle": "Job search strategy"
+ },
+ {
+  "term": "AppLocker",
+  "def": "a Windows feature for controlling which applications are permitted to run.",
+  "pathId": "07-windows-security",
+  "pathN": "07",
+  "pathTitle": "Windows Security Basics",
+  "subId": "windows-group-policy-basics",
+  "subTitle": "Windows Group Policy Basics"
  },
  {
   "term": "App Transport Security (ATS)",
@@ -2119,6 +2137,24 @@ const GLOSSARY = [
   "subTitle": "HTML, CSS & JavaScript"
  },
  {
+  "term": "Domain Admin",
+  "def": "the account type with effectively unrestricted control over an entire AD domain.",
+  "pathId": "07-windows-security",
+  "pathN": "07",
+  "pathTitle": "Windows Security Basics",
+  "subId": "windows-active-directory-basics",
+  "subTitle": "Windows Active Directory: The Basics"
+ },
+ {
+  "term": "Domain Controller (DC)",
+  "def": "the server running Active Directory and handling authentication for its domain.",
+  "pathId": "07-windows-security",
+  "pathN": "07",
+  "pathTitle": "Windows Security Basics",
+  "subId": "windows-active-directory-basics",
+  "subTitle": "Windows Active Directory: The Basics"
+ },
+ {
   "term": "Domain generation algorithm (DGA)",
   "def": "malware that algorithmically generates many candidate C2 domain names to evade blocklisting.",
   "pathId": "17-malware-re",
@@ -2785,6 +2821,15 @@ const GLOSSARY = [
   "subTitle": "HTTP & HTTPS"
  },
  {
+  "term": "Get-Service",
+  "def": "a PowerShell cmdlet for querying installed services.",
+  "pathId": "07-windows-security",
+  "pathN": "07",
+  "pathTitle": "Windows Security Basics",
+  "subId": "windows-services-and-task-manager",
+  "subTitle": "Windows Services & Task Manager, for Security"
+ },
+ {
   "term": "GICSP",
   "def": "Global Industrial Cyber Security Professional, the most widely recognized OT/ICS-specific security certification",
   "pathId": "25-ot-ics-security",
@@ -2891,6 +2936,15 @@ const GLOSSARY = [
   "pathTitle": "Operating Systems & Linux",
   "subId": "files-and-folders",
   "subTitle": "Files & folders"
+ },
+ {
+  "term": "Group Policy Object (GPO)",
+  "def": "a collection of configuration settings automatically applied to users or computers within its scope.",
+  "pathId": "07-windows-security",
+  "pathN": "07",
+  "pathTitle": "Windows Security Basics",
+  "subId": "windows-group-policy-basics",
+  "subTitle": "Windows Group Policy Basics"
  },
  {
   "term": "Growth mindset",
@@ -3379,6 +3433,15 @@ const GLOSSARY = [
   "subTitle": "Cloud security"
  },
  {
+  "term": "Immutable backup",
+  "def": "a backup that cannot be modified or deleted, even by an attacker with otherwise-privileged access, for a defined retention period.",
+  "pathId": "07-windows-security",
+  "pathN": "07",
+  "pathTitle": "Windows Security Basics",
+  "subId": "windows-backup-and-recovery",
+  "subTitle": "Windows Backup & Recovery"
+ },
+ {
   "term": "Implicit trust gap",
   "def": "any place a Zero Trust architecture still assumes trust without verification, often hiding behind a \"that's just internal traffic\" or \"that's just a trusted admin\" justification",
   "pathId": "24-zero-trust",
@@ -3467,6 +3530,15 @@ const GLOSSARY = [
   "pathTitle": "GRC & Compliance",
   "subId": "risk-management-fundamentals",
   "subTitle": "Risk Management Fundamentals"
+ },
+ {
+  "term": "Inheritance (Group Policy)",
+  "def": "the hierarchical application of GPOs from domain level down through OUs, with more specific settings generally overriding broader ones.",
+  "pathId": "07-windows-security",
+  "pathN": "07",
+  "pathTitle": "Windows Security Basics",
+  "subId": "windows-group-policy-basics",
+  "subTitle": "Windows Group Policy Basics"
  },
  {
   "term": "Insecure Output Handling",
@@ -3676,6 +3748,15 @@ const GLOSSARY = [
   "subTitle": "Building your first home lab"
  },
  {
+  "term": "Isolation",
+  "def": "disconnecting a suspected-compromised machine from the network while preserving its state for investigation.",
+  "pathId": "07-windows-security",
+  "pathN": "07",
+  "pathTitle": "Windows Security Basics",
+  "subId": "recognizing-windows-compromise",
+  "subTitle": "Recognizing a Compromised Windows Machine"
+ },
+ {
   "term": "Isolation erosion",
   "def": "the gradual, often well-intentioned weakening of a safety system's network separation through convenience features and shared equipment",
   "pathId": "25-ot-ics-security",
@@ -3809,6 +3890,15 @@ const GLOSSARY = [
   "pathTitle": "Advanced Cyber Topics",
   "subId": "active-directory",
   "subTitle": "Active Directory attacks"
+ },
+ {
+  "term": "Kerberos",
+  "def": "the ticket-based authentication protocol Active Directory uses.",
+  "pathId": "07-windows-security",
+  "pathN": "07",
+  "pathTitle": "Windows Security Basics",
+  "subId": "windows-active-directory-basics",
+  "subTitle": "Windows Active Directory: The Basics"
  },
  {
   "term": "Kerberos / TGT / Service Ticket",
@@ -4007,6 +4097,15 @@ const GLOSSARY = [
   "pathTitle": "How the Web Works",
   "subId": "cookies-sessions",
   "subTitle": "Cookies, sessions, logins"
+ },
+ {
+  "term": "LocalSystem",
+  "def": "a highly privileged built-in account many Windows services run under.",
+  "pathId": "07-windows-security",
+  "pathN": "07",
+  "pathTitle": "Windows Security Basics",
+  "subId": "windows-services-and-task-manager",
+  "subTitle": "Windows Services & Task Manager, for Security"
  },
  {
   "term": "LOLBins",
@@ -4412,6 +4511,15 @@ const GLOSSARY = [
   "pathTitle": "Network Security",
   "subId": "netsec-roadmap",
   "subTitle": "Your network-security path"
+ },
+ {
+  "term": "Network Level Authentication (NLA)",
+  "def": "a security feature requiring authentication before a full RDP session is established.",
+  "pathId": "07-windows-security",
+  "pathN": "07",
+  "pathTitle": "Windows Security Basics",
+  "subId": "windows-rdp-remote-access-security",
+  "subTitle": "RDP & Remote Access Security"
  },
  {
   "term": "Network panel",
@@ -5008,6 +5116,15 @@ const GLOSSARY = [
   "subTitle": "Phase 4: Post-exploitation"
  },
  {
+  "term": "Persistence mechanism",
+  "def": "a technique malware uses to survive a reboot and maintain access, such as a scheduled task or startup entry.",
+  "pathId": "07-windows-security",
+  "pathN": "07",
+  "pathTitle": "Windows Security Basics",
+  "subId": "recognizing-windows-compromise",
+  "subTitle": "Recognizing a Compromised Windows Machine"
+ },
+ {
   "term": "Personal toolkit",
   "def": "the growing library of scripts, templates, and automation built and refined across sessions over time.",
   "pathId": "15-bug-bounty",
@@ -5314,6 +5431,15 @@ const GLOSSARY = [
   "subTitle": "Choosing programs"
  },
  {
+  "term": "Privilege escalation",
+  "def": "the process of gaining greater access than initially granted, either to a higher privilege level (vertical) or a different account at the same level (horizontal).",
+  "pathId": "07-windows-security",
+  "pathN": "07",
+  "pathTitle": "Windows Security Basics",
+  "subId": "windows-privesc-intro",
+  "subTitle": "Windows Privilege Escalation: An Introduction"
+ },
+ {
   "term": "Privilege escalation (privesc)",
   "def": "moving from a low-privilege foothold to higher (ideally root) access.",
   "pathId": "16-advanced",
@@ -5348,6 +5474,15 @@ const GLOSSARY = [
   "pathTitle": "OT/ICS & Critical Infrastructure Security",
   "subId": "ics-incident-response",
   "subTitle": "ICS Incident Response"
+ },
+ {
+  "term": "Process Explorer",
+  "def": "a Sysinternals tool providing more detailed process information than Task Manager alone.",
+  "pathId": "07-windows-security",
+  "pathN": "07",
+  "pathTitle": "Windows Security Basics",
+  "subId": "recognizing-windows-compromise",
+  "subTitle": "Recognizing a Compromised Windows Machine"
  },
  {
   "term": "Profile README",
@@ -5674,6 +5809,15 @@ const GLOSSARY = [
   "subTitle": "Rate Limiting, Injection & Resource Abuse"
  },
  {
+  "term": "RDP (Remote Desktop Protocol)",
+  "def": "a Windows protocol allowing full remote control of a machine's desktop over the network.",
+  "pathId": "07-windows-security",
+  "pathN": "07",
+  "pathTitle": "Windows Security Basics",
+  "subId": "windows-rdp-remote-access-security",
+  "subTitle": "RDP & Remote Access Security"
+ },
+ {
   "term": "Reachability",
   "def": "whether vulnerable code can actually be executed by your application",
   "pathId": "22-devsecops-appsec",
@@ -5924,6 +6068,15 @@ const GLOSSARY = [
   "pathTitle": "How the Web Works",
   "subId": "apis-json",
   "subTitle": "APIs & JSON"
+ },
+ {
+  "term": "Restore point",
+  "def": "a saved snapshot of Windows system configuration and installed software state, used by System Restore.",
+  "pathId": "07-windows-security",
+  "pathN": "07",
+  "pathTitle": "Windows Security Basics",
+  "subId": "windows-backup-and-recovery",
+  "subTitle": "Windows Backup & Recovery"
  },
  {
   "term": "`return` / parameters / default arguments",
@@ -7294,6 +7447,24 @@ const GLOSSARY = [
   "subTitle": "What is cybersecurity?"
  },
  {
+  "term": "SYSTEM",
+  "def": "the most privileged built-in Windows account, above even a standard Administrator account.",
+  "pathId": "07-windows-security",
+  "pathN": "07",
+  "pathTitle": "Windows Security Basics",
+  "subId": "windows-privesc-intro",
+  "subTitle": "Windows Privilege Escalation: An Introduction"
+ },
+ {
+  "term": "System Image Backup",
+  "def": "a complete, exact copy of an entire drive including the operating system and all files.",
+  "pathId": "07-windows-security",
+  "pathN": "07",
+  "pathTitle": "Windows Security Basics",
+  "subId": "windows-backup-and-recovery",
+  "subTitle": "Windows Backup & Recovery"
+ },
+ {
   "term": "System integrator",
   "def": "a third-party firm that configures and deploys ICS equipment on a customer's behalf, often with deep temporary access",
   "pathId": "25-ot-ics-security",
@@ -7754,6 +7925,15 @@ const GLOSSARY = [
  },
  {
   "term": "Unquoted service path",
+  "def": "a legacy Windows misconfiguration where an unquoted, space-containing service path can be exploited to run attacker-controlled code.",
+  "pathId": "07-windows-security",
+  "pathN": "07",
+  "pathTitle": "Windows Security Basics",
+  "subId": "windows-privesc-intro",
+  "subTitle": "Windows Privilege Escalation: An Introduction"
+ },
+ {
+  "term": "Unquoted service path",
   "def": "a vulnerable service configuration allowing binary planting via ambiguous path parsing.",
   "pathId": "16-advanced",
   "pathN": "16",
@@ -8122,6 +8302,15 @@ const GLOSSARY = [
   "subTitle": "Windows Fundamentals for Security"
  },
  {
+  "term": "Windows service",
+  "def": "a background process running independently of any logged-in user, often starting automatically at boot.",
+  "pathId": "07-windows-security",
+  "pathN": "07",
+  "pathTitle": "Windows Security Basics",
+  "subId": "windows-services-and-task-manager",
+  "subTitle": "Windows Services & Task Manager, for Security"
+ },
+ {
   "term": "WinPEAS",
   "def": "the Windows-specific automated privesc enumeration script.",
   "pathId": "16-advanced",
@@ -8129,6 +8318,15 @@ const GLOSSARY = [
   "pathTitle": "Advanced Cyber Topics",
   "subId": "windows-privesc",
   "subTitle": "Windows privilege escalation"
+ },
+ {
+  "term": "WinRM (Windows Remote Management)",
+  "def": "a remote management protocol used heavily for PowerShell remoting.",
+  "pathId": "07-windows-security",
+  "pathN": "07",
+  "pathTitle": "Windows Security Basics",
+  "subId": "windows-rdp-remote-access-security",
+  "subTitle": "RDP & Remote Access Security"
  },
  {
   "term": "Wireshark",

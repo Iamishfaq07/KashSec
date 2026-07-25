@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Windows Group Policy Basics — Path 07 · KashSec Academy</title>
+<meta name="description" content="The Active Directory lesson introduced OUs and groups as ways of organizing an organization's users and computers. This lesson covers the tool that actually enforces consistent settings across all of ">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/07-windows-security/windows-group-policy-basics">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Windows Group Policy Basics — Path 07 · KashSec Academy">
+<meta property="og:description" content="The Active Directory lesson introduced OUs and groups as ways of organizing an organization's users and computers. This lesson covers the tool that actually enforces consistent settings across all of ">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/07-windows-security/windows-group-policy-basics">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Windows Group Policy Basics — Path 07 · KashSec Academy">
+<meta name="twitter:description" content="The Active Directory lesson introduced OUs and groups as ways of organizing an organization's users and computers. This lesson covers the tool that actually enforces consistent settings across all of ">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Windows Group Policy Basics — Path 07 · KashSec Academy","description":"The Active Directory lesson introduced OUs and groups as ways of organizing an organization's users and computers. This lesson covers the tool that actually enforces consistent settings across all of ","url":"https://kashsec.vercel.app/#/lesson/07-windows-security/windows-group-policy-basics","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/07-windows-security/windows-group-policy-basics">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 07 — Windows Security Basics</a> · Windows Group Policy Basics</div>
+  <article><h1>Windows Group Policy Basics</h1>
+<p>The Active Directory lesson introduced OUs and groups as ways of organizing an organization&#39;s users and computers. This lesson covers the tool that actually <em>enforces</em> consistent settings across all of them at once: <strong>Group Policy</strong>.</p>
+<p>:::</p>
+<h2>What a Group Policy Object actually is</h2>
+<p>A <strong>Group Policy Object (GPO)</strong> is a collection of configuration settings — anything from password complexity requirements to which applications are allowed to run — that gets linked to a domain, site, or specific Organizational Unit (from the previous lesson) and automatically applied to every user or computer within that scope.</p>
+<h2>How GPOs actually get applied: inheritance and scope</h2>
+<p>GPOs apply hierarchically, and this hierarchy matters a lot for both administration and security assessment:</p>
+<ul>
+<li><strong>Inheritance</strong> — a computer in a specific OU inherits GPOs applied at the domain level <em>and</em> any GPOs applied specifically to its OU, with more specific (OU-level) settings generally overriding broader (domain-level) ones where they conflict</li>
+<li><strong>Scope</strong> — an administrator can deliberately apply a stricter policy to a sensitive OU (say, an IT-admin-accounts OU) than to a general-employee OU, directly extending the OU-based organization from the Active Directory lesson into actual enforced behavior</li>
+</ul>
+<h2>Common security-relevant Group Policy settings</h2>
+<ul>
+<li><strong>Password and account lockout policy</strong> — enforcing minimum password length, complexity, and lockout thresholds domain-wide, rather than relying on individual users to configure this themselves</li>
+<li><strong>Software restriction / AppLocker policies</strong> — controlling which applications are allowed to run at all, a genuinely powerful defense against unauthorized or malicious software execution</li>
+<li><strong>Audit policy</strong> — controlling exactly which events actually get logged to the Security log the Event Viewer lesson covered — without the right audit policy configured, the events you&#39;d want to investigate later may never have been recorded in the first place</li>
+<li><strong>Windows Firewall and Defender configuration</strong> — enforcing consistent security-tool settings across every machine, rather than trusting each user not to disable protection locally</li>
+</ul>
+<h2>Why Group Policy misconfiguration is a real security finding</h2>
+<p>Just as the Active Directory lesson covered misconfigured permissions creating attack paths, misconfigured or overly permissive GPOs are a genuine, commonly-found security weakness in real assessments — a GPO that grants broader software-installation rights than intended, or that fails to actually enforce the password policy an organization believes is in effect, undermines security silently and at scale, precisely because the misconfiguration applies automatically to every machine in its scope rather than being an isolated, one-off mistake.</p>
+<p>:::challenge Diagnose an inheritance conflict
+A domain-level GPO sets minimum password length to 12 characters. An OU-level GPO applied specifically to the &quot;Contractors&quot; OU sets minimum password length to 8 characters. A contractor&#39;s account currently uses an 8-character password.</p>
+<details><summary>Hint</summary>Given how GPO inheritance and scope work, which policy actually takes effect for an account in the Contractors OU?</details>
+<details><summary>Show answer</summary>The OU-level policy (8 characters) takes effect for accounts within the Contractors OU, since more specific, closer-scoped GPOs generally override broader domain-level ones where a direct conflict exists — meaning the contractor's 8-character password is technically compliant with the effective policy actually governing their account, even though it violates the domain-wide baseline. Whether this is an intentional, deliberate exception or an accidental misconfiguration is exactly the kind of question a real security review would need to ask — and it's a good illustration of why understanding GPO inheritance and scope matters for security assessment, not just IT administration: the "effective" policy an account is actually subject to isn't always obvious just from looking at the domain-level settings alone.</details><h2>🧪 Hands-on lab — trace an inheritance chain</h2>
+<p>For a hypothetical domain with a domain-level GPO enforcing 90-day password expiration and an OU-level GPO on a &quot;Service Accounts&quot; OU setting password expiration to &quot;never,&quot; determine the effective policy for an account in that OU, and write one sentence on whether this specific override seems like a reasonable, deliberate exception or a security risk worth investigating further.</p>
+<ol>
+<li>What is a Group Policy Object, and what problem does it solve compared to configuring each machine individually?</li>
+<li>In GPO inheritance, which generally takes precedence when a domain-level and an OU-level setting conflict?</li>
+<li>Why does audit policy configuration matter for incident investigation, even though it doesn&#39;t directly prevent an attack?</li>
+</ol>
+<h2>Key terms</h2>
+<ul>
+<li><strong>Group Policy Object (GPO)</strong> — a collection of configuration settings automatically applied to users or computers within its scope.</li>
+<li><strong>Inheritance (Group Policy)</strong> — the hierarchical application of GPOs from domain level down through OUs, with more specific settings generally overriding broader ones.</li>
+<li><strong>AppLocker</strong> — a Windows feature for controlling which applications are permitted to run.</li>
+</ul>
+<h2>Recap</h2>
+<p>Group Policy is Active Directory&#39;s mechanism for enforcing consistent security configuration automatically across every relevant computer and user, rather than requiring manual configuration machine by machine. Understanding GPO inheritance and scope matters for security assessment specifically because the &quot;effective&quot; policy governing a given account isn&#39;t always obvious from domain-level settings alone — and misconfigured or overly permissive GPOs are a genuine, commonly-found weakness in real-world Active Directory environments, applying silently at scale rather than as isolated mistakes.</p>
+<h3>References</h3>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/srvnodes/group-policy">Microsoft — Group Policy Overview</a> — the official technical reference</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/07-windows-security/windows-command-line-basics">Windows Command Line Basics</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/07-windows-security/windows-group-policy-basics";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

@@ -69,4 +69,4 @@ On your own machine (or a test VM), walk through every setting in this lesson: c
 - [Microsoft: BitLocker overview](https://learn.microsoft.com/en-us/windows/security/operating-system-security/data-protection/bitlocker/) — official documentation on Windows' disk encryption feature.
 ???
 
-**Next up →** [Windows Event Viewer](#/lesson/07-windows-security/windows-event-viewer)
+**Next up →** [RDP & Remote Access Security](#/lesson/07-windows-security/windows-rdp-remote-access-security)

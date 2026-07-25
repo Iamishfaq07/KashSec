@@ -69,4 +69,4 @@ On a VM or test machine, use `net user` and `net localgroup administrators` to l
 - [Microsoft: User Account Control overview](https://learn.microsoft.com/en-us/windows/security/application-security/application-control/user-account-control/) — official documentation on UAC's design and configuration.
 ???
 
-**Next up →** [Windows Command Line Basics](#/lesson/07-windows-security/windows-command-line-basics)
+**Next up →** [Windows Active Directory: The Basics](#/lesson/07-windows-security/windows-active-directory-basics)

@@ -792,11 +792,18 @@ const PATHS = [
    subs:[
      {n:"1", id:"windows-fundamentals",       title:"Windows Fundamentals for Security", desc:"Architecture, the Registry, and services — Windows' equivalent of Path 03."},
      {n:"2", id:"windows-security-settings",  title:"Windows Security Settings", desc:"Defender, Firewall, Windows Update, UAC, and BitLocker."},
-     {n:"3", id:"windows-event-viewer",       title:"Windows Event Viewer", desc:"Reading the Security log — Windows' equivalent of auth.log."},
-     {n:"4", id:"windows-user-accounts",      title:"Windows User Accounts & UAC", desc:"Standard vs. admin, least privilege, and account auditing."},
-     {n:"5", id:"windows-command-line-basics", title:"Windows Command Line Basics", desc:"Command Prompt and PowerShell, and why attackers love the latter too."},
-     {n:"6", id:"securing-a-windows-machine", title:"Securing a Windows Machine", desc:"A complete, practical hardening checklist."},
-     {n:"7", id:"windows-security-lab",       title:"Windows Security Lab", desc:"Hands-on on a real Windows VM, start to finish."}
+     {n:"3", id:"windows-rdp-remote-access-security", title:"RDP & Remote Access Security", desc:"Why exposed RDP is a top ransomware entry point, and how to lock it down."},
+     {n:"4", id:"windows-event-viewer",       title:"Windows Event Viewer", desc:"Reading the Security log — Windows' equivalent of auth.log."},
+     {n:"5", id:"recognizing-windows-compromise", title:"Recognizing a Compromised Windows Machine", desc:"The practical signs to check across processes, accounts, and scheduled tasks."},
+     {n:"6", id:"windows-user-accounts",      title:"Windows User Accounts & UAC", desc:"Standard vs. admin, least privilege, and account auditing."},
+     {n:"7", id:"windows-active-directory-basics", title:"Windows Active Directory: The Basics", desc:"Domains, Domain Controllers, Kerberos, and why AD is such a high-value target."},
+     {n:"8", id:"windows-group-policy-basics", title:"Windows Group Policy Basics", desc:"How GPOs enforce settings domain-wide, and why misconfiguration is a real finding."},
+     {n:"9", id:"windows-command-line-basics", title:"Windows Command Line Basics", desc:"Command Prompt and PowerShell, and why attackers love the latter too."},
+     {n:"10", id:"windows-services-and-task-manager", title:"Windows Services & Task Manager, for Security", desc:"Why services are an attacker's favorite persistence mechanism, and how to audit them."},
+     {n:"11", id:"securing-a-windows-machine", title:"Securing a Windows Machine", desc:"A complete, practical hardening checklist."},
+     {n:"12", id:"windows-backup-and-recovery", title:"Windows Backup & Recovery", desc:"File History, System Restore, and why neither one is a ransomware defense on its own."},
+     {n:"13", id:"windows-privesc-intro",     title:"Windows Privilege Escalation: An Introduction", desc:"Vertical vs. horizontal escalation, and the named technique categories to recognize."},
+     {n:"14", id:"windows-security-lab",       title:"Windows Security Lab", desc:"Hands-on on a real Windows VM, start to finish."}
    ]},
   {n:"08", id:"08-cloud-basics", title:"Cloud Computing Basics", level:"Beginner",
    desc:"Path 16 jumps straight into cloud security — this path builds the foundation first: what cloud computing is, storage, networking, IAM, and the shared responsibility model.",
@@ -4745,6 +4752,11 @@ function renderLabPhishing(){
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
+  {date:'2026-07-25', title:'Path 07 doubled to 14 lessons', items:[
+    'Sixth batch of the course-wide content-doubling effort: Path 07 (Windows Security Basics) grows from 7 to 14 lessons.',
+    'New lessons: RDP & Remote Access Security, Recognizing a Compromised Windows Machine, Windows Active Directory: The Basics, Windows Group Policy Basics, Windows Services & Task Manager for Security, Windows Backup & Recovery, and Windows Privilege Escalation: An Introduction.',
+    'The new Active Directory and Group Policy lessons build a foundation that Path 16\'s hands-on Active Directory attack lab now assumes.'
+  ]},
   {date:'2026-07-25', title:'Path 06 doubled to 14 lessons', items:[
     'Fifth batch of the course-wide content-doubling effort: Path 06 (Cryptography Fundamentals) grows from 7 to 14 lessons.',
     'New lessons: Key Exchange & Diffie-Hellman, Elliptic Curve Cryptography, The TLS Handshake Step by Step, Common Cryptographic Attacks, Applied Cryptography, Blockchain & Cryptocurrency Cryptography, and Post-Quantum Cryptography.',

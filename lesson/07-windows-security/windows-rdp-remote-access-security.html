@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RDP &amp; Remote Access Security — Path 07 · KashSec Academy</title>
+<meta name="description" content="Windows Security Settings covered the Firewall in general terms. This lesson zooms in on one specific service worth its own dedicated attention: Remote Desktop Protocol (RDP) — genuinely one of the si">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/07-windows-security/windows-rdp-remote-access-security">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="RDP &amp; Remote Access Security — Path 07 · KashSec Academy">
+<meta property="og:description" content="Windows Security Settings covered the Firewall in general terms. This lesson zooms in on one specific service worth its own dedicated attention: Remote Desktop Protocol (RDP) — genuinely one of the si">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/07-windows-security/windows-rdp-remote-access-security">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="RDP &amp; Remote Access Security — Path 07 · KashSec Academy">
+<meta name="twitter:description" content="Windows Security Settings covered the Firewall in general terms. This lesson zooms in on one specific service worth its own dedicated attention: Remote Desktop Protocol (RDP) — genuinely one of the si">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"RDP & Remote Access Security — Path 07 · KashSec Academy","description":"Windows Security Settings covered the Firewall in general terms. This lesson zooms in on one specific service worth its own dedicated attention: Remote Desktop Protocol (RDP) — genuinely one of the si","url":"https://kashsec.vercel.app/#/lesson/07-windows-security/windows-rdp-remote-access-security","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/07-windows-security/windows-rdp-remote-access-security">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 07 — Windows Security Basics</a> · RDP &amp; Remote Access Security</div>
+  <article><h1>RDP &amp; Remote Access Security</h1>
+<p>Windows Security Settings covered the Firewall in general terms. This lesson zooms in on one specific service worth its own dedicated attention: <strong>Remote Desktop Protocol (RDP)</strong> — genuinely one of the single most commonly attacked Windows services in the real world.</p>
+<p>:::</p>
+<h2>What RDP actually is, and why it&#39;s such a common target</h2>
+<p><strong>RDP</strong> lets a user remotely control a Windows machine&#39;s full desktop over the network — genuinely useful for legitimate remote work and IT administration, which is exactly why it&#39;s enabled so widely, and exactly why attackers scan the internet constantly looking for exposed RDP ports (3389 by default). An exposed RDP service, combined with a weak or reused password (Path 00&#39;s passwords lesson), gives an attacker a full, interactive desktop session — not just a foothold, but often complete control.</p>
+<h2>How attackers actually find and abuse exposed RDP</h2>
+<ul>
+<li><strong>Mass internet scanning</strong> — automated tools continuously scan the entire internet for machines with port 3389 open, the same &quot;fishing with a giant net&quot; pattern the why-it-matters lesson back in Path 01 described</li>
+<li><strong>Credential stuffing and brute-forcing</strong> — once an exposed RDP service is found, attackers try leaked or common password lists against it, exactly the credential-attack pattern covered in Path 01&#39;s cyberattacks overview</li>
+<li><strong>Ransomware deployment</strong> — RDP compromise is one of the most frequently cited initial-access methods in real ransomware incident reports, precisely because a working RDP session gives an attacker everything needed to move further into a network from there</li>
+</ul>
+<h2>Practical RDP hardening</h2>
+<ul>
+<li><strong>Never expose RDP directly to the internet</strong> — this is the single highest-impact fix; if remote access is genuinely needed, route it through a VPN (Path 00&#39;s Wi-Fi lesson) or a Zero Trust Network Access solution (Path 24) instead of a raw open port</li>
+<li><strong>Enable Network Level Authentication (NLA)</strong> — requires authentication to complete <em>before</em> a full remote session is even established, closing off a category of pre-authentication attacks</li>
+<li><strong>Enforce strong passwords and, where possible, MFA</strong> on any account with RDP access — the same fundamentals from Path 00&#39;s passwords lesson apply with extra force here</li>
+<li><strong>Change the default port</strong> — a minor, &quot;security through obscurity&quot; measure on its own, but it does meaningfully reduce noise from the most basic automated scanners, as a supplementary layer rather than a primary defense</li>
+<li><strong>Enable account lockout policies</strong> — limiting how many failed login attempts are tolerated before an account locks, directly slowing brute-force attempts</li>
+</ul>
+<h2>Other remote access surfaces worth the same scrutiny</h2>
+<p>RDP is the most notorious example, but the same underlying principle — remote access services deserve extra hardening scrutiny — applies to <strong>SSH</strong> (if enabled on Windows), <strong>WinRM</strong> (Windows Remote Management, used heavily for PowerShell remoting), and any third-party remote-support tool installed on a machine. Each is a legitimate, useful capability that becomes a serious liability the moment it&#39;s exposed without proper controls around it.</p>
+<p>:::challenge Diagnose an exposure
+A small business&#39;s server has RDP enabled with a strong 16-character password, but the server sits directly on the internet with port 3389 open to any source address, and no VPN or NLA configured.</p>
+<details><summary>Hint</summary>Does a strong password alone address every risk category this lesson covered — internet exposure, pre-authentication attacks, and brute-force protection?</details>
+<details><summary>Show answer</summary>A strong password helps against brute-forcing specifically, but it doesn't address the core problem: the service is directly internet-reachable at all, which exposes it to every automated scanner and any future vulnerability discovered in RDP itself (RDP has had serious remote-code-execution vulnerabilities in the past, independent of password strength). The real fix is architectural, not just credential strength: remove direct internet exposure entirely by routing access through a VPN, enable NLA to require pre-authentication, and add account lockout policies as defense in depth. A strong password is necessary but nowhere close to sufficient on its own here.</details><h2>🧪 Hands-on lab — audit RDP configuration</h2>
+<p>On a Windows machine or VM you control, check whether Remote Desktop is enabled (Settings → System → Remote Desktop), confirm whether Network Level Authentication is required, and check the Windows Firewall rules governing port 3389 to see exactly what source addresses are currently permitted.</p>
+<ol>
+<li>Why is exposed RDP such a common initial-access vector in real ransomware incidents?</li>
+<li>What does Network Level Authentication add that a plain RDP connection doesn&#39;t have?</li>
+<li>Name one remote access surface besides RDP that deserves the same hardening scrutiny.</li>
+</ol>
+<h2>Key terms</h2>
+<ul>
+<li><strong>RDP (Remote Desktop Protocol)</strong> — a Windows protocol allowing full remote control of a machine&#39;s desktop over the network.</li>
+<li><strong>Network Level Authentication (NLA)</strong> — a security feature requiring authentication before a full RDP session is established.</li>
+<li><strong>WinRM (Windows Remote Management)</strong> — a remote management protocol used heavily for PowerShell remoting.</li>
+</ul>
+<h2>Recap</h2>
+<p>RDP is one of the single most commonly attacked Windows services in the real world, precisely because a compromised session hands an attacker full interactive control — and internet-exposed RDP is a frequently cited initial-access vector in real ransomware incidents. Never exposing RDP directly to the internet, enabling NLA, enforcing strong authentication, and applying the same scrutiny to other remote access surfaces (WinRM, SSH, third-party tools) closes off one of the highest-impact, lowest-effort attack paths a Windows environment can have.</p>
+<h3>References</h3>
+<ul>
+<li><a href="https://www.cisa.gov/news-events/cybersecurity-advisories">CISA — Remote Desktop Protocol (RDP) Security Guidance</a> — search CISA&#39;s advisories for current RDP-specific guidance</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/07-windows-security/windows-event-viewer">Windows Event Viewer</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/07-windows-security/windows-rdp-remote-access-security";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

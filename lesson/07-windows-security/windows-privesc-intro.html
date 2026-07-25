@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Windows Privilege Escalation: An Introduction — Path 07 · KashSec Academy</title>
+<meta name="description" content="Every lesson in this path so far has been defensive — hardening, monitoring, backing up. This closing conceptual lesson flips the perspective, in overview form, to show you what an attacker actually d">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/07-windows-security/windows-privesc-intro">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Windows Privilege Escalation: An Introduction — Path 07 · KashSec Academy">
+<meta property="og:description" content="Every lesson in this path so far has been defensive — hardening, monitoring, backing up. This closing conceptual lesson flips the perspective, in overview form, to show you what an attacker actually d">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/07-windows-security/windows-privesc-intro">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Windows Privilege Escalation: An Introduction — Path 07 · KashSec Academy">
+<meta name="twitter:description" content="Every lesson in this path so far has been defensive — hardening, monitoring, backing up. This closing conceptual lesson flips the perspective, in overview form, to show you what an attacker actually d">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Windows Privilege Escalation: An Introduction — Path 07 · KashSec Academy","description":"Every lesson in this path so far has been defensive — hardening, monitoring, backing up. This closing conceptual lesson flips the perspective, in overview form, to show you what an attacker actually d","url":"https://kashsec.vercel.app/#/lesson/07-windows-security/windows-privesc-intro","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/07-windows-security/windows-privesc-intro">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 07 — Windows Security Basics</a> · Windows Privilege Escalation: An Introduction</div>
+  <article><h1>Windows Privilege Escalation: An Introduction</h1>
+<p>Every lesson in this path so far has been defensive — hardening, monitoring, backing up. This closing conceptual lesson flips the perspective, in overview form, to show you what an attacker actually does <em>after</em> gaining that first limited foothold this whole path has been trying to prevent — full hands-on technique lives in Path 16&#39;s dedicated Windows privesc lab, which assumes exactly this lesson as its starting foundation.</p>
+<p>:::</p>
+<h2>Why privilege escalation matters even to defenders</h2>
+<p>An attacker&#39;s initial foothold — a phishing-compromised standard user account (Path 00), a webshell dropped through a vulnerable application — is rarely the end goal. The standard-user restrictions the windows-user-accounts lesson described are specifically designed to limit what that initial foothold can actually do. <strong>Privilege escalation</strong> is the process of turning that limited foothold into broader access — ideally, from the attacker&#39;s perspective, all the way to SYSTEM or Domain Admin (from the Active Directory lesson).</p>
+<h2>Two broad categories: vertical and horizontal</h2>
+<ul>
+<li><strong>Vertical privilege escalation</strong> — gaining <em>higher</em> privilege than you started with (standard user → administrator → SYSTEM)</li>
+<li><strong>Horizontal privilege escalation</strong> — gaining access to a <em>different</em> account or resource at roughly the same privilege level (compromising one standard user&#39;s data by abusing another standard user&#39;s improperly-isolated access)</li>
+</ul>
+<h2>Common Windows privesc technique categories, by name</h2>
+<ul>
+<li><strong>Misconfigured service permissions</strong> — if a standard user has write access to a service&#39;s executable or configuration (a misconfiguration, not intended design) and that service runs as SYSTEM, replacing the executable grants SYSTEM-level code execution the moment the service restarts — directly building on the services lesson&#39;s coverage of LocalSystem-level privilege</li>
+<li><strong>Unquoted service paths</strong> — a legacy Windows quirk where a service path containing spaces but no surrounding quotes can be exploited by placing a malicious executable earlier in the interpreted path</li>
+<li><strong>Weak file/folder permissions</strong> — sensitive files or scheduled tasks (from the recognizing-compromise lesson) that a standard user shouldn&#39;t be able to modify, but can, due to a permissions misconfiguration</li>
+<li><strong>Credential exposure</strong> — stored, cached, or improperly protected credentials (in scripts, configuration files, or memory) that grant access to a higher-privileged account</li>
+<li><strong>Unpatched vulnerabilities</strong> — kernel or service-level vulnerabilities specifically enabling privilege escalation, which is exactly why the patching discipline from Path 00&#39;s updates lesson matters at every privilege level, not just for internet-facing services</li>
+</ul>
+<h2>How this connects forward to Path 16 and the Active Directory lab</h2>
+<p>This lesson&#39;s vocabulary — vertical/horizontal escalation, service misconfiguration, credential exposure — is exactly the foundation Path 16&#39;s Windows privesc lab builds its hands-on exercises on, and it connects directly to this path&#39;s own Active Directory lesson: privilege escalation <em>within</em> a single machine is often just the first step toward the domain-wide escalation (toward Domain Admin) that Path 16&#39;s full Active Directory attack lab covers in depth.</p>
+<p>:::challenge Categorize the technique
+An attacker with standard-user access discovers that a Windows service configured to run as SYSTEM has its executable file located in a folder the attacker&#39;s account has write permission to.</p>
+<details><summary>Hint</summary>Which named technique category from this lesson does replacing that executable and restarting the service fall under?</details>
+<details><summary>Show answer</summary>This is <strong>misconfigured service permissions</strong> — a form of vertical privilege escalation. The attacker doesn't need to break any authentication or exploit a software vulnerability at all; the misconfiguration (a standard user having write access to a SYSTEM-privileged service's executable) directly hands over an escalation path. Replacing the legitimate executable with a malicious one, then triggering the service to restart, causes the malicious code to run with the service's SYSTEM privileges rather than the attacker's original standard-user privileges — turning a limited foothold into full system control. This exact technique category, and the file-permission auditing that catches it, is covered hands-on in Path 16's Windows privesc lab.</details><h2>🧪 Hands-on lab — reason about defenses, not just attacks</h2>
+<p>For each of the five technique categories named in this lesson, write one sentence identifying which earlier lesson in this path already covers a relevant defensive control (services auditing, GPO password/account policy, patching discipline, and so on).</p>
+<ol>
+<li>What&#39;s the difference between vertical and horizontal privilege escalation?</li>
+<li>Why is a misconfigured service permission a privilege escalation risk specifically when the service runs as SYSTEM?</li>
+<li>Why does patching matter for privilege escalation defense, not just for preventing initial compromise?</li>
+</ol>
+<h2>Key terms</h2>
+<ul>
+<li><strong>Privilege escalation</strong> — the process of gaining greater access than initially granted, either to a higher privilege level (vertical) or a different account at the same level (horizontal).</li>
+<li><strong>SYSTEM</strong> — the most privileged built-in Windows account, above even a standard Administrator account.</li>
+<li><strong>Unquoted service path</strong> — a legacy Windows misconfiguration where an unquoted, space-containing service path can be exploited to run attacker-controlled code.</li>
+</ul>
+<h2>Recap</h2>
+<p>Privilege escalation is the category of techniques that turns an attacker&#39;s initial limited foothold — exactly the kind the hardening and monitoring lessons throughout this path try to prevent or detect — into broader access, whether vertical (higher privilege) or horizontal (a different account at the same level). Misconfigured service permissions, unquoted paths, weak file permissions, credential exposure, and unpatched vulnerabilities are the named technique categories worth recognizing now, with full hands-on practice waiting in Path 16&#39;s dedicated Windows privesc lab and Active Directory attack lab.</p>
+<h3>References</h3>
+<ul>
+<li><a href="https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation">HackTricks — Windows Local Privilege Escalation</a> — a comprehensive, widely-used technical reference</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/07-windows-security/windows-security-lab">Windows Security Lab</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/07-windows-security/windows-privesc-intro";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

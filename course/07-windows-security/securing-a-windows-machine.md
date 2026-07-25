@@ -80,4 +80,4 @@ On a test VM (never a machine you depend on, in case something needs undoing), w
 
 Windows security hardening is fundamentally a checklist discipline, not a single silver-bullet setting — updates, account hygiene, Defender/Firewall configuration, encryption, logging, and reduced attack surface each close off a different category of risk, and real security comes from consistently applying all of them together, not from any single control alone.
 
-**Next up →** [Windows Security Lab](#/lesson/07-windows-security/windows-security-lab)
+**Next up →** [Windows Backup & Recovery](#/lesson/07-windows-security/windows-backup-and-recovery)
