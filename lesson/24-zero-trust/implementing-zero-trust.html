@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Implementing Zero Trust: A Practical Roadmap — Path 24 · KashSec Academy</title>
+<meta name="description" content="Every lesson so far has explained a piece of Zero Trust in isolation. This one answers the question every real organization actually has to answer: given all of this, where do we even start, and in wh">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/24-zero-trust/implementing-zero-trust">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Implementing Zero Trust: A Practical Roadmap — Path 24 · KashSec Academy">
+<meta property="og:description" content="Every lesson so far has explained a piece of Zero Trust in isolation. This one answers the question every real organization actually has to answer: given all of this, where do we even start, and in wh">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/24-zero-trust/implementing-zero-trust">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Implementing Zero Trust: A Practical Roadmap — Path 24 · KashSec Academy">
+<meta name="twitter:description" content="Every lesson so far has explained a piece of Zero Trust in isolation. This one answers the question every real organization actually has to answer: given all of this, where do we even start, and in wh">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Implementing Zero Trust: A Practical Roadmap — Path 24 · KashSec Academy","description":"Every lesson so far has explained a piece of Zero Trust in isolation. This one answers the question every real organization actually has to answer: given all of this, where do we even start, and in wh","url":"https://kashsec.vercel.app/#/lesson/24-zero-trust/implementing-zero-trust","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/24-zero-trust/implementing-zero-trust">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 24 — Zero Trust Architecture</a> · Implementing Zero Trust: A Practical Roadmap</div>
+  <article><h1>Implementing Zero Trust: A Practical Roadmap</h1>
+<p>Every lesson so far has explained a piece of Zero Trust in isolation. This one answers the question every real organization actually has to answer: given all of this, where do we even start, and in what order?</p>
+<p>:::</p>
+<h2>Why sequencing matters</h2>
+<p>Every piece covered in this path — strong identity, device posture, micro-segmentation, ZTNA, continuous verification — depends on pieces that come before it. Trying to build fine-grained micro-segmentation before you have reliable identity is like installing a sophisticated lock before you&#39;ve decided who gets keys. Sequencing isn&#39;t bureaucratic caution; it&#39;s the only way each layer actually has something solid to build on.</p>
+<h2>A realistic maturity model</h2>
+<p>Most Zero Trust maturity frameworks (including CISA&#39;s) describe roughly four stages:</p>
+<table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>Characteristic</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Traditional</td>
+<td>Static, perimeter-based controls</td>
+<td>Firewall + VPN, minimal internal segmentation</td>
+</tr>
+<tr>
+<td>Initial</td>
+<td>Some automation, early risk-based signals</td>
+<td>MFA rolled out broadly, basic conditional access rules</td>
+</tr>
+<tr>
+<td>Advanced</td>
+<td>Cross-pillar coordination, continuous monitoring</td>
+<td>Device posture feeds access decisions, ZTNA replacing VPN for key apps</td>
+</tr>
+<tr>
+<td>Optimal</td>
+<td>Fully dynamic, automated, continuously assessed</td>
+<td>Real-time risk scoring drives access across identity, device, network, and application layers together</td>
+</tr>
+</tbody></table>
+<p>No organization jumps from Traditional to Optimal. Most spend years in Initial and Advanced, and that&#39;s a completely normal, healthy pace — not a sign of failure.</p>
+<h2>A practical first 12 months</h2>
+<ol>
+<li><strong>Inventory first.</strong> You cannot protect what you don&#39;t know exists — map applications, data sensitivity, and who/what needs access to what. This mirrors the GRC path&#39;s advice almost exactly, because it&#39;s the same underlying discipline.</li>
+<li><strong>Strengthen identity.</strong> Roll out phishing-resistant MFA broadly, consolidate around a real Identity Provider, and start building conditional access policy — this is the highest-leverage, lowest-disruption first step almost every framework agrees on.</li>
+<li><strong>Establish device posture visibility.</strong> Get an MDM/EDR signal flowing for managed devices before trying to <em>enforce</em> anything based on it — visibility first, enforcement once you trust the data.</li>
+<li><strong>Pick one high-value pilot application for ZTNA.</strong> Not everything — one real, meaningful application, ideally one with a genuine remote-access pain point, so the win is visible and motivating.</li>
+<li><strong>Start mapping internal traffic</strong>, not yet writing deny rules — you need to understand what actually talks to what before you can safely default-deny anything, per the segmentation lesson&#39;s warning about retrofitting.</li>
+</ol>
+<p>:::warn
+The most common real-world Zero Trust rollout failure isn&#39;t technical — it&#39;s sequencing. An organization buys a ZTNA product, deploys it broadly, and immediately breaks a dozen legacy applications nobody had inventoried, because steps 1 and 3 were skipped. The tools are rarely the bottleneck; the discipline to go in order is.</p>
+<h2>Governance: who actually owns this?</h2>
+<p>Zero Trust touches identity, networking, endpoint management, application teams, and often the cloud/infrastructure team — no single existing team owns all of it end to end. Successful programs create explicit cross-functional ownership (a steering committee, a named program lead) rather than assuming it&#39;ll coordinate itself. This connects directly to the GRC path&#39;s governance lesson: without clear ownership and accountability, a program that touches this many teams tends to stall on the seams between them.</p>
+<h2>Metrics that actually matter here</h2>
+<p>Borrowing directly from the DevSecOps path&#39;s metrics lesson and its warning about Goodhart&#39;s Law: pick metrics that reflect real progress, not vanity numbers.</p>
+<ul>
+<li><strong>Weak metric</strong>: &quot;number of MFA prompts issued&quot; — measures activity, not security improvement</li>
+<li><strong>Better metric</strong>: &quot;% of privileged accounts protected by phishing-resistant MFA&quot; — a concrete, meaningful coverage number</li>
+<li><strong>Weak metric</strong>: &quot;ZTNA product purchased&quot; — a checkbox, not an outcome</li>
+<li><strong>Better metric</strong>: &quot;% of remote access to top-10 sensitive applications now flowing through ZTNA instead of VPN&quot; — measures actual exposure reduction</li>
+</ul>
+<h2>A worked example: sequencing done right vs. wrong</h2>
+<p><strong>Done wrong</strong>: A company announces &quot;we&#39;re going Zero Trust&quot; and immediately deploys network micro-segmentation with aggressive default-deny rules across the whole environment. Within a day, dozens of legitimate internal services break because nobody had mapped what actually depended on what. Trust in the whole initiative — from both engineering and leadership — takes a serious hit, and the rollback effort costs more than a careful rollout would have.</p>
+<p><strong>Done right</strong>: The same company starts with identity (MFA rollout, conditional access), takes six months to get device posture visibility flowing reliably, pilots ZTNA on one genuinely painful legacy-VPN use case that everyone already wants fixed, and only then starts traffic-mapping toward eventual segmentation — armed with real usage data instead of guesses. Slower, but each stage builds credibility (and a working foundation) for the next one, instead of spending that credibility on an early, avoidable failure.</p>
+<h2>🧪 Hands-on lab — draft a 12-month roadmap</h2>
+<p>Pick a hypothetical mid-size company (50–500 employees, a mix of cloud and on-premises systems, no prior Zero Trust investment).</p>
+<ol>
+<li><p>Using the maturity table above, honestly place this company at its likely current stage.</p>
+</li>
+<li><p>Write your first 90-day priorities, drawing from the practical first-year list above — be specific about which one or two things come first and why.</p>
+</li>
+<li><p>Pick one metric you&#39;d report to leadership after 90 days, and explain why it&#39;s a &quot;better metric&quot; rather than a vanity one, per the framing above.</p>
+</li>
+<li><p>Identify who would realistically need to be in the room to make this program succeed (which roles/teams), and why a single team owning it alone would likely stall.</p>
+</li>
+<li><p>Why is &quot;we bought a ZTNA product&quot; not, by itself, evidence of Zero Trust maturity?</p>
+</li>
+<li><p>Explain why identity is almost universally the recommended first step, using what you know from the earlier lessons in this path about what identity feeds into.</p>
+</li>
+<li><p>In the &quot;done wrong&quot; example, what specific earlier-lesson advice was skipped, and what would following it have prevented?</p>
+</li>
+</ol>
+<h2>Key terms</h2>
+<ul>
+<li><strong>Zero Trust maturity model</strong> — a staged framework (Traditional → Initial → Advanced → Optimal) for assessing and planning Zero Trust adoption</li>
+<li><strong>Pilot application</strong> — a single, carefully chosen application used to prove out a new control (like ZTNA) before broader rollout</li>
+<li><strong>Cross-functional ownership</strong> — explicit, shared accountability across teams (identity, network, endpoint, cloud) for a program that no single team fully controls</li>
+</ul>
+<h2>Recap</h2>
+<p>Zero Trust adoption succeeds or fails largely on sequencing and governance, not on which specific products get purchased — identity first, device visibility next, a well-chosen pilot for ZTNA, and traffic-mapping before any aggressive segmentation. Pair that sequencing discipline with real cross-functional ownership and metrics that reflect actual exposure reduction rather than activity, and a multi-year journey becomes a series of credible, buildable wins instead of one big disruptive failure.</p>
+<h3>References</h3>
+<ul>
+<li><a href="https://www.cisa.gov/zero-trust-maturity-model">CISA Zero Trust Maturity Model</a> — the maturity stages referenced throughout this lesson</li>
+<li><a href="https://csrc.nist.gov/pubs/sp/800/207/final">NIST SP 800-207 — Zero Trust Architecture</a> — the foundational architectural reference this entire path is built on</li>
+</ul>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/24-zero-trust/implementing-zero-trust";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

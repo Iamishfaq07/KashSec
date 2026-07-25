@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Identity as the New Perimeter — Path 24 · KashSec Academy</title>
+<meta name="description" content="If the network location can't be trusted, something else has to become the primary control point. In Zero Trust, that's identity — a strongly verified, continuously checked answer to &quot;who (or what) is">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/24-zero-trust/identity-as-perimeter">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Identity as the New Perimeter — Path 24 · KashSec Academy">
+<meta property="og:description" content="If the network location can't be trusted, something else has to become the primary control point. In Zero Trust, that's identity — a strongly verified, continuously checked answer to &quot;who (or what) is">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/24-zero-trust/identity-as-perimeter">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Identity as the New Perimeter — Path 24 · KashSec Academy">
+<meta name="twitter:description" content="If the network location can't be trusted, something else has to become the primary control point. In Zero Trust, that's identity — a strongly verified, continuously checked answer to &quot;who (or what) is">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Identity as the New Perimeter — Path 24 · KashSec Academy","description":"If the network location can't be trusted, something else has to become the primary control point. In Zero Trust, that's identity — a strongly verified, continuously checked answer to \"who (or what) is","url":"https://kashsec.vercel.app/#/lesson/24-zero-trust/identity-as-perimeter","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/24-zero-trust/identity-as-perimeter">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 24 — Zero Trust Architecture</a> · Identity as the New Perimeter</div>
+  <article><h1>Identity as the New Perimeter</h1>
+<p>If the network location can&#39;t be trusted, something else has to become the primary control point. In Zero Trust, that&#39;s <strong>identity</strong> — a strongly verified, continuously checked answer to &quot;who (or what) is actually making this request?&quot;</p>
+<p>:::</p>
+<h2>Why identity became the anchor</h2>
+<p>Every other Zero Trust control — device checks, network segmentation, authorization decisions — has to be <em>attached to something</em>, and that something is almost always &quot;which identity is this.&quot; A device policy is meaningless without knowing whose device it is. A least-privilege authorization decision is meaningless without knowing who&#39;s asking. Identity is the thread that runs through the entire model.</p>
+<p>This is why the phrase &quot;identity is the new perimeter&quot; shows up constantly in Zero Trust material — not because the network stopped mattering, but because identity became the <em>primary</em> thing worth defending and verifying, with the network relegated to a secondary signal.</p>
+<h2>The building blocks</h2>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>What it does</th>
+<th>Why it matters here</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Identity Provider (IdP)</td>
+<td>Central source of truth for who a user is (Okta, Azure AD/Entra ID, Google Workspace)</td>
+<td>Every other system defers to it instead of managing its own separate login</td>
+</tr>
+<tr>
+<td>Single Sign-On (SSO)</td>
+<td>One strong login grants access across many apps</td>
+<td>Fewer passwords floating around, one place to revoke access instantly</td>
+</tr>
+<tr>
+<td>Multi-Factor Authentication (MFA)</td>
+<td>A second, independent proof of identity beyond a password</td>
+<td>Passwords alone are compromised constantly — phishing, reuse, leaks</td>
+</tr>
+<tr>
+<td>Conditional Access</td>
+<td>Rules that adjust what&#39;s allowed based on context (location, device health, risk score)</td>
+<td>Turns identity from a yes/no gate into a continuously adjustable dial</td>
+</tr>
+</tbody></table>
+<h2>MFA is necessary, not sufficient</h2>
+<p>MFA dramatically reduces account-takeover risk — but it is not itself Zero Trust, and not all MFA is equally strong:</p>
+<ul>
+<li><strong>SMS codes</strong> — better than nothing, but vulnerable to SIM-swapping and interception</li>
+<li><strong>Authenticator app codes (TOTP)</strong> — meaningfully stronger, still phishable (a fake login page can relay the code in real time)</li>
+<li><strong>Push notifications</strong> — convenient, but vulnerable to &quot;MFA fatigue&quot; attacks, where an attacker spams push requests hoping a tired user taps &quot;approve&quot; by mistake</li>
+<li><strong>Hardware security keys (FIDO2/WebAuthn)</strong> — cryptographically bound to the real site, effectively unphishable, currently the strongest widely-deployed option</li>
+</ul>
+<p>:::danger
+MFA fatigue attacks are not theoretical — they&#39;ve been used in several major real-world breaches. An attacker with a stolen password sends repeated push notifications, sometimes at 2am, until an annoyed or confused user approves one just to make it stop. The fix isn&#39;t &quot;trust users to always say no&quot; — it&#39;s number-matching (the app shows a code the user must type, not just tap approve) and rate-limiting how often a login can trigger new pushes.</p>
+<h2>Conditional access: identity as a dial, not a switch</h2>
+<p>A login isn&#39;t just &quot;allowed&quot; or &quot;denied&quot; — conditional access lets an organization set rules like:</p>
+<ul>
+<li>Allow access from a managed, patched company laptop with no extra prompt</li>
+<li>Require an additional MFA challenge if the login comes from a new country</li>
+<li>Block access entirely from a device flagged as compromised, regardless of correct credentials</li>
+<li>Require step-up authentication (a fresh MFA prompt) before an already-logged-in user can access something especially sensitive, like payroll data</li>
+</ul>
+<p>This is the practical mechanism that makes &quot;continuous verification&quot; real rather than aspirational — the system keeps evaluating context throughout a session, not only at the login screen.</p>
+<h2>A worked example: the same login, two different outcomes</h2>
+<p>Alice logs into the company&#39;s HR system from her laptop.</p>
+<ul>
+<li><strong>Scenario A</strong>: She&#39;s on her managed company laptop (patched, EDR agent reporting healthy), in her usual country, during business hours. Conditional access sees low risk and lets the login through with just her usual MFA push.</li>
+<li><strong>Scenario B</strong>: The same username and correct password are used an hour later from a browser in a country Alice has never logged in from, on a device with no management agent at all. Conditional access flags this as high-risk: it can require a hardware-key challenge Alice&#39;s real device would satisfy easily but an attacker likely can&#39;t, or block the login outright and alert the security team.</li>
+</ul>
+<p>Same credentials, wildly different outcome — because identity in Zero Trust isn&#39;t just &quot;did they know the password,&quot; it&#39;s &quot;does everything about this request look like the real Alice.&quot;</p>
+<h2>Service identity, not just human identity</h2>
+<p>Zero Trust identity isn&#39;t only about people logging in. Services calling other services need identity too:</p>
+<ul>
+<li><strong>API keys and static secrets</strong> are the weak version — long-lived, easily leaked, hard to rotate cleanly</li>
+<li><strong>Short-lived, cryptographically issued service identities</strong> (like SPIFFE/SPIRE, or cloud-native workload identity) are the Zero Trust-aligned version — a service proves who it is with a credential that expires in minutes and was never manually copied anywhere</li>
+</ul>
+<p>This connects directly to a theme from the DevSecOps path: preferring OIDC-issued short-lived credentials over static API keys is a Zero Trust principle in practice, even if nobody in that conversation used the phrase &quot;Zero Trust.&quot;</p>
+<h2>🧪 Hands-on lab — audit your own MFA posture</h2>
+<ol>
+<li><p>List every account you have that supports MFA (email, banking, work accounts, social media).</p>
+</li>
+<li><p>For each, note which MFA method you&#39;re currently using: none, SMS, authenticator app, push, or hardware key.</p>
+</li>
+<li><p>Identify your single most valuable account (usually your primary email, since it&#39;s often the recovery path for everything else) and check: is it using your strongest available MFA method?</p>
+</li>
+<li><p>If any high-value account is using SMS or nothing at all, upgrade it now to at least an authenticator app — this is one of the highest-value 15-minute security improvements available to any individual.</p>
+</li>
+<li><p>Write one sentence on why your primary email deserves stronger MFA than a low-value account you rarely use.</p>
+</li>
+<li><p>Why is a hardware security key considered &quot;unphishable&quot; in a way that a 6-digit authenticator app code isn&#39;t?</p>
+</li>
+<li><p>Explain how a conditional access policy could let the same correct password succeed in one context and fail in another.</p>
+</li>
+<li><p>Why does Zero Trust care about service-to-service identity, not just human logins?</p>
+</li>
+</ol>
+<h2>Key terms</h2>
+<ul>
+<li><strong>Identity Provider (IdP)</strong> — the central system that authenticates users and issues identity for other applications to trust</li>
+<li><strong>Conditional Access</strong> — policy rules that adjust access decisions based on real-time context (device, location, risk)</li>
+<li><strong>MFA fatigue attack</strong> — spamming push-based MFA approvals hoping a user taps &quot;approve&quot; out of annoyance or confusion</li>
+<li><strong>FIDO2/WebAuthn</strong> — a phishing-resistant authentication standard using hardware-bound cryptographic keys</li>
+<li><strong>Step-up authentication</strong> — requiring a fresh, stronger authentication challenge before an already-logged-in session can access something more sensitive</li>
+</ul>
+<h2>Recap</h2>
+<p>Identity is the anchor Zero Trust&#39;s other controls attach to — but strong identity means more than &quot;has a password&quot;: it means phishing-resistant MFA, continuous risk-based evaluation through conditional access, and identity for services as well as people. Getting this layer right is usually the highest-leverage first step in any real Zero Trust rollout, which is exactly why the next lesson builds on it with device trust.</p>
+<h3>References</h3>
+<ul>
+<li><a href="https://pages.nist.gov/800-63-4/">NIST SP 800-63 — Digital Identity Guidelines</a> — the authoritative reference on authentication assurance levels</li>
+<li><a href="https://fidoalliance.org/">FIDO Alliance</a> — the standards body behind FIDO2/WebAuthn hardware key authentication</li>
+</ul>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/24-zero-trust/identity-as-perimeter";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

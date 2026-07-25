@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zero Trust in Cloud-Native Environments — Path 24 · KashSec Academy</title>
+<meta name="description" content="Every lesson so far has largely described Zero Trust as if there's a network to segment and a perimeter to dissolve. In cloud-native environments, there often isn't a traditional network at all — work">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/24-zero-trust/zero-trust-cloud">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Zero Trust in Cloud-Native Environments — Path 24 · KashSec Academy">
+<meta property="og:description" content="Every lesson so far has largely described Zero Trust as if there's a network to segment and a perimeter to dissolve. In cloud-native environments, there often isn't a traditional network at all — work">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/24-zero-trust/zero-trust-cloud">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Zero Trust in Cloud-Native Environments — Path 24 · KashSec Academy">
+<meta name="twitter:description" content="Every lesson so far has largely described Zero Trust as if there's a network to segment and a perimeter to dissolve. In cloud-native environments, there often isn't a traditional network at all — work">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Zero Trust in Cloud-Native Environments — Path 24 · KashSec Academy","description":"Every lesson so far has largely described Zero Trust as if there's a network to segment and a perimeter to dissolve. In cloud-native environments, there often isn't a traditional network at all — work","url":"https://kashsec.vercel.app/#/lesson/24-zero-trust/zero-trust-cloud","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/24-zero-trust/zero-trust-cloud">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 24 — Zero Trust Architecture</a> · Zero Trust in Cloud-Native Environments</div>
+  <article><h1>Zero Trust in Cloud-Native Environments</h1>
+<p>Every lesson so far has largely described Zero Trust as if there&#39;s a network to segment and a perimeter to dissolve. In cloud-native environments, there often isn&#39;t a traditional network at all — workloads are ephemeral, infrastructure is defined in code, and &quot;the network&quot; might be entirely virtual and reconfigured on every deployment. Zero Trust principles still apply, but the mechanics look different.</p>
+<p>:::</p>
+<h2>Why cloud makes the perimeter problem worse, not better</h2>
+<p>On-premises, at least there was a physical perimeter to reason about, however leaky. In the cloud:</p>
+<ul>
+<li>Workloads spin up and down constantly — a server that existed five minutes ago might not exist now, and a brand-new one just replaced it</li>
+<li>Infrastructure spans multiple providers and regions, each with its own network model</li>
+<li>Traditional network-based controls (a firewall at a fixed IP) don&#39;t map cleanly onto infrastructure defined in Terraform and deployed via CI/CD pipelines</li>
+<li>The &quot;perimeter,&quot; if it exists at all, is defined by policy and API calls, not physical cabling</li>
+</ul>
+<p>This is exactly why Zero Trust and cloud adoption grew up together — the perimeter model was already failing before cloud, and cloud made it fail faster and more completely.</p>
+<h2>Workload identity: the cloud version of device trust</h2>
+<p>On a traditional network, a device has an identity (managed laptop, MDM-enrolled, posture-checked). In the cloud, a <strong>workload</strong> — a container, a serverless function, a VM — needs an equivalent: proof of what it is, issued and verified without a human ever typing a password.</p>
+<table>
+<thead>
+<tr>
+<th>On-prem device trust</th>
+<th>Cloud workload identity</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>MDM-managed laptop with an agent</td>
+<td>A container with a cryptographically issued, short-lived identity</td>
+</tr>
+<tr>
+<td>EDR reports device health</td>
+<td>Runtime security tooling reports workload behavior</td>
+</tr>
+<tr>
+<td>Certificate tied to enrolled hardware</td>
+<td>Identity tied to the workload&#39;s deployment context (which cluster, which namespace, which service account)</td>
+</tr>
+</tbody></table>
+<p>Standards like <strong>SPIFFE/SPIRE</strong> exist specifically to give workloads verifiable, short-lived identities that other services can check before trusting a request — the direct cloud-native analog of a managed device certificate.</p>
+<h2>IAM as the new segmentation</h2>
+<p>In traditional networking, segmentation meant firewall rules between subnets. In the cloud, the equivalent control is often <strong>IAM (Identity and Access Management) policy</strong> — which service, function, or role can call which API, on which resource, under which conditions. A misconfigured IAM policy that grants a function broader permissions than it needs is functionally the same mistake as a flat, unsegmented network — it&#39;s just expressed as a JSON policy document instead of a firewall rule.</p>
+<p>:::danger
+Overly broad IAM roles are one of the single most common real-world cloud security findings — a Lambda function or service account granted <code>*</code> (wildcard) permissions &quot;to make it work&quot; during development, that never gets scoped down before production. This is least privilege failing in exactly the way the first lesson in this path warned about, just in IAM syntax instead of network syntax.</p>
+<h2>Service mesh: micro-segmentation for microservices</h2>
+<p>A <strong>service mesh</strong> (Istio, Linkerd, and similar tools) provides, for service-to-service traffic inside a cloud-native application, roughly what micro-segmentation provides for a traditional network: mutual authentication between services (via workload identity), encrypted traffic by default, and fine-grained policy over which service can call which other service. This is the direct cloud-native descendant of the &quot;default-deny, explicitly allow what&#39;s needed&quot; model from the segmentation lesson — just implemented at the application layer instead of the network layer, because in Kubernetes especially, the underlying network is often too dynamic to segment meaningfully on its own.</p>
+<h2>The shared responsibility wrinkle</h2>
+<p>Cloud providers secure the infrastructure <em>underneath</em> your workloads (physical security, hypervisor isolation, and so on) — but everything you configure on top (IAM policies, network rules, workload identity, what&#39;s publicly exposed) is squarely your responsibility. Zero Trust in the cloud doesn&#39;t change this shared responsibility boundary; it&#39;s a framework for how you handle <em>your</em> half of it well. A cloud provider having excellent physical security does nothing to fix an IAM role with wildcard permissions that you configured.</p>
+<h2>A worked example: a serverless data pipeline</h2>
+<p>A cloud-native pipeline: an API Gateway triggers a Lambda function, which reads from a database and writes results to a storage bucket.</p>
+<p><strong>Without Zero Trust discipline</strong>: the Lambda function has a broad execution role — full read/write on every database table and every storage bucket in the account, because it was easier to grant broad access once than scope it precisely. If that function is ever compromised (a vulnerable dependency, a code injection bug), the blast radius is the entire account&#39;s data.</p>
+<p><strong>With Zero Trust discipline applied</strong>: the Lambda function&#39;s IAM role is scoped to exactly the one database table it needs to read and the one specific bucket it needs to write to — nothing else. Its identity is short-lived and tied to that specific deployment. If it&#39;s compromised, the attacker inherits exactly that narrow scope, not the whole account — the cloud-native equivalent of the three-tier segmentation example from the earlier lesson.</p>
+<h2>🧪 Hands-on lab — audit a cloud IAM policy for least privilege</h2>
+<ol>
+<li><p>Pick a cloud service you&#39;re familiar with (AWS Lambda, a GCP Cloud Function, or a hypothetical equivalent) and sketch what it actually needs to do (e.g., &quot;read from one S3 bucket, write to one DynamoDB table&quot;).</p>
+</li>
+<li><p>Write out the absolute minimum IAM permissions that would satisfy that need — specific resource ARNs/paths, not wildcards.</p>
+</li>
+<li><p>Now write the overly broad version a rushed developer might actually deploy (e.g., <code>s3:*</code> on <code>*</code>, or a role reused from an unrelated project).</p>
+</li>
+<li><p>For the broad version, write a concrete scenario of what an attacker could do if that specific function were compromised, that the scoped version would have prevented.</p>
+</li>
+<li><p>Why does &quot;the network&quot; become a less meaningful security boundary in cloud-native environments than it was on-premises?</p>
+</li>
+<li><p>Explain workload identity in your own words, and name its closest analog from the device-trust lesson.</p>
+</li>
+<li><p>A cloud provider advertises strong physical data-center security. Why doesn&#39;t that address an overly permissive IAM role you configured?</p>
+</li>
+</ol>
+<h2>Key terms</h2>
+<ul>
+<li><strong>Workload identity</strong> — a cryptographically verifiable, typically short-lived identity issued to a cloud workload (container, function, VM) rather than a human</li>
+<li><strong>IAM (Identity and Access Management)</strong> — the cloud-native mechanism for controlling which identities can perform which actions on which resources</li>
+<li><strong>Service mesh</strong> — infrastructure providing mutual authentication, encryption, and fine-grained policy for service-to-service traffic in cloud-native applications</li>
+<li><strong>Shared responsibility model</strong> — the division between what a cloud provider secures (infrastructure) and what the customer must secure (configuration, IAM, workload identity, data)</li>
+</ul>
+<h2>Recap</h2>
+<p>Zero Trust&#39;s principles translate directly into cloud-native environments — identity and device trust become workload identity, network segmentation becomes IAM policy and service mesh rules — but the mechanics shift because the underlying infrastructure is ephemeral, API-driven, and often has no meaningful physical or fixed-network perimeter to begin with. Overly broad IAM permissions are the cloud-native version of a flat, unsegmented network, and they&#39;re one of the most common real-world findings in cloud security assessments.</p>
+<h3>References</h3>
+<ul>
+<li><a href="https://spiffe.io/">SPIFFE/SPIRE</a> — the open standard for workload identity referenced above</li>
+<li><a href="https://csrc.nist.gov/pubs/sp/800/207/final">NIST SP 800-207 — Zero Trust Architecture</a> — includes cloud and hybrid deployment considerations</li>
+<li><a href="https://aws.amazon.com/compliance/shared-responsibility-model/">AWS/Azure/GCP shared responsibility model documentation</a> — the canonical framing of provider vs. customer responsibility</li>
+</ul>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/24-zero-trust/zero-trust-cloud";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

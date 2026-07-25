@@ -1008,6 +1008,19 @@ const PATHS = [
      {n:"7", id:"policies-and-procedures",    title:"Writing Policies People Actually Follow", desc:"The anatomy of a policy that survives contact with a real engineering team."},
      {n:"8", id:"third-party-vendor-risk",    title:"Third-Party & Vendor Risk", desc:"Why vendors are the weak link, and how to actually assess them."},
      {n:"9", id:"grc-tools-and-careers",      title:"GRC Tools, Certifications & Careers", desc:"Vanta/Drata, CISA/CRISC/CISM, and how to break into a GRC role."}
+   ]},
+  {n:"24", id:"24-zero-trust", title:"Zero Trust Architecture", level:"Advanced",
+   desc:"Never trust, always verify — identity, device trust, micro-segmentation, ZTNA, continuous verification, and how to actually roll this out.",
+   subs:[
+     {n:"1", id:"what-is-zero-trust",           title:"What is Zero Trust?", desc:"Why the perimeter model broke, and the three core principles that replaced it."},
+     {n:"2", id:"identity-as-perimeter",        title:"Identity as the New Perimeter", desc:"MFA, conditional access, and why identity anchors every other Zero Trust control."},
+     {n:"3", id:"device-trust-posture",         title:"Device Trust & Posture Verification", desc:"Why a correct password isn't enough — checking the device, not just the user."},
+     {n:"4", id:"microsegmentation",            title:"Micro-Segmentation & Network Design", desc:"Default-deny, blast radius, and containing what a flat network never could."},
+     {n:"5", id:"continuous-verification",      title:"Continuous Verification & Adaptive Access", desc:"Risk-based, adaptive access that keeps checking throughout a session, not just at login."},
+     {n:"6", id:"ztna-vs-vpn",                  title:"Zero Trust Network Access (ZTNA) vs. Traditional VPN", desc:"Why ZTNA grants an app, not a network — and what that changes."},
+     {n:"7", id:"zero-trust-cloud",             title:"Zero Trust in Cloud-Native Environments", desc:"Workload identity, IAM as segmentation, and service mesh in a world with no fixed perimeter."},
+     {n:"8", id:"implementing-zero-trust",      title:"Implementing Zero Trust: A Practical Roadmap", desc:"Sequencing, governance, and metrics for a real multi-year rollout."},
+     {n:"9", id:"zero-trust-case-studies-lab",  title:"Case Studies & Capstone: Assess a Zero Trust Maturity", desc:"BeyondCorp and real-world lessons, then a full maturity assessment exercise."}
    ]}
 
 ];
@@ -4670,6 +4683,10 @@ function renderLabPhishing(){
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
+  {date:'2026-07-25', title:'New path: Zero Trust Architecture', items:[
+    'A new 9-lesson advanced path: never trust/always verify, identity as the perimeter, device posture, micro-segmentation, continuous verification, ZTNA vs. VPN, Zero Trust in the cloud, a practical rollout roadmap, and a closing lesson on real-world case studies (Google BeyondCorp) capped with a maturity-assessment capstone exercise.',
+    'Comes with a full 10-question path quiz, like every other path.'
+  ]},
   {date:'2026-07-25', title:'New Active Directory Attack Lab', items:[
     'A guided, three-stage walkthrough of the classic AD attack chain: BloodHound-style graph recon to find a misconfigured-ACL path to Domain Admin, Kerberoasting a service account whose password leaked into its own description field, and forging a Golden Ticket once the krbtgt hash is obtained.'
   ]},

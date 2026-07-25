@@ -237,5 +237,14 @@ const LESSON_HASHES = {
  "23-grc-compliance/soc2-and-audits": "14c9b38bd4",
  "23-grc-compliance/policies-and-procedures": "280a97ca8d",
  "23-grc-compliance/third-party-vendor-risk": "dfc576abbe",
- "23-grc-compliance/grc-tools-and-careers": "925444a69e"
+ "23-grc-compliance/grc-tools-and-careers": "925444a69e",
+ "24-zero-trust/what-is-zero-trust": "f9299b2a98",
+ "24-zero-trust/identity-as-perimeter": "fe9ea88886",
+ "24-zero-trust/device-trust-posture": "f9cf4f9d8b",
+ "24-zero-trust/microsegmentation": "5f29075273",
+ "24-zero-trust/continuous-verification": "2ddcd59ac3",
+ "24-zero-trust/ztna-vs-vpn": "d408e64d6a",
+ "24-zero-trust/zero-trust-cloud": "09bc0d1716",
+ "24-zero-trust/implementing-zero-trust": "bd9e49fd00",
+ "24-zero-trust/zero-trust-case-studies-lab": "a9f967bd23"
 };

@@ -2,18 +2,20 @@
 
 **A completely free cybersecurity course, from absolute zero to job-ready.**
 
-24 learning paths · 235 sub-lessons · diagrams, labs, a hands-on CTF zone & challenges · always free
+25 learning paths · 244 sub-lessons · diagrams, labs, a hands-on CTF zone & challenges · always free
 
 [![Live Site](https://img.shields.io/badge/live-kashsec.academy-EFA43A?style=for-the-badge)](https://kashsec.vercel.app/)
 
 ## What's new
+- **New advanced path: Zero Trust Architecture** — never trust/always verify, identity as the perimeter, device posture, micro-segmentation, ZTNA vs. VPN, continuous verification, Zero Trust in the cloud, and a practical rollout roadmap capped with a BeyondCorp case study and maturity-assessment capstone
+- **New interactive labs**: 4 API Security labs (BOLA/BFLA, GraphQL introspection abuse, mass assignment, rate-limit bypass), 4 AI Red Teaming labs (prompt injection, jailbreak, indirect injection, an agentic-risk defensive exercise), and a guided 3-stage Active Directory Attack Lab (BloodHound recon, Kerberoasting, Golden Ticket)
 - **Two new advanced paths**: **API Security** (OWASP API Top 10, BOLA/BFLA, JWT attacks, GraphQL security, capstone lab) and **DevSecOps & AppSec Program** (SAST/DAST/SCA, CI/CD security, secrets & supply chain, threat modeling, building an AppSec program)
 - **Tools** — a suite of in-browser security utilities (`#/tools`): encoder/decoder, hash generator, JWT decoder, CVSS 3.1 calculator, subnet calculator, password-strength meter, and a cipher playground. All client-side; nothing leaves the browser.
 - **Full-text search** — search now matches the body of every lesson, not just titles. Plus an activity heatmap on your progress page, reading preferences (text size, width, legibility boost), Markdown export of your notes, an interview question bank (`#/interview`), a changelog (`#/changelog`) with RSS feed, and a "suggest an edit" link on every lesson.
 - **Glossary & flashcards** — all 600+ Key Terms from every lesson in one searchable A–Z glossary (`#/glossary`), plus an active-recall flashcard mode (`#/review`) that remembers which terms you already know
 - **Better lesson reading** — reading-time estimates, an "On this page" table of contents on longer lessons, one-click copy buttons and syntax highlighting on code blocks
 - **Streaks, backups & shortcuts** — a visible day-streak counter, JSON export/import of all your progress (no account needed), quiz "review your last attempt", and keyboard shortcuts (`[` / `]` between lessons, `?` for the cheatsheet)
-- **Installable & works offline** — KashSec is a full PWA now. Install it from the browser (or "Add to Home Screen" on mobile) and the entire course — app shell plus all 226 lessons — is available with zero network connection. See [Offline / PWA support](#offline--pwa-support) below.
+- **Installable & works offline** — KashSec is a full PWA now. Install it from the browser (or "Add to Home Screen" on mobile) and the entire course — app shell plus all 244 lessons — is available with zero network connection. See [Offline / PWA support](#offline--pwa-support) below.
 - **Four new beginner-friendly paths**: **Cryptography Fundamentals** (encoding vs. encryption vs. hashing, from zero), **Windows Security Basics** (Path 03's Linux depth, now for Windows), **Cloud Computing Basics** (the foundation Path 16's cloud security assumes), and **Digital Privacy & Personal Security** (your footprint, VPNs, secure messaging, identity theft)
 - **Path 17 — Malware & Reverse Engineering**: PE internals, hands-on Ghidra disassembly, dynamic analysis and sandboxing, unpacking/obfuscation, and writing YARA detection rules, capped with a full analysis pipeline lab
 - **Path 13 — Mobile App Security**: Android & iOS from the ground up — APK analysis, insecure storage, traffic interception, certificate pinning bypass, and exported component vulnerabilities, capped with a full assessment lab
@@ -54,9 +56,9 @@ KashSec/
     └── ...22-devsecops-appsec/
 ```
 
-## 🗺️ The 24 paths
+## 🗺️ The 25 paths
 
-`00` Computer Basics & Security Mindset · `01` Introduction · `02` Networking · `03` Linux & Operating Systems · `04` Programming & Python · `05` How the Web Works · `06` Cryptography Fundamentals · `07` Windows Security Basics · `08` Cloud Computing Basics · `09` Digital Privacy & Personal Security · `10` Cybersecurity Fundamentals · `11` Web Security & Hacking · `12` Network Security · `13` Mobile App Security · `14` Ethical Hacking · `15` Bug Bounty · `16` Advanced Topics · `17` Malware & Reverse Engineering · `18` AI & AI Security · `19` CTF Challenges · `20` Career Prep · `21` API Security · `22` DevSecOps & AppSec Program · `23` GRC & Compliance
+`00` Computer Basics & Security Mindset · `01` Introduction · `02` Networking · `03` Linux & Operating Systems · `04` Programming & Python · `05` How the Web Works · `06` Cryptography Fundamentals · `07` Windows Security Basics · `08` Cloud Computing Basics · `09` Digital Privacy & Personal Security · `10` Cybersecurity Fundamentals · `11` Web Security & Hacking · `12` Network Security · `13` Mobile App Security · `14` Ethical Hacking · `15` Bug Bounty · `16` Advanced Topics · `17` Malware & Reverse Engineering · `18` AI & AI Security · `19` CTF Challenges · `20` Career Prep · `21` API Security · `22` DevSecOps & AppSec Program · `23` GRC & Compliance · `24` Zero Trust Architecture
 
 ## ✍️ Writing a lesson
 
@@ -108,7 +110,7 @@ configured, the sign-in UI stays hidden and nothing changes.
 
 ## 📴 Offline / PWA support
 
-KashSec is an installable Progressive Web App. A service worker (`sw.js`) precaches the entire app shell plus all 226 lesson files the first time you visit, so once that finishes, the whole course works with **no network connection at all** — refresh, close the tab, come back a week later on a plane, it's all still there.
+KashSec is an installable Progressive Web App. A service worker (`sw.js`) precaches the entire app shell plus all 244 lesson files the first time you visit, so once that finishes, the whole course works with **no network connection at all** — refresh, close the tab, come back a week later on a plane, it's all still there.
 
 - **Install it**: most browsers show an install icon in the address bar, or use the install button in the site header (desktop Chrome/Edge, Android). On iOS Safari, use Share → **Add to Home Screen**.
 - **Regenerating the precache list**: `sw.js` is generated, not hand-written. After adding, removing, or renaming any path or lesson, run:

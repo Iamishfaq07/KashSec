@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Micro-Segmentation &amp; Network Design — Path 24 · KashSec Academy</title>
+<meta name="description" content="If identity and device posture answer &quot;who can get in,&quot; micro-segmentation answers a different, equally important question: &quot;once something is in, how far can it actually go?&quot; This is the &quot;assume brea">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/24-zero-trust/microsegmentation">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Micro-Segmentation &amp; Network Design — Path 24 · KashSec Academy">
+<meta property="og:description" content="If identity and device posture answer &quot;who can get in,&quot; micro-segmentation answers a different, equally important question: &quot;once something is in, how far can it actually go?&quot; This is the &quot;assume brea">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/24-zero-trust/microsegmentation">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Micro-Segmentation &amp; Network Design — Path 24 · KashSec Academy">
+<meta name="twitter:description" content="If identity and device posture answer &quot;who can get in,&quot; micro-segmentation answers a different, equally important question: &quot;once something is in, how far can it actually go?&quot; This is the &quot;assume brea">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Micro-Segmentation & Network Design — Path 24 · KashSec Academy","description":"If identity and device posture answer \"who can get in,\" micro-segmentation answers a different, equally important question: \"once something is in, how far can it actually go?\" This is the \"assume brea","url":"https://kashsec.vercel.app/#/lesson/24-zero-trust/microsegmentation","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/24-zero-trust/microsegmentation">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 24 — Zero Trust Architecture</a> · Micro-Segmentation &amp; Network Design</div>
+  <article><h1>Micro-Segmentation &amp; Network Design</h1>
+<p>If identity and device posture answer &quot;who can get in,&quot; micro-segmentation answers a different, equally important question: &quot;once something is in, how far can it actually go?&quot; This is the &quot;assume breach&quot; principle from the first lesson, made concrete at the network layer.</p>
+<p>:::</p>
+<h2>From flat networks to micro-segments</h2>
+<p>A <strong>flat network</strong> is one where, once you&#39;re inside, most systems can talk to most other systems by default. This was common (and honestly, often not deliberately &quot;designed&quot; — it&#39;s just what happens when nobody ever restricted internal traffic). The practical consequence: a single compromised workstation in the marketing department can often reach the finance database server directly, because nothing was ever configured to stop it.</p>
+<p><strong>Micro-segmentation</strong> breaks a network into small, deliberately isolated zones — sometimes down to the level of individual workloads — where traffic between segments is denied by default and only explicitly allowed paths are opened.</p>
+<table>
+<thead>
+<tr>
+<th>Approach</th>
+<th>Granularity</th>
+<th>Typical unit</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Traditional VLANs</td>
+<td>Coarse</td>
+<td>Whole departments or floors</td>
+</tr>
+<tr>
+<td>Subnet-based segmentation</td>
+<td>Medium</td>
+<td>Groups of related servers</td>
+</tr>
+<tr>
+<td>Micro-segmentation</td>
+<td>Fine</td>
+<td>Individual workloads or services</td>
+</tr>
+<tr>
+<td>Zero Trust micro-segmentation</td>
+<td>Finest</td>
+<td>Individual requests, evaluated per-flow</td>
+</tr>
+</tbody></table>
+<h2>Default-deny is the whole point</h2>
+<p>The single most important shift: <strong>default-deny, not default-allow</strong>. In a flat network, the question is &quot;is there a rule blocking this?&quot; In a properly micro-segmented network, the question flips to &quot;is there a rule explicitly allowing this?&quot; — and if not, the traffic simply doesn&#39;t happen.</p>
+<p>This sounds like a small wording difference. In practice it&#39;s the difference between a network where new, unreviewed pathways silently exist by default, and one where every single pathway had to be deliberately requested and approved.</p>
+<p>:::danger
+Retrofitting default-deny onto an existing flat network is genuinely hard — it usually breaks things nobody remembers configuring, because &quot;it just worked&quot; was never actually documented anywhere. This is exactly why organizations moving toward micro-segmentation typically start with extensive traffic-mapping (watching what actually talks to what for weeks before writing any deny rules) rather than flipping a switch.</p>
+<h2>A worked example: a three-tier app, segmented properly</h2>
+<p>A typical web application has a web tier, an app tier, and a database tier. Under flat networking, once inside, an attacker who compromises the web server might be able to reach the database directly, bypassing the app tier&#39;s business logic entirely.</p>
+<p>Under micro-segmentation:</p>
+<ul>
+<li>Web tier → app tier: <strong>allowed</strong>, on the specific port the app tier actually listens on</li>
+<li>App tier → database tier: <strong>allowed</strong>, on the specific database port, from app-tier hosts only</li>
+<li>Web tier → database tier: <strong>denied</strong>, full stop — there&#39;s no legitimate reason the web tier should ever talk to the database directly</li>
+<li>Database tier → anything outbound: <strong>denied by default</strong> — a compromised database server shouldn&#39;t be able to freely exfiltrate data to the internet or pivot elsewhere</li>
+</ul>
+<p>If an attacker compromises the web server now, they hit a wall trying to reach the database directly — they&#39;d have to also compromise the app tier through its legitimate, narrower interface, which is a meaningfully harder additional step, and one more chance for detection.</p>
+<h2>Software-Defined Perimeter (SDP)</h2>
+<p>Traditional segmentation is often still tied to physical or virtual network topology (VLANs, subnets, firewall zones). <strong>Software-Defined Perimeter</strong> takes this further: resources aren&#39;t just segmented, they&#39;re effectively <em>invisible</em> to anyone who hasn&#39;t been authorized. An unauthenticated scan of the network doesn&#39;t see a login page to attack — it sees nothing at all, because the resource never responds until the requester has already proven their identity and authorization out-of-band.</p>
+<p>This &quot;deny by default, invisible until authorized&quot; model is a big part of what modern Zero Trust Network Access (ZTNA) products are actually selling — covered in more depth in the next lesson.</p>
+<h2>East-west traffic: the blind spot</h2>
+<p>Security teams have historically spent enormous effort on <strong>north-south traffic</strong> (into and out of the network, at the perimeter) and comparatively little on <strong>east-west traffic</strong> (between systems inside the network). This is backwards from an &quot;assume breach&quot; standpoint — once an attacker is inside, east-west movement is exactly how they turn one compromised laptop into a full breach. Micro-segmentation is fundamentally an east-west control: it doesn&#39;t stop the initial break-in as much as it stops what happens <em>after</em>.</p>
+<h2>🧪 Hands-on lab — map a network&#39;s blast radius</h2>
+<p>Pick a system you&#39;re familiar with (a personal home network, a small app you&#39;ve built, or a hypothetical company setup).</p>
+<ol>
+<li><p>List every device/server/service on it.</p>
+</li>
+<li><p>For each pair, ask honestly: does A actually need to talk to B, or does it just <em>happen</em> to be able to right now?</p>
+</li>
+<li><p>Draw (in words or a simple diagram) which connections are genuinely necessary versus which exist only because nothing ever restricted them.</p>
+</li>
+<li><p>Pick the single most sensitive system in your list (a database, a personal NAS, whatever holds the most valuable data). Write down: right now, how many other systems could reach it if compromised? What&#39;s the smallest set of explicit rules that would get that number down to just what&#39;s actually needed?</p>
+</li>
+<li><p>Explain the difference between default-allow and default-deny network segmentation in your own words.</p>
+</li>
+<li><p>In the three-tier app example, why is &quot;web tier → database tier: denied&quot; specifically valuable, even though the web tier can still reach the app tier?</p>
+</li>
+<li><p>Why has east-west traffic historically gotten less security attention than north-south traffic, and why is that a problem under an &quot;assume breach&quot; mindset?</p>
+</li>
+</ol>
+<h2>Key terms</h2>
+<ul>
+<li><strong>Micro-segmentation</strong> — dividing a network into small, isolated zones with default-deny traffic rules between them</li>
+<li><strong>Default-deny</strong> — a security posture where all traffic is blocked unless explicitly allowed, rather than allowed unless explicitly blocked</li>
+<li><strong>East-west traffic</strong> — traffic between systems inside a network, as opposed to traffic crossing the perimeter</li>
+<li><strong>Software-Defined Perimeter (SDP)</strong> — an approach that makes resources invisible/unreachable to unauthorized requesters rather than merely access-controlled</li>
+</ul>
+<h2>Recap</h2>
+<p>Flat networks let a single compromise become a full breach; micro-segmentation limits blast radius by making every internal connection an explicit, deliberate decision instead of a default. Combined with the identity and device-trust layers from the previous two lessons, this is where Zero Trust stops being purely about &quot;who logs in&quot; and starts actively containing what happens after something inevitably goes wrong.</p>
+<h3>References</h3>
+<ul>
+<li><a href="https://csrc.nist.gov/pubs/sp/800/207/final">NIST SP 800-207 — Zero Trust Architecture</a> — covers network segmentation as a core architectural component</li>
+<li><a href="https://www.cisa.gov/zero-trust-maturity-model">CISA Zero Trust Maturity Model — Networks pillar</a> — maturity stages specifically for network segmentation</li>
+</ul>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/24-zero-trust/microsegmentation";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

@@ -103,6 +103,15 @@ const GLOSSARY = [
   "subTitle": "How to learn tech effectively"
  },
  {
+  "term": "Adaptive access",
+  "def": "scaling the access response (seamless, step-up, block) to the calculated risk level",
+  "pathId": "24-zero-trust",
+  "pathN": "24",
+  "pathTitle": "Zero Trust Architecture",
+  "subId": "continuous-verification",
+  "subTitle": "Continuous Verification & Adaptive Access"
+ },
+ {
   "term": "Adversarial example",
   "def": "an input with small, often imperceptible perturbations designed to cause model misclassification.",
   "pathId": "18-ai-security",
@@ -625,6 +634,15 @@ const GLOSSARY = [
   "subTitle": "Phishing & social eng."
  },
  {
+  "term": "BeyondCorp",
+  "def": "Google's pioneering, production-scale Zero Trust implementation, built in response to Operation Aurora",
+  "pathId": "24-zero-trust",
+  "pathN": "24",
+  "pathTitle": "Zero Trust Architecture",
+  "subId": "zero-trust-case-studies-lab",
+  "subTitle": "Case Studies & Capstone: Assess a Zero Trust Maturity"
+ },
+ {
   "term": "Binary",
   "def": "the 1s-and-0s representation everything reduces to.",
   "pathId": "00-fresher-basics",
@@ -677,6 +695,15 @@ const GLOSSARY = [
   "pathTitle": "DevSecOps & AppSec Program",
   "subId": "cicd-security",
   "subTitle": "Securing the CI/CD Pipeline"
+ },
+ {
+  "term": "Blast radius",
+  "def": "the scope of what's reachable/damageable if a given credential or device is compromised",
+  "pathId": "24-zero-trust",
+  "pathN": "24",
+  "pathTitle": "Zero Trust Architecture",
+  "subId": "ztna-vs-vpn",
+  "subTitle": "Zero Trust Network Access (ZTNA) vs. Traditional VPN"
  },
  {
   "term": "Blind command injection",
@@ -778,6 +805,15 @@ const GLOSSARY = [
   "subTitle": "Browser DevTools"
  },
  {
+  "term": "Broker",
+  "def": "the component in ZTNA that mediates every connection request between a user and a specific application",
+  "pathId": "24-zero-trust",
+  "pathN": "24",
+  "pathTitle": "Zero Trust Architecture",
+  "subId": "ztna-vs-vpn",
+  "subTitle": "Zero Trust Network Access (ZTNA) vs. Traditional VPN"
+ },
+ {
   "term": "Browser fingerprinting",
   "def": "identifying a device through the unique combination of its browser/system characteristics, without requiring cookies.",
   "pathId": "09-digital-privacy",
@@ -857,6 +893,15 @@ const GLOSSARY = [
   "pathTitle": "Bug Bounty",
   "subId": "logic-and-chains",
   "subTitle": "Business logic & chains"
+ },
+ {
+  "term": "BYOD",
+  "def": "Bring Your Own Device; personal, typically unmanaged devices used for work access",
+  "pathId": "24-zero-trust",
+  "pathN": "24",
+  "pathTitle": "Zero Trust Architecture",
+  "subId": "device-trust-posture",
+  "subTitle": "Device Trust & Posture Verification"
  },
  {
   "term": "C2 (Command & Control)",
@@ -1156,6 +1201,15 @@ const GLOSSARY = [
   "subTitle": "Decisions with if/else"
  },
  {
+  "term": "Conditional Access",
+  "def": "policy rules that adjust access decisions based on real-time context (device, location, risk)",
+  "pathId": "24-zero-trust",
+  "pathN": "24",
+  "pathTitle": "Zero Trust Architecture",
+  "subId": "identity-as-perimeter",
+  "subTitle": "Identity as the New Perimeter"
+ },
+ {
   "term": "Condition / loop / function",
   "def": "the building blocks of any script.",
   "pathId": "03-linux",
@@ -1235,6 +1289,15 @@ const GLOSSARY = [
   "pathTitle": "Programming & Python",
   "subId": "automation-for-security",
   "subTitle": "Automation for Security"
+ },
+ {
+  "term": "Continuous verification",
+  "def": "re-evaluating trust throughout a session, not just at initial login",
+  "pathId": "24-zero-trust",
+  "pathN": "24",
+  "pathTitle": "Zero Trust Architecture",
+  "subId": "continuous-verification",
+  "subTitle": "Continuous Verification & Adaptive Access"
  },
  {
   "term": "Control",
@@ -1334,6 +1397,15 @@ const GLOSSARY = [
   "pathTitle": "Operating Systems & Linux",
   "subId": "bash-scripting",
   "subTitle": "Your first bash script"
+ },
+ {
+  "term": "Cross-functional ownership",
+  "def": "explicit, shared accountability across teams (identity, network, endpoint, cloud) for a program that no single team fully controls",
+  "pathId": "24-zero-trust",
+  "pathN": "24",
+  "pathTitle": "Zero Trust Architecture",
+  "subId": "implementing-zero-trust",
+  "subTitle": "Implementing Zero Trust: A Practical Roadmap"
  },
  {
   "term": "CSP (Content Security Policy)",
@@ -1498,6 +1570,15 @@ const GLOSSARY = [
   "subTitle": "Firewalls, VPNs, proxies"
  },
  {
+  "term": "Default-deny",
+  "def": "a security posture where all traffic is blocked unless explicitly allowed, rather than allowed unless explicitly blocked",
+  "pathId": "24-zero-trust",
+  "pathN": "24",
+  "pathTitle": "Zero Trust Architecture",
+  "subId": "microsegmentation",
+  "subTitle": "Micro-Segmentation & Network Design"
+ },
+ {
   "term": "Defense in depth",
   "def": "layering multiple independent security controls rather than relying on any single one.",
   "pathId": "01-introduction",
@@ -1550,6 +1631,15 @@ const GLOSSARY = [
   "pathTitle": "DevSecOps & AppSec Program",
   "subId": "secrets-supply-chain",
   "subTitle": "Secrets Management & Software Supply Chain"
+ },
+ {
+  "term": "Device posture",
+  "def": "a real-time assessment of a device's security health (patch level, encryption, EDR status, etc.)",
+  "pathId": "24-zero-trust",
+  "pathN": "24",
+  "pathTitle": "Zero Trust Architecture",
+  "subId": "device-trust-posture",
+  "subTitle": "Device Trust & Posture Verification"
  },
  {
   "term": "DevTools",
@@ -1802,6 +1892,15 @@ const GLOSSARY = [
   "pathTitle": "Bug Bounty",
   "subId": "what-is-bb",
   "subTitle": "What is a bug bounty?"
+ },
+ {
+  "term": "East-west traffic",
+  "def": "traffic between systems inside a network, as opposed to traffic crossing the perimeter",
+  "pathId": "24-zero-trust",
+  "pathN": "24",
+  "pathTitle": "Zero Trust Architecture",
+  "subId": "microsegmentation",
+  "subTitle": "Micro-Segmentation & Network Design"
  },
  {
   "term": "ECB / CBC / GCM",
@@ -2126,6 +2225,15 @@ const GLOSSARY = [
   "pathTitle": "Cybersecurity Fundamentals",
   "subId": "protect-yourself",
   "subTitle": "MFA, updates, backups"
+ },
+ {
+  "term": "FIDO2/WebAuthn",
+  "def": "a phishing-resistant authentication standard using hardware-bound cryptographic keys",
+  "pathId": "24-zero-trust",
+  "pathN": "24",
+  "pathTitle": "Zero Trust Architecture",
+  "subId": "identity-as-perimeter",
+  "subTitle": "Identity as the New Perimeter"
  },
  {
   "term": "File",
@@ -2740,6 +2848,15 @@ const GLOSSARY = [
   "subTitle": "Cloud security"
  },
  {
+  "term": "IAM (Identity and Access Management)",
+  "def": "the cloud-native mechanism for controlling which identities can perform which actions on which resources",
+  "pathId": "24-zero-trust",
+  "pathN": "24",
+  "pathTitle": "Zero Trust Architecture",
+  "subId": "zero-trust-cloud",
+  "subTitle": "Zero Trust in Cloud-Native Environments"
+ },
+ {
   "term": "IAM role",
   "def": "temporarily assumable permissions with automatically expiring credentials, as opposed to a permanent user's long-lived credentials.",
   "pathId": "08-cloud-basics",
@@ -2747,6 +2864,15 @@ const GLOSSARY = [
   "pathTitle": "Cloud Computing Basics",
   "subId": "cloud-identity-access",
   "subTitle": "Cloud Identity & Access Management"
+ },
+ {
+  "term": "Identity Provider (IdP)",
+  "def": "the central system that authenticates users and issues identity for other applications to trust",
+  "pathId": "24-zero-trust",
+  "pathN": "24",
+  "pathTitle": "Zero Trust Architecture",
+  "subId": "identity-as-perimeter",
+  "subTitle": "Identity as the New Perimeter"
  },
  {
   "term": "Identity theft",
@@ -2837,6 +2963,15 @@ const GLOSSARY = [
   "pathTitle": "Malware & Reverse Engineering",
   "subId": "static-analysis-deep-dive",
   "subTitle": "Static Analysis Deep Dive"
+ },
+ {
+  "term": "Impossible travel",
+  "def": "a detection signal where the same account appears to be active in two geographically distant locations within a timeframe that rules out real travel",
+  "pathId": "24-zero-trust",
+  "pathN": "24",
+  "pathTitle": "Zero Trust Architecture",
+  "subId": "continuous-verification",
+  "subTitle": "Continuous Verification & Adaptive Access"
  },
  {
   "term": "`in`",
@@ -3253,6 +3388,24 @@ const GLOSSARY = [
   "subTitle": "Attackers & the kill chain"
  },
  {
+  "term": "Lateral movement",
+  "def": "an attacker moving from one compromised system to another inside a network",
+  "pathId": "24-zero-trust",
+  "pathN": "24",
+  "pathTitle": "Zero Trust Architecture",
+  "subId": "what-is-zero-trust",
+  "subTitle": "What is Zero Trust?"
+ },
+ {
+  "term": "Least privilege",
+  "def": "granting only the minimum access necessary for a given task",
+  "pathId": "24-zero-trust",
+  "pathN": "24",
+  "pathTitle": "Zero Trust Architecture",
+  "subId": "what-is-zero-trust",
+  "subTitle": "What is Zero Trust?"
+ },
+ {
   "term": "Least-privilege tool access",
   "def": "granting an agent only the minimum tool capabilities its task genuinely requires.",
   "pathId": "18-ai-security",
@@ -3397,6 +3550,15 @@ const GLOSSARY = [
   "subTitle": "Decisions with if/else"
  },
  {
+  "term": "Maturity assessment",
+  "def": "evaluating an organization's current Zero Trust posture against a staged framework to inform prioritized next steps",
+  "pathId": "24-zero-trust",
+  "pathN": "24",
+  "pathTitle": "Zero Trust Architecture",
+  "subId": "zero-trust-case-studies-lab",
+  "subTitle": "Case Studies & Capstone: Assess a Zero Trust Maturity"
+ },
+ {
   "term": "Maturity model",
   "def": "a staged framework (like the ladder above) for assessing and growing a program deliberately rather than all at once",
   "pathId": "22-devsecops-appsec",
@@ -3413,6 +3575,15 @@ const GLOSSARY = [
   "pathTitle": "GRC & Compliance",
   "subId": "nist-csf-overview",
   "subTitle": "NIST Cybersecurity Framework Overview"
+ },
+ {
+  "term": "MDM (Mobile Device Management)",
+  "def": "a platform that enrolls, monitors, and enforces policy on managed devices",
+  "pathId": "24-zero-trust",
+  "pathN": "24",
+  "pathTitle": "Zero Trust Architecture",
+  "subId": "device-trust-posture",
+  "subTitle": "Device Trust & Posture Verification"
  },
  {
   "term": "Memory forensics / Volatility",
@@ -3460,6 +3631,15 @@ const GLOSSARY = [
   "subTitle": "Snapshots & safety"
  },
  {
+  "term": "MFA fatigue attack",
+  "def": "spamming push-based MFA approvals hoping a user taps \"approve\" out of annoyance or confusion",
+  "pathId": "24-zero-trust",
+  "pathN": "24",
+  "pathTitle": "Zero Trust Architecture",
+  "subId": "identity-as-perimeter",
+  "subTitle": "Identity as the New Perimeter"
+ },
+ {
   "term": "MFA / TOTP / FIDO2",
   "def": "multi-factor authentication and its modern standards.",
   "pathId": "10-fundamentals",
@@ -3467,6 +3647,15 @@ const GLOSSARY = [
   "pathTitle": "Cybersecurity Fundamentals",
   "subId": "passwords-hashing",
   "subTitle": "Passwords & hashing"
+ },
+ {
+  "term": "Micro-segmentation",
+  "def": "dividing a network into small, isolated zones with default-deny traffic rules between them",
+  "pathId": "24-zero-trust",
+  "pathN": "24",
+  "pathTitle": "Zero Trust Architecture",
+  "subId": "microsegmentation",
+  "subTitle": "Micro-Segmentation & Network Design"
  },
  {
   "term": "Mitigate / Accept / Transfer / Avoid",
@@ -3593,6 +3782,15 @@ const GLOSSARY = [
   "pathTitle": "Bug Bounty",
   "subId": "hunting-idor",
   "subTitle": "Hunting IDOR"
+ },
+ {
+  "term": "NAC (Network Access Control)",
+  "def": "older network-layer approach to checking device health, historically point-in-time rather than continuous",
+  "pathId": "24-zero-trust",
+  "pathN": "24",
+  "pathTitle": "Zero Trust Architecture",
+  "subId": "device-trust-posture",
+  "subTitle": "Device Trust & Posture Verification"
  },
  {
   "term": "NAT",
@@ -3836,6 +4034,15 @@ const GLOSSARY = [
   "pathTitle": "Operating Systems & Linux",
   "subId": "what-is-an-os",
   "subTitle": "What is an operating system?"
+ },
+ {
+  "term": "Operation Aurora",
+  "def": "a 2009 attack against Google and other companies that exposed the dangers of broadly trusted internal networks",
+  "pathId": "24-zero-trust",
+  "pathN": "24",
+  "pathTitle": "Zero Trust Architecture",
+  "subId": "zero-trust-case-studies-lab",
+  "subTitle": "Case Studies & Capstone: Assess a Zero Trust Maturity"
  },
  {
   "term": "OSCP",
@@ -4144,6 +4351,15 @@ const GLOSSARY = [
   "subTitle": "Static Analysis Deep Dive"
  },
  {
+  "term": "Perimeter model",
+  "def": "the traditional security approach that trusts traffic based on network location (inside vs. outside a firewall)",
+  "pathId": "24-zero-trust",
+  "pathN": "24",
+  "pathTitle": "Zero Trust Architecture",
+  "subId": "what-is-zero-trust",
+  "subTitle": "What is Zero Trust?"
+ },
+ {
   "term": "Persisted query",
   "def": "a pre-registered, allow-listed query the client references by ID instead of sending arbitrary query text",
   "pathId": "21-api-security",
@@ -4196,6 +4412,15 @@ const GLOSSARY = [
   "pathTitle": "Cybersecurity Fundamentals",
   "subId": "phishing",
   "subTitle": "Phishing & social eng."
+ },
+ {
+  "term": "Pilot application",
+  "def": "a single, carefully chosen application used to prove out a new control (like ZTNA) before broader rollout",
+  "pathId": "24-zero-trust",
+  "pathN": "24",
+  "pathTitle": "Zero Trust Architecture",
+  "subId": "implementing-zero-trust",
+  "subTitle": "Implementing Zero Trust: A Practical Roadmap"
  },
  {
   "term": "Pinned action",
@@ -4268,6 +4493,15 @@ const GLOSSARY = [
   "pathTitle": "DevSecOps & AppSec Program",
   "subId": "building-appsec-program",
   "subTitle": "Building an AppSec Program from Scratch"
+ },
+ {
+  "term": "Policy engine",
+  "def": "the component that evaluates every access request against identity, device, and context signals",
+  "pathId": "24-zero-trust",
+  "pathN": "24",
+  "pathTitle": "Zero Trust Architecture",
+  "subId": "what-is-zero-trust",
+  "subTitle": "What is Zero Trust?"
  },
  {
   "term": "Policy hierarchy",
@@ -4999,6 +5233,15 @@ const GLOSSARY = [
   "subTitle": "Risk Management Fundamentals"
  },
  {
+  "term": "Risk score",
+  "def": "a combined confidence level derived from multiple identity, device, behavioral, and network signals",
+  "pathId": "24-zero-trust",
+  "pathN": "24",
+  "pathTitle": "Zero Trust Architecture",
+  "subId": "continuous-verification",
+  "subTitle": "Continuous Verification & Adaptive Access"
+ },
+ {
   "term": "Risk treatment",
   "def": "the chosen response to a risk: accept, mitigate, transfer, or avoid",
   "pathId": "23-grc-compliance",
@@ -5395,6 +5638,15 @@ const GLOSSARY = [
   "subTitle": "Windows Fundamentals for Security"
  },
  {
+  "term": "Service mesh",
+  "def": "infrastructure providing mutual authentication, encryption, and fine-grained policy for service-to-service traffic in cloud-native applications",
+  "pathId": "24-zero-trust",
+  "pathN": "24",
+  "pathTitle": "Zero Trust Architecture",
+  "subId": "zero-trust-cloud",
+  "subTitle": "Zero Trust in Cloud-Native Environments"
+ },
+ {
   "term": "Session",
   "def": "the concept of \"who this browser is right now.\"",
   "pathId": "05-web-basics",
@@ -5465,6 +5717,15 @@ const GLOSSARY = [
   "pathTitle": "Advanced Cyber Topics",
   "subId": "cloud-security",
   "subTitle": "Cloud security"
+ },
+ {
+  "term": "Shared responsibility model",
+  "def": "the division between what a cloud provider secures (infrastructure) and what the customer must secure (configuration, IAM, workload identity, data)",
+  "pathId": "24-zero-trust",
+  "pathN": "24",
+  "pathTitle": "Zero Trust Architecture",
+  "subId": "zero-trust-cloud",
+  "subTitle": "Zero Trust in Cloud-Native Environments"
  },
  {
   "term": "Shebang",
@@ -5683,6 +5944,15 @@ const GLOSSARY = [
   "subTitle": "What is a computer really?"
  },
  {
+  "term": "Software-Defined Perimeter (SDP)",
+  "def": "an approach that makes resources invisible/unreachable to unauthorized requesters rather than merely access-controlled",
+  "pathId": "24-zero-trust",
+  "pathN": "24",
+  "pathTitle": "Zero Trust Architecture",
+  "subId": "microsegmentation",
+  "subTitle": "Micro-Segmentation & Network Design"
+ },
+ {
   "term": "SOP / CORS / CSP",
   "def": "the browser's core security mechanisms.",
   "pathId": "05-web-basics",
@@ -5888,6 +6158,15 @@ const GLOSSARY = [
   "pathTitle": "Operating Systems & Linux",
   "subId": "terminal-basics",
   "subTitle": "Meet the terminal"
+ },
+ {
+  "term": "Step-up authentication",
+  "def": "requiring a fresh, stronger authentication challenge before an already-logged-in session can access something more sensitive",
+  "pathId": "24-zero-trust",
+  "pathN": "24",
+  "pathTitle": "Zero Trust Architecture",
+  "subId": "identity-as-perimeter",
+  "subTitle": "Identity as the New Perimeter"
  },
  {
   "term": "Storage",
@@ -6637,6 +6916,15 @@ const GLOSSARY = [
   "subTitle": "Firewalls, VPNs, proxies"
  },
  {
+  "term": "VPN concentrator",
+  "def": "the central device/server that terminates VPN connections and routes traffic onto the internal network",
+  "pathId": "24-zero-trust",
+  "pathN": "24",
+  "pathTitle": "Zero Trust Architecture",
+  "subId": "ztna-vs-vpn",
+  "subTitle": "Zero Trust Network Access (ZTNA) vs. Traditional VPN"
+ },
+ {
   "term": "VPN (Virtual Private Network)",
   "def": "an encrypted tunnel routing your traffic through an intermediary server, hiding it from your local network and ISP.",
   "pathId": "09-digital-privacy",
@@ -6790,6 +7078,15 @@ const GLOSSARY = [
   "subTitle": "Your first Python program"
  },
  {
+  "term": "Workload identity",
+  "def": "a cryptographically verifiable, typically short-lived identity issued to a cloud workload (container, function, VM) rather than a human",
+  "pathId": "24-zero-trust",
+  "pathN": "24",
+  "pathTitle": "Zero Trust Architecture",
+  "subId": "zero-trust-cloud",
+  "subTitle": "Zero Trust in Cloud-Native Environments"
+ },
+ {
   "term": "WPS",
   "def": "a convenience pairing feature with a history of serious brute-force vulnerabilities.",
   "pathId": "12-network-security",
@@ -6862,6 +7159,15 @@ const GLOSSARY = [
   "subTitle": "Firewalls, VPNs, proxies"
  },
  {
+  "term": "Zero Trust maturity model",
+  "def": "a staged framework (Traditional → Initial → Advanced → Optimal) for assessing and planning Zero Trust adoption",
+  "pathId": "24-zero-trust",
+  "pathN": "24",
+  "pathTitle": "Zero Trust Architecture",
+  "subId": "implementing-zero-trust",
+  "subTitle": "Implementing Zero Trust: A Practical Roadmap"
+ },
+ {
   "term": "Zombie API",
   "def": "a deprecated API version still running and still reachable, often with weaker security than its replacement",
   "pathId": "21-api-security",
@@ -6869,5 +7175,14 @@ const GLOSSARY = [
   "pathTitle": "API Security",
   "subId": "owasp-api-top-10",
   "subTitle": "OWASP API Top 10 (2023)"
+ },
+ {
+  "term": "ZTNA (Zero Trust Network Access)",
+  "def": "a model granting brokered, per-application access rather than broad network-level access",
+  "pathId": "24-zero-trust",
+  "pathN": "24",
+  "pathTitle": "Zero Trust Architecture",
+  "subId": "ztna-vs-vpn",
+  "subTitle": "Zero Trust Network Access (ZTNA) vs. Traditional VPN"
  }
 ];

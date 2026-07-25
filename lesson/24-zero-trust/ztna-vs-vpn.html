@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zero Trust Network Access (ZTNA) vs. Traditional VPN — Path 24 · KashSec Academy</title>
+<meta name="description" content="Every earlier lesson in this path has been mostly conceptual. ZTNA is where Zero Trust principles become a specific, buyable, deployable technology category — and understanding what it actually replac">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/24-zero-trust/ztna-vs-vpn">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Zero Trust Network Access (ZTNA) vs. Traditional VPN — Path 24 · KashSec Academy">
+<meta property="og:description" content="Every earlier lesson in this path has been mostly conceptual. ZTNA is where Zero Trust principles become a specific, buyable, deployable technology category — and understanding what it actually replac">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/24-zero-trust/ztna-vs-vpn">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Zero Trust Network Access (ZTNA) vs. Traditional VPN — Path 24 · KashSec Academy">
+<meta name="twitter:description" content="Every earlier lesson in this path has been mostly conceptual. ZTNA is where Zero Trust principles become a specific, buyable, deployable technology category — and understanding what it actually replac">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Zero Trust Network Access (ZTNA) vs. Traditional VPN — Path 24 · KashSec Academy","description":"Every earlier lesson in this path has been mostly conceptual. ZTNA is where Zero Trust principles become a specific, buyable, deployable technology category — and understanding what it actually replac","url":"https://kashsec.vercel.app/#/lesson/24-zero-trust/ztna-vs-vpn","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/24-zero-trust/ztna-vs-vpn">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 24 — Zero Trust Architecture</a> · Zero Trust Network Access (ZTNA) vs. Traditional VPN</div>
+  <article><h1>Zero Trust Network Access (ZTNA) vs. Traditional VPN</h1>
+<p>Every earlier lesson in this path has been mostly conceptual. ZTNA is where Zero Trust principles become a specific, buyable, deployable technology category — and understanding what it actually replaces (and why) is one of the most interview-relevant topics in this entire path.</p>
+<p>:::</p>
+<h2>What a traditional VPN actually does</h2>
+<p>A corporate VPN authenticates a user, then assigns their device an IP address <em>inside</em> the corporate network range. From that point forward, the device is — network-wise — treated as if it&#39;s plugged into an ethernet port in the office. Whatever that network segment can reach, the VPN-connected device can generally attempt to reach too, subject to whatever internal firewall rules happen to exist (which, per the micro-segmentation lesson, are often far looser than they should be).</p>
+<p>This was a reasonable design in an era of flat internal networks and infrequent remote access. It creates two persistent problems:</p>
+<ol>
+<li><strong>Broad implicit access.</strong> Connecting to the VPN is a coarse, all-or-nothing decision. It&#39;s not &quot;grant access to the specific app I need,&quot; it&#39;s &quot;grant a foothold on the whole network, then hope internal segmentation limits the blast radius&quot; — and as covered in the segmentation lesson, that internal segmentation is often weaker than assumed.</li>
+<li><strong>A single point of compromise with wide reach.</strong> VPN credentials (or a VPN client vulnerability) becoming compromised is a well-worn path to serious breaches, precisely because &quot;on the VPN&quot; has historically meant &quot;on the network,&quot; full stop.</li>
+</ol>
+<h2>What ZTNA does instead</h2>
+<p>ZTNA (Zero Trust Network Access) grants access to <strong>one specific application</strong>, after verifying identity, device posture, and policy — without ever placing the device on the broader network at all. The user never gets an internal IP address; they get a narrow, brokered connection to exactly the resource they were authorized for, and nothing else exists from their vantage point.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Traditional VPN</th>
+<th>ZTNA</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Grants</td>
+<td>Network-level access (an IP on the internal network)</td>
+<td>Application-level access (one specific app/service)</td>
+</tr>
+<tr>
+<td>Visibility of other resources</td>
+<td>Often broad — much of the internal network is reachable</td>
+<td>Effectively invisible — unauthorized resources don&#39;t even respond</td>
+</tr>
+<tr>
+<td>Trust model</td>
+<td>Trust established once at connection, largely static after</td>
+<td>Continuously re-evaluated (identity + device + context), per the earlier lessons in this path</td>
+</tr>
+<tr>
+<td>Typical failure mode</td>
+<td>A compromised VPN credential can reach far more than intended</td>
+<td>A compromised credential is contained to the specific app it was scoped to</td>
+</tr>
+<tr>
+<td>Segmentation dependency</td>
+<td>Relies heavily on internal network segmentation to limit blast radius</td>
+<td>Segmentation is closer to inherent in the model itself</td>
+</tr>
+</tbody></table>
+<h2>How ZTNA actually works, at a high level</h2>
+<pre><code>User/device
+    │  (identity + device posture checked)
+Policy engine / broker
+    │  (only if authorized for THIS specific app)
+Application  ← direct, brokered connection — nothing else is reachable
+</code></pre>
+<p>The broker sits between the user and every application, making a fresh authorization decision per connection request instead of granting broad network reachability once. This is exactly the Software-Defined Perimeter concept from the micro-segmentation lesson, applied specifically to remote access.</p>
+<h2>A worked example: the blast radius difference</h2>
+<p>An attacker steals an employee&#39;s VPN credentials via phishing.</p>
+<p><strong>Under a traditional VPN</strong>: the attacker connects, gets an internal IP, and can now attempt to reach whatever that network segment allows — internal wikis, file shares, other servers, anything internal segmentation didn&#39;t explicitly block. The actual damage depends entirely on how well-segmented the internal network happens to be, which, realistically, varies a lot.</p>
+<p><strong>Under ZTNA</strong>: the same stolen credentials get the attacker access to <em>exactly</em> the specific applications that employee&#39;s identity and device posture were authorized for — nothing more. If the employee&#39;s real device is required for that authorization (a device certificate, a managed-device check) and the attacker is using their own machine, even the stolen credentials alone aren&#39;t enough; they&#39;d also need to defeat the device-trust layer from an earlier lesson. The blast radius is architecturally bounded from the start, not dependent on how well someone configured internal firewall rules years ago.</p>
+<h2>Why this matters beyond &quot;it&#39;s more secure&quot;</h2>
+<ul>
+<li><strong>Better remote-work experience in practice</strong>: ZTNA often means users connect directly to the specific app they need with less latency than backhauling all traffic through a central VPN concentrator</li>
+<li><strong>Cleaner third-party and contractor access</strong>: granting a contractor VPN access to &quot;the network&quot; is a scoping nightmare; granting them ZTNA access to exactly two applications is a much smaller, auditable decision</li>
+<li><strong>No more VPN client as a top attack target</strong>: VPN client software vulnerabilities have repeatedly been high-profile initial-access vectors in real breaches; removing the always-on VPN client from the picture removes that specific attack surface</li>
+</ul>
+<h2>What ZTNA doesn&#39;t magically solve</h2>
+<p>ZTNA is a real architectural improvement, not a silver bullet:</p>
+<ul>
+<li>It&#39;s only as good as the identity and device-posture signals feeding its policy decisions — garbage signals in, garbage authorization decisions out</li>
+<li>Migrating from VPN to ZTNA is a genuine project, not a flag flip — legacy applications not designed for it may need adaptation</li>
+<li>Vendors market plenty of &quot;ZTNA&quot; products that implement only part of the real model — the same &quot;not a single product&quot; warning from the first lesson applies here directly</li>
+</ul>
+<h2>🧪 Hands-on lab — compare the two models on paper</h2>
+<p>Pick a hypothetical remote employee who needs access to three internal resources: an internal wiki, a customer database, and a deployment tool.</p>
+<ol>
+<li>Under a traditional VPN model, describe what network-level access granting VPN connectivity would realistically expose, beyond just those three resources.</li>
+<li>Under a ZTNA model, describe what the same employee&#39;s access would look like instead — be specific about what&#39;s visible and what isn&#39;t.</li>
+<li>Now imagine this employee&#39;s laptop gets malware. For each model, write one sentence on what the malware could realistically reach using the employee&#39;s live session.</li>
+<li>Which model would you recommend for a contractor who only ever needs the deployment tool, and why?</li>
+</ol>
+<p>:::challenge Test yourself</p>
+<ol>
+<li>In one sentence, explain the core architectural difference between &quot;network-level access&quot; and &quot;application-level access.&quot;</li>
+<li>Why does a VPN client vulnerability represent a bigger single point of failure than a ZTNA broker vulnerability, assuming both are equally likely to have bugs?</li>
+<li>Name one thing ZTNA does NOT automatically fix, even after a full migration.</li>
+</ol>
+<h2>Key terms</h2>
+<ul>
+<li><strong>ZTNA (Zero Trust Network Access)</strong> — a model granting brokered, per-application access rather than broad network-level access</li>
+<li><strong>VPN concentrator</strong> — the central device/server that terminates VPN connections and routes traffic onto the internal network</li>
+<li><strong>Broker</strong> — the component in ZTNA that mediates every connection request between a user and a specific application</li>
+<li><strong>Blast radius</strong> — the scope of what&#39;s reachable/damageable if a given credential or device is compromised</li>
+</ul>
+<h2>Recap</h2>
+<p>Traditional VPNs grant broad network presence and rely on internal segmentation to limit damage after the fact; ZTNA grants narrow, per-application access brokered through continuous identity and device checks, bounding blast radius by design rather than by hoping internal firewall rules are good enough. It&#39;s the most concrete, deployable expression of everything the earlier lessons in this path have been building toward — which is exactly why it&#39;s such a common interview and real-world adoption topic.</p>
+<h3>References</h3>
+<ul>
+<li><a href="https://csrc.nist.gov/pubs/sp/800/207/final">NIST SP 800-207 — Zero Trust Architecture</a> — describes the architectural model ZTNA implements</li>
+<li><a href="https://www.cisa.gov/zero-trust-maturity-model">CISA Zero Trust Maturity Model — Networks pillar</a> — situates ZTNA within a broader adoption roadmap</li>
+</ul>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/24-zero-trust/ztna-vs-vpn";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>
