@@ -177,4 +177,4 @@ You find a website with an obvious-looking flaw. You're sure you could confirm i
 - [scanme.nmap.org](https://nmap.org/book/legal-issues.html#legal-issues-scanme) — Nmap's own note about their legal practice target.
 ???
 
-**Next up →** [How to actually learn this](#/lesson/01-introduction/how-to-learn)
+**Next up →** [Cybersecurity laws & ethics, beyond the golden rule](#/lesson/01-introduction/cybersecurity-laws-and-ethics)

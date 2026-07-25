@@ -572,6 +572,15 @@ const GLOSSARY = [
  },
  {
   "term": "Availability",
+  "def": "systems and data remain accessible to legitimate users when needed.",
+  "pathId": "01-introduction",
+  "pathN": "01",
+  "pathTitle": "Introduction to Cybersecurity",
+  "subId": "cia-triad-explained",
+  "subTitle": "The CIA Triad: the three things security actually protects"
+ },
+ {
+  "term": "Availability",
   "def": "systems accessible when needed.",
   "pathId": "10-fundamentals",
   "pathN": "10",
@@ -1030,6 +1039,15 @@ const GLOSSARY = [
   "subTitle": "Web recon"
  },
  {
+  "term": "CFAA (Computer Fraud and Abuse Act)",
+  "def": "the primary US federal law governing unauthorized computer access.",
+  "pathId": "01-introduction",
+  "pathN": "01",
+  "pathTitle": "Introduction to Cybersecurity",
+  "subId": "cybersecurity-laws-and-ethics",
+  "subTitle": "Cybersecurity laws & ethics, beyond the golden rule"
+ },
+ {
   "term": "Chaining",
   "def": "combining multiple individual findings into one higher-impact, realistic attack scenario.",
   "pathId": "14-ethical-hacking",
@@ -1100,6 +1118,15 @@ const GLOSSARY = [
   "pathTitle": "OT/ICS & Critical Infrastructure Security",
   "subId": "ics-vulnerability-management",
   "subTitle": "ICS Vulnerability Management"
+ },
+ {
+  "term": "CIS Controls",
+  "def": "a prioritized, concrete list of technical security safeguards.",
+  "pathId": "01-introduction",
+  "pathN": "01",
+  "pathTitle": "Introduction to Cybersecurity",
+  "subId": "security-frameworks-intro",
+  "subTitle": "Security frameworks: a beginner's map"
  },
  {
   "term": "CISO",
@@ -1307,6 +1334,15 @@ const GLOSSARY = [
   "pathTitle": "Operating Systems & Linux",
   "subId": "bash-scripting",
   "subTitle": "Your first bash script"
+ },
+ {
+  "term": "Confidentiality",
+  "def": "only authorized people can access specific information.",
+  "pathId": "01-introduction",
+  "pathN": "01",
+  "pathTitle": "Introduction to Cybersecurity",
+  "subId": "cia-triad-explained",
+  "subTitle": "The CIA Triad: the three things security actually protects"
  },
  {
   "term": "Confidentiality",
@@ -1562,6 +1598,15 @@ const GLOSSARY = [
  },
  {
   "term": "CTF (Capture The Flag)",
+  "def": "a gamified security challenge format where participants exploit deliberately vulnerable systems to find hidden flags.",
+  "pathId": "01-introduction",
+  "pathN": "01",
+  "pathTitle": "Introduction to Cybersecurity",
+  "subId": "joining-the-community",
+  "subTitle": "Joining the security community"
+ },
+ {
+  "term": "CTF (Capture The Flag)",
   "def": "gamified security challenges for legal, structured skill-building.",
   "pathId": "14-ethical-hacking",
   "pathN": "14",
@@ -1678,6 +1723,15 @@ const GLOSSARY = [
   "subTitle": "Networking & community"
  },
  {
+  "term": "DDoS (Distributed Denial of Service)",
+  "def": "flooding a service with traffic to make it unavailable to legitimate users.",
+  "pathId": "01-introduction",
+  "pathN": "01",
+  "pathTitle": "Introduction to Cybersecurity",
+  "subId": "common-cyberattacks-overview",
+  "subTitle": "A tour of common cyberattacks"
+ },
+ {
   "term": "Debugging",
   "def": "finding and fixing why a program does the wrong thing.",
   "pathId": "04-python",
@@ -1712,6 +1766,15 @@ const GLOSSARY = [
   "pathTitle": "Zero Trust Architecture",
   "subId": "microsegmentation",
   "subTitle": "Micro-Segmentation & Network Design"
+ },
+ {
+  "term": "DEF CON",
+  "def": "one of the world's largest hacker conferences, with local chapter meetups in many cities.",
+  "pathId": "01-introduction",
+  "pathN": "01",
+  "pathTitle": "Introduction to Cybersecurity",
+  "subId": "joining-the-community",
+  "subTitle": "Joining the security community"
  },
  {
   "term": "Defense in depth",
@@ -2893,6 +2956,15 @@ const GLOSSARY = [
   "subTitle": "SCADA & ICS Architecture Fundamentals"
  },
  {
+  "term": "Home lab",
+  "def": "a small, isolated practice environment for hands-on security learning.",
+  "pathId": "01-introduction",
+  "pathN": "01",
+  "pathTitle": "Introduction to Cybersecurity",
+  "subId": "building-a-home-lab",
+  "subTitle": "Building your first home lab"
+ },
+ {
   "term": "Horizontal privilege escalation",
   "def": "gaining access to another user's data at the same privilege level (BOLA's typical impact)",
   "pathId": "21-api-security",
@@ -3335,6 +3407,15 @@ const GLOSSARY = [
  },
  {
   "term": "Integrity",
+  "def": "information stays accurate and unaltered by unauthorized parties.",
+  "pathId": "01-introduction",
+  "pathN": "01",
+  "pathTitle": "Introduction to Cybersecurity",
+  "subId": "cia-triad-explained",
+  "subTitle": "The CIA Triad: the three things security actually protects"
+ },
+ {
+  "term": "Integrity",
   "def": "data is accurate and untampered.",
   "pathId": "10-fundamentals",
   "pathN": "10",
@@ -3470,12 +3551,30 @@ const GLOSSARY = [
  },
  {
   "term": "ISO 27001",
+  "def": "an international standard for building and certifying an Information Security Management System (ISMS).",
+  "pathId": "01-introduction",
+  "pathN": "01",
+  "pathTitle": "Introduction to Cybersecurity",
+  "subId": "security-frameworks-intro",
+  "subTitle": "Security frameworks: a beginner's map"
+ },
+ {
+  "term": "ISO 27001",
   "def": "international ISMS certification standard.",
   "pathId": "10-fundamentals",
   "pathN": "10",
   "pathTitle": "Cybersecurity Fundamentals",
   "subId": "frameworks",
   "subTitle": "Frameworks & compliance"
+ },
+ {
+  "term": "Isolated/host-only network",
+  "def": "a VM network configuration that prevents traffic from reaching your real home network or the internet.",
+  "pathId": "01-introduction",
+  "pathN": "01",
+  "pathTitle": "Introduction to Cybersecurity",
+  "subId": "building-a-home-lab",
+  "subTitle": "Building your first home lab"
  },
  {
   "term": "Isolation erosion",
@@ -3811,6 +3910,15 @@ const GLOSSARY = [
   "subTitle": "Command inj. & uploads"
  },
  {
+  "term": "Malware",
+  "def": "software designed to harm, exploit, or gain unauthorized access to a system.",
+  "pathId": "01-introduction",
+  "pathN": "01",
+  "pathTitle": "Introduction to Cybersecurity",
+  "subId": "common-cyberattacks-overview",
+  "subTitle": "A tour of common cyberattacks"
+ },
+ {
   "term": "`man`",
   "def": "the built-in manual.",
   "pathId": "03-linux",
@@ -3827,6 +3935,15 @@ const GLOSSARY = [
   "pathTitle": "Computer Basics & Security Mindset",
   "subId": "how-internet-works",
   "subTitle": "How the internet works"
+ },
+ {
+  "term": "Man-in-the-middle (MITM)",
+  "def": "secretly intercepting communication between two parties.",
+  "pathId": "01-introduction",
+  "pathN": "01",
+  "pathTitle": "Introduction to Cybersecurity",
+  "subId": "common-cyberattacks-overview",
+  "subTitle": "A tour of common cyberattacks"
  },
  {
   "term": "Mass assignment",
@@ -4208,6 +4325,15 @@ const GLOSSARY = [
  },
  {
   "term": "NIST CSF",
+  "def": "a widely-used cybersecurity framework organized around six core functions: Identify, Protect, Detect, Respond, Recover, Govern.",
+  "pathId": "01-introduction",
+  "pathN": "01",
+  "pathTitle": "Introduction to Cybersecurity",
+  "subId": "security-frameworks-intro",
+  "subTitle": "Security frameworks: a beginner's map"
+ },
+ {
+  "term": "NIST CSF",
   "def": "Govern/Identify/Protect/Detect/Respond/Recover framework.",
   "pathId": "10-fundamentals",
   "pathN": "10",
@@ -4493,6 +4619,15 @@ const GLOSSARY = [
   "pathTitle": "Mobile App Security",
   "subId": "owasp-mobile-top-10",
   "subTitle": "OWASP Mobile Top 10"
+ },
+ {
+  "term": "OWASP Top 10",
+  "def": "a regularly updated list of the most critical web application security risks.",
+  "pathId": "01-introduction",
+  "pathN": "01",
+  "pathTitle": "Introduction to Cybersecurity",
+  "subId": "security-frameworks-intro",
+  "subTitle": "Security frameworks: a beginner's map"
  },
  {
   "term": "OWASP Top 10",
@@ -5603,6 +5738,15 @@ const GLOSSARY = [
  },
  {
   "term": "Responsible disclosure",
+  "def": "reporting a discovered vulnerability to the affected organization through an official channel, rather than exploiting or publicizing it.",
+  "pathId": "01-introduction",
+  "pathN": "01",
+  "pathTitle": "Introduction to Cybersecurity",
+  "subId": "cybersecurity-laws-and-ethics",
+  "subTitle": "Cybersecurity laws & ethics, beyond the golden rule"
+ },
+ {
+  "term": "Responsible disclosure",
   "def": "reporting vulnerabilities outside a formal contract, following the same core reporting discipline.",
   "pathId": "14-ethical-hacking",
   "pathN": "14",
@@ -5942,6 +6086,15 @@ const GLOSSARY = [
   "pathTitle": "Introduction to Cybersecurity",
   "subId": "the-golden-rule",
   "subTitle": "The golden rule: permission"
+ },
+ {
+  "term": "Scope",
+  "def": "the explicitly agreed boundaries of what a security engagement authorizes.",
+  "pathId": "01-introduction",
+  "pathN": "01",
+  "pathTitle": "Introduction to Cybersecurity",
+  "subId": "cybersecurity-laws-and-ethics",
+  "subTitle": "Cybersecurity laws & ethics, beyond the golden rule"
  },
  {
   "term": "Scope",
@@ -6413,6 +6566,15 @@ const GLOSSARY = [
  },
  {
   "term": "Snapshot",
+  "def": "a saved state of a VM that can be instantly restored later.",
+  "pathId": "01-introduction",
+  "pathN": "01",
+  "pathTitle": "Introduction to Cybersecurity",
+  "subId": "building-a-home-lab",
+  "subTitle": "Building your first home lab"
+ },
+ {
+  "term": "Snapshot",
   "def": "a restorable saved state of a VM.",
   "pathId": "03-linux",
   "pathN": "03",
@@ -6608,6 +6770,15 @@ const GLOSSARY = [
   "pathTitle": "Computer Basics & Security Mindset",
   "subId": "email-basics-and-safety",
   "subTitle": "Email basics & safety"
+ },
+ {
+  "term": "Spoofing",
+  "def": "impersonating a trusted source to gain trust or access.",
+  "pathId": "01-introduction",
+  "pathN": "01",
+  "pathTitle": "Introduction to Cybersecurity",
+  "subId": "common-cyberattacks-overview",
+  "subTitle": "A tour of common cyberattacks"
  },
  {
   "term": "Spoofing",
@@ -7508,6 +7679,15 @@ const GLOSSARY = [
   "pathTitle": "Operating Systems & Linux",
   "subId": "virtualization",
   "subTitle": "What is virtualization?"
+ },
+ {
+  "term": "Virtual machine (VM)",
+  "def": "a full, isolated operating system running as software inside your real computer.",
+  "pathId": "01-introduction",
+  "pathN": "01",
+  "pathTitle": "Introduction to Cybersecurity",
+  "subId": "building-a-home-lab",
+  "subTitle": "Building your first home lab"
  },
  {
   "term": "Virtual machine (VM)",

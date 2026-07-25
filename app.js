@@ -699,10 +699,16 @@ const PATHS = [
    subs:[
      {n:"1", id:"what-is-cybersecurity", title:"What is cybersecurity?", desc:"The concept, in plain English with everyday analogies."},
      {n:"2", id:"why-it-matters",        title:"Why it matters to you",   desc:"Everyday attacks, and the career door this opens."},
-     {n:"3", id:"types-of-hackers",      title:"Types of hackers & careers", desc:"White/grey/black hats, and the jobs that exist."},
-     {n:"4", id:"the-golden-rule",       title:"The golden rule: permission", desc:"The one legal line that keeps you safe forever."},
-     {n:"5", id:"how-to-learn",          title:"How to actually learn this", desc:"The habits that prevent burnout and speed you up."},
-     {n:"6", id:"security-mindset-lab",  title:"Security Mindset Lab",    desc:"A hands-on exercise to develop the right way of thinking about security."}
+     {n:"3", id:"cia-triad-explained",   title:"The CIA Triad: the three things security actually protects", desc:"Confidentiality, Integrity, Availability — the framework behind nearly every control you'll learn."},
+     {n:"4", id:"types-of-hackers",      title:"Types of hackers & careers", desc:"White/grey/black hats, and the jobs that exist."},
+     {n:"5", id:"common-cyberattacks-overview", title:"A tour of common cyberattacks", desc:"A bird's-eye map of malware, phishing, and web/network attacks before the deep dives."},
+     {n:"6", id:"the-golden-rule",       title:"The golden rule: permission", desc:"The one legal line that keeps you safe forever."},
+     {n:"7", id:"cybersecurity-laws-and-ethics", title:"Cybersecurity laws & ethics, beyond the golden rule", desc:"The CFAA, the hat framework formalized, and ethics beyond strict legality."},
+     {n:"8", id:"security-frameworks-intro", title:"Security frameworks: a beginner's map", desc:"NIST CSF, ISO 27001, CIS Controls, and OWASP Top 10, in plain English."},
+     {n:"9", id:"how-to-learn",          title:"How to actually learn this", desc:"The habits that prevent burnout and speed you up."},
+     {n:"10", id:"building-a-home-lab",  title:"Building your first home lab", desc:"VMs, snapshots, and setting up an isolated environment to practice in."},
+     {n:"11", id:"joining-the-community", title:"Joining the security community", desc:"CTFs, communities, and where real learning happens outside a classroom."},
+     {n:"12", id:"security-mindset-lab",  title:"Security Mindset Lab",    desc:"A hands-on exercise to develop the right way of thinking about security."}
    ]},
   {n:"02", id:"02-networking", title:"Networking Fundamentals", level:"Beginner",
    desc:"Networks, IP, ports, packets, TCP/UDP, DNS, HTTP/HTTPS — the bedrock.",
@@ -4732,6 +4738,11 @@ function renderLabPhishing(){
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
+  {date:'2026-07-25', title:'Path 01 doubled to 12 lessons', items:[
+    'Fourth batch of the course-wide content-doubling effort: Path 01 (Introduction to Cybersecurity) grows from 6 to 12 lessons.',
+    'New lessons: The CIA Triad, A Tour of Common Cyberattacks, Cybersecurity Laws & Ethics, Security Frameworks: A Beginner\'s Map, Building Your First Home Lab, and Joining the Security Community.',
+    'Lesson order and "Next up" links re-sequenced across the whole path to keep the beginner narrative coherent.'
+  ]},
   {date:'2026-07-25', title:'Path 00 doubled to 12 lessons', items:[
     'Third batch of the course-wide content-doubling effort: Path 00 (Computer Basics & Security Mindset) grows from 6 to 12 lessons.',
     'New lessons: Using Your Web Browser Safely, Wi-Fi & Connecting Safely, Updates & Backups, Email Basics & Safety, Common Tech Scams for Beginners, and Building Good Digital Habits.',

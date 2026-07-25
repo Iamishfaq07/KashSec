@@ -184,4 +184,4 @@ You now understand:
 
 That's a real achievement. Take a moment.
 
-**Next up →** [Security Mindset Lab](#/lesson/01-introduction/security-mindset-lab)
+**Next up →** [Building your first home lab](#/lesson/01-introduction/building-a-home-lab)

@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The CIA Triad: the three things security actually protects — Path 01 · KashSec Academy</title>
+<meta name="description" content="Every security control you'll learn about in this entire course — firewalls, encryption, backups, access control — exists to protect one of exactly three properties. This lesson introduces that framew">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/01-introduction/cia-triad-explained">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="The CIA Triad: the three things security actually protects — Path 01 · KashSec Academy">
+<meta property="og:description" content="Every security control you'll learn about in this entire course — firewalls, encryption, backups, access control — exists to protect one of exactly three properties. This lesson introduces that framew">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/01-introduction/cia-triad-explained">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The CIA Triad: the three things security actually protects — Path 01 · KashSec Academy">
+<meta name="twitter:description" content="Every security control you'll learn about in this entire course — firewalls, encryption, backups, access control — exists to protect one of exactly three properties. This lesson introduces that framew">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"The CIA Triad: the three things security actually protects — Path 01 · KashSec Academy","description":"Every security control you'll learn about in this entire course — firewalls, encryption, backups, access control — exists to protect one of exactly three properties. This lesson introduces that framew","url":"https://kashsec.vercel.app/#/lesson/01-introduction/cia-triad-explained","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/01-introduction/cia-triad-explained">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 01 — Introduction to Cybersecurity</a> · The CIA Triad: the three things security actually protects</div>
+  <article><h1>The CIA Triad: the three things security actually protects</h1>
+<p>Every security control you&#39;ll learn about in this entire course — firewalls, encryption, backups, access control — exists to protect one of exactly three properties. This lesson introduces that framework now, early, so you have a mental hook to hang everything else on.</p>
+<p>:::</p>
+<h2>Confidentiality: keeping secrets secret</h2>
+<p><strong>Confidentiality</strong> means only authorized people can see specific information. A password leak, a data breach exposing customer records, or someone reading your private messages are all confidentiality failures — the information didn&#39;t change, and the system didn&#39;t go down, but it ended up in front of eyes it shouldn&#39;t have.</p>
+<h2>Integrity: keeping information accurate and untampered</h2>
+<p><strong>Integrity</strong> means information stays accurate and hasn&#39;t been secretly changed by someone unauthorized. If an attacker can&#39;t read your bank balance but <em>can</em> quietly change the number, that&#39;s an integrity failure — often more dangerous than a confidentiality failure, because the damage isn&#39;t just exposure, it&#39;s corrupted trust in data everyone relies on being accurate.</p>
+<h2>Availability: keeping systems usable when you need them</h2>
+<p><strong>Availability</strong> means systems and data are actually accessible when legitimate users need them. A website knocked offline by a flood of fake traffic (a <strong>DDoS attack</strong>, covered properly in Path 12), or files locked by ransomware demanding payment, are both availability failures — nothing was necessarily read or changed, but the legitimate user simply can&#39;t get to what they need.</p>
+<h2>Why the triad matters: not every threat attacks all three equally</h2>
+<p>Understanding which leg of the triad a given attack targets tells you a lot about how to defend against it:</p>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Which leg fails</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>A hacker steals a customer database</td>
+<td>Confidentiality</td>
+<td>Data was read by someone unauthorized</td>
+</tr>
+<tr>
+<td>An attacker changes grades in a school&#39;s system</td>
+<td>Integrity</td>
+<td>Data was altered, not just seen</td>
+</tr>
+<tr>
+<td>A hospital&#39;s systems are knocked offline by ransomware</td>
+<td>Availability</td>
+<td>Data can&#39;t be accessed at all, even by legitimate staff</td>
+</tr>
+</tbody></table>
+<p>Some attacks hit more than one leg at once — ransomware, for instance, typically threatens both availability (files are locked) <em>and</em> confidentiality (attackers increasingly threaten to leak the data too, a tactic called double extortion).</p>
+<p>:::challenge Categorize the attack
+An attacker breaks into a company&#39;s inventory system and doesn&#39;t steal anything or take it offline — they just quietly change stock counts so certain products appear out of stock when they aren&#39;t.</p>
+<details><summary>Hint</summary>Was anything read that shouldn't have been? Did the system go down? What actually changed?</details>
+<details><summary>Show answer</summary>This is an <strong>integrity</strong> failure. Nothing was leaked (confidentiality intact) and the system stayed online (availability intact) — but the data itself was altered without authorization, corrupting the accuracy of information the business depends on. This is exactly the kind of subtle attack the triad framework helps you spot: it's easy to focus security effort on "keeping attackers out" (confidentiality) and "keeping the lights on" (availability) while under-investing in making sure the data itself can't be quietly tampered with.</details><h2>🧪 Hands-on lab — apply the triad to your own life</h2>
+<p>Think of three things you personally protect (a bank account, a private journal, a work file). For each, identify which leg of the triad matters most to you, and one concrete thing you already do (or should start doing) to protect it.</p>
+<ol>
+<li>Which leg of the CIA triad does a stolen password primarily threaten?</li>
+<li>Why might an integrity failure sometimes be more dangerous than a confidentiality failure?</li>
+<li>Name one attack type that threatens two legs of the triad at once, and explain how.</li>
+</ol>
+<h2>Key terms</h2>
+<ul>
+<li><strong>Confidentiality</strong> — only authorized people can access specific information.</li>
+<li><strong>Integrity</strong> — information stays accurate and unaltered by unauthorized parties.</li>
+<li><strong>Availability</strong> — systems and data remain accessible to legitimate users when needed.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>The CIA triad (Confidentiality, Integrity, Availability) is the framework nearly every security control ultimately serves.</li>
+<li>Different attacks target different legs — a data breach hits confidentiality, tampered data hits integrity, and an outage hits availability.</li>
+<li>Some attacks, like modern ransomware, deliberately threaten multiple legs at once.</li>
+<li>Learning to instantly categorize &quot;which leg does this attack threaten?&quot; is one of the most useful habits you&#39;ll build in this entire course.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/01-introduction/types-of-hackers">Types of hackers &amp; careers</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/01-introduction/cia-triad-explained";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

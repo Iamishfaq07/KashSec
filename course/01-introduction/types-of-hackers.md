@@ -187,4 +187,4 @@ An ethical hacker and a criminal can have identical skills and use identical too
 - [Cyber Career Framework — UK Cyber Security Council](https://www.ukcybersecuritycouncil.org.uk/careers-and-learning/cyber-career-framework/) — 16 cyber specialisms with role descriptions.
 ???
 
-**Next up →** [The golden rule: permission](#/lesson/01-introduction/the-golden-rule)
+**Next up →** [A tour of common cyberattacks](#/lesson/01-introduction/common-cyberattacks-overview)

@@ -161,4 +161,4 @@ What's the name of the attack where a password leaked from **one** site is autom
 - [Google Phishing Quiz](https://phishingquiz.withgoogle.com/) — take it, then share it with family. Excellent free training.
 ???
 
-**Next up →** [Types of hackers & careers](#/lesson/01-introduction/types-of-hackers)
+**Next up →** [The CIA Triad: the three things security actually protects](#/lesson/01-introduction/cia-triad-explained)

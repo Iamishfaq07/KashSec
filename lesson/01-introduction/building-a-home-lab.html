@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Building your first home lab — Path 01 · KashSec Academy</title>
+<meta name="description" content="Reading about security only gets you so far — real skill comes from actually doing things, safely, on systems you're allowed to break. This lesson covers how to set up your own practice environment be">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/01-introduction/building-a-home-lab">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Building your first home lab — Path 01 · KashSec Academy">
+<meta property="og:description" content="Reading about security only gets you so far — real skill comes from actually doing things, safely, on systems you're allowed to break. This lesson covers how to set up your own practice environment be">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/01-introduction/building-a-home-lab">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Building your first home lab — Path 01 · KashSec Academy">
+<meta name="twitter:description" content="Reading about security only gets you so far — real skill comes from actually doing things, safely, on systems you're allowed to break. This lesson covers how to set up your own practice environment be">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Building your first home lab — Path 01 · KashSec Academy","description":"Reading about security only gets you so far — real skill comes from actually doing things, safely, on systems you're allowed to break. This lesson covers how to set up your own practice environment be","url":"https://kashsec.vercel.app/#/lesson/01-introduction/building-a-home-lab","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/01-introduction/building-a-home-lab">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 01 — Introduction to Cybersecurity</a> · Building your first home lab</div>
+  <article><h1>Building your first home lab</h1>
+<p>Reading about security only gets you so far — real skill comes from actually doing things, safely, on systems you&#39;re allowed to break. This lesson covers how to set up your own practice environment before you dive into the more technical paths ahead.</p>
+<p>:::</p>
+<h2>What a home lab actually is</h2>
+<p>A <strong>home lab</strong> is a small, isolated practice environment — usually one or more virtual machines running on your own computer — where you can install vulnerable software, practice attacks, break things, and reset everything back to a clean state whenever you want, all without any risk to a real system or network.</p>
+<h2>Virtual machines: the core building block</h2>
+<p>A <strong>virtual machine (VM)</strong> is a full, isolated &quot;computer inside your computer&quot; — a separate operating system running in software, that behaves like its own independent machine but can be created, copied, or deleted in minutes. This is exactly why VMs are the standard tool for security practice: you can intentionally infect, misconfigure, or break a VM, then simply delete it and start over, with zero risk to your actual computer.</p>
+<ul>
+<li><strong>VirtualBox</strong> and <strong>VMware Workstation Player</strong> are the two most common free options for running VMs on your own computer.</li>
+<li><strong>Snapshots</strong> — a feature nearly every VM tool offers — let you save an exact state of a VM and instantly roll back to it later, which is enormously useful when you want to practice the same attack repeatedly from a known clean starting point.</li>
+</ul>
+<h2>What to actually install, as a beginner</h2>
+<ul>
+<li><strong>Kali Linux</strong> — a Linux distribution that comes pre-loaded with hundreds of security tools, widely used throughout this course&#39;s later labs and in the real security industry</li>
+<li><strong>A deliberately vulnerable target VM</strong> — projects like <strong>Metasploitable</strong> and <strong>DVWA (Damn Vulnerable Web Application)</strong> are built specifically to be broken into for learning purposes, giving you something legal and safe to practice attacking</li>
+<li><strong>A second, &quot;clean&quot; VM</strong> running a normal operating system, useful for practicing defensive concepts (patching, monitoring, hardening) rather than only offensive ones</li>
+</ul>
+<h2>Isolating your lab network — the step beginners skip</h2>
+<p>The single most important lab configuration detail: set your VMs to use an <strong>isolated (or &quot;host-only&quot;) network</strong> rather than bridging them directly to your home network. This ensures that anything you&#39;re deliberately running — a vulnerable web app, malware samples in later paths — can&#39;t accidentally reach your real home devices or the wider internet.</p>
+<p>:::tip
+Getting this right now means you won&#39;t have to relearn it later — Path 03&#39;s Linux fundamentals, Path 11&#39;s web security labs, and nearly every hands-on exercise in this course from here forward assume you have a working, isolated lab environment ready to go.</p>
+<h2>🧪 Hands-on lab — set up your first environment</h2>
+<ol>
+<li><p>Download and install VirtualBox (or VMware Workstation Player) — both are free for personal use.</p>
+</li>
+<li><p>Download Kali Linux&#39;s official VM image and import it into your virtualization software.</p>
+</li>
+<li><p>Configure the VM&#39;s network adapter to &quot;Host-only&quot; or &quot;Internal Network&quot; rather than &quot;Bridged,&quot; so it&#39;s isolated from your home network.</p>
+</li>
+<li><p>Take a snapshot of the freshly installed Kali VM before you do anything else with it — this becomes your clean starting point to roll back to later.</p>
+</li>
+<li><p>Boot the VM once and confirm it starts up successfully.</p>
+</li>
+<li><p>Why are VMs specifically well-suited to security practice, compared to installing tools directly on your main computer?</p>
+</li>
+<li><p>What does a snapshot let you do that would otherwise require a full reinstall?</p>
+</li>
+<li><p>Why should a lab&#39;s network be isolated rather than bridged to your home network?</p>
+</li>
+</ol>
+<h2>Key terms</h2>
+<ul>
+<li><strong>Home lab</strong> — a small, isolated practice environment for hands-on security learning.</li>
+<li><strong>Virtual machine (VM)</strong> — a full, isolated operating system running as software inside your real computer.</li>
+<li><strong>Snapshot</strong> — a saved state of a VM that can be instantly restored later.</li>
+<li><strong>Isolated/host-only network</strong> — a VM network configuration that prevents traffic from reaching your real home network or the internet.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>A home lab, built from virtual machines, is how you get unlimited legal &quot;permission&quot; to practice attack and defense techniques.</li>
+<li>VirtualBox or VMware, plus a Kali Linux VM and a deliberately vulnerable target VM, form a solid beginner setup.</li>
+<li>Snapshots let you instantly reset to a clean state, making repeated practice fast and low-risk.</li>
+<li>Isolating your lab&#39;s network is the single most important configuration step, and one this course&#39;s labs assume you already have working going forward.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/01-introduction/joining-the-community">Joining the security community</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/01-introduction/building-a-home-lab";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

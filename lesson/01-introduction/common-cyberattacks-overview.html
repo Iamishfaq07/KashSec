@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A tour of common cyberattacks — Path 01 · KashSec Academy</title>
+<meta name="description" content="You'll spend the rest of this course learning individual attack types in real depth. This lesson is a bird's-eye tour first — a map of the territory, so every deep-dive lesson later on has a place to ">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/01-introduction/common-cyberattacks-overview">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="A tour of common cyberattacks — Path 01 · KashSec Academy">
+<meta property="og:description" content="You'll spend the rest of this course learning individual attack types in real depth. This lesson is a bird's-eye tour first — a map of the territory, so every deep-dive lesson later on has a place to ">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/01-introduction/common-cyberattacks-overview">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="A tour of common cyberattacks — Path 01 · KashSec Academy">
+<meta name="twitter:description" content="You'll spend the rest of this course learning individual attack types in real depth. This lesson is a bird's-eye tour first — a map of the territory, so every deep-dive lesson later on has a place to ">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"A tour of common cyberattacks — Path 01 · KashSec Academy","description":"You'll spend the rest of this course learning individual attack types in real depth. This lesson is a bird's-eye tour first — a map of the territory, so every deep-dive lesson later on has a place to ","url":"https://kashsec.vercel.app/#/lesson/01-introduction/common-cyberattacks-overview","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/01-introduction/common-cyberattacks-overview">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 01 — Introduction to Cybersecurity</a> · A tour of common cyberattacks</div>
+  <article><h1>A tour of common cyberattacks</h1>
+<p>You&#39;ll spend the rest of this course learning individual attack types in real depth. This lesson is a bird&#39;s-eye tour first — a map of the territory, so every deep-dive lesson later on has a place to slot into, rather than arriving as an unconnected fact.</p>
+<p>:::</p>
+<h2>Malware — the umbrella term</h2>
+<p><strong>Malware</strong> (malicious software) is the broad category covering any software designed to harm, exploit, or gain unauthorized access to a system. Specific types you&#39;ll hear constantly:</p>
+<ul>
+<li><strong>Virus</strong> — malware that attaches itself to legitimate files and spreads when those files are shared</li>
+<li><strong>Worm</strong> — malware that spreads on its own across networks, with no user action required</li>
+<li><strong>Ransomware</strong> — malware that encrypts your files and demands payment to unlock them (mentioned in the CIA triad lesson as a classic availability attack)</li>
+<li><strong>Trojan</strong> — malware disguised as something legitimate or desirable, tricking you into installing it yourself</li>
+</ul>
+<p>Path 17 covers malware analysis in real depth; for now, just recognize the family.</p>
+<h2>Phishing and social engineering</h2>
+<p><strong>Phishing</strong> is a fake message designed to trick you into revealing information or clicking something malicious — covered in real detail in the email-safety lesson back in Path 00. The broader category, <strong>social engineering</strong>, covers any attack that manipulates human psychology rather than exploiting a technical flaw — the gift-card scams and fake-emergency scams from Path 00 both fall under this umbrella, and Path 10 covers the full psychological playbook.</p>
+<h2>Attacks against passwords and accounts</h2>
+<ul>
+<li><strong>Credential stuffing</strong> — trying leaked username/password pairs from one breach against many other sites, relying on password reuse (covered in the passwords lesson)</li>
+<li><strong>Brute-force</strong> — systematically trying every possible password combination</li>
+<li><strong>Credential phishing</strong> — a fake login page designed to steal your real password when you type it in</li>
+</ul>
+<h2>Attacks against websites and applications</h2>
+<ul>
+<li><strong>SQL injection</strong> — tricking a website&#39;s database into running commands it shouldn&#39;t, by sneaking code into a normal-looking input field (Path 11 covers this hands-on)</li>
+<li><strong>Cross-site scripting (XSS)</strong> — injecting malicious code into a website that then runs in <em>other</em> visitors&#39; browsers</li>
+<li><strong>DDoS (Distributed Denial of Service)</strong> — flooding a service with fake traffic from many sources at once until it can&#39;t handle real users, a textbook availability attack</li>
+</ul>
+<h2>Attacks against networks</h2>
+<ul>
+<li><strong>Man-in-the-middle (MITM)</strong> — secretly intercepting communication between two parties who believe they&#39;re talking directly to each other</li>
+<li><strong>Spoofing</strong> — impersonating a trusted source (a device, a website, an email sender) to gain trust or access</li>
+</ul>
+<h2>Why this overview matters even though you don&#39;t know the details yet</h2>
+<p>Every one of these terms will come back, explained properly with hands-on labs, later in this course. Having heard them once here means that when Path 11 says &quot;let&#39;s exploit a SQL injection vulnerability,&quot; you&#39;re not hearing the term for the first time — you already know roughly where it fits (an attack against a website&#39;s database), and the deep dive builds on that foundation instead of starting from zero.</p>
+<p>:::challenge Sort the attacks
+Sort these three attacks by which category from this lesson they belong to: (1) a fake email claiming to be your bank, (2) a flood of traffic taking a website offline, (3) malicious code hidden inside a file disguised as a free game.</p>
+<details><summary>Show answer</summary>(1) is <strong>phishing / social engineering</strong> — it manipulates trust rather than exploiting a technical flaw. (2) is a <strong>DDoS attack</strong> — an availability attack against a network or service. (3) is a <strong>Trojan</strong> — malware disguised as something desirable to trick you into installing it. Recognizing which broad family an attack belongs to, even before knowing every technical detail, is exactly the skill this lesson is building.</details><h2>🧪 Hands-on lab — spot the category in the news</h2>
+<p>Find one recent cybersecurity news story (a quick search for &quot;data breach&quot; or &quot;ransomware attack&quot; will surface plenty) and identify which category or categories from this lesson it falls under, based on the article&#39;s description of what happened.</p>
+<ol>
+<li>What&#39;s the difference between a virus and a worm?</li>
+<li>Why is phishing categorized separately from malware, even though both can lead to a compromised account?</li>
+<li>Name the attack type where an attacker secretly intercepts communication between two parties.</li>
+</ol>
+<h2>Key terms</h2>
+<ul>
+<li><strong>Malware</strong> — software designed to harm, exploit, or gain unauthorized access to a system.</li>
+<li><strong>DDoS (Distributed Denial of Service)</strong> — flooding a service with traffic to make it unavailable to legitimate users.</li>
+<li><strong>Man-in-the-middle (MITM)</strong> — secretly intercepting communication between two parties.</li>
+<li><strong>Spoofing</strong> — impersonating a trusted source to gain trust or access.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>This lesson is a map, not a deep dive — recognition now, real depth in later paths.</li>
+<li>Malware, phishing/social engineering, credential attacks, web application attacks, and network attacks are the broad families most specific attacks fall into.</li>
+<li>Having heard these terms once here means later, hands-on lessons build on a foundation instead of starting from zero.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/01-introduction/the-golden-rule">The golden rule: permission</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/01-introduction/common-cyberattacks-overview";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>
