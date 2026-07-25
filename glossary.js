@@ -41,7 +41,7 @@ const GLOSSARY = [
  },
  {
   "term": "Abuse case",
-  "def": "a use case written from the attacker's point of view",
+  "def": "a use case written from the attacker's point of view, the mirror image of a user story",
   "pathId": "22-devsecops-appsec",
   "pathN": "22",
   "pathTitle": "DevSecOps & AppSec Program",
@@ -191,6 +191,15 @@ const GLOSSARY = [
   "pathTitle": "AI & AI Security",
   "subId": "llm-supply-chain-attacks",
   "subTitle": "LLM Supply Chain Attacks"
+ },
+ {
+  "term": "Alert fatigue",
+  "def": "the state where so many alerts are false or unactionable that people stop reading them",
+  "pathId": "22-devsecops-appsec",
+  "pathN": "22",
+  "pathTitle": "DevSecOps & AppSec Program",
+  "subId": "what-is-devsecops",
+  "subTitle": "What is DevSecOps?"
  },
  {
   "term": "alg:none",
@@ -347,7 +356,7 @@ const GLOSSARY = [
  },
  {
   "term": "Artifact signing",
-  "def": "cryptographic proof of who built a binary/image",
+  "def": "cryptographic proof of who built a binary/image, checkable before it's ever deployed",
   "pathId": "22-devsecops-appsec",
   "pathN": "22",
   "pathTitle": "DevSecOps & AppSec Program",
@@ -605,6 +614,15 @@ const GLOSSARY = [
   "pathTitle": "Ethical Hacking",
   "subId": "the-5-phases",
   "subTitle": "The 5 phases"
+ },
+ {
+  "term": "Blast radius",
+  "def": "the scope of damage possible if a given credential or system is fully compromised",
+  "pathId": "22-devsecops-appsec",
+  "pathN": "22",
+  "pathTitle": "DevSecOps & AppSec Program",
+  "subId": "cicd-security",
+  "subTitle": "Securing the CI/CD Pipeline"
  },
  {
   "term": "Blind command injection",
@@ -1283,7 +1301,7 @@ const GLOSSARY = [
  },
  {
   "term": "DAST",
-  "def": "dynamic testing of a running app",
+  "def": "dynamic testing of a running application from the outside",
   "pathId": "22-devsecops-appsec",
   "pathN": "22",
   "pathTitle": "DevSecOps & AppSec Program",
@@ -1316,6 +1334,15 @@ const GLOSSARY = [
   "pathTitle": "AI & AI Security",
   "subId": "prompt-injection",
   "subTitle": "Prompt injection"
+ },
+ {
+  "term": "Data-flow diagram",
+  "def": "a simple diagram of components and how data moves between them, the usual starting point for a threat model",
+  "pathId": "22-devsecops-appsec",
+  "pathN": "22",
+  "pathTitle": "DevSecOps & AppSec Program",
+  "subId": "threat-modeling-sdlc",
+  "subTitle": "Threat Modeling in the SDLC"
  },
  {
   "term": "DC groups",
@@ -1388,6 +1415,15 @@ const GLOSSARY = [
   "pathTitle": "Web Security & Hacking",
   "subId": "idor",
   "subTitle": "Broken access & IDOR"
+ },
+ {
+  "term": "Dependency confusion",
+  "def": "tricking a package manager into installing a public malicious package instead of an intended private one, by name collision",
+  "pathId": "22-devsecops-appsec",
+  "pathN": "22",
+  "pathTitle": "DevSecOps & AppSec Program",
+  "subId": "secrets-supply-chain",
+  "subTitle": "Secrets Management & Software Supply Chain"
  },
  {
   "term": "DevTools",
@@ -1760,7 +1796,16 @@ const GLOSSARY = [
  },
  {
   "term": "Escape rate",
-  "def": "defects that reach production or external discovery",
+  "def": "the proportion of vulnerabilities that reach production rather than being caught earlier",
+  "pathId": "22-devsecops-appsec",
+  "pathN": "22",
+  "pathTitle": "DevSecOps & AppSec Program",
+  "subId": "what-is-devsecops",
+  "subTitle": "What is DevSecOps?"
+ },
+ {
+  "term": "Escape rate",
+  "def": "defects that reach production or external discovery, rather than being caught by an earlier control",
   "pathId": "22-devsecops-appsec",
   "pathN": "22",
   "pathTitle": "DevSecOps & AppSec Program",
@@ -1850,7 +1895,7 @@ const GLOSSARY = [
  },
  {
   "term": "False positive",
-  "def": "a finding that is not a real issue",
+  "def": "a finding that is not actually a real issue",
   "pathId": "22-devsecops-appsec",
   "pathN": "22",
   "pathTitle": "DevSecOps & AppSec Program",
@@ -2090,6 +2135,15 @@ const GLOSSARY = [
   "pathTitle": "Advanced Cyber Topics",
   "subId": "active-directory",
   "subTitle": "Active Directory attacks"
+ },
+ {
+  "term": "Goodhart's Law",
+  "def": "\"when a measure becomes a target, it ceases to be a good measure\"; the central risk of any metrics program",
+  "pathId": "22-devsecops-appsec",
+  "pathN": "22",
+  "pathTitle": "DevSecOps & AppSec Program",
+  "subId": "metrics-that-matter",
+  "subTitle": "Metrics That Matter"
  },
  {
   "term": "Google dorking",
@@ -3037,6 +3091,15 @@ const GLOSSARY = [
   "subTitle": "Decisions with if/else"
  },
  {
+  "term": "Maturity model",
+  "def": "a staged framework (like the ladder above) for assessing and growing a program deliberately rather than all at once",
+  "pathId": "22-devsecops-appsec",
+  "pathN": "22",
+  "pathTitle": "DevSecOps & AppSec Program",
+  "subId": "building-appsec-program",
+  "subTitle": "Building an AppSec Program from Scratch"
+ },
+ {
   "term": "Memory forensics / Volatility",
   "def": "analysing volatile RAM contents, revealing evidence that never touches disk.",
   "pathId": "16-advanced",
@@ -3389,7 +3452,7 @@ const GLOSSARY = [
  },
  {
   "term": "OIDC federation",
-  "def": "exchanging a short-lived pipeline identity for cloud credentials",
+  "def": "exchanging a short-lived pipeline identity for cloud credentials, without ever storing a long-lived key",
   "pathId": "22-devsecops-appsec",
   "pathN": "22",
   "pathTitle": "DevSecOps & AppSec Program",
@@ -3776,7 +3839,7 @@ const GLOSSARY = [
  },
  {
   "term": "Pinned action",
-  "def": "referencing a GitHub Action by commit SHA, not a moving tag",
+  "def": "referencing a GitHub Action by commit SHA, not a moving tag, so the code that runs can't change out from under you",
   "pathId": "22-devsecops-appsec",
   "pathN": "22",
   "pathTitle": "DevSecOps & AppSec Program",
@@ -4081,6 +4144,15 @@ const GLOSSARY = [
   "subTitle": "What is Cloud Computing?"
  },
  {
+  "term": "`pull_request_target`",
+  "def": "a GitHub Actions trigger that runs with base-repo secrets even when the PR comes from a fork",
+  "pathId": "22-devsecops-appsec",
+  "pathN": "22",
+  "pathTitle": "DevSecOps & AppSec Program",
+  "subId": "cicd-security",
+  "subTitle": "Securing the CI/CD Pipeline"
+ },
+ {
   "term": "`.py` file",
   "def": "a Python program on disk.",
   "pathId": "04-python",
@@ -4205,6 +4277,15 @@ const GLOSSARY = [
   "pathTitle": "Bug Bounty",
   "subId": "recon-pipeline",
   "subTitle": "The recon pipeline"
+ },
+ {
+  "term": "Reachability",
+  "def": "whether vulnerable code can actually be executed by your application",
+  "pathId": "22-devsecops-appsec",
+  "pathN": "22",
+  "pathTitle": "DevSecOps & AppSec Program",
+  "subId": "sast-dast-sca",
+  "subTitle": "SAST, DAST & SCA — The Core Scanning Trio"
  },
  {
   "term": "README",
@@ -4358,6 +4439,15 @@ const GLOSSARY = [
   "pathTitle": "Programming & Python",
   "subId": "why-python",
   "subTitle": "Why Python for security"
+ },
+ {
+  "term": "Residual risk",
+  "def": "whatever risk remains after mitigations are applied, which is what a pentest should actually be checking",
+  "pathId": "22-devsecops-appsec",
+  "pathN": "22",
+  "pathTitle": "DevSecOps & AppSec Program",
+  "subId": "threat-modeling-sdlc",
+  "subTitle": "Threat Modeling in the SDLC"
  },
  {
   "term": "Resolver",
@@ -4577,7 +4667,7 @@ const GLOSSARY = [
  },
  {
   "term": "SAST",
-  "def": "static analysis of code",
+  "def": "static analysis of source code, no execution",
   "pathId": "22-devsecops-appsec",
   "pathN": "22",
   "pathTitle": "DevSecOps & AppSec Program",
@@ -4586,7 +4676,7 @@ const GLOSSARY = [
  },
  {
   "term": "SCA",
-  "def": "analysis of third-party components",
+  "def": "analysis of third-party components against known-vulnerability databases",
   "pathId": "22-devsecops-appsec",
   "pathN": "22",
   "pathTitle": "DevSecOps & AppSec Program",
@@ -4694,7 +4784,7 @@ const GLOSSARY = [
  },
  {
   "term": "Security champion",
-  "def": "a developer who is the security point person for their team",
+  "def": "a developer who acts as the security point person for their team",
   "pathId": "22-devsecops-appsec",
   "pathN": "22",
   "pathTitle": "DevSecOps & AppSec Program",
@@ -4883,12 +4973,21 @@ const GLOSSARY = [
  },
  {
   "term": "Shift left",
-  "def": "moving security earlier in the lifecycle",
+  "def": "moving security earlier in the lifecycle, where fixes are cheaper",
   "pathId": "22-devsecops-appsec",
   "pathN": "22",
   "pathTitle": "DevSecOps & AppSec Program",
   "subId": "what-is-devsecops",
   "subTitle": "What is DevSecOps?"
+ },
+ {
+  "term": "Short-lived credential",
+  "def": "a secret that expires quickly (minutes to hours), limiting the value of theft",
+  "pathId": "22-devsecops-appsec",
+  "pathN": "22",
+  "pathTitle": "DevSecOps & AppSec Program",
+  "subId": "secrets-supply-chain",
+  "subTitle": "Secrets Management & Software Supply Chain"
  },
  {
   "term": "SIEM",
@@ -4928,12 +5027,21 @@ const GLOSSARY = [
  },
  {
   "term": "SLA",
-  "def": "service level agreement for fixing findings by severity",
+  "def": "service level agreement for fixing findings by severity, e.g. \"critical findings fixed within 15 days\"",
   "pathId": "22-devsecops-appsec",
   "pathN": "22",
   "pathTitle": "DevSecOps & AppSec Program",
   "subId": "metrics-that-matter",
   "subTitle": "Metrics That Matter"
+ },
+ {
+  "term": "SLA",
+  "def": "the agreed time window for fixing a finding of a given severity",
+  "pathId": "22-devsecops-appsec",
+  "pathN": "22",
+  "pathTitle": "DevSecOps & AppSec Program",
+  "subId": "building-appsec-program",
+  "subTitle": "Building an AppSec Program from Scratch"
  },
  {
   "term": "Smishing / vishing",
@@ -5243,7 +5351,7 @@ const GLOSSARY = [
  },
  {
   "term": "STRIDE",
-  "def": "a common threat-classification mnemonic",
+  "def": "a common threat-classification mnemonic (Spoofing, Tampering, Repudiation, Information disclosure, Denial of service, Elevation of privilege)",
   "pathId": "22-devsecops-appsec",
   "pathN": "22",
   "pathTitle": "DevSecOps & AppSec Program",
@@ -5584,6 +5692,15 @@ const GLOSSARY = [
   "subTitle": "Poisoning & adversarial ML"
  },
  {
+  "term": "Transitive dependency",
+  "def": "a dependency of one of your dependencies, which you never chose directly",
+  "pathId": "22-devsecops-appsec",
+  "pathN": "22",
+  "pathTitle": "DevSecOps & AppSec Program",
+  "subId": "sast-dast-sca",
+  "subTitle": "SAST, DAST & SCA — The Core Scanning Trio"
+ },
+ {
   "term": "Triager",
   "def": "the person (or team) reviewing and validating bug bounty submissions.",
   "pathId": "15-bug-bounty",
@@ -5612,7 +5729,7 @@ const GLOSSARY = [
  },
  {
   "term": "Trust boundary",
-  "def": "a place where the level of trust changes",
+  "def": "a place where the level of trust changes, and where an attacker gets leverage",
   "pathId": "22-devsecops-appsec",
   "pathN": "22",
   "pathTitle": "DevSecOps & AppSec Program",

@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Threat Modeling in the SDLC — Path 22 · KashSec Academy</title>
-<meta name="description" content="Threat modeling is the practice of thinking about what can go wrong before you write or ship the code. Done well, it prevents entire classes of bugs instead of finding them later.">
+<meta name="description" content="Threat modeling is the practice of thinking about what can go wrong before you write or ship the code. Done well, it prevents entire classes of bugs instead of finding them later — it's the one activi">
 <link rel="canonical" href="https://kashsec.vercel.app/#/lesson/22-devsecops-appsec/threat-modeling-sdlc">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Threat Modeling in the SDLC — Path 22 · KashSec Academy">
-<meta property="og:description" content="Threat modeling is the practice of thinking about what can go wrong before you write or ship the code. Done well, it prevents entire classes of bugs instead of finding them later.">
+<meta property="og:description" content="Threat modeling is the practice of thinking about what can go wrong before you write or ship the code. Done well, it prevents entire classes of bugs instead of finding them later — it's the one activi">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/#/lesson/22-devsecops-appsec/threat-modeling-sdlc">
 <meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
@@ -16,11 +16,11 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Threat Modeling in the SDLC — Path 22 · KashSec Academy">
-<meta name="twitter:description" content="Threat modeling is the practice of thinking about what can go wrong before you write or ship the code. Done well, it prevents entire classes of bugs instead of finding them later.">
+<meta name="twitter:description" content="Threat modeling is the practice of thinking about what can go wrong before you write or ship the code. Done well, it prevents entire classes of bugs instead of finding them later — it's the one activi">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Threat Modeling in the SDLC — Path 22 · KashSec Academy","description":"Threat modeling is the practice of thinking about what can go wrong before you write or ship the code. Done well, it prevents entire classes of bugs instead of finding them later.","url":"https://kashsec.vercel.app/#/lesson/22-devsecops-appsec/threat-modeling-sdlc","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Threat Modeling in the SDLC — Path 22 · KashSec Academy","description":"Threat modeling is the practice of thinking about what can go wrong before you write or ship the code. Done well, it prevents entire classes of bugs instead of finding them later — it's the one activi","url":"https://kashsec.vercel.app/#/lesson/22-devsecops-appsec/threat-modeling-sdlc","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
 </script>
 <style>
 :root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
@@ -50,50 +50,129 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
   <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/22-devsecops-appsec/threat-modeling-sdlc">continue here →</a></div>
   <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 22 — DevSecOps & AppSec Program</a> · Threat Modeling in the SDLC</div>
   <article><h1>Threat Modeling in the SDLC</h1>
-<p>Threat modeling is the practice of thinking about what can go wrong <em>before</em> you write or ship the code. Done well, it prevents entire classes of bugs instead of finding them later.</p>
+<p>Threat modeling is the practice of thinking about what can go wrong <em>before</em> you write or ship the code. Done well, it prevents entire classes of bugs instead of finding them later — it&#39;s the one activity in this whole path that operates purely on design, before a single line exists to scan.</p>
+<p>:::</p>
 <h2>Why it belongs in DevSecOps</h2>
-<p>Scanning tools find known patterns. Threat modeling finds design flaws — the expensive ones that scanners miss (broken authorization logic, dangerous trust boundaries, missing abuse controls).</p>
+<p>Scanning tools find known patterns. Threat modeling finds design flaws — the expensive ones that scanners miss entirely, because there&#39;s nothing pattern-matchable about them:</p>
+<ul>
+<li>Broken authorization logic (&quot;any logged-in user can view any other user&#39;s invoice by changing an ID in the URL&quot;)</li>
+<li>Dangerous trust boundaries (&quot;the internal admin API trusts any request from inside the VPC, and the VPC also contains the marketing website&#39;s contractor-managed CMS&quot;)</li>
+<li>Missing abuse controls (&quot;the password reset endpoint has no rate limit, so it can be used to enumerate every registered email address&quot;)</li>
+</ul>
+<p>None of these are a vulnerable function call. A SAST tool has nothing to flag. This is exactly the gap the &quot;Side by side&quot; table in the SAST/DAST/SCA lesson pointed at — none of the scanners find design flaws, and this lesson is the answer to that gap.</p>
 <h2>A lightweight process that works</h2>
-<p>You do not need a week-long workshop for every feature. A 30–60 minute session with the right questions is often enough.</p>
+<p>You do not need a week-long workshop for every feature. A 30–60 minute session with the right questions is often enough, and doing it lightweight and often beats doing it heavyweight and rarely.</p>
 <h3>1. Diagram the system</h3>
-<p>Draw the main components and data flows (users, browsers, APIs, databases, third parties, admin tools). A simple data-flow diagram is enough.</p>
+<p>Draw the main components and data flows (users, browsers, APIs, databases, third parties, admin tools). A simple data-flow diagram is enough — boxes and arrows on a whiteboard, not a formal UML document.</p>
 <h3>2. Identify assets &amp; trust boundaries</h3>
-<p>What are you protecting (credentials, PII, money, admin functions)? Where does trust change (internet → app, app → database, service A → service B)?</p>
+<p>What are you protecting (credentials, PII, money, admin functions)? Where does trust change (internet → app, app → database, service A → service B)? Every arrow that crosses a trust boundary is a place where an attacker gets to act.</p>
 <h3>3. Enumerate threats</h3>
 <p>Use a simple framework:</p>
 <ul>
 <li><strong>STRIDE</strong> (Spoofing, Tampering, Repudiation, Information disclosure, Denial of service, Elevation of privilege)</li>
 <li>Or just ask: &quot;What can an attacker with a browser / a stolen token / access to this service do that we don&#39;t want?&quot;</li>
 </ul>
+<table>
+<thead>
+<tr>
+<th>STRIDE category</th>
+<th>Plain-language question</th>
+<th>Example finding</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Spoofing</td>
+<td>Can someone pretend to be another user or service?</td>
+<td>No mutual TLS between two internal services that assume they trust each other</td>
+</tr>
+<tr>
+<td>Tampering</td>
+<td>Can someone modify data they shouldn&#39;t?</td>
+<td>Price sent from client and trusted by the server on checkout</td>
+</tr>
+<tr>
+<td>Repudiation</td>
+<td>Can someone deny doing something, with no way to prove otherwise?</td>
+<td>Admin actions not logged with who/when</td>
+</tr>
+<tr>
+<td>Information disclosure</td>
+<td>Can someone see data they shouldn&#39;t?</td>
+<td>Error messages leaking stack traces with internal paths</td>
+</tr>
+<tr>
+<td>Denial of service</td>
+<td>Can someone make this unavailable?</td>
+<td>An endpoint with no rate limit that triggers an expensive database query</td>
+</tr>
+<tr>
+<td>Elevation of privilege</td>
+<td>Can someone gain more access than they should have?</td>
+<td>A &quot;become this user&quot; support tool with no audit trail or scoping</td>
+</tr>
+</tbody></table>
 <h3>4. Decide mitigations</h3>
-<p>For each high-impact threat, decide a control (or accept the risk with a documented reason).</p>
+<p>For each high-impact threat, decide a control (or accept the risk with a documented reason). &quot;We know about this and are accepting it because X&quot; is a legitimate outcome — it&#39;s the undocumented, unconsidered risks that cause incidents.</p>
 <h3>5. Track and revisit</h3>
-<p>Put the results where the team can see them (ticket, ADR, security design review note). Revisit when the design changes.</p>
+<p>Put the results where the team can see them (ticket, ADR, security design review note). Revisit when the design changes — a threat model for the system as it existed six architecture changes ago is not describing the system you&#39;re actually running.</p>
+<h2>Worked example: a file-upload feature</h2>
+<p>A team is adding &quot;upload your profile photo.&quot; A 30-minute threat model surfaces:</p>
+<ul>
+<li><strong>Trust boundary</strong>: uploaded file content is fully attacker-controlled, even though it &quot;just&quot; looks like an image</li>
+<li><strong>Tampering</strong>: what stops someone uploading a <code>.php</code> or <code>.jsp</code> file with a <code>.jpg</code> extension?</li>
+<li><strong>Information disclosure</strong>: if uploads are stored at a predictable URL pattern, can one user enumerate other users&#39; private photos?</li>
+<li><strong>Denial of service</strong>: what stops someone uploading a 4GB file, or a &quot;zip bomb&quot; image, repeatedly?</li>
+</ul>
+<p>Decided mitigations: validate file content (not just extension) against actual image magic bytes, store uploads outside the web root with randomized non-guessable names, enforce a size limit server-side, and re-encode images on upload rather than serving the uploaded bytes directly. All four are cheap to build now and expensive to retrofit after the feature has shipped — this is the &quot;before and after&quot; cost curve from the first lesson in this path, applied concretely.</p>
 <h2>When to threat model</h2>
 <ul>
 <li>New high-risk features (auth, payments, admin, data export, file upload)</li>
 <li>Major architectural changes</li>
-<li>Before a penetration test (so the test can focus on residual risk)</li>
+<li>Before a penetration test (so the test can focus on residual risk instead of things a 30-minute session would have caught for free)</li>
 </ul>
 <h2>Common pitfalls</h2>
 <ul>
-<li>Only security people in the room → developers disengage</li>
-<li>Massive documents nobody reads → prefer short, living notes</li>
-<li>Treating it as a one-time gate instead of a recurring design habit</li>
+<li>Only security people in the room → developers disengage, and the model reflects the security team&#39;s guesses about the system rather than the builders&#39; actual knowledge of it</li>
+<li>Massive documents nobody reads → prefer short, living notes over a 40-page threat model template that gets filled out once and never opened again</li>
+<li>Treating it as a one-time gate instead of a recurring design habit — a system&#39;s threat model goes stale the moment the architecture changes and nobody updates it</li>
 </ul>
-<p>The best threat models are done by the people who are building the system, with a security person facilitating. Ownership stays with the team.</p>
+<p>:::danger
+The most dangerous outcome of threat modeling is not &quot;we missed a threat&quot; — it&#39;s &quot;we found threats, wrote them down, and never assigned an owner or a decision.&quot; A threat model that produces no action is worse than not having done one, because it creates the appearance of due diligence without the substance.</p>
+<h2>🧪 Hands-on lab — threat model a real feature</h2>
+<p>Pick a feature from a project you&#39;re working on, or use &quot;users can reset their password by email&quot; as a stand-in if you don&#39;t have one handy.</p>
+<ol>
+<li><p>Draw the data flow: user → browser → app server → email service → database. Mark where trust changes.</p>
+</li>
+<li><p>Walk through all six STRIDE categories against this flow. For each, write down at least one concrete threat — even a rough one.</p>
+</li>
+<li><p>For your three highest-impact threats, write a one-line mitigation each.</p>
+</li>
+<li><p>For one threat you decide <em>not</em> to mitigate right now, write the &quot;accepted because...&quot; justification a real team would need to write down.</p>
+</li>
+<li><p>Time yourself. If this took under 45 minutes, you&#39;ve just demonstrated that lightweight threat modeling is genuinely fast enough to do routinely.</p>
+</li>
+<li><p>A team says &quot;we don&#39;t need to threat model, we already run SAST and DAST on everything.&quot; What&#39;s wrong with that reasoning?</p>
+</li>
+<li><p>Using STRIDE, name one threat category that a &quot;forgot password&quot; feature is especially prone to, and explain why.</p>
+</li>
+<li><p>Why is &quot;accept the risk with a documented reason&quot; a legitimate outcome of threat modeling, rather than a failure to fix everything?</p>
+</li>
+</ol>
 <h2>Key terms</h2>
 <ul>
-<li><strong>STRIDE</strong> — a common threat-classification mnemonic</li>
-<li><strong>Trust boundary</strong> — a place where the level of trust changes</li>
-<li><strong>Abuse case</strong> — a use case written from the attacker&#39;s point of view</li>
+<li><strong>STRIDE</strong> — a common threat-classification mnemonic (Spoofing, Tampering, Repudiation, Information disclosure, Denial of service, Elevation of privilege)</li>
+<li><strong>Trust boundary</strong> — a place where the level of trust changes, and where an attacker gets leverage</li>
+<li><strong>Abuse case</strong> — a use case written from the attacker&#39;s point of view, the mirror image of a user story</li>
+<li><strong>Data-flow diagram</strong> — a simple diagram of components and how data moves between them, the usual starting point for a threat model</li>
+<li><strong>Residual risk</strong> — whatever risk remains after mitigations are applied, which is what a pentest should actually be checking</li>
 </ul>
 <h2>Recap</h2>
-<p>Threat modeling is design-time security. A short, focused session early prevents findings that would otherwise appear in production or in a pentest report.</p>
+<p>Threat modeling is design-time security — the one control in this path that catches problems no scanner ever will. A short, focused session early prevents findings that would otherwise appear in production or in a pentest report, but only if it produces owned, tracked decisions rather than a document nobody revisits.</p>
 <h3>References</h3>
 <ul>
 <li><a href="https://owasp.org/www-community/Threat_Modeling">OWASP Threat Modeling</a></li>
 <li><a href="https://www.threatmodelingmanifesto.org/">Threat Modeling Manifesto</a></li>
+<li><a href="https://shostack.org/games/elevation-of-privilege">Elevation of Privilege card game</a> — a free, low-friction way to run a STRIDE session with a team new to the practice</li>
 </ul>
 </article>
   <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>

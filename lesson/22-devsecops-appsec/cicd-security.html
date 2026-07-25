@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Securing the CI/CD Pipeline — Path 22 · KashSec Academy</title>
-<meta name="description" content="The pipeline that builds and deploys your software is itself a high-value target. If an attacker can run code in CI, they can often reach secrets, production, or every developer.">
+<meta name="description" content="The pipeline that builds and deploys your software is itself a high-value target. If an attacker can run code in CI, they don't need to find a bug in your app at all — they can often reach secrets, pr">
 <link rel="canonical" href="https://kashsec.vercel.app/#/lesson/22-devsecops-appsec/cicd-security">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Securing the CI/CD Pipeline — Path 22 · KashSec Academy">
-<meta property="og:description" content="The pipeline that builds and deploys your software is itself a high-value target. If an attacker can run code in CI, they can often reach secrets, production, or every developer.">
+<meta property="og:description" content="The pipeline that builds and deploys your software is itself a high-value target. If an attacker can run code in CI, they don't need to find a bug in your app at all — they can often reach secrets, pr">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/#/lesson/22-devsecops-appsec/cicd-security">
 <meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
@@ -16,11 +16,11 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Securing the CI/CD Pipeline — Path 22 · KashSec Academy">
-<meta name="twitter:description" content="The pipeline that builds and deploys your software is itself a high-value target. If an attacker can run code in CI, they can often reach secrets, production, or every developer.">
+<meta name="twitter:description" content="The pipeline that builds and deploys your software is itself a high-value target. If an attacker can run code in CI, they don't need to find a bug in your app at all — they can often reach secrets, pr">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Securing the CI/CD Pipeline — Path 22 · KashSec Academy","description":"The pipeline that builds and deploys your software is itself a high-value target. If an attacker can run code in CI, they can often reach secrets, production, or every developer.","url":"https://kashsec.vercel.app/#/lesson/22-devsecops-appsec/cicd-security","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Securing the CI/CD Pipeline — Path 22 · KashSec Academy","description":"The pipeline that builds and deploys your software is itself a high-value target. If an attacker can run code in CI, they don't need to find a bug in your app at all — they can often reach secrets, pr","url":"https://kashsec.vercel.app/#/lesson/22-devsecops-appsec/cicd-security","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
 </script>
 <style>
 :root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
@@ -50,64 +50,96 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
   <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/22-devsecops-appsec/cicd-security">continue here →</a></div>
   <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 22 — DevSecOps & AppSec Program</a> · Securing the CI/CD Pipeline</div>
   <article><h1>Securing the CI/CD Pipeline</h1>
-<p>The pipeline that builds and deploys your software is itself a high-value target. If an attacker can run code in CI, they can often reach secrets, production, or every developer.</p>
+<p>The pipeline that builds and deploys your software is itself a high-value target. If an attacker can run code in CI, they don&#39;t need to find a bug in your app at all — they can often reach secrets, production, or every developer who pushes code, in one move.</p>
+<p>:::</p>
 <h2>Why pipelines matter</h2>
 <ul>
-<li>They hold cloud credentials, API keys, and signing keys</li>
-<li>They can push code or artifacts to production</li>
-<li>A compromised pipeline is a supply-chain attack</li>
+<li>They hold cloud credentials, API keys, and signing keys — often with broad scope, because &quot;just make the build work&quot; is a powerful incentive to over-grant permissions</li>
+<li>They can push code or artifacts straight to production, frequently with no human in the loop</li>
+<li>A compromised pipeline is a <strong>supply-chain attack</strong>: instead of attacking one company, an attacker who compromises a popular CI action or a widely-used base image attacks every downstream user at once</li>
 </ul>
+<h2>The 2021 Codecov incident, briefly</h2>
+<p>A real example worth knowing: attackers modified Codecov&#39;s bash uploader script, used by thousands of CI pipelines to send test coverage data. The modified script quietly exfiltrated environment variables — which is exactly where CI secrets live — from every pipeline that ran it, for months, before anyone noticed. Nobody&#39;s <em>application</em> was vulnerable. Their <em>pipeline dependency</em> was, and that was enough.</p>
 <h2>Common CI/CD risks</h2>
 <ol>
 <li><strong>Secrets in plaintext</strong> in pipeline YAML or environment variables visible in logs</li>
-<li><strong>Over-privileged tokens</strong> (e.g. GitHub <code>write</code> on all repos)</li>
-<li><strong>Untrusted code execution</strong> — pull requests from forks running privileged workflows</li>
-<li><strong>Mutable third-party actions</strong> (<code>uses: some/action@main</code> instead of a pinned SHA)</li>
-<li><strong>No isolation</strong> between build jobs of different trust levels</li>
-<li><strong>Artifact tampering</strong> — no signing or verification of what gets deployed</li>
+<li><strong>Over-privileged tokens</strong> (e.g. GitHub <code>write</code> on all repos, or a cloud key with account-admin scope for a job that only needs to write to one S3 bucket)</li>
+<li><strong>Untrusted code execution</strong> — pull requests from forks running privileged workflows, or triggering builds that can read secrets meant for trusted code</li>
+<li><strong>Mutable third-party actions</strong> (<code>uses: some/action@main</code> instead of a pinned SHA) — the tag can be repointed by the action&#39;s maintainer, or by whoever compromises their account, and your pipeline silently runs whatever it now points to</li>
+<li><strong>No isolation</strong> between build jobs of different trust levels — a job building a low-trust experimental branch running on the same runner pool with the same secrets as a job deploying to production</li>
+<li><strong>Artifact tampering</strong> — no signing or verification of what gets deployed, so a build step that never ran through the real pipeline can be substituted in</li>
 </ol>
+<p>:::warn
+<code>pull_request_target</code> is the single most dangerous trigger in GitHub Actions. Unlike <code>pull_request</code>, it runs with access to the base repo&#39;s secrets <em>and</em> can be told to check out the fork&#39;s untrusted code. Combine those two and a stranger&#39;s pull request can exfiltrate your production secrets before a human ever reviews it.</p>
 <h2>Hardening checklist</h2>
 <h3>Secrets</h3>
 <ul>
-<li>Store secrets in a proper secret manager (GitHub Secrets, Vault, cloud secret managers)</li>
-<li>Never echo secrets in logs</li>
-<li>Prefer short-lived, OIDC-based cloud credentials over long-lived access keys</li>
+<li>Store secrets in a proper secret manager (GitHub Secrets, Vault, cloud secret managers) — never in the YAML file itself, never in a <code>.env</code> committed &quot;just for now&quot;</li>
+<li>Never echo secrets in logs. Most CI systems mask known secret values automatically, but a secret assembled at runtime (e.g. concatenated into a URL) often slips past the masker</li>
+<li>Prefer short-lived, OIDC-based cloud credentials over long-lived access keys. A static AWS access key sitting in GitHub Secrets is a permanent target; an OIDC-issued token expires in an hour and was never stored anywhere to begin with</li>
 </ul>
 <h3>Least privilege</h3>
 <ul>
-<li>Give each workflow the minimum permissions it needs (<code>permissions:</code> in GitHub Actions)</li>
-<li>Separate build and deploy roles</li>
+<li>Give each workflow the minimum permissions it needs (<code>permissions:</code> in GitHub Actions — set it to <code>contents: read</code> by default and add only what a specific job actually requires)</li>
+<li>Separate build and deploy roles — the job that compiles code should not hold the credential that pushes to production; that credential belongs to a separate, more tightly gated job</li>
 </ul>
 <h3>Trust boundaries</h3>
 <ul>
-<li>Do not run privileged workflows on <code>pull_request_target</code> with untrusted code</li>
-<li>Pin third-party actions to full commit SHAs</li>
-<li>Review and vendor critical actions when possible</li>
+<li>Do not run privileged workflows on <code>pull_request_target</code> with untrusted code checked out</li>
+<li>Pin third-party actions to full commit SHAs, not tags: <code>uses: actions/checkout@8f4b7f8</code> not <code>uses: actions/checkout@v4</code></li>
+<li>Review and vendor critical actions when possible, especially for anything that touches secrets or deploy credentials</li>
 </ul>
 <h3>Integrity</h3>
 <ul>
-<li>Sign artifacts (Sigstore / cosign, etc.)</li>
-<li>Verify signatures before deploy</li>
-<li>Use immutable, digested image references</li>
+<li>Sign artifacts (Sigstore / cosign, etc.) so a build&#39;s origin can be cryptographically verified later</li>
+<li>Verify signatures before deploy — signing that nothing ever checks is theater</li>
+<li>Use immutable, digested image references (<code>image@sha256:...</code>) instead of mutable tags (<code>image:latest</code>)</li>
 </ul>
 <h3>Visibility</h3>
 <ul>
-<li>Log and monitor pipeline runs</li>
-<li>Alert on unusual workflow changes or secret access</li>
+<li>Log and monitor pipeline runs — who triggered it, what changed, what it touched</li>
+<li>Alert on unusual workflow changes or secret access, especially edits to <code>.github/workflows/</code> from unexpected authors</li>
 </ul>
-<p>A single over-privileged <code>GITHUB_TOKEN</code> or cloud key in CI has caused multiple real-world breaches. Treat pipeline credentials like production credentials.</p>
+<p>:::</p>
+<h2>Worked example: a permissions review</h2>
+<p>Say a workflow has this at the top:</p>
+<pre><code class="language-yaml">permissions: write-all
+</code></pre>
+<p>That single line grants the job the ability to write to repo contents, issues, pull requests, packages, deployments, and more — for a job that, on inspection, only builds a Docker image and pushes it to a registry. The fix:</p>
+<pre><code class="language-yaml">permissions:
+  contents: read
+  packages: write
+</code></pre>
+<p>Now, if this workflow is ever compromised (a malicious dependency in the build step, for example), the blast radius is &quot;can push a bad package&quot; instead of &quot;can rewrite any issue, merge any PR, and delete any release.&quot; Same build, radically different worst case.</p>
+<h2>🧪 Hands-on lab — audit a real workflow</h2>
+<ol>
+<li>Pick any GitHub repository you maintain (or fork a public one) with a <code>.github/workflows/</code> directory.</li>
+<li>Open each workflow file and answer, for every job: what permissions does it declare? If none are declared, GitHub&#39;s default (often <code>write</code> on many scopes) silently applies — that&#39;s a finding by itself.</li>
+<li>Search for any <code>uses: owner/action@&lt;tag&gt;</code> where <code>&lt;tag&gt;</code> is a branch or version tag rather than a full commit SHA. List them.</li>
+<li>Check for <code>pull_request_target</code> anywhere in the file. If present, confirm the job does <strong>not</strong> also check out <code>github.event.pull_request.head.sha</code> or otherwise run fork code.</li>
+<li>Write a one-paragraph risk summary: if this pipeline were fully compromised today, what could an attacker do with the credentials it holds?</li>
+</ol>
+<p>:::challenge Test yourself</p>
+<ol>
+<li>A workflow triggered on <code>pull_request_target</code> checks out the PR&#39;s own branch and runs <code>npm install &amp;&amp; npm test</code>. Why is this dangerous even though it&#39;s &quot;just running tests&quot;?</li>
+<li>Your team pins actions to version tags like <code>@v3</code> for readability. What&#39;s the actual risk of doing that, and what&#39;s the trade-off if you switch to pinning by SHA?</li>
+<li>Explain, in one sentence, why a build job and a deploy job should generally hold different credentials even if the same team owns both.</li>
+</ol>
 <h2>Key terms</h2>
 <ul>
-<li><strong>OIDC federation</strong> — exchanging a short-lived pipeline identity for cloud credentials</li>
-<li><strong>Pinned action</strong> — referencing a GitHub Action by commit SHA, not a moving tag</li>
-<li><strong>Artifact signing</strong> — cryptographic proof of who built a binary/image</li>
+<li><strong>OIDC federation</strong> — exchanging a short-lived pipeline identity for cloud credentials, without ever storing a long-lived key</li>
+<li><strong>Pinned action</strong> — referencing a GitHub Action by commit SHA, not a moving tag, so the code that runs can&#39;t change out from under you</li>
+<li><strong>Artifact signing</strong> — cryptographic proof of who built a binary/image, checkable before it&#39;s ever deployed</li>
+<li><strong><code>pull_request_target</code></strong> — a GitHub Actions trigger that runs with base-repo secrets even when the PR comes from a fork</li>
+<li><strong>Blast radius</strong> — the scope of damage possible if a given credential or system is fully compromised</li>
 </ul>
 <h2>Recap</h2>
-<p>Secure pipelines are a prerequisite for secure software delivery. Apply least privilege, pin dependencies, keep secrets out of logs, and monitor the pipeline itself.</p>
+<p>Secure pipelines are a prerequisite for secure software delivery — a perfectly secure application deployed through a compromised pipeline is not secure at all. Apply least privilege, pin dependencies, keep secrets out of logs, sign and verify artifacts, and monitor the pipeline itself as the production system it actually is.</p>
 <h3>References</h3>
 <ul>
-<li><a href="https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions">GitHub Actions security hardening</a></li>
-<li><a href="https://slsa.dev/">SLSA framework</a></li>
+<li><a href="https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions">GitHub Actions security hardening</a> — GitHub&#39;s own hardening guide</li>
+<li><a href="https://slsa.dev/">SLSA framework</a> — a maturity model for supply-chain integrity</li>
+<li><a href="https://about.codecov.io/security-update/">Codecov bash uploader incident writeup</a> — the real-world case referenced above</li>
 </ul>
 </article>
   <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>

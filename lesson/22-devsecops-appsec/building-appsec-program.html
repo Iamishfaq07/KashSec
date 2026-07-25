@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Building an AppSec Program from Scratch — Path 22 · KashSec Academy</title>
-<meta name="description" content="You have the tools and the practices. Now you need the program — the people, process, and governance that make security sustainable across many teams and repositories.">
+<meta name="description" content="You have the tools and the practices. Now you need the program — the people, process, and governance that make security sustainable across many teams and repositories, instead of depending entirely on">
 <link rel="canonical" href="https://kashsec.vercel.app/#/lesson/22-devsecops-appsec/building-appsec-program">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Building an AppSec Program from Scratch — Path 22 · KashSec Academy">
-<meta property="og:description" content="You have the tools and the practices. Now you need the program — the people, process, and governance that make security sustainable across many teams and repositories.">
+<meta property="og:description" content="You have the tools and the practices. Now you need the program — the people, process, and governance that make security sustainable across many teams and repositories, instead of depending entirely on">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/#/lesson/22-devsecops-appsec/building-appsec-program">
 <meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
@@ -16,11 +16,11 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Building an AppSec Program from Scratch — Path 22 · KashSec Academy">
-<meta name="twitter:description" content="You have the tools and the practices. Now you need the program — the people, process, and governance that make security sustainable across many teams and repositories.">
+<meta name="twitter:description" content="You have the tools and the practices. Now you need the program — the people, process, and governance that make security sustainable across many teams and repositories, instead of depending entirely on">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Building an AppSec Program from Scratch — Path 22 · KashSec Academy","description":"You have the tools and the practices. Now you need the program — the people, process, and governance that make security sustainable across many teams and repositories.","url":"https://kashsec.vercel.app/#/lesson/22-devsecops-appsec/building-appsec-program","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Building an AppSec Program from Scratch — Path 22 · KashSec Academy","description":"You have the tools and the practices. Now you need the program — the people, process, and governance that make security sustainable across many teams and repositories, instead of depending entirely on","url":"https://kashsec.vercel.app/#/lesson/22-devsecops-appsec/building-appsec-program","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
 </script>
 <style>
 :root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
@@ -50,8 +50,8 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
   <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/22-devsecops-appsec/building-appsec-program">continue here →</a></div>
   <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 22 — DevSecOps & AppSec Program</a> · Building an AppSec Program from Scratch</div>
   <article><h1>Building an AppSec Program from Scratch</h1>
-<p>You have the tools and the practices. Now you need the program — the people, process, and governance that make security sustainable across many teams and repositories.</p>
-<p>This lesson is written for the person who is asked to &quot;own application security&quot; for an organisation that previously had little or none.</p>
+<p>You have the tools and the practices. Now you need the program — the people, process, and governance that make security sustainable across many teams and repositories, instead of depending entirely on one person&#39;s memory and goodwill.</p>
+<p>:::</p>
 <h2>The job of an AppSec program</h2>
 <ol>
 <li>Reduce the number of serious vulnerabilities that reach production</li>
@@ -59,6 +59,7 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <li>Make secure defaults the path of least resistance for developers</li>
 <li>Provide evidence for customers, auditors, and leadership</li>
 </ol>
+<p>Notice what&#39;s <em>not</em> on this list: &quot;run every possible scanner&quot; and &quot;review 100% of pull requests&quot; aren&#39;t goals, they&#39;re tactics. A program measured only by tool count can look busy while none of these four outcomes actually improve.</p>
 <h2>A practical maturity ladder</h2>
 <h3>Level 0 — Ad hoc</h3>
 <ul>
@@ -88,34 +89,87 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <li>Regular purple-team / attack-simulation exercises</li>
 <li>Continuous improvement based on incident and pentest lessons</li>
 </ul>
+<p>:::warn
+Do not try to jump straight to Level 3. An organisation with no application inventory that buys a policy-as-code gate will just block builds mysteriously with no one able to explain why, and the whole program will get disabled within a month. Maturity is sequential for a reason — each level depends on the trust and infrastructure the previous one built.</p>
 <h2>Concrete first 90 days</h2>
 <ol>
-<li><strong>Inventory</strong> — list services, owners, languages, data sensitivity.</li>
-<li><strong>Quick wins</strong> — Dependabot / SCA + secret scanning everywhere.</li>
-<li><strong>Triage process</strong> — one place for findings, clear severity definitions, SLAs.</li>
-<li><strong>Champion pilot</strong> — 2–3 teams with a named security champion.</li>
-<li><strong>Design review office hours</strong> — make it easy to ask before building.</li>
-<li><strong>One metric leadership cares about</strong> — e.g. &quot;critical vulns older than 30 days&quot;.</li>
+<li><strong>Inventory</strong> — list services, owners, languages, data sensitivity. You cannot secure what you don&#39;t know exists, and in most organisations more services exist than anyone expects.</li>
+<li><strong>Quick wins</strong> — Dependabot / SCA + secret scanning everywhere. Both are low-effort, low-noise, and immediately demonstrate value with almost no developer friction.</li>
+<li><strong>Triage process</strong> — one place for findings, clear severity definitions, SLAs. Without this, &quot;quick wins&quot; step 2 just generates a pile of alerts nobody owns.</li>
+<li><strong>Champion pilot</strong> — 2–3 teams with a named security champion. Start small enough to actually support them well; a champions program launched across 40 teams at once gets 40 half-hearted volunteers.</li>
+<li><strong>Design review office hours</strong> — make it easy to ask before building. A standing weekly slot where any team can bring a design question removes the friction of &quot;filing a ticket to talk to security.&quot;</li>
+<li><strong>One metric leadership cares about</strong> — e.g. &quot;critical vulns older than 30 days&quot;. Pick something concrete enough to report a trend line on by day 90.</li>
 </ol>
+<h2>A concrete first-90-days timeline</h2>
+<table>
+<thead>
+<tr>
+<th>Week</th>
+<th>Focus</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1–2</td>
+<td>Build the inventory; interview 5–6 team leads about what they own and what worries them</td>
+</tr>
+<tr>
+<td>3–4</td>
+<td>Turn on SCA + secret scanning everywhere; nothing blocking yet, just visibility</td>
+</tr>
+<tr>
+<td>5–6</td>
+<td>Stand up the triage process and severity definitions; start routing findings somewhere real</td>
+</tr>
+<tr>
+<td>7–8</td>
+<td>Recruit champion pilot teams; run the first design-review office hours</td>
+</tr>
+<tr>
+<td>9–12</td>
+<td>Publish the first metrics dashboard; report the first trend line to leadership</td>
+</tr>
+</tbody></table>
 <h2>Governance without bureaucracy</h2>
 <ul>
-<li>Severity definitions everyone understands</li>
+<li>Severity definitions everyone understands — &quot;critical&quot; should mean the same thing to a developer, a security engineer, and an auditor</li>
 <li>Written SLAs (e.g. critical = 7 days, high = 30 days)</li>
-<li>Exception process with expiry dates (no permanent &quot;accept the risk&quot; without review)</li>
-<li>Regular reporting that is short and decision-oriented</li>
+<li>Exception process with expiry dates (no permanent &quot;accept the risk&quot; without review) — an exception that never expires is a policy, not an exception</li>
+<li>Regular reporting that is short and decision-oriented, using the metrics discipline from the previous lesson</li>
 </ul>
+<h2>What failure looks like, and why</h2>
+<p>The most common way an AppSec program fails is not lack of budget — it&#39;s lack of trust. A program that ships noisy tools without triage burns developer goodwill in month one, and every subsequent ask — even reasonable ones — gets read as &quot;the security team slowing us down again.&quot; Trust, once burned, is far more expensive to rebuild than it was to earn in the first place. This is why the 90-day plan above deliberately puts &quot;quick wins with low noise&quot; before anything that blocks a build.</p>
+<h2>🧪 Hands-on lab — write your own first-90-days plan</h2>
+<p>Pick a real or hypothetical organisation (10–50 engineers, some mix of services, no existing AppSec function).</p>
+<ol>
+<li><p>Write the inventory questions you&#39;d ask in week 1 — what exactly do you need to know about each service?</p>
+</li>
+<li><p>Pick your two &quot;quick wins&quot; for weeks 3–4. Justify why these two specifically, and not others.</p>
+</li>
+<li><p>Draft severity definitions for Critical/High/Medium/Low in one sentence each, concrete enough that two different engineers would classify the same finding the same way.</p>
+</li>
+<li><p>Pick the one Level-2 capability you&#39;d build toward first after the 90 days, and explain why it&#39;s next rather than any of the others.</p>
+</li>
+<li><p>An organisation with no application inventory wants to buy an automated policy-as-code gate immediately. What&#39;s your advice, and why?</p>
+</li>
+<li><p>Explain in one sentence why &quot;run every scanner available&quot; is not, by itself, a good AppSec program goal.</p>
+</li>
+<li><p>Why does an exception process need expiry dates rather than being a one-time &quot;accept the risk&quot; decision?</p>
+</li>
+</ol>
 <h2>Key terms</h2>
 <ul>
 <li><strong>MTTR</strong> — Mean Time To Remediate</li>
 <li><strong>Security champion</strong> — developer who is the security liaison for their team</li>
 <li><strong>Policy as code</strong> — encoding security rules so pipelines can enforce them automatically</li>
+<li><strong>Maturity model</strong> — a staged framework (like the ladder above) for assessing and growing a program deliberately rather than all at once</li>
+<li><strong>SLA</strong> — the agreed time window for fixing a finding of a given severity</li>
 </ul>
 <h2>Recap</h2>
-<p>An AppSec program is a product. Start with inventory and quick automated wins, build trust with developers, measure what matters, and grow maturity deliberately instead of buying every tool at once.</p>
+<p>An AppSec program is a product, not a checklist — it has users (developers), it needs trust to be adopted, and it needs a roadmap. Start with inventory and quick automated wins, build trust with developers before asking for anything that blocks their work, measure what matters, and grow maturity deliberately instead of buying every tool at once.</p>
 <h3>References</h3>
 <ul>
-<li><a href="https://owaspsamm.org/">OWASP SAMM</a></li>
-<li><a href="https://www.bsimm.com/">BSIMM</a></li>
+<li><a href="https://owaspsamm.org/">OWASP SAMM</a> — the Software Assurance Maturity Model, the basis for the ladder above</li>
+<li><a href="https://www.bsimm.com/">BSIMM</a> — the Building Security In Maturity Model, based on real-world program data</li>
 </ul>
 </article>
   <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>

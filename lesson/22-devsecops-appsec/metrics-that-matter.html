@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Metrics That Matter — Path 22 · KashSec Academy</title>
-<meta name="description" content="If you cannot measure it, you cannot improve it — and you cannot defend your budget. Choose metrics that drive the behaviour you want.">
+<meta name="description" content="If you cannot measure it, you cannot improve it — and you cannot defend your budget. The metrics you choose don't just report on your program, they shape it: whatever you measure is what your team wil">
 <link rel="canonical" href="https://kashsec.vercel.app/#/lesson/22-devsecops-appsec/metrics-that-matter">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Metrics That Matter — Path 22 · KashSec Academy">
-<meta property="og:description" content="If you cannot measure it, you cannot improve it — and you cannot defend your budget. Choose metrics that drive the behaviour you want.">
+<meta property="og:description" content="If you cannot measure it, you cannot improve it — and you cannot defend your budget. The metrics you choose don't just report on your program, they shape it: whatever you measure is what your team wil">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/#/lesson/22-devsecops-appsec/metrics-that-matter">
 <meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
@@ -16,11 +16,11 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Metrics That Matter — Path 22 · KashSec Academy">
-<meta name="twitter:description" content="If you cannot measure it, you cannot improve it — and you cannot defend your budget. Choose metrics that drive the behaviour you want.">
+<meta name="twitter:description" content="If you cannot measure it, you cannot improve it — and you cannot defend your budget. The metrics you choose don't just report on your program, they shape it: whatever you measure is what your team wil">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Metrics That Matter — Path 22 · KashSec Academy","description":"If you cannot measure it, you cannot improve it — and you cannot defend your budget. Choose metrics that drive the behaviour you want.","url":"https://kashsec.vercel.app/#/lesson/22-devsecops-appsec/metrics-that-matter","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Metrics That Matter — Path 22 · KashSec Academy","description":"If you cannot measure it, you cannot improve it — and you cannot defend your budget. The metrics you choose don't just report on your program, they shape it: whatever you measure is what your team wil","url":"https://kashsec.vercel.app/#/lesson/22-devsecops-appsec/metrics-that-matter","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
 </script>
 <style>
 :root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
@@ -50,13 +50,17 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
   <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/22-devsecops-appsec/metrics-that-matter">continue here →</a></div>
   <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 22 — DevSecOps & AppSec Program</a> · Metrics That Matter</div>
   <article><h1>Metrics That Matter</h1>
-<p>If you cannot measure it, you cannot improve it — and you cannot defend your budget. Choose metrics that drive the behaviour you want.</p>
+<p>If you cannot measure it, you cannot improve it — and you cannot defend your budget. The metrics you choose don&#39;t just report on your program, they <em>shape</em> it: whatever you measure is what your team will optimize for, even when that&#39;s not what you meant.</p>
+<p>:::</p>
 <h2>Bad metrics (common traps)</h2>
 <ul>
-<li>Raw vulnerability counts (incentivises hiding or gaming)</li>
-<li>&quot;Number of scans run&quot;</li>
-<li>Lines of code covered by SAST without regard to quality of findings</li>
+<li><strong>Raw vulnerability counts</strong> — incentivizes hiding or gaming. A team that stops scanning entirely has zero open vulnerabilities. That is not the outcome you want, but it&#39;s exactly what this metric rewards.</li>
+<li><strong>&quot;Number of scans run&quot;</strong> — measures activity, not outcome. You can run a thousand scans against code nobody looks at.</li>
+<li><strong>Lines of code covered by SAST without regard to quality of findings</strong> — 100% coverage with a ruleset that only checks formatting is worthless coverage.</li>
+<li><strong>Total findings closed</strong> — a team can close 500 low-severity findings and ignore the 2 critical ones and this metric looks fantastic.</li>
 </ul>
+<h2>A concrete example of a metric backfiring</h2>
+<p>A team is measured on &quot;number of critical findings open.&quot; Leadership announces a hard deadline: zero by end of quarter. What actually happens, almost every time: findings get <em>reclassified</em> from critical to high, not fixed. The dashboard goes green. The vulnerabilities do not go anywhere. This is Goodhart&#39;s Law in action — &quot;when a measure becomes a target, it ceases to be a good measure&quot; — and it&#39;s the single biggest risk in building an AppSec metrics program.</p>
 <h2>Better metrics</h2>
 <h3>Coverage</h3>
 <ul>
@@ -64,15 +68,41 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <li>% with SAST / secret scanning on the default branch</li>
 <li>% of internet-facing services that had a design review or pentest in the last year</li>
 </ul>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>What it tells you</th>
+<th>What it can&#39;t tell you</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>SCA coverage %</td>
+<td>How many repos are being watched at all</td>
+<td>Whether findings in covered repos get fixed</td>
+</tr>
+<tr>
+<td>SAST on default branch %</td>
+<td>Baseline visibility across the org</td>
+<td>Whether the ruleset is any good</td>
+</tr>
+<tr>
+<td>Services pentested / year</td>
+<td>Depth of assurance for critical assets</td>
+<td>Anything about the other 90% of services</td>
+</tr>
+</tbody></table>
 <h3>Health of the backlog</h3>
 <ul>
 <li>Open critical / high vulnerabilities older than the SLA</li>
 <li>Mean (or median) time to remediate critical findings</li>
-<li>Arrival rate vs closure rate of high-severity issues</li>
+<li>Arrival rate vs closure rate of high-severity issues — if arrivals consistently outpace closures, the backlog is growing no matter how busy everyone looks</li>
 </ul>
+<p>:::warn
+Watch median, not just mean, for remediation time. One 400-day-old finding that nobody owns will drag a mean upward and hide the fact that most findings actually get fixed quickly. Report both, or report median alone if you can only pick one.</p>
 <h3>Outcomes</h3>
 <ul>
-<li>Serious vulnerabilities found in production / by external researchers (escape rate)</li>
+<li>Serious vulnerabilities found in production / by external researchers (<strong>escape rate</strong>) — this is the metric that most honestly answers &quot;is our program working,&quot; because it measures what actually got past every earlier control</li>
 <li>Time from vulnerability disclosure to fix in production</li>
 <li>Percentage of services that meet a defined security baseline</li>
 </ul>
@@ -80,27 +110,44 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <ul>
 <li>Number of active security champions</li>
 <li>Design reviews completed per quarter</li>
-<li>Developer satisfaction with security tooling (short survey)</li>
+<li>Developer satisfaction with security tooling (short survey) — a scanner developers hate gets routed around, no matter how good its findings are</li>
 </ul>
 <h2>How to use metrics</h2>
 <ol>
-<li><strong>Pick a small set</strong> (5–7) that leadership can understand.</li>
-<li><strong>Show trend lines</strong>, not just snapshots.</li>
-<li><strong>Pair every metric with an action</strong> — &quot;this number is high, therefore we will…&quot;.</li>
-<li><strong>Avoid weaponising metrics against teams</strong> — use them to prioritise support and investment.</li>
+<li><strong>Pick a small set</strong> (5–7) that leadership can understand. A 40-metric dashboard gets ignored; a 5-metric one gets read every week.</li>
+<li><strong>Show trend lines</strong>, not just snapshots. &quot;12 critical findings&quot; means nothing alone. &quot;12, down from 40 last quarter&quot; is a story.</li>
+<li><strong>Pair every metric with an action</strong> — &quot;this number is high, therefore we will…&quot;. A metric with no attached decision is trivia, not management.</li>
+<li><strong>Avoid weaponising metrics against teams</strong> — use them to prioritise support and investment, not to rank-and-shame. Teams that feel punished by a metric will learn to hide from it rather than improve against it.</li>
 </ol>
-<p>A simple executive slide: &quot;Critical vulnerabilities older than 30 days: 12 → 3 in the last quarter. Coverage of SCA: 40% → 95%.&quot; That story gets budget.</p>
+<p>:::</p>
+<h2>🧪 Hands-on lab — design a 5-metric dashboard</h2>
+<p>Pick a real or hypothetical organization (your workplace, a personal project portfolio, or a scenario you invent).</p>
+<ol>
+<li>List every security metric you could plausibly collect for it — aim for at least 10.</li>
+<li>For each one, apply the Goodhart&#39;s Law test from above: could a team game it without getting more secure? Cross off any that fail.</li>
+<li>From what&#39;s left, pick exactly 5 that together cover coverage, backlog health, and outcomes — don&#39;t pick 5 that are all backlog metrics.</li>
+<li>For each of your 5, write the one sentence of &quot;therefore we will...&quot; that a bad number would trigger.</li>
+<li>Sketch (in words or a rough table) what the trend line for each metric would look like after a <em>good</em> quarter versus a <em>bad</em> quarter.</li>
+</ol>
+<p>:::challenge Test yourself</p>
+<ol>
+<li>Your CISO wants a single number that summarizes &quot;how secure are we.&quot; Why is this a dangerous request, and what would you offer instead?</li>
+<li>A team&#39;s &quot;time to remediate&quot; metric improved dramatically overnight. List two explanations that mean real progress and two that mean the metric is being gamed.</li>
+<li>Explain escape rate in one sentence, and explain why it&#39;s harder to game than most other AppSec metrics.</li>
+</ol>
 <h2>Key terms</h2>
 <ul>
 <li><strong>MTTR</strong> — mean time to remediate</li>
-<li><strong>Escape rate</strong> — defects that reach production or external discovery</li>
-<li><strong>SLA</strong> — service level agreement for fixing findings by severity</li>
+<li><strong>Escape rate</strong> — defects that reach production or external discovery, rather than being caught by an earlier control</li>
+<li><strong>SLA</strong> — service level agreement for fixing findings by severity, e.g. &quot;critical findings fixed within 15 days&quot;</li>
+<li><strong>Goodhart&#39;s Law</strong> — &quot;when a measure becomes a target, it ceases to be a good measure&quot;; the central risk of any metrics program</li>
 </ul>
 <h2>Recap</h2>
-<p>Measure coverage, backlog health, and real outcomes. Keep the set small, show trends, and always connect numbers to decisions.</p>
+<p>Measure coverage, backlog health, and real outcomes — and pressure-test every candidate metric against Goodhart&#39;s Law before you adopt it. Keep the set small, show trends, and always connect numbers to decisions, because a metric nobody acts on is just decoration.</p>
 <h3>References</h3>
 <ul>
 <li><a href="https://www.defectdojo.org/">OWASP DefectDojo</a> — open-source vulnerability management that helps track many of these metrics</li>
+<li><a href="https://en.wikipedia.org/wiki/Goodhart%27s_law">Goodhart&#39;s Law (overview)</a> — the underlying risk behind every metrics program</li>
 </ul>
 </article>
   <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
