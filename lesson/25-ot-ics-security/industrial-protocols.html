@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Industrial Protocols: Modbus, DNP3, and Why Their Design Causes Security Problems — Path 25 · KashSec Academy</title>
+<meta name="description" content="The previous lesson described the sense-decide-act loop conceptually. This lesson gets concrete about how the pieces actually talk to each other — and why the protocols carrying that conversation are,">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/25-ot-ics-security/industrial-protocols">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Industrial Protocols: Modbus, DNP3, and Why Their Design Causes Security Problems — Path 25 · KashSec Academy">
+<meta property="og:description" content="The previous lesson described the sense-decide-act loop conceptually. This lesson gets concrete about how the pieces actually talk to each other — and why the protocols carrying that conversation are,">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/25-ot-ics-security/industrial-protocols">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Industrial Protocols: Modbus, DNP3, and Why Their Design Causes Security Problems — Path 25 · KashSec Academy">
+<meta name="twitter:description" content="The previous lesson described the sense-decide-act loop conceptually. This lesson gets concrete about how the pieces actually talk to each other — and why the protocols carrying that conversation are,">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Industrial Protocols: Modbus, DNP3, and Why Their Design Causes Security Problems — Path 25 · KashSec Academy","description":"The previous lesson described the sense-decide-act loop conceptually. This lesson gets concrete about how the pieces actually talk to each other — and why the protocols carrying that conversation are,","url":"https://kashsec.vercel.app/#/lesson/25-ot-ics-security/industrial-protocols","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/25-ot-ics-security/industrial-protocols">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 25 — OT/ICS & Critical Infrastructure Security</a> · Industrial Protocols: Modbus, DNP3, and Why Their Design Causes Security Problems</div>
+  <article><h1>Industrial Protocols: Modbus, DNP3, and Why Their Design Causes Security Problems</h1>
+<p>The previous lesson described the sense-decide-act loop conceptually. This lesson gets concrete about how the pieces actually talk to each other — and why the protocols carrying that conversation are, from a security standpoint, a genuinely different problem than anything covered elsewhere in this course.</p>
+<p>:::</p>
+<h2>Modbus: simple, ubiquitous, and trusting by design</h2>
+<p><strong>Modbus</strong> is one of the oldest and most widely deployed industrial protocols, originally developed in 1979. Its enduring popularity comes from genuine simplicity — a small set of function codes for reading and writing data (read a coil, write a register, and a handful of others), transmitted in plain text with no authentication whatsoever.</p>
+<ul>
+<li><strong>No authentication</strong>: any device that can reach a Modbus-speaking PLC over the network can send it commands. There&#39;s no concept of &quot;prove you&#39;re allowed to do this&quot; anywhere in the protocol.</li>
+<li><strong>No encryption</strong>: commands and responses travel in cleartext. Anyone who can observe the traffic can read exactly what&#39;s being commanded and what values are being reported.</li>
+<li><strong>No integrity checking beyond basic error detection</strong>: nothing stops a manipulated packet from being accepted as legitimate, as long as it&#39;s well-formed.</li>
+</ul>
+<p>In practice, this means: if an attacker can reach a Modbus network segment at all, they can typically read any value and write any command a legitimate engineering workstation could — the protocol itself provides no resistance whatsoever. The only security Modbus has ever had is <em>network-level</em> — keeping unauthorized devices off the segment entirely, which is exactly the segmentation problem the Purdue Model lesson tackles next.</p>
+<h2>DNP3: built for a harsher environment, with a few more guardrails</h2>
+<p><strong>DNP3 (Distributed Network Protocol 3)</strong> is common in utility environments — especially electrical grid and water infrastructure — and reflects lessons learned from operating over less reliable, longer-distance links than Modbus typically assumes:</p>
+<ul>
+<li>Includes better support for time-stamped data and event reporting, useful when readings travel long distances with variable delay</li>
+<li>A newer specification, <strong>DNP3 Secure Authentication</strong>, adds a genuine authentication mechanism — but it&#39;s an <em>optional add-on</em>, not a mandatory part of the base protocol, and real-world adoption of the secure variant has historically lagged far behind adoption of DNP3 itself</li>
+</ul>
+<p>The pattern here repeats across the whole industrial protocol landscape: security extensions exist, but the base, insecure version remains the one actually deployed on a huge share of real infrastructure, because replacing working field equipment is expensive and disruptive in a way that patching a web server never is.</p>
+<h2>Side-by-side comparison</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Modbus</th>
+<th>DNP3</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Original design era</td>
+<td>1979</td>
+<td>1990s</td>
+</tr>
+<tr>
+<td>Typical use case</td>
+<td>Factory automation, building automation</td>
+<td>Utilities — electric grid, water infrastructure</td>
+</tr>
+<tr>
+<td>Built-in authentication</td>
+<td>None</td>
+<td>Optional (Secure Authentication extension), rarely deployed</td>
+</tr>
+<tr>
+<td>Built-in encryption</td>
+<td>None</td>
+<td>None in base protocol</td>
+</tr>
+<tr>
+<td>Transport</td>
+<td>Often serial, now commonly over TCP/IP too</td>
+<td>Serial and TCP/IP</td>
+</tr>
+<tr>
+<td>Real-world exposure</td>
+<td>Frequently found reachable from broader networks than intended</td>
+<td>Similarly exposed, especially where legacy remote access exists</td>
+</tr>
+</tbody></table>
+<h2>Why &quot;just add TLS&quot; doesn&#39;t simply fix this</h2>
+<p>A natural instinct from an IT security background: wrap these protocols in TLS and call it solved. In practice this runs into real OT constraints:</p>
+<ul>
+<li>Many field devices have limited processing power — decades-old hardware may not have the computational headroom for modern cryptographic overhead at the required speed</li>
+<li>Retrofitting encryption onto a live, safety-critical control loop risks introducing latency or failure modes that are unacceptable given the &quot;availability and safety first&quot; priority from the first lesson in this path</li>
+<li>A huge installed base of legacy devices simply cannot be upgraded to support it at all — the fix would mean physically replacing equipment across an entire facility or region</li>
+</ul>
+<p>This is exactly why OT security leans so heavily on <strong>network-level controls</strong> (segmentation, monitoring, strict access control) rather than &quot;fix the protocol&quot; — the protocol often genuinely can&#39;t be fixed at scale without replacing hardware that&#39;s expected to run for another decade or two.</p>
+<p>:::warn
+A common, dangerous assumption: &quot;we use Modbus, but it&#39;s on our internal network, so it&#39;s fine.&quot; The protocol provides zero authentication regardless of network location — the <em>entire</em> security of a Modbus deployment rests on nothing reaching that network segment that shouldn&#39;t. If segmentation fails even once, the protocol itself offers no second line of defense.</p>
+<h2>A worked example: what an unauthenticated write actually looks like</h2>
+<p>A Modbus &quot;write single register&quot; command is, in essence: function code, register address, value — sent as a simple, well-documented, unauthenticated packet. If an attacker can reach the network segment a PLC is on, crafting and sending that exact packet requires no special exploit, no vulnerability research, and no credentials — just knowledge of the (publicly documented) protocol and the target&#39;s address. This is a meaningful difference from most IT vulnerabilities, which typically require finding and exploiting an actual bug. In classic ICS/Modbus attacks, there&#39;s frequently no bug to find at all — the protocol is working exactly as designed, and the &quot;vulnerability&quot; is that it was ever reachable by an untrusted party in the first place.</p>
+<h2>🧪 Hands-on lab — read a real Modbus packet capture (conceptually)</h2>
+<p>You don&#39;t need real ICS hardware for this exercise — the goal is understanding the protocol&#39;s shape.</p>
+<ol>
+<li><p>Research the basic structure of a Modbus &quot;read holding registers&quot; request and response (function code, address, data — publicly documented, safe to look up).</p>
+</li>
+<li><p>Write out, in plain English, what information in that request an attacker could learn just by observing it on the wire (no decryption needed, since there&#39;s nothing encrypted).</p>
+</li>
+<li><p>Now do the same for a &quot;write single register&quot; request — what could an attacker change, and what would they need to know to target a specific piece of equipment?</p>
+</li>
+<li><p>Write one paragraph explaining why network segmentation is effectively the <em>only</em> real defense for a device that only speaks unauthenticated Modbus.</p>
+</li>
+<li><p>Why does Modbus have no built-in authentication, and why does that matter more in 2026 than it did in 1979?</p>
+</li>
+<li><p>Explain why &quot;just add TLS to it&quot; is harder in OT than the equivalent fix would be for a typical IT web service.</p>
+</li>
+<li><p>In the &quot;unauthenticated write&quot; example, why is this not really a &quot;vulnerability&quot; in the traditional bug-hunting sense?</p>
+</li>
+</ol>
+<h2>Key terms</h2>
+<ul>
+<li><strong>Modbus</strong> — one of the oldest and most widely deployed industrial protocols, with no built-in authentication or encryption</li>
+<li><strong>DNP3</strong> — a protocol common in utility environments, with an optional (rarely deployed) secure authentication extension</li>
+<li><strong>Function code</strong> — the part of an industrial protocol command that specifies the action being requested (read, write, etc.)</li>
+<li><strong>Secure Authentication (DNP3)</strong> — an add-on specification providing cryptographic authentication for DNP3, not part of the base protocol</li>
+</ul>
+<h2>Recap</h2>
+<p>Modbus and DNP3 both reflect a design era that assumed trusted, isolated networks — no authentication, no encryption, and commands that any reachable device can send and any observer can read. Retrofitting modern security onto them is genuinely harder than in IT, both technically (device constraints) and practically (an enormous, expensive-to-replace installed base), which is exactly why network-level segmentation — the subject of the next lesson — carries so much of the real-world security burden in these environments.</p>
+<h3>References</h3>
+<ul>
+<li><a href="https://csrc.nist.gov/pubs/sp/800/82/r3/final">NIST SP 800-82 — Guide to Industrial Control Systems Security</a> — covers Modbus, DNP3, and other industrial protocols in detail</li>
+<li><a href="https://www.cisa.gov/news-events/cybersecurity-advisories?f%5B0%5D=advisory_type%3A94">CISA — Industrial Control Systems Advisories</a> — ongoing real-world vulnerability disclosures affecting these protocols</li>
+</ul>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/25-ot-ics-security/industrial-protocols";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

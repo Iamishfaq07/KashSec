@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Practical OT Security Controls — Path 25 · KashSec Academy</title>
+<meta name="description" content="Every earlier lesson in this path has explained why OT is hard to secure: legacy protocols with no authentication, equipment that can't be casually patched, and real-world incidents proving the theore">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/25-ot-ics-security/practical-ot-security-controls">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Practical OT Security Controls — Path 25 · KashSec Academy">
+<meta property="og:description" content="Every earlier lesson in this path has explained why OT is hard to secure: legacy protocols with no authentication, equipment that can't be casually patched, and real-world incidents proving the theore">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/25-ot-ics-security/practical-ot-security-controls">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Practical OT Security Controls — Path 25 · KashSec Academy">
+<meta name="twitter:description" content="Every earlier lesson in this path has explained why OT is hard to secure: legacy protocols with no authentication, equipment that can't be casually patched, and real-world incidents proving the theore">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Practical OT Security Controls — Path 25 · KashSec Academy","description":"Every earlier lesson in this path has explained why OT is hard to secure: legacy protocols with no authentication, equipment that can't be casually patched, and real-world incidents proving the theore","url":"https://kashsec.vercel.app/#/lesson/25-ot-ics-security/practical-ot-security-controls","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/25-ot-ics-security/practical-ot-security-controls">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 25 — OT/ICS & Critical Infrastructure Security</a> · Practical OT Security Controls</div>
+  <article><h1>Practical OT Security Controls</h1>
+<p>Every earlier lesson in this path has explained why OT is hard to secure: legacy protocols with no authentication, equipment that can&#39;t be casually patched, and real-world incidents proving the theoretical risks are genuine. This lesson is the payoff — what actually gets deployed, in what order, given all of those real constraints.</p>
+<p>:::</p>
+<h2>The priority order, and why it&#39;s different from IT</h2>
+<p>In IT security, &quot;patch everything quickly&quot; is close to a default best practice. In OT, patching is often the <em>last</em> tool reached for, not the first — because of the deployment and downtime constraints covered in the fundamentals lesson. The realistic priority order looks more like:</p>
+<ol>
+<li><strong>Network segmentation</strong> (the Purdue Model, enforced) — the highest-leverage control, because it doesn&#39;t touch the fragile legacy equipment at all</li>
+<li><strong>Monitoring and detection</strong> — knowing what&#39;s happening, especially at DMZ boundaries and on OT network segments, without changing anything about the control systems themselves</li>
+<li><strong>Access control</strong> — who and what can reach OT systems at all, and through what specific, narrow paths</li>
+<li><strong>Compensating controls around legacy protocols</strong> — since Modbus/DNP3 often can&#39;t be fixed directly, controls exist around them instead</li>
+<li><strong>Patching</strong> — genuinely important, but scheduled around planned outages, tested extensively beforehand, and often years behind the equivalent IT patch cadence</li>
+</ol>
+<h2>Segmentation, enforced (not just diagrammed)</h2>
+<p>The Purdue Model lesson already covered the architecture. The practical control here is making sure it&#39;s real: actual firewall rules between levels, a genuinely restrictive DMZ, and — critically — <strong>regular verification that nobody has quietly bypassed it</strong>, since the DMZ-bypass failure mode from that lesson tends to creep back in over time through well-intentioned shortcuts.</p>
+<h2>Passive monitoring: seeing without touching</h2>
+<p>A defining OT security technique: <strong>passive network monitoring</strong> — observing traffic on a network tap or mirrored port without ever injecting traffic onto the OT network itself. This matters because active scanning (the kind routine in IT vulnerability management) can genuinely crash fragile, decades-old ICS equipment that was never tested against unexpected traffic patterns. Passive monitoring gets visibility — what devices exist, what protocols they&#39;re speaking, whether traffic patterns look unusual — without the risk of actively probing equipment that might not handle it gracefully.</p>
+<p>:::danger
+Running a standard IT vulnerability scanner against an OT network is a well-known way to cause a real outage. Scanners are built and tested against IT equipment; a PLC from the 1990s may simply not have been designed to handle unexpected connection attempts gracefully, and &quot;unexpected downtime caused by the security tool meant to prevent unexpected downtime&quot; is exactly the kind of failure this field takes very seriously.</p>
+<h2>Access control for a world that can&#39;t always use modern auth</h2>
+<p>Given that many field devices can&#39;t support modern authentication (from the protocols lesson), access control shifts to controlling <em>who can reach the network segment at all</em>:</p>
+<ul>
+<li><strong>Jump hosts / bastion hosts</strong> for any remote or vendor access into OT segments — no direct connection, only through a single, monitored, tightly controlled chokepoint</li>
+<li><strong>Least privilege for engineering workstations</strong> — the machines that <em>can</em> legitimately reprogram a PLC are exactly the machines that need the most protection, since they&#39;re the closest thing OT has to &quot;keys to everything&quot;</li>
+<li><strong>Multi-factor authentication wherever it can actually be supported</strong> — typically at the IT-adjacent layers (engineering workstations, historians, remote access gateways) rather than on the field devices themselves, which usually can&#39;t support it at all</li>
+</ul>
+<h2>Compensating controls for unauthenticated protocols</h2>
+<p>Since Modbus and similar protocols can&#39;t be retrofitted with authentication at scale, the practical response is controls <em>around</em> them:</p>
+<ul>
+<li><strong>Protocol-aware firewalls / deep packet inspection</strong>: devices that understand Modbus/DNP3 well enough to allow only expected, legitimate function codes and block anything anomalous, even though the protocol itself can&#39;t distinguish legitimate from malicious</li>
+<li><strong>Unidirectional gateways (&quot;data diodes&quot;)</strong>: hardware that physically allows data to flow in only one direction — commonly used to let OT data flow <em>out</em> to a historian or reporting system while making it physically impossible for anything to flow back <em>in</em>. This is a genuinely elegant solution for one-way data needs, because it doesn&#39;t rely on a rule being correctly configured — the hardware simply cannot carry traffic the wrong way</li>
+<li><strong>Anomaly-based detection</strong>: since there&#39;s no authentication to check, detection often relies on knowing what &quot;normal&quot; traffic and command patterns look like for a given process, and flagging deviations — directly building on the historian data covered in the fundamentals lesson</li>
+</ul>
+<h2>Patching, done the OT way</h2>
+<p>When patching does happen, it typically involves:</p>
+<ul>
+<li>Testing extensively in a non-production, representative environment first — never patching live safety-critical equipment untested</li>
+<li>Scheduling around planned maintenance windows, sometimes coordinated months in advance with regulators, customers, and multiple internal teams</li>
+<li>Prioritizing based on real exploitability and exposure (a vulnerability in equipment properly isolated by segmentation is a different urgency than one on an internet-reachable device) rather than patching everything on a fixed calendar cadence the way IT often does</li>
+</ul>
+<h2>A worked example: securing a legacy PLC that can&#39;t be patched at all</h2>
+<p>Say a facility runs a PLC so old that the manufacturer no longer supports it, and no patch will ever exist. Realistic controls, stacked together:</p>
+<ol>
+<li><strong>Segmentation</strong>: the PLC sits on its own tightly restricted network segment, reachable only from the specific engineering workstation that legitimately needs to program it</li>
+<li><strong>Passive monitoring</strong>: a network tap watches traffic to and from that segment, alerting on any connection attempt from an unexpected source</li>
+<li><strong>Protocol-aware filtering</strong>: a firewall in front of the segment only allows the specific function codes this PLC&#39;s normal operation actually uses, blocking anything else even if it&#39;s technically valid Modbus</li>
+<li><strong>Jump host access control</strong>: the one workstation allowed to reach it requires MFA and is itself monitored closely</li>
+</ol>
+<p>No single control here &quot;fixes&quot; the PLC&#39;s fundamental lack of authentication — but layered together, they meaningfully reduce the realistic attack surface without ever touching the fragile, unpatchable device itself.</p>
+<h2>🧪 Hands-on lab — design a control stack for a legacy device</h2>
+<p>Pick a hypothetical legacy PLC controlling something specific (a conveyor belt, a pump station — your choice).</p>
+<ol>
+<li><p>List what you know or can reasonably assume about it: no authentication, can&#39;t be patched, communicates over Modbus.</p>
+</li>
+<li><p>Design a layered control stack (at least three distinct controls) that reduces risk without touching or patching the device itself.</p>
+</li>
+<li><p>For each control, write one sentence on specifically what attack path or scenario it closes off.</p>
+</li>
+<li><p>Identify the single most important control in your stack, and explain why removing it would leave the largest remaining gap.</p>
+</li>
+<li><p>Why does OT security typically prioritize segmentation and monitoring ahead of patching, when IT security usually treats patching as a top priority?</p>
+</li>
+<li><p>Explain why active vulnerability scanning is considered risky against OT networks, and what technique is used instead.</p>
+</li>
+<li><p>What does a unidirectional gateway (&quot;data diode&quot;) physically guarantee that a standard firewall rule does not?</p>
+</li>
+</ol>
+<h2>Key terms</h2>
+<ul>
+<li><strong>Passive monitoring</strong> — observing network traffic without injecting any traffic onto the monitored network, avoiding the risk of disrupting fragile equipment</li>
+<li><strong>Jump host / bastion host</strong> — a single, tightly controlled and monitored system that all remote or vendor access must pass through</li>
+<li><strong>Unidirectional gateway (data diode)</strong> — hardware that physically allows data flow in only one direction</li>
+<li><strong>Compensating control</strong> — a control that reduces risk around a weakness that can&#39;t be directly fixed</li>
+</ul>
+<h2>Recap</h2>
+<p>Practical OT security accepts the constraints earlier lessons established — legacy protocols that can&#39;t be authenticated, equipment that can&#39;t be casually patched — and builds layered, non-invasive controls around them: enforced segmentation, passive monitoring instead of active scanning, tightly controlled access chokepoints, and protocol-aware filtering as compensating controls. Patching still matters, but it&#39;s the last tool reached for, not the first, precisely because availability and physical safety outrank the &quot;patch it now&quot; instinct that dominates IT security thinking.</p>
+<h3>References</h3>
+<ul>
+<li><a href="https://csrc.nist.gov/pubs/sp/800/82/r3/final">NIST SP 800-82 — Guide to Industrial Control Systems Security</a> — comprehensive practical control guidance</li>
+<li><a href="https://www.cisa.gov/topics/industrial-control-systems">CISA — Industrial Control Systems</a> — recommended practices and advisories</li>
+</ul>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/25-ot-ics-security/practical-ot-security-controls";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

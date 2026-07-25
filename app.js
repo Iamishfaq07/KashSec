@@ -1021,6 +1021,17 @@ const PATHS = [
      {n:"7", id:"zero-trust-cloud",             title:"Zero Trust in Cloud-Native Environments", desc:"Workload identity, IAM as segmentation, and service mesh in a world with no fixed perimeter."},
      {n:"8", id:"implementing-zero-trust",      title:"Implementing Zero Trust: A Practical Roadmap", desc:"Sequencing, governance, and metrics for a real multi-year rollout."},
      {n:"9", id:"zero-trust-case-studies-lab",  title:"Case Studies & Capstone: Assess a Zero Trust Maturity", desc:"BeyondCorp and real-world lessons, then a full maturity assessment exercise."}
+   ]},
+  {n:"25", id:"25-ot-ics-security", title:"OT/ICS & Critical Infrastructure Security", level:"Advanced",
+   desc:"A different world from IT: SCADA, industrial protocols, the Purdue Model, real-world ICS attacks (Stuxnet, Ukraine grid), and practical controls that respect physical safety constraints.",
+   subs:[
+     {n:"1", id:"what-is-ot-ics",                     title:"What is OT/ICS Security?", desc:"Why OT security reverses IT's usual priorities, and the vocabulary you'll need."},
+     {n:"2", id:"scada-ics-fundamentals",             title:"SCADA & ICS Architecture Fundamentals", desc:"The sense-decide-act control loop, SCADA vs. DCS, HMI, and the historian."},
+     {n:"3", id:"industrial-protocols",               title:"Industrial Protocols: Modbus, DNP3, and Why Their Design Causes Security Problems", desc:"Protocols with no built-in authentication, and why 'just add TLS' doesn't work."},
+     {n:"4", id:"purdue-model",                       title:"The Purdue Model: Segmenting IT from OT", desc:"The standard reference architecture, and why the DMZ is the whole point."},
+     {n:"5", id:"real-world-ics-attacks",             title:"Real-World ICS Attacks: What They Actually Teach Us", desc:"Stuxnet, the Ukraine grid attacks, Oldsmar, and Triton — mapped back to the lessons that predicted them."},
+     {n:"6", id:"practical-ot-security-controls",     title:"Practical OT Security Controls", desc:"Segmentation, passive monitoring, jump hosts, and compensating controls for unpatchable legacy gear."},
+     {n:"7", id:"ot-ics-capstone-lab",                title:"Capstone: Secure a Realistic Industrial Network", desc:"A full assessment exercise applying everything in this path to one fictional facility."}
    ]}
 
 ];
@@ -4683,6 +4694,10 @@ function renderLabPhishing(){
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
+  {date:'2026-07-25', title:'New path: OT/ICS & Critical Infrastructure Security', items:[
+    'A new 7-lesson advanced path: SCADA/ICS architecture fundamentals, industrial protocols (Modbus, DNP3) and why they lack built-in authentication, the Purdue Model, real-world attacks (Stuxnet, the Ukraine grid attacks, Oldsmar, Triton/Trisis) mapped back to the failure modes that caused them, practical OT security controls, and a full capstone security assessment.',
+    'Comes with a full 10-question path quiz, like every other path.'
+  ]},
   {date:'2026-07-25', title:'New path: Zero Trust Architecture', items:[
     'A new 9-lesson advanced path: never trust/always verify, identity as the perimeter, device posture, micro-segmentation, continuous verification, ZTNA vs. VPN, Zero Trust in the cloud, a practical rollout roadmap, and a closing lesson on real-world case studies (Google BeyondCorp) capped with a maturity-assessment capstone exercise.',
     'Comes with a full 10-question path quiz, like every other path.'

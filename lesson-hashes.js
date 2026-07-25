@@ -246,5 +246,12 @@ const LESSON_HASHES = {
  "24-zero-trust/ztna-vs-vpn": "d408e64d6a",
  "24-zero-trust/zero-trust-cloud": "09bc0d1716",
  "24-zero-trust/implementing-zero-trust": "bd9e49fd00",
- "24-zero-trust/zero-trust-case-studies-lab": "a9f967bd23"
+ "24-zero-trust/zero-trust-case-studies-lab": "a9f967bd23",
+ "25-ot-ics-security/what-is-ot-ics": "db7e35b27e",
+ "25-ot-ics-security/scada-ics-fundamentals": "19a694e226",
+ "25-ot-ics-security/industrial-protocols": "beea3ab185",
+ "25-ot-ics-security/purdue-model": "984ab71615",
+ "25-ot-ics-security/real-world-ics-attacks": "75e9634897",
+ "25-ot-ics-security/practical-ot-security-controls": "6c39a867a9",
+ "25-ot-ics-security/ot-ics-capstone-lab": "e735696b5f"
 };

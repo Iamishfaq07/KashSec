@@ -193,6 +193,15 @@ const GLOSSARY = [
   "subTitle": "AI red teaming"
  },
  {
+  "term": "Air gap",
+  "def": "a network with no physical or logical connection to other networks, historically assumed (often incorrectly) to protect OT environments",
+  "pathId": "25-ot-ics-security",
+  "pathN": "25",
+  "pathTitle": "OT/ICS & Critical Infrastructure Security",
+  "subId": "what-is-ot-ics",
+  "subTitle": "What is OT/ICS Security?"
+ },
+ {
   "term": "AI supply chain",
   "def": "the full pipeline from training data through fine-tuning, plugins, and hosting to a deployed application.",
   "pathId": "18-ai-security",
@@ -1138,6 +1147,15 @@ const GLOSSARY = [
   "subTitle": "Meet the terminal"
  },
  {
+  "term": "Compensating control",
+  "def": "a control that reduces risk around a weakness that can't be directly fixed",
+  "pathId": "25-ot-ics-security",
+  "pathN": "25",
+  "pathTitle": "OT/ICS & Critical Infrastructure Security",
+  "subId": "practical-ot-security-controls",
+  "subTitle": "Practical OT Security Controls"
+ },
+ {
   "term": "Compiled / interpreted",
   "def": "two different ways source code gets translated into something a CPU can execute.",
   "pathId": "00-fresher-basics",
@@ -1748,6 +1766,24 @@ const GLOSSARY = [
   "pathTitle": "Operating Systems & Linux",
   "subId": "windows-linux-mac",
   "subTitle": "Windows vs Linux vs macOS"
+ },
+ {
+  "term": "DMZ bypass",
+  "def": "an unauthorized or undocumented direct connection that skips the DMZ, defeating the segmentation the model relies on",
+  "pathId": "25-ot-ics-security",
+  "pathN": "25",
+  "pathTitle": "OT/ICS & Critical Infrastructure Security",
+  "subId": "purdue-model",
+  "subTitle": "The Purdue Model: Segmenting IT from OT"
+ },
+ {
+  "term": "DNP3",
+  "def": "a protocol common in utility environments, with an optional (rarely deployed) secure authentication extension",
+  "pathId": "25-ot-ics-security",
+  "pathN": "25",
+  "pathTitle": "OT/ICS & Critical Infrastructure Security",
+  "subId": "industrial-protocols",
+  "subTitle": "Industrial Protocols: Modbus, DNP3, and Why Their Design Causes Security Problems"
  },
  {
   "term": "DNS",
@@ -2380,6 +2416,15 @@ const GLOSSARY = [
   "subTitle": "Lists & functions"
  },
  {
+  "term": "Function code",
+  "def": "the part of an industrial protocol command that specifies the action being requested (read, write, etc.)",
+  "pathId": "25-ot-ics-security",
+  "pathN": "25",
+  "pathTitle": "OT/ICS & Critical Infrastructure Security",
+  "subId": "industrial-protocols",
+  "subTitle": "Industrial Protocols: Modbus, DNP3, and Why Their Design Causes Security Problems"
+ },
+ {
   "term": "Function Level Authorization",
   "def": "checking the *action*, not just the object",
   "pathId": "21-api-security",
@@ -2668,6 +2713,24 @@ const GLOSSARY = [
   "subTitle": "Frameworks & compliance"
  },
  {
+  "term": "Historian",
+  "def": "a specialized database logging process data over time for analysis and forensic reconstruction",
+  "pathId": "25-ot-ics-security",
+  "pathN": "25",
+  "pathTitle": "OT/ICS & Critical Infrastructure Security",
+  "subId": "scada-ics-fundamentals",
+  "subTitle": "SCADA & ICS Architecture Fundamentals"
+ },
+ {
+  "term": "HMI (Human-Machine Interface)",
+  "def": "the operator-facing screen for monitoring and supervisory control",
+  "pathId": "25-ot-ics-security",
+  "pathN": "25",
+  "pathTitle": "OT/ICS & Critical Infrastructure Security",
+  "subId": "scada-ics-fundamentals",
+  "subTitle": "SCADA & ICS Architecture Fundamentals"
+ },
+ {
   "term": "Horizontal privilege escalation",
   "def": "gaining access to another user's data at the same privilege level (BOLA's typical impact)",
   "pathId": "21-api-security",
@@ -2866,6 +2929,15 @@ const GLOSSARY = [
   "subTitle": "Cloud Identity & Access Management"
  },
  {
+  "term": "ICS (Industrial Control Systems)",
+  "def": "the umbrella term for OT systems and their supporting infrastructure",
+  "pathId": "25-ot-ics-security",
+  "pathN": "25",
+  "pathTitle": "OT/ICS & Critical Infrastructure Security",
+  "subId": "what-is-ot-ics",
+  "subTitle": "What is OT/ICS Security?"
+ },
+ {
   "term": "Identity Provider (IdP)",
   "def": "the central system that authenticates users and issues identity for other applications to trust",
   "pathId": "24-zero-trust",
@@ -2999,6 +3071,15 @@ const GLOSSARY = [
   "pathTitle": "AI & AI Security",
   "subId": "agentic-ai-risks",
   "subTitle": "Agentic AI Risks"
+ },
+ {
+  "term": "Industrial DMZ (Level 3.5)",
+  "def": "a dedicated buffer zone controlling and monitoring all traffic between OT and IT",
+  "pathId": "25-ot-ics-security",
+  "pathN": "25",
+  "pathTitle": "OT/ICS & Critical Infrastructure Security",
+  "subId": "purdue-model",
+  "subTitle": "The Purdue Model: Segmenting IT from OT"
  },
  {
   "term": "Info.plist",
@@ -3235,6 +3316,15 @@ const GLOSSARY = [
   "subTitle": "APIs & JSON"
  },
  {
+  "term": "Jump host / bastion host",
+  "def": "a single, tightly controlled and monitored system that all remote or vendor access must pass through",
+  "pathId": "25-ot-ics-security",
+  "pathN": "25",
+  "pathTitle": "OT/ICS & Critical Infrastructure Security",
+  "subId": "practical-ot-security-controls",
+  "subTitle": "Practical OT Security Controls"
+ },
+ {
   "term": "JWKS",
   "def": "JSON Web Key Set, the endpoint that publishes an API's public signing keys",
   "pathId": "21-api-security",
@@ -3413,6 +3503,15 @@ const GLOSSARY = [
   "pathTitle": "AI & AI Security",
   "subId": "agentic-ai-risks",
   "subTitle": "Agentic AI Risks"
+ },
+ {
+  "term": "Legitimate business need",
+  "def": "the real, valid reason a risky-looking connection or access path exists, which any good redesign must preserve rather than simply eliminate",
+  "pathId": "25-ot-ics-security",
+  "pathN": "25",
+  "pathTitle": "OT/ICS & Critical Infrastructure Security",
+  "subId": "ot-ics-capstone-lab",
+  "subTitle": "Capstone: Secure a Realistic Industrial Network"
  },
  {
   "term": "LinPEAS",
@@ -3683,6 +3782,15 @@ const GLOSSARY = [
   "pathTitle": "Cybersecurity Fundamentals",
   "subId": "attackers-kill-chain",
   "subTitle": "Attackers & the kill chain"
+ },
+ {
+  "term": "Modbus",
+  "def": "one of the oldest and most widely deployed industrial protocols, with no built-in authentication or encryption",
+  "pathId": "25-ot-ics-security",
+  "pathN": "25",
+  "pathTitle": "OT/ICS & Critical Infrastructure Security",
+  "subId": "industrial-protocols",
+  "subTitle": "Industrial Protocols: Modbus, DNP3, and Why Their Design Causes Security Problems"
  },
  {
   "term": "Model drift",
@@ -4081,6 +4189,15 @@ const GLOSSARY = [
   "subTitle": "Phase 1: Reconnaissance"
  },
  {
+  "term": "OT (Operational Technology)",
+  "def": "systems that directly monitor and control physical processes and equipment",
+  "pathId": "25-ot-ics-security",
+  "pathN": "25",
+  "pathTitle": "OT/ICS & Critical Infrastructure Security",
+  "subId": "what-is-ot-ics",
+  "subTitle": "What is OT/ICS Security?"
+ },
+ {
   "term": "Output encoding",
   "def": "converting dangerous characters to safe equivalents based on context; the primary defence.",
   "pathId": "11-web-security",
@@ -4223,6 +4340,15 @@ const GLOSSARY = [
   "pathTitle": "Web Security & Hacking",
   "subId": "web-recon",
   "subTitle": "Web recon"
+ },
+ {
+  "term": "Passive monitoring",
+  "def": "observing network traffic without injecting any traffic onto the monitored network, avoiding the risk of disrupting fragile equipment",
+  "pathId": "25-ot-ics-security",
+  "pathN": "25",
+  "pathTitle": "OT/ICS & Critical Infrastructure Security",
+  "subId": "practical-ot-security-controls",
+  "subTitle": "Practical OT Security Controls"
  },
  {
   "term": "Passkey",
@@ -4466,6 +4592,24 @@ const GLOSSARY = [
   "pathTitle": "Cryptography Fundamentals",
   "subId": "what-is-cryptography",
   "subTitle": "What is cryptography?"
+ },
+ {
+  "term": "PLC (Programmable Logic Controller)",
+  "def": "the hardware device that directly reads sensors and controls physical equipment",
+  "pathId": "25-ot-ics-security",
+  "pathN": "25",
+  "pathTitle": "OT/ICS & Critical Infrastructure Security",
+  "subId": "what-is-ot-ics",
+  "subTitle": "What is OT/ICS Security?"
+ },
+ {
+  "term": "PLC (Programmable Logic Controller)",
+  "def": "hardware that reads sensors and controls actuators based on programmed logic",
+  "pathId": "25-ot-ics-security",
+  "pathN": "25",
+  "pathTitle": "OT/ICS & Critical Infrastructure Security",
+  "subId": "scada-ics-fundamentals",
+  "subTitle": "SCADA & ICS Architecture Fundamentals"
  },
  {
   "term": "Pod Security Standards",
@@ -4729,6 +4873,15 @@ const GLOSSARY = [
   "subTitle": "What is a protocol?"
  },
  {
+  "term": "Protocol-speaking malware",
+  "def": "malware built to directly issue commands in an industrial protocol's native language, requiring no software vulnerability to exploit",
+  "pathId": "25-ot-ics-security",
+  "pathN": "25",
+  "pathTitle": "OT/ICS & Critical Infrastructure Security",
+  "subId": "real-world-ics-attacks",
+  "subTitle": "Real-World ICS Attacks: What They Actually Teach Us"
+ },
+ {
   "term": "Provenance",
   "def": "metadata that describes how an artifact was built",
   "pathId": "22-devsecops-appsec",
@@ -4790,6 +4943,15 @@ const GLOSSARY = [
   "pathTitle": "DevSecOps & AppSec Program",
   "subId": "cicd-security",
   "subTitle": "Securing the CI/CD Pipeline"
+ },
+ {
+  "term": "Purdue Model (Purdue Enterprise Reference Architecture)",
+  "def": "the standard layered reference architecture for segmenting IT and OT environments",
+  "pathId": "25-ot-ics-security",
+  "pathN": "25",
+  "pathTitle": "OT/ICS & Critical Infrastructure Security",
+  "subId": "purdue-model",
+  "subTitle": "The Purdue Model: Segmenting IT from OT"
  },
  {
   "term": "`.py` file",
@@ -5323,6 +5485,15 @@ const GLOSSARY = [
   "subTitle": "Asymmetric Encryption"
  },
  {
+  "term": "RTU (Remote Terminal Unit)",
+  "def": "similar role to a PLC, typically used in geographically distributed SCADA contexts",
+  "pathId": "25-ot-ics-security",
+  "pathN": "25",
+  "pathTitle": "OT/ICS & Critical Infrastructure Security",
+  "subId": "scada-ics-fundamentals",
+  "subTitle": "SCADA & ICS Architecture Fundamentals"
+ },
+ {
   "term": "Rules of Engagement (RoE)",
   "def": "the formal document defining scope, boundaries, and procedures for an engagement.",
   "pathId": "14-ethical-hacking",
@@ -5366,6 +5537,15 @@ const GLOSSARY = [
   "pathTitle": "Bug Bounty",
   "subId": "choose-programs",
   "subTitle": "Choosing programs"
+ },
+ {
+  "term": "Safety Instrumented System (SIS)",
+  "def": "a system independent from normal process control, whose job is triggering an emergency shutdown if conditions become dangerous",
+  "pathId": "25-ot-ics-security",
+  "pathN": "25",
+  "pathTitle": "OT/ICS & Critical Infrastructure Security",
+  "subId": "real-world-ics-attacks",
+  "subTitle": "Real-World ICS Attacks: What They Actually Teach Us"
  },
  {
   "term": "Salt",
@@ -5512,6 +5692,15 @@ const GLOSSARY = [
   "subTitle": "Cloud security"
  },
  {
+  "term": "Secure Authentication (DNP3)",
+  "def": "an add-on specification providing cryptographic authentication for DNP3, not part of the base protocol",
+  "pathId": "25-ot-ics-security",
+  "pathN": "25",
+  "pathTitle": "OT/ICS & Critical Infrastructure Security",
+  "subId": "industrial-protocols",
+  "subTitle": "Industrial Protocols: Modbus, DNP3, and Why Their Design Causes Security Problems"
+ },
+ {
   "term": "Security+",
   "def": "foundational, vendor-neutral entry certification.",
   "pathId": "20-career-prep",
@@ -5519,6 +5708,15 @@ const GLOSSARY = [
   "pathTitle": "Career Prep",
   "subId": "certifications-roadmap",
   "subTitle": "Certifications that actually help"
+ },
+ {
+  "term": "Security assessment",
+  "def": "a structured evaluation of an environment's weaknesses, prioritized recommendations, and the reasoning connecting them",
+  "pathId": "25-ot-ics-security",
+  "pathN": "25",
+  "pathTitle": "OT/ICS & Critical Infrastructure Security",
+  "subId": "ot-ics-capstone-lab",
+  "subTitle": "Capstone: Secure a Realistic Industrial Network"
  },
  {
   "term": "Security champion",
@@ -5672,6 +5870,15 @@ const GLOSSARY = [
   "pathTitle": "Operating Systems & Linux",
   "subId": "bash-scripting",
   "subTitle": "Your first bash script"
+ },
+ {
+  "term": "Setpoint",
+  "def": "the target value a control loop tries to maintain (e.g., \"keep the tank at 75% full\")",
+  "pathId": "25-ot-ics-security",
+  "pathN": "25",
+  "pathTitle": "OT/ICS & Critical Infrastructure Security",
+  "subId": "scada-ics-fundamentals",
+  "subTitle": "SCADA & ICS Architecture Fundamentals"
  },
  {
   "term": "SHA-256",
@@ -5978,6 +6185,15 @@ const GLOSSARY = [
   "pathTitle": "Computer Basics & Security Mindset",
   "subId": "staying-safe-online",
   "subTitle": "Staying safe online"
+ },
+ {
+  "term": "Spear-phishing",
+  "def": "a targeted phishing attack aimed at a specific individual or organization, often the initial foothold in IT-to-OT pivot attacks",
+  "pathId": "25-ot-ics-security",
+  "pathN": "25",
+  "pathTitle": "OT/ICS & Critical Infrastructure Security",
+  "subId": "real-world-ics-attacks",
+  "subTitle": "Real-World ICS Attacks: What They Actually Teach Us"
  },
  {
   "term": "Specialisation",
@@ -6698,6 +6914,15 @@ const GLOSSARY = [
   "pathTitle": "Introduction to Cybersecurity",
   "subId": "the-golden-rule",
   "subTitle": "The golden rule: permission"
+ },
+ {
+  "term": "Unidirectional gateway (data diode)",
+  "def": "hardware that physically allows data flow in only one direction",
+  "pathId": "25-ot-ics-security",
+  "pathN": "25",
+  "pathTitle": "OT/ICS & Critical Infrastructure Security",
+  "subId": "practical-ot-security-controls",
+  "subTitle": "Practical OT Security Controls"
  },
  {
   "term": "UNION-based / error-based / blind (boolean, time) / out-of-band",

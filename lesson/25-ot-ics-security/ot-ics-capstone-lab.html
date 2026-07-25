@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Capstone: Secure a Realistic Industrial Network — Path 25 · KashSec Academy</title>
+<meta name="description" content="This closing lesson pulls together everything from the path — control loops, protocols, the Purdue Model, real-world incident patterns, and practical controls — into one applied exercise: assessing an">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/25-ot-ics-security/ot-ics-capstone-lab">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Capstone: Secure a Realistic Industrial Network — Path 25 · KashSec Academy">
+<meta property="og:description" content="This closing lesson pulls together everything from the path — control loops, protocols, the Purdue Model, real-world incident patterns, and practical controls — into one applied exercise: assessing an">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/25-ot-ics-security/ot-ics-capstone-lab">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Capstone: Secure a Realistic Industrial Network — Path 25 · KashSec Academy">
+<meta name="twitter:description" content="This closing lesson pulls together everything from the path — control loops, protocols, the Purdue Model, real-world incident patterns, and practical controls — into one applied exercise: assessing an">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Capstone: Secure a Realistic Industrial Network — Path 25 · KashSec Academy","description":"This closing lesson pulls together everything from the path — control loops, protocols, the Purdue Model, real-world incident patterns, and practical controls — into one applied exercise: assessing an","url":"https://kashsec.vercel.app/#/lesson/25-ot-ics-security/ot-ics-capstone-lab","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/25-ot-ics-security/ot-ics-capstone-lab">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 25 — OT/ICS & Critical Infrastructure Security</a> · Capstone: Secure a Realistic Industrial Network</div>
+  <article><h1>Capstone: Secure a Realistic Industrial Network</h1>
+<p>This closing lesson pulls together everything from the path — control loops, protocols, the Purdue Model, real-world incident patterns, and practical controls — into one applied exercise: assessing and securing a realistic (fictional) industrial facility.</p>
+<p>:::</p>
+<h2>The scenario: Meridian Water Treatment Facility</h2>
+<p>Meridian is a mid-size municipal water treatment plant. Current state, based on a walkthrough with their engineering team:</p>
+<ul>
+<li><strong>Field devices (Level 0/1)</strong>: PLCs controlling chemical dosing pumps and flow valves, communicating via unauthenticated Modbus over a flat internal OT network</li>
+<li><strong>Supervisory (Level 2)</strong>: A single HMI in the control room, plus a second HMI accessible via a remote-desktop connection some engineers use &quot;for convenience&quot; when off-site — this connection goes directly from a personal laptop into the Level 2 network, with no jump host and no MFA</li>
+<li><strong>Site operations (Level 3)</strong>: A historian logging chemical dosing and flow data, used for regulatory compliance reporting</li>
+<li><strong>No DMZ currently exists.</strong> The historian has a direct network share to a Level 4 business reporting server, set up years ago by an engineer who has since left the company, and nobody is entirely sure it&#39;s still needed</li>
+<li><strong>No passive monitoring</strong> — nobody currently has visibility into what&#39;s actually talking to what on the OT network</li>
+<li>Engineers mention that the PLCs are old enough that the manufacturer no longer supports them, and replacing them isn&#39;t in this year&#39;s budget</li>
+</ul>
+<h2>Your task</h2>
+<p>Produce a structured security assessment and prioritized recommendation set, covering:</p>
+<h3>1. Map the findings to the Purdue Model</h3>
+<p>For each system described above, identify its Purdue level, and specifically flag every place the model&#39;s core rule (IT never talks directly to OT) is currently being violated.</p>
+<h3>2. Identify the real-world attack pattern each weakness most resembles</h3>
+<p>At least two of Meridian&#39;s weaknesses closely resemble a failure mode from a real incident covered earlier in this path. Name them specifically and explain the parallel — this is the same &quot;map the incident to the lesson&quot; skill from the real-world-attacks lesson, run in reverse.</p>
+<h3>3. Prioritize your recommendations</h3>
+<p>Using the practical-controls lesson&#39;s priority order (segmentation → monitoring → access control → compensating controls → patching) as your framework, write a ranked list of the top five things Meridian should do, and justify the order — not everything can happen at once, and given the unsupported legacy PLCs, patching them isn&#39;t realistically on this list at all.</p>
+<h3>4. Design the specific fix for the remote-access problem</h3>
+<p>The off-site HMI access is one of the most acute risks described. Propose a specific redesign using concepts from this path (jump host, MFA, DMZ) that preserves the legitimate business need (engineers genuinely need occasional remote access) while closing the current gap.</p>
+<h3>5. Write the one-paragraph pitch to leadership</h3>
+<p>Following the &quot;connect it to a real trigger&quot; lesson from the real-world-attacks case studies — write a short, concrete paragraph a security lead could use to get budget approval for your top recommendation, referencing a real-world incident pattern this scenario resembles.</p>
+<h2>A worked partial example, to calibrate against</h2>
+<p>Here&#39;s a taste of what a strong answer to part 4 looks like, so you have something to compare your own answer against — not to copy:</p>
+<blockquote>
+<p>Replace the direct personal-laptop-to-Level-2 connection with a jump host placed in a new Level 3.5 DMZ. Off-site engineers connect to the jump host only, authenticate with MFA, and the jump host — not their personal laptop — is the only system with a controlled, monitored path into Level 2. This closes the direct-access gap (mirroring the credential-based pivot pattern from the 2015 Ukraine attack) without removing engineers&#39; genuine ability to respond to issues remotely, and every session through the jump host can be logged for later review.</p>
+</blockquote>
+<p>Notice this answer doesn&#39;t say &quot;ban remote access entirely&quot; — it redesigns the access path to be safe <em>and</em> still functional, which is the realistic, deployable kind of recommendation this field actually rewards.</p>
+<h2>🧪 This lesson&#39;s hands-on lab is the capstone itself</h2>
+<p>Complete all five parts above as a single written assessment. When you&#39;re done, review it against this checklist:</p>
+<ul>
+<li><input disabled="" type="checkbox"> Every finding is tied to a specific Purdue level</li>
+<li><input disabled="" type="checkbox"> At least two findings are explicitly connected to a real-world incident pattern from this path</li>
+<li><input disabled="" type="checkbox"> Your priority order follows segmentation-first, patching-last, and you explain <em>why</em> for at least one item</li>
+<li><input disabled="" type="checkbox"> Your remote-access redesign preserves the legitimate business need rather than just removing it</li>
+<li><input disabled="" type="checkbox"> Your leadership pitch references a concrete, real trigger rather than abstract risk language</li>
+</ul>
+<p>:::challenge Test yourself</p>
+<ol>
+<li>Which of Meridian&#39;s weaknesses represents the clearest DMZ-bypass failure, and why?</li>
+<li>Why is &quot;just replace the unsupported legacy PLCs&quot; not a realistic top-priority recommendation, even though it would technically solve several problems at once?</li>
+<li>In your remote-access redesign, what specifically stops a compromised personal laptop from directly reaching Level 2, the way it could today?</li>
+</ol>
+<h2>Key terms</h2>
+<ul>
+<li><strong>Security assessment</strong> — a structured evaluation of an environment&#39;s weaknesses, prioritized recommendations, and the reasoning connecting them</li>
+<li><strong>Legitimate business need</strong> — the real, valid reason a risky-looking connection or access path exists, which any good redesign must preserve rather than simply eliminate</li>
+</ul>
+<h2>Recap</h2>
+<p>This capstone forces the same discipline every real OT security engagement requires: map findings to a real architecture (Purdue), recognize which real-world incident pattern each weakness echoes, prioritize realistically given genuine constraints (unsupported legacy hardware, real business needs for remote access), and communicate the case for action in terms that connect to a concrete, believable trigger. That combination — technical accuracy plus realistic prioritization plus a clear, actionable pitch — is what separates a useful OT security assessment from a purely theoretical one, and it&#39;s the same combination every lesson in this path has been building toward.</p>
+<h3>References</h3>
+<ul>
+<li><a href="https://csrc.nist.gov/pubs/sp/800/82/r3/final">NIST SP 800-82 — Guide to Industrial Control Systems Security</a> — the foundational reference for this entire path</li>
+<li><a href="https://www.cisa.gov/topics/industrial-control-systems">CISA — Industrial Control Systems</a> — ongoing real-world guidance and advisories</li>
+<li><a href="https://www.cisa.gov/cross-sector-cybersecurity-performance-goals">CISA — Cross-Sector Cybersecurity Performance Goals</a> — a practical, prioritized baseline many real organizations use for exactly this kind of assessment</li>
+</ul>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/25-ot-ics-security/ot-ics-capstone-lab";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>
