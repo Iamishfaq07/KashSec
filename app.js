@@ -1036,7 +1036,16 @@ const PATHS = [
      {n:"6", id:"ztna-vs-vpn",                  title:"Zero Trust Network Access (ZTNA) vs. Traditional VPN", desc:"Why ZTNA grants an app, not a network — and what that changes."},
      {n:"7", id:"zero-trust-cloud",             title:"Zero Trust in Cloud-Native Environments", desc:"Workload identity, IAM as segmentation, and service mesh in a world with no fixed perimeter."},
      {n:"8", id:"implementing-zero-trust",      title:"Implementing Zero Trust: A Practical Roadmap", desc:"Sequencing, governance, and metrics for a real multi-year rollout."},
-     {n:"9", id:"zero-trust-case-studies-lab",  title:"Case Studies & Capstone: Assess a Zero Trust Maturity", desc:"BeyondCorp and real-world lessons, then a full maturity assessment exercise."}
+     {n:"9", id:"zero-trust-data-security",     title:"Data-Centric Zero Trust", desc:"Classification, DLP, and rights management — the last line of defense once access is granted."},
+     {n:"10", id:"zero-trust-api-security",     title:"Zero Trust for APIs & Microservices", desc:"mTLS, service identity, and per-service least privilege for internal service-to-service traffic."},
+     {n:"11", id:"zero-trust-pam",              title:"Privileged Access Management Under Zero Trust", desc:"Just-in-Time elevation, break-glass accounts, and closing the standing-access gap."},
+     {n:"12", id:"zero-trust-third-party-risk", title:"Zero Trust for Third Parties & Vendor Access", desc:"Federated identity and time-boxed access for the population outside your control."},
+     {n:"13", id:"zero-trust-maturity-model",   title:"Zero Trust Maturity Models", desc:"CISA's five pillars and four stages — measuring progress instead of guessing at it."},
+     {n:"14", id:"zero-trust-analytics-monitoring", title:"Analytics & Monitoring for Zero Trust", desc:"UEBA and composite risk scoring — the connective tissue between every other pillar."},
+     {n:"15", id:"zero-trust-common-pitfalls",  title:"Common Zero Trust Pitfalls", desc:"Where real rollouts break: exemptions, legacy excuses, and measuring adoption instead of risk."},
+     {n:"16", id:"zero-trust-remote-work",      title:"Zero Trust for Remote & Hybrid Work", desc:"Applying the full stack without a location-based double standard."},
+     {n:"17", id:"zero-trust-careers",          title:"Zero Trust Careers & Certifications", desc:"Where Zero Trust fluency shows up in job postings, and how to build it."},
+     {n:"18", id:"zero-trust-case-studies-lab",  title:"Case Studies & Capstone: Assess a Zero Trust Maturity", desc:"BeyondCorp and real-world lessons, then a full maturity assessment exercise."}
    ]},
   {n:"25", id:"25-ot-ics-security", title:"OT/ICS & Critical Infrastructure Security", level:"Advanced",
    desc:"A different world from IT: SCADA, industrial protocols, the Purdue Model, real-world ICS attacks (Stuxnet, Ukraine grid), and practical controls that respect physical safety constraints.",
@@ -4717,6 +4726,10 @@ function renderLabPhishing(){
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
+  {date:'2026-07-25', title:'Zero Trust path doubled to 18 lessons', items:[
+    'Second batch of the course-wide content-doubling effort: Path 24 (Zero Trust Architecture) grows from 9 to 18 lessons.',
+    'New lessons: Data-Centric Zero Trust, Zero Trust for APIs & Microservices, Privileged Access Management, Zero Trust for Third Parties, Zero Trust Maturity Models, Analytics & Monitoring, Common Zero Trust Pitfalls, Remote & Hybrid Work, and Zero Trust Careers & Certifications.'
+  ]},
   {date:'2026-07-25', title:'OT/ICS path doubled to 14 lessons', items:[
     'First batch of a course-wide content-doubling effort: Path 25 (OT/ICS & Critical Infrastructure Security) grows from 7 to 14 lessons.',
     'New lessons: OT Asset Inventory & Visibility, ICS Vulnerability Management, Safety Instrumented Systems, ICS Incident Response, ICS Supply Chain Risk, IIoT & Cloud Convergence, and OT/ICS Careers & Certifications.',

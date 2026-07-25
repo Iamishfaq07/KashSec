@@ -112,6 +112,15 @@ const GLOSSARY = [
   "subTitle": "Continuous Verification & Adaptive Access"
  },
  {
+  "term": "Adoption metric vs. risk metric",
+  "def": "the difference between measuring how much technology was deployed and measuring how much actual risk was reduced",
+  "pathId": "24-zero-trust",
+  "pathN": "24",
+  "pathTitle": "Zero Trust Architecture",
+  "subId": "zero-trust-common-pitfalls",
+  "subTitle": "Common Zero Trust Pitfalls"
+ },
+ {
   "term": "Adversarial example",
   "def": "an input with small, often imperceptible perturbations designed to cause model misclassification.",
   "pathId": "18-ai-security",
@@ -805,6 +814,15 @@ const GLOSSARY = [
   "subTitle": "Loops: repeat things"
  },
  {
+  "term": "Break-glass account",
+  "def": "an emergency-access account intended only for genuine outage scenarios, with mandatory logging and review on use",
+  "pathId": "24-zero-trust",
+  "pathN": "24",
+  "pathTitle": "Zero Trust Architecture",
+  "subId": "zero-trust-pam",
+  "subTitle": "Privileged Access Management Under Zero Trust"
+ },
+ {
   "term": "Breakpoint",
   "def": "a paused point in JS execution for debugging.",
   "pathId": "05-web-basics",
@@ -911,6 +929,15 @@ const GLOSSARY = [
   "pathTitle": "Zero Trust Architecture",
   "subId": "device-trust-posture",
   "subTitle": "Device Trust & Posture Verification"
+ },
+ {
+  "term": "BYOD (Bring Your Own Device)",
+  "def": "employees using personally-owned devices for work, common in remote settings and requiring the same posture verification as corporate-managed devices",
+  "pathId": "24-zero-trust",
+  "pathN": "24",
+  "pathTitle": "Zero Trust Architecture",
+  "subId": "zero-trust-remote-work",
+  "subTitle": "Zero Trust for Remote & Hybrid Work"
  },
  {
   "term": "C2 (Command & Control)",
@@ -1201,6 +1228,15 @@ const GLOSSARY = [
   "subTitle": "What is GRC?"
  },
  {
+  "term": "Composite risk score",
+  "def": "a risk evaluation combining multiple signals across pillars, rather than any single signal in isolation",
+  "pathId": "24-zero-trust",
+  "pathN": "24",
+  "pathTitle": "Zero Trust Architecture",
+  "subId": "zero-trust-analytics-monitoring",
+  "subTitle": "Analytics & Monitoring for Zero Trust"
+ },
+ {
   "term": "Comprehension",
   "def": "one-line list building.",
   "pathId": "04-python",
@@ -1417,6 +1453,15 @@ const GLOSSARY = [
   "subTitle": "Passwords & hashing"
  },
  {
+  "term": "Credential vaulting",
+  "def": "storing privileged credentials in a managed system rather than memorized or hardcoded, checked out only when needed",
+  "pathId": "24-zero-trust",
+  "pathN": "24",
+  "pathTitle": "Zero Trust Architecture",
+  "subId": "zero-trust-pam",
+  "subTitle": "Privileged Access Management Under Zero Trust"
+ },
+ {
   "term": "Credit freeze",
   "def": "locking your credit file to prevent new account openings without your explicit, PIN-authenticated unlock.",
   "pathId": "09-digital-privacy",
@@ -1451,6 +1496,15 @@ const GLOSSARY = [
   "pathTitle": "Zero Trust Architecture",
   "subId": "implementing-zero-trust",
   "subTitle": "Implementing Zero Trust: A Practical Roadmap"
+ },
+ {
+  "term": "Cross-pillar reasoning",
+  "def": "the ability to understand how a decision in one Zero Trust pillar (say, Identity) affects outcomes in another (say, Data)",
+  "pathId": "24-zero-trust",
+  "pathN": "24",
+  "pathTitle": "Zero Trust Architecture",
+  "subId": "zero-trust-careers",
+  "subTitle": "Zero Trust Careers & Certifications"
  },
  {
   "term": "CSP (Content Security Policy)",
@@ -1559,6 +1613,15 @@ const GLOSSARY = [
   "pathTitle": "Digital Privacy & Personal Security",
   "subId": "digital-footprint",
   "subTitle": "Your Digital Footprint"
+ },
+ {
+  "term": "Data classification",
+  "def": "labeling data by sensitivity so downstream controls can apply automatically",
+  "pathId": "24-zero-trust",
+  "pathN": "24",
+  "pathTitle": "Zero Trust Architecture",
+  "subId": "zero-trust-data-security",
+  "subTitle": "Data-Centric Zero Trust"
  },
  {
   "term": "Data exfiltration via markdown rendering",
@@ -1793,6 +1856,15 @@ const GLOSSARY = [
   "pathTitle": "Operating Systems & Linux",
   "subId": "windows-linux-mac",
   "subTitle": "Windows vs Linux vs macOS"
+ },
+ {
+  "term": "DLP (Data Loss Prevention)",
+  "def": "automated detection and blocking of sensitive data leaving through unauthorized channels",
+  "pathId": "24-zero-trust",
+  "pathN": "24",
+  "pathTitle": "Zero Trust Architecture",
+  "subId": "zero-trust-data-security",
+  "subTitle": "Data-Centric Zero Trust"
  },
  {
   "term": "DMZ bypass",
@@ -2270,6 +2342,15 @@ const GLOSSARY = [
   "pathTitle": "DevSecOps & AppSec Program",
   "subId": "sast-dast-sca",
   "subTitle": "SAST, DAST & SCA — The Core Scanning Trio"
+ },
+ {
+  "term": "Federated identity",
+  "def": "authenticating a user through their own organization's identity provider rather than creating a separate local account",
+  "pathId": "24-zero-trust",
+  "pathN": "24",
+  "pathTitle": "Zero Trust Architecture",
+  "subId": "zero-trust-third-party-risk",
+  "subTitle": "Zero Trust for Third Parties & Vendor Access"
  },
  {
   "term": "Federation",
@@ -3091,6 +3172,15 @@ const GLOSSARY = [
   "subTitle": "Cloud security"
  },
  {
+  "term": "Implicit trust gap",
+  "def": "any place a Zero Trust architecture still assumes trust without verification, often hiding behind a \"that's just internal traffic\" or \"that's just a trusted admin\" justification",
+  "pathId": "24-zero-trust",
+  "pathN": "24",
+  "pathTitle": "Zero Trust Architecture",
+  "subId": "zero-trust-common-pitfalls",
+  "subTitle": "Common Zero Trust Pitfalls"
+ },
+ {
   "term": "Import Address Table (IAT)",
   "def": "the list of external functions a binary calls, revealing intended behavior.",
   "pathId": "17-malware-re",
@@ -3395,6 +3485,15 @@ const GLOSSARY = [
   "pathTitle": "OT/ICS & Critical Infrastructure Security",
   "subId": "practical-ot-security-controls",
   "subTitle": "Practical OT Security Controls"
+ },
+ {
+  "term": "Just-in-Time (JIT) access",
+  "def": "elevated privilege granted only for a specific, time-boxed window rather than standing indefinitely",
+  "pathId": "24-zero-trust",
+  "pathN": "24",
+  "pathTitle": "Zero Trust Architecture",
+  "subId": "zero-trust-pam",
+  "subTitle": "Privileged Access Management Under Zero Trust"
  },
  {
   "term": "JWKS",
@@ -3739,6 +3838,24 @@ const GLOSSARY = [
   "subTitle": "Building an AppSec Program from Scratch"
  },
  {
+  "term": "Maturity pillar",
+  "def": "one of five independently assessed domains (Identity, Devices, Networks, Applications, Data) in the CISA Zero Trust Maturity Model",
+  "pathId": "24-zero-trust",
+  "pathN": "24",
+  "pathTitle": "Zero Trust Architecture",
+  "subId": "zero-trust-maturity-model",
+  "subTitle": "Zero Trust Maturity Models"
+ },
+ {
+  "term": "Maturity stage",
+  "def": "one of four levels (Traditional, Initial, Advanced, Optimal) describing how automated and integrated a pillar's controls are",
+  "pathId": "24-zero-trust",
+  "pathN": "24",
+  "pathTitle": "Zero Trust Architecture",
+  "subId": "zero-trust-maturity-model",
+  "subTitle": "Zero Trust Maturity Models"
+ },
+ {
   "term": "Maturity tier",
   "def": "CSF's four-level scale (Partial, Risk Informed, Repeatable, Adaptive) for scoring program maturity",
   "pathId": "23-grc-compliance",
@@ -3962,6 +4079,15 @@ const GLOSSARY = [
   "pathTitle": "Bug Bounty",
   "subId": "hunting-idor",
   "subTitle": "Hunting IDOR"
+ },
+ {
+  "term": "Mutual TLS (mTLS)",
+  "def": "a TLS handshake where both the client and server cryptographically verify each other's identity",
+  "pathId": "24-zero-trust",
+  "pathN": "24",
+  "pathTitle": "Zero Trust Architecture",
+  "subId": "zero-trust-api-security",
+  "subTitle": "Zero Trust for APIs & Microservices"
  },
  {
   "term": "NAC (Network Access Control)",
@@ -5458,6 +5584,15 @@ const GLOSSARY = [
   "subTitle": "What is a protocol?"
  },
  {
+  "term": "Rights management",
+  "def": "protection that travels with a file itself, persisting beyond the environment where access was originally granted",
+  "pathId": "24-zero-trust",
+  "pathN": "24",
+  "pathTitle": "Zero Trust Architecture",
+  "subId": "zero-trust-data-security",
+  "subTitle": "Data-Centric Zero Trust"
+ },
+ {
   "term": "Right-to-audit clause",
   "def": "a contract term allowing the customer to audit a vendor's security practices",
   "pathId": "23-grc-compliance",
@@ -5827,6 +5962,15 @@ const GLOSSARY = [
   "subTitle": "Certifications that actually help"
  },
  {
+  "term": "Security architect",
+  "def": "the role most directly aligned with full-breadth Zero Trust design work across all five maturity pillars",
+  "pathId": "24-zero-trust",
+  "pathN": "24",
+  "pathTitle": "Zero Trust Architecture",
+  "subId": "zero-trust-careers",
+  "subTitle": "Zero Trust Careers & Certifications"
+ },
+ {
   "term": "Security assessment",
   "def": "a structured evaluation of an environment's weaknesses, prioritized recommendations, and the reasoning connecting them",
   "pathId": "25-ot-ics-security",
@@ -5960,6 +6104,15 @@ const GLOSSARY = [
   "pathTitle": "Zero Trust Architecture",
   "subId": "zero-trust-cloud",
   "subTitle": "Zero Trust in Cloud-Native Environments"
+ },
+ {
+  "term": "Service mesh",
+  "def": "infrastructure that automatically enforces identity, encryption, and authorization policy between microservices",
+  "pathId": "24-zero-trust",
+  "pathN": "24",
+  "pathTitle": "Zero Trust Architecture",
+  "subId": "zero-trust-api-security",
+  "subTitle": "Zero Trust for APIs & Microservices"
  },
  {
   "term": "Session",
@@ -6347,6 +6500,15 @@ const GLOSSARY = [
   "pathTitle": "Programming & Python",
   "subId": "lists-functions",
   "subTitle": "Lists & functions"
+ },
+ {
+  "term": "Split tunneling",
+  "def": "routing only corporate-destined traffic through a secure connection while other traffic bypasses it unmonitored",
+  "pathId": "24-zero-trust",
+  "pathN": "24",
+  "pathTitle": "Zero Trust Architecture",
+  "subId": "zero-trust-remote-work",
+  "subTitle": "Zero Trust for Remote & Hybrid Work"
  },
  {
   "term": "Spoofing",
@@ -6835,6 +6997,15 @@ const GLOSSARY = [
   "subTitle": "TCP vs UDP"
  },
  {
+  "term": "Time-boxed access",
+  "def": "access explicitly scoped to expire at a defined point, rather than persisting indefinitely",
+  "pathId": "24-zero-trust",
+  "pathN": "24",
+  "pathTitle": "Zero Trust Architecture",
+  "subId": "zero-trust-third-party-risk",
+  "subTitle": "Zero Trust for Third Parties & Vendor Access"
+ },
+ {
   "term": "Timeline analysis / log2timeline",
   "def": "reconstructing chronological incident events from multiple log sources.",
   "pathId": "16-advanced",
@@ -7049,6 +7220,15 @@ const GLOSSARY = [
   "pathTitle": "Networking Fundamentals",
   "subId": "tcp-vs-udp",
   "subTitle": "TCP vs UDP"
+ },
+ {
+  "term": "UEBA (User and Entity Behavior Analytics)",
+  "def": "analytics that build an individual behavioral baseline and flag deviations from it, for both human users and non-human service identities",
+  "pathId": "24-zero-trust",
+  "pathN": "24",
+  "pathTitle": "Zero Trust Architecture",
+  "subId": "zero-trust-analytics-monitoring",
+  "subTitle": "Analytics & Monitoring for Zero Trust"
  },
  {
   "term": "Unauthorised access",

@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zero Trust for Remote &amp; Hybrid Work — Path 24 · KashSec Academy</title>
+<meta name="description" content="Zero Trust and remote work grew up together — the perimeter-based model this path opened by describing was already breaking under a distributed workforce before it fully collapsed. This lesson pulls t">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/24-zero-trust/zero-trust-remote-work">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Zero Trust for Remote &amp; Hybrid Work — Path 24 · KashSec Academy">
+<meta property="og:description" content="Zero Trust and remote work grew up together — the perimeter-based model this path opened by describing was already breaking under a distributed workforce before it fully collapsed. This lesson pulls t">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/24-zero-trust/zero-trust-remote-work">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Zero Trust for Remote &amp; Hybrid Work — Path 24 · KashSec Academy">
+<meta name="twitter:description" content="Zero Trust and remote work grew up together — the perimeter-based model this path opened by describing was already breaking under a distributed workforce before it fully collapsed. This lesson pulls t">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Zero Trust for Remote & Hybrid Work — Path 24 · KashSec Academy","description":"Zero Trust and remote work grew up together — the perimeter-based model this path opened by describing was already breaking under a distributed workforce before it fully collapsed. This lesson pulls t","url":"https://kashsec.vercel.app/#/lesson/24-zero-trust/zero-trust-remote-work","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/24-zero-trust/zero-trust-remote-work">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 24 — Zero Trust Architecture</a> · Zero Trust for Remote &amp; Hybrid Work</div>
+  <article><h1>Zero Trust for Remote &amp; Hybrid Work</h1>
+<p>Zero Trust and remote work grew up together — the perimeter-based model this path opened by describing was already breaking under a distributed workforce before it fully collapsed. This lesson pulls together how the pieces you&#39;ve already learned combine specifically for remote and hybrid employees.</p>
+<p>:::</p>
+<h2>Why remote work exposed the perimeter model&#39;s failure first</h2>
+<p>The what-is-Zero-Trust lesson opened this path by explaining why the perimeter model broke. Remote work is where that break became impossible to ignore: a home network, a coffee shop Wi-Fi, and a corporate office are not meaningfully different trust zones once &quot;inside the corporate network&quot; stops being a coherent concept at all — remote work simply made that reality visible faster than anything else could have.</p>
+<h2>Applying the full stack to a remote employee</h2>
+<ul>
+<li><strong>Identity</strong> — the same MFA and conditional access from the identity-as-perimeter lesson, with location and network signals (an unfamiliar country, an anonymizing VPN) feeding directly into risk-based access decisions</li>
+<li><strong>Device posture</strong> — arguably more important for remote work than office work, since a remote device is never physically inspectable and personal devices are more likely to be involved (BYOD scenarios), making the device-trust-posture lesson&#39;s checks the primary signal of whether a device can be trusted at all</li>
+<li><strong>ZTNA over VPN</strong> — the ZTNA vs. VPN lesson&#39;s argument applies most visibly here: a remote employee gets access to the specific applications they need, never a foothold on the broader corporate network, regardless of which network their laptop happens to be connected to</li>
+<li><strong>Continuous verification</strong> — a session that starts on a trusted home network and later shows signs of a SIM-swap-enabled account takeover, or an impossible-travel login pattern, gets caught by the same adaptive, in-session risk evaluation the continuous-verification lesson covered — remote work has no &quot;physical office&quot; fallback signal, making this layer do more work than it might in a hybrid scenario</li>
+</ul>
+<h2>Split tunneling and the temptation to cut corners</h2>
+<p>A common remote-work shortcut: <strong>split tunneling</strong>, where only traffic destined for corporate resources routes through the secure connection, and everything else (personal browsing, other services) goes directly to the internet unmonitored. This is efficient, but it recreates a version of the implicit-trust gap the common-pitfalls lesson warned about — the device itself may still be compromised through that unmonitored traffic, and a Zero Trust architecture that only verifies the corporate-bound portion of a session is only partially applying its own principles.</p>
+<p>:::challenge Evaluate a hybrid policy
+A company gives office-based employees streamlined, low-friction access (device checks run once per day) but requires remote employees to re-verify device posture and re-authenticate every two hours, reasoning that remote work is inherently riskier.</p>
+<details><summary>Hint</summary>Does "inside the office" actually provide a meaningfully different trust signal than "at home," under the Zero Trust principles this entire path has built? What does treating them differently imply about the architecture?</details>
+<details><summary>Show answer</summary>This policy quietly reintroduces the perimeter model this path opened by rejecting — it treats physical office location as an implicit trust signal, exactly the assumption Zero Trust exists to remove. A consistent architecture applies the same continuous, risk-based verification cadence regardless of location, adjusting frequency based on *actual risk signals* (an anomalous login pattern, a failed device posture check, unusual data access) rather than a blanket assumption that "in the building" is inherently safer. If the office network genuinely offers stronger real signals — say, a managed, monitored corporate network with no BYOD — that's a legitimate input to the risk score, but it should be evaluated the same way for every user, not applied as a flat, location-based double standard.</details><h2>🧪 Hands-on lab — design a remote access policy</h2>
+<p>Sketch a remote-work access policy using at least four techniques from this path (identity, device posture, ZTNA, continuous verification) and explicitly note where, if anywhere, it treats remote and office-based access differently — and justify each difference with a real risk signal rather than location alone.</p>
+<ol>
+<li>Why did remote work expose the perimeter model&#39;s weaknesses before other factors did?</li>
+<li>What&#39;s the risk of split tunneling in a Zero Trust remote-access design?</li>
+<li>Why is treating &quot;in the office&quot; as inherently more trustworthy than &quot;remote&quot; inconsistent with Zero Trust principles?</li>
+</ol>
+<h2>Key terms</h2>
+<ul>
+<li><strong>Split tunneling</strong> — routing only corporate-destined traffic through a secure connection while other traffic bypasses it unmonitored</li>
+<li><strong>BYOD (Bring Your Own Device)</strong> — employees using personally-owned devices for work, common in remote settings and requiring the same posture verification as corporate-managed devices</li>
+</ul>
+<h2>Recap</h2>
+<p>Remote and hybrid work isn&#39;t a special case Zero Trust needs a separate model for — it&#39;s close to the scenario the architecture was built around from the start, and applying the full stack (identity, device posture, ZTNA, continuous verification) consistently, regardless of physical location, is what actually delivers on the never-trust-always-verify principle. Any policy that quietly trusts &quot;in the office&quot; more than &quot;at home&quot; without a specific risk signal justifying it has reintroduced the exact perimeter assumption this path opened by explaining had already broken.</p>
+<h3>References</h3>
+<ul>
+<li><a href="https://www.cisa.gov/zero-trust-maturity-model">CISA Zero Trust Maturity Model</a> — remote workforce considerations across all five pillars</li>
+</ul>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/24-zero-trust/zero-trust-remote-work";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

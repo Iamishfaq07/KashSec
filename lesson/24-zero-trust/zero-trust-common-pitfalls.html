@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Common Zero Trust Pitfalls — Path 24 · KashSec Academy</title>
+<meta name="description" content="You've now covered the full technical scope of Zero Trust across identity, devices, networks, applications, and data. This lesson covers where real rollouts actually go wrong — the gap between the arc">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/24-zero-trust/zero-trust-common-pitfalls">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Common Zero Trust Pitfalls — Path 24 · KashSec Academy">
+<meta property="og:description" content="You've now covered the full technical scope of Zero Trust across identity, devices, networks, applications, and data. This lesson covers where real rollouts actually go wrong — the gap between the arc">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/24-zero-trust/zero-trust-common-pitfalls">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Common Zero Trust Pitfalls — Path 24 · KashSec Academy">
+<meta name="twitter:description" content="You've now covered the full technical scope of Zero Trust across identity, devices, networks, applications, and data. This lesson covers where real rollouts actually go wrong — the gap between the arc">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Common Zero Trust Pitfalls — Path 24 · KashSec Academy","description":"You've now covered the full technical scope of Zero Trust across identity, devices, networks, applications, and data. This lesson covers where real rollouts actually go wrong — the gap between the arc","url":"https://kashsec.vercel.app/#/lesson/24-zero-trust/zero-trust-common-pitfalls","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/24-zero-trust/zero-trust-common-pitfalls">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 24 — Zero Trust Architecture</a> · Common Zero Trust Pitfalls</div>
+  <article><h1>Common Zero Trust Pitfalls</h1>
+<p>You&#39;ve now covered the full technical scope of Zero Trust across identity, devices, networks, applications, and data. This lesson covers where real rollouts actually go wrong — the gap between the architecture as designed and the architecture as it ends up deployed under real organizational pressure.</p>
+<p>:::</p>
+<h2>Pitfall 1: &quot;Zero Trust&quot; as a product purchase, not an architecture</h2>
+<p>Buying a vendor&#39;s &quot;Zero Trust&quot; product suite doesn&#39;t automatically produce a Zero Trust architecture — the maturity model lesson&#39;s whole point is that maturity is assessed pillar by pillar, and a product can genuinely strengthen one pillar (say, ZTNA for network access) while leaving others (data classification, privileged access) completely untouched. Organizations that treat a single purchase as &quot;done&quot; typically end up with an uneven, exploitable maturity profile exactly like the imbalance covered in that lesson&#39;s worked example.</p>
+<h2>Pitfall 2: Exempting privileged or &quot;trusted&quot; users</h2>
+<p>Covered directly in the PAM lesson: administrators and executives are disproportionately likely to be granted exemptions from MFA, device posture checks, or conditional access &quot;for convenience&quot; — turning the accounts capable of the most damage into the ones with the least scrutiny, exactly backwards from what the risk profile calls for.</p>
+<h2>Pitfall 3: Legacy systems as a permanent excuse</h2>
+<p>Real environments contain systems that genuinely can&#39;t support modern authentication or Zero Trust tooling — the OT/ICS path covers an entire category of this problem. The pitfall isn&#39;t acknowledging that constraint, it&#39;s letting &quot;this system can&#39;t do Zero Trust&quot; become the justification for never revisiting it, rather than building compensating controls (network isolation, strict access chokepoints) around the systems that genuinely can&#39;t be brought current.</p>
+<h2>Pitfall 4: Treating internal traffic as implicitly trusted anyway</h2>
+<p>The API-security lesson covered this directly: a Zero Trust rollout that carefully secures the perimeter and user access, but still lets internal service-to-service traffic flow without verification, has only moved the perimeter — not actually eliminated implicit trust.</p>
+<h2>Pitfall 5: No plan for third parties</h2>
+<p>The third-party-risk lesson&#39;s entire premise: Zero Trust controls built for the employee population, with vendor and contractor access handled through an old-model shortcut (a shared VPN credential, standing unreviewed access), leaves exactly the population most likely to be under-scrutinized as a wide-open gap.</p>
+<h2>Pitfall 6: Measuring rollout by &quot;things deployed&quot; instead of risk reduced</h2>
+<p>A rollout can report impressive-sounding progress — &quot;MFA deployed to 100% of users,&quot; &quot;ZTNA replacing VPN for 80% of applications&quot; — while the maturity model&#39;s Data pillar sits untouched at Traditional. Real progress tracking needs the pillar-by-pillar view from the maturity model lesson, not a single feel-good adoption percentage.</p>
+<p>:::challenge Diagnose a rollout
+An organization proudly reports: &quot;Zero Trust rollout complete — MFA on all accounts, ZTNA fully replacing VPN, and micro-segmentation deployed across the data center.&quot; Six months later, they suffer a significant data breach originating from a compromised third-party vendor&#39;s shared support credential, which had standing access to an internal reporting database with no monitoring or expiration.</p>
+<details><summary>Hint</summary>Which specific pitfall from this lesson does this scenario match, and why did the organization's confident "complete" announcement fail to catch it?</details>
+<details><summary>Show answer</summary>This is Pitfall 5 (no plan for third parties) compounding with Pitfall 6 (measuring by deployment, not risk). The organization's rollout was genuinely strong across identity, network, and segmentation for its own workforce — but "complete" was declared based on internal-facing metrics that never accounted for the third-party population at all. A shared, standing, unmonitored vendor credential is precisely the old-model shortcut the third-party-risk lesson warned bypasses every control built for employees. A maturity-model-style pillar assessment, applied honestly and including third-party access as part of the Identity pillar's scope, would have surfaced this gap before an attacker did.</details><h2>🧪 Hands-on lab — pitfall-proof a rollout announcement</h2>
+<p>Take the &quot;complete&quot; rollout announcement from the challenge above and rewrite it as an honest, pillar-by-pillar status update that would have surfaced the third-party gap before it became a breach.</p>
+<ol>
+<li>Why is buying Zero Trust products not the same as achieving a mature Zero Trust architecture?</li>
+<li>Which pitfall does exempting privileged accounts from MFA represent, and why is it especially dangerous?</li>
+<li>Why can &quot;percentage of users with MFA deployed&quot; be a misleading measure of overall Zero Trust progress?</li>
+</ol>
+<h2>Key terms</h2>
+<ul>
+<li><strong>Implicit trust gap</strong> — any place a Zero Trust architecture still assumes trust without verification, often hiding behind a &quot;that&#39;s just internal traffic&quot; or &quot;that&#39;s just a trusted admin&quot; justification</li>
+<li><strong>Adoption metric vs. risk metric</strong> — the difference between measuring how much technology was deployed and measuring how much actual risk was reduced</li>
+</ul>
+<h2>Recap</h2>
+<p>Nearly every real Zero Trust failure traces back to an exemption that made sense in isolation — for a privileged user, a legacy system, internal traffic, or a trusted vendor — and became the actual attack path precisely because it was exempted from the scrutiny applied everywhere else. Avoiding these pitfalls means applying the maturity model&#39;s pillar-by-pillar honesty consistently, including to the populations and traffic easiest to overlook, rather than declaring victory once the visible, easy-to-measure parts of the rollout are done.</p>
+<h3>References</h3>
+<ul>
+<li><a href="https://csrc.nist.gov/pubs/sp/800/207/final">NIST SP 800-207 — Zero Trust Architecture</a> — includes discussion of common implementation gaps</li>
+</ul>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/24-zero-trust/zero-trust-common-pitfalls";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>
