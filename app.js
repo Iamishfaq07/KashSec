@@ -683,10 +683,16 @@ const PATHS = [
    subs:[
      {n:"1", id:"what-is-a-computer",   title:"What is a computer really?", desc:"Hardware, software, and the OS, explained simply."},
      {n:"2", id:"how-internet-works",   title:"How the internet works",     desc:"From your phone to the world, in plain English."},
-     {n:"3", id:"files-folders-you",    title:"Files, folders & organizing yourself", desc:"Where your data lives, and how to stay tidy."},
-     {n:"4", id:"passwords-accounts",   title:"Passwords & accounts basics", desc:"Your first line of defense, done right."},
-     {n:"5", id:"staying-safe-online",  title:"Staying safe online",        desc:"Phishing, scams, and the basics of online safety."},
-     {n:"6", id:"how-to-learn-tech",    title:"How to learn tech effectively", desc:"The habits that make the difference."}
+     {n:"3", id:"how-to-use-a-browser-safely", title:"Using your web browser safely", desc:"The padlock, lookalike addresses, and what incognito mode really does."},
+     {n:"4", id:"wifi-and-connecting-safely", title:"Wi-Fi & connecting safely", desc:"Home router basics and what actually matters on public Wi-Fi."},
+     {n:"5", id:"files-folders-you",    title:"Files, folders & organizing yourself", desc:"Where your data lives, and how to stay tidy."},
+     {n:"6", id:"understanding-updates-and-backups", title:"Updates & backups: the boring habits that save you", desc:"Why the update you keep dismissing matters, and the 3-2-1 backup rule."},
+     {n:"7", id:"email-basics-and-safety", title:"Email basics & safety", desc:"Why your inbox is the master key to everything else, and how to spot a fake."},
+     {n:"8", id:"passwords-accounts",   title:"Passwords & accounts basics", desc:"Your first line of defense, done right."},
+     {n:"9", id:"common-tech-scams-for-beginners", title:"Common tech scams for beginners", desc:"Fake tech support, gift-card scams, and the pressure tactics behind both."},
+     {n:"10", id:"staying-safe-online",  title:"Staying safe online",        desc:"Phishing, scams, and the basics of online safety."},
+     {n:"11", id:"building-good-digital-habits", title:"Building good digital habits", desc:"Turning everything in this path into a five-minute weekly routine."},
+     {n:"12", id:"how-to-learn-tech",    title:"How to learn tech effectively", desc:"The habits that make the difference."}
    ]},
   {n:"01", id:"01-introduction", title:"Introduction to Cybersecurity", level:"Absolute beginner",
    desc:"What security is, why it matters, hacker types, the law, how to learn well.",
@@ -4726,6 +4732,11 @@ function renderLabPhishing(){
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
+  {date:'2026-07-25', title:'Path 00 doubled to 12 lessons', items:[
+    'Third batch of the course-wide content-doubling effort: Path 00 (Computer Basics & Security Mindset) grows from 6 to 12 lessons.',
+    'New lessons: Using Your Web Browser Safely, Wi-Fi & Connecting Safely, Updates & Backups, Email Basics & Safety, Common Tech Scams for Beginners, and Building Good Digital Habits.',
+    'Lesson order and "Next up" links across the whole path were re-sequenced so absolute beginners still move through a logical, connected story.'
+  ]},
   {date:'2026-07-25', title:'Zero Trust path doubled to 18 lessons', items:[
     'Second batch of the course-wide content-doubling effort: Path 24 (Zero Trust Architecture) grows from 9 to 18 lessons.',
     'New lessons: Data-Centric Zero Trust, Zero Trust for APIs & Microservices, Privileged Access Management, Zero Trust for Third Parties, Zero Trust Maturity Models, Analytics & Monitoring, Common Zero Trust Pitfalls, Remote & Hybrid Work, and Zero Trust Careers & Certifications.'

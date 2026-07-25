@@ -129,4 +129,4 @@ If DNS is just "asking a server for an IP address," why is DNS spoofing (an atta
 - [ICANN: What does ICANN do?](https://www.icann.org/resources/pages/what-2012-02-25-en) — a free, official overview of how internet-wide coordination actually works.
 ???
 
-**Next up →** [Files, folders & organizing yourself](#/lesson/00-fresher-basics/files-folders-you)
+**Next up →** [Using your web browser safely](#/lesson/00-fresher-basics/how-to-use-a-browser-safely)

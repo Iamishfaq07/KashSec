@@ -111,4 +111,4 @@ Why does length generally matter more for password strength than throwing in sym
 - [FIDO Alliance: Passkeys](https://fidoalliance.org/passkeys/) — a free, official explanation of how passkeys actually work.
 ???
 
-**Next up →** [Staying safe online](#/lesson/00-fresher-basics/staying-safe-online)
+**Next up →** [Common tech scams for beginners](#/lesson/00-fresher-basics/common-tech-scams-for-beginners)

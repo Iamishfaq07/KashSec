@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wi-Fi &amp; connecting safely — Path 00 · KashSec Academy</title>
+<meta name="description" content="Almost everything you do online travels over Wi-Fi at some point — at home, at work, or at a coffee shop. This lesson covers what actually makes a Wi-Fi connection safe or risky, in plain language, be">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/00-fresher-basics/wifi-and-connecting-safely">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Wi-Fi &amp; connecting safely — Path 00 · KashSec Academy">
+<meta property="og:description" content="Almost everything you do online travels over Wi-Fi at some point — at home, at work, or at a coffee shop. This lesson covers what actually makes a Wi-Fi connection safe or risky, in plain language, be">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/00-fresher-basics/wifi-and-connecting-safely">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Wi-Fi &amp; connecting safely — Path 00 · KashSec Academy">
+<meta name="twitter:description" content="Almost everything you do online travels over Wi-Fi at some point — at home, at work, or at a coffee shop. This lesson covers what actually makes a Wi-Fi connection safe or risky, in plain language, be">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Wi-Fi & connecting safely — Path 00 · KashSec Academy","description":"Almost everything you do online travels over Wi-Fi at some point — at home, at work, or at a coffee shop. This lesson covers what actually makes a Wi-Fi connection safe or risky, in plain language, be","url":"https://kashsec.vercel.app/#/lesson/00-fresher-basics/wifi-and-connecting-safely","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/00-fresher-basics/wifi-and-connecting-safely">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 00 — Computer Basics & Security Mindset</a> · Wi-Fi &amp; connecting safely</div>
+  <article><h1>Wi-Fi &amp; connecting safely</h1>
+<p>Almost everything you do online travels over Wi-Fi at some point — at home, at work, or at a coffee shop. This lesson covers what actually makes a Wi-Fi connection safe or risky, in plain language, before Path 02 goes into networking in much more technical depth.</p>
+<h2>What &quot;connecting to Wi-Fi&quot; actually does</h2>
+<p>When you join a Wi-Fi network, your device starts routing all of its internet traffic through whatever router or access point runs that network. This matters because whoever controls that router — the network&#39;s owner, or in the case of a public network, potentially anyone else on it — has some ability to see or interfere with the traffic passing through, depending on how well the traffic itself is protected.</p>
+<h2>Home Wi-Fi: the basics that matter</h2>
+<ul>
+<li><strong>Change the router&#39;s default admin password.</strong> Routers ship with well-known default logins (<code>admin</code>/<code>admin</code> is extremely common) that anyone can look up online — leaving it unchanged means anyone briefly on your network could reconfigure your router entirely.</li>
+<li><strong>Use WPA2 or WPA3 encryption</strong>, not the older, broken WEP standard — this is usually already the default on any router bought in the last decade, but it&#39;s worth confirming in your router&#39;s settings.</li>
+<li><strong>Use a strong Wi-Fi password</strong>, not the short one printed on the router by default — the same length-over-complexity logic from the passwords lesson applies here too.</li>
+<li><strong>Keep your router&#39;s firmware updated</strong> — router manufacturers occasionally patch real security flaws, and most modern routers can update themselves automatically if you enable that setting.</li>
+</ul>
+<h2>Public Wi-Fi: what actually changes</h2>
+<p>Public Wi-Fi (coffee shops, airports, hotels) isn&#39;t automatically dangerous, but it does remove a layer of trust you have at home — you don&#39;t know who set up the network, and in some cases you don&#39;t know who else is on it either.</p>
+<p>Because the vast majority of modern websites use encrypted HTTPS connections (the padlock from the previous lesson), someone else on the same public Wi-Fi generally can&#39;t read what you&#39;re typing into a legitimate site, even without a VPN. The bigger public-Wi-Fi risk in practice is a fake &quot;free wifi&quot; network set up specifically to intercept traffic, or an unencrypted site that doesn&#39;t use HTTPS at all.</p>
+<ul>
+<li><strong>Avoid networks with generic or suspicious names</strong> — a network called &quot;Free Airport WiFi&quot; with no password could be entirely legitimate, or could be set up by someone nearby specifically to intercept traffic; when in doubt, ask staff for the official network name.</li>
+<li><strong>Avoid logging into sensitive accounts</strong> (banking, in particular) on a network you don&#39;t fully trust, if you can reasonably wait.</li>
+<li><strong>A VPN adds a genuine extra layer</strong> by encrypting all of your traffic before it even reaches the local network — useful on public Wi-Fi specifically, and covered in real depth in Path 09.</li>
+</ul>
+<h2>Bluetooth and &quot;nearby&quot; connections, briefly</h2>
+<p>The same basic caution applies beyond Wi-Fi: turn off Bluetooth when you&#39;re not actively using it, and don&#39;t accept pairing requests or file transfers from devices you don&#39;t recognize.</p>
+<h2>🧪 Hands-on lab — a home network check-up</h2>
+<ol>
+<li>Log into your home router&#39;s admin page (usually at an address like <code>192.168.1.1</code> — check your router&#39;s manual if unsure) and confirm the default admin password has been changed.</li>
+<li>Confirm your Wi-Fi network is using WPA2 or WPA3 encryption, not an older or open standard.</li>
+<li>Check whether your router has an available firmware update, and whether automatic updates are enabled.</li>
+<li>Next time you&#39;re on public Wi-Fi, make a habit of checking the network name with staff before connecting, rather than picking the first plausible-looking option.</li>
+</ol>
+<p>Why is a fake public Wi-Fi network with a plausible name a bigger practical risk than public Wi-Fi encryption itself?</p>
+<details><summary>Show answer</summary>Modern HTTPS encryption already protects the content of your traffic to most legitimate sites, even over public Wi-Fi — so the connection type itself isn't the primary danger. The bigger risk is connecting to a network set up specifically to intercept or manipulate your traffic before it ever reaches a legitimate, encrypted destination, which is exactly why verifying the network's real name with staff matters more than avoiding public Wi-Fi altogether.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Router</strong> — the device that manages your home network and connects it to the internet.</li>
+<li><strong>WPA2/WPA3</strong> — the current, secure Wi-Fi encryption standards; WEP is an older, broken standard to avoid.</li>
+<li><strong>VPN (Virtual Private Network)</strong> — a service that encrypts all of your traffic before it reaches the local network, adding protection on untrusted networks.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Changing your router&#39;s default admin password and Wi-Fi password are the two highest-value home-network habits.</li>
+<li>Most public-Wi-Fi risk today comes from fake networks, not from encryption gaps in legitimate ones — HTTPS already protects most of what matters.</li>
+<li>A VPN adds a genuine extra layer of protection specifically useful on networks you don&#39;t fully trust.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/00-fresher-basics/files-folders-you">Files, folders &amp; organizing yourself</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/00-fresher-basics/wifi-and-connecting-safely";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

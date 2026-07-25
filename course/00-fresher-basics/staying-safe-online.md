@@ -100,4 +100,4 @@ Why is "hover over the link to check where it actually goes" more reliable than 
 - [CISA: Recognize and Report Phishing](https://www.cisa.gov/secure-our-world/recognize-and-report-phishing) — official US government guidance.
 ???
 
-**Next up →** [How to learn tech effectively](#/lesson/00-fresher-basics/how-to-learn-tech)
+**Next up →** [Building good digital habits](#/lesson/00-fresher-basics/building-good-digital-habits)

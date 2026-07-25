@@ -106,4 +106,4 @@ Why is "always show file extensions" considered a security best practice, rather
 - [EFF: Metadata and privacy](https://ssd.eff.org/module/why-metadata-matters) — a free, clear explanation of why metadata matters for privacy, referenced again in Path 09.
 ???
 
-**Next up →** [Passwords & accounts basics](#/lesson/00-fresher-basics/passwords-accounts)
+**Next up →** [Updates & backups: the boring habits that save you](#/lesson/00-fresher-basics/understanding-updates-and-backups)

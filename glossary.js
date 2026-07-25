@@ -13,6 +13,15 @@ const GLOSSARY = [
   "subTitle": "MFA, updates, backups"
  },
  {
+  "term": "3-2-1 rule",
+  "def": "a backup guideline: 3 copies, on 2 storage types, with 1 stored separately.",
+  "pathId": "00-fresher-basics",
+  "pathN": "00",
+  "pathTitle": "Computer Basics & Security Mindset",
+  "subId": "understanding-updates-and-backups",
+  "subTitle": "Updates & backups: the boring habits that save you"
+ },
+ {
   "term": "A / AAAA / MX / NS / TXT / CNAME",
   "def": "different DNS record types.",
   "pathId": "02-networking",
@@ -598,6 +607,15 @@ const GLOSSARY = [
   "subTitle": "Poisoning & adversarial ML"
  },
  {
+  "term": "Backup",
+  "def": "a separate copy of important data, kept somewhere independent of your main device.",
+  "pathId": "00-fresher-basics",
+  "pathN": "00",
+  "pathTitle": "Computer Basics & Security Mindset",
+  "subId": "understanding-updates-and-backups",
+  "subTitle": "Updates & backups: the boring habits that save you"
+ },
+ {
   "term": "Batching",
   "def": "sending multiple GraphQL operations in a single HTTP request",
   "pathId": "21-api-security",
@@ -839,6 +857,15 @@ const GLOSSARY = [
   "pathTitle": "Zero Trust Architecture",
   "subId": "ztna-vs-vpn",
   "subTitle": "Zero Trust Network Access (ZTNA) vs. Traditional VPN"
+ },
+ {
+  "term": "Browser extension",
+  "def": "a small add-on program that adds functionality to your browser.",
+  "pathId": "00-fresher-basics",
+  "pathN": "00",
+  "pathTitle": "Computer Basics & Security Mindset",
+  "subId": "how-to-use-a-browser-safely",
+  "subTitle": "Using your web browser safely"
  },
  {
   "term": "Browser fingerprinting",
@@ -2081,6 +2108,15 @@ const GLOSSARY = [
   "pathTitle": "Cryptography Fundamentals",
   "subId": "what-is-cryptography",
   "subTitle": "What is cryptography?"
+ },
+ {
+  "term": "Encrypted connection",
+  "def": "a connection where data traveling between you and a site can't be read by anyone else on the network in between.",
+  "pathId": "00-fresher-basics",
+  "pathN": "00",
+  "pathTitle": "Computer Basics & Security Mindset",
+  "subId": "how-to-use-a-browser-safely",
+  "subTitle": "Using your web browser safely"
  },
  {
   "term": "Encryption in transit",
@@ -4721,6 +4757,15 @@ const GLOSSARY = [
  },
  {
   "term": "Phishing",
+  "def": "a message designed to trick you into revealing sensitive information or clicking a malicious link (covered in full depth in the next lesson).",
+  "pathId": "00-fresher-basics",
+  "pathN": "00",
+  "pathTitle": "Computer Basics & Security Mindset",
+  "subId": "email-basics-and-safety",
+  "subTitle": "Email basics & safety"
+ },
+ {
+  "term": "Phishing",
   "def": "fraudulent messages impersonating a trusted source to steal information or money.",
   "pathId": "00-fresher-basics",
   "pathN": "00",
@@ -4961,6 +5006,15 @@ const GLOSSARY = [
   "pathTitle": "Digital Privacy & Personal Security",
   "subId": "browser-privacy",
   "subTitle": "Browser Privacy"
+ },
+ {
+  "term": "Private/incognito window",
+  "def": "a browsing mode that doesn't save history or cookies locally, but provides no anonymity from the outside world.",
+  "pathId": "00-fresher-basics",
+  "pathN": "00",
+  "pathTitle": "Computer Basics & Security Mindset",
+  "subId": "how-to-use-a-browser-safely",
+  "subTitle": "Using your web browser safely"
  },
  {
   "term": "Private IP",
@@ -5285,6 +5339,15 @@ const GLOSSARY = [
   "pathTitle": "Programming & Python",
   "subId": "loops",
   "subTitle": "Loops: repeat things"
+ },
+ {
+  "term": "Ransomware",
+  "def": "malicious software that encrypts your files and demands payment to restore them.",
+  "pathId": "00-fresher-basics",
+  "pathN": "00",
+  "pathTitle": "Computer Basics & Security Mindset",
+  "subId": "understanding-updates-and-backups",
+  "subTitle": "Updates & backups: the boring habits that save you"
  },
  {
   "term": "Ransomware",
@@ -5711,6 +5774,15 @@ const GLOSSARY = [
  },
  {
   "term": "Router",
+  "def": "the device that manages your home network and connects it to the internet.",
+  "pathId": "00-fresher-basics",
+  "pathN": "00",
+  "pathTitle": "Computer Basics & Security Mindset",
+  "subId": "wifi-and-connecting-safely",
+  "subTitle": "Wi-Fi & connecting safely"
+ },
+ {
+  "term": "Router",
   "def": "connects your home network to the internet and directs traffic.",
   "pathId": "02-networking",
   "pathN": "02",
@@ -6005,6 +6077,15 @@ const GLOSSARY = [
   "pathTitle": "Cloud Computing Basics",
   "subId": "cloud-networking-basics",
   "subTitle": "Cloud Networking Basics"
+ },
+ {
+  "term": "Security habit",
+  "def": "a small, repeatable routine that maintains protection without requiring active daily decision-making.",
+  "pathId": "00-fresher-basics",
+  "pathN": "00",
+  "pathTitle": "Computer Basics & Security Mindset",
+  "subId": "building-good-digital-habits",
+  "subTitle": "Building good digital habits"
  },
  {
   "term": "Security IN the cloud",
@@ -6404,6 +6485,15 @@ const GLOSSARY = [
  },
  {
   "term": "Social engineering",
+  "def": "manipulating someone into an action or disclosure through psychological pressure rather than a technical exploit (covered in much more depth in Path 10).",
+  "pathId": "00-fresher-basics",
+  "pathN": "00",
+  "pathTitle": "Computer Basics & Security Mindset",
+  "subId": "common-tech-scams-for-beginners",
+  "subTitle": "Common tech scams for beginners"
+ },
+ {
+  "term": "Social engineering",
   "def": "manipulating people (rather than exploiting technical flaws) to gain access or information.",
   "pathId": "00-fresher-basics",
   "pathN": "00",
@@ -6509,6 +6599,15 @@ const GLOSSARY = [
   "pathTitle": "Zero Trust Architecture",
   "subId": "zero-trust-remote-work",
   "subTitle": "Zero Trust for Remote & Hybrid Work"
+ },
+ {
+  "term": "Spoofing",
+  "def": "sending an email that falsely appears to come from a different sender.",
+  "pathId": "00-fresher-basics",
+  "pathN": "00",
+  "pathTitle": "Computer Basics & Security Mindset",
+  "subId": "email-basics-and-safety",
+  "subTitle": "Email basics & safety"
  },
  {
   "term": "Spoofing",
@@ -6925,6 +7024,15 @@ const GLOSSARY = [
   "subTitle": "Web recon"
  },
  {
+  "term": "Tech support scam",
+  "def": "a fake warning or call claiming your device is infected, aimed at extracting payment or remote access.",
+  "pathId": "00-fresher-basics",
+  "pathN": "00",
+  "pathTitle": "Computer Basics & Security Mindset",
+  "subId": "common-tech-scams-for-beginners",
+  "subTitle": "Common tech scams for beginners"
+ },
+ {
   "term": "Template categories",
   "def": "cves/, exposures/, misconfiguration/, vulnerabilities/, takeovers/, default-logins/.",
   "pathId": "15-bug-bounty",
@@ -7276,6 +7384,15 @@ const GLOSSARY = [
   "subTitle": "Windows privilege escalation"
  },
  {
+  "term": "Update / patch",
+  "def": "a software release that fixes bugs or security flaws.",
+  "pathId": "00-fresher-basics",
+  "pathN": "00",
+  "pathTitle": "Computer Basics & Security Mindset",
+  "subId": "understanding-updates-and-backups",
+  "subTitle": "Updates & backups: the boring habits that save you"
+ },
+ {
   "term": "URL parts",
   "def": "scheme, host, port, path, query.",
   "pathId": "05-web-basics",
@@ -7475,6 +7592,15 @@ const GLOSSARY = [
  },
  {
   "term": "VPN (Virtual Private Network)",
+  "def": "a service that encrypts all of your traffic before it reaches the local network, adding protection on untrusted networks.",
+  "pathId": "00-fresher-basics",
+  "pathN": "00",
+  "pathTitle": "Computer Basics & Security Mindset",
+  "subId": "wifi-and-connecting-safely",
+  "subTitle": "Wi-Fi & connecting safely"
+ },
+ {
+  "term": "VPN (Virtual Private Network)",
   "def": "an encrypted tunnel routing your traffic through an intermediary server, hiding it from your local network and ISP.",
   "pathId": "09-digital-privacy",
   "pathN": "09",
@@ -7508,6 +7634,15 @@ const GLOSSARY = [
   "pathTitle": "Bug Bounty",
   "subId": "report-writing",
   "subTitle": "Reports that get paid"
+ },
+ {
+  "term": "Web browser",
+  "def": "the program used to view and navigate websites.",
+  "pathId": "00-fresher-basics",
+  "pathN": "00",
+  "pathTitle": "Computer Basics & Security Mindset",
+  "subId": "how-to-use-a-browser-safely",
+  "subTitle": "Using your web browser safely"
  },
  {
   "term": "Web shell",
@@ -7634,6 +7769,15 @@ const GLOSSARY = [
   "pathTitle": "Zero Trust Architecture",
   "subId": "zero-trust-cloud",
   "subTitle": "Zero Trust in Cloud-Native Environments"
+ },
+ {
+  "term": "WPA2/WPA3",
+  "def": "the current, secure Wi-Fi encryption standards; WEP is an older, broken standard to avoid.",
+  "pathId": "00-fresher-basics",
+  "pathN": "00",
+  "pathTitle": "Computer Basics & Security Mindset",
+  "subId": "wifi-and-connecting-safely",
+  "subTitle": "Wi-Fi & connecting safely"
  },
  {
   "term": "WPS",
