@@ -509,27 +509,59 @@ function toggleTheme(){
 applyTheme();
 
 /* ---------- Listen mode (text-to-speech) ---------- */
+/* Chrome (desktop and Android) has a long-standing bug where
+   speechSynthesis silently stops mid-queue after ~15s, most often on
+   longer content or when the tab loses focus — the utterance queue just
+   goes quiet with no error and no onend. The standard workaround is a
+   periodic pause()/resume() "kick" while speaking. See
+   https://bugs.chromium.org/p/chromium/issues/detail?id=679437 */
 const TTS = {
   supported: typeof window !== 'undefined' && 'speechSynthesis' in window,
   speaking: false,
+  _keepAlive: null,
+  _startKeepAlive(){
+    clearInterval(this._keepAlive);
+    this._keepAlive = setInterval(()=>{
+      if(!this.speaking){ clearInterval(this._keepAlive); return; }
+      try{
+        if(window.speechSynthesis.speaking && !window.speechSynthesis.paused){
+          window.speechSynthesis.pause();
+          window.speechSynthesis.resume();
+        }
+      }catch(e){}
+    }, 5000);
+  },
   stop(){
     if(!this.supported) return;
-    try{ window.speechSynthesis.cancel(); }catch(e){}
+    clearInterval(this._keepAlive);
     this.speaking = false;
+    try{ window.speechSynthesis.cancel(); }catch(e){}
   },
   /* Speak text in chunks (some engines choke on very long utterances).
-     onEnd fires when the whole thing finishes or is cancelled. */
+     onEnd fires when the whole thing finishes or is cancelled. A watchdog
+     bails out (and reports done) if a chunk's onend/onerror never fires —
+     better a stuck "Listen" button resets itself than hangs forever. */
   speak(text, onEnd){
     if(!this.supported) return;
     this.stop();
     const chunks = text.replace(/\s+/g,' ').match(/[^.!?]+[.!?]*\s*/g) || [text];
     let i = 0;
     this.speaking = true;
+    this._startKeepAlive();
+    const finish = ()=>{ this.speaking = false; clearInterval(this._keepAlive); onEnd && onEnd(); };
     const next = ()=>{
-      if(!this.speaking || i >= chunks.length){ this.speaking = false; onEnd && onEnd(); return; }
-      const u = new SpeechSynthesisUtterance(chunks[i++]);
-      u.rate = 1; u.onend = next; u.onerror = ()=>{ this.speaking=false; onEnd && onEnd(); };
-      window.speechSynthesis.speak(u);
+      if(!this.speaking || i >= chunks.length){ finish(); return; }
+      const chunk = chunks[i++];
+      const u = new SpeechSynthesisUtterance(chunk);
+      let settled = false;
+      const advance = ()=>{ if(settled) return; settled = true; clearTimeout(watchdog); next(); };
+      u.rate = 1;
+      u.onend = advance;
+      u.onerror = advance;
+      // Rough ceiling: ~10 words/sec at rate 1, plus generous slack, floor 6s.
+      const watchdog = setTimeout(advance, Math.max(6000, chunk.split(/\s+/).length * 600));
+      try{ window.speechSynthesis.speak(u); }
+      catch(e){ advance(); }
     };
     next();
   }
