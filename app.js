@@ -508,68 +508,6 @@ function toggleTheme(){
 }
 applyTheme();
 
-/* ---------- Listen mode (text-to-speech) ---------- */
-/* Two well-documented speechSynthesis engine quirks, both of which
-   produce the same symptom — the UI shows "speaking" but no sound ever
-   comes out:
-     1. Calling speak() in the same tick as a preceding cancel() gets
-        silently dropped by Chrome/WebKit — the fix is a short delay
-        between cancel() and the next speak().
-     2. Proactively calling pause() (a common "workaround" for Chrome's
-        ~15s auto-stall bug, chromium.org/p/chromium/issues/detail?id=679437)
-        can leave Safari's engine stuck silent afterwards. So: never call
-        pause() ourselves — only resume() if the engine reports itself
-        paused on its own. */
-const TTS = {
-  supported: typeof window !== 'undefined' && 'speechSynthesis' in window,
-  speaking: false,
-  _keepAlive: null,
-  _startTimer: null,
-  stop(){
-    if(!this.supported) return;
-    clearInterval(this._keepAlive);
-    clearTimeout(this._startTimer);
-    this.speaking = false;
-    try{ window.speechSynthesis.cancel(); }catch(e){}
-  },
-  /* Speak text in chunks (some engines choke on very long utterances).
-     onEnd fires when the whole thing finishes or is cancelled. A watchdog
-     bails out (and reports done) if a chunk's onend/onerror never fires —
-     better a stuck "Listen" button resets itself than hangs forever. */
-  speak(text, onEnd){
-    if(!this.supported) return;
-    this.stop();
-    const chunks = text.replace(/\s+/g,' ').match(/[^.!?]+[.!?]*\s*/g) || [text];
-    let i = 0;
-    this.speaking = true;
-    const finish = ()=>{ this.speaking = false; clearInterval(this._keepAlive); onEnd && onEnd(); };
-    const next = ()=>{
-      if(!this.speaking || i >= chunks.length){ finish(); return; }
-      const chunk = chunks[i++];
-      const u = new SpeechSynthesisUtterance(chunk);
-      let settled = false;
-      const advance = ()=>{ if(settled) return; settled = true; clearTimeout(watchdog); next(); };
-      u.rate = 1;
-      u.onend = advance;
-      u.onerror = advance;
-      // Rough ceiling: ~10 words/sec at rate 1, plus generous slack, floor 6s.
-      const watchdog = setTimeout(advance, Math.max(6000, chunk.split(/\s+/).length * 600));
-      try{ window.speechSynthesis.speak(u); }
-      catch(e){ advance(); }
-    };
-    // Give the engine a beat after cancel() before the first speak() —
-    // issuing them back-to-back is what causes silent playback (quirk 1).
-    clearTimeout(this._startTimer);
-    this._startTimer = setTimeout(next, 80);
-    // Passive keep-alive for quirk 2: only ever resume(), never pause().
-    clearInterval(this._keepAlive);
-    this._keepAlive = setInterval(()=>{
-      if(!this.speaking){ clearInterval(this._keepAlive); return; }
-      try{ if(window.speechSynthesis.paused) window.speechSynthesis.resume(); }catch(e){}
-    }, 4000);
-  }
-};
-
 /* ============================================================
    Streak reminders (local notifications)
    ------------------------------------------------------------
@@ -1267,14 +1205,10 @@ let renderGeneration = 0;
 
 function route(){
   renderGeneration++;
-  if(typeof TTS !== 'undefined') TTS.stop(); // stop any read-aloud when navigating
   currentTocObserver?.disconnect();
   document.getElementById('tocFloat')?.remove();
   clearInterval(mockInterviewTimer);
   clearInterval(pomodoroInterval);
-  if(playlistActive && !(location.hash || '').startsWith(`#/lesson/${playlistPathId}/`)){
-    playlistActive = false; playlistPathId = null; // user navigated off the playlist's path
-  }
   // Magic-link / OAuth redirects land back on the site with auth tokens
   // riding in the URL (e.g. #access_token=...). That's not a real route —
   // show a brief loading state and let the auth bootstrap below redirect
@@ -1285,7 +1219,11 @@ function route(){
     return;
   }
   const hash = location.hash || '#/';
-  window.scrollTo(0,0);
+  // Explicit 'instant' bypasses the site-wide CSS scroll-behavior:smooth —
+  // without it, this scroll animates and gets cut short the instant the
+  // new page's (possibly much shorter) content replaces the old DOM a
+  // moment later, which looks like navigation "doesn't jump" at all.
+  window.scrollTo({top:0, left:0, behavior:'instant'});
   if(hash === '#/' || hash === '#') renderHome();
   else if(hash === '#/course') renderCourseIndex();
   else if(hash === '#/careers') renderCareers();
@@ -1824,7 +1762,6 @@ function renderPathOverview(pathId){
             <a class="btn-amber" href="#/lesson/${p.id}/${firstUnfinished.id}">${startLabel} →</a>
             ${quiz ? `<a class="btn-ghost" href="#/quiz/${p.id}">${quizResult ? (quizResult.passed?'✅ Retake quiz':'Retake quiz') : '📝 Take the path quiz'}</a>` : ''}
             <button class="btn-ghost" id="downloadPackBtn" type="button">⬇ Download offline pack (.zip)</button>
-            ${TTS.supported ? `<button class="btn-ghost" id="playlistStartBtn" type="button">🎧 Listen to this path</button>` : ''}
           </div>
         </div>
         <div class="sublesson-grid">
@@ -1873,12 +1810,6 @@ function renderPathOverview(pathId){
       btn.textContent = original;
       btn.disabled = false;
     }
-  });
-
-  document.getElementById('playlistStartBtn')?.addEventListener('click', ()=>{
-    playlistActive = true;
-    playlistPathId = p.id;
-    location.hash = `#/lesson/${p.id}/${p.subs[0].id}`;
   });
 }
 
@@ -2147,10 +2078,6 @@ async function renderSubLesson(pathId, subId){
             &nbsp;·&nbsp; Sub-lesson ${ctx.path.n}.${ctx.sub.n}
           </div>
           <div class="reader-actions">
-            <button class="icon-btn" id="listenBtn" type="button" aria-label="Listen to this lesson" title="Listen (read aloud)" hidden>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
-            </button>
-            <button class="icon-btn ${playlistActive?'active':''}" id="playlistBtn" type="button" aria-label="${playlistActive?'Stop playlist mode':'Play this path back-to-back like a podcast'}" title="${playlistActive?'Stop playlist':'Playlist mode — auto-advance through the path'}" hidden>🎧</button>
             <button class="icon-btn ${isBookmarked(pathId,subId)?'active':''}" id="bookmarkBtn" type="button" aria-label="Bookmark this lesson" aria-pressed="${isBookmarked(pathId,subId)}">
               <svg viewBox="0 0 24 24" fill="${isBookmarked(pathId,subId)?'currentColor':'none'}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
             </button>
@@ -2353,10 +2280,6 @@ async function renderSubLesson(pathId, subId){
     // Copy buttons + syntax highlighting on code blocks
     enhanceCodeBlocks(contentEl);
 
-    // Listen mode (read-aloud), only where the browser supports it.
-    wireListenButton(contentEl);
-    wirePlaylist(ctx, contentEl);
-
     // End-of-lesson quick check, drawn from this path's quiz bank.
     renderMicroCheck(ctx);
 
@@ -2530,8 +2453,6 @@ function buildTocFloat(tocable){
 let currentTocObserver = null;
 let mockInterviewTimer = null;
 let pomodoroInterval = null;
-let playlistActive = false;
-let playlistPathId = null;
 
 /* Focus timer (Pomodoro) — 25-minute countdown on lesson pages. Purely
    client-side; a completed session logs to STATE.pomodoroSessions,
@@ -2592,28 +2513,6 @@ function wirePomodoro(){
 
 /* Copy-to-clipboard buttons + best-effort syntax highlighting on all real
    code blocks (mermaid fences were already converted to .mermaid divs). */
-/* Wire the read-aloud button once a lesson's content is in the DOM.
-   Reads the visible article text (skipping code blocks and diagrams). */
-function wireListenButton(contentEl){
-  const btn = document.getElementById('listenBtn');
-  if(!btn || !TTS.supported) return; // stays hidden where unsupported
-  btn.hidden = false;
-  const setPlaying = (on)=>{
-    btn.classList.toggle('active', on);
-    btn.setAttribute('aria-label', on ? 'Stop reading' : 'Listen to this lesson');
-    btn.setAttribute('title', on ? 'Stop' : 'Listen (read aloud)');
-  };
-  const gatherText = ()=>{
-    const clone = contentEl.cloneNode(true);
-    clone.querySelectorAll('pre, .mermaid, .code-copy, .toc').forEach(n=>n.remove());
-    return clone.innerText;
-  };
-  btn.addEventListener('click', ()=>{
-    if(TTS.speaking){ TTS.stop(); setPlaying(false); return; }
-    setPlaying(true);
-    TTS.speak(gatherText(), ()=>setPlaying(false));
-  });
-}
 
 /* End-of-lesson micro-check — one quick question so a lesson ends with
    active recall instead of passive reading. Questions come from the
@@ -2657,50 +2556,6 @@ function renderMicroCheck(ctx){
       if(correct) fireConfetti({count:30});
     });
   });
-}
-
-/* Playlist mode — auto-advances through every remaining sub-lesson in
-   the current path, reading each aloud back-to-back (podcast-style).
-   Reuses TTS.speak's onEnd callback to chain into the next lesson;
-   route() clears playlistActive if the user navigates off this path. */
-function wirePlaylist(ctx, contentEl){
-  const btn = document.getElementById('playlistBtn');
-  if(!btn || !TTS.supported) return;
-  btn.hidden = false;
-  const gatherText = ()=>{
-    const clone = contentEl.cloneNode(true);
-    clone.querySelectorAll('pre, .mermaid, .code-copy, .toc').forEach(n=>n.remove());
-    return clone.innerText;
-  };
-  const setUi = (on)=>{
-    btn.classList.toggle('active', on);
-    btn.setAttribute('aria-label', on ? 'Stop playlist mode' : 'Play this path back-to-back like a podcast');
-    btn.setAttribute('title', on ? 'Stop playlist' : 'Playlist mode — auto-advance through the path');
-  };
-  const startSpeaking = ()=>{
-    TTS.speak(gatherText(), ()=>{
-      if(!playlistActive) return; // stopped mid-lesson
-      if(ctx.next && ctx.next.pathId === ctx.path.id){
-        location.hash = `#/lesson/${ctx.next.pathId}/${ctx.next.subId}`;
-      } else {
-        playlistActive = false; playlistPathId = null; setUi(false);
-      }
-    });
-  };
-  setUi(playlistActive);
-  btn.addEventListener('click', ()=>{
-    if(playlistActive){
-      playlistActive = false; playlistPathId = null;
-      TTS.stop();
-      setUi(false);
-      return;
-    }
-    playlistActive = true; playlistPathId = ctx.path.id;
-    setUi(true);
-    startSpeaking();
-  });
-  // Resuming an already-active playlist after auto-navigating here.
-  if(playlistActive && playlistPathId === ctx.path.id) startSpeaking();
 }
 
 function enhanceCodeBlocks(contentEl){
@@ -4190,6 +4045,10 @@ function renderLabPhishing(){
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
+  {date:'2026-07-25', title:'Removed Listen mode, fixed navigation not scrolling to top', items:[
+    'Removed Listen mode and Playlist mode — the browser text-to-speech read-aloud feature was unreliable across Chrome and Safari (silent playback, stalled mid-lesson) and has been pulled rather than patched further.',
+    'Fixed a real bug: clicking a nav or footer link (Paths, Careers, Tracks, etc.) could leave the page scrolled wherever you already were instead of jumping to the top of the new page — a site-wide smooth-scroll style was getting cut off by the page content swapping in.'
+  ]},
   {date:'2026-07-24', title:'Faster first load, missed-question review & update flags', items:[
     'Roughly half a megabyte less to download on first visit — the glossary and search index no longer block the offline installer, they load in the background instead.',
     'Missed-question review (#/quiz/missed): questions you get wrong now come back on a spaced schedule until you\'ve answered each correctly three times.',
