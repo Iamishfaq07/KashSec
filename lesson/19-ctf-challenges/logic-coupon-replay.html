@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Web — The Coupon That Wouldn't Quit — Path 19 · KashSec Academy</title>
+<meta name="description" content="Category: Web · Difficulty: Medium">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/19-ctf-challenges/logic-coupon-replay">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Web — The Coupon That Wouldn't Quit — Path 19 · KashSec Academy">
+<meta property="og:description" content="Category: Web · Difficulty: Medium">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/19-ctf-challenges/logic-coupon-replay">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Web — The Coupon That Wouldn't Quit — Path 19 · KashSec Academy">
+<meta name="twitter:description" content="Category: Web · Difficulty: Medium">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Web — The Coupon That Wouldn't Quit — Path 19 · KashSec Academy","description":"Category: Web · Difficulty: Medium","url":"https://kashsec.vercel.app/#/lesson/19-ctf-challenges/logic-coupon-replay","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/19-ctf-challenges/logic-coupon-replay">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 19 — CTF Challenges</a> · Web — The Coupon That Wouldn't Quit</div>
+  <article><h1>Web — The Coupon That Wouldn&#39;t Quit</h1>
+<p><strong>Category:</strong> Web · <strong>Difficulty:</strong> Medium</p>
+<h2>Scenario</h2>
+<p><code>shop.kashsec-labs.test</code> runs a one-time-use coupon system: <code>WELCOME15</code> gives 15% off, and is meant to be redeemable exactly once per account. You&#39;ve read the (leaked, internal) pseudocode describing how redemption is implemented.</p>
+<h2>Provided data</h2>
+<pre><code class="language-python">def redeem_coupon(user, code):
+    coupon = db.get_coupon(code)
+    if coupon.used_by_user(user):
+        return error(&quot;Already redeemed&quot;)
+    apply_discount(user.cart, coupon.percent)
+    order = create_order(user.cart)
+    charge_payment(order)
+    mark_coupon_used(coupon, user)   # &lt;-- happens LAST, after payment
+    return success(order)
+</code></pre>
+<p>A note on the checkout page&#39;s behavior: &quot;Place Order&quot; can be double-clicked, and the frontend has no protection against it — each click fires an independent request to <code>/api/redeem_coupon</code>.</p>
+<h2>Your task</h2>
+<p>There&#39;s no injection, no broken authentication, nothing a scanner would flag. Something about the <em>order of operations</em> in this pseudocode makes the coupon reusable in a single narrow window. Find it, and figure out what the flag-bearing consequence would be.</p>
+<details><summary>Hint 1</summary>Read the function line by line, in order. The check ("has this user already used this coupon?") happens at the very top. The action that actually <em>records</em> the coupon as used happens at the very bottom — after the discount is applied, the order is created, and payment is charged.</details>
+<details><summary>Hint 2</summary>Now imagine two requests to redeem the same coupon arrive at the server at nearly the same instant — close enough that both pass the "already redeemed?" check before either one has reached the line that marks the coupon used. What happens to each of them independently?</details>
+<details><summary>Show full answer</summary>This is a classic <strong>Time-Of-Check to Time-Of-Use (TOCTOU) race condition</strong>. If two redemption requests for the same coupon arrive close enough together, both can pass <code>coupon.used_by_user(user)</code> — which returns <code>false</code> for both, since neither has been marked used yet — before either one reaches <code>mark_coupon_used()</code> at the end. Both requests then proceed to apply the discount, create an order, and charge payment, and only afterward does the coupon finally get marked used (twice, redundantly, by two separate requests). The double-click behavior mentioned in the scenario is exactly the trigger: two near-simultaneous requests exploit the gap between the check and the action. In this scenario, successfully firing two overlapping redemption requests returns a second order confirmation containing: <code>{"order_id": 9021, "discount_applied": true, "flag": "KASHSEC{r4c3_c0nd1t10ns_d0nt_c4re_4b0ut_0rder}"}</code> — a second 15%-off order the coupon was never supposed to permit.</details><h2>The flag</h2>
+<pre><code>KASHSEC{r4c3_c0nd1t10ns_d0nt_c4re_4b0ut_0rder}
+</code></pre>
+<h2>Why this matters beyond the CTF</h2>
+<p>Race conditions in business logic (&quot;check then act&quot; patterns with a gap in between) are a genuinely underappreciated real-world vulnerability class, showing up in coupon systems, account balance transfers, inventory reservation, and rate limiters alike — anywhere a system checks a condition and only updates state afterward, rather than atomically. They&#39;re also notoriously hard to find with automated scanners, since exploiting them requires precise timing, not a malformed payload. Path 21&#39;s rate-limiting lesson touches this same &quot;check then act&quot; pattern from a different angle; the underlying principle — make the check-and-update a single atomic operation, not two separate steps with a gap — applies identically here.</p>
+<h2>Bonus round — how would you actually fire two near-simultaneous requests?</h2>
+<details><summary>Hint</summary>A human manually double-clicking a button is far too slow and inconsistent to reliably land both requests inside a race window that might only be open for a few milliseconds. What tooling would give you the timing precision needed?</details>
+<details><summary>Show answer</summary>Real-world race condition testing typically uses tooling built specifically for this — Burp Suite's "Turbo Intruder" extension, for example, can fire many requests within the same network packet or with sub-millisecond timing precision, dramatically increasing the odds of landing multiple requests inside a narrow check-then-act window compared to any manual approach. The core idea (send the same request many times, as close together in time as your tooling allows, and see whether more than one "wins") stays the same as the double-click description in this challenge — it's just executed with far more precision and repetition than manual clicking could ever achieve, which is exactly why race conditions that seem like they'd only trigger "by extreme luck" are, in practice, quite reliably exploitable with the right tools.</details><p>The exact same &quot;check happens early, the state-changing action happens late&quot; shape shows up in withdrawal limits, one-time password redemption, seat reservation systems, and inventory counters. Whenever a piece of pseudocode (or your own code) checks a condition and then does something consequential several steps later, ask: could two of these run at once, and would that matter?</p>
+<p><strong>Next up →</strong> <a href="#/lesson/19-ctf-challenges/logic-skip-a-step">Web — Two Steps Forward, Zero Back</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/19-ctf-challenges/logic-coupon-replay";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

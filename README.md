@@ -2,7 +2,7 @@
 
 **A completely free cybersecurity course, from absolute zero to job-ready.**
 
-26 learning paths · 251 sub-lessons · diagrams, labs, a hands-on CTF zone & challenges · always free
+26 learning paths · 267 sub-lessons · diagrams, labs, a hands-on CTF zone & challenges · always free
 
 [![Live Site](https://img.shields.io/badge/live-kashsec.academy-EFA43A?style=for-the-badge)](https://kashsec.vercel.app/)
 
@@ -16,11 +16,11 @@
 - **Glossary & flashcards** — all 600+ Key Terms from every lesson in one searchable A–Z glossary (`#/glossary`), plus an active-recall flashcard mode (`#/review`) that remembers which terms you already know
 - **Better lesson reading** — reading-time estimates, an "On this page" table of contents on longer lessons, one-click copy buttons and syntax highlighting on code blocks
 - **Streaks, backups & shortcuts** — a visible day-streak counter, JSON export/import of all your progress (no account needed), quiz "review your last attempt", and keyboard shortcuts (`[` / `]` between lessons, `?` for the cheatsheet)
-- **Installable & works offline** — KashSec is a full PWA now. Install it from the browser (or "Add to Home Screen" on mobile) and the entire course — app shell plus all 251 lessons — is available with zero network connection. See [Offline / PWA support](#offline--pwa-support) below.
+- **Installable & works offline** — KashSec is a full PWA now. Install it from the browser (or "Add to Home Screen" on mobile) and the entire course — app shell plus all 267 lessons — is available with zero network connection. See [Offline / PWA support](#offline--pwa-support) below.
 - **Four new beginner-friendly paths**: **Cryptography Fundamentals** (encoding vs. encryption vs. hashing, from zero), **Windows Security Basics** (Path 03's Linux depth, now for Windows), **Cloud Computing Basics** (the foundation Path 16's cloud security assumes), and **Digital Privacy & Personal Security** (your footprint, VPNs, secure messaging, identity theft)
 - **Path 17 — Malware & Reverse Engineering**: PE internals, hands-on Ghidra disassembly, dynamic analysis and sandboxing, unpacking/obfuscation, and writing YARA detection rules, capped with a full analysis pipeline lab
 - **Path 13 — Mobile App Security**: Android & iOS from the ground up — APK analysis, insecure storage, traffic interception, certificate pinning bypass, and exported component vulnerabilities, capped with a full assessment lab
-- **Path 19 — CTF Challenges**: a standalone Capture The Flag zone with 8 self-contained puzzles across Web, Crypto, Forensics, Misc, and Linux privilege escalation
+- **Path 19 — CTF Challenges**: a standalone Capture The Flag zone with 24 self-contained puzzles across Web, API, JWT, Crypto, Forensics, AI, Misc, and Linux privilege escalation, with difficulty tiers and a solution write-up template
 - **Progress tracking, bookmarks & notes** on every lesson, plus an interactive roadmap and a personal progress dashboard
 - **21 path quizzes + a Final Exam** (API Security and DevSecOps & AppSec Program don't have quizzes yet), with a canvas-drawn **certificate of completion** (PNG download, print-to-PDF, LinkedIn share)
 - **14 achievements**, a light/dark **theme toggle**, global **search** (Ctrl/Cmd+K), and "continue where you left off"
@@ -111,7 +111,7 @@ configured, the sign-in UI stays hidden and nothing changes.
 
 ## 📴 Offline / PWA support
 
-KashSec is an installable Progressive Web App. A service worker (`sw.js`) precaches the entire app shell plus all 251 lesson files the first time you visit, so once that finishes, the whole course works with **no network connection at all** — refresh, close the tab, come back a week later on a plane, it's all still there.
+KashSec is an installable Progressive Web App. A service worker (`sw.js`) precaches the entire app shell plus all 267 lesson files the first time you visit, so once that finishes, the whole course works with **no network connection at all** — refresh, close the tab, come back a week later on a plane, it's all still there.
 
 - **Install it**: most browsers show an install icon in the address bar, or use the install button in the site header (desktop Chrome/Edge, Android). On iOS Safari, use Share → **Add to Home Screen**.
 - **Regenerating the precache list**: `sw.js` is generated, not hand-written. After adding, removing, or renaming any path or lesson, run:

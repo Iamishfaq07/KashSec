@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>API — The Profile Update That Went Too Far — Path 19 · KashSec Academy</title>
+<meta name="description" content="Category: API · Difficulty: Medium">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/19-ctf-challenges/api-mass-assignment">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="API — The Profile Update That Went Too Far — Path 19 · KashSec Academy">
+<meta property="og:description" content="Category: API · Difficulty: Medium">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/19-ctf-challenges/api-mass-assignment">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="API — The Profile Update That Went Too Far — Path 19 · KashSec Academy">
+<meta name="twitter:description" content="Category: API · Difficulty: Medium">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"API — The Profile Update That Went Too Far — Path 19 · KashSec Academy","description":"Category: API · Difficulty: Medium","url":"https://kashsec.vercel.app/#/lesson/19-ctf-challenges/api-mass-assignment","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/19-ctf-challenges/api-mass-assignment">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 19 — CTF Challenges</a> · API — The Profile Update That Went Too Far</div>
+  <article><h1>API — The Profile Update That Went Too Far</h1>
+<p><strong>Category:</strong> API · <strong>Difficulty:</strong> Medium</p>
+<h2>Scenario</h2>
+<p><code>forum.kashsec-labs.test</code> lets you update your own profile through a <code>PATCH</code> request. You captured the request the site&#39;s own &quot;Edit Profile&quot; form sends when you change your bio.</p>
+<h2>Provided data</h2>
+<p>The legitimate request the UI sends:</p>
+<pre><code>PATCH /api/v1/users/me HTTP/1.1
+Host: forum.kashsec-labs.test
+Content-Type: application/json
+Cookie: session=redacted
+
+{&quot;display_name&quot;: &quot;kash_fan_92&quot;, &quot;bio&quot;: &quot;long-time lurker, first-time poster&quot;}
+</code></pre>
+<p>Server response:</p>
+<pre><code class="language-json">{&quot;display_name&quot;: &quot;kash_fan_92&quot;, &quot;bio&quot;: &quot;long-time lurker, first-time poster&quot;, &quot;role&quot;: &quot;member&quot;, &quot;verified&quot;: false}
+</code></pre>
+<p>Notice the response includes two fields — <code>role</code> and <code>verified</code> — that the UI never gave you any option to set.</p>
+<h2>Your task</h2>
+<p>The server&#39;s update logic is, in essence, <code>Object.assign(user, request.body)</code> — it merges whatever JSON keys you send directly onto your account record, with no allow-list restricting which fields a client is permitted to touch. Craft a request that reveals the flag.</p>
+<details><summary>Hint 1</summary>The response already told you two field names that exist on your account but that the UI never exposes as editable: <code>role</code> and <code>verified</code>. If the server accepts any field you send, what happens if you just... send one of those?</details>
+<details><summary>Hint 2</summary>Try sending a <code>role</code> value the forum reserves for site staff — <code>"moderator"</code> is a reasonable guess for a forum. Include it alongside a normal field like <code>bio</code> so the request still looks like an ordinary profile edit.</details>
+<details><summary>Show full answer</summary>Sending <code>{"bio": "testing", "role": "moderator"}</code> succeeds, and the server responds: <code>{"display_name": "kash_fan_92", "bio": "testing", "role": "moderator", "verified": false, "flag": "KASHSEC{m4ss_4ssignment_4dmin_f0r_free}"}</code>. The endpoint never restricts which fields a client may set — it binds the entire request body onto the account record. Because <code>role</code> happens to be one of those fields, a "profile update" endpoint becomes a privilege-escalation vector. The forum's response even includes a bonus flag field once you're recognized as staff-tier, confirming the escalation worked.</details><h2>The flag</h2>
+<pre><code>KASHSEC{m4ss_4ssignment_4dmin_f0r_free}
+</code></pre>
+<h2>Why this matters beyond the CTF</h2>
+<p>Mass assignment is one of the sneakier API vulnerability classes precisely because it&#39;s invisible from the client-side UI — the form never shows you a <code>role</code> dropdown, so a developer reviewing the frontend sees nothing wrong. The bug only becomes visible when you inspect what the <em>API itself</em> actually accepts, independent of what the UI happens to expose. Path 21&#39;s <strong>Mass Assignment Toy</strong> lab walks through this exact pattern hands-on, and the matching lesson covers the fix: explicit allow-lists for every writable field, never a raw <code>Object.assign</code> onto a live model.</p>
+<h2>Bonus round — a field with no obvious name</h2>
+<p>The same endpoint also silently accepts a field the response never showed you at all: <code>account_balance</code>.</p>
+<details><summary>Hint</summary>You can't discover an invisible field purely by observation — but you <em>can</em> make educated guesses based on what the app clearly does (it's a forum with some kind of paid tier, based on the "verified" field hinting at premium status). Real-world mass assignment hunting often means trying plausible field names based on the app's domain, not just the ones you've already seen.</details>
+<details><summary>Show answer</summary>Sending <code>{"bio": "testing", "account_balance": 999999}</code> succeeds and the field appears in the response on your next profile fetch — confirming the server accepts and stores a completely undocumented, UI-invisible field just because it happened to exist as a column on the underlying user model. This is the honest, uncomfortable truth about testing for mass assignment against a real target: you often can't enumerate every vulnerable field from the outside. The practical defense-side lesson matters more here than the offense-side one — a server should never trust that "the field isn't in the docs" provides any real protection, which is exactly why allow-listing (not guessing what attackers might try) is the only reliable fix.</details><p>Mass assignment isn&#39;t only a privilege-escalation bug. Depending on the target model, it can just as easily let you set a price to zero, mark an unpaid invoice as paid, or flip a &quot;verified&quot; flag meant to be earned, not self-assigned. Whatever field exists on the model and isn&#39;t explicitly protected is fair game to a client that sends it.</p>
+<p><strong>Next up →</strong> <a href="#/lesson/19-ctf-challenges/api-rate-limit-bypass">API — Locked Out, Sort Of</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/19-ctf-challenges/api-mass-assignment";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

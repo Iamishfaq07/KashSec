@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>API — The Order Number That Wasn't Yours — Path 19 · KashSec Academy</title>
+<meta name="description" content="Category: API · Difficulty: Easy">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/19-ctf-challenges/api-bola-hunt">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="API — The Order Number That Wasn't Yours — Path 19 · KashSec Academy">
+<meta property="og:description" content="Category: API · Difficulty: Easy">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/19-ctf-challenges/api-bola-hunt">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="API — The Order Number That Wasn't Yours — Path 19 · KashSec Academy">
+<meta name="twitter:description" content="Category: API · Difficulty: Easy">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"API — The Order Number That Wasn't Yours — Path 19 · KashSec Academy","description":"Category: API · Difficulty: Easy","url":"https://kashsec.vercel.app/#/lesson/19-ctf-challenges/api-bola-hunt","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/19-ctf-challenges/api-bola-hunt">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 19 — CTF Challenges</a> · API — The Order Number That Wasn't Yours</div>
+  <article><h1>API — The Order Number That Wasn&#39;t Yours</h1>
+<p><strong>Category:</strong> API · <strong>Difficulty:</strong> Easy</p>
+<h2>Scenario</h2>
+<p><code>shop.kashsec-labs.test</code> has a mobile app backend at <code>/api/v2/</code>. You placed one order (order <code>#5510</code>) and, out of curiosity, opened your browser&#39;s DevTools to watch the app&#39;s network traffic while checking your order status.</p>
+<h2>Provided data</h2>
+<p>The request your app made when you opened &quot;My Order&quot;:</p>
+<pre><code>GET /api/v2/orders/5510 HTTP/1.1
+Host: shop.kashsec-labs.test
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjo0NDIxfQ.redacted
+</code></pre>
+<p>And the response:</p>
+<pre><code class="language-json">{
+  &quot;order_id&quot;: 5510,
+  &quot;user_id&quot;: 4421,
+  &quot;item&quot;: &quot;KashSec hoodie (M)&quot;,
+  &quot;shipping_address&quot;: &quot;412 Birchwood Ln, Apt 3&quot;,
+  &quot;payment_last4&quot;: &quot;4242&quot;
+}
+</code></pre>
+<p>Curious what a neighboring order number returns, you replay the exact same request with only the URL&#39;s number changed:</p>
+<pre><code>GET /api/v2/orders/5509 HTTP/1.1
+Host: shop.kashsec-labs.test
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjo0NDIxfQ.redacted
+</code></pre>
+<h2>Your task</h2>
+<p>Find the flag hidden in whatever <code>/api/v2/orders/5509</code> actually returns.</p>
+<details><summary>Hint 1</summary>Your `Authorization` header proves *who you are* — it doesn't automatically mean the server checks whether the specific order you're asking for actually belongs to you.</details>
+<details><summary>Hint 2</summary>This is the exact same underlying flaw from this section's earlier IDOR challenge — just wearing an API's clothing instead of a classic web app's. The OWASP API Top 10 has a name for it: it's the #1 item on that list.</details>
+<details><summary>Show full answer</summary>The API accepts a valid, authenticated request and then fetches whatever order ID appears in the URL — without ever checking that <code>order_id 5509</code>'s owner matches the <code>user_id</code> encoded in your bearer token. Requesting <code>/api/v2/orders/5509</code> returns: <code>{"order_id": 5509, "user_id": 4420, "item": "Server rack cooling fan", "shipping_address": "KASHSEC{bol4_1s_th3_new_1dor}", "payment_last4": "8810"}</code> — someone else's full order, including their address, with the flag planted directly in the address field. This is <strong>BOLA (Broken Object Level Authorization)</strong>, the API Security path's #1 risk: your token proves identity, but the server never separately verified <em>authorization</em> for this specific object.</details><h2>The flag</h2>
+<pre><code>KASHSEC{bol4_1s_th3_new_1dor}
+</code></pre>
+<h2>Why this matters beyond the CTF</h2>
+<p>BOLA is, by a wide margin, the most commonly found and most damaging API vulnerability class in real bug bounty programs and pentests — precisely because, like classic IDOR, it requires nothing more than two accounts and a willingness to change a number. Path 21&#39;s <strong>BOLA &amp; BFLA</strong> lesson (and the matching <strong>BOLA/BFLA Playground</strong> lab) cover the full methodology: this challenge is the compressed, self-contained version of exactly that technique, applied to a JSON API instead of a rendered web page.</p>
+<h2>Bonus round — a second, subtler variant</h2>
+<p>The same app has a <code>DELETE</code> endpoint for cancelling your own pending orders:</p>
+<pre><code>DELETE /api/v2/orders/5510 HTTP/1.1
+Host: shop.kashsec-labs.test
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjo0NDIxfQ.redacted
+</code></pre>
+<details><summary>Hint</summary>You already confirmed GET on 5509 returns someone else's order with no ownership check. Does that necessarily mean DELETE has the exact same bug, or could the server check ownership on writes but not reads (or vice versa)?</details>
+<details><summary>Show answer</summary>In a genuinely well-tested app, you can't know without actually trying — and that's the point of this bonus round. In this scenario, the same missing check applies to <code>DELETE</code> too: the endpoint only verifies the token is valid, not that the token's user owns the specific order being deleted, meaning any authenticated user could cancel <em>any other user's</em> pending order. This is why a real BOLA assessment tests every HTTP method on every object-referencing endpoint separately, rather than assuming a fix (or a bug) on one verb automatically applies to the others.</details><p>The entire technique demonstrated here — capture a legitimate request, replay it with a different object ID, see what comes back — is literally the entire BOLA-hunting methodology used in real assessments. It doesn&#39;t get more complicated than this; it just gets applied more exhaustively, across every endpoint and every HTTP method.</p>
+<p><strong>Next up →</strong> <a href="#/lesson/19-ctf-challenges/api-mass-assignment">API — The Profile Update That Went Too Far</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/19-ctf-challenges/api-bola-hunt";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

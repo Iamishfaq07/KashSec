@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Linux — The Binary That Betrayed Root — Path 19 · KashSec Academy</title>
+<meta name="description" content="Category: Linux/Privesc · Difficulty: Medium">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/19-ctf-challenges/linux-gtfobins">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Linux — The Binary That Betrayed Root — Path 19 · KashSec Academy">
+<meta property="og:description" content="Category: Linux/Privesc · Difficulty: Medium">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/19-ctf-challenges/linux-gtfobins">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Linux — The Binary That Betrayed Root — Path 19 · KashSec Academy">
+<meta name="twitter:description" content="Category: Linux/Privesc · Difficulty: Medium">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Linux — The Binary That Betrayed Root — Path 19 · KashSec Academy","description":"Category: Linux/Privesc · Difficulty: Medium","url":"https://kashsec.vercel.app/#/lesson/19-ctf-challenges/linux-gtfobins","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/19-ctf-challenges/linux-gtfobins">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 19 — CTF Challenges</a> · Linux — The Binary That Betrayed Root</div>
+  <article><h1>Linux — The Binary That Betrayed Root</h1>
+<p><strong>Category:</strong> Linux/Privesc · <strong>Difficulty:</strong> Medium</p>
+<h2>Scenario</h2>
+<p>You have low-privileged SSH access to a training box as user <code>intern</code>. This section&#39;s earlier privesc challenge covered <code>sudo</code> misconfiguration specifically — this one is a different vector entirely: the <strong>SUID bit</strong>, a completely separate way an ordinary binary can end up running with root&#39;s privileges.</p>
+<h2>Provided data</h2>
+<p>Your <code>sudo -l</code> check comes back empty this time — no path there:</p>
+<pre><code>intern@kashsec-box:~$ sudo -l
+Sorry, user intern may not run sudo on kashsec-box.
+</code></pre>
+<p>But a standard privesc enumeration step turns up something else:</p>
+<pre><code>intern@kashsec-box:~$ find / -perm -4000 -type f 2&gt;/dev/null
+/usr/bin/passwd
+/usr/bin/sudo
+/usr/bin/mount
+/usr/bin/python3.9
+</code></pre>
+<pre><code>intern@kashsec-box:~$ ls -la /usr/bin/python3.9
+-rwsr-xr-x 1 root root 5471288 Jan 14  2025 /usr/bin/python3.9
+</code></pre>
+<h2>Your task</h2>
+<p><code>find ... -perm -4000</code> lists every file with the <strong>SUID bit</strong> set — meaning it runs with the <em>file owner&#39;s</em> privileges (here, <code>root</code>), regardless of who executes it. <code>passwd</code>, <code>sudo</code>, and <code>mount</code> having SUID set is completely normal and expected. <code>python3.9</code> having it set is not — that&#39;s the misconfiguration. Turn this into a root shell and find the flag in <code>/root/flag.txt</code>.</p>
+<details><summary>Hint 1</summary>The SUID bit doesn't care what the binary <em>is</em> — only that its owner is root and the bit is set. A general-purpose scripting language interpreter running with root's privileges can be told to execute arbitrary code, and that code inherits the interpreter's effective privileges.</details>
+<details><summary>Hint 2</summary>Python has a built-in way to replace the current process with a new shell process, inheriting whatever privileges the calling process currently holds. Look into Python's <code>os</code> module — specifically a function for executing another program in place of the current one.</details>
+<details><summary>Show full answer</summary>Because <code>/usr/bin/python3.9</code> is SUID-root, running <code>/usr/bin/python3.9 -c 'import os; os.setuid(0); os.system("/bin/sh")'</code> spawns a shell that inherits root's effective privileges — the SUID bit means the Python interpreter itself started with root's permissions, and explicitly calling <code>os.setuid(0)</code> makes that privilege permanent for the shell it then launches, rather than just temporary/effective. From that root shell, <code>cat /root/flag.txt</code> returns: <code>KASHSEC{su1d_1nterpret3rs_4re_r00t_sh3lls}</code>. This is a textbook entry from GTFOBins, a well-known public reference cataloging exactly which common Unix binaries can be abused this way when SUID, sudo-permitted, or otherwise misconfigured — Python, along with dozens of other everyday tools (find, vim, less, awk, and more), appears on that list precisely because these general-purpose tools almost always offer some built-in way to execute arbitrary commands.</details><h2>The flag</h2>
+<pre><code>KASHSEC{su1d_1nterpret3rs_4re_r00t_sh3lls}
+</code></pre>
+<h2>Why this matters beyond the CTF</h2>
+<p>SUID misconfiguration is one of the most common real-world Linux privilege escalation vectors, and it&#39;s genuinely easy to introduce by accident — a system administrator running <code>chmod u+s</code> on a binary to solve one specific permissions headache, without fully reasoning through what that binary can actually be made to do once it inherits root. Path 03&#39;s Linux fundamentals and Path 16&#39;s Linux Privilege Escalation lesson both cover SUID enumeration (<code>find / -perm -4000</code>) as a standard first step in any real Linux privesc assessment — right alongside the <code>sudo -l</code> check this section&#39;s earlier challenge focused on. A thorough real-world assessment always checks both vectors, since a target hardened against one is often still wide open on the other.</p>
+<h2>Bonus round — why is Python especially dangerous here, compared to a narrower tool?</h2>
+<details><summary>Hint</summary>Compare Python to something like <code>/usr/bin/passwd</code>, which is also SUID-root but isn't a privesc vector at all in normal use. What's fundamentally different about what each program is <em>capable</em> of doing?</details>
+<details><summary>Show answer</summary><code>passwd</code> is SUID-root by design, but its entire functionality is narrowly scoped to one specific, carefully-controlled task (changing a password with proper validation) — it has no general mechanism for an ordinary user to make it do anything else. A full scripting language interpreter, by contrast, is Turing-complete and deliberately designed to run arbitrary code on command — that's its entire purpose. Making a general-purpose interpreter SUID is fundamentally different from making a narrow, purpose-built utility SUID, because the interpreter's "intended functionality" and "arbitrary code execution" are the same thing. This is exactly why GTFOBins treats interpreters (Python, Perl, Ruby, Lua, and others) as some of the highest-value SUID/sudo misconfiguration targets on the entire list.</details><p>Running <code>find / -perm -4000 -type f 2>/dev/null</code> on any Linux system you&#39;re authorized to review takes seconds and immediately reveals every SUID binary present — cross-referencing the results against a resource like GTFOBins is one of the highest-value, lowest-effort steps in any real privilege escalation assessment.</p>
+<p><strong>Next up →</strong> <a href="#/lesson/19-ctf-challenges/ctf-writeup-template">Solution Write-ups: The Template Every Good CTF Player Uses</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/19-ctf-challenges/linux-gtfobins";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

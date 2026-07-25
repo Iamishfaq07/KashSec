@@ -77,4 +77,4 @@ You've now worked through all seven challenges in the CTF Zone — Web (IDOR and
 - [PicoCTF](https://picoctf.org/) and [TryHackMe](https://tryhackme.com/) — continue practicing across all of these categories and more.
 ???
 
-**Explore more →** [Back to all paths](#/course) · [Your progress & certificate](#/progress)
+**Next up →** [API — The Order Number That Wasn't Yours](#/lesson/19-ctf-challenges/api-bola-hunt)

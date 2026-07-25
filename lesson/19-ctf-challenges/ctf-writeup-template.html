@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Solution Write-ups: The Template Every Good CTF Player Uses — Path 19 · KashSec Academy</title>
+<meta name="description" content="You've now worked through every challenge in this section. This closing lesson teaches a skill that matters far more than any individual solve: writing a clean, reusable solution write-up — the exact ">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/19-ctf-challenges/ctf-writeup-template">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Solution Write-ups: The Template Every Good CTF Player Uses — Path 19 · KashSec Academy">
+<meta property="og:description" content="You've now worked through every challenge in this section. This closing lesson teaches a skill that matters far more than any individual solve: writing a clean, reusable solution write-up — the exact ">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/19-ctf-challenges/ctf-writeup-template">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Solution Write-ups: The Template Every Good CTF Player Uses — Path 19 · KashSec Academy">
+<meta name="twitter:description" content="You've now worked through every challenge in this section. This closing lesson teaches a skill that matters far more than any individual solve: writing a clean, reusable solution write-up — the exact ">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Solution Write-ups: The Template Every Good CTF Player Uses — Path 19 · KashSec Academy","description":"You've now worked through every challenge in this section. This closing lesson teaches a skill that matters far more than any individual solve: writing a clean, reusable solution write-up — the exact ","url":"https://kashsec.vercel.app/#/lesson/19-ctf-challenges/ctf-writeup-template","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/19-ctf-challenges/ctf-writeup-template">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 19 — CTF Challenges</a> · Solution Write-ups: The Template Every Good CTF Player Uses</div>
+  <article><h1>Solution Write-ups: The Template Every Good CTF Player Uses</h1>
+<p>You&#39;ve now worked through every challenge in this section. This closing lesson teaches a skill that matters far more than any individual solve: <strong>writing a clean, reusable solution write-up</strong> — the exact document format that turns &quot;I solved a puzzle&quot; into a portfolio piece, a bug bounty report, or a professional pentest finding.</p>
+<p>:::</p>
+<h2>Why write-ups matter more than solve counts</h2>
+<p>Anyone can claim &quot;I solved 40 CTF challenges.&quot; A recruiter, a bug bounty program, or a hiring manager can&#39;t verify that claim from the number alone — but they absolutely can evaluate a well-written solution write-up, because it demonstrates exactly the skills this entire course has been building: clear technical communication, structured problem-solving, and the ability to explain <em>why</em> something works, not just <em>that</em> it works. Path 15&#39;s bug bounty material and Path 20&#39;s portfolio-building lesson both point at the same underlying truth: a portfolio of well-documented write-ups is one of the highest-leverage things a newcomer to this field can build, because it&#39;s concrete, verifiable evidence of real skill — something a resume line item can never be.</p>
+<h2>The template</h2>
+<p>Every strong write-up, regardless of category, follows roughly this structure:</p>
+<h3>1. Challenge summary</h3>
+<p>One or two sentences: what was the challenge, what category, what difficulty. Enough that a reader unfamiliar with the specific puzzle understands the setup immediately.</p>
+<h3>2. Recon / initial observations</h3>
+<p>What did you notice first? What data were you given, and what stood out about it? This section should read like your actual first few minutes of looking at the problem — organized, but honest about where your attention actually went.</p>
+<h3>3. Hypothesis and approach</h3>
+<p>What did you suspect the vulnerability or technique was, and why? This is the section that demonstrates <em>reasoning</em>, not just knowledge — a reader should be able to follow your logic even if they&#39;ve never seen this specific challenge before.</p>
+<h3>4. Exploitation / solution steps</h3>
+<p>The actual technical steps, in order, with enough specific detail (commands, payloads, requests) that someone else could reproduce your solve exactly. This is the section most people over-abbreviate — &quot;then I found the flag&quot; is not a solution step, it&#39;s a conclusion with no shown work.</p>
+<h3>5. Root cause</h3>
+<p>What was the <em>underlying</em> flaw, in one or two sentences, independent of this specific challenge&#39;s flavor text? This is what separates a write-up that demonstrates real understanding from one that just demonstrates you followed steps to an answer.</p>
+<h3>6. Remediation (optional but valuable)</h3>
+<p>How would you actually fix this, if it were a real system? This section is what turns a CTF write-up into something that reads like a professional security finding — genuinely useful practice for real bug bounty and pentest report writing, covered in more depth by Path 21&#39;s Vulnerability Report Writer tool and Path 15&#39;s bug bounty report-writing material.</p>
+<h2>A worked example, using a challenge from earlier in this section</h2>
+<p>Here&#39;s what a strong write-up for the IDOR Hunt challenge (from earlier in this section) looks like, applying the template:</p>
+<blockquote>
+<p><strong>Challenge summary</strong>: Web category, Easy difficulty. A note-taking app returns another user&#39;s private note when the note ID in the URL is decremented by one from the player&#39;s own note.</p>
+<p><strong>Recon</strong>: The app makes a <code>GET /api/notes/{id}</code> request when viewing a note. My own note loaded at ID 8831. The request only carries a session cookie — the ID itself comes straight from the URL.</p>
+<p><strong>Hypothesis</strong>: If the server is using the raw URL parameter to fetch a note without cross-checking it against the authenticated session&#39;s owner, adjacent IDs might belong to other users and be readable regardless.</p>
+<p><strong>Solution steps</strong>: Replayed the same authenticated request with <code>id=8830</code> instead of <code>8831</code>. The server returned a full note object belonging to a different <code>owner_id</code> (1041, versus my own account&#39;s 1042), including its full contents — with no authorization error.</p>
+<p><strong>Root cause</strong>: Insecure Direct Object Reference (IDOR) / Broken Object Level Authorization — the server checks that a note with the given ID exists, but never checks that the <em>requesting user</em> is actually authorized to view that specific note.</p>
+<p><strong>Remediation</strong>: Add a server-side ownership check on every read: <code>if note.owner_id != current_user.id: return 403</code>, enforced on the actual object being fetched, not inferred from the fact that the requester is authenticated at all.</p>
+</blockquote>
+<p>Notice what this example does <em>not</em> include: a play-by-play of every wrong guess, unrelated observations that went nowhere, or vague language like &quot;I tried some stuff and it worked.&quot; A strong write-up is a clean reconstruction, not a transcript.</p>
+<h2>Common write-up mistakes to avoid</h2>
+<ul>
+<li><strong>Skipping the &quot;why,&quot; jumping straight to the payload.</strong> A write-up that&#39;s just &quot;run this exact command&quot; teaches nothing transferable and reads as if you copied someone else&#39;s solve without understanding it — even when you didn&#39;t.</li>
+<li><strong>Including irrelevant exploration.</strong> Nobody needs to know about the seventeen things you tried that didn&#39;t work, unless one of them meaningfully shaped your eventual approach.</li>
+<li><strong>Vague root-cause statements.</strong> &quot;The app was insecure&quot; explains nothing. &quot;The endpoint trusted a client-supplied ID with no server-side ownership check&quot; is specific enough to actually demonstrate understanding.</li>
+<li><strong>No remediation section, when one would clearly add value.</strong> Especially for anything web/API/logic-related, a one-line fix demonstrates you understand the <em>defense</em> side, not just the <em>offense</em> side — exactly the dual perspective real AppSec and pentest roles require.</li>
+</ul>
+<h2>🧪 Hands-on lab — write two real write-ups</h2>
+<ol>
+<li>Pick any two challenges from this section that you&#39;ve genuinely solved (not just read the answer to).</li>
+<li>Using the six-section template above, write a full solution write-up for each — aim for concise, specific, and reproducible, not exhaustive.</li>
+<li>For at least one, include a genuine remediation section, written as if you were reporting this to the fictional company&#39;s engineering team.</li>
+<li>Compare your two write-ups: is your reasoning section in each one specific enough that a stranger could follow your logic without already knowing the answer?</li>
+</ol>
+<p>:::challenge Test yourself</p>
+<ol>
+<li>Why does &quot;I tried some stuff and it worked&quot; fail as a write-up, even if the described exploit was real and correct?</li>
+<li>What&#39;s the difference between a write-up&#39;s &quot;root cause&quot; section and its &quot;solution steps&quot; section?</li>
+<li>Why does a well-written write-up matter more to a hiring manager or bug bounty program than a raw solve count?</li>
+</ol>
+<h2>Key terms</h2>
+<ul>
+<li><strong>Write-up</strong> — a structured, reconstructed explanation of how a challenge was solved, written for a reader who wasn&#39;t present for the actual solving process</li>
+<li><strong>Root cause</strong> — the underlying, general flaw responsible for a vulnerability, independent of the specific scenario it appeared in</li>
+<li><strong>Remediation</strong> — the concrete fix that would close the vulnerability in a real system</li>
+</ul>
+<h2>Recap</h2>
+<p>A clean, well-structured write-up is one of the highest-leverage artifacts you can produce from CTF practice — it&#39;s concrete, verifiable evidence of real technical reasoning, not just a solve count. The six-part template (summary, recon, hypothesis, solution steps, root cause, remediation) applies across every category in this section, and the exact same skill transfers directly into real bug bounty reports and professional pentest findings, which is precisely why this course treats it as the closing lesson of the entire CTF Zone.</p>
+<h3>References</h3>
+<ul>
+<li><a href="https://ctftime.org/writeups">CTFtime write-up archive</a> — thousands of real, publicly published CTF write-ups worth studying for style and structure</li>
+<li><a href="https://www.hackerone.com/vulnerability-management/how-write-good-vulnerability-report">HackerOne — How to write a good vulnerability report</a> — the professional, real-world equivalent of this lesson&#39;s template</li>
+</ul>
+<p><strong>Explore more →</strong> <a href="#/course">Back to all paths</a> · <a href="#/progress">Your progress &amp; certificate</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/19-ctf-challenges/ctf-writeup-template";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

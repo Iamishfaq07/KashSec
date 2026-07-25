@@ -945,7 +945,7 @@ const PATHS = [
      {n:"15", id:"securing-llm-apps",  title:"Securing LLM Applications", desc:"How to build and deploy LLMs more securely."}
    ]},
   {n:"19", id:"19-ctf-challenges", title:"CTF Challenges", level:"All levels",
-   desc:"A standalone Capture The Flag zone — self-contained hands-on puzzles across Web, Crypto, Forensics, Misc, and Linux privesc. No new material, just applying what you've learned under pressure.",
+   desc:"A standalone Capture The Flag zone — self-contained hands-on puzzles across Web, API, Crypto, Forensics, AI, Misc, and Linux privesc. No new material, just applying what you've learned under pressure.",
    subs:[
      {n:"1", id:"ctf-briefing",              title:"Welcome to the CTF Zone", desc:"Flag format, categories, and how to actually approach a challenge."},
      {n:"2", id:"web-idor-hunt",             title:"Web — The IDOR Hunt", desc:"Spot and explain a broken access control flaw. Easy."},
@@ -954,7 +954,23 @@ const PATHS = [
      {n:"5", id:"web-jwt-forge",             title:"Web — Forge the Token", desc:"Exploit alg=none to forge admin access. Medium."},
      {n:"6", id:"misc-hidden-headers",       title:"Misc — Hidden in Plain Sight", desc:"Reassemble a flag scattered across HTTP headers. Medium."},
      {n:"7", id:"crypto-xor-cipher",         title:"Crypto — Break the XOR Cipher", desc:"A real known-plaintext attack on repeating-key XOR. Hard."},
-     {n:"8", id:"linux-privesc-challenge",   title:"Linux — The Privesc Puzzle", desc:"Turn a passwordless sudo rule into a root shell. Medium."}
+     {n:"8", id:"linux-privesc-challenge",   title:"Linux — The Privesc Puzzle", desc:"Turn a passwordless sudo rule into a root shell. Medium."},
+     {n:"9", id:"api-bola-hunt",             title:"API — The Order Number That Wasn't Yours", desc:"Classic BOLA against a JSON API. Easy."},
+     {n:"10", id:"api-mass-assignment",      title:"API — The Profile Update That Went Too Far", desc:"Escalate privilege through an unrestricted PATCH endpoint. Medium."},
+     {n:"11", id:"api-rate-limit-bypass",    title:"API — Locked Out, Sort Of", desc:"Spoof X-Forwarded-For to blow past a login lockout. Hard."},
+     {n:"12", id:"jwt-weak-secret",          title:"Web — Crack the Secret", desc:"Brute-force a guessable HS256 HMAC secret, then forge admin. Medium."},
+     {n:"13", id:"jwt-algorithm-confusion",  title:"Web — The Wrong Kind of Trust", desc:"Turn a public RSA key into an HMAC secret. Hard."},
+     {n:"14", id:"jwt-kid-injection",        title:"Web — A Key of Your Choosing", desc:"Path-traverse the kid header into a known, empty signing key. Hard."},
+     {n:"15", id:"logic-price-tamper",       title:"Web — Name Your Own Price", desc:"A checkout that trusts client-submitted pricing. Easy."},
+     {n:"16", id:"logic-coupon-replay",      title:"Web — The Coupon That Wouldn't Quit", desc:"A check-then-act race condition in coupon redemption. Medium."},
+     {n:"17", id:"logic-skip-a-step",        title:"Web — Two Steps Forward, Zero Back", desc:"Skip straight to checkout confirmation, no payment required. Hard."},
+     {n:"18", id:"ai-prompt-leak",           title:"AI — Leak the System Prompt", desc:"Direct prompt injection against a support chatbot. Easy."},
+     {n:"19", id:"ai-indirect-injection",    title:"AI — The Ambush in the Article", desc:"Plant an instruction inside content another user's AI assistant will read. Medium."},
+     {n:"20", id:"ai-jailbreak-judge",       title:"AI — Jailbreak the Judge", desc:"Bypass a hardened refusal with a fictional-story framing. Hard."},
+     {n:"21", id:"crypto-weak-rsa",          title:"Crypto — Small Primes, Big Problem", desc:"Factor an undersized RSA modulus by hand and recover the private key. Hard."},
+     {n:"22", id:"forensics-exif-trail",     title:"Forensics — The EXIF Trail", desc:"A leaked photo's metadata reveals more than a flag. Easy."},
+     {n:"23", id:"linux-gtfobins",           title:"Linux — The Binary That Betrayed Root", desc:"A SUID-root Python interpreter is a root shell in disguise. Medium."},
+     {n:"24", id:"ctf-writeup-template",     title:"Solution Write-ups: The Template Every Good CTF Player Uses", desc:"The six-part structure that turns a solve into a portfolio piece."}
    ]},
   {n:"20", id:"20-career-prep", title:"Career Prep", level:"All levels",
    desc:"Resume, portfolio, interviews, and the job search — turn your skills into an offer.",
@@ -4694,6 +4710,11 @@ function renderLabPhishing(){
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
+  {date:'2026-07-25', title:'CTF Zone expanded to 24 challenges', items:[
+    '16 new self-contained CTF puzzles across API Security (BOLA, mass assignment, rate-limit bypass), a JWT chain (weak-secret brute force, algorithm confusion, kid header injection), business logic bugs (price tampering, coupon-replay race condition, step-skipping), AI Red Teaming (prompt leak, indirect injection, jailbreak-the-judge), plus Crypto (small-prime RSA factoring), Forensics (EXIF metadata trail), and Linux privesc (SUID interpreter abuse).',
+    'Every challenge now carries an explicit difficulty tier (Easy/Medium/Hard) and progressive hints.',
+    'New closing lesson: a six-part solution write-up template (summary, recon, hypothesis, exploitation steps, root cause, remediation) with a worked example, for turning CTF solves into portfolio-ready write-ups or bug bounty reports.'
+  ]},
   {date:'2026-07-25', title:'New path: OT/ICS & Critical Infrastructure Security', items:[
     'A new 7-lesson advanced path: SCADA/ICS architecture fundamentals, industrial protocols (Modbus, DNP3) and why they lack built-in authentication, the Purdue Model, real-world attacks (Stuxnet, the Ukraine grid attacks, Oldsmar, Triton/Trisis) mapped back to the failure modes that caused them, practical OT security controls, and a full capstone security assessment.',
     'Comes with a full 10-question path quiz, like every other path.'

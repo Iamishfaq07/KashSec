@@ -5233,6 +5233,15 @@ const GLOSSARY = [
   "subTitle": "Files, folders & organizing yourself"
  },
  {
+  "term": "Remediation",
+  "def": "the concrete fix that would close the vulnerability in a real system",
+  "pathId": "19-ctf-challenges",
+  "pathN": "19",
+  "pathTitle": "CTF Challenges",
+  "subId": "ctf-writeup-template",
+  "subTitle": "Solution Write-ups: The Template Every Good CTF Player Uses"
+ },
+ {
   "term": "Repeater",
   "def": "Burp's tool for resending and tweaking individual requests.",
   "pathId": "11-web-security",
@@ -5429,6 +5438,15 @@ const GLOSSARY = [
   "pathTitle": "AI & AI Security",
   "subId": "jailbreaks",
   "subTitle": "Jailbreaks & bypasses"
+ },
+ {
+  "term": "Root cause",
+  "def": "the underlying, general flaw responsible for a vulnerability, independent of the specific scenario it appeared in",
+  "pathId": "19-ctf-challenges",
+  "pathN": "19",
+  "pathTitle": "CTF Challenges",
+  "subId": "ctf-writeup-template",
+  "subTitle": "Solution Write-ups: The Template Every Good CTF Player Uses"
  },
  {
   "term": "Rootkit",
@@ -7319,6 +7337,15 @@ const GLOSSARY = [
   "pathTitle": "Network Security",
   "subId": "wifi-security",
   "subTitle": "Wi-Fi security & attacks"
+ },
+ {
+  "term": "Write-up",
+  "def": "a structured, reconstructed explanation of how a challenge was solved, written for a reader who wasn't present for the actual solving process",
+  "pathId": "19-ctf-challenges",
+  "pathN": "19",
+  "pathTitle": "CTF Challenges",
+  "subId": "ctf-writeup-template",
+  "subTitle": "Solution Write-ups: The Template Every Good CTF Player Uses"
  },
  {
   "term": "Write-up",

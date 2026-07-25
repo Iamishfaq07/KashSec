@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Web — The Wrong Kind of Trust — Path 19 · KashSec Academy</title>
+<meta name="description" content="Category: Web · Difficulty: Hard">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/19-ctf-challenges/jwt-algorithm-confusion">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Web — The Wrong Kind of Trust — Path 19 · KashSec Academy">
+<meta property="og:description" content="Category: Web · Difficulty: Hard">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/19-ctf-challenges/jwt-algorithm-confusion">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Web — The Wrong Kind of Trust — Path 19 · KashSec Academy">
+<meta name="twitter:description" content="Category: Web · Difficulty: Hard">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Web — The Wrong Kind of Trust — Path 19 · KashSec Academy","description":"Category: Web · Difficulty: Hard","url":"https://kashsec.vercel.app/#/lesson/19-ctf-challenges/jwt-algorithm-confusion","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/19-ctf-challenges/jwt-algorithm-confusion">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 19 — CTF Challenges</a> · Web — The Wrong Kind of Trust</div>
+  <article><h1>Web — The Wrong Kind of Trust</h1>
+<p><strong>Category:</strong> Web · <strong>Difficulty:</strong> Hard</p>
+<h2>Scenario</h2>
+<p><code>secure-api.kashsec-labs.test</code> uses RS256 — asymmetric signing, meant to be the &quot;safe&quot; choice compared to the weak-secret and <code>alg=none</code> bugs from this section&#39;s earlier challenges. RS256 tokens are signed with a private key only the server holds, and verified with a matching <em>public</em> key that anyone can freely download — that&#39;s the whole point of asymmetric crypto, and normally it&#39;s genuinely solid.</p>
+<h2>Provided data</h2>
+<p>Your valid <code>guest</code> token:</p>
+<pre><code>eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiZ3Vlc3QiLCJyb2xlIjoidXNlciJ9.redacted_rsa_signature
+</code></pre>
+<p>The server&#39;s public key, published (as intended) at a standard, documented endpoint:</p>
+<pre><code>-----BEGIN PUBLIC KEY-----
+MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAKj34GkxFhD91assKM+PdMDBpG3+
+[... key content abbreviated for this exercise ...]
+-----END PUBLIC KEY-----
+</code></pre>
+<p>A note from the API&#39;s changelog:</p>
+<pre><code>v2.1: Auth service now accepts both RS256 and HS256 tokens for backward
+compatibility with the legacy mobile client. Verification library:
+jwt.verify(token, key) — key is looked up automatically based on the
+token&#39;s own declared alg.
+</code></pre>
+<h2>Your task</h2>
+<p>The changelog reveals the actual vulnerability, if you read it precisely. Work out how to turn &quot;the server trusts both algorithms&quot; into a forged admin token.</p>
+<details><summary>Hint 1</summary>Re-read the changelog's last line very carefully: the verification key is chosen "based on the token's own declared <code>alg</code>." That means the attacker — not the server — effectively picks which key gets used for verification, just by setting the header field.</details>
+<details><summary>Hint 2</summary>RS256 uses the private key to sign and the <em>public</em> key to verify. HS256 uses one shared secret for both signing and verifying. If a poorly-written verification function is told "verify this as HS256" and blindly uses whatever key it was configured with — the server's own public RSA key — as if it were a plain HMAC secret string, what could you do with a key that is, by definition, publicly available to anyone?</details>
+<details><summary>Show full answer</summary>This is <strong>algorithm confusion</strong>: change the token's header from <code>{"alg":"RS256"}</code> to <code>{"alg":"HS256"}</code>, then compute an HMAC-SHA256 signature using the server's own <em>public</em> RSA key — the exact text from the "Provided data" section above — as the HMAC secret string. If the server's verification code does something like <code>jwt.verify(token, publicKey)</code> without explicitly restricting which algorithm is acceptable, it now reads the forged token's <code>alg:HS256</code> header, treats the same public key it was handed as an HMAC secret, and successfully "verifies" a signature that you — not the server's private key holder — actually produced. Because the public key is, deliberately and correctly, available to absolutely anyone, this collapses the entire asymmetric trust model. Submitting a forged token with payload <code>{"user":"guest","role":"admin"}</code>, signed this way, returns: <code>{"user":"guest","role":"admin","flag":"KASHSEC{c0nfus3_th3_4lg0r1thm_st34l_th3_k3ys}"}</code>.</details><h2>The flag</h2>
+<pre><code>KASHSEC{c0nfus3_th3_4lg0r1thm_st34l_th3_k3ys}
+</code></pre>
+<h2>Why this matters beyond the CTF</h2>
+<p>Algorithm confusion is arguably the most conceptually elegant JWT attack in this entire section, because the vulnerability isn&#39;t a weak secret or a forgotten debug flag — it&#39;s a fundamental misunderstanding, baked into the verification code, about what &quot;the key&quot; is supposed to mean for each algorithm. It has affected real, production JWT libraries historically, precisely because &quot;just call <code>verify(token, key)</code>&quot; looks completely reasonable at a glance. Path 21&#39;s JWT-attacks lesson covers this as the most advanced of the three classic attacks (alongside <code>alg=none</code> and weak secrets) — the fix is for the server to hardcode the <em>specific</em> algorithm it expects for a given key, and reject any token that declares a different one, rather than dynamically trusting whatever the token itself claims.</p>
+<h2>Bonus round — why doesn&#39;t this work against a well-written server?</h2>
+<details><summary>Hint</summary>The vulnerability hinges entirely on the server dynamically choosing behavior based on the token's own <code>alg</code> field. What if the server simply never looked at that field to make a decision at all?</details>
+<details><summary>Show answer</summary>A correctly implemented server hardcodes the expected algorithm on the verification call itself — for example, <code>jwt.verify(token, publicKey, {algorithms: ["RS256"]})</code> — and immediately rejects any token whose header claims a different algorithm, before ever attempting to verify a signature at all. In that world, a forged <code>alg:HS256</code> token is rejected outright, regardless of what key material an attacker tries to sign it with, because the server never lets the token itself influence which verification path runs. The lesson generalizes well past JWTs: whenever a system's security-critical behavior branches based on client-supplied metadata about how to interpret client-supplied data, that's a structural red flag worth specifically hunting for.</details><p>&quot;The client&#39;s data tells the server how to verify the client&#39;s data&quot; is one of the most reliable smells in all of application security — it shows up in JWT algorithm confusion, in XML parsers trusting embedded DTDs (XXE), in deserialization attacks trusting a type field in the serialized payload, and elsewhere. Whenever you see this shape, assume it&#39;s exploitable until proven otherwise.</p>
+<p><strong>Next up →</strong> <a href="#/lesson/19-ctf-challenges/jwt-kid-injection">Web — A Key of Your Choosing</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/19-ctf-challenges/jwt-algorithm-confusion";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>
