@@ -205,4 +205,4 @@ Why does professional AI red-teaming require reporting findings as success *rate
 - [OWASP LLM Top 10 — Testing Guidance](https://owasp.org/www-project-top-10-for-large-language-model-applications/) — methodology aligned with the framework from Path 18.5.
 ???
 
-**Next up →** [Building an AI security career](#/lesson/18-ai-security/ai-career)
+**Next up →** [AI Safety Evaluation & Benchmarking](#/lesson/18-ai-security/ai-safety-evaluation-benchmarking)

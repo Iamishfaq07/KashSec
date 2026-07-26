@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Threat Modeling — Path 18 · KashSec Academy</title>
+<meta name="description" content="The why-AI-security-is-different lesson established that AI systems face genuinely novel risk categories. This lesson applies a structured, systematic framework to actually reasoning about those risks">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/18-ai-security/ai-threat-modeling">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="AI Threat Modeling — Path 18 · KashSec Academy">
+<meta property="og:description" content="The why-AI-security-is-different lesson established that AI systems face genuinely novel risk categories. This lesson applies a structured, systematic framework to actually reasoning about those risks">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/18-ai-security/ai-threat-modeling">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AI Threat Modeling — Path 18 · KashSec Academy">
+<meta name="twitter:description" content="The why-AI-security-is-different lesson established that AI systems face genuinely novel risk categories. This lesson applies a structured, systematic framework to actually reasoning about those risks">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"AI Threat Modeling — Path 18 · KashSec Academy","description":"The why-AI-security-is-different lesson established that AI systems face genuinely novel risk categories. This lesson applies a structured, systematic framework to actually reasoning about those risks","url":"https://kashsec.vercel.app/#/lesson/18-ai-security/ai-threat-modeling","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/18-ai-security/ai-threat-modeling">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 18 — AI & AI Security</a> · AI Threat Modeling</div>
+  <article><h1>AI Threat Modeling</h1>
+<p>The why-AI-security-is-different lesson established that AI systems face genuinely novel risk categories. This lesson applies a structured, systematic framework to actually reasoning about those risks in a specific application — directly connecting to Path 22&#39;s STRIDE threat-modeling worksheet, adapted here specifically for AI/LLM-integrated systems.</p>
+<h2>Why AI systems need their own threat-modeling adaptation</h2>
+<p>Directly connecting to Path 22&#39;s STRIDE lesson: traditional threat modeling categories (Spoofing, Tampering, Repudiation, Information Disclosure, Denial of Service, Elevation of Privilege) remain relevant to AI applications, but each category manifests differently when an LLM sits in the data flow — &quot;Tampering,&quot; for instance, now includes tampering with a model&#39;s training data or its retrieved context, not just tampering with a traditional database record.</p>
+<h2>The AI-specific attack surface, mapped</h2>
+<p>Before applying any framework, identify where an AI system&#39;s actual attack surface differs from a traditional application&#39;s:</p>
+<ul>
+<li><strong>Input surface</strong> — not just user-typed prompts, but anything an LLM might read into its context: retrieved documents, tool outputs, fetched web content, email content in an AI-powered assistant — directly connecting to the transformer-architecture lesson&#39;s point that all of this is just tokens to the model</li>
+<li><strong>Training/fine-tuning surface</strong> — data used to train or fine-tune the model itself, directly connecting to the poisoning-and-adversarial-ML lesson later in this path</li>
+<li><strong>Output surface</strong> — what the model&#39;s response gets used for downstream: is it displayed as text to a human, or does it trigger an automated action (a tool call, a database write, an email send)?</li>
+<li><strong>Model supply chain</strong> — the model weights, libraries, and infrastructure the application depends on, connecting directly to the llm-supply-chain-attacks lesson later in this path</li>
+</ul>
+<h2>A worked threat-modeling example</h2>
+<p>Consider a customer support chatbot that can read a customer&#39;s order history and issue refunds via a tool call:</p>
+<p>Applying the framework: the input surface (customer message) is fully untrusted, meaning a prompt injection attempt is a realistic threat; the output surface includes an automated action with real financial consequence (issuing a refund), meaning &quot;Elevation of Privilege&quot; here specifically means &quot;convincing the LLM to authorize a refund it shouldn&#39;t&quot; — directly connecting to the securing-llm-apps lesson&#39;s emphasis on never letting an LLM&#39;s output directly trigger a high-consequence action without independent validation.</p>
+<h2>Prioritizing by consequence, not just likelihood</h2>
+<p>Directly connecting to Path 23&#39;s GRC risk-scoring approach: an AI threat model should weigh the <em>consequence</em> of a successful attack as heavily as its likelihood — a prompt injection that merely makes a chatbot respond oddly is a low-consequence nuisance, while the same injection technique targeting a system that can execute a refund, send an email, or modify a database record represents a fundamentally more severe risk, even if the underlying injection technique itself is identical in both cases.</p>
+<h2>Threat modeling as an ongoing practice, not a one-time exercise</h2>
+<p>Directly connecting to Path 22&#39;s continuous-threat-modeling framing: adding a new tool the LLM can call, connecting it to a new data source, or fine-tuning it on new data each meaningfully changes the attack surface this lesson&#39;s framework maps — a threat model completed once at initial design time and never revisited becomes stale exactly as fast as the system itself evolves, which for actively-developed AI features tends to be quickly.</p>
+<p>Why does giving an LLM the ability to call a refund tool fundamentally change the severity of a prompt injection vulnerability, even if the injection technique itself is unchanged?</p>
+<details><summary>Show answer</summary>A prompt injection attack's actual danger is entirely a function of what the LLM's output or decisions can subsequently cause to happen, not just whether the injection technique successfully manipulates the model's response — this is exactly the "consequence over likelihood" prioritization principle from Path 23's GRC risk-scoring approach, applied here to AI-specific threats. When an LLM's role is purely to generate text a human then reads and reacts to, a successful injection at worst produces a misleading or inappropriate response the human can evaluate and disregard — a real problem, but a bounded one. When that same LLM has tool-calling access to execute a refund (or any other consequential automated action) without independent server-side validation, a successful injection can translate directly into an unauthorized financial transaction with no human review step in between — the exact same manipulated model output that previously only risked an awkward chat message now risks real, executed financial harm. This is precisely why the securing-llm-apps lesson insists that consequential actions always require independent validation separate from trusting the LLM's own stated intent, regardless of how well the injection defenses on the input side are engineered.</details><h2>Key terms</h2>
+<ul>
+<li><strong>AI attack surface</strong> — the input, training, output, and supply-chain surfaces specific to an AI-integrated system.</li>
+<li><strong>Consequence-weighted prioritization</strong> — ranking AI threats by the severity of what a successful attack could cause, not just how likely it is.</li>
+<li><strong>Tool-calling risk</strong> — the elevated severity a prompt injection carries when the LLM&#39;s output can trigger automated, consequential actions.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Traditional threat-modeling categories (like STRIDE) remain useful for AI systems but manifest differently across input, training, output, and supply-chain surfaces.</li>
+<li>A worked example (a refund-issuing chatbot) shows how the same injection technique carries dramatically different severity depending on what the LLM&#39;s output can actually trigger.</li>
+<li>AI threat models should prioritize by consequence, not just likelihood, mirroring Path 23&#39;s GRC risk-scoring approach.</li>
+<li>Threat models require ongoing revisiting as an AI system&#39;s tools, data sources, and capabilities evolve, not a one-time exercise.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/18-ai-security/prompt-injection">Prompt injection</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/18-ai-security/ai-threat-modeling";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

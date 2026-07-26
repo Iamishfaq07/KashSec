@@ -180,4 +180,4 @@ Why is indirect prompt injection generally considered more dangerous in practice
 - [Anthropic — Prompt injection mitigation research](https://www.anthropic.com/research) — ongoing research from a leading AI lab on this exact problem.
 ???
 
-**Next up →** [Jailbreaking techniques](#/lesson/18-ai-security/jailbreaks)
+**Next up →** [Indirect Prompt Injection, Deep Dive](#/lesson/18-ai-security/indirect-prompt-injection-deep-dive)

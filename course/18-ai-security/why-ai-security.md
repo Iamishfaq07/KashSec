@@ -100,4 +100,4 @@ Why can't LLM safety vulnerabilities typically be "patched" with the same clean,
 - [Simon Willison — Prompt injection writing](https://simonwillison.net/series/prompt-injection/) — extensive, grounded, practitioner-level writing on this exact topic, covered technically in Path 18.3.
 ???
 
-**Next up →** [Prompt injection](#/lesson/18-ai-security/prompt-injection)
+**Next up →** [AI Threat Modeling](#/lesson/18-ai-security/ai-threat-modeling)

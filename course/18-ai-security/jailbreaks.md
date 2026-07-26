@@ -123,4 +123,4 @@ Why might a gradual, multi-turn escalation technique succeed against a model tha
 - [Lakera — Prompt Injection & Jailbreak resource hub](https://www.lakera.ai/blog) — accessible, regularly-updated practitioner content on this exact topic.
 ???
 
-**Next up →** [The OWASP LLM Top 10](#/lesson/18-ai-security/llm-top-10)
+**Next up →** [Jailbreak Defenses & Guardrails](#/lesson/18-ai-security/jailbreak-defenses-and-guardrails)

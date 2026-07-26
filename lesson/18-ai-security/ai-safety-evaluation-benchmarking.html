@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Safety Evaluation &amp; Benchmarking — Path 18 · KashSec Academy</title>
+<meta name="description" content="The ai-red-teaming lesson established that success rates across many attempts, not binary pass/fail, are the meaningful unit of measurement. This lesson goes deep into exactly how that measurement act">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/18-ai-security/ai-safety-evaluation-benchmarking">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="AI Safety Evaluation &amp; Benchmarking — Path 18 · KashSec Academy">
+<meta property="og:description" content="The ai-red-teaming lesson established that success rates across many attempts, not binary pass/fail, are the meaningful unit of measurement. This lesson goes deep into exactly how that measurement act">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/18-ai-security/ai-safety-evaluation-benchmarking">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AI Safety Evaluation &amp; Benchmarking — Path 18 · KashSec Academy">
+<meta name="twitter:description" content="The ai-red-teaming lesson established that success rates across many attempts, not binary pass/fail, are the meaningful unit of measurement. This lesson goes deep into exactly how that measurement act">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"AI Safety Evaluation & Benchmarking — Path 18 · KashSec Academy","description":"The ai-red-teaming lesson established that success rates across many attempts, not binary pass/fail, are the meaningful unit of measurement. This lesson goes deep into exactly how that measurement act","url":"https://kashsec.vercel.app/#/lesson/18-ai-security/ai-safety-evaluation-benchmarking","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/18-ai-security/ai-safety-evaluation-benchmarking">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 18 — AI & AI Security</a> · AI Safety Evaluation &amp; Benchmarking</div>
+  <article><h1>AI Safety Evaluation &amp; Benchmarking</h1>
+<p>The ai-red-teaming lesson established that success rates across many attempts, not binary pass/fail, are the meaningful unit of measurement. This lesson goes deep into exactly how that measurement actually gets done rigorously — directly connecting to Path 15&#39;s report-writing lesson&#39;s CVSS-scoring discipline, applied here to a domain where &quot;did the attack work&quot; is genuinely more ambiguous than a binary technical outcome.</p>
+<h2>Attack Success Rate — the core metric, defined carefully</h2>
+<p>The fundamental measurement in AI red-teaming is <strong>Attack Success Rate (ASR)</strong> — the percentage of attempts, across many variations of a technique, that successfully produce the undesired behavior. A single successful jailbreak attempt out of one try tells you almost nothing reliable; the same technique tested 100 times with systematic variations, succeeding 23 times, gives a genuinely meaningful, comparable measurement — directly connecting to the ai-red-teaming lesson&#39;s &quot;systematic test case generation at scale&quot; methodology.</p>
+<h2>Why sample size and statistical rigor matter here specifically</h2>
+<p>A genuinely important, easy-to-overlook point: because LLM outputs are probabilistic (directly connecting to the how-LLMs-work lesson&#39;s next-token-prediction framing), the exact same input can occasionally produce different outputs across repeated attempts, even with identical settings. This means a single test run&#39;s outcome is not fully reliable on its own — a technique that succeeds once might simply have gotten a favorable roll of the model&#39;s inherent output variability, not a truly reproducible vulnerability. Rigorous evaluation runs each test case multiple times and reports a rate with an appropriate <strong>confidence interval</strong>, rather than treating any single trial as definitive.</p>
+<h2>Standard benchmark suites — comparing across models and time</h2>
+<p>Directly connecting to Path 22&#39;s compliance-framework approach of using standardized, comparable measurement: several open, standardized benchmark suites (<strong>HarmBench</strong>, <strong>AdvBench</strong>, and similar academic/industry benchmarks) provide curated, published sets of adversarial test cases specifically designed to let researchers compare safety performance across different models, or track a single model&#39;s safety performance across successive versions, using a shared, reproducible methodology rather than each researcher inventing their own ad-hoc test set every time.</p>
+<h2>The grading problem — who decides if an attempt &quot;succeeded&quot;?</h2>
+<p>A genuinely hard, often-underappreciated methodological question: for many test cases, whether an attempt actually &quot;succeeded&quot; isn&#39;t a simple keyword match — a response might partially comply, hedge, comply in a roundabout way, or refuse while still leaking a small amount of relevant information. Directly connecting to the ai-red-teaming lesson&#39;s point that human review remains essential: many rigorous evaluation pipelines use a combination of automated classifiers (imperfect but fast, useful for large-scale initial triage) and human review (slower, but catching the nuanced partial-compliance cases automated grading tends to miss) — treating the grading methodology itself as something requiring the same careful documentation as the test cases.</p>
+<h2>Reporting evaluation results honestly</h2>
+<p>Directly connecting to Path 15&#39;s report-writing lesson&#39;s four-part structure: a rigorous AI safety evaluation report should specify exactly what benchmark or test set was used, the sample size and number of trials per test case, the grading methodology (automated, human, or both), and the resulting ASR with appropriate uncertainty — a report stating simply &quot;we tested for jailbreaks and it seemed pretty safe&quot; provides essentially no verifiable, comparable information, exactly parallel to that lesson&#39;s critique of vague, unstructured findings in traditional pentest reporting.</p>
+<p>Why is a single successful jailbreak attempt out of one try considered insufficient evidence of a genuine, reproducible vulnerability, given that the attack clearly worked at least once?</p>
+<details><summary>Show answer</summary>LLM outputs are inherently probabilistic rather than deterministic — the same exact input, submitted multiple times under identical settings, can produce meaningfully different outputs across attempts due to how the model samples from its predicted probability distribution over possible next tokens, directly connecting to the how-LLMs-work lesson's next-token-prediction framing. A single successful attempt could represent a genuinely reliable, reproducible weakness in the model's safety training — or it could simply represent one unlucky sample from the model's natural output variability, where the exact same input would fail to produce the harmful output in the overwhelming majority of subsequent attempts. Without running the same test case multiple times and calculating an actual success rate (ideally with a stated confidence interval reflecting the sample size), there's no way to distinguish a genuinely exploitable, high-probability weakness from a rare statistical fluke — which is precisely why professional AI red-teaming methodology insists on aggregated rates across many trials rather than treating any single successful attempt as conclusive proof of a reliable vulnerability, exactly the same reasoning that would make a security researcher skeptical of a "vulnerability" that only reproduces once in a hundred attempts against a traditional deterministic system.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Attack Success Rate (ASR)</strong> — the percentage of systematic attempts, across many variations, that successfully produce an undesired model behavior.</li>
+<li><strong>Benchmark suite (HarmBench, AdvBench)</strong> — standardized, published test case sets enabling reproducible comparison across models or model versions.</li>
+<li><strong>Grading methodology</strong> — the documented approach (automated classifier, human review, or both) used to determine whether a given attempt actually succeeded.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Attack Success Rate, measured across many systematic trials, is the meaningful unit for AI safety evaluation, not any single attempt&#39;s outcome.</li>
+<li>LLM output variability means a single successful attempt can be a statistical fluke rather than a reliable, reproducible vulnerability.</li>
+<li>Standardized benchmark suites like HarmBench enable reproducible comparison across models and model versions using shared methodology.</li>
+<li>Rigorous reporting specifies the benchmark used, sample size, grading methodology, and resulting rate with appropriate uncertainty — vague claims provide no verifiable information.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/18-ai-security/ai-career">Building an AI security career</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/18-ai-security/ai-safety-evaluation-benchmarking";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

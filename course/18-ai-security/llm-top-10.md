@@ -167,4 +167,4 @@ An LLM-powered coding assistant is granted permission to read, write, AND execut
 - [NIST AI Risk Management Framework](https://www.nist.gov/itl/ai-risk-management-framework) — official US government AI risk guidance.
 ???
 
-**Next up →** [Data poisoning & adversarial ML](#/lesson/18-ai-security/poisoning-adv-ml)
+**Next up →** [RAG Security Risks](#/lesson/18-ai-security/rag-security-risks)

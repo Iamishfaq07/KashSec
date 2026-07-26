@@ -161,4 +161,4 @@ Why is a backdoor-style data poisoning attack specifically designed to remain do
 - [Anthropic Research](https://www.anthropic.com/research) — ongoing published research on AI safety and robustness from a leading AI lab.
 ???
 
-**Next up →** [AI red-teaming methodology](#/lesson/18-ai-security/ai-red-teaming)
+**Next up →** [Multimodal Attack Vectors](#/lesson/18-ai-security/multimodal-attack-vectors)

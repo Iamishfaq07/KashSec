@@ -116,4 +116,4 @@ Thank you for building this course. Good luck out there — ethically, legally, 
 
 **— KashSec Academy**
 
-**Next up →** [Agentic AI Risks](#/lesson/18-ai-security/agentic-ai-risks)
+**Next up →** [Defensive Prompt Engineering](#/lesson/18-ai-security/defensive-prompt-engineering)

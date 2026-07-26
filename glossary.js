@@ -220,6 +220,15 @@ const GLOSSARY = [
   "subTitle": "How LLMs actually work"
  },
  {
+  "term": "AI attack surface",
+  "def": "the input, training, output, and supply-chain surfaces specific to an AI-integrated system.",
+  "pathId": "18-ai-security",
+  "pathN": "18",
+  "pathTitle": "AI & AI Security",
+  "subId": "ai-threat-modeling",
+  "subTitle": "AI Threat Modeling"
+ },
+ {
   "term": "AI Governance and Policy",
   "def": "translating technical AI security findings into organisational and regulatory context.",
   "pathId": "18-ai-security",
@@ -625,6 +634,15 @@ const GLOSSARY = [
   "subTitle": "Choosing a Linux distro for security work"
  },
  {
+  "term": "Attack Success Rate (ASR)",
+  "def": "the percentage of systematic attempts, across many variations, that successfully produce an undesired model behavior.",
+  "pathId": "18-ai-security",
+  "pathN": "18",
+  "pathTitle": "AI & AI Security",
+  "subId": "ai-safety-evaluation-benchmarking",
+  "subTitle": "AI Safety Evaluation & Benchmarking"
+ },
+ {
   "term": "Attack surface",
   "def": "the total sum of everywhere an attacker could possibly attempt entry.",
   "pathId": "01-introduction",
@@ -650,6 +668,15 @@ const GLOSSARY = [
   "pathTitle": "API Security",
   "subId": "api-testing",
   "subTitle": "How to actually test APIs"
+ },
+ {
+  "term": "Attention mechanism",
+  "def": "the transformer's core innovation, weighing the relevance of every token against every other token regardless of distance.",
+  "pathId": "18-ai-security",
+  "pathN": "18",
+  "pathTitle": "AI & AI Security",
+  "subId": "transformer-architecture-deep-dive",
+  "subTitle": "Transformer Architecture, Deep Dive"
  },
  {
   "term": "Authenticated encryption",
@@ -884,6 +911,15 @@ const GLOSSARY = [
   "pathTitle": "Cybersecurity Fundamentals",
   "subId": "phishing",
   "subTitle": "Phishing & social eng."
+ },
+ {
+  "term": "Benchmark suite (HarmBench, AdvBench)",
+  "def": "standardized, published test case sets enabling reproducible comparison across models or model versions.",
+  "pathId": "18-ai-security",
+  "pathN": "18",
+  "pathTitle": "AI & AI Security",
+  "subId": "ai-safety-evaluation-benchmarking",
+  "subTitle": "AI Safety Evaluation & Benchmarking"
  },
  {
   "term": "BeyondCorp",
@@ -1912,6 +1948,15 @@ const GLOSSARY = [
   "subTitle": "Blockchain & Cryptocurrency Cryptography"
  },
  {
+  "term": "Consequence-weighted prioritization",
+  "def": "ranking AI threats by the severity of what a successful attack could cause, not just how likely it is.",
+  "pathId": "18-ai-security",
+  "pathN": "18",
+  "pathTitle": "AI & AI Security",
+  "subId": "ai-threat-modeling",
+  "subTitle": "AI Threat Modeling"
+ },
+ {
   "term": "Console",
   "def": "run JS, view logs/errors.",
   "pathId": "05-web-basics",
@@ -1928,6 +1973,15 @@ const GLOSSARY = [
   "pathTitle": "AI & AI Security",
   "subId": "jailbreaks",
   "subTitle": "Jailbreaks & bypasses"
+ },
+ {
+  "term": "Constitutional AI / self-critique",
+  "def": "training a model to review and revise its own draft responses against explicit principles before finalizing an answer.",
+  "pathId": "18-ai-security",
+  "pathN": "18",
+  "pathTitle": "AI & AI Security",
+  "subId": "jailbreak-defenses-and-guardrails",
+  "subTitle": "Jailbreak Defenses & Guardrails"
  },
  {
   "term": "Container",
@@ -1991,6 +2045,15 @@ const GLOSSARY = [
   "pathTitle": "AI & AI Security",
   "subId": "how-llms-work",
   "subTitle": "How LLMs actually work"
+ },
+ {
+  "term": "Context window",
+  "def": "the maximum number of tokens a model can attend to at once, a real engineering and cost constraint.",
+  "pathId": "18-ai-security",
+  "pathN": "18",
+  "pathTitle": "AI & AI Security",
+  "subId": "transformer-architecture-deep-dive",
+  "subTitle": "Transformer Architecture, Deep Dive"
  },
  {
   "term": "Continuous monitoring",
@@ -2596,6 +2659,24 @@ const GLOSSARY = [
   "subTitle": "Secure Coding for Web Developers"
  },
  {
+  "term": "Defense-in-depth for AI safety",
+  "def": "combining multiple independent defensive layers, none individually sufficient, mirroring Path 12's general security principle.",
+  "pathId": "18-ai-security",
+  "pathN": "18",
+  "pathTitle": "AI & AI Security",
+  "subId": "jailbreak-defenses-and-guardrails",
+  "subTitle": "Jailbreak Defenses & Guardrails"
+ },
+ {
+  "term": "Defense-in-depth for prompts",
+  "def": "treating prompt engineering as one cheap, imperfect layer alongside classifiers and architectural patterns, never a standalone solution.",
+  "pathId": "18-ai-security",
+  "pathN": "18",
+  "pathTitle": "AI & AI Security",
+  "subId": "defensive-prompt-engineering",
+  "subTitle": "Defensive Prompt Engineering"
+ },
+ {
   "term": "Deletion",
   "def": "actually triggering removal of account data, subject to any legal retention exceptions.",
   "pathId": "09-digital-privacy",
@@ -3091,6 +3172,15 @@ const GLOSSARY = [
   "subTitle": "Automation & nuclei"
  },
  {
+  "term": "Dual-LLM (quarantine) pattern",
+  "def": "separating a privileged, action-taking LLM from a quarantined LLM that processes untrusted content with no tool access.",
+  "pathId": "18-ai-security",
+  "pathN": "18",
+  "pathTitle": "AI & AI Security",
+  "subId": "indirect-prompt-injection-deep-dive",
+  "subTitle": "Indirect Prompt Injection, Deep Dive"
+ },
+ {
   "term": "Duplicate",
   "def": "a report of an issue already found and reported by someone else, typically unpaid.",
   "pathId": "15-bug-bounty",
@@ -3206,6 +3296,15 @@ const GLOSSARY = [
   "pathTitle": "Cryptography Fundamentals",
   "subId": "elliptic-curve-cryptography",
   "subTitle": "Elliptic Curve Cryptography"
+ },
+ {
+  "term": "Emergent capability",
+  "def": "new capabilities appearing in larger models with more layers, not present or reliably usable in smaller versions.",
+  "pathId": "18-ai-security",
+  "pathN": "18",
+  "pathTitle": "AI & AI Security",
+  "subId": "transformer-architecture-deep-dive",
+  "subTitle": "Transformer Architecture, Deep Dive"
  },
  {
   "term": "Encapsulation",
@@ -3503,6 +3602,15 @@ const GLOSSARY = [
   "pathTitle": "Operating Systems & Linux",
   "subId": "bash-scripting",
   "subTitle": "Your first bash script"
+ },
+ {
+  "term": "Explicit delimiting",
+  "def": "clearly marking where untrusted content begins and ends within a prompt using consistent markers.",
+  "pathId": "18-ai-security",
+  "pathN": "18",
+  "pathTitle": "AI & AI Security",
+  "subId": "defensive-prompt-engineering",
+  "subTitle": "Defensive Prompt Engineering"
  },
  {
   "term": "Exploit development",
@@ -4079,6 +4187,15 @@ const GLOSSARY = [
   "pathTitle": "GRC & Compliance",
   "subId": "nist-csf-overview",
   "subTitle": "NIST Cybersecurity Framework Overview"
+ },
+ {
+  "term": "Grading methodology",
+  "def": "the documented approach (automated classifier, human review, or both) used to determine whether a given attempt actually succeeded.",
+  "pathId": "18-ai-security",
+  "pathN": "18",
+  "pathTitle": "AI & AI Security",
+  "subId": "ai-safety-evaluation-benchmarking",
+  "subTitle": "AI Safety Evaluation & Benchmarking"
  },
  {
   "term": "Gradual escalation",
@@ -4738,6 +4855,15 @@ const GLOSSARY = [
   "subTitle": "IIoT & Cloud Convergence"
  },
  {
+  "term": "Image-based prompt injection",
+  "def": "embedding instructional text within an image, legible to a model's vision capability but easily overlooked by a human reviewer.",
+  "pathId": "18-ai-security",
+  "pathN": "18",
+  "pathTitle": "AI & AI Security",
+  "subId": "multimodal-attack-vectors",
+  "subTitle": "Multimodal Attack Vectors"
+ },
+ {
   "term": "IMDSv2",
   "def": "AWS's token-based metadata service protocol, defeating basic SSRF-to-metadata attacks.",
   "pathId": "16-advanced",
@@ -4880,6 +5006,15 @@ const GLOSSARY = [
   "pathTitle": "Programming & Python",
   "subId": "object-oriented-python-basics",
   "subTitle": "Object-oriented Python basics"
+ },
+ {
+  "term": "Input/output classifiers",
+  "def": "separate models screening prompts before processing or responses before display, independent of the main model's own judgment.",
+  "pathId": "18-ai-security",
+  "pathN": "18",
+  "pathTitle": "AI & AI Security",
+  "subId": "jailbreak-defenses-and-guardrails",
+  "subTitle": "Jailbreak Defenses & Guardrails"
  },
  {
   "term": "Insecure deserialization",
@@ -5674,6 +5809,15 @@ const GLOSSARY = [
   "subTitle": "Attackers & the kill chain"
  },
  {
+  "term": "Lost in the middle",
+  "def": "the empirically observed tendency for models to weight information at the start and end of a long context more reliably than the middle.",
+  "pathId": "18-ai-security",
+  "pathN": "18",
+  "pathTitle": "AI & AI Security",
+  "subId": "defensive-prompt-engineering",
+  "subTitle": "Defensive Prompt Engineering"
+ },
+ {
   "term": "LPIC-1",
   "def": "a vendor-neutral Linux certification from the Linux Professional Institute.",
   "pathId": "03-linux",
@@ -5996,6 +6140,15 @@ const GLOSSARY = [
   "pathTitle": "Ethical Hacking",
   "subId": "purple-teaming-basics",
   "subTitle": "Purple Teaming Basics"
+ },
+ {
+  "term": "Modality-specific defense",
+  "def": "the requirement that input/output classifiers and other defenses be independently trained and tested for each input type a system accepts.",
+  "pathId": "18-ai-security",
+  "pathN": "18",
+  "pathTitle": "AI & AI Security",
+  "subId": "multimodal-attack-vectors",
+  "subTitle": "Multimodal Attack Vectors"
  },
  {
   "term": "Modbus",
@@ -7904,6 +8057,33 @@ const GLOSSARY = [
   "pathTitle": "API Security",
   "subId": "rate-limiting-injection",
   "subTitle": "Rate Limiting, Injection & Resource Abuse"
+ },
+ {
+  "term": "RAG poisoning",
+  "def": "tampering with documents in a retrieval index so malicious instructions enter an LLM's context when retrieved.",
+  "pathId": "18-ai-security",
+  "pathN": "18",
+  "pathTitle": "AI & AI Security",
+  "subId": "indirect-prompt-injection-deep-dive",
+  "subTitle": "Indirect Prompt Injection, Deep Dive"
+ },
+ {
+  "term": "RAG poisoning",
+  "def": "injecting malicious content into a document set a RAG system indexes, so it's later retrieved and inserted into victims' contexts.",
+  "pathId": "18-ai-security",
+  "pathN": "18",
+  "pathTitle": "AI & AI Security",
+  "subId": "rag-security-risks",
+  "subTitle": "RAG Security Risks"
+ },
+ {
+  "term": "RAG (Retrieval-Augmented Generation)",
+  "def": "retrieving relevant documents and inserting them into an LLM's context to answer using external, up-to-date, or private knowledge.",
+  "pathId": "18-ai-security",
+  "pathN": "18",
+  "pathTitle": "AI & AI Security",
+  "subId": "rag-security-risks",
+  "subTitle": "RAG Security Risks"
  },
  {
   "term": "RAG (Retrieval-Augmented Generation) poisoning",
@@ -9985,6 +10165,15 @@ const GLOSSARY = [
   "subTitle": "Meet the terminal"
  },
  {
+  "term": "Steganographic technique",
+  "def": "hiding data within an image's pixel-level structure, invisible to human perception entirely.",
+  "pathId": "18-ai-security",
+  "pathN": "18",
+  "pathTitle": "AI & AI Security",
+  "subId": "multimodal-attack-vectors",
+  "subTitle": "Multimodal Attack Vectors"
+ },
+ {
   "term": "Step-up authentication",
   "def": "requiring a fresh, stronger authentication challenge before an already-logged-in session can access something more sensitive",
   "pathId": "24-zero-trust",
@@ -10561,6 +10750,15 @@ const GLOSSARY = [
   "subTitle": "How LLMs actually work"
  },
  {
+  "term": "Tool-calling risk",
+  "def": "the elevated severity a prompt injection carries when the LLM's output can trigger automated, consequential actions.",
+  "pathId": "18-ai-security",
+  "pathN": "18",
+  "pathTitle": "AI & AI Security",
+  "subId": "ai-threat-modeling",
+  "subTitle": "AI Threat Modeling"
+ },
+ {
   "term": "Tor",
   "def": "a browser and network routing traffic through multiple encrypted relays for strong anonymity, at a real cost to speed and compatibility.",
   "pathId": "09-digital-privacy",
@@ -10685,6 +10883,15 @@ const GLOSSARY = [
   "pathTitle": "DevSecOps & AppSec Program",
   "subId": "threat-modeling-sdlc",
   "subTitle": "Threat Modeling in the SDLC"
+ },
+ {
+  "term": "Trusted-session routing",
+  "def": "how indirect injection exploits a legitimate user's authenticated session, evading account-based detection.",
+  "pathId": "18-ai-security",
+  "pathN": "18",
+  "pathTitle": "AI & AI Security",
+  "subId": "indirect-prompt-injection-deep-dive",
+  "subTitle": "Indirect Prompt Injection, Deep Dive"
  },
  {
   "term": "Trust Services Criteria",
@@ -10964,6 +11171,15 @@ const GLOSSARY = [
   "pathTitle": "Operating Systems & Linux",
   "subId": "bash-scripting",
   "subTitle": "Your first bash script"
+ },
+ {
+  "term": "Vector database",
+  "def": "a searchable index storing document content as numerical embeddings for semantic similarity search.",
+  "pathId": "18-ai-security",
+  "pathN": "18",
+  "pathTitle": "AI & AI Security",
+  "subId": "rag-security-risks",
+  "subTitle": "RAG Security Risks"
  },
  {
   "term": "Vendor-neutral certification",

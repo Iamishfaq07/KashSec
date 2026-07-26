@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Multimodal Attack Vectors — Path 18 · KashSec Academy</title>
+<meta name="description" content="The llm-red-teaming-playbooks lesson (later in this path) briefly flags multimodal input as needing dedicated test cases. This lesson goes deep into exactly why — as models increasingly accept images,">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/18-ai-security/multimodal-attack-vectors">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Multimodal Attack Vectors — Path 18 · KashSec Academy">
+<meta property="og:description" content="The llm-red-teaming-playbooks lesson (later in this path) briefly flags multimodal input as needing dedicated test cases. This lesson goes deep into exactly why — as models increasingly accept images,">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/18-ai-security/multimodal-attack-vectors">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Multimodal Attack Vectors — Path 18 · KashSec Academy">
+<meta name="twitter:description" content="The llm-red-teaming-playbooks lesson (later in this path) briefly flags multimodal input as needing dedicated test cases. This lesson goes deep into exactly why — as models increasingly accept images,">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Multimodal Attack Vectors — Path 18 · KashSec Academy","description":"The llm-red-teaming-playbooks lesson (later in this path) briefly flags multimodal input as needing dedicated test cases. This lesson goes deep into exactly why — as models increasingly accept images,","url":"https://kashsec.vercel.app/#/lesson/18-ai-security/multimodal-attack-vectors","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/18-ai-security/multimodal-attack-vectors">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 18 — AI & AI Security</a> · Multimodal Attack Vectors</div>
+  <article><h1>Multimodal Attack Vectors</h1>
+<p>The llm-red-teaming-playbooks lesson (later in this path) briefly flags multimodal input as needing dedicated test cases. This lesson goes deep into exactly why — as models increasingly accept images, audio, and file uploads alongside text, the attack surface this path has covered so far (all fundamentally text-based) expands in genuinely new directions, directly connecting to the indirect-prompt-injection-deep-dive lesson&#39;s coverage of untrusted content entering a model&#39;s context.</p>
+<h2>Why multimodal inputs aren&#39;t just &quot;more input formats&quot;</h2>
+<p>Directly connecting to the transformer-architecture-deep-dive lesson: a multimodal model doesn&#39;t process an image as a fundamentally separate thing from text — modern vision-language models convert image content into token-like representations that get fed into essentially the same attention mechanism processing the text prompt, meaning content extracted from an image can influence the model&#39;s response in a manner structurally similar to text in the prompt itself, just via a different input pathway with different human-visibility characteristics.</p>
+<h2>Image-based prompt injection</h2>
+<p>The most direct multimodal attack: embedding text within an image that a model&#39;s vision capability reads and processes as though it were part of the prompt — a screenshot containing a small block of instructional text in the corner, invisible or easily overlooked to a human glancing at the image, but fully legible to the model&#39;s vision component. This directly extends the indirect-prompt-injection lesson&#39;s core problem (untrusted content entering context and being treated as instruction) into a channel that&#39;s genuinely harder for a human reviewer to spot during a quick visual check than equivalent text would be.</p>
+<h2>Steganographic and adversarial-perturbation techniques</h2>
+<p>Directly connecting to the poisoning-and-adversarial-ML lesson&#39;s adversarial-example coverage: some multimodal attacks go further than plainly visible embedded text, using <strong>steganographic</strong> techniques (hiding data within an image&#39;s pixel-level structure, invisible to human perception entirely) or <strong>adversarial perturbations</strong> (small, carefully calculated pixel modifications designed to influence a specific model&#39;s internal processing in a targeted way) — both representing a meaningfully higher sophistication tier than simply writing visible text into a corner of an image.</p>
+<h2>Audio and voice-based attack surfaces</h2>
+<p>As voice-interactive AI assistants become more common, <strong>audio-based injection</strong> introduces its own distinct considerations: spoken instructions embedded within audio content the model transcribes and processes (background audio in a video call, an audio file uploaded for summarization) can inject instructions exactly like image-embedded text does, and audio carries an additional wrinkle — a human reviewing a transcript summary might see only the model&#39;s interpretation of the audio, not the raw audio itself, making a hidden or subtly-embedded spoken instruction potentially even less likely to be caught during review than a visible image-based one.</p>
+<h2>File upload and metadata vectors</h2>
+<p>Directly connecting to the llm-supply-chain-attacks lesson&#39;s document-handling coverage: files uploaded for an AI system to process (PDFs, Word documents, spreadsheets) carry attack surface beyond their visible content — document metadata, hidden form fields, or embedded objects can all potentially reach a model&#39;s context if the application&#39;s document-processing pipeline extracts and includes them, even when a human reviewing the document&#39;s visible content sees nothing unusual at all.</p>
+<h2>Why defenses have to be modality-specific</h2>
+<p>An input classifier trained specifically to recognize suspicious text patterns (from the jailbreak-defenses-and-guardrails lesson) has no inherent ability to recognize an equivalent attack pattern embedded within an image or audio file unless it was specifically trained on that modality too — this is exactly why a genuinely thorough security review of a multimodal AI application needs dedicated, modality-specific testing for every input type the system actually accepts, rather than assuming text-focused defensive measures provide equivalent protection across every other input channel by default.</p>
+<p>Why might a hidden instruction embedded in an uploaded image be genuinely harder for a human reviewer to catch than the equivalent instruction embedded as plain text in a chat message?</p>
+<details><summary>Show answer</summary>When an attacker embeds a malicious instruction directly as visible text in a chat message, a human reviewing the conversation log or the application's input can simply read the full message and immediately notice the suspicious instruction sitting in plain sight. An image, by contrast, is something a human typically perceives holistically and quickly — glancing at a screenshot or photo doesn't naturally involve reading every pixel with the same systematic scrutiny as reading a line of text, meaning a small block of instructional text placed in a corner, rendered in a low-contrast color, or sized small relative to the rest of the image can easily go unnoticed by a human doing a normal visual review, even though it's fully legible to the model's vision component processing the same image at the pixel level. This asymmetry — full model visibility into content that receives only partial human scrutiny — is exactly the property that makes image-based (and similarly, audio-based) prompt injection genuinely more insidious than the equivalent plain-text attack, and it's precisely why dedicated multimodal test cases in a red-teaming playbook can't simply be assumed to be redundant with thorough text-based testing.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Image-based prompt injection</strong> — embedding instructional text within an image, legible to a model&#39;s vision capability but easily overlooked by a human reviewer.</li>
+<li><strong>Steganographic technique</strong> — hiding data within an image&#39;s pixel-level structure, invisible to human perception entirely.</li>
+<li><strong>Modality-specific defense</strong> — the requirement that input/output classifiers and other defenses be independently trained and tested for each input type a system accepts.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Multimodal models process image, audio, and text content through structurally similar mechanisms, meaning non-text content can influence output much like text prompts do.</li>
+<li>Image-based injection exploits the gap between full model visibility into pixel-level content and only partial human scrutiny during a quick visual review.</li>
+<li>Audio and file-upload vectors introduce their own distinct considerations, including reduced human visibility into raw content versus a model&#39;s processed interpretation.</li>
+<li>Text-focused defenses don&#39;t automatically transfer to other modalities, requiring dedicated, modality-specific testing for every input type a system accepts.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/18-ai-security/ai-red-teaming">AI red-teaming methodology</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/18-ai-security/multimodal-attack-vectors";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

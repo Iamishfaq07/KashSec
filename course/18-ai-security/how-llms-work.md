@@ -155,4 +155,4 @@ Why does the lack of a structural distinction between "trusted instructions" and
 - [3Blue1Brown — Neural Networks / Transformers series (YouTube)](https://www.3blue1brown.com/topics/neural-networks) — an excellent, visual deep-dive into the underlying mechanics for those wanting to go deeper.
 ???
 
-**Next up →** [Why AI security is different](#/lesson/18-ai-security/why-ai-security)
+**Next up →** [Transformer Architecture, Deep Dive](#/lesson/18-ai-security/transformer-architecture-deep-dive)

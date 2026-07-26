@@ -1089,20 +1089,28 @@ const PATHS = [
    desc:"How LLMs work, prompt injection, OWASP LLM Top 10, AI red teaming.",
    subs:[
      {n:"1", id:"how-llms-work",       title:"How LLMs actually work",  desc:"A friendly primer without the mystique."},
-     {n:"2", id:"why-ai-security",     title:"Why AI security is new",  desc:"What makes AI attacks unlike any before."},
-     {n:"3", id:"prompt-injection",    title:"Prompt injection",        desc:"The SQL injection of AI — direct and indirect."},
-     {n:"4", id:"jailbreaks",          title:"Jailbreaks & bypasses",   desc:"Bypassing policy, not just instructions."},
-     {n:"5", id:"llm-top-10",          title:"OWASP LLM Top 10",        desc:"The shared checklist for AI application security."},
-     {n:"6", id:"poisoning-adv-ml",    title:"Poisoning & adversarial ML", desc:"Backdoors, extraction, adversarial examples."},
-     {n:"7", id:"ai-red-teaming",      title:"AI red teaming",          desc:"Methodology, harms taxonomy, ethics."},
-     {n:"8", id:"ai-career",           title:"Your AI-security career", desc:"The 12-month plan for a new frontier."},
-     {n:"9", id:"agentic-ai-risks",    title:"Agentic AI Risks",        desc:"As AI agents become more powerful, new risks emerge."},
-     {n:"10", id:"llm-attack-taxonomy", title:"LLM Attack Taxonomy",    desc:"A clear map of the different ways attackers try to break AI systems."},
-     {n:"11", id:"llm-governance",     title:"LLM Governance & Compliance", desc:"Managing AI systems responsibly at scale."},
-     {n:"12", id:"llm-red-teaming-playbooks", title:"LLM Red Teaming Playbooks", desc:"Structured approaches to systematically test LLM applications."},
-     {n:"13", id:"llm-supply-chain-attacks", title:"LLM Supply Chain Attacks", desc:"Attacks that target the components and data used to build and run LLMs."},
-     {n:"14", id:"practical-ai-labs",  title:"Practical AI Red Teaming Labs", desc:"Hands-on challenges you can do safely with free or low-cost LLMs."},
-     {n:"15", id:"securing-llm-apps",  title:"Securing LLM Applications", desc:"How to build and deploy LLMs more securely."}
+     {n:"2", id:"transformer-architecture-deep-dive", title:"Transformer Architecture, Deep Dive", desc:"Attention, context windows, and why prompt injection runs so deep."},
+     {n:"3", id:"why-ai-security",     title:"Why AI security is new",  desc:"What makes AI attacks unlike any before."},
+     {n:"4", id:"ai-threat-modeling",  title:"AI Threat Modeling",      desc:"Systematically mapping an AI system's real attack surface."},
+     {n:"5", id:"prompt-injection",    title:"Prompt injection",        desc:"The SQL injection of AI — direct and indirect."},
+     {n:"6", id:"indirect-prompt-injection-deep-dive", title:"Indirect Prompt Injection, Deep Dive", desc:"Full attack chains and the dual-LLM defensive pattern."},
+     {n:"7", id:"jailbreaks",          title:"Jailbreaks & bypasses",   desc:"Bypassing policy, not just instructions."},
+     {n:"8", id:"jailbreak-defenses-and-guardrails", title:"Jailbreak Defenses & Guardrails", desc:"Classifiers, self-critique, and layered protection."},
+     {n:"9", id:"llm-top-10",          title:"OWASP LLM Top 10",        desc:"The shared checklist for AI application security."},
+     {n:"10", id:"rag-security-risks", title:"RAG Security Risks",      desc:"Access control, poisoning, and the retrieval-trust gap."},
+     {n:"11", id:"poisoning-adv-ml",   title:"Poisoning & adversarial ML", desc:"Backdoors, extraction, adversarial examples."},
+     {n:"12", id:"multimodal-attack-vectors", title:"Multimodal Attack Vectors", desc:"Image, audio, and file-upload injection surfaces."},
+     {n:"13", id:"ai-red-teaming",     title:"AI red teaming",          desc:"Methodology, harms taxonomy, ethics."},
+     {n:"14", id:"ai-safety-evaluation-benchmarking", title:"AI Safety Evaluation & Benchmarking", desc:"Attack success rates, benchmarks, and rigorous measurement."},
+     {n:"15", id:"ai-career",          title:"Your AI-security career", desc:"The 12-month plan for a new frontier."},
+     {n:"16", id:"defensive-prompt-engineering", title:"Defensive Prompt Engineering", desc:"The cheapest real mitigation available to any builder."},
+     {n:"17", id:"agentic-ai-risks",   title:"Agentic AI Risks",        desc:"As AI agents become more powerful, new risks emerge."},
+     {n:"18", id:"llm-attack-taxonomy", title:"LLM Attack Taxonomy",    desc:"A clear map of the different ways attackers try to break AI systems."},
+     {n:"19", id:"llm-governance",     title:"LLM Governance & Compliance", desc:"Managing AI systems responsibly at scale."},
+     {n:"20", id:"llm-red-teaming-playbooks", title:"LLM Red Teaming Playbooks", desc:"Structured approaches to systematically test LLM applications."},
+     {n:"21", id:"llm-supply-chain-attacks", title:"LLM Supply Chain Attacks", desc:"Attacks that target the components and data used to build and run LLMs."},
+     {n:"22", id:"practical-ai-labs",  title:"Practical AI Red Teaming Labs", desc:"Hands-on challenges you can do safely with free or low-cost LLMs."},
+     {n:"23", id:"securing-llm-apps",  title:"Securing LLM Applications", desc:"How to build and deploy LLMs more securely."}
    ]},
   {n:"19", id:"19-ctf-challenges", title:"CTF Challenges", level:"All levels",
    desc:"A standalone Capture The Flag zone — self-contained hands-on puzzles across Web, API, Crypto, Forensics, AI, Misc, and Linux privesc. No new material, just applying what you've learned under pressure.",
@@ -4886,6 +4894,11 @@ function renderLabPhishing(){
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
+  {date:'2026-07-25', title:'Path 18 doubled to 23 lessons', items:[
+    'Twenty-first batch of the course-wide content-doubling effort: Path 18 (AI & AI Security) grows from 15 to 23 lessons (the original 8 foundational lessons doubled to 16, with the 7 previously-added lessons kept unchanged and renumbered).',
+    'New lessons: Transformer Architecture Deep Dive, AI Threat Modeling, Indirect Prompt Injection Deep Dive (the dual-LLM defensive pattern), Jailbreak Defenses & Guardrails, RAG Security Risks, Multimodal Attack Vectors, AI Safety Evaluation & Benchmarking (Attack Success Rate methodology), and Defensive Prompt Engineering.',
+    'The new transformer-architecture lesson explains, at the mechanical level, exactly why prompt injection remains structurally unsolved — attention weighs every token uniformly, with no architectural separation between trusted instructions and untrusted data.'
+  ]},
   {date:'2026-07-25', title:'Path 17 doubled to 17 lessons', items:[
     'Twentieth batch of the course-wide content-doubling effort: Path 17 (Malware & Reverse Engineering) grows from 9 to 17 lessons (8 core lessons doubled to 16, plus the capstone lab unchanged).',
     'New lessons: x86 vs. ARM Architectures, C2 Frameworks and Infrastructure (beaconing, DGAs, Cobalt Strike/Sliver/Mythic), ELF Format & Linux Malware (cryptominers, fileless memfd_create techniques), Ghidra Scripting Basics, API Hooking & Monitoring (Frida), Control Flow Obfuscation Deep Dive (flattening, opaque predicates), Sigma Rules & Detection Engineering, and Malware Triage Methodology.',

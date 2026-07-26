@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jailbreak Defenses &amp; Guardrails — Path 18 · KashSec Academy</title>
+<meta name="description" content="The jailbreaks lesson catalogued attack techniques — role-play framing, encoding, multi-turn escalation. This lesson covers the defensive side: how model developers and application builders actually h">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/18-ai-security/jailbreak-defenses-and-guardrails">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Jailbreak Defenses &amp; Guardrails — Path 18 · KashSec Academy">
+<meta property="og:description" content="The jailbreaks lesson catalogued attack techniques — role-play framing, encoding, multi-turn escalation. This lesson covers the defensive side: how model developers and application builders actually h">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/18-ai-security/jailbreak-defenses-and-guardrails">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Jailbreak Defenses &amp; Guardrails — Path 18 · KashSec Academy">
+<meta name="twitter:description" content="The jailbreaks lesson catalogued attack techniques — role-play framing, encoding, multi-turn escalation. This lesson covers the defensive side: how model developers and application builders actually h">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Jailbreak Defenses & Guardrails — Path 18 · KashSec Academy","description":"The jailbreaks lesson catalogued attack techniques — role-play framing, encoding, multi-turn escalation. This lesson covers the defensive side: how model developers and application builders actually h","url":"https://kashsec.vercel.app/#/lesson/18-ai-security/jailbreak-defenses-and-guardrails","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/18-ai-security/jailbreak-defenses-and-guardrails">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 18 — AI & AI Security</a> · Jailbreak Defenses &amp; Guardrails</div>
+  <article><h1>Jailbreak Defenses &amp; Guardrails</h1>
+<p>The jailbreaks lesson catalogued attack techniques — role-play framing, encoding, multi-turn escalation. This lesson covers the defensive side: how model developers and application builders actually harden against these techniques, directly connecting to Path 12&#39;s defense-in-depth lesson, since no single defensive layer covered here is sufficient alone.</p>
+<h2>RLHF hardening — the first, foundational layer</h2>
+<p>Directly connecting to the jailbreaks lesson&#39;s RLHF reference: model developers continuously incorporate discovered jailbreak techniques back into safety training itself — every well-documented technique (the specific DAN persona framing, for instance) becomes training data teaching the model to recognize and resist that specific pattern in future versions. This is exactly why the base lesson noted that older, simpler techniques are &quot;more of a baseline test than a sophisticated attack&quot; against modern models — the arms race between jailbreak discovery and safety retraining is continuous and ongoing.</p>
+<h2>Input-side classifiers — a separate defensive layer</h2>
+<p>Beyond the model&#39;s own trained behavior, many production AI applications add a <strong>separate, dedicated classifier model</strong> that screens incoming prompts <em>before</em> they ever reach the main model — specifically trained to recognize jailbreak attempt patterns (unusual encoding, role-play framing markers, instruction-override language) and block or flag suspicious requests independently of whatever the main model&#39;s own judgment concludes. This adds genuine defense-in-depth: even if a jailbreak technique successfully fools the main model&#39;s safety training, a well-tuned input classifier operating on a different, independently-trained basis may still catch it.</p>
+<h2>Output-side classifiers — catching what slips through</h2>
+<p>Symmetrically, <strong>output classifiers</strong> screen the model&#39;s generated response <em>before</em> it&#39;s shown to the user — checking whether the actual output content violates policy, regardless of whether the input looked suspicious or not. This catches a genuinely important edge case: a cleverly-crafted prompt that doesn&#39;t trigger the input classifier but somehow still produces a policy-violating response gets caught at this second checkpoint instead, directly mirroring the defense-in-depth principle of never relying on a single control point.</p>
+<h2>Constitutional AI and self-critique approaches</h2>
+<p>A more architecturally-integrated approach: some models are trained to critique and revise their own draft responses against an explicit set of principles (sometimes called a &quot;constitution&quot;) before finalizing an answer — effectively building a form of self-review directly into the generation process itself, rather than relying entirely on a separate external classifier. This connects directly to why some jailbreak techniques that successfully bypass a model&#39;s <em>initial</em> instinct sometimes still fail, because a self-critique step catches the problematic content on a second pass.</p>
+<h2>Rate limiting and behavioral monitoring, applied to jailbreak attempts</h2>
+<p>Directly connecting to Path 24&#39;s UEBA/behavioral-analytics lesson: an account or session making unusually many jailbreak-pattern-matching requests in a short window (many role-play or encoding attempts in sequence) is itself a detectable behavioral signal, independent of whether any individual attempt actually succeeds — exactly the same &quot;unusual pattern over time&quot; detection philosophy that lesson applied to network behavior, here applied to conversational interaction patterns instead.</p>
+<h2>Why layered defense, not a single fix, is the realistic goal</h2>
+<p>Directly connecting to Path 12&#39;s defense-in-depth principle generally: RLHF hardening, input classifiers, output classifiers, self-critique, and behavioral monitoring each catch a different subset of attempts and each have known bypass techniques individually — the honest, professionally accurate claim any of these defenses can make is &quot;meaningfully raises the cost and reduces the success rate of jailbreak attempts,&quot; not &quot;makes jailbreaking impossible.&quot; This connects directly to the ai-red-teaming lesson&#39;s coverage of why continuous, adversarial testing against a real deployed system remains necessary even after every defensive layer here has been implemented.</p>
+<p>Why do input-side and output-side classifiers provide meaningfully different protection, rather than one simply being a redundant duplicate of the other?</p>
+<details><summary>Show answer</summary>An input classifier evaluates the user's prompt <em>before</em> the main model ever processes it, looking for known suspicious patterns in how the request is phrased — but it has no visibility into what the main model would actually generate in response, meaning a genuinely novel jailbreak phrasing that doesn't match any known suspicious pattern can slip past the input classifier entirely, even if it later successfully manipulates the main model into producing a policy-violating response. An output classifier, by contrast, evaluates the actual generated content itself, completely independent of how cleverly or unusually the original request was phrased — it doesn't need to recognize the jailbreak <em>technique</em> at all, it only needs to recognize that the <em>resulting content</em> violates policy, which is a fundamentally different and complementary detection task. This is precisely why defense-in-depth calls for both layers together: the input classifier catches known attack patterns cheaply and early, while the output classifier provides a technique-agnostic safety net catching violations regardless of how the attacker got there, each compensating for exactly the blind spot the other has.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Input/output classifiers</strong> — separate models screening prompts before processing or responses before display, independent of the main model&#39;s own judgment.</li>
+<li><strong>Constitutional AI / self-critique</strong> — training a model to review and revise its own draft responses against explicit principles before finalizing an answer.</li>
+<li><strong>Defense-in-depth for AI safety</strong> — combining multiple independent defensive layers, none individually sufficient, mirroring Path 12&#39;s general security principle.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>RLHF hardening continuously incorporates newly-discovered jailbreak techniques back into safety training, an ongoing arms race.</li>
+<li>Input and output classifiers provide complementary, non-redundant protection — one catches known attack patterns early, the other catches violating content regardless of technique.</li>
+<li>Self-critique approaches build a review step directly into generation, catching some attempts that slip past initial instinct.</li>
+<li>No single layer is sufficient alone; the realistic, honest goal is meaningfully raising attack cost and reducing success rate through layered defense.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/18-ai-security/llm-top-10">The OWASP LLM Top 10</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/18-ai-security/jailbreak-defenses-and-guardrails";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>
