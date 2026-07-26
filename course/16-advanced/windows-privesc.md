@@ -217,4 +217,4 @@ Work through at least one TryHackMe or HackTheBox Windows privesc room, delibera
 - [GTFOBins-equivalent for Windows: LOLBAS](https://lolbas-project.github.io/) — Living Off the Land Binaries and Scripts for Windows.
 ???
 
-**Next up →** [Active Directory attacks](#/lesson/16-advanced/active-directory)
+**Next up →** [Windows privilege escalation tools, deep dive](#/lesson/16-advanced/windows-privesc-tools-deep-dive)

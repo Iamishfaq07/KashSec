@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IAM, deep dive — Path 16 · KashSec Academy</title>
+<meta name="description" content="The cloud security lesson mentioned IAM misconfiguration as a common finding without fully unpacking the mechanics. This lesson goes deep specifically into cloud Identity and Access Management, direct">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/16-advanced/iam-deep-dive">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="IAM, deep dive — Path 16 · KashSec Academy">
+<meta property="og:description" content="The cloud security lesson mentioned IAM misconfiguration as a common finding without fully unpacking the mechanics. This lesson goes deep specifically into cloud Identity and Access Management, direct">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/16-advanced/iam-deep-dive">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="IAM, deep dive — Path 16 · KashSec Academy">
+<meta name="twitter:description" content="The cloud security lesson mentioned IAM misconfiguration as a common finding without fully unpacking the mechanics. This lesson goes deep specifically into cloud Identity and Access Management, direct">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"IAM, deep dive — Path 16 · KashSec Academy","description":"The cloud security lesson mentioned IAM misconfiguration as a common finding without fully unpacking the mechanics. This lesson goes deep specifically into cloud Identity and Access Management, direct","url":"https://kashsec.vercel.app/#/lesson/16-advanced/iam-deep-dive","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/16-advanced/iam-deep-dive">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 16 — Advanced Cyber Topics</a> · IAM, deep dive</div>
+  <article><h1>IAM, Deep Dive</h1>
+<p>The cloud security lesson mentioned IAM misconfiguration as a common finding without fully unpacking the mechanics. This lesson goes deep specifically into cloud <strong>Identity and Access Management</strong>, directly connecting to Path 22&#39;s Zero Trust identity coverage, since IAM is the practical implementation layer that entire architectural philosophy depends on.</p>
+<h2>Why IAM is the actual perimeter in cloud environments</h2>
+<p>Directly connecting to Path 12&#39;s defense-in-depth lesson: in a traditional on-premises network, the network perimeter (firewall, VPN) was the primary security boundary. In cloud environments, that boundary has fundamentally shifted — <strong>IAM policy is the real perimeter</strong>, since every resource (a storage bucket, a database, a compute instance) is reachable over the public internet by default in many configurations, with IAM policy being the actual mechanism deciding who can do what to it.</p>
+<h2>The anatomy of an IAM policy</h2>
+<p>Cloud IAM policies (AWS, Azure, and GCP all use structurally similar models) specify three core elements: <strong>principal</strong> (who — a user, role, or service), <strong>action</strong> (what — <code>s3:GetObject</code>, <code>ec2:TerminateInstances</code>), and <strong>resource</strong> (which specific object the action applies to), optionally combined with <strong>conditions</strong> (when — only from a specific IP range, only with MFA present). A misconfiguration in any one of these three elements can grant unintended access.</p>
+<h2>Privilege escalation via IAM misconfiguration</h2>
+<p>A genuinely important cloud-specific concept with no direct on-premises equivalent: <strong>IAM privilege escalation</strong> occurs when a user&#39;s <em>existing</em>, seemingly limited permissions include the ability to modify IAM policy itself — for instance, permission to attach a more permissive policy to their own role, or to create a new access key for a more privileged service account. This means a seemingly low-risk permission grant (<code>iam:PassRole</code>, <code>iam:CreatePolicyVersion</code>) can be a genuine privilege escalation path, distinct from any traditional software vulnerability — directly connecting to Path 14&#39;s privilege-escalation-methodology lesson, applied here entirely through policy misconfiguration rather than any exploited software flaw.</p>
+<h2>Overly broad roles: the most common real-world finding</h2>
+<p>Directly connecting to the least-privilege principle from Path 12: the single most common real-world cloud IAM finding is a role or service account granted <code>*</code> (wildcard, meaning &quot;all actions&quot;) on a resource, or an entire administrative policy attached when the actual workload only ever needs to read from one specific storage bucket. This happens for an understandable reason — broad permissions are the path of least resistance during initial development — but it means a single compromised credential or exploited application often grants far more access than the actual compromised component ever needed.</p>
+<h2>Cross-account and third-party access</h2>
+<p>Cloud environments frequently grant IAM roles to external, third-party accounts (a monitoring vendor, a CI/CD provider) — directly connecting to Path 22&#39;s supply-chain security coverage, since a misconfigured trust policy allowing overly broad cross-account access effectively extends an organization&#39;s attack surface to include every third party it&#39;s granted access to, whether or not that third party&#39;s own security posture has been carefully vetted.</p>
+<p>Why does the permission <code>iam:PassRole</code> specifically represent a potential privilege escalation risk, even though it doesn&#39;t directly grant access to any data or resource itself?</p>
+<details><summary>Show answer</summary><code>iam:PassRole</code> allows a user or service to attach an existing IAM role to a resource they're creating or configuring (a new compute instance, a new serverless function, for instance) — meaning the user isn't granted that role's permissions directly, but can cause a resource they control to run *with* that role's permissions. If an attacker with only <code>iam:PassRole</code> (and permission to create some compute resource) can pass a highly privileged role — one they could never have been granted directly — onto a new instance or function they fully control, they've effectively gained that privileged role's access indirectly, entirely through a permission that looks harmless in isolation because it never appears to grant direct access to anything itself. This is exactly the kind of non-obvious escalation chain that makes IAM policy review a genuinely specialized skill distinct from simply checking whether a user has an "admin" label — the danger often lives in how individually reasonable-looking permissions combine, not in any single overtly dangerous one.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Principal, action, resource, condition</strong> — the four core elements of a cloud IAM policy statement.</li>
+<li><strong>IAM privilege escalation</strong> — using existing permissions to grant oneself additional, more privileged access via policy modification.</li>
+<li><strong>iam:PassRole</strong> — a permission allowing a role to be attached to a new resource, a common indirect escalation vector.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>IAM policy functions as the real security perimeter in cloud environments, replacing the traditional on-premises network boundary.</li>
+<li>IAM privilege escalation exploits permissions to modify policy itself, a cloud-specific escalation path distinct from any software vulnerability.</li>
+<li>Overly broad wildcard permissions remain the most common real-world cloud IAM finding, born from development-time convenience.</li>
+<li>Cross-account trust relationships extend an organization&#39;s effective attack surface to every third party granted access.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/16-advanced/containers-k8s">Containers &amp; Kubernetes security</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/16-advanced/iam-deep-dive";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

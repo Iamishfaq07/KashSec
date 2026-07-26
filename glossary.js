@@ -67,6 +67,15 @@ const GLOSSARY = [
   "subTitle": "Threat Modeling in the SDLC"
  },
  {
+  "term": "Access token",
+  "def": "a Windows object representing a user or service's identity and privileges, attached to every running process.",
+  "pathId": "16-advanced",
+  "pathN": "16",
+  "pathTitle": "Advanced Cyber Topics",
+  "subId": "windows-privesc-tools-deep-dive",
+  "subTitle": "Windows privesc tools, deep dive"
+ },
+ {
   "term": "Access token / SeImpersonatePrivilege",
   "def": "Windows's identity/privilege representation and the specific privilege enabling Potato-family exploits.",
   "pathId": "16-advanced",
@@ -515,6 +524,15 @@ const GLOSSARY = [
   "pathTitle": "Ethical Hacking",
   "subId": "recon",
   "subTitle": "Phase 1: Reconnaissance"
+ },
+ {
+  "term": "AS-REP Roasting",
+  "def": "harvesting offline-crackable authentication material from accounts with Kerberos pre-authentication disabled, requiring no prior credentials.",
+  "pathId": "16-advanced",
+  "pathN": "16",
+  "pathTitle": "Advanced Cyber Topics",
+  "subId": "kerberos-attacks-deep-dive",
+  "subTitle": "Kerberos attacks, deep dive"
  },
  {
   "term": "Assets",
@@ -2380,6 +2398,15 @@ const GLOSSARY = [
   "subTitle": "Networking & community"
  },
  {
+  "term": "DCSync",
+  "def": "abusing Active Directory's replication protocol to extract password hashes by impersonating a Domain Controller.",
+  "pathId": "16-advanced",
+  "pathN": "16",
+  "pathTitle": "Advanced Cyber Topics",
+  "subId": "ad-persistence-and-detection",
+  "subTitle": "AD persistence & detection"
+ },
+ {
   "term": "DDoS (Distributed Denial of Service)",
   "def": "flooding a service with traffic to make it unavailable to legitimate users.",
   "pathId": "01-introduction",
@@ -2720,6 +2747,15 @@ const GLOSSARY = [
   "pathTitle": "Operating Systems & Linux",
   "subId": "windows-linux-mac",
   "subTitle": "Windows vs Linux vs macOS"
+ },
+ {
+  "term": "DLL hijacking",
+  "def": "placing a malicious DLL earlier in a legitimate application's search order so it's loaded and executed unknowingly.",
+  "pathId": "16-advanced",
+  "pathN": "16",
+  "pathTitle": "Advanced Cyber Topics",
+  "subId": "malware-persistence-mechanisms",
+  "subTitle": "Malware persistence mechanisms"
  },
  {
   "term": "DLP (Data Loss Prevention)",
@@ -3224,6 +3260,15 @@ const GLOSSARY = [
   "pathTitle": "DevSecOps & AppSec Program",
   "subId": "metrics-that-matter",
   "subTitle": "Metrics That Matter"
+ },
+ {
+  "term": "etcd",
+  "def": "Kubernetes' backing datastore, storing every Secret and ConfigMap; unauthenticated access is equivalent to full cluster compromise.",
+  "pathId": "16-advanced",
+  "pathN": "16",
+  "pathTitle": "Advanced Cyber Topics",
+  "subId": "kubernetes-attack-paths",
+  "subTitle": "Kubernetes attack paths"
  },
  {
   "term": "Ethical hacking / penetration testing",
@@ -4000,6 +4045,15 @@ const GLOSSARY = [
   "subTitle": "Linux privilege escalation"
  },
  {
+  "term": "GTFOBins",
+  "def": "a reference database documenting privilege escalation techniques for common SUID/sudo-abusable Unix binaries.",
+  "pathId": "16-advanced",
+  "pathN": "16",
+  "pathTitle": "Advanced Cyber Topics",
+  "subId": "linux-privesc-tools-deep-dive",
+  "subTitle": "Linux privesc tools, deep dive"
+ },
+ {
   "term": "Guest Additions",
   "def": "VirtualBox add-ons for smooth display, clipboard, and shared folders.",
   "pathId": "03-linux",
@@ -4324,6 +4378,15 @@ const GLOSSARY = [
   "subTitle": "Agentic AI Risks"
  },
  {
+  "term": "Hunting hypothesis",
+  "def": "a specific, falsifiable statement about a possible attacker technique, tested against actual log data.",
+  "pathId": "16-advanced",
+  "pathN": "16",
+  "pathTitle": "Advanced Cyber Topics",
+  "subId": "threat-hunting-fundamentals",
+  "subTitle": "Threat hunting fundamentals"
+ },
+ {
   "term": "Hybrid encryption",
   "def": "combining fast symmetric encryption for bulk data with asymmetric encryption to protect just the symmetric key.",
   "pathId": "06-crypto-fundamentals",
@@ -4394,6 +4457,24 @@ const GLOSSARY = [
   "pathTitle": "Zero Trust Architecture",
   "subId": "zero-trust-cloud",
   "subTitle": "Zero Trust in Cloud-Native Environments"
+ },
+ {
+  "term": "iam:PassRole",
+  "def": "a permission allowing a role to be attached to a new resource, a common indirect escalation vector.",
+  "pathId": "16-advanced",
+  "pathN": "16",
+  "pathTitle": "Advanced Cyber Topics",
+  "subId": "iam-deep-dive",
+  "subTitle": "IAM, deep dive"
+ },
+ {
+  "term": "IAM privilege escalation",
+  "def": "using existing permissions to grant oneself additional, more privileged access via policy modification.",
+  "pathId": "16-advanced",
+  "pathN": "16",
+  "pathTitle": "Advanced Cyber Topics",
+  "subId": "iam-deep-dive",
+  "subTitle": "IAM, deep dive"
  },
  {
   "term": "IAM role",
@@ -5071,6 +5152,15 @@ const GLOSSARY = [
   "subTitle": "Build a password checker"
  },
  {
+  "term": "KDC (Key Distribution Center)",
+  "def": "the trusted Kerberos authentication service running on every Domain Controller.",
+  "pathId": "16-advanced",
+  "pathN": "16",
+  "pathTitle": "Advanced Cyber Topics",
+  "subId": "kerberos-attacks-deep-dive",
+  "subTitle": "Kerberos attacks, deep dive"
+ },
+ {
   "term": "Kerberoasting / AS-REP Roasting",
   "def": "offline password-cracking attacks against service/user account Kerberos tickets.",
   "pathId": "16-advanced",
@@ -5269,6 +5359,15 @@ const GLOSSARY = [
   "subTitle": "Linux privilege escalation"
  },
  {
+  "term": "LinPEAS",
+  "def": "an automated Linux enumeration script that surfaces likely privilege escalation vectors, color-coded by confidence.",
+  "pathId": "16-advanced",
+  "pathN": "16",
+  "pathTitle": "Advanced Cyber Topics",
+  "subId": "linux-privesc-tools-deep-dive",
+  "subTitle": "Linux privesc tools, deep dive"
+ },
+ {
   "term": "LinPEAS / WinPEAS",
   "def": "automated enumeration tools surfacing candidate privilege escalation paths on Linux and Windows respectively.",
   "pathId": "14-ethical-hacking",
@@ -5321,6 +5420,15 @@ const GLOSSARY = [
   "pathTitle": "Ethical Hacking",
   "subId": "lateral-movement-techniques",
   "subTitle": "Lateral Movement Techniques"
+ },
+ {
+  "term": "Living off the land (malware persistence)",
+  "def": "achieving persistence via legitimate built-in mechanisms rather than a new, signature-detectable file.",
+  "pathId": "16-advanced",
+  "pathN": "16",
+  "pathTitle": "Advanced Cyber Topics",
+  "subId": "malware-persistence-mechanisms",
+  "subTitle": "Malware persistence mechanisms"
  },
  {
   "term": "LLM (Large Language Model)",
@@ -5710,6 +5818,15 @@ const GLOSSARY = [
   "subTitle": "Attackers & the kill chain"
  },
  {
+  "term": "MITRE ATT&CK",
+  "def": "a framework organizing real-world adversary tactics and techniques, used as a systematic hunting roadmap.",
+  "pathId": "16-advanced",
+  "pathN": "16",
+  "pathTitle": "Advanced Cyber Topics",
+  "subId": "threat-hunting-fundamentals",
+  "subTitle": "Threat hunting fundamentals"
+ },
+ {
   "term": "MITRE ATT&CK framework",
   "def": "a structured catalog of real-world adversary tactics and techniques, commonly used to organize purple team exercises.",
   "pathId": "14-ethical-hacking",
@@ -6041,6 +6158,15 @@ const GLOSSARY = [
   "pathTitle": "Network Security",
   "subId": "nmap",
   "subTitle": "Scan networks with Nmap"
+ },
+ {
+  "term": "Node metadata service",
+  "def": "the underlying cloud instance's metadata endpoint, reachable from a compromised pod and potentially exposing the node's own cloud credentials.",
+  "pathId": "16-advanced",
+  "pathN": "16",
+  "pathTitle": "Advanced Cyber Topics",
+  "subId": "kubernetes-attack-paths",
+  "subTitle": "Kubernetes attack paths"
  },
  {
   "term": "No-logs policy",
@@ -7132,6 +7258,15 @@ const GLOSSARY = [
   "subTitle": "Types of security controls"
  },
  {
+  "term": "Principal, action, resource, condition",
+  "def": "the four core elements of a cloud IAM policy statement.",
+  "pathId": "16-advanced",
+  "pathN": "16",
+  "pathTitle": "Advanced Cyber Topics",
+  "subId": "iam-deep-dive",
+  "subTitle": "IAM, deep dive"
+ },
+ {
   "term": "Principle of least privilege",
   "def": "granting only the minimum permissions an identity genuinely needs.",
   "pathId": "08-cloud-basics",
@@ -7841,6 +7976,15 @@ const GLOSSARY = [
   "pathTitle": "Malware & Reverse Engineering",
   "subId": "re-fundamentals",
   "subTitle": "Reverse Engineering Fundamentals"
+ },
+ {
+  "term": "Registry Run key",
+  "def": "a classic Windows persistence location causing automatic program execution at user login.",
+  "pathId": "16-advanced",
+  "pathN": "16",
+  "pathTitle": "Advanced Cyber Topics",
+  "subId": "malware-persistence-mechanisms",
+  "subTitle": "Malware persistence mechanisms"
  },
  {
   "term": "Regression testing",
@@ -8761,6 +8905,15 @@ const GLOSSARY = [
   "subTitle": "Security Governance Basics"
  },
  {
+  "term": "SeImpersonatePrivilege",
+  "def": "a Windows privilege enabling a process to impersonate another security context's authentication token, the mechanism the Potato exploit family abuses.",
+  "pathId": "16-advanced",
+  "pathN": "16",
+  "pathTitle": "Advanced Cyber Topics",
+  "subId": "windows-privesc-tools-deep-dive",
+  "subTitle": "Windows privesc tools, deep dive"
+ },
+ {
   "term": "Separation of duties",
   "def": "requiring more than one person to complete a sensitive action, preventing any single insider from acting alone.",
   "pathId": "10-fundamentals",
@@ -8813,6 +8966,15 @@ const GLOSSARY = [
   "pathTitle": "Windows Security Basics",
   "subId": "windows-fundamentals",
   "subTitle": "Windows Fundamentals for Security"
+ },
+ {
+  "term": "Service account token",
+  "def": "a credential automatically mounted into every pod, authenticating it to the Kubernetes API as its assigned service account.",
+  "pathId": "16-advanced",
+  "pathN": "16",
+  "pathTitle": "Advanced Cyber Topics",
+  "subId": "kubernetes-attack-paths",
+  "subTitle": "Kubernetes attack paths"
  },
  {
   "term": "Service mesh",
@@ -9119,6 +9281,15 @@ const GLOSSARY = [
   "pathTitle": "Bug Bounty",
   "subId": "race-conditions-deep-dive",
   "subTitle": "Race conditions, deep dive"
+ },
+ {
+  "term": "Skeleton Key",
+  "def": "malware that patches a Domain Controller's authentication to accept a universal backdoor password alongside real ones.",
+  "pathId": "16-advanced",
+  "pathN": "16",
+  "pathTitle": "Advanced Cyber Topics",
+  "subId": "ad-persistence-and-detection",
+  "subTitle": "AD persistence & detection"
  },
  {
   "term": "SLA",
@@ -9724,6 +9895,15 @@ const GLOSSARY = [
   "subTitle": "Users, permissions & sudo"
  },
  {
+  "term": "SUID binary",
+  "def": "an executable that runs with its owner's (often root's) privileges regardless of who invokes it.",
+  "pathId": "16-advanced",
+  "pathN": "16",
+  "pathTitle": "Advanced Cyber Topics",
+  "subId": "linux-privesc-tools-deep-dive",
+  "subTitle": "Linux privesc tools, deep dive"
+ },
+ {
   "term": "SUID/SGID",
   "def": "file permission bits causing a binary to run with the file owner's/group's privileges.",
   "pathId": "16-advanced",
@@ -10039,6 +10219,15 @@ const GLOSSARY = [
   "subTitle": "Meet the terminal"
  },
  {
+  "term": "TGT (Ticket Granting Ticket)",
+  "def": "the initial ticket obtained after authenticating, used to request further service tickets without re-entering a password.",
+  "pathId": "16-advanced",
+  "pathN": "16",
+  "pathTitle": "Advanced Cyber Topics",
+  "subId": "kerberos-attacks-deep-dive",
+  "subTitle": "Kerberos attacks, deep dive"
+ },
+ {
   "term": "The internet",
   "def": "a global network of networks.",
   "pathId": "02-networking",
@@ -10084,6 +10273,15 @@ const GLOSSARY = [
   "subTitle": "Threats, vulns & risk"
  },
  {
+  "term": "Threat hunting",
+  "def": "the proactive, hypothesis-driven search for evidence of compromise that automated detection missed.",
+  "pathId": "16-advanced",
+  "pathN": "16",
+  "pathTitle": "Advanced Cyber Topics",
+  "subId": "threat-hunting-fundamentals",
+  "subTitle": "Threat hunting fundamentals"
+ },
+ {
   "term": "Threat modeling (AI-specific)",
   "def": "defining a system's use case, agency/tool access, and relevant OWASP LLM Top 10 categories before testing.",
   "pathId": "18-ai-security",
@@ -10100,6 +10298,15 @@ const GLOSSARY = [
   "pathTitle": "Networking Fundamentals",
   "subId": "tcp-vs-udp",
   "subTitle": "TCP vs UDP"
+ },
+ {
+  "term": "Tiered administration",
+  "def": "a defensive AD model restricting which accounts can administer which tier of systems, limiting lateral escalation.",
+  "pathId": "16-advanced",
+  "pathN": "16",
+  "pathTitle": "Advanced Cyber Topics",
+  "subId": "ad-persistence-and-detection",
+  "subTitle": "AD persistence & detection"
  },
  {
   "term": "Time-boxed access",
@@ -10937,6 +11144,15 @@ const GLOSSARY = [
   "pathTitle": "Advanced Cyber Topics",
   "subId": "windows-privesc",
   "subTitle": "Windows privilege escalation"
+ },
+ {
+  "term": "WinPEAS",
+  "def": "the Windows-specific counterpart to LinPEAS, automating enumeration of Windows privilege escalation vectors.",
+  "pathId": "16-advanced",
+  "pathN": "16",
+  "pathTitle": "Advanced Cyber Topics",
+  "subId": "windows-privesc-tools-deep-dive",
+  "subTitle": "Windows privesc tools, deep dive"
  },
  {
   "term": "WinRM (Windows Remote Management)",

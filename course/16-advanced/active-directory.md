@@ -189,4 +189,4 @@ Why is Kerberoasting considered such a consistently effective real-world attack,
 - [GOAD (Game Of Active Directory)](https://github.com/Orange-Cyberdefense/GOAD) — a free, deployable vulnerable AD lab environment.
 ???
 
-**Next up →** [Cloud security fundamentals](#/lesson/16-advanced/cloud-security)
+**Next up →** [Kerberos attacks, deep dive](#/lesson/16-advanced/kerberos-attacks-deep-dive)

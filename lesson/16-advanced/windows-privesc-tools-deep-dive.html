@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Windows privesc tools, deep dive — Path 16 · KashSec Academy</title>
+<meta name="description" content="The Windows privilege escalation lesson introduced WinPEAS and the Potato family of exploits. This lesson goes deeper into the tooling and the token-based mechanics behind them, directly connecting to">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/16-advanced/windows-privesc-tools-deep-dive">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Windows privesc tools, deep dive — Path 16 · KashSec Academy">
+<meta property="og:description" content="The Windows privilege escalation lesson introduced WinPEAS and the Potato family of exploits. This lesson goes deeper into the tooling and the token-based mechanics behind them, directly connecting to">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/16-advanced/windows-privesc-tools-deep-dive">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Windows privesc tools, deep dive — Path 16 · KashSec Academy">
+<meta name="twitter:description" content="The Windows privilege escalation lesson introduced WinPEAS and the Potato family of exploits. This lesson goes deeper into the tooling and the token-based mechanics behind them, directly connecting to">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Windows privesc tools, deep dive — Path 16 · KashSec Academy","description":"The Windows privilege escalation lesson introduced WinPEAS and the Potato family of exploits. This lesson goes deeper into the tooling and the token-based mechanics behind them, directly connecting to","url":"https://kashsec.vercel.app/#/lesson/16-advanced/windows-privesc-tools-deep-dive","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/16-advanced/windows-privesc-tools-deep-dive">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 16 — Advanced Cyber Topics</a> · Windows privesc tools, deep dive</div>
+  <article><h1>Windows Privilege Escalation Tools, Deep Dive</h1>
+<p>The Windows privilege escalation lesson introduced WinPEAS and the Potato family of exploits. This lesson goes deeper into the tooling and the token-based mechanics behind them, directly connecting to the previous lesson&#39;s Linux tool coverage as the Windows-side counterpart of the exact same enumeration-first discipline.</p>
+<h2>WinPEAS mirrors LinPEAS, on Windows-specific vectors</h2>
+<p><strong>WinPEAS</strong> performs the same systematic, color-coded enumeration philosophy as LinPEAS (previous lesson), but checks Windows-specific vectors instead: service permissions, registry autoruns, scheduled tasks, stored credentials in unattended-install files, and token privileges — the same &quot;automate the manual checklist, then verify manually&quot; relationship applies here just as directly.</p>
+<h2>Service misconfigurations, the most common real-world finding</h2>
+<p>A genuinely frequent real-world Windows privesc path: a Windows service configured to run as <code>SYSTEM</code> (the highest privilege level) but with a service binary path that&#39;s writable by a lower-privileged user — replacing that binary (or, if the path contains unquoted spaces, planting a malicious executable at an ambiguous path Windows will resolve incorrectly) means the next service restart executes attacker-controlled code as <code>SYSTEM</code>, directly parallel to the writable-cron-job technique from the previous lesson&#39;s Linux coverage.</p>
+<h2>The Potato family, actually explained</h2>
+<p>Directly connecting to Path 14&#39;s exploit-development-basics lesson on the gap between vulnerability and exploit: the <strong>Potato</strong> exploit family (JuicyPotato, RoguePotato, PrintSpoofer, and successors) all abuse a specific category of Windows privilege — a service account holding <code>SeImpersonatePrivilege</code> can be tricked into authenticating as <code>SYSTEM</code> to an attacker-controlled component, then that authentication token gets captured and reused (impersonated) to run commands as <code>SYSTEM</code>. This is a genuinely different mechanism from the Linux techniques covered previously — it exploits how Windows handles privileged token impersonation, not a filesystem permission gap.</p>
+<h2>Tokens, briefly — why this matters</h2>
+<p>Windows access control fundamentally revolves around <strong>access tokens</strong> — an object representing a user or service&#39;s identity and privileges, attached to every process that user or service runs. A privilege like <code>SeImpersonatePrivilege</code> grants a process the ability to impersonate another security context&#39;s token under specific conditions; the Potato exploits&#39; entire mechanism is manipulating exactly that impersonation capability, which is why understanding tokens conceptually (even without deep internals knowledge) makes the Potato family&#39;s actual mechanism click rather than remaining a black-box &quot;just run the tool&quot; technique.</p>
+<h2>Credentials in unexpected places</h2>
+<p>Directly connecting to Path 00&#39;s password-hygiene lesson from the defender&#39;s side: Windows systems frequently retain plaintext or weakly-encoded credentials in surprising locations — <code>unattend.xml</code> files left over from automated OS deployment, PowerShell command history, or credentials cached in the registry from legacy autologon configuration. WinPEAS specifically checks these locations because they remain a genuinely common, embarrassingly simple real-world finding.</p>
+<p>Why does the Potato exploit family require <code>SeImpersonatePrivilege</code> specifically, rather than working against any service account?</p>
+<details><summary>Show answer</summary>The Potato techniques don't exploit a filesystem or configuration weakness the way the writable-service-binary-path technique does — they exploit a very specific Windows security feature: the ability for a process holding <code>SeImpersonatePrivilege</code> to impersonate the security context of another entity that authenticates to it, under certain conditions. The exploit chain works by tricking a privileged Windows component (historically, a COM/DCOM or NTLM-relay-adjacent mechanism, depending on the specific Potato variant) into authenticating as <code>SYSTEM</code> to something the attacker's process controls, at which point the attacker's process — because it holds that specific impersonation privilege — can capture and reuse that <code>SYSTEM</code>-level authentication token as its own. A service account that lacks <code>SeImpersonatePrivilege</code> entirely has no mechanism available to capture and reuse that token even if the same authentication trick could be triggered, which is exactly why checking for this specific privilege (via <code>whoami /priv</code>) is one of the very first things a Windows privilege escalation enumeration should do.</details><h2>Key terms</h2>
+<ul>
+<li><strong>WinPEAS</strong> — the Windows-specific counterpart to LinPEAS, automating enumeration of Windows privilege escalation vectors.</li>
+<li><strong>Access token</strong> — a Windows object representing a user or service&#39;s identity and privileges, attached to every running process.</li>
+<li><strong>SeImpersonatePrivilege</strong> — a Windows privilege enabling a process to impersonate another security context&#39;s authentication token, the mechanism the Potato exploit family abuses.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>WinPEAS applies the same enumeration-then-verify philosophy as LinPEAS, targeted at Windows-specific vectors like service permissions and stored credentials.</li>
+<li>Misconfigured service binary paths running as SYSTEM are a direct Windows parallel to the writable-cron-job Linux technique.</li>
+<li>The Potato exploit family works by abusing SeImpersonatePrivilege to capture and reuse a SYSTEM-level authentication token, a fundamentally token-based mechanism rather than a filesystem permission gap.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/16-advanced/active-directory">Active Directory attacks</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/16-advanced/windows-privesc-tools-deep-dive";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

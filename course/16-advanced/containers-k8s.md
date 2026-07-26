@@ -234,4 +234,4 @@ A container has the host's Docker socket (`/var/run/docker.sock`) mounted inside
 - [HackTricks — Docker/Kubernetes Security](https://book.hacktricks.xyz/pentesting/pentesting-docker) — extensive practical escape/attack technique reference.
 ???
 
-**Next up →** [Malware analysis basics](#/lesson/16-advanced/malware-analysis)
+**Next up →** [Kubernetes attack paths](#/lesson/16-advanced/kubernetes-attack-paths)

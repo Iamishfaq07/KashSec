@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kerberos attacks, deep dive — Path 16 · KashSec Academy</title>
+<meta name="description" content="The Active Directory lesson introduced Kerberoasting and AS-REP Roasting by name. This lesson goes deeper into how Kerberos authentication actually works mechanically, since understanding the protocol">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/16-advanced/kerberos-attacks-deep-dive">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Kerberos attacks, deep dive — Path 16 · KashSec Academy">
+<meta property="og:description" content="The Active Directory lesson introduced Kerberoasting and AS-REP Roasting by name. This lesson goes deeper into how Kerberos authentication actually works mechanically, since understanding the protocol">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/16-advanced/kerberos-attacks-deep-dive">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Kerberos attacks, deep dive — Path 16 · KashSec Academy">
+<meta name="twitter:description" content="The Active Directory lesson introduced Kerberoasting and AS-REP Roasting by name. This lesson goes deeper into how Kerberos authentication actually works mechanically, since understanding the protocol">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Kerberos attacks, deep dive — Path 16 · KashSec Academy","description":"The Active Directory lesson introduced Kerberoasting and AS-REP Roasting by name. This lesson goes deeper into how Kerberos authentication actually works mechanically, since understanding the protocol","url":"https://kashsec.vercel.app/#/lesson/16-advanced/kerberos-attacks-deep-dive","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/16-advanced/kerberos-attacks-deep-dive">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 16 — Advanced Cyber Topics</a> · Kerberos attacks, deep dive</div>
+  <article><h1>Kerberos Attacks, Deep Dive</h1>
+<p>The Active Directory lesson introduced Kerberoasting and AS-REP Roasting by name. This lesson goes deeper into how Kerberos authentication actually works mechanically, since understanding the protocol makes every attack against it click as a logical consequence rather than a memorized trick — directly connecting to Path 14&#39;s lateral-movement-techniques lesson&#39;s Kerberos coverage from the credential-theft angle.</p>
+<h2>How Kerberos authentication actually works</h2>
+<p>Kerberos is a <strong>ticket-based</strong> authentication protocol built around a trusted third party — the <strong>Key Distribution Center (KDC)</strong>, running on every Domain Controller. The core flow: a user authenticates once to get a <strong>Ticket Granting Ticket (TGT)</strong>, then presents that TGT to request <strong>service tickets (TGS)</strong> for specific resources, without ever re-entering a password for each new service accessed.</p>
+<h2>Kerberoasting, now mechanically explained</h2>
+<p>The Active Directory lesson named Kerberoasting; here&#39;s exactly why it works: any authenticated domain user can request a service ticket (TGS) for <strong>any</strong> service account registered with a Service Principal Name (SPN), and the KDC issues it — no special privilege required. That service ticket is encrypted using the <strong>service account&#39;s own password hash</strong>. Since any user can request this ticket, and it&#39;s encrypted offline-crackable material, an attacker with no privileges beyond a basic domain account can harvest tickets for every SPN-registered service account and attempt to crack them offline, entirely without triggering the failed-login detection a direct password-guessing attack would.</p>
+<h2>AS-REP Roasting, the pre-authentication gap</h2>
+<p>AS-REP Roasting targets a narrower, specific misconfiguration: accounts with <strong>Kerberos pre-authentication disabled</strong>. Normally, requesting a TGT (the AS-REQ step above) requires proving knowledge of the password first; with pre-authentication disabled, the KDC issues the AS-REP (containing crackable material) to <em>anyone</em> who simply requests it for that specific username, no proof of any password required at all — a genuinely more severe gap than Kerberoasting, since it requires zero prior authentication whatsoever, just knowledge of a valid username.</p>
+<h2>Why offline cracking is the shared mechanism</h2>
+<p>Directly connecting to Path 00&#39;s hashing and cracking lesson: both attacks share the exact same fundamental weakness — the KDC returns material encrypted with a password-derived key, and that material can be taken offline and attacked with unlimited, undetected guessing attempts (via <code>hashcat</code>), unlike an online login attempt that would trigger account lockout policies after a small number of failures. This is precisely why both attacks are so effective against weak service account passwords specifically — those accounts are frequently set once, years ago, and never rotated, unlike a human user&#39;s password that account-lockout and complexity policies push toward reasonable strength.</p>
+<h2>Golden and Silver Tickets, revisited with real mechanics</h2>
+<p>The Active Directory lesson&#39;s Golden Ticket coverage becomes clearer with the flow above in mind: since the TGT itself is encrypted with the <strong>krbtgt account&#39;s</strong> password hash, an attacker who obtains that specific hash (typically requiring Domain Admin-level access already) can forge a completely valid TGT for <em>any</em> user, including ones that don&#39;t actually exist, entirely offline — this is why Golden Ticket persistence is so severe and why the only true remediation is rotating the krbtgt password (twice, per Microsoft&#39;s guidance, since it retains two valid password generations simultaneously).</p>
+<p>Why is AS-REP Roasting considered a more severe finding than Kerberoasting, even though both ultimately produce offline-crackable material?</p>
+<details><summary>Show answer</summary>Kerberoasting requires the attacker to already hold valid domain credentials of some kind — a basic, low-privileged domain account is enough to request service tickets, but authentication as *some* user is still a prerequisite before the attack can even begin. AS-REP Roasting requires no prior authentication at all: because the targeted account has Kerberos pre-authentication disabled, the KDC will issue the crackable AS-REP material to literally anyone who requests it for that specific username, without that requester ever needing to prove any credential whatsoever first. This means AS-REP Roasting can be attempted by someone with zero domain access — just a list of possibly-valid usernames, itself often obtainable through OSINT (Path 14) — making it a genuinely more severe exposure than Kerberoasting, which at minimum requires the attacker to have already obtained some valid, if low-privileged, foothold in the domain.</details><h2>Key terms</h2>
+<ul>
+<li><strong>KDC (Key Distribution Center)</strong> — the trusted Kerberos authentication service running on every Domain Controller.</li>
+<li><strong>TGT (Ticket Granting Ticket)</strong> — the initial ticket obtained after authenticating, used to request further service tickets without re-entering a password.</li>
+<li><strong>AS-REP Roasting</strong> — harvesting offline-crackable authentication material from accounts with Kerberos pre-authentication disabled, requiring no prior credentials.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Kerberos is a ticket-based protocol where a TGT, obtained once, is exchanged for service-specific tickets without repeated password entry.</li>
+<li>Kerberoasting exploits that any user can request a crackable service ticket for any SPN-registered account.</li>
+<li>AS-REP Roasting exploits accounts with pre-authentication disabled, requiring no prior credentials at all — a more severe gap than Kerberoasting.</li>
+<li>Both attacks share the same underlying weakness as offline password cracking generally: no online lockout policy limits guessing attempts once material is captured.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/16-advanced/ad-persistence-and-detection">Active Directory persistence &amp; detection</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/16-advanced/kerberos-attacks-deep-dive";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

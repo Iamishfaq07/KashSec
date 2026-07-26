@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AD persistence &amp; detection — Path 16 · KashSec Academy</title>
+<meta name="description" content="The previous lesson explained Kerberos mechanics behind Golden Tickets. This lesson covers what happens after that level of compromise — how attackers maintain long-term access, and how defenders actu">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/16-advanced/ad-persistence-and-detection">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="AD persistence &amp; detection — Path 16 · KashSec Academy">
+<meta property="og:description" content="The previous lesson explained Kerberos mechanics behind Golden Tickets. This lesson covers what happens after that level of compromise — how attackers maintain long-term access, and how defenders actu">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/16-advanced/ad-persistence-and-detection">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AD persistence &amp; detection — Path 16 · KashSec Academy">
+<meta name="twitter:description" content="The previous lesson explained Kerberos mechanics behind Golden Tickets. This lesson covers what happens after that level of compromise — how attackers maintain long-term access, and how defenders actu">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"AD persistence & detection — Path 16 · KashSec Academy","description":"The previous lesson explained Kerberos mechanics behind Golden Tickets. This lesson covers what happens after that level of compromise — how attackers maintain long-term access, and how defenders actu","url":"https://kashsec.vercel.app/#/lesson/16-advanced/ad-persistence-and-detection","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/16-advanced/ad-persistence-and-detection">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 16 — Advanced Cyber Topics</a> · AD persistence &amp; detection</div>
+  <article><h1>Active Directory Persistence &amp; Detection</h1>
+<p>The previous lesson explained Kerberos mechanics behind Golden Tickets. This lesson covers what happens after that level of compromise — how attackers maintain long-term access, and how defenders actually catch it — directly connecting to Path 12&#39;s defense-in-depth lesson, now applied to the specific, high-stakes domain of AD compromise.</p>
+<h2>Why persistence matters more in AD than almost anywhere else</h2>
+<p>Directly connecting to Path 14&#39;s lateral-movement-techniques lesson: once an attacker achieves Domain Admin, they don&#39;t just want momentary access — they want to survive password resets, account disabling, and even a partial incident response effort, which is exactly what makes AD persistence techniques a genuinely higher-stakes concern than persistence on any single compromised workstation.</p>
+<h2>Golden Ticket persistence, revisited</h2>
+<p>The previous lesson explained the mechanism; here&#39;s why it&#39;s so hard to fully remediate: a forged Golden Ticket remains valid until the krbtgt account&#39;s password is rotated — and because AD retains the two most recent krbtgt password versions simultaneously (for operational continuity), a single rotation isn&#39;t sufficient. Microsoft&#39;s official guidance requires rotating krbtgt <strong>twice</strong>, with enough time between rotations for replication to complete across all Domain Controllers, or a Golden Ticket forged with the older hash remains valid.</p>
+<h2>DCSync — stealing password hashes without touching a DC&#39;s disk</h2>
+<p><strong>DCSync</strong> abuses a legitimate Active Directory replication feature: any account with replication permissions (normally reserved for Domain Controllers themselves, but sometimes over-permissioned by misconfiguration) can request password hash data directly from a Domain Controller by <em>impersonating</em> a DC during the replication protocol — meaning an attacker with the right permissions can extract every domain user&#39;s password hash, including krbtgt, without ever touching a Domain Controller&#39;s actual disk or running code on it directly, a significant detection-evasion advantage over dumping hashes locally.</p>
+<h2>Skeleton Key — a persistent backdoor password</h2>
+<p>A more aggressive technique: <strong>Skeleton Key</strong> malware patches a Domain Controller&#39;s authentication process in memory to accept a single, attacker-chosen master password for <em>any</em> domain account, in addition to that account&#39;s real password continuing to work normally — meaning the attacker gains a persistent, universal backdoor while every legitimate user&#39;s normal login continues working completely unaffected, making it genuinely hard to notice without specific detection.</p>
+<h2>How defenders actually catch this</h2>
+<p>Directly connecting to Path 16&#39;s dfir lesson later in this path: detecting AD persistence relies heavily on specific, well-known event log signatures —</p>
+<ul>
+<li><strong>Event ID 4769</strong> (Kerberos service ticket requests) at unusual volume or against unusual SPNs — a Kerberoasting indicator</li>
+<li><strong>Event ID 4662</strong> (object access) against the krbtgt account&#39;s replication properties — a DCSync indicator</li>
+<li><strong>Anomalous replication traffic</strong> from a source that isn&#39;t a legitimate Domain Controller — directly connecting to Path 24&#39;s UEBA/behavioral-analytics lesson, since this is exactly the kind of &quot;this account has never done this before&quot; pattern behavioral baselining is designed to catch, distinct from any single-event signature</li>
+</ul>
+<h2>Why remediation goes far beyond &quot;reset the compromised password&quot;</h2>
+<p>Once Domain Admin-level compromise (and krbtgt hash theft specifically) has occurred, a genuinely complete remediation requires the double krbtgt rotation described above, auditing every account&#39;s replication permissions for over-provisioning, and treating every credential in the domain as potentially exposed — not just the specific account initially compromised. This is exactly why real-world AD compromises frequently require a dedicated incident response engagement (Path 16&#39;s dfir lesson) rather than a quick fix, and why AD security fundamentals (least privilege, tiered administration) covered earlier in this lesson&#39;s parent topic matter so much as prevention.</p>
+<p>Why is DCSync considered a significant detection-evasion advantage compared to dumping password hashes directly from a compromised Domain Controller&#39;s memory or disk?</p>
+<details><summary>Show answer</summary>Dumping hashes directly from a Domain Controller (using a tool like Mimikatz against LSASS memory, for instance) requires the attacker to have actually executed code on that Domain Controller — an action that's a well-monitored, high-value target for endpoint detection tools, generating clear evidence of code execution on a critical system. DCSync instead abuses the legitimate Active Directory replication protocol itself: an account with sufficient (often over-provisioned) permissions can simply request replication data from a Domain Controller over the network, exactly as a real, legitimate secondary Domain Controller normally would — meaning the malicious activity looks structurally identical to normal AD replication traffic rather than to a suspicious code-execution event, and no code ever needs to run on the Domain Controller itself at all. This is precisely why detecting DCSync requires monitoring for the specific replication-permission abuse pattern (Event ID 4662 against krbtgt's replication properties) rather than relying on endpoint detection tools that watch for code execution — the attack technique was deliberately designed around abusing a trusted, expected protocol rather than triggering an obviously anomalous action.</details><h2>Key terms</h2>
+<ul>
+<li><strong>DCSync</strong> — abusing Active Directory&#39;s replication protocol to extract password hashes by impersonating a Domain Controller.</li>
+<li><strong>Skeleton Key</strong> — malware that patches a Domain Controller&#39;s authentication to accept a universal backdoor password alongside real ones.</li>
+<li><strong>Tiered administration</strong> — a defensive AD model restricting which accounts can administer which tier of systems, limiting lateral escalation.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Golden Ticket persistence requires the krbtgt password to be rotated twice, due to AD&#39;s two-generation password retention.</li>
+<li>DCSync extracts domain-wide password hashes by abusing legitimate replication permissions, without ever executing code on a Domain Controller directly.</li>
+<li>Skeleton Key provides a persistent, universal backdoor password that coexists invisibly alongside every real login continuing to work normally.</li>
+<li>Detection relies on specific event log signatures and behavioral baselining rather than any single obvious indicator, and full remediation goes well beyond a single password reset.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/16-advanced/cloud-security">Cloud security fundamentals</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/16-advanced/ad-persistence-and-detection";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

@@ -183,4 +183,4 @@ An IAM policy grants a user permission to attach any IAM policy to their own use
 - [AWS IMDSv2 documentation](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configuring-instance-metadata-service.html) — the official SSRF-to-metadata mitigation reference.
 ???
 
-**Next up →** [Containers & Kubernetes security](#/lesson/16-advanced/containers-k8s)
+**Next up →** [IAM, deep dive](#/lesson/16-advanced/iam-deep-dive)

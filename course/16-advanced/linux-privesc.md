@@ -238,4 +238,4 @@ Work through at least 2-3 different vulnerable VMs, deliberately trying to ident
 - [Payatu — Linux Privilege Escalation Guide](https://payatu.com/blog/a-guide-to-linux-privilege-escalation/) — accessible, well-structured walkthrough.
 ???
 
-**Next up →** [Windows privilege escalation](#/lesson/16-advanced/windows-privesc)
+**Next up →** [Linux privilege escalation tools, deep dive](#/lesson/16-advanced/linux-privesc-tools-deep-dive)

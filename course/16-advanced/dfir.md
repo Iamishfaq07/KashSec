@@ -188,4 +188,4 @@ Why must a forensic investigator always work from a verified disk image copy rat
 - [Autopsy](https://www.autopsy.com/) — free, GUI-based digital forensics platform.
 ???
 
-**Next up →** [Choosing your specialisation](#/lesson/16-advanced/specialise)
+**Next up →** [Threat hunting fundamentals](#/lesson/16-advanced/threat-hunting-fundamentals)
