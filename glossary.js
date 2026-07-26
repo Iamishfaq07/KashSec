@@ -580,6 +580,15 @@ const GLOSSARY = [
   "subTitle": "Phase 1: Reconnaissance"
  },
  {
+  "term": "ASOC (Application Security Orchestration and Correlation)",
+  "def": "platforms unifying findings from multiple scanning tools into one deduplicated, consistent workflow.",
+  "pathId": "22-devsecops-appsec",
+  "pathN": "22",
+  "pathTitle": "DevSecOps & AppSec Program",
+  "subId": "appsec-tooling-and-orchestration",
+  "subTitle": "AppSec Tooling & Orchestration"
+ },
+ {
   "term": "AS-REP Roasting",
   "def": "harvesting offline-crackable authentication material from accounts with Kerberos pre-authentication disabled, requiring no prior credentials.",
   "pathId": "16-advanced",
@@ -866,6 +875,15 @@ const GLOSSARY = [
   "pathTitle": "Computer Basics & Security Mindset",
   "subId": "understanding-updates-and-backups",
   "subTitle": "Updates & backups: the boring habits that save you"
+ },
+ {
+  "term": "Base image",
+  "def": "the foundational OS/runtime layer a container image is built on top of, shaping its inherited attack surface.",
+  "pathId": "22-devsecops-appsec",
+  "pathN": "22",
+  "pathTitle": "DevSecOps & AppSec Program",
+  "subId": "container-image-and-registry-security",
+  "subTitle": "Container Image & Registry Security"
  },
  {
   "term": "Batching",
@@ -1541,6 +1559,15 @@ const GLOSSARY = [
   "pathTitle": "Advanced Cyber Topics",
   "subId": "dfir",
   "subTitle": "Digital forensics & IR"
+ },
+ {
+  "term": "Champion recruiting pipeline",
+  "def": "the organic path from demonstrated Champion engagement into a formal AppSec career transition.",
+  "pathId": "22-devsecops-appsec",
+  "pathN": "22",
+  "pathTitle": "DevSecOps & AppSec Program",
+  "subId": "security-champions-programs",
+  "subTitle": "Security Champions Programs"
  },
  {
   "term": "Check-then-act flaw",
@@ -2999,6 +3026,15 @@ const GLOSSARY = [
   "pathTitle": "Operating Systems & Linux",
   "subId": "windows-linux-mac",
   "subTitle": "Windows vs Linux vs macOS"
+ },
+ {
+  "term": "Distroless image",
+  "def": "a minimal base image containing only exact runtime dependencies, with no unnecessary packages.",
+  "pathId": "22-devsecops-appsec",
+  "pathN": "22",
+  "pathTitle": "DevSecOps & AppSec Program",
+  "subId": "container-image-and-registry-security",
+  "subTitle": "Container Image & Registry Security"
  },
  {
   "term": "DLL hijacking",
@@ -4864,6 +4900,15 @@ const GLOSSARY = [
   "subTitle": "What is Cloud Computing?"
  },
  {
+  "term": "IaC scanner",
+  "def": "a tool checking infrastructure definitions against known misconfiguration patterns before deployment.",
+  "pathId": "22-devsecops-appsec",
+  "pathN": "22",
+  "pathTitle": "DevSecOps & AppSec Program",
+  "subId": "iac-security-scanning",
+  "subTitle": "Infrastructure as Code (IaC) Security Scanning"
+ },
+ {
   "term": "IAM (Identity and Access Management)",
   "def": "the system controlling who (or what) can do what within a cloud account.",
   "pathId": "08-cloud-basics",
@@ -5035,6 +5080,15 @@ const GLOSSARY = [
   "subTitle": "Multimodal Attack Vectors"
  },
  {
+  "term": "Image signing",
+  "def": "cryptographically signing a built image to verify it hasn't been tampered with between build and deployment.",
+  "pathId": "22-devsecops-appsec",
+  "pathN": "22",
+  "pathTitle": "DevSecOps & AppSec Program",
+  "subId": "container-image-and-registry-security",
+  "subTitle": "Container Image & Registry Security"
+ },
+ {
   "term": "IMDSv2",
   "def": "AWS's token-based metadata service protocol, defeating basic SSRF-to-metadata attacks.",
   "pathId": "16-advanced",
@@ -5159,6 +5213,15 @@ const GLOSSARY = [
   "pathTitle": "Cloud Computing Basics",
   "subId": "cloud-providers-overview",
   "subTitle": "Cloud Providers Overview"
+ },
+ {
+  "term": "Infrastructure as Code (IaC)",
+  "def": "defining cloud infrastructure in version-controlled configuration files rather than manual console changes.",
+  "pathId": "22-devsecops-appsec",
+  "pathN": "22",
+  "pathTitle": "DevSecOps & AppSec Program",
+  "subId": "iac-security-scanning",
+  "subTitle": "Infrastructure as Code (IaC) Security Scanning"
  },
  {
   "term": "Inherent risk",
@@ -5719,6 +5782,15 @@ const GLOSSARY = [
   "subTitle": "Building your security resume"
  },
  {
+  "term": "Known Exploited Vulnerabilities (KEV)",
+  "def": "a tracked catalog of vulnerabilities with confirmed active, real-world exploitation.",
+  "pathId": "22-devsecops-appsec",
+  "pathN": "22",
+  "pathTitle": "DevSecOps & AppSec Program",
+  "subId": "vulnerability-management-and-prioritization",
+  "subTitle": "Vulnerability Management & Prioritization"
+ },
+ {
   "term": "Kubernetes RBAC",
   "def": "the cluster-level, Kubernetes-native access control system, analogous to cloud IAM.",
   "pathId": "16-advanced",
@@ -5942,6 +6014,15 @@ const GLOSSARY = [
   "pathTitle": "Windows Security Basics",
   "subId": "windows-user-accounts",
   "subTitle": "Windows User Accounts & UAC"
+ },
+ {
+  "term": "Local context",
+  "def": "team-specific knowledge (legacy code, upcoming risk, team norms) a Champion brings that a central team structurally can't replicate at scale.",
+  "pathId": "22-devsecops-appsec",
+  "pathN": "22",
+  "pathTitle": "DevSecOps & AppSec Program",
+  "subId": "security-champions-programs",
+  "subTitle": "Security Champions Programs"
  },
  {
   "term": "localhost / 127.0.0.1",
@@ -7762,6 +7843,15 @@ const GLOSSARY = [
   "subTitle": "Writing Policies People Actually Follow"
  },
  {
+  "term": "Policy as Code",
+  "def": "codifying an organization's specific security and compliance rules as automatically-enforceable, version-controlled policy.",
+  "pathId": "22-devsecops-appsec",
+  "pathN": "22",
+  "pathTitle": "DevSecOps & AppSec Program",
+  "subId": "iac-security-scanning",
+  "subTitle": "Infrastructure as Code (IaC) Security Scanning"
+ },
+ {
   "term": "Policy as code",
   "def": "encoding security rules so pipelines can enforce them automatically",
   "pathId": "22-devsecops-appsec",
@@ -8527,6 +8617,15 @@ const GLOSSARY = [
   "subTitle": "Malware families"
  },
  {
+  "term": "RASP (Runtime Application Self-Protection)",
+  "def": "application-embedded security monitoring and blocking, distinct from perimeter-level controls.",
+  "pathId": "22-devsecops-appsec",
+  "pathN": "22",
+  "pathTitle": "DevSecOps & AppSec Program",
+  "subId": "shift-left-vs-shift-right",
+  "subTitle": "Shift Left vs. Shift Right"
+ },
+ {
   "term": "Rate limiting",
   "def": "deliberately throttling automated tools to respect program policy and avoid disruption.",
   "pathId": "15-bug-bounty",
@@ -8561,6 +8660,15 @@ const GLOSSARY = [
   "pathTitle": "DevSecOps & AppSec Program",
   "subId": "sast-dast-sca",
   "subTitle": "SAST, DAST & SCA — The Core Scanning Trio"
+ },
+ {
+  "term": "Reachability analysis",
+  "def": "determining whether a vulnerable dependency function is actually called by an application's own code.",
+  "pathId": "22-devsecops-appsec",
+  "pathN": "22",
+  "pathTitle": "DevSecOps & AppSec Program",
+  "subId": "vulnerability-management-and-prioritization",
+  "subTitle": "Vulnerability Management & Prioritization"
  },
  {
   "term": "React Native bridge",
@@ -9022,6 +9130,15 @@ const GLOSSARY = [
   "subTitle": "Threats, vulns & risk"
  },
  {
+  "term": "Risk acceptance",
+  "def": "a documented, time-bound, formally approved decision not to remediate a specific finding.",
+  "pathId": "22-devsecops-appsec",
+  "pathN": "22",
+  "pathTitle": "DevSecOps & AppSec Program",
+  "subId": "vulnerability-management-and-prioritization",
+  "subTitle": "Vulnerability Management & Prioritization"
+ },
+ {
   "term": "Risk register",
   "def": "a living document tracking identified risks, their severity, and their treatment",
   "pathId": "23-grc-compliance",
@@ -9337,6 +9454,15 @@ const GLOSSARY = [
   "subTitle": "SAST, DAST & SCA — The Core Scanning Trio"
  },
  {
+  "term": "SBOM (Software Bill of Materials)",
+  "def": "a formal, machine-readable inventory of every component in a piece of software, including transitive dependencies.",
+  "pathId": "22-devsecops-appsec",
+  "pathN": "22",
+  "pathTitle": "DevSecOps & AppSec Program",
+  "subId": "sbom-and-software-bill-of-materials",
+  "subTitle": "SBOM & Software Bill of Materials"
+ },
+ {
   "term": "SCA",
   "def": "analysis of third-party components against known-vulnerability databases",
   "pathId": "22-devsecops-appsec",
@@ -9560,6 +9686,15 @@ const GLOSSARY = [
   "pathTitle": "DevSecOps & AppSec Program",
   "subId": "what-is-devsecops",
   "subTitle": "What is DevSecOps?"
+ },
+ {
+  "term": "Security Champion",
+  "def": "a developer embedded within a regular engineering team, taking on additional local security responsibility without being a formal AppSec team member.",
+  "pathId": "22-devsecops-appsec",
+  "pathN": "22",
+  "pathTitle": "DevSecOps & AppSec Program",
+  "subId": "security-champions-programs",
+  "subTitle": "Security Champions Programs"
  },
  {
   "term": "Security champion",
@@ -10003,6 +10138,24 @@ const GLOSSARY = [
   "subTitle": "What is DevSecOps?"
  },
  {
+  "term": "Shift left",
+  "def": "moving security activities earlier in the development lifecycle, toward design and coding phases.",
+  "pathId": "22-devsecops-appsec",
+  "pathN": "22",
+  "pathTitle": "DevSecOps & AppSec Program",
+  "subId": "shift-left-vs-shift-right",
+  "subTitle": "Shift Left vs. Shift Right"
+ },
+ {
+  "term": "Shift right",
+  "def": "extending security practices into production through runtime monitoring and active response.",
+  "pathId": "22-devsecops-appsec",
+  "pathN": "22",
+  "pathTitle": "DevSecOps & AppSec Program",
+  "subId": "shift-left-vs-shift-right",
+  "subTitle": "Shift Left vs. Shift Right"
+ },
+ {
   "term": "Shor's algorithm",
   "def": "a quantum algorithm capable of efficiently solving the factoring and discrete logarithm problems RSA and Diffie-Hellman/ECC depend on.",
   "pathId": "06-crypto-fundamentals",
@@ -10334,6 +10487,15 @@ const GLOSSARY = [
   "pathTitle": "Computer Basics & Security Mindset",
   "subId": "how-to-learn-tech",
   "subTitle": "How to learn tech effectively"
+ },
+ {
+  "term": "SPDX / CycloneDX",
+  "def": "the two dominant standardized, machine-readable SBOM formats.",
+  "pathId": "22-devsecops-appsec",
+  "pathN": "22",
+  "pathTitle": "DevSecOps & AppSec Program",
+  "subId": "sbom-and-software-bill-of-materials",
+  "subTitle": "SBOM & Software Bill of Materials"
  },
  {
   "term": "Spear phishing",
@@ -11227,6 +11389,24 @@ const GLOSSARY = [
   "subTitle": "AI Threat Modeling"
  },
  {
+  "term": "Tool consolidation",
+  "def": "the deliberate, periodic practice of reviewing and reducing genuine overlap across an accumulated tool portfolio.",
+  "pathId": "22-devsecops-appsec",
+  "pathN": "22",
+  "pathTitle": "DevSecOps & AppSec Program",
+  "subId": "appsec-tooling-and-orchestration",
+  "subTitle": "AppSec Tooling & Orchestration"
+ },
+ {
+  "term": "Tool sprawl",
+  "def": "the accumulation of many disconnected security scanning tools, each with its own dashboard and finding format.",
+  "pathId": "22-devsecops-appsec",
+  "pathN": "22",
+  "pathTitle": "DevSecOps & AppSec Program",
+  "subId": "appsec-tooling-and-orchestration",
+  "subTitle": "AppSec Tooling & Orchestration"
+ },
+ {
   "term": "Tor",
   "def": "a browser and network routing traffic through multiple encrypted relays for strong anonymity, at a real cost to speed and compatibility.",
   "pathId": "09-digital-privacy",
@@ -11288,6 +11468,15 @@ const GLOSSARY = [
   "pathTitle": "DevSecOps & AppSec Program",
   "subId": "sast-dast-sca",
   "subTitle": "SAST, DAST & SCA — The Core Scanning Trio"
+ },
+ {
+  "term": "Transitive dependency",
+  "def": "a dependency of a dependency, often several layers removed from what a development team directly and knowingly chose.",
+  "pathId": "22-devsecops-appsec",
+  "pathN": "22",
+  "pathTitle": "DevSecOps & AppSec Program",
+  "subId": "sbom-and-software-bill-of-materials",
+  "subTitle": "SBOM & Software Bill of Materials"
  },
  {
   "term": "Triage",

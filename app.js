@@ -1190,13 +1190,20 @@ const PATHS = [
    desc:"Move from finding individual bugs to building the program that prevents them at scale — SAST/DAST/SCA, CI/CD security, secrets & supply chain, threat modeling, and the metrics that earn leadership buy-in.",
    subs:[
      {n:"1", id:"what-is-devsecops",        title:"What is DevSecOps?", desc:"Security folded into every stage of delivery, not bolted on at the end."},
-     {n:"2", id:"sast-dast-sca",            title:"SAST, DAST & SCA — The Core Scanning Trio", desc:"Static analysis, dynamic testing, and dependency scanning — how they fit together."},
-     {n:"3", id:"cicd-security",            title:"Securing the CI/CD Pipeline", desc:"The pipeline itself is a target: secrets, permissions, and supply-chain trust."},
-     {n:"4", id:"secrets-supply-chain",     title:"Secrets Management & Software Supply Chain", desc:"Where credentials leak, and how typosquatting and dependency confusion work."},
-     {n:"5", id:"threat-modeling-sdlc",     title:"Threat Modeling in the SDLC", desc:"Finding design flaws before you write the code that has them."},
-     {n:"6", id:"metrics-that-matter",      title:"Metrics That Matter", desc:"Coverage, backlog health, and the numbers that actually earn budget."},
-     {n:"7", id:"building-appsec-program",  title:"Building an AppSec Program from Scratch", desc:"The maturity ladder from ad hoc to optimising, and a concrete first 90 days."},
-     {n:"8", id:"appsec-program-lab",       title:"AppSec Program Capstone Lab", desc:"Design a lightweight AppSec program for a real-shaped organisation."}
+     {n:"2", id:"shift-left-vs-shift-right", title:"Shift Left vs. Shift Right", desc:"The two directions security folds into delivery, and why mature programs need both."},
+     {n:"3", id:"sast-dast-sca",            title:"SAST, DAST & SCA — The Core Scanning Trio", desc:"Static analysis, dynamic testing, and dependency scanning — how they fit together."},
+     {n:"4", id:"iac-security-scanning",    title:"Infrastructure as Code (IaC) Security Scanning", desc:"Catching cloud misconfiguration in the Terraform file, before it's ever deployed."},
+     {n:"5", id:"cicd-security",            title:"Securing the CI/CD Pipeline", desc:"The pipeline itself is a target: secrets, permissions, and supply-chain trust."},
+     {n:"6", id:"container-image-and-registry-security", title:"Container Image & Registry Security", desc:"Base images, scanning, signing, and registry access control."},
+     {n:"7", id:"secrets-supply-chain",     title:"Secrets Management & Software Supply Chain", desc:"Where credentials leak, and how typosquatting and dependency confusion work."},
+     {n:"8", id:"sbom-and-software-bill-of-materials", title:"SBOM & Software Bill of Materials", desc:"Making the deep, invisible dependency tree visible and queryable."},
+     {n:"9", id:"threat-modeling-sdlc",     title:"Threat Modeling in the SDLC", desc:"Finding design flaws before you write the code that has them."},
+     {n:"10", id:"security-champions-programs", title:"Security Champions Programs", desc:"Scaling a five-person AppSec team's reach across a whole engineering org."},
+     {n:"11", id:"metrics-that-matter",     title:"Metrics That Matter", desc:"Coverage, backlog health, and the numbers that actually earn budget."},
+     {n:"12", id:"vulnerability-management-and-prioritization", title:"Vulnerability Management & Prioritization", desc:"Reachability, exploit maturity, SLAs, and formal risk acceptance."},
+     {n:"13", id:"building-appsec-program", title:"Building an AppSec Program from Scratch", desc:"The maturity ladder from ad hoc to optimising, and a concrete first 90 days."},
+     {n:"14", id:"appsec-tooling-and-orchestration", title:"AppSec Tooling & Orchestration", desc:"Taming tool sprawl once a program has outgrown manual tracking."},
+     {n:"15", id:"appsec-program-lab",      title:"AppSec Program Capstone Lab", desc:"Design a lightweight AppSec program for a real-shaped organisation."}
    ]},
   {n:"23", id:"23-grc-compliance", title:"GRC & Compliance", level:"All levels",
    desc:"Governance, Risk, and Compliance — the non-coding path into security. ISO 27001, NIST CSF, SOC 2, vendor risk, and how to actually break into a GRC career.",
@@ -4912,6 +4919,11 @@ function renderLabPhishing(){
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
+  {date:'2026-07-25', title:'Path 22 doubled to 15 lessons', items:[
+    'Twenty-fourth batch of the course-wide content-doubling effort: Path 22 (DevSecOps & AppSec Program) grows from 8 to 15 lessons (7 core lessons doubled to 14, plus the capstone lab unchanged).',
+    'New lessons: Shift Left vs. Shift Right, Infrastructure as Code (IaC) Security Scanning, Container Image & Registry Security, SBOM & Software Bill of Materials, Security Champions Programs, Vulnerability Management & Prioritization, and AppSec Tooling & Orchestration.',
+    'The new SBOM lesson covers requirements that moved from voluntary best practice into genuine regulatory mandate, directly connecting to Path 23\'s GRC coverage of exactly that kind of compliance shift.'
+  ]},
   {date:'2026-07-25', title:'Path 21 doubled to 24 lessons', items:[
     'Twenty-third batch of the course-wide content-doubling effort: Path 21 (API Security) grows from 13 to 24 lessons (11 core lessons doubled to 22, plus the capstone lab and roadmap unchanged).',
     'New lessons: Real-World API Breach Case Studies, API Versioning & Shadow APIs, API Security Standards & Frameworks, OAuth2 & OIDC Deep Dive, API Key & Secret Management, Webhook Security, API Gateway Security, WebSocket Security, gRPC & Protobuf Security, GraphQL Authorization Patterns, and API Documentation & Postman Workflows.',

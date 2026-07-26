@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Infrastructure as Code (IaC) Security Scanning — Path 22 · KashSec Academy</title>
+<meta name="description" content="The SAST/DAST/SCA lesson covered the core scanning trio applied to application code and dependencies. This lesson covers a fourth, increasingly essential scanning category applied to something genuine">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/22-devsecops-appsec/iac-security-scanning">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Infrastructure as Code (IaC) Security Scanning — Path 22 · KashSec Academy">
+<meta property="og:description" content="The SAST/DAST/SCA lesson covered the core scanning trio applied to application code and dependencies. This lesson covers a fourth, increasingly essential scanning category applied to something genuine">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/22-devsecops-appsec/iac-security-scanning">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Infrastructure as Code (IaC) Security Scanning — Path 22 · KashSec Academy">
+<meta name="twitter:description" content="The SAST/DAST/SCA lesson covered the core scanning trio applied to application code and dependencies. This lesson covers a fourth, increasingly essential scanning category applied to something genuine">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Infrastructure as Code (IaC) Security Scanning — Path 22 · KashSec Academy","description":"The SAST/DAST/SCA lesson covered the core scanning trio applied to application code and dependencies. This lesson covers a fourth, increasingly essential scanning category applied to something genuine","url":"https://kashsec.vercel.app/#/lesson/22-devsecops-appsec/iac-security-scanning","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/22-devsecops-appsec/iac-security-scanning">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 22 — DevSecOps & AppSec Program</a> · Infrastructure as Code (IaC) Security Scanning</div>
+  <article><h1>Infrastructure as Code (IaC) Security Scanning</h1>
+<p>The SAST/DAST/SCA lesson covered the core scanning trio applied to application code and dependencies. This lesson covers a fourth, increasingly essential scanning category applied to something genuinely different — the infrastructure definitions themselves — directly connecting to Path 16&#39;s cloud-security and IAM-deep-dive lessons, since IaC misconfiguration is frequently how those exact cloud vulnerabilities get introduced in the first place.</p>
+<h2>What Infrastructure as Code actually is</h2>
+<p><strong>Infrastructure as Code (IaC)</strong> means defining cloud infrastructure (virtual machines, storage buckets, network rules, IAM policies) in version-controlled configuration files — Terraform, CloudFormation, Kubernetes manifests, Pulumi — rather than manually clicking through a cloud provider&#39;s console. This is a genuinely positive shift for reliability and repeatability, but it means infrastructure misconfigurations are now defined in code, which means they can (and should) be scanned like any other code, before they&#39;re ever actually deployed.</p>
+<h2>Why IaC scanning catches what runtime cloud scanning catches too late</h2>
+<p>Directly connecting to Path 16&#39;s cloud-security lesson&#39;s publicly-readable-bucket coverage: a storage bucket misconfigured with public read access is a real, exploitable finding whether it&#39;s caught by scanning the Terraform file that defines it <em>before</em> deployment, or by a cloud security posture management tool discovering it <em>after</em> deployment — but catching it in the IaC file itself, before the <code>terraform apply</code> command ever runs, means the misconfiguration never actually exists in a live, exploitable state at all, directly connecting to the previous lesson&#39;s shift-left economics.</p>
+<pre><code class="language-hcl"># Example: a Terraform misconfiguration an IaC scanner would flag
+resource &quot;aws_s3_bucket_acl&quot; &quot;example&quot; {
+  bucket = aws_s3_bucket.example.id
+  acl    = &quot;public-read&quot;   # Flagged: publicly readable bucket
+}
+</code></pre>
+<h2>What IaC scanners actually check for</h2>
+<ul>
+<li><strong>Overly permissive IAM policies</strong> — directly connecting to Path 16&#39;s iam-deep-dive lesson, wildcard permissions (<code>Action: &quot;*&quot;</code>) or overly broad resource scopes defined directly in the IaC file</li>
+<li><strong>Missing encryption settings</strong> — storage resources, databases, and disks defined without encryption-at-rest explicitly enabled</li>
+<li><strong>Publicly exposed resources</strong> — security groups, network ACLs, or storage buckets configured with overly permissive public access</li>
+<li><strong>Hardcoded secrets in configuration</strong> — directly connecting to the secrets-supply-chain lesson, credentials accidentally embedded directly in IaC files rather than referenced from a secrets manager</li>
+</ul>
+<h2>Popular IaC scanning tools</h2>
+<p><strong>Checkov</strong>, <strong>tfsec</strong>, and <strong>Terrascan</strong> are widely-used, open-source IaC scanners specifically built to parse Terraform, CloudFormation, and Kubernetes manifests, checking them against large, continuously-updated rule sets covering exactly the misconfiguration categories above — genuinely analogous to how SAST tools (the previous lesson) check application source code against known vulnerability patterns, just applied to infrastructure definitions instead.</p>
+<h2>Integrating IaC scanning into the pipeline</h2>
+<p>Directly connecting to the CI/CD-security lesson: IaC scanning belongs as a required check in the same pipeline stage as SAST and dependency scanning — running automatically on every pull request that modifies infrastructure code, blocking merge on high-severity findings exactly the way a SAST failure would, rather than treating infrastructure changes as somehow exempt from the same automated gate application code changes go through.</p>
+<h2>Policy as Code — codifying organizational standards directly</h2>
+<p>A more advanced practice worth knowing: <strong>Policy as Code</strong> tools (Open Policy Agent/OPA being the most widely referenced) let an organization define its own specific security and compliance rules as code, beyond what a generic IaC scanner&#39;s default rule set covers — &quot;every S3 bucket in this organization must have versioning enabled&quot; becomes an enforceable, automatically-checked policy rather than a guideline documented somewhere nobody consistently follows.</p>
+<p>Why does catching a public storage bucket misconfiguration in the Terraform file itself, before deployment, provide a genuinely stronger guarantee than catching the same misconfiguration through runtime cloud security scanning after deployment?</p>
+<h2>Key terms</h2>
+<ul>
+<li><strong>Infrastructure as Code (IaC)</strong> — defining cloud infrastructure in version-controlled configuration files rather than manual console changes.</li>
+<li><strong>IaC scanner</strong> — a tool checking infrastructure definitions against known misconfiguration patterns before deployment.</li>
+<li><strong>Policy as Code</strong> — codifying an organization&#39;s specific security and compliance rules as automatically-enforceable, version-controlled policy.</li>
+</ul>
+<h2>Recap</h2>
+<p>IaC scanning applies the same shift-left, automated-checking philosophy as SAST/DAST/SCA to infrastructure definitions instead of application code, catching misconfigurations before they&#39;re ever deployed into a live, exploitable state. Overly permissive IAM policies, missing encryption, public exposure, and hardcoded secrets are the most common checks. Checkov, tfsec, and Terrascan are the standard open-source tools, and Policy as Code extends this further by letting organizations codify their own specific standards as enforceable, automated policy.</p>
+<h3>References</h3>
+<ul>
+<li><a href="https://www.checkov.io/">Checkov</a> — open-source IaC scanner supporting Terraform, CloudFormation, Kubernetes, and more.</li>
+<li><a href="https://www.openpolicyagent.org/">Open Policy Agent</a> — the standard Policy as Code engine.</li>
+</ul>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/22-devsecops-appsec/iac-security-scanning";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

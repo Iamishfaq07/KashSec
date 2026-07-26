@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shift Left vs. Shift Right — Path 22 · KashSec Academy</title>
+<meta name="description" content="The what-is-DevSecOps lesson introduced &quot;security folded into every stage of delivery&quot; as the core idea. This lesson unpacks the two specific directions that folding actually happens in — shift left a">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/22-devsecops-appsec/shift-left-vs-shift-right">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Shift Left vs. Shift Right — Path 22 · KashSec Academy">
+<meta property="og:description" content="The what-is-DevSecOps lesson introduced &quot;security folded into every stage of delivery&quot; as the core idea. This lesson unpacks the two specific directions that folding actually happens in — shift left a">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/22-devsecops-appsec/shift-left-vs-shift-right">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Shift Left vs. Shift Right — Path 22 · KashSec Academy">
+<meta name="twitter:description" content="The what-is-DevSecOps lesson introduced &quot;security folded into every stage of delivery&quot; as the core idea. This lesson unpacks the two specific directions that folding actually happens in — shift left a">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Shift Left vs. Shift Right — Path 22 · KashSec Academy","description":"The what-is-DevSecOps lesson introduced \"security folded into every stage of delivery\" as the core idea. This lesson unpacks the two specific directions that folding actually happens in — shift left a","url":"https://kashsec.vercel.app/#/lesson/22-devsecops-appsec/shift-left-vs-shift-right","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/22-devsecops-appsec/shift-left-vs-shift-right">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 22 — DevSecOps & AppSec Program</a> · Shift Left vs. Shift Right</div>
+  <article><h1>Shift Left vs. Shift Right</h1>
+<p>The what-is-DevSecOps lesson introduced &quot;security folded into every stage of delivery&quot; as the core idea. This lesson unpacks the two specific directions that folding actually happens in — <strong>shift left</strong> and <strong>shift right</strong> — since the phrase &quot;shift left&quot; gets used constantly in this field without always being explained precisely, and the newer &quot;shift right&quot; half of the picture is even less commonly understood.</p>
+<h2>Shift left, precisely defined</h2>
+<p><strong>Shift left</strong> means moving security activities earlier in the software development lifecycle — from a final pre-release security review (traditionally happening right before deployment, the furthest &quot;right&quot; point) toward design, coding, and early testing phases instead. The core economic argument: a vulnerability found during design or code review costs dramatically less to fix than the exact same vulnerability found in production, since fixing it earlier avoids the cost of already-shipped code, customer impact, and emergency patching under pressure.</p>
+<h2>Why shift left isn&#39;t a silver bullet</h2>
+<p>Directly connecting to the threat-modeling-sdlc lesson: shift left genuinely reduces the <em>volume</em> of vulnerabilities that make it to production, but it doesn&#39;t eliminate the need for runtime security entirely — no amount of design review, static analysis, or code review catches every possible issue, particularly ones that only manifest under real production conditions (unexpected traffic patterns, actual attacker behavior, integration issues between services that only surface at scale). Treating shift left as sufficient on its own, with no runtime security investment, is a genuinely common and costly mistake.</p>
+<h2>Shift right — the underappreciated other half</h2>
+<p><strong>Shift right</strong> means extending security practices into production itself — runtime monitoring, real-user behavior analysis, and active response capability for the issues that inevitably still reach production despite shift-left efforts. Directly connecting to Path 16&#39;s threat-hunting-fundamentals and Path 24&#39;s UEBA coverage, shift-right practices include runtime application self-protection (RASP), production-environment vulnerability scanning, and chaos engineering-adjacent security testing (deliberately probing production-like environments for weaknesses under realistic conditions).</p>
+<h2>Why mature programs need both, not one or the other</h2>
+<p>A genuinely important framing: an organization that only shifts left assumes its pre-production security controls are perfect, which they never are — new attack techniques emerge after code ships, and some vulnerability classes are only observable in a running production environment. An organization that only shifts right is accepting an unnecessarily high volume of preventable issues reaching production in the first place, when many could have been caught far more cheaply earlier. Mature AppSec programs, directly connecting to the building-appsec-program lesson&#39;s maturity ladder, invest in both simultaneously, with the specific balance shifting somewhat based on organizational risk tolerance and resources.</p>
+<h2>Practical shift-left implementations</h2>
+<ul>
+<li>Security requirements defined at the design phase, before any code is written, directly connecting to the threat-modeling-sdlc lesson</li>
+<li>IDE-integrated static analysis providing feedback to developers as they type, rather than only in a separate, later CI stage</li>
+<li>Pre-commit hooks catching obvious issues (hardcoded secrets, known-vulnerable dependency versions) before code even reaches version control</li>
+</ul>
+<h2>Practical shift-right implementations</h2>
+<ul>
+<li>Runtime Application Self-Protection (RASP) — application-embedded monitoring that can detect and block attacks in real time within the running application itself, distinct from a perimeter-level WAF (Path 12)</li>
+<li>Production-safe canary deployments that gradually roll out changes, limiting the blast radius of any newly-introduced issue that pre-production testing missed</li>
+<li>Feature flags allowing rapid, code-deployment-free rollback of a feature discovered to have a security issue after release</li>
+</ul>
+<p>Why does an organization that invests heavily in shift-left practices still need meaningful shift-right investment, rather than treating a strong shift-left program as sufficient on its own?</p>
+<h2>Key terms</h2>
+<ul>
+<li><strong>Shift left</strong> — moving security activities earlier in the development lifecycle, toward design and coding phases.</li>
+<li><strong>Shift right</strong> — extending security practices into production through runtime monitoring and active response.</li>
+<li><strong>RASP (Runtime Application Self-Protection)</strong> — application-embedded security monitoring and blocking, distinct from perimeter-level controls.</li>
+</ul>
+<h2>Recap</h2>
+<p>Shift left moves security earlier because vulnerabilities cost dramatically less to fix during design and coding than after production deployment. Shift right extends security into production runtime, since no amount of pre-production effort catches every issue, particularly ones only observable under real conditions. Mature AppSec programs invest in both simultaneously as complementary strategies, not a choice between them.</p>
+<h3>References</h3>
+<ul>
+<li><a href="https://owasp.org/www-project-devsecops-guideline/">OWASP DevSecOps Guideline</a></li>
+<li><a href="https://csrc.nist.gov/Projects/ssdf">NIST SSDF (Secure Software Development Framework)</a></li>
+</ul>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/22-devsecops-appsec/shift-left-vs-shift-right";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SBOM &amp; Software Bill of Materials — Path 22 · KashSec Academy</title>
+<meta name="description" content="The secrets-supply-chain lesson covered typosquatting and dependency confusion as supply-chain attack vectors. This lesson covers the defensive tool increasingly mandated specifically to manage that s">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/22-devsecops-appsec/sbom-and-software-bill-of-materials">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="SBOM &amp; Software Bill of Materials — Path 22 · KashSec Academy">
+<meta property="og:description" content="The secrets-supply-chain lesson covered typosquatting and dependency confusion as supply-chain attack vectors. This lesson covers the defensive tool increasingly mandated specifically to manage that s">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/22-devsecops-appsec/sbom-and-software-bill-of-materials">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="SBOM &amp; Software Bill of Materials — Path 22 · KashSec Academy">
+<meta name="twitter:description" content="The secrets-supply-chain lesson covered typosquatting and dependency confusion as supply-chain attack vectors. This lesson covers the defensive tool increasingly mandated specifically to manage that s">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"SBOM & Software Bill of Materials — Path 22 · KashSec Academy","description":"The secrets-supply-chain lesson covered typosquatting and dependency confusion as supply-chain attack vectors. This lesson covers the defensive tool increasingly mandated specifically to manage that s","url":"https://kashsec.vercel.app/#/lesson/22-devsecops-appsec/sbom-and-software-bill-of-materials","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/22-devsecops-appsec/sbom-and-software-bill-of-materials">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 22 — DevSecOps & AppSec Program</a> · SBOM &amp; Software Bill of Materials</div>
+  <article><h1>SBOM &amp; Software Bill of Materials</h1>
+<p>The secrets-supply-chain lesson covered typosquatting and dependency confusion as supply-chain attack vectors. This lesson covers the defensive tool increasingly mandated specifically to manage that same supply-chain risk at scale — the <strong>Software Bill of Materials (SBOM)</strong> — directly connecting to Path 23&#39;s GRC lesson, since SBOM requirements have moved from best practice into genuine regulatory and contractual mandate in several sectors.</p>
+<h2>What an SBOM actually is</h2>
+<p>A <strong>Software Bill of Materials</strong> is a formal, machine-readable inventory of every component — every library, every dependency, every transitive dependency of those dependencies — that makes up a piece of software, along with version information for each. The concept borrows directly from manufacturing&#39;s traditional bill of materials (a parts list for a physical product), applied to software&#39;s often-invisible internal composition.</p>
+<pre><code>Application: PaymentService v2.4.1
+├── express@4.18.2
+├── jsonwebtoken@9.0.0
+│   └── jws@3.2.2
+│       └── jwa@1.4.1
+├── lodash@4.17.21
+└── ... (247 more dependencies)
+</code></pre>
+<h2>Why SBOMs became urgent, not just nice-to-have</h2>
+<p>Directly connecting to the secrets-supply-chain lesson&#39;s supply-chain attack coverage: several major, publicly disclosed supply-chain incidents — a widely-used dependency compromised, then silently pulled into thousands of downstream applications that had no way of knowing they depended on it, directly or transitively — made a genuinely uncomfortable fact clear across the industry: most organizations, until fairly recently, couldn&#39;t actually answer &quot;are we affected by this vulnerable component?&quot; quickly or confidently, simply because nobody had a complete, accurate inventory of what their software actually contained.</p>
+<h2>The transitive dependency problem, specifically</h2>
+<p>A genuinely important, easy-to-underestimate point: an application&#39;s direct dependencies (the ones explicitly listed in its own package manifest) are usually well understood — but each of those dependencies has its own dependencies, and so on, several layers deep. A vulnerability disclosed in a package three or four layers down the dependency tree, one the development team has likely never even heard of directly, can still affect the application just as severely as a vulnerability in a directly-chosen, well-known dependency — an SBOM&#39;s entire value proposition is making that full, deep dependency tree visible and queryable, rather than only the top-level list a <code>package.json</code> or similar manifest shows.</p>
+<h2>SBOM formats — SPDX and CycloneDX</h2>
+<p>Two standardized, widely-adopted SBOM formats dominate in practice: <strong>SPDX</strong> (Software Package Data Exchange, originally focused on license compliance, now broadly used for security purposes too) and <strong>CycloneDX</strong> (originally purpose-built for security use cases specifically). Both are machine-readable formats designed to be generated automatically as part of a build process and consumed automatically by vulnerability-matching tools, rather than manually maintained documents that inevitably go stale.</p>
+<h2>Generating and using SBOMs in practice</h2>
+<p>Directly connecting to the SAST/DAST/SCA lesson&#39;s SCA (Software Composition Analysis) coverage: most modern SCA tools can generate an SBOM directly as part of their normal scanning process — the practical workflow is generating an SBOM automatically on every build (via tools like <strong>Syft</strong>), storing it alongside the built artifact, and then, when a new vulnerability is publicly disclosed in any component, querying stored SBOMs across the entire organization&#39;s software inventory to instantly identify every affected application, rather than manually checking each application&#39;s dependencies one at a time.</p>
+<h2>Regulatory and contractual momentum behind SBOMs</h2>
+<p>Directly connecting to Path 23&#39;s GRC/compliance coverage: SBOM requirements have moved from voluntary best practice into explicit mandate in several contexts — US federal government software procurement now requires SBOMs from vendors under a 2021 executive order, and several industry-specific regulatory frameworks are moving in the same direction. This means SBOM generation is increasingly not just a defensive security practice but a genuine compliance and contractual requirement an AppSec program needs to actively support.</p>
+<p>Why does a vulnerability disclosed in a transitive dependency several layers deep in an application&#39;s dependency tree pose a genuine risk-visibility problem, even for a development team that carefully vets every dependency they directly choose?</p>
+<h2>Key terms</h2>
+<ul>
+<li><strong>SBOM (Software Bill of Materials)</strong> — a formal, machine-readable inventory of every component in a piece of software, including transitive dependencies.</li>
+<li><strong>Transitive dependency</strong> — a dependency of a dependency, often several layers removed from what a development team directly and knowingly chose.</li>
+<li><strong>SPDX / CycloneDX</strong> — the two dominant standardized, machine-readable SBOM formats.</li>
+</ul>
+<h2>Recap</h2>
+<p>An SBOM provides a complete, machine-readable inventory of every component in a piece of software, including deep transitive dependencies most development teams have never directly examined. This solves a genuine, previously widespread problem: organizations unable to quickly answer whether they&#39;re affected by a newly disclosed vulnerability in some component buried deep in their dependency tree. SPDX and CycloneDX are the dominant formats, SCA tools like Syft can generate SBOMs automatically as part of every build, and SBOM requirements have moved into genuine regulatory and contractual mandate in several sectors.</p>
+<h3>References</h3>
+<ul>
+<li><a href="https://cyclonedx.org/">CycloneDX</a> — a security-focused SBOM standard.</li>
+<li><a href="https://www.cisa.gov/sbom">CISA — SBOM resources</a> — official US government guidance and requirements.</li>
+<li><a href="https://github.com/anchore/syft">Syft</a> — a widely-used open-source SBOM generation tool.</li>
+</ul>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/22-devsecops-appsec/sbom-and-software-bill-of-materials";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>
