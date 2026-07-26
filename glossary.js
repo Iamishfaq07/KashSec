@@ -139,6 +139,15 @@ const GLOSSARY = [
   "subTitle": "Continuous Verification & Adaptive Access"
  },
  {
+  "term": "Ad identifier",
+  "def": "a resettable, device-level identifier used to track behavior across apps for advertising purposes.",
+  "pathId": "09-digital-privacy",
+  "pathN": "09",
+  "pathTitle": "Digital Privacy & Personal Security",
+  "subId": "device-location-privacy",
+  "subTitle": "Device & Location Privacy"
+ },
+ {
   "term": "Adoption metric vs. risk metric",
   "def": "the difference between measuring how much technology was deployed and measuring how much actual risk was reduced",
   "pathId": "24-zero-trust",
@@ -1048,6 +1057,15 @@ const GLOSSARY = [
   "subTitle": "DNS: the phonebook"
  },
  {
+  "term": "CCPA/CPRA",
+  "def": "California's state-level privacy law, granting residents rights to know, delete, and opt out of the sale of their data.",
+  "pathId": "09-digital-privacy",
+  "pathN": "09",
+  "pathTitle": "Digital Privacy & Personal Security",
+  "subId": "privacy-laws-your-rights",
+  "subTitle": "Privacy Laws & Your Rights"
+ },
+ {
   "term": "CCSK (Certificate of Cloud Security Knowledge)",
   "def": "a vendor-neutral cloud security certification from the Cloud Security Alliance.",
   "pathId": "08-cloud-basics",
@@ -1588,6 +1606,15 @@ const GLOSSARY = [
   "subTitle": "Cookies, sessions, logins"
  },
  {
+  "term": "COPPA (Children's Online Privacy Protection Act)",
+  "def": "US law restricting data collection from children under 13 without verifiable parental consent.",
+  "pathId": "09-digital-privacy",
+  "pathN": "09",
+  "pathTitle": "Digital Privacy & Personal Security",
+  "subId": "protecting-family-childrens-privacy",
+  "subTitle": "Protecting Family & Children's Privacy"
+ },
+ {
   "term": "Correlation rule",
   "def": "a SIEM rule connecting multiple individually-low-priority events into a higher-confidence alert.",
   "pathId": "12-network-security",
@@ -1822,6 +1849,15 @@ const GLOSSARY = [
   "subTitle": "Your Digital Footprint"
  },
  {
+  "term": "Data broker",
+  "def": "a company that collects, aggregates, and sells personal information, often without the individual's direct knowledge.",
+  "pathId": "09-digital-privacy",
+  "pathN": "09",
+  "pathTitle": "Digital Privacy & Personal Security",
+  "subId": "data-broker-opt-outs",
+  "subTitle": "Data Broker Opt-Outs"
+ },
+ {
   "term": "Data classification",
   "def": "labeling data by sensitivity so downstream controls can apply automatically",
   "pathId": "24-zero-trust",
@@ -1849,6 +1885,15 @@ const GLOSSARY = [
   "subTitle": "Threat Modeling in the SDLC"
  },
  {
+  "term": "Data Subject Access Request (DSAR)",
+  "def": "a formal request under GDPR (or similar laws) for an organization to disclose what personal data it holds about you.",
+  "pathId": "09-digital-privacy",
+  "pathN": "09",
+  "pathTitle": "Digital Privacy & Personal Security",
+  "subId": "privacy-laws-your-rights",
+  "subTitle": "Privacy Laws & Your Rights"
+ },
+ {
   "term": "DC groups",
   "def": "local DEF CON-affiliated meetup groups.",
   "pathId": "20-career-prep",
@@ -1865,6 +1910,15 @@ const GLOSSARY = [
   "pathTitle": "Introduction to Cybersecurity",
   "subId": "common-cyberattacks-overview",
   "subTitle": "A tour of common cyberattacks"
+ },
+ {
+  "term": "Deactivation",
+  "def": "hiding an account from public view while the underlying data typically remains stored by the provider.",
+  "pathId": "09-digital-privacy",
+  "pathN": "09",
+  "pathTitle": "Digital Privacy & Personal Security",
+  "subId": "deleting-your-digital-footprint",
+  "subTitle": "Deleting Your Digital Footprint"
  },
  {
   "term": "Debugging",
@@ -1937,6 +1991,15 @@ const GLOSSARY = [
   "pathTitle": "AI & AI Security",
   "subId": "securing-llm-apps",
   "subTitle": "Securing LLM Applications"
+ },
+ {
+  "term": "Deletion",
+  "def": "actually triggering removal of account data, subject to any legal retention exceptions.",
+  "pathId": "09-digital-privacy",
+  "pathN": "09",
+  "pathTitle": "Digital Privacy & Personal Security",
+  "subId": "deleting-your-digital-footprint",
+  "subTitle": "Deleting Your Digital Footprint"
  },
  {
   "term": "Deny by default",
@@ -2882,6 +2945,15 @@ const GLOSSARY = [
   "pathTitle": "Advanced Cyber Topics",
   "subId": "specialise",
   "subTitle": "Advanced career paths"
+ },
+ {
+  "term": "GDPR (General Data Protection Regulation)",
+  "def": "the EU's comprehensive privacy law, applying to any organization processing EU residents' data.",
+  "pathId": "09-digital-privacy",
+  "pathN": "09",
+  "pathTitle": "Digital Privacy & Personal Security",
+  "subId": "privacy-laws-your-rights",
+  "subTitle": "Privacy Laws & Your Rights"
  },
  {
   "term": "`getpass`",
@@ -4207,6 +4279,24 @@ const GLOSSARY = [
   "subTitle": "Windows Services & Task Manager, for Security"
  },
  {
+  "term": "Location history",
+  "def": "a persistent, often long-retained timeline of a device's past locations, frequently maintained at the account level rather than per-app.",
+  "pathId": "09-digital-privacy",
+  "pathN": "09",
+  "pathTitle": "Digital Privacy & Personal Security",
+  "subId": "device-location-privacy",
+  "subTitle": "Device & Location Privacy"
+ },
+ {
+  "term": "Location permission",
+  "def": "the granular control an operating system gives users over which apps can access device location, and under what conditions.",
+  "pathId": "09-digital-privacy",
+  "pathN": "09",
+  "pathTitle": "Digital Privacy & Personal Security",
+  "subId": "device-location-privacy",
+  "subTitle": "Device & Location Privacy"
+ },
+ {
   "term": "LOLBins",
   "def": "using legitimate built-in tools to avoid detection.",
   "pathId": "10-fundamentals",
@@ -4711,6 +4801,15 @@ const GLOSSARY = [
   "subTitle": "VPNs Explained"
  },
  {
+  "term": "No-logs policy",
+  "def": "a provider's commitment not to record user activity, ideally verified by independent audit rather than taken on trust alone.",
+  "pathId": "09-digital-privacy",
+  "pathN": "09",
+  "pathTitle": "Digital Privacy & Personal Security",
+  "subId": "privacy-focused-tools-alternatives",
+  "subTitle": "Privacy-Focused Tools & Alternatives"
+ },
+ {
   "term": "Nonce / IV (initialization vector)",
   "def": "a value required to be unique per encryption operation, though not necessarily secret.",
   "pathId": "06-crypto-fundamentals",
@@ -4864,6 +4963,15 @@ const GLOSSARY = [
   "subTitle": "Case Studies & Capstone: Assess a Zero Trust Maturity"
  },
  {
+  "term": "Opt-out",
+  "def": "a request to a data broker to remove your information from their database, generally requiring periodic repetition.",
+  "pathId": "09-digital-privacy",
+  "pathN": "09",
+  "pathTitle": "Digital Privacy & Personal Security",
+  "subId": "data-broker-opt-outs",
+  "subTitle": "Data Broker Opt-Outs"
+ },
+ {
   "term": "OSCP",
   "def": "the industry's gold-standard hands-on offensive security certification.",
   "pathId": "20-career-prep",
@@ -4943,6 +5051,15 @@ const GLOSSARY = [
   "pathTitle": "AI & AI Security",
   "subId": "llm-top-10",
   "subTitle": "OWASP LLM Top 10"
+ },
+ {
+  "term": "Oversharing (security sense)",
+  "def": "revealing information that, combined with other public details, meaningfully lowers the cost of an attack against you.",
+  "pathId": "09-digital-privacy",
+  "pathN": "09",
+  "pathTitle": "Digital Privacy & Personal Security",
+  "subId": "social-media-privacy-oversharing",
+  "subTitle": "Social Media Privacy & Oversharing"
  },
  {
   "term": "Oversight",
@@ -6925,6 +7042,15 @@ const GLOSSARY = [
   "subTitle": "Zero Trust in Cloud-Native Environments"
  },
  {
+  "term": "Sharenting",
+  "def": "parents regularly sharing details, photos, or milestones about their children online.",
+  "pathId": "09-digital-privacy",
+  "pathN": "09",
+  "pathTitle": "Digital Privacy & Personal Security",
+  "subId": "protecting-family-childrens-privacy",
+  "subTitle": "Protecting Family & Children's Privacy"
+ },
+ {
   "term": "Shebang",
   "def": "`#!` line naming the interpreter.",
   "pathId": "03-linux",
@@ -7645,6 +7771,15 @@ const GLOSSARY = [
   "subTitle": "Meet the terminal"
  },
  {
+  "term": "Tag review",
+  "def": "a platform feature requiring approval before content tagging you becomes visible on your profile.",
+  "pathId": "09-digital-privacy",
+  "pathN": "09",
+  "pathTitle": "Digital Privacy & Personal Security",
+  "subId": "social-media-privacy-oversharing",
+  "subTitle": "Social Media Privacy & Oversharing"
+ },
+ {
   "term": "Take-home challenge",
   "def": "a practical exercise (often a small pentest, code review, or written analysis) completed outside the live interview.",
   "pathId": "20-career-prep",
@@ -7841,6 +7976,15 @@ const GLOSSARY = [
   "pathTitle": "AI & AI Security",
   "subId": "how-llms-work",
   "subTitle": "How LLMs actually work"
+ },
+ {
+  "term": "Tor",
+  "def": "a browser and network routing traffic through multiple encrypted relays for strong anonymity, at a real cost to speed and compatibility.",
+  "pathId": "09-digital-privacy",
+  "pathN": "09",
+  "pathTitle": "Digital Privacy & Personal Security",
+  "subId": "privacy-focused-tools-alternatives",
+  "subTitle": "Privacy-Focused Tools & Alternatives"
  },
  {
   "term": "Traceback",

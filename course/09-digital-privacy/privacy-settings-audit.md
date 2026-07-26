@@ -71,4 +71,4 @@ Work through all 7 categories above for your own accounts and devices, documenti
 - [EFF: Privacy Behind the Firewall (settings guides)](https://ssd.eff.org/) — free, platform-specific privacy settings walkthroughs.
 ???
 
-**Next up →** [Personal Security Capstone Lab](#/lesson/09-digital-privacy/personal-security-lab)
+**Next up →** [Protecting Family & Children's Privacy](#/lesson/09-digital-privacy/protecting-family-childrens-privacy)

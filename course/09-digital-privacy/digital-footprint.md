@@ -64,4 +64,4 @@ Search your own name across a search engine, review what's publicly visible on y
 - [EFF: Surveillance Self-Defense](https://ssd.eff.org/) — a free, comprehensive, well-regarded guide to digital privacy practices.
 ???
 
-**Next up →** [VPNs Explained](#/lesson/09-digital-privacy/vpns-explained)
+**Next up →** [Social Media Privacy & Oversharing](#/lesson/09-digital-privacy/social-media-privacy-oversharing)

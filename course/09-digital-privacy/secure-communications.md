@@ -66,4 +66,4 @@ Why can a messaging provider using "encryption in transit" (but not end-to-end e
 - [EFF: Surveillance Self-Defense — Communicating with Others](https://ssd.eff.org/module-categories/communicating-others) — free, practical guidance on choosing secure communication tools.
 ???
 
-**Next up →** [Identity Theft Protection](#/lesson/09-digital-privacy/identity-theft-protection)
+**Next up →** [Device & Location Privacy](#/lesson/09-digital-privacy/device-location-privacy)

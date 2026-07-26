@@ -65,4 +65,4 @@ Using Cover Your Tracks, test your own browser's fingerprint uniqueness. Then re
 - [uBlock Origin](https://ublockorigin.com/) — free, open-source, widely-regarded tracker/ad blocking extension.
 ???
 
-**Next up →** [Secure Communications](#/lesson/09-digital-privacy/secure-communications)
+**Next up →** [Privacy-Focused Tools & Alternatives](#/lesson/09-digital-privacy/privacy-focused-tools-alternatives)

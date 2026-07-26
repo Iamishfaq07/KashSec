@@ -827,12 +827,19 @@ const PATHS = [
    desc:"A full path on protecting yourself, not just systems — your digital footprint, VPNs, browser tracking, secure messaging, identity theft, and a complete personal security audit.",
    subs:[
      {n:"1", id:"digital-footprint",          title:"Your Digital Footprint", desc:"What you leave behind online, and why it enables spear phishing."},
-     {n:"2", id:"vpns-explained",             title:"VPNs Explained", desc:"What a VPN genuinely protects against — and what it doesn't."},
-     {n:"3", id:"browser-privacy",            title:"Browser Privacy", desc:"Third-party cookies, fingerprinting, and why incognito mode isn't a privacy tool."},
-     {n:"4", id:"secure-communications",      title:"Secure Communications", desc:"End-to-end encryption vs. encrypted-in-transit, and what metadata still reveals."},
-     {n:"5", id:"identity-theft-protection",  title:"Identity Theft Protection", desc:"Credit freezes, monitoring, and a concrete response checklist."},
-     {n:"6", id:"privacy-settings-audit",     title:"Privacy Settings Audit", desc:"A structured, repeatable audit of your real accounts."},
-     {n:"7", id:"personal-security-lab",      title:"Personal Security Capstone Lab", desc:"A complete personal security review, start to finish."}
+     {n:"2", id:"social-media-privacy-oversharing", title:"Social Media Privacy & Oversharing", desc:"Aggregation risk in practice — real-time location, metadata photos, and hidden security answers."},
+     {n:"3", id:"vpns-explained",             title:"VPNs Explained", desc:"What a VPN genuinely protects against — and what it doesn't."},
+     {n:"4", id:"browser-privacy",            title:"Browser Privacy", desc:"Third-party cookies, fingerprinting, and why incognito mode isn't a privacy tool."},
+     {n:"5", id:"privacy-focused-tools-alternatives", title:"Privacy-Focused Tools & Alternatives", desc:"Real tools — browsers, search engines, messaging, VPNs — matched honestly to their tradeoffs."},
+     {n:"6", id:"secure-communications",      title:"Secure Communications", desc:"End-to-end encryption vs. encrypted-in-transit, and what metadata still reveals."},
+     {n:"7", id:"device-location-privacy",    title:"Device & Location Privacy", desc:"How your phone reveals location beyond GPS, and the app-permission habits that matter."},
+     {n:"8", id:"data-broker-opt-outs",       title:"Data Broker Opt-Outs", desc:"The industry compiling your public data into purchasable profiles, and how to push back."},
+     {n:"9", id:"identity-theft-protection",  title:"Identity Theft Protection", desc:"Credit freezes, monitoring, and a concrete response checklist."},
+     {n:"10", id:"privacy-laws-your-rights",  title:"Privacy Laws & Your Rights", desc:"GDPR, CCPA, and how to actually exercise your legal data rights."},
+     {n:"11", id:"privacy-settings-audit",     title:"Privacy Settings Audit", desc:"A structured, repeatable audit of your real accounts."},
+     {n:"12", id:"protecting-family-childrens-privacy", title:"Protecting Family & Children's Privacy", desc:"Sharenting, COPPA, and applying deliberate choice on someone else's behalf."},
+     {n:"13", id:"deleting-your-digital-footprint", title:"Deleting Your Digital Footprint", desc:"A practical, prioritized cleanup process, tying this whole path together."},
+     {n:"14", id:"personal-security-lab",      title:"Personal Security Capstone Lab", desc:"A complete personal security review, start to finish."}
    ]},
   {n:"10", id:"10-fundamentals", title:"Cybersecurity Fundamentals", level:"Beginner→Intermediate",
    desc:"CIA triad, risk, malware, hashing, phishing, MFA, frameworks.",
@@ -4759,6 +4766,11 @@ function renderLabPhishing(){
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
+  {date:'2026-07-25', title:'Path 09 doubled to 14 lessons', items:[
+    'Eighth batch of the course-wide content-doubling effort: Path 09 (Digital Privacy & Personal Security) grows from 7 to 14 lessons.',
+    'New lessons: Social Media Privacy & Oversharing, Privacy-Focused Tools & Alternatives, Device & Location Privacy, Data Broker Opt-Outs, Privacy Laws & Your Rights (GDPR/CCPA), Protecting Family & Children\'s Privacy, and Deleting Your Digital Footprint.',
+    'The new closing lesson ties the whole path together into a practical, prioritized cleanup process.'
+  ]},
   {date:'2026-07-25', title:'Path 08 doubled to 14 lessons', items:[
     'Seventh batch of the course-wide content-doubling effort: Path 08 (Cloud Computing Basics) grows from 7 to 14 lessons.',
     'New lessons: Cloud Compute Basics, Cloud Serverless Basics, Cloud Databases Basics, Cloud Logging & Monitoring Basics, Cloud Cost & Billing Security, Cloud Multi-Account Governance, and Cloud Security Careers & Certifications.',

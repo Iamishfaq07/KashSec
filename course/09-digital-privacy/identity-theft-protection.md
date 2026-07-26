@@ -69,4 +69,4 @@ Write out your own personal identity theft response checklist, adapted from this
 - [Have I Been Pwned](https://haveibeenpwned.com/) — check your accounts against known breaches, referenced throughout this course since Path 00.
 ???
 
-**Next up →** [Privacy Settings Audit](#/lesson/09-digital-privacy/privacy-settings-audit)
+**Next up →** [Privacy Laws & Your Rights](#/lesson/09-digital-privacy/privacy-laws-your-rights)

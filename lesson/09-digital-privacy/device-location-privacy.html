@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Device &amp; Location Privacy — Path 09 · KashSec Academy</title>
+<meta name="description" content="Every lesson so far in this path has focused on what you do online. This lesson covers something more physical and often overlooked: what your devices themselves reveal about your real-world location ">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/09-digital-privacy/device-location-privacy">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Device &amp; Location Privacy — Path 09 · KashSec Academy">
+<meta property="og:description" content="Every lesson so far in this path has focused on what you do online. This lesson covers something more physical and often overlooked: what your devices themselves reveal about your real-world location ">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/09-digital-privacy/device-location-privacy">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Device &amp; Location Privacy — Path 09 · KashSec Academy">
+<meta name="twitter:description" content="Every lesson so far in this path has focused on what you do online. This lesson covers something more physical and often overlooked: what your devices themselves reveal about your real-world location ">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Device & Location Privacy — Path 09 · KashSec Academy","description":"Every lesson so far in this path has focused on what you do online. This lesson covers something more physical and often overlooked: what your devices themselves reveal about your real-world location ","url":"https://kashsec.vercel.app/#/lesson/09-digital-privacy/device-location-privacy","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/09-digital-privacy/device-location-privacy">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 09 — Digital Privacy & Personal Security</a> · Device &amp; Location Privacy</div>
+  <article><h1>Device &amp; Location Privacy</h1>
+<p>Every lesson so far in this path has focused on what you do online. This lesson covers something more physical and often overlooked: what your devices themselves reveal about your real-world location and habits, frequently without you actively doing anything at all.</p>
+<p>:::</p>
+<h2>How your phone reveals location, even with GPS considerations aside</h2>
+<ul>
+<li><strong>GPS</strong> — the most precise source, but not the only one</li>
+<li><strong>Wi-Fi and Bluetooth scanning</strong> — your phone can determine approximate location by detecting nearby Wi-Fi networks and Bluetooth devices and comparing them against a database, even without connecting to any of them and even with GPS disabled</li>
+<li><strong>Cell tower triangulation</strong> — your carrier can approximate your location based on which cell towers your phone connects to, a baseline level of location awareness that exists independent of any app or setting</li>
+<li><strong>IP address geolocation</strong> — a coarser but still real signal, revealing your general area (Path 08&#39;s cloud-networking material touched on IP-based location from a different angle) even for purely web-based activity with no app involved at all</li>
+</ul>
+<h2>App permissions: the practical control point</h2>
+<p>Most location exposure in practice comes down to which apps you&#39;ve granted <strong>location permission</strong> to, and how broadly:</p>
+<ul>
+<li><strong>&quot;While using the app&quot;</strong> — location access only when the app is actively open and in use, generally the most privacy-respecting option for apps that genuinely need location (maps, weather)</li>
+<li><strong>&quot;Always&quot;</strong> — location access even when the app is closed or running in the background, which a genuinely small number of apps actually need to function (a fitness tracker recording your full walk, for instance) — and worth specifically questioning for any app requesting it without an obvious reason</li>
+<li><strong>Precise vs. approximate location</strong> — some platforms now let you grant an app your general area without your exact coordinates, a genuinely useful middle ground for apps that have some legitimate use for location without needing pinpoint precision</li>
+</ul>
+<h2>Location history and the accounts that quietly keep it</h2>
+<p>Beyond individual apps, some account-level services maintain a long-term, detailed <strong>location history</strong> — a timeline of everywhere a device has been, often retained for years unless a user actively finds and disables it. This is meaningfully different from a single app&#39;s real-time location access: it&#39;s a persistent, searchable historical record, and it&#39;s frequently enabled by default as part of a broader account setup rather than something users deliberately opted into with full awareness of what it accumulates.</p>
+<h2>Other device-level privacy signals worth knowing about</h2>
+<ul>
+<li><strong>Ad identifiers</strong> — a unique-per-device identifier (distinct from your name or account) that lets advertisers track behavior across different apps, resettable in most device settings, a genuinely useful periodic habit</li>
+<li><strong>Bluetooth and Wi-Fi discoverability</strong> — leaving these broadly discoverable when not actively pairing a new device provides no benefit and a small amount of unnecessary exposure</li>
+<li><strong>Smart home and IoT devices</strong> — increasingly common sources of always-on data collection (audio from smart speakers, video from doorbell cameras) worth the same permission-review scrutiny as phone apps</li>
+</ul>
+<p>:::challenge Evaluate a permission request
+A simple flashlight app requests &quot;Always&quot; location access and full contact list access during installation.</p>
+<details><summary>Hint</summary>Does a flashlight app have any plausible functional need for either of these permissions? What does a request this disproportionate to the app's actual purpose suggest?</details>
+<details><summary>Show answer</summary>A flashlight app has no legitimate functional need for either location or contact access — its entire function is toggling the device's flash, which requires neither. A permission request this disproportionate to an app's stated purpose is a well-known warning sign of a data-harvesting app whose real business model is collecting and selling exactly this kind of information, sometimes for legitimate ad-targeting purposes and sometimes for less legitimate ones. The practical response: deny permissions that don't match an app's obvious function, and treat a flashlight app specifically requesting broad "Always" location and full contacts as a reason to look for a more narrowly-scoped alternative rather than granting the request out of habit.</details><h2>🧪 Hands-on lab — audit your own device</h2>
+<p>On your own phone, review the location permission granted to your five most-used apps, and identify any set to &quot;Always&quot; that you can reasonably restrict to &quot;While using the app&quot; without breaking the app&#39;s actual function. Separately, check whether your device or a linked account maintains a location history, and review what it&#39;s actually retained.</p>
+<ol>
+<li>Name two ways a phone can reveal approximate location even with GPS disabled.</li>
+<li>What&#39;s the practical difference between &quot;While using the app&quot; and &quot;Always&quot; location permission?</li>
+<li>Why is a location history feature meaningfully different in risk from a single app&#39;s real-time location access?</li>
+</ol>
+<h2>Key terms</h2>
+<ul>
+<li><strong>Location permission</strong> — the granular control an operating system gives users over which apps can access device location, and under what conditions.</li>
+<li><strong>Location history</strong> — a persistent, often long-retained timeline of a device&#39;s past locations, frequently maintained at the account level rather than per-app.</li>
+<li><strong>Ad identifier</strong> — a resettable, device-level identifier used to track behavior across apps for advertising purposes.</li>
+</ul>
+<h2>Recap</h2>
+<p>Your device reveals location through far more channels than GPS alone — Wi-Fi/Bluetooth scanning, cell tower proximity, and IP geolocation all contribute, largely invisibly. App-level location permissions are the most practical control point, and reviewing which apps have &quot;Always&quot; access (versus the more privacy-respecting &quot;While using the app&quot;) against their actual functional need is a genuinely high-value, low-effort habit — directly extending this path&#39;s ongoing theme of understanding exactly what&#39;s being collected so you can make that choice deliberately.</p>
+<h3>References</h3>
+<ul>
+<li><a href="https://www.eff.org/issues/location-tracking">EFF — Location Data and Privacy</a> — deeper coverage of location tracking mechanisms and mitigations</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/09-digital-privacy/data-broker-opt-outs">Data Broker Opt-Outs</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/09-digital-privacy/device-location-privacy";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>
