@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Defense in depth — Path 10 · KashSec Academy</title>
+<meta name="description" content="The CIA triad told you what security protects. This lesson introduces the strategy for actually protecting it: defense in depth — a concept you'll see referenced constantly for the rest of this course">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/10-fundamentals/defense-in-depth-basics">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Defense in depth — Path 10 · KashSec Academy">
+<meta property="og:description" content="The CIA triad told you what security protects. This lesson introduces the strategy for actually protecting it: defense in depth — a concept you'll see referenced constantly for the rest of this course">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/10-fundamentals/defense-in-depth-basics">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Defense in depth — Path 10 · KashSec Academy">
+<meta name="twitter:description" content="The CIA triad told you what security protects. This lesson introduces the strategy for actually protecting it: defense in depth — a concept you'll see referenced constantly for the rest of this course">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Defense in depth — Path 10 · KashSec Academy","description":"The CIA triad told you what security protects. This lesson introduces the strategy for actually protecting it: defense in depth — a concept you'll see referenced constantly for the rest of this course","url":"https://kashsec.vercel.app/#/lesson/10-fundamentals/defense-in-depth-basics","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/10-fundamentals/defense-in-depth-basics">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 10 — Cybersecurity Fundamentals</a> · Defense in depth</div>
+  <article><h1>Defense in depth</h1>
+<p>The CIA triad told you <em>what</em> security protects. This lesson introduces the strategy for actually protecting it: <strong>defense in depth</strong> — a concept you&#39;ll see referenced constantly for the rest of this course, now formally introduced with its own name and reasoning.</p>
+<h2>The core idea: no single control is ever enough</h2>
+<p><strong>Defense in depth</strong> means layering multiple, independent security controls so that if one fails — and every single control eventually can fail, whether through a bug, a misconfiguration, or a genuinely novel attack technique — the others still stand between an attacker and the actual asset being protected.</p>
+<h2>A concrete example, drawing on lessons you&#39;ve already seen</h2>
+<p>Think back to Path 05&#39;s Content Security Policy lesson: even if an application has an actual XSS vulnerability (one layer failing), a properly configured CSP can still prevent the injected script from executing (a second, independent layer catching what the first missed). Neither layer alone is a complete defense — the actual input validation that would have prevented the XSS in the first place still matters — but together, they mean one single mistake doesn&#39;t automatically become a full compromise.</p>
+<h2>The castle analogy, made concrete</h2>
+<p>A medieval castle didn&#39;t rely on just one wall — it layered a moat, an outer wall, an inner wall, and a keep, each providing a fallback if an earlier layer was breached. Modern defense in depth follows the same logic, just with firewalls, access controls, monitoring, and encryption instead of stone and water.</p>
+<h2>Why this principle explains so much of this course&#39;s structure</h2>
+<p>Nearly every path in this course adds a distinct layer to the same overall picture: network segmentation (Path 02, Path 24), strong authentication (Path 00), input validation (Path 05, Path 11), monitoring and logging (Path 08, Path 03), and encryption (Path 06) are all <em>independent</em> layers, each catching different failure modes. This is exactly why no single path in this course claims to be &quot;the&quot; solution to security — the entire structure of this curriculum mirrors the defense-in-depth principle itself.</p>
+<p>Why is relying on a single, even very strong, security control (say, an excellent firewall) considered poor practice, even if that one control genuinely works well?</p>
+<details><summary>Show answer</summary>Every security control, no matter how strong, has some way it can fail — a firewall can be misconfigured, bypassed through a legitimate but abused channel, or rendered irrelevant by an attack that doesn't need to cross it at all (an insider threat, a phishing-compromised credential used through the front door). Relying on a single control means that one specific failure mode becomes a complete compromise with nothing else standing in the way. Defense in depth accepts that any individual layer might fail and asks a different question: even if this specific control fails, what else is still standing between the attacker and the actual asset? This is exactly why a genuinely mature security posture is measured by how many independent layers exist, not by how strong any single layer is.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Defense in depth</strong> — layering multiple independent security controls so a single failure doesn&#39;t lead directly to full compromise.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Defense in depth means no single control is ever trusted alone — layered, independent controls catch different failure modes.</li>
+<li>The CSP-versus-XSS example from Path 05 is a concrete illustration: a failure at one layer (the injection vulnerability) doesn&#39;t automatically mean the attack succeeds, if a later layer (CSP) catches it.</li>
+<li>This entire course is structured around the same principle — no single path is &quot;the&quot; answer to security, and that&#39;s intentional.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/10-fundamentals/threats-risk">Threats, vulnerabilities &amp; risk</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/10-fundamentals/defense-in-depth-basics";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

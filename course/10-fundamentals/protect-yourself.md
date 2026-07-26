@@ -158,4 +158,4 @@ Why is enabling MFA on your **email account** specifically considered higher pri
 - [EFF Surveillance Self-Defense](https://ssd.eff.org/) — excellent deep-dive personal security guide.
 ???
 
-**Next up →** [Security frameworks & standards](#/lesson/10-fundamentals/frameworks)
+**Next up →** [Incident Response Basics](#/lesson/10-fundamentals/incident-response-basics)

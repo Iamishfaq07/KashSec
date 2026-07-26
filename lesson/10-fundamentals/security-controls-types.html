@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Types of security controls — Path 10 · KashSec Academy</title>
+<meta name="description" content="The threats-risk lesson gave you the vocabulary for what security manages. This lesson categorizes the actual tools used to manage it — a classification system you'll see referenced constantly in fram">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/10-fundamentals/security-controls-types">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Types of security controls — Path 10 · KashSec Academy">
+<meta property="og:description" content="The threats-risk lesson gave you the vocabulary for what security manages. This lesson categorizes the actual tools used to manage it — a classification system you'll see referenced constantly in fram">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/10-fundamentals/security-controls-types">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Types of security controls — Path 10 · KashSec Academy">
+<meta name="twitter:description" content="The threats-risk lesson gave you the vocabulary for what security manages. This lesson categorizes the actual tools used to manage it — a classification system you'll see referenced constantly in fram">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Types of security controls — Path 10 · KashSec Academy","description":"The threats-risk lesson gave you the vocabulary for what security manages. This lesson categorizes the actual tools used to manage it — a classification system you'll see referenced constantly in fram","url":"https://kashsec.vercel.app/#/lesson/10-fundamentals/security-controls-types","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/10-fundamentals/security-controls-types">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 10 — Cybersecurity Fundamentals</a> · Types of security controls</div>
+  <article><h1>Types of security controls</h1>
+<p>The threats-risk lesson gave you the vocabulary for what security manages. This lesson categorizes the actual tools used to manage it — a classification system you&#39;ll see referenced constantly in frameworks, job postings, and real security assessments.</p>
+<h2>The four functional categories</h2>
+<ul>
+<li><strong>Preventive</strong> — stops an incident before it happens (a firewall blocking unauthorized traffic, MFA preventing account takeover from a stolen password alone)</li>
+<li><strong>Detective</strong> — identifies that something happened, ideally quickly (logging and monitoring from Path 08, an intrusion detection system, the recognizing-compromise habits from Path 07)</li>
+<li><strong>Corrective</strong> — limits damage and restores normal operation after an incident (backups and recovery from Path 00 and Path 07, an incident response plan)</li>
+<li><strong>Deterrent</strong> — discourages an attack from being attempted at all (visible security cameras, a warning banner on a login page, published legal consequences)</li>
+</ul>
+<h2>Why categorizing controls this way is genuinely useful</h2>
+<p>A mature security program deliberately includes controls from <em>every</em> category, not just preventive ones — a genuinely common beginner mistake is over-investing in prevention while under-investing in detection, leaving an organization with no way to notice when (not if) a preventive control eventually fails. This directly extends the previous lesson&#39;s defense-in-depth principle: different control types catch different failure points along the same attack timeline.</p>
+<h2>A second useful classification: technical, administrative, physical</h2>
+<p>Beyond the functional categories above, controls are also classified by <em>what kind of thing</em> they actually are:</p>
+<ul>
+<li><strong>Technical controls</strong> — implemented through technology (firewalls, encryption, access control lists)</li>
+<li><strong>Administrative controls</strong> — policies, procedures, and training (a security policy document, mandatory security awareness training, background checks before hiring)</li>
+<li><strong>Physical controls</strong> — protecting the actual physical environment (locked server rooms, badge access, security cameras — covered fully in the physical-security lesson later in this path)</li>
+</ul>
+<h2>Mapping a real example across both classifications</h2>
+<p>Take <strong>MFA</strong> (from Path 00): it&#39;s a <strong>preventive</strong>, <strong>technical</strong> control. A <strong>security awareness training program</strong> teaching employees to recognize phishing is a <strong>preventive</strong>, <strong>administrative</strong> control. Both prevent incidents, but through completely different mechanisms — technology versus human behavior — which is exactly why a mature program needs both, not just the technical half.</p>
+<p>An organization has excellent firewalls, strong encryption, and MFA everywhere — but no logging, no monitoring, and no incident response plan. Using this lesson&#39;s framework, what&#39;s the specific gap in their control strategy?</p>
+<details><summary>Show answer</summary>This organization has heavily invested in <strong>preventive</strong> controls but has essentially no <strong>detective</strong> or <strong>corrective</strong> controls at all. Every preventive control, no matter how strong, can eventually fail or be bypassed — and without detective controls (logging, monitoring), this organization would have no way to even notice that a breach occurred, let alone respond to it. Without corrective controls (an incident response plan, tested backups), they'd also have no structured way to limit damage or recover once an incident is finally discovered, however that discovery happens. This is exactly the "over-invest in prevention, under-invest in detection" pattern this lesson warned is a common and genuinely dangerous real-world mistake — strong locks on every door mean little if nobody notices when one gets picked anyway.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Preventive / detective / corrective / deterrent controls</strong> — the four functional categories describing what a security control actually does along an incident&#39;s timeline.</li>
+<li><strong>Technical / administrative / physical controls</strong> — the classification describing what kind of mechanism a control actually is.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Security controls are classified by function (preventive, detective, corrective, deterrent) and by type (technical, administrative, physical).</li>
+<li>A mature security program deliberately includes controls from every functional category, not just preventive ones — over-investing in prevention alone is a common, genuinely dangerous mistake.</li>
+<li>The same real-world control (like MFA or security training) can be classified along both dimensions simultaneously, and understanding both helps identify genuine gaps in a security strategy.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/10-fundamentals/vulnerability-management-basics">Vulnerability Management Basics</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/10-fundamentals/security-controls-types";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

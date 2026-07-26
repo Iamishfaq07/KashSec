@@ -1039,6 +1039,15 @@ const GLOSSARY = [
   "subTitle": "What is a bug bounty?"
  },
  {
+  "term": "Business Continuity Planning (BCP)",
+  "def": "planning for how an organization continues functioning during a major disruption.",
+  "pathId": "10-fundamentals",
+  "pathN": "10",
+  "pathTitle": "Cybersecurity Fundamentals",
+  "subId": "business-continuity-disaster-recovery",
+  "subTitle": "Business Continuity & Disaster Recovery"
+ },
+ {
   "term": "Business email compromise (CEO fraud)",
   "def": "impersonating a company executive to authorize fraudulent transfers.",
   "pathId": "00-fresher-basics",
@@ -1561,6 +1570,15 @@ const GLOSSARY = [
   "subTitle": "Lists & functions"
  },
  {
+  "term": "Compromised insider",
+  "def": "a legitimate account taken over by an external attacker, inheriting that account's full legitimate access.",
+  "pathId": "10-fundamentals",
+  "pathN": "10",
+  "pathTitle": "Cybersecurity Fundamentals",
+  "subId": "insider-threats",
+  "subTitle": "Insider Threats"
+ },
+ {
   "term": "CompTIA Network+",
   "def": "the standard, vendor-neutral entry-level networking certification.",
   "pathId": "02-networking",
@@ -1685,6 +1703,15 @@ const GLOSSARY = [
   "pathTitle": "Advanced Cyber Topics",
   "subId": "containers-k8s",
   "subTitle": "Containers & Kubernetes"
+ },
+ {
+  "term": "Containment",
+  "def": "the incident-response phase focused on stopping an incident from spreading further.",
+  "pathId": "10-fundamentals",
+  "pathN": "10",
+  "pathTitle": "Cybersecurity Fundamentals",
+  "subId": "incident-response-basics",
+  "subTitle": "Incident Response Basics"
  },
  {
   "term": "Content discovery",
@@ -1993,6 +2020,15 @@ const GLOSSARY = [
   "subTitle": "Elliptic Curve Cryptography"
  },
  {
+  "term": "CVE (Common Vulnerabilities and Exposures)",
+  "def": "a standardized, unique identifier for a specific publicly known vulnerability.",
+  "pathId": "10-fundamentals",
+  "pathN": "10",
+  "pathTitle": "Cybersecurity Fundamentals",
+  "subId": "vulnerability-management-basics",
+  "subTitle": "Vulnerability Management Basics"
+ },
+ {
   "term": "CVE / CVSS / CWE",
   "def": "public identifiers and scoring for known vulnerabilities.",
   "pathId": "10-fundamentals",
@@ -2000,6 +2036,15 @@ const GLOSSARY = [
   "pathTitle": "Cybersecurity Fundamentals",
   "subId": "threats-risk",
   "subTitle": "Threats, vulns & risk"
+ },
+ {
+  "term": "CVSS (Common Vulnerability Scoring System)",
+  "def": "a numeric score (0-10) representing a vulnerability's theoretical severity.",
+  "pathId": "10-fundamentals",
+  "pathN": "10",
+  "pathTitle": "Cybersecurity Fundamentals",
+  "subId": "vulnerability-management-basics",
+  "subTitle": "Vulnerability Management Basics"
  },
  {
   "term": "CVSS score/vector",
@@ -2219,6 +2264,15 @@ const GLOSSARY = [
  },
  {
   "term": "Defense in depth",
+  "def": "layering multiple independent security controls so a single failure doesn't lead directly to full compromise.",
+  "pathId": "10-fundamentals",
+  "pathN": "10",
+  "pathTitle": "Cybersecurity Fundamentals",
+  "subId": "defense-in-depth-basics",
+  "subTitle": "Defense in depth"
+ },
+ {
+  "term": "Defense in depth",
   "def": "layering multiple independent controls.",
   "pathId": "10-fundamentals",
   "pathN": "10",
@@ -2396,6 +2450,15 @@ const GLOSSARY = [
   "pathTitle": "Malware & Reverse Engineering",
   "subId": "re-fundamentals",
   "subTitle": "Reverse Engineering Fundamentals"
+ },
+ {
+  "term": "Disaster Recovery (DR)",
+  "def": "the technical subset of BCP focused on restoring IT systems and data.",
+  "pathId": "10-fundamentals",
+  "pathN": "10",
+  "pathTitle": "Cybersecurity Fundamentals",
+  "subId": "business-continuity-disaster-recovery",
+  "subTitle": "Business Continuity & Disaster Recovery"
  },
  {
   "term": "Display filter",
@@ -4036,6 +4099,15 @@ const GLOSSARY = [
   "subTitle": "Decisions with if/else"
  },
  {
+  "term": "Incident response lifecycle",
+  "def": "the structured process (preparation, detection/analysis, containment, eradication, recovery, lessons learned) for handling a security incident.",
+  "pathId": "10-fundamentals",
+  "pathN": "10",
+  "pathTitle": "Cybersecurity Fundamentals",
+  "subId": "incident-response-basics",
+  "subTitle": "Incident Response Basics"
+ },
+ {
   "term": "IndexedDB",
   "def": "a more powerful, database-like client-side storage option for larger structured data.",
   "pathId": "05-web-basics",
@@ -4124,6 +4196,15 @@ const GLOSSARY = [
   "pathTitle": "AI & AI Security",
   "subId": "llm-top-10",
   "subTitle": "OWASP LLM Top 10"
+ },
+ {
+  "term": "Insider threat",
+  "def": "risk arising from someone who already has legitimate, authorized access to a system.",
+  "pathId": "10-fundamentals",
+  "pathN": "10",
+  "pathTitle": "Cybersecurity Fundamentals",
+  "subId": "insider-threats",
+  "subTitle": "Insider Threats"
  },
  {
   "term": "Inspector",
@@ -5125,6 +5206,15 @@ const GLOSSARY = [
   "subTitle": "Anatomy of a web app"
  },
  {
+  "term": "MTTD (Mean Time to Detect)",
+  "def": "the average time between an incident starting and it being detected.",
+  "pathId": "10-fundamentals",
+  "pathN": "10",
+  "pathTitle": "Cybersecurity Fundamentals",
+  "subId": "security-metrics-kpis",
+  "subTitle": "Security Metrics & KPIs"
+ },
+ {
   "term": "MTTR",
   "def": "mean time to remediate",
   "pathId": "22-devsecops-appsec",
@@ -5141,6 +5231,15 @@ const GLOSSARY = [
   "pathTitle": "DevSecOps & AppSec Program",
   "subId": "building-appsec-program",
   "subTitle": "Building an AppSec Program from Scratch"
+ },
+ {
+  "term": "MTTR (Mean Time to Respond/Resolve)",
+  "def": "the average time from detection to full incident resolution.",
+  "pathId": "10-fundamentals",
+  "pathN": "10",
+  "pathTitle": "Cybersecurity Fundamentals",
+  "subId": "security-metrics-kpis",
+  "subTitle": "Security Metrics & KPIs"
  },
  {
   "term": "Multi-account strategy",
@@ -5827,6 +5926,15 @@ const GLOSSARY = [
   "subTitle": "Phase 3: Exploitation"
  },
  {
+  "term": "Patch compliance rate",
+  "def": "the percentage of systems actually up to date with available security patches.",
+  "pathId": "10-fundamentals",
+  "pathN": "10",
+  "pathTitle": "Cybersecurity Fundamentals",
+  "subId": "security-metrics-kpis",
+  "subTitle": "Security Metrics & KPIs"
+ },
+ {
   "term": "Path",
   "def": "the full address describing where a file or folder lives.",
   "pathId": "00-fresher-basics",
@@ -5987,6 +6095,15 @@ const GLOSSARY = [
   "pathTitle": "Cybersecurity Fundamentals",
   "subId": "phishing",
   "subTitle": "Phishing & social eng."
+ },
+ {
+  "term": "Physical security control",
+  "def": "a control protecting the physical environment (access control, surveillance, environmental protection, secure disposal).",
+  "pathId": "10-fundamentals",
+  "pathN": "10",
+  "pathTitle": "Cybersecurity Fundamentals",
+  "subId": "physical-security-basics",
+  "subTitle": "Physical Security Basics"
  },
  {
   "term": "pickle",
@@ -6248,6 +6365,15 @@ const GLOSSARY = [
   "pathTitle": "Cybersecurity Fundamentals",
   "subId": "phishing",
   "subTitle": "Phishing & social eng."
+ },
+ {
+  "term": "Preventive / detective / corrective / deterrent controls",
+  "def": "the four functional categories describing what a security control actually does along an incident's timeline.",
+  "pathId": "10-fundamentals",
+  "pathN": "10",
+  "pathTitle": "Cybersecurity Fundamentals",
+  "subId": "security-controls-types",
+  "subTitle": "Types of security controls"
  },
  {
   "term": "Principle of least privilege",
@@ -7249,6 +7375,15 @@ const GLOSSARY = [
   "subTitle": "Asymmetric Encryption"
  },
  {
+  "term": "RTO (Recovery Time Objective) / RPO (Recovery Point Objective)",
+  "def": "the maximum acceptable downtime and data loss, respectively, for a given system.",
+  "pathId": "10-fundamentals",
+  "pathN": "10",
+  "pathTitle": "Cybersecurity Fundamentals",
+  "subId": "business-continuity-disaster-recovery",
+  "subTitle": "Business Continuity & Disaster Recovery"
+ },
+ {
   "term": "RTU (Remote Terminal Unit)",
   "def": "similar role to a PLC, typically used in geographically distributed SCADA contexts",
   "pathId": "25-ot-ics-security",
@@ -7537,6 +7672,15 @@ const GLOSSARY = [
   "subTitle": "Capstone: Secure a Realistic Industrial Network"
  },
  {
+  "term": "Security awareness training",
+  "def": "organization-wide training teaching employees to recognize and respond to real security threats.",
+  "pathId": "10-fundamentals",
+  "pathN": "10",
+  "pathTitle": "Cybersecurity Fundamentals",
+  "subId": "security-policies-awareness",
+  "subTitle": "Security Policies & Awareness Training"
+ },
+ {
   "term": "Security champion",
   "def": "a developer who acts as the security point person for their team",
   "pathId": "22-devsecops-appsec",
@@ -7591,6 +7735,15 @@ const GLOSSARY = [
   "subTitle": "The Shared Responsibility Model"
  },
  {
+  "term": "Security policy",
+  "def": "a formal, documented statement of an organization's security requirements and expectations.",
+  "pathId": "10-fundamentals",
+  "pathN": "10",
+  "pathTitle": "Cybersecurity Fundamentals",
+  "subId": "security-policies-awareness",
+  "subTitle": "Security Policies & Awareness Training"
+ },
+ {
   "term": "Security rating service",
   "def": "a tool (BitSight, SecurityScorecard) providing continuous outside-in risk scoring of vendors",
   "pathId": "23-grc-compliance",
@@ -7643,6 +7796,15 @@ const GLOSSARY = [
   "pathTitle": "GRC & Compliance",
   "subId": "governance-basics",
   "subTitle": "Security Governance Basics"
+ },
+ {
+  "term": "Separation of duties",
+  "def": "requiring more than one person to complete a sensitive action, preventing any single insider from acting alone.",
+  "pathId": "10-fundamentals",
+  "pathN": "10",
+  "pathTitle": "Cybersecurity Fundamentals",
+  "subId": "insider-threats",
+  "subTitle": "Insider Threats"
  },
  {
   "term": "Serializer",
@@ -7951,6 +8113,15 @@ const GLOSSARY = [
   "subTitle": "Passwords & accounts basics"
  },
  {
+  "term": "Simulated phishing campaign",
+  "def": "a deliberate, harmless internal test measuring whether phishing-recognition training actually changed real behavior.",
+  "pathId": "10-fundamentals",
+  "pathN": "10",
+  "pathTitle": "Cybersecurity Fundamentals",
+  "subId": "security-policies-awareness",
+  "subTitle": "Security Policies & Awareness Training"
+ },
+ {
   "term": "SLA",
   "def": "service level agreement for fixing findings by severity, e.g. \"critical findings fixed within 15 days\"",
   "pathId": "22-devsecops-appsec",
@@ -8111,6 +8282,15 @@ const GLOSSARY = [
   "pathTitle": "Computer Basics & Security Mindset",
   "subId": "what-is-a-computer",
   "subTitle": "What is a computer really?"
+ },
+ {
+  "term": "Software Bill of Materials (SBOM)",
+  "def": "a detailed inventory of a software product's components and dependencies.",
+  "pathId": "10-fundamentals",
+  "pathN": "10",
+  "pathTitle": "Cybersecurity Fundamentals",
+  "subId": "supply-chain-security-basics",
+  "subTitle": "Supply Chain Security Basics"
  },
  {
   "term": "Software-Defined Networking (SDN)",
@@ -8536,6 +8716,15 @@ const GLOSSARY = [
   "subTitle": "Users, permissions & sudo"
  },
  {
+  "term": "Supply chain attack",
+  "def": "compromising an organization by attacking a trusted vendor, dependency, or third party it relies on.",
+  "pathId": "10-fundamentals",
+  "pathN": "10",
+  "pathTitle": "Cybersecurity Fundamentals",
+  "subId": "supply-chain-security-basics",
+  "subTitle": "Supply Chain Security Basics"
+ },
+ {
   "term": "Supply chain security",
   "def": "securing the third-party components and build process behind an app, not just its own code.",
   "pathId": "13-mobile-security",
@@ -8689,6 +8878,15 @@ const GLOSSARY = [
   "subTitle": "Social Media Privacy & Oversharing"
  },
  {
+  "term": "Tailgating (piggybacking)",
+  "def": "following an authorized person through a secured entrance without independently authenticating.",
+  "pathId": "10-fundamentals",
+  "pathN": "10",
+  "pathTitle": "Cybersecurity Fundamentals",
+  "subId": "physical-security-basics",
+  "subTitle": "Physical Security Basics"
+ },
+ {
   "term": "Take-home challenge",
   "def": "a practical exercise (often a small pentest, code review, or written analysis) completed outside the live interview.",
   "pathId": "20-career-prep",
@@ -8741,6 +8939,15 @@ const GLOSSARY = [
   "pathTitle": "Networking Fundamentals",
   "subId": "packets",
   "subTitle": "Packets & the OSI layers"
+ },
+ {
+  "term": "Technical / administrative / physical controls",
+  "def": "the classification describing what kind of mechanism a control actually is.",
+  "pathId": "10-fundamentals",
+  "pathN": "10",
+  "pathTitle": "Cybersecurity Fundamentals",
+  "subId": "security-controls-types",
+  "subTitle": "Types of security controls"
  },
  {
   "term": "Technology fingerprinting",
@@ -9488,6 +9695,15 @@ const GLOSSARY = [
   "pathTitle": "Cybersecurity Fundamentals",
   "subId": "threats-risk",
   "subTitle": "Threats, vulns & risk"
+ },
+ {
+  "term": "Vulnerability management lifecycle",
+  "def": "the ongoing process of discovering, prioritizing, remediating, verifying, and reporting on vulnerabilities.",
+  "pathId": "10-fundamentals",
+  "pathN": "10",
+  "pathTitle": "Cybersecurity Fundamentals",
+  "subId": "vulnerability-management-basics",
+  "subTitle": "Vulnerability Management Basics"
  },
  {
   "term": "Vulnerability Rating Taxonomy",

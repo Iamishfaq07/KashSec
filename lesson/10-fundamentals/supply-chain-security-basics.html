@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Supply Chain Security Basics — Path 10 · KashSec Academy</title>
+<meta name="description" content="The malware lesson covered how malicious software actually behaves. This lesson covers a specific, increasingly significant way malware (and other compromise) actually reaches an organization in the f">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/10-fundamentals/supply-chain-security-basics">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Supply Chain Security Basics — Path 10 · KashSec Academy">
+<meta property="og:description" content="The malware lesson covered how malicious software actually behaves. This lesson covers a specific, increasingly significant way malware (and other compromise) actually reaches an organization in the f">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/10-fundamentals/supply-chain-security-basics">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Supply Chain Security Basics — Path 10 · KashSec Academy">
+<meta name="twitter:description" content="The malware lesson covered how malicious software actually behaves. This lesson covers a specific, increasingly significant way malware (and other compromise) actually reaches an organization in the f">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Supply Chain Security Basics — Path 10 · KashSec Academy","description":"The malware lesson covered how malicious software actually behaves. This lesson covers a specific, increasingly significant way malware (and other compromise) actually reaches an organization in the f","url":"https://kashsec.vercel.app/#/lesson/10-fundamentals/supply-chain-security-basics","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/10-fundamentals/supply-chain-security-basics">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 10 — Cybersecurity Fundamentals</a> · Supply Chain Security Basics</div>
+  <article><h1>Supply Chain Security Basics</h1>
+<p>The malware lesson covered how malicious software actually behaves. This lesson covers a specific, increasingly significant way malware (and other compromise) actually reaches an organization in the first place: through the <strong>supply chain</strong> — the vendors, software, and third parties an organization depends on and implicitly trusts.</p>
+<h2>What &quot;supply chain&quot; means in a security context</h2>
+<p>A <strong>supply chain attack</strong> compromises an organization not by attacking it directly, but by attacking something it <em>depends on</em> — a software vendor, an open-source library, a hardware component, a managed service provider — and using that trusted relationship as the actual delivery mechanism. This is directly analogous to Path 03&#39;s coverage of package repositories: when you <code>apt install</code> a package, you&#39;re extending trust to that repository&#39;s entire chain of maintainers and infrastructure, not just the specific software you asked for.</p>
+<h2>Why this attack pattern is so effective</h2>
+<p>Organizations invest heavily in defending their own perimeter and internal systems, but a supply chain attack sidesteps all of that by compromising something already <em>inside</em> the trust boundary before the attack even begins — a legitimate software update, signed with a legitimate vendor&#39;s genuine credentials, delivered through the organization&#39;s own normal, trusted update process. Path 25&#39;s OT/ICS supply-chain lesson covered this exact pattern (Stuxnet&#39;s reported USB delivery vector); this lesson generalizes it to IT environments broadly.</p>
+<h2>Real categories of supply chain risk</h2>
+<ul>
+<li><strong>Compromised software updates</strong> — an attacker compromises a vendor&#39;s build or distribution system, and the malicious code rides along in an otherwise-legitimate, properly-signed update (the SolarWinds incident is a widely-cited real-world example)</li>
+<li><strong>Vulnerable open-source dependencies</strong> — modern software commonly depends on dozens or hundreds of open-source libraries, any one of which could contain a vulnerability (or, less commonly, be deliberately compromised by a malicious contributor) — directly connecting to Path 22&#39;s DevSecOps material on software composition analysis</li>
+<li><strong>Third-party service providers</strong> — a managed IT provider, a cloud service, or a contractor with access to an organization&#39;s systems represents an extension of that organization&#39;s own attack surface, not a separate concern</li>
+<li><strong>Hardware supply chain risk</strong> — less common but genuinely real, involving compromised components introduced somewhere in the manufacturing or distribution process before hardware ever reaches its final owner</li>
+</ul>
+<h2>Practical mitigations</h2>
+<ul>
+<li><strong>Vendor security assessment</strong> — evaluating a vendor&#39;s own security practices before extending trust to them, exactly the practice Path 25&#39;s OT/ICS lesson recommended for industrial equipment vendors</li>
+<li><strong>Software Bill of Materials (SBOM)</strong> — a detailed inventory of every component and dependency within a piece of software, letting an organization quickly determine whether a newly disclosed vulnerability in a specific library actually affects them</li>
+<li><strong>Least privilege for third-party access</strong> — a vendor or contractor should have access to exactly what they need, for exactly as long as they need it, directly extending the least-privilege principle from throughout this course</li>
+<li><strong>Monitoring vendor and dependency updates</strong> — treating a third-party update with the same scrutiny (where feasible) as internally-developed code, rather than assuming &quot;it came from a trusted vendor&quot; is sufficient on its own</li>
+</ul>
+<p>Why does a supply chain attack often succeed even against organizations with genuinely strong perimeter defenses?</p>
+<details><summary>Show answer</summary>Perimeter defenses (firewalls, network segmentation, access controls) are built to stop <em>unauthorized</em> traffic and actors from getting in — but a supply chain attack arrives disguised as something the organization already trusts and has explicitly permitted: a legitimate, properly-signed software update from a vendor relationship that predates the attack entirely. The malicious code doesn't need to breach the perimeter at all, because it's delivered through a channel (the vendor's own update mechanism) that the organization's own defenses were specifically configured to allow. This is exactly why supply chain security requires a fundamentally different set of controls — vendor assessment, SBOMs, monitoring dependencies — rather than simply strengthening the same perimeter defenses that were never actually positioned to catch this specific attack pattern in the first place.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Supply chain attack</strong> — compromising an organization by attacking a trusted vendor, dependency, or third party it relies on.</li>
+<li><strong>Software Bill of Materials (SBOM)</strong> — a detailed inventory of a software product&#39;s components and dependencies.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Supply chain attacks compromise a trusted vendor, dependency, or third party rather than attacking an organization directly, sidestepping perimeter defenses entirely by riding in through an already-trusted channel.</li>
+<li>Real risk categories include compromised software updates, vulnerable open-source dependencies, third-party service providers, and (less commonly) hardware.</li>
+<li>Vendor assessment, SBOMs, least privilege for third-party access, and treating trusted updates with appropriate scrutiny are the practical mitigations.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/10-fundamentals/passwords-hashing">Passwords &amp; hashing</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/10-fundamentals/supply-chain-security-basics";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

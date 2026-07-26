@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Incident Response Basics — Path 10 · KashSec Academy</title>
+<meta name="description" content="You've now covered prevention (protect-yourself) and detection concepts (security controls) throughout this path. This lesson introduces what happens next: incident response — the structured process f">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/10-fundamentals/incident-response-basics">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Incident Response Basics — Path 10 · KashSec Academy">
+<meta property="og:description" content="You've now covered prevention (protect-yourself) and detection concepts (security controls) throughout this path. This lesson introduces what happens next: incident response — the structured process f">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/10-fundamentals/incident-response-basics">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Incident Response Basics — Path 10 · KashSec Academy">
+<meta name="twitter:description" content="You've now covered prevention (protect-yourself) and detection concepts (security controls) throughout this path. This lesson introduces what happens next: incident response — the structured process f">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Incident Response Basics — Path 10 · KashSec Academy","description":"You've now covered prevention (protect-yourself) and detection concepts (security controls) throughout this path. This lesson introduces what happens next: incident response — the structured process f","url":"https://kashsec.vercel.app/#/lesson/10-fundamentals/incident-response-basics","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/10-fundamentals/incident-response-basics">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 10 — Cybersecurity Fundamentals</a> · Incident Response Basics</div>
+  <article><h1>Incident Response Basics</h1>
+<p>You&#39;ve now covered prevention (protect-yourself) and detection concepts (security controls) throughout this path. This lesson introduces what happens next: <strong>incident response</strong> — the structured process for handling a security incident once one actually occurs, previewed here before Path 16&#39;s full, hands-on incident-response material.</p>
+<h2>Why &quot;prevention will eventually fail&quot; is the right starting assumption</h2>
+<p>Every path in this course has emphasized layered, defense-in-depth thinking specifically because no single control, and no combination of controls, provides perfect prevention indefinitely. A mature security program plans for the moment prevention fails, not just for preventing failure — which is exactly what incident response actually is.</p>
+<h2>The incident response lifecycle, at a glance</h2>
+<ul>
+<li><strong>Preparation</strong> — having a plan, trained people, and the right tools <em>before</em> an incident happens — genuinely the phase that determines how well every later phase goes</li>
+<li><strong>Detection &amp; Analysis</strong> — noticing something happened and figuring out what it actually is, drawing directly on the logging and monitoring concepts from Path 08</li>
+<li><strong>Containment</strong> — stopping the incident from spreading further, exactly the &quot;isolate first&quot; instinct Path 07&#39;s compromise-recognition lesson established</li>
+<li><strong>Eradication</strong> — actually removing the root cause (a malicious file, a compromised account, an exploited vulnerability)</li>
+<li><strong>Recovery</strong> — safely restoring normal operations, verified and tested before fully trusting the system again</li>
+<li><strong>Lessons Learned</strong> — a genuinely often-skipped but critical final step, feeding what was learned back into better preparation for next time</li>
+</ul>
+<h2>Why &quot;isolate first, investigate second&quot; keeps appearing throughout this course</h2>
+<p>Path 07&#39;s Windows compromise-recognition lesson and Path 03&#39;s Linux logging lesson both independently arrived at the same instinct: disconnect a suspected-compromised system from the network before doing anything else. This is the <strong>containment</strong> phase of the incident-response lifecycle, applied at the individual-machine level — this lesson names the broader framework those earlier, specific pieces of advice were always part of.</p>
+<h2>Why having a written plan matters, even for a small organization</h2>
+<p>An incident is, by definition, a high-stress, time-pressured situation — exactly the wrong moment to be inventing a response process from scratch. Even a simple, written plan (who to contact, what to isolate first, who has authority to make key decisions) meaningfully improves outcomes compared to improvising entirely under pressure, directly connecting to Path 24&#39;s common-pitfalls lesson emphasis on structured rather than ad-hoc security practice.</p>
+<p>Why is &quot;Lessons Learned&quot; considered a genuinely important phase of incident response, rather than an optional formality after the real work is already done?</p>
+<details><summary>Show answer</summary>Every real incident reveals something about an organization's actual security posture that wasn't fully visible beforehand — a detection gap that let the incident go unnoticed longer than it should have, a containment step that took too long, a preparation gap that made response harder than necessary. Skipping the Lessons Learned phase means an organization pays the full cost of experiencing an incident without capturing the corresponding benefit of actually improving for next time — the exact same incident, or a very similar one, becomes meaningfully more likely to recur in a similar way. This is precisely why the lifecycle diagram in this lesson shows Lessons Learned feeding back into Preparation: incident response isn't a one-time linear process, it's a cycle that should make each future incident easier to handle than the last.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Incident response lifecycle</strong> — the structured process (preparation, detection/analysis, containment, eradication, recovery, lessons learned) for handling a security incident.</li>
+<li><strong>Containment</strong> — the incident-response phase focused on stopping an incident from spreading further.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Incident response assumes prevention will eventually fail, and prepares for that moment rather than only trying to prevent it.</li>
+<li>The six-phase lifecycle — preparation, detection/analysis, containment, eradication, recovery, lessons learned — is the structured framework behind the &quot;isolate first&quot; instinct this course has taught in several earlier, specific contexts.</li>
+<li>Lessons Learned is a genuinely important, often-skipped final phase, turning each incident into improved preparation for the next one rather than a one-time, non-recurring cost.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/10-fundamentals/business-continuity-disaster-recovery">Business Continuity &amp; Disaster Recovery</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/10-fundamentals/incident-response-basics";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

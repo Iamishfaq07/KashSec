@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Security Metrics &amp; KPIs — Path 10 · KashSec Academy</title>
+<meta name="description" content="You've now covered a huge range of security fundamentals — controls, vulnerability management, incident response, policy, physical security. This lesson closes the loop with a genuinely under-taught b">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/10-fundamentals/security-metrics-kpis">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Security Metrics &amp; KPIs — Path 10 · KashSec Academy">
+<meta property="og:description" content="You've now covered a huge range of security fundamentals — controls, vulnerability management, incident response, policy, physical security. This lesson closes the loop with a genuinely under-taught b">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/10-fundamentals/security-metrics-kpis">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Security Metrics &amp; KPIs — Path 10 · KashSec Academy">
+<meta name="twitter:description" content="You've now covered a huge range of security fundamentals — controls, vulnerability management, incident response, policy, physical security. This lesson closes the loop with a genuinely under-taught b">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Security Metrics & KPIs — Path 10 · KashSec Academy","description":"You've now covered a huge range of security fundamentals — controls, vulnerability management, incident response, policy, physical security. This lesson closes the loop with a genuinely under-taught b","url":"https://kashsec.vercel.app/#/lesson/10-fundamentals/security-metrics-kpis","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/10-fundamentals/security-metrics-kpis">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 10 — Cybersecurity Fundamentals</a> · Security Metrics &amp; KPIs</div>
+  <article><h1>Security Metrics &amp; KPIs</h1>
+<p>You&#39;ve now covered a huge range of security fundamentals — controls, vulnerability management, incident response, policy, physical security. This lesson closes the loop with a genuinely under-taught but essential question: how do you actually know whether any of it is <em>working</em>?</p>
+<h2>Why &quot;we have security controls&quot; isn&#39;t the same as &quot;we&#39;re secure&quot;</h2>
+<p>Every earlier lesson in this path described controls and processes — but having a control in place says nothing about whether it&#39;s <em>effective</em>. This is precisely the gap the security-policies-and-awareness lesson identified between having a policy and actually following it, generalized here to the entire security program: measurement is what separates a genuine security posture from a collection of well-intentioned but unverified assumptions.</p>
+<h2>Common security metrics worth knowing by name</h2>
+<ul>
+<li><strong>MTTD (Mean Time to Detect)</strong> — on average, how long between an incident starting and someone actually noticing it? Directly reflects the maturity of the detective controls from the security-controls-types lesson</li>
+<li><strong>MTTR (Mean Time to Respond/Resolve)</strong> — on average, how long from detection to actually containing and resolving an incident? Reflects the effectiveness of the incident-response process from earlier in this path</li>
+<li><strong>Patch compliance rate</strong> — what percentage of systems are actually up to date with available security patches, directly measuring the vulnerability-management lifecycle in practice, not just in policy</li>
+<li><strong>Phishing simulation click-through rate</strong> — what percentage of employees click a simulated phishing test, tracked over time to measure whether security awareness training is actually changing behavior</li>
+</ul>
+<h2>Why trends matter more than any single snapshot number</h2>
+<p>A single metric captured once tells you very little — an MTTD of &quot;4 hours&quot; is meaningless without context: is that improving or getting worse? How does it compare to similar organizations? The real value of security metrics comes from tracking them consistently <strong>over time</strong>, revealing whether a security program is genuinely improving, stagnant, or quietly getting worse despite continued investment.</p>
+<h2>Why choosing the wrong metrics can be actively misleading</h2>
+<p>A team that&#39;s measured purely on &quot;number of vulnerabilities patched per month&quot; might rationally prioritize easy, low-severity patches over harder, more critical ones — technically improving their metric while leaving the organization&#39;s most dangerous exposures unaddressed. This is exactly why the vulnerability-management lesson&#39;s point about prioritizing by actual exposure, not just raw count, matters directly here too: metrics shape behavior, and poorly chosen metrics can shape it in the wrong direction entirely.</p>
+<h2>Connecting metrics back to the whole path</h2>
+<p>Every metric named in this lesson maps directly onto an earlier lesson&#39;s concept: MTTD measures detective-control effectiveness, MTTR measures incident-response maturity, patch compliance measures the vulnerability-management lifecycle in practice, and phishing click-through rate measures whether security-awareness training is genuinely working rather than just being delivered. This lesson isn&#39;t introducing a separate topic — it&#39;s the measurement layer sitting on top of everything else this path has taught.</p>
+<p>Why might an organization that only tracks &quot;number of security policies published&quot; be measuring the wrong thing, even though publishing policies is genuinely valuable work?</p>
+<details><summary>Show answer</summary>The number of policies published measures <em>output</em> — how much documentation exists — rather than <em>outcome</em>, whether those policies are actually followed, enforced, and effective at reducing real risk, exactly the gap the security-policies-and-awareness lesson described between having a policy and actually living up to it. An organization could publish dozens of thorough, well-written policies while enforcement remains inconsistent and actual security posture doesn't meaningfully improve — the metric would show impressive, growing numbers while genuine risk stays flat or even worsens. A more meaningful metric would track something closer to actual outcomes: policy compliance audit results, or a reduction in the specific incident types a given policy was written to prevent — measuring whether the policy is actually working, not just whether it exists.</details><h2>Key terms</h2>
+<ul>
+<li><strong>MTTD (Mean Time to Detect)</strong> — the average time between an incident starting and it being detected.</li>
+<li><strong>MTTR (Mean Time to Respond/Resolve)</strong> — the average time from detection to full incident resolution.</li>
+<li><strong>Patch compliance rate</strong> — the percentage of systems actually up to date with available security patches.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Having security controls in place says nothing about whether they&#39;re actually effective — measurement is what closes that gap.</li>
+<li>MTTD, MTTR, patch compliance, and phishing simulation click-through rates are standard metrics, each directly measuring a concept covered earlier in this path.</li>
+<li>Metrics matter most as trends over time, not single snapshots, and choosing the wrong metric can actively incentivize the wrong behavior — a genuine risk worth designing around deliberately.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/10-fundamentals/risk-assessment-lab">Risk Assessment Lab</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/10-fundamentals/security-metrics-kpis";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

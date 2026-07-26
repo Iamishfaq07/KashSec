@@ -138,4 +138,4 @@ An email claims to be from your CEO, asks you to urgently buy $2,000 in gift car
 - [Google/Jigsaw — Phishing Quiz](https://phishingquiz.withgoogle.com/) — free, excellent hands-on practice spotting real vs fake emails.
 ???
 
-**Next up →** [Protect yourself: practical hardening](#/lesson/10-fundamentals/protect-yourself)
+**Next up →** [Security Policies & Awareness Training](#/lesson/10-fundamentals/security-policies-awareness)

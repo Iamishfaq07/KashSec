@@ -135,4 +135,4 @@ An organisation has excellent email filtering (blocking most phishing) but very 
 - [MITRE ATT&CK — Living off the Land](https://attack.mitre.org/techniques/T1218/) — example LOLBin technique page.
 ???
 
-**Next up →** [Malware types explained](#/lesson/10-fundamentals/malware)
+**Next up →** [Insider Threats](#/lesson/10-fundamentals/insider-threats)

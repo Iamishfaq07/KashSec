@@ -173,4 +173,4 @@ A company has a serious vulnerability in an internal admin tool, but that tool i
 - [MITRE CWE](https://cwe.mitre.org/) — the weakness classification system.
 ???
 
-**Next up →** [Attackers & the kill chain](#/lesson/10-fundamentals/attackers-kill-chain)
+**Next up →** [Types of security controls](#/lesson/10-fundamentals/security-controls-types)

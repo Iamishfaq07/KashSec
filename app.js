@@ -888,15 +888,25 @@ const PATHS = [
    desc:"CIA triad, risk, malware, hashing, phishing, MFA, frameworks.",
    subs:[
      {n:"1", id:"cia-triad",           title:"The CIA triad",           desc:"Confidentiality, Integrity, Availability — the field's core."},
-     {n:"2", id:"threats-risk",        title:"Threats, vulns & risk",   desc:"The unlocked-door analogy and the risk equation."},
-     {n:"3", id:"attackers-kill-chain", title:"Attackers & the kill chain", desc:"Who attacks and the phases of an intrusion."},
-     {n:"4", id:"malware",             title:"Malware families",        desc:"Virus, worm, trojan, ransomware, rootkit, spyware."},
-     {n:"5", id:"passwords-hashing",   title:"Passwords & hashing",     desc:"How they should be stored, why reuse is a disaster."},
-     {n:"6", id:"phishing",            title:"Phishing & social eng.",  desc:"Attacking humans, not computers."},
-     {n:"7", id:"protect-yourself",    title:"MFA, updates, backups",   desc:"Habits that stop most real attacks."},
-     {n:"8", id:"frameworks",          title:"Frameworks & compliance", desc:"NIST, ISO, OWASP, MITRE, PCI DSS, HIPAA, GDPR."},
-     {n:"9", id:"risk-assessment-lab", title:"Risk Assessment Lab",     desc:"Practice thinking like a risk analyst."},
-     {n:"10", id:"social-engineering-lab", title:"Social Engineering Lab", desc:"Understand how attackers manipulate people."}
+     {n:"2", id:"defense-in-depth-basics", title:"Defense in depth", desc:"Why no single control is ever enough, and how this course itself mirrors the principle."},
+     {n:"3", id:"threats-risk",        title:"Threats, vulns & risk",   desc:"The unlocked-door analogy and the risk equation."},
+     {n:"4", id:"security-controls-types", title:"Types of security controls", desc:"Preventive/detective/corrective/deterrent, and technical/administrative/physical."},
+     {n:"5", id:"vulnerability-management-basics", title:"Vulnerability Management Basics", desc:"CVE, CVSS, and why score alone doesn't determine real priority."},
+     {n:"6", id:"attackers-kill-chain", title:"Attackers & the kill chain", desc:"Who attacks and the phases of an intrusion."},
+     {n:"7", id:"insider-threats",     title:"Insider Threats", desc:"Malicious, negligent, and compromised insiders — and why they're hard to detect."},
+     {n:"8", id:"malware",             title:"Malware families",        desc:"Virus, worm, trojan, ransomware, rootkit, spyware."},
+     {n:"9", id:"supply-chain-security-basics", title:"Supply Chain Security Basics", desc:"Why a trusted vendor relationship is itself an attack surface."},
+     {n:"10", id:"passwords-hashing",   title:"Passwords & hashing",     desc:"How they should be stored, why reuse is a disaster."},
+     {n:"11", id:"phishing",            title:"Phishing & social eng.",  desc:"Attacking humans, not computers."},
+     {n:"12", id:"security-policies-awareness", title:"Security Policies & Awareness Training", desc:"Why a policy on paper isn't the same as security in practice."},
+     {n:"13", id:"protect-yourself",    title:"MFA, updates, backups",   desc:"Habits that stop most real attacks."},
+     {n:"14", id:"incident-response-basics", title:"Incident Response Basics", desc:"The six-phase lifecycle behind 'isolate first, investigate second.'"},
+     {n:"15", id:"business-continuity-disaster-recovery", title:"Business Continuity & Disaster Recovery", desc:"RTO, RPO, and backups at organizational scale."},
+     {n:"16", id:"physical-security-basics", title:"Physical Security Basics", desc:"Why physical access defeats most digital controls, and what tailgating exploits."},
+     {n:"17", id:"frameworks",          title:"Frameworks & compliance", desc:"NIST, ISO, OWASP, MITRE, PCI DSS, HIPAA, GDPR."},
+     {n:"18", id:"security-metrics-kpis", title:"Security Metrics & KPIs", desc:"MTTD, MTTR, and why measuring the wrong thing can be actively misleading."},
+     {n:"19", id:"risk-assessment-lab", title:"Risk Assessment Lab",     desc:"Practice thinking like a risk analyst."},
+     {n:"20", id:"social-engineering-lab", title:"Social Engineering Lab", desc:"Understand how attackers manipulate people."}
    ]},
   {n:"11", id:"11-web-security", title:"Web Security & Hacking", level:"Intermediate",
    desc:"OWASP Top 10, Burp, IDOR, XSS, SQLi, command injection, SSRF, JWT.",
@@ -4809,6 +4819,11 @@ function renderLabPhishing(){
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
+  {date:'2026-07-25', title:'Path 10 doubled to 20 lessons', items:[
+    'Thirteenth batch of the course-wide content-doubling effort: Path 10 (Cybersecurity Fundamentals) grows from 10 to 20 lessons.',
+    'New lessons: Defense in Depth, Types of Security Controls, Vulnerability Management Basics, Insider Threats, Supply Chain Security Basics, Security Policies & Awareness Training, Incident Response Basics, Business Continuity & Disaster Recovery, Physical Security Basics, and Security Metrics & KPIs.',
+    'The new metrics lesson closes the loop on the whole path, explaining how to actually measure whether a security program works rather than just assuming it does.'
+  ]},
   {date:'2026-07-25', title:'Path 05 doubled to 18 lessons', items:[
     'Twelfth batch of the course-wide content-doubling effort: Path 05 (How the Web Works) grows from 9 to 18 lessons.',
     'New lessons: How Browsers Render Pages (the DOM and XSS), HTTP Methods & Status Codes, Browser Storage Basics, Same-Origin Policy & CORS, WebSockets & the Real-Time Web, Web Forms & Input Handling, Content Security Policy Basics, Web Caching Basics, and Web Frameworks: An Overview.',

@@ -147,4 +147,4 @@ An attacker doesn't steal or change any data — they simply flood a company's s
 - [Parkerian Hexad — overview](https://en.wikipedia.org/wiki/Parkerian_Hexad)
 ???
 
-**Next up →** [Threats, vulnerabilities & risk](#/lesson/10-fundamentals/threats-risk)
+**Next up →** [Defense in depth](#/lesson/10-fundamentals/defense-in-depth-basics)
