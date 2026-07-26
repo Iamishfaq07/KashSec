@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wireless networking basics — Path 02 · KashSec Academy</title>
+<meta name="description" content="Everything covered so far in this path works the same whether devices connect by cable or by air — but wireless networking adds a few genuinely distinct concepts and risks worth understanding on their">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/02-networking/wireless-networking-basics">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Wireless networking basics — Path 02 · KashSec Academy">
+<meta property="og:description" content="Everything covered so far in this path works the same whether devices connect by cable or by air — but wireless networking adds a few genuinely distinct concepts and risks worth understanding on their">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/02-networking/wireless-networking-basics">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Wireless networking basics — Path 02 · KashSec Academy">
+<meta name="twitter:description" content="Everything covered so far in this path works the same whether devices connect by cable or by air — but wireless networking adds a few genuinely distinct concepts and risks worth understanding on their">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Wireless networking basics — Path 02 · KashSec Academy","description":"Everything covered so far in this path works the same whether devices connect by cable or by air — but wireless networking adds a few genuinely distinct concepts and risks worth understanding on their","url":"https://kashsec.vercel.app/#/lesson/02-networking/wireless-networking-basics","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/02-networking/wireless-networking-basics">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 02 — Networking Fundamentals</a> · Wireless networking basics</div>
+  <article><h1>Wireless networking basics</h1>
+<p>Everything covered so far in this path works the same whether devices connect by cable or by air — but wireless networking adds a few genuinely distinct concepts and risks worth understanding on their own terms.</p>
+<h2>How Wi-Fi actually works, briefly</h2>
+<p>A <strong>wireless access point</strong> broadcasts a radio signal that nearby devices can connect to, functioning much like the switch from the previous lesson, except devices connect over radio waves instead of a physical cable. Every Wi-Fi network broadcasts an <strong>SSID</strong> (Service Set Identifier) — the network name you pick from a list when connecting.</p>
+<h2>Wi-Fi standards, briefly</h2>
+<p>You&#39;ll see names like <strong>802.11ac</strong> or <strong>802.11ax (Wi-Fi 6)</strong> on router boxes — these are just successive generations of the Wi-Fi standard, each offering faster speeds and better handling of many simultaneous devices. For security purposes, the standard generation matters far less than the <em>encryption</em> protocol in use, covered next.</p>
+<h2>WPA2, WPA3, and why the encryption standard matters more than the speed</h2>
+<p>Path 00&#39;s Wi-Fi lesson already introduced WPA2/WPA3 as the modern, secure encryption standards, and WEP as an older, broken one worth avoiding entirely. This lesson adds the technical reason why: <strong>WEP&#39;s encryption was cryptographically broken</strong> — practical, publicly documented attacks can recover a WEP network&#39;s password in minutes, regardless of how strong that password actually is, because the flaw is in the protocol itself, not in password strength. WPA2 and especially WPA3 fixed the underlying cryptographic weaknesses, directly applying the cryptography concepts from Path 06.</p>
+<h2>Open networks vs. encrypted networks</h2>
+<p>An <strong>open network</strong> (no password required) provides zero encryption between your device and the access point — anyone else connected to that same open network can potentially observe unencrypted traffic passing over it, which is exactly why Path 00&#39;s Wi-Fi lesson recommended caution on unfamiliar open networks, and why HTTPS (Path 06&#39;s TLS-handshake lesson) matters so much regardless of which network you&#39;re on.</p>
+<h2>Evil twin attacks: a wireless-specific threat</h2>
+<p>An <strong>evil twin attack</strong> is when an attacker sets up a rogue access point broadcasting the <em>same</em> SSID as a legitimate network — a fake &quot;Coffee Shop WiFi&quot; sitting right next to the real one — hoping victims connect to the attacker&#39;s version instead, letting the attacker observe or manipulate all resulting traffic. This is precisely the &quot;fake public Wi-Fi network with a plausible name&quot; risk Path 00 warned about, now with the specific technical name and mechanism behind it.</p>
+<p>Devices generally connect based on SSID name and signal strength, not any deeper verification of who&#39;s actually running the access point — meaning an evil twin with a strong signal and the right name can genuinely fool an unsuspecting device, or even auto-reconnect a device that&#39;s connected to that network name before.</p>
+<p>Why does WEP&#39;s vulnerability matter regardless of how strong the actual Wi-Fi password chosen is?</p>
+<details><summary>Show answer</summary>WEP's weakness is in the underlying cryptographic protocol itself — the way it generates and reuses certain values during encryption — not in the specific password chosen. This means a WEP network protected by a genuinely long, random, hard-to-guess password is <em>still</em> breakable through the same documented cryptographic attack, in roughly the same amount of time as a network using a weak password, because the attack doesn't work by guessing the password directly — it exploits a flaw in how WEP encrypts data regardless of what that password actually is. This is exactly why WPA2/WPA3 replaced WEP entirely, rather than WEP simply needing "stronger passwords."</details><h2>Key terms</h2>
+<ul>
+<li><strong>SSID</strong> — the broadcast name of a Wi-Fi network.</li>
+<li><strong>Open network</strong> — a Wi-Fi network requiring no password, providing no encryption between device and access point.</li>
+<li><strong>Evil twin attack</strong> — a rogue access point broadcasting a legitimate network&#39;s name to trick victims into connecting.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Wireless networking works much like wired networking underneath, with radio waves replacing cables.</li>
+<li>WPA2/WPA3 fixed real, documented cryptographic weaknesses in the older WEP standard — this matters more than which generation of Wi-Fi speed standard is in use.</li>
+<li>Open networks provide no encryption of their own, which is exactly why HTTPS matters regardless of network trust.</li>
+<li>Evil twin attacks exploit the fact that devices generally trust a network by name and signal strength alone, without deeper verification.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/02-networking/dns">DNS: the phonebook</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/02-networking/wireless-networking-basics";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Routing basics — Path 02 · KashSec Academy</title>
+<meta name="description" content="The what-is-a-network lesson used the post office as an analogy. This lesson introduces the actual postal worker in that analogy: the router, the device that decides which direction a packet needs to ">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/02-networking/routing-basics">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Routing basics — Path 02 · KashSec Academy">
+<meta property="og:description" content="The what-is-a-network lesson used the post office as an analogy. This lesson introduces the actual postal worker in that analogy: the router, the device that decides which direction a packet needs to ">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/02-networking/routing-basics">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Routing basics — Path 02 · KashSec Academy">
+<meta name="twitter:description" content="The what-is-a-network lesson used the post office as an analogy. This lesson introduces the actual postal worker in that analogy: the router, the device that decides which direction a packet needs to ">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Routing basics — Path 02 · KashSec Academy","description":"The what-is-a-network lesson used the post office as an analogy. This lesson introduces the actual postal worker in that analogy: the router, the device that decides which direction a packet needs to ","url":"https://kashsec.vercel.app/#/lesson/02-networking/routing-basics","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/02-networking/routing-basics">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 02 — Networking Fundamentals</a> · Routing basics</div>
+  <article><h1>Routing basics</h1>
+<p>The what-is-a-network lesson used the post office as an analogy. This lesson introduces the actual postal worker in that analogy: the <strong>router</strong>, the device that decides which direction a packet needs to travel next.</p>
+<h2>What a router actually does</h2>
+<p>Every network you&#39;ve ever used — your home Wi-Fi, your phone&#39;s mobile data, a coffee shop&#39;s guest network — sits behind at least one router. A <strong>router</strong>&#39;s single job is looking at a packet&#39;s destination IP address (the next lesson goes deeper on IP addresses) and deciding which direction to forward it, based on a <strong>routing table</strong> — essentially a list of &quot;if the destination looks like this, send it this way&quot; rules.</p>
+<h2>The default gateway: your network&#39;s exit door</h2>
+<p>Your device has a setting called the <strong>default gateway</strong> — the address of the router your device sends traffic to whenever it doesn&#39;t already know how to reach a destination directly. For almost every home device, the default gateway is your home router, and virtually all outbound traffic passes through it on its way anywhere else.</p>
+<p>On Windows, <code>ipconfig</code> shows a line labeled &quot;Default Gateway.&quot; On Mac/Linux, <code>ip route</code> (or the older <code>netstat -nr</code>) shows the same thing. It&#39;s almost always something like <code>192.168.1.1</code> — the same private-range address style covered in the upcoming IP-addresses lesson.</p>
+<h2>Hop by hop: how a packet actually crosses the internet</h2>
+<p>A packet rarely reaches its destination in one jump. It travels <strong>hop by hop</strong> — router to router — with each router only needing to know &quot;which direction gets this packet closer,&quot; not the entire path from start to finish. This is genuinely similar to asking for directions in an unfamiliar city: each person you ask doesn&#39;t need to know the whole route, just the next useful step.</p>
+<h2>Why this matters for security</h2>
+<p>Understanding routing explains a real attack category you&#39;ll meet properly in Path 12: <strong>rogue routers and route manipulation</strong>. If an attacker can trick your device into using a router they control as its default gateway (or manipulate the routing tables along the path), they can potentially intercept, inspect, or alter traffic passing through — the same &quot;man-in-the-middle&quot; positioning idea that keeps showing up throughout this course.</p>
+<p>Why does a router only need to know &quot;which direction gets a packet closer,&quot; rather than the entire path to every possible destination?</p>
+<details><summary>Show answer</summary>The internet is far too large for any single router to store a complete map of every possible destination and exact route. Instead, each router only needs to know enough to make one good local decision — forward the packet toward a router that's "closer" in some sense — and trust that the next router will do the same. This hop-by-hop design is what lets the internet scale to billions of devices: no single point needs global knowledge, just good local decisions repeated many times.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Router</strong> — a device that forwards packets toward their destination based on a routing table.</li>
+<li><strong>Default gateway</strong> — the router your device sends traffic to when it doesn&#39;t know a more direct path.</li>
+<li><strong>Hop</strong> — one router-to-router jump along a packet&#39;s path.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>A router&#39;s job is deciding which direction a packet needs to go next, using a routing table.</li>
+<li>Your default gateway is the router your device relies on for almost all outbound traffic.</li>
+<li>Packets cross the internet hop by hop, with no single router needing to know the entire path.</li>
+<li>Manipulating routing (a rogue router, tampered routing tables) is a real attack category covered fully in Path 12.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/02-networking/ip-addresses">IP addresses</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/02-networking/routing-basics";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

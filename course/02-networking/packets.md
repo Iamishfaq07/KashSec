@@ -168,4 +168,4 @@ You'll do this properly with Wireshark in Path 12, but a taste now:
 - [Practical Packet Analysis (book)](https://nostarch.com/packetanalysis3) — Chris Sanders' classic Wireshark book.
 ???
 
-**Next up →** [What is a protocol?](#/lesson/02-networking/protocols)
+**Next up →** [Switches & VLANs](#/lesson/02-networking/switches-and-vlans)

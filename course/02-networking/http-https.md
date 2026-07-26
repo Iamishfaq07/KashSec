@@ -187,4 +187,4 @@ You send a request and get back a **500 Internal Server Error**. What does that 
 
 You now understand networks, IP addresses, ports, packets & OSI layers, protocols, TCP vs UDP, DNS, and HTTP/HTTPS. This is the true foundation under every attack and defence — you can picture how data moves and where an attacker fits in.
 
-**Next up →** [DNS Lab](#/lesson/02-networking/dns-lab)
+**Next up →** [Firewalls: the basics](#/lesson/02-networking/firewalls-basics)

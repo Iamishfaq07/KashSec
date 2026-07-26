@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Network Troubleshooting Tools — Path 02 · KashSec Academy</title>
+<meta name="description" content="Every concept in this path so far has been explained on paper. This lesson hands you the actual command-line tools for looking at a real network directly — the same small toolkit both network administ">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/02-networking/network-troubleshooting-tools">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Network Troubleshooting Tools — Path 02 · KashSec Academy">
+<meta property="og:description" content="Every concept in this path so far has been explained on paper. This lesson hands you the actual command-line tools for looking at a real network directly — the same small toolkit both network administ">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/02-networking/network-troubleshooting-tools">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Network Troubleshooting Tools — Path 02 · KashSec Academy">
+<meta name="twitter:description" content="Every concept in this path so far has been explained on paper. This lesson hands you the actual command-line tools for looking at a real network directly — the same small toolkit both network administ">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Network Troubleshooting Tools — Path 02 · KashSec Academy","description":"Every concept in this path so far has been explained on paper. This lesson hands you the actual command-line tools for looking at a real network directly — the same small toolkit both network administ","url":"https://kashsec.vercel.app/#/lesson/02-networking/network-troubleshooting-tools","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/02-networking/network-troubleshooting-tools">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 02 — Networking Fundamentals</a> · Network Troubleshooting Tools</div>
+  <article><h1>Network Troubleshooting Tools</h1>
+<p>Every concept in this path so far has been explained on paper. This lesson hands you the actual command-line tools for looking at a real network directly — the same small toolkit both network administrators and security practitioners reach for constantly.</p>
+<h2>ping: is anything even there?</h2>
+<p><strong><code>ping</code></strong> sends a small test message to a target address and waits for a reply, measuring whether the target is reachable at all and roughly how long the round trip takes.</p>
+<pre><code>ping 8.8.8.8
+</code></pre>
+<p>A successful ping confirms basic connectivity exists; no reply could mean the target is down, unreachable, or — increasingly common — deliberately configured to ignore ping requests as a minor security measure.</p>
+<h2>traceroute / tracert: which path did this actually take?</h2>
+<p>Building directly on the routing-basics lesson&#39;s hop-by-hop concept, <strong><code>traceroute</code></strong> (Linux/Mac) or <strong><code>tracert</code></strong> (Windows) reveals every router hop between your device and a destination, showing exactly which path your traffic actually travels.</p>
+<pre><code>traceroute google.com
+</code></pre>
+<p>This is genuinely useful for diagnosing where a connection is actually failing or slowing down along a multi-hop path, rather than only knowing the final destination is unreachable without any sense of where along the way the problem lives.</p>
+<h2>nslookup / dig: asking DNS directly</h2>
+<p>Building on the DNS lesson, <strong><code>nslookup</code></strong> (all platforms) or <strong><code>dig</code></strong> (Linux/Mac, generally more detailed) lets you directly query DNS and see exactly what a domain name currently resolves to.</p>
+<pre><code>nslookup example.com
+dig example.com
+</code></pre>
+<p>This is a genuinely practical way to verify a suspicious redirect or check whether DNS spoofing (from the network-attacks lesson) might be in play — comparing what a domain <em>should</em> resolve to against what your specific network is actually returning.</p>
+<h2>ipconfig / ifconfig / ip: what does my own network look like?</h2>
+<p><strong><code>ipconfig</code></strong> (Windows) or <strong><code>ifconfig</code></strong>/<strong><code>ip addr</code></strong> (Linux/Mac) shows your own device&#39;s network configuration — your IP address, default gateway, and more, directly surfacing the concepts from the IP-addresses and routing-basics lessons on your own real machine.</p>
+<pre><code>ipconfig        (Windows)
+ip addr         (modern Linux)
+ifconfig        (Mac, older Linux)
+</code></pre>
+<h2>netstat: what&#39;s actually connected right now?</h2>
+<p><strong><code>netstat</code></strong> shows active network connections on your device — genuinely useful for spotting the kind of unexpected outbound connection Path 07&#39;s recognizing-compromise lesson described as a real indicator of malware activity.</p>
+<pre><code>netstat -an
+</code></pre>
+<h2>Putting it together: a realistic troubleshooting sequence</h2>
+<p>A genuinely common real-world diagnostic sequence, worth internalizing as a pattern rather than memorizing as separate disconnected commands: <code>ping</code> to confirm basic reachability → <code>traceroute</code> to see where along the path things break down if ping fails → <code>nslookup</code>/<code>dig</code> to rule out a DNS problem specifically → <code>ipconfig</code>/<code>ifconfig</code> to confirm your own device&#39;s configuration is actually correct in the first place.</p>
+<p>A user reports &quot;the website won&#39;t load.&quot; Using this lesson&#39;s tools, describe a sensible order to diagnose the problem, and what each step would rule in or out.</p>
+<details><summary>Show answer</summary>A sensible sequence: first, run <code>ipconfig</code>/<code>ifconfig</code> to confirm the device itself has a valid IP address and default gateway configured — no point troubleshooting further if the device isn't even properly connected to its own local network. Next, <code>ping</code> the default gateway to confirm basic local network connectivity, then ping a known-reliable external address (like <code>8.8.8.8</code>) to confirm broader internet reachability. If both succeed, run <code>nslookup</code> or <code>dig</code> against the specific website's domain to check whether it resolves to a sensible IP address — a DNS problem specifically would explain "the website won't load" even with otherwise-working internet connectivity. If DNS resolves correctly but the site still won't load, <code>traceroute</code> to that specific IP address can reveal exactly where along the path the connection is actually failing.</details><h2>Key terms</h2>
+<ul>
+<li><strong>ping</strong> — tests basic reachability and round-trip time to a target address.</li>
+<li><strong>traceroute/tracert</strong> — reveals every router hop between your device and a destination.</li>
+<li><strong>nslookup/dig</strong> — directly queries DNS to see what a domain currently resolves to.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li><code>ping</code>, <code>traceroute</code>, <code>nslookup</code>/<code>dig</code>, <code>ipconfig</code>/<code>ifconfig</code>, and <code>netstat</code> form a small, genuinely practical toolkit for diagnosing real network problems.</li>
+<li>Each tool maps directly onto a concept already covered in this path — routing, DNS, IP addressing — turning abstract knowledge into something you can actually check on a real network.</li>
+<li>A sensible troubleshooting sequence moves from &quot;is my own device configured correctly&quot; outward to &quot;is the specific destination reachable,&quot; rather than guessing randomly.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/02-networking/dns-lab">DNS Lab</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/02-networking/network-troubleshooting-tools";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

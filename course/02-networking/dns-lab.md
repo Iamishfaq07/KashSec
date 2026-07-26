@@ -47,4 +47,4 @@ Pick a domain (your own site, or any organization that publishes a public bug bo
 
 DNS records are public by design, and querying them directly (rather than relying only on what a browser shows you) reveals a surprising amount about an organization's infrastructure — which is exactly why DNS enumeration is one of the very first steps in almost every real penetration test and bug bounty engagement.
 
-**Next up →** [Practical Packet Analysis Intro](#/lesson/02-networking/practical-packet-lab)
+**Next up →** [Cloud & Modern Networking](#/lesson/02-networking/cloud-and-modern-networking)

@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Switches &amp; VLANs — Path 02 · KashSec Academy</title>
+<meta name="description" content="The routing-basics lesson covered routers, which move traffic between networks. This lesson covers the device that moves traffic within a single local network: the switch — and the clever trick that l">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/02-networking/switches-and-vlans">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Switches &amp; VLANs — Path 02 · KashSec Academy">
+<meta property="og:description" content="The routing-basics lesson covered routers, which move traffic between networks. This lesson covers the device that moves traffic within a single local network: the switch — and the clever trick that l">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/02-networking/switches-and-vlans">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Switches &amp; VLANs — Path 02 · KashSec Academy">
+<meta name="twitter:description" content="The routing-basics lesson covered routers, which move traffic between networks. This lesson covers the device that moves traffic within a single local network: the switch — and the clever trick that l">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Switches & VLANs — Path 02 · KashSec Academy","description":"The routing-basics lesson covered routers, which move traffic between networks. This lesson covers the device that moves traffic within a single local network: the switch — and the clever trick that l","url":"https://kashsec.vercel.app/#/lesson/02-networking/switches-and-vlans","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/02-networking/switches-and-vlans">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 02 — Networking Fundamentals</a> · Switches &amp; VLANs</div>
+  <article><h1>Switches &amp; VLANs</h1>
+<p>The routing-basics lesson covered routers, which move traffic <em>between</em> networks. This lesson covers the device that moves traffic <em>within</em> a single local network: the <strong>switch</strong> — and the clever trick that lets one switch behave like several separate networks at once.</p>
+<h2>Switches: connecting devices on the same local network</h2>
+<p>A <strong>switch</strong> connects multiple devices on the same local network, and (unlike an old-fashioned hub, which simply repeats every signal to every port) intelligently learns which device sits on which port, and forwards traffic only to the port that specific device actually lives on. This is meaningfully more efficient and more private than a hub, since other devices on the switch never see traffic that wasn&#39;t meant for them in the first place.</p>
+<h2>VLANs: one physical switch, several logical networks</h2>
+<p>A <strong>VLAN (Virtual Local Area Network)</strong> lets a single physical switch be divided into multiple separate, isolated logical networks — devices in different VLANs generally can&#39;t talk to each other at all unless something (typically a router, or a firewall) explicitly allows it, even though they&#39;re plugged into the exact same physical hardware.</p>
+<p>This is precisely the same segmentation idea covered in Path 24&#39;s micro-segmentation lesson and Path 08&#39;s cloud subnetting concepts, just implemented at the physical-network layer: instead of buying separate physical switches for, say, a guest Wi-Fi network and an internal staff network, an organization can run both on the same hardware while keeping them logically completely separate.</p>
+<h2>Why VLANs matter for security specifically</h2>
+<ul>
+<li><strong>Containing a compromise</strong> — if a device on the guest VLAN gets compromised, VLAN separation means the attacker doesn&#39;t automatically have a path to reach devices on the staff VLAN, directly applying the blast-radius reduction principle covered throughout this course</li>
+<li><strong>IoT and smart-device isolation</strong> — a genuinely common, practical real-world use: putting smart TVs, cameras, and other IoT devices (often built with weaker security practices) on their own VLAN, separate from the devices actually holding sensitive data</li>
+<li><strong>Compliance and sensitive-data separation</strong> — some regulatory requirements (Path 23&#39;s GRC material covers this) specifically expect sensitive systems to be network-isolated from general traffic, and VLANs are frequently the practical tool used to satisfy that requirement</li>
+</ul>
+<p>An attacker who can manipulate specific switch configuration details can sometimes &quot;hop&quot; from one VLAN to another they shouldn&#39;t have access to — a genuine attack category covered more fully in Path 12&#39;s network security material. Properly configured switches (not accepting untrusted devices as trunk ports, disabling unused ports) meaningfully reduce this risk.</p>
+<p>Why might an organization put its smart office devices (thermostats, security cameras) on a separate VLAN from the network its employee laptops use?</p>
+<details><summary>Show answer</summary>IoT devices like thermostats and cameras are frequently built with weaker security practices than general-purpose computers — less frequent firmware updates, weaker default credentials, and less scrutiny overall. Placing them on a separate VLAN means that if one of these devices is compromised (a genuinely common real-world occurrence), the attacker's access is contained to that VLAN and doesn't automatically extend to the network segment holding employee laptops and sensitive business data — directly applying the blast-radius containment principle that shows up repeatedly throughout this course, from Zero Trust's micro-segmentation to cloud multi-account governance.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Switch</strong> — a device connecting multiple devices on the same local network, forwarding traffic only to the intended destination port.</li>
+<li><strong>VLAN (Virtual Local Area Network)</strong> — a logically isolated network segment running on shared physical switch hardware.</li>
+<li><strong>VLAN hopping</strong> — an attack technique for improperly crossing from one VLAN into another without authorization.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>A switch efficiently connects devices on the same local network, forwarding traffic only to its actual destination.</li>
+<li>VLANs let one physical switch host multiple logically-isolated networks, directly applying the same segmentation principle covered throughout this course at the physical-network layer.</li>
+<li>VLAN separation is a practical, common tool for containing compromise, isolating weaker IoT devices, and meeting compliance requirements around sensitive-data isolation.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/02-networking/protocols">What is a protocol?</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/02-networking/switches-and-vlans";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

@@ -153,4 +153,4 @@ Which IP address always means "this very computer I'm sitting at"?
 - [whatismyipaddress.com](https://whatismyipaddress.com/) — quick public IP + location lookup.
 ???
 
-**Next up →** [Ports: the doors of a computer](#/lesson/02-networking/ports)
+**Next up →** [Subnetting & CIDR notation](#/lesson/02-networking/subnetting-and-cidr)

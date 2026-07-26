@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Subnetting &amp; CIDR notation — Path 02 · KashSec Academy</title>
+<meta name="description" content="The IP-addresses lesson showed you what an address looks like. This lesson answers the next natural question: how does a network know which addresses belong to it, versus which addresses live somewher">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/02-networking/subnetting-and-cidr">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Subnetting &amp; CIDR notation — Path 02 · KashSec Academy">
+<meta property="og:description" content="The IP-addresses lesson showed you what an address looks like. This lesson answers the next natural question: how does a network know which addresses belong to it, versus which addresses live somewher">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/02-networking/subnetting-and-cidr">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Subnetting &amp; CIDR notation — Path 02 · KashSec Academy">
+<meta name="twitter:description" content="The IP-addresses lesson showed you what an address looks like. This lesson answers the next natural question: how does a network know which addresses belong to it, versus which addresses live somewher">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Subnetting & CIDR notation — Path 02 · KashSec Academy","description":"The IP-addresses lesson showed you what an address looks like. This lesson answers the next natural question: how does a network know which addresses belong to it, versus which addresses live somewher","url":"https://kashsec.vercel.app/#/lesson/02-networking/subnetting-and-cidr","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/02-networking/subnetting-and-cidr">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 02 — Networking Fundamentals</a> · Subnetting &amp; CIDR notation</div>
+  <article><h1>Subnetting &amp; CIDR notation</h1>
+<p>The IP-addresses lesson showed you what an address looks like. This lesson answers the next natural question: how does a network know which addresses belong to <em>it</em>, versus which addresses live somewhere else entirely?</p>
+<h2>Splitting one big address space into smaller networks</h2>
+<p>A <strong>subnet</strong> is a smaller network carved out of a larger address range — the same way a big office building might be divided into individual floors, each with its own set of room numbers. Splitting a network into subnets lets an organization group related devices together and control exactly how traffic flows between groups (directly setting up the security-groups concept from Path 08&#39;s cloud-networking lesson, and the micro-segmentation idea from Path 24).</p>
+<h2>Reading CIDR notation</h2>
+<p>You&#39;ll see addresses written like <code>192.168.1.0/24</code> constantly once you start working with networks — that <code>/24</code> is <strong>CIDR notation</strong> (Classless Inter-Domain Routing), and it tells you exactly how many addresses belong to that specific subnet.</p>
+<pre><code>192.168.1.0/24
+</code></pre>
+<p>The number after the slash tells you how many bits are reserved for the <em>network</em> portion of the address — the rest is available for individual <em>hosts</em> (devices) within that subnet. A <code>/24</code> reserves 24 of the 32 bits in an IPv4 address for the network, leaving 8 bits for hosts — which works out to 256 possible addresses (254 usable, since the first and last are reserved).</p>
+<ul>
+<li><code>/24</code> → 256 addresses (a typical home network)</li>
+<li><code>/16</code> → 65,536 addresses (a mid-size organization)</li>
+<li><code>/8</code> → 16.7 million addresses (a huge, historical allocation)</li>
+</ul>
+<p>Smaller number after the slash = bigger network. This trips up almost everyone the first time.</p>
+<h2>Why this actually matters for security work</h2>
+<p>Subnet boundaries are exactly where firewalls, security groups, and access controls typically get applied — you&#39;ll see this pattern constantly starting with Path 08&#39;s cloud-networking lesson and Path 12&#39;s network security material: &quot;allow traffic from this subnet, block traffic from that one.&quot; Understanding CIDR notation isn&#39;t optional trivia — it&#39;s the actual language most firewall rules, cloud security groups, and network diagrams are written in.</p>
+<p>Recognizing a CIDR range also tells you something practical during reconnaissance (covered properly in Path 14): a target organization&#39;s public IP range, once identified, tells you roughly how large their internet-facing footprint is.</p>
+<p>A network is described as <code>10.0.5.0/24</code>. Roughly how many individual device addresses does this subnet contain, and is that a small network or a large one compared to a <code>/16</code>?</p>
+<details><summary>Show answer</summary>A `/24` subnet contains 256 total addresses (254 usable for actual devices), which is a fairly small subnet — typical for a single office, floor, or home network. A `/16`, by contrast, contains 65,536 addresses — 256 times larger. This is the counterintuitive part worth remembering: the <em>smaller</em> the number after the slash, the <em>larger</em> the network, because a smaller number means fewer bits are "used up" reserving the network portion, leaving more bits free for individual hosts.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Subnet</strong> — a smaller network carved out of a larger address range.</li>
+<li><strong>CIDR notation</strong> — the <code>/number</code> suffix on an IP address indicating how many bits belong to the network portion.</li>
+<li><strong>Host bits</strong> — the remaining bits in an address, available for individual devices within a subnet.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Subnets divide a large address space into smaller, manageable, individually-controllable networks.</li>
+<li>CIDR notation (<code>/24</code>, <code>/16</code>, etc.) tells you exactly how large a given subnet is — smaller number after the slash means a bigger network.</li>
+<li>Subnet boundaries are where security controls (firewalls, security groups) typically get applied, making CIDR fluency a genuinely practical skill.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/02-networking/nat-and-port-forwarding">NAT &amp; Port Forwarding</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/02-networking/subnetting-and-cidr";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

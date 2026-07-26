@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NAT &amp; Port Forwarding — Path 02 · KashSec Academy</title>
+<meta name="description" content="If your home has five devices online right now, they almost certainly all share a single public IP address as far as the rest of the internet can tell. This lesson explains the clever trick that makes">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/02-networking/nat-and-port-forwarding">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="NAT &amp; Port Forwarding — Path 02 · KashSec Academy">
+<meta property="og:description" content="If your home has five devices online right now, they almost certainly all share a single public IP address as far as the rest of the internet can tell. This lesson explains the clever trick that makes">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/02-networking/nat-and-port-forwarding">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="NAT &amp; Port Forwarding — Path 02 · KashSec Academy">
+<meta name="twitter:description" content="If your home has five devices online right now, they almost certainly all share a single public IP address as far as the rest of the internet can tell. This lesson explains the clever trick that makes">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"NAT & Port Forwarding — Path 02 · KashSec Academy","description":"If your home has five devices online right now, they almost certainly all share a single public IP address as far as the rest of the internet can tell. This lesson explains the clever trick that makes","url":"https://kashsec.vercel.app/#/lesson/02-networking/nat-and-port-forwarding","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/02-networking/nat-and-port-forwarding">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 02 — Networking Fundamentals</a> · NAT &amp; Port Forwarding</div>
+  <article><h1>NAT &amp; Port Forwarding</h1>
+<p>If your home has five devices online right now, they almost certainly all share a single public IP address as far as the rest of the internet can tell. This lesson explains the clever trick that makes that possible: <strong>NAT</strong>.</p>
+<h2>Private addresses vs. public addresses</h2>
+<p>The subnetting lesson mentioned address ranges. A specific set of IPv4 ranges (<code>10.0.0.0/8</code>, <code>172.16.0.0/12</code>, and <code>192.168.0.0/16</code>) are reserved as <strong>private addresses</strong> — they&#39;re not routable on the public internet at all, and every home and office network reuses these exact same ranges internally without conflict, because they never need to be globally unique.</p>
+<h2>NAT: sharing one public address among many devices</h2>
+<p><strong>Network Address Translation (NAT)</strong> is what your router does to let every device on your private network share a single public IP address when talking to the internet. Your router keeps a translation table tracking which internal device made which outbound request, so when a response comes back, it knows exactly which device on your network to deliver it to.</p>
+<h2>Why NAT accidentally works like a basic firewall</h2>
+<p>A genuinely useful side effect: because NAT only knows how to route <em>responses</em> to requests your devices already initiated, unsolicited incoming traffic from the internet generally has nowhere to go by default — there&#39;s no existing translation-table entry for it to match. This isn&#39;t the same as a real firewall (Path 12 covers that properly), but it does mean home networks behind NAT get a meaningful baseline of protection almost by accident, simply from how NAT is designed to work.</p>
+<h2>Port forwarding: deliberately opening a door</h2>
+<p>Sometimes you genuinely want the outside world to reach a specific device on your network — hosting a game server, running a home security camera you want to check remotely. <strong>Port forwarding</strong> is how you tell your router &quot;any incoming traffic on this specific port should always go to this specific internal device,&quot; deliberately punching a hole through the protection NAT provides by default.</p>
+<p>Every port you forward is a door you&#39;ve deliberately opened from the entire internet straight to a specific device on your home network. This is exactly why the RDP-exposure lesson in Path 07 warned so strongly against exposing remote access directly — port forwarding is frequently how that exposure actually happens on a home network, often set up for a legitimate reason and then forgotten about entirely.</p>
+<p>Why does NAT provide accidental protection against unsolicited incoming internet traffic, even though it wasn&#39;t designed as a security feature?</p>
+<details><summary>Show answer</summary>NAT's translation table only knows how to route <em>responses</em> to requests that a device behind it already initiated — it has no entry, and therefore no idea what to do, with traffic arriving unprompted from the internet. This means an attacker scanning the internet generally can't directly reach a specific device sitting behind a home router's NAT, simply as a side effect of how NAT was designed to solve address-sharing, not as a deliberate security control. Port forwarding deliberately removes this protection for one specific port and device, which is exactly why it should be used sparingly and only when genuinely necessary.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Private address</strong> — an IP address range reserved for internal networks, not routable on the public internet.</li>
+<li><strong>NAT (Network Address Translation)</strong> — the technique letting many devices on a private network share one public IP address.</li>
+<li><strong>Port forwarding</strong> — deliberately configuring a router to send specific incoming traffic to a specific internal device.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Private IP address ranges are reused across countless home and office networks, since they&#39;re never directly reachable from the internet.</li>
+<li>NAT lets many devices share one public IP address, and accidentally provides a baseline of protection against unsolicited incoming traffic as a side effect.</li>
+<li>Port forwarding deliberately opens a specific door through that protection — genuinely useful when needed, but a real, commonly-forgotten exposure risk.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/02-networking/ports">Ports: the doors of a computer</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/02-networking/nat-and-port-forwarding";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

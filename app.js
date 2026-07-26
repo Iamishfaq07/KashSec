@@ -714,15 +714,25 @@ const PATHS = [
    desc:"Networks, IP, ports, packets, TCP/UDP, DNS, HTTP/HTTPS — the bedrock.",
    subs:[
      {n:"1", id:"what-is-a-network",   title:"What is a network?",       desc:"The post-office picture that makes it all click."},
-     {n:"2", id:"ip-addresses",        title:"IP addresses",             desc:"Private vs public, IPv4 vs IPv6, and finding yours."},
-     {n:"3", id:"ports",               title:"Ports: the doors",         desc:"Well-known ports and why scanners knock on them."},
-     {n:"4", id:"packets",             title:"Packets & the OSI layers", desc:"How data is chopped, wrapped, and reassembled."},
-     {n:"5", id:"protocols",           title:"What is a protocol?",      desc:"Rules two computers agree on before talking."},
-     {n:"6", id:"tcp-vs-udp",          title:"TCP vs UDP",               desc:"Registered mail vs postcard — plus the handshake."},
-     {n:"7", id:"dns",                 title:"DNS: the phonebook",       desc:"How names become numbers, and what leaks."},
-     {n:"8", id:"http-https",          title:"HTTP & HTTPS",             desc:"The web's language, and why the padlock matters."},
-     {n:"9", id:"dns-lab",             title:"DNS Lab",                  desc:"Understand how DNS works and how it can be abused."},
-     {n:"10", id:"practical-packet-lab", title:"Practical Packet Analysis Intro", desc:"See how data actually moves, hands-on."}
+     {n:"2", id:"routing-basics",      title:"Routing basics",           desc:"Routers, the default gateway, and how packets travel hop by hop."},
+     {n:"3", id:"ip-addresses",        title:"IP addresses",             desc:"Private vs public, IPv4 vs IPv6, and finding yours."},
+     {n:"4", id:"subnetting-and-cidr", title:"Subnetting & CIDR notation", desc:"Reading /24, /16, and why smaller numbers mean bigger networks."},
+     {n:"5", id:"nat-and-port-forwarding", title:"NAT & Port Forwarding", desc:"How your whole house shares one public IP, and why forwarding a port is risky."},
+     {n:"6", id:"ports",               title:"Ports: the doors",         desc:"Well-known ports and why scanners knock on them."},
+     {n:"7", id:"packets",             title:"Packets & the OSI layers", desc:"How data is chopped, wrapped, and reassembled."},
+     {n:"8", id:"switches-and-vlans",  title:"Switches & VLANs",         desc:"One physical switch, several isolated logical networks."},
+     {n:"9", id:"protocols",           title:"What is a protocol?",      desc:"Rules two computers agree on before talking."},
+     {n:"10", id:"tcp-vs-udp",          title:"TCP vs UDP",               desc:"Registered mail vs postcard — plus the handshake."},
+     {n:"11", id:"wireless-networking-basics", title:"Wireless networking basics", desc:"WPA2/WPA3 vs. broken WEP, open networks, and evil twin attacks."},
+     {n:"12", id:"dns",                 title:"DNS: the phonebook",       desc:"How names become numbers, and what leaks."},
+     {n:"13", id:"http-https",          title:"HTTP & HTTPS",             desc:"The web's language, and why the padlock matters."},
+     {n:"14", id:"firewalls-basics",   title:"Firewalls: the basics", desc:"Default-deny vs. default-allow, and stateful vs. stateless filtering."},
+     {n:"15", id:"common-network-attacks-overview", title:"Common Network Attacks: An Overview", desc:"ARP spoofing, DNS spoofing, SYN floods, and packet sniffing, named and mapped."},
+     {n:"16", id:"network-troubleshooting-tools", title:"Network Troubleshooting Tools", desc:"ping, traceroute, nslookup, and the toolkit for looking at a real network."},
+     {n:"17", id:"dns-lab",             title:"DNS Lab",                  desc:"Understand how DNS works and how it can be abused."},
+     {n:"18", id:"cloud-and-modern-networking", title:"Cloud & Modern Networking", desc:"SDN, virtual networks, and why the concepts transfer even when hardware disappears."},
+     {n:"19", id:"network-certifications-careers", title:"Network Security Careers & Certifications", desc:"Network+, CCNA, and why this foundation underlies most other security specializations."},
+     {n:"20", id:"practical-packet-lab", title:"Practical Packet Analysis Intro", desc:"See how data actually moves, hands-on."}
    ]},
   {n:"03", id:"03-linux", title:"Operating Systems & Linux", level:"Beginner",
    desc:"Install Kali in VirtualBox, then a full tour of the Linux command line.",
@@ -4766,6 +4776,11 @@ function renderLabPhishing(){
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
+  {date:'2026-07-25', title:'Path 02 doubled to 20 lessons', items:[
+    'Ninth batch of the course-wide content-doubling effort: Path 02 (Networking Fundamentals) grows from 10 to 20 lessons — the largest single-path expansion so far.',
+    'New lessons: Routing Basics, Subnetting & CIDR Notation, NAT & Port Forwarding, Switches & VLANs, Wireless Networking Basics, Firewalls: The Basics, Common Network Attacks Overview, Network Troubleshooting Tools, Cloud & Modern Networking, and Network Security Careers & Certifications.',
+    'The new Cloud & Modern Networking lesson explicitly bridges this path\'s physical-networking fundamentals to Path 08\'s cloud-networking material.'
+  ]},
   {date:'2026-07-25', title:'Path 09 doubled to 14 lessons', items:[
     'Eighth batch of the course-wide content-doubling effort: Path 09 (Digital Privacy & Personal Security) grows from 7 to 14 lessons.',
     'New lessons: Social Media Privacy & Oversharing, Privacy-Focused Tools & Alternatives, Device & Location Privacy, Data Broker Opt-Outs, Privacy Laws & Your Rights (GDPR/CCPA), Protecting Family & Children\'s Privacy, and Deleting Your Digital Footprint.',

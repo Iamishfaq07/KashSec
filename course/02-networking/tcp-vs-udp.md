@@ -115,4 +115,4 @@ Which protocol re-sends any lost pieces and guarantees delivery — TCP or UDP?
 - [CloudflareLearning: SYN flood](https://www.cloudflare.com/learning/ddos/syn-flood-ddos-attack/) — the classic attack.
 ???
 
-**Next up →** [DNS: the phonebook](#/lesson/02-networking/dns)
+**Next up →** [Wireless networking basics](#/lesson/02-networking/wireless-networking-basics)

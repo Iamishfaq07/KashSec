@@ -155,4 +155,4 @@ Do this on your own home network only.
 - [Networking Basics — Cisco](https://www.cisco.com/c/en/us/solutions/small-business/resource-center/networking/networking-basics.html)
 ???
 
-**Next up →** [IP addresses](#/lesson/02-networking/ip-addresses)
+**Next up →** [Routing basics](#/lesson/02-networking/routing-basics)

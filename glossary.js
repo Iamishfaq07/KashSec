@@ -428,6 +428,15 @@ const GLOSSARY = [
  },
  {
   "term": "ARP spoofing",
+  "def": "sending forged ARP messages to intercept local network traffic.",
+  "pathId": "02-networking",
+  "pathN": "02",
+  "pathTitle": "Networking Fundamentals",
+  "subId": "common-network-attacks-overview",
+  "subTitle": "Common Network Attacks: An Overview"
+ },
+ {
+  "term": "ARP spoofing",
   "def": "forging ARP replies to redirect local network traffic through an attacker's machine.",
   "pathId": "12-network-security",
   "pathN": "12",
@@ -1057,6 +1066,15 @@ const GLOSSARY = [
   "subTitle": "DNS: the phonebook"
  },
  {
+  "term": "CCNA (Cisco Certified Network Associate)",
+  "def": "a widely respected, vendor-specific networking certification.",
+  "pathId": "02-networking",
+  "pathN": "02",
+  "pathTitle": "Networking Fundamentals",
+  "subId": "network-certifications-careers",
+  "subTitle": "Network Security Careers & Certifications"
+ },
+ {
   "term": "CCPA/CPRA",
   "def": "California's state-level privacy law, granting residents rights to know, delete, and opt out of the sale of their data.",
   "pathId": "09-digital-privacy",
@@ -1190,6 +1208,15 @@ const GLOSSARY = [
   "pathTitle": "DevSecOps & AppSec Program",
   "subId": "what-is-devsecops",
   "subTitle": "What is DevSecOps?"
+ },
+ {
+  "term": "CIDR notation",
+  "def": "the `/number` suffix on an IP address indicating how many bits belong to the network portion.",
+  "pathId": "02-networking",
+  "pathN": "02",
+  "pathTitle": "Networking Fundamentals",
+  "subId": "subnetting-and-cidr",
+  "subTitle": "Subnetting & CIDR notation"
  },
  {
   "term": "Cipher suite",
@@ -1415,6 +1442,15 @@ const GLOSSARY = [
   "pathTitle": "Programming & Python",
   "subId": "lists-functions",
   "subTitle": "Lists & functions"
+ },
+ {
+  "term": "CompTIA Network+",
+  "def": "the standard, vendor-neutral entry-level networking certification.",
+  "pathId": "02-networking",
+  "pathN": "02",
+  "pathTitle": "Networking Fundamentals",
+  "subId": "network-certifications-careers",
+  "subTitle": "Network Security Careers & Certifications"
  },
  {
   "term": "`concurrent.futures`",
@@ -1939,6 +1975,15 @@ const GLOSSARY = [
   "subTitle": "Reverse Engineering Fundamentals"
  },
  {
+  "term": "Default-deny",
+  "def": "a rule policy blocking everything except explicitly permitted traffic.",
+  "pathId": "02-networking",
+  "pathN": "02",
+  "pathTitle": "Networking Fundamentals",
+  "subId": "firewalls-basics",
+  "subTitle": "Firewalls: the basics"
+ },
+ {
   "term": "Default deny",
   "def": "blocking everything not explicitly allowed; the safest baseline policy.",
   "pathId": "12-network-security",
@@ -1955,6 +2000,15 @@ const GLOSSARY = [
   "pathTitle": "Zero Trust Architecture",
   "subId": "microsegmentation",
   "subTitle": "Micro-Segmentation & Network Design"
+ },
+ {
+  "term": "Default gateway",
+  "def": "the router your device sends traffic to when it doesn't know a more direct path.",
+  "pathId": "02-networking",
+  "pathN": "02",
+  "pathTitle": "Networking Fundamentals",
+  "subId": "routing-basics",
+  "subTitle": "Routing basics"
  },
  {
   "term": "DEF CON",
@@ -2225,6 +2279,15 @@ const GLOSSARY = [
   "pathTitle": "Networking Fundamentals",
   "subId": "dns",
   "subTitle": "DNS: the phonebook"
+ },
+ {
+  "term": "DNS spoofing",
+  "def": "providing false DNS responses to redirect traffic to an attacker-controlled destination.",
+  "pathId": "02-networking",
+  "pathN": "02",
+  "pathTitle": "Networking Fundamentals",
+  "subId": "common-network-attacks-overview",
+  "subTitle": "Common Network Attacks: An Overview"
  },
  {
   "term": "Docker socket",
@@ -2596,6 +2659,15 @@ const GLOSSARY = [
   "subTitle": "Wi-Fi security & attacks"
  },
  {
+  "term": "Evil twin attack",
+  "def": "a rogue access point broadcasting a legitimate network's name to trick victims into connecting.",
+  "pathId": "02-networking",
+  "pathN": "02",
+  "pathTitle": "Networking Fundamentals",
+  "subId": "wireless-networking-basics",
+  "subTitle": "Wireless networking basics"
+ },
+ {
   "term": "Exception",
   "def": "a documented instance where a control didn't operate as designed, noted in the audit report along with remediation",
   "pathId": "23-grc-compliance",
@@ -2801,6 +2873,15 @@ const GLOSSARY = [
   "pathTitle": "Operating Systems & Linux",
   "subId": "files-and-folders",
   "subTitle": "Files & folders"
+ },
+ {
+  "term": "Firewall",
+  "def": "a device or software that inspects traffic and allows or blocks it based on defined rules.",
+  "pathId": "02-networking",
+  "pathN": "02",
+  "pathTitle": "Networking Fundamentals",
+  "subId": "firewalls-basics",
+  "subTitle": "Firewalls: the basics"
  },
  {
   "term": "Firewall",
@@ -3271,6 +3352,15 @@ const GLOSSARY = [
   "subTitle": "Building your first home lab"
  },
  {
+  "term": "Hop",
+  "def": "one router-to-router jump along a packet's path.",
+  "pathId": "02-networking",
+  "pathN": "02",
+  "pathTitle": "Networking Fundamentals",
+  "subId": "routing-basics",
+  "subTitle": "Routing basics"
+ },
+ {
   "term": "Horizontal privilege escalation",
   "def": "gaining access to another user's data at the same privilege level (BOLA's typical impact)",
   "pathId": "21-api-security",
@@ -3296,6 +3386,15 @@ const GLOSSARY = [
   "pathTitle": "Web Security & Hacking",
   "subId": "idor",
   "subTitle": "Broken access & IDOR"
+ },
+ {
+  "term": "Host bits",
+  "def": "the remaining bits in an address, available for individual devices within a subnet.",
+  "pathId": "02-networking",
+  "pathN": "02",
+  "pathTitle": "Networking Fundamentals",
+  "subId": "subnetting-and-cidr",
+  "subTitle": "Subnetting & CIDR notation"
  },
  {
   "term": "Host discovery",
@@ -4702,6 +4801,15 @@ const GLOSSARY = [
   "subTitle": "How the internet works"
  },
  {
+  "term": "NAT (Network Address Translation)",
+  "def": "the technique letting many devices on a private network share one public IP address.",
+  "pathId": "02-networking",
+  "pathN": "02",
+  "pathTitle": "Networking Fundamentals",
+  "subId": "nat-and-port-forwarding",
+  "subTitle": "NAT & Port Forwarding"
+ },
+ {
   "term": "Network",
   "def": "two or more connected computers sharing information.",
   "pathId": "02-networking",
@@ -4846,6 +4954,15 @@ const GLOSSARY = [
   "subTitle": "Scan networks with Nmap"
  },
  {
+  "term": "nslookup/dig",
+  "def": "directly queries DNS to see what a domain currently resolves to.",
+  "pathId": "02-networking",
+  "pathN": "02",
+  "pathTitle": "Networking Fundamentals",
+  "subId": "network-troubleshooting-tools",
+  "subTitle": "Network Troubleshooting Tools"
+ },
+ {
   "term": "NTFS ACL (Access Control List)",
   "def": "Windows' fine-grained file/folder permission system.",
   "pathId": "07-windows-security",
@@ -4925,6 +5042,15 @@ const GLOSSARY = [
   "pathTitle": "Networking Fundamentals",
   "subId": "ports",
   "subTitle": "Ports: the doors"
+ },
+ {
+  "term": "Open network",
+  "def": "a Wi-Fi network requiring no password, providing no encryption between device and access point.",
+  "pathId": "02-networking",
+  "pathN": "02",
+  "pathTitle": "Networking Fundamentals",
+  "subId": "wireless-networking-basics",
+  "subTitle": "Wireless networking basics"
  },
  {
   "term": "Open source",
@@ -5042,6 +5168,15 @@ const GLOSSARY = [
   "pathTitle": "API Security",
   "subId": "rest-vs-graphql",
   "subTitle": "REST vs GraphQL — security differences that matter"
+ },
+ {
+  "term": "Overlay network",
+  "def": "a logical network spanning multiple underlying physical networks, appearing as one seamless network to anything running on top of it.",
+  "pathId": "02-networking",
+  "pathN": "02",
+  "pathTitle": "Networking Fundamentals",
+  "subId": "cloud-and-modern-networking",
+  "subTitle": "Cloud & Modern Networking"
  },
  {
   "term": "Overreliance",
@@ -5422,6 +5557,15 @@ const GLOSSARY = [
   "subTitle": "Implementing Zero Trust: A Practical Roadmap"
  },
  {
+  "term": "ping",
+  "def": "tests basic reachability and round-trip time to a target address.",
+  "pathId": "02-networking",
+  "pathN": "02",
+  "pathTitle": "Networking Fundamentals",
+  "subId": "network-troubleshooting-tools",
+  "subTitle": "Network Troubleshooting Tools"
+ },
+ {
   "term": "Pinned action",
   "def": "referencing a GitHub Action by commit SHA, not a moving tag, so the code that runs can't change out from under you",
   "pathId": "22-devsecops-appsec",
@@ -5566,6 +5710,15 @@ const GLOSSARY = [
   "subTitle": "GRC Tools, Certifications & Careers"
  },
  {
+  "term": "Port forwarding",
+  "def": "deliberately configuring a router to send specific incoming traffic to a specific internal device.",
+  "pathId": "02-networking",
+  "pathN": "02",
+  "pathTitle": "Networking Fundamentals",
+  "subId": "nat-and-port-forwarding",
+  "subTitle": "NAT & Port Forwarding"
+ },
+ {
   "term": "Post-exploitation",
   "def": "activity after initial access, demonstrating actual business impact.",
   "pathId": "14-ethical-hacking",
@@ -5636,6 +5789,15 @@ const GLOSSARY = [
   "pathTitle": "Digital Privacy & Personal Security",
   "subId": "privacy-settings-audit",
   "subTitle": "Privacy Settings Audit"
+ },
+ {
+  "term": "Private address",
+  "def": "an IP address range reserved for internal networks, not routable on the public internet.",
+  "pathId": "02-networking",
+  "pathN": "02",
+  "pathTitle": "Networking Fundamentals",
+  "subId": "nat-and-port-forwarding",
+  "subTitle": "NAT & Port Forwarding"
  },
  {
   "term": "Private/incognito browsing",
@@ -6502,6 +6664,15 @@ const GLOSSARY = [
   "subTitle": "What is a network?"
  },
  {
+  "term": "Router",
+  "def": "a device that forwards packets toward their destination based on a routing table.",
+  "pathId": "02-networking",
+  "pathN": "02",
+  "pathTitle": "Networking Fundamentals",
+  "subId": "routing-basics",
+  "subTitle": "Routing basics"
+ },
+ {
   "term": "RSA",
   "def": "the classic, widely used asymmetric encryption algorithm, based on the difficulty of factoring large numbers.",
   "pathId": "06-crypto-fundamentals",
@@ -7303,6 +7474,15 @@ const GLOSSARY = [
   "subTitle": "What is a computer really?"
  },
  {
+  "term": "Software-Defined Networking (SDN)",
+  "def": "separating network routing decisions from physical hardware, controlled instead through software.",
+  "pathId": "02-networking",
+  "pathN": "02",
+  "pathTitle": "Networking Fundamentals",
+  "subId": "cloud-and-modern-networking",
+  "subTitle": "Cloud & Modern Networking"
+ },
+ {
   "term": "Software-Defined Perimeter (SDP)",
   "def": "an approach that makes resources invisible/unreachable to unauthorized requesters rather than merely access-controlled",
   "pathId": "24-zero-trust",
@@ -7438,6 +7618,15 @@ const GLOSSARY = [
   "subTitle": "Phase 4: Post-exploitation"
  },
  {
+  "term": "SSID",
+  "def": "the broadcast name of a Wi-Fi network.",
+  "pathId": "02-networking",
+  "pathN": "02",
+  "pathTitle": "Networking Fundamentals",
+  "subId": "wireless-networking-basics",
+  "subTitle": "Wireless networking basics"
+ },
+ {
   "term": "SSL stripping",
   "def": "downgrading an HTTPS connection to unencrypted HTTP during interception.",
   "pathId": "12-network-security",
@@ -7499,6 +7688,15 @@ const GLOSSARY = [
   "pathTitle": "Career Prep",
   "subId": "interview-prep",
   "subTitle": "Interview preparation"
+ },
+ {
+  "term": "Stateful firewall",
+  "def": "a firewall that tracks ongoing connection context, rather than evaluating each packet in isolation.",
+  "pathId": "02-networking",
+  "pathN": "02",
+  "pathTitle": "Networking Fundamentals",
+  "subId": "firewalls-basics",
+  "subTitle": "Firewalls: the basics"
  },
  {
   "term": "Stateful inspection",
@@ -7618,6 +7816,15 @@ const GLOSSARY = [
   "subTitle": "Automation & nuclei"
  },
  {
+  "term": "Subnet",
+  "def": "a smaller network carved out of a larger address range.",
+  "pathId": "02-networking",
+  "pathN": "02",
+  "pathTitle": "Networking Fundamentals",
+  "subId": "subnetting-and-cidr",
+  "subTitle": "Subnetting & CIDR notation"
+ },
+ {
   "term": "Subprocessor",
   "def": "a third party a vendor itself relies on, sometimes called a \"fourth party\" from the original company's perspective",
   "pathId": "23-grc-compliance",
@@ -7681,6 +7888,15 @@ const GLOSSARY = [
   "subTitle": "ISO 27001 Overview"
  },
  {
+  "term": "Switch",
+  "def": "a device connecting multiple devices on the same local network, forwarding traffic only to the intended destination port.",
+  "pathId": "02-networking",
+  "pathN": "02",
+  "pathTitle": "Networking Fundamentals",
+  "subId": "switches-and-vlans",
+  "subTitle": "Switches & VLANs"
+ },
+ {
   "term": "Symmetric encryption",
   "def": "encryption where the same key both encrypts and decrypts.",
   "pathId": "06-crypto-fundamentals",
@@ -7697,6 +7913,15 @@ const GLOSSARY = [
   "pathTitle": "Networking Fundamentals",
   "subId": "tcp-vs-udp",
   "subTitle": "TCP vs UDP"
+ },
+ {
+  "term": "SYN flood",
+  "def": "a DDoS technique exhausting a server's connection-tracking capacity via incomplete TCP handshakes.",
+  "pathId": "02-networking",
+  "pathN": "02",
+  "pathTitle": "Networking Fundamentals",
+  "subId": "common-network-attacks-overview",
+  "subTitle": "Common Network Attacks: An Overview"
  },
  {
   "term": "SYN scan / Connect scan",
@@ -7994,6 +8219,15 @@ const GLOSSARY = [
   "pathTitle": "Programming & Python",
   "subId": "first-program",
   "subTitle": "Your first Python program"
+ },
+ {
+  "term": "traceroute/tracert",
+  "def": "reveals every router hop between your device and a destination.",
+  "pathId": "02-networking",
+  "pathN": "02",
+  "pathTitle": "Networking Fundamentals",
+  "subId": "network-troubleshooting-tools",
+  "subTitle": "Network Troubleshooting Tools"
  },
  {
   "term": "Track record",
@@ -8417,6 +8651,24 @@ const GLOSSARY = [
   "pathTitle": "Cybersecurity Fundamentals",
   "subId": "malware",
   "subTitle": "Malware families"
+ },
+ {
+  "term": "VLAN hopping",
+  "def": "an attack technique for improperly crossing from one VLAN into another without authorization.",
+  "pathId": "02-networking",
+  "pathN": "02",
+  "pathTitle": "Networking Fundamentals",
+  "subId": "switches-and-vlans",
+  "subTitle": "Switches & VLANs"
+ },
+ {
+  "term": "VLAN (Virtual Local Area Network)",
+  "def": "a logically isolated network segment running on shared physical switch hardware.",
+  "pathId": "02-networking",
+  "pathN": "02",
+  "pathTitle": "Networking Fundamentals",
+  "subId": "switches-and-vlans",
+  "subTitle": "Switches & VLANs"
  },
  {
   "term": "VPC / security group",
