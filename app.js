@@ -1162,18 +1162,29 @@ const PATHS = [
    desc:"APIs are the real backend of almost every modern app — the OWASP API Top 10, BOLA/BFLA, JWT attacks, GraphQL security, and a hands-on capstone lab against a real vulnerable API.",
    subs:[
      {n:"1", id:"why-api-security",       title:"Why API Security Matters", desc:"APIs are the real backend now — and where most real-world breaches actually happen."},
-     {n:"2", id:"what-are-apis",          title:"What are APIs and why do they matter for security?", desc:"The contract behind almost everything modern software does."},
-     {n:"3", id:"owasp-api-top-10",       title:"OWASP API Top 10 (2023)", desc:"The shared checklist for API risk, ten categories at a glance."},
-     {n:"4", id:"authn-authz-apis",       title:"Authentication & Authorization in APIs", desc:"Who are you vs. what are you allowed to do — the distinction that matters most."},
-     {n:"5", id:"broken-auth-jwt",        title:"Broken Authentication & JWT Attacks", desc:"alg:none, algorithm confusion, and weak secrets — how tokens get forged."},
-     {n:"6", id:"bola-and-bfla",          title:"BOLA & BFLA — the two most common API authorization failures", desc:"Object-level and function-level authorization, the #1 real-world API risk."},
-     {n:"7", id:"mass-assignment",        title:"Mass Assignment & Excessive Data Exposure", desc:"When the API accepts — or returns — more than it should."},
-     {n:"8", id:"rate-limiting-injection", title:"Rate Limiting, Injection & Resource Abuse", desc:"SSRF, classic injection, and business-logic abuse when limits are missing."},
-     {n:"9", id:"rest-vs-graphql",        title:"REST vs GraphQL — security differences that matter", desc:"Same goals, different attack surface — one endpoint changes everything."},
-     {n:"10", id:"graphql-security",      title:"GraphQL Security", desc:"Introspection, nested queries, and field-level authorization."},
-     {n:"11", id:"api-testing",           title:"How to actually test APIs", desc:"A battle-tested recon-to-report workflow for bug bounty and pentests."},
-     {n:"12", id:"api-security-lab",      title:"API Security Capstone Lab", desc:"Put it all together against a real vulnerable API — crAPI, vAPI, or your own."},
-     {n:"13", id:"api-roadmap",           title:"Your API Security Roadmap", desc:"Where to go next, and how to keep growing this specialisation."}
+     {n:"2", id:"api-breach-case-studies", title:"Real-World API Breach Case Studies", desc:"How the checklist categories actually played out in real incidents."},
+     {n:"3", id:"what-are-apis",          title:"What are APIs and why do they matter for security?", desc:"The contract behind almost everything modern software does."},
+     {n:"4", id:"api-versioning-and-shadow-apis", title:"API Versioning & Shadow APIs", desc:"What accumulates in the gaps as an API evolves over time."},
+     {n:"5", id:"owasp-api-top-10",       title:"OWASP API Top 10 (2023)", desc:"The shared checklist for API risk, ten categories at a glance."},
+     {n:"6", id:"api-security-standards-and-frameworks", title:"API Security Standards & Frameworks", desc:"ASVS, NIST, and industry regulations layered on top of OWASP."},
+     {n:"7", id:"authn-authz-apis",       title:"Authentication & Authorization in APIs", desc:"Who are you vs. what are you allowed to do — the distinction that matters most."},
+     {n:"8", id:"oauth2-and-oidc-deep-dive", title:"OAuth2 & OIDC, Deep Dive", desc:"The delegation protocol behind most real-world API authentication."},
+     {n:"9", id:"broken-auth-jwt",        title:"Broken Authentication & JWT Attacks", desc:"alg:none, algorithm confusion, and weak secrets — how tokens get forged."},
+     {n:"10", id:"api-key-and-secret-management", title:"API Key & Secret Management", desc:"Where keys actually leak, and why rotation matters."},
+     {n:"11", id:"bola-and-bfla",         title:"BOLA & BFLA — the two most common API authorization failures", desc:"Object-level and function-level authorization, the #1 real-world API risk."},
+     {n:"12", id:"webhook-security",      title:"Webhook Security", desc:"Authenticating inbound requests you didn't initiate."},
+     {n:"13", id:"mass-assignment",       title:"Mass Assignment & Excessive Data Exposure", desc:"When the API accepts — or returns — more than it should."},
+     {n:"14", id:"api-gateway-security",  title:"API Gateway Security", desc:"Centralizing defense — and the risk of trusting it too much."},
+     {n:"15", id:"rate-limiting-injection", title:"Rate Limiting, Injection & Resource Abuse", desc:"SSRF, classic injection, and business-logic abuse when limits are missing."},
+     {n:"16", id:"websocket-security",    title:"WebSocket Security", desc:"Persistent connections break the usual request-response assumptions."},
+     {n:"17", id:"rest-vs-graphql",       title:"REST vs GraphQL — security differences that matter", desc:"Same goals, different attack surface — one endpoint changes everything."},
+     {n:"18", id:"grpc-and-protobuf-security", title:"gRPC & Protobuf Security", desc:"Binary, schema-defined messages need a genuinely different testing approach."},
+     {n:"19", id:"graphql-security",      title:"GraphQL Security", desc:"Introspection, nested queries, and field-level authorization."},
+     {n:"20", id:"graphql-authorization-patterns", title:"GraphQL Authorization Patterns", desc:"How field-level authorization actually gets implemented — and where it breaks."},
+     {n:"21", id:"api-testing",           title:"How to actually test APIs", desc:"A battle-tested recon-to-report workflow for bug bounty and pentests."},
+     {n:"22", id:"api-documentation-and-postman-workflows", title:"API Documentation & Postman Workflows", desc:"Collections, environments, and automating checks with Newman."},
+     {n:"23", id:"api-security-lab",      title:"API Security Capstone Lab", desc:"Put it all together against a real vulnerable API — crAPI, vAPI, or your own."},
+     {n:"24", id:"api-roadmap",           title:"Your API Security Roadmap", desc:"Where to go next, and how to keep growing this specialisation."}
    ]},
   {n:"22", id:"22-devsecops-appsec", title:"DevSecOps & AppSec Program", level:"Advanced",
    desc:"Move from finding individual bugs to building the program that prevents them at scale — SAST/DAST/SCA, CI/CD security, secrets & supply chain, threat modeling, and the metrics that earn leadership buy-in.",
@@ -4901,6 +4912,11 @@ function renderLabPhishing(){
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
+  {date:'2026-07-25', title:'Path 21 doubled to 24 lessons', items:[
+    'Twenty-third batch of the course-wide content-doubling effort: Path 21 (API Security) grows from 13 to 24 lessons (11 core lessons doubled to 22, plus the capstone lab and roadmap unchanged).',
+    'New lessons: Real-World API Breach Case Studies, API Versioning & Shadow APIs, API Security Standards & Frameworks, OAuth2 & OIDC Deep Dive, API Key & Secret Management, Webhook Security, API Gateway Security, WebSocket Security, gRPC & Protobuf Security, GraphQL Authorization Patterns, and API Documentation & Postman Workflows.',
+    'The new gRPC and WebSocket lessons fill a real gap: every previous lesson in this path assumed REST/GraphQL\'s request-response model, even though internal microservice traffic and real-time features increasingly don\'t follow that model at all.'
+  ]},
   {date:'2026-07-25', title:'Path 20 doubled to 14 lessons', items:[
     'Twenty-second batch of the course-wide content-doubling effort: Path 20 (Career Prep) grows from 7 to 14 lessons.',
     'New lessons: LinkedIn Optimization for Security Roles, Entry-Level vs. Experienced Career Paths, Writing Technical Blog Posts, Navigating Recruiters & Referrals, Salary Negotiation, Mentorship & Imposter Syndrome, and Career Growth After Year One.',

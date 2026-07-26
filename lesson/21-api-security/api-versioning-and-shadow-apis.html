@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>API Versioning &amp; Shadow APIs — Path 21 · KashSec Academy</title>
+<meta name="description" content="The what-are-APIs lesson introduced the basic client-server contract. This lesson covers something that contract rarely accounts for cleanly: what happens to that contract as it evolves over time, and">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/21-api-security/api-versioning-and-shadow-apis">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="API Versioning &amp; Shadow APIs — Path 21 · KashSec Academy">
+<meta property="og:description" content="The what-are-APIs lesson introduced the basic client-server contract. This lesson covers something that contract rarely accounts for cleanly: what happens to that contract as it evolves over time, and">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/21-api-security/api-versioning-and-shadow-apis">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="API Versioning &amp; Shadow APIs — Path 21 · KashSec Academy">
+<meta name="twitter:description" content="The what-are-APIs lesson introduced the basic client-server contract. This lesson covers something that contract rarely accounts for cleanly: what happens to that contract as it evolves over time, and">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"API Versioning & Shadow APIs — Path 21 · KashSec Academy","description":"The what-are-APIs lesson introduced the basic client-server contract. This lesson covers something that contract rarely accounts for cleanly: what happens to that contract as it evolves over time, and","url":"https://kashsec.vercel.app/#/lesson/21-api-security/api-versioning-and-shadow-apis","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/21-api-security/api-versioning-and-shadow-apis">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 21 — API Security</a> · API Versioning &amp; Shadow APIs</div>
+  <article><h1>API Versioning &amp; Shadow APIs</h1>
+<p>The what-are-APIs lesson introduced the basic client-server contract. This lesson covers something that contract rarely accounts for cleanly: what happens to that contract as it evolves over time, and what accumulates in the gaps — directly connecting to the api-breach-case-studies lesson&#39;s &quot;internal API accidentally left public&quot; pattern.</p>
+<h2>Why API versioning exists, and why it creates risk</h2>
+<p>As an API evolves, breaking changes (renamed fields, removed endpoints, changed authentication requirements) would break every existing client if pushed instantly — so most real APIs maintain multiple versions simultaneously (<code>/api/v1/...</code>, <code>/api/v2/...</code>), giving clients time to migrate. This is a completely reasonable engineering practice, but it has a genuine security consequence: <strong>older versions frequently receive less security attention</strong> than the current version, since engineering focus naturally gravitates toward what&#39;s actively being developed.</p>
+<h2>The deprecated-but-still-live endpoint</h2>
+<p>A genuinely common real-world finding: <code>/api/v1/users</code> was deprecated years ago in favor of <code>/api/v2/users</code>, with improved authorization logic added to the newer version — but the old <code>/api/v1/users</code> endpoint was never actually decommissioned, and still processes requests using its original, weaker logic. An attacker who discovers this old version (through historical documentation, cached search results, or simply guessing the version-numbering pattern) can bypass every security improvement made since, simply by calling the old path instead of the current one.</p>
+<h2>Shadow APIs — the ones nobody documented</h2>
+<p>A <strong>shadow API</strong> is an API endpoint that exists and is reachable, but isn&#39;t tracked in any official inventory or documentation — created during rapid development, a proof-of-concept that made it to production, or a feature flag left permanently enabled for internal testing. Directly connecting to the OWASP API Top 10&#39;s &quot;Improper Inventory Management&quot; category, shadow APIs are dangerous precisely because you can&#39;t secure, monitor, or even meaningfully reason about something your own organization doesn&#39;t know exists.</p>
+<h2>Zombie APIs — the ones everyone forgot</h2>
+<p>A <strong>zombie API</strong> is related but distinct: an endpoint that was properly documented and deployed at one point, but has since been forgotten — the team that built it moved on, the documentation went stale, and nobody currently at the organization has clear ownership or awareness that it&#39;s still live and reachable. The practical difference from a shadow API matters less than the shared consequence: both represent attack surface that exists in production without active security ownership.</p>
+<h2>How attackers actually find these</h2>
+<ul>
+<li><strong>Historical documentation and archives</strong> — Wayback Machine snapshots, cached API documentation pages, and old blog posts sometimes reference endpoint patterns long after the current documentation has been updated</li>
+<li><strong>Version-pattern guessing</strong> — directly connecting to the recon-pipeline mindset from Path 15&#39;s bug bounty content: if <code>/api/v2/</code> exists, systematically trying <code>/api/v1/</code>, <code>/api/v3/</code>, and <code>/api-beta/</code> is a near-zero-cost, frequently productive step</li>
+<li><strong>Mobile app decompilation</strong> — older app versions still installed on some users&#39; devices may call API versions the current app no longer uses, but that the server still accepts, directly connecting to Path 13&#39;s mobile reverse-engineering coverage</li>
+<li><strong>JavaScript bundle analysis</strong> — client-side code for a web app frequently references API endpoints beyond what&#39;s actually rendered in the current UI, sometimes including deprecated or in-development paths</li>
+</ul>
+<h2>Practical inventory management</h2>
+<p>The actual fix is organizational as much as technical: maintaining a genuinely accurate, continuously-updated <strong>API inventory</strong> — every endpoint, its version, its owner, and its deprecation status — and treating decommissioning an old API version as a real, tracked engineering task with a deadline, not something left to happen &quot;eventually.&quot; An API gateway (covered later in this path) that requires every new endpoint to be explicitly registered before it&#39;s routable adds a structural forcing function, rather than relying purely on developer discipline.</p>
+<p>Why does a deprecated API version that still receives requests pose a genuinely worse risk than the exact same vulnerability existing in the current, actively-maintained version?</p>
+<h2>Key terms</h2>
+<ul>
+<li><strong>Shadow API</strong> — a reachable API endpoint that isn&#39;t tracked in any official documentation or inventory.</li>
+<li><strong>Zombie API</strong> — a previously documented endpoint that&#39;s been forgotten and lost active ownership over time.</li>
+<li><strong>API inventory</strong> — a maintained, accurate record of every live endpoint, its version, owner, and deprecation status.</li>
+</ul>
+<h2>Recap</h2>
+<p>API versioning is a reasonable engineering practice that creates a real security consequence: older versions receive less attention while sometimes remaining fully reachable with weaker security logic. Shadow APIs (never documented) and zombie APIs (documented, then forgotten) both represent unowned attack surface, discoverable through historical archives, version-pattern guessing, and client-side code analysis. A genuinely accurate, continuously-maintained API inventory, paired with real decommissioning deadlines, is the practical fix.</p>
+<h3>References</h3>
+<ul>
+<li><a href="https://owasp.org/API-Security/editions/2023/en/0xa9-improper-inventory-management/">OWASP API9:2023 — Improper Inventory Management</a></li>
+<li><a href="https://web.archive.org/">Wayback Machine</a> — a useful tool for finding historical API documentation.</li>
+</ul>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/21-api-security/api-versioning-and-shadow-apis";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

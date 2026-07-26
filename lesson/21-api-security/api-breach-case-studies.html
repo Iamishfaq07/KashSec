@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Real-World API Breach Case Studies — Path 21 · KashSec Academy</title>
+<meta name="description" content="The why-API-security lesson listed BOLA, JWT issues, GraphQL abuse, and mass assignment as recurring themes in high-profile breaches. This lesson walks through how those patterns actually played out i">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/21-api-security/api-breach-case-studies">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Real-World API Breach Case Studies — Path 21 · KashSec Academy">
+<meta property="og:description" content="The why-API-security lesson listed BOLA, JWT issues, GraphQL abuse, and mass assignment as recurring themes in high-profile breaches. This lesson walks through how those patterns actually played out i">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/21-api-security/api-breach-case-studies">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Real-World API Breach Case Studies — Path 21 · KashSec Academy">
+<meta name="twitter:description" content="The why-API-security lesson listed BOLA, JWT issues, GraphQL abuse, and mass assignment as recurring themes in high-profile breaches. This lesson walks through how those patterns actually played out i">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Real-World API Breach Case Studies — Path 21 · KashSec Academy","description":"The why-API-security lesson listed BOLA, JWT issues, GraphQL abuse, and mass assignment as recurring themes in high-profile breaches. This lesson walks through how those patterns actually played out i","url":"https://kashsec.vercel.app/#/lesson/21-api-security/api-breach-case-studies","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/21-api-security/api-breach-case-studies">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 21 — API Security</a> · Real-World API Breach Case Studies</div>
+  <article><h1>Real-World API Breach Case Studies</h1>
+<p>The why-API-security lesson listed BOLA, JWT issues, GraphQL abuse, and mass assignment as recurring themes in high-profile breaches. This lesson walks through how those patterns actually played out in real, publicly documented incidents — because seeing the exact mechanics of a real breach makes the abstract category concrete in a way a checklist alone can&#39;t.</p>
+<h2>Why studying real breaches matters more than memorizing categories</h2>
+<p>The OWASP API Top 10 (next lesson) gives you the vocabulary. Real breach post-mortems give you the <em>mechanism</em> — the specific sequence of small, individually-reasonable engineering decisions that combined into a severe, exploitable flaw. Almost no real API breach is a single, obviously catastrophic bug; it&#39;s usually a chain of small gaps, each defensible on its own, that an attacker strings together.</p>
+<h2>Pattern 1 — the sequential ID enumeration breach</h2>
+<p>A recurring shape across multiple large, publicly reported incidents: an API endpoint that returns a user&#39;s profile or order data based on a sequential numeric ID, with no server-side check that the requesting user actually owns that ID. An attacker with one valid, authenticated session simply increments the ID — <code>/api/users/1001</code>, <code>/api/users/1002</code>, <code>/api/users/1003</code> — and scripts it into a loop, extracting an entire user database in minutes. This is BOLA, exactly as the why-API-security lesson described, but seeing it as a real production incident (rather than a lab exercise) makes clear how quickly a single missing <code>WHERE user_id = current_user.id</code> clause scales into a mass breach.</p>
+<h2>Pattern 2 — the internal API accidentally left public</h2>
+<p>A genuinely common shape: an API endpoint built for internal, trusted use (an admin dashboard, an internal tool) gets deployed on the same public-facing infrastructure as customer-facing endpoints, with the assumption that &quot;nobody will find the URL&quot; serving as the only actual access control. Directly connecting to the shadow-and-zombie-APIs lesson later in this path, this specific pattern — security through obscurity as the sole real control — recurs across breach post-mortems with striking consistency, since URL discovery (through client-side JavaScript, mobile app decompilation, or simple guessing) defeats it trivially.</p>
+<h2>Pattern 3 — the long-lived token that outlived its purpose</h2>
+<p>Directly connecting to the broken-auth-jwt lesson: several notable breaches trace back to authentication tokens issued with no meaningful expiration, or a revocation mechanism that existed on paper but wasn&#39;t actually enforced consistently across every service consuming that token. A token stolen months earlier (through an unrelated, seemingly minor incident) remained fully valid and usable, turning what should have been a contained, time-limited exposure into an open-ended one.</p>
+<h2>Pattern 4 — GraphQL introspection left enabled in production</h2>
+<p>Directly connecting to the graphql-security lesson: a genuinely common real-world finding is a GraphQL API with introspection (the ability to query the schema itself, discovering every available field and type) left enabled in a production environment, when it was only ever intended for development convenience. This single misconfiguration hands an attacker a complete, self-documenting map of the entire API&#39;s data model, dramatically accelerating every subsequent stage of an attack.</p>
+<h2>The common thread across every pattern</h2>
+<p>None of these patterns require advanced technical sophistication to exploit — sequential ID incrementing, trying an obvious internal-sounding URL, replaying an old token, or querying an exposed schema are all trivial, low-skill actions. The sophistication, when it exists at all in these breaches, is almost always on the <em>defensive</em> side that failed to exist — a missing authorization check, a missing token expiration policy, a missing production configuration review — not on the attacker&#39;s side. This is exactly why this path emphasizes systematic checklists (the OWASP API Top 10, next) over exotic technique: most real API breaches are caught by disciplined basics, not clever detection.</p>
+<h2>🧪 Hands-on lab — reconstruct a breach chain</h2>
+<ol>
+<li><p>Research one publicly documented API breach (search &quot;API breach post-mortem&quot; or &quot;API vulnerability disclosure writeup&quot; — several security vendors and affected companies have published detailed technical breakdowns).</p>
+</li>
+<li><p>Identify which OWASP API Top 10 category (or categories — many real breaches combine more than one) the root cause maps to.</p>
+</li>
+<li><p>Write a one-paragraph summary of the specific chain of decisions that led to the breach, in your own words, as if explaining it to a non-technical stakeholder.</p>
+</li>
+<li><p>Why does &quot;nobody will find this URL&quot; fail as a real access control, given how APIs actually get discovered in practice?</p>
+</li>
+<li><p>In the sequential ID pattern, what&#39;s the one specific server-side change that would have prevented the breach entirely?</p>
+</li>
+<li><p>Why does GraphQL introspection left enabled in production accelerate every other stage of an attack, not just the reconnaissance stage?</p>
+</li>
+</ol>
+<h2>Key terms</h2>
+<ul>
+<li><strong>Post-mortem</strong> — a detailed technical writeup explaining the root cause and timeline of a security incident.</li>
+<li><strong>Security through obscurity</strong> — relying on secrecy of implementation details (like an undocumented URL) as the sole access control.</li>
+<li><strong>Breach chain</strong> — the sequence of individually small gaps that combine into a severe, exploitable vulnerability.</li>
+</ul>
+<h2>Recap</h2>
+<p>Real API breaches are almost never a single catastrophic bug — they&#39;re chains of small, individually defensible engineering shortcuts that combine into severe exposure. Sequential ID enumeration, internal APIs left publicly accessible, long-lived unrevoked tokens, and exposed GraphQL introspection are recurring, well-documented shapes across real incidents. None require sophisticated attacker technique — they&#39;re caught (or missed) by disciplined basics, which is exactly the checklist-driven approach this path builds toward next.</p>
+<h3>References</h3>
+<ul>
+<li><a href="https://owasp.org/API-Security/editions/2023/en/0x11-t10/">OWASP API Security — Real World Examples</a></li>
+<li><a href="https://hackerone.com/hacktivity?querystring=API">HackerOne Hacktivity — API vulnerability reports</a></li>
+</ul>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/21-api-security/api-breach-case-studies";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

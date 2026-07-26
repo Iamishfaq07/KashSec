@@ -418,6 +418,15 @@ const GLOSSARY = [
   "subTitle": "Why API Security Matters"
  },
  {
+  "term": "API gateway",
+  "def": "infrastructure centralizing cross-cutting API concerns (authentication, rate limiting, routing) in front of backend services.",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "api-gateway-security",
+  "subTitle": "API Gateway Security"
+ },
+ {
   "term": "API hooking",
   "def": "intercepting a program's function calls to observe or modify behavior before the real function executes.",
   "pathId": "17-malware-re",
@@ -425,6 +434,24 @@ const GLOSSARY = [
   "pathTitle": "Malware & Reverse Engineering",
   "subId": "api-hooking-and-monitoring",
   "subTitle": "API Hooking & Monitoring"
+ },
+ {
+  "term": "API inventory",
+  "def": "a maintained, accurate record of every live endpoint, its version, owner, and deprecation status.",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "api-versioning-and-shadow-apis",
+  "subTitle": "API Versioning & Shadow APIs"
+ },
+ {
+  "term": "API key",
+  "def": "a static, long-lived secret string used for simpler authentication than a full OAuth2 flow.",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "api-key-and-secret-management",
+  "subTitle": "API Key & Secret Management"
  },
  {
   "term": "API / UI",
@@ -1156,6 +1183,15 @@ const GLOSSARY = [
   "subTitle": "Malware families"
  },
  {
+  "term": "Breach chain",
+  "def": "the sequence of individually small gaps that combine into a severe, exploitable vulnerability.",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "api-breach-case-studies",
+  "subTitle": "Real-World API Breach Case Studies"
+ },
+ {
   "term": "`break` / `continue`",
   "def": "leave / skip an iteration.",
   "pathId": "04-python",
@@ -1840,6 +1876,15 @@ const GLOSSARY = [
   "subTitle": "What is GRC?"
  },
  {
+  "term": "Compliance mapping",
+  "def": "translating technical security findings and controls into the specific language a regulatory framework's auditors require.",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "api-security-standards-and-frameworks",
+  "subTitle": "API Security Standards & Frameworks"
+ },
+ {
   "term": "Component",
   "def": "a reusable, self-contained piece of UI in a frontend framework, managing its own portion of the DOM.",
   "pathId": "05-web-basics",
@@ -2315,6 +2360,15 @@ const GLOSSARY = [
   "pathTitle": "Mobile App Security",
   "subId": "cross-platform-mobile-security",
   "subTitle": "Cross-Platform Mobile Security"
+ },
+ {
+  "term": "Cross-Site WebSocket Hijacking (CSWSH)",
+  "def": "establishing an unauthorized WebSocket connection as a victim via a missing Origin header check, the WebSocket analogue of CSRF.",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "websocket-security",
+  "subTitle": "WebSocket Security"
  },
  {
   "term": "Cryptomining abuse",
@@ -2864,6 +2918,15 @@ const GLOSSARY = [
   "pathTitle": "Cryptography Fundamentals",
   "subId": "asymmetric-encryption",
   "subTitle": "Asymmetric Encryption"
+ },
+ {
+  "term": "Directive-based authorization",
+  "def": "declaring access requirements directly in the GraphQL schema using custom directives, rather than scattering checks across resolver code.",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "graphql-authorization-patterns",
+  "subTitle": "GraphQL Authorization Patterns"
  },
  {
   "term": "Directory brute-forcing",
@@ -3820,6 +3883,15 @@ const GLOSSARY = [
   "subTitle": "Identity as the New Perimeter"
  },
  {
+  "term": "Field-level authorization",
+  "def": "authorization checks evaluated per individual field at resolution time, not just once per query or endpoint.",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "graphql-authorization-patterns",
+  "subTitle": "GraphQL Authorization Patterns"
+ },
+ {
   "term": "File",
   "def": "a single unit of stored data, identified by a name and extension.",
   "pathId": "00-fresher-basics",
@@ -4342,6 +4414,15 @@ const GLOSSARY = [
   "subTitle": "Career Growth After Year One"
  },
  {
+  "term": "gRPC",
+  "def": "a high-performance RPC framework using Protocol Buffers, common for internal service-to-service communication.",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "grpc-and-protobuf-security",
+  "subTitle": "gRPC & Protobuf Security"
+ },
+ {
   "term": "GTFOBins",
   "def": "reference of exploitable SUID/sudo binaries.",
   "pathId": "03-linux",
@@ -4547,6 +4628,15 @@ const GLOSSARY = [
   "pathTitle": "OT/ICS & Critical Infrastructure Security",
   "subId": "scada-ics-fundamentals",
   "subTitle": "SCADA & ICS Architecture Fundamentals"
+ },
+ {
+  "term": "HMAC signature verification",
+  "def": "computing and comparing a cryptographic signature to confirm a webhook request genuinely came from the expected sender.",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "webhook-security",
+  "subTitle": "Webhook Security"
  },
  {
   "term": "HMI (Human-Machine Interface)",
@@ -5611,6 +5701,15 @@ const GLOSSARY = [
   "subTitle": "Applied Cryptography: Choosing and Using It Correctly"
  },
  {
+  "term": "Key rotation",
+  "def": "periodically issuing new keys and retiring old ones to bound the maximum possible exposure window.",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "api-key-and-secret-management",
+  "subTitle": "API Key & Secret Management"
+ },
+ {
   "term": "Keyword matching",
   "def": "aligning your resume's terminology with the job description's language.",
   "pathId": "20-career-prep",
@@ -6133,6 +6232,15 @@ const GLOSSARY = [
   "subTitle": "Digital forensics & IR"
  },
  {
+  "term": "Message-level authorization",
+  "def": "the object-level authorization check individual WebSocket messages still require, despite lacking a discrete per-message HTTP request.",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "websocket-security",
+  "subTitle": "WebSocket Security"
+ },
+ {
   "term": "Metadata",
   "def": "information about a communication (who, when, how often) distinct from its actual content, often still visible even with E2EE.",
   "pathId": "09-digital-privacy",
@@ -6413,12 +6521,30 @@ const GLOSSARY = [
  },
  {
   "term": "Mutual TLS (mTLS)",
+  "def": "a service-to-service authentication mechanism where both parties present and verify certificates.",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "grpc-and-protobuf-security",
+  "subTitle": "gRPC & Protobuf Security"
+ },
+ {
+  "term": "Mutual TLS (mTLS)",
   "def": "a TLS handshake where both the client and server cryptographically verify each other's identity",
   "pathId": "24-zero-trust",
   "pathN": "24",
   "pathTitle": "Zero Trust Architecture",
   "subId": "zero-trust-api-security",
   "subTitle": "Zero Trust for APIs & Microservices"
+ },
+ {
+  "term": "N+1 authorization gap",
+  "def": "an authorization bypass introduced when batching optimizations skip per-object checks meant to run individually.",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "graphql-authorization-patterns",
+  "subTitle": "GraphQL Authorization Patterns"
  },
  {
   "term": "NAC (Network Access Control)",
@@ -6536,6 +6662,15 @@ const GLOSSARY = [
   "pathTitle": "Network Security",
   "subId": "why-netsec",
   "subTitle": "Why network security matters"
+ },
+ {
+  "term": "Newman",
+  "def": "Postman's command-line runner, enabling collections to run automatically in CI/CD pipelines.",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "api-documentation-and-postman-workflows",
+  "subTitle": "API Documentation & Postman Workflows"
  },
  {
   "term": "NGFW / WAF",
@@ -6709,6 +6844,15 @@ const GLOSSARY = [
   "subTitle": "Automation & nuclei"
  },
  {
+  "term": "OAuth 2.0",
+  "def": "a delegation protocol letting a user grant limited third-party access without sharing credentials.",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "oauth2-and-oidc-deep-dive",
+  "subTitle": "OAuth2 & OIDC, Deep Dive"
+ },
+ {
   "term": "Obfuscation",
   "def": "transforming code to make it harder to read while preserving its behavior, raising the cost of static analysis.",
   "pathId": "13-mobile-security",
@@ -6772,6 +6916,24 @@ const GLOSSARY = [
   "subTitle": "Control Flow Obfuscation, Deep Dive"
  },
  {
+  "term": "OpenAPI import",
+  "def": "automatically generating a complete request collection directly from an API's OpenAPI specification.",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "api-documentation-and-postman-workflows",
+  "subTitle": "API Documentation & Postman Workflows"
+ },
+ {
+  "term": "OpenAPI Specification",
+  "def": "the standard machine-readable format for describing an API, increasingly used as a security and inventory artifact.",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "api-security-standards-and-frameworks",
+  "subTitle": "API Security Standards & Frameworks"
+ },
+ {
   "term": "OpenAPI / Swagger",
   "def": "standard API description format.",
   "pathId": "05-web-basics",
@@ -6788,6 +6950,15 @@ const GLOSSARY = [
   "pathTitle": "Networking Fundamentals",
   "subId": "ports",
   "subTitle": "Ports: the doors"
+ },
+ {
+  "term": "OpenID Connect (OIDC)",
+  "def": "an identity layer built on OAuth2, providing verifiable user identity assertions via ID tokens.",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "oauth2-and-oidc-deep-dive",
+  "subTitle": "OAuth2 & OIDC, Deep Dive"
  },
  {
   "term": "Open network",
@@ -7024,6 +7195,15 @@ const GLOSSARY = [
   "subTitle": "API Security Fundamentals"
  },
  {
+  "term": "OWASP ASVS",
+  "def": "a granular, testable set of security requirements for web and API applications, complementary to the Top 10's category-level framing.",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "api-security-standards-and-frameworks",
+  "subTitle": "API Security Standards & Frameworks"
+ },
+ {
   "term": "OWASP Mobile Application Security (MAS)",
   "def": "the umbrella project covering the Mobile Top 10, plus the detailed testing guide (MASTG) and verification standard (MASVS).",
   "pathId": "13-mobile-security",
@@ -7256,6 +7436,15 @@ const GLOSSARY = [
   "pathTitle": "Advanced Cyber Topics",
   "subId": "linux-privesc",
   "subTitle": "Linux privilege escalation"
+ },
+ {
+  "term": "Path normalization mismatch",
+  "def": "a discrepancy between how a gateway and a backend service interpret the same URL path, creating a security bypass.",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "api-gateway-security",
+  "subTitle": "API Gateway Security"
  },
  {
   "term": "Path traversal (directory traversal)",
@@ -7663,6 +7852,24 @@ const GLOSSARY = [
   "subTitle": "Phase 4: Post-exploitation"
  },
  {
+  "term": "Postman collection",
+  "def": "an organized, reusable set of saved API requests, itself a compounding testing artifact.",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "api-documentation-and-postman-workflows",
+  "subTitle": "API Documentation & Postman Workflows"
+ },
+ {
+  "term": "Post-mortem",
+  "def": "a detailed technical writeup explaining the root cause and timeline of a security incident.",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "api-breach-case-studies",
+  "subTitle": "Real-World API Breach Case Studies"
+ },
+ {
   "term": "Post-quantum cryptography (PQC)",
   "def": "cryptographic algorithms designed to remain secure against quantum computers, standardized by NIST beginning in 2024.",
   "pathId": "06-crypto-fundamentals",
@@ -7976,6 +8183,15 @@ const GLOSSARY = [
   "pathTitle": "Networking Fundamentals",
   "subId": "protocols",
   "subTitle": "What is a protocol?"
+ },
+ {
+  "term": "Protocol Buffers (protobuf)",
+  "def": "gRPC's compact, binary, schema-defined serialization format.",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "grpc-and-protobuf-security",
+  "subTitle": "gRPC & Protobuf Security"
  },
  {
   "term": "Protocol-speaking malware",
@@ -8590,6 +8806,15 @@ const GLOSSARY = [
   "subTitle": "Common Cryptographic Attacks"
  },
  {
+  "term": "Replay attack",
+  "def": "resending a previously valid, correctly-signed request to trigger unintended repeated processing.",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "webhook-security",
+  "subTitle": "Webhook Security"
+ },
+ {
   "term": "Repository",
   "def": "a curated collection of packages a package manager installs from.",
   "pathId": "03-linux",
@@ -9184,6 +9409,15 @@ const GLOSSARY = [
   "subTitle": "The 5 phases"
  },
  {
+  "term": "Scope",
+  "def": "a granular permission string defining exactly what an issued token is authorized to do.",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "oauth2-and-oidc-deep-dive",
+  "subTitle": "OAuth2 & OIDC, Deep Dive"
+ },
+ {
   "term": "Scope document",
   "def": "the precise, legally-meaningful definition of what's authorized for testing.",
   "pathId": "15-bug-bounty",
@@ -9254,6 +9488,15 @@ const GLOSSARY = [
   "pathTitle": "Advanced Cyber Topics",
   "subId": "cloud-security",
   "subTitle": "Cloud security"
+ },
+ {
+  "term": "Secrets manager",
+  "def": "dedicated infrastructure for storing, rotating, and auditing access to credentials, independent of application code.",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "api-key-and-secret-management",
+  "subTitle": "API Key & Secret Management"
  },
  {
   "term": "Secure Authentication (DNP3)",
@@ -9409,6 +9652,15 @@ const GLOSSARY = [
   "subTitle": "Common Crypto Mistakes"
  },
  {
+  "term": "Security through obscurity",
+  "def": "relying on secrecy of implementation details (like an undocumented URL) as the sole access control.",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "api-breach-case-studies",
+  "subTitle": "Real-World API Breach Case Studies"
+ },
+ {
   "term": "security.txt",
   "def": "a standard file (`/.well-known/security.txt`) where sites publish how to report security issues responsibly.",
   "pathId": "01-introduction",
@@ -9506,6 +9758,15 @@ const GLOSSARY = [
   "pathTitle": "Cloud Computing Basics",
   "subId": "cloud-serverless-basics",
   "subTitle": "Cloud Serverless Basics"
+ },
+ {
+  "term": "Server reflection",
+  "def": "a gRPC feature allowing schema discovery at runtime, analogous to GraphQL introspection.",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "grpc-and-protobuf-security",
+  "subTitle": "gRPC & Protobuf Security"
  },
  {
   "term": "Service",
@@ -9623,6 +9884,15 @@ const GLOSSARY = [
   "pathTitle": "Operating Systems & Linux",
   "subId": "install-kali",
   "subTitle": "Install Kali Linux"
+ },
+ {
+  "term": "Shadow API",
+  "def": "a reachable API endpoint that isn't tracked in any official documentation or inventory.",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "api-versioning-and-shadow-apis",
+  "subTitle": "API Versioning & Shadow APIs"
  },
  {
   "term": "Shadow API",
@@ -10289,6 +10559,15 @@ const GLOSSARY = [
   "pathTitle": "GRC & Compliance",
   "subId": "iso27001-overview",
   "subTitle": "ISO 27001 Overview"
+ },
+ {
+  "term": "State parameter",
+  "def": "a CSRF-prevention value ensuring an OAuth flow was genuinely initiated by the user completing it.",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "oauth2-and-oidc-deep-dive",
+  "subTitle": "OAuth2 & OIDC, Deep Dive"
  },
  {
   "term": "Static analysis",
@@ -11650,6 +11929,15 @@ const GLOSSARY = [
   "subTitle": "Using your web browser safely"
  },
  {
+  "term": "Webhook",
+  "def": "a callback mechanism where a third-party service sends an event notification directly to your application's endpoint.",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "webhook-security",
+  "subTitle": "Webhook Security"
+ },
+ {
   "term": "Web shell",
   "def": "a malicious script uploaded to gain remote command execution via file upload.",
   "pathId": "11-web-security",
@@ -11666,6 +11954,15 @@ const GLOSSARY = [
   "pathTitle": "How the Web Works",
   "subId": "websockets-realtime-web",
   "subTitle": "WebSockets & the real-time web"
+ },
+ {
+  "term": "WebSocket",
+  "def": "a persistent, bidirectional connection protocol, architecturally distinct from request-response REST/GraphQL APIs.",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "websocket-security",
+  "subTitle": "WebSocket Security"
  },
  {
   "term": "Well-known ports",
@@ -11981,6 +12278,24 @@ const GLOSSARY = [
   "pathTitle": "Zero Trust Architecture",
   "subId": "implementing-zero-trust",
   "subTitle": "Implementing Zero Trust: A Practical Roadmap"
+ },
+ {
+  "term": "Zero Trust service verification",
+  "def": "backend services independently authenticating every request rather than implicitly trusting anything reaching them internally.",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "api-gateway-security",
+  "subTitle": "API Gateway Security"
+ },
+ {
+  "term": "Zombie API",
+  "def": "a previously documented endpoint that's been forgotten and lost active ownership over time.",
+  "pathId": "21-api-security",
+  "pathN": "21",
+  "pathTitle": "API Security",
+  "subId": "api-versioning-and-shadow-apis",
+  "subTitle": "API Versioning & Shadow APIs"
  },
  {
   "term": "Zombie API",

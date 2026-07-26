@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OAuth2 &amp; OIDC, Deep Dive — Path 21 · KashSec Academy</title>
+<meta name="description" content="The authn-authz-apis lesson covered authentication and authorization conceptually. This lesson goes deep into the specific, extremely widely-deployed protocol most real-world APIs actually use to impl">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/21-api-security/oauth2-and-oidc-deep-dive">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="OAuth2 &amp; OIDC, Deep Dive — Path 21 · KashSec Academy">
+<meta property="og:description" content="The authn-authz-apis lesson covered authentication and authorization conceptually. This lesson goes deep into the specific, extremely widely-deployed protocol most real-world APIs actually use to impl">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/21-api-security/oauth2-and-oidc-deep-dive">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="OAuth2 &amp; OIDC, Deep Dive — Path 21 · KashSec Academy">
+<meta name="twitter:description" content="The authn-authz-apis lesson covered authentication and authorization conceptually. This lesson goes deep into the specific, extremely widely-deployed protocol most real-world APIs actually use to impl">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"OAuth2 & OIDC, Deep Dive — Path 21 · KashSec Academy","description":"The authn-authz-apis lesson covered authentication and authorization conceptually. This lesson goes deep into the specific, extremely widely-deployed protocol most real-world APIs actually use to impl","url":"https://kashsec.vercel.app/#/lesson/21-api-security/oauth2-and-oidc-deep-dive","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/21-api-security/oauth2-and-oidc-deep-dive">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 21 — API Security</a> · OAuth2 &amp; OIDC, Deep Dive</div>
+  <article><h1>OAuth2 &amp; OIDC, Deep Dive</h1>
+<p>The authn-authz-apis lesson covered authentication and authorization conceptually. This lesson goes deep into the specific, extremely widely-deployed protocol most real-world APIs actually use to implement both: <strong>OAuth 2.0</strong> and <strong>OpenID Connect (OIDC)</strong> — genuinely essential to understand precisely because it&#39;s so common that &quot;how does OAuth actually work&quot; is one of the most frequent gaps between developers who use it correctly by copying working examples and those who genuinely understand its security model.</p>
+<h2>OAuth2 solves delegation, not authentication</h2>
+<p>A genuinely important, frequently-confused distinction: <strong>OAuth 2.0</strong> is fundamentally a delegation protocol — it lets a user grant a third-party application limited access to their data on another service, without ever sharing their actual password with that third party (&quot;let this app read your calendar&quot; without giving the app your Google password). OAuth2 alone says nothing about <em>who</em> the user actually is; that&#39;s what <strong>OpenID Connect (OIDC)</strong>, built on top of OAuth2, actually adds — a standardized identity layer providing a verifiable &quot;this is genuinely the user&quot; assertion.</p>
+<h2>The authorization code flow, the one that actually matters</h2>
+<p>The <strong>authorization code flow</strong> is the current recommended standard for essentially every real-world scenario involving a server-side component, specifically because the actual access token exchange happens server-to-server (the &quot;App→Auth: Exchanges code&quot; step above), never passing through the user&#39;s browser at all — a genuinely important security property, since anything passing through the browser is exposed to browser-based attacks like XSS (Path 11).</p>
+<h2>Scopes — the actual authorization boundary</h2>
+<p>Directly connecting to the authn-authz-apis lesson&#39;s authorization coverage: <strong>scopes</strong> define exactly what an issued token is authorized to do — <code>read:calendar</code>, <code>write:profile</code>, and similar granular permission strings. A genuinely common real-world misconfiguration is a token issued with far broader scope than the requesting application actually needs, directly violating least-privilege (Path 12) — an app that only ever needs to read a user&#39;s profile shouldn&#39;t be issued a token also capable of modifying it.</p>
+<h2>Common OAuth2 implementation vulnerabilities</h2>
+<ul>
+<li><strong>Redirect URI validation gaps</strong> — if an authorization server doesn&#39;t strictly validate the <code>redirect_uri</code> parameter against a pre-registered list, an attacker can redirect the authorization code to an attacker-controlled endpoint instead, hijacking the entire flow</li>
+<li><strong>State parameter omission</strong> — the <code>state</code> parameter is specifically designed to prevent CSRF-style attacks (Path 11) against the OAuth flow itself; omitting it lets an attacker trick a victim into completing an OAuth flow the victim never initiated</li>
+<li><strong>Implicit flow usage</strong> — the older <strong>implicit flow</strong> returns the access token directly in the browser&#39;s URL fragment, exposing it to browser history, referrer leakage, and any script running on the page — deprecated for exactly this reason, but still occasionally found in legacy implementations</li>
+<li><strong>Token leakage via referrer headers</strong> — an access token embedded in a URL (rather than a header or POST body) can leak to a third-party site through the <code>Referer</code> header when the page navigates onward</li>
+</ul>
+<h2>OIDC&#39;s ID token — the identity assertion</h2>
+<p>Directly connecting to the broken-auth-jwt lesson: OIDC&#39;s <strong>ID token</strong> is itself a JWT, cryptographically signed by the authorization server, containing verifiable claims about the authenticated user (their unique identifier, when they authenticated, sometimes their email). Critically, the ID token proves identity to the <em>client application</em> — it should never be sent to a resource API as though it were an access token, a genuinely common implementation mistake that conflates two tokens serving structurally different purposes.</p>
+<p>Why does the authorization code flow&#39;s server-to-server token exchange step provide a meaningfully stronger security property than the deprecated implicit flow&#39;s direct browser-based token issuance?</p>
+<h2>Key terms</h2>
+<ul>
+<li><strong>OAuth 2.0</strong> — a delegation protocol letting a user grant limited third-party access without sharing credentials.</li>
+<li><strong>OpenID Connect (OIDC)</strong> — an identity layer built on OAuth2, providing verifiable user identity assertions via ID tokens.</li>
+<li><strong>Scope</strong> — a granular permission string defining exactly what an issued token is authorized to do.</li>
+<li><strong>State parameter</strong> — a CSRF-prevention value ensuring an OAuth flow was genuinely initiated by the user completing it.</li>
+</ul>
+<h2>Recap</h2>
+<p>OAuth2 solves delegated access without credential sharing; OIDC adds verifiable identity on top of it — the two solve genuinely different problems despite being frequently used together. The authorization code flow is the current standard specifically because token exchange happens server-to-server, avoiding browser exposure. Redirect URI validation gaps, missing state parameters, deprecated implicit flow usage, and confusing ID tokens with access tokens are the most common real-world implementation vulnerabilities.</p>
+<h3>References</h3>
+<ul>
+<li><a href="https://www.oauth.com/">OAuth 2.0 Simplified</a> — an accessible, thorough practical guide.</li>
+<li><a href="https://cheatsheetseries.owasp.org/cheatsheets/OAuth2_Cheat_Sheet.html">OWASP OAuth2 Security Cheat Sheet</a></li>
+</ul>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/21-api-security/oauth2-and-oidc-deep-dive";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

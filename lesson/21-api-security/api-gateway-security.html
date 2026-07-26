@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>API Gateway Security — Path 21 · KashSec Academy</title>
+<meta name="description" content="The mass-assignment lesson focused on individual endpoint logic flaws. This lesson zooms out to the infrastructure layer sitting in front of every endpoint — the API gateway — directly connecting to P">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/21-api-security/api-gateway-security">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="API Gateway Security — Path 21 · KashSec Academy">
+<meta property="og:description" content="The mass-assignment lesson focused on individual endpoint logic flaws. This lesson zooms out to the infrastructure layer sitting in front of every endpoint — the API gateway — directly connecting to P">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/21-api-security/api-gateway-security">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="API Gateway Security — Path 21 · KashSec Academy">
+<meta name="twitter:description" content="The mass-assignment lesson focused on individual endpoint logic flaws. This lesson zooms out to the infrastructure layer sitting in front of every endpoint — the API gateway — directly connecting to P">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"API Gateway Security — Path 21 · KashSec Academy","description":"The mass-assignment lesson focused on individual endpoint logic flaws. This lesson zooms out to the infrastructure layer sitting in front of every endpoint — the API gateway — directly connecting to P","url":"https://kashsec.vercel.app/#/lesson/21-api-security/api-gateway-security","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/21-api-security/api-gateway-security">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 21 — API Security</a> · API Gateway Security</div>
+  <article><h1>API Gateway Security</h1>
+<p>The mass-assignment lesson focused on individual endpoint logic flaws. This lesson zooms out to the infrastructure layer sitting in front of every endpoint — the <strong>API gateway</strong> — directly connecting to Path 12&#39;s IDS/IPS/WAF coverage, since a gateway is essentially a purpose-built reverse proxy specifically for API traffic, applying similar defensive principles at a different layer.</p>
+<h2>What an API gateway actually does</h2>
+<p>An <strong>API gateway</strong> sits between clients and your actual backend services, centralizing cross-cutting concerns that would otherwise need to be duplicated in every individual service: authentication verification, rate limiting, request/response logging, and routing. Rather than every microservice independently implementing its own authentication check, a gateway can verify a token once, at the edge, before a request ever reaches internal services at all.</p>
+<h2>Why centralizing security logic at the gateway matters</h2>
+<p>Directly connecting to the authn-authz-apis lesson&#39;s &quot;correct pattern&quot; coverage: a genuinely common real-world security gap is inconsistent authorization enforcement across different microservices — one team&#39;s service carefully checks every request, another team&#39;s service, built under deadline pressure, has a gap. A gateway that enforces baseline authentication and basic authorization checks centrally means every request gets that minimum guarantee regardless of which specific backend team built the destination service, reducing (though not eliminating — backend services still need their own object-level authorization checks) the blast radius of any single team&#39;s oversight.</p>
+<h2>Rate limiting at the gateway versus the application</h2>
+<p>Directly connecting to the rate-limiting-injection lesson: implementing rate limiting at the gateway layer, rather than in each individual service&#39;s own code, has a genuine practical advantage — malicious or excessive traffic gets rejected before consuming any actual backend compute resources at all, protecting every downstream service simultaneously with a single, consistently-configured control, rather than relying on each service team to implement rate limiting correctly and consistently on their own.</p>
+<h2>The gateway as a single point of failure — and a single point of bypass</h2>
+<p>A genuinely important architectural risk: if backend services are directly reachable on the internal network without also independently verifying that requests actually passed through the gateway, an attacker who gains any internal network foothold (through an unrelated vulnerability elsewhere) can bypass every gateway-enforced control entirely by talking to backend services directly. This directly connects to Path 22&#39;s Zero Trust path — a properly Zero Trust-aligned architecture has backend services independently verify requests (mutual TLS, service-to-service authentication) rather than implicitly trusting anything that reaches them on the internal network, precisely because &quot;the gateway already checked this&quot; is not itself a security guarantee once an attacker has internal network access.</p>
+<h2>API gateway-specific misconfigurations</h2>
+<ul>
+<li><strong>Path normalization mismatches</strong> — a gateway&#39;s routing logic and a backend service&#39;s own routing logic occasionally interpret ambiguous URL paths (trailing slashes, encoded characters, path traversal sequences) differently, creating a request that passes the gateway&#39;s security checks under one interpretation but gets processed by the backend under a different one</li>
+<li><strong>Header injection/spoofing</strong> — a gateway that adds trusted internal headers (like <code>X-User-Id</code>, populated after verifying a token) needs to strip any client-supplied header with the same name first, or a client can simply set that header themselves and potentially impersonate another user if the backend blindly trusts it</li>
+<li><strong>Overly permissive CORS configuration</strong> — a gateway-level CORS misconfiguration (Path 05) can expose every backend service behind it to cross-origin attacks simultaneously, rather than being contained to a single service&#39;s own misconfiguration</li>
+</ul>
+<h2>Web Application Firewalls (WAF) for API traffic specifically</h2>
+<p>Directly connecting to Path 12&#39;s WAF coverage: a <strong>WAF</strong> deployed in front of an API gateway can catch known injection patterns and other signature-matchable attacks before they reach application logic at all — genuinely useful as one layer of defense-in-depth, but, exactly as Path 12 emphasized generally, never a substitute for the application itself correctly validating input and enforcing authorization, since a sufficiently novel or obfuscated attack can evade signature-based WAF detection entirely.</p>
+<p>Why does relying solely on gateway-level authentication, without backend services independently verifying requests, create a genuine architectural risk beyond just &quot;extra defense is always better&quot;?</p>
+<h2>Key terms</h2>
+<ul>
+<li><strong>API gateway</strong> — infrastructure centralizing cross-cutting API concerns (authentication, rate limiting, routing) in front of backend services.</li>
+<li><strong>Path normalization mismatch</strong> — a discrepancy between how a gateway and a backend service interpret the same URL path, creating a security bypass.</li>
+<li><strong>Zero Trust service verification</strong> — backend services independently authenticating every request rather than implicitly trusting anything reaching them internally.</li>
+</ul>
+<h2>Recap</h2>
+<p>An API gateway centralizes authentication, rate limiting, and routing across multiple backend services, reducing inconsistent per-service security implementation. This centralization is genuinely valuable but creates risk if backend services implicitly trust anything reaching them internally rather than independently verifying requests, exactly the gap Zero Trust architecture addresses. Path normalization mismatches, header spoofing, and CORS misconfiguration are gateway-specific risks worth checking explicitly, and a WAF adds one more defensive layer without replacing correct application-level validation.</p>
+<h3>References</h3>
+<ul>
+<li><a href="https://owasp.org/API-Security/editions/2023/en/0xa8-security-misconfiguration/">OWASP API8:2023 — Security Misconfiguration</a></li>
+<li><a href="https://csrc.nist.gov/pubs/sp/800/207/final">NIST SP 800-207 — Zero Trust Architecture</a></li>
+</ul>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/21-api-security/api-gateway-security";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

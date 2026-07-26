@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GraphQL Authorization Patterns — Path 21 · KashSec Academy</title>
+<meta name="description" content="The GraphQL security lesson covered introspection, nested query abuse, and field-level authorization at an introductory level. This lesson goes deep specifically into how field-level authorization act">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/21-api-security/graphql-authorization-patterns">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="GraphQL Authorization Patterns — Path 21 · KashSec Academy">
+<meta property="og:description" content="The GraphQL security lesson covered introspection, nested query abuse, and field-level authorization at an introductory level. This lesson goes deep specifically into how field-level authorization act">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/21-api-security/graphql-authorization-patterns">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="GraphQL Authorization Patterns — Path 21 · KashSec Academy">
+<meta name="twitter:description" content="The GraphQL security lesson covered introspection, nested query abuse, and field-level authorization at an introductory level. This lesson goes deep specifically into how field-level authorization act">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"GraphQL Authorization Patterns — Path 21 · KashSec Academy","description":"The GraphQL security lesson covered introspection, nested query abuse, and field-level authorization at an introductory level. This lesson goes deep specifically into how field-level authorization act","url":"https://kashsec.vercel.app/#/lesson/21-api-security/graphql-authorization-patterns","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/21-api-security/graphql-authorization-patterns">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 21 — API Security</a> · GraphQL Authorization Patterns</div>
+  <article><h1>GraphQL Authorization Patterns</h1>
+<p>The GraphQL security lesson covered introspection, nested query abuse, and field-level authorization at an introductory level. This lesson goes deep specifically into how field-level authorization actually gets implemented correctly (and where it commonly breaks), directly connecting to the BOLA-and-BFLA lesson&#39;s core object/function-level authorization distinction, now applied to GraphQL&#39;s uniquely flexible query structure.</p>
+<h2>Why GraphQL&#39;s flexibility creates a genuinely different authorization surface</h2>
+<p>Directly connecting to the REST-vs-GraphQL lesson: a REST API&#39;s authorization surface is bounded by its fixed set of endpoints — you check authorization once per endpoint definition. GraphQL&#39;s single endpoint accepts client-defined queries requesting an arbitrary combination of fields across an arbitrary combination of connected types in one request, meaning authorization can&#39;t be checked once &quot;at the endpoint&quot; — it has to be checked at the level of individual <strong>fields</strong> and <strong>resolvers</strong>, since the same query shape can legitimately request very different combinations of sensitive and non-sensitive data.</p>
+<h2>Field-level authorization, illustrated</h2>
+<pre><code class="language-graphql">query {
+  user(id: 42) {
+    name        # Public — anyone can see this
+    email       # Private — only the user themselves or an admin
+    salary      # Highly sensitive — only HR admins
+    orders {
+      total     # Private — only the user or an admin
+    }
+  }
+}
+</code></pre>
+<p>A single query can request fields with three genuinely different authorization requirements simultaneously — the naive mistake is checking &quot;is this user authenticated&quot; once at the top and assuming that&#39;s sufficient, when each field actually needs its own independent check evaluated at resolution time.</p>
+<h2>Where field-level authorization commonly breaks</h2>
+<ul>
+<li><strong>Checking at the query root only</strong> — verifying the requesting user can access <code>user(id: 42)</code> generally, but never re-checking whether they specifically should see the nested <code>salary</code> field once inside that object</li>
+<li><strong>Inconsistent authorization across resolvers written by different developers</strong> — directly connecting to the api-gateway-security lesson&#39;s &quot;inconsistent enforcement across teams&quot; point, one resolver correctly checks field-level access while another, written later under deadline pressure, doesn&#39;t</li>
+<li><strong>Authorization logic duplicated instead of centralized</strong> — copy-pasting the same permission check into every resolver that needs it means a fix applied to one location doesn&#39;t propagate to the others, a classic maintenance trap directly connecting to Path 04&#39;s DRY-principle coverage</li>
+</ul>
+<h2>The directive-based authorization pattern</h2>
+<p>A genuinely robust, common approach: using <strong>GraphQL directives</strong> — custom annotations directly in the schema definition — to declare authorization requirements as part of the schema itself, rather than scattering permission checks throughout individual resolver function bodies:</p>
+<pre><code class="language-graphql">type User {
+  name: String
+  email: String @auth(requires: SELF_OR_ADMIN)
+  salary: Float @auth(requires: HR_ADMIN)
+}
+</code></pre>
+<p>This pattern moves authorization from imperative, easy-to-forget code scattered across resolvers into declarative, schema-visible policy — a reviewer scanning the schema can immediately see every field&#39;s access requirement in one place, rather than having to trace through separate resolver implementations to verify enforcement actually happened.</p>
+<h2>Batching and the N+1 authorization problem</h2>
+<p>Directly connecting to the api-testing lesson&#39;s DataLoader/batching coverage for performance: a genuinely subtle authorization gap can emerge from performance-optimization patterns — if a batching layer fetches data for many objects in a single underlying query (to avoid the classic &quot;N+1 query&quot; performance problem), authorization checks written to run per-individual-object can accidentally get skipped or short-circuited by the batching optimization if the two systems weren&#39;t designed together carefully, meaning a well-intentioned performance fix can silently introduce an authorization bypass.</p>
+<h2>Authorization at the connection/edge level, not just the node level</h2>
+<p>A genuinely GraphQL-specific consideration: authorization sometimes needs to apply to the <em>relationship</em> between two objects, not just each object individually — a user might be authorized to see a specific <code>Order</code> object generally, but not authorized to see it specifically in the context of another user&#39;s <code>orders</code> connection field, if that relationship itself reveals information (like &quot;this order belongs to this specific other user&quot;) beyond what viewing the order in isolation would.</p>
+<p>Why does checking authorization only at a GraphQL query&#39;s root object (rather than at each individual field) create a genuine security gap, even when the root-level check itself is implemented correctly?</p>
+<h2>Key terms</h2>
+<ul>
+<li><strong>Field-level authorization</strong> — authorization checks evaluated per individual field at resolution time, not just once per query or endpoint.</li>
+<li><strong>Directive-based authorization</strong> — declaring access requirements directly in the GraphQL schema using custom directives, rather than scattering checks across resolver code.</li>
+<li><strong>N+1 authorization gap</strong> — an authorization bypass introduced when batching optimizations skip per-object checks meant to run individually.</li>
+</ul>
+<h2>Recap</h2>
+<p>GraphQL&#39;s flexible, client-defined query structure means authorization can&#39;t be checked once per endpoint the way REST allows — it must be evaluated at the level of individual fields and resolvers. Common failures include checking only at the query root, inconsistent enforcement across resolvers, and duplicated rather than centralized logic. Directive-based authorization declared in the schema itself provides a more robust, auditable pattern, and batching optimizations built for performance need careful design to avoid silently skipping per-object authorization checks.</p>
+<h3>References</h3>
+<ul>
+<li><a href="https://graphql.org/learn/authorization/">GraphQL — Authorization patterns</a></li>
+<li><a href="https://cheatsheetseries.owasp.org/cheatsheets/GraphQL_Cheat_Sheet.html">OWASP — GraphQL Cheat Sheet</a></li>
+</ul>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/21-api-security/graphql-authorization-patterns";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>
