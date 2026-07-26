@@ -715,6 +715,15 @@ const GLOSSARY = [
   "subTitle": "GraphQL Security"
  },
  {
+  "term": "bcrypt",
+  "def": "a third-party library implementing password-specific, deliberately slow hashing.",
+  "pathId": "04-python",
+  "pathN": "04",
+  "pathTitle": "Programming & Python",
+  "subId": "python-security-libraries-overview",
+  "subTitle": "Python Security Libraries: An Overview"
+ },
+ {
   "term": "bcrypt / Argon2",
   "def": "purpose-built, deliberately slow password hashing algorithms.",
   "pathId": "06-crypto-fundamentals",
@@ -1300,6 +1309,15 @@ const GLOSSARY = [
   "subTitle": "Certifications that actually help"
  },
  {
+  "term": "Class",
+  "def": "a blueprint for creating objects that bundle data and behavior together.",
+  "pathId": "04-python",
+  "pathN": "04",
+  "pathTitle": "Programming & Python",
+  "subId": "object-oriented-python-basics",
+  "subTitle": "Object-oriented Python basics"
+ },
+ {
   "term": "Cleanup",
   "def": "removing all testing artifacts before an engagement concludes.",
   "pathId": "14-ethical-hacking",
@@ -1559,6 +1577,15 @@ const GLOSSARY = [
   "pathTitle": "Digital Privacy & Personal Security",
   "subId": "privacy-settings-audit",
   "subTitle": "Privacy Settings Audit"
+ },
+ {
+  "term": "connect_ex()",
+  "def": "a socket method that attempts a connection and returns a result code rather than raising an exception on failure, convenient for scanning.",
+  "pathId": "04-python",
+  "pathN": "04",
+  "pathTitle": "Programming & Python",
+  "subId": "python-network-scripting",
+  "subTitle": "Python for network scripting"
  },
  {
   "term": "Consensus mechanism",
@@ -2200,6 +2227,15 @@ const GLOSSARY = [
   "subTitle": "Digital forensics & IR"
  },
  {
+  "term": "Dictionary",
+  "def": "a collection of key-value pairs, accessed by meaningful key rather than numeric position.",
+  "pathId": "04-python",
+  "pathN": "04",
+  "pathTitle": "Programming & Python",
+  "subId": "dictionaries-and-sets",
+  "subTitle": "Dictionaries & sets"
+ },
+ {
   "term": "Diffie-Hellman key exchange",
   "def": "a method for two parties to agree on a shared secret over a public channel without transmitting the secret itself.",
   "pathId": "06-crypto-fundamentals",
@@ -2722,6 +2758,15 @@ const GLOSSARY = [
   "subTitle": "Shell Scripting Security Pitfalls"
  },
  {
+  "term": "eval() / exec()",
+  "def": "Python functions that interpret and run a string as actual code, dangerous with untrusted input.",
+  "pathId": "04-python",
+  "pathN": "04",
+  "pathTitle": "Programming & Python",
+  "subId": "writing-secure-python-code",
+  "subTitle": "Writing Secure Python Code"
+ },
+ {
   "term": "Event ID",
   "def": "a numeric identifier for a specific type of logged event.",
   "pathId": "07-windows-security",
@@ -2756,6 +2801,15 @@ const GLOSSARY = [
   "pathTitle": "Networking Fundamentals",
   "subId": "wireless-networking-basics",
   "subTitle": "Wireless networking basics"
+ },
+ {
+  "term": "Exception",
+  "def": "an error Python raises when something goes wrong during execution.",
+  "pathId": "04-python",
+  "pathN": "04",
+  "pathTitle": "Programming & Python",
+  "subId": "error-handling-exceptions",
+  "subTitle": "Error handling & exceptions"
  },
  {
   "term": "Exception",
@@ -3082,6 +3136,15 @@ const GLOSSARY = [
   "subTitle": "Variables & data types"
  },
  {
+  "term": "f-string",
+  "def": "Python's syntax for embedding variables directly inside a string.",
+  "pathId": "04-python",
+  "pathN": "04",
+  "pathTitle": "Programming & Python",
+  "subId": "string-manipulation-regex",
+  "subTitle": "String manipulation & regex"
+ },
+ {
   "term": "Function",
   "def": "reusable named block of code.",
   "pathId": "04-python",
@@ -3386,6 +3449,15 @@ const GLOSSARY = [
   "pathTitle": "Cybersecurity Fundamentals",
   "subId": "passwords-hashing",
   "subTitle": "Passwords & hashing"
+ },
+ {
+  "term": "hashlib",
+  "def": "Python's built-in module for general-purpose hashing (not suitable for password storage).",
+  "pathId": "04-python",
+  "pathN": "04",
+  "pathTitle": "Programming & Python",
+  "subId": "python-security-libraries-overview",
+  "subTitle": "Python Security Libraries: An Overview"
  },
  {
   "term": "Header",
@@ -3901,6 +3973,15 @@ const GLOSSARY = [
   "subTitle": "Windows Group Policy Basics"
  },
  {
+  "term": "`__init__`",
+  "def": "the special method that runs automatically when a new object is created, setting up its initial data.",
+  "pathId": "04-python",
+  "pathN": "04",
+  "pathTitle": "Programming & Python",
+  "subId": "object-oriented-python-basics",
+  "subTitle": "Object-oriented Python basics"
+ },
+ {
   "term": "Insecure Output Handling",
   "def": "the AI-era descendant of XSS/SQLi, when LLM output is trusted blindly downstream.",
   "pathId": "18-ai-security",
@@ -4160,6 +4241,15 @@ const GLOSSARY = [
   "pathTitle": "Operating Systems & Linux",
   "subId": "linux-logging-basics",
   "subTitle": "Linux Logging Basics"
+ },
+ {
+  "term": "JSON",
+  "def": "the standard data format for most modern web APIs, automatically parsed into a Python dictionary by `response.json()`.",
+  "pathId": "04-python",
+  "pathN": "04",
+  "pathTitle": "Programming & Python",
+  "subId": "python-requests-apis",
+  "subTitle": "Python, requests & APIs"
  },
  {
   "term": "JSON",
@@ -4873,6 +4963,15 @@ const GLOSSARY = [
   "subTitle": "LLM Supply Chain Attacks"
  },
  {
+  "term": "Module",
+  "def": "a file containing reusable Python code, imported with `import`.",
+  "pathId": "04-python",
+  "pathN": "04",
+  "pathTitle": "Programming & Python",
+  "subId": "python-modules-packages",
+  "subTitle": "Python modules & packages"
+ },
+ {
   "term": "Monolith / microservices",
   "def": "one big app vs many small ones.",
   "pathId": "05-web-basics",
@@ -5168,6 +5267,15 @@ const GLOSSARY = [
   "pathTitle": "Bug Bounty",
   "subId": "automation-nuclei",
   "subTitle": "Automation & nuclei"
+ },
+ {
+  "term": "Object",
+  "def": "a specific instance created from a class.",
+  "pathId": "04-python",
+  "pathN": "04",
+  "pathTitle": "Programming & Python",
+  "subId": "object-oriented-python-basics",
+  "subTitle": "Object-oriented Python basics"
  },
  {
   "term": "Object storage",
@@ -5728,6 +5836,15 @@ const GLOSSARY = [
   "subTitle": "Phishing & social eng."
  },
  {
+  "term": "pickle",
+  "def": "Python's object serialization module, unsafe to deserialize from untrusted sources.",
+  "pathId": "04-python",
+  "pathN": "04",
+  "pathTitle": "Programming & Python",
+  "subId": "writing-secure-python-code",
+  "subTitle": "Writing Secure Python Code"
+ },
+ {
   "term": "Pilot application",
   "def": "a single, carefully chosen application used to prove out a new control (like ZTNA) before broader rollout",
   "pathId": "24-zero-trust",
@@ -5762,6 +5879,15 @@ const GLOSSARY = [
   "pathTitle": "Programming & Python",
   "subId": "why-python",
   "subTitle": "Why Python for security"
+ },
+ {
+  "term": "pip",
+  "def": "Python's standard package installer for third-party libraries.",
+  "pathId": "04-python",
+  "pathN": "04",
+  "pathTitle": "Programming & Python",
+  "subId": "python-modules-packages",
+  "subTitle": "Python modules & packages"
  },
  {
   "term": "Pipe (`|`)",
@@ -5888,6 +6014,15 @@ const GLOSSARY = [
   "pathTitle": "Networking Fundamentals",
   "subId": "ports",
   "subTitle": "Ports: the doors"
+ },
+ {
+  "term": "Portfolio project",
+  "def": "a genuinely working, well-documented tool demonstrating real skill, often more valuable than a certification alone for programming-adjacent roles.",
+  "pathId": "04-python",
+  "pathN": "04",
+  "pathTitle": "Programming & Python",
+  "subId": "python-careers-next-steps",
+  "subTitle": "Python Careers & Next Steps"
  },
  {
   "term": "Portfolio project",
@@ -6457,6 +6592,15 @@ const GLOSSARY = [
   "subTitle": "Building projects & GitHub portfolio"
  },
  {
+  "term": "Read mode (\"r\") / write mode (\"w\") / append mode (\"a\")",
+  "def": "the three most common file access modes in Python.",
+  "pathId": "04-python",
+  "pathN": "04",
+  "pathTitle": "Programming & Python",
+  "subId": "working-with-files-python",
+  "subTitle": "Working with files in Python"
+ },
+ {
   "term": "Recon pipeline",
   "def": "a chained sequence of automated reconnaissance tools, covered in depth in Path 15.",
   "pathId": "04-python",
@@ -6556,6 +6700,15 @@ const GLOSSARY = [
   "subTitle": "LLM Red Teaming Playbooks"
  },
  {
+  "term": "Regular expression (regex)",
+  "def": "a pattern describing the general shape of text to match, rather than an exact string.",
+  "pathId": "04-python",
+  "pathN": "04",
+  "pathTitle": "Programming & Python",
+  "subId": "string-manipulation-regex",
+  "subTitle": "String manipulation & regex"
+ },
+ {
   "term": "Relative path",
   "def": "a path relative to your current location.",
   "pathId": "00-fresher-basics",
@@ -6626,6 +6779,15 @@ const GLOSSARY = [
   "pathTitle": "Programming & Python",
   "subId": "where-next",
   "subTitle": "Where to go next"
+ },
+ {
+  "term": "requests",
+  "def": "the standard third-party Python library for making HTTP requests.",
+  "pathId": "04-python",
+  "pathN": "04",
+  "pathTitle": "Programming & Python",
+  "subId": "python-requests-apis",
+  "subTitle": "Python, requests & APIs"
  },
  {
   "term": "`requirements.txt`",
@@ -7042,6 +7204,15 @@ const GLOSSARY = [
   "subTitle": "SAST, DAST & SCA — The Core Scanning Trio"
  },
  {
+  "term": "scapy",
+  "def": "a library for crafting and analyzing raw network packets.",
+  "pathId": "04-python",
+  "pathN": "04",
+  "pathTitle": "Programming & Python",
+  "subId": "python-security-libraries-overview",
+  "subTitle": "Python Security Libraries: An Overview"
+ },
+ {
   "term": "SCA (Software Composition Analysis)",
   "def": "tooling for finding known-vulnerable dependencies (A06).",
   "pathId": "11-web-security",
@@ -7366,6 +7537,15 @@ const GLOSSARY = [
   "subTitle": "Cookies, sessions, logins"
  },
  {
+  "term": "Set",
+  "def": "a collection that automatically enforces uniqueness among its items.",
+  "pathId": "04-python",
+  "pathN": "04",
+  "pathTitle": "Programming & Python",
+  "subId": "dictionaries-and-sets",
+  "subTitle": "Dictionaries & sets"
+ },
+ {
   "term": "Set-Cookie",
   "def": "the header the server uses to hand out a cookie.",
   "pathId": "05-web-basics",
@@ -7490,6 +7670,15 @@ const GLOSSARY = [
   "pathTitle": "Web Security & Hacking",
   "subId": "cmd-and-upload",
   "subTitle": "Command inj. & uploads"
+ },
+ {
+  "term": "shell=True",
+  "def": "a subprocess option that hands a command string to the system shell for interpretation, reintroducing shell-injection risk.",
+  "pathId": "04-python",
+  "pathN": "04",
+  "pathTitle": "Programming & Python",
+  "subId": "writing-secure-python-code",
+  "subTitle": "Writing Secure Python Code"
  },
  {
   "term": "Shift left",
@@ -7715,6 +7904,15 @@ const GLOSSARY = [
   "pathTitle": "Cybersecurity Fundamentals",
   "subId": "phishing",
   "subTitle": "Phishing & social eng."
+ },
+ {
+  "term": "socket",
+  "def": "Python's built-in module for low-level network connections.",
+  "pathId": "04-python",
+  "pathN": "04",
+  "pathTitle": "Programming & Python",
+  "subId": "python-network-scripting",
+  "subTitle": "Python for network scripting"
  },
  {
   "term": "Software",
@@ -8617,6 +8815,15 @@ const GLOSSARY = [
   "subTitle": "Decisions with if/else"
  },
  {
+  "term": "try/except",
+  "def": "the structure for attempting risky code and handling specific failures gracefully.",
+  "pathId": "04-python",
+  "pathN": "04",
+  "pathTitle": "Programming & Python",
+  "subId": "error-handling-exceptions",
+  "subTitle": "Error handling & exceptions"
+ },
+ {
   "term": "Two-account testing",
   "def": "the core technique behind finding BOLA/BFLA: perform an action as one user, replay as another",
   "pathId": "21-api-security",
@@ -8903,6 +9110,15 @@ const GLOSSARY = [
   "pathTitle": "Operating Systems & Linux",
   "subId": "install-kali",
   "subTitle": "Install Kali Linux"
+ },
+ {
+  "term": "Virtual environment",
+  "def": "an isolated Python installation, keeping one project's package versions independent of others.",
+  "pathId": "04-python",
+  "pathN": "04",
+  "pathTitle": "Programming & Python",
+  "subId": "python-modules-packages",
+  "subTitle": "Python modules & packages"
  },
  {
   "term": "Virtualization",
@@ -9209,6 +9425,15 @@ const GLOSSARY = [
   "pathTitle": "Programming & Python",
   "subId": "first-program",
   "subTitle": "Your first Python program"
+ },
+ {
+  "term": "`with open(...)`",
+  "def": "the standard, recommended pattern for opening a file, automatically closing it when finished.",
+  "pathId": "04-python",
+  "pathN": "04",
+  "pathTitle": "Programming & Python",
+  "subId": "working-with-files-python",
+  "subTitle": "Working with files in Python"
  },
  {
   "term": "Word-splitting",

@@ -63,4 +63,4 @@ Think back through any manual security task you've done in this course so far (c
 - [ProjectDiscovery tools](https://github.com/projectdiscovery) — subfinder, httpx, nuclei, and more; the free, widely-used toolkit referenced throughout Path 15's recon pipeline material.
 ???
 
-**Next up →** [Security Scripting Lab](#/lesson/04-python/security-scripting-lab)
+**Next up →** [Python Careers & Next Steps](#/lesson/04-python/python-careers-next-steps)

@@ -336,4 +336,4 @@ In the code below, what does `[t for t in tools if len(t) < 6]` produce, given `
 - [PEP 257 — Docstring conventions](https://peps.python.org/pep-0257/)
 ???
 
-**Next up →** [Build a password checker](#/lesson/04-python/password-checker)
+**Next up →** [Working with files in Python](#/lesson/04-python/working-with-files-python)

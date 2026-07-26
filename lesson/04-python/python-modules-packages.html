@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python modules &amp; packages — Path 04 · KashSec Academy</title>
+<meta name="description" content="Everything you've written so far has lived in one file, using only Python's built-in features. This lesson covers modules — how to organize and reuse your own code — and packages — how to use code oth">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/04-python/python-modules-packages">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Python modules &amp; packages — Path 04 · KashSec Academy">
+<meta property="og:description" content="Everything you've written so far has lived in one file, using only Python's built-in features. This lesson covers modules — how to organize and reuse your own code — and packages — how to use code oth">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/04-python/python-modules-packages">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Python modules &amp; packages — Path 04 · KashSec Academy">
+<meta name="twitter:description" content="Everything you've written so far has lived in one file, using only Python's built-in features. This lesson covers modules — how to organize and reuse your own code — and packages — how to use code oth">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Python modules & packages — Path 04 · KashSec Academy","description":"Everything you've written so far has lived in one file, using only Python's built-in features. This lesson covers modules — how to organize and reuse your own code — and packages — how to use code oth","url":"https://kashsec.vercel.app/#/lesson/04-python/python-modules-packages","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/04-python/python-modules-packages">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 04 — Programming & Python</a> · Python modules &amp; packages</div>
+  <article><h1>Python modules &amp; packages</h1>
+<p>Everything you&#39;ve written so far has lived in one file, using only Python&#39;s built-in features. This lesson covers <strong>modules</strong> — how to organize and reuse your own code — and <strong>packages</strong> — how to use code other people have already written, both essential for any real-world Python security tool.</p>
+<h2>Built-in modules: Python&#39;s own toolkit</h2>
+<p>Python ships with a large standard library, organized into <strong>modules</strong> you <code>import</code> as needed:</p>
+<pre><code class="language-python">import random
+print(random.randint(1, 100))    # a random number between 1 and 100
+
+import datetime
+print(datetime.datetime.now())    # the current date and time
+</code></pre>
+<p>You&#39;ll meet several security-relevant standard modules directly — <code>socket</code> (already used in the error-handling lesson), <code>hashlib</code>, and <code>re</code> (from the string-manipulation lesson) — throughout the rest of this path.</p>
+<h2>Third-party packages: code the community has already written</h2>
+<p>Beyond Python&#39;s built-in modules, an enormous ecosystem of third-party packages exists for nearly any task imaginable, installed using <strong>pip</strong>, Python&#39;s package installer:</p>
+<pre><code class="language-bash">pip install requests
+</code></pre>
+<pre><code class="language-python">import requests
+response = requests.get(&quot;https://example.com&quot;)
+print(response.status_code)
+</code></pre>
+<p>The <code>requests</code> library (covered properly in this path&#39;s requests-and-APIs lesson) is genuinely one of the most widely used Python packages in existence, precisely because making HTTP requests by hand using only built-in modules is considerably more tedious.</p>
+<h2>Virtual environments: keeping projects isolated</h2>
+<p>A <strong>virtual environment</strong> creates an isolated Python installation for a specific project, so different projects can use different (even conflicting) package versions without interfering with each other:</p>
+<pre><code class="language-bash">python3 -m venv myproject-env
+source myproject-env/bin/activate    # Linux/Mac, from Path 03
+myproject-env\Scripts\activate       # Windows
+pip install requests
+</code></pre>
+<p>Without virtual environments, installing a package for one project can silently break a different project relying on an older, incompatible version of that same package. This is a genuinely common, entirely avoidable source of &quot;it worked yesterday&quot; frustration — creating a dedicated virtual environment per project is a small habit that prevents it entirely.</p>
+<h2>Organizing your own code into modules</h2>
+<p>As scripts grow beyond a single file, you can split your own code into separate files and import between them, exactly like a built-in module:</p>
+<pre><code class="language-python"># helpers.py
+def is_valid_ip(address):
+    parts = address.split(&quot;.&quot;)
+    return len(parts) == 4
+
+# main.py
+from helpers import is_valid_ip
+print(is_valid_ip(&quot;192.168.1.1&quot;))
+</code></pre>
+<p>Why might two different Python projects on the same machine need genuinely different, even conflicting versions of the same third-party package?</p>
+<details><summary>Show answer</summary>Software projects are frequently built and tested against a specific version of a dependency, and a newer version of that same package can sometimes introduce changes that break code written for the older version — meaning a project written a year ago might genuinely require an older package version to keep working correctly, while a brand-new project might require the latest version to access a feature that didn't exist before. Without virtual environments, installing the version one project needs can silently break the other project relying on a different version, since there'd only be one shared, global installation of that package on the entire machine. A virtual environment solves this by giving each project its own genuinely isolated set of installed packages, entirely independent of any other project's requirements.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Module</strong> — a file containing reusable Python code, imported with <code>import</code>.</li>
+<li><strong>pip</strong> — Python&#39;s standard package installer for third-party libraries.</li>
+<li><strong>Virtual environment</strong> — an isolated Python installation, keeping one project&#39;s package versions independent of others.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Python&#39;s built-in modules and the third-party package ecosystem (installed via <code>pip</code>) provide an enormous amount of ready-made functionality you don&#39;t need to build yourself.</li>
+<li>Virtual environments keep each project&#39;s dependencies isolated, preventing one project&#39;s package requirements from silently breaking another&#39;s.</li>
+<li>Splitting your own growing scripts into separate, importable files applies the same modular organization to code you write yourself.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/04-python/password-checker">Build a password checker</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/04-python/python-modules-packages";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

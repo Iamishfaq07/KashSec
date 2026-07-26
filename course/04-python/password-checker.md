@@ -278,4 +278,4 @@ Why does the HIBP check only send the first 5 characters of the SHA-1 hash, and 
 - [passlib docs](https://passlib.readthedocs.io/) — proper password hashing in Python (bcrypt/argon2).
 ???
 
-**Next up →** [Where to go next with Python](#/lesson/04-python/where-next)
+**Next up →** [Object-oriented Python basics](#/lesson/04-python/object-oriented-python-basics)

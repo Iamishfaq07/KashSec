@@ -252,4 +252,4 @@ You want to print the numbers 1 to 100 inclusive. Which is the correct `range()`
 - [Python list comprehensions guide](https://realpython.com/list-comprehension-python/)
 ???
 
-**Next up →** [Why Python for security](#/lesson/04-python/why-python)
+**Next up →** [Error handling & exceptions](#/lesson/04-python/error-handling-exceptions)

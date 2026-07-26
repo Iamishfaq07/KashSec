@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>String manipulation &amp; regex — Path 04 · KashSec Academy</title>
+<meta name="description" content="Your first Python program worked with plain text. This lesson goes deeper into manipulating strings — and introduces regular expressions, the pattern-matching tool that shows up constantly throughout ">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/04-python/string-manipulation-regex">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="String manipulation &amp; regex — Path 04 · KashSec Academy">
+<meta property="og:description" content="Your first Python program worked with plain text. This lesson goes deeper into manipulating strings — and introduces regular expressions, the pattern-matching tool that shows up constantly throughout ">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/04-python/string-manipulation-regex">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="String manipulation &amp; regex — Path 04 · KashSec Academy">
+<meta name="twitter:description" content="Your first Python program worked with plain text. This lesson goes deeper into manipulating strings — and introduces regular expressions, the pattern-matching tool that shows up constantly throughout ">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"String manipulation & regex — Path 04 · KashSec Academy","description":"Your first Python program worked with plain text. This lesson goes deeper into manipulating strings — and introduces regular expressions, the pattern-matching tool that shows up constantly throughout ","url":"https://kashsec.vercel.app/#/lesson/04-python/string-manipulation-regex","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/04-python/string-manipulation-regex">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 04 — Programming & Python</a> · String manipulation &amp; regex</div>
+  <article><h1>String manipulation &amp; regex</h1>
+<p>Your first Python program worked with plain text. This lesson goes deeper into manipulating strings — and introduces <strong>regular expressions</strong>, the pattern-matching tool that shows up constantly throughout log analysis, input validation, and security tooling generally.</p>
+<h2>String methods you&#39;ll use constantly</h2>
+<pre><code class="language-python">line = &quot;  Failed login from 10.0.0.5  &quot;
+
+line.strip()            # remove leading/trailing whitespace
+line.lower()             # convert to lowercase — useful before comparing strings
+line.split()              # split into a list of words
+&quot;10.0.0.5&quot; in line        # check whether a substring is present
+line.replace(&quot;Failed&quot;, &quot;Blocked&quot;)   # find-and-replace
+</code></pre>
+<h2>f-strings: building strings from variables</h2>
+<p>You&#39;ve already seen <code>f&quot;Checking port {port}...&quot;</code> in earlier lessons — this is an <strong>f-string</strong>, letting you embed variables directly inside a string, genuinely the standard, readable way to build formatted output in modern Python.</p>
+<h2>Regular expressions: pattern matching for text</h2>
+<p>A <strong>regular expression (regex)</strong> describes a <em>pattern</em> a piece of text might match, rather than an exact string to search for — exactly the same underlying concept behind the regex-tester tool elsewhere in this course, now available directly inside your own Python scripts:</p>
+<pre><code class="language-python">import re
+
+log_line = &quot;Failed login from 192.168.1.45 at 03:14:22&quot;
+
+match = re.search(r&quot;\d+\.\d+\.\d+\.\d+&quot;, log_line)
+if match:
+    print(f&quot;Found IP: {match.group()}&quot;)
+</code></pre>
+<p><code>\d+\.\d+\.\d+\.\d+</code> reads as &quot;one or more digits, a literal dot, one or more digits, a literal dot...&quot; — a pattern matching the general shape of an IPv4 address (from Path 02), regardless of the specific numbers involved.</p>
+<h2>Common regex building blocks worth recognizing</h2>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Matches</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>\d</code></td>
+<td>any digit</td>
+</tr>
+<tr>
+<td><code>\w</code></td>
+<td>any letter, digit, or underscore</td>
+</tr>
+<tr>
+<td><code>+</code></td>
+<td>one or more of the previous thing</td>
+</tr>
+<tr>
+<td><code>*</code></td>
+<td>zero or more of the previous thing</td>
+</tr>
+<tr>
+<td><code>.</code></td>
+<td>any single character</td>
+</tr>
+<tr>
+<td><code>^</code> / <code>$</code></td>
+<td>start / end of the string</td>
+</tr>
+</tbody></table>
+<h2>Why this matters directly for security work</h2>
+<p>Extracting IP addresses from log files, validating that user input matches an expected format (a password-complexity check, an email format), and searching through large amounts of unstructured text for a specific pattern are all genuinely everyday security-scripting tasks, and regex is the standard tool for all three — directly extending the text-processing toolkit (<code>grep</code>, <code>sed</code>, <code>awk</code>) from Path 03 into Python itself.</p>
+<p>Why is a regex pattern like <code>\d+\.\d+\.\d+\.\d+</code> more useful for finding IP addresses in a log file than searching for one exact, specific IP address string?</p>
+<details><summary>Show answer</summary>Searching for one exact string only finds that <em>one specific</em> IP address, which is rarely the actual goal — a real log file contains many different IP addresses, and you generally want to find <em>any</em> text matching the general shape of an IP address, not one you already know in advance. A regex pattern describes that general shape (digits, a dot, digits, a dot, and so on) rather than a specific value, letting <code>re.search()</code> or <code>re.findall()</code> locate every IP-shaped string in the text regardless of its actual numbers — exactly the flexibility that makes regex genuinely essential for real-world log analysis and input validation, where you rarely know the exact value you're looking for in advance.</details><h2>Key terms</h2>
+<ul>
+<li><strong>f-string</strong> — Python&#39;s syntax for embedding variables directly inside a string.</li>
+<li><strong>Regular expression (regex)</strong> — a pattern describing the general shape of text to match, rather than an exact string.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>String methods (<code>strip</code>, <code>lower</code>, <code>split</code>, <code>replace</code>) and f-strings handle everyday text manipulation.</li>
+<li>Regular expressions describe a general text pattern rather than an exact value, letting you find or validate text whose exact content you don&#39;t know in advance.</li>
+<li>This is exactly the tool behind extracting data from log files, validating input formats, and countless other everyday security-scripting tasks.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/04-python/lists-functions">Lists &amp; functions</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/04-python/string-manipulation-regex";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python for network scripting — Path 04 · KashSec Academy</title>
+<meta name="description" content="The requests-and-APIs lesson covered the web-application layer. This lesson drops down to the raw networking layer from Path 02 — sockets, port checking, and the exact building blocks behind real netw">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/04-python/python-network-scripting">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Python for network scripting — Path 04 · KashSec Academy">
+<meta property="og:description" content="The requests-and-APIs lesson covered the web-application layer. This lesson drops down to the raw networking layer from Path 02 — sockets, port checking, and the exact building blocks behind real netw">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/04-python/python-network-scripting">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Python for network scripting — Path 04 · KashSec Academy">
+<meta name="twitter:description" content="The requests-and-APIs lesson covered the web-application layer. This lesson drops down to the raw networking layer from Path 02 — sockets, port checking, and the exact building blocks behind real netw">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Python for network scripting — Path 04 · KashSec Academy","description":"The requests-and-APIs lesson covered the web-application layer. This lesson drops down to the raw networking layer from Path 02 — sockets, port checking, and the exact building blocks behind real netw","url":"https://kashsec.vercel.app/#/lesson/04-python/python-network-scripting","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/04-python/python-network-scripting">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 04 — Programming & Python</a> · Python for network scripting</div>
+  <article><h1>Python for network scripting</h1>
+<p>The requests-and-APIs lesson covered the web-application layer. This lesson drops down to the raw networking layer from Path 02 — sockets, port checking, and the exact building blocks behind real network scanning tools.</p>
+<h2>The socket module: raw network connections</h2>
+<p>The error-handling lesson already used Python&#39;s <code>socket</code> module briefly. This lesson explains what&#39;s actually happening:</p>
+<pre><code class="language-python">import socket
+
+sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)   # TCP socket, from Path 02
+sock.settimeout(2)
+
+result = sock.connect_ex((&quot;192.168.1.1&quot;, 80))
+if result == 0:
+    print(&quot;Port 80 is open&quot;)
+else:
+    print(&quot;Port 80 is closed or filtered&quot;)
+
+sock.close()
+</code></pre>
+<p><code>AF_INET</code> means &quot;using IPv4 addressing&quot; and <code>SOCK_STREAM</code> means &quot;using TCP&quot; — directly the concepts from Path 02&#39;s IP-addresses and TCP-vs-UDP lessons, now expressed in actual working code.</p>
+<h2>Building a simple port scanner</h2>
+<p>Combining loops, error handling, and sockets into something genuinely functional:</p>
+<pre><code class="language-python">import socket
+
+def scan_port(ip, port):
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock.settimeout(1)
+    result = sock.connect_ex((ip, port))
+    sock.close()
+    return result == 0
+
+target = &quot;192.168.1.1&quot;
+common_ports = [21, 22, 80, 443, 3306]
+
+for port in common_ports:
+    if scan_port(target, port):
+        print(f&quot;Port {port} is open&quot;)
+</code></pre>
+<p>This lesson&#39;s simple scanner exists to teach the underlying concept, not to replace nmap (previewed back in Path 03, covered properly with full legal and ethical context in Path 14). A real scan of a network you don&#39;t have explicit permission to test remains exactly as prohibited here as anywhere else in this course — the golden rule from Path 01 applies to code you write yourself just as much as to any pre-built tool.</p>
+<h2>DNS lookups from Python</h2>
+<pre><code class="language-python">import socket
+
+ip = socket.gethostbyname(&quot;example.com&quot;)
+print(ip)   # resolves the domain to an IP address, directly connecting to Path 02&#39;s DNS lesson
+</code></pre>
+<h2>Sending a raw HTTP request without the requests library</h2>
+<p>Genuinely useful for understanding what <code>requests</code> is actually doing underneath, and occasionally useful when you need finer control than a high-level library provides:</p>
+<pre><code class="language-python">import socket
+
+sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+sock.connect((&quot;example.com&quot;, 80))
+request = &quot;GET / HTTP/1.1\r\nHost: example.com\r\nConnection: close\r\n\r\n&quot;
+sock.send(request.encode())
+response = sock.recv(4096)
+print(response.decode())
+sock.close()
+</code></pre>
+<p>Notice this is manually building the exact HTTP request structure Path 02&#39;s HTTP/HTTPS lesson described in theory — genuinely useful for cementing that this isn&#39;t magic, it&#39;s a specifically formatted piece of text sent over a TCP connection.</p>
+<p>Why does the simple port scanner example in this lesson still require explicit authorization to run against a real target, even though it&#39;s &quot;just Python code you wrote yourself&quot; rather than a pre-built tool like nmap?</p>
+<details><summary>Show answer</summary>The golden rule from Path 01 and the CFAA coverage from that same path's laws-and-ethics lesson focus on <em>authorization to access a system</em>, not on which specific tool or technique was used to attempt that access. Whether you scan a target using nmap, a custom Python script, or any other method, the underlying action — probing a system's ports without permission — is what the law and ethical norms actually care about, not whether the code happened to be pre-built or something you wrote yourself. "I wrote it myself, so it's different" is not a meaningful legal or ethical distinction; the same permission requirement from Path 01 applies regardless of which tool executes the actual network traffic.</details><h2>Key terms</h2>
+<ul>
+<li><strong>socket</strong> — Python&#39;s built-in module for low-level network connections.</li>
+<li><strong>connect_ex()</strong> — a socket method that attempts a connection and returns a result code rather than raising an exception on failure, convenient for scanning.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Python&#39;s <code>socket</code> module provides direct, low-level access to the networking concepts from Path 02 — TCP connections, DNS resolution, raw HTTP requests.</li>
+<li>A simple port scanner combines sockets, loops, and error handling into genuinely functional (if much simpler) territory that tools like nmap cover fully.</li>
+<li>Writing the code yourself doesn&#39;t change the authorization requirement from Path 01 — the golden rule applies to your own scripts exactly as much as to any pre-built tool.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/04-python/python-security-libraries-overview">Python Security Libraries: An Overview</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/04-python/python-network-scripting";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

@@ -265,4 +265,4 @@ Type `exit()` or press Ctrl+D to leave. The REPL is where you'll experiment thro
 - [Learn Python interactively — LearnPython.org](https://www.learnpython.org/) — free browser-based exercises.
 ???
 
-**Next up →** [Decisions with if/else](#/lesson/04-python/if-else)
+**Next up →** [Dictionaries & sets](#/lesson/04-python/dictionaries-and-sets)

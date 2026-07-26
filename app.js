@@ -769,15 +769,26 @@ const PATHS = [
    subs:[
      {n:"1", id:"what-is-programming", title:"What is programming?",    desc:"Recipes for computers, in plain English."},
      {n:"2", id:"variables-types",     title:"Variables & data types",  desc:"Labelled boxes: strings, numbers, booleans."},
-     {n:"3", id:"if-else",             title:"Decisions with if/else",  desc:"The logic behind every login check."},
-     {n:"4", id:"loops",               title:"Loops: repeat things",    desc:"How tools try 10,000 passwords in seconds."},
-     {n:"5", id:"why-python",          title:"Why Python for security", desc:"Readable, ubiquitous, batteries included."},
-     {n:"6", id:"first-program",       title:"Your first Python program", desc:"Print, input, comments — the write-save-run cycle."},
-     {n:"7", id:"lists-functions",     title:"Lists & functions",       desc:"Wordlists and reusable code blocks."},
-     {n:"8", id:"password-checker",    title:"Build a password checker", desc:"Combine everything into a real tool."},
-     {n:"9", id:"where-next",          title:"Where to go next",        desc:"requests, socket, hashlib — and a mini port checker."},
-     {n:"10", id:"automation-for-security", title:"Automation for Security", desc:"Why scripting and automation are essential in security."},
-     {n:"11", id:"security-scripting-lab", title:"Security Scripting Lab", desc:"Turn Python into a real security tool."}
+     {n:"3", id:"dictionaries-and-sets", title:"Dictionaries & sets", desc:"Labelled data, and automatic uniqueness for things like log IPs."},
+     {n:"4", id:"if-else",             title:"Decisions with if/else",  desc:"The logic behind every login check."},
+     {n:"5", id:"loops",               title:"Loops: repeat things",    desc:"How tools try 10,000 passwords in seconds."},
+     {n:"6", id:"error-handling-exceptions", title:"Error handling & exceptions", desc:"try/except, and why a real scanner can't crash on the first timeout."},
+     {n:"7", id:"why-python",          title:"Why Python for security", desc:"Readable, ubiquitous, batteries included."},
+     {n:"8", id:"first-program",       title:"Your first Python program", desc:"Print, input, comments — the write-save-run cycle."},
+     {n:"9", id:"string-manipulation-regex", title:"String manipulation & regex", desc:"f-strings, and pattern matching for log analysis and input validation."},
+     {n:"10", id:"lists-functions",     title:"Lists & functions",       desc:"Wordlists and reusable code blocks."},
+     {n:"11", id:"working-with-files-python", title:"Working with files in Python", desc:"Reading wordlists, parsing logs, and writing results safely."},
+     {n:"12", id:"python-modules-packages", title:"Python modules & packages", desc:"pip, virtual environments, and organizing your own growing scripts."},
+     {n:"13", id:"password-checker",    title:"Build a password checker", desc:"Combine everything into a real tool."},
+     {n:"14", id:"object-oriented-python-basics", title:"Object-oriented Python basics", desc:"Classes, objects, and why real tools bundle data with behavior."},
+     {n:"15", id:"writing-secure-python-code", title:"Writing Secure Python Code", desc:"eval(), shell=True, hardcoded secrets, and unsafe pickle."},
+     {n:"16", id:"where-next",          title:"Where to go next",        desc:"requests, socket, hashlib — and a mini port checker."},
+     {n:"17", id:"python-requests-apis", title:"Python, requests & APIs", desc:"GET/POST, JSON, headers, and a realistic header-checking script."},
+     {n:"18", id:"python-network-scripting", title:"Python for network scripting", desc:"Sockets, a simple port scanner, and DNS lookups from code."},
+     {n:"19", id:"python-security-libraries-overview", title:"Python Security Libraries: An Overview", desc:"hashlib, bcrypt, scapy, Beautiful Soup, and paramiko, named and mapped."},
+     {n:"20", id:"automation-for-security", title:"Automation for Security", desc:"Why scripting and automation are essential in security."},
+     {n:"21", id:"python-careers-next-steps", title:"Python Careers & Next Steps", desc:"Why Python fluency is assumed, and how to build a real portfolio."},
+     {n:"22", id:"security-scripting-lab", title:"Security Scripting Lab", desc:"Turn Python into a real security tool."}
    ]},
   {n:"05", id:"05-web-basics", title:"How the Web Works", level:"Beginner",
    desc:"Requests, HTML/CSS/JS, client/server, cookies, APIs, DevTools.",
@@ -4789,6 +4800,11 @@ function renderLabPhishing(){
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
+  {date:'2026-07-25', title:'Path 04 doubled to 22 lessons', items:[
+    'Eleventh batch of the course-wide content-doubling effort: Path 04 (Programming & Python) grows from 11 to 22 lessons.',
+    'New lessons: Dictionaries & Sets, Error Handling & Exceptions, String Manipulation & Regex, Working with Files in Python, Python Modules & Packages, Object-Oriented Python Basics, Writing Secure Python Code, Python/requests/APIs, Python for Network Scripting, Python Security Libraries Overview, and Python Careers & Next Steps.',
+    'The new secure-coding lesson covers eval()/exec(), shell=True, hardcoded secrets, and unsafe pickle deserialization.'
+  ]},
   {date:'2026-07-25', title:'Path 03 doubled to 26 lessons', items:[
     'Tenth batch of the course-wide content-doubling effort: Path 03 (Operating Systems & Linux) grows from 13 to 26 lessons — the largest single-path expansion yet.',
     'New lessons: Choosing a Linux Distro for Security Work, The Linux Filesystem Hierarchy, Text Processing Tools (sed/awk), Linux Package Management, Linux Process Management, Linux Networking Commands, SSH & Remote Access, Linux Cron & Scheduling, Linux Logging Basics, Linux Firewall Basics, Shell Scripting Security Pitfalls, a Practical Linux Hardening Checklist, and Linux Careers & Certifications.',

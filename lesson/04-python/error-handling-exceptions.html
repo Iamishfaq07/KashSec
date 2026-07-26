@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Error handling &amp; exceptions — Path 04 · KashSec Academy</title>
+<meta name="description" content="Every program you've written so far has assumed everything goes right. Real programs — especially security tools reaching out to real networks and real files — constantly encounter things going wrong.">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/04-python/error-handling-exceptions">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Error handling &amp; exceptions — Path 04 · KashSec Academy">
+<meta property="og:description" content="Every program you've written so far has assumed everything goes right. Real programs — especially security tools reaching out to real networks and real files — constantly encounter things going wrong.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/04-python/error-handling-exceptions">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Error handling &amp; exceptions — Path 04 · KashSec Academy">
+<meta name="twitter:description" content="Every program you've written so far has assumed everything goes right. Real programs — especially security tools reaching out to real networks and real files — constantly encounter things going wrong.">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Error handling & exceptions — Path 04 · KashSec Academy","description":"Every program you've written so far has assumed everything goes right. Real programs — especially security tools reaching out to real networks and real files — constantly encounter things going wrong.","url":"https://kashsec.vercel.app/#/lesson/04-python/error-handling-exceptions","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/04-python/error-handling-exceptions">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 04 — Programming & Python</a> · Error handling &amp; exceptions</div>
+  <article><h1>Error handling &amp; exceptions</h1>
+<p>Every program you&#39;ve written so far has assumed everything goes right. Real programs — especially security tools reaching out to real networks and real files — constantly encounter things going wrong. This lesson covers handling that gracefully instead of crashing.</p>
+<h2>What happens when Python hits an error</h2>
+<p>When something goes wrong — a file that doesn&#39;t exist, a network connection that times out, dividing by zero — Python raises an <strong>exception</strong>, and without any handling, your entire program stops immediately:</p>
+<pre><code class="language-python">port = int(input(&quot;Enter a port number: &quot;))   # if the user types &quot;abc&quot;, this crashes
+</code></pre>
+<h2>try/except: catching the problem instead of crashing</h2>
+<pre><code class="language-python">try:
+    port = int(input(&quot;Enter a port number: &quot;))
+    print(f&quot;Checking port {port}...&quot;)
+except ValueError:
+    print(&quot;That&#39;s not a valid number. Try again.&quot;)
+</code></pre>
+<p>The <code>try</code> block contains code that might fail; the <code>except</code> block runs only if it actually does, letting your program respond sensibly instead of dying immediately.</p>
+<h2>Why this matters especially for security scripts</h2>
+<p>Recall the loops lesson&#39;s port-checking example. A real port scanner reaching out to hundreds of addresses will inevitably hit some that don&#39;t respond, some that actively refuse the connection, and some that time out entirely — without error handling, the very first one of these would crash the entire scan:</p>
+<pre><code class="language-python">import socket
+
+targets = [&quot;192.168.1.1&quot;, &quot;192.168.1.99&quot;, &quot;10.0.0.5&quot;]
+for ip in targets:
+    try:
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.settimeout(1)
+        sock.connect((ip, 80))
+        print(f&quot;{ip}: port 80 is open&quot;)
+        sock.close()
+    except (socket.timeout, ConnectionRefusedError):
+        print(f&quot;{ip}: port 80 is closed or unreachable&quot;)
+</code></pre>
+<p>This exact pattern — try the risky operation, catch the specific failures you expect, keep going — is what turns a fragile script that dies on the first hiccup into a genuinely usable tool.</p>
+<h2>Catching specific exceptions, not everything blindly</h2>
+<pre><code class="language-python"># Too broad — silently hides bugs you&#39;d genuinely want to know about
+try:
+    risky_operation()
+except:
+    pass
+
+# Better — catch specifically what you expect, let genuine surprises surface
+try:
+    risky_operation()
+except ConnectionError:
+    print(&quot;Network issue, skipping this target.&quot;)
+</code></pre>
+<p>Catching every possible exception with a bare <code>except:</code> is a genuinely common beginner mistake — it silently swallows real bugs along with the errors you actually expected, making problems far harder to diagnose later. Catching specific exception types keeps your error handling honest about what you actually anticipated.</p>
+<p>Why is <code>except:</code> (catching everything) considered worse practice than <code>except ConnectionError:</code> (catching something specific), even though both technically &quot;handle&quot; errors?</p>
+<details><summary>Show answer</summary>A bare <code>except:</code> catches every possible error, including genuine bugs in your own code that have nothing to do with the specific risky operation you were trying to handle — a typo in a variable name, a logic error, anything at all gets silently swallowed and hidden, making it far harder to notice and fix real problems in your script. Catching a specific exception type like <code>ConnectionError</code> only handles the exact failure mode you actually anticipated and know how to respond to sensibly, while letting genuinely unexpected errors surface loudly so you can actually see and fix them, rather than having your script silently misbehave with no indication anything went wrong at all.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Exception</strong> — an error Python raises when something goes wrong during execution.</li>
+<li><strong>try/except</strong> — the structure for attempting risky code and handling specific failures gracefully.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Without error handling, any unexpected failure crashes your entire program immediately.</li>
+<li><code>try</code>/<code>except</code> lets a script attempt something risky and respond sensibly if it fails, rather than dying — essential for any script that touches real networks or files.</li>
+<li>Catching specific exception types, rather than everything blindly, keeps your error handling honest and real bugs visible.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/04-python/why-python">Why Python for security</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/04-python/error-handling-exceptions";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

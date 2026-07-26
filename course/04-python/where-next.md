@@ -250,4 +250,4 @@ Name one **specific tiny tool** you'll build in the next two weeks using what yo
 
 You now know Python well enough to write real tools. Variables, control flow, functions, files, standard library, `requests`, exception handling, threading, project structure — everything you need for the rest of the course and beyond.
 
-**Next up →** [Automation for Security](#/lesson/04-python/automation-for-security)
+**Next up →** [Python, requests & APIs](#/lesson/04-python/python-requests-apis)

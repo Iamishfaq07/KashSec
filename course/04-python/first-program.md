@@ -292,4 +292,4 @@ Which built-in Python function opens a file, and what's the special block that g
 - [Python Cheatsheet — pythoncheatsheet.org](https://www.pythoncheatsheet.org/)
 ???
 
-**Next up →** [Lists & functions](#/lesson/04-python/lists-functions)
+**Next up →** [String manipulation & regex](#/lesson/04-python/string-manipulation-regex)

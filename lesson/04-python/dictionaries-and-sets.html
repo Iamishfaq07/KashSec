@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dictionaries &amp; sets — Path 04 · KashSec Academy</title>
+<meta name="description" content="Variables gave you one labelled box at a time. This lesson gives you two more powerful containers: dictionaries, which pair a label with a value, and sets, which automatically keep every item unique.">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/04-python/dictionaries-and-sets">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Dictionaries &amp; sets — Path 04 · KashSec Academy">
+<meta property="og:description" content="Variables gave you one labelled box at a time. This lesson gives you two more powerful containers: dictionaries, which pair a label with a value, and sets, which automatically keep every item unique.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/04-python/dictionaries-and-sets">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Dictionaries &amp; sets — Path 04 · KashSec Academy">
+<meta name="twitter:description" content="Variables gave you one labelled box at a time. This lesson gives you two more powerful containers: dictionaries, which pair a label with a value, and sets, which automatically keep every item unique.">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Dictionaries & sets — Path 04 · KashSec Academy","description":"Variables gave you one labelled box at a time. This lesson gives you two more powerful containers: dictionaries, which pair a label with a value, and sets, which automatically keep every item unique.","url":"https://kashsec.vercel.app/#/lesson/04-python/dictionaries-and-sets","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/04-python/dictionaries-and-sets">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 04 — Programming & Python</a> · Dictionaries &amp; sets</div>
+  <article><h1>Dictionaries &amp; sets</h1>
+<p>Variables gave you one labelled box at a time. This lesson gives you two more powerful containers: <strong>dictionaries</strong>, which pair a label with a value, and <strong>sets</strong>, which automatically keep every item unique.</p>
+<h2>Dictionaries: labelled data, not just numbered</h2>
+<p>A <strong>list</strong> (which you&#39;ll meet properly two lessons from now) accesses items by position — item 0, item 1. A <strong>dictionary</strong> accesses items by a meaningful <strong>key</strong> instead:</p>
+<pre><code class="language-python">user = {
+    &quot;username&quot;: &quot;admin&quot;,
+    &quot;login_attempts&quot;: 3,
+    &quot;is_locked&quot;: False
+}
+
+print(user[&quot;username&quot;])       # admin
+user[&quot;login_attempts&quot;] += 1   # update a value
+</code></pre>
+<p>This is genuinely how a huge amount of real security data actually gets represented in Python — a parsed log entry, a JSON API response (you&#39;ll meet this properly in the requests-and-APIs lesson), a configuration file — all naturally map onto dictionaries far more cleanly than a plain numbered list ever could.</p>
+<h2>Looping through a dictionary</h2>
+<pre><code class="language-python">for key, value in user.items():
+    print(f&quot;{key}: {value}&quot;)
+</code></pre>
+<h2>Sets: automatically unique</h2>
+<p>A <strong>set</strong> is like a list, but it automatically removes duplicates and doesn&#39;t preserve order:</p>
+<pre><code class="language-python">suspicious_ips = {&quot;10.0.0.5&quot;, &quot;10.0.0.9&quot;, &quot;10.0.0.5&quot;}
+print(suspicious_ips)   # {&quot;10.0.0.5&quot;, &quot;10.0.0.9&quot;} — the duplicate is gone automatically
+</code></pre>
+<p>Sets are genuinely useful in security scripting specifically for exactly this: given a huge log file with a source IP on every line, converting the full list into a set instantly gives you the unique addresses involved, with zero manual duplicate-checking logic required.</p>
+<pre><code class="language-python">all_ips = [&quot;10.0.0.5&quot;, &quot;10.0.0.9&quot;, &quot;10.0.0.5&quot;, &quot;10.0.0.1&quot;]
+unique_ips = set(all_ips)
+print(len(unique_ips))   # 3 — three distinct addresses appeared
+</code></pre>
+<p>You have a list of 10,000 IP addresses extracted from a log file, and you want to know how many <em>distinct</em> addresses appear. Why is converting the list to a set a faster, simpler solution than writing your own loop to check for duplicates manually?</p>
+<details><summary>Show answer</summary>A set's entire job, built directly into the language, is guaranteeing every item it contains is unique — converting a list to a set (<code>set(all_ips)</code>) does in one line exactly what a hand-written duplicate-checking loop would take several lines and much more careful logic to achieve correctly. Sets are also implemented internally for fast lookups, meaning checking "is this item already in the set?" is significantly faster than manually scanning a list every time, which matters when you're working with genuinely large amounts of data like a real log file. This is a good example of a broader Python habit worth building: before writing your own logic for something, check whether a built-in data type already solves the problem more simply.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Dictionary</strong> — a collection of key-value pairs, accessed by meaningful key rather than numeric position.</li>
+<li><strong>Set</strong> — a collection that automatically enforces uniqueness among its items.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Dictionaries pair keys with values, mapping naturally onto real-world security data like log entries and API responses.</li>
+<li>Sets automatically eliminate duplicates, making them genuinely useful for tasks like counting distinct IP addresses in a log.</li>
+<li>Reaching for the right built-in data type often solves a problem more simply than writing custom logic from scratch.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/04-python/if-else">Decisions with if/else</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/04-python/dictionaries-and-sets";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

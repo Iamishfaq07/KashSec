@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Object-oriented Python basics — Path 04 · KashSec Academy</title>
+<meta name="description" content="You've built the password checker using functions and data working together, but kept somewhat separate. This lesson introduces classes — Python's way of bundling data and the functions that operate o">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/04-python/object-oriented-python-basics">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Object-oriented Python basics — Path 04 · KashSec Academy">
+<meta property="og:description" content="You've built the password checker using functions and data working together, but kept somewhat separate. This lesson introduces classes — Python's way of bundling data and the functions that operate o">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/04-python/object-oriented-python-basics">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Object-oriented Python basics — Path 04 · KashSec Academy">
+<meta name="twitter:description" content="You've built the password checker using functions and data working together, but kept somewhat separate. This lesson introduces classes — Python's way of bundling data and the functions that operate o">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Object-oriented Python basics — Path 04 · KashSec Academy","description":"You've built the password checker using functions and data working together, but kept somewhat separate. This lesson introduces classes — Python's way of bundling data and the functions that operate o","url":"https://kashsec.vercel.app/#/lesson/04-python/object-oriented-python-basics","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/04-python/object-oriented-python-basics">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 04 — Programming & Python</a> · Object-oriented Python basics</div>
+  <article><h1>Object-oriented Python basics</h1>
+<p>You&#39;ve built the password checker using functions and data working together, but kept somewhat separate. This lesson introduces <strong>classes</strong> — Python&#39;s way of bundling data and the functions that operate on it into a single, reusable unit, genuinely common in larger real-world security tools.</p>
+<h2>What a class actually is</h2>
+<p>A <strong>class</strong> is a blueprint for creating <strong>objects</strong> that bundle together data (called <strong>attributes</strong>) and behavior (called <strong>methods</strong>):</p>
+<pre><code class="language-python">class ScanTarget:
+    def __init__(self, ip_address, port):
+        self.ip_address = ip_address
+        self.port = port
+        self.is_open = None
+
+    def check(self):
+        # (simplified — a real version would use the socket module from earlier)
+        self.is_open = True
+        return self.is_open
+
+target = ScanTarget(&quot;192.168.1.1&quot;, 80)
+target.check()
+print(f&quot;{target.ip_address}:{target.port} — open: {target.is_open}&quot;)
+</code></pre>
+<p><code>__init__</code> is a special method that runs automatically when you create a new object, setting up its initial data — here, every <code>ScanTarget</code> object starts with an IP address, a port, and an unknown open/closed state.</p>
+<h2>Why this matters beyond just &quot;another way to organize code&quot;</h2>
+<p>The dictionaries lesson showed you how to represent structured data. A class goes one step further: it keeps the data (<code>ip_address</code>, <code>port</code>, <code>is_open</code>) bundled <em>together with</em> the specific behavior that operates on that exact data (<code>check()</code>), rather than having separate functions that each need the data passed in every time. As a script grows into a genuinely larger tool — scanning many targets, each with its own results — this bundling keeps related code and data organized together instead of scattered across many loosely-connected functions and dictionaries.</p>
+<h2>A slightly larger example: multiple targets</h2>
+<pre><code class="language-python">class ScanTarget:
+    def __init__(self, ip_address, port):
+        self.ip_address = ip_address
+        self.port = port
+        self.is_open = None
+
+    def check(self):
+        self.is_open = True   # simplified
+        return self.is_open
+
+targets = [
+    ScanTarget(&quot;192.168.1.1&quot;, 80),
+    ScanTarget(&quot;192.168.1.1&quot;, 443),
+    ScanTarget(&quot;192.168.1.5&quot;, 22),
+]
+
+for target in targets:
+    target.check()
+    status = &quot;open&quot; if target.is_open else &quot;closed&quot;
+    print(f&quot;{target.ip_address}:{target.port} is {status}&quot;)
+</code></pre>
+<p>Each <code>ScanTarget</code> object independently tracks its own state — this pattern of &quot;one object per real-world thing being tracked&quot; is genuinely how many real security tools (vulnerability scanners, asset inventory tools) are actually structured internally.</p>
+<p>Object-oriented programming is a genuinely deep topic, and plenty of useful, working security scripts get written using just functions and dictionaries, the way earlier lessons in this path did. The goal here is recognition — knowing what a class is and roughly why it&#39;s useful — so that when you read real-world security tool source code (and you will, constantly, in this field) the pattern looks familiar rather than mysterious.</p>
+<p>Why might bundling <code>ip_address</code>, <code>port</code>, and <code>is_open</code> together inside a <code>ScanTarget</code> class be more organized than tracking the same information using three separate lists (one for IPs, one for ports, one for results)?</p>
+<details><summary>Show answer</summary>With three separate lists, you'd need to carefully keep track of which index in each list corresponds to the same target — item 5 in the IP list, item 5 in the port list, and item 5 in the results list would all need to line up correctly, and it's genuinely easy to introduce a bug where one list gets out of sync with the others (say, after sorting one list but not the others). Bundling the related data into a single <code>ScanTarget</code> object keeps everything about one specific target — its address, its port, its result — inherently together as one unit, making it structurally impossible for that specific target's own data to get mismatched with a different target's data, regardless of how the collection of targets gets sorted, filtered, or reordered.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Class</strong> — a blueprint for creating objects that bundle data and behavior together.</li>
+<li><strong>Object</strong> — a specific instance created from a class.</li>
+<li><strong><code>__init__</code></strong> — the special method that runs automatically when a new object is created, setting up its initial data.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>A class bundles related data (attributes) and behavior (methods) into a single reusable unit, rather than keeping them separate.</li>
+<li>This pattern — one object per real-world thing being tracked — is genuinely how many real security tools are structured internally.</li>
+<li>You don&#39;t need to master object-oriented programming to write useful scripts, but recognizing the pattern helps enormously when reading real-world tool source code.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/04-python/writing-secure-python-code">Writing Secure Python Code</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/04-python/object-oriented-python-basics";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>
