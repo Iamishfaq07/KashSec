@@ -94,4 +94,4 @@ Why is the STAR method (Situation, Task, Action, Result) more effective than ans
 - [The STAR Interview Method](https://www.themuse.com/advice/star-interview-method) — a clear, practical explainer with examples.
 ???
 
-**Next up →** [Networking & community](#/lesson/20-career-prep/networking-community)
+**Next up →** [Salary Negotiation](#/lesson/20-career-prep/salary-negotiation)

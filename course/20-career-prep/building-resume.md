@@ -89,4 +89,4 @@ Why might a technically excellent candidate's resume get automatically filtered 
 - [OWASP Top 10](https://owasp.org/Top10/) — good source of accurate terminology to mirror if relevant to your target roles.
 ???
 
-**Next up →** [Certifications that actually help](#/lesson/20-career-prep/certifications-roadmap)
+**Next up →** [LinkedIn Optimization for Security Roles](#/lesson/20-career-prep/linkedin-optimization)

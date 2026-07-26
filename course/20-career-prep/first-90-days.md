@@ -83,4 +83,4 @@ Why is attempting to "prove yourself" with a flashy technical contribution in th
 - [The First 90 Days (concept overview)](https://hbr.org/2017/05/the-first-90-days) — Harvard Business Review's widely referenced framework for role transitions.
 ???
 
-**Congratulations!** You've completed Path 20 — the career-prep core of KashSec Academy, taking you from absolute zero to genuinely job-ready. You now have a resume, a portfolio strategy, a certification roadmap, interview preparation, a networking approach, and a plan for your first 90 days. The CTF Challenges zone and several specialised paths (mobile security, malware/RE, cryptography, Windows security, cloud basics, digital privacy) still lie ahead if you want to keep building depth. Keep learning, keep building, and keep showing up in the community — that's genuinely most of what it takes from here.
+**Next up →** [Career Growth After Year One](#/lesson/20-career-prep/career-growth-after-year-one)

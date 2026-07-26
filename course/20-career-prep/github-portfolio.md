@@ -107,4 +107,4 @@ Why does a stranger landing on a GitHub repo with no README typically dismiss it
 - [gitignore.io](https://www.toptal.com/developers/gitignore) — generate a proper `.gitignore` for any language/tool in seconds.
 ???
 
-**Next up →** [Job search strategy](#/lesson/20-career-prep/job-search)
+**Next up →** [Writing Technical Blog Posts](#/lesson/20-career-prep/writing-technical-blog-posts)

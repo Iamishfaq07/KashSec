@@ -166,6 +166,15 @@ const GLOSSARY = [
   "subTitle": "Device & Location Privacy"
  },
  {
+  "term": "Adjacent role strategy",
+  "def": "deliberately taking a related IT role to build credible experience toward an internal or lateral security move.",
+  "pathId": "20-career-prep",
+  "pathN": "20",
+  "pathTitle": "Career Prep",
+  "subId": "entry-level-vs-experienced-paths",
+  "subTitle": "Entry-Level vs. Experienced Career Paths"
+ },
+ {
   "term": "Adoption metric vs. risk metric",
   "def": "the difference between measuring how much technology was deployed and measuring how much actual risk was reduced",
   "pathId": "24-zero-trust",
@@ -911,6 +920,15 @@ const GLOSSARY = [
   "pathTitle": "Cybersecurity Fundamentals",
   "subId": "phishing",
   "subTitle": "Phishing & social eng."
+ },
+ {
+  "term": "Being mentorable",
+  "def": "actively demonstrating effort, follow-through, and genuine gratitude that make a mentor's time investment feel well-placed.",
+  "pathId": "20-career-prep",
+  "pathN": "20",
+  "pathTitle": "Career Prep",
+  "subId": "mentorship-and-imposter-syndrome",
+  "subTitle": "Mentorship & Imposter Syndrome"
  },
  {
   "term": "Benchmark suite (HarmBench, AdvBench)",
@@ -1768,6 +1786,15 @@ const GLOSSARY = [
   "subTitle": "Meet the terminal"
  },
  {
+  "term": "Community engagement",
+  "def": "commenting, sharing, and participating visibly, building recognizable reputation over time.",
+  "pathId": "20-career-prep",
+  "pathN": "20",
+  "pathTitle": "Career Prep",
+  "subId": "linkedin-optimization",
+  "subTitle": "LinkedIn Optimization for Security Roles"
+ },
+ {
   "term": "Compensating control",
   "def": "a control that reduces risk around a weakness that can't be directly fixed",
   "pathId": "25-ot-ics-security",
@@ -1856,6 +1883,15 @@ const GLOSSARY = [
   "pathTitle": "Networking Fundamentals",
   "subId": "network-certifications-careers",
   "subTitle": "Network Security Careers & Certifications"
+ },
+ {
+  "term": "Concept explainer",
+  "def": "writing to teach something you learned, which itself reveals and closes gaps in your own understanding.",
+  "pathId": "20-career-prep",
+  "pathN": "20",
+  "pathTitle": "Career Prep",
+  "subId": "writing-technical-blog-posts",
+  "subTitle": "Writing Technical Blog Posts"
  },
  {
   "term": "`concurrent.futures`",
@@ -3379,6 +3415,15 @@ const GLOSSARY = [
   "subTitle": "Static Analysis Deep Dive"
  },
  {
+  "term": "Entry-level paradox",
+  "def": "the common mismatch between \"entry-level\" job titles and multi-year experience requirements in the same posting.",
+  "pathId": "20-career-prep",
+  "pathN": "20",
+  "pathTitle": "Career Prep",
+  "subId": "entry-level-vs-experienced-paths",
+  "subTitle": "Entry-Level vs. Experienced Career Paths"
+ },
+ {
   "term": "enum4linux / smbclient",
   "def": "SMB-specific enumeration tools.",
   "pathId": "14-ethical-hacking",
@@ -3721,6 +3766,15 @@ const GLOSSARY = [
   "subTitle": "Malware Triage Methodology"
  },
  {
+  "term": "Featured section",
+  "def": "a pinned area for showcasing top portfolio pieces directly on a profile, above the normal scroll.",
+  "pathId": "20-career-prep",
+  "pathN": "20",
+  "pathTitle": "Career Prep",
+  "subId": "linkedin-optimization",
+  "subTitle": "LinkedIn Optimization for Security Roles"
+ },
+ {
   "term": "Federated identity",
   "def": "authenticating a user through their own organization's identity provider rather than creating a separate local account",
   "pathId": "24-zero-trust",
@@ -3989,6 +4043,15 @@ const GLOSSARY = [
   "pathTitle": "Programming & Python",
   "subId": "string-manipulation-regex",
   "subTitle": "String manipulation & regex"
+ },
+ {
+  "term": "Full compensation package",
+  "def": "the complete set of negotiable elements beyond base salary, including bonus, equity, and development budget.",
+  "pathId": "20-career-prep",
+  "pathN": "20",
+  "pathTitle": "Career Prep",
+  "subId": "salary-negotiation",
+  "subTitle": "Salary Negotiation"
  },
  {
   "term": "Function",
@@ -4270,6 +4333,15 @@ const GLOSSARY = [
   "subTitle": "How to learn tech effectively"
  },
  {
+  "term": "Growth plateau",
+  "def": "the common, normal period after initial onboarding where growth feels stalled even though skill development continues.",
+  "pathId": "20-career-prep",
+  "pathN": "20",
+  "pathTitle": "Career Prep",
+  "subId": "career-growth-after-year-one",
+  "subTitle": "Career Growth After Year One"
+ },
+ {
   "term": "GTFOBins",
   "def": "reference of exploitable SUID/sudo binaries.",
   "pathId": "03-linux",
@@ -4421,6 +4493,15 @@ const GLOSSARY = [
   "pathTitle": "Malware & Reverse Engineering",
   "subId": "ghidra-scripting-basics",
   "subTitle": "Ghidra Scripting Basics"
+ },
+ {
+  "term": "Headline optimization",
+  "def": "using LinkedIn's headline field for searchable skills and goals rather than just a job title.",
+  "pathId": "20-career-prep",
+  "pathN": "20",
+  "pathTitle": "Career Prep",
+  "subId": "linkedin-optimization",
+  "subTitle": "LinkedIn Optimization for Security Roles"
  },
  {
   "term": "HIBP",
@@ -4972,6 +5053,15 @@ const GLOSSARY = [
   "subTitle": "iOS App Security Basics"
  },
  {
+  "term": "Informal mentorship",
+  "def": "an ongoing, unstructured relationship with someone further along, distinct from a formal, labeled arrangement.",
+  "pathId": "20-career-prep",
+  "pathN": "20",
+  "pathTitle": "Career Prep",
+  "subId": "mentorship-and-imposter-syndrome",
+  "subTitle": "Mentorship & Imposter Syndrome"
+ },
+ {
   "term": "Infrastructure as Code (IaC)",
   "def": "defining cloud infrastructure in version-controlled configuration files rather than manual setup.",
   "pathId": "08-cloud-basics",
@@ -5105,6 +5195,15 @@ const GLOSSARY = [
   "pathTitle": "Web Security & Hacking",
   "subId": "burp-setup",
   "subTitle": "Burp Suite & PortSwigger"
+ },
+ {
+  "term": "Internal vs. external recruiter",
+  "def": "an in-house recruiter working for the hiring company directly, versus an agency recruiter representing multiple companies and earning a placement fee.",
+  "pathId": "20-career-prep",
+  "pathN": "20",
+  "pathTitle": "Career Prep",
+  "subId": "navigating-recruiters-and-referrals",
+  "subTitle": "Navigating Recruiters & Referrals"
  },
  {
   "term": "Interpreted / compiled",
@@ -5548,6 +5647,15 @@ const GLOSSARY = [
   "subTitle": "What is programming?"
  },
  {
+  "term": "Lateral move",
+  "def": "shifting between security specializations later in a career, leveraging transferable fundamentals rather than starting over.",
+  "pathId": "20-career-prep",
+  "pathN": "20",
+  "pathTitle": "Career Prep",
+  "subId": "entry-level-vs-experienced-paths",
+  "subTitle": "Entry-Level vs. Experienced Career Paths"
+ },
+ {
   "term": "Lateral movement",
   "def": "moving from one compromised system to others.",
   "pathId": "10-fundamentals",
@@ -5888,6 +5996,15 @@ const GLOSSARY = [
   "pathTitle": "Introduction to Cybersecurity",
   "subId": "common-cyberattacks-overview",
   "subTitle": "A tour of common cyberattacks"
+ },
+ {
+  "term": "Market value research",
+  "def": "grounding a negotiation ask in actual, specific compensation data rather than a general sense of deserving more.",
+  "pathId": "20-career-prep",
+  "pathN": "20",
+  "pathTitle": "Career Prep",
+  "subId": "salary-negotiation",
+  "subTitle": "Salary Negotiation"
  },
  {
   "term": "Mass assignment",
@@ -6358,6 +6475,15 @@ const GLOSSARY = [
   "subTitle": "NAT & Port Forwarding"
  },
  {
+  "term": "Negotiation leverage",
+  "def": "the relative strength of a candidate's negotiating position, genuinely lower but never zero at the entry level.",
+  "pathId": "20-career-prep",
+  "pathN": "20",
+  "pathTitle": "Career Prep",
+  "subId": "salary-negotiation",
+  "subTitle": "Salary Negotiation"
+ },
+ {
   "term": "Network",
   "def": "two or more connected computers sharing information.",
   "pathId": "02-networking",
@@ -6725,6 +6851,15 @@ const GLOSSARY = [
   "pathTitle": "Digital Privacy & Personal Security",
   "subId": "data-broker-opt-outs",
   "subTitle": "Data Broker Opt-Outs"
+ },
+ {
+  "term": "Organizational ceiling",
+  "def": "a genuine limit on internal advancement caused by structural factors, not individual performance.",
+  "pathId": "20-career-prep",
+  "pathN": "20",
+  "pathTitle": "Career Prep",
+  "subId": "career-growth-after-year-one",
+  "subTitle": "Career Growth After Year One"
  },
  {
   "term": "Origin",
@@ -7762,6 +7897,15 @@ const GLOSSARY = [
   "subTitle": "Recognizing a Compromised Windows Machine"
  },
  {
+  "term": "Process transparency",
+  "def": "honestly documenting dead ends and failed attempts, not just the final working solution.",
+  "pathId": "20-career-prep",
+  "pathN": "20",
+  "pathTitle": "Career Prep",
+  "subId": "writing-technical-blog-posts",
+  "subTitle": "Writing Technical Blog Posts"
+ },
+ {
   "term": "Profile README",
   "def": "a special GitHub repo (named after your username) that renders on your profile page.",
   "pathId": "20-career-prep",
@@ -7922,6 +8066,15 @@ const GLOSSARY = [
   "pathTitle": "Cloud Computing Basics",
   "subId": "what-is-cloud-computing",
   "subTitle": "What is Cloud Computing?"
+ },
+ {
+  "term": "Publishing consistency",
+  "def": "favoring regular, shipped, imperfect posts over rare, exhaustively polished but unpublished ones.",
+  "pathId": "20-career-prep",
+  "pathN": "20",
+  "pathTitle": "Career Prep",
+  "subId": "writing-technical-blog-posts",
+  "subTitle": "Writing Technical Blog Posts"
  },
  {
   "term": "`pull_request_target`",
@@ -8248,6 +8401,15 @@ const GLOSSARY = [
   "subTitle": "Phase 1: Reconnaissance"
  },
  {
+  "term": "Recurring recruiter relationship",
+  "def": "treating recruiter interactions as potentially ongoing rather than single, transactional events.",
+  "pathId": "20-career-prep",
+  "pathN": "20",
+  "pathTitle": "Career Prep",
+  "subId": "navigating-recruiters-and-referrals",
+  "subTitle": "Navigating Recruiters & Referrals"
+ },
+ {
   "term": "Redirect (`>`, `>>`, `<`, `2>`)",
   "def": "send streams to/from files.",
   "pathId": "03-linux",
@@ -8291,6 +8453,15 @@ const GLOSSARY = [
   "pathTitle": "Career Prep",
   "subId": "job-search",
   "subTitle": "Job search strategy"
+ },
+ {
+  "term": "Referral as risk reduction",
+  "def": "understanding why referrals statistically outperform cold applications, grounded in reduced hiring uncertainty.",
+  "pathId": "20-career-prep",
+  "pathN": "20",
+  "pathTitle": "Career Prep",
+  "subId": "navigating-recruiters-and-referrals",
+  "subTitle": "Navigating Recruiters & Referrals"
  },
  {
   "term": "Reflected / Stored / DOM-based XSS",
@@ -9283,6 +9454,15 @@ const GLOSSARY = [
   "subTitle": "Windows privesc tools, deep dive"
  },
  {
+  "term": "Selection bias (in public visibility)",
+  "def": "the systematic skew toward impressive, successful work in what a community publicly shares, distorting fair self-comparison.",
+  "pathId": "20-career-prep",
+  "pathN": "20",
+  "pathTitle": "Career Prep",
+  "subId": "mentorship-and-imposter-syndrome",
+  "subTitle": "Mentorship & Imposter Syndrome"
+ },
+ {
   "term": "Separation of duties",
   "def": "requiring more than one person to complete a sensitive action, preventing any single insider from acting alone.",
   "pathId": "10-fundamentals",
@@ -10199,6 +10379,15 @@ const GLOSSARY = [
   "pathTitle": "Bug Bounty",
   "subId": "hunting-xss-and-injection",
   "subTitle": "Hunting XSS & injection bugs"
+ },
+ {
+  "term": "Stretch assignment",
+  "def": "a task slightly beyond current scope, taken on deliberately and with manager support to build capability faster.",
+  "pathId": "20-career-prep",
+  "pathN": "20",
+  "pathTitle": "Career Prep",
+  "subId": "career-growth-after-year-one",
+  "subTitle": "Career Growth After Year One"
  },
  {
   "term": "STRIDE",

@@ -80,4 +80,4 @@ Why does applying only to roles where you meet 100% of the listed requirements o
 - [LinkedIn's guide to optimizing your profile](https://www.linkedin.com/business/talent/blog/product-tips/tips-to-improve-your-linkedin-profile) — practical, broadly applicable advice.
 ???
 
-**Next up →** [Interview preparation](#/lesson/20-career-prep/interview-prep)
+**Next up →** [Navigating Recruiters & Referrals](#/lesson/20-career-prep/navigating-recruiters-and-referrals)

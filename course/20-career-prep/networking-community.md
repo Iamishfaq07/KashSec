@@ -74,4 +74,4 @@ Why does "being genuinely helpful first" tend to produce better long-term career
 - [BSides events](http://www.securitybsides.com/) — low-cost, community-run regional security conferences worldwide.
 ???
 
-**Next up →** [Your first 90 days in a security job](#/lesson/20-career-prep/first-90-days)
+**Next up →** [Mentorship & Imposter Syndrome](#/lesson/20-career-prep/mentorship-and-imposter-syndrome)

@@ -1144,12 +1144,19 @@ const PATHS = [
    desc:"Resume, portfolio, interviews, and the job search — turn your skills into an offer.",
    subs:[
      {n:"1", id:"building-resume",       title:"Building your security resume", desc:"Your resume is your first impression."},
-     {n:"2", id:"certifications-roadmap", title:"Certifications that actually help", desc:"Not all certs are equal — focus on the right ones at the right time."},
-     {n:"3", id:"github-portfolio",      title:"Building projects & GitHub portfolio", desc:"Projects beat certificates alone."},
-     {n:"4", id:"job-search",            title:"Job search strategy",     desc:"Where and how to find security jobs effectively."},
-     {n:"5", id:"interview-prep",        title:"Interview preparation",   desc:"Technical and soft skills that win jobs."},
-     {n:"6", id:"networking-community",  title:"Networking & community",  desc:"Connections often matter as much as skills."},
-     {n:"7", id:"first-90-days",         title:"Your first 90 days in a security job", desc:"How to succeed once you land the role."}
+     {n:"2", id:"linkedin-optimization", title:"LinkedIn Optimization for Security Roles", desc:"Getting found before you can be evaluated."},
+     {n:"3", id:"certifications-roadmap", title:"Certifications that actually help", desc:"Not all certs are equal — focus on the right ones at the right time."},
+     {n:"4", id:"entry-level-vs-experienced-paths", title:"Entry-Level vs. Experienced Career Paths", desc:"The strategy has to differ depending on where you're starting."},
+     {n:"5", id:"github-portfolio",      title:"Building projects & GitHub portfolio", desc:"Projects beat certificates alone."},
+     {n:"6", id:"writing-technical-blog-posts", title:"Writing Technical Blog Posts", desc:"The portfolio piece that shows how you think, not just what you built."},
+     {n:"7", id:"job-search",            title:"Job search strategy",     desc:"Where and how to find security jobs effectively."},
+     {n:"8", id:"navigating-recruiters-and-referrals", title:"Navigating Recruiters & Referrals", desc:"How the most powerful channel actually works."},
+     {n:"9", id:"interview-prep",        title:"Interview preparation",   desc:"Technical and soft skills that win jobs."},
+     {n:"10", id:"salary-negotiation",   title:"Salary Negotiation",      desc:"Don't leave money on the table you didn't have to."},
+     {n:"11", id:"networking-community", title:"Networking & community",  desc:"Connections often matter as much as skills."},
+     {n:"12", id:"mentorship-and-imposter-syndrome", title:"Mentorship & Imposter Syndrome", desc:"Finding real mentors, and naming a feeling nearly everyone has."},
+     {n:"13", id:"first-90-days",        title:"Your first 90 days in a security job", desc:"How to succeed once you land the role."},
+     {n:"14", id:"career-growth-after-year-one", title:"Career Growth After Year One", desc:"Navigating the plateau, and making real growth visible."}
    ]},
   {n:"21", id:"21-api-security", title:"API Security", level:"Advanced",
    desc:"APIs are the real backend of almost every modern app — the OWASP API Top 10, BOLA/BFLA, JWT attacks, GraphQL security, and a hands-on capstone lab against a real vulnerable API.",
@@ -4894,6 +4901,11 @@ function renderLabPhishing(){
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
+  {date:'2026-07-25', title:'Path 20 doubled to 14 lessons', items:[
+    'Twenty-second batch of the course-wide content-doubling effort: Path 20 (Career Prep) grows from 7 to 14 lessons.',
+    'New lessons: LinkedIn Optimization for Security Roles, Entry-Level vs. Experienced Career Paths, Writing Technical Blog Posts, Navigating Recruiters & Referrals, Salary Negotiation, Mentorship & Imposter Syndrome, and Career Growth After Year One.',
+    'The new mentorship lesson names imposter syndrome directly and explains it as a predictable consequence of comparing your unfiltered daily reality against the community\'s curated public highlight reel, not an accurate signal about competence.'
+  ]},
   {date:'2026-07-25', title:'Path 18 doubled to 23 lessons', items:[
     'Twenty-first batch of the course-wide content-doubling effort: Path 18 (AI & AI Security) grows from 15 to 23 lessons (the original 8 foundational lessons doubled to 16, with the 7 previously-added lessons kept unchanged and renumbered).',
     'New lessons: Transformer Architecture Deep Dive, AI Threat Modeling, Indirect Prompt Injection Deep Dive (the dual-LLM defensive pattern), Jailbreak Defenses & Guardrails, RAG Security Risks, Multimodal Attack Vectors, AI Safety Evaluation & Benchmarking (Attack Success Rate methodology), and Defensive Prompt Engineering.',

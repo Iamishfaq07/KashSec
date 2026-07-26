@@ -98,4 +98,4 @@ Why is attempting OSCP before building substantial hands-on foundation considere
 - [CompTIA Security+](https://www.comptia.org/certifications/security) — official certification details.
 ???
 
-**Next up →** [Building projects & GitHub portfolio](#/lesson/20-career-prep/github-portfolio)
+**Next up →** [Entry-Level vs. Experienced Career Paths](#/lesson/20-career-prep/entry-level-vs-experienced-paths)
