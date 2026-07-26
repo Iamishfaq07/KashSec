@@ -1068,14 +1068,22 @@ const PATHS = [
    desc:"A deep dive into reverse engineering and malware analysis — PE internals, Ghidra disassembly, dynamic analysis, unpacking, and writing YARA detection rules.",
    subs:[
      {n:"1", id:"re-fundamentals",            title:"Reverse Engineering Fundamentals", desc:"What RE is, assembly basics, and the core toolset."},
-     {n:"2", id:"malware-families-deep-dive", title:"Malware Families Deep Dive", desc:"Ransomware crypto, rootkits, worms, and botnet C2, mechanically explained."},
-     {n:"3", id:"static-analysis-deep-dive",  title:"Static Analysis Deep Dive", desc:"PE format internals, imports, and entropy analysis."},
-     {n:"4", id:"disassembly-with-ghidra",    title:"Disassembly with Ghidra", desc:"Hands-on: navigating, decompiling, and renaming your way through a real binary."},
-     {n:"5", id:"dynamic-analysis-sandboxing", title:"Dynamic Analysis & Sandboxing", desc:"Automated sandboxes, ProcMon, and combining static + dynamic workflow."},
-     {n:"6", id:"unpacking-and-obfuscation",  title:"Unpacking & Obfuscation", desc:"What packers do, and how to get past them — including by hand."},
-     {n:"7", id:"yara-rules-and-detection",   title:"YARA Rules & Detection", desc:"Turn one analysis into scalable, automated detection."},
-     {n:"8", id:"anti-analysis-techniques",   title:"Anti-Analysis Techniques", desc:"Anti-debug, anti-VM, anti-sandbox — and how to see past each."},
-     {n:"9", id:"malware-re-capstone-lab",    title:"Malware & RE Capstone Lab", desc:"A full analysis pipeline against a real sample, start to finish."}
+     {n:"2", id:"x86-vs-arm-architectures",   title:"x86 vs. ARM Architectures", desc:"Why architecture matters before you read a single instruction."},
+     {n:"3", id:"malware-families-deep-dive", title:"Malware Families Deep Dive", desc:"Ransomware crypto, rootkits, worms, and botnet C2, mechanically explained."},
+     {n:"4", id:"c2-frameworks-and-infrastructure", title:"C2 Frameworks and Infrastructure", desc:"Beaconing, DGAs, and Cobalt Strike/Sliver/Mythic."},
+     {n:"5", id:"static-analysis-deep-dive",  title:"Static Analysis Deep Dive", desc:"PE format internals, imports, and entropy analysis."},
+     {n:"6", id:"elf-format-and-linux-malware", title:"ELF Format & Linux Malware", desc:"Cryptominers, fileless techniques, and cloud-native malware."},
+     {n:"7", id:"disassembly-with-ghidra",    title:"Disassembly with Ghidra", desc:"Hands-on: navigating, decompiling, and renaming your way through a real binary."},
+     {n:"8", id:"ghidra-scripting-basics",    title:"Ghidra Scripting Basics", desc:"Automating repetitive analysis with the scripting API."},
+     {n:"9", id:"dynamic-analysis-sandboxing", title:"Dynamic Analysis & Sandboxing", desc:"Automated sandboxes, ProcMon, and combining static + dynamic workflow."},
+     {n:"10", id:"api-hooking-and-monitoring", title:"API Hooking & Monitoring", desc:"How dynamic analysis tools actually capture behavior."},
+     {n:"11", id:"unpacking-and-obfuscation", title:"Unpacking & Obfuscation", desc:"What packers do, and how to get past them — including by hand."},
+     {n:"12", id:"control-flow-obfuscation",  title:"Control Flow Obfuscation, Deep Dive", desc:"Flattening, opaque predicates, and systematic deobfuscation."},
+     {n:"13", id:"yara-rules-and-detection",  title:"YARA Rules & Detection", desc:"Turn one analysis into scalable, automated detection."},
+     {n:"14", id:"sigma-rules-and-detection-engineering", title:"Sigma Rules & Detection Engineering", desc:"Turning proven hunts into automated log-based detection."},
+     {n:"15", id:"anti-analysis-techniques",  title:"Anti-Analysis Techniques", desc:"Anti-debug, anti-VM, anti-sandbox — and how to see past each."},
+     {n:"16", id:"malware-triage-methodology", title:"Malware Triage Methodology", desc:"Deciding how much analysis effort a sample actually deserves."},
+     {n:"17", id:"malware-re-capstone-lab",   title:"Malware & RE Capstone Lab", desc:"A full analysis pipeline against a real sample, start to finish."}
    ]},
   {n:"18", id:"18-ai-security", title:"AI & AI Security", level:"Advanced",
    desc:"How LLMs work, prompt injection, OWASP LLM Top 10, AI red teaming.",
@@ -4878,6 +4886,11 @@ function renderLabPhishing(){
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
+  {date:'2026-07-25', title:'Path 17 doubled to 17 lessons', items:[
+    'Twentieth batch of the course-wide content-doubling effort: Path 17 (Malware & Reverse Engineering) grows from 9 to 17 lessons (8 core lessons doubled to 16, plus the capstone lab unchanged).',
+    'New lessons: x86 vs. ARM Architectures, C2 Frameworks and Infrastructure (beaconing, DGAs, Cobalt Strike/Sliver/Mythic), ELF Format & Linux Malware (cryptominers, fileless memfd_create techniques), Ghidra Scripting Basics, API Hooking & Monitoring (Frida), Control Flow Obfuscation Deep Dive (flattening, opaque predicates), Sigma Rules & Detection Engineering, and Malware Triage Methodology.',
+    'The new ELF-format lesson fills a real gap: every previous lesson in this path used Windows PE examples, even though most cloud/container malware in 2026 targets Linux specifically.'
+  ]},
   {date:'2026-07-25', title:'Path 16 doubled to 26 lessons', items:[
     'Nineteenth batch of the course-wide content-doubling effort: Path 16 (Advanced Cyber Topics) grows from 18 to 26 lessons (8 core lessons doubled to 16, plus 10 existing labs unchanged).',
     'New lessons: Linux/Windows Privesc Tools Deep Dive, Kerberos Attacks Deep Dive (the protocol mechanics behind Kerberoasting and AS-REP Roasting), AD Persistence & Detection (DCSync, Skeleton Key), IAM Deep Dive, Kubernetes Attack Paths (chaining one pod into full cluster control), Malware Persistence Mechanisms, and Threat Hunting Fundamentals.',

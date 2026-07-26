@@ -400,6 +400,15 @@ const GLOSSARY = [
   "subTitle": "Why API Security Matters"
  },
  {
+  "term": "API hooking",
+  "def": "intercepting a program's function calls to observe or modify behavior before the real function executes.",
+  "pathId": "17-malware-re",
+  "pathN": "17",
+  "pathTitle": "Malware & Reverse Engineering",
+  "subId": "api-hooking-and-monitoring",
+  "subTitle": "API Hooking & Monitoring"
+ },
+ {
   "term": "API / UI",
   "def": "machine-callable / human-facing surfaces.",
   "pathId": "05-web-basics",
@@ -830,6 +839,15 @@ const GLOSSARY = [
   "pathTitle": "Cybersecurity Fundamentals",
   "subId": "passwords-hashing",
   "subTitle": "Passwords & hashing"
+ },
+ {
+  "term": "Beaconing",
+  "def": "periodic, regularly-timed check-ins from infected systems to their C2 server.",
+  "pathId": "17-malware-re",
+  "pathN": "17",
+  "pathTitle": "Malware & Reverse Engineering",
+  "subId": "c2-frameworks-and-infrastructure",
+  "subTitle": "C2 Frameworks and Infrastructure"
  },
  {
   "term": "Bearer token",
@@ -1507,6 +1525,15 @@ const GLOSSARY = [
   "subTitle": "ICS Vulnerability Management"
  },
  {
+  "term": "CISC",
+  "def": "Complex Instruction Set Computer; x86's design philosophy, favoring fewer, more powerful instructions.",
+  "pathId": "17-malware-re",
+  "pathN": "17",
+  "pathTitle": "Malware & Reverse Engineering",
+  "subId": "x86-vs-arm-architectures",
+  "subTitle": "x86 vs. ARM Architectures"
+ },
+ {
   "term": "CIS Controls",
   "def": "a prioritized, concrete list of technical security safeguards.",
   "pathId": "01-introduction",
@@ -1667,6 +1694,15 @@ const GLOSSARY = [
   "pathTitle": "Malware & Reverse Engineering",
   "subId": "malware-families-deep-dive",
   "subTitle": "Malware Families Deep Dive"
+ },
+ {
+  "term": "Command and Control (C2)",
+  "def": "attacker-operated infrastructure that compromised systems communicate with to receive instructions.",
+  "pathId": "17-malware-re",
+  "pathN": "17",
+  "pathTitle": "Malware & Reverse Engineering",
+  "subId": "c2-frameworks-and-infrastructure",
+  "subTitle": "C2 Frameworks and Infrastructure"
  },
  {
   "term": "Command injection",
@@ -1840,6 +1876,15 @@ const GLOSSARY = [
   "subTitle": "The CIA triad"
  },
  {
+  "term": "Configuration extraction",
+  "def": "automating the recovery of a malware family's embedded, often encrypted, configuration data (like C2 addresses).",
+  "pathId": "17-malware-re",
+  "pathN": "17",
+  "pathTitle": "Malware & Reverse Engineering",
+  "subId": "ghidra-scripting-basics",
+  "subTitle": "Ghidra Scripting Basics"
+ },
+ {
   "term": "Connected third-party apps",
   "def": "external applications granted access to your account, often forgotten long after initial authorization.",
   "pathId": "09-digital-privacy",
@@ -1973,6 +2018,15 @@ const GLOSSARY = [
   "pathTitle": "GRC & Compliance",
   "subId": "what-is-grc",
   "subTitle": "What is GRC?"
+ },
+ {
+  "term": "Control flow flattening",
+  "def": "restructuring a function's blocks into a single dispatcher loop driven by a state variable, obscuring original logical structure.",
+  "pathId": "17-malware-re",
+  "pathN": "17",
+  "pathTitle": "Malware & Reverse Engineering",
+  "subId": "control-flow-obfuscation",
+  "subTitle": "Control Flow Obfuscation, Deep Dive"
  },
  {
   "term": "Controlled folder access",
@@ -2587,6 +2641,15 @@ const GLOSSARY = [
   "subTitle": "Secrets Management & Software Supply Chain"
  },
  {
+  "term": "Detection engineering",
+  "def": "the discipline of converting validated hunting hypotheses into reliable, automated detection rules.",
+  "pathId": "17-malware-re",
+  "pathN": "17",
+  "pathTitle": "Malware & Reverse Engineering",
+  "subId": "sigma-rules-and-detection-engineering",
+  "subTitle": "Sigma Rules & Detection Engineering"
+ },
+ {
   "term": "Device binding",
   "def": "an attempt to tie an authentication session to a specific device, often implemented (insecurely) only on the client side.",
   "pathId": "13-mobile-security",
@@ -2720,6 +2783,15 @@ const GLOSSARY = [
   "pathTitle": "Cybersecurity Fundamentals",
   "subId": "business-continuity-disaster-recovery",
   "subTitle": "Business Continuity & Disaster Recovery"
+ },
+ {
+  "term": "Dispatcher loop",
+  "def": "the central loop-and-switch structure a flattened function's execution constantly returns to between blocks.",
+  "pathId": "17-malware-re",
+  "pathN": "17",
+  "pathTitle": "Malware & Reverse Engineering",
+  "subId": "control-flow-obfuscation",
+  "subTitle": "Control Flow Obfuscation, Deep Dive"
  },
  {
   "term": "Display filter",
@@ -2965,6 +3037,15 @@ const GLOSSARY = [
   "subTitle": "Malware Families Deep Dive"
  },
  {
+  "term": "Domain Generation Algorithm (DGA)",
+  "def": "an algorithm generating many candidate C2 domains to evade simple blocklisting.",
+  "pathId": "17-malware-re",
+  "pathN": "17",
+  "pathTitle": "Malware & Reverse Engineering",
+  "subId": "c2-frameworks-and-infrastructure",
+  "subTitle": "C2 Frameworks and Infrastructure"
+ },
+ {
   "term": "Domain validation",
   "def": "a CA confirming the certificate requester controls the domain, without vetting the domain's legitimacy or intent.",
   "pathId": "06-crypto-fundamentals",
@@ -3046,6 +3127,15 @@ const GLOSSARY = [
   "subTitle": "ARP Spoofing, Hands-On"
  },
  {
+  "term": "Dynamic symbols (.dynsym)",
+  "def": "Linux's equivalent of the Windows Import Address Table, listing externally-called functions.",
+  "pathId": "17-malware-re",
+  "pathN": "17",
+  "pathTitle": "Malware & Reverse Engineering",
+  "subId": "elf-format-and-linux-malware",
+  "subTitle": "ELF Format & Linux Malware"
+ },
+ {
   "term": "East-west traffic",
   "def": "traffic between systems inside a network, as opposed to traffic crossing the perimeter",
   "pathId": "24-zero-trust",
@@ -3098,6 +3188,15 @@ const GLOSSARY = [
   "pathTitle": "Cloud Computing Basics",
   "subId": "what-is-cloud-computing",
   "subTitle": "What is Cloud Computing?"
+ },
+ {
+  "term": "ELF (Executable and Linkable Format)",
+  "def": "the executable file format used on Linux, structurally analogous to Windows PE.",
+  "pathId": "17-malware-re",
+  "pathN": "17",
+  "pathTitle": "Malware & Reverse Engineering",
+  "subId": "elf-format-and-linux-malware",
+  "subTitle": "ELF Format & Linux Malware"
  },
  {
   "term": "Elliptic Curve Cryptography (ECC)",
@@ -3505,6 +3604,15 @@ const GLOSSARY = [
   "subTitle": "Web Application Firewalls (WAFs)"
  },
  {
+  "term": "Family fingerprinting",
+  "def": "recognizing a sample's malware family from known distinctive characteristics, enabling reuse of existing analysis.",
+  "pathId": "17-malware-re",
+  "pathN": "17",
+  "pathTitle": "Malware & Reverse Engineering",
+  "subId": "malware-triage-methodology",
+  "subTitle": "Malware Triage Methodology"
+ },
+ {
   "term": "Federated identity",
   "def": "authenticating a user through their own organization's identity provider rather than creating a separate local account",
   "pathId": "24-zero-trust",
@@ -3730,6 +3838,15 @@ const GLOSSARY = [
   "subTitle": "Reverse Engineering Mobile Apps"
  },
  {
+  "term": "Frida",
+  "def": "a cross-platform dynamic instrumentation toolkit for injecting custom hooks into running processes.",
+  "pathId": "17-malware-re",
+  "pathN": "17",
+  "pathTitle": "Malware & Reverse Engineering",
+  "subId": "api-hooking-and-monitoring",
+  "subTitle": "API Hooking & Monitoring"
+ },
+ {
   "term": "Front-end / back-end",
   "def": "same distinction from a dev's angle.",
   "pathId": "05-web-basics",
@@ -3872,6 +3989,15 @@ const GLOSSARY = [
   "pathTitle": "Windows Security Basics",
   "subId": "windows-services-and-task-manager",
   "subTitle": "Windows Services & Task Manager, for Security"
+ },
+ {
+  "term": "Ghidra Script Manager",
+  "def": "the built-in code editor and script library for automating Ghidra analysis tasks.",
+  "pathId": "17-malware-re",
+  "pathN": "17",
+  "pathTitle": "Malware & Reverse Engineering",
+  "subId": "ghidra-scripting-basics",
+  "subTitle": "Ghidra Scripting Basics"
  },
  {
   "term": "GIAC GMOB",
@@ -4144,6 +4270,15 @@ const GLOSSARY = [
   "subTitle": "Python Security Libraries: An Overview"
  },
  {
+  "term": "Hash lookup",
+  "def": "checking a sample's cryptographic hash against a reputation database before manual analysis begins.",
+  "pathId": "17-malware-re",
+  "pathN": "17",
+  "pathTitle": "Malware & Reverse Engineering",
+  "subId": "malware-triage-methodology",
+  "subTitle": "Malware Triage Methodology"
+ },
+ {
   "term": "Header",
   "def": "the \"writing on the envelope\": addresses, port, order number.",
   "pathId": "02-networking",
@@ -4160,6 +4295,15 @@ const GLOSSARY = [
   "pathTitle": "Networking Fundamentals",
   "subId": "http-https",
   "subTitle": "HTTP & HTTPS"
+ },
+ {
+  "term": "Headless mode",
+  "def": "running Ghidra's analysis engine and scripts from the command line without the GUI, enabling batch processing.",
+  "pathId": "17-malware-re",
+  "pathN": "17",
+  "pathTitle": "Malware & Reverse Engineering",
+  "subId": "ghidra-scripting-basics",
+  "subTitle": "Ghidra Scripting Basics"
  },
  {
   "term": "HIBP",
@@ -5440,6 +5584,15 @@ const GLOSSARY = [
   "subTitle": "How LLMs actually work"
  },
  {
+  "term": "Load/store architecture",
+  "def": "ARM's strict separation of memory access instructions from computation instructions.",
+  "pathId": "17-malware-re",
+  "pathN": "17",
+  "pathTitle": "Malware & Reverse Engineering",
+  "subId": "x86-vs-arm-architectures",
+  "subTitle": "x86 vs. ARM Architectures"
+ },
+ {
   "term": "Local account",
   "def": "credentials stored only on a specific machine, versus a cloud-linked Microsoft account.",
   "pathId": "07-windows-security",
@@ -5699,6 +5852,15 @@ const GLOSSARY = [
   "pathTitle": "Zero Trust Architecture",
   "subId": "device-trust-posture",
   "subTitle": "Device Trust & Posture Verification"
+ },
+ {
+  "term": "memfd_create",
+  "def": "a Linux system call enabling fileless, memory-only malware execution with no on-disk footprint.",
+  "pathId": "17-malware-re",
+  "pathN": "17",
+  "pathTitle": "Malware & Reverse Engineering",
+  "subId": "elf-format-and-linux-malware",
+  "subTitle": "ELF Format & Linux Malware"
  },
  {
   "term": "Memory forensics / Volatility",
@@ -6295,6 +6457,15 @@ const GLOSSARY = [
   "subTitle": "Cloud Storage Basics"
  },
  {
+  "term": "Offensive hooking",
+  "def": "malware itself using hooking techniques to intercept and steal data from legitimate applications.",
+  "pathId": "17-malware-re",
+  "pathN": "17",
+  "pathTitle": "Malware & Reverse Engineering",
+  "subId": "api-hooking-and-monitoring",
+  "subTitle": "API Hooking & Monitoring"
+ },
+ {
   "term": "OIDC federation",
   "def": "exchanging a short-lived pipeline identity for cloud credentials, without ever storing a long-lived key",
   "pathId": "22-devsecops-appsec",
@@ -6311,6 +6482,15 @@ const GLOSSARY = [
   "pathTitle": "Career Prep",
   "subId": "first-90-days",
   "subTitle": "Your first 90 days in a security job"
+ },
+ {
+  "term": "Opaque predicate",
+  "def": "a conditional check constructed to always evaluate the same way, adding fake branches that never actually execute.",
+  "pathId": "17-malware-re",
+  "pathN": "17",
+  "pathTitle": "Malware & Reverse Engineering",
+  "subId": "control-flow-obfuscation",
+  "subTitle": "Control Flow Obfuscation, Deep Dive"
  },
  {
   "term": "OpenAPI / Swagger",
@@ -8248,6 +8428,15 @@ const GLOSSARY = [
   "subTitle": "Third-Party & Vendor Risk"
  },
  {
+  "term": "RISC",
+  "def": "Reduced Instruction Set Computer; ARM's design philosophy, favoring simpler, more uniform instructions.",
+  "pathId": "17-malware-re",
+  "pathN": "17",
+  "pathTitle": "Malware & Reverse Engineering",
+  "subId": "x86-vs-arm-architectures",
+  "subTitle": "x86 vs. ARM Architectures"
+ },
+ {
   "term": "Risk",
   "def": "the combined likelihood and impact of a threat exploiting a vulnerability.",
   "pathId": "10-fundamentals",
@@ -9227,6 +9416,15 @@ const GLOSSARY = [
   "pathTitle": "Network Security",
   "subId": "ids-ips-siem",
   "subTitle": "IDS, IPS & SIEM"
+ },
+ {
+  "term": "Sigma",
+  "def": "a vendor-agnostic YAML rule format for log-based detection, convertible into many different SIEM platforms' native query syntax.",
+  "pathId": "17-malware-re",
+  "pathN": "17",
+  "pathTitle": "Malware & Reverse Engineering",
+  "subId": "sigma-rules-and-detection-engineering",
+  "subTitle": "Sigma Rules & Detection Engineering"
  },
  {
   "term": "Signal ratio",
@@ -10435,6 +10633,15 @@ const GLOSSARY = [
   "subTitle": "Bug bounty platforms, deep dive"
  },
  {
+  "term": "Triage",
+  "def": "quickly classifying and prioritizing samples to decide how much analysis depth each one warrants.",
+  "pathId": "17-malware-re",
+  "pathN": "17",
+  "pathTitle": "Malware & Reverse Engineering",
+  "subId": "malware-triage-methodology",
+  "subTitle": "Malware Triage Methodology"
+ },
+ {
   "term": "Triager",
   "def": "the person (or team) reviewing and validating bug bounty submissions.",
   "pathId": "15-bug-bounty",
@@ -10505,6 +10712,15 @@ const GLOSSARY = [
   "pathTitle": "Programming & Python",
   "subId": "error-handling-exceptions",
   "subTitle": "Error handling & exceptions"
+ },
+ {
+  "term": "Tuning",
+  "def": "the ongoing process of adjusting a deployed rule's thresholds to control its false-positive rate as normal activity evolves.",
+  "pathId": "17-malware-re",
+  "pathN": "17",
+  "pathTitle": "Malware & Reverse Engineering",
+  "subId": "sigma-rules-and-detection-engineering",
+  "subTitle": "Sigma Rules & Detection Engineering"
  },
  {
   "term": "Turbo Intruder",
