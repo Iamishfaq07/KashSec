@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Linux Networking Commands — Path 03 · KashSec Academy</title>
+<meta name="description" content="Path 02 covered networking concepts and cross-platform troubleshooting tools. This lesson is the Linux-specific practical follow-up — the exact commands you'll use constantly once you're actually work">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/03-linux/linux-networking-commands">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Linux Networking Commands — Path 03 · KashSec Academy">
+<meta property="og:description" content="Path 02 covered networking concepts and cross-platform troubleshooting tools. This lesson is the Linux-specific practical follow-up — the exact commands you'll use constantly once you're actually work">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/03-linux/linux-networking-commands">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Linux Networking Commands — Path 03 · KashSec Academy">
+<meta name="twitter:description" content="Path 02 covered networking concepts and cross-platform troubleshooting tools. This lesson is the Linux-specific practical follow-up — the exact commands you'll use constantly once you're actually work">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Linux Networking Commands — Path 03 · KashSec Academy","description":"Path 02 covered networking concepts and cross-platform troubleshooting tools. This lesson is the Linux-specific practical follow-up — the exact commands you'll use constantly once you're actually work","url":"https://kashsec.vercel.app/#/lesson/03-linux/linux-networking-commands","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/03-linux/linux-networking-commands">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 03 — Operating Systems & Linux</a> · Linux Networking Commands</div>
+  <article><h1>Linux Networking Commands</h1>
+<p>Path 02 covered networking concepts and cross-platform troubleshooting tools. This lesson is the Linux-specific practical follow-up — the exact commands you&#39;ll use constantly once you&#39;re actually working at a Linux terminal, whether defending a system or testing one.</p>
+<h2>Checking your own network configuration</h2>
+<pre><code class="language-bash">ip addr             # modern standard: show all interfaces and their IPs
+ifconfig             # older, still common on many systems
+ip route             # show the routing table, including your default gateway
+</code></pre>
+<p>Directly applying the IP-addressing and routing concepts from Path 02 to a real, running Linux system in front of you.</p>
+<h2>Testing connectivity</h2>
+<pre><code class="language-bash">ping -c 4 8.8.8.8              # send exactly 4 pings (Linux&#39;s ping runs forever by default)
+traceroute example.com          # trace the hop-by-hop path, from Path 02
+</code></pre>
+<h2>Seeing active connections: netstat and its modern replacement</h2>
+<pre><code class="language-bash">netstat -tulnp        # older, still widely available
+ss -tulnp              # modern, faster replacement for netstat
+</code></pre>
+<p>Both reveal which ports are actively listening for connections and which process owns each one — directly extending Path 07&#39;s netstat coverage to Linux, and genuinely one of the most useful commands for spotting an unexpected listening service (a potential backdoor, a misconfigured service accidentally exposed) during an investigation.</p>
+<h2>curl and wget: making requests from the command line</h2>
+<pre><code class="language-bash">curl https://example.com                    # fetch and display a page&#39;s content
+curl -I https://example.com                  # fetch just the HTTP headers
+wget https://example.com/file.zip            # download a file directly
+</code></pre>
+<p><code>curl</code> in particular is genuinely essential throughout security work — testing an API (Path 21), checking HTTP security headers (the tool from Path 11&#39;s material), or simply confirming a web service is responding as expected, all without ever opening a browser.</p>
+<h2>nmap: the network scanner you&#39;ll meet properly in Path 14</h2>
+<p>A brief preview, since you&#39;ll see the name constantly from here forward: <strong><code>nmap</code></strong> scans a target for open ports and running services — one of the single most important tools in a security professional&#39;s toolkit, covered in full, careful, authorized-use-only depth in Path 14&#39;s ethical hacking material. Mentioned here specifically so the name is already familiar when it reappears with the legal and ethical context it deserves.</p>
+<p>Exactly like Path 01&#39;s golden-rule lesson emphasized: scanning a network or system you don&#39;t have explicit permission to test is not something to casually try &quot;just to see what it does.&quot; Save hands-on <code>nmap</code> practice for your own lab environment (Path 01&#39;s home-lab lesson) or Path 14&#39;s properly authorized material.</p>
+<p>Why is checking active listening connections (<code>netstat</code>/<code>ss</code>) a genuinely valuable security habit, not just a networking curiosity?</p>
+<details><summary>Show answer</summary>A listening port represents a service actively waiting to accept incoming connections — and an unexpected listening port is one of the clearest, most direct signs that something on the system is reachable that shouldn't be, whether that's a misconfigured service accidentally exposed to the network or an actual backdoor an attacker installed. This directly extends the recognizing-compromise principle from Path 07 (originally covered for Windows) to Linux: knowing what "normal" looks like on a system you're responsible for — which ports should legitimately be listening — is exactly what makes an unexpected one stand out as worth investigating.</details><h2>Key terms</h2>
+<ul>
+<li><strong>ss</strong> — the modern replacement for <code>netstat</code>, showing active network connections and listening ports.</li>
+<li><strong>curl</strong> — a command-line tool for making HTTP requests directly from the terminal.</li>
+<li><strong>nmap</strong> — a network scanning tool for discovering open ports and services, covered fully (with proper authorization context) in Path 14.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li><code>ip</code>/<code>ifconfig</code>, <code>ping</code>, and <code>traceroute</code> bring Path 02&#39;s networking concepts directly to your own Linux terminal.</li>
+<li><code>netstat</code>/<code>ss</code> reveal active and listening connections — a genuinely high-value habit for spotting unexpected exposure or backdoors.</li>
+<li><code>curl</code> and <code>wget</code> make HTTP requests and downloads directly from the command line, essential throughout security testing work.</li>
+<li><code>nmap</code> is the major network-scanning tool you&#39;ll meet properly, with full legal and ethical context, in Path 14.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/03-linux/ssh-and-remote-access">SSH &amp; Remote Access</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/03-linux/linux-networking-commands";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

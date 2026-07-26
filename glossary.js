@@ -535,6 +535,15 @@ const GLOSSARY = [
   "subTitle": "What is cybersecurity?"
  },
  {
+  "term": "Attack platform",
+  "def": "a distro configured for offensive security testing (Kali, Parrot), not intended for production exposure.",
+  "pathId": "03-linux",
+  "pathN": "03",
+  "pathTitle": "Operating Systems & Linux",
+  "subId": "linux-distros-for-security",
+  "subTitle": "Choosing a Linux distro for security work"
+ },
+ {
   "term": "Attack surface",
   "def": "the total sum of everywhere an attacker could possibly attempt entry.",
   "pathId": "01-introduction",
@@ -587,6 +596,15 @@ const GLOSSARY = [
   "pathTitle": "How the Web Works",
   "subId": "web-anatomy",
   "subTitle": "Anatomy of a web app"
+ },
+ {
+  "term": "auth.log / secure",
+  "def": "the log files recording authentication events on Debian-based and RHEL-based systems respectively.",
+  "pathId": "03-linux",
+  "pathN": "03",
+  "pathTitle": "Operating Systems & Linux",
+  "subId": "linux-logging-basics",
+  "subTitle": "Linux Logging Basics"
  },
  {
   "term": "Authorisation / permission",
@@ -650,6 +668,15 @@ const GLOSSARY = [
   "pathTitle": "Cryptography Fundamentals",
   "subId": "what-is-cryptography",
   "subTitle": "What is cryptography?"
+ },
+ {
+  "term": "awk",
+  "def": "a column-aware text processing tool for extracting or reformatting structured text.",
+  "pathId": "03-linux",
+  "pathN": "03",
+  "pathTitle": "Operating Systems & Linux",
+  "subId": "linux-text-processing-tools",
+  "subTitle": "Text Processing Tools: Beyond grep"
  },
  {
   "term": "AWS / Azure / GCP",
@@ -1111,6 +1138,15 @@ const GLOSSARY = [
   "subTitle": "Anatomy of a web app"
  },
  {
+  "term": "Centralized logging",
+  "def": "forwarding logs to a separate remote system, protecting them from tampering even if the original machine is compromised.",
+  "pathId": "03-linux",
+  "pathN": "03",
+  "pathTitle": "Operating Systems & Linux",
+  "subId": "linux-logging-basics",
+  "subTitle": "Linux Logging Basics"
+ },
+ {
   "term": "Certificate Authority (CA)",
   "def": "a trusted organization that verifies domain ownership and signs certificates.",
   "pathId": "06-crypto-fundamentals",
@@ -1361,6 +1397,15 @@ const GLOSSARY = [
   "pathTitle": "Malware & Reverse Engineering",
   "subId": "malware-families-deep-dive",
   "subTitle": "Malware Families Deep Dive"
+ },
+ {
+  "term": "Command injection",
+  "def": "untrusted input being interpreted as executable shell commands rather than pure data.",
+  "pathId": "03-linux",
+  "pathN": "03",
+  "pathTitle": "Operating Systems & Linux",
+  "subId": "shell-scripting-security-pitfalls",
+  "subTitle": "Shell Scripting Security Pitfalls"
  },
  {
   "term": "Command injection",
@@ -1723,6 +1768,15 @@ const GLOSSARY = [
   "subTitle": "Identity Theft Protection"
  },
  {
+  "term": "cron",
+  "def": "Linux's time-based job scheduler, running commands automatically on a defined recurring schedule.",
+  "pathId": "03-linux",
+  "pathN": "03",
+  "pathTitle": "Operating Systems & Linux",
+  "subId": "linux-cron-and-scheduling",
+  "subTitle": "Linux Cron & Scheduling"
+ },
+ {
   "term": "cron / crontab",
   "def": "schedule scripts to run automatically.",
   "pathId": "03-linux",
@@ -1730,6 +1784,15 @@ const GLOSSARY = [
   "pathTitle": "Operating Systems & Linux",
   "subId": "bash-scripting",
   "subTitle": "Your first bash script"
+ },
+ {
+  "term": "crontab",
+  "def": "the file (per-user or system-wide) defining a set of scheduled cron jobs.",
+  "pathId": "03-linux",
+  "pathN": "03",
+  "pathTitle": "Operating Systems & Linux",
+  "subId": "linux-cron-and-scheduling",
+  "subTitle": "Linux Cron & Scheduling"
  },
  {
   "term": "Cross-functional ownership",
@@ -1802,6 +1865,15 @@ const GLOSSARY = [
   "pathTitle": "Ethical Hacking",
   "subId": "eh-roadmap",
   "subTitle": "Your ethical-hacking path"
+ },
+ {
+  "term": "curl",
+  "def": "a command-line tool for making HTTP requests directly from the terminal.",
+  "pathId": "03-linux",
+  "pathN": "03",
+  "pathTitle": "Operating Systems & Linux",
+  "subId": "linux-networking-commands",
+  "subTitle": "Linux Networking Commands"
  },
  {
   "term": "Curve25519",
@@ -2072,6 +2144,15 @@ const GLOSSARY = [
   "pathTitle": "API Security",
   "subId": "bola-and-bfla",
   "subTitle": "BOLA & BFLA — the two most common API authorization failures"
+ },
+ {
+  "term": "Dependency",
+  "def": "another package a piece of software requires in order to function.",
+  "pathId": "03-linux",
+  "pathN": "03",
+  "pathTitle": "Operating Systems & Linux",
+  "subId": "linux-package-management",
+  "subTitle": "Linux Package Management"
  },
  {
   "term": "Dependency confusion",
@@ -2632,6 +2713,15 @@ const GLOSSARY = [
   "subTitle": "What ethical hacking really is"
  },
  {
+  "term": "eval",
+  "def": "a shell builtin that interprets a string as a command, a common source of injection vulnerabilities when combined with untrusted input.",
+  "pathId": "03-linux",
+  "pathN": "03",
+  "pathTitle": "Operating Systems & Linux",
+  "subId": "shell-scripting-security-pitfalls",
+  "subTitle": "Shell Scripting Security Pitfalls"
+ },
+ {
   "term": "Event ID",
   "def": "a numeric identifier for a specific type of logged event.",
   "pathId": "07-windows-security",
@@ -2747,6 +2837,15 @@ const GLOSSARY = [
   "pathTitle": "Operating Systems & Linux",
   "subId": "install-virtualbox",
   "subTitle": "Install VirtualBox"
+ },
+ {
+  "term": "fail2ban",
+  "def": "a tool that automatically bans source addresses after repeated failed login attempts.",
+  "pathId": "03-linux",
+  "pathN": "03",
+  "pathTitle": "Operating Systems & Linux",
+  "subId": "ssh-and-remote-access",
+  "subTitle": "SSH & Remote Access"
  },
  {
   "term": "Fail closed",
@@ -2891,6 +2990,15 @@ const GLOSSARY = [
   "pathTitle": "Network Security",
   "subId": "firewalls-vpns",
   "subTitle": "Firewalls, VPNs, proxies"
+ },
+ {
+  "term": "firewalld",
+  "def": "the zone-based firewall management tool common on RHEL-family distros.",
+  "pathId": "03-linux",
+  "pathN": "03",
+  "pathTitle": "Operating Systems & Linux",
+  "subId": "linux-firewall-basics",
+  "subTitle": "Linux Firewall Basics"
  },
  {
   "term": "First-party / third-party requests",
@@ -3955,6 +4063,15 @@ const GLOSSARY = [
   "subTitle": "IP addresses"
  },
  {
+  "term": "iptables",
+  "def": "Linux's traditional, low-level firewall rule engine.",
+  "pathId": "03-linux",
+  "pathN": "03",
+  "pathTitle": "Operating Systems & Linux",
+  "subId": "linux-firewall-basics",
+  "subTitle": "Linux Firewall Basics"
+ },
+ {
   "term": "IPv4 / IPv6",
   "def": "the older 4-number system and the newer larger one.",
   "pathId": "02-networking",
@@ -4034,6 +4151,15 @@ const GLOSSARY = [
   "pathTitle": "AI & AI Security",
   "subId": "jailbreaks",
   "subTitle": "Jailbreaks & bypasses"
+ },
+ {
+  "term": "journalctl",
+  "def": "the command for querying systemd's unified, structured log.",
+  "pathId": "03-linux",
+  "pathN": "03",
+  "pathTitle": "Operating Systems & Linux",
+  "subId": "linux-logging-basics",
+  "subTitle": "Linux Logging Basics"
  },
  {
   "term": "JSON",
@@ -4189,6 +4315,15 @@ const GLOSSARY = [
   "subTitle": "What is cryptography?"
  },
  {
+  "term": "Key-based authentication",
+  "def": "SSH authentication using a public/private key pair instead of a password.",
+  "pathId": "03-linux",
+  "pathN": "03",
+  "pathTitle": "Operating Systems & Linux",
+  "subId": "ssh-and-remote-access",
+  "subTitle": "SSH & Remote Access"
+ },
+ {
   "term": "Keychain",
   "def": "iOS's secure, hardware-backed storage for sensitive data.",
   "pathId": "13-mobile-security",
@@ -4306,6 +4441,15 @@ const GLOSSARY = [
   "subTitle": "Linux privilege escalation"
  },
  {
+  "term": "Linux distribution (distro)",
+  "def": "the Linux kernel packaged together with a specific software selection, package manager, and configuration choices.",
+  "pathId": "03-linux",
+  "pathN": "03",
+  "pathTitle": "Operating Systems & Linux",
+  "subId": "linux-distros-for-security",
+  "subTitle": "Choosing a Linux distro for security work"
+ },
+ {
   "term": "List comprehension",
   "def": "one-line list construction.",
   "pathId": "04-python",
@@ -4403,6 +4547,24 @@ const GLOSSARY = [
   "pathTitle": "Cybersecurity Fundamentals",
   "subId": "attackers-kill-chain",
   "subTitle": "Attackers & the kill chain"
+ },
+ {
+  "term": "LPIC-1",
+  "def": "a vendor-neutral Linux certification from the Linux Professional Institute.",
+  "pathId": "03-linux",
+  "pathN": "03",
+  "pathTitle": "Operating Systems & Linux",
+  "subId": "linux-careers-and-certifications",
+  "subTitle": "Linux Careers & Certifications"
+ },
+ {
+  "term": "Lynis",
+  "def": "an open-source Linux security auditing tool that automates much of a hardening review.",
+  "pathId": "03-linux",
+  "pathN": "03",
+  "pathTitle": "Operating Systems & Linux",
+  "subId": "linux-hardening-checklist",
+  "subTitle": "A Practical Linux Hardening Checklist"
  },
  {
   "term": "Magic bytes",
@@ -4891,6 +5053,15 @@ const GLOSSARY = [
   "subTitle": "NIST Cybersecurity Framework Overview"
  },
  {
+  "term": "nmap",
+  "def": "a network scanning tool for discovering open ports and services, covered fully (with proper authorization context) in Path 14.",
+  "pathId": "03-linux",
+  "pathN": "03",
+  "pathTitle": "Operating Systems & Linux",
+  "subId": "linux-networking-commands",
+  "subTitle": "Linux Networking Commands"
+ },
+ {
   "term": "Nmap",
   "def": "the standard network scanning and host/service discovery tool.",
   "pathId": "12-network-security",
@@ -5269,6 +5440,15 @@ const GLOSSARY = [
   "subTitle": "Windows vs Linux vs macOS"
  },
  {
+  "term": "Package manager",
+  "def": "software that installs, updates, and removes packages while automatically resolving dependencies.",
+  "pathId": "03-linux",
+  "pathN": "03",
+  "pathTitle": "Operating Systems & Linux",
+  "subId": "linux-package-management",
+  "subTitle": "Linux Package Management"
+ },
+ {
   "term": "Packet",
   "def": "a small chunk of data that gets routed across the network.",
   "pathId": "00-fresher-basics",
@@ -5593,6 +5773,15 @@ const GLOSSARY = [
   "subTitle": "Files & folders"
  },
  {
+  "term": "Pipe (`|`)",
+  "def": "chains the output of one command directly into the input of the next.",
+  "pathId": "03-linux",
+  "pathN": "03",
+  "pathTitle": "Operating Systems & Linux",
+  "subId": "linux-text-processing-tools",
+  "subTitle": "Text Processing Tools: Beyond grep"
+ },
+ {
   "term": "Pivoting",
   "def": "using one compromised host's network access to reach otherwise-unreachable systems.",
   "pathId": "14-ethical-hacking",
@@ -5872,6 +6061,15 @@ const GLOSSARY = [
   "subTitle": "Why AI security is new"
  },
  {
+  "term": "`/proc`",
+  "def": "a virtual filesystem exposing live information about running processes.",
+  "pathId": "03-linux",
+  "pathN": "03",
+  "pathTitle": "Operating Systems & Linux",
+  "subId": "linux-filesystem-hierarchy",
+  "subTitle": "The Linux Filesystem Hierarchy"
+ },
+ {
   "term": "Procedure",
   "def": "the specific, frequently-updated steps that implement a policy",
   "pathId": "23-grc-compliance",
@@ -5879,6 +6077,15 @@ const GLOSSARY = [
   "pathTitle": "GRC & Compliance",
   "subId": "policies-and-procedures",
   "subTitle": "Writing Policies People Actually Follow"
+ },
+ {
+  "term": "Process",
+  "def": "a running instance of a program, identified by a unique PID.",
+  "pathId": "03-linux",
+  "pathN": "03",
+  "pathTitle": "Operating Systems & Linux",
+  "subId": "linux-process-management",
+  "subTitle": "Linux Process Management"
  },
  {
   "term": "Process engineer",
@@ -6394,6 +6601,15 @@ const GLOSSARY = [
   "subTitle": "Common Cryptographic Attacks"
  },
  {
+  "term": "Repository",
+  "def": "a curated collection of packages a package manager installs from.",
+  "pathId": "03-linux",
+  "pathN": "03",
+  "pathTitle": "Operating Systems & Linux",
+  "subId": "linux-package-management",
+  "subTitle": "Linux Package Management"
+ },
+ {
   "term": "Request / response",
   "def": "what your browser sends and the server returns.",
   "pathId": "02-networking",
@@ -6520,6 +6736,15 @@ const GLOSSARY = [
   "subTitle": "What is a protocol?"
  },
  {
+  "term": "RHCSA (Red Hat Certified System Administrator)",
+  "def": "a hands-on, performance-based certification specific to Red Hat Enterprise Linux.",
+  "pathId": "03-linux",
+  "pathN": "03",
+  "pathTitle": "Operating Systems & Linux",
+  "subId": "linux-careers-and-certifications",
+  "subTitle": "Linux Careers & Certifications"
+ },
+ {
   "term": "Rights management",
   "def": "protection that travels with a file itself, persisting beyond the environment where access was originally granted",
   "pathId": "24-zero-trust",
@@ -6608,6 +6833,15 @@ const GLOSSARY = [
   "pathTitle": "CTF Challenges",
   "subId": "ctf-writeup-template",
   "subTitle": "Solution Write-ups: The Template Every Good CTF Player Uses"
+ },
+ {
+  "term": "Root directory (`/`)",
+  "def": "the single top-level directory containing Linux's entire unified filesystem tree.",
+  "pathId": "03-linux",
+  "pathN": "03",
+  "pathTitle": "Operating Systems & Linux",
+  "subId": "linux-filesystem-hierarchy",
+  "subTitle": "The Linux Filesystem Hierarchy"
  },
  {
   "term": "Rootkit",
@@ -7033,6 +7267,15 @@ const GLOSSARY = [
   "subTitle": "The golden rule: permission"
  },
  {
+  "term": "sed",
+  "def": "a stream editor for line-by-line text transformation, most commonly find-and-replace.",
+  "pathId": "03-linux",
+  "pathN": "03",
+  "pathTitle": "Operating Systems & Linux",
+  "subId": "linux-text-processing-tools",
+  "subTitle": "Text Processing Tools: Beyond grep"
+ },
+ {
   "term": "Segmentation",
   "def": "dividing a network into isolated zones to limit how far a compromise can spread.",
   "pathId": "12-network-security",
@@ -7310,6 +7553,15 @@ const GLOSSARY = [
   "pathTitle": "Network Security",
   "subId": "ids-ips-siem",
   "subTitle": "IDS, IPS & SIEM"
+ },
+ {
+  "term": "SIGTERM / SIGKILL",
+  "def": "the polite and forceful termination signals sent by `kill` and `kill -9` respectively.",
+  "pathId": "03-linux",
+  "pathN": "03",
+  "pathTitle": "Operating Systems & Linux",
+  "subId": "linux-process-management",
+  "subTitle": "Linux Process Management"
  },
  {
   "term": "SIM-swap attack",
@@ -7607,6 +7859,24 @@ const GLOSSARY = [
   "pathTitle": "Web Security & Hacking",
   "subId": "sqli",
   "subTitle": "SQL Injection"
+ },
+ {
+  "term": "ss",
+  "def": "the modern replacement for `netstat`, showing active network connections and listening ports.",
+  "pathId": "03-linux",
+  "pathN": "03",
+  "pathTitle": "Operating Systems & Linux",
+  "subId": "linux-networking-commands",
+  "subTitle": "Linux Networking Commands"
+ },
+ {
+  "term": "SSH (Secure Shell)",
+  "def": "an encrypted protocol for remotely operating a machine's command line.",
+  "pathId": "03-linux",
+  "pathN": "03",
+  "pathTitle": "Operating Systems & Linux",
+  "subId": "ssh-and-remote-access",
+  "subTitle": "SSH & Remote Access"
  },
  {
   "term": "SSH tunneling / SOCKS proxy",
@@ -7958,6 +8228,24 @@ const GLOSSARY = [
   "pathTitle": "Windows Security Basics",
   "subId": "windows-privesc-intro",
   "subTitle": "Windows Privilege Escalation: An Introduction"
+ },
+ {
+  "term": "systemd",
+  "def": "the modern Linux service and process manager for background services.",
+  "pathId": "03-linux",
+  "pathN": "03",
+  "pathTitle": "Operating Systems & Linux",
+  "subId": "linux-process-management",
+  "subTitle": "Linux Process Management"
+ },
+ {
+  "term": "systemd timer",
+  "def": "the modern systemd-integrated alternative to traditional cron scheduling.",
+  "pathId": "03-linux",
+  "pathN": "03",
+  "pathTitle": "Operating Systems & Linux",
+  "subId": "linux-cron-and-scheduling",
+  "subTitle": "Linux Cron & Scheduling"
  },
  {
   "term": "System Image Backup",
@@ -8426,6 +8714,15 @@ const GLOSSARY = [
   "pathTitle": "Zero Trust Architecture",
   "subId": "zero-trust-analytics-monitoring",
   "subTitle": "Analytics & Monitoring for Zero Trust"
+ },
+ {
+  "term": "ufw (Uncomplicated Firewall)",
+  "def": "a simplified interface built on top of iptables.",
+  "pathId": "03-linux",
+  "pathN": "03",
+  "pathTitle": "Operating Systems & Linux",
+  "subId": "linux-firewall-basics",
+  "subTitle": "Linux Firewall Basics"
  },
  {
   "term": "Unauthorised access",
@@ -8914,6 +9211,15 @@ const GLOSSARY = [
   "subTitle": "Your first Python program"
  },
  {
+  "term": "Word-splitting",
+  "def": "the shell's default behavior of breaking an unquoted variable's value into multiple separate words at spaces.",
+  "pathId": "03-linux",
+  "pathN": "03",
+  "pathTitle": "Operating Systems & Linux",
+  "subId": "shell-scripting-security-pitfalls",
+  "subTitle": "Shell Scripting Security Pitfalls"
+ },
+ {
   "term": "Workload identity",
   "def": "a cryptographically verifiable, typically short-lived identity issued to a cloud workload (container, function, VM) rather than a human",
   "pathId": "24-zero-trust",
@@ -8921,6 +9227,15 @@ const GLOSSARY = [
   "pathTitle": "Zero Trust Architecture",
   "subId": "zero-trust-cloud",
   "subTitle": "Zero Trust in Cloud-Native Environments"
+ },
+ {
+  "term": "World-writable directory",
+  "def": "a directory any user can write to, such as `/tmp`, a recurring target for attack techniques.",
+  "pathId": "03-linux",
+  "pathN": "03",
+  "pathTitle": "Operating Systems & Linux",
+  "subId": "linux-filesystem-hierarchy",
+  "subTitle": "The Linux Filesystem Hierarchy"
  },
  {
   "term": "WPA2/WPA3",

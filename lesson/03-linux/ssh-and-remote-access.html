@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SSH &amp; Remote Access — Path 03 · KashSec Academy</title>
+<meta name="description" content="Every lesson so far has assumed you're sitting directly at the machine. This lesson covers SSH, the tool that lets you securely operate a Linux machine from anywhere — and directly parallels Path 07's">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/03-linux/ssh-and-remote-access">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="SSH &amp; Remote Access — Path 03 · KashSec Academy">
+<meta property="og:description" content="Every lesson so far has assumed you're sitting directly at the machine. This lesson covers SSH, the tool that lets you securely operate a Linux machine from anywhere — and directly parallels Path 07's">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/03-linux/ssh-and-remote-access">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="SSH &amp; Remote Access — Path 03 · KashSec Academy">
+<meta name="twitter:description" content="Every lesson so far has assumed you're sitting directly at the machine. This lesson covers SSH, the tool that lets you securely operate a Linux machine from anywhere — and directly parallels Path 07's">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"SSH & Remote Access — Path 03 · KashSec Academy","description":"Every lesson so far has assumed you're sitting directly at the machine. This lesson covers SSH, the tool that lets you securely operate a Linux machine from anywhere — and directly parallels Path 07's","url":"https://kashsec.vercel.app/#/lesson/03-linux/ssh-and-remote-access","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/03-linux/ssh-and-remote-access">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 03 — Operating Systems & Linux</a> · SSH &amp; Remote Access</div>
+  <article><h1>SSH &amp; Remote Access</h1>
+<p>Every lesson so far has assumed you&#39;re sitting directly at the machine. This lesson covers <strong>SSH</strong>, the tool that lets you securely operate a Linux machine from anywhere — and directly parallels Path 07&#39;s RDP-security lesson, covering the Linux equivalent of that exact same remote-access risk category.</p>
+<h2>What SSH actually is</h2>
+<p><strong>SSH (Secure Shell)</strong> provides an encrypted connection to a remote machine&#39;s command line, directly applying the TLS-style cryptography concepts from Path 06 — everything you type, and everything the remote machine sends back, travels encrypted, protected against the packet-sniffing risk covered in Path 02.</p>
+<pre><code class="language-bash">ssh username@remote-host
+</code></pre>
+<h2>Password authentication vs. key-based authentication</h2>
+<ul>
+<li><strong>Password authentication</strong> — the simplest option, but vulnerable to exactly the credential-stuffing and brute-force risks Path 00&#39;s passwords lesson covered, especially against internet-exposed SSH</li>
+<li><strong>Key-based authentication</strong> — a public/private key pair (directly applying Path 06&#39;s asymmetric-encryption concepts) where your private key stays on your own machine and only the corresponding public key is placed on the server, meaning there&#39;s no password to guess, phish, or brute-force at all</li>
+</ul>
+<pre><code class="language-bash">ssh-keygen -t ed25519          # generate a new key pair
+ssh-copy-id username@remote-host   # install your public key on the server
+</code></pre>
+<p>Most professionally-managed Linux servers disable password authentication for SSH entirely, requiring key-based authentication instead — directly eliminating the entire brute-force and credential-stuffing attack category, the same way Path 00&#39;s passkeys coverage described eliminating phishable passwords entirely.</p>
+<h2>SSH as a genuinely high-value attacker target</h2>
+<p>Directly mirroring Path 07&#39;s RDP lesson: internet-exposed SSH is one of the most commonly scanned and attacked services on the internet, precisely because a successful login often grants a full, interactive command-line session on the target.</p>
+<h2>Practical SSH hardening</h2>
+<ul>
+<li><strong>Disable password authentication</strong>, requiring key-based auth exclusively</li>
+<li><strong>Disable direct root login</strong> (<code>PermitRootLogin no</code>) — forcing an attacker to compromise a normal user account <em>and</em> separately escalate privilege, rather than getting full root access from a single successful login</li>
+<li><strong>Change the default port</strong> — the same minor, supplementary &quot;reduce automated scanner noise&quot; benefit Path 07&#39;s RDP lesson described, not a primary defense on its own</li>
+<li><strong>Use fail2ban or similar tools</strong> — automatically banning source addresses after repeated failed login attempts, directly applying the account-lockout principle from Path 00&#39;s passwords lesson at the network level</li>
+</ul>
+<h2>SSH tunneling: a genuinely useful (and sometimes risky) side feature</h2>
+<p>SSH can also forward other network traffic through its encrypted connection — a technique called <strong>tunneling</strong>, useful for securely accessing an internal service through an SSH connection. Worth knowing it exists, since it&#39;s both a legitimate administrative tool and, in the wrong hands, a way to route otherwise-blocked traffic through an unexpected path — precisely the kind of thing a security review of SSH configuration should account for.</p>
+<p>Why does key-based SSH authentication eliminate an entire category of attack that password authentication remains vulnerable to?</p>
+<details><summary>Show answer</summary>Key-based authentication removes the password entirely from the equation — there's nothing to guess, phish, or reuse from a different breach, since authentication depends on possessing the correct private key rather than knowing a secret string. Credential stuffing and brute-force attacks specifically target passwords; against key-based authentication, an attacker without the actual private key file has no viable path in at all, regardless of how many attempts they make or how weak a "password" might otherwise have been. This is exactly the same fundamental shift Path 00's passkey coverage described for account logins generally, applied here to server access specifically.</details><h2>Key terms</h2>
+<ul>
+<li><strong>SSH (Secure Shell)</strong> — an encrypted protocol for remotely operating a machine&#39;s command line.</li>
+<li><strong>Key-based authentication</strong> — SSH authentication using a public/private key pair instead of a password.</li>
+<li><strong>fail2ban</strong> — a tool that automatically bans source addresses after repeated failed login attempts.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>SSH provides encrypted remote command-line access, directly applying Path 06&#39;s cryptography concepts to everyday Linux administration.</li>
+<li>Key-based authentication eliminates the password-guessing attack category entirely, and is the real-world professional standard.</li>
+<li>Internet-exposed SSH is a top attacker target for exactly the same reasons Path 07 flagged RDP — disabling password auth, disabling root login, and using tools like fail2ban meaningfully harden it.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/03-linux/linux-cron-and-scheduling">Linux Cron &amp; Scheduling</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/03-linux/ssh-and-remote-access";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

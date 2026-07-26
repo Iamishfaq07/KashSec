@@ -275,4 +275,4 @@ What does the shebang line `#!/bin/bash` do at the top of a script?
 
 You now know what an OS is, how Windows/Linux/macOS differ, why security lives on Linux, how to build a lab with VirtualBox and Kali, the terminal, filesystem navigation, permissions and sudo, and how to write real Bash scripts. This is a huge foundation — most beginners never get this far.
 
-**Next up →** [Advanced Terminal Lab](#/lesson/03-linux/advanced-terminal-lab)
+**Next up →** [Shell Scripting Security Pitfalls](#/lesson/03-linux/shell-scripting-security-pitfalls)

@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Linux Cron &amp; Scheduling — Path 03 · KashSec Academy</title>
+<meta name="description" content="Path 07 covered Windows Task Scheduler as a common persistence mechanism. This lesson covers Linux's equivalent — cron — both as a genuinely essential administrative tool and as exactly the same kind ">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/03-linux/linux-cron-and-scheduling">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Linux Cron &amp; Scheduling — Path 03 · KashSec Academy">
+<meta property="og:description" content="Path 07 covered Windows Task Scheduler as a common persistence mechanism. This lesson covers Linux's equivalent — cron — both as a genuinely essential administrative tool and as exactly the same kind ">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/03-linux/linux-cron-and-scheduling">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Linux Cron &amp; Scheduling — Path 03 · KashSec Academy">
+<meta name="twitter:description" content="Path 07 covered Windows Task Scheduler as a common persistence mechanism. This lesson covers Linux's equivalent — cron — both as a genuinely essential administrative tool and as exactly the same kind ">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Linux Cron & Scheduling — Path 03 · KashSec Academy","description":"Path 07 covered Windows Task Scheduler as a common persistence mechanism. This lesson covers Linux's equivalent — cron — both as a genuinely essential administrative tool and as exactly the same kind ","url":"https://kashsec.vercel.app/#/lesson/03-linux/linux-cron-and-scheduling","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/03-linux/linux-cron-and-scheduling">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 03 — Operating Systems & Linux</a> · Linux Cron &amp; Scheduling</div>
+  <article><h1>Linux Cron &amp; Scheduling</h1>
+<p>Path 07 covered Windows Task Scheduler as a common persistence mechanism. This lesson covers Linux&#39;s equivalent — <strong>cron</strong> — both as a genuinely essential administrative tool and as exactly the same kind of attacker technique worth recognizing.</p>
+<h2>What cron actually does</h2>
+<p><strong>cron</strong> runs commands automatically on a defined schedule — a backup script every night, a log rotation every week, a monitoring check every five minutes — without requiring anyone to manually trigger it.</p>
+<h2>Reading a crontab entry</h2>
+<pre><code># minute hour day-of-month month day-of-week command
+30    2    *      *      *     /usr/local/bin/backup.sh
+</code></pre>
+<p>This example runs <code>backup.sh</code> at 2:30 AM, every day, every month — the five time fields (minute, hour, day-of-month, month, day-of-week) let you express nearly any recurring schedule, with <code>*</code> meaning &quot;every.&quot;</p>
+<pre><code class="language-bash">crontab -l          # list your own scheduled jobs
+crontab -e          # edit your own scheduled jobs
+sudo crontab -l -u username   # view another user&#39;s scheduled jobs (as root)
+</code></pre>
+<h2>System-wide vs. per-user cron</h2>
+<p>Beyond each individual user&#39;s own crontab, Linux also supports system-wide scheduled jobs in <code>/etc/cron.d/</code>, <code>/etc/cron.daily/</code>, and similar locations — directly connecting back to the filesystem-hierarchy lesson&#39;s coverage of <code>/etc</code> as the single most security-relevant directory on the system.</p>
+<h2>Cron as a persistence mechanism</h2>
+<p>Exactly mirroring Path 07&#39;s Windows Task Scheduler coverage: a malicious cron job — added to a compromised user&#39;s crontab, or dropped into <code>/etc/cron.d/</code> if the attacker has root — will keep re-executing on schedule, surviving a simple process kill or even a reboot, making it a genuine and commonly-used persistence technique in real Linux compromises.</p>
+<p>Directly extending the recognizing-compromise habit from Path 07: periodically reviewing <code>crontab -l</code> for your own account, and system-wide cron locations under <code>/etc</code>, for anything unfamiliar is a genuinely valuable, low-effort investigation habit — particularly after any suspected compromise.</p>
+<h2>systemd timers: the modern alternative</h2>
+<p>Modern Linux systems increasingly use <strong>systemd timers</strong> instead of (or alongside) traditional cron, integrating scheduling directly with the systemd service management covered in the process-management lesson:</p>
+<pre><code class="language-bash">systemctl list-timers        # list all active systemd timers
+</code></pre>
+<p>Functionally similar to cron, but tied more tightly into systemd&#39;s logging and dependency management — worth recognizing by name even if cron remains more common in casual, day-to-day scripting.</p>
+<p>Why does a malicious cron job represent a more durable threat than simply running a malicious process directly?</p>
+<details><summary>Show answer</summary>A process running directly can be discovered and killed (using the `kill` command from the process-management lesson), and it disappears entirely if the system reboots. A cron job, by contrast, is a standing <em>instruction</em> stored in a crontab file — even if the currently-running instance is killed, the scheduled entry remains, and cron will simply launch it again at the next scheduled time, surviving both a kill and a full reboot. This is exactly why cron (and its Windows Task Scheduler counterpart from Path 07) is such a commonly used persistence mechanism: it doesn't just run malicious code once, it guarantees that code keeps coming back on a schedule until the underlying crontab entry itself is found and removed.</details><h2>Key terms</h2>
+<ul>
+<li><strong>cron</strong> — Linux&#39;s time-based job scheduler, running commands automatically on a defined recurring schedule.</li>
+<li><strong>crontab</strong> — the file (per-user or system-wide) defining a set of scheduled cron jobs.</li>
+<li><strong>systemd timer</strong> — the modern systemd-integrated alternative to traditional cron scheduling.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>cron runs commands automatically on a schedule, essential for backups, maintenance, and monitoring — and, in the wrong hands, a durable attacker persistence mechanism that survives both process termination and reboots.</li>
+<li>Both per-user crontabs and system-wide locations under <code>/etc</code> deserve periodic review, exactly mirroring the scheduled-task scrutiny Path 07 established for Windows.</li>
+<li>systemd timers are the modern alternative, worth recognizing by name even where cron remains more common day to day.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/03-linux/linux-logging-basics">Linux Logging Basics</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/03-linux/linux-cron-and-scheduling";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

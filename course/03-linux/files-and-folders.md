@@ -248,4 +248,4 @@ What does the pipe symbol `|` do between two commands? Give a one-sentence answe
 - [The Missing Semester of Your CS Education (MIT)](https://missing.csail.mit.edu/) — free lectures on the command line and tooling.
 ???
 
-**Next up →** [Users, permissions & sudo](#/lesson/03-linux/users-permissions)
+**Next up →** [Text Processing Tools: Beyond grep](#/lesson/03-linux/linux-text-processing-tools)

@@ -740,16 +740,29 @@ const PATHS = [
      {n:"1", id:"what-is-an-os",       title:"What is an operating system?", desc:"The manager that runs your computer."},
      {n:"2", id:"windows-linux-mac",   title:"Windows vs Linux vs macOS", desc:"The big three, and why security loves Linux."},
      {n:"3", id:"why-linux",           title:"Why hackers love Linux",  desc:"Open, scriptable, and the tools live here."},
-     {n:"4", id:"virtualization",      title:"What is virtualization?", desc:"A whole computer inside your computer."},
-     {n:"5", id:"install-virtualbox",  title:"Install VirtualBox",      desc:"Step-by-step with troubleshooting."},
-     {n:"6", id:"install-kali",        title:"Install Kali Linux",      desc:"The pre-built image route, safely."},
-     {n:"7", id:"snapshots-safety",    title:"Snapshots & safety",      desc:"Undo mistakes; network isolation."},
-     {n:"8", id:"terminal-basics",     title:"Meet the terminal",       desc:"Your first commands, unafraid."},
-     {n:"9", id:"files-and-folders",   title:"Files & folders",         desc:"Navigate, read, search — grep is gold."},
-     {n:"10", id:"users-permissions",  title:"Users, permissions & sudo", desc:"Read rwx, install with apt, the SUID clue."},
-     {n:"11", id:"bash-scripting",     title:"Your first bash script",  desc:"Pipes, redirection, loops — automation begins."},
-     {n:"12", id:"advanced-terminal-lab", title:"Advanced Terminal Lab", desc:"Level up your command line skills."},
-     {n:"13", id:"linux-forensics-lab", title:"Linux Forensics Basics Lab", desc:"Learn to investigate a Linux system."}
+     {n:"4", id:"linux-distros-for-security", title:"Choosing a Linux distro for security work", desc:"Kali vs. Parrot vs. Ubuntu — attack platform vs. target system."},
+     {n:"5", id:"virtualization",      title:"What is virtualization?", desc:"A whole computer inside your computer."},
+     {n:"6", id:"install-virtualbox",  title:"Install VirtualBox",      desc:"Step-by-step with troubleshooting."},
+     {n:"7", id:"install-kali",        title:"Install Kali Linux",      desc:"The pre-built image route, safely."},
+     {n:"8", id:"snapshots-safety",    title:"Snapshots & safety",      desc:"Undo mistakes; network isolation."},
+     {n:"9", id:"terminal-basics",     title:"Meet the terminal",       desc:"Your first commands, unafraid."},
+     {n:"10", id:"linux-filesystem-hierarchy", title:"The Linux Filesystem Hierarchy", desc:"Why /etc matters most, and how /tmp becomes an attack surface."},
+     {n:"11", id:"files-and-folders",   title:"Files & folders",         desc:"Navigate, read, search — grep is gold."},
+     {n:"12", id:"linux-text-processing-tools", title:"Text Processing Tools: Beyond grep", desc:"sed, awk, cut, and sort — chained together with pipes."},
+     {n:"13", id:"users-permissions",  title:"Users, permissions & sudo", desc:"Read rwx, install with apt, the SUID clue."},
+     {n:"14", id:"linux-package-management", title:"Linux Package Management", desc:"apt/dnf/pacman, repositories, and why package signing matters."},
+     {n:"15", id:"linux-process-management", title:"Linux Process Management", desc:"ps, top, kill, and systemd — the Linux side of Path 07's Task Manager coverage."},
+     {n:"16", id:"linux-networking-commands", title:"Linux Networking Commands", desc:"ip, ss, curl, and a first, careful preview of nmap."},
+     {n:"17", id:"ssh-and-remote-access", title:"SSH & Remote Access", desc:"Key-based auth, hardening, and the Linux parallel to Path 07's RDP lesson."},
+     {n:"18", id:"linux-cron-and-scheduling", title:"Linux Cron & Scheduling", desc:"Scheduled jobs, and why cron is a favorite persistence mechanism."},
+     {n:"19", id:"linux-logging-basics", title:"Linux Logging Basics", desc:"/var/log, journalctl, and why attackers try to clear their tracks."},
+     {n:"20", id:"linux-firewall-basics", title:"Linux Firewall Basics", desc:"iptables, ufw, and applying default-deny without locking yourself out."},
+     {n:"21", id:"bash-scripting",     title:"Your first bash script",  desc:"Pipes, redirection, loops — automation begins."},
+     {n:"22", id:"shell-scripting-security-pitfalls", title:"Shell Scripting Security Pitfalls", desc:"Command injection, unquoted variables, and eval's real dangers."},
+     {n:"23", id:"linux-hardening-checklist", title:"A Practical Linux Hardening Checklist", desc:"Every earlier lesson in this path, consolidated into one ordered checklist."},
+     {n:"24", id:"linux-careers-and-certifications", title:"Linux Careers & Certifications", desc:"Linux+, RHCSA, and why this foundation underlies most other security paths."},
+     {n:"25", id:"advanced-terminal-lab", title:"Advanced Terminal Lab", desc:"Level up your command line skills."},
+     {n:"26", id:"linux-forensics-lab", title:"Linux Forensics Basics Lab", desc:"Learn to investigate a Linux system."}
    ]},
   {n:"04", id:"04-python", title:"Programming & Python", level:"Beginner",
    desc:"Programming from zero, then Python — build a real password-strength tool.",
@@ -4776,6 +4789,11 @@ function renderLabPhishing(){
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
+  {date:'2026-07-25', title:'Path 03 doubled to 26 lessons', items:[
+    'Tenth batch of the course-wide content-doubling effort: Path 03 (Operating Systems & Linux) grows from 13 to 26 lessons — the largest single-path expansion yet.',
+    'New lessons: Choosing a Linux Distro for Security Work, The Linux Filesystem Hierarchy, Text Processing Tools (sed/awk), Linux Package Management, Linux Process Management, Linux Networking Commands, SSH & Remote Access, Linux Cron & Scheduling, Linux Logging Basics, Linux Firewall Basics, Shell Scripting Security Pitfalls, a Practical Linux Hardening Checklist, and Linux Careers & Certifications.',
+    'The new hardening-checklist lesson consolidates every earlier lesson in the path into one practical, sensibly-ordered sequence.'
+  ]},
   {date:'2026-07-25', title:'Path 02 doubled to 20 lessons', items:[
     'Ninth batch of the course-wide content-doubling effort: Path 02 (Networking Fundamentals) grows from 10 to 20 lessons — the largest single-path expansion so far.',
     'New lessons: Routing Basics, Subnetting & CIDR Notation, NAT & Port Forwarding, Switches & VLANs, Wireless Networking Basics, Firewalls: The Basics, Common Network Attacks Overview, Network Troubleshooting Tools, Cloud & Modern Networking, and Network Security Careers & Certifications.',

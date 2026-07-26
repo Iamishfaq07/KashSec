@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Linux Filesystem Hierarchy — Path 03 · KashSec Academy</title>
+<meta name="description" content="The terminal-basics lesson got you moving around Linux. This lesson explains the actual map you're navigating — why /etc holds what it holds, why /var is named that, and why knowing this layout matter">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/03-linux/linux-filesystem-hierarchy">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="The Linux Filesystem Hierarchy — Path 03 · KashSec Academy">
+<meta property="og:description" content="The terminal-basics lesson got you moving around Linux. This lesson explains the actual map you're navigating — why /etc holds what it holds, why /var is named that, and why knowing this layout matter">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/03-linux/linux-filesystem-hierarchy">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Linux Filesystem Hierarchy — Path 03 · KashSec Academy">
+<meta name="twitter:description" content="The terminal-basics lesson got you moving around Linux. This lesson explains the actual map you're navigating — why /etc holds what it holds, why /var is named that, and why knowing this layout matter">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"The Linux Filesystem Hierarchy — Path 03 · KashSec Academy","description":"The terminal-basics lesson got you moving around Linux. This lesson explains the actual map you're navigating — why /etc holds what it holds, why /var is named that, and why knowing this layout matter","url":"https://kashsec.vercel.app/#/lesson/03-linux/linux-filesystem-hierarchy","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/03-linux/linux-filesystem-hierarchy">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 03 — Operating Systems & Linux</a> · The Linux Filesystem Hierarchy</div>
+  <article><h1>The Linux Filesystem Hierarchy</h1>
+<p>The terminal-basics lesson got you moving around Linux. This lesson explains the actual map you&#39;re navigating — why <code>/etc</code> holds what it holds, why <code>/var</code> is named that, and why knowing this layout matters far beyond just finding files.</p>
+<h2>Everything starts at <code>/</code></h2>
+<p>Unlike Windows&#39; separate drive letters (<code>C:</code>, <code>D:</code>), Linux has a single unified tree starting at the <strong>root directory</strong>, written simply as <code>/</code>. Every file and every other storage device, no matter how it&#39;s physically connected, gets mounted somewhere within this one tree.</p>
+<h2>The directories worth knowing by name</h2>
+<pre><code>/
+├── bin, sbin   → essential command binaries
+├── etc         → system-wide configuration files
+├── home        → personal directories, one per user
+├── var         → variable data: logs, caches, spool files
+├── tmp         → temporary files, often cleared on reboot
+├── usr         → installed software and its own bin/lib subfolders
+├── root        → the root user&#39;s own home directory (not the same as /)
+├── dev         → device files, representing hardware
+└── proc        → a virtual filesystem representing running processes
+</code></pre>
+<ul>
+<li><strong><code>/etc</code></strong> — genuinely the single most security-relevant directory on the system. Nearly every configuration file that determines how a service behaves lives here, including <code>/etc/passwd</code> and <code>/etc/shadow</code> from the users-permissions lesson</li>
+<li><strong><code>/var/log</code></strong> — where most system and application logs live, directly setting up the logging-basics lesson later in this path</li>
+<li><strong><code>/tmp</code></strong> — world-writable by design, which makes it a genuinely common location for both legitimate temporary files <em>and</em> a landing spot attackers target when dropping malicious files, since any user can write there</li>
+<li><strong><code>/proc</code></strong> — not a real directory on disk at all; it&#39;s a live, virtual window into the kernel&#39;s view of every running process, letting you inspect a process&#39;s memory maps, open files, and command line just by reading files under <code>/proc/&lt;pid&gt;/</code></li>
+</ul>
+<h2>Why this layout matters for security specifically</h2>
+<p>Knowing the filesystem hierarchy means knowing where to look during an investigation, and knowing what &quot;normal&quot; looks like well enough to spot what isn&#39;t. A suspicious executable sitting in <code>/tmp</code> or an unfamiliar file appearing in <code>/etc/cron.d/</code> (previewed here, covered fully in the cron-and-scheduling lesson) are both meaningful findings specifically <em>because</em> you understand what those locations are supposed to contain.</p>
+<p><code>/tmp</code> and similarly permissioned world-writable locations are frequently abused for privilege escalation techniques (a preview of the deeper coverage in Path 16&#39;s Linux privesc lab) — a script running as root that carelessly reads or executes a file from <code>/tmp</code> without verifying who put it there is a genuine, recurring real-world vulnerability pattern.</p>
+<p>Why is <code>/etc</code> considered the single most security-relevant directory on a Linux system?</p>
+<details><summary>Show answer</summary><code>/etc</code> holds nearly every system-wide configuration file that determines how services actually behave — from user account definitions (<code>/etc/passwd</code>) to network configuration to which services start automatically. An attacker who can modify files in <code>/etc</code> can often reconfigure how the entire system behaves without needing to touch a single binary or exploit any software vulnerability at all — simply changing a configuration file can be enough to create a backdoor, weaken authentication, or redirect traffic. This is exactly why file integrity monitoring tools frequently watch <code>/etc</code> specifically, and why unexpected changes there are treated as a high-priority investigation finding.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Root directory (<code>/</code>)</strong> — the single top-level directory containing Linux&#39;s entire unified filesystem tree.</li>
+<li><strong><code>/proc</code></strong> — a virtual filesystem exposing live information about running processes.</li>
+<li><strong>World-writable directory</strong> — a directory any user can write to, such as <code>/tmp</code>, a recurring target for attack techniques.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Linux organizes everything under one unified tree starting at <code>/</code>, unlike Windows&#39; separate drive letters.</li>
+<li><code>/etc</code> (configuration), <code>/var/log</code> (logs), <code>/tmp</code> (temporary, world-writable files), and <code>/proc</code> (live process information) are the directories most worth knowing by name for security work.</li>
+<li>Understanding this layout is what lets you recognize when something&#39;s out of place — exactly the skill an investigation or a privilege-escalation hunt depends on.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/03-linux/files-and-folders">Files &amp; folders</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/03-linux/linux-filesystem-hierarchy";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

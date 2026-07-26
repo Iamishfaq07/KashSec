@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Text Processing Tools: Beyond grep — Path 03 · KashSec Academy</title>
+<meta name="description" content="The files-and-folders lesson called grep &quot;gold&quot; — and it is. This lesson introduces the rest of the toolkit that, combined with grep, lets you slice, transform, and summarize text data on the command ">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/03-linux/linux-text-processing-tools">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Text Processing Tools: Beyond grep — Path 03 · KashSec Academy">
+<meta property="og:description" content="The files-and-folders lesson called grep &quot;gold&quot; — and it is. This lesson introduces the rest of the toolkit that, combined with grep, lets you slice, transform, and summarize text data on the command ">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/03-linux/linux-text-processing-tools">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Text Processing Tools: Beyond grep — Path 03 · KashSec Academy">
+<meta name="twitter:description" content="The files-and-folders lesson called grep &quot;gold&quot; — and it is. This lesson introduces the rest of the toolkit that, combined with grep, lets you slice, transform, and summarize text data on the command ">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Text Processing Tools: Beyond grep — Path 03 · KashSec Academy","description":"The files-and-folders lesson called grep \"gold\" — and it is. This lesson introduces the rest of the toolkit that, combined with grep, lets you slice, transform, and summarize text data on the command ","url":"https://kashsec.vercel.app/#/lesson/03-linux/linux-text-processing-tools","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/03-linux/linux-text-processing-tools">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 03 — Operating Systems & Linux</a> · Text Processing Tools: Beyond grep</div>
+  <article><h1>Text Processing Tools: Beyond grep</h1>
+<p>The files-and-folders lesson called <code>grep</code> &quot;gold&quot; — and it is. This lesson introduces the rest of the toolkit that, combined with <code>grep</code>, lets you slice, transform, and summarize text data on the command line without ever opening a text editor.</p>
+<h2>sed: find and replace, at scale</h2>
+<p><strong><code>sed</code></strong> (stream editor) applies text transformations to every line of input, most commonly for find-and-replace:</p>
+<pre><code class="language-bash">sed &#39;s/old-text/new-text/&#39; file.txt      # replace first match per line
+sed &#39;s/old-text/new-text/g&#39; file.txt     # replace every match per line
+</code></pre>
+<p>Genuinely useful for quickly fixing a config file across many lines, or transforming log output into a more readable format before further analysis.</p>
+<h2>awk: column-aware text processing</h2>
+<p><strong><code>awk</code></strong> treats each line of input as a set of columns (fields), letting you extract, filter, or reformat based on column position — extremely useful for structured text like <code>/etc/passwd</code> or command output:</p>
+<pre><code class="language-bash">awk -F: &#39;{print $1}&#39; /etc/passwd    # print just the username column
+awk &#39;{print $1, $NF}&#39; file.txt      # print first and last column of each line
+</code></pre>
+<h2>cut and sort: simpler, complementary tools</h2>
+<ul>
+<li><strong><code>cut</code></strong> — a lighter-weight alternative to <code>awk</code> for simple column extraction: <code>cut -d: -f1 /etc/passwd</code> does the same username extraction as the <code>awk</code> example above</li>
+<li><strong><code>sort</code></strong> — sorts lines alphabetically or numerically (<code>sort -n</code> for numeric sort), commonly chained after other commands to organize output</li>
+</ul>
+<h2>Chaining it all together with pipes</h2>
+<p>The bash-scripting lesson (later in this path) covers pipes properly, but the real power of this lesson&#39;s tools comes from combining them:</p>
+<pre><code class="language-bash">cat /var/log/auth.log | grep &quot;Failed password&quot; | awk &#39;{print $11}&#39; | sort | uniq -c | sort -rn
+</code></pre>
+<p>This one chained command — find failed login attempts, extract the source IP, then count and rank how often each IP appears — is a genuinely realistic example of the kind of quick command-line log analysis this course&#39;s incident-response and log-analysis material (Path 16) builds on directly.</p>
+<p>:::</p>
+<p>:::challenge Test yourself
+Why is <code>awk -F: &#39;{print $1}&#39; /etc/passwd</code> a more precise tool for extracting just usernames than a simple <code>grep</code> command would be?</p>
+<details><summary>Show answer</summary><code>grep</code> is built for finding lines matching a pattern — it has no built-in concept of columns or fields, so it can't cleanly extract "just the first piece of each line" without much clumsier pattern-matching. <code>awk</code>, by contrast, is specifically built to treat each line as a set of fields separated by a delimiter (here, <code>:</code>, since that's how <code>/etc/passwd</code> is structured) — <code>$1</code> then directly and reliably refers to the first field (the username) regardless of what appears in the rest of the line. This is exactly why each tool in this lesson exists separately rather than one tool trying to do everything: grep excels at finding matching lines, awk excels at working with structured columns within those lines.</details><h2>Key terms</h2>
+<ul>
+<li><strong>sed</strong> — a stream editor for line-by-line text transformation, most commonly find-and-replace.</li>
+<li><strong>awk</strong> — a column-aware text processing tool for extracting or reformatting structured text.</li>
+<li><strong>Pipe (<code>|</code>)</strong> — chains the output of one command directly into the input of the next.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li><code>sed</code> handles find-and-replace transformations; <code>awk</code> handles column-aware extraction and reformatting; <code>cut</code> and <code>sort</code> handle simpler, complementary tasks.</li>
+<li>Chaining these tools together with pipes is what turns a handful of simple, single-purpose commands into genuinely sophisticated on-the-fly text and log analysis.</li>
+<li>This exact composable-toolkit approach is what the log-analysis and incident-response material later in this course builds directly on.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/03-linux/users-permissions">Users, permissions &amp; sudo</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/03-linux/linux-text-processing-tools";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

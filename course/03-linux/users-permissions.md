@@ -211,4 +211,4 @@ A file's permissions show as `-rwxr-xr--`. Which class of users cannot execute i
 - [Explainshell — chmod](https://explainshell.com/explain?cmd=chmod+755+file) — paste any command, get every flag explained.
 ???
 
-**Next up →** [Your first bash script](#/lesson/03-linux/bash-scripting)
+**Next up →** [Linux Package Management](#/lesson/03-linux/linux-package-management)

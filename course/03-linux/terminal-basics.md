@@ -217,4 +217,4 @@ Which command shows the full manual for another command? And how do you exit it?
 - [OverTheWire Bandit levels 0–10](https://overthewire.org/wargames/bandit/) — game-style practice.
 ???
 
-**Next up →** [Files & folders](#/lesson/03-linux/files-and-folders)
+**Next up →** [The Linux Filesystem Hierarchy](#/lesson/03-linux/linux-filesystem-hierarchy)

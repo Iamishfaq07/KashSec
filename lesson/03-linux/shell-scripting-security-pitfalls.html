@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shell Scripting Security Pitfalls — Path 03 · KashSec Academy</title>
+<meta name="description" content="The bash-scripting lesson taught you to write your first automation. This lesson covers the mistakes that turn a convenient script into a genuine vulnerability — the shell-scripting equivalent of Path">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/03-linux/shell-scripting-security-pitfalls">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Shell Scripting Security Pitfalls — Path 03 · KashSec Academy">
+<meta property="og:description" content="The bash-scripting lesson taught you to write your first automation. This lesson covers the mistakes that turn a convenient script into a genuine vulnerability — the shell-scripting equivalent of Path">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/03-linux/shell-scripting-security-pitfalls">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Shell Scripting Security Pitfalls — Path 03 · KashSec Academy">
+<meta name="twitter:description" content="The bash-scripting lesson taught you to write your first automation. This lesson covers the mistakes that turn a convenient script into a genuine vulnerability — the shell-scripting equivalent of Path">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Shell Scripting Security Pitfalls — Path 03 · KashSec Academy","description":"The bash-scripting lesson taught you to write your first automation. This lesson covers the mistakes that turn a convenient script into a genuine vulnerability — the shell-scripting equivalent of Path","url":"https://kashsec.vercel.app/#/lesson/03-linux/shell-scripting-security-pitfalls","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/03-linux/shell-scripting-security-pitfalls">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 03 — Operating Systems & Linux</a> · Shell Scripting Security Pitfalls</div>
+  <article><h1>Shell Scripting Security Pitfalls</h1>
+<p>The bash-scripting lesson taught you to write your first automation. This lesson covers the mistakes that turn a convenient script into a genuine vulnerability — the shell-scripting equivalent of Path 11&#39;s SQL injection material, applied to the command line instead of a web form.</p>
+<h2>Command injection: the shell&#39;s version of SQL injection</h2>
+<p>Just as Path 11 will cover SQL injection (untrusted input getting interpreted as database commands instead of pure data), a shell script that builds a command by directly concatenating unvalidated input is vulnerable to <strong>command injection</strong>:</p>
+<pre><code class="language-bash"># Dangerous: if $filename contains &quot;; rm -rf /&quot;, this executes it too
+eval &quot;cat $filename&quot;
+
+# Also dangerous, for the same underlying reason
+bash -c &quot;process_file $user_input&quot;
+</code></pre>
+<p>If <code>$filename</code> or <code>$user_input</code> comes from anywhere an attacker could influence — a web form passing data to a backend script, a filename uploaded by a user — an attacker can potentially inject entirely different, arbitrary commands that the shell will happily execute alongside (or instead of) the intended one.</p>
+<h2>Unquoted variables: a smaller mistake with real consequences</h2>
+<pre><code class="language-bash"># Dangerous: word-splitting and glob expansion can break this in surprising ways
+if [ $filename = &quot;test.txt&quot; ]; then
+
+# Safer: quoting prevents the shell from reinterpreting spaces or special characters
+if [ &quot;$filename&quot; = &quot;test.txt&quot; ]; then
+</code></pre>
+<p>Failing to quote variables is a genuinely common source of both ordinary bugs <em>and</em> security issues — an unquoted variable containing spaces, wildcards, or special shell characters can behave in ways the script&#39;s author never intended, sometimes exploitably.</p>
+<h2>Trusting input from files or environment variables</h2>
+<p>Scripts frequently read configuration from files or environment variables without validating them — but anything a script trusts implicitly is a potential injection point if an attacker can influence that source, directly connecting to the input-validation principle covered throughout Path 11&#39;s web security material, just applied here to the shell instead of a web request.</p>
+<h2>Running scripts as root unnecessarily</h2>
+<p>Exactly extending the least-privilege principle from the users-permissions and process-management lessons: a script that only needs to read a log file shouldn&#39;t be run with <code>sudo</code> out of habit or convenience — every unnecessary privilege a script runs with is additional potential damage if that script (or something it calls) turns out to be exploitable.</p>
+<pre><code class="language-bash">#!/bin/bash
+filename=$1
+eval &quot;cat $filename&quot;
+</code></pre>
+<p>Run as <code>./script.sh &quot;test.txt; rm -rf ~&quot;</code>, this script doesn&#39;t just display <code>test.txt</code> — the semicolon breaks out of the intended command entirely, and <code>rm -rf ~</code> executes as a completely separate, attacker-controlled command. This exact pattern — building a command string from unvalidated input and handing it to <code>eval</code> or a similar interpreter — is responsible for a genuinely large share of real-world shell scripting vulnerabilities.</p>
+<h2>Practical defenses</h2>
+<ul>
+<li><strong>Quote every variable</strong>, as a near-universal default habit, not just where you think it matters</li>
+<li><strong>Avoid <code>eval</code> entirely wherever possible</strong> — it&#39;s specifically designed to interpret a string as a command, which is exactly the dangerous behavior this lesson has been describing</li>
+<li><strong>Validate and sanitize any input from outside the script&#39;s own control</strong> — user input, file contents, environment variables — before using it in any command</li>
+<li><strong>Run scripts with the minimum privilege they actually need</strong>, never <code>sudo</code> by default habit</li>
+</ul>
+<p>Why does quoting a variable like <code>&quot;$filename&quot;</code> meaningfully reduce security risk, beyond just preventing ordinary bugs?</p>
+<details><summary>Show answer</summary>Without quotes, the shell performs word-splitting (breaking a value into multiple separate words wherever spaces appear) and glob expansion (interpreting characters like <code>*</code> as wildcards) on a variable's contents before your script's logic ever sees it — meaning a value containing spaces, semicolons, or wildcard characters can be reinterpreted by the shell in ways the script's author never intended, sometimes letting an attacker smuggle extra commands or unexpected arguments through what was meant to be a single, simple value. Quoting the variable tells the shell to treat its entire contents as one literal string, exactly as written, closing off this entire category of unintended reinterpretation — a small habit that closes a genuinely real vulnerability class.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Command injection</strong> — untrusted input being interpreted as executable shell commands rather than pure data.</li>
+<li><strong>Word-splitting</strong> — the shell&#39;s default behavior of breaking an unquoted variable&#39;s value into multiple separate words at spaces.</li>
+<li><strong>eval</strong> — a shell builtin that interprets a string as a command, a common source of injection vulnerabilities when combined with untrusted input.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Command injection is the shell scripting equivalent of SQL injection — untrusted input getting executed as commands rather than treated as pure data.</li>
+<li>Quoting variables, avoiding <code>eval</code> with untrusted input, validating external input, and running scripts with minimum necessary privilege are the practical defenses.</li>
+<li>These same input-validation principles reappear throughout this course, from Path 11&#39;s web injection attacks to Path 21&#39;s API security material — the underlying lesson (never trust unvalidated input) is genuinely universal.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/03-linux/linux-hardening-checklist">Linux Hardening Checklist</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/03-linux/shell-scripting-security-pitfalls";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

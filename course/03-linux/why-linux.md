@@ -100,4 +100,4 @@ Give one reason security tools are usually built for Linux rather than Windows.
 - [OverTheWire Bandit](https://overthewire.org/wargames/bandit/) — the classic free Linux command-line wargame. Do it while you learn this path.
 ???
 
-**Next up →** [What is virtualization?](#/lesson/03-linux/virtualization)
+**Next up →** [Choosing a Linux distro for security work](#/lesson/03-linux/linux-distros-for-security)
