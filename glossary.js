@@ -85,6 +85,15 @@ const GLOSSARY = [
   "subTitle": "Windows privilege escalation"
  },
  {
+  "term": "Accountability ambiguity",
+  "def": "the common governance failure where a decision has no single clear owner, causing it to be made nowhere or redundantly everywhere.",
+  "pathId": "23-grc-compliance",
+  "pathN": "23",
+  "pathTitle": "GRC & Compliance",
+  "subId": "raci-and-security-committees",
+  "subTitle": "RACI & Security Committees"
+ },
+ {
   "term": "Account factory",
   "def": "automated tooling that provisions new accounts from a landing zone template.",
   "pathId": "08-cloud-basics",
@@ -362,6 +371,15 @@ const GLOSSARY = [
   "pathTitle": "Programming & Python",
   "subId": "if-else",
   "subTitle": "Decisions with if/else"
+ },
+ {
+  "term": "Annualized loss expectancy",
+  "def": "the estimated financial loss a risk represents per year, directly comparable against a proposed control's cost.",
+  "pathId": "23-grc-compliance",
+  "pathN": "23",
+  "pathTitle": "GRC & Compliance",
+  "subId": "quantitative-risk-analysis-fair",
+  "subTitle": "Quantitative Risk Analysis & FAIR"
  },
  {
   "term": "Anonymous/null session",
@@ -1894,6 +1912,24 @@ const GLOSSARY = [
   "subTitle": "GRC Tools, Certifications & Careers"
  },
  {
+  "term": "Compliance automation platforms",
+  "def": "tools expanding the total market of companies that can feasibly pursue certification, growing overall GRC hiring demand.",
+  "pathId": "23-grc-compliance",
+  "pathN": "23",
+  "pathTitle": "GRC & Compliance",
+  "subId": "grc-career-economics-and-demand",
+  "subTitle": "GRC Career Economics & Demand"
+ },
+ {
+  "term": "Compliance-checkbox training",
+  "def": "training designed primarily to satisfy audit requirements, often producing minimal genuine behavior change.",
+  "pathId": "23-grc-compliance",
+  "pathN": "23",
+  "pathTitle": "GRC & Compliance",
+  "subId": "security-awareness-training-programs",
+  "subTitle": "Security Awareness Training Programs"
+ },
+ {
   "term": "Compliance framework",
   "def": "a defined set of controls an organisation attests to following (ISO 27001, SOC 2, NIST CSF, etc.)",
   "pathId": "23-grc-compliance",
@@ -1901,6 +1937,15 @@ const GLOSSARY = [
   "pathTitle": "GRC & Compliance",
   "subId": "what-is-grc",
   "subTitle": "What is GRC?"
+ },
+ {
+  "term": "Compliance-gated sales",
+  "def": "enterprise procurement processes that require certified compliance before a contract can close, making GRC work directly revenue-relevant.",
+  "pathId": "23-grc-compliance",
+  "pathN": "23",
+  "pathTitle": "GRC & Compliance",
+  "subId": "grc-career-economics-and-demand",
+  "subTitle": "GRC Career Economics & Demand"
  },
  {
   "term": "Compliance mapping",
@@ -2173,6 +2218,15 @@ const GLOSSARY = [
   "subTitle": "Automation for Security"
  },
  {
+  "term": "Continuous monitoring",
+  "def": "automated, ongoing evidence collection that flags control failures near-immediately, rather than only during periodic audit prep.",
+  "pathId": "23-grc-compliance",
+  "pathN": "23",
+  "pathTitle": "GRC & Compliance",
+  "subId": "grc-automation-platforms-deep-dive",
+  "subTitle": "GRC Automation Platforms, Deep Dive"
+ },
+ {
   "term": "Continuous verification",
   "def": "re-evaluating trust throughout a session, not just at initial login",
   "pathId": "24-zero-trust",
@@ -2189,6 +2243,15 @@ const GLOSSARY = [
   "pathTitle": "GRC & Compliance",
   "subId": "what-is-grc",
   "subTitle": "What is GRC?"
+ },
+ {
+  "term": "Control baseline",
+  "def": "a defined set of controls scaled to a system's actual risk level (Low, Moderate, High), avoiding uniform over- or under-application.",
+  "pathId": "23-grc-compliance",
+  "pathN": "23",
+  "pathTitle": "GRC & Compliance",
+  "subId": "nist-800-53-control-families",
+  "subTitle": "NIST 800-53 & Control Families"
  },
  {
   "term": "Control flow flattening",
@@ -2218,6 +2281,15 @@ const GLOSSARY = [
   "subTitle": "ICS Incident Response"
  },
  {
+  "term": "Control mapping (automated)",
+  "def": "a platform automatically applying one piece of collected evidence to satisfy corresponding requirements across multiple compliance frameworks.",
+  "pathId": "23-grc-compliance",
+  "pathN": "23",
+  "pathTitle": "GRC & Compliance",
+  "subId": "grc-automation-platforms-deep-dive",
+  "subTitle": "GRC Automation Platforms, Deep Dive"
+ },
+ {
   "term": "Convergence",
   "def": "the increasing connection between OT data and IT/cloud systems, valuable for analytics but risky if it bypasses existing security architecture",
   "pathId": "25-ot-ics-security",
@@ -2243,6 +2315,15 @@ const GLOSSARY = [
   "pathTitle": "Digital Privacy & Personal Security",
   "subId": "protecting-family-childrens-privacy",
   "subTitle": "Protecting Family & Children's Privacy"
+ },
+ {
+  "term": "Corrective action",
+  "def": "a formal process root-causing and remediating an audit finding, distinct from a superficial one-time fix.",
+  "pathId": "23-grc-compliance",
+  "pathN": "23",
+  "pathTitle": "GRC & Compliance",
+  "subId": "isms-documentation-and-internal-audit",
+  "subTitle": "ISMS Documentation & Internal Audit"
  },
  {
   "term": "Correlation rule",
@@ -3190,6 +3271,15 @@ const GLOSSARY = [
   "subTitle": "Why Python for security"
  },
  {
+  "term": "Document control",
+  "def": "the formal process for creating, versioning, approving, and retiring every ISMS document, preventing outdated versions from remaining in active use.",
+  "pathId": "23-grc-compliance",
+  "pathN": "23",
+  "pathTitle": "GRC & Compliance",
+  "subId": "isms-documentation-and-internal-audit",
+  "subTitle": "ISMS Documentation & Internal Audit"
+ },
+ {
   "term": "Document metadata",
   "def": "hidden data embedded in files, often revealing usernames or internal software versions.",
   "pathId": "14-ethical-hacking",
@@ -3658,6 +3748,15 @@ const GLOSSARY = [
   "subTitle": "Windows Event Viewer"
  },
  {
+  "term": "Evidence collection",
+  "def": "gathering proof (screenshots, exports, API data) that a specific control is genuinely operating as documented.",
+  "pathId": "23-grc-compliance",
+  "pathN": "23",
+  "pathTitle": "GRC & Compliance",
+  "subId": "grc-automation-platforms-deep-dive",
+  "subTitle": "GRC Automation Platforms, Deep Dive"
+ },
+ {
   "term": "Evil twin",
   "def": "a rogue access point impersonating a legitimate network's SSID.",
   "pathId": "12-network-security",
@@ -3793,6 +3892,15 @@ const GLOSSARY = [
   "subTitle": "Install VirtualBox"
  },
  {
+  "term": "Extraterritorial reach",
+  "def": "a regulation's applicability based on whose data is processed, not where the processing organization is based, as with GDPR.",
+  "pathId": "23-grc-compliance",
+  "pathN": "23",
+  "pathTitle": "GRC & Compliance",
+  "subId": "other-compliance-frameworks",
+  "subTitle": "Other Compliance Frameworks: PCI-DSS, HIPAA & Beyond"
+ },
+ {
   "term": "fail2ban",
   "def": "a tool that automatically bans source addresses after repeated failed login attempts.",
   "pathId": "03-linux",
@@ -3818,6 +3926,15 @@ const GLOSSARY = [
   "pathTitle": "GRC & Compliance",
   "subId": "risk-management-fundamentals",
   "subTitle": "Risk Management Fundamentals"
+ },
+ {
+  "term": "FAIR (Factor Analysis of Information Risk)",
+  "def": "a quantitative risk methodology decomposing risk into loss event frequency and loss magnitude, expressed in financial terms.",
+  "pathId": "23-grc-compliance",
+  "pathN": "23",
+  "pathTitle": "GRC & Compliance",
+  "subId": "quantitative-risk-analysis-fair",
+  "subTitle": "Quantitative Risk Analysis & FAIR"
  },
  {
   "term": "False negative (WAF context)",
@@ -3890,6 +4007,15 @@ const GLOSSARY = [
   "pathTitle": "Cloud Computing Basics",
   "subId": "cloud-identity-access",
   "subTitle": "Cloud Identity & Access Management"
+ },
+ {
+  "term": "FedRAMP",
+  "def": "800-53's control baselines applied specifically to cloud service providers seeking authorization to serve US federal government customers.",
+  "pathId": "23-grc-compliance",
+  "pathN": "23",
+  "pathTitle": "GRC & Compliance",
+  "subId": "nist-800-53-control-families",
+  "subTitle": "NIST 800-53 & Control Families"
  },
  {
   "term": "Feynman Technique",
@@ -4414,6 +4540,15 @@ const GLOSSARY = [
   "subTitle": "GRC Tools, Certifications & Careers"
  },
  {
+  "term": "GRC-to-CISO pathway",
+  "def": "the career trajectory where senior GRC and governance skills become central to executive security leadership roles.",
+  "pathId": "23-grc-compliance",
+  "pathN": "23",
+  "pathTitle": "GRC & Compliance",
+  "subId": "grc-career-economics-and-demand",
+  "subTitle": "GRC Career Economics & Demand"
+ },
+ {
   "term": "`grep`",
   "def": "search for text inside files or streams.",
   "pathId": "03-linux",
@@ -4655,6 +4790,15 @@ const GLOSSARY = [
   "pathTitle": "Cybersecurity Fundamentals",
   "subId": "frameworks",
   "subTitle": "Frameworks & compliance"
+ },
+ {
+  "term": "HIPAA Security Rule",
+  "def": "the US healthcare data protection framework, enforced primarily through complaint- and breach-driven investigation rather than continuous audit.",
+  "pathId": "23-grc-compliance",
+  "pathN": "23",
+  "pathTitle": "GRC & Compliance",
+  "subId": "other-compliance-frameworks",
+  "subTitle": "Other Compliance Frameworks: PCI-DSS, HIPAA & Beyond"
  },
  {
   "term": "Historian",
@@ -5348,6 +5492,15 @@ const GLOSSARY = [
   "pathTitle": "Web Security & Hacking",
   "subId": "burp-setup",
   "subTitle": "Burp Suite & PortSwigger"
+ },
+ {
+  "term": "Internal audit",
+  "def": "an independent, scheduled review checking whether ISMS practice matches documentation, conducted before the external audit.",
+  "pathId": "23-grc-compliance",
+  "pathN": "23",
+  "pathTitle": "GRC & Compliance",
+  "subId": "isms-documentation-and-internal-audit",
+  "subTitle": "ISMS Documentation & Internal Audit"
  },
  {
   "term": "Internal vs. external recruiter",
@@ -6547,6 +6700,15 @@ const GLOSSARY = [
   "subTitle": "Anatomy of a web app"
  },
  {
+  "term": "Monte Carlo simulation",
+  "def": "repeatedly sampling from probability distributions to generate a realistic range of possible outcomes rather than a single estimate.",
+  "pathId": "23-grc-compliance",
+  "pathN": "23",
+  "pathTitle": "GRC & Compliance",
+  "subId": "quantitative-risk-analysis-fair",
+  "subTitle": "Quantitative Risk Analysis & FAIR"
+ },
+ {
   "term": "MTTD (Mean Time to Detect)",
   "def": "the average time between an incident starting and it being detected.",
   "pathId": "10-fundamentals",
@@ -6799,6 +6961,15 @@ const GLOSSARY = [
   "subTitle": "Pentest Methodologies & Standards"
  },
  {
+  "term": "NIST SP 800-53",
+  "def": "a granular catalog of specific security controls, organized into control families, complementary to CSF's higher-level function structure.",
+  "pathId": "23-grc-compliance",
+  "pathN": "23",
+  "pathTitle": "GRC & Compliance",
+  "subId": "nist-800-53-control-families",
+  "subTitle": "NIST 800-53 & Control Families"
+ },
+ {
   "term": "nmap",
   "def": "a network scanning tool for discovering open ports and services, covered fully (with proper authorization context) in Path 14.",
   "pathId": "03-linux",
@@ -6860,6 +7031,15 @@ const GLOSSARY = [
   "pathTitle": "Cloud Computing Basics",
   "subId": "cloud-databases-basics",
   "subTitle": "Cloud Databases Basics"
+ },
+ {
+  "term": "Notification clock",
+  "def": "the legally mandated timeframe (e.g., GDPR's 72 hours) within which an organization must notify regulators or affected individuals after becoming aware of a breach.",
+  "pathId": "23-grc-compliance",
+  "pathN": "23",
+  "pathTitle": "GRC & Compliance",
+  "subId": "breach-notification-and-disclosure-law",
+  "subTitle": "Breach Notification & Disclosure Law"
  },
  {
   "term": "NSE (Nmap Scripting Engine)",
@@ -7564,6 +7744,15 @@ const GLOSSARY = [
   "subTitle": "Frameworks & compliance"
  },
  {
+  "term": "PCI-DSS",
+  "def": "the payment card industry's security standard, with real contractual enforcement directly from card networks.",
+  "pathId": "23-grc-compliance",
+  "pathN": "23",
+  "pathTitle": "GRC & Compliance",
+  "subId": "other-compliance-frameworks",
+  "subTitle": "Other Compliance Frameworks: PCI-DSS, HIPAA & Beyond"
+ },
+ {
   "term": "PDCA",
   "def": "Plan-Do-Check-Act, the continuous improvement cycle underlying the standard",
   "pathId": "23-grc-compliance",
@@ -8266,6 +8455,15 @@ const GLOSSARY = [
   "subTitle": "Reports that get paid"
  },
  {
+  "term": "Protected information category",
+  "def": "the specific, legally-defined types of data (SSNs, financial credentials, health information) whose exposure typically triggers notification obligations.",
+  "pathId": "23-grc-compliance",
+  "pathN": "23",
+  "pathTitle": "GRC & Compliance",
+  "subId": "breach-notification-and-disclosure-law",
+  "subTitle": "Breach Notification & Disclosure Law"
+ },
+ {
   "term": "Protocol",
   "def": "an agreed set of rules for how computers communicate.",
   "pathId": "02-networking",
@@ -8516,6 +8714,15 @@ const GLOSSARY = [
   "pathTitle": "API Security",
   "subId": "rate-limiting-injection",
   "subTitle": "Rate Limiting, Injection & Resource Abuse"
+ },
+ {
+  "term": "RACI matrix",
+  "def": "a structural tool assigning Responsible, Accountable, Consulted, and Informed roles explicitly for a given decision.",
+  "pathId": "23-grc-compliance",
+  "pathN": "23",
+  "pathTitle": "GRC & Compliance",
+  "subId": "raci-and-security-committees",
+  "subTitle": "RACI & Security Committees"
  },
  {
   "term": "RAG poisoning",
@@ -8921,6 +9128,15 @@ const GLOSSARY = [
   "pathTitle": "API Security",
   "subId": "webhook-security",
   "subTitle": "Webhook Security"
+ },
+ {
+  "term": "Reporting culture",
+  "def": "an organizational environment where employees report suspected mistakes or suspicious activity without fear of punitive consequence.",
+  "pathId": "23-grc-compliance",
+  "pathN": "23",
+  "pathTitle": "GRC & Compliance",
+  "subId": "security-awareness-training-programs",
+  "subTitle": "Security Awareness Training Programs"
  },
  {
   "term": "Repository",
@@ -9778,6 +9994,15 @@ const GLOSSARY = [
   "subTitle": "Third-Party & Vendor Risk"
  },
  {
+  "term": "Security steering committee",
+  "def": "a recurring, cross-functional forum with genuine decision-making authority for security matters.",
+  "pathId": "23-grc-compliance",
+  "pathN": "23",
+  "pathTitle": "GRC & Compliance",
+  "subId": "raci-and-security-committees",
+  "subTitle": "RACI & Security Committees"
+ },
+ {
   "term": "Security through obscurity",
   "def": "relying on an algorithm or method's secrecy rather than genuine cryptographic strength, an approach that fails once details become known.",
   "pathId": "06-crypto-fundamentals",
@@ -10253,6 +10478,15 @@ const GLOSSARY = [
   "pathTitle": "Cybersecurity Fundamentals",
   "subId": "security-policies-awareness",
   "subTitle": "Security Policies & Awareness Training"
+ },
+ {
+  "term": "Simulated phishing campaign",
+  "def": "sending realistic test phishing emails to measure and track genuine employee susceptibility over time.",
+  "pathId": "23-grc-compliance",
+  "pathN": "23",
+  "pathTitle": "GRC & Compliance",
+  "subId": "security-awareness-training-programs",
+  "subTitle": "Security Awareness Training Programs"
  },
  {
   "term": "Single-packet attack",
@@ -11846,6 +12080,15 @@ const GLOSSARY = [
   "pathTitle": "Cloud Computing Basics",
   "subId": "cloud-certifications-careers",
   "subTitle": "Cloud Security Careers & Certifications"
+ },
+ {
+  "term": "Vendor notification clause",
+  "def": "a contract term specifying how quickly a vendor must notify your organization of a breach affecting your data.",
+  "pathId": "23-grc-compliance",
+  "pathN": "23",
+  "pathTitle": "GRC & Compliance",
+  "subId": "breach-notification-and-disclosure-law",
+  "subTitle": "Breach Notification & Disclosure Law"
  },
  {
   "term": "Vendor tiering",

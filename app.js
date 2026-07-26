@@ -1209,14 +1209,23 @@ const PATHS = [
    desc:"Governance, Risk, and Compliance — the non-coding path into security. ISO 27001, NIST CSF, SOC 2, vendor risk, and how to actually break into a GRC career.",
    subs:[
      {n:"1", id:"what-is-grc",                title:"What is GRC?", desc:"Governance, Risk, and Compliance — and why it's a real, growing entry point into security."},
-     {n:"2", id:"governance-basics",          title:"Security Governance Basics", desc:"Who decides, and how — policy, standard, procedure, and who's in the room."},
-     {n:"3", id:"risk-management-fundamentals", title:"Risk Management Fundamentals", desc:"Risk registers, treatment options, and inherent vs. residual risk."},
-     {n:"4", id:"iso27001-overview",          title:"ISO 27001 Overview", desc:"The world's most recognised ISMS standard — Annex A, the SoA, and the audit process."},
-     {n:"5", id:"nist-csf-overview",          title:"NIST Cybersecurity Framework Overview", desc:"Govern, Identify, Protect, Detect, Respond, Recover — the six functions and maturity tiers."},
-     {n:"6", id:"soc2-and-audits",            title:"SOC 2 and Audits", desc:"Type I vs Type II, Trust Services Criteria, and what an auditor actually checks."},
-     {n:"7", id:"policies-and-procedures",    title:"Writing Policies People Actually Follow", desc:"The anatomy of a policy that survives contact with a real engineering team."},
-     {n:"8", id:"third-party-vendor-risk",    title:"Third-Party & Vendor Risk", desc:"Why vendors are the weak link, and how to actually assess them."},
-     {n:"9", id:"grc-tools-and-careers",      title:"GRC Tools, Certifications & Careers", desc:"Vanta/Drata, CISA/CRISC/CISM, and how to break into a GRC role."}
+     {n:"2", id:"grc-career-economics-and-demand", title:"GRC Career Economics & Demand", desc:"Why compliance directly gates revenue, and why hiring demand has outpaced supply."},
+     {n:"3", id:"governance-basics",          title:"Security Governance Basics", desc:"Who decides, and how — policy, standard, procedure, and who's in the room."},
+     {n:"4", id:"raci-and-security-committees", title:"RACI & Security Committees", desc:"The structural tools that make governance function, not just exist on paper."},
+     {n:"5", id:"risk-management-fundamentals", title:"Risk Management Fundamentals", desc:"Risk registers, treatment options, and inherent vs. residual risk."},
+     {n:"6", id:"quantitative-risk-analysis-fair", title:"Quantitative Risk Analysis & FAIR", desc:"Turning risk into real dollar figures for big-ticket decisions."},
+     {n:"7", id:"iso27001-overview",          title:"ISO 27001 Overview", desc:"The world's most recognised ISMS standard — Annex A, the SoA, and the audit process."},
+     {n:"8", id:"isms-documentation-and-internal-audit", title:"ISMS Documentation & Internal Audit", desc:"What actually keeps a certification genuine between annual audits."},
+     {n:"9", id:"nist-csf-overview",          title:"NIST Cybersecurity Framework Overview", desc:"Govern, Identify, Protect, Detect, Respond, Recover — the six functions and maturity tiers."},
+     {n:"10", id:"nist-800-53-control-families", title:"NIST 800-53 & Control Families", desc:"The granular control catalog CSF's functions get mapped onto in practice."},
+     {n:"11", id:"soc2-and-audits",           title:"SOC 2 and Audits", desc:"Type I vs Type II, Trust Services Criteria, and what an auditor actually checks."},
+     {n:"12", id:"other-compliance-frameworks", title:"Other Compliance Frameworks: PCI-DSS, HIPAA & Beyond", desc:"Why one framework rarely covers an entire organisation."},
+     {n:"13", id:"policies-and-procedures",   title:"Writing Policies People Actually Follow", desc:"The anatomy of a policy that survives contact with a real engineering team."},
+     {n:"14", id:"security-awareness-training-programs", title:"Security Awareness Training Programs", desc:"Why annual compliance training mostly fails, and what actually works."},
+     {n:"15", id:"third-party-vendor-risk",   title:"Third-Party & Vendor Risk", desc:"Why vendors are the weak link, and how to actually assess them."},
+     {n:"16", id:"breach-notification-and-disclosure-law", title:"Breach Notification & Disclosure Law", desc:"Fragmented state laws, the 72-hour clock, and who makes the call."},
+     {n:"17", id:"grc-tools-and-careers",     title:"GRC Tools, Certifications & Careers", desc:"Vanta/Drata, CISA/CRISC/CISM, and how to break into a GRC role."},
+     {n:"18", id:"grc-automation-platforms-deep-dive", title:"GRC Automation Platforms, Deep Dive", desc:"How continuous evidence collection actually works mechanically."}
    ]},
   {n:"24", id:"24-zero-trust", title:"Zero Trust Architecture", level:"Advanced",
    desc:"Never trust, always verify — identity, device trust, micro-segmentation, ZTNA, continuous verification, and how to actually roll this out.",
@@ -4919,6 +4928,11 @@ function renderLabPhishing(){
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
+  {date:'2026-07-25', title:'Path 23 doubled to 18 lessons', items:[
+    'Twenty-fifth batch of the course-wide content-doubling effort, and the final path in this effort: Path 23 (GRC & Compliance) grows from 9 to 18 lessons.',
+    'New lessons: GRC Career Economics & Demand, RACI & Security Committees, Quantitative Risk Analysis & FAIR, ISMS Documentation & Internal Audit, NIST 800-53 & Control Families, Other Compliance Frameworks (PCI-DSS, HIPAA & beyond), Security Awareness Training Programs, Breach Notification & Disclosure Law, and GRC Automation Platforms Deep Dive.',
+    'With this batch, every course path (00 through 23) has now been doubled in this effort — Path 19 (CTF) and the LABS/TOOLS arrays were assessed separately given their fundamentally different content structure.'
+  ]},
   {date:'2026-07-25', title:'Path 22 doubled to 15 lessons', items:[
     'Twenty-fourth batch of the course-wide content-doubling effort: Path 22 (DevSecOps & AppSec Program) grows from 8 to 15 lessons (7 core lessons doubled to 14, plus the capstone lab unchanged).',
     'New lessons: Shift Left vs. Shift Right, Infrastructure as Code (IaC) Security Scanning, Container Image & Registry Security, SBOM & Software Bill of Materials, Security Champions Programs, Vulnerability Management & Prioritization, and AppSec Tooling & Orchestration.',

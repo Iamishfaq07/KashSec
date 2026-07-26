@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RACI &amp; Security Committees — Path 23 · KashSec Academy</title>
+<meta name="description" content="The governance-basics lesson covered who's actually in the room and the policy hierarchy. This lesson goes deep into the specific structural tools that make governance function in practice rather than">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/23-grc-compliance/raci-and-security-committees">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="RACI &amp; Security Committees — Path 23 · KashSec Academy">
+<meta property="og:description" content="The governance-basics lesson covered who's actually in the room and the policy hierarchy. This lesson goes deep into the specific structural tools that make governance function in practice rather than">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/23-grc-compliance/raci-and-security-committees">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="RACI &amp; Security Committees — Path 23 · KashSec Academy">
+<meta name="twitter:description" content="The governance-basics lesson covered who's actually in the room and the policy hierarchy. This lesson goes deep into the specific structural tools that make governance function in practice rather than">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"RACI & Security Committees — Path 23 · KashSec Academy","description":"The governance-basics lesson covered who's actually in the room and the policy hierarchy. This lesson goes deep into the specific structural tools that make governance function in practice rather than","url":"https://kashsec.vercel.app/#/lesson/23-grc-compliance/raci-and-security-committees","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/23-grc-compliance/raci-and-security-committees">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 23 — GRC & Compliance</a> · RACI &amp; Security Committees</div>
+  <article><h1>RACI &amp; Security Committees</h1>
+<p>The governance-basics lesson covered who&#39;s actually in the room and the policy hierarchy. This lesson goes deep into the specific structural tools that make governance function in practice rather than existing only on an org chart — the <strong>RACI matrix</strong> and formal <strong>security committees</strong> — directly connecting to Path 22&#39;s building-appsec-program lesson&#39;s governance-without-bureaucracy coverage, since these tools are exactly how that balance actually gets achieved operationally.</p>
+<h2>Why governance needs explicit structure, not just goodwill</h2>
+<p>A genuinely common early-career misconception: assuming that once the right people are generally aware of security&#39;s importance, decisions and accountability will naturally sort themselves out. In practice, without explicit structure, security decisions frequently either happen nowhere (everyone assumes someone else owns it) or happen everywhere redundantly (multiple people making conflicting decisions about the same issue) — both genuinely common, costly failure modes this lesson&#39;s tools directly address.</p>
+<h2>RACI, precisely defined</h2>
+<p>A <strong>RACI matrix</strong> assigns exactly one of four roles to every relevant person or team for a given decision or task:</p>
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Responsible</strong></td>
+<td>Does the actual work</td>
+</tr>
+<tr>
+<td><strong>Accountable</strong></td>
+<td>Owns the outcome — exactly one person per decision, the final decision-maker</td>
+</tr>
+<tr>
+<td><strong>Consulted</strong></td>
+<td>Provides input before the decision, two-way communication</td>
+</tr>
+<tr>
+<td><strong>Informed</strong></td>
+<td>Told about the decision after it&#39;s made, one-way communication</td>
+</tr>
+</tbody></table>
+<p>The single most valuable discipline RACI enforces: exactly <strong>one</strong> person holds Accountable for any given decision — directly preventing the &quot;everyone assumes someone else owns it&quot; failure mode, since ambiguity about accountability is structurally eliminated by the matrix&#39;s own format.</p>
+<h2>A worked RACI example — approving a new SaaS vendor</h2>
+<table>
+<thead>
+<tr>
+<th>Task</th>
+<th>Security Team</th>
+<th>Legal</th>
+<th>Department Requesting Tool</th>
+<th>CISO</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Vendor security questionnaire</td>
+<td>R</td>
+<td>C</td>
+<td>C</td>
+<td>A</td>
+</tr>
+<tr>
+<td>Data processing agreement review</td>
+<td>C</td>
+<td>R</td>
+<td>I</td>
+<td>A</td>
+</tr>
+<tr>
+<td>Final approval decision</td>
+<td>C</td>
+<td>C</td>
+<td>I</td>
+<td>A</td>
+</tr>
+</tbody></table>
+<p>Directly connecting to the third-party-vendor-risk lesson: this table makes explicit exactly who does the work (Security runs the questionnaire), who provides input (Legal on the contract, the requesting department on business need), and who&#39;s ultimately accountable (the CISO) — eliminating the genuinely common real-world confusion about &quot;wait, who actually approves this?&quot;</p>
+<h2>Security committees — where cross-functional decisions actually happen</h2>
+<p>A <strong>security steering committee</strong> (or similarly named body) provides the recurring, structured forum where security decisions requiring cross-functional input actually get made, rather than happening in ad hoc hallway conversations or getting stuck waiting for an opportunistic meeting. Directly connecting to the governance-basics lesson&#39;s &quot;who&#39;s in the room&quot; coverage, a well-functioning committee typically includes representation from security, engineering leadership, legal, and sometimes finance — with clear, published meeting cadence and decision authority, not just a standing invite list that rarely actually convenes.</p>
+<h2>Why committees fail — and how to prevent it</h2>
+<p>A genuinely common failure pattern worth naming directly: a security committee that meets regularly but has no actual decision-making authority, existing purely to receive status updates rather than to genuinely deliberate and decide anything — directly connecting to Path 22&#39;s metrics-that-matter lesson&#39;s trust-building coverage, a committee perceived as a rubber-stamp exercise quickly loses genuine engagement from busy stakeholders who correctly conclude their actual presence isn&#39;t changing outcomes. A functioning committee needs real agenda items requiring genuine decisions, not just information broadcast.</p>
+<h2>RACI applied to incident response specifically</h2>
+<p>Directly connecting to Path 16&#39;s DFIR lesson: RACI is genuinely valuable applied to incident response specifically, since incident response under real time pressure is exactly when accountability ambiguity causes the most damage — a pre-defined RACI matrix for incident severity tiers (who&#39;s Accountable for a critical incident&#39;s public communication decision, for instance) removes exactly the kind of confusion that costs precious response time when it matters most.</p>
+<p>Why does RACI&#39;s rule that exactly one person holds &quot;Accountable&quot; for any given decision matter more than simply ensuring many relevant people are generally aware of and involved in that decision?</p>
+<h2>Key terms</h2>
+<ul>
+<li><strong>RACI matrix</strong> — a structural tool assigning Responsible, Accountable, Consulted, and Informed roles explicitly for a given decision.</li>
+<li><strong>Security steering committee</strong> — a recurring, cross-functional forum with genuine decision-making authority for security matters.</li>
+<li><strong>Accountability ambiguity</strong> — the common governance failure where a decision has no single clear owner, causing it to be made nowhere or redundantly everywhere.</li>
+</ul>
+<h2>Recap</h2>
+<p>Without explicit structure, security decisions predictably fall into two failure modes: made nowhere, or made redundantly and conflictingly everywhere. RACI eliminates accountability ambiguity by assigning exactly one Accountable owner per decision, alongside clearly defined Responsible, Consulted, and Informed roles. Security committees provide the recurring forum where cross-functional decisions actually happen, but only function well when they carry genuine decision-making authority rather than existing as a status-broadcast exercise. Applying RACI to incident response specifically prevents exactly the accountability confusion that costs response time under real pressure.</p>
+<h3>References</h3>
+<ul>
+<li><a href="https://www.isaca.org/resources">ISACA — RACI Chart Guidance</a></li>
+<li><a href="https://www.sans.org/white-papers/">SANS — Building a Security Steering Committee</a></li>
+</ul>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/23-grc-compliance/raci-and-security-committees";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NIST 800-53 &amp; Control Families — Path 23 · KashSec Academy</title>
+<meta name="description" content="The NIST CSF overview lesson covered the six high-level functions and maturity tiers. This lesson goes deep into a related but distinctly different NIST publication that GRC practitioners frequently n">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/23-grc-compliance/nist-800-53-control-families">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="NIST 800-53 &amp; Control Families — Path 23 · KashSec Academy">
+<meta property="og:description" content="The NIST CSF overview lesson covered the six high-level functions and maturity tiers. This lesson goes deep into a related but distinctly different NIST publication that GRC practitioners frequently n">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/23-grc-compliance/nist-800-53-control-families">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="NIST 800-53 &amp; Control Families — Path 23 · KashSec Academy">
+<meta name="twitter:description" content="The NIST CSF overview lesson covered the six high-level functions and maturity tiers. This lesson goes deep into a related but distinctly different NIST publication that GRC practitioners frequently n">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"NIST 800-53 & Control Families — Path 23 · KashSec Academy","description":"The NIST CSF overview lesson covered the six high-level functions and maturity tiers. This lesson goes deep into a related but distinctly different NIST publication that GRC practitioners frequently n","url":"https://kashsec.vercel.app/#/lesson/23-grc-compliance/nist-800-53-control-families","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/23-grc-compliance/nist-800-53-control-families">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 23 — GRC & Compliance</a> · NIST 800-53 &amp; Control Families</div>
+  <article><h1>NIST 800-53 &amp; Control Families</h1>
+<p>The NIST CSF overview lesson covered the six high-level functions and maturity tiers. This lesson goes deep into a related but distinctly different NIST publication that GRC practitioners frequently need to know — <strong>NIST SP 800-53</strong> — the actual granular control catalog CSF&#39;s functions are often mapped onto in practice, directly connecting to Path 21&#39;s api-security-standards-and-frameworks lesson&#39;s OWASP-ASVS-versus-Top-10 distinction, since this is the same &quot;high-level framework versus granular control catalog&quot; relationship applied to NIST specifically.</p>
+<h2>Why CSF and 800-53 aren&#39;t competing standards</h2>
+<p>A genuinely common point of confusion worth resolving directly: NIST CSF (the previous lesson) and <strong>NIST SP 800-53</strong> aren&#39;t alternative choices — CSF provides a high-level, outcome-oriented structure (Govern, Identify, Protect, Detect, Respond, Recover) meant to be broadly accessible across organizations of any size or sophistication, while 800-53 provides several hundred specific, granular, technically detailed controls that an organization (particularly a US federal agency or federal contractor) can map its actual implementation against. CSF tells you <em>what categories</em> of outcome you need; 800-53 tells you <em>specifically which controls</em> satisfy them.</p>
+<h2>The control family structure</h2>
+<p>800-53 organizes its controls into <strong>control families</strong> — related groups covering a specific security domain:</p>
+<table>
+<thead>
+<tr>
+<th>Family</th>
+<th>Covers</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>AC — Access Control</td>
+<td>Least privilege, account management, session controls</td>
+</tr>
+<tr>
+<td>AU — Audit and Accountability</td>
+<td>Logging, log review, audit record retention</td>
+</tr>
+<tr>
+<td>IA — Identification and Authentication</td>
+<td>MFA requirements, credential management</td>
+</tr>
+<tr>
+<td>IR — Incident Response</td>
+<td>Directly connecting to Path 16&#39;s DFIR lesson&#39;s six-phase model</td>
+</tr>
+<tr>
+<td>RA — Risk Assessment</td>
+<td>Directly connecting to the risk-management-fundamentals lesson</td>
+</tr>
+<tr>
+<td>SC — System and Communications Protection</td>
+<td>Encryption, boundary protection, network segmentation</td>
+</tr>
+</tbody></table>
+<p>Each family contains individual, numbered controls (<code>AC-2: Account Management</code>, <code>IA-2: Identification and Authentication</code>) with specific implementation requirements — genuinely more granular than anything CSF&#39;s six functions specify directly.</p>
+<h2>Control baselines — tailoring rigor to actual risk</h2>
+<p>Directly connecting to the risk-management-fundamentals lesson: 800-53 explicitly acknowledges that not every organization needs every control at the same rigor — it defines <strong>control baselines</strong> (Low, Moderate, High impact) that scale the specific set and depth of required controls to the actual sensitivity of the system being protected, avoiding the genuinely wasteful mistake of applying maximum-rigor controls uniformly regardless of actual risk, or applying inadequate controls to genuinely high-risk systems.</p>
+<h2>FedRAMP — 800-53 applied to cloud services specifically</h2>
+<p>A genuinely important practical application worth knowing: <strong>FedRAMP (Federal Risk and Authorization Management Program)</strong> is essentially 800-53&#39;s control baselines applied specifically to cloud service providers wanting to sell to the US federal government — directly connecting to the previous lesson&#39;s grc-career-economics-and-demand coverage, a cloud company pursuing FedRAMP authorization represents a genuinely significant, multi-year compliance undertaking, and GRC professionals specializing in FedRAMP authorization work command a genuinely distinct, often well-compensated niche within the broader GRC career landscape.</p>
+<h2>Why this granularity matters for control mapping work</h2>
+<p>Directly connecting to Path 22&#39;s iac-security-scanning lesson&#39;s Policy-as-Code coverage: a genuinely common real-world GRC task is <strong>control mapping</strong> — demonstrating that a specific technical control already implemented for one framework (say, SOC 2&#39;s access control requirements) also satisfies a corresponding 800-53 control, avoiding duplicate implementation effort for organizations needing to satisfy multiple overlapping frameworks simultaneously. This granular, specific control language is exactly what makes that mapping work possible — CSF&#39;s higher-level functions alone don&#39;t provide enough specificity to confidently assert equivalence between two different frameworks&#39; requirements.</p>
+<p>Why does an organization pursuing both SOC 2 and FedRAMP authorization benefit from control mapping between the two frameworks&#39; specific requirements, rather than implementing each framework&#39;s controls entirely independently from scratch?</p>
+<h2>Key terms</h2>
+<ul>
+<li><strong>NIST SP 800-53</strong> — a granular catalog of specific security controls, organized into control families, complementary to CSF&#39;s higher-level function structure.</li>
+<li><strong>Control baseline</strong> — a defined set of controls scaled to a system&#39;s actual risk level (Low, Moderate, High), avoiding uniform over- or under-application.</li>
+<li><strong>FedRAMP</strong> — 800-53&#39;s control baselines applied specifically to cloud service providers seeking authorization to serve US federal government customers.</li>
+</ul>
+<h2>Recap</h2>
+<p>NIST CSF and 800-53 aren&#39;t competing standards — CSF provides high-level, outcome-oriented structure, while 800-53 provides the granular, specific control catalog organized into control families that CSF&#39;s functions are often mapped onto in practice. Control baselines scale required rigor to actual system risk rather than applying uniform requirements everywhere. FedRAMP applies this same control catalog specifically to cloud providers serving federal customers, representing a genuinely distinct GRC career niche. This granularity is exactly what makes control mapping between overlapping frameworks possible, avoiding duplicate implementation effort.</p>
+<h3>References</h3>
+<ul>
+<li><a href="https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final">NIST SP 800-53 Rev. 5</a></li>
+<li><a href="https://www.fedramp.gov/">FedRAMP official site</a></li>
+</ul>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/23-grc-compliance/nist-800-53-control-families";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>
