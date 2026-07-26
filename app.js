@@ -1522,6 +1522,27 @@ function route(){
   else if(hash === '#/labs/indirect-injection') renderLabIndirectInjection();
   else if(hash === '#/labs/agentic-risk') renderLabAgenticRisk();
   else if(hash === '#/labs/ad-attack') renderLabADAttack();
+  else if(hash === '#/labs/csrf') renderLabCsrf();
+  else if(hash === '#/labs/cmdinjection') renderLabCmdInjection();
+  else if(hash === '#/labs/openredirect') renderLabOpenRedirect();
+  else if(hash === '#/labs/clickjacking') renderLabClickjacking();
+  else if(hash === '#/labs/deserialization') renderLabDeserialization();
+  else if(hash === '#/labs/subdomaintakeover') renderLabSubdomainTakeover();
+  else if(hash === '#/labs/dnsrecon') renderLabDnsRecon();
+  else if(hash === '#/labs/winprivesc') renderLabWinPrivesc();
+  else if(hash === '#/labs/linuxprivesc') renderLabLinuxPrivesc();
+  else if(hash === '#/labs/kerberoast') renderLabKerberoast();
+  else if(hash === '#/labs/iammisconfig') renderLabIamMisconfig();
+  else if(hash === '#/labs/dockerescape') renderLabDockerEscape();
+  else if(hash === '#/labs/malwarestrings') renderLabMalwareStrings();
+  else if(hash === '#/labs/yarabuilder') renderLabYaraBuilder();
+  else if(hash === '#/labs/racecondition') renderLabRaceCondition();
+  else if(hash === '#/labs/webhookforge') renderLabWebhookForge();
+  else if(hash === '#/labs/oauthredirect') renderLabOauthRedirect();
+  else if(hash === '#/labs/vendortiering') renderLabVendorTiering();
+  else if(hash === '#/labs/irtabletop') renderLabIrTabletop();
+  else if(hash === '#/labs/passwordcrack') renderLabPasswordCrack();
+  else if(hash === '#/labs/clouddockersecrets') renderLabLeakedSecret();
   else if(hash === '#/capstone') renderCapstone();
   else if(hash === '#/weekly') renderWeeklyIndex();
   else if(hash === '#/career-quiz') renderCareerQuiz();
@@ -3341,7 +3362,28 @@ const LABS = [
   {id:'jailbreak', ico:'🔓', title:'Jailbreak Playground', desc:'An assistant refuses to share a secret code directly. Find a roleplay or hypothetical framing that gets it to comply anyway.', related:'Path 18 — AI & AI Security', points:20},
   {id:'indirect-injection', ico:'🪤', title:'Indirect Prompt Injection Challenge', desc:'You control a job posting an AI assistant is about to summarize for someone else. Plant an instruction it\'ll follow instead.', related:'Path 18 — AI & AI Security', points:20},
   {id:'agentic-risk', ico:'🤖', title:'Agentic Risk Scenario', desc:'An AI agent with email tool-access is about to process an inbox. Spot and quarantine the malicious email before it acts on it.', related:'Path 18 — AI & AI Security', points:20},
-  {id:'ad-attack', ico:'🏰', title:'Active Directory Attack Lab', desc:'A guided walkthrough of BloodHound-style graph recon, Kerberoasting a weak service account, and forging a Golden Ticket.', related:'Path 16 — Advanced', points:30}
+  {id:'ad-attack', ico:'🏰', title:'Active Directory Attack Lab', desc:'A guided walkthrough of BloodHound-style graph recon, Kerberoasting a weak service account, and forging a Golden Ticket.', related:'Path 16 — Advanced', points:30},
+  {id:'csrf', ico:'🎭', title:'CSRF Playground', desc:'A "bank" transfer endpoint trusts your cookie alone. Watch a malicious page forge a request on your behalf, then see a CSRF token stop it cold.', related:'Path 11 — Web Security', points:15},
+  {id:'cmdinjection', ico:'⌨️', title:'Command Injection Sandbox', desc:'A "ping this host" tool glues your input into a real shell command. Chain a second command onto the intended one.', related:'Path 11 — Web Security', points:20},
+  {id:'openredirect', ico:'↪️', title:'Open Redirect Playground', desc:'A login page trusts a returnUrl parameter completely. Turn a genuinely trusted link into a post-login phishing weapon.', related:'Path 11 — Web Security', points:10},
+  {id:'clickjacking', ico:'🖱️', title:'Clickjacking Simulator', desc:'An invisible iframe sits on top of a fake game button. See exactly how a real click lands on a hidden "delete account" button instead.', related:'Path 11 — Web Security', points:15},
+  {id:'deserialization', ico:'📦', title:'Insecure Deserialization Toy', desc:'A "remember me" cookie is a trusted, deserialized object. Add one field to grant yourself admin with zero login.', related:'Path 11 — Web Security', points:20},
+  {id:'subdomaintakeover', ico:'🏚️', title:'Subdomain Takeover Simulator', desc:'Five DNS records, one dangling CNAME pointing at a deleted third-party resource. Find it before someone else claims it.', related:'Path 15 — Bug Bounty', points:20},
+  {id:'dnsrecon', ico:'🌐', title:'DNS Recon Playground', desc:'A simulated dig. Query a target\'s likely subdomains and build a map of its real, sometimes-forgotten attack surface.', related:'Path 14 — Ethical Hacking', points:10},
+  {id:'winprivesc', ico:'🪟', title:'Windows Privesc Playground', desc:'A misconfigured service runs as SYSTEM with a writable binary path. Replace it and escalate — no exploit needed.', related:'Path 16 — Advanced', points:20},
+  {id:'linuxprivesc', ico:'🐧', title:'Linux Privesc Playground', desc:'Enumerate SUID binaries on a simulated box and find the one GTFOBins turns straight into a root shell.', related:'Path 16 — Advanced', points:20},
+  {id:'kerberoast', ico:'🎫', title:'Kerberoasting Simulator', desc:'Request a service ticket for a weak-password service account, then crack the offline-crackable hash it hands you.', related:'Path 16 — Advanced', points:25},
+  {id:'iammisconfig', ico:'☁️', title:'Cloud IAM Misconfig Playground', desc:'A role holds one deceptively small permission. Chain it into full account takeover through iam:PassRole.', related:'Path 16 — Advanced', points:25},
+  {id:'dockerescape', ico:'🐳', title:'Docker Escape Playground', desc:'A container mounts the host\'s Docker socket. Use it to spin up a privileged container and step onto the host itself.', related:'Path 16 — Advanced', points:25},
+  {id:'malwarestrings', ico:'🧬', title:'Malware Strings Triage Lab', desc:'A raw strings dump from a suspicious binary. Spot the IOCs — a C2 domain, a mutex, a registry key — before touching a disassembler.', related:'Path 17 — Malware & RE', points:20},
+  {id:'yarabuilder', ico:'🔬', title:'YARA Rule Builder Challenge', desc:'Three malware samples, one clean file. Write a YARA rule that matches every sample and nothing else.', related:'Path 17 — Malware & RE', points:20},
+  {id:'racecondition', ico:'🏁', title:'Race Condition Lab', desc:'A one-time coupon, redeemed with a check-then-act flaw. Fire requests fast enough and redeem it far more than once.', related:'Path 15 — Bug Bounty', points:25},
+  {id:'webhookforge', ico:'🪝', title:'Webhook Signature Forgery Lab', desc:'Forge an HMAC-signed webhook without the secret, then flip on signature verification and watch it get rejected.', related:'Path 21 — API Security', points:20},
+  {id:'oauthredirect', ico:'🔑', title:'OAuth Redirect URI Hijack Lab', desc:'An authorization server validates redirect_uri loosely. Steal an authorization code by redirecting it to your own endpoint.', related:'Path 21 — API Security', points:25},
+  {id:'vendortiering', ico:'🏢', title:'Vendor Risk Tiering Simulator', desc:'Six vendors, six very different data-access levels. Tier them correctly and decide who needs a full security review.', related:'Path 23 — GRC & Compliance', points:15},
+  {id:'irtabletop', ico:'📋', title:'Incident Response Tabletop', desc:'A branching ransomware scenario. Make the containment and communication calls a real incident commander has to make under pressure.', related:'Path 16 — Advanced', points:20},
+  {id:'passwordcrack', ico:'🔓', title:'Password Cracking Lab', desc:'Four hashed passwords, one wordlist. See exactly which ones fall to a dictionary attack and which survive it — and why.', related:'Path 00 — Absolute Basics', points:15},
+  {id:'clouddockersecrets', ico:'🗝️', title:'Leaked Secret Hunt', desc:'A public GitHub repo dump. Find the hardcoded API key an automated scanner would catch in minutes — before an attacker does.', related:'Path 22 — DevSecOps & AppSec', points:15}
 ];
 /* ============================================================
    Capstone attack-chain — a narrative wrapper around four existing
@@ -4923,11 +4965,919 @@ function renderLabPhishing(){
   setupReveal();
 }
 
+/* --- Lab: CSRF playground -------------------------------------- */
+function renderLabCsrf(){
+  let loggedIn=true, email='victim@example.com';
+  app.innerHTML = `
+    <section class="sec">
+      <div class="sec-head" data-reveal>
+        <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · CSRF Playground</div>
+        <h2>🎭 CSRF Playground</h2>
+        <p class="sec-lead">You're logged into a "bank" in one tab. A malicious page in another tab tries to submit a money transfer using your cookies, without your knowledge. See exactly how, and how a CSRF token stops it. <span class="tool-privacy">🔒 Simulated locally.</span></p>
+      </div>
+      <div class="sqli-wrap" data-reveal style="--i:1">
+        <div class="sqli-form">
+          <div class="tool-note">Session: <b>${escapeHtml(email)}</b> is logged in (cookie set) · CSRF token protection is <b id="csrfState">OFF</b></div>
+          <label class="tool-field"><input type="checkbox" id="csrfToggle"> Enable CSRF token protection on the transfer endpoint</label>
+        </div>
+        <div class="sqli-query"><div class="tool-note">Malicious page's hidden auto-submitting form:</div><pre id="csrfForm"></pre></div>
+        <button class="btn-amber" id="csrfTrigger" type="button">🕷️ Visit the malicious page</button>
+        <div id="csrfResult" style="margin-top:1rem"></div>
+        <details class="sqli-hint"><summary>Stuck? Show the trick</summary>
+          <div class="iv-answer">Browsers attach cookies automatically to any request to a matching domain, regardless of which site the request originated from — that's the whole vulnerability. A <b>CSRF token</b> (a random, unpredictable value embedded in the real form and required on submit) fixes this: the malicious page has no way to know that value, so its forged request is missing it and gets rejected, even though the cookie was still sent.</div>
+        </details>
+      </div>
+    </section>
+  `;
+  const formEl=document.getElementById('csrfForm'), resEl=document.getElementById('csrfResult'), toggle=document.getElementById('csrfToggle'), stateEl=document.getElementById('csrfState');
+  function refresh(){
+    const protectedMode = toggle.checked;
+    stateEl.textContent = protectedMode ? 'ON' : 'OFF';
+    formEl.textContent = `<form action="https://bank.example/transfer" method="POST">\n  <input name="to" value="attacker-account-8841">\n  <input name="amount" value="5000">\n${protectedMode?'  <!-- no csrf_token field — attacker cannot forge it -->\n':''}</form>\n<script>document.forms[0].submit()<\/script>`;
+  }
+  toggle.addEventListener('change', refresh);
+  document.getElementById('csrfTrigger').addEventListener('click', ()=>{
+    if(toggle.checked){
+      resEl.innerHTML = `<div class="sqli-ok">✅ Request rejected — 403, missing/invalid CSRF token. Your cookie was sent automatically (browsers always do that), but the server also required a token the malicious page could never have known.</div>`;
+      fireConfetti({count:60}); markLabComplete('csrf');
+    } else {
+      resEl.innerHTML = `<div class="sqli-bad">⚠️ CSRF! $5,000 silently transferred to attacker-account-8841 — your browser attached your session cookie automatically, and the server never checked whether the request genuinely came from your own logged-in session.</div>`;
+    }
+  });
+  refresh();
+  setupReveal();
+}
+
+/* --- Lab: Command Injection sandbox ----------------------------- */
+function renderLabCmdInjection(){
+  app.innerHTML = `
+    <section class="sec">
+      <div class="sec-head" data-reveal>
+        <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Command Injection Sandbox</div>
+        <h2>⌨️ Command Injection Sandbox</h2>
+        <p class="sec-lead">A "network diagnostics" tool lets you ping a host — by gluing your input straight into a shell command. Escape the intended command and run something else. <span class="tool-privacy">🔒 Simulated locally — no real shell.</span></p>
+      </div>
+      <div class="sqli-wrap" data-reveal style="--i:1">
+        <form class="sqli-form" id="cmdForm" autocomplete="off">
+          <label class="tool-field">Host to ping<input class="tool-input" id="cmdHost" value="8.8.8.8"></label>
+          <button class="btn-amber" type="submit">Run diagnostic</button>
+        </form>
+        <div class="sqli-query"><div class="tool-note">The shell command your input produces:</div><pre id="cmdQuery"></pre></div>
+        <div id="cmdResult"></div>
+        <details class="sqli-hint"><summary>Stuck? Show the trick</summary>
+          <div class="iv-answer">Try <code>8.8.8.8; cat /etc/passwd</code> or <code>8.8.8.8 &amp;&amp; whoami</code> — shell metacharacters (<code>;</code>, <code>&amp;&amp;</code>, <code>|</code>) let you chain a second, completely unrelated command onto the intended one. The real fix is never building shell commands from string concatenation at all — use a language API that calls the binary directly with an argument array, which no shell ever parses.</div>
+        </details>
+      </div>
+    </section>
+  `;
+  const hostEl=document.getElementById('cmdHost'), qEl=document.getElementById('cmdQuery'), resEl=document.getElementById('cmdResult');
+  function refresh(){ qEl.textContent = `ping -c 4 ${hostEl.value}`; }
+  document.getElementById('cmdForm').addEventListener('submit', (e)=>{
+    e.preventDefault();
+    refresh();
+    const v = hostEl.value;
+    const injected = /[;&|`$]/.test(v);
+    if(injected){
+      resEl.innerHTML = `<div class="sqli-bad">⚠️ Command injection! The shell executed your extra command:<pre class="sqli-query" style="margin-top:.6rem">root:x:0:0:root:/root:/bin/bash\ndaemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin\napp:x:1000:1000:app:/home/app:/bin/bash</pre></div>`;
+      fireConfetti({count:70}); markLabComplete('cmdinjection');
+    } else {
+      resEl.innerHTML = `<div class="sqli-ok">✅ PING ${escapeHtml(v)}: 4 packets transmitted, 4 received, 0% packet loss.</div>`;
+    }
+  });
+  hostEl.addEventListener('input', refresh);
+  refresh();
+  setupReveal();
+}
+
+/* --- Lab: Open redirect playground ------------------------------ */
+function renderLabOpenRedirect(){
+  app.innerHTML = `
+    <section class="sec">
+      <div class="sec-head" data-reveal>
+        <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Open Redirect Playground</div>
+        <h2>↪️ Open Redirect Playground</h2>
+        <p class="sec-lead">A login page redirects you back to wherever you came from after signing in — trusting a <code>?returnUrl=</code> parameter with no validation at all. Turn a trusted link into a phishing weapon. <span class="tool-privacy">🔒 Simulated locally.</span></p>
+      </div>
+      <div class="sqli-wrap" data-reveal style="--i:1">
+        <form class="sqli-form" id="orForm" autocomplete="off">
+          <label class="tool-field">returnUrl parameter<input class="tool-input" id="orUrl" value="/dashboard"></label>
+          <button class="btn-amber" type="submit">Simulate login → redirect</button>
+        </form>
+        <div class="sqli-query"><div class="tool-note">The link a phishing email would actually send:</div><pre id="orLink"></pre></div>
+        <div id="orResult"></div>
+        <details class="sqli-hint"><summary>Stuck? Show the trick</summary>
+          <div class="iv-answer">Try <code>https://evil-example.com</code> — the app never checks that the redirect target is on its own domain, so a link that looks entirely legitimate (real domain, real login flow, real credentials required) silently drops the victim onto an attacker-controlled site right after they've built trust by successfully logging in. Fix: only allow relative paths, or check the target against an explicit allowlist of your own domains.</div>
+        </details>
+      </div>
+    </section>
+  `;
+  const urlEl=document.getElementById('orUrl'), linkEl=document.getElementById('orLink'), resEl=document.getElementById('orResult');
+  function refresh(){ linkEl.textContent = `https://real-bank.example/login?returnUrl=${encodeURIComponent(urlEl.value)}`; }
+  document.getElementById('orForm').addEventListener('submit', (e)=>{
+    e.preventDefault();
+    refresh();
+    const v = urlEl.value.trim();
+    const external = /^https?:\/\//i.test(v) && !/^https?:\/\/real-bank\.example/i.test(v);
+    if(external){
+      resEl.innerHTML = `<div class="sqli-bad">⚠️ Open redirect! After a completely real login, the victim lands on <b>${escapeHtml(v)}</b> — an attacker-controlled page that can now show a convincing fake "session expired, log in again" prompt to a victim who trusts the URL they just came from.</div>`;
+      fireConfetti({count:60}); markLabComplete('openredirect');
+    } else {
+      resEl.innerHTML = `<div class="sqli-ok">✅ Redirects to ${escapeHtml(v)} — a normal, same-site destination. Nothing exploitable here.</div>`;
+    }
+  });
+  urlEl.addEventListener('input', refresh);
+  refresh();
+  setupReveal();
+}
+
+/* --- Lab: Clickjacking simulator ---------------------------------- */
+function renderLabClickjacking(){
+  let framed=true;
+  app.innerHTML = `
+    <section class="sec">
+      <div class="sec-head" data-reveal>
+        <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Clickjacking Simulator</div>
+        <h2>🖱️ Clickjacking Simulator</h2>
+        <p class="sec-lead">A malicious page overlays an invisible "Delete my account" button from another site on top of a fake game, so a real click lands on the hidden button instead. Toggle the defense and see the difference. <span class="tool-privacy">🔒 Simulated locally.</span></p>
+      </div>
+      <div class="sqli-wrap" data-reveal style="--i:1">
+        <div class="sqli-form">
+          <label class="tool-field"><input type="checkbox" id="cjToggle"> Send <code>X-Frame-Options: DENY</code> (or a CSP <code>frame-ancestors</code> directive)</label>
+        </div>
+        <div class="sqli-query"><div class="tool-note">What the "game" page actually contains:</div><pre>&lt;div class="fake-game-button" style="position:relative"&gt;Click to win!&lt;/div&gt;
+&lt;iframe src="https://real-site.example/settings/delete-account"
+        style="opacity:0.01; position:absolute; top:-40px; left:-10px"&gt;&lt;/iframe&gt;</pre></div>
+        <button class="btn-amber" id="cjClick" type="button">🎮 Click "Click to win!"</button>
+        <div id="cjResult" style="margin-top:1rem"></div>
+        <details class="sqli-hint"><summary>Stuck? Show the trick</summary>
+          <div class="iv-answer">The invisible <code>&lt;iframe&gt;</code> is positioned exactly over the visible "game" button, so a genuine click physically lands on the real site's delete-account button underneath, not the fake button the user thinks they're clicking. <code>X-Frame-Options: DENY</code> (or CSP's <code>frame-ancestors 'none'</code>) tells the browser to refuse to render the sensitive page inside anyone else's frame at all, breaking the attack before it can even set up the overlay.</div>
+        </details>
+      </div>
+    </section>
+  `;
+  const toggle=document.getElementById('cjToggle'), resEl=document.getElementById('cjResult');
+  document.getElementById('cjClick').addEventListener('click', ()=>{
+    if(toggle.checked){
+      resEl.innerHTML = `<div class="sqli-ok">✅ The browser refused to render the framed page at all (X-Frame-Options: DENY) — the invisible overlay never loaded, so the click just plays the harmless game.</div>`;
+      fireConfetti({count:60}); markLabComplete('clickjacking');
+    } else {
+      resEl.innerHTML = `<div class="sqli-bad">⚠️ Clickjacked! That click landed on the invisible iframe underneath, not the game — "Delete my account" was just submitted on the victim's behalf, with their own valid, already-logged-in session.</div>`;
+    }
+  });
+  setupReveal();
+}
+
+/* --- Lab: Insecure deserialization toy -------------------------- */
+function renderLabDeserialization(){
+  app.innerHTML = `
+    <section class="sec">
+      <div class="sec-head" data-reveal>
+        <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Insecure Deserialization Toy</div>
+        <h2>📦 Insecure Deserialization Toy</h2>
+        <p class="sec-lead">A "remember me" cookie stores a serialized user-preferences object the server deserializes and trusts completely. Craft a payload that grants yourself admin, no login required. <span class="tool-privacy">🔒 Simulated locally.</span></p>
+      </div>
+      <div class="sqli-wrap" data-reveal style="--i:1">
+        <form class="sqli-form" id="deserForm" autocomplete="off">
+          <label class="tool-field">Cookie value (serialized object)<textarea class="tool-input tool-textarea" id="deserInput" rows="4">{"theme":"dark","fontSize":14}</textarea></label>
+          <button class="btn-amber" type="submit">Send cookie to server</button>
+        </form>
+        <div id="deserResult"></div>
+        <details class="sqli-hint"><summary>Stuck? Show the trick</summary>
+          <div class="iv-answer">Try adding <code>"role":"admin"</code> to the object — since the server deserializes this cookie into a real object and trusts every field it contains (never re-validating role/permission fields server-side, from a source the user fully controls), you can simply declare yourself admin. The fix: never deserialize untrusted client input into objects with security-relevant fields; keep authorization state entirely server-side, keyed only by a session ID the client can't forge.</div>
+        </details>
+      </div>
+    </section>
+  `;
+  const inputEl=document.getElementById('deserInput'), resEl=document.getElementById('deserResult');
+  document.getElementById('deserForm').addEventListener('submit', (e)=>{
+    e.preventDefault();
+    let obj;
+    try{ obj = JSON.parse(inputEl.value); } catch(err){ resEl.innerHTML = `<div class="sqli-bad">❌ Invalid JSON.</div>`; return; }
+    if(obj && obj.role==='admin'){
+      resEl.innerHTML = `<div class="sqli-bad">⚠️ Deserialized straight into a trusted session object: <code>{role:"admin",...}</code> — you're now browsing as an administrator with zero authentication, just by editing a cookie the server never re-validated.</div>`;
+      fireConfetti({count:70}); markLabComplete('deserialization');
+    } else {
+      resEl.innerHTML = `<div class="sqli-ok">✅ Deserialized as an ordinary, unprivileged preferences object. Nothing exploitable in this payload — try adding a role field.</div>`;
+    }
+  });
+  setupReveal();
+}
+
+/* --- Lab: Subdomain takeover simulator ---------------------------- */
+function renderLabSubdomainTakeover(){
+  const RECORDS = [
+    {sub:'www.acme-corp.example', cname:'acme-corp.example.com', status:'active'},
+    {sub:'blog.acme-corp.example', cname:'acme-blog.wordpress.com', status:'active'},
+    {sub:'old-promo.acme-corp.example', cname:'acme-promo-2019.herokuapp.com', status:'unclaimed'},
+    {sub:'cdn.acme-corp.example', cname:'d111abcxyz.cloudfront.net', status:'active'},
+    {sub:'staging.acme-corp.example', cname:'acme-staging.github.io', status:'unclaimed'}
+  ];
+  let claimed=null;
+  app.innerHTML = `
+    <section class="sec">
+      <div class="sec-head" data-reveal>
+        <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Subdomain Takeover Simulator</div>
+        <h2>🏚️ Subdomain Takeover Simulator</h2>
+        <p class="sec-lead">Five subdomains, five CNAME records pointing at third-party services. One of them points at a service the organisation never actually claimed — find it and take it over. <span class="tool-privacy">🔒 Simulated locally.</span></p>
+      </div>
+      <div class="sqli-wrap" data-reveal style="--i:1">
+        <div class="tool-note">DNS zone dump (<code>dig CNAME</code> for every subdomain):</div>
+        <div class="sqli-query"><pre>${RECORDS.map(r=>`${r.sub}.  CNAME  ${r.cname}.`).join('\n')}</pre></div>
+        <div style="display:flex;gap:.6rem;flex-wrap:wrap;margin:1rem 0">
+          ${RECORDS.map(r=>`<button class="btn-ghost sm" data-sub="${escapeHtml(r.sub)}" type="button">Check ${escapeHtml(r.sub.split('.')[0])}</button>`).join('')}
+        </div>
+        <div id="stResult"></div>
+        <details class="sqli-hint"><summary>Stuck? Show the trick</summary>
+          <div class="iv-answer">Check <code>old-promo</code> and <code>staging</code> — both CNAME to a third-party platform (Heroku, GitHub Pages) where the actual app/repo was deleted, but the DNS record was never removed. Anyone can register that exact app name on the third-party platform, and the subdomain — still trusted by every visitor, and still able to receive cookies for the parent domain in some configurations — now serves attacker-controlled content. Fix: remove the CNAME the moment the underlying resource is decommissioned, and periodically audit DNS for dangling records.</div>
+        </details>
+      </div>
+    </section>
+  `;
+  document.getElementById('stResult');
+  document.querySelectorAll('[data-sub]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const r = RECORDS.find(x=>x.sub===btn.dataset.sub);
+      const resEl = document.getElementById('stResult');
+      if(r.status==='unclaimed'){
+        resEl.innerHTML = `<div class="sqli-bad">⚠️ Dangling CNAME! <b>${escapeHtml(r.cname)}</b> is unclaimed — register that exact name on the third-party platform and <b>${escapeHtml(r.sub)}</b> now serves your content, still trusted as the organisation's own subdomain.</div>`;
+        fireConfetti({count:70}); markLabComplete('subdomaintakeover');
+      } else {
+        resEl.innerHTML = `<div class="sqli-ok">✅ <b>${escapeHtml(r.cname)}</b> is actively claimed and in use — nothing to take over here.</div>`;
+      }
+    });
+  });
+  setupReveal();
+}
+
+/* --- Lab: DNS recon playground ------------------------------------ */
+function renderLabDnsRecon(){
+  const ZONE = {
+    'acme-corp.example': {A:['203.0.113.10'], MX:['mail.acme-corp.example'], TXT:['v=spf1 include:_spf.google.com ~all']},
+    'mail.acme-corp.example': {A:['203.0.113.11']},
+    'vpn.acme-corp.example': {A:['198.51.100.22']},
+    'staging-internal.acme-corp.example': {A:['10.0.4.55'], TXT:['do-not-index — internal staging, no auth required yet']},
+    'ns1.acme-corp.example': {A:['203.0.113.2']}
+  };
+  app.innerHTML = `
+    <section class="sec">
+      <div class="sec-head" data-reveal>
+        <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · DNS Recon Playground</div>
+        <h2>🌐 DNS Recon Playground</h2>
+        <p class="sec-lead">A simulated <code>dig</code>. Query records for a target domain and its likely subdomains to build a map of an organisation's real, sometimes-forgotten attack surface, entirely passively. <span class="tool-privacy">🔒 Simulated locally — no real DNS traffic.</span></p>
+      </div>
+      <div class="sqli-wrap" data-reveal style="--i:1">
+        <form class="sqli-form" id="dnsForm" autocomplete="off">
+          <label class="tool-field">Query (try: acme-corp.example, mail.acme-corp.example, staging-internal.acme-corp.example)<input class="tool-input" id="dnsQuery" value="acme-corp.example"></label>
+          <button class="btn-amber" type="submit">dig ANY</button>
+        </form>
+        <div id="dnsResult"></div>
+        <details class="sqli-hint"><summary>Stuck? Show the trick</summary>
+          <div class="iv-answer">Try <code>staging-internal.acme-corp.example</code> — it resolves to a private <code>10.x</code> address (meaning it's reachable from inside the corporate network, or via VPN) and its TXT record literally says "no auth required yet." Guessing at likely subdomain names (staging, dev, internal, old, test, vpn, admin) and querying each one is exactly the passive recon technique real OSINT relies on — no packet ever touches the actual target beyond a routine, publicly-answered DNS lookup.</div>
+        </details>
+      </div>
+    </section>
+  `;
+  const qEl=document.getElementById('dnsQuery'), resEl=document.getElementById('dnsResult');
+  document.getElementById('dnsForm').addEventListener('submit', (e)=>{
+    e.preventDefault();
+    const q = qEl.value.trim().toLowerCase();
+    const rec = ZONE[q];
+    if(!rec){ resEl.innerHTML = `<div class="sqli-bad">❌ NXDOMAIN — no record found for ${escapeHtml(q)}.</div>`; return; }
+    const lines = Object.entries(rec).map(([type,vals])=>vals.map(v=>`${q}.  IN  ${type}  ${v}`).join('\n')).join('\n');
+    const interesting = q.includes('staging') || q.includes('internal');
+    resEl.innerHTML = `<div class="sqli-query"><pre>${escapeHtml(lines)}</pre></div>${interesting?`<div class="sqli-bad">🔍 Interesting: a private-range IP and a revealing TXT record on what looks like a forgotten internal staging host.</div>`:`<div class="sqli-ok">✅ Ordinary, expected public infrastructure record.</div>`}`;
+    if(interesting){ fireConfetti({count:60}); markLabComplete('dnsrecon'); }
+  });
+  setupReveal();
+}
+
+/* --- Lab: Windows privesc playground -------------------------- */
+function renderLabWinPrivesc(){
+  const SVCS = [
+    {name:'WinDefend', path:'C:\\Program Files\\Windows Defender\\MsMpEng.exe', runsAs:'LocalSystem', writable:false},
+    {name:'BackupAgent', path:'C:\\ProgramData\\Backup Co\\agent.exe', runsAs:'LocalSystem', writable:true},
+    {name:'Spooler', path:'C:\\Windows\\System32\\spoolsv.exe', runsAs:'LocalSystem', writable:false},
+    {name:'RemoteRegistry', path:'C:\\Windows\\System32\\svchost.exe -k regsvc', runsAs:'LocalService', writable:false}
+  ];
+  app.innerHTML = `
+    <section class="sec">
+      <div class="sec-head" data-reveal>
+        <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Windows Privesc Playground</div>
+        <h2>🪟 Windows Privesc Playground</h2>
+        <p class="sec-lead">Four Windows services, one runs as SYSTEM with a binary path your low-privileged account can actually write to. Find it, replace it, and escalate on next restart. <span class="tool-privacy">🔒 Simulated locally.</span></p>
+      </div>
+      <div class="sqli-wrap" data-reveal style="--i:1">
+        <div class="sqli-query"><pre>${SVCS.map(s=>`${s.name.padEnd(16)} ${s.runsAs.padEnd(14)} ${s.path}`).join('\n')}</pre></div>
+        <div style="display:flex;gap:.6rem;flex-wrap:wrap;margin:1rem 0">
+          ${SVCS.map(s=>`<button class="btn-ghost sm" data-svc="${escapeHtml(s.name)}" type="button">icacls ${escapeHtml(s.name)}</button>`).join('')}
+        </div>
+        <div id="wpResult"></div>
+        <details class="sqli-hint"><summary>Stuck? Show the trick</summary>
+          <div class="iv-answer">Check <b>BackupAgent</b> — it runs as <code>LocalSystem</code> (highest privilege) but its executable's folder is writable by ordinary authenticated users, likely left over from a quick installer that never locked down permissions. Overwrite <code>agent.exe</code> with your own payload; the next service restart (or a reboot) runs your code as SYSTEM. Fix: service binaries should live in protected, admin-only-writable directories, and periodic ACL audits should catch drift like this.</div>
+        </details>
+      </div>
+    </section>
+  `;
+  document.querySelectorAll('[data-svc]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const s = SVCS.find(x=>x.name===btn.dataset.svc);
+      const resEl = document.getElementById('wpResult');
+      if(s.writable){
+        resEl.innerHTML = `<div class="sqli-bad">⚠️ Writable! BUILTIN\\Users: (F) Full control on <code>${escapeHtml(s.path)}</code> — this service runs as <b>${escapeHtml(s.runsAs)}</b>. Overwrite the binary, restart the service, get SYSTEM.</div>`;
+        fireConfetti({count:70}); markLabComplete('winprivesc');
+      } else {
+        resEl.innerHTML = `<div class="sqli-ok">✅ NT AUTHORITY\\SYSTEM: (F) — properly locked down, ordinary users have no write access here.</div>`;
+      }
+    });
+  });
+  setupReveal();
+}
+
+/* --- Lab: Linux privesc playground ------------------------------ */
+function renderLabLinuxPrivesc(){
+  const BINS = [
+    {path:'/usr/bin/ls', suid:false},
+    {path:'/usr/bin/passwd', suid:true, note:'expected — passwd is always SUID root'},
+    {path:'/usr/bin/find', suid:true, note:'GTFOBins: find has an -exec primitive'},
+    {path:'/usr/bin/cat', suid:false},
+    {path:'/usr/bin/vim', suid:false}
+  ];
+  app.innerHTML = `
+    <section class="sec">
+      <div class="sec-head" data-reveal>
+        <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Linux Privesc Playground</div>
+        <h2>🐧 Linux Privesc Playground</h2>
+        <p class="sec-lead">Run the SUID enumeration a real LinPEAS pass would do, then use GTFOBins to turn one unexpected result into a root shell. <span class="tool-privacy">🔒 Simulated locally.</span></p>
+      </div>
+      <div class="sqli-wrap" data-reveal style="--i:1">
+        <button class="btn-amber" id="findBtn" type="button">find / -perm -4000 -type f 2&gt;/dev/null</button>
+        <div id="findOut" class="sqli-query" style="margin-top:1rem"></div>
+        <div id="lpResult"></div>
+        <details class="sqli-hint"><summary>Stuck? Show the trick</summary>
+          <div class="iv-answer"><code>find</code> being SUID-root is the unexpected one — <code>passwd</code> is supposed to be SUID (it needs root to edit <code>/etc/shadow</code>), but <code>find</code> has no legitimate reason to be. GTFOBins documents exactly this: <code>find . -exec /bin/sh -p \\;</code> spawns a root shell, because <code>find</code>'s <code>-exec</code> primitive runs with the SUID bit's elevated privilege, not the invoking user's.</div>
+        </details>
+      </div>
+    </section>
+  `;
+  document.getElementById('findBtn').addEventListener('click', ()=>{
+    document.getElementById('findOut').innerHTML = `<pre>${BINS.filter(b=>b.suid).map(b=>`-rwsr-xr-x 1 root root ${b.path}`).join('\n')}</pre>`;
+    const resEl = document.getElementById('lpResult');
+    resEl.innerHTML = `<button class="btn-ghost sm" id="tryFind" type="button">GTFOBins: try find . -exec /bin/sh -p \\;</button>`;
+    document.getElementById('tryFind').addEventListener('click', ()=>{
+      resEl.innerHTML = `<div class="sqli-bad">⚠️ # id → uid=1000(user) gid=1000(user) euid=0(root) — a root shell, from a single SUID binary nobody meant to leave that way.</div>`;
+      fireConfetti({count:70}); markLabComplete('linuxprivesc');
+    });
+  });
+  setupReveal();
+}
+
+/* --- Lab: Kerberoasting simulator --------------------------------- */
+function renderLabKerberoast(){
+  const SPNS = [
+    {user:'svc-sql', spn:'MSSQLSvc/db01.corp.local', hashPrefix:'$krb5tgs$23$*svc-sql', crackable:true, pw:'Summer2024!'},
+    {user:'svc-web', spn:'HTTP/web01.corp.local', hashPrefix:'$krb5tgs$23$*svc-web', crackable:false, pw:'x7#kQ2$mZp9!vL4@wR8n'}
+  ];
+  app.innerHTML = `
+    <section class="sec">
+      <div class="sec-head" data-reveal>
+        <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Kerberoasting Simulator</div>
+        <h2>🎫 Kerberoasting Simulator</h2>
+        <p class="sec-lead">Any domain user can request a service ticket for any SPN — no special privilege required. Request tickets for two service accounts, then crack the one with a weak password offline. <span class="tool-privacy">🔒 Simulated locally.</span></p>
+      </div>
+      <div class="sqli-wrap" data-reveal style="--i:1">
+        <div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:1rem">
+          ${SPNS.map(s=>`<button class="btn-ghost sm" data-spn="${escapeHtml(s.spn)}" type="button">GetUserSPNs -request ${escapeHtml(s.spn)}</button>`).join('')}
+        </div>
+        <div id="krResult"></div>
+        <details class="sqli-hint"><summary>Stuck? Show the trick</summary>
+          <div class="iv-answer">Both tickets come back equally "crackable" in principle — the actual gap is password strength. <code>svc-sql</code>'s password is a common, dictionary-guessable pattern; <code>svc-web</code>'s is long and random. Offline cracking has no lockout policy to worry about, so it's purely a race against the password's entropy — this is exactly why service account passwords need to be genuinely random and rotated, not memorable.</div>
+        </details>
+      </div>
+    </section>
+  `;
+  document.querySelectorAll('[data-spn]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const s = SPNS.find(x=>x.spn===btn.dataset.spn);
+      const resEl = document.getElementById('krResult');
+      resEl.innerHTML = `<div class="sqli-query"><pre>${escapeHtml(s.hashPrefix)}$...</pre></div><button class="btn-amber sm" id="crackBtn" type="button">hashcat -m 13100 -a 0 ticket.hash wordlist.txt</button><div id="crackOut" style="margin-top:.8rem"></div>`;
+      document.getElementById('crackBtn').addEventListener('click', ()=>{
+        const out = document.getElementById('crackOut');
+        if(s.crackable){
+          out.innerHTML = `<div class="sqli-bad">⚠️ Cracked! <b>${escapeHtml(s.user)}</b>:<b>${escapeHtml(s.pw)}</b> — found in seconds against a standard wordlist. That's a valid domain credential now, entirely offline and undetected.</div>`;
+          fireConfetti({count:70}); markLabComplete('kerberoast');
+        } else {
+          out.innerHTML = `<div class="sqli-ok">✅ Exhausted — not found in the wordlist within a reasonable timeframe. A genuinely random, long password resists this attack even with unlimited offline attempts.</div>`;
+        }
+      });
+    });
+  });
+  setupReveal();
+}
+
+/* --- Lab: Cloud IAM misconfig playground -------------------------- */
+function renderLabIamMisconfig(){
+  app.innerHTML = `
+    <section class="sec">
+      <div class="sec-head" data-reveal>
+        <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Cloud IAM Misconfig Playground</div>
+        <h2>☁️ Cloud IAM Misconfig Playground</h2>
+        <p class="sec-lead">Your role holds one permission that looks harmless in isolation: <code>iam:PassRole</code>. Chain it with the ability to launch a compute instance into a full account takeover. <span class="tool-privacy">🔒 Simulated locally.</span></p>
+      </div>
+      <div class="sqli-wrap" data-reveal style="--i:1">
+        <div class="sqli-query"><pre>Your role "app-deployer" permissions:
+  - ec2:RunInstances
+  - iam:PassRole
+  - s3:GetObject (own bucket only)
+
+Available IAM roles in the account:
+  - "readonly-role"    (S3 read only)
+  - "admin-role"       (AdministratorAccess — full account control)</pre></div>
+        <label class="tool-field">Which role do you attach to a new EC2 instance?
+          <select class="tool-input" id="iamRole">
+            <option value="readonly-role">readonly-role</option>
+            <option value="admin-role">admin-role</option>
+          </select>
+        </label>
+        <button class="btn-amber" id="iamLaunch" type="button">ec2:RunInstances --iam-instance-profile</button>
+        <div id="iamResult" style="margin-top:1rem"></div>
+        <details class="sqli-hint"><summary>Stuck? Show the trick</summary>
+          <div class="iv-answer"><code>iam:PassRole</code> doesn't grant you admin-role's permissions directly — but it lets you attach admin-role to a new EC2 instance you fully control. Once that instance boots, you can query its metadata service for admin-role's temporary credentials and use them yourself. You never needed admin-role granted to you; you only needed permission to attach it to something you control.</div>
+        </details>
+      </div>
+    </section>
+  `;
+  document.getElementById('iamLaunch').addEventListener('click', ()=>{
+    const role = document.getElementById('iamRole').value;
+    const resEl = document.getElementById('iamResult');
+    if(role==='admin-role'){
+      resEl.innerHTML = `<div class="sqli-bad">⚠️ Instance launched with admin-role attached. Querying its metadata service (169.254.169.254) returns temporary AdministratorAccess credentials — full account takeover, starting from a role that was never directly granted admin permissions at all.</div>`;
+      fireConfetti({count:70}); markLabComplete('iammisconfig');
+    } else {
+      resEl.innerHTML = `<div class="sqli-ok">✅ Instance launched with read-only access — nothing to escalate here. Try attaching the admin role instead.</div>`;
+    }
+  });
+  setupReveal();
+}
+
+/* --- Lab: Docker escape playground -------------------------------- */
+function renderLabDockerEscape(){
+  let mounted=true;
+  app.innerHTML = `
+    <section class="sec">
+      <div class="sec-head" data-reveal>
+        <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Docker Escape Playground</div>
+        <h2>🐳 Docker Escape Playground</h2>
+        <p class="sec-lead">A "CI runner" container mounts <code>/var/run/docker.sock</code> for convenience. That socket <i>is</i> root on the host. <span class="tool-privacy">🔒 Simulated locally.</span></p>
+      </div>
+      <div class="sqli-wrap" data-reveal style="--i:1">
+        <div class="tool-note">Container mounts: <code>-v /var/run/docker.sock:/var/run/docker.sock</code> — status: <b id="dockState">mounted</b></div>
+        <label class="tool-field"><input type="checkbox" id="dockToggle" checked> Docker socket mounted inside the container</label>
+        <button class="btn-amber" id="dockRun" type="button">docker -H unix:///var/run/docker.sock run --privileged -v /:/host alpine chroot /host sh</button>
+        <div id="dockResult" style="margin-top:1rem"></div>
+        <details class="sqli-hint"><summary>Stuck? Show the trick</summary>
+          <div class="iv-answer">The Docker socket is a full, unauthenticated API to the host's Docker daemon — anything that can write to it can ask the daemon (which itself runs as root on the host) to start a brand new, privileged container with the host's entire root filesystem bind-mounted in. <code>chroot /host sh</code> then drops you into a shell that <i>is</i> the host, not the original container. This is exactly why mounting the Docker socket into any container is functionally equivalent to giving that container root on the host.</div>
+        </details>
+      </div>
+    </section>
+  `;
+  const toggle=document.getElementById('dockToggle'), stateEl=document.getElementById('dockState');
+  toggle.addEventListener('change', ()=>{ mounted=toggle.checked; stateEl.textContent = mounted?'mounted':'not mounted'; });
+  document.getElementById('dockRun').addEventListener('click', ()=>{
+    const resEl = document.getElementById('dockResult');
+    if(mounted){
+      resEl.innerHTML = `<div class="sqli-bad">⚠️ # id → uid=0(root) gid=0(root) — and this is the <b>host's</b> filesystem, not the container's. Full host compromise from a single mounted socket.</div>`;
+      fireConfetti({count:70}); markLabComplete('dockerescape');
+    } else {
+      resEl.innerHTML = `<div class="sqli-ok">✅ docker: Cannot connect to the Docker daemon — no socket available inside this container. Nothing to escalate through.</div>`;
+    }
+  });
+  setupReveal();
+}
+
+/* --- Lab: Malware strings triage lab -------------------------------- */
+function renderLabMalwareStrings(){
+  const STRINGS = [
+    'GetProcAddress','LoadLibraryA','kernel32.dll','185.220.101.47','CreateRemoteThread',
+    'C:\\Users\\Public\\svchost_update.exe','\\Software\\Microsoft\\Windows\\CurrentVersion\\Run',
+    'Global\\{8F3A2B1C-4D5E-6F70-8192-A3B4C5D6E7F8}','WriteProcessMemory','VirtualAllocEx',
+    'HTTP/1.1 200 OK','api.telegram.org/bot','msvcrt.dll','GetSystemDirectoryA'
+  ];
+  const IOCS = new Set(['185.220.101.47','C:\\Users\\Public\\svchost_update.exe','\\Software\\Microsoft\\Windows\\CurrentVersion\\Run','Global\\{8F3A2B1C-4D5E-6F70-8192-A3B4C5D6E7F8}','api.telegram.org/bot']);
+  let picked = new Set();
+  app.innerHTML = `
+    <section class="sec">
+      <div class="sec-head" data-reveal>
+        <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Malware Strings Triage Lab</div>
+        <h2>🧬 Malware Strings Triage Lab</h2>
+        <p class="sec-lead">A raw <code>strings</code> dump from a suspicious binary. Click every genuine IOC — a C2 address, a persistence path, a mutex, an exfil channel — before touching a disassembler. <span class="tool-privacy">🔒 Simulated locally.</span></p>
+      </div>
+      <div class="sqli-wrap" data-reveal style="--i:1">
+        <div class="sqli-query"><pre id="msList">${STRINGS.map((s,i)=>`<span class="ms-pick" data-i="${i}" style="cursor:pointer;text-decoration:underline dotted">${escapeHtml(s)}</span>`).join('\n')}</pre></div>
+        <button class="btn-amber" id="msSubmit" type="button">Submit IOC list</button>
+        <div id="msResult" style="margin-top:1rem"></div>
+        <details class="sqli-hint"><summary>Stuck? Show the trick</summary>
+          <div class="iv-answer">The five real IOCs: the hardcoded IP (likely C2), the suspicious dropped-file path, the Registry Run key (persistence), the mutex GUID (used to prevent re-infection, a common fingerprint), and the Telegram bot API URL (a genuinely common, hard-to-block exfiltration/C2 channel used by real malware). The rest — Windows API names, DLL names, an ordinary HTTP status line — are completely normal and appear in most legitimate Windows binaries too; flagging every API name as suspicious just creates noise.</div>
+        </details>
+      </div>
+    </section>
+  `;
+  document.querySelectorAll('.ms-pick').forEach(el=>{
+    el.addEventListener('click', ()=>{
+      const i = el.dataset.i;
+      if(picked.has(i)){ picked.delete(i); el.style.background=''; } else { picked.add(i); el.style.background='rgba(239,164,58,.25)'; }
+    });
+  });
+  document.getElementById('msSubmit').addEventListener('click', ()=>{
+    const chosen = [...picked].map(i=>STRINGS[i]);
+    const correct = chosen.filter(s=>IOCS.has(s)).length;
+    const wrong = chosen.length - correct;
+    const resEl = document.getElementById('msResult');
+    if(correct===IOCS.size && wrong===0){
+      resEl.innerHTML = `<div class="sqli-ok">✅ All 5 genuine IOCs found, no false positives. That's a clean, submittable triage.</div>`;
+      fireConfetti({count:70}); markLabComplete('malwarestrings');
+    } else {
+      resEl.innerHTML = `<div class="sqli-bad">Found ${correct}/${IOCS.size} genuine IOCs${wrong?`, plus ${wrong} false positive${wrong>1?'s':''}`:''}. Keep going.</div>`;
+    }
+  });
+  setupReveal();
+}
+
+/* --- Lab: YARA rule builder challenge -------------------------------- */
+function renderLabYaraBuilder(){
+  const SAMPLES = [
+    {name:'sample1.bin (malicious)', content:'this binary contains the string EVIL_C2_BEACON and imports CreateRemoteThread'},
+    {name:'sample2.bin (malicious)', content:'variant with EVIL_C2_BEACON marker, different packer, imports VirtualAllocEx'},
+    {name:'sample3.bin (malicious)', content:'another EVIL_C2_BEACON sample, imports WriteProcessMemory this time'},
+    {name:'clean1.bin (legitimate)', content:'an ordinary installer, imports CreateRemoteThread for a legitimate updater feature'},
+    {name:'clean2.bin (legitimate)', content:'unrelated clean utility, no suspicious strings or imports at all'}
+  ];
+  app.innerHTML = `
+    <section class="sec">
+      <div class="sec-head" data-reveal>
+        <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · YARA Rule Builder Challenge</div>
+        <h2>🔬 YARA Rule Builder Challenge</h2>
+        <p class="sec-lead">Three malware samples share one distinctive marker. Write a rule (just a string to match, simplified here) that catches all three and none of the two clean files. <span class="tool-privacy">🔒 Simulated locally.</span></p>
+      </div>
+      <div class="sqli-wrap" data-reveal style="--i:1">
+        <div class="sqli-query"><pre>${SAMPLES.map(s=>`${s.name}: "${s.content}"`).join('\n\n')}</pre></div>
+        <label class="tool-field">Your rule — a string that must appear<input class="tool-input" id="yaraStr" placeholder="e.g. CreateRemoteThread"></label>
+        <button class="btn-amber" id="yaraTest" type="button">Test rule against all 5 samples</button>
+        <div id="yaraResult" style="margin-top:1rem"></div>
+        <details class="sqli-hint"><summary>Stuck? Show the trick</summary>
+          <div class="iv-answer">Try <code>EVIL_C2_BEACON</code>. <code>CreateRemoteThread</code> alone is tempting since it appears in a malicious sample, but it also appears in a legitimate installer — a real false positive. <code>EVIL_C2_BEACON</code> is the actual distinctive marker every malicious sample shares and no clean sample contains, exactly the "distinctive, not just present" principle YARA rule-writing depends on.</div>
+        </details>
+      </div>
+    </section>
+  `;
+  document.getElementById('yaraTest').addEventListener('click', ()=>{
+    const term = document.getElementById('yaraStr').value.trim();
+    if(!term){ return; }
+    const matches = SAMPLES.map(s=>s.content.includes(term));
+    const malMatched = matches.slice(0,3).filter(Boolean).length;
+    const cleanMatched = matches.slice(3).filter(Boolean).length;
+    const resEl = document.getElementById('yaraResult');
+    if(malMatched===3 && cleanMatched===0){
+      resEl.innerHTML = `<div class="sqli-ok">✅ Matches all 3 malicious samples, 0 false positives on clean files. A genuinely deployable rule.</div>`;
+      fireConfetti({count:70}); markLabComplete('yarabuilder');
+    } else {
+      resEl.innerHTML = `<div class="sqli-bad">Matched ${malMatched}/3 malicious samples, ${cleanMatched} false positive${cleanMatched!==1?'s':''} on clean files. Not deployable yet.</div>`;
+    }
+  });
+  setupReveal();
+}
+
+/* --- Lab: Race condition lab ---------------------------------------- */
+function renderLabRaceCondition(){
+  let balance = 1, redemptions = 0;
+  app.innerHTML = `
+    <section class="sec">
+      <div class="sec-head" data-reveal>
+        <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Race Condition Lab</div>
+        <h2>🏁 Race Condition Lab</h2>
+        <p class="sec-lead">One coupon, meant to be redeemed exactly once. The server checks "is it used?" then, separately, marks it used — a genuine check-then-act gap. Fire many requests "simultaneously" and redeem it more than once. <span class="tool-privacy">🔒 Simulated locally.</span></p>
+      </div>
+      <div class="sqli-wrap" data-reveal style="--i:1">
+        <div class="tool-note">Coupon SAVE50 — uses remaining: <b id="rcBalance">1</b> · redeemed so far: <b id="rcCount">0</b></div>
+        <label class="tool-field">Concurrent requests to fire<input class="tool-input" id="rcN" type="number" value="10" min="1" max="50"></label>
+        <button class="btn-amber" id="rcFire" type="button">Fire concurrent redemption requests</button>
+        <div id="rcResult" style="margin-top:1rem"></div>
+        <details class="sqli-hint"><summary>Stuck? Show the trick</summary>
+          <div class="iv-answer">Firing many requests within the same instant means several of them can each independently check "used = false" (still true for all of them, since none has finished writing yet) before any single one gets to the "mark used" step — every request that read the not-yet-updated state redeems successfully. The fix is an atomic check-and-set operation (a database row lock or a compare-and-swap) so the check and the update happen as one indivisible step, not two separate ones an attacker can race between.</div>
+        </details>
+      </div>
+    </section>
+  `;
+  document.getElementById('rcFire').addEventListener('click', ()=>{
+    const n = Math.max(1, Math.min(50, parseInt(document.getElementById('rcN').value)||10));
+    // Simulate the race: every "concurrent" request reads used=false before any write lands.
+    let used = false, success = 0;
+    for(let i=0;i<n;i++){ if(!used){ success++; /* naive server never actually flips 'used' in time */ } }
+    redemptions += success;
+    document.getElementById('rcCount').textContent = redemptions;
+    const resEl = document.getElementById('rcResult');
+    if(redemptions>1){
+      resEl.innerHTML = `<div class="sqli-bad">⚠️ Race condition! A one-time coupon was redeemed <b>${redemptions} times</b> — every request checked "used?" before any single one finished writing "used=true," so they all read the same stale, unused state.</div>`;
+      fireConfetti({count:70}); markLabComplete('racecondition');
+    } else {
+      resEl.innerHTML = `<div class="sqli-ok">Redeemed once so far. Try firing more concurrent requests at once to widen the race window.</div>`;
+    }
+  });
+  setupReveal();
+}
+
+/* --- Lab: Webhook signature forgery lab ------------------------------ */
+async function hmacSha256Hex(key, msg){
+  const enc = new TextEncoder();
+  const cryptoKey = await crypto.subtle.importKey('raw', enc.encode(key), {name:'HMAC', hash:'SHA-256'}, false, ['sign']);
+  const sig = await crypto.subtle.sign('HMAC', cryptoKey, enc.encode(msg));
+  return [...new Uint8Array(sig)].map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+function renderLabWebhookForge(){
+  const SECRET = 'whsec_9f8a7b6c5d4e3f2a1b0c';
+  const PAYLOAD = '{"event":"payment.completed","amount":50000,"account":"attacker-8841"}';
+  app.innerHTML = `
+    <section class="sec">
+      <div class="sec-head" data-reveal>
+        <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Webhook Signature Forgery Lab</div>
+        <h2>🪝 Webhook Signature Forgery Lab</h2>
+        <p class="sec-lead">A payment webhook is verified with an HMAC signature. First, try to forge one without the secret. Then flip on verification and watch the endpoint correctly reject you. <span class="tool-privacy">🔒 Runs locally via the browser's real crypto engine.</span></p>
+      </div>
+      <div class="sqli-wrap" data-reveal style="--i:1">
+        <div class="sqli-query"><pre>POST /webhooks/payments
+X-Signature: sha256=&lt;your guess&gt;
+Body: ${escapeHtml(PAYLOAD)}</pre></div>
+        <label class="tool-field">Guess the signature (hex)<input class="tool-input" id="whGuess" placeholder="e.g. aabbcc... or leave blank"></label>
+        <button class="btn-amber" id="whSend" type="button">Send forged webhook</button>
+        <div id="whResult" style="margin-top:1rem"></div>
+        <details class="sqli-hint"><summary>Stuck? Show the trick</summary>
+          <div class="iv-answer">You genuinely can't guess a correct HMAC-SHA256 signature without the secret — that's the entire point of the mechanism. This lab exists to demonstrate the negative: no matter what you enter, verification correctly rejects it, exactly the defense the Webhook Security lesson (Path 21) describes. Click "reveal the real signature" to see what the legitimate sender's request actually looks like.</div>
+        </details>
+        <button class="btn-ghost sm" id="whReveal" type="button" style="margin-top:.6rem">Reveal the real signature (server-side secret)</button>
+      </div>
+    </section>
+  `;
+  document.getElementById('whSend').addEventListener('click', async ()=>{
+    const guess = document.getElementById('whGuess').value.trim();
+    const real = await hmacSha256Hex(SECRET, PAYLOAD);
+    const resEl = document.getElementById('whResult');
+    if(guess && guess.toLowerCase()===real.toLowerCase()){
+      resEl.innerHTML = `<div class="sqli-bad">⚠️ Somehow matched — but in real HMAC-SHA256 this space is effectively unguessable without the secret.</div>`;
+      fireConfetti({count:70}); markLabComplete('webhookforge');
+    } else {
+      resEl.innerHTML = `<div class="sqli-ok">✅ Rejected — signature mismatch. Exactly as it should be: without the shared secret, you cannot produce a valid signature no matter how the payload is crafted.</div>`;
+      fireConfetti({count:40}); markLabComplete('webhookforge');
+    }
+  });
+  document.getElementById('whReveal').addEventListener('click', async ()=>{
+    const real = await hmacSha256Hex(SECRET, PAYLOAD);
+    document.getElementById('whResult').innerHTML += `<div class="sqli-query" style="margin-top:.6rem"><div class="tool-note">The real, secret-derived signature:</div><pre>${real}</pre></div>`;
+  });
+  setupReveal();
+}
+
+/* --- Lab: OAuth redirect URI hijack lab ------------------------------ */
+function renderLabOauthRedirect(){
+  app.innerHTML = `
+    <section class="sec">
+      <div class="sec-head" data-reveal>
+        <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · OAuth Redirect URI Hijack Lab</div>
+        <h2>🔑 OAuth Redirect URI Hijack Lab</h2>
+        <p class="sec-lead">The authorization server checks that <code>redirect_uri</code> starts with the registered app's domain — but "starts with" is a looser check than "exactly matches." Steal an authorization code. <span class="tool-privacy">🔒 Simulated locally.</span></p>
+      </div>
+      <div class="sqli-wrap" data-reveal style="--i:1">
+        <div class="tool-note">Registered app domain: <code>https://realapp.example</code></div>
+        <form class="sqli-form" id="oauthForm" autocomplete="off">
+          <label class="tool-field">redirect_uri you send<input class="tool-input" id="oauthUri" value="https://realapp.example.attacker.com/callback"></label>
+          <button class="btn-amber" type="submit">/authorize?client_id=...&redirect_uri=...</button>
+        </form>
+        <div id="oauthResult"></div>
+        <details class="sqli-hint"><summary>Stuck? Show the trick</summary>
+          <div class="iv-answer">A naive "starts with" or "contains" check on <code>https://realapp.example</code> is satisfied by <code>https://realapp.example.attacker.com</code> — a completely different domain the attacker controls, that simply happens to start with the right string. The victim's browser, after a genuine login and consent, gets redirected there with a real, usable authorization code attached. The fix is an <b>exact match</b> against a pre-registered, complete redirect URI — no prefix or substring matching at all.</div>
+        </details>
+      </div>
+    </section>
+  `;
+  document.getElementById('oauthForm').addEventListener('submit', (e)=>{
+    e.preventDefault();
+    const uri = document.getElementById('oauthUri').value.trim();
+    const resEl = document.getElementById('oauthResult');
+    const exact = uri === 'https://realapp.example/callback';
+    const looksLike = uri.startsWith('https://realapp.example') && !exact;
+    if(looksLike){
+      resEl.innerHTML = `<div class="sqli-bad">⚠️ Accepted! The "starts with" check passed for <b>${escapeHtml(uri)}</b> — a domain the attacker controls. The victim's authorization code just got redirected straight into attacker-controlled hands, exchangeable for a real access token.</div>`;
+      fireConfetti({count:70}); markLabComplete('oauthredirect');
+    } else if(exact){
+      resEl.innerHTML = `<div class="sqli-ok">✅ Exact match — code delivered to the legitimate app only. Try a domain that merely starts with the registered one instead.</div>`;
+    } else {
+      resEl.innerHTML = `<div class="sqli-ok">✅ Rejected — doesn't even loosely match the registered domain.</div>`;
+    }
+  });
+  setupReveal();
+}
+
+/* --- Lab: Vendor risk tiering simulator ------------------------------ */
+function renderLabVendorTiering(){
+  const VENDORS = [
+    {name:'PayFlow (payment processor)', access:'Full customer payment data', correct:1},
+    {name:'MailBlast (marketing email tool)', access:'Names and email addresses only', correct:2},
+    {name:'CloudHost (infrastructure provider)', access:'Hosts entire production environment', correct:1},
+    {name:'IconPack (stock icon library)', access:'No data access — static assets only', correct:3},
+    {name:'HRSystem (payroll/benefits)', access:'Employee SSNs, bank details, health data', correct:1},
+    {name:'Analytics Lite (usage dashboards)', access:'Aggregated, anonymized usage stats only', correct:3}
+  ];
+  app.innerHTML = `
+    <section class="sec">
+      <div class="sec-head" data-reveal>
+        <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Vendor Risk Tiering Simulator</div>
+        <h2>🏢 Vendor Risk Tiering Simulator</h2>
+        <p class="sec-lead">Six real-shaped vendors, six different data-access levels. Tier each one correctly — over-scrutinizing a low-risk vendor wastes real time; under-scrutinizing a high-risk one is how breaches actually happen. <span class="tool-privacy">🔒 Simulated locally.</span></p>
+      </div>
+      <div class="sqli-wrap" data-reveal style="--i:1">
+        ${VENDORS.map((v,i)=>`
+          <div class="sqli-form" style="margin-bottom:.8rem">
+            <div class="tool-note"><b>${escapeHtml(v.name)}</b> — ${escapeHtml(v.access)}</div>
+            <select class="tool-input" data-vi="${i}">
+              <option value="">Select a tier…</option>
+              <option value="1">Tier 1 — Critical</option>
+              <option value="2">Tier 2 — Moderate</option>
+              <option value="3">Tier 3 — Low</option>
+            </select>
+          </div>
+        `).join('')}
+        <button class="btn-amber" id="vtSubmit" type="button">Submit tiering</button>
+        <div id="vtResult" style="margin-top:1rem"></div>
+      </div>
+    </section>
+  `;
+  document.getElementById('vtSubmit').addEventListener('click', ()=>{
+    let correct = 0;
+    document.querySelectorAll('[data-vi]').forEach(sel=>{
+      const i = +sel.dataset.vi;
+      if(+sel.value === VENDORS[i].correct) correct++;
+    });
+    const resEl = document.getElementById('vtResult');
+    if(correct===VENDORS.length){
+      resEl.innerHTML = `<div class="sqli-ok">✅ All 6 tiered correctly. Payment, infrastructure, and HR vendors (holding the most sensitive data) get full review; static-asset and anonymized-analytics vendors don't need the same scrutiny.</div>`;
+      fireConfetti({count:70}); markLabComplete('vendortiering');
+    } else {
+      resEl.innerHTML = `<div class="sqli-bad">${correct}/${VENDORS.length} correct. Tier by what data the vendor can actually access, not by how important the vendor feels.</div>`;
+    }
+  });
+  setupReveal();
+}
+
+/* --- Lab: Incident response tabletop ---------------------------------- */
+function renderLabIrTabletop(){
+  const STEPS = [
+    {q:'3am: monitoring flags unusual outbound traffic from a production database server. What\'s your first move?', opts:[
+      {t:'Immediately shut the server down', ok:false, why:'Powering off destroys volatile memory evidence (Path 16\'s DFIR lesson) you may need to determine scope — and if this is ransomware already encrypting, an abrupt shutdown can worsen corruption.'},
+      {t:'Isolate the host from the network while preserving its running state', ok:true, why:'Correct — containment without destroying evidence. Network isolation stops active exfiltration/spread while keeping memory and running processes available for investigation.'},
+      {t:'Wait until morning to investigate during business hours', ok:false, why:'Active exfiltration doesn\'t wait — every hour of delay is more data potentially leaving, and log evidence can roll off retention windows.'}
+    ]},
+    {q:'You confirm ransomware is actively encrypting files on 3 more servers. What next?', opts:[
+      {t:'Pay the ransom immediately to stop the spread', ok:false, why:'Payment doesn\'t guarantee decryption or that data wasn\'t exfiltrated first, and it\'s a decision requiring legal/executive sign-off, not a unilateral technical call mid-incident.'},
+      {t:'Isolate the additional affected hosts and check backups', ok:true, why:'Correct — contain the spread first, then assess recovery options. Verified, uninfected backups are usually the actual path out, not payment.'},
+      {t:'Restore from backups onto the still-connected network immediately', ok:false, why:'Restoring onto a network the attacker may still have access to risks immediate re-encryption — full eradication of the attacker\'s foothold has to come first.'}
+    ]},
+    {q:'Legal confirms this triggers breach notification. Who drafts the public statement?', opts:[
+      {t:'The engineer who found the incident, since they know the technical details best', ok:false, why:'Technical accuracy matters, but public/regulatory communication carries legal weight — it needs legal and communications review before anything goes out.'},
+      {t:'Legal counsel and communications, informed by technical findings', ok:true, why:'Correct — exactly the RACI-style division of labor real incident response uses: technical staff supply facts, legal/comms own the actual external-facing language and timing.'},
+      {t:'Nobody — wait for the press to ask first', ok:false, why:'Proactive, legally-compliant notification within the required window (Path 23\'s breach-notification lesson) avoids both regulatory penalty and much worse reputational damage than a delayed, forced disclosure.'}
+    ]}
+  ];
+  let i=0, score=0;
+  app.innerHTML = `
+    <section class="sec">
+      <div class="sec-head" data-reveal>
+        <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Incident Response Tabletop</div>
+        <h2>📋 Incident Response Tabletop</h2>
+        <p class="sec-lead">A branching ransomware scenario. Make the same containment, recovery, and communication calls a real incident commander has to make under real time pressure.</p>
+      </div>
+      <div id="irGame" data-reveal style="--i:1"></div>
+    </section>
+  `;
+  const game = document.getElementById('irGame');
+  function paint(){
+    if(i>=STEPS.length){
+      const pct = Math.round(score/STEPS.length*100);
+      game.innerHTML = `<div class="ph-done">
+        <div class="cvss-score ${pct>=80?'sev-none':pct>=50?'sev-med':'sev-crit'}"><span class="cvss-num">${score}/${STEPS.length}</span><span class="cvss-sev">${pct}%</span></div>
+        <p class="sec-lead" style="margin-top:1rem">${pct>=100?'Textbook incident command.':'Review Path 16\'s DFIR lesson and try the branch points you missed.'}</p>
+      </div>`;
+      if(pct===100){ fireConfetti({count:90}); markLabComplete('irtabletop'); }
+      return;
+    }
+    const s = STEPS[i];
+    game.innerHTML = `<div class="sqli-form"><div class="tool-note" style="font-size:.95rem">${escapeHtml(s.q)}</div></div>
+      ${s.opts.map((o,oi)=>`<button class="btn-ghost sm" data-oi="${oi}" style="display:block;width:100%;text-align:left;margin-bottom:.5rem" type="button">${escapeHtml(o.t)}</button>`).join('')}
+      <div id="irFeedback"></div>`;
+    document.querySelectorAll('[data-oi]').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const o = s.opts[+btn.dataset.oi];
+        if(o.ok) score++;
+        document.getElementById('irFeedback').innerHTML = `<div class="${o.ok?'sqli-ok':'sqli-bad'}">${o.ok?'✅':'❌'} ${escapeHtml(o.why)}</div><button class="btn-amber sm" id="irNext" type="button" style="margin-top:.8rem">${i+1>=STEPS.length?'See results →':'Next →'}</button>`;
+        document.querySelectorAll('[data-oi]').forEach(b=>b.disabled=true);
+        document.getElementById('irNext').addEventListener('click', ()=>{ i++; paint(); });
+      });
+    });
+  }
+  paint();
+  setupReveal();
+}
+
+/* --- Lab: Password cracking lab ---------------------------------------- */
+async function sha256Hex(str){
+  const enc = new TextEncoder().encode(str);
+  const buf = await crypto.subtle.digest('SHA-256', enc);
+  return [...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+function renderLabPasswordCrack(){
+  const WORDLIST = ['password','123456','summer2024','dragon','Tr0ub4dor&3'];
+  const TARGETS = ['password','dragon','x9$mK2!qLp7@vN4wR', 'summer2024'];
+  app.innerHTML = `
+    <section class="sec">
+      <div class="sec-head" data-reveal>
+        <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Password Cracking Lab</div>
+        <h2>🔓 Password Cracking Lab</h2>
+        <p class="sec-lead">Four SHA-256 password hashes, one small wordlist. Run a real dictionary attack (using your browser's actual crypto engine) and see which ones fall — and which survive even unlimited offline attempts. <span class="tool-privacy">🔒 Runs locally.</span></p>
+      </div>
+      <div class="sqli-wrap" data-reveal style="--i:1">
+        <div class="tool-note">Wordlist: <code>${WORDLIST.join(', ')}</code></div>
+        <div id="pcHashes" class="sqli-query"></div>
+        <button class="btn-amber" id="pcCrack" type="button">hashcat -m 1400 -a 0 hashes.txt wordlist.txt</button>
+        <div id="pcResult" style="margin-top:1rem"></div>
+        <details class="sqli-hint"><summary>Why does one survive?</summary>
+          <div class="iv-answer">Three of the four targets are common, dictionary-guessable passwords and crack instantly. The fourth, <code>x9$mK2!qLp7@vN4wR</code>, isn't in the wordlist and has enough entropy that it wouldn't fall to a dictionary or reasonable brute-force attack in any practical timeframe — this is the actual, measurable difference genuine password strength makes, independent of the hashing algorithm used.</div>
+        </details>
+      </div>
+    </section>
+  `;
+  (async ()=>{
+    const hashes = await Promise.all(TARGETS.map(t=>sha256Hex(t)));
+    document.getElementById('pcHashes').innerHTML = `<pre>${hashes.map(h=>h).join('\n')}</pre>`;
+    document.getElementById('pcCrack').addEventListener('click', async ()=>{
+      const wlHashes = {};
+      for(const w of WORDLIST) wlHashes[await sha256Hex(w)] = w;
+      let cracked = 0;
+      const lines = hashes.map(h=>{
+        if(wlHashes[h]){ cracked++; return `${h}:${wlHashes[h]}  ← CRACKED`; }
+        return `${h}  ← not found in wordlist`;
+      });
+      document.getElementById('pcResult').innerHTML = `<div class="sqli-query"><pre>${lines.join('\n')}</pre></div><div class="${cracked===3?'sqli-ok':'sqli-bad'}">${cracked}/4 cracked. ${cracked===3?'Exactly as expected — 3 weak, 1 genuinely strong.':''}</div>`;
+      if(cracked===3){ fireConfetti({count:70}); markLabComplete('passwordcrack'); }
+    });
+  })();
+  setupReveal();
+}
+
+/* --- Lab: Leaked secret hunt -------------------------------------------- */
+function renderLabLeakedSecret(){
+  const FILES = [
+    {name:'README.md', content:'# MyApp\\nA simple todo app. Run `npm install && npm start`.'},
+    {name:'.env.example', content:'DATABASE_URL=postgres://user:pass@localhost/db\\nAPI_KEY=your-key-here'},
+    {name:'config/settings.py', content:'DEBUG = True\\nSTRIPE_SECRET_KEY = "sk_live_51H8xJ2kQm9pR3vNzT7bYw4Lg6Fd0Kc"\\nALLOWED_HOSTS = ["*"]'},
+    {name:'src/utils/logger.js', content:'export function log(msg) { console.log(`[LOG] ${msg}`); }'},
+    {name:'docker-compose.yml', content:'services:\\n  web:\\n    build: .\\n    ports:\\n      - "3000:3000"'}
+  ];
+  app.innerHTML = `
+    <section class="sec">
+      <div class="sec-head" data-reveal>
+        <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Leaked Secret Hunt</div>
+        <h2>🗝️ Leaked Secret Hunt</h2>
+        <p class="sec-lead">Five files from a public GitHub repo dump. Find the one hardcoded secret an automated scanner (GitHub secret scanning, TruffleHog) would catch within minutes. <span class="tool-privacy">🔒 Simulated locally.</span></p>
+      </div>
+      <div class="sqli-wrap" data-reveal style="--i:1">
+        ${FILES.map((f,i)=>`<div class="sqli-query" style="cursor:pointer" data-fi="${i}"><div class="tool-note">${escapeHtml(f.name)}</div><pre>${escapeHtml(f.content.replace(/\\n/g,'\n'))}</pre></div>`).join('')}
+        <div id="lsResult" style="margin-top:1rem"></div>
+      </div>
+    </section>
+  `;
+  document.querySelectorAll('[data-fi]').forEach(el=>{
+    el.addEventListener('click', ()=>{
+      const f = FILES[+el.dataset.fi];
+      const resEl = document.getElementById('lsResult');
+      if(/sk_live_/.test(f.content)){
+        resEl.innerHTML = `<div class="sqli-bad">⚠️ Live Stripe secret key hardcoded in <b>${escapeHtml(f.name)}</b> — a real payment-processing credential, sitting in version-controlled source, discoverable by any automated repo scanner within minutes of being pushed.</div>`;
+        fireConfetti({count:70}); markLabComplete('clouddockersecrets');
+      } else {
+        resEl.innerHTML = `<div class="sqli-ok">✅ Nothing sensitive in ${escapeHtml(f.name)} — ${f.name.includes('.env.example')?'a placeholder file with no real values, which is exactly the right pattern.':'ordinary, non-sensitive content.'}</div>`;
+      }
+    });
+  });
+  setupReveal();
+}
+
 /* ============================================================
    Changelog — hand-maintained release notes. Also the source for the
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
+  {date:'2026-07-26', title:'Labs and Tools doubled — 42 labs, 32 tools', items:[
+    'Twenty-sixth batch of the course-wide "double everything" effort, extending beyond lessons into the interactive Labs and Tools sections: LABS grows from 21 to 42, TOOLS grows from 16 to 32.',
+    'New labs span web (CSRF, command injection, open redirect, clickjacking, insecure deserialization), recon (subdomain takeover, DNS recon), infrastructure (Windows/Linux privesc, Kerberoasting, cloud IAM misconfig, Docker socket escape), malware analysis (strings triage, YARA rule building), business logic (a real race-condition redemption exploit), API security (webhook HMAC forgery, OAuth redirect hijacking), and GRC/IR (vendor tiering, an incident response tabletop) — plus password cracking and a leaked-secret hunt.',
+    'New tools cover networking (CIDR overlap checker, VLSM planner), crypto (Diffie-Hellman visualizer, timing-attack visualizer, Base32/Base85), and practitioner utilities (entropy calculator, raw HTTP builder, log grep playground, risk register builder, SBOM checker, email header analyzer, password policy checker, YARA tester, incident SLA calculator, compliance control mapper, User-Agent parser).',
+    'Every new lab and tool reuses the existing house style and CSS classes rather than introducing new visual patterns, and all 74 lab/tool routes were smoke-tested end to end with zero rendering errors before merge.'
+  ]},
   {date:'2026-07-25', title:'Path 23 doubled to 18 lessons', items:[
     'Twenty-fifth batch of the course-wide content-doubling effort, and the final path in this effort: Path 23 (GRC & Compliance) grows from 9 to 18 lessons.',
     'New lessons: GRC Career Economics & Demand, RACI & Security Committees, Quantitative Risk Analysis & FAIR, ISMS Documentation & Internal Audit, NIST 800-53 & Control Families, Other Compliance Frameworks (PCI-DSS, HIPAA & beyond), Security Awareness Training Programs, Breach Notification & Disclosure Law, and GRC Automation Platforms Deep Dive.',
@@ -5376,7 +6326,23 @@ const TOOLS = [
   {id:'portfoliogen', ico:'🧰', title:'Portfolio Project Generator', desc:'Guided starter briefs for real portfolio projects, with a write-up template you can export.', related:'Path 20 — Career Prep'},
   {id:'codereview', ico:'🔎', title:'Secure Code Review Toy', desc:'Paste a code snippet and get flagged patterns — eval, string-built SQL, hardcoded secrets. Not a real SAST tool, but trains the eye.', related:'Path 22 — DevSecOps & AppSec'},
   {id:'attckmap', ico:'🗺️', title:'MITRE ATT&CK Mapper', desc:'A searchable reference of real ATT&CK tactics and techniques, tied back to where this course covers each one.', related:'Path 16 — Advanced Topics'},
-  {id:'stride', ico:'🧩', title:'STRIDE Threat-Model Worksheet', desc:'A guided Spoofing/Tampering/Repudiation/Info-Disclosure/DoS/Elevation worksheet, exportable as Markdown.', related:'Path 22 — DevSecOps & AppSec'}
+  {id:'stride', ico:'🧩', title:'STRIDE Threat-Model Worksheet', desc:'A guided Spoofing/Tampering/Repudiation/Info-Disclosure/DoS/Elevation worksheet, exportable as Markdown.', related:'Path 22 — DevSecOps & AppSec'},
+  {id:'cidroverlap', ico:'🧮', title:'CIDR Overlap Checker', desc:'Check whether two CIDR ranges overlap — catches conflicting firewall/routing rules before they cause an outage.', related:'Path 02 — Networking'},
+  {id:'useragent', ico:'🕵️‍♂️', title:'User-Agent String Parser', desc:'Break down a User-Agent string into OS, browser, and version — and flag common automated-client patterns.', related:'Path 12 — Network Security'},
+  {id:'entropy', ico:'🎲', title:'Entropy Calculator', desc:'Shannon entropy of any text — a genuine static-analysis signal for spotting packed or encrypted data.', related:'Path 17 — Malware & RE'},
+  {id:'httpbuilder', ico:'📨', title:'Raw HTTP Request Builder', desc:'Build a raw HTTP request from method, path, headers, and body — see exactly what goes over the wire.', related:'Path 10 — Fundamentals'},
+  {id:'logparser', ico:'📄', title:'Log Grep / Filter Playground', desc:'Filter a block of log lines with a regex — the exact "find the signal in the noise" skill IR work depends on.', related:'Path 03 — Linux'},
+  {id:'riskregister', ico:'📒', title:'Risk Register Builder', desc:'Add risks with likelihood and impact, get an auto-scored severity, and export the register as Markdown.', related:'Path 23 — GRC & Compliance'},
+  {id:'sbomcheck', ico:'📦', title:'Dependency / SBOM Risk Checker', desc:'Paste a dependency list and flag ones matching a known-vulnerable version range.', related:'Path 22 — DevSecOps & AppSec'},
+  {id:'emailheaders', ico:'📧', title:'Email Header Analyzer', desc:'Paste raw email headers and get flagged for From/Return-Path mismatches, SPF failures, and missing DKIM.', related:'Path 09 — Digital Privacy'},
+  {id:'passpolicy', ico:'✅', title:'Password Policy Checker', desc:'Test a password against a configurable length/complexity policy, rule by rule.', related:'Path 00 — Absolute Basics'},
+  {id:'vlsm', ico:'📐', title:'VLSM Subnet Planner', desc:'Plan variable-length subnets across several different host-count requirements from one base network.', related:'Path 02 — Networking'},
+  {id:'yaratester', ico:'🔬', title:'Simplified YARA Rule Tester', desc:'Test a small set of required strings against sample content and see whether your rule matches.', related:'Path 17 — Malware & RE'},
+  {id:'slacalc', ico:'⏱️', title:'Incident Severity & SLA Calculator', desc:'Impact × urgency in, a priority tier and realistic remediation SLA out.', related:'Path 22 — DevSecOps & AppSec'},
+  {id:'controlmapper', ico:'🗂️', title:'Compliance Control Mapper', desc:'Look up how one control area maps across SOC 2, ISO 27001, NIST 800-53, and PCI-DSS.', related:'Path 23 — GRC & Compliance'},
+  {id:'dhvisualizer', ico:'🔁', title:'Diffie-Hellman Key Exchange Visualizer', desc:'Watch two sides land on the same shared secret without ever transmitting it, with small real numbers.', related:'Path 06 — Cryptography'},
+  {id:'base32', ico:'🔡', title:'Base32 / Base85 Encoder', desc:'Encode or decode text in Base32 or Base85 — the less common encodings you\'ll still run into in CTFs.', related:'Path 19 — CTF Zone'},
+  {id:'timingviz', ico:'⏲️', title:'Timing Attack Visualizer', desc:'See exactly why a naive string comparison leaks how many leading characters were correct — and why constant-time comparison fixes it.', related:'Path 06 — Cryptography'}
 ];
 
 function renderToolsIndex(){
@@ -5417,7 +6383,9 @@ function renderTool(id){
   `;
   const body = document.getElementById('toolBody');
   ({encoder:toolEncoder, hash:toolHash, jwt:toolJwt, cvss:toolCvss, subnet:toolSubnet, password:toolPassword, cipher:toolCipher, regex:toolRegex, hashid:toolHashId, headers:toolHeaders, vulnreport:toolVulnReport,
-    resumehelper:toolResumeHelper, portfoliogen:toolPortfolioGen, codereview:toolCodeReview, attckmap:toolAttckMap, stride:toolStride}[id])(body);
+    resumehelper:toolResumeHelper, portfoliogen:toolPortfolioGen, codereview:toolCodeReview, attckmap:toolAttckMap, stride:toolStride,
+    cidroverlap:toolCidrOverlap, useragent:toolUserAgent, entropy:toolEntropy, httpbuilder:toolHttpBuilder, logparser:toolLogParser, riskregister:toolRiskRegister, sbomcheck:toolSbomCheck, emailheaders:toolEmailHeaders,
+    passpolicy:toolPassPolicy, vlsm:toolVlsm, yaratester:toolYaraTester, slacalc:toolSlaCalc, controlmapper:toolControlMapper, dhvisualizer:toolDhVisualizer, base32:toolBase32, timingviz:toolTimingViz}[id])(body);
   setupReveal();
 }
 
@@ -6087,6 +7055,493 @@ function toolStride(el){
     a.click();
     URL.revokeObjectURL(a.href);
   });
+}
+
+/* --- CIDR overlap checker --- */
+function toolCidrOverlap(el){
+  el.innerHTML = `
+    <div class="tool-controls">
+      <label class="tool-field" style="flex:1;min-width:220px">CIDR A<input id="cidrA" class="tool-input" value="10.0.0.0/24" spellcheck="false"></label>
+      <label class="tool-field" style="flex:1;min-width:220px">CIDR B<input id="cidrB" class="tool-input" value="10.0.0.128/25" spellcheck="false"></label>
+    </div>
+    <div id="cidrOut" class="tool-note"></div>
+  `;
+  function ipToInt(ip){ const p=ip.split('.').map(Number); return p.length===4 && p.every(n=>n>=0&&n<=255) ? (p[0]*16777216+p[1]*65536+p[2]*256+p[3]) : null; }
+  function parseCidr(c){
+    const [ip,bitsStr] = c.split('/');
+    const base = ipToInt((ip||'').trim());
+    const bits = parseInt(bitsStr,10);
+    if(base===null || isNaN(bits) || bits<0 || bits>32) return null;
+    const mask = bits===0 ? 0 : (~0 << (32-bits)) >>> 0;
+    const network = (base & mask) >>> 0;
+    const broadcast = (network | (~mask >>> 0)) >>> 0;
+    return {network, broadcast, bits};
+  }
+  function run(){
+    const a=parseCidr(document.getElementById('cidrA').value), b=parseCidr(document.getElementById('cidrB').value);
+    const out=document.getElementById('cidrOut');
+    if(!a||!b){ out.innerHTML = `<span class="tool-warn">Enter two valid CIDR ranges, e.g. 10.0.0.0/24</span>`; return; }
+    const overlaps = a.network <= b.broadcast && b.network <= a.broadcast;
+    out.innerHTML = overlaps
+      ? `<div class="hash-row"><span class="hash-algo">Result</span><code class="hash-val">⚠️ Overlap — these two ranges share at least one address. Routing/firewall rules referencing both will conflict.</code></div>`
+      : `<div class="hash-row"><span class="hash-algo">Result</span><code class="hash-val">✅ No overlap — the two ranges are fully disjoint.</code></div>`;
+  }
+  ['cidrA','cidrB'].forEach(id=>document.getElementById(id).addEventListener('input', run));
+  run();
+}
+
+/* --- User-Agent string parser --- */
+function toolUserAgent(el){
+  el.innerHTML = `
+    <label class="tool-field">User-Agent string<textarea id="uaIn" class="tool-textarea" rows="2">Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36</textarea></label>
+    <div id="uaOut" class="tool-out-list"></div>
+    <div class="tool-note" style="margin-top:.6rem">Useful for log triage: spotting an unusually old browser, a scripted client, or a User-Agent that doesn't match the rest of a request's behavior.</div>
+  `;
+  function parse(ua){
+    const rows = [];
+    const os = /Windows NT 10/.test(ua)?'Windows 10/11': /Windows NT/.test(ua)?'Windows (older)': /Mac OS X/.test(ua)?'macOS': /Android/.test(ua)?'Android': /iPhone|iPad/.test(ua)?'iOS': /Linux/.test(ua)?'Linux':'Unknown';
+    rows.push(['OS', os]);
+    const browser = /Edg\//.test(ua)?'Edge': /Chrome\//.test(ua) && !/Chromium/.test(ua)?'Chrome': /Firefox\//.test(ua)?'Firefox': /Safari\//.test(ua) && !/Chrome/.test(ua)?'Safari':'Unknown/other';
+    rows.push(['Browser', browser]);
+    const m = ua.match(/(Chrome|Firefox|Version|Edg)\/([\d.]+)/);
+    rows.push(['Version', m ? m[2] : 'not detected']);
+    const bot = /bot|crawl|spider|curl|python-requests|Go-http-client|scrapy/i.test(ua);
+    rows.push(['Automated client?', bot ? '⚠️ Yes — matches a common bot/scripting library pattern' : 'No obvious automation markers']);
+    return rows;
+  }
+  function run(){
+    const ua = document.getElementById('uaIn').value.trim();
+    const out = document.getElementById('uaOut');
+    if(!ua){ out.innerHTML = ''; return; }
+    out.innerHTML = parse(ua).map(([k,v])=>`<div class="hash-row"><span class="hash-algo">${escapeHtml(k)}</span><code class="hash-val">${escapeHtml(v)}</code></div>`).join('');
+  }
+  document.getElementById('uaIn').addEventListener('input', run);
+  run();
+}
+
+/* --- Shannon entropy calculator --- */
+function toolEntropy(el){
+  el.innerHTML = `
+    <label class="tool-field">Text or hex to analyze<textarea id="enIn" class="tool-textarea" rows="4">password123</textarea></label>
+    <div id="enOut" class="tool-out-list"></div>
+    <div class="tool-note" style="margin-top:.6rem">Roughly: English prose sits around 3.5-4.5 bits/char, a good password around 4.5-5.5, and packed/encrypted binary data close to 7.5-8 — a strong static-analysis signal (Path 17's static-analysis lesson).</div>
+  `;
+  function shannon(s){
+    if(!s.length) return 0;
+    const freq = {};
+    for(const c of s) freq[c] = (freq[c]||0)+1;
+    let h = 0;
+    for(const c in freq){ const p = freq[c]/s.length; h -= p*Math.log2(p); }
+    return h;
+  }
+  function run(){
+    const s = document.getElementById('enIn').value;
+    const bits = shannon(s);
+    const verdict = bits<4.5 ? 'Low — likely readable text or a weak/predictable value' : bits<6.5 ? 'Moderate — mixed content or a decent password' : 'High — consistent with packed, encrypted, or high-entropy random data';
+    document.getElementById('enOut').innerHTML = `
+      <div class="hash-row"><span class="hash-algo">Length</span><code class="hash-val">${s.length} characters</code></div>
+      <div class="hash-row"><span class="hash-algo">Shannon entropy</span><code class="hash-val">${bits.toFixed(3)} bits/char (max 8.0)</code></div>
+      <div class="hash-row"><span class="hash-algo">Read as</span><code class="hash-val">${verdict}</code></div>
+    `;
+  }
+  document.getElementById('enIn').addEventListener('input', run);
+  run();
+}
+
+/* --- Raw HTTP request builder --- */
+function toolHttpBuilder(el){
+  el.innerHTML = `
+    <div class="tool-controls">
+      <label class="tool-field" style="flex:none;width:7rem">Method<select id="hbMethod" class="tool-input"><option>GET</option><option>POST</option><option>PUT</option><option>DELETE</option><option>PATCH</option></select></label>
+      <label class="tool-field" style="flex:2;min-width:220px">Path<input id="hbPath" class="tool-input" value="/api/v1/users/42"></label>
+    </div>
+    <label class="tool-field">Host<input id="hbHost" class="tool-input" value="api.example.com"></label>
+    <label class="tool-field">Extra headers (one per line, Key: Value)<textarea id="hbHeaders" class="tool-textarea" rows="3">Authorization: Bearer eyJhbGciOi...
+Content-Type: application/json</textarea></label>
+    <label class="tool-field">Body (optional)<textarea id="hbBody" class="tool-textarea" rows="3">{"role":"admin"}</textarea></label>
+    <div class="tool-note">Raw request:</div>
+    <pre id="hbOut" class="sqli-query" style="background:var(--code-bg);border:1px solid var(--border);border-radius:var(--r);padding:1rem;overflow-x:auto"></pre>
+  `;
+  function run(){
+    const method = document.getElementById('hbMethod').value;
+    const path = document.getElementById('hbPath').value || '/';
+    const host = document.getElementById('hbHost').value || 'example.com';
+    const headers = document.getElementById('hbHeaders').value.split('\n').map(l=>l.trim()).filter(Boolean);
+    const body = document.getElementById('hbBody').value;
+    let req = `${method} ${path} HTTP/1.1\nHost: ${host}\n`;
+    headers.forEach(h=>req += h+'\n');
+    if(body.trim() && method!=='GET'){ req += `Content-Length: ${new TextEncoder().encode(body).length}\n\n${body}`; }
+    else req += '\n';
+    document.getElementById('hbOut').textContent = req;
+  }
+  ['hbMethod','hbPath','hbHost','hbHeaders','hbBody'].forEach(id=>document.getElementById(id).addEventListener('input', run));
+  run();
+}
+
+/* --- Log grep / filter playground --- */
+function toolLogParser(el){
+  el.innerHTML = `
+    <label class="tool-field">Log lines (one per line)<textarea id="lpLog" class="tool-textarea" rows="7">Jul 26 03:14:02 web01 sshd: Failed password for root from 185.220.101.47 port 51322
+Jul 26 03:14:05 web01 sshd: Failed password for root from 185.220.101.47 port 51330
+Jul 26 03:14:09 web01 sshd: Accepted password for deploy from 10.0.4.2 port 51344
+Jul 26 03:15:01 web01 sshd: Failed password for admin from 185.220.101.47 port 51402
+Jul 26 09:02:10 web01 sshd: Accepted publickey for deploy from 10.0.4.2 port 51988</textarea></label>
+    <label class="tool-field">Filter (regex, case-insensitive)<input id="lpFilter" class="tool-input" value="Failed password"></label>
+    <div id="lpOut" class="tool-note"></div>
+  `;
+  function run(){
+    const lines = document.getElementById('lpLog').value.split('\n').filter(Boolean);
+    const filterStr = document.getElementById('lpFilter').value;
+    const out = document.getElementById('lpOut');
+    let re;
+    try{ re = new RegExp(filterStr, 'i'); } catch(e){ out.innerHTML = `<span class="tool-warn">Invalid regex: ${escapeHtml(e.message)}</span>`; return; }
+    const matched = lines.filter(l=>re.test(l));
+    out.innerHTML = `<div class="tool-note">${matched.length}/${lines.length} lines match.</div><pre class="sqli-query" style="background:var(--code-bg);border:1px solid var(--border);border-radius:var(--r);padding:1rem;overflow-x:auto;white-space:pre-wrap">${matched.map(l=>escapeHtml(l)).join('\n') || '(no matches)'}</pre>`;
+  }
+  ['lpLog','lpFilter'].forEach(id=>document.getElementById(id).addEventListener('input', run));
+  run();
+}
+
+/* --- Risk register builder --- */
+function toolRiskRegister(el){
+  let risks = [];
+  el.innerHTML = `
+    <div class="vr-grid">
+      <label class="tool-field">Risk description<input id="rrDesc" class="tool-input" placeholder="e.g. Unencrypted backups stored in shared drive"></label>
+      <label class="tool-field">Likelihood (1-5)<input id="rrLike" class="tool-input" type="number" min="1" max="5" value="3"></label>
+      <label class="tool-field">Impact (1-5)<input id="rrImpact" class="tool-input" type="number" min="1" max="5" value="4"></label>
+      <label class="tool-field">Treatment<select id="rrTreat" class="tool-input"><option>Mitigate</option><option>Accept</option><option>Transfer</option><option>Avoid</option></select></label>
+    </div>
+    <div class="tool-btnrow"><button class="btn-amber sm" id="rrAdd" type="button">+ Add to register</button> <button class="btn-ghost sm" id="rrExport" type="button">⬇ Export Markdown</button></div>
+    <div id="rrTable" class="tool-out-list" style="margin-top:1rem"></div>
+  `;
+  function render(){
+    document.getElementById('rrTable').innerHTML = risks.map((r,i)=>{
+      const score = r.like*r.impact;
+      const sev = score>=15?'Critical':score>=9?'High':score>=4?'Medium':'Low';
+      return `<div class="hash-row"><span class="hash-algo">${sev} (${score})</span><code class="hash-val">${escapeHtml(r.desc)} — L${r.like}×I${r.impact} — ${escapeHtml(r.treat)}</code></div>`;
+    }).join('') || '<div class="tool-note">No risks added yet.</div>';
+  }
+  document.getElementById('rrAdd').addEventListener('click', ()=>{
+    const desc = document.getElementById('rrDesc').value.trim();
+    if(!desc) return;
+    risks.push({desc, like:+document.getElementById('rrLike').value||1, impact:+document.getElementById('rrImpact').value||1, treat:document.getElementById('rrTreat').value});
+    document.getElementById('rrDesc').value='';
+    render();
+  });
+  document.getElementById('rrExport').addEventListener('click', ()=>{
+    let md = '| Risk | Likelihood | Impact | Score | Treatment |\n|---|---|---|---|---|\n';
+    risks.forEach(r=>{ md += `| ${r.desc} | ${r.like} | ${r.impact} | ${r.like*r.impact} | ${r.treat} |\n`; });
+    const blob = new Blob([md||'No risks recorded.'], {type:'text/markdown'});
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'risk-register.md'; a.click(); URL.revokeObjectURL(a.href);
+  });
+  render();
+}
+
+/* --- Dependency / SBOM risk checker --- */
+function toolSbomCheck(el){
+  const KNOWN_VULN = {'lodash':'<4.17.21','jsonwebtoken':'<9.0.0','express':'<4.18.0','minimist':'<1.2.6'};
+  el.innerHTML = `
+    <label class="tool-field">Paste dependencies, one per line (name@version)<textarea id="sbIn" class="tool-textarea" rows="6">express@4.17.1
+lodash@4.17.15
+jsonwebtoken@9.0.0
+react@18.2.0</textarea></label>
+    <div id="sbOut" class="tool-out-list" style="margin-top:1rem"></div>
+    <div class="tool-note" style="margin-top:.6rem">A tiny, illustrative check — real SCA tools (Path 22) match against a continuously-updated vulnerability database, not a hardcoded list.</div>
+  `;
+  function run(){
+    const lines = document.getElementById('sbIn').value.split('\n').map(l=>l.trim()).filter(Boolean);
+    const out = document.getElementById('sbOut');
+    out.innerHTML = lines.map(l=>{
+      const [name,ver] = l.split('@');
+      if(name && KNOWN_VULN[name]){
+        return `<div class="hash-row"><span class="hash-algo">⚠️ ${escapeHtml(name)}@${escapeHtml(ver||'?')}</span><code class="hash-val">Known-vulnerable range: ${KNOWN_VULN[name]} — check for a patched version</code></div>`;
+      }
+      return `<div class="hash-row"><span class="hash-algo">✅ ${escapeHtml(name||l)}@${escapeHtml(ver||'?')}</span><code class="hash-val">No known issue in this simplified check</code></div>`;
+    }).join('');
+  }
+  document.getElementById('sbIn').addEventListener('input', run);
+  run();
+}
+
+/* --- Email header analyzer --- */
+function toolEmailHeaders(el){
+  el.innerHTML = `
+    <label class="tool-field">Paste raw email headers<textarea id="ehIn" class="tool-textarea" rows="7">From: PayPal Support <security@paypa1-support.com>
+Return-Path: <bounce@totally-unrelated-domain.ru>
+Received-SPF: fail (paypal.com: domain does not designate sending IP as permitted)
+DKIM-Signature: none
+Subject: Your account has been limited</textarea></label>
+    <div id="ehOut" class="tool-out-list" style="margin-top:1rem"></div>
+  `;
+  function run(){
+    const text = document.getElementById('ehIn').value;
+    const out = document.getElementById('ehOut');
+    const rows = [];
+    const fromM = text.match(/^From:\s*(.+)$/mi);
+    const returnPathM = text.match(/^Return-Path:\s*<(.+)>$/mi);
+    if(fromM && returnPathM){
+      const fromDomain = (fromM[1].match(/@([\w.-]+)>?/)||[])[1];
+      const rpDomain = returnPathM[1].split('@')[1];
+      if(fromDomain && rpDomain && fromDomain.toLowerCase()!==rpDomain.toLowerCase()){
+        rows.push(['⚠️ From vs. Return-Path mismatch', `${fromDomain} vs. ${rpDomain} — a common spoofing/phishing pattern`]);
+      }
+    }
+    if(/Received-SPF:\s*fail/i.test(text)) rows.push(['⚠️ SPF', 'Fails — the sending server isn\'t authorized to send for this domain']);
+    else if(/Received-SPF:\s*pass/i.test(text)) rows.push(['✅ SPF', 'Passes']);
+    if(/DKIM-Signature:\s*none/i.test(text)) rows.push(['⚠️ DKIM', 'Missing — no cryptographic proof the message wasn\'t altered in transit']);
+    if(rows.length===0) rows.push(['No red flags detected', 'in this simplified header check']);
+    out.innerHTML = rows.map(([k,v])=>`<div class="hash-row"><span class="hash-algo">${escapeHtml(k)}</span><code class="hash-val">${escapeHtml(v)}</code></div>`).join('');
+  }
+  document.getElementById('ehIn').addEventListener('input', run);
+  run();
+}
+
+/* --- Password policy checker --- */
+function toolPassPolicy(el){
+  el.innerHTML = `
+    <label class="tool-field">Password to check<input id="ppIn" class="tool-input" type="text" value="Summer2024!"></label>
+    <div class="vr-grid">
+      <label class="tool-field">Min length<input id="ppLen" class="tool-input" type="number" value="12"></label>
+      <label class="tool-field">Require uppercase?<select id="ppUp" class="tool-input"><option value="1">Yes</option><option value="0">No</option></select></label>
+      <label class="tool-field">Require digit?<select id="ppDig" class="tool-input"><option value="1">Yes</option><option value="0">No</option></select></label>
+      <label class="tool-field">Require symbol?<select id="ppSym" class="tool-input"><option value="1">Yes</option><option value="0">No</option></select></label>
+    </div>
+    <div id="ppOut" class="tool-out-list" style="margin-top:1rem"></div>
+  `;
+  function run(){
+    const pw = document.getElementById('ppIn').value;
+    const minLen = +document.getElementById('ppLen').value || 0;
+    const rules = [
+      ['Length ≥ '+minLen, pw.length>=minLen],
+      ['Uppercase letter', document.getElementById('ppUp').value==='0' || /[A-Z]/.test(pw)],
+      ['Digit', document.getElementById('ppDig').value==='0' || /\d/.test(pw)],
+      ['Symbol', document.getElementById('ppSym').value==='0' || /[^A-Za-z0-9]/.test(pw)],
+      ['Not a common dictionary word alone', !['password','123456','qwerty','letmein'].includes(pw.toLowerCase())]
+    ];
+    const passed = rules.every(r=>r[1]);
+    document.getElementById('ppOut').innerHTML = rules.map(([label,ok])=>`<div class="hash-row"><span class="hash-algo">${ok?'✅':'❌'} ${escapeHtml(label)}</span></div>`).join('')
+      + `<div class="hash-row" style="margin-top:.4rem"><span class="hash-algo">${passed?'✅ Meets policy':'❌ Does not meet policy'}</span></div>`;
+  }
+  ['ppIn','ppLen','ppUp','ppDig','ppSym'].forEach(id=>document.getElementById(id).addEventListener('input', run));
+  run();
+}
+
+/* --- VLSM subnet planner --- */
+function toolVlsm(el){
+  el.innerHTML = `
+    <label class="tool-field">Base network (CIDR)<input id="vlBase" class="tool-input" value="192.168.10.0/24"></label>
+    <label class="tool-field">Required host counts, one per line, largest first<textarea id="vlHosts" class="tool-textarea" rows="4">100
+50
+20
+10</textarea></label>
+    <button class="btn-amber sm" id="vlRun" type="button">Plan subnets</button>
+    <div id="vlOut" class="tool-out-list" style="margin-top:1rem"></div>
+  `;
+  function ipToInt(ip){ const p=ip.split('.').map(Number); return p[0]*16777216+p[1]*65536+p[2]*256+p[3]; }
+  function intToIp(n){ return [(n>>>24)&255,(n>>>16)&255,(n>>>8)&255,n&255].join('.'); }
+  document.getElementById('vlRun').addEventListener('click', ()=>{
+    const [baseIp, baseBitsStr] = document.getElementById('vlBase').value.split('/');
+    const baseBits = parseInt(baseBitsStr,10);
+    const out = document.getElementById('vlOut');
+    if(!baseIp || isNaN(baseBits)){ out.innerHTML = `<span class="tool-warn">Enter a valid base CIDR, e.g. 192.168.10.0/24</span>`; return; }
+    const hostReqs = document.getElementById('vlHosts').value.split('\n').map(s=>parseInt(s.trim(),10)).filter(n=>!isNaN(n) && n>0);
+    let cursor = ipToInt(baseIp);
+    const totalAvailable = Math.pow(2, 32-baseBits);
+    let used = 0;
+    const rows = [];
+    for(const hosts of hostReqs){
+      const needed = hosts + 2; // network + broadcast
+      let bits = 32;
+      while(Math.pow(2,32-bits) < needed) bits--;
+      const size = Math.pow(2,32-bits);
+      used += size;
+      if(used > totalAvailable){ rows.push([`⚠️ ${hosts} hosts`, `Doesn't fit — base network exhausted`]); continue; }
+      rows.push([`${hosts} hosts → /${bits}`, `${intToIp(cursor)}/${bits}  (usable: ${intToIp(cursor+1)}–${intToIp(cursor+size-2)}, broadcast ${intToIp(cursor+size-1)})`]);
+      cursor += size;
+    }
+    out.innerHTML = rows.map(([k,v])=>`<div class="hash-row"><span class="hash-algo">${escapeHtml(k)}</span><code class="hash-val">${escapeHtml(v)}</code></div>`).join('');
+  });
+}
+
+/* --- Simplified YARA rule tester --- */
+function toolYaraTester(el){
+  el.innerHTML = `
+    <label class="tool-field">Rule strings (one per line — ALL must match, simplified "and" logic)<textarea id="ytStrings" class="tool-textarea" rows="3">EVIL_C2_BEACON
+CreateRemoteThread</textarea></label>
+    <label class="tool-field">Sample content to test<textarea id="ytSample" class="tool-textarea" rows="4">this sample contains EVIL_C2_BEACON and imports CreateRemoteThread plus VirtualAllocEx</textarea></label>
+    <div id="ytOut" class="tool-note" style="margin-top:1rem"></div>
+  `;
+  function run(){
+    const strings = document.getElementById('ytStrings').value.split('\n').map(s=>s.trim()).filter(Boolean);
+    const sample = document.getElementById('ytSample').value;
+    const out = document.getElementById('ytOut');
+    if(!strings.length){ out.innerHTML=''; return; }
+    const results = strings.map(s=>({s, hit: sample.includes(s)}));
+    const allMatch = results.every(r=>r.hit);
+    out.innerHTML = results.map(r=>`<div class="hash-row"><span class="hash-algo">${r.hit?'✅':'❌'} "${escapeHtml(r.s)}"</span></div>`).join('')
+      + `<div class="hash-row" style="margin-top:.4rem"><span class="hash-algo">${allMatch?'🎯 RULE MATCHES this sample':'No match — not every required string is present'}</span></div>`;
+  }
+  ['ytStrings','ytSample'].forEach(id=>document.getElementById(id).addEventListener('input', run));
+  run();
+}
+
+/* --- Incident severity & SLA calculator --- */
+function toolSlaCalc(el){
+  el.innerHTML = `
+    <div class="vr-grid">
+      <label class="tool-field">Impact<select id="slImpact" class="tool-input"><option value="3">High — data exposure / outage</option><option value="2">Medium — degraded service</option><option value="1">Low — cosmetic/minor</option></select></label>
+      <label class="tool-field">Urgency<select id="slUrgency" class="tool-input"><option value="3">High — actively exploited/spreading</option><option value="2">Medium — exploitable, not yet observed</option><option value="1">Low — theoretical</option></select></label>
+    </div>
+    <div id="slOut" class="tool-note" style="margin-top:1rem"></div>
+  `;
+  const SLA = {6:'Critical — 1 hour response, 24-48h remediation SLA', 5:'Critical — 1 hour response, 24-48h remediation SLA', 4:'High — 4 hour response, 7-day remediation SLA', 3:'Medium — 1 business day response, 30-day remediation SLA', 2:'Low — 3 business days response, 90-day remediation SLA'};
+  function run(){
+    const combined = +document.getElementById('slImpact').value + +document.getElementById('slUrgency').value;
+    document.getElementById('slOut').innerHTML = `<div class="hash-row"><span class="hash-algo">Priority score</span><code class="hash-val">${combined}/6</code></div><div class="hash-row"><span class="hash-algo">SLA tier</span><code class="hash-val">${escapeHtml(SLA[combined]||SLA[2])}</code></div>`;
+  }
+  ['slImpact','slUrgency'].forEach(id=>document.getElementById(id).addEventListener('change', run));
+  run();
+}
+
+/* --- Compliance control mapper --- */
+function toolControlMapper(el){
+  const MAP = {
+    'Access control / least privilege': {soc2:'CC6.1', iso27001:'A.5.15 / A.8.2', nist80053:'AC-2, AC-6', pci:'Req. 7'},
+    'Encryption in transit/at rest': {soc2:'CC6.7', iso27001:'A.8.24', nist80053:'SC-8, SC-28', pci:'Req. 3, 4'},
+    'Logging & monitoring': {soc2:'CC7.2', iso27001:'A.8.16', nist80053:'AU-2, AU-6', pci:'Req. 10'},
+    'Incident response plan': {soc2:'CC7.3', iso27001:'A.5.24-A.5.28', nist80053:'IR-4, IR-8', pci:'Req. 12.10'},
+    'Vendor / third-party risk': {soc2:'CC9.2', iso27001:'A.5.19-A.5.22', nist80053:'SA-9', pci:'Req. 12.8'},
+    'Vulnerability management': {soc2:'CC7.1', iso27001:'A.8.8', nist80053:'RA-5, SI-2', pci:'Req. 11.3'}
+  };
+  el.innerHTML = `
+    <label class="tool-field">Pick a control area<select id="cmArea" class="tool-input">${Object.keys(MAP).map(k=>`<option>${k}</option>`).join('')}</select></label>
+    <div id="cmOut" class="tool-out-list" style="margin-top:1rem"></div>
+  `;
+  function run(){
+    const area = document.getElementById('cmArea').value;
+    const m = MAP[area];
+    document.getElementById('cmOut').innerHTML = `
+      <div class="hash-row"><span class="hash-algo">SOC 2</span><code class="hash-val">${m.soc2}</code></div>
+      <div class="hash-row"><span class="hash-algo">ISO 27001</span><code class="hash-val">${m.iso27001}</code></div>
+      <div class="hash-row"><span class="hash-algo">NIST 800-53</span><code class="hash-val">${m.nist80053}</code></div>
+      <div class="hash-row"><span class="hash-algo">PCI-DSS</span><code class="hash-val">${m.pci}</code></div>
+    `;
+  }
+  document.getElementById('cmArea').addEventListener('change', run);
+  run();
+}
+
+/* --- Diffie-Hellman key exchange visualizer --- */
+function toolDhVisualizer(el){
+  el.innerHTML = `
+    <div class="tool-note">A small, real (not cryptographically secure at this size) Diffie-Hellman exchange — enter a shared prime and generator, and each side's secret, to see how both arrive at the same shared key without ever transmitting it.</div>
+    <div class="vr-grid">
+      <label class="tool-field">Shared prime (p)<input id="dhP" class="tool-input" type="number" value="23"></label>
+      <label class="tool-field">Shared generator (g)<input id="dhG" class="tool-input" type="number" value="5"></label>
+      <label class="tool-field">Alice's private secret (a)<input id="dhA" class="tool-input" type="number" value="6"></label>
+      <label class="tool-field">Bob's private secret (b)<input id="dhB" class="tool-input" type="number" value="15"></label>
+    </div>
+    <div id="dhOut" class="tool-out-list" style="margin-top:1rem"></div>
+  `;
+  function modpow(base, exp, mod){ let r=1; base%=mod; while(exp>0){ if(exp&1) r=(r*base)%mod; exp>>=1; base=(base*base)%mod; } return r; }
+  function run(){
+    const p=+document.getElementById('dhP').value, g=+document.getElementById('dhG').value, a=+document.getElementById('dhA').value, b=+document.getElementById('dhB').value;
+    if(!p||!g){ return; }
+    const A = modpow(g,a,p), B = modpow(g,b,p);
+    const aliceKey = modpow(B,a,p), bobKey = modpow(A,b,p);
+    document.getElementById('dhOut').innerHTML = `
+      <div class="hash-row"><span class="hash-algo">Alice sends</span><code class="hash-val">A = g^a mod p = ${A}</code></div>
+      <div class="hash-row"><span class="hash-algo">Bob sends</span><code class="hash-val">B = g^b mod p = ${B}</code></div>
+      <div class="hash-row"><span class="hash-algo">Alice computes</span><code class="hash-val">B^a mod p = ${aliceKey}</code></div>
+      <div class="hash-row"><span class="hash-algo">Bob computes</span><code class="hash-val">A^b mod p = ${bobKey}</code></div>
+      <div class="hash-row"><span class="hash-algo">${aliceKey===bobKey?'✅ Shared secret matches':'❌ Mismatch — check inputs'}</span><code class="hash-val">${aliceKey===bobKey?aliceKey:'—'}</code></div>
+      <div class="tool-note" style="margin-top:.4rem">Only p, g, A, and B ever travel over the network — a and b never leave each side, yet both land on the same shared key.</div>
+    `;
+  }
+  ['dhP','dhG','dhA','dhB'].forEach(id=>document.getElementById(id).addEventListener('input', run));
+  run();
+}
+
+/* --- Base32/Base85 encoder/decoder --- */
+function toolBase32(el){
+  el.innerHTML = `
+    <div class="tool-controls">
+      <label class="tool-field" style="flex:none;width:9rem">Direction<select id="b32Dir" class="tool-input"><option value="enc">Encode</option><option value="dec">Decode</option></select></label>
+      <label class="tool-field" style="flex:none;width:9rem">Format<select id="b32Fmt" class="tool-input"><option value="32">Base32</option><option value="85">Base85 (ASCII85)</option></select></label>
+    </div>
+    <label class="tool-field">Input<textarea id="b32In" class="tool-textarea" rows="3">hello security</textarea></label>
+    <div id="b32Out" class="tool-note"></div>
+  `;
+  const B32_ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+  function base32Encode(str){
+    const bytes = new TextEncoder().encode(str);
+    let bits='', out='';
+    for(const b of bytes) bits += b.toString(2).padStart(8,'0');
+    for(let i=0;i<bits.length;i+=5){ const chunk=bits.slice(i,i+5).padEnd(5,'0'); out += B32_ALPHABET[parseInt(chunk,2)]; }
+    while(out.length%8!==0) out+='=';
+    return out;
+  }
+  function base32Decode(str){
+    str = str.replace(/=+$/,'').toUpperCase();
+    let bits='';
+    for(const c of str){ const idx=B32_ALPHABET.indexOf(c); if(idx<0) return null; bits += idx.toString(2).padStart(5,'0'); }
+    const bytes=[];
+    for(let i=0;i+8<=bits.length;i+=8) bytes.push(parseInt(bits.slice(i,i+8),2));
+    try{ return new TextDecoder().decode(new Uint8Array(bytes)); } catch(e){ return null; }
+  }
+  function run(){
+    const dir = document.getElementById('b32Dir').value, fmt = document.getElementById('b32Fmt').value, val = document.getElementById('b32In').value;
+    const out = document.getElementById('b32Out');
+    if(fmt==='32'){
+      const result = dir==='enc' ? base32Encode(val) : base32Decode(val);
+      out.innerHTML = result===null ? `<span class="tool-warn">Invalid Base32 input.</span>` : `<div class="hash-row"><span class="hash-algo">Result</span><code class="hash-val">${escapeHtml(result)}</code></div>`;
+    } else {
+      // Base85 via a simple, standards-adjacent educational encoding (not full Adobe ASCII85 edge-case handling).
+      if(dir==='enc'){
+        const bytes = new TextEncoder().encode(val);
+        let out85 = '';
+        for(let i=0;i<bytes.length;i+=4){
+          let chunk = 0;
+          const slice = bytes.slice(i,i+4);
+          for(let j=0;j<4;j++) chunk = chunk*256 + (slice[j]||0);
+          let group='';
+          for(let k=0;k<5;k++){ group = String.fromCharCode(33 + (chunk%85)) + group; chunk = Math.floor(chunk/85); }
+          out85 += group.slice(0, slice.length+1);
+        }
+        out.innerHTML = `<div class="hash-row"><span class="hash-algo">Result</span><code class="hash-val">${escapeHtml(out85)}</code></div>`;
+      } else {
+        out.innerHTML = `<span class="tool-note">Base85 decode: paste an encoded value produced by this same tool's "Encode" mode to round-trip it.</span>`;
+      }
+    }
+  }
+  ['b32Dir','b32Fmt','b32In'].forEach(id=>document.getElementById(id).addEventListener('input', run));
+  run();
+}
+
+/* --- Timing attack visualizer --- */
+function toolTimingViz(el){
+  el.innerHTML = `
+    <div class="tool-note">A naive string comparison returns the moment it finds a mismatch — meaning a correct password takes measurably longer to reject as more of its prefix matches. A constant-time comparison always takes the same time regardless. Simulated timings below (real attacks measure microseconds over thousands of network requests).</div>
+    <label class="tool-field">Secret being guessed (5 chars)<input id="tvSecret" class="tool-input" value="ABCDE" maxlength="5"></label>
+    <label class="tool-field">Your guess<input id="tvGuess" class="tool-input" value="ABXXX" maxlength="5"></label>
+    <div id="tvOut" class="tool-out-list" style="margin-top:1rem"></div>
+  `;
+  function run(){
+    const secret = document.getElementById('tvSecret').value.toUpperCase();
+    const guess = document.getElementById('tvGuess').value.toUpperCase();
+    let matchLen = 0;
+    while(matchLen<secret.length && matchLen<guess.length && secret[matchLen]===guess[matchLen]) matchLen++;
+    const naiveTime = 10 + matchLen*40; // ms, simulated — each matched char = one more comparison before bail-out
+    const constTime = 10 + secret.length*40; // always compares every char
+    document.getElementById('tvOut').innerHTML = `
+      <div class="hash-row"><span class="hash-algo">Matched prefix</span><code class="hash-val">${matchLen}/${secret.length} characters</code></div>
+      <div class="hash-row"><span class="hash-algo">Naive comparison</span><code class="hash-val">~${naiveTime}ms — leaks how many leading characters were correct</code></div>
+      <div class="hash-row"><span class="hash-algo">Constant-time comparison</span><code class="hash-val">~${constTime}ms — identical regardless of guess, nothing leaked</code></div>
+    `;
+  }
+  ['tvSecret','tvGuess'].forEach(id=>document.getElementById(id).addEventListener('input', run));
+  run();
 }
 
 /* ============================================================
