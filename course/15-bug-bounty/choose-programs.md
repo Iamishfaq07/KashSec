@@ -162,4 +162,4 @@ A program's scope lists `*.example.com` as in-scope. During recon, you discover 
 - [Bugcrowd — Vulnerability Rating Taxonomy](https://bugcrowd.com/vulnerability-rating-taxonomy) — understanding how severity maps to reward expectations.
 ???
 
-**Next up →** [Building a recon pipeline](#/lesson/15-bug-bounty/recon-pipeline)
+**Next up →** [Scope and legal boundaries](#/lesson/15-bug-bounty/scope-and-legal-boundaries)

@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Burp Suite for bug bounty workflow — Path 15 · KashSec Academy</title>
+<meta name="description" content="The recon pipeline lesson covered automated discovery tools like subfinder and httpx. This lesson covers the manual-testing counterpart most bounty hunters live in daily — directly connecting to Path ">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/15-bug-bounty/burp-suite-for-bb">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Burp Suite for bug bounty workflow — Path 15 · KashSec Academy">
+<meta property="og:description" content="The recon pipeline lesson covered automated discovery tools like subfinder and httpx. This lesson covers the manual-testing counterpart most bounty hunters live in daily — directly connecting to Path ">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/15-bug-bounty/burp-suite-for-bb">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Burp Suite for bug bounty workflow — Path 15 · KashSec Academy">
+<meta name="twitter:description" content="The recon pipeline lesson covered automated discovery tools like subfinder and httpx. This lesson covers the manual-testing counterpart most bounty hunters live in daily — directly connecting to Path ">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Burp Suite for bug bounty workflow — Path 15 · KashSec Academy","description":"The recon pipeline lesson covered automated discovery tools like subfinder and httpx. This lesson covers the manual-testing counterpart most bounty hunters live in daily — directly connecting to Path ","url":"https://kashsec.vercel.app/#/lesson/15-bug-bounty/burp-suite-for-bb","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/15-bug-bounty/burp-suite-for-bb">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 15 — Bug Bounty</a> · Burp Suite for bug bounty workflow</div>
+  <article><h1>Burp Suite for Bug Bounty Workflow</h1>
+<p>The recon pipeline lesson covered automated discovery tools like subfinder and httpx. This lesson covers the manual-testing counterpart most bounty hunters live in daily — directly connecting to Path 10&#39;s Burp Suite introduction, now applied specifically to bug bounty workflow rather than general web-app testing.</p>
+<h2>Recon output feeds directly into Burp</h2>
+<p>The recon pipeline&#39;s output — a list of live hosts and discovered endpoints from <code>httpx</code> and <code>gau</code> — isn&#39;t the finish line, it&#39;s the input to this lesson&#39;s actual manual testing phase. A genuinely common beginner mistake is treating automated recon as sufficient on its own; the real vulnerability hunting mostly happens after that list exists, working through it manually in Burp.</p>
+<h2>Proxy setup, revisited for scale</h2>
+<p>Path 10 covered basic Burp proxy configuration. For bug bounty work specifically, <strong>Target &gt; Scope</strong> configuration matters enormously more: adding a program&#39;s exact in-scope domains (from the previous lesson&#39;s scope-reading discipline) to Burp&#39;s scope settings means every other tab — Proxy history, Repeater, the Logger — can filter to only in-scope traffic, directly preventing the accidental out-of-scope testing the previous lesson warned about.</p>
+<h2>Repeater — the actual bug-hunting workhorse</h2>
+<p>Nearly all manual bug bounty testing happens in <strong>Repeater</strong>: capturing a request, sending it to Repeater, then methodically modifying parameters, headers, and values to observe how the application responds to each variation. This is the exact mechanism behind the hunting-idor lesson&#39;s two-account method — changing an ID parameter and resending is a Repeater operation, performed dozens or hundreds of times across a single target.</p>
+<h2>Burp extensions worth knowing</h2>
+<ul>
+<li><strong>Autorize</strong> — automatically resends every captured request as a lower-privileged user, directly automating the two-account IDOR-hunting method this path teaches manually</li>
+<li><strong>Param Miner</strong> — discovers hidden, unlinked parameters a target&#39;s code processes but never exposes in its visible UI, often a rich source of overlooked functionality</li>
+<li><strong>Logger++</strong> — retains and lets you search across the full history of requests/responses, useful when a pattern only becomes visible after testing dozens of endpoints</li>
+</ul>
+<h2>Building a testing checklist inside Burp</h2>
+<p>A genuinely practical habit: using Burp&#39;s <strong>Comments</strong> feature (right-click any request in history) to mark endpoints as &quot;tested — auth checked,&quot; &quot;tested — IDOR checked,&quot; or &quot;needs revisit,&quot; directly connecting to the systematic, checklist-driven testing culture Path 10&#39;s OWASP Testing Guide references — turning ad-hoc clicking around into a methodical, repeatable process that scales across a target with hundreds of endpoints.</p>
+<p>The paid Professional edition adds the active scanner and several time-saving extensions, but Community Edition&#39;s Proxy, Repeater, and Intruder are fully sufficient to find real, payable bugs — a genuinely low barrier to entry worth knowing before assuming a paid license is a prerequisite for serious bounty hunting.</p>
+<p>Why does configuring Burp&#39;s Target &gt; Scope specifically matter for bug bounty work, beyond just organizing the traffic view?</p>
+<details><summary>Show answer</summary>Beyond simple organization, scope configuration directly connects to the legal boundary the previous lesson emphasized: a bug bounty program only authorizes testing against its explicitly listed in-scope assets, and accidentally sending a crafted, potentially aggressive Repeater request to an out-of-scope domain (a third-party integration, an unrelated subdomain that happened to appear in browsing history) genuinely risks the same authorization problem as manually typing a request to the wrong target. Configuring scope correctly means Burp's various views (Proxy history, the Logger, and critically, tools like Intruder that send many automated requests) can filter or restrict activity to only the domains actually authorized for testing, turning a manual discipline ("remember to only test in-scope things") into a tool-enforced one that's much harder to violate by accident during a long, multi-hour testing session.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Target Scope</strong> — Burp&#39;s configuration restricting which domains its tools operate against.</li>
+<li><strong>Repeater</strong> — Burp&#39;s tool for manually modifying and resending individual requests, the primary bug-hunting workhorse.</li>
+<li><strong>Autorize</strong> — a Burp extension automating privilege-comparison testing across two accounts.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Recon output feeds directly into manual Burp testing — automated discovery finds the targets, Burp is where the actual vulnerability hunting happens.</li>
+<li>Repeater is the core workhorse tool, and it&#39;s the literal mechanism behind the two-account IDOR method taught later in this path.</li>
+<li>Configuring Target Scope correctly turns the previous lesson&#39;s legal-boundary discipline into a tool-enforced habit, not just a manual one to remember.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/15-bug-bounty/report-writing">Writing effective bug bounty reports</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/15-bug-bounty/burp-suite-for-bb";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

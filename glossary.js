@@ -688,6 +688,15 @@ const GLOSSARY = [
   "subTitle": "Why hackers love Linux"
  },
  {
+  "term": "Autorize",
+  "def": "a Burp extension automating privilege-comparison testing across two accounts.",
+  "pathId": "15-bug-bounty",
+  "pathN": "15",
+  "pathTitle": "Bug Bounty",
+  "subId": "burp-suite-for-bb",
+  "subTitle": "Burp Suite for bug bounty workflow"
+ },
+ {
   "term": "Auto-scaling",
   "def": "automatically adjusting the number of running compute instances based on demand.",
   "pathId": "08-cloud-basics",
@@ -1010,6 +1019,15 @@ const GLOSSARY = [
   "pathTitle": "Web Security & Hacking",
   "subId": "idor",
   "subTitle": "Broken access & IDOR"
+ },
+ {
+  "term": "BOLA",
+  "def": "Broken Object Level Authorization, the API-specific name for IDOR.",
+  "pathId": "15-bug-bounty",
+  "pathN": "15",
+  "pathTitle": "Bug Bounty",
+  "subId": "mobile-and-api-bb",
+  "subTitle": "Mobile & API bug bounty"
  },
  {
   "term": "BOLA",
@@ -1343,6 +1361,15 @@ const GLOSSARY = [
   "pathTitle": "Network Security",
   "subId": "mitm",
   "subTitle": "Man-in-the-Middle"
+ },
+ {
+  "term": "Certificate pinning",
+  "def": "a mobile security control that blocks proxy-based traffic interception unless bypassed first.",
+  "pathId": "15-bug-bounty",
+  "pathN": "15",
+  "pathTitle": "Bug Bounty",
+  "subId": "mobile-and-api-bb",
+  "subTitle": "Mobile & API bug bounty"
  },
  {
   "term": "Certificate Transparency (CT) logs",
@@ -2677,6 +2704,15 @@ const GLOSSARY = [
   "subTitle": "See traffic with Wireshark"
  },
  {
+  "term": "Dispute/mediation process",
+  "def": "a platform's formal mechanism for contesting a triage decision on specific grounds.",
+  "pathId": "15-bug-bounty",
+  "pathN": "15",
+  "pathTitle": "Bug Bounty",
+  "subId": "duplicate-and-triage-realities",
+  "subTitle": "Duplicates & triage realities"
+ },
+ {
   "term": "Distribution (\"distro\")",
   "def": "a specific version of Linux (Ubuntu, Kali, Parrot).",
   "pathId": "03-linux",
@@ -2945,6 +2981,15 @@ const GLOSSARY = [
   "pathTitle": "Bug Bounty",
   "subId": "what-is-bb",
   "subTitle": "What is a bug bounty?"
+ },
+ {
+  "term": "Duplicate closure",
+  "def": "a report closed because another researcher already reported the same issue first.",
+  "pathId": "15-bug-bounty",
+  "pathN": "15",
+  "pathTitle": "Bug Bounty",
+  "subId": "duplicate-and-triage-realities",
+  "subTitle": "Duplicates & triage realities"
  },
  {
   "term": "Dynamic analysis",
@@ -3539,6 +3584,15 @@ const GLOSSARY = [
   "pathTitle": "Operating Systems & Linux",
   "subId": "linux-firewall-basics",
   "subTitle": "Linux Firewall Basics"
+ },
+ {
+  "term": "First-mover advantage",
+  "def": "the reduced duplicate risk from testing genuinely new attack surface before other researchers reach it.",
+  "pathId": "15-bug-bounty",
+  "pathN": "15",
+  "pathTitle": "Bug Bounty",
+  "subId": "duplicate-and-triage-realities",
+  "subTitle": "Duplicates & triage realities"
  },
  {
   "term": "First-party / third-party requests",
@@ -5441,6 +5495,15 @@ const GLOSSARY = [
  },
  {
   "term": "Mass assignment",
+  "def": "an API accepting more client-controlled fields than intended, sometimes including privileged ones.",
+  "pathId": "15-bug-bounty",
+  "pathN": "15",
+  "pathTitle": "Bug Bounty",
+  "subId": "mobile-and-api-bb",
+  "subTitle": "Mobile & API bug bounty"
+ },
+ {
+  "term": "Mass assignment",
   "def": "accepting more fields than the developer intended",
   "pathId": "21-api-security",
   "pathN": "21",
@@ -7142,6 +7205,15 @@ const GLOSSARY = [
  },
  {
   "term": "Private program",
+  "def": "an invite-only bounty program, typically gated by reputation score.",
+  "pathId": "15-bug-bounty",
+  "pathN": "15",
+  "pathTitle": "Bug Bounty",
+  "subId": "bb-platforms-deep-dive",
+  "subTitle": "Bug bounty platforms, deep dive"
+ },
+ {
+  "term": "Private program",
   "def": "invite-only, typically extended after demonstrating quality on public programs.",
   "pathId": "15-bug-bounty",
   "pathN": "15",
@@ -7502,6 +7574,15 @@ const GLOSSARY = [
  },
  {
   "term": "Race condition",
+  "def": "a bug where simultaneous, unsynchronized requests interfere with intended check-then-act logic.",
+  "pathId": "15-bug-bounty",
+  "pathN": "15",
+  "pathTitle": "Bug Bounty",
+  "subId": "race-conditions-deep-dive",
+  "subTitle": "Race conditions, deep dive"
+ },
+ {
+  "term": "Race condition",
   "def": "a bug where the outcome depends on the timing of concurrent operations, often exploitable via near-simultaneous requests",
   "pathId": "21-api-security",
   "pathN": "21",
@@ -7726,6 +7807,15 @@ const GLOSSARY = [
   "subTitle": "Cross-Site Scripting"
  },
  {
+  "term": "Reflected XSS",
+  "def": "injected script that executes immediately from the current request, not stored for later victims.",
+  "pathId": "15-bug-bounty",
+  "pathN": "15",
+  "pathTitle": "Bug Bounty",
+  "subId": "hunting-xss-and-injection",
+  "subTitle": "Hunting XSS & injection bugs"
+ },
+ {
   "term": "Refresh token",
   "def": "a long-lived credential keeping a user authenticated, requiring the same secure storage discipline as any other sensitive credential.",
   "pathId": "13-mobile-security",
@@ -7798,6 +7888,15 @@ const GLOSSARY = [
   "subTitle": "Burp Suite & PortSwigger"
  },
  {
+  "term": "Repeater",
+  "def": "Burp's tool for manually modifying and resending individual requests, the primary bug-hunting workhorse.",
+  "pathId": "15-bug-bounty",
+  "pathN": "15",
+  "pathTitle": "Bug Bounty",
+  "subId": "burp-suite-for-bb",
+  "subTitle": "Burp Suite for bug bounty workflow"
+ },
+ {
   "term": "REPL",
   "def": "Python's interactive mode (`python3`).",
   "pathId": "04-python",
@@ -7823,6 +7922,15 @@ const GLOSSARY = [
   "pathTitle": "Operating Systems & Linux",
   "subId": "linux-package-management",
   "subTitle": "Linux Package Management"
+ },
+ {
+  "term": "Reputation score",
+  "def": "a platform's running signal of a researcher's accepted reports, severity, and false-positive rate.",
+  "pathId": "15-bug-bounty",
+  "pathN": "15",
+  "pathTitle": "Bug Bounty",
+  "subId": "bb-platforms-deep-dive",
+  "subTitle": "Bug bounty platforms, deep dive"
  },
  {
   "term": "Request / response",
@@ -8230,6 +8338,15 @@ const GLOSSARY = [
   "subTitle": "Choosing programs"
  },
  {
+  "term": "Safe harbor",
+  "def": "a program's explicit legal commitment not to pursue action against researchers who test within scope responsibly.",
+  "pathId": "15-bug-bounty",
+  "pathN": "15",
+  "pathTitle": "Bug Bounty",
+  "subId": "scope-and-legal-boundaries",
+  "subTitle": "Scope and legal boundaries"
+ },
+ {
   "term": "Safety Instrumented System (SIS)",
   "def": "a system independent from normal process control, whose job is triggering an emergency shutdown if conditions become dangerous",
   "pathId": "25-ot-ics-security",
@@ -8390,6 +8507,15 @@ const GLOSSARY = [
   "pathTitle": "Bug Bounty",
   "subId": "choose-programs",
   "subTitle": "Choosing programs"
+ },
+ {
+  "term": "Scope document",
+  "def": "the published list of in-scope/out-of-scope assets and permitted techniques for a bug bounty program.",
+  "pathId": "15-bug-bounty",
+  "pathN": "15",
+  "pathTitle": "Bug Bounty",
+  "subId": "scope-and-legal-boundaries",
+  "subTitle": "Scope and legal boundaries"
  },
  {
   "term": "Scoped storage",
@@ -8986,6 +9112,15 @@ const GLOSSARY = [
   "subTitle": "Security Policies & Awareness Training"
  },
  {
+  "term": "Single-packet attack",
+  "def": "sending many requests within one TCP/HTTP2 connection to maximize true request concurrency.",
+  "pathId": "15-bug-bounty",
+  "pathN": "15",
+  "pathTitle": "Bug Bounty",
+  "subId": "race-conditions-deep-dive",
+  "subTitle": "Race conditions, deep dive"
+ },
+ {
   "term": "SLA",
   "def": "service level agreement for fixing findings by severity, e.g. \"critical findings fixed within 15 days\"",
   "pathId": "22-devsecops-appsec",
@@ -9499,6 +9634,15 @@ const GLOSSARY = [
   "subTitle": "What is a computer really?"
  },
  {
+  "term": "Stored XSS",
+  "def": "injected script saved server-side that executes for every subsequent viewer, generally higher severity.",
+  "pathId": "15-bug-bounty",
+  "pathN": "15",
+  "pathTitle": "Bug Bounty",
+  "subId": "hunting-xss-and-injection",
+  "subTitle": "Hunting XSS & injection bugs"
+ },
+ {
   "term": "STRIDE",
   "def": "a common threat-classification mnemonic (Spoofing, Tampering, Repudiation, Information disclosure, Denial of service, Elevation of privilege)",
   "pathId": "22-devsecops-appsec",
@@ -9632,6 +9776,15 @@ const GLOSSARY = [
   "pathTitle": "GRC & Compliance",
   "subId": "iso27001-overview",
   "subTitle": "ISO 27001 Overview"
+ },
+ {
+  "term": "SVG upload vector",
+  "def": "embedding executable JavaScript inside an uploaded SVG file, an often-overlooked stored-XSS source.",
+  "pathId": "15-bug-bounty",
+  "pathN": "15",
+  "pathTitle": "Bug Bounty",
+  "subId": "hunting-xss-and-injection",
+  "subTitle": "Hunting XSS & injection bugs"
  },
  {
   "term": "Switch",
@@ -9787,6 +9940,15 @@ const GLOSSARY = [
   "subTitle": "Interview preparation"
  },
  {
+  "term": "Target Scope",
+  "def": "Burp's configuration restricting which domains its tools operate against.",
+  "pathId": "15-bug-bounty",
+  "pathN": "15",
+  "pathTitle": "Bug Bounty",
+  "subId": "burp-suite-for-bb",
+  "subTitle": "Burp Suite for bug bounty workflow"
+ },
+ {
   "term": "`tar`, `zip`, `unzip`",
   "def": "archives and compression.",
   "pathId": "03-linux",
@@ -9893,6 +10055,15 @@ const GLOSSARY = [
   "pathTitle": "Digital Privacy & Personal Security",
   "subId": "browser-privacy",
   "subTitle": "Browser Privacy"
+ },
+ {
+  "term": "Third-party scope trap",
+  "def": "mistakenly testing an integrated but separately-owned service that isn't actually covered by the program's authorization.",
+  "pathId": "15-bug-bounty",
+  "pathN": "15",
+  "pathTitle": "Bug Bounty",
+  "subId": "scope-and-legal-boundaries",
+  "subTitle": "Scope and legal boundaries"
  },
  {
   "term": "Third-party/vendor risk",
@@ -10048,6 +10219,15 @@ const GLOSSARY = [
   "subTitle": "SAST, DAST & SCA — The Core Scanning Trio"
  },
  {
+  "term": "Triage",
+  "def": "the review process a submitted report passes through before reaching the client's engineering team.",
+  "pathId": "15-bug-bounty",
+  "pathN": "15",
+  "pathTitle": "Bug Bounty",
+  "subId": "bb-platforms-deep-dive",
+  "subTitle": "Bug bounty platforms, deep dive"
+ },
+ {
   "term": "Triager",
   "def": "the person (or team) reviewing and validating bug bounty submissions.",
   "pathId": "15-bug-bounty",
@@ -10118,6 +10298,15 @@ const GLOSSARY = [
   "pathTitle": "Programming & Python",
   "subId": "error-handling-exceptions",
   "subTitle": "Error handling & exceptions"
+ },
+ {
+  "term": "Turbo Intruder",
+  "def": "a Burp Suite extension purpose-built for automating race condition testing.",
+  "pathId": "15-bug-bounty",
+  "pathN": "15",
+  "pathTitle": "Bug Bounty",
+  "subId": "race-conditions-deep-dive",
+  "subTitle": "Race conditions, deep dive"
  },
  {
   "term": "Two-account testing",

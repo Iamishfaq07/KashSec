@@ -124,4 +124,4 @@ Two researchers independently discover and report the exact same SQL injection v
 - [Bugcrowd — Vulnerability Rating Taxonomy](https://bugcrowd.com/vulnerability-rating-taxonomy) — a widely-referenced severity classification standard.
 ???
 
-**Next up →** [Choosing programs & scope](#/lesson/15-bug-bounty/choose-programs)
+**Next up →** [Bug bounty platforms, deep dive](#/lesson/15-bug-bounty/bb-platforms-deep-dive)

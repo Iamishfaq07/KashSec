@@ -159,4 +159,4 @@ While testing an IDOR pattern on a real bug bounty program, you successfully acc
 - [OWASP API Security Top 10 — BOLA](https://owasp.org/API-Security/editions/2023/en/0xa1-broken-object-level-authorization/) — the API-specific parallel.
 ???
 
-**Next up →** [Business logic flaws & chaining bugs](#/lesson/15-bug-bounty/logic-and-chains)
+**Next up →** [Hunting XSS & injection bugs](#/lesson/15-bug-bounty/hunting-xss-and-injection)

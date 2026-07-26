@@ -243,4 +243,4 @@ Why is the "diff against previous run" step considered one of the highest-value 
 - [Awesome Bug Bounty Tools (GitHub)](https://github.com/vavkamil/awesome-bugbounty-tools) — a comprehensive, curated tool list beyond what's covered here.
 ???
 
-**Next up →** [Writing effective bug bounty reports](#/lesson/15-bug-bounty/report-writing)
+**Next up →** [Burp Suite for bug bounty workflow](#/lesson/15-bug-bounty/burp-suite-for-bb)

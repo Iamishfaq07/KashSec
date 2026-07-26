@@ -181,4 +181,4 @@ A checkout page's JavaScript prevents users from entering a negative quantity in
 - [PortSwigger — Race conditions](https://portswigger.net/web-security/race-conditions) — dedicated free hands-on labs.
 ???
 
-**Next up →** [Automation with Nuclei](#/lesson/15-bug-bounty/automation-nuclei)
+**Next up →** [Race conditions, deep dive](#/lesson/15-bug-bounty/race-conditions-deep-dive)

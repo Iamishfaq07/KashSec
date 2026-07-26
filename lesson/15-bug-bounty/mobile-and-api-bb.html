@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mobile &amp; API bug bounty — Path 15 · KashSec Academy</title>
+<meta name="description" content="Every lesson so far in this path has implicitly focused on traditional web applications. This lesson covers the two fastest-growing bug bounty categories beyond that — directly connecting to Path 21's">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/15-bug-bounty/mobile-and-api-bb">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Mobile &amp; API bug bounty — Path 15 · KashSec Academy">
+<meta property="og:description" content="Every lesson so far in this path has implicitly focused on traditional web applications. This lesson covers the two fastest-growing bug bounty categories beyond that — directly connecting to Path 21's">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/15-bug-bounty/mobile-and-api-bb">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Mobile &amp; API bug bounty — Path 15 · KashSec Academy">
+<meta name="twitter:description" content="Every lesson so far in this path has implicitly focused on traditional web applications. This lesson covers the two fastest-growing bug bounty categories beyond that — directly connecting to Path 21's">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Mobile & API bug bounty — Path 15 · KashSec Academy","description":"Every lesson so far in this path has implicitly focused on traditional web applications. This lesson covers the two fastest-growing bug bounty categories beyond that — directly connecting to Path 21's","url":"https://kashsec.vercel.app/#/lesson/15-bug-bounty/mobile-and-api-bb","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/15-bug-bounty/mobile-and-api-bb">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 15 — Bug Bounty</a> · Mobile &amp; API bug bounty</div>
+  <article><h1>Mobile &amp; API Bug Bounty</h1>
+<p>Every lesson so far in this path has implicitly focused on traditional web applications. This lesson covers the two fastest-growing bug bounty categories beyond that — directly connecting to Path 21&#39;s dedicated API Security path, applied here specifically through a bounty-hunting lens.</p>
+<h2>Why mobile and API scope is genuinely less competitive</h2>
+<p>A consistent, practical observation among experienced bounty hunters: mobile app and API endpoints receive dramatically less tester attention than a program&#39;s main web application, simply because fewer researchers have built the specific skills this lesson covers — directly connecting to the choose-programs lesson&#39;s &quot;less-loved scope&quot; strategy, here applied as a whole testing category rather than just a program selection heuristic.</p>
+<h2>API bug bounty essentials</h2>
+<p>Directly connecting to Path 21&#39;s OWASP API Security Top 10 coverage, the highest-value bugs to hunt for specifically in API scope:</p>
+<ul>
+<li><strong>BOLA (Broken Object Level Authorization)</strong> — the API-specific name for the exact IDOR pattern the hunting-idor lesson taught, now applied to API endpoints rather than web UI parameters</li>
+<li><strong>Excessive data exposure</strong> — an API endpoint returning far more fields in its response than the calling application&#39;s UI actually displays, often leaking internal fields (<code>is_admin</code>, <code>internal_notes</code>) a developer never intended to expose</li>
+<li><strong>Mass assignment</strong> — an API accepting and processing more fields in a request body than the developer intended to allow client-controlled, sometimes letting an attacker set a <code>role</code> or <code>isAdmin</code> field the UI never exposes an option for</li>
+<li><strong>Broken function-level authorization</strong> — an admin-only API endpoint reachable by a regular authenticated user simply because the server never actually re-checks role on that specific endpoint, even though the UI correctly hides the button</li>
+</ul>
+<h2>Finding hidden API endpoints</h2>
+<p>Directly connecting to the recon-pipeline lesson&#39;s <code>gau</code>/historical-URL discovery and the Burp lesson&#39;s Param Miner extension: mobile apps and single-page web applications both frequently call API endpoints never linked from any visible UI element, discoverable by intercepting the mobile app&#39;s own traffic through a proxy (Burp, configured as the phone&#39;s network proxy) or by examining a web app&#39;s JavaScript bundle for endpoint URLs referenced but never actually rendered as clickable links.</p>
+<h2>Mobile-specific testing basics</h2>
+<ul>
+<li><strong>Static analysis of the APK/IPA</strong> — decompiling a mobile app (directly connecting to Path 17&#39;s reverse-engineering coverage) frequently reveals hardcoded API keys, internal endpoint URLs, or debug functionality left enabled in production builds</li>
+<li><strong>Certificate pinning bypass</strong> — many mobile apps implement certificate pinning specifically to prevent proxy interception; bypassing it (via tools like Frida, referenced below) is often a prerequisite before any traffic-based testing can begin at all</li>
+<li><strong>Insecure local storage</strong> — mobile apps frequently store authentication tokens or sensitive data in local, poorly-protected storage, testable through basic device or emulator filesystem access</li>
+</ul>
+<h2>Why this pairs naturally with automation</h2>
+<p>Directly connecting to the previous lesson&#39;s nuclei coverage: nuclei has dedicated templates specifically for common API misconfigurations (exposed Swagger/OpenAPI documentation, GraphQL introspection left enabled in production, common admin API paths) — meaning the same automation-first discovery approach from that lesson applies directly here, just pointed at API-shaped targets instead of traditional web pages.</p>
+<p>Why does an API endpoint&#39;s response sometimes reveal more than the corresponding web UI ever displays, and why does that matter for bug hunting?</p>
+<details><summary>Show answer</summary>A typical web application architecture has the frontend UI request data from a backend API, then selectively render only some of the returned fields — a developer building the UI might request a "get user profile" endpoint and only display the name and avatar, while the actual API response quietly includes every field in that user's database record, including ones like <code>is_admin</code>, internal notes, or other users' partial data that were never intended for the calling application to expose to an end user. This matters enormously for bug hunting because the UI's selective rendering creates a false sense that only the displayed fields exist — a tester who only interacts with the rendered page misses this entirely, while a tester who intercepts the raw API response directly (via Burp, exactly as the burp-suite-for-bb lesson taught) sees the full, unfiltered data the backend actually returned, frequently surfacing an excessive-data-exposure finding the UI itself gives no visible hint of.</details><h2>Key terms</h2>
+<ul>
+<li><strong>BOLA</strong> — Broken Object Level Authorization, the API-specific name for IDOR.</li>
+<li><strong>Mass assignment</strong> — an API accepting more client-controlled fields than intended, sometimes including privileged ones.</li>
+<li><strong>Certificate pinning</strong> — a mobile security control that blocks proxy-based traffic interception unless bypassed first.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Mobile and API scope receive dramatically less tester attention than traditional web UIs, making them a genuinely less competitive specialization.</li>
+<li>BOLA, excessive data exposure, mass assignment, and broken function-level authorization are the highest-value API bug categories.</li>
+<li>Mobile testing requires additional prerequisite skills — APK decompilation and certificate pinning bypass — before traffic-based testing can even begin.</li>
+<li>Nuclei&#39;s API-focused templates extend the previous lesson&#39;s automation approach directly into this scope.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/15-bug-bounty/bb-career">Building a bug bounty career</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/15-bug-bounty/mobile-and-api-bb";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

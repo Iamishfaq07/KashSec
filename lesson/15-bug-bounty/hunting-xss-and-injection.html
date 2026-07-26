@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hunting XSS &amp; injection bugs — Path 15 · KashSec Academy</title>
+<meta name="description" content="The previous lesson focused entirely on access control — IDOR is about who can see whose data. This lesson covers the other major beginner-accessible bug category: injection flaws, directly connecting">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/15-bug-bounty/hunting-xss-and-injection">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Hunting XSS &amp; injection bugs — Path 15 · KashSec Academy">
+<meta property="og:description" content="The previous lesson focused entirely on access control — IDOR is about who can see whose data. This lesson covers the other major beginner-accessible bug category: injection flaws, directly connecting">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/15-bug-bounty/hunting-xss-and-injection">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Hunting XSS &amp; injection bugs — Path 15 · KashSec Academy">
+<meta name="twitter:description" content="The previous lesson focused entirely on access control — IDOR is about who can see whose data. This lesson covers the other major beginner-accessible bug category: injection flaws, directly connecting">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Hunting XSS & injection bugs — Path 15 · KashSec Academy","description":"The previous lesson focused entirely on access control — IDOR is about who can see whose data. This lesson covers the other major beginner-accessible bug category: injection flaws, directly connecting","url":"https://kashsec.vercel.app/#/lesson/15-bug-bounty/hunting-xss-and-injection","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/15-bug-bounty/hunting-xss-and-injection">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 15 — Bug Bounty</a> · Hunting XSS &amp; injection bugs</div>
+  <article><h1>Hunting XSS &amp; Injection Bugs</h1>
+<p>The previous lesson focused entirely on access control — IDOR is about <em>who can see whose data</em>. This lesson covers the other major beginner-accessible bug category: injection flaws, directly connecting to Path 11&#39;s XSS and SQL injection lessons, now applied specifically to bug bounty hunting methodology rather than classroom theory.</p>
+<h2>Why XSS remains one of the most commonly paid findings</h2>
+<p>Despite being one of the oldest web vulnerability classes (Path 11), <strong>Cross-Site Scripting</strong> remains a consistently common, consistently paid bug bounty finding — modern frameworks reduce it significantly through automatic output encoding, but genuinely reduce, not eliminate: raw HTML rendering features, custom sanitization logic, and older or less-maintained parts of large applications all remain common sources of real, exploitable XSS.</p>
+<h2>Where to actually look for it</h2>
+<ul>
+<li><strong>Search fields and error messages</strong> — reflected input is often echoed back verbatim in &quot;no results found for [your search]&quot; messages, a classic and still-common reflected XSS source</li>
+<li><strong>Rich text / comment fields</strong> — anywhere a user can submit formatted content (markdown editors, comment boxes, profile bios) is a candidate for stored XSS, generally the higher-severity variant since it affects every subsequent viewer, not just the submitter</li>
+<li><strong>URL parameters reflected into the page</strong> — directly connecting to the recon pipeline&#39;s <code>gau</code> output, which surfaces historical URLs frequently containing exactly the kind of reflected parameters worth testing systematically</li>
+<li><strong>File upload / SVG uploads</strong> — SVG files can contain embedded JavaScript, a genuinely underappreciated stored-XSS vector many applications&#39; upload validation misses entirely</li>
+</ul>
+<h2>A practical XSS testing payload progression</h2>
+<pre><code>&quot;&gt;&lt;script&gt;alert(document.domain)&lt;/script&gt;
+&quot;&gt;&lt;img src=x onerror=alert(document.domain)&gt;
+javascript:alert(document.domain)
+</code></pre>
+<p>Starting with a simple proof-of-concept alert (using <code>document.domain</code>, not just a static string, to prove the payload actually executed in the target&#39;s own origin) before escalating to something demonstrating real impact — directly connecting to the report-writing lesson&#39;s emphasis on concrete impact over a bare proof-of-concept alone.</p>
+<h2>SQL injection: less common in modern apps, still valuable when found</h2>
+<p>Path 11&#39;s SQL injection coverage explained why parameterized queries have made classic SQLi rarer in well-maintained modern applications — but &quot;rarer&quot; isn&#39;t &quot;gone,&quot; and when a genuine SQLi is found in a bug bounty program, it&#39;s typically rated critical, since the impact (full database access, in the worst case) is severe by nearly every severity framework. <code>sqlmap</code> (Path 11) remains the standard tool for confirming and exploiting a suspected injection point once manual testing has identified a promising parameter.</p>
+<h2>Why manual testing still beats automated scanners here</h2>
+<p>Directly connecting to the automation-nuclei lesson later in this path: automated scanners like nuclei are excellent at finding <em>known</em> vulnerability patterns via templates, but XSS specifically is highly context-dependent — whether a payload executes depends on exactly where in the page it lands (an HTML attribute, a JavaScript string, an already-encoded context), something a generic scanner frequently misses but a human tester probing manually in Burp Repeater (from two lessons back) catches by actually reading the response.</p>
+<p>Why does testing an XSS proof-of-concept with <code>alert(document.domain)</code> specifically, rather than just <code>alert(1)</code> or <code>alert(&#39;xss&#39;)</code>, matter for a bug bounty report?</p>
+<details><summary>Show answer</summary><code>alert(document.domain)</code> proves something a generic <code>alert(1)</code> doesn't: that the injected script is actually executing within the target application's own browser origin, with access to that origin's <code>document</code> object — which is exactly the access an attacker would need to actually steal session cookies, read page content, or perform actions as the victim user. A triager reviewing a submitted report (from the bb-platforms-deep-dive lesson) needs convincing evidence the vulnerability is real and has genuine impact, not just that some string happened to render in a popup; showing the domain confirms execution context unambiguously and heads off exactly the kind of "can you demonstrate actual impact" clarification request that slows a report down in triage.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Reflected XSS</strong> — injected script that executes immediately from the current request, not stored for later victims.</li>
+<li><strong>Stored XSS</strong> — injected script saved server-side that executes for every subsequent viewer, generally higher severity.</li>
+<li><strong>SVG upload vector</strong> — embedding executable JavaScript inside an uploaded SVG file, an often-overlooked stored-XSS source.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>XSS remains a consistently common, consistently paid finding despite modern framework mitigations, particularly in rich-text fields, search reflections, and file uploads.</li>
+<li>A proof-of-concept using <code>document.domain</code> demonstrates real execution context, not just that a popup appeared.</li>
+<li>SQL injection is rarer in modern applications but typically rated critical when genuinely found, with <code>sqlmap</code> remaining the standard confirmation tool.</li>
+<li>Manual testing in Burp Repeater catches context-dependent XSS that automated scanners frequently miss.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/15-bug-bounty/logic-and-chains">Business logic flaws &amp; chaining bugs</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/15-bug-bounty/hunting-xss-and-injection";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bug bounty platforms, deep dive — Path 15 · KashSec Academy</title>
+<meta name="description" content="The what-is-bb lesson named HackerOne, Bugcrowd, and Intigriti in passing. This lesson goes deeper into how these platforms actually operate — the mechanics behind the marketplace, directly connecting">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/15-bug-bounty/bb-platforms-deep-dive">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Bug bounty platforms, deep dive — Path 15 · KashSec Academy">
+<meta property="og:description" content="The what-is-bb lesson named HackerOne, Bugcrowd, and Intigriti in passing. This lesson goes deeper into how these platforms actually operate — the mechanics behind the marketplace, directly connecting">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/15-bug-bounty/bb-platforms-deep-dive">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Bug bounty platforms, deep dive — Path 15 · KashSec Academy">
+<meta name="twitter:description" content="The what-is-bb lesson named HackerOne, Bugcrowd, and Intigriti in passing. This lesson goes deeper into how these platforms actually operate — the mechanics behind the marketplace, directly connecting">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Bug bounty platforms, deep dive — Path 15 · KashSec Academy","description":"The what-is-bb lesson named HackerOne, Bugcrowd, and Intigriti in passing. This lesson goes deeper into how these platforms actually operate — the mechanics behind the marketplace, directly connecting","url":"https://kashsec.vercel.app/#/lesson/15-bug-bounty/bb-platforms-deep-dive","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/15-bug-bounty/bb-platforms-deep-dive">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 15 — Bug Bounty</a> · Bug bounty platforms, deep dive</div>
+  <article><h1>Bug Bounty Platforms, Deep Dive</h1>
+<p>The what-is-bb lesson named HackerOne, Bugcrowd, and Intigriti in passing. This lesson goes deeper into how these platforms actually operate — the mechanics behind the marketplace, directly connecting to Path 20&#39;s freelance-platform coverage as the same intermediary-marketplace model applied to security research specifically.</p>
+<h2>Why platforms exist at all</h2>
+<p>An organization could run a bug bounty program entirely on its own — its own portal, its own triage team, its own payment processing. Most don&#39;t, for the same reason most companies use a job board instead of building their own recruiting website: <strong>platforms</strong> (HackerOne, Bugcrowd, Intigriti, YesWeHack) provide the shared infrastructure — submission forms, triage staff, payment processing, and a pool of researchers already vetted and reputation-scored — that would otherwise need to be rebuilt by every single program from scratch.</p>
+<h2>The triage layer — the part beginners underestimate</h2>
+<p>Every submitted report passes through <strong>triage</strong> before it ever reaches the actual client engineering team: a platform (or sometimes client-internal) triager reviews the report, attempts to reproduce it, assigns an initial severity, and either forwards it to the client or requests more information. Directly connecting to the report-writing lesson later in this path: a report a triager can&#39;t quickly reproduce gets bounced back with a clarification request at best, or closed as &quot;unable to reproduce&quot; at worst — meaning report quality determines triage speed just as much as the underlying vulnerability&#39;s actual severity.</p>
+<h2>Reputation and signal — why it compounds</h2>
+<p>Most platforms track a researcher&#39;s <strong>reputation score</strong> — a running signal built from accepted reports, average severity, and false-positive rate — and many private (invite-only) programs use this score to decide who even gets invited to test. This creates a genuinely important early-career dynamic: a beginner&#39;s first several reports matter disproportionately, not just for their bounty payout but for the reputation compounding that eventually unlocks access to the higher-paying private programs the choose-programs lesson will cover next.</p>
+<h2>Managed vs. self-managed programs</h2>
+<ul>
+<li><strong>Fully platform-managed</strong> — the platform&#39;s own triage staff handle first-pass review before anything reaches the client, reducing noise the client engineering team has to deal with directly</li>
+<li><strong>Client-managed</strong> — the client&#39;s own security team triages submissions directly, common among larger organizations with dedicated in-house AppSec capacity</li>
+<li><strong>Hybrid</strong> — platform triage for an initial pass, escalated to client teams for final severity/payout decisions</li>
+</ul>
+<h2>Why this matters for where you start</h2>
+<p>Directly connecting to the next lesson&#39;s program-selection guidance: understanding that private programs are reputation-gated (not just randomly harder to get into) explains why the standard beginner advice is to build reputation on public programs first — it&#39;s not just about skill development, it&#39;s about the platform&#39;s own gating mechanism requiring a track record before better-paying opportunities open up.</p>
+<p>Why does report quality affect triage speed, not just the eventual bounty payout?</p>
+<details><summary>Show answer</summary>A triager's job is to quickly verify whether a reported vulnerability is real and reproducible before forwarding it to the client's engineering team — a report with vague reproduction steps forces the triager to spend extra time (or fail entirely) attempting to recreate the issue themselves, which either delays the report while they request clarification from the researcher or results in the report being closed as unreproducible even if the underlying vulnerability is genuinely real. A precise, complete report (exact steps, exact payload, clear impact) lets the triager verify and forward it quickly, which matters because triage capacity is a genuinely limited resource shared across every researcher submitting to that program — a report that's easy to triage moves faster through the queue purely as a side effect of being easy to verify, independent of the vulnerability's actual underlying severity.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Triage</strong> — the review process a submitted report passes through before reaching the client&#39;s engineering team.</li>
+<li><strong>Reputation score</strong> — a platform&#39;s running signal of a researcher&#39;s accepted reports, severity, and false-positive rate.</li>
+<li><strong>Private program</strong> — an invite-only bounty program, typically gated by reputation score.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Platforms provide shared triage, payment, and researcher-pool infrastructure that individual programs would otherwise rebuild themselves.</li>
+<li>Triage is the critical first filter every report passes through — report quality affects triage speed independently of underlying severity.</li>
+<li>Reputation compounds over time and gates access to higher-paying private programs, which is why early reports matter disproportionately.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/15-bug-bounty/choose-programs">Choosing programs &amp; scope</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/15-bug-bounty/bb-platforms-deep-dive";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

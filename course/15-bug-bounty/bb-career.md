@@ -131,8 +131,4 @@ Across this entire path, which single concept do you think will matter most for 
 - [CVE Program](https://www.cve.org/) — official CVE assignment process for eligible findings.
 ???
 
-## 🎉 You've finished Path 15
-
-You now have a complete, practical bug bounty methodology — program selection, automated recon pipelines, systematic IDOR/access-control hunting, business logic and chaining thinking, Nuclei-based automation, and a realistic framework for building this into a sustainable long-term practice. Combined with Paths 11-09, you have genuine, employable, and directly monetisable security skills.
-
-**Next up →** [Bug Bounty Hunting Challenges](#/lesson/15-bug-bounty/bounty-hunting-challenges)
+**Next up →** [Duplicates & triage realities](#/lesson/15-bug-bounty/duplicate-and-triage-realities)

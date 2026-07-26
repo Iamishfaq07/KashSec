@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scope and legal boundaries — Path 15 · KashSec Academy</title>
+<meta name="description" content="The choose-programs lesson touched on reading scope carefully. This lesson makes that explicit and legal, not just strategic — directly connecting to Path 14's rules-of-engagement-deep-dive lesson, si">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/15-bug-bounty/scope-and-legal-boundaries">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Scope and legal boundaries — Path 15 · KashSec Academy">
+<meta property="og:description" content="The choose-programs lesson touched on reading scope carefully. This lesson makes that explicit and legal, not just strategic — directly connecting to Path 14's rules-of-engagement-deep-dive lesson, si">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/15-bug-bounty/scope-and-legal-boundaries">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Scope and legal boundaries — Path 15 · KashSec Academy">
+<meta name="twitter:description" content="The choose-programs lesson touched on reading scope carefully. This lesson makes that explicit and legal, not just strategic — directly connecting to Path 14's rules-of-engagement-deep-dive lesson, si">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Scope and legal boundaries — Path 15 · KashSec Academy","description":"The choose-programs lesson touched on reading scope carefully. This lesson makes that explicit and legal, not just strategic — directly connecting to Path 14's rules-of-engagement-deep-dive lesson, si","url":"https://kashsec.vercel.app/#/lesson/15-bug-bounty/scope-and-legal-boundaries","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/15-bug-bounty/scope-and-legal-boundaries">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 15 — Bug Bounty</a> · Scope and legal boundaries</div>
+  <article><h1>Scope and Legal Boundaries</h1>
+<p>The choose-programs lesson touched on reading scope carefully. This lesson makes that explicit and legal, not just strategic — directly connecting to Path 14&#39;s rules-of-engagement-deep-dive lesson, since a bug bounty program&#39;s scope document is functionally the same authorization boundary as a formal pentest&#39;s RoE, just written for a much broader, public audience of researchers.</p>
+<h2>Scope is the entire legal basis for your testing</h2>
+<p>Directly connecting to Path 01&#39;s CFAA-and-ethics lesson: a bug bounty program&#39;s published scope is what transforms otherwise-unauthorized computer access into legally protected security research. Testing outside that scope — even against a system that seems obviously related, even with genuinely good intentions — receives none of that protection, and can expose a researcher to real legal risk regardless of skill or intent.</p>
+<h2>Reading a scope document like a contract</h2>
+<ul>
+<li><strong>In-scope assets</strong> — the exact domains, subdomains, IP ranges, or applications explicitly listed as testable</li>
+<li><strong>Out-of-scope assets</strong> — explicitly excluded systems, often third-party integrations, staging environments the company doesn&#39;t control, or acquired subsidiaries not yet fully integrated</li>
+<li><strong>Prohibited techniques</strong> — nearly every program explicitly prohibits denial-of-service testing, automated scanning above a stated rate limit, and social engineering against staff, even against in-scope systems</li>
+<li><strong>Safe harbor language</strong> — the specific legal commitment (or lack of one) a program makes not to pursue legal action against researchers who test within scope and report responsibly</li>
+</ul>
+<h2>Safe harbor, specifically</h2>
+<p>A <strong>safe harbor</strong> clause is a program&#39;s explicit promise not to initiate legal action against a researcher who stays within scope and follows the disclosure process — directly connecting to Path 01&#39;s authorized-access framing, this is the closest a bug bounty program gets to the formal get-out-of-jail letter Path 14 described for contracted pentests. Its absence from a program&#39;s policy is a genuine warning sign, not a minor omission.</p>
+<h2>Third-party scope: a genuinely common trap</h2>
+<p>A company&#39;s application frequently integrates third-party services — a payment processor, an analytics platform, a cloud storage bucket hosted under a different domain entirely. Finding a vulnerability in one of these integrations feels like a legitimate finding against the target company, but if that specific asset isn&#39;t explicitly listed in scope, testing it may mean testing a completely different organization&#39;s infrastructure without their authorization at all — exactly the scope-precision problem Path 14&#39;s RoE lesson warned about, here with the added complication that the boundary is often genuinely unclear without careful reading.</p>
+<h2>Rate limits and aggressive scanning</h2>
+<p>Nearly every program specifies acceptable request rates for automated tools, directly connecting to the recon-pipeline lesson&#39;s tooling: running <code>nuclei</code> or <code>ffuf</code> at full aggressive speed against a production system can functionally become a denial-of-service attack even without any malicious intent, violating scope even when the underlying vulnerability being searched for would have been perfectly legitimate to report.</p>
+<p>Why doesn&#39;t good intent protect a researcher who tests a third-party integration that turns out to be outside the program&#39;s scope?</p>
+<details><summary>Show answer</summary>Authorization under laws like the CFAA (covered in Path 01) is based on whether access was actually granted by the entity that owns the system being tested — not on the tester's subjective belief about whether the testing was reasonable or well-intentioned. A company's bug bounty scope only grants authorization for the specific assets it lists; a third-party service integrated into that company's product is owned and operated by a completely different organization that never granted any authorization at all, regardless of how directly related it appears to the original target. Good intent might affect how a situation is handled after the fact (whether the third party chooses to pursue action, for instance), but it does not retroactively create the authorization that never legally existed — exactly the same principle Path 14's RoE lesson emphasized about accidentally testing a shared hosting environment believed to be in scope.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Scope document</strong> — the published list of in-scope/out-of-scope assets and permitted techniques for a bug bounty program.</li>
+<li><strong>Safe harbor</strong> — a program&#39;s explicit legal commitment not to pursue action against researchers who test within scope responsibly.</li>
+<li><strong>Third-party scope trap</strong> — mistakenly testing an integrated but separately-owned service that isn&#39;t actually covered by the program&#39;s authorization.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>A program&#39;s scope document is the entire legal basis for authorized testing — the bug bounty equivalent of Path 14&#39;s formal RoE document.</li>
+<li>Safe harbor language is the closest equivalent to a get-out-of-jail letter, and its absence is a genuine warning sign.</li>
+<li>Third-party integrations and aggressive automated scanning are two of the most common, genuinely easy-to-make scope violations.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/15-bug-bounty/recon-pipeline">Building a recon pipeline</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/15-bug-bounty/scope-and-legal-boundaries";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

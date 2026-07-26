@@ -250,4 +250,4 @@ A Nuclei scan flags a "high severity" finding on one of your targets. What's the
 - [ProjectDiscovery — Nuclei template writing guide](https://docs.projectdiscovery.io/templates/introduction) — official deep-dive documentation.
 ???
 
-**Next up →** [Building a bug bounty career](#/lesson/15-bug-bounty/bb-career)
+**Next up →** [Mobile & API bug bounty](#/lesson/15-bug-bounty/mobile-and-api-bb)

@@ -1016,16 +1016,23 @@ const PATHS = [
    desc:"Programs, recon pipelines, hunting IDOR & logic bugs, reports that pay.",
    subs:[
      {n:"1", id:"what-is-bb",          title:"What is a bug bounty?",   desc:"Platforms, scope, and responsible disclosure."},
-     {n:"2", id:"choose-programs",     title:"Choosing programs",       desc:"Wide scope, newer, less-loved — beginner strategy."},
-     {n:"3", id:"recon-pipeline",      title:"The recon pipeline",      desc:"subfinder → httpx → gau → nuclei — a real pipeline."},
-     {n:"4", id:"report-writing",      title:"Reports that get paid",   desc:"The template, plus impact and CVSS."},
-     {n:"5", id:"hunting-idor",        title:"Hunting IDOR",            desc:"Two-account method for beginners' goldmine."},
-     {n:"6", id:"logic-and-chains",    title:"Business logic & chains", desc:"Race conditions, GraphQL, OAuth."},
-     {n:"7", id:"automation-nuclei",   title:"Automation & nuclei",     desc:"Monitor while you sleep."},
-     {n:"8", id:"bb-career",           title:"The bug-bounty career",   desc:"Economics, community, staying sane."},
-     {n:"9", id:"bounty-hunting-challenges", title:"Bug Bounty Hunting Challenges", desc:"Practical challenges to level up your hunting skills."},
-     {n:"10", id:"logic-bug-hunting-lab", title:"Logic Bug Hunting Lab", desc:"Practice finding business logic vulnerabilities."},
-     {n:"11", id:"recon-pipeline-lab", title:"Recon Pipeline Lab",      desc:"Build and run a real reconnaissance pipeline."}
+     {n:"2", id:"bb-platforms-deep-dive", title:"Bug bounty platforms, deep dive", desc:"Triage, reputation, and how the marketplace works."},
+     {n:"3", id:"choose-programs",     title:"Choosing programs",       desc:"Wide scope, newer, less-loved — beginner strategy."},
+     {n:"4", id:"scope-and-legal-boundaries", title:"Scope and legal boundaries", desc:"Safe harbor, third-party scope traps, and staying legal."},
+     {n:"5", id:"recon-pipeline",      title:"The recon pipeline",      desc:"subfinder → httpx → gau → nuclei — a real pipeline."},
+     {n:"6", id:"burp-suite-for-bb",   title:"Burp Suite for bug bounty workflow", desc:"Repeater, scope config, and useful extensions."},
+     {n:"7", id:"report-writing",      title:"Reports that get paid",   desc:"The template, plus impact and CVSS."},
+     {n:"8", id:"hunting-idor",        title:"Hunting IDOR",            desc:"Two-account method for beginners' goldmine."},
+     {n:"9", id:"hunting-xss-and-injection", title:"Hunting XSS & injection bugs", desc:"Where to look, and how to prove real impact."},
+     {n:"10", id:"logic-and-chains",   title:"Business logic & chains", desc:"Race conditions, GraphQL, OAuth."},
+     {n:"11", id:"race-conditions-deep-dive", title:"Race conditions, deep dive", desc:"Check-then-act bugs and the single-packet attack."},
+     {n:"12", id:"automation-nuclei",  title:"Automation & nuclei",     desc:"Monitor while you sleep."},
+     {n:"13", id:"mobile-and-api-bb",  title:"Mobile & API bug bounty", desc:"BOLA, mass assignment, and less-competitive scope."},
+     {n:"14", id:"bb-career",          title:"The bug-bounty career",   desc:"Economics, community, staying sane."},
+     {n:"15", id:"duplicate-and-triage-realities", title:"Duplicates & triage realities", desc:"Why most reports close, and how to stay sustainable."},
+     {n:"16", id:"bounty-hunting-challenges", title:"Bug Bounty Hunting Challenges", desc:"Practical challenges to level up your hunting skills."},
+     {n:"17", id:"logic-bug-hunting-lab", title:"Logic Bug Hunting Lab", desc:"Practice finding business logic vulnerabilities."},
+     {n:"18", id:"recon-pipeline-lab", title:"Recon Pipeline Lab",      desc:"Build and run a real reconnaissance pipeline."}
    ]},
   {n:"16", id:"16-advanced", title:"Advanced Cyber Topics", level:"Advanced",
    desc:"Linux/Windows privesc, Active Directory, cloud, containers, malware, DFIR.",
@@ -4863,6 +4870,11 @@ function renderLabPhishing(){
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
+  {date:'2026-07-25', title:'Path 15 doubled to 18 lessons', items:[
+    'Eighteenth batch of the course-wide content-doubling effort: Path 15 (Bug Bounty) grows from 11 to 18 lessons (8 core lessons doubled to 16, plus 2 existing labs unchanged).',
+    'New lessons: Bug Bounty Platforms Deep Dive (triage and reputation mechanics), Scope and Legal Boundaries (safe harbor, third-party scope traps), Burp Suite for Bug Bounty Workflow, Hunting XSS & Injection Bugs, Race Conditions Deep Dive (the single-packet attack), Mobile & API Bug Bounty (BOLA, mass assignment), and Duplicates & Triage Realities.',
+    'The new race-conditions lesson explains why automated scanners essentially never find this bug class, and why deliberate manual testing with Turbo Intruder remains a genuinely valuable specialization.'
+  ]},
   {date:'2026-07-25', title:'Path 14 doubled to 24 lessons', items:[
     'Seventeenth batch of the course-wide content-doubling effort: Path 14 (Ethical Hacking) grows from 12 to 24 lessons.',
     'New lessons: Rules of Engagement Deep Dive, Pentest Methodologies & Standards (PTES/OSSTMM/NIST 800-115), OSINT Tools Deep Dive, Vulnerability Scanning Tools, Exploit Development Basics, Privilege Escalation Methodology, Lateral Movement Techniques, Pivoting & Tunneling, Red Team vs. Penetration Testing, Social Engineering in Pentests, Wireless Pentesting Basics, and Purple Teaming Basics.',
