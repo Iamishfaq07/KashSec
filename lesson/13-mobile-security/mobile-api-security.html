@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mobile API Security — Path 13 · KashSec Academy</title>
+<meta name="description" content="The intercepting-mobile-traffic lesson showed you how to see what a mobile app actually sends. This lesson covers what to actually look for once you can — nearly every mobile app is, underneath its in">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/13-mobile-security/mobile-api-security">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Mobile API Security — Path 13 · KashSec Academy">
+<meta property="og:description" content="The intercepting-mobile-traffic lesson showed you how to see what a mobile app actually sends. This lesson covers what to actually look for once you can — nearly every mobile app is, underneath its in">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/13-mobile-security/mobile-api-security">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Mobile API Security — Path 13 · KashSec Academy">
+<meta name="twitter:description" content="The intercepting-mobile-traffic lesson showed you how to see what a mobile app actually sends. This lesson covers what to actually look for once you can — nearly every mobile app is, underneath its in">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Mobile API Security — Path 13 · KashSec Academy","description":"The intercepting-mobile-traffic lesson showed you how to see what a mobile app actually sends. This lesson covers what to actually look for once you can — nearly every mobile app is, underneath its in","url":"https://kashsec.vercel.app/#/lesson/13-mobile-security/mobile-api-security","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/13-mobile-security/mobile-api-security">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 13 — Mobile App Security</a> · Mobile API Security</div>
+  <article><h1>Mobile API Security</h1>
+<p>The intercepting-mobile-traffic lesson showed you how to see what a mobile app actually sends. This lesson covers what to actually look for once you can — nearly every mobile app is, underneath its interface, a client talking to a backend API, making Path 11 and Path 21&#39;s API security material directly, immediately applicable here.</p>
+<h2>The mobile app is just another API client</h2>
+<p>Every vulnerability class from Path 11&#39;s web-security path — IDOR, broken authentication, mass assignment (from Path 21) — applies exactly as fully to a mobile app&#39;s backend API as to a traditional web application&#39;s, since a mobile app is, from the server&#39;s perspective, simply another client making HTTP requests. The mobile-specific challenge is entirely about <em>reaching</em> that traffic in the first place — exactly what the certificate-pinning-bypass techniques from the previous lesson exist to solve.</p>
+<h2>Why mobile apps are a genuinely good target for API testing</h2>
+<p>A subtle but important point: mobile app backends sometimes receive <em>less</em> security scrutiny than a company&#39;s main web application, on the mistaken assumption that &quot;the mobile app enforces the rules&quot; — but exactly like Path 05&#39;s web-forms lesson taught for client-side validation, any check performed only in the mobile app&#39;s own code is trivially bypassable by an attacker who simply talks to the backend API directly, using the exact interception setup from the previous lesson, without the mobile app&#39;s client-side logic involved at all.</p>
+<h2>API keys and secrets embedded in mobile apps</h2>
+<p>Directly connecting to the reverse-engineering lesson&#39;s warning about hardcoded secrets: a genuinely common mobile-specific finding is an API key or secret embedded directly in the app&#39;s code, extractable by anyone through simple decompilation — sometimes a key intended to be secret, sometimes a key that was never meant to be secret in the first place but is being relied upon as if it were an actual access-control mechanism, a mistake this lesson treats as a distinct, common finding worth naming specifically.</p>
+<h2>Mobile-specific authentication patterns</h2>
+<ul>
+<li><strong>Refresh tokens stored insecurely</strong> — an authentication token designed to keep a user logged in long-term, if stored in SharedPreferences rather than the Keystore (from the previous lesson), becomes an extractable, long-lived credential</li>
+<li><strong>Device binding weaknesses</strong> — some apps attempt to tie an authentication session to a specific device, but implement this check client-side only, making it trivially bypassable exactly like any other client-side-only control</li>
+<li><strong>Certificate pinning as the only defense</strong> — an app relying purely on certificate pinning to protect its API traffic, with no additional server-side authorization checks, is vulnerable the moment pinning is bypassed (the previous lesson&#39;s Frida technique) — defense in depth (Path 10) matters here exactly as much as anywhere else in this course</li>
+</ul>
+<h2>A practical mobile API testing workflow</h2>
+<ol>
+<li>Set up traffic interception (the previous lesson&#39;s Burp Suite / Frida setup)</li>
+<li>Use the app normally, capturing every API call it makes</li>
+<li>Replay and modify captured requests directly (bypassing the app&#39;s own client-side logic entirely) to test for IDOR, broken authorization, and injection — exactly the Path 11 techniques, applied to traffic captured from a mobile app instead of a browser</li>
+</ol>
+<p>Why does relying purely on certificate pinning to protect a mobile app&#39;s API traffic represent a single point of failure, rather than genuine defense in depth?</p>
+<details><summary>Show answer</summary>Certificate pinning protects the <em>transport</em> — preventing a network-level interception (the MITM setups from Path 12) from reading or modifying traffic between the app and its backend. But once pinning is bypassed at the application layer (using Frida to hook and disable the pinning check, exactly the previous lesson's technique), an attacker gains full, direct visibility into every API call the app makes, with nothing else standing in the way if the backend itself doesn't independently verify authorization on each request. If pinning is the <em>only</em> protection — with no server-side authorization checks assuming a request might come from anywhere, no rate limiting, no additional validation — then bypassing that single control grants an attacker essentially unrestricted access to probe the API exactly as this lesson's testing workflow describes. Genuine defense in depth means the backend API is built to be secure even assuming an attacker can see and manipulate every request, not solely relying on the transport-level protection remaining intact.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Refresh token</strong> — a long-lived credential keeping a user authenticated, requiring the same secure storage discipline as any other sensitive credential.</li>
+<li><strong>Device binding</strong> — an attempt to tie an authentication session to a specific device, often implemented (insecurely) only on the client side.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>A mobile app&#39;s backend API is subject to exactly the same vulnerability classes covered in Path 11 and Path 21 — the mobile-specific challenge is reaching that traffic, not a fundamentally different set of vulnerabilities once you can.</li>
+<li>Hardcoded API keys, insecurely-stored refresh tokens, and client-side-only device binding are common mobile-specific findings within this broader API-security frame.</li>
+<li>Certificate pinning alone is never sufficient defense in depth — a backend API needs to remain secure assuming an attacker can eventually see and manipulate its traffic.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/13-mobile-security/ios-security-basics">iOS App Security Basics</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/13-mobile-security/mobile-api-security";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

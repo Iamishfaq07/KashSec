@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cross-Platform Mobile Security — Path 13 · KashSec Academy</title>
+<meta name="description" content="Every lesson so far has treated Android and iOS as the two native platforms. This lesson covers a genuinely different, increasingly common development approach — frameworks that build one codebase dep">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/13-mobile-security/cross-platform-mobile-security">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Cross-Platform Mobile Security — Path 13 · KashSec Academy">
+<meta property="og:description" content="Every lesson so far has treated Android and iOS as the two native platforms. This lesson covers a genuinely different, increasingly common development approach — frameworks that build one codebase dep">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/13-mobile-security/cross-platform-mobile-security">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Cross-Platform Mobile Security — Path 13 · KashSec Academy">
+<meta name="twitter:description" content="Every lesson so far has treated Android and iOS as the two native platforms. This lesson covers a genuinely different, increasingly common development approach — frameworks that build one codebase dep">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Cross-Platform Mobile Security — Path 13 · KashSec Academy","description":"Every lesson so far has treated Android and iOS as the two native platforms. This lesson covers a genuinely different, increasingly common development approach — frameworks that build one codebase dep","url":"https://kashsec.vercel.app/#/lesson/13-mobile-security/cross-platform-mobile-security","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/13-mobile-security/cross-platform-mobile-security">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 13 — Mobile App Security</a> · Cross-Platform Mobile Security</div>
+  <article><h1>Cross-Platform Mobile Security</h1>
+<p>Every lesson so far has treated Android and iOS as the two native platforms. This lesson covers a genuinely different, increasingly common development approach — frameworks that build one codebase deployed to both platforms — and the distinct security considerations that come with it.</p>
+<h2>What cross-platform frameworks actually are</h2>
+<p><strong>React Native</strong>, <strong>Flutter</strong>, and similar frameworks let developers write an app&#39;s logic largely once, then deploy it to both Android and iOS, rather than maintaining two entirely separate native codebases — directly connecting to Path 05&#39;s web-frameworks-overview lesson&#39;s coverage of frontend frameworks, just applied to mobile rather than the browser.</p>
+<h2>Why cross-platform apps introduce a distinct security surface</h2>
+<ul>
+<li><strong>The JavaScript bridge (React Native specifically)</strong> — React Native apps run application logic in JavaScript, communicating with native platform code through a <strong>bridge</strong> — a genuinely distinct attack surface, since data crossing this bridge needs the same validation discipline Path 11 taught for any trust boundary, and a poorly secured bridge can expose native functionality to script-level manipulation</li>
+<li><strong>Bundled JavaScript is even easier to extract than native code</strong> — React Native&#39;s JavaScript bundle is frequently less obfuscated than compiled native code by default, meaning the reverse-engineering lesson&#39;s static-analysis techniques often require even less effort against a cross-platform app&#39;s business logic</li>
+<li><strong>Third-party plugin risk</strong> — cross-platform frameworks rely heavily on a plugin ecosystem for native functionality, directly connecting to Path 10&#39;s supply-chain-security lesson: a vulnerable or malicious plugin becomes part of the app&#39;s trusted codebase the same way a compromised dependency does in any software supply chain</li>
+</ul>
+<h2>Flutter&#39;s different approach, and its own tradeoffs</h2>
+<p>Flutter compiles to native ARM code rather than running an interpreted JavaScript bridge, which removes React Native&#39;s specific bridge-related attack surface — but Flutter apps still face the same underlying secure-storage, API-security, and permission-model considerations covered throughout this entire path, since those are platform-level concerns the development framework doesn&#39;t change.</p>
+<h2>What stays exactly the same regardless of framework choice</h2>
+<p>Every single vulnerability class covered in this path — insecure data storage, certificate pinning (needing its own cross-platform-compatible implementation), API security, root/jailbreak detection — applies identically to a cross-platform app as to a fully native one. The framework changes <em>how</em> an app is built, not the underlying platform security model (permissions, sandboxing, secure enclave access) it ultimately runs on top of.</p>
+<p>Why might a React Native app&#39;s core business logic be genuinely easier to reverse-engineer than an equivalent native Android app&#39;s compiled code?</p>
+<details><summary>Show answer</summary>A native Android app compiles to bytecode that requires the decompilation process the APK-analysis lesson covered — a genuine, if not enormously difficult, extra step. A React Native app, by contrast, bundles its actual application logic as JavaScript, which is an interpreted language shipped in a form that's often considerably closer to its original, human-readable source than compiled native bytecode — without deliberate obfuscation (a topic the app-hardening lesson covers next), a React Native bundle can sometimes be nearly as readable as the original source code the developer actually wrote. This is exactly why cross-platform apps built with JavaScript-based frameworks deserve particular attention to obfuscation and code-hardening measures, precisely because their default, un-hardened state tends to expose more of the app's actual logic than an equivalent native binary would.</details><h2>Key terms</h2>
+<ul>
+<li><strong>React Native bridge</strong> — the communication layer between an app&#39;s JavaScript logic and native platform code, a distinct attack surface.</li>
+<li><strong>Cross-platform framework</strong> — a development approach (React Native, Flutter) building one codebase deployed to both Android and iOS.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Cross-platform frameworks introduce their own distinct considerations — React Native&#39;s bridge, easier-to-extract JavaScript bundles, and third-party plugin supply-chain risk — on top of, not instead of, every platform-level security concern this path has covered.</li>
+<li>Flutter&#39;s compiled-native approach removes the bridge-specific risk but doesn&#39;t change the underlying platform security model any framework ultimately builds on.</li>
+<li>Every vulnerability class covered elsewhere in this path applies identically to cross-platform apps, since the framework changes how an app is built, not the platform it ultimately runs on.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/13-mobile-security/mobile-privesc-root-detection">Mobile Privilege Escalation &amp; Root Detection</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/13-mobile-security/cross-platform-mobile-security";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

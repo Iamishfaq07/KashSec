@@ -109,7 +109,7 @@ adb shell am start -n com.example.vulnerableapp/.AdminActivity
 <p>Using DIVA or InsecureBankv2 on your rooted emulator, use <code>dumpsys package</code> to find an exported component, and attempt to launch or interact with it directly via <code>adb shell am start</code> (or <code>adb shell content query</code> for an exported Content Provider). Document what you were able to reach, and what the correct fix would look like (setting <code>exported=&quot;false&quot;</code>, or adding a custom permission requirement).</p>
 <h2>Key takeaway</h2>
 <p>Root/jailbreak detection is a genuine but ultimately bypassable speed bump, not a real security control — real security must come from proper server-side authorization and data protection, not from hoping the client environment stays untampered. Separately, exported components represent a mobile-specific access control risk with no web equivalent, and checking for them is a standard, high-value step in any Android security review.</p>
-<p><strong>Next up →</strong> <a href="#/lesson/13-mobile-security/mobile-security-lab">Mobile Security Capstone Lab</a></p>
+<p><strong>Next up →</strong> <a href="#/lesson/13-mobile-security/mobile-app-hardening">Mobile App Hardening</a></p>
 </article>
   <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
 </main>

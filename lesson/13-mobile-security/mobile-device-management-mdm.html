@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mobile Device Management (MDM) — Path 13 · KashSec Academy</title>
+<meta name="description" content="Every lesson so far has focused on a single app's security. This lesson zooms out to how organizations manage security across an entire fleet of mobile devices at once — directly connecting to Path 24">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/13-mobile-security/mobile-device-management-mdm">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Mobile Device Management (MDM) — Path 13 · KashSec Academy">
+<meta property="og:description" content="Every lesson so far has focused on a single app's security. This lesson zooms out to how organizations manage security across an entire fleet of mobile devices at once — directly connecting to Path 24">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/13-mobile-security/mobile-device-management-mdm">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Mobile Device Management (MDM) — Path 13 · KashSec Academy">
+<meta name="twitter:description" content="Every lesson so far has focused on a single app's security. This lesson zooms out to how organizations manage security across an entire fleet of mobile devices at once — directly connecting to Path 24">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Mobile Device Management (MDM) — Path 13 · KashSec Academy","description":"Every lesson so far has focused on a single app's security. This lesson zooms out to how organizations manage security across an entire fleet of mobile devices at once — directly connecting to Path 24","url":"https://kashsec.vercel.app/#/lesson/13-mobile-security/mobile-device-management-mdm","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/13-mobile-security/mobile-device-management-mdm">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 13 — Mobile App Security</a> · Mobile Device Management (MDM)</div>
+  <article><h1>Mobile Device Management (MDM)</h1>
+<p>Every lesson so far has focused on a single app&#39;s security. This lesson zooms out to how organizations manage security across an entire fleet of mobile devices at once — directly connecting to Path 24&#39;s device-trust-posture lesson, now applied specifically to phones and tablets.</p>
+<h2>What MDM actually does</h2>
+<p><strong>Mobile Device Management (MDM)</strong> software lets an organization enforce security policy, deploy apps, and remotely manage a fleet of mobile devices — setting password requirements, enforcing encryption, remotely wiping a lost or stolen device, and controlling which apps can be installed, all centrally, without requiring an administrator to physically handle each device.</p>
+<h2>Corporate-owned vs. BYOD: two genuinely different models</h2>
+<ul>
+<li><strong>Corporate-owned devices (COBO/COPE)</strong> — the organization owns the device outright, giving MDM full control over its configuration, exactly the strongest enforcement position but with obvious cost and flexibility tradeoffs</li>
+<li><strong>BYOD (Bring Your Own Device)</strong> — directly connecting to Path 24&#39;s remote-work lesson&#39;s coverage of this exact tension: an employee&#39;s personal device is enrolled in MDM, but the organization doesn&#39;t own it, creating a genuine balance to strike between security control and personal privacy</li>
+</ul>
+<h2>Containerization: solving the BYOD privacy tension</h2>
+<p>Modern MDM solutions commonly use <strong>containerization</strong> (also called work profiles on Android) — creating a genuinely separate, encrypted, managed workspace on a personal device, containing only work apps and data, entirely isolated from the user&#39;s personal apps and data on the same physical phone. The organization can enforce policy and even remotely wipe the work container without ever touching (or even being able to see) the user&#39;s personal photos, messages, or apps.</p>
+<h2>Why MDM matters for the security fundamentals covered earlier in this path</h2>
+<ul>
+<li><strong>Enforcing encryption and passcode requirements</strong> device-wide, directly connecting to Path 06&#39;s applied-crypto principles and Path 00&#39;s passwords lesson, applied at fleet scale rather than trusting each individual user&#39;s own choices</li>
+<li><strong>App allow-listing</strong> — restricting which apps can be installed at all, directly reducing exposure to the sideloading and malicious-app risks from the previous lesson</li>
+<li><strong>Remote wipe</strong> — a genuine, high-value corrective control (Path 10&#39;s control-types lesson) for a lost or stolen device, preventing the data-extraction risks covered throughout the insecure-storage and authentication lessons from ever mattering if the device itself falls into the wrong hands</li>
+<li><strong>Conditional access</strong> — directly extending Path 24&#39;s Zero Trust device-posture concept: an unmanaged or non-compliant device can be denied access to corporate resources entirely, regardless of whether the user&#39;s credentials are otherwise valid</li>
+</ul>
+<h2>The genuine privacy tension worth naming honestly</h2>
+<p>Even with containerization, MDM enrollment involves real tradeoffs an employee should understand — some MDM configurations retain visibility into device-level information (location, installed app inventory, network activity) beyond just the work container, and the specific boundaries vary meaningfully by product and configuration. This is exactly the same &quot;be deliberate and transparent about the tradeoff, not just assume it&#39;s fine&quot; principle Path 09&#39;s family-privacy lesson raised for parental monitoring, applied here to the employer-employee relationship instead.</p>
+<p>Why does containerization specifically address the core tension in BYOD security, rather than just being a nice-to-have feature?</p>
+<details><summary>Show answer</summary>Without containerization, an organization enforcing meaningful security policy on a personal device (remote wipe capability, mandatory encryption, app restrictions) would need visibility and control over the <em>entire device</em> — including the user's personal photos, messages, and unrelated apps — creating a genuine, reasonable reason for an employee to resist enrollment entirely, since accepting corporate security policy would mean surrendering control over clearly personal, unrelated data. Containerization resolves this by creating a genuinely separate, isolated managed workspace: the organization gets full enforcement capability over the work container specifically (encryption, remote wipe, app control), while the user's personal profile remains genuinely outside the organization's reach, addressing the legitimate privacy concern directly rather than asking the employee to simply trust that the organization won't misuse broader access it doesn't actually need to have in the first place.</details><h2>Key terms</h2>
+<ul>
+<li><strong>MDM (Mobile Device Management)</strong> — software for centrally enforcing security policy and managing a fleet of mobile devices.</li>
+<li><strong>Containerization / work profile</strong> — a separate, encrypted, organization-managed workspace isolated from a personal device&#39;s personal data.</li>
+<li><strong>COBO/COPE</strong> — corporate-owned device ownership models, giving an organization full device control.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>MDM extends Path 24&#39;s Zero Trust device-posture concept to fleet-scale mobile device management, enforcing encryption, app restrictions, and remote wipe centrally.</li>
+<li>Containerization resolves BYOD&#39;s core privacy tension by creating a genuinely isolated, organization-managed work profile separate from an employee&#39;s personal data on the same device.</li>
+<li>Real privacy tradeoffs remain even with containerization, and being deliberate and transparent about them mirrors the same principle Path 09 raised for personal device-monitoring decisions.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/13-mobile-security/mobile-security-careers-certifications">Mobile Security Careers &amp; Certifications</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/13-mobile-security/mobile-device-management-mdm";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

@@ -80,4 +80,4 @@ Why might an iOS app be, in some ways, more resistant to casual static analysis 
 - [OWASP MASTG — iOS section](https://mas.owasp.org/MASTG/iOS/0x06a-Platform-Overview/) — the free, detailed iOS-specific testing methodology.
 ???
 
-**Next up →** [Mobile Privilege Escalation & Root Detection](#/lesson/13-mobile-security/mobile-privesc-root-detection)
+**Next up →** [Cross-Platform Mobile Security](#/lesson/13-mobile-security/cross-platform-mobile-security)

@@ -346,6 +346,15 @@ const GLOSSARY = [
   "subTitle": "Phase 2: Scan & enumerate"
  },
  {
+  "term": "Anti-tampering check",
+  "def": "a runtime verification that an app's code hasn't been modified since signing.",
+  "pathId": "13-mobile-security",
+  "pathN": "13",
+  "pathTitle": "Mobile App Security",
+  "subId": "mobile-app-hardening",
+  "subTitle": "Mobile App Hardening"
+ },
+ {
   "term": "`any()`",
   "def": "True if any element matches a condition.",
   "pathId": "04-python",
@@ -875,6 +884,15 @@ const GLOSSARY = [
   "pathTitle": "Mobile App Security",
   "subId": "owasp-mobile-top-10",
   "subTitle": "OWASP Mobile Top 10"
+ },
+ {
+  "term": "Biometric authentication",
+  "def": "using a fingerprint or face match, performed entirely on-device, to unlock access to a securely-stored key.",
+  "pathId": "13-mobile-security",
+  "pathN": "13",
+  "pathTitle": "Mobile App Security",
+  "subId": "mobile-authentication-biometrics",
+  "subTitle": "Mobile Authentication & Biometrics"
  },
  {
   "term": "BitLocker",
@@ -1552,6 +1570,15 @@ const GLOSSARY = [
   "subTitle": "Windows Command Line Basics"
  },
  {
+  "term": "COBO/COPE",
+  "def": "corporate-owned device ownership models, giving an organization full device control.",
+  "pathId": "13-mobile-security",
+  "pathN": "13",
+  "pathTitle": "Mobile App Security",
+  "subId": "mobile-device-management-mdm",
+  "subTitle": "Mobile Device Management (MDM)"
+ },
+ {
   "term": "Code signing",
   "def": "cryptographically signing software to verify its publisher and integrity.",
   "pathId": "17-malware-re",
@@ -1813,6 +1840,15 @@ const GLOSSARY = [
   "subTitle": "Containers & Kubernetes"
  },
  {
+  "term": "Containerization / work profile",
+  "def": "a separate, encrypted, organization-managed workspace isolated from a personal device's personal data.",
+  "pathId": "13-mobile-security",
+  "pathN": "13",
+  "pathTitle": "Mobile App Security",
+  "subId": "mobile-device-management-mdm",
+  "subTitle": "Mobile Device Management (MDM)"
+ },
+ {
   "term": "Containment",
   "def": "the incident-response phase focused on stopping an incident from spreading further.",
   "pathId": "10-fundamentals",
@@ -2054,6 +2090,15 @@ const GLOSSARY = [
   "pathTitle": "Zero Trust Architecture",
   "subId": "zero-trust-careers",
   "subTitle": "Zero Trust Careers & Certifications"
+ },
+ {
+  "term": "Cross-platform framework",
+  "def": "a development approach (React Native, Flutter) building one codebase deployed to both Android and iOS.",
+  "pathId": "13-mobile-security",
+  "pathN": "13",
+  "pathTitle": "Mobile App Security",
+  "subId": "cross-platform-mobile-security",
+  "subTitle": "Cross-Platform Mobile Security"
  },
  {
   "term": "Cryptomining abuse",
@@ -2470,6 +2515,15 @@ const GLOSSARY = [
   "subTitle": "Secrets Management & Software Supply Chain"
  },
  {
+  "term": "Device binding",
+  "def": "an attempt to tie an authentication session to a specific device, often implemented (insecurely) only on the client side.",
+  "pathId": "13-mobile-security",
+  "pathN": "13",
+  "pathTitle": "Mobile App Security",
+  "subId": "mobile-api-security",
+  "subTitle": "Mobile API Security"
+ },
+ {
   "term": "Device posture",
   "def": "a real-time assessment of a device's security health (patch level, encryption, EDR status, etc.)",
   "pathId": "24-zero-trust",
@@ -2875,6 +2929,15 @@ const GLOSSARY = [
   "subTitle": "What is a bug bounty?"
  },
  {
+  "term": "Dynamic analysis",
+  "def": "observing an app's actual behavior while it runs.",
+  "pathId": "13-mobile-security",
+  "pathN": "13",
+  "pathTitle": "Mobile App Security",
+  "subId": "reverse-engineering-mobile-apps",
+  "subTitle": "Reverse Engineering Mobile Apps"
+ },
+ {
   "term": "Dynamic ARP Inspection (DAI)",
   "def": "a switch-level feature validating ARP packets against a known-good binding table.",
   "pathId": "12-network-security",
@@ -3226,6 +3289,15 @@ const GLOSSARY = [
   "subTitle": "Your first bash script"
  },
  {
+  "term": "Exported component",
+  "def": "part of an app's functionality reachable by other apps on the device, a separate attack surface from the permission model.",
+  "pathId": "13-mobile-security",
+  "pathN": "13",
+  "pathTitle": "Mobile App Security",
+  "subId": "android-permissions-deep-dive",
+  "subTitle": "Android Permissions Deep Dive"
+ },
+ {
   "term": "Exposure-based prioritization",
   "def": "ranking vulnerabilities by realistic reachability and impact in your specific environment, not raw CVSS score alone",
   "pathId": "25-ot-ics-security",
@@ -3505,6 +3577,15 @@ const GLOSSARY = [
   "subTitle": "Clickjacking"
  },
  {
+  "term": "Frida",
+  "def": "a dynamic instrumentation tool for hooking and modifying a running app's functions in real time.",
+  "pathId": "13-mobile-security",
+  "pathN": "13",
+  "pathTitle": "Mobile App Security",
+  "subId": "reverse-engineering-mobile-apps",
+  "subTitle": "Reverse Engineering Mobile Apps"
+ },
+ {
   "term": "Front-end / back-end",
   "def": "same distinction from a dev's angle.",
   "pathId": "05-web-basics",
@@ -3629,6 +3710,15 @@ const GLOSSARY = [
   "pathTitle": "Windows Security Basics",
   "subId": "windows-services-and-task-manager",
   "subTitle": "Windows Services & Task Manager, for Security"
+ },
+ {
+  "term": "GIAC GMOB",
+  "def": "a dedicated GIAC certification for mobile device and application security.",
+  "pathId": "13-mobile-security",
+  "pathN": "13",
+  "pathTitle": "Mobile App Security",
+  "subId": "mobile-security-careers-certifications",
+  "subTitle": "Mobile Security Careers & Certifications"
  },
  {
   "term": "GICSP",
@@ -5315,6 +5405,15 @@ const GLOSSARY = [
  },
  {
   "term": "MDM (Mobile Device Management)",
+  "def": "software for centrally enforcing security policy and managing a fleet of mobile devices.",
+  "pathId": "13-mobile-security",
+  "pathN": "13",
+  "pathTitle": "Mobile App Security",
+  "subId": "mobile-device-management-mdm",
+  "subTitle": "Mobile Device Management (MDM)"
+ },
+ {
+  "term": "MDM (Mobile Device Management)",
   "def": "a platform that enrolls, monitors, and enforces policy on managed devices",
   "pathId": "24-zero-trust",
   "pathN": "24",
@@ -5854,6 +5953,15 @@ const GLOSSARY = [
   "subTitle": "Automation & nuclei"
  },
  {
+  "term": "Obfuscation",
+  "def": "transforming code to make it harder to read while preserving its behavior, raising the cost of static analysis.",
+  "pathId": "13-mobile-security",
+  "pathN": "13",
+  "pathTitle": "Mobile App Security",
+  "subId": "mobile-app-hardening",
+  "subTitle": "Mobile App Hardening"
+ },
+ {
   "term": "Object",
   "def": "a specific instance created from a class.",
   "pathId": "04-python",
@@ -6052,6 +6160,15 @@ const GLOSSARY = [
   "subTitle": "REST vs GraphQL — security differences that matter"
  },
  {
+  "term": "Overlay attack",
+  "def": "displaying a fake interface on top of a legitimate app to capture credentials, a mobile-specific phishing variant.",
+  "pathId": "13-mobile-security",
+  "pathN": "13",
+  "pathTitle": "Mobile App Security",
+  "subId": "mobile-malware-app-store-security",
+  "subTitle": "Mobile Malware & App Store Security"
+ },
+ {
   "term": "Overlay network",
   "def": "a logical network spanning multiple underlying physical networks, appearing as one seamless network to anything running on top of it.",
   "pathId": "02-networking",
@@ -6113,6 +6230,15 @@ const GLOSSARY = [
   "pathTitle": "Mobile App Security",
   "subId": "owasp-mobile-top-10",
   "subTitle": "OWASP Mobile Top 10"
+ },
+ {
+  "term": "OWASP MSTG (Mobile Security Testing Guide)",
+  "def": "a comprehensive, freely available mobile security testing reference.",
+  "pathId": "13-mobile-security",
+  "pathN": "13",
+  "pathTitle": "Mobile App Security",
+  "subId": "mobile-security-careers-certifications",
+  "subTitle": "Mobile Security Careers & Certifications"
  },
  {
   "term": "OWASP Top 10",
@@ -7276,6 +7402,15 @@ const GLOSSARY = [
   "subTitle": "SAST, DAST & SCA — The Core Scanning Trio"
  },
  {
+  "term": "React Native bridge",
+  "def": "the communication layer between an app's JavaScript logic and native platform code, a distinct attack surface.",
+  "pathId": "13-mobile-security",
+  "pathN": "13",
+  "pathTitle": "Mobile App Security",
+  "subId": "cross-platform-mobile-security",
+  "subTitle": "Cross-Platform Mobile Security"
+ },
+ {
   "term": "README",
   "def": "the landing document explaining what a repo does, why, and how to use it.",
   "pathId": "20-career-prep",
@@ -7364,6 +7499,15 @@ const GLOSSARY = [
   "pathTitle": "Web Security & Hacking",
   "subId": "xss",
   "subTitle": "Cross-Site Scripting"
+ },
+ {
+  "term": "Refresh token",
+  "def": "a long-lived credential keeping a user authenticated, requiring the same secure storage discipline as any other sensitive credential.",
+  "pathId": "13-mobile-security",
+  "pathN": "13",
+  "pathTitle": "Mobile App Security",
+  "subId": "mobile-api-security",
+  "subTitle": "Mobile API Security"
  },
  {
   "term": "Refresh token",
@@ -7816,6 +7960,15 @@ const GLOSSARY = [
   "subTitle": "The 5 phases"
  },
  {
+  "term": "Runtime permission",
+  "def": "a sensitive permission requested individually at the moment it's needed, rather than bundled at install time.",
+  "pathId": "13-mobile-security",
+  "pathN": "13",
+  "pathTitle": "Mobile App Security",
+  "subId": "android-permissions-deep-dive",
+  "subTitle": "Android Permissions Deep Dive"
+ },
+ {
   "term": "Runtime permissions",
   "def": "explicit, often individually-grantable user consent for sensitive resource access.",
   "pathId": "13-mobile-security",
@@ -8005,6 +8158,15 @@ const GLOSSARY = [
   "subTitle": "Choosing programs"
  },
  {
+  "term": "Scoped storage",
+  "def": "a modern Android restriction limiting default file-system access to an app's own sandbox.",
+  "pathId": "13-mobile-security",
+  "pathN": "13",
+  "pathTitle": "Mobile App Security",
+  "subId": "android-permissions-deep-dive",
+  "subTitle": "Android Permissions Deep Dive"
+ },
+ {
   "term": "Scope / policy",
   "def": "the program's defined boundaries, the bug bounty analogue of a pentest's RoE.",
   "pathId": "15-bug-bounty",
@@ -8057,6 +8219,15 @@ const GLOSSARY = [
   "pathTitle": "OT/ICS & Critical Infrastructure Security",
   "subId": "industrial-protocols",
   "subTitle": "Industrial Protocols: Modbus, DNP3, and Why Their Design Causes Security Problems"
+ },
+ {
+  "term": "Secure enclave / Trusted Execution Environment (TEE)",
+  "def": "a physically isolated hardware component storing cryptographic keys that can never be extracted, even with root access.",
+  "pathId": "13-mobile-security",
+  "pathN": "13",
+  "pathTitle": "Mobile App Security",
+  "subId": "mobile-authentication-biometrics",
+  "subTitle": "Mobile Authentication & Biometrics"
  },
  {
   "term": "Security+",
@@ -8516,6 +8687,15 @@ const GLOSSARY = [
   "pathTitle": "Cryptography Fundamentals",
   "subId": "cryptographic-attacks-overview",
   "subTitle": "Common Cryptographic Attacks"
+ },
+ {
+  "term": "Sideloading",
+  "def": "installing an app from outside the official app store, bypassing that store's review process entirely.",
+  "pathId": "13-mobile-security",
+  "pathN": "13",
+  "pathTitle": "Mobile App Security",
+  "subId": "mobile-malware-app-store-security",
+  "subTitle": "Mobile Malware & App Store Security"
  },
  {
   "term": "SIEM",
@@ -9002,6 +9182,15 @@ const GLOSSARY = [
   "pathTitle": "GRC & Compliance",
   "subId": "iso27001-overview",
   "subTitle": "ISO 27001 Overview"
+ },
+ {
+  "term": "Static analysis",
+  "def": "examining an app's code and configuration without executing it.",
+  "pathId": "13-mobile-security",
+  "pathN": "13",
+  "pathTitle": "Mobile App Security",
+  "subId": "reverse-engineering-mobile-apps",
+  "subTitle": "Reverse Engineering Mobile Apps"
  },
  {
   "term": "Static / dynamic analysis",

@@ -92,4 +92,4 @@ Using DIVA or InsecureBankv2 (installed in the lab setup lesson) on your rooted 
 
 Insecure local storage requires zero exploitation to abuse — just root access or a backup extraction and the willingness to look. This makes it one of the highest-yield, lowest-effort findings in mobile testing, and exactly why checking local storage should be one of the very first things you do in any mobile security assessment.
 
-**Next up →** [Intercepting Mobile Traffic](#/lesson/13-mobile-security/intercepting-mobile-traffic)
+**Next up →** [Mobile Authentication & Biometrics](#/lesson/13-mobile-security/mobile-authentication-biometrics)

@@ -70,4 +70,4 @@ Using DIVA or InsecureBankv2 on your rooted emulator, use `dumpsys package` to f
 
 Root/jailbreak detection is a genuine but ultimately bypassable speed bump, not a real security control — real security must come from proper server-side authorization and data protection, not from hoping the client environment stays untampered. Separately, exported components represent a mobile-specific access control risk with no web equivalent, and checking for them is a standard, high-value step in any Android security review.
 
-**Next up →** [Mobile Security Capstone Lab](#/lesson/13-mobile-security/mobile-security-lab)
+**Next up →** [Mobile App Hardening](#/lesson/13-mobile-security/mobile-app-hardening)

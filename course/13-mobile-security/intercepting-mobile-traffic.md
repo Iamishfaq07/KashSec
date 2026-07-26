@@ -78,4 +78,4 @@ Using your rooted emulator and Frida (or Objection), attempt to bypass certifica
 
 Certificate pinning raises the bar for traffic interception but doesn't make it impossible — runtime instrumentation tools like Frida can patch an app's own trust decision at the exact moment it's made, which is exactly why defense-in-depth (proper server-side authorization, not relying on pinning alone) matters as much on mobile as everywhere else in this course.
 
-**Next up →** [iOS App Security Basics](#/lesson/13-mobile-security/ios-security-basics)
+**Next up →** [Mobile API Security](#/lesson/13-mobile-security/mobile-api-security)

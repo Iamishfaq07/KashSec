@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Android Permissions Deep Dive — Path 13 · KashSec Academy</title>
+<meta name="description" content="The fundamentals lesson introduced permissions at a high level. This lesson goes properly deep — the actual permission model, why it changed dramatically over Android's history, and the security impli">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/13-mobile-security/android-permissions-deep-dive">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Android Permissions Deep Dive — Path 13 · KashSec Academy">
+<meta property="og:description" content="The fundamentals lesson introduced permissions at a high level. This lesson goes properly deep — the actual permission model, why it changed dramatically over Android's history, and the security impli">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/13-mobile-security/android-permissions-deep-dive">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Android Permissions Deep Dive — Path 13 · KashSec Academy">
+<meta name="twitter:description" content="The fundamentals lesson introduced permissions at a high level. This lesson goes properly deep — the actual permission model, why it changed dramatically over Android's history, and the security impli">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Android Permissions Deep Dive — Path 13 · KashSec Academy","description":"The fundamentals lesson introduced permissions at a high level. This lesson goes properly deep — the actual permission model, why it changed dramatically over Android's history, and the security impli","url":"https://kashsec.vercel.app/#/lesson/13-mobile-security/android-permissions-deep-dive","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/13-mobile-security/android-permissions-deep-dive">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 13 — Mobile App Security</a> · Android Permissions Deep Dive</div>
+  <article><h1>Android Permissions Deep Dive</h1>
+<p>The fundamentals lesson introduced permissions at a high level. This lesson goes properly deep — the actual permission model, why it changed dramatically over Android&#39;s history, and the security implications of getting it wrong as either a developer or an assessor.</p>
+<h2>Install-time vs. runtime permissions</h2>
+<p>Older Android versions granted every permission an app requested at install time, all at once — meaning a user either accepted the app&#39;s entire permission list or didn&#39;t install it at all, with no granularity. Modern Android uses <strong>runtime permissions</strong> for anything sensitive (location, camera, contacts, microphone): the app must request each one individually, at the moment it&#39;s actually needed, and the user can grant or deny each independently — directly applying the least-privilege principle from throughout this course to end-user consent itself.</p>
+<h2>Permission protection levels</h2>
+<ul>
+<li><strong>Normal</strong> — low-risk permissions (internet access, for instance) granted automatically at install time, no explicit user prompt needed</li>
+<li><strong>Dangerous</strong> — the runtime-prompted category covering genuinely sensitive access (location, camera, contacts, SMS)</li>
+<li><strong>Signature</strong> — granted automatically only to apps signed with the same certificate as the app declaring the permission, commonly used for communication between an organization&#39;s own suite of apps</li>
+<li><strong>Signature|System</strong> — reserved for apps that are part of the Android system image itself or share a platform-level signature</li>
+</ul>
+<h2>Why over-permissioned apps remain a genuine, common finding</h2>
+<p>Directly connecting to Path 09&#39;s device-and-location-privacy lesson&#39;s flashlight-app example: a mobile security assessment routinely finds apps requesting far more permissions than their stated function requires — exactly the disproportionate-permission-request pattern that lesson flagged as a data-harvesting warning sign, now examined from the assessor&#39;s side rather than the end user&#39;s.</p>
+<pre><code class="language-bash">adb shell dumpsys package com.example.app | grep permission
+</code></pre>
+<p>Reviewing an app&#39;s declared and actually-granted permissions is a genuinely quick, high-value first step in any mobile assessment, directly connecting to the mobile-testing-lab-setup lesson&#39;s ADB tooling.</p>
+<h2>Permission scoping in modern Android: even more granular</h2>
+<p>Recent Android versions have introduced even finer-grained control — <strong>scoped storage</strong> (limiting file-system access to an app&#39;s own sandbox by default, rather than broad external storage access) and <strong>approximate location</strong> (letting a user grant general-area location without precise coordinates, directly connecting to Path 09&#39;s device-location-privacy lesson) both represent the same trend: narrowing the default blast radius of what any single permission grant actually exposes.</p>
+<h2>The security implication of exported components, previewed</h2>
+<p>A permission alone doesn&#39;t fully determine an app&#39;s attack surface — the mobile-privesc-root-detection lesson later in this path covers <strong>exported components</strong>, where an app&#39;s own internal functionality can be reached by <em>other apps</em> on the device, entirely independent of the permission model covered in this lesson. Worth flagging now: permissions control what an app itself can access, while exported components control what <em>other</em> apps can reach within it — two genuinely separate attack surfaces.</p>
+<p>Why does the shift from install-time to runtime permissions represent a genuine security improvement, not just a UX change?</p>
+<details><summary>Show answer</summary>Install-time permissions forced an all-or-nothing decision before a user had any real context for why a specific permission might be needed — a user installing a photo-editing app might grant location access simply because refusing meant not installing the app at all, with no way to use the app's core functionality while declining unrelated, unnecessary access. Runtime permissions let a user make an informed decision <em>at the moment</em> a specific permission is actually being requested, with context about what triggered the request, and — critically — let a user grant some permissions while denying others, using the app's core functionality without necessarily accepting every requested access. This directly reduces the effectiveness of over-permissioned or data-harvesting apps, since a user can now decline a suspicious, disproportionate permission request (the flashlight-app example from Path 09) while still using the app's legitimate core feature, rather than facing an all-or-nothing choice.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Runtime permission</strong> — a sensitive permission requested individually at the moment it&#39;s needed, rather than bundled at install time.</li>
+<li><strong>Scoped storage</strong> — a modern Android restriction limiting default file-system access to an app&#39;s own sandbox.</li>
+<li><strong>Exported component</strong> — part of an app&#39;s functionality reachable by other apps on the device, a separate attack surface from the permission model.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Modern Android&#39;s runtime permission model lets users make informed, granular decisions rather than an all-or-nothing install-time choice, directly applying least privilege to end-user consent.</li>
+<li>Over-permissioned apps remain a genuinely common real-world finding, directly connecting to Path 09&#39;s disproportionate-permission-request warning sign.</li>
+<li>Permissions and exported components are two separate attack surfaces — one controls what an app itself can access, the other controls what other apps can reach within it.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/13-mobile-security/mobile-testing-lab-setup">Setting Up a Mobile Testing Lab</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/13-mobile-security/android-permissions-deep-dive";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

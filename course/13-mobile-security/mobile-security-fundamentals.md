@@ -94,4 +94,4 @@ Why does mobile app sandboxing alone not guarantee an app's data is actually saf
 - [Android Developers: App Sandbox](https://developer.android.com/privacy-and-security/security-tips) — Google's own security documentation.
 ???
 
-**Next up →** [Setting Up a Mobile Testing Lab](#/lesson/13-mobile-security/mobile-testing-lab-setup)
+**Next up →** [Android Permissions Deep Dive](#/lesson/13-mobile-security/android-permissions-deep-dive)

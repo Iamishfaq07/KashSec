@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reverse Engineering Mobile Apps — Path 13 · KashSec Academy</title>
+<meta name="description" content="The APK-analysis lesson introduced decompiling an app's code. This lesson goes deeper into the actual reverse-engineering workflow — static and dynamic analysis working together, and the specific tool">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/13-mobile-security/reverse-engineering-mobile-apps">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Reverse Engineering Mobile Apps — Path 13 · KashSec Academy">
+<meta property="og:description" content="The APK-analysis lesson introduced decompiling an app's code. This lesson goes deeper into the actual reverse-engineering workflow — static and dynamic analysis working together, and the specific tool">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/13-mobile-security/reverse-engineering-mobile-apps">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Reverse Engineering Mobile Apps — Path 13 · KashSec Academy">
+<meta name="twitter:description" content="The APK-analysis lesson introduced decompiling an app's code. This lesson goes deeper into the actual reverse-engineering workflow — static and dynamic analysis working together, and the specific tool">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Reverse Engineering Mobile Apps — Path 13 · KashSec Academy","description":"The APK-analysis lesson introduced decompiling an app's code. This lesson goes deeper into the actual reverse-engineering workflow — static and dynamic analysis working together, and the specific tool","url":"https://kashsec.vercel.app/#/lesson/13-mobile-security/reverse-engineering-mobile-apps","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/13-mobile-security/reverse-engineering-mobile-apps">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 13 — Mobile App Security</a> · Reverse Engineering Mobile Apps</div>
+  <article><h1>Reverse Engineering Mobile Apps</h1>
+<p>The APK-analysis lesson introduced decompiling an app&#39;s code. This lesson goes deeper into the actual reverse-engineering workflow — static and dynamic analysis working together, and the specific tool (Frida) that shows up constantly throughout the rest of this path.</p>
+<h2>Static analysis: reading code without running it</h2>
+<p>The APK-analysis lesson&#39;s decompilation is genuinely static analysis — examining an app&#39;s code, resources, and configuration without ever executing it. Beyond simply reading decompiled Java/Kotlin, static analysis includes:</p>
+<ul>
+<li><strong>Reviewing <code>AndroidManifest.xml</code></strong> — revealing declared permissions (from the previous lesson), exported components (previewed there, covered fully in the privesc lesson), and other configuration details before ever running the app</li>
+<li><strong>Searching decompiled code for hardcoded secrets</strong> — directly connecting to Path 04&#39;s secure-coding lesson&#39;s warning against hardcoded credentials, an even more common finding in mobile apps than in server-side code, since a mobile APK is trivially extractable and decompilable by anyone who downloads it</li>
+<li><strong>String analysis</strong> — searching an app&#39;s compiled strings for API endpoints, internal comments left in by developers, or debug flags accidentally left enabled in a production build</li>
+</ul>
+<h2>Dynamic analysis: watching the app actually run</h2>
+<p><strong>Dynamic analysis</strong> observes an app&#39;s real behavior while it executes — network traffic (the intercepting-mobile-traffic lesson), file system access, and runtime function calls — revealing behavior that static analysis alone might miss, especially when code is obfuscated (previewed here, covered fully in the app-hardening lesson later in this path).</p>
+<h2>Frida: dynamic instrumentation, hands-on</h2>
+<p><strong>Frida</strong> is the dominant tool for mobile dynamic analysis, letting a researcher inject JavaScript into a running app&#39;s process to hook functions, intercept calls, and modify behavior in real time — genuinely the same underlying technique the intercepting-mobile-traffic lesson uses to bypass certificate pinning, generalized to any function in the app.</p>
+<pre><code class="language-javascript">// A simplified example: hooking a function to log its arguments
+Java.perform(function() {
+    var TargetClass = Java.use(&quot;com.example.app.SecurityCheck&quot;);
+    TargetClass.isRooted.implementation = function() {
+        console.log(&quot;isRooted() was called — forcing return false&quot;);
+        return false;
+    };
+});
+</code></pre>
+<p>This exact pattern — hooking a specific function and overriding its return value — is precisely the technique the mobile-privesc-root-detection lesson later in this path uses to bypass root-detection checks, now shown in the general form that applies to essentially any function an app defines.</p>
+<h2>Why combining static and dynamic analysis matters</h2>
+<p>Neither approach alone tells the complete story: static analysis can reveal code paths that are rarely triggered during normal use (an unusual condition, a hidden debug feature) that dynamic analysis might never happen to exercise, while dynamic analysis reveals genuine runtime behavior (actual network destinations, real decrypted values) that static analysis of obfuscated or encrypted code might never fully recover. A thorough mobile assessment moves between both approaches, using findings from each to guide the other.</p>
+<p>Why might a hardcoded API key be easier to find in a mobile app&#39;s decompiled code than in a typical server-side web application&#39;s source code?</p>
+<details><summary>Show answer</summary>A mobile app's compiled package (APK or IPA) ships directly to every single user who installs it — meaning anyone can download the app, decompile it using the exact tools this path has covered, and examine its code and embedded strings directly, entirely on their own device with no need to access the developer's actual servers or source repository at all. Server-side web application code, by contrast, never leaves the server — a user only ever sees the application's outputs (rendered pages, API responses), never the underlying source code itself, unless a separate vulnerability (like the source-code-disclosure risks covered elsewhere in this course) exposes it. This fundamental distribution difference is exactly why hardcoded secrets in mobile apps are considered an even more severe and more commonly found mistake than the equivalent in server-side code — the "attacker" doesn't need to breach anything at all, they just need to download the app like anyone else.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Static analysis</strong> — examining an app&#39;s code and configuration without executing it.</li>
+<li><strong>Dynamic analysis</strong> — observing an app&#39;s actual behavior while it runs.</li>
+<li><strong>Frida</strong> — a dynamic instrumentation tool for hooking and modifying a running app&#39;s functions in real time.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Static analysis (decompiled code, manifest review, string searching) and dynamic analysis (observed runtime behavior) each reveal different information, and a thorough assessment combines both.</li>
+<li>Frida&#39;s function-hooking technique is the same underlying mechanism used throughout this path — from certificate-pinning bypass to root-detection bypass — just applied to different target functions.</li>
+<li>Hardcoded secrets are an even more severe finding in mobile apps than server-side code, precisely because the compiled app ships directly to every user, making decompilation trivially accessible to anyone.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/13-mobile-security/insecure-data-storage">Insecure Data Storage</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/13-mobile-security/reverse-engineering-mobile-apps";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

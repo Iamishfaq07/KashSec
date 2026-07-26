@@ -92,4 +92,4 @@ Download any free, legitimate app's APK (via a tool like `apk-mirror` alternativ
 
 Compiled doesn't mean unreadable — with free, widely available tools, an APK's structure, permissions, and a substantial portion of its actual logic are all directly inspectable, which is exactly why hardcoded secrets and exported components remain such consistently common real-world Android findings.
 
-**Next up →** [Insecure Data Storage](#/lesson/13-mobile-security/insecure-data-storage)
+**Next up →** [Reverse Engineering Mobile Apps](#/lesson/13-mobile-security/reverse-engineering-mobile-apps)

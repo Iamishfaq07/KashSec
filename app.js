@@ -966,14 +966,23 @@ const PATHS = [
    desc:"Android & iOS security from the ground up — APK analysis, insecure storage, traffic interception, certificate pinning bypass, and exported component vulnerabilities.",
    subs:[
      {n:"1", id:"mobile-security-fundamentals", title:"Mobile Security Fundamentals", desc:"Sandboxing, permissions, and how Android/iOS differ."},
-     {n:"2", id:"mobile-testing-lab-setup",     title:"Setting Up a Mobile Testing Lab", desc:"Emulator, ADB, Burp, and root access — all wired together."},
-     {n:"3", id:"owasp-mobile-top-10",          title:"OWASP Mobile Top 10", desc:"The shared checklist for mobile application security."},
-     {n:"4", id:"android-apk-analysis",         title:"Android APK Analysis", desc:"Decompile and read an app's code without ever running it."},
-     {n:"5", id:"insecure-data-storage",        title:"Insecure Data Storage", desc:"The most common real-world mobile finding, hands-on."},
-     {n:"6", id:"intercepting-mobile-traffic",  title:"Intercepting Mobile Traffic", desc:"Certificate pinning, and bypassing it with Frida."},
-     {n:"7", id:"ios-security-basics",          title:"iOS App Security Basics", desc:"IPA structure, ATS, and the Keychain."},
-     {n:"8", id:"mobile-privesc-root-detection", title:"Mobile Privilege Escalation & Root Detection", desc:"Root/jailbreak detection bypass and exported component attacks."},
-     {n:"9", id:"mobile-security-lab",          title:"Mobile Security Capstone Lab", desc:"A full assessment against a real vulnerable app."}
+     {n:"2", id:"android-permissions-deep-dive", title:"Android Permissions Deep Dive", desc:"Runtime permissions, protection levels, and the over-permissioned-app red flag."},
+     {n:"3", id:"mobile-testing-lab-setup",     title:"Setting Up a Mobile Testing Lab", desc:"Emulator, ADB, Burp, and root access — all wired together."},
+     {n:"4", id:"owasp-mobile-top-10",          title:"OWASP Mobile Top 10", desc:"The shared checklist for mobile application security."},
+     {n:"5", id:"android-apk-analysis",         title:"Android APK Analysis", desc:"Decompile and read an app's code without ever running it."},
+     {n:"6", id:"reverse-engineering-mobile-apps", title:"Reverse Engineering Mobile Apps", desc:"Static and dynamic analysis together, and a first real look at Frida."},
+     {n:"7", id:"insecure-data-storage",        title:"Insecure Data Storage", desc:"The most common real-world mobile finding, hands-on."},
+     {n:"8", id:"mobile-authentication-biometrics", title:"Mobile Authentication & Biometrics", desc:"The secure enclave, and why Face ID doesn't work the way most people assume."},
+     {n:"9", id:"intercepting-mobile-traffic",  title:"Intercepting Mobile Traffic", desc:"Certificate pinning, and bypassing it with Frida."},
+     {n:"10", id:"mobile-api-security",          title:"Mobile API Security", desc:"Every Path 11/21 vulnerability class, reached through a mobile app's traffic instead of a browser."},
+     {n:"11", id:"ios-security-basics",          title:"iOS App Security Basics", desc:"IPA structure, ATS, and the Keychain."},
+     {n:"12", id:"cross-platform-mobile-security", title:"Cross-Platform Mobile Security", desc:"React Native's bridge, Flutter's tradeoffs, and what stays the same either way."},
+     {n:"13", id:"mobile-privesc-root-detection", title:"Mobile Privilege Escalation & Root Detection", desc:"Root/jailbreak detection bypass and exported component attacks."},
+     {n:"14", id:"mobile-app-hardening",        title:"Mobile App Hardening", desc:"Obfuscation, anti-tampering, and anti-Frida — real protection with real, honest limits."},
+     {n:"15", id:"mobile-malware-app-store-security", title:"Mobile Malware & App Store Security", desc:"How malicious apps actually reach users despite official review."},
+     {n:"16", id:"mobile-device-management-mdm", title:"Mobile Device Management (MDM)", desc:"Containerization, BYOD, and enforcing security policy across a whole device fleet."},
+     {n:"17", id:"mobile-security-careers-certifications", title:"Mobile Security Careers & Certifications", desc:"GMOB, eMAPT, and why mobile is a genuine specialization, not a universal baseline."},
+     {n:"18", id:"mobile-security-lab",          title:"Mobile Security Capstone Lab", desc:"A full assessment against a real vulnerable app."}
    ]},
   {n:"14", id:"14-ethical-hacking", title:"Ethical Hacking", level:"Intermediate→Advanced",
    desc:"The 5-phase methodology, from reconnaissance through reporting.",
@@ -4842,6 +4851,11 @@ function renderLabPhishing(){
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
+  {date:'2026-07-25', title:'Path 13 doubled to 18 lessons', items:[
+    'Sixteenth batch of the course-wide content-doubling effort: Path 13 (Mobile App Security) grows from 9 to 18 lessons.',
+    'New lessons: Android Permissions Deep Dive, Reverse Engineering Mobile Apps (Frida), Mobile Authentication & Biometrics (the secure enclave), Mobile API Security, Cross-Platform Mobile Security (React Native/Flutter), Mobile App Hardening, Mobile Malware & App Store Security, Mobile Device Management (MDM), and Mobile Security Careers & Certifications.',
+    'The new biometrics lesson corrects a common misconception: Face ID doesn\'t send biometric data anywhere, it unlocks a key that never leaves the secure enclave.'
+  ]},
   {date:'2026-07-25', title:'Path 12 doubled to 20 lessons', items:[
     'Fifteenth batch of the course-wide content-doubling effort: Path 12 (Network Security) grows from 10 to 20 lessons.',
     'New lessons: Network Forensics Basics, ARP Spoofing Hands-On, VPN Protocols Deep Dive, Network Segmentation in Practice, Network Security Monitoring Tools (Zeek/Suricata), Network Access Control (802.1X), Bluetooth & IoT Security, DNS Attacks Hands-On, DDoS Attacks & Mitigation, and Cloud Network Security.',
