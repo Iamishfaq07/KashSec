@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cloud Multi-Account Governance — Path 08 · KashSec Academy</title>
+<meta name="description" content="Every lesson so far has implicitly assumed a single cloud account. This lesson covers how real organizations — beyond a certain size — actually structure their cloud presence: not one account, but man">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/08-cloud-basics/cloud-multi-account-governance">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Cloud Multi-Account Governance — Path 08 · KashSec Academy">
+<meta property="og:description" content="Every lesson so far has implicitly assumed a single cloud account. This lesson covers how real organizations — beyond a certain size — actually structure their cloud presence: not one account, but man">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/08-cloud-basics/cloud-multi-account-governance">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Cloud Multi-Account Governance — Path 08 · KashSec Academy">
+<meta name="twitter:description" content="Every lesson so far has implicitly assumed a single cloud account. This lesson covers how real organizations — beyond a certain size — actually structure their cloud presence: not one account, but man">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Cloud Multi-Account Governance — Path 08 · KashSec Academy","description":"Every lesson so far has implicitly assumed a single cloud account. This lesson covers how real organizations — beyond a certain size — actually structure their cloud presence: not one account, but man","url":"https://kashsec.vercel.app/#/lesson/08-cloud-basics/cloud-multi-account-governance","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/08-cloud-basics/cloud-multi-account-governance">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 08 — Cloud Computing Basics</a> · Cloud Multi-Account Governance</div>
+  <article><h1>Cloud Multi-Account Governance</h1>
+<p>Every lesson so far has implicitly assumed a single cloud account. This lesson covers how real organizations — beyond a certain size — actually structure their cloud presence: not one account, but many, deliberately, and the governance layer that keeps that structure coherent.</p>
+<p>:::</p>
+<h2>Why one account isn&#39;t enough at real scale</h2>
+<p>A single cloud account sharing everything — production and development environments, every team&#39;s resources, every project — creates exactly the kind of large blast radius the microsegmentation lesson in Path 24 warned about, just applied to cloud infrastructure: a misconfiguration or compromise anywhere in that one account can potentially reach anything else in it. Real organizations instead adopt a <strong>multi-account strategy</strong>, deliberately splitting resources across separate accounts along meaningful boundaries.</p>
+<h2>Common account separation patterns</h2>
+<ul>
+<li><strong>Environment separation</strong> — separate accounts for development, staging, and production, so a mistake or compromise in a development environment (where security controls are often deliberately looser to speed up iteration) can&#39;t reach production data or systems at all</li>
+<li><strong>Team or business-unit separation</strong> — separate accounts per team or department, limiting each team&#39;s blast radius to their own resources and making cost attribution and access review far more tractable</li>
+<li><strong>Workload sensitivity separation</strong> — an account handling regulated or highly sensitive data isolated from an account running a public marketing website, so the security posture and compliance requirements appropriate to each don&#39;t have to be uniformly applied everywhere</li>
+</ul>
+<h2>Landing zones and account factories</h2>
+<p>Setting up dozens or hundreds of accounts by hand doesn&#39;t scale — real organizations use a <strong>landing zone</strong> (a standardized, pre-configured account template covering baseline security controls, logging, and networking) combined with an <strong>account factory</strong> (automated tooling that provisions new accounts from that template on demand). This ensures every new account starts with the logging (from the previous lesson), IAM baseline, and network configuration a security team has already reviewed and approved, rather than each new account being configured from scratch and potentially missing something important.</p>
+<h2>Centralized visibility across many accounts</h2>
+<p>Splitting resources across many accounts solves the blast-radius problem, but creates a new one: how does a security team maintain visibility across dozens of separate accounts at once? Major providers offer <strong>organization-wide services</strong> (AWS Organizations plus a centralized CloudTrail/Security Hub setup, Azure Management Groups, Google Cloud&#39;s resource hierarchy with organization-level policies) specifically to aggregate logging, enforce baseline policies, and provide a single pane of glass across every account in the organization — directly extending the logging-monitoring lesson&#39;s principles from a single account to an entire fleet of them.</p>
+<p>:::challenge Evaluate a governance gap
+An organization has properly separated development and production into different accounts, following this lesson&#39;s environment-separation pattern. However, they set up each new account manually and inconsistently over several years, and a recent audit finds that three older accounts never had audit logging enabled at all, while newer accounts do.</p>
+<details><summary>Hint</summary>What specific tool from this lesson exists precisely to prevent this kind of inconsistency, and why would it have caught this gap automatically?</details>
+<details><summary>Show answer</summary>This is exactly the failure mode a landing zone and account factory are designed to prevent — manual, ad-hoc account setup over time inevitably drifts, with older accounts missing baseline controls (like audit logging) that later became standard practice. A landing zone bakes required controls into the account creation process itself, so every account — old or new — starts from the same reviewed, secure baseline, and an account factory ensures that baseline gets applied consistently rather than depending on whoever happened to set up a given account remembering every required step. The organization's fix here isn't just enabling logging on the three gap accounts — it's establishing (or retrofitting) a proper landing zone so this exact inconsistency can't recur as they continue creating new accounts going forward.</details><h2>🧪 Hands-on lab — design an account structure</h2>
+<p>For a hypothetical mid-size company with three teams (Engineering, Marketing, Data Science) and separate development/production needs, sketch a multi-account structure using at least two of the separation patterns from this lesson, and identify one organization-wide control (logging, IAM baseline) that should apply uniformly across every account in your structure.</p>
+<ol>
+<li>Why does a single shared cloud account create a large blast radius, in the same sense the microsegmentation lesson used that term?</li>
+<li>What problem does a landing zone solve that ad-hoc, manual account creation doesn&#39;t?</li>
+<li>Why is organization-wide centralized logging necessary once an organization adopts a multi-account strategy?</li>
+</ol>
+<h2>Key terms</h2>
+<ul>
+<li><strong>Multi-account strategy</strong> — deliberately splitting cloud resources across separate accounts along meaningful boundaries to limit blast radius.</li>
+<li><strong>Landing zone</strong> — a standardized, pre-configured account template covering baseline security, logging, and networking controls.</li>
+<li><strong>Account factory</strong> — automated tooling that provisions new accounts from a landing zone template.</li>
+</ul>
+<h2>Recap</h2>
+<p>Real organizations at scale don&#39;t run everything in one cloud account — they deliberately split resources across many accounts along environment, team, or sensitivity boundaries, directly applying the blast-radius reduction principle covered elsewhere in this course to the account level itself. Landing zones and account factories keep that structure consistent and secure by default as it grows, while organization-wide logging and policy tools solve the visibility challenge that splitting resources across many accounts would otherwise create.</p>
+<h3>References</h3>
+<ul>
+<li><a href="https://docs.aws.amazon.com/whitepapers/latest/organizing-your-aws-environment/organizing-your-aws-environment.html">AWS — Organizing Your AWS Environment Using Multiple Accounts</a> — a detailed official whitepaper on this exact topic</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/08-cloud-basics/shared-responsibility-model">The Shared Responsibility Model</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/08-cloud-basics/cloud-multi-account-governance";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

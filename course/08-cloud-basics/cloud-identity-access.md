@@ -104,4 +104,4 @@ Why is an IAM *role* generally considered more secure than a permanent IAM *user
 - [AWS IAM Best Practices](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html) — official, detailed, free guidance directly relevant to this lesson.
 ???
 
-**Next up →** [The Shared Responsibility Model](#/lesson/08-cloud-basics/shared-responsibility-model)
+**Next up →** [Cloud Multi-Account Governance](#/lesson/08-cloud-basics/cloud-multi-account-governance)

@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cloud Serverless Basics — Path 08 · KashSec Academy</title>
+<meta name="description" content="The compute lesson covered VMs and containers — infrastructure you provision and manage, even if the cloud makes that easier than on-premises hardware. This lesson covers a fundamentally different mod">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/08-cloud-basics/cloud-serverless-basics">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Cloud Serverless Basics — Path 08 · KashSec Academy">
+<meta property="og:description" content="The compute lesson covered VMs and containers — infrastructure you provision and manage, even if the cloud makes that easier than on-premises hardware. This lesson covers a fundamentally different mod">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/08-cloud-basics/cloud-serverless-basics">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Cloud Serverless Basics — Path 08 · KashSec Academy">
+<meta name="twitter:description" content="The compute lesson covered VMs and containers — infrastructure you provision and manage, even if the cloud makes that easier than on-premises hardware. This lesson covers a fundamentally different mod">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Cloud Serverless Basics — Path 08 · KashSec Academy","description":"The compute lesson covered VMs and containers — infrastructure you provision and manage, even if the cloud makes that easier than on-premises hardware. This lesson covers a fundamentally different mod","url":"https://kashsec.vercel.app/#/lesson/08-cloud-basics/cloud-serverless-basics","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/08-cloud-basics/cloud-serverless-basics">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 08 — Cloud Computing Basics</a> · Cloud Serverless Basics</div>
+  <article><h1>Cloud Serverless Basics</h1>
+<p>The compute lesson covered VMs and containers — infrastructure you provision and manage, even if the cloud makes that easier than on-premises hardware. This lesson covers a fundamentally different model: <strong>serverless computing</strong>, where you stop thinking about servers at all.</p>
+<p>:::</p>
+<h2>What a serverless function actually is</h2>
+<p>A <strong>serverless function</strong> (AWS Lambda, Azure Functions, Google Cloud Functions) is a small piece of code that runs in response to a <strong>trigger</strong> — an HTTP request, a new file uploaded to storage (from the cloud-storage-basics lesson), a scheduled time — and automatically stops running the moment it finishes, with the provider handling all the underlying compute provisioning invisibly. You&#39;re billed only for the actual execution time, often down to the millisecond, rather than paying for an always-running server whether it&#39;s doing useful work or not.</p>
+<h2>Why this is such a different mental model</h2>
+<ul>
+<li><strong>No idle capacity to pay for</strong> — unlike a VM (from the compute lesson) that runs continuously whether or not it&#39;s handling requests, a serverless function costs nothing when it isn&#39;t actively executing</li>
+<li><strong>Automatic, near-instant scaling</strong> — a serverless function handling one request and one handling ten thousand simultaneous requests both &quot;just work,&quot; with the provider automatically running as many parallel instances as needed, without any auto-scaling configuration required</li>
+<li><strong>No OS patching responsibility</strong> — since you never manage the underlying server, operating-system-level patching (a recurring theme throughout Path 00 and Path 07) becomes entirely the provider&#39;s problem, not yours</li>
+</ul>
+<h2>Where serverless genuinely shines, and where it doesn&#39;t</h2>
+<p>Serverless is an excellent fit for event-driven, intermittent workloads — processing an uploaded file, responding to an API request, running a nightly scheduled job. It&#39;s a poor fit for long-running, continuously-active processes (most providers impose maximum execution time limits per invocation) or workloads needing very fine-grained control over the underlying runtime environment — exactly the cases where the compute lesson&#39;s VMs or containers remain the better tool.</p>
+<h2>Security considerations specific to serverless</h2>
+<ul>
+<li><strong>Function-level permissions, not instance-level</strong> — each individual function gets its own IAM role (from the cloud-identity-access lesson), and the same least-privilege principle applies with even more precision here: a function that only needs to read from one specific storage bucket should have permissions for exactly that, not broad account-wide access</li>
+<li><strong>Dependency and supply-chain risk</strong> — serverless functions commonly pull in third-party libraries, and a vulnerability in one of those dependencies is exploitable the moment the function runs, directly connecting to Path 22&#39;s software supply-chain security material</li>
+<li><strong>Event-source misconfiguration</strong> — since functions trigger automatically off events (a file upload, an API call), a misconfigured trigger can expose a function to unintended, unauthenticated invocation far more easily than a traditional server sitting behind a login page</li>
+</ul>
+<p>:::challenge Choose the right tool
+A company needs to: (1) run a continuously-active web application handling steady, predictable traffic all day, and (2) process and resize an image every time one is uploaded to a storage bucket, which happens sporadically throughout the day.</p>
+<details><summary>Hint</summary>Which workload matches serverless's "event-driven, intermittent" sweet spot, and which matches the compute lesson's "continuously running" use case better?</details>
+<details><summary>Show answer</summary>Workload (1) — steady, predictable, continuously-active traffic — is generally a better fit for traditional compute (VMs or containers, possibly with auto-scaling from the compute lesson), since the workload runs consistently enough that serverless's per-invocation billing model and cold-start overhead don't offer much advantage over an always-on server sized appropriately for the load. Workload (2) — sporadic, event-triggered image processing — is a textbook serverless use case: a function triggered directly by the storage upload event, running only when needed, with zero cost during the idle periods between uploads. This exact split (steady traffic on traditional compute, event-driven bursts on serverless) is a common, sensible real-world architecture pattern.</details><h2>🧪 Hands-on lab — design a serverless workflow</h2>
+<p>Sketch a simple serverless architecture for a hypothetical app that needs to send a welcome email every time a new user signs up. Identify the trigger, the function&#39;s single responsibility, and the minimal IAM permissions it would actually need.</p>
+<ol>
+<li>What does &quot;serverless&quot; actually mean, given that servers obviously still exist somewhere?</li>
+<li>Why is serverless a poor fit for a long-running, continuously-active process?</li>
+<li>Why does function-level IAM permission scoping matter especially in a serverless architecture?</li>
+</ol>
+<h2>Key terms</h2>
+<ul>
+<li><strong>Serverless function</strong> — code that runs in response to a trigger, with the cloud provider fully managing the underlying compute.</li>
+<li><strong>Trigger</strong> — an event (an HTTP request, a file upload, a schedule) that causes a serverless function to execute.</li>
+<li><strong>Cold start</strong> — the brief delay a serverless function can experience when invoked after being idle, as the provider provisions execution resources.</li>
+</ul>
+<h2>Recap</h2>
+<p>Serverless computing removes server management entirely from your responsibility — you write code, a trigger fires it, and you&#39;re billed only for actual execution time — making it an excellent fit for event-driven, intermittent workloads and a poor fit for continuously-active, long-running processes better served by the VMs and containers from the compute lesson. Its security model shifts scrutiny toward function-level IAM permissions, dependency risk, and event-source configuration, rather than the OS-patching concerns that dominate traditional compute security.</p>
+<h3>References</h3>
+<ul>
+<li><a href="https://docs.aws.amazon.com/lambda/latest/dg/welcome.html">AWS — What is AWS Lambda?</a> — the official overview of AWS&#39;s serverless compute service</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/08-cloud-basics/cloud-storage-basics">Cloud Storage Basics</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/08-cloud-basics/cloud-serverless-basics";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

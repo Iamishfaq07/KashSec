@@ -84,4 +84,4 @@ Why does an SSRF vulnerability (Path 11) become dramatically more dangerous spec
 - [AWS: Instance Metadata Service](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-metadata.html) — official documentation on the exact mechanism referenced throughout this lesson.
 ???
 
-**Next up →** [Cloud Identity & Access Management](#/lesson/08-cloud-basics/cloud-identity-access)
+**Next up →** [Cloud Logging & Monitoring Basics](#/lesson/08-cloud-basics/cloud-logging-monitoring-basics)

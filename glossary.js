@@ -67,6 +67,15 @@ const GLOSSARY = [
   "subTitle": "Windows privilege escalation"
  },
  {
+  "term": "Account factory",
+  "def": "automated tooling that provisions new accounts from a landing zone template.",
+  "pathId": "08-cloud-basics",
+  "pathN": "08",
+  "pathTitle": "Cloud Computing Basics",
+  "subId": "cloud-multi-account-governance",
+  "subTitle": "Cloud Multi-Account Governance"
+ },
+ {
   "term": "Account lockout policy",
   "def": "a defense automatically locking an account after repeated failed login attempts.",
   "pathId": "07-windows-security",
@@ -589,6 +598,15 @@ const GLOSSARY = [
   "subTitle": "Why hackers love Linux"
  },
  {
+  "term": "Auto-scaling",
+  "def": "automatically adjusting the number of running compute instances based on demand.",
+  "pathId": "08-cloud-basics",
+  "pathN": "08",
+  "pathTitle": "Cloud Computing Basics",
+  "subId": "cloud-compute-basics",
+  "subTitle": "Cloud Compute Basics"
+ },
+ {
   "term": "Availability",
   "def": "systems and data remain accessible to legitimate users when needed.",
   "pathId": "01-introduction",
@@ -704,6 +722,15 @@ const GLOSSARY = [
   "pathTitle": "Zero Trust Architecture",
   "subId": "zero-trust-case-studies-lab",
   "subTitle": "Case Studies & Capstone: Assess a Zero Trust Maturity"
+ },
+ {
+  "term": "Billing alert / budget",
+  "def": "a configured notification that fires when cloud spending crosses a defined threshold.",
+  "pathId": "08-cloud-basics",
+  "pathN": "08",
+  "pathTitle": "Cloud Computing Basics",
+  "subId": "cloud-cost-billing-security",
+  "subTitle": "Cloud Cost & Billing Security"
  },
  {
   "term": "Binary",
@@ -1021,6 +1048,15 @@ const GLOSSARY = [
   "subTitle": "DNS: the phonebook"
  },
  {
+  "term": "CCSK (Certificate of Cloud Security Knowledge)",
+  "def": "a vendor-neutral cloud security certification from the Cloud Security Alliance.",
+  "pathId": "08-cloud-basics",
+  "pathN": "08",
+  "pathTitle": "Cloud Computing Basics",
+  "subId": "cloud-certifications-careers",
+  "subTitle": "Cloud Security Careers & Certifications"
+ },
+ {
   "term": "CDN",
   "def": "geographically-distributed asset cache.",
   "pathId": "05-web-basics",
@@ -1228,6 +1264,24 @@ const GLOSSARY = [
   "subTitle": "SSRF & auth attacks"
  },
  {
+  "term": "CloudTrail (and equivalents)",
+  "def": "a cloud audit logging service recording nearly every API action taken within an account.",
+  "pathId": "08-cloud-basics",
+  "pathN": "08",
+  "pathTitle": "Cloud Computing Basics",
+  "subId": "cloud-logging-monitoring-basics",
+  "subTitle": "Cloud Logging & Monitoring Basics"
+ },
+ {
+  "term": "CloudWatch (and equivalents)",
+  "def": "a cloud monitoring service combining metrics, logs, and automated alerting.",
+  "pathId": "08-cloud-basics",
+  "pathN": "08",
+  "pathTitle": "Cloud Computing Basics",
+  "subId": "cloud-logging-monitoring-basics",
+  "subTitle": "Cloud Logging & Monitoring Basics"
+ },
+ {
   "term": "Cmdlet",
   "def": "a PowerShell command, following the consistent `Verb-Noun` naming pattern.",
   "pathId": "07-windows-security",
@@ -1244,6 +1298,15 @@ const GLOSSARY = [
   "pathTitle": "Malware & Reverse Engineering",
   "subId": "static-analysis-deep-dive",
   "subTitle": "Static Analysis Deep Dive"
+ },
+ {
+  "term": "Cold start",
+  "def": "the brief delay a serverless function can experience when invoked after being idle, as the provider provisions execution resources.",
+  "pathId": "08-cloud-basics",
+  "pathN": "08",
+  "pathTitle": "Cloud Computing Basics",
+  "subId": "cloud-serverless-basics",
+  "subTitle": "Cloud Serverless Basics"
  },
  {
   "term": "Command-and-control (C2)",
@@ -1424,6 +1487,15 @@ const GLOSSARY = [
   "pathTitle": "AI & AI Security",
   "subId": "jailbreaks",
   "subTitle": "Jailbreaks & bypasses"
+ },
+ {
+  "term": "Container",
+  "def": "a lightweight, isolated application package that shares the underlying OS kernel rather than running a full separate operating system.",
+  "pathId": "08-cloud-basics",
+  "pathN": "08",
+  "pathTitle": "Cloud Computing Basics",
+  "subId": "cloud-compute-basics",
+  "subTitle": "Cloud Compute Basics"
  },
  {
   "term": "Container escape",
@@ -1613,6 +1685,15 @@ const GLOSSARY = [
   "pathTitle": "Zero Trust Architecture",
   "subId": "zero-trust-careers",
   "subTitle": "Zero Trust Careers & Certifications"
+ },
+ {
+  "term": "Cryptomining abuse",
+  "def": "using a compromised cloud account's compute resources to mine cryptocurrency at the account owner's expense.",
+  "pathId": "08-cloud-basics",
+  "pathN": "08",
+  "pathTitle": "Cloud Computing Basics",
+  "subId": "cloud-cost-billing-security",
+  "subTitle": "Cloud Cost & Billing Security"
  },
  {
   "term": "CSP (Content Security Policy)",
@@ -3568,6 +3649,15 @@ const GLOSSARY = [
   "subTitle": "Cloud Networking Basics"
  },
  {
+  "term": "Instance type",
+  "def": "a predefined combination of CPU, memory, and other resources offered for a cloud compute instance.",
+  "pathId": "08-cloud-basics",
+  "pathN": "08",
+  "pathTitle": "Cloud Computing Basics",
+  "subId": "cloud-compute-basics",
+  "subTitle": "Cloud Compute Basics"
+ },
+ {
   "term": "Instruction hierarchy",
   "def": "assigning different trust/priority levels to system prompts, user input, and third-party content.",
   "pathId": "18-ai-security",
@@ -3964,6 +4054,15 @@ const GLOSSARY = [
   "subTitle": "Containers & Kubernetes"
  },
  {
+  "term": "Landing zone",
+  "def": "a standardized, pre-configured account template covering baseline security, logging, and networking controls.",
+  "pathId": "08-cloud-basics",
+  "pathN": "08",
+  "pathTitle": "Cloud Computing Basics",
+  "subId": "cloud-multi-account-governance",
+  "subTitle": "Cloud Multi-Account Governance"
+ },
+ {
   "term": "Language",
   "def": "the syntax rules (Python, Bash, JS, C, ...).",
   "pathId": "04-python",
@@ -4142,6 +4241,15 @@ const GLOSSARY = [
   "pathTitle": "Operating Systems & Linux",
   "subId": "terminal-basics",
   "subTitle": "Meet the terminal"
+ },
+ {
+  "term": "Managed database",
+  "def": "a database service where the cloud provider handles operational tasks like patching, backups, and replication.",
+  "pathId": "08-cloud-basics",
+  "pathN": "08",
+  "pathTitle": "Cloud Computing Basics",
+  "subId": "cloud-databases-basics",
+  "subTitle": "Cloud Databases Basics"
  },
  {
   "term": "Man-in-the-middle attack",
@@ -4441,6 +4549,15 @@ const GLOSSARY = [
   "subTitle": "Building an AppSec Program from Scratch"
  },
  {
+  "term": "Multi-account strategy",
+  "def": "deliberately splitting cloud resources across separate accounts along meaningful boundaries to limit blast radius.",
+  "pathId": "08-cloud-basics",
+  "pathN": "08",
+  "pathTitle": "Cloud Computing Basics",
+  "subId": "cloud-multi-account-governance",
+  "subTitle": "Cloud Multi-Account Governance"
+ },
+ {
   "term": "Multi-account testing methodology",
   "def": "the systematic practice of using 2+ accounts to test every feature for access control flaws.",
   "pathId": "15-bug-bounty",
@@ -4601,6 +4718,15 @@ const GLOSSARY = [
   "pathTitle": "Cryptography Fundamentals",
   "subId": "common-crypto-mistakes",
   "subTitle": "Common Crypto Mistakes"
+ },
+ {
+  "term": "NoSQL database",
+  "def": "a non-relational database optimized for specific access patterns like key-value lookups or document storage.",
+  "pathId": "08-cloud-basics",
+  "pathN": "08",
+  "pathTitle": "Cloud Computing Basics",
+  "subId": "cloud-databases-basics",
+  "subTitle": "Cloud Databases Basics"
  },
  {
   "term": "NSE (Nmap Scripting Engine)",
@@ -5249,6 +5375,15 @@ const GLOSSARY = [
   "pathTitle": "Advanced Cyber Topics",
   "subId": "containers-k8s",
   "subTitle": "Containers & Kubernetes"
+ },
+ {
+  "term": "Point-in-time recovery",
+  "def": "the ability to restore a database to its exact state at any specific past moment within a retention window.",
+  "pathId": "08-cloud-basics",
+  "pathN": "08",
+  "pathTitle": "Cloud Computing Basics",
+  "subId": "cloud-databases-basics",
+  "subTitle": "Cloud Databases Basics"
  },
  {
   "term": "Policy",
@@ -6646,6 +6781,15 @@ const GLOSSARY = [
   "subTitle": "What is cybersecurity?"
  },
  {
+  "term": "Serverless function",
+  "def": "code that runs in response to a trigger, with the cloud provider fully managing the underlying compute.",
+  "pathId": "08-cloud-basics",
+  "pathN": "08",
+  "pathTitle": "Cloud Computing Basics",
+  "subId": "cloud-serverless-basics",
+  "subTitle": "Cloud Serverless Basics"
+ },
+ {
   "term": "Service",
   "def": "a background process, often starting automatically at boot, roughly analogous to a Linux daemon.",
   "pathId": "07-windows-security",
@@ -6671,6 +6815,15 @@ const GLOSSARY = [
   "pathTitle": "Zero Trust Architecture",
   "subId": "zero-trust-api-security",
   "subTitle": "Zero Trust for APIs & Microservices"
+ },
+ {
+  "term": "Service quota",
+  "def": "a provider-enforced limit on the number or type of resources an account can provision.",
+  "pathId": "08-cloud-basics",
+  "pathN": "08",
+  "pathTitle": "Cloud Computing Basics",
+  "subId": "cloud-cost-billing-security",
+  "subTitle": "Cloud Cost & Billing Security"
  },
  {
   "term": "Session",
@@ -7744,6 +7897,15 @@ const GLOSSARY = [
   "subTitle": "Reports that get paid"
  },
  {
+  "term": "Trigger",
+  "def": "an event (an HTTP request, a file upload, a schedule) that causes a serverless function to execute.",
+  "pathId": "08-cloud-basics",
+  "pathN": "08",
+  "pathTitle": "Cloud Computing Basics",
+  "subId": "cloud-serverless-basics",
+  "subTitle": "Cloud Serverless Basics"
+ },
+ {
   "term": "Trivy",
   "def": "the widely-used open-source container image and configuration vulnerability scanner.",
   "pathId": "16-advanced",
@@ -7994,6 +8156,15 @@ const GLOSSARY = [
   "pathTitle": "Operating Systems & Linux",
   "subId": "bash-scripting",
   "subTitle": "Your first bash script"
+ },
+ {
+  "term": "Vendor-neutral certification",
+  "def": "a credential covering concepts that transfer across cloud providers, rather than one specific provider's ecosystem.",
+  "pathId": "08-cloud-basics",
+  "pathN": "08",
+  "pathTitle": "Cloud Computing Basics",
+  "subId": "cloud-certifications-careers",
+  "subTitle": "Cloud Security Careers & Certifications"
  },
  {
   "term": "Vendor tiering",

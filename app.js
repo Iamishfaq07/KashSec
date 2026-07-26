@@ -810,11 +810,18 @@ const PATHS = [
    subs:[
      {n:"1", id:"what-is-cloud-computing",    title:"What is Cloud Computing?", desc:"IaaS/PaaS/SaaS, and why this course is itself a cloud example."},
      {n:"2", id:"cloud-providers-overview",   title:"Cloud Providers Overview", desc:"AWS, Azure, GCP — the same concepts, different names."},
-     {n:"3", id:"cloud-storage-basics",       title:"Cloud Storage Basics", desc:"Buckets, objects, and why misconfigured storage is a top real-world breach cause."},
-     {n:"4", id:"cloud-networking-basics",    title:"Cloud Networking Basics", desc:"VPCs, security groups, and the instance metadata service, explained fully."},
-     {n:"5", id:"cloud-identity-access",      title:"Cloud Identity & Access Management", desc:"IAM roles, least privilege, and why leaked keys are a leading breach cause."},
-     {n:"6", id:"shared-responsibility-model", title:"The Shared Responsibility Model", desc:"Where the provider's job ends and yours begins."},
-     {n:"7", id:"cloud-basics-lab",           title:"Cloud Basics Hands-On Lab", desc:"A real free-tier account, start to finish — prep for Path 16's flAWS lab."}
+     {n:"3", id:"cloud-compute-basics",       title:"Cloud Compute Basics", desc:"VMs, containers, instance types, and auto-scaling."},
+     {n:"4", id:"cloud-serverless-basics",    title:"Cloud Serverless Basics", desc:"Functions, triggers, and why 'serverless' still has servers underneath."},
+     {n:"5", id:"cloud-storage-basics",       title:"Cloud Storage Basics", desc:"Buckets, objects, and why misconfigured storage is a top real-world breach cause."},
+     {n:"6", id:"cloud-databases-basics",     title:"Cloud Databases Basics", desc:"Managed relational, NoSQL, and data warehouse services, and their security tradeoffs."},
+     {n:"7", id:"cloud-networking-basics",    title:"Cloud Networking Basics", desc:"VPCs, security groups, and the instance metadata service, explained fully."},
+     {n:"8", id:"cloud-logging-monitoring-basics", title:"Cloud Logging & Monitoring Basics", desc:"CloudTrail-style audit logs, and why they're not always enabled by default."},
+     {n:"9", id:"cloud-cost-billing-security", title:"Cloud Cost & Billing Security", desc:"Cryptomining abuse, billing alerts, and cost as an early compromise signal."},
+     {n:"10", id:"cloud-identity-access",      title:"Cloud Identity & Access Management", desc:"IAM roles, least privilege, and why leaked keys are a leading breach cause."},
+     {n:"11", id:"cloud-multi-account-governance", title:"Cloud Multi-Account Governance", desc:"Landing zones, account factories, and blast radius at the account level."},
+     {n:"12", id:"shared-responsibility-model", title:"The Shared Responsibility Model", desc:"Where the provider's job ends and yours begins."},
+     {n:"13", id:"cloud-certifications-careers", title:"Cloud Security Careers & Certifications", desc:"AWS/Azure/GCP security certs, CCSK, and how to build real hands-on experience."},
+     {n:"14", id:"cloud-basics-lab",           title:"Cloud Basics Hands-On Lab", desc:"A real free-tier account, start to finish — prep for Path 16's flAWS lab."}
    ]},
   {n:"09", id:"09-digital-privacy", title:"Digital Privacy & Personal Security", level:"Beginner",
    desc:"A full path on protecting yourself, not just systems — your digital footprint, VPNs, browser tracking, secure messaging, identity theft, and a complete personal security audit.",
@@ -4752,6 +4759,11 @@ function renderLabPhishing(){
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
+  {date:'2026-07-25', title:'Path 08 doubled to 14 lessons', items:[
+    'Seventh batch of the course-wide content-doubling effort: Path 08 (Cloud Computing Basics) grows from 7 to 14 lessons.',
+    'New lessons: Cloud Compute Basics, Cloud Serverless Basics, Cloud Databases Basics, Cloud Logging & Monitoring Basics, Cloud Cost & Billing Security, Cloud Multi-Account Governance, and Cloud Security Careers & Certifications.',
+    'The new billing-security lesson covers cryptomining abuse as a distinct, often-overlooked cloud attack surface — damage measured in dollars, not just data.'
+  ]},
   {date:'2026-07-25', title:'Path 07 doubled to 14 lessons', items:[
     'Sixth batch of the course-wide content-doubling effort: Path 07 (Windows Security Basics) grows from 7 to 14 lessons.',
     'New lessons: RDP & Remote Access Security, Recognizing a Compromised Windows Machine, Windows Active Directory: The Basics, Windows Group Policy Basics, Windows Services & Task Manager for Security, Windows Backup & Recovery, and Windows Privilege Escalation: An Introduction.',

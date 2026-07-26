@@ -71,4 +71,4 @@ Why might understanding "S3" (AWS's object storage service) transfer well to Azu
 - [AWS Free Tier](https://aws.amazon.com/free/) · [Azure Free Account](https://azure.microsoft.com/en-us/free/) · [Google Cloud Free Tier](https://cloud.google.com/free) — free hands-on practice allowances from each major provider.
 ???
 
-**Next up →** [Cloud Storage Basics](#/lesson/08-cloud-basics/cloud-storage-basics)
+**Next up →** [Cloud Compute Basics](#/lesson/08-cloud-basics/cloud-compute-basics)

@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cloud Databases Basics — Path 08 · KashSec Academy</title>
+<meta name="description" content="The storage lesson covered object storage for files. This lesson covers the cloud's other major data service: managed databases — structured, queryable data storage where the provider handles most of ">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/08-cloud-basics/cloud-databases-basics">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Cloud Databases Basics — Path 08 · KashSec Academy">
+<meta property="og:description" content="The storage lesson covered object storage for files. This lesson covers the cloud's other major data service: managed databases — structured, queryable data storage where the provider handles most of ">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/08-cloud-basics/cloud-databases-basics">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Cloud Databases Basics — Path 08 · KashSec Academy">
+<meta name="twitter:description" content="The storage lesson covered object storage for files. This lesson covers the cloud's other major data service: managed databases — structured, queryable data storage where the provider handles most of ">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Cloud Databases Basics — Path 08 · KashSec Academy","description":"The storage lesson covered object storage for files. This lesson covers the cloud's other major data service: managed databases — structured, queryable data storage where the provider handles most of ","url":"https://kashsec.vercel.app/#/lesson/08-cloud-basics/cloud-databases-basics","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/08-cloud-basics/cloud-databases-basics">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 08 — Cloud Computing Basics</a> · Cloud Databases Basics</div>
+  <article><h1>Cloud Databases Basics</h1>
+<p>The storage lesson covered object storage for files. This lesson covers the cloud&#39;s other major data service: <strong>managed databases</strong> — structured, queryable data storage where the provider handles most of the operational burden that used to fall entirely on whoever ran the database server.</p>
+<p>:::</p>
+<h2>Managed relational databases</h2>
+<p>Services like <strong>Amazon RDS</strong>, <strong>Azure SQL Database</strong>, and <strong>Google Cloud SQL</strong> run traditional relational databases (MySQL, PostgreSQL, and others) as a managed service — you get the same SQL query language and relational data model, but automated backups, patching, and high-availability replication come built in, rather than being something you have to configure and maintain yourself.</p>
+<h2>NoSQL and other specialized database types</h2>
+<p>Beyond relational databases, cloud providers offer specialized data stores for specific access patterns:</p>
+<ul>
+<li><strong>Key-value / document stores</strong> (DynamoDB, Cosmos DB, Firestore) — optimized for fast lookups by a known key, commonly used for session data, user profiles, and application state at massive scale</li>
+<li><strong>Data warehouses</strong> (Redshift, BigQuery, Synapse) — optimized for large-scale analytical queries across huge datasets, rather than the fast, small transactional queries relational databases handle well</li>
+<li><strong>In-memory caches</strong> (ElastiCache, Azure Cache for Redis) — extremely fast, temporary data stores used to reduce load on a primary database by serving frequently-requested data from memory instead</li>
+</ul>
+<h2>Why database choice matters for security, not just performance</h2>
+<p>Different database types carry different security considerations directly relevant to concepts covered elsewhere in this course:</p>
+<ul>
+<li><strong>Relational databases</strong> remain the primary target of SQL injection (Path 11 covers this hands-on) — the query language itself is exactly what an injection attack exploits</li>
+<li><strong>NoSQL databases</strong> have their own analogous injection risks (NoSQL injection), a less commonly known but genuinely real category worth being aware of even though this course doesn&#39;t cover it in the same depth as SQL injection</li>
+<li><strong>Publicly accessible database endpoints</strong> are a serious, surprisingly common real-world misconfiguration — a managed database that should only be reachable from within a private network, but is instead configured with a public endpoint and weak or default credentials, mirroring the exact same misconfiguration pattern the cloud-storage-basics lesson covered for buckets</li>
+</ul>
+<h2>Backup and disaster recovery, done differently at cloud scale</h2>
+<p>Managed database services typically offer automated backups and <strong>point-in-time recovery</strong> — the ability to restore a database to its exact state at any specific moment within a retention window, not just to the most recent full backup. This is a meaningfully stronger recovery capability than most self-managed setups achieve without significant additional engineering effort, directly extending the backup principles from Path 00 and Path 07 to a much more granular level.</p>
+<p>:::challenge Diagnose a misconfiguration
+A managed relational database is found configured with a public endpoint (reachable from the internet), using the default administrator username, and a password that was never changed from the value auto-generated during setup — which the team assumed nobody would ever see since &quot;it&#39;s just for internal use.&quot;</p>
+<details><summary>Hint</summary>Compare this to the earlier lesson's coverage of publicly-accessible storage buckets — what's the structurally identical mistake being made here, just against a different service type?</details>
+<details><summary>Show answer</summary>This is the exact same structural mistake as a misconfigured public storage bucket, applied to a database instead: an assumption that "internal use" provides real protection, when the actual technical configuration (a public endpoint) makes the resource reachable by anyone on the internet regardless of intent. Combined with default credentials, this database is trivially discoverable by automated internet-wide scanning (the same "fishing with a giant net" pattern from Path 01) and trivially accessible once found. The fix mirrors the storage lesson's fix too: restrict the database to a private network endpoint reachable only from within the appropriate VPC (covered in the networking lesson), and always change default credentials immediately, regardless of how "internal" the resource is assumed to be.</details><h2>🧪 Hands-on lab — match the database to the workload</h2>
+<p>For three scenarios — (1) storing user shopping cart sessions for fast lookup, (2) running analytical queries across five years of sales data, (3) storing structured customer order records with complex relationships — identify which database category from this lesson fits best, and explain why in one sentence each.</p>
+<ol>
+<li>What operational burden does a managed database service take on that a self-hosted database wouldn&#39;t?</li>
+<li>Why might a NoSQL key-value store be a better fit than a relational database for session data specifically?</li>
+<li>Why is a publicly accessible database endpoint considered a serious misconfiguration, structurally similar to a misconfigured storage bucket?</li>
+</ol>
+<h2>Key terms</h2>
+<ul>
+<li><strong>Managed database</strong> — a database service where the cloud provider handles operational tasks like patching, backups, and replication.</li>
+<li><strong>Point-in-time recovery</strong> — the ability to restore a database to its exact state at any specific past moment within a retention window.</li>
+<li><strong>NoSQL database</strong> — a non-relational database optimized for specific access patterns like key-value lookups or document storage.</li>
+</ul>
+<h2>Recap</h2>
+<p>Cloud managed database services offload the operational burden of patching, backups, and replication that traditionally required dedicated database administration, while offering specialized options — relational, key-value, data warehouse, in-memory cache — matched to different access patterns. Security scrutiny for databases mirrors the storage lesson&#39;s core lesson almost exactly: public accessibility plus weak credentials is a dangerous, surprisingly common combination, regardless of how &quot;internal&quot; a resource was assumed to be.</p>
+<h3>References</h3>
+<ul>
+<li><a href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Welcome.html">AWS — What is Amazon RDS?</a> — the official overview of AWS&#39;s managed relational database service</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/08-cloud-basics/cloud-networking-basics">Cloud Networking Basics</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/08-cloud-basics/cloud-databases-basics";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

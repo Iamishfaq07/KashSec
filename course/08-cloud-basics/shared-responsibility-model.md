@@ -76,4 +76,4 @@ For a hypothetical company running a web application on a cloud IaaS virtual mac
 - [Microsoft: Shared responsibility in the cloud](https://learn.microsoft.com/en-us/azure/security/fundamentals/shared-responsibility) — Azure's equivalent framing, confirming this model is industry-standard, not AWS-specific.
 ???
 
-**Next up →** [Cloud Basics Hands-On Lab](#/lesson/08-cloud-basics/cloud-basics-lab)
+**Next up →** [Cloud Security Careers & Certifications](#/lesson/08-cloud-basics/cloud-certifications-careers)

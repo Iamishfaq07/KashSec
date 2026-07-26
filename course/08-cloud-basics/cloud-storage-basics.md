@@ -85,4 +85,4 @@ Why does deleting a sensitive file from a cloud storage bucket not necessarily f
 - [AWS S3 Security Best Practices](https://docs.aws.amazon.com/AmazonS3/latest/userguide/security-best-practices.html) — official, detailed, free guidance directly relevant to this lesson.
 ???
 
-**Next up →** [Cloud Networking Basics](#/lesson/08-cloud-basics/cloud-networking-basics)
+**Next up →** [Cloud Databases Basics](#/lesson/08-cloud-basics/cloud-databases-basics)
