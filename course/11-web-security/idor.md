@@ -153,4 +153,4 @@ An app shows only your own orders in its UI, and the "Order ID" is never visible
 - [HackerOne — IDOR reports (Hacktivity)](https://hackerone.com/hacktivity?querystring=IDOR) — real, disclosed IDOR bug bounty reports for study.
 ???
 
-**Next up →** [XSS — Cross-Site Scripting](#/lesson/11-web-security/xss)
+**Next up →** [CSRF — Cross-Site Request Forgery](#/lesson/11-web-security/csrf-attacks)

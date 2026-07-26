@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Business Logic Vulnerabilities — Path 11 · KashSec Academy</title>
+<meta name="description" content="Every vulnerability class covered so far in this path — IDOR, XSS, SQL injection — involves the application failing to properly handle malicious input. This lesson covers something genuinely different">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/11-web-security/business-logic-vulnerabilities">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Business Logic Vulnerabilities — Path 11 · KashSec Academy">
+<meta property="og:description" content="Every vulnerability class covered so far in this path — IDOR, XSS, SQL injection — involves the application failing to properly handle malicious input. This lesson covers something genuinely different">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/11-web-security/business-logic-vulnerabilities">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Business Logic Vulnerabilities — Path 11 · KashSec Academy">
+<meta name="twitter:description" content="Every vulnerability class covered so far in this path — IDOR, XSS, SQL injection — involves the application failing to properly handle malicious input. This lesson covers something genuinely different">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Business Logic Vulnerabilities — Path 11 · KashSec Academy","description":"Every vulnerability class covered so far in this path — IDOR, XSS, SQL injection — involves the application failing to properly handle malicious input. This lesson covers something genuinely different","url":"https://kashsec.vercel.app/#/lesson/11-web-security/business-logic-vulnerabilities","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/11-web-security/business-logic-vulnerabilities">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 11 — Web Security & Hacking</a> · Business Logic Vulnerabilities</div>
+  <article><h1>Business Logic Vulnerabilities</h1>
+<p>Every vulnerability class covered so far in this path — IDOR, XSS, SQL injection — involves the application failing to properly handle malicious <em>input</em>. This lesson covers something genuinely different: vulnerabilities where every individual input is perfectly valid, but the <em>sequence or combination</em> of otherwise-legitimate actions breaks the application&#39;s intended logic.</p>
+<h2>Why business logic bugs are structurally different</h2>
+<p>A <strong>business logic vulnerability</strong> doesn&#39;t require malicious payloads, injection strings, or malformed data at all — it exploits a flaw in the application&#39;s actual <em>workflow assumptions</em>, using entirely legitimate requests in an order or combination the developers never anticipated. This is exactly why automated vulnerability scanners are notoriously bad at finding these bugs — there&#39;s no malicious-looking pattern to detect, since every single request looks completely normal in isolation.</p>
+<h2>Real examples, drawing on this course&#39;s own CTF material</h2>
+<p>Path 19&#39;s CTF Zone includes several challenges built around exactly this category:</p>
+<ul>
+<li><strong>Price tampering</strong> — a checkout flow trusting a client-submitted price rather than looking it up server-side (Path 19&#39;s &quot;Name Your Own Price&quot; challenge)</li>
+<li><strong>Coupon replay</strong> — a check-then-act race condition letting a single-use coupon be redeemed multiple times (Path 19&#39;s &quot;The Coupon That Wouldn&#39;t Quit&quot; challenge, and directly connecting to the race-conditions lesson later in this path)</li>
+<li><strong>Step-skipping</strong> — jumping directly to a checkout confirmation step without completing (or paying for) the steps that should precede it (Path 19&#39;s &quot;Two Steps Forward, Zero Back&quot; challenge)</li>
+</ul>
+<h2>More business logic patterns worth recognizing</h2>
+<ul>
+<li><strong>Negative value abuse</strong> — a shopping cart quantity field accepting a negative number, potentially causing a refund calculation to work backward in the attacker&#39;s favor</li>
+<li><strong>Workflow bypass</strong> — an approval process with multiple required steps that can be short-circuited by directly calling a later-stage API endpoint the client-side interface doesn&#39;t normally expose</li>
+<li><strong>Rate-limit and quota abuse</strong> — exploiting a limit that&#39;s enforced per-account but not per-resource (or vice versa), letting an attacker circumvent an intended usage cap through a technicality the logic didn&#39;t anticipate</li>
+</ul>
+<h2>Why finding these requires understanding the application, not just attacking it</h2>
+<p>Unlike injection-based attacks, which follow a repeatable technical pattern regardless of what the application actually does, finding business logic flaws genuinely requires understanding <em>what the application is supposed to do</em> well enough to spot where its actual implementation diverges from that intent — a fundamentally different skill than pattern-matching known vulnerability signatures, and one that becomes considerably easier with the systematic recon habits from the web-recon lesson earlier in this path.</p>
+<p>Why are business logic vulnerabilities notoriously difficult for automated scanners to detect, compared to something like SQL injection?</p>
+<details><summary>Show answer</summary>Automated scanners work primarily by recognizing known malicious patterns — a SQL injection payload contains a recognizable structure (quotes, SQL keywords in unexpected places) that a scanner can pattern-match against, regardless of what the underlying application actually does. A business logic vulnerability involves no malicious-looking input at all — every individual request is perfectly well-formed and legitimate on its own; the flaw only becomes apparent when you understand the application's intended <em>workflow</em> and recognize that a particular sequence or combination of otherwise-valid actions produces an outcome the developers never intended. A scanner has no generic way to know what a specific application's business logic is <em>supposed</em> to look like, which is exactly why finding these bugs requires genuine human understanding of the target, not automated pattern-matching.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Business logic vulnerability</strong> — a flaw in an application&#39;s intended workflow, exploited through legitimate-looking requests in an unanticipated sequence or combination.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Business logic vulnerabilities exploit workflow assumptions, not malformed input — every individual request looks completely legitimate.</li>
+<li>Price tampering, coupon replay, step-skipping, and workflow bypass are common real patterns, directly practiced hands-on in Path 19&#39;s CTF challenges.</li>
+<li>Finding these bugs requires genuinely understanding what an application is supposed to do, a fundamentally different skill from pattern-matching known injection signatures.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/11-web-security/race-conditions-web">Race Conditions in Web Applications</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/11-web-security/business-logic-vulnerabilities";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

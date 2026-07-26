@@ -240,4 +240,4 @@ Why are Certificate Transparency logs (crt.sh) such a powerful passive subdomain
 - [Google Hacking Database (GHDB)](https://www.exploit-db.com/google-hacking-database) — curated dork queries.
 ???
 
-**Next up →** [IDOR — Broken Access Control](#/lesson/11-web-security/idor)
+**Next up →** [Path Traversal Basics](#/lesson/11-web-security/path-traversal-basics)

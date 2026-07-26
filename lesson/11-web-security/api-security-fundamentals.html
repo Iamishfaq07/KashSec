@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>API Security Fundamentals — Path 11 · KashSec Academy</title>
+<meta name="description" content="Nearly every vulnerability covered throughout this path — IDOR, injection, CSRF, deserialization — applies just as fully to APIs as to traditional web pages, since an API is ultimately just another wa">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/11-web-security/api-security-fundamentals">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="API Security Fundamentals — Path 11 · KashSec Academy">
+<meta property="og:description" content="Nearly every vulnerability covered throughout this path — IDOR, injection, CSRF, deserialization — applies just as fully to APIs as to traditional web pages, since an API is ultimately just another wa">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/11-web-security/api-security-fundamentals">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="API Security Fundamentals — Path 11 · KashSec Academy">
+<meta name="twitter:description" content="Nearly every vulnerability covered throughout this path — IDOR, injection, CSRF, deserialization — applies just as fully to APIs as to traditional web pages, since an API is ultimately just another wa">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"API Security Fundamentals — Path 11 · KashSec Academy","description":"Nearly every vulnerability covered throughout this path — IDOR, injection, CSRF, deserialization — applies just as fully to APIs as to traditional web pages, since an API is ultimately just another wa","url":"https://kashsec.vercel.app/#/lesson/11-web-security/api-security-fundamentals","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/11-web-security/api-security-fundamentals">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 11 — Web Security & Hacking</a> · API Security Fundamentals</div>
+  <article><h1>API Security Fundamentals</h1>
+<p>Nearly every vulnerability covered throughout this path — IDOR, injection, CSRF, deserialization — applies just as fully to APIs as to traditional web pages, since an API is ultimately just another way of exchanging HTTP requests and responses. This lesson is a focused summary of how those same concepts apply specifically to APIs, before Path 21&#39;s entire dedicated path goes considerably deeper.</p>
+<h2>APIs aren&#39;t a separate attack surface — they&#39;re the same surface, differently shaped</h2>
+<p>Path 05&#39;s APIs-and-JSON lesson explained what an API actually is. The security implication: every attack this entire path has covered has a direct API equivalent — IDOR against an API endpoint returning JSON instead of rendering an HTML page, SQL injection through a JSON request body instead of a form field, CSRF against a state-changing API call instead of a traditional form submission.</p>
+<h2>Where API security genuinely differs from traditional web security</h2>
+<ul>
+<li><strong>No visible UI to guide testing</strong> — a traditional web app&#39;s structure is somewhat discoverable just by clicking around; an API&#39;s endpoints, parameters, and expected data shapes often require reading documentation or actively probing, directly connecting to the web-recon lesson&#39;s techniques applied to a less visually guided target</li>
+<li><strong>Authentication is almost always token-based</strong> — rather than session cookies, most APIs use bearer tokens or API keys, directly connecting to the JWT concepts covered in this path&#39;s advanced JWT lab</li>
+<li><strong>Rate limiting matters even more</strong> — an API is frequently designed for programmatic, high-volume access, making rate-limiting bypass (Path 21&#39;s dedicated lab) a genuinely more central concern than for a typical human-browsed web page</li>
+<li><strong>Mass assignment</strong> — an API that blindly accepts and applies every field in a request body (rather than an explicit allow-list of expected fields) can let an attacker set fields they shouldn&#39;t be able to touch, like an <code>is_admin</code> flag never intended to be client-settable — covered as a full hands-on lab in Path 21</li>
+</ul>
+<h2>The OWASP API Security Top 10, briefly</h2>
+<p>Just as the OWASP Top 10 (the very first lesson in this path) organizes the most critical web application risks, a parallel <strong>OWASP API Security Top 10</strong> exists specifically for API-focused risks — Broken Object Level Authorization (essentially IDOR, applied to APIs) consistently tops that list, directly reflecting how central the access-control failures this path opened with remain, even in an API-specific context.</p>
+<h2>Why understanding this matters even before Path 21</h2>
+<p>Modern applications increasingly <em>are</em> APIs underneath — a React frontend (from Path 05&#39;s frameworks lesson) calling a JSON API backend is now the dominant architecture pattern, meaning API security isn&#39;t a niche specialization anymore, it&#39;s simply where most of this path&#39;s vulnerability classes actually live in a genuinely modern application.</p>
+<p>Why does IDOR (Broken Object Level Authorization) top the OWASP API Security Top 10, given everything covered throughout this path?</p>
+<details><summary>Show answer</summary>APIs are frequently designed around returning data by a direct identifier — <code>GET /api/orders/{id}</code>, <code>GET /api/users/{id}</code> — exactly the pattern the IDOR lesson described as the classic vulnerable pattern, and this design is even more common and more central to how APIs work than it is for traditional server-rendered web pages. Combined with the fact that APIs often lack a visible UI hiding or restricting which IDs a client could plausibly request (a traditional web app's UI might only ever generate links to your own resources, providing a thin, easily-bypassed layer of obscurity an API frequently doesn't even have), the object-level authorization check genuinely has to be correct on the server side every single time, with no incidental UI-level protection to fall back on — making this exact vulnerability class both extremely common and consistently high-impact across real-world APIs.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Bearer token</strong> — a credential (often a JWT) presented in an API request&#39;s Authorization header to prove identity.</li>
+<li><strong>Mass assignment</strong> — a vulnerability where an API blindly applies every field in a request body rather than restricting to an explicit allow-list.</li>
+<li><strong>OWASP API Security Top 10</strong> — a parallel to the general OWASP Top 10, focused specifically on API-related risks.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Every vulnerability class covered throughout this path applies directly to APIs, just expressed through JSON request/response bodies instead of HTML forms and pages.</li>
+<li>Token-based authentication, reduced UI-based obscurity, and rate limiting are the areas where API security genuinely diverges from traditional web security.</li>
+<li>Broken Object Level Authorization tops the OWASP API Security Top 10 for good reason — it&#39;s the direct API-context version of the IDOR vulnerability this path opened with, and Path 21 covers this entire area in full, hands-on depth.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/11-web-security/graphql-security-basics">GraphQL Security Basics</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/11-web-security/api-security-fundamentals";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

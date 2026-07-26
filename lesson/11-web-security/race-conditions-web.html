@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Race Conditions in Web Applications — Path 11 · KashSec Academy</title>
+<meta name="description" content="The business-logic lesson mentioned coupon replay as a race-condition-driven example. This lesson explains exactly what a race condition actually is, and why timing itself — not any malicious input — ">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/11-web-security/race-conditions-web">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Race Conditions in Web Applications — Path 11 · KashSec Academy">
+<meta property="og:description" content="The business-logic lesson mentioned coupon replay as a race-condition-driven example. This lesson explains exactly what a race condition actually is, and why timing itself — not any malicious input — ">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/11-web-security/race-conditions-web">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Race Conditions in Web Applications — Path 11 · KashSec Academy">
+<meta name="twitter:description" content="The business-logic lesson mentioned coupon replay as a race-condition-driven example. This lesson explains exactly what a race condition actually is, and why timing itself — not any malicious input — ">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Race Conditions in Web Applications — Path 11 · KashSec Academy","description":"The business-logic lesson mentioned coupon replay as a race-condition-driven example. This lesson explains exactly what a race condition actually is, and why timing itself — not any malicious input — ","url":"https://kashsec.vercel.app/#/lesson/11-web-security/race-conditions-web","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/11-web-security/race-conditions-web">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 11 — Web Security & Hacking</a> · Race Conditions in Web Applications</div>
+  <article><h1>Race Conditions in Web Applications</h1>
+<p>The business-logic lesson mentioned coupon replay as a race-condition-driven example. This lesson explains exactly what a race condition actually is, and why timing itself — not any malicious input — is the entire attack.</p>
+<h2>What a race condition actually is</h2>
+<p>A <strong>race condition</strong> occurs when an application&#39;s correctness depends on operations happening in a specific order, but the application doesn&#39;t actually enforce that order — creating a window where two things can happen &quot;at the same time&quot; in a way the developer never intended.</p>
+<h2>The classic check-then-act flaw</h2>
+<p>Most web race conditions follow the same underlying pattern: <strong>check</strong>, then <strong>act</strong>, with a gap between the two steps:</p>
+<pre><code>1. CHECK: &quot;Has this coupon already been used?&quot; → No
+2. ACT: &quot;Redeem the coupon, mark it as used&quot;
+</code></pre>
+<p>If an attacker sends many identical requests simultaneously, several of them can pass step 1 (the check) <em>before any of them completes step 2</em> (marking it as used) — each request independently sees &quot;not yet used&quot; during its own check, and all of them proceed to redeem the coupon, even though it should only have been usable once.</p>
+<h2>Where race conditions show up in the real world</h2>
+<ul>
+<li><strong>Coupon/discount redemption</strong> — exactly the Path 19 example, redeeming a single-use code multiple times</li>
+<li><strong>Financial transactions</strong> — a withdrawal or transfer where the balance check and the balance deduction aren&#39;t handled atomically, potentially allowing a withdrawal beyond the actual available balance</li>
+<li><strong>Rate limiting bypass</strong> — Path 21&#39;s rate-limit-bypass lab and Path 19&#39;s own rate-limit CTF challenge both touch on timing-related bypass techniques, closely related to this same underlying category</li>
+<li><strong>Account creation abuse</strong> — creating multiple accounts that should be limited to one per email, if the uniqueness check and the account-creation step aren&#39;t handled atomically</li>
+</ul>
+<h2>The defense: atomic operations and proper locking</h2>
+<ul>
+<li><strong>Database-level atomicity</strong> — using a single atomic operation (a database transaction, or an atomic &quot;decrement if greater than zero&quot; operation) instead of a separate check followed by a separate act, eliminating the gap entirely</li>
+<li><strong>Locking</strong> — explicitly locking a resource during the check-and-act sequence, preventing a second concurrent request from reading a stale, pre-update state</li>
+<li><strong>Idempotency keys</strong> — a unique identifier for a specific intended action, letting the server recognize and reject a duplicate, simultaneously-submitted request as the same action already being processed rather than a legitimately separate one</li>
+</ul>
+<p>Why doesn&#39;t simply adding a &quot;has this coupon been used?&quot; check prevent the race-condition vulnerability described in this lesson, if that check already exists?</p>
+<details><summary>Show answer</summary>The check itself isn't the problem — the problem is the <em>gap in time</em> between the check completing and the corresponding update (marking the coupon as used) actually being committed. If multiple identical requests arrive within that gap, each one independently performs its own check <em>before</em> any of them has finished updating the database, meaning each check genuinely, correctly returns "not yet used" at the moment it runs — the check isn't lying, it's just running against stale information because the update from a concurrent, simultaneous request hasn't landed yet. The fix isn't a better or more frequent check — it's eliminating the gap entirely, by making the check-and-update a single atomic operation that no other concurrent request can interleave with, which is exactly what database transactions and proper locking are designed to guarantee.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Race condition</strong> — a flaw where correctness depends on operation ordering the application doesn&#39;t actually enforce.</li>
+<li><strong>Check-then-act flaw</strong> — the classic race-condition pattern, where a gap between a check and its corresponding action allows concurrent requests to both pass the check before either completes the action.</li>
+<li><strong>Atomic operation</strong> — an operation guaranteed to complete as a single, indivisible unit, with no possibility of another operation interleaving partway through.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Race conditions exploit the timing gap in a check-then-act pattern, letting concurrent requests each pass a check before any of them completes the corresponding update.</li>
+<li>Coupon redemption, financial transactions, rate limiting, and account creation are all real-world areas where this pattern commonly appears.</li>
+<li>Atomic database operations, explicit locking, and idempotency keys are the standard defenses, each eliminating the timing gap rather than trying to check more carefully or more often.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/11-web-security/cmd-and-upload">Command injection &amp; file upload flaws</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/11-web-security/race-conditions-web";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

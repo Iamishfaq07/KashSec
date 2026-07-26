@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GraphQL Security Basics — Path 11 · KashSec Academy</title>
+<meta name="description" content="The API-security lesson covered traditional REST-style APIs. This lesson introduces GraphQL, an increasingly common alternative API architecture with its own genuinely distinct security considerations">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/11-web-security/graphql-security-basics">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="GraphQL Security Basics — Path 11 · KashSec Academy">
+<meta property="og:description" content="The API-security lesson covered traditional REST-style APIs. This lesson introduces GraphQL, an increasingly common alternative API architecture with its own genuinely distinct security considerations">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/11-web-security/graphql-security-basics">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="GraphQL Security Basics — Path 11 · KashSec Academy">
+<meta name="twitter:description" content="The API-security lesson covered traditional REST-style APIs. This lesson introduces GraphQL, an increasingly common alternative API architecture with its own genuinely distinct security considerations">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"GraphQL Security Basics — Path 11 · KashSec Academy","description":"The API-security lesson covered traditional REST-style APIs. This lesson introduces GraphQL, an increasingly common alternative API architecture with its own genuinely distinct security considerations","url":"https://kashsec.vercel.app/#/lesson/11-web-security/graphql-security-basics","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/11-web-security/graphql-security-basics">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 11 — Web Security & Hacking</a> · GraphQL Security Basics</div>
+  <article><h1>GraphQL Security Basics</h1>
+<p>The API-security lesson covered traditional REST-style APIs. This lesson introduces <strong>GraphQL</strong>, an increasingly common alternative API architecture with its own genuinely distinct security considerations, before Path 21&#39;s dedicated GraphQL introspection lab goes hands-on.</p>
+<h2>What GraphQL actually is, briefly</h2>
+<p>Unlike a REST API&#39;s fixed set of endpoints (each returning a predetermined data shape), <strong>GraphQL</strong> exposes a single endpoint where the <em>client</em> specifies exactly what data it wants in the request itself:</p>
+<pre><code class="language-graphql">query {
+  user(id: &quot;1024&quot;) {
+    name
+    email
+    orders {
+      id
+      total
+    }
+  }
+}
+</code></pre>
+<p>This flexibility is genuinely powerful for legitimate application development — a client can fetch precisely the data it needs in one request, rather than making several separate REST calls — but it introduces security considerations that don&#39;t have a direct REST equivalent.</p>
+<h2>Introspection: GraphQL&#39;s built-in self-documentation</h2>
+<p>Most GraphQL implementations support <strong>introspection</strong> — a query that asks the API to describe its own complete schema: every available field, type, and relationship:</p>
+<pre><code class="language-graphql">query {
+  __schema {
+    types {
+      name
+      fields { name }
+    }
+  }
+}
+</code></pre>
+<p>Introspection is genuinely useful during development, but left enabled in production, it hands an attacker a complete, automatically-generated map of the entire API&#39;s data model — every field, every relationship, every potentially sensitive internal field name — without any of the manual reconnaissance effort the web-recon lesson described for traditional APIs. This exact scenario is what Path 21&#39;s GraphQL introspection lab lets you practice hands-on.</p>
+<h2>Why GraphQL amplifies some existing vulnerability classes</h2>
+<ul>
+<li><strong>IDOR, but easier to find</strong> — introspection reveals every queryable relationship directly, making the object-level authorization gaps this path has covered repeatedly easier for an attacker to systematically locate</li>
+<li><strong>Query complexity / depth attacks</strong> — GraphQL&#39;s nested query structure allows a maliciously crafted, deeply nested query to force the server to perform an enormous amount of work resolving it, a denial-of-service pattern genuinely specific to GraphQL&#39;s query model, unrelated to the &quot;billion laughs&quot; XML attack but conceptually similar in spirit</li>
+<li><strong>Batching abuse</strong> — some GraphQL implementations allow multiple queries in a single request, which can be abused to bypass rate limiting (Path 21&#39;s dedicated lab) designed around counting individual HTTP requests rather than individual queries within a request</li>
+</ul>
+<h2>Practical defenses</h2>
+<ul>
+<li><strong>Disable introspection in production</strong> — the single highest-value, lowest-effort GraphQL-specific hardening step</li>
+<li><strong>Enforce query depth and complexity limits</strong> — rejecting queries that exceed a reasonable nesting depth or computational cost before they&#39;re fully executed</li>
+<li><strong>Apply the exact same object-level authorization checks GraphQL&#39;s flexibility doesn&#39;t provide automatically</strong> — GraphQL&#39;s ability to fetch related, nested data doesn&#39;t mean authorization is automatically enforced at every level of that nesting; each resolver needs its own genuine authorization check, exactly the same discipline the IDOR lesson demanded of REST endpoints</li>
+</ul>
+<p>Why does leaving GraphQL introspection enabled in production hand an attacker a meaningfully bigger advantage than a traditional REST API&#39;s lack of built-in self-documentation?</p>
+<details><summary>Show answer</summary>A REST API attacker typically has to manually reconstruct the API's structure through the web-recon lesson's techniques — inspecting client-side JavaScript, guessing endpoint patterns, watching network traffic — a genuinely effortful process that reveals the API's shape incrementally and imperfectly. GraphQL introspection, when enabled, directly answers the exact question an attacker would otherwise have to painstakingly reconstruct: it returns the complete schema — every type, every field, every relationship — in a single, machine-readable response, effectively handing over a complete map of the entire API's data model with zero manual reconnaissance effort required. This is exactly why disabling introspection in production is considered such high-value, low-effort hardening — it doesn't fix any underlying vulnerability, but it removes the single easiest reconnaissance shortcut an attacker would otherwise have.</details><h2>Key terms</h2>
+<ul>
+<li><strong>GraphQL</strong> — an API architecture where clients specify exactly what data they want in a single flexible query, rather than calling fixed REST endpoints.</li>
+<li><strong>Introspection</strong> — a GraphQL feature allowing a query to retrieve the API&#39;s complete schema.</li>
+<li><strong>Query depth/complexity attack</strong> — a denial-of-service technique exploiting GraphQL&#39;s nested query structure to force excessive server-side work.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>GraphQL&#39;s flexibility is genuinely powerful, but introspection left enabled in production hands an attacker a complete API map with essentially no reconnaissance effort.</li>
+<li>GraphQL amplifies existing vulnerability classes (IDOR becomes easier to find) and introduces genuinely new ones (query depth attacks, batching-based rate-limit bypass).</li>
+<li>Disabling introspection, enforcing query complexity limits, and applying real per-resolver authorization checks are the practical defenses, and Path 21&#39;s dedicated lab lets you practice the introspection-abuse pattern hands-on.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/11-web-security/web-application-firewalls">Web Application Firewalls</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/11-web-security/graphql-security-basics";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

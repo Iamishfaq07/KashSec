@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Path Traversal Basics — Path 11 · KashSec Academy</title>
+<meta name="description" content="Web recon showed you how to map out an application's structure. This lesson covers one of the simplest, most classic vulnerabilities you'll find once you have that map — one that exploits nothing more">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/11-web-security/path-traversal-basics">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Path Traversal Basics — Path 11 · KashSec Academy">
+<meta property="og:description" content="Web recon showed you how to map out an application's structure. This lesson covers one of the simplest, most classic vulnerabilities you'll find once you have that map — one that exploits nothing more">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/11-web-security/path-traversal-basics">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Path Traversal Basics — Path 11 · KashSec Academy">
+<meta name="twitter:description" content="Web recon showed you how to map out an application's structure. This lesson covers one of the simplest, most classic vulnerabilities you'll find once you have that map — one that exploits nothing more">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Path Traversal Basics — Path 11 · KashSec Academy","description":"Web recon showed you how to map out an application's structure. This lesson covers one of the simplest, most classic vulnerabilities you'll find once you have that map — one that exploits nothing more","url":"https://kashsec.vercel.app/#/lesson/11-web-security/path-traversal-basics","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/11-web-security/path-traversal-basics">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 11 — Web Security & Hacking</a> · Path Traversal Basics</div>
+  <article><h1>Path Traversal Basics</h1>
+<p>Web recon showed you how to map out an application&#39;s structure. This lesson covers one of the simplest, most classic vulnerabilities you&#39;ll find once you have that map — one that exploits nothing more sophisticated than a filesystem path.</p>
+<h2>What path traversal actually is</h2>
+<p><strong>Path traversal</strong> (also called directory traversal) exploits an application that builds a file path from user input without properly sanitizing it, letting an attacker navigate <em>outside</em> the intended directory using <code>../</code> sequences:</p>
+<pre><code>GET /download?file=report.pdf HTTP/1.1
+</code></pre>
+<p>If the server naively builds a file path like <code>/var/www/uploads/report.pdf</code>, an attacker can potentially request:</p>
+<pre><code>GET /download?file=../../../../etc/passwd HTTP/1.1
+</code></pre>
+<p>Directly connecting to Path 03&#39;s filesystem-hierarchy lesson: <code>../</code> means &quot;go up one directory level&quot; — stacking several of these can walk all the way from an intended upload folder back to the filesystem root, then down into sensitive system files like <code>/etc/passwd</code>.</p>
+<h2>Why this remains a real, recurring vulnerability</h2>
+<p>Despite being a genuinely old, well-understood attack, path traversal keeps appearing in real applications because file-handling code is written in countless different places, each needing its own careful sanitization — a single unvalidated file-path parameter anywhere in a large application is enough.</p>
+<h2>Common bypass techniques worth recognizing</h2>
+<ul>
+<li><strong>URL encoding</strong> — <code>%2e%2e%2f</code> decodes to <code>../</code>, sometimes bypassing naive filters checking for the literal string</li>
+<li><strong>Double encoding</strong> — <code>%252e%252e%252f</code>, useful against filters that only decode once</li>
+<li><strong>Null byte injection</strong> (largely historical, but worth recognizing) — older systems sometimes truncated a string at a null byte, letting an attacker append <code>%00</code> to bypass an extension check</li>
+<li><strong>Absolute paths</strong> — some vulnerable implementations accept a full path like <code>/etc/passwd</code> directly, with no traversal sequence needed at all</li>
+</ul>
+<h2>The defense: never trust user input for filesystem operations</h2>
+<ul>
+<li><strong>Never build a file path directly from user input</strong> — instead, use an internal identifier (a database ID, a UUID) that maps to a real file path only on the server side, never trusting the client to specify the actual path</li>
+<li><strong>Canonicalize and validate</strong> — resolve the requested path to its absolute form and verify it still falls within the intended directory before using it</li>
+<li><strong>Least privilege at the OS level</strong> (Path 03&#39;s users-permissions lesson) — the web server process itself shouldn&#39;t have read access to sensitive files like <code>/etc/shadow</code> in the first place, providing a defense-in-depth backstop even if the application-level validation fails</li>
+</ul>
+<p>Why is mapping user-supplied filenames to an internal database ID a stronger defense than trying to filter out <code>../</code> sequences from the input directly?</p>
+<details><summary>Show answer</summary>Filtering for <code>../</code> specifically is a blocklist approach, and blocklists are notoriously incomplete — URL encoding, double encoding, and other bypass techniques (all covered in this lesson) exist specifically because attackers keep finding new ways to represent the same traversal sequence that a naive filter didn't anticipate. Mapping user input to an internal ID instead removes the entire attack surface structurally: the actual file path is never derived from anything the client supplies at all, meaning there's no traversal sequence, however cleverly encoded, that could possibly reach a file outside the intended directory — the server simply never asks "what does this user-supplied string resolve to on disk" in the first place.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Path traversal (directory traversal)</strong> — exploiting unsanitized file paths to access files outside an intended directory.</li>
+<li><strong>Canonicalization</strong> — resolving a path to its absolute, fully-normalized form before validating it.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Path traversal exploits <code>../</code> sequences (and various encoded variants) to escape an intended directory and reach sensitive files elsewhere on the filesystem.</li>
+<li>This remains a real, recurring vulnerability precisely because file-handling code appears in many different places throughout an application, each needing its own careful validation.</li>
+<li>The strongest defense avoids the problem structurally — mapping user input to an internal identifier rather than trusting any client-supplied path at all.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/11-web-security/idor">IDOR — Broken Access Control</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/11-web-security/path-traversal-basics";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

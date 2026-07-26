@@ -914,16 +914,29 @@ const PATHS = [
      {n:"1", id:"owasp-top-10",        title:"The OWASP Top 10",        desc:"The web hacker's shared checklist, in plain words."},
      {n:"2", id:"burp-setup",          title:"Burp Suite & PortSwigger", desc:"The professional's tool and free lab platform."},
      {n:"3", id:"web-recon",           title:"Web recon",               desc:"Subdomains, paths, parameters, JS files."},
-     {n:"4", id:"idor",                title:"Broken access & IDOR",    desc:"The friendliest first bug — just change the ID."},
-     {n:"5", id:"xss",                 title:"Cross-Site Scripting",    desc:"Reflected, stored, DOM — and how to prove it safely."},
-     {n:"6", id:"sqli",                title:"SQL Injection",           desc:"The classic — with auth bypass, UNION, blind, sqlmap."},
-     {n:"7", id:"cmd-and-upload",      title:"Command inj. & uploads",  desc:"Two paths to server takeover."},
-     {n:"8", id:"ssrf-and-auth",       title:"SSRF & auth attacks",     desc:"Cloud metadata, JWT, credential attacks."},
-     {n:"9", id:"web-roadmap",         title:"Your 90-day roadmap",     desc:"A concrete plan to reach real bug bounty."},
-     {n:"10", id:"burp-advanced-lab",  title:"Advanced Burp Suite Lab", desc:"Take your Burp skills to the next level."},
-     {n:"11", id:"jwt-advanced-lab",   title:"Advanced JWT Lab",        desc:"Deep dive into JWT attacks and defenses."},
-     {n:"12", id:"ssrf-jwt-lab",       title:"SSRF & JWT Lab",          desc:"Practice two important modern web attacks."},
-     {n:"13", id:"xss-practical-lab",  title:"XSS Practical Lab",       desc:"Learn to find and exploit Cross-Site Scripting safely."}
+     {n:"4", id:"path-traversal-basics", title:"Path Traversal Basics", desc:"Escaping an intended directory with ../, and the encoded bypasses that follow."},
+     {n:"5", id:"idor",                title:"Broken access & IDOR",    desc:"The friendliest first bug — just change the ID."},
+     {n:"6", id:"csrf-attacks",        title:"CSRF — Cross-Site Request Forgery", desc:"Tricking a browser into sending a request the victim never meant to send."},
+     {n:"7", id:"clickjacking",        title:"Clickjacking", desc:"Invisible iframes, and why frame-ancestors matters."},
+     {n:"8", id:"xss",                 title:"Cross-Site Scripting",    desc:"Reflected, stored, DOM — and how to prove it safely."},
+     {n:"9", id:"web-security-headers-deep-dive", title:"Web Security Headers: A Deep Dive", desc:"HSTS, X-Content-Type-Options, Referrer-Policy, and every header this course has mentioned, in one place."},
+     {n:"10", id:"sqli",                title:"SQL Injection",           desc:"The classic — with auth bypass, UNION, blind, sqlmap."},
+     {n:"11", id:"business-logic-vulnerabilities", title:"Business Logic Vulnerabilities", desc:"Price tampering, step-skipping, and bugs no scanner will ever find."},
+     {n:"12", id:"race-conditions-web", title:"Race Conditions in Web Applications", desc:"The check-then-act flaw behind coupon replay and double-spend bugs."},
+     {n:"13", id:"cmd-and-upload",      title:"Command inj. & uploads",  desc:"Two paths to server takeover."},
+     {n:"14", id:"xxe-injection",      title:"XXE — XML External Entity Injection", desc:"File disclosure, SSRF, and denial of service through XML parsing."},
+     {n:"15", id:"file-inclusion-lfi-rfi", title:"Local & Remote File Inclusion (LFI/RFI)", desc:"When 'read this file' becomes 'execute this file.'"},
+     {n:"16", id:"deserialization-attacks", title:"Insecure Deserialization", desc:"Why pickle.load() on untrusted data can mean instant code execution."},
+     {n:"17", id:"ssrf-and-auth",       title:"SSRF & auth attacks",     desc:"Cloud metadata, JWT, credential attacks."},
+     {n:"18", id:"api-security-fundamentals", title:"API Security Fundamentals", desc:"Every vulnerability in this path, reshaped for JSON endpoints."},
+     {n:"19", id:"graphql-security-basics", title:"GraphQL Security Basics", desc:"Introspection, query depth attacks, and why IDOR gets easier to find."},
+     {n:"20", id:"web-application-firewalls", title:"Web Application Firewalls (WAFs)", desc:"Real protection, real limits, and why a WAF is never the actual fix."},
+     {n:"21", id:"secure-coding-for-web-devs", title:"Secure Coding for Web Developers", desc:"Every defensive principle in this path, consolidated into one checklist."},
+     {n:"22", id:"web-roadmap",         title:"Your 90-day roadmap",     desc:"A concrete plan to reach real bug bounty."},
+     {n:"23", id:"burp-advanced-lab",  title:"Advanced Burp Suite Lab", desc:"Take your Burp skills to the next level."},
+     {n:"24", id:"jwt-advanced-lab",   title:"Advanced JWT Lab",        desc:"Deep dive into JWT attacks and defenses."},
+     {n:"25", id:"ssrf-jwt-lab",       title:"SSRF & JWT Lab",          desc:"Practice two important modern web attacks."},
+     {n:"26", id:"xss-practical-lab",  title:"XSS Practical Lab",       desc:"Learn to find and exploit Cross-Site Scripting safely."}
    ]},
   {n:"12", id:"12-network-security", title:"Network Security", level:"Intermediate",
    desc:"Nmap, Wireshark, firewalls, VPNs, IDS/IPS, Wi-Fi attacks, MITM.",
@@ -4819,6 +4832,11 @@ function renderLabPhishing(){
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
+  {date:'2026-07-25', title:'Path 11 doubled to 26 lessons', items:[
+    'Fourteenth batch of the course-wide content-doubling effort: Path 11 (Web Security & Hacking) grows from 13 to 26 lessons.',
+    'New lessons: Path Traversal Basics, CSRF, Clickjacking, Web Security Headers Deep Dive, Business Logic Vulnerabilities, Race Conditions in Web Applications, XXE, Local & Remote File Inclusion, Insecure Deserialization, API Security Fundamentals, GraphQL Security Basics, Web Application Firewalls, and Secure Coding for Web Developers.',
+    'The new secure-coding lesson closes the path by naming the single root cause connecting nearly every vulnerability covered: trusting data or requests without verifying they\'re actually legitimate.'
+  ]},
   {date:'2026-07-25', title:'Path 10 doubled to 20 lessons', items:[
     'Thirteenth batch of the course-wide content-doubling effort: Path 10 (Cybersecurity Fundamentals) grows from 10 to 20 lessons.',
     'New lessons: Defense in Depth, Types of Security Controls, Vulnerability Management Basics, Insider Threats, Supply Chain Security Basics, Security Policies & Awareness Training, Incident Response Basics, Business Continuity & Disaster Recovery, Physical Security Basics, and Security Metrics & KPIs.',

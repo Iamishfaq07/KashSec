@@ -200,4 +200,4 @@ An attacker submits a malicious comment on a blog post. The comment is saved to 
 - [Content Security Policy — MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP)
 ???
 
-**Next up →** [SQL Injection](#/lesson/11-web-security/sqli)
+**Next up →** [Web Security Headers: A Deep Dive](#/lesson/11-web-security/web-security-headers-deep-dive)

@@ -508,6 +508,15 @@ const GLOSSARY = [
   "subTitle": "Where to go next"
  },
  {
+  "term": "Atomic operation",
+  "def": "an operation guaranteed to complete as a single, indivisible unit, with no possibility of another operation interleaving partway through.",
+  "pathId": "11-web-security",
+  "pathN": "11",
+  "pathTitle": "Web Security & Hacking",
+  "subId": "race-conditions-web",
+  "subTitle": "Race Conditions in Web Applications"
+ },
+ {
   "term": "ATS",
   "def": "Applicant Tracking System, software that filters/ranks applications (see the resume lesson for detail).",
   "pathId": "20-career-prep",
@@ -752,6 +761,15 @@ const GLOSSARY = [
  },
  {
   "term": "Bearer token",
+  "def": "a credential (often a JWT) presented in an API request's Authorization header to prove identity.",
+  "pathId": "11-web-security",
+  "pathN": "11",
+  "pathTitle": "Web Security & Hacking",
+  "subId": "api-security-fundamentals",
+  "subTitle": "API Security Fundamentals"
+ },
+ {
+  "term": "Bearer token",
   "def": "a token that grants access to whoever \"bears\" (presents) it, with no further proof required",
   "pathId": "21-api-security",
   "pathN": "21",
@@ -794,6 +812,15 @@ const GLOSSARY = [
   "pathTitle": "Cloud Computing Basics",
   "subId": "cloud-cost-billing-security",
   "subTitle": "Cloud Cost & Billing Security"
+ },
+ {
+  "term": "Billion laughs attack",
+  "def": "an XXE-adjacent denial-of-service technique using nested entity expansion to exhaust server resources.",
+  "pathId": "11-web-security",
+  "pathN": "11",
+  "pathTitle": "Web Security & Hacking",
+  "subId": "xxe-injection",
+  "subTitle": "XXE — XML External Entity Injection"
  },
  {
   "term": "Binary",
@@ -1084,6 +1111,15 @@ const GLOSSARY = [
   "subTitle": "Business logic & chains"
  },
  {
+  "term": "Business logic vulnerability",
+  "def": "a flaw in an application's intended workflow, exploited through legitimate-looking requests in an unanticipated sequence or combination.",
+  "pathId": "11-web-security",
+  "pathN": "11",
+  "pathTitle": "Web Security & Hacking",
+  "subId": "business-logic-vulnerabilities",
+  "subTitle": "Business Logic Vulnerabilities"
+ },
+ {
   "term": "BYOD",
   "def": "Bring Your Own Device; personal, typically unmanaged devices used for work access",
   "pathId": "24-zero-trust",
@@ -1136,6 +1172,15 @@ const GLOSSARY = [
   "pathTitle": "How the Web Works",
   "subId": "web-caching-basics",
   "subTitle": "Web caching basics"
+ },
+ {
+  "term": "Canonicalization",
+  "def": "resolving a path to its absolute, fully-normalized form before validating it.",
+  "pathId": "11-web-security",
+  "pathN": "11",
+  "pathTitle": "Web Security & Hacking",
+  "subId": "path-traversal-basics",
+  "subTitle": "Path Traversal Basics"
  },
  {
   "term": "CCNA (Cisco Certified Network Associate)",
@@ -1264,6 +1309,15 @@ const GLOSSARY = [
   "subTitle": "Digital forensics & IR"
  },
  {
+  "term": "Check-then-act flaw",
+  "def": "the classic race-condition pattern, where a gap between a check and its corresponding action allows concurrent requests to both pass the check before either completes the action.",
+  "pathId": "11-web-security",
+  "pathN": "11",
+  "pathTitle": "Web Security & Hacking",
+  "subId": "race-conditions-web",
+  "subTitle": "Race Conditions in Web Applications"
+ },
+ {
   "term": "`chmod` / `chown`",
   "def": "change permissions / ownership.",
   "pathId": "03-linux",
@@ -1370,6 +1424,15 @@ const GLOSSARY = [
   "pathTitle": "Ethical Hacking",
   "subId": "post-exploitation",
   "subTitle": "Phase 4: Post-exploitation"
+ },
+ {
+  "term": "Clickjacking",
+  "def": "overlaying an invisible target page beneath deceptive content, tricking a victim's genuine click into an unintended action.",
+  "pathId": "11-web-security",
+  "pathN": "11",
+  "pathTitle": "Web Security & Hacking",
+  "subId": "clickjacking",
+  "subTitle": "Clickjacking"
  },
  {
   "term": "CLI (Command Line Interface)",
@@ -1966,6 +2029,15 @@ const GLOSSARY = [
   "subTitle": "Cross-Site Scripting"
  },
  {
+  "term": "CSRF (Cross-Site Request Forgery)",
+  "def": "tricking a victim's authenticated browser into making an unintended request to a target site.",
+  "pathId": "11-web-security",
+  "pathN": "11",
+  "pathTitle": "Web Security & Hacking",
+  "subId": "csrf-attacks",
+  "subTitle": "CSRF — Cross-Site Request Forgery"
+ },
+ {
   "term": "CSRF / session hijacking / fixation",
   "def": "the three big session-related attacks.",
   "pathId": "05-web-basics",
@@ -1973,6 +2045,15 @@ const GLOSSARY = [
   "pathTitle": "How the Web Works",
   "subId": "cookies-sessions",
   "subTitle": "Cookies, sessions, logins"
+ },
+ {
+  "term": "CSRF token",
+  "def": "a unique, unpredictable value verifying a request genuinely originated from the legitimate page.",
+  "pathId": "11-web-security",
+  "pathN": "11",
+  "pathTitle": "Web Security & Hacking",
+  "subId": "csrf-attacks",
+  "subTitle": "CSRF — Cross-Site Request Forgery"
  },
  {
   "term": "CTF (Capture The Flag)",
@@ -2288,6 +2369,15 @@ const GLOSSARY = [
   "pathTitle": "AI & AI Security",
   "subId": "securing-llm-apps",
   "subTitle": "Securing LLM Applications"
+ },
+ {
+  "term": "Defense in depth (applied to code)",
+  "def": "layering multiple independent defensive practices (input validation, output escaping, authorization checks) rather than relying on any single one.",
+  "pathId": "11-web-security",
+  "pathN": "11",
+  "pathTitle": "Web Security & Hacking",
+  "subId": "secure-coding-for-web-devs",
+  "subTitle": "Secure Coding for Web Developers"
  },
  {
   "term": "Deletion",
@@ -3082,6 +3172,15 @@ const GLOSSARY = [
   "subTitle": "Risk Management Fundamentals"
  },
  {
+  "term": "False negative (WAF context)",
+  "def": "a genuine attack payload the WAF fails to recognize and blocks.",
+  "pathId": "11-web-security",
+  "pathN": "11",
+  "pathTitle": "Web Security & Hacking",
+  "subId": "web-application-firewalls",
+  "subTitle": "Web Application Firewalls (WAFs)"
+ },
+ {
   "term": "False positive",
   "def": "a finding that is not actually a real issue",
   "pathId": "22-devsecops-appsec",
@@ -3089,6 +3188,15 @@ const GLOSSARY = [
   "pathTitle": "DevSecOps & AppSec Program",
   "subId": "sast-dast-sca",
   "subTitle": "SAST, DAST & SCA — The Core Scanning Trio"
+ },
+ {
+  "term": "False positive (WAF context)",
+  "def": "legitimate traffic mistakenly blocked because it resembles an attack pattern.",
+  "pathId": "11-web-security",
+  "pathN": "11",
+  "pathTitle": "Web Security & Hacking",
+  "subId": "web-application-firewalls",
+  "subTitle": "Web Application Firewalls (WAFs)"
  },
  {
   "term": "Federated identity",
@@ -3278,6 +3386,15 @@ const GLOSSARY = [
   "pathTitle": "Network Security",
   "subId": "wifi-security",
   "subTitle": "Wi-Fi security & attacks"
+ },
+ {
+  "term": "frame-ancestors",
+  "def": "a CSP directive controlling which sites are allowed to embed a page in an iframe.",
+  "pathId": "11-web-security",
+  "pathN": "11",
+  "pathTitle": "Web Security & Hacking",
+  "subId": "clickjacking",
+  "subTitle": "Clickjacking"
  },
  {
   "term": "Front-end / back-end",
@@ -3476,6 +3593,15 @@ const GLOSSARY = [
   "pathTitle": "AI & AI Security",
   "subId": "jailbreaks",
   "subTitle": "Jailbreaks & bypasses"
+ },
+ {
+  "term": "GraphQL",
+  "def": "an API architecture where clients specify exactly what data they want in a single flexible query, rather than calling fixed REST endpoints.",
+  "pathId": "11-web-security",
+  "pathN": "11",
+  "pathTitle": "Web Security & Hacking",
+  "subId": "graphql-security-basics",
+  "subTitle": "GraphQL Security Basics"
  },
  {
   "term": "GraphQL resolver",
@@ -3791,6 +3917,15 @@ const GLOSSARY = [
   "pathTitle": "Network Security",
   "subId": "mitm",
   "subTitle": "Man-in-the-Middle"
+ },
+ {
+  "term": "HSTS (Strict-Transport-Security)",
+  "def": "forces the browser to only ever connect over HTTPS to a domain, closing the unencrypted-first-request gap a redirect alone leaves open.",
+  "pathId": "11-web-security",
+  "pathN": "11",
+  "pathTitle": "Web Security & Hacking",
+  "subId": "web-security-headers-deep-dive",
+  "subTitle": "Web Security Headers: A Deep Dive"
  },
  {
   "term": "HTML / CSS / JS",
@@ -4189,6 +4324,15 @@ const GLOSSARY = [
   "subTitle": "Object-oriented Python basics"
  },
  {
+  "term": "Insecure deserialization",
+  "def": "deserializing untrusted data using a format capable of triggering arbitrary code execution during reconstruction.",
+  "pathId": "11-web-security",
+  "pathN": "11",
+  "pathTitle": "Web Security & Hacking",
+  "subId": "deserialization-attacks",
+  "subTitle": "Insecure Deserialization"
+ },
+ {
   "term": "Insecure Output Handling",
   "def": "the AI-era descendant of XSS/SQLi, when LLM output is trusted blindly downstream.",
   "pathId": "18-ai-security",
@@ -4286,6 +4430,15 @@ const GLOSSARY = [
   "pathTitle": "Programming & Python",
   "subId": "what-is-programming",
   "subTitle": "What is programming?"
+ },
+ {
+  "term": "Introspection",
+  "def": "a GraphQL feature allowing a query to retrieve the API's complete schema.",
+  "pathId": "11-web-security",
+  "pathN": "11",
+  "pathTitle": "Web Security & Hacking",
+  "subId": "graphql-security-basics",
+  "subTitle": "GraphQL Security Basics"
  },
  {
   "term": "Introspection",
@@ -4729,6 +4882,15 @@ const GLOSSARY = [
   "subTitle": "Capstone: Secure a Realistic Industrial Network"
  },
  {
+  "term": "LFI (Local File Inclusion)",
+  "def": "exploiting a dynamic include statement to execute a local file's content as server-side code.",
+  "pathId": "11-web-security",
+  "pathN": "11",
+  "pathTitle": "Web Security & Hacking",
+  "subId": "file-inclusion-lfi-rfi",
+  "subTitle": "Local & Remote File Inclusion (LFI/RFI)"
+ },
+ {
   "term": "libsodium",
   "def": "a widely recommended, easy-to-use cryptography library designed to make secure defaults the easy path.",
   "pathId": "06-crypto-fundamentals",
@@ -4855,6 +5017,15 @@ const GLOSSARY = [
   "subTitle": "Device & Location Privacy"
  },
  {
+  "term": "Log poisoning",
+  "def": "planting malicious code inside a log file (via a header or input that gets logged) so it can later be triggered through LFI.",
+  "pathId": "11-web-security",
+  "pathN": "11",
+  "pathTitle": "Web Security & Hacking",
+  "subId": "file-inclusion-lfi-rfi",
+  "subTitle": "Local & Remote File Inclusion (LFI/RFI)"
+ },
+ {
   "term": "LOLBins",
   "def": "using legitimate built-in tools to avoid detection.",
   "pathId": "10-fundamentals",
@@ -4934,6 +5105,15 @@ const GLOSSARY = [
   "pathTitle": "Introduction to Cybersecurity",
   "subId": "common-cyberattacks-overview",
   "subTitle": "A tour of common cyberattacks"
+ },
+ {
+  "term": "Mass assignment",
+  "def": "a vulnerability where an API blindly applies every field in a request body rather than restricting to an explicit allow-list.",
+  "pathId": "11-web-security",
+  "pathN": "11",
+  "pathTitle": "Web Security & Hacking",
+  "subId": "api-security-fundamentals",
+  "subTitle": "API Security Fundamentals"
  },
  {
   "term": "Mass assignment",
@@ -5087,6 +5267,15 @@ const GLOSSARY = [
   "pathTitle": "Zero Trust Architecture",
   "subId": "microsegmentation",
   "subTitle": "Micro-Segmentation & Network Design"
+ },
+ {
+  "term": "MIME-sniffing",
+  "def": "a browser's attempt to guess a file's actual type by inspecting its content rather than trusting the declared Content-Type.",
+  "pathId": "11-web-security",
+  "pathN": "11",
+  "pathTitle": "Web Security & Hacking",
+  "subId": "web-security-headers-deep-dive",
+  "subTitle": "Web Security Headers: A Deep Dive"
  },
  {
   "term": "Mitigate / Accept / Transfer / Avoid",
@@ -5746,6 +5935,15 @@ const GLOSSARY = [
   "subTitle": "The OWASP Top 10"
  },
  {
+  "term": "OWASP API Security Top 10",
+  "def": "a parallel to the general OWASP Top 10, focused specifically on API-related risks.",
+  "pathId": "11-web-security",
+  "pathN": "11",
+  "pathTitle": "Web Security & Hacking",
+  "subId": "api-security-fundamentals",
+  "subTitle": "API Security Fundamentals"
+ },
+ {
   "term": "OWASP Mobile Application Security (MAS)",
   "def": "the umbrella project covering the Mobile Top 10, plus the detailed testing guide (MASTG) and verification standard (MASVS).",
   "pathId": "13-mobile-security",
@@ -5951,6 +6149,15 @@ const GLOSSARY = [
   "pathTitle": "Advanced Cyber Topics",
   "subId": "linux-privesc",
   "subTitle": "Linux privilege escalation"
+ },
+ {
+  "term": "Path traversal (directory traversal)",
+  "def": "exploiting unsanitized file paths to access files outside an intended directory.",
+  "pathId": "11-web-security",
+  "pathN": "11",
+  "pathTitle": "Web Security & Hacking",
+  "subId": "path-traversal-basics",
+  "subTitle": "Path Traversal Basics"
  },
  {
   "term": "Payload / Meterpreter",
@@ -6736,6 +6943,15 @@ const GLOSSARY = [
   "subTitle": "REST vs GraphQL — security differences that matter"
  },
  {
+  "term": "Query depth/complexity attack",
+  "def": "a denial-of-service technique exploiting GraphQL's nested query structure to force excessive server-side work.",
+  "pathId": "11-web-security",
+  "pathN": "11",
+  "pathTitle": "Web Security & Hacking",
+  "subId": "graphql-security-basics",
+  "subTitle": "GraphQL Security Basics"
+ },
+ {
   "term": "Quick win",
   "def": "a small, achievable early contribution that builds credibility without requiring deep tenure.",
   "pathId": "20-career-prep",
@@ -6743,6 +6959,15 @@ const GLOSSARY = [
   "pathTitle": "Career Prep",
   "subId": "first-90-days",
   "subTitle": "Your first 90 days in a security job"
+ },
+ {
+  "term": "Race condition",
+  "def": "a flaw where correctness depends on operation ordering the application doesn't actually enforce.",
+  "pathId": "11-web-security",
+  "pathN": "11",
+  "pathTitle": "Web Security & Hacking",
+  "subId": "race-conditions-web",
+  "subTitle": "Race Conditions in Web Applications"
  },
  {
   "term": "Race condition",
@@ -7195,6 +7420,15 @@ const GLOSSARY = [
   "subTitle": "What is a protocol?"
  },
  {
+  "term": "RFI (Remote File Inclusion)",
+  "def": "exploiting a dynamic include statement to execute code from an attacker-controlled remote URL.",
+  "pathId": "11-web-security",
+  "pathN": "11",
+  "pathTitle": "Web Security & Hacking",
+  "subId": "file-inclusion-lfi-rfi",
+  "subTitle": "Local & Remote File Inclusion (LFI/RFI)"
+ },
+ {
   "term": "RHCSA (Red Hat Certified System Administrator)",
   "def": "a hands-on, performance-based certification specific to Red Hat Enterprise Linux.",
   "pathId": "03-linux",
@@ -7481,6 +7715,15 @@ const GLOSSARY = [
   "pathTitle": "How the Web Works",
   "subId": "same-origin-policy-and-cors",
   "subTitle": "Same-Origin Policy & CORS"
+ },
+ {
+  "term": "SameSite cookie attribute",
+  "def": "a browser-enforced setting restricting when a cookie is sent on cross-origin requests.",
+  "pathId": "11-web-security",
+  "pathN": "11",
+  "pathTitle": "Web Security & Hacking",
+  "subId": "csrf-attacks",
+  "subTitle": "CSRF — Cross-Site Request Forgery"
  },
  {
   "term": "Sandbox",
@@ -7807,6 +8050,15 @@ const GLOSSARY = [
   "subTitle": "Insider Threats"
  },
  {
+  "term": "Serialization / deserialization",
+  "def": "converting an object to a storable/transmittable format and back again.",
+  "pathId": "11-web-security",
+  "pathN": "11",
+  "pathTitle": "Web Security & Hacking",
+  "subId": "deserialization-attacks",
+  "subTitle": "Insecure Deserialization"
+ },
+ {
   "term": "Serializer",
   "def": "the layer responsible for converting an internal object into the JSON actually sent to a client",
   "pathId": "21-api-security",
@@ -8030,6 +8282,15 @@ const GLOSSARY = [
   "pathTitle": "Programming & Python",
   "subId": "writing-secure-python-code",
   "subTitle": "Writing Secure Python Code"
+ },
+ {
+  "term": "Shift left",
+  "def": "addressing security during development rather than discovering it later through testing or an actual incident.",
+  "pathId": "11-web-security",
+  "pathN": "11",
+  "pathTitle": "Web Security & Hacking",
+  "subId": "secure-coding-for-web-devs",
+  "subTitle": "Secure Coding for Web Developers"
  },
  {
   "term": "Shift left",
@@ -9715,6 +9976,15 @@ const GLOSSARY = [
   "subTitle": "Reports that get paid"
  },
  {
+  "term": "Web Application Firewall (WAF)",
+  "def": "a tool inspecting HTTP request content for patterns resembling known attack techniques, blocking matches before they reach the application.",
+  "pathId": "11-web-security",
+  "pathN": "11",
+  "pathTitle": "Web Security & Hacking",
+  "subId": "web-application-firewalls",
+  "subTitle": "Web Application Firewalls (WAFs)"
+ },
+ {
   "term": "Web browser",
   "def": "the program used to view and navigate websites.",
   "pathId": "00-fresher-basics",
@@ -9958,6 +10228,15 @@ const GLOSSARY = [
   "subTitle": "Why hackers love Linux"
  },
  {
+  "term": "X-Frame-Options",
+  "def": "an older header providing similar anti-framing protection.",
+  "pathId": "11-web-security",
+  "pathN": "11",
+  "pathTitle": "Web Security & Hacking",
+  "subId": "clickjacking",
+  "subTitle": "Clickjacking"
+ },
+ {
   "term": "XSS",
   "def": "untrusted input executed as code in the page.",
   "pathId": "05-web-basics",
@@ -9974,6 +10253,15 @@ const GLOSSARY = [
   "pathTitle": "Web Security & Hacking",
   "subId": "xss",
   "subTitle": "Cross-Site Scripting"
+ },
+ {
+  "term": "XXE (XML External Entity) injection",
+  "def": "exploiting an XML parser's external entity processing to read files, trigger SSRF, or cause denial of service.",
+  "pathId": "11-web-security",
+  "pathN": "11",
+  "pathTitle": "Web Security & Hacking",
+  "subId": "xxe-injection",
+  "subTitle": "XXE — XML External Entity Injection"
  },
  {
   "term": "XYZ formula",

@@ -208,4 +208,4 @@ Why is a parameterised query fundamentally safer than "carefully sanitising" use
 - [testphp.vulnweb.com](http://testphp.vulnweb.com/) — legal practice target with real SQLi flaws.
 ???
 
-**Next up →** [Command injection & file upload flaws](#/lesson/11-web-security/cmd-and-upload)
+**Next up →** [Business Logic Vulnerabilities](#/lesson/11-web-security/business-logic-vulnerabilities)

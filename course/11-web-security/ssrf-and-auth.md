@@ -155,4 +155,4 @@ An app blocks any `image_url` input containing the literal string `localhost` or
 - [AWS — IMDSv2 documentation](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configuring-instance-metadata-service.html) — the real-world SSRF-to-metadata mitigation.
 ???
 
-**Next up →** [Your web security roadmap](#/lesson/11-web-security/web-roadmap)
+**Next up →** [API Security Fundamentals](#/lesson/11-web-security/api-security-fundamentals)

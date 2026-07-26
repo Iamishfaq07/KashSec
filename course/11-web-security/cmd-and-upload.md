@@ -169,4 +169,4 @@ A file upload feature checks the `Content-Type` header to ensure only `image/jpe
 - [OWASP File Upload Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/File_Upload_Cheat_Sheet.html)
 ???
 
-**Next up →** [SSRF & authentication flaws](#/lesson/11-web-security/ssrf-and-auth)
+**Next up →** [XXE — XML External Entity Injection](#/lesson/11-web-security/xxe-injection)
