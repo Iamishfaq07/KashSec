@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cloud Network Security — Path 12 · KashSec Academy</title>
+<meta name="description" content="Every concept in this path so far has assumed physical or on-premises infrastructure. This closing conceptual lesson bridges directly to Path 08's cloud-networking material, showing exactly how the sa">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/12-network-security/cloud-network-security">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Cloud Network Security — Path 12 · KashSec Academy">
+<meta property="og:description" content="Every concept in this path so far has assumed physical or on-premises infrastructure. This closing conceptual lesson bridges directly to Path 08's cloud-networking material, showing exactly how the sa">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/12-network-security/cloud-network-security">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Cloud Network Security — Path 12 · KashSec Academy">
+<meta name="twitter:description" content="Every concept in this path so far has assumed physical or on-premises infrastructure. This closing conceptual lesson bridges directly to Path 08's cloud-networking material, showing exactly how the sa">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Cloud Network Security — Path 12 · KashSec Academy","description":"Every concept in this path so far has assumed physical or on-premises infrastructure. This closing conceptual lesson bridges directly to Path 08's cloud-networking material, showing exactly how the sa","url":"https://kashsec.vercel.app/#/lesson/12-network-security/cloud-network-security","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/12-network-security/cloud-network-security">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 12 — Network Security</a> · Cloud Network Security</div>
+  <article><h1>Cloud Network Security</h1>
+<p>Every concept in this path so far has assumed physical or on-premises infrastructure. This closing conceptual lesson bridges directly to Path 08&#39;s cloud-networking material, showing exactly how the same principles this path has built get reimplemented once a network moves into the cloud.</p>
+<h2>The concepts transfer, exactly as Path 02 predicted</h2>
+<p>Path 02&#39;s cloud-and-modern-networking lesson made this argument for networking fundamentals broadly; this lesson applies it specifically to network <em>security</em>: firewalls become <strong>security groups</strong>, VLANs and segmentation become <strong>VPC subnets and network ACLs</strong>, and NAC&#39;s device-verification role gets handled through cloud IAM (Path 08) rather than 802.1X port authentication — the underlying security logic is identical, just implemented in cloud-provider configuration instead of physical hardware.</p>
+<h2>Security groups: stateful, instance-level firewalls</h2>
+<p>Directly extending this path&#39;s firewalls-VPNs lesson: a <strong>security group</strong> in AWS (or the equivalent in Azure/GCP) is a stateful firewall applied at the individual instance level, following the exact same default-deny, explicit-allow logic covered earlier in this path, just configured through an API call rather than <code>iptables</code> rules on a physical machine.</p>
+<h2>Network ACLs: subnet-level, stateless filtering</h2>
+<p>Where security groups operate per-instance and are stateful, <strong>Network ACLs</strong> operate at the subnet level and are stateless — directly applying this path&#39;s stateful-vs-stateless distinction from the firewalls-basics material, now as two complementary layers within a single cloud architecture, providing genuine defense in depth (Path 10) within the cloud environment itself.</p>
+<h2>Why cloud network security introduces genuinely new risk patterns</h2>
+<ul>
+<li><strong>Misconfigured security groups are a leading real-world cloud breach cause</strong> — a security group accidentally allowing inbound traffic from <code>0.0.0.0/0</code> (any address at all) on a sensitive port is the cloud-native equivalent of the exposed-RDP risk Path 07 covered for on-premises Windows machines, and it happens with genuine frequency in real environments</li>
+<li><strong>The shared responsibility model applies directly</strong> — Path 08&#39;s shared-responsibility-model lesson makes clear that network security <em>configuration</em> within a cloud account remains the customer&#39;s responsibility, even though the underlying physical network infrastructure is the provider&#39;s</li>
+</ul>
+<h2>Cloud-native DDoS protection, connecting back to the previous lesson</h2>
+<p>Major cloud providers offer built-in DDoS protection (AWS Shield, Azure DDoS Protection) directly applying the previous lesson&#39;s scrubbing and over-provisioning concepts at cloud scale — genuinely one of the practical advantages of cloud infrastructure over a smaller organization&#39;s own on-premises capacity to absorb a large-scale volumetric attack.</p>
+<p>Why is a misconfigured security group allowing inbound access from <code>0.0.0.0/0</code> considered structurally similar to the exposed-RDP risk covered in Path 07, despite being a completely different technology?</p>
+<details><summary>Show answer</summary>Both represent the exact same underlying mistake: a sensitive service or port made directly reachable from the entire internet, with no restriction to a specific, known, trusted source — Path 07's exposed RDP and a cloud security group open to <code>0.0.0.0/0</code> are structurally identical failures, just occurring in different environments (on-premises Windows infrastructure versus cloud-hosted instances). Both are discovered the same way (automated internet-wide scanning, the "fishing with a giant net" pattern from Path 01), both dramatically increase exposure to credential-stuffing and exploitation attempts, and both have the same fix in principle: restrict access to specific, known source addresses or route it through a properly secured intermediary (a VPN, a bastion host) rather than leaving it open to the entire internet by default. Recognizing this pattern across different technologies is exactly the kind of transferable understanding this course has been building throughout — the same underlying mistake keeps appearing, just wearing different specific configuration syntax each time.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Security group</strong> — a stateful, instance-level firewall in cloud environments, following the same default-deny principle as traditional firewalls.</li>
+<li><strong>Network ACL</strong> — a stateless, subnet-level filtering layer in cloud environments, complementary to security groups.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Cloud network security reimplements every concept this path has covered — firewalls, segmentation, access control — in cloud-provider configuration rather than physical hardware, directly extending Path 02&#39;s &quot;concepts transfer, implementation doesn&#39;t&quot; principle to security specifically.</li>
+<li>Security groups and Network ACLs provide layered, stateful-plus-stateless defense in depth within a single cloud architecture.</li>
+<li>Misconfigured security groups remain a leading real-world cloud breach cause, structurally identical to the exposed-RDP risk covered for on-premises infrastructure in Path 07.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/12-network-security/netsec-roadmap">Your network security roadmap</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/12-network-security/cloud-network-security";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

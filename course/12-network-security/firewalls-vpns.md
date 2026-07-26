@@ -202,4 +202,4 @@ An employee's VPN client successfully establishes an encrypted tunnel to the com
 - [NIST SP 800-207 — Zero Trust Architecture](https://csrc.nist.gov/pubs/sp/800/207/final) — the official Zero Trust reference.
 ???
 
-**Next up →** [IDS, IPS & SIEM](#/lesson/12-network-security/ids-ips-siem)
+**Next up →** [VPN Protocols: A Deep Dive](#/lesson/12-network-security/vpn-protocols-deep-dive)

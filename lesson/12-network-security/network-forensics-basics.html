@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Network Forensics Basics — Path 12 · KashSec Academy</title>
+<meta name="description" content="The Wireshark lesson taught you to capture and read live traffic. This lesson covers the closely related, genuinely distinct discipline of investigating a captured packet file after an incident — reco">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/12-network-security/network-forensics-basics">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Network Forensics Basics — Path 12 · KashSec Academy">
+<meta property="og:description" content="The Wireshark lesson taught you to capture and read live traffic. This lesson covers the closely related, genuinely distinct discipline of investigating a captured packet file after an incident — reco">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/12-network-security/network-forensics-basics">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Network Forensics Basics — Path 12 · KashSec Academy">
+<meta name="twitter:description" content="The Wireshark lesson taught you to capture and read live traffic. This lesson covers the closely related, genuinely distinct discipline of investigating a captured packet file after an incident — reco">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Network Forensics Basics — Path 12 · KashSec Academy","description":"The Wireshark lesson taught you to capture and read live traffic. This lesson covers the closely related, genuinely distinct discipline of investigating a captured packet file after an incident — reco","url":"https://kashsec.vercel.app/#/lesson/12-network-security/network-forensics-basics","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/12-network-security/network-forensics-basics">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 12 — Network Security</a> · Network Forensics Basics</div>
+  <article><h1>Network Forensics Basics</h1>
+<p>The Wireshark lesson taught you to capture and read live traffic. This lesson covers the closely related, genuinely distinct discipline of investigating a captured packet file <em>after</em> an incident — reconstructing what actually happened from a saved <code>.pcap</code> file, directly building toward Path 16&#39;s DFIR material.</p>
+<h2>Live analysis vs. forensic analysis</h2>
+<p>Watching Wireshark&#39;s live capture window is genuinely useful for understanding traffic in real time, but a real investigation usually starts differently: given a <code>.pcap</code> file captured <em>before</em> you were called in — from a compromised firewall, an IDS alert (from the ids-ips-siem lesson), or a network tap that happened to be running — what actually happened during that recorded window?</p>
+<h2>Following a TCP stream: reconstructing a full conversation</h2>
+<p>Wireshark&#39;s &quot;Follow TCP Stream&quot; feature reassembles every packet belonging to one specific connection into the actual data exchanged, in order — turning a scattered list of individual packets back into something resembling the original conversation, whether that&#39;s an HTTP request/response pair or a plaintext protocol exchange.</p>
+<h2>What to actually look for in a forensic capture</h2>
+<ul>
+<li><strong>Unusual destination addresses or ports</strong> — traffic to an unfamiliar external IP, or on a port that doesn&#39;t match the expected protocol (HTTP traffic on a non-standard port, for instance), often signals command-and-control activity or data exfiltration</li>
+<li><strong>DNS queries for suspicious domains</strong> — a burst of DNS lookups for algorithmically-generated-looking domain names is a well-documented pattern associated with malware using <strong>domain generation algorithms (DGAs)</strong> to locate its command-and-control server</li>
+<li><strong>Large or unusual outbound data transfers</strong> — a sudden spike in outbound traffic volume, especially to an external destination, can indicate data exfiltration in progress</li>
+<li><strong>Plaintext credentials</strong> — exactly the packet-sniffing risk Path 05 warned about: a capture containing plaintext HTTP Basic Auth headers or unencrypted login form submissions reveals a genuine, immediately actionable finding</li>
+</ul>
+<h2>Extracting files from a capture</h2>
+<p>Network forensics tools (including Wireshark&#39;s own &quot;Export Objects&quot; feature) can reconstruct entire files — images, documents, executables — that were transferred as part of the captured traffic, letting an investigator recover exactly what was actually sent across the wire, not just infer it from metadata alone.</p>
+<h2>Why timestamps and correlation matter</h2>
+<p>A single packet capture rarely tells the whole story on its own — correlating capture timestamps against other evidence (the authentication logs from Path 03&#39;s logging lesson, the Windows Event Viewer records from Path 07) builds a genuinely complete timeline of an incident, directly connecting network-level evidence to the host-level evidence covered throughout earlier paths.</p>
+<p>Why might a burst of DNS queries for seemingly random, algorithmically-generated domain names be a stronger indicator of malware activity than a single suspicious-looking query?</p>
+<details><summary>Show answer</summary>Malware using a <strong>domain generation algorithm (DGA)</strong> generates many candidate domain names on a schedule, trying each one in turn until it finds one the attacker has actually registered and pointed at their command-and-control infrastructure — this defeats simple blocklisting, since the malware doesn't rely on one single, static, easily-blocked domain. A single unusual DNS query could have a completely innocent explanation (a typo, an unusual but legitimate service), but a rapid burst of many queries for domains that look randomly generated, most of which fail to resolve at all, is a genuinely distinctive pattern that legitimate applications essentially never produce — making it a much stronger, more specific indicator worth investigating than any single query in isolation.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Follow TCP Stream</strong> — a Wireshark feature reassembling a connection&#39;s packets into the actual data exchanged.</li>
+<li><strong>Domain Generation Algorithm (DGA)</strong> — a technique malware uses to generate many candidate command-and-control domain names, evading simple blocklisting.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Network forensics investigates a captured packet file after the fact, distinct from live traffic monitoring, and directly sets up Path 16&#39;s DFIR material.</li>
+<li>Unusual destinations, DGA-pattern DNS queries, large outbound transfers, and plaintext credentials are the key things to look for in a forensic capture.</li>
+<li>Correlating packet-capture timestamps against host-level logs (authentication logs, Event Viewer records) is what turns isolated network evidence into a genuinely complete incident timeline.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/12-network-security/arp-spoofing-hands-on">ARP Spoofing, Hands-On</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/12-network-security/network-forensics-basics";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

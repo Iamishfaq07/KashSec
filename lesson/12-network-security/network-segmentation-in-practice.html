@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Network Segmentation in Practice — Path 12 · KashSec Academy</title>
+<meta name="description" content="Path 02 introduced VLANs; Path 24's micro-segmentation lesson covered the Zero Trust theory. This lesson bridges the two — how segmentation actually gets designed and implemented as a real defensive s">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/12-network-security/network-segmentation-in-practice">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Network Segmentation in Practice — Path 12 · KashSec Academy">
+<meta property="og:description" content="Path 02 introduced VLANs; Path 24's micro-segmentation lesson covered the Zero Trust theory. This lesson bridges the two — how segmentation actually gets designed and implemented as a real defensive s">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/12-network-security/network-segmentation-in-practice">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Network Segmentation in Practice — Path 12 · KashSec Academy">
+<meta name="twitter:description" content="Path 02 introduced VLANs; Path 24's micro-segmentation lesson covered the Zero Trust theory. This lesson bridges the two — how segmentation actually gets designed and implemented as a real defensive s">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Network Segmentation in Practice — Path 12 · KashSec Academy","description":"Path 02 introduced VLANs; Path 24's micro-segmentation lesson covered the Zero Trust theory. This lesson bridges the two — how segmentation actually gets designed and implemented as a real defensive s","url":"https://kashsec.vercel.app/#/lesson/12-network-security/network-segmentation-in-practice","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/12-network-security/network-segmentation-in-practice">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 12 — Network Security</a> · Network Segmentation in Practice</div>
+  <article><h1>Network Segmentation in Practice</h1>
+<p>Path 02 introduced VLANs; Path 24&#39;s micro-segmentation lesson covered the Zero Trust theory. This lesson bridges the two — how segmentation actually gets designed and implemented as a real defensive strategy, not just a concept.</p>
+<h2>Segmentation as an active defense, not just organization</h2>
+<p>Earlier coverage of VLANs framed segmentation largely as network organization. This lesson reframes it as a genuinely active security control: properly designed segmentation is one of the highest-leverage defenses against <strong>lateral movement</strong> — an attacker who compromises one system trying to reach others — directly connecting to the blast-radius principle this course has returned to repeatedly, from Zero Trust to cloud multi-account governance.</p>
+<h2>Designing segments around trust boundaries, not just convenience</h2>
+<p>A common real-world mistake: segmenting a network purely along organizational lines (a &quot;Sales VLAN,&quot; a &quot;Marketing VLAN&quot;) without considering actual trust and sensitivity differences within those groups. A more security-driven approach segments around <strong>data sensitivity and function</strong>:</p>
+<ul>
+<li>A segment for general user workstations</li>
+<li>A separate, more restricted segment for servers holding sensitive data</li>
+<li>A separate, tightly controlled segment for administrative and management interfaces</li>
+<li>A separate segment for IoT and other lower-trust devices, directly echoing Path 02&#39;s switches-and-VLANs lesson</li>
+</ul>
+<h2>The DMZ pattern, generalized beyond OT</h2>
+<p>Path 25&#39;s Purdue Model lesson introduced the DMZ concept for OT/IT separation. The same pattern applies broadly: any network segment that needs to be reachable from a lower-trust zone (the internet, a guest network) but also needs to reach a higher-trust zone (an internal database) sits in its own <strong>DMZ</strong>, with strict, limited rules governing exactly what can cross each boundary — never allowing a lower-trust zone to reach a higher-trust one directly.</p>
+<h2>Segmentation and incident response, working together</h2>
+<p>Directly connecting to Path 10&#39;s incident-response lesson: well-designed segmentation makes the <strong>containment</strong> phase dramatically more effective — isolating a compromised segment (by adjusting firewall rules or disabling the relevant VLAN) can stop an active incident from spreading, without needing to shut down the entire network. Poor segmentation, by contrast, means containment options are limited to &quot;isolate this one device&quot; or &quot;shut down everything,&quot; with no useful middle ground.</p>
+<h2>A practical example: segmenting a small business network</h2>
+<ol>
+<li><strong>Guest Wi-Fi</strong> — fully isolated, no access to any internal resource at all</li>
+<li><strong>Employee workstations</strong> — access to internal file shares and the internet, no direct access to servers</li>
+<li><strong>Server segment</strong> — reachable only from specific workstation IPs that genuinely need it, never directly from guest or general internet traffic</li>
+<li><strong>Management segment</strong> — reachable only from a small number of specific administrator devices, exactly the jump-host pattern Path 25&#39;s practical-controls lesson described for OT environments</li>
+</ol>
+<p>Why does poor network segmentation limit an organization&#39;s options during incident containment specifically, beyond just being a general security weakness?</p>
+<details><summary>Show answer</summary>The incident-response lesson's containment phase depends on being able to stop an active incident from spreading <em>without</em> having to shut down everything the organization depends on — and that selective isolation is only possible if the network is actually divided into segments a defender can meaningfully act on independently. On a flat, unsegmented network, "contain the incident" effectively means either isolating one single compromised device (which does nothing if the attacker has already spread further, silently, before detection) or disconnecting the entire network (an extreme, costly option that halts all legitimate business operations too). Well-designed segmentation gives defenders a genuine middle ground: isolate the specific segment where the incident is actually contained, based on real evidence of how far it's spread, without the false choice between "do almost nothing" and "shut down the whole organization."</details><h2>Key terms</h2>
+<ul>
+<li><strong>Lateral movement</strong> — an attacker&#39;s attempt to move from an initially compromised system to other systems on the same network.</li>
+<li><strong>DMZ (Demilitarized Zone)</strong> — a segment mediating between a lower-trust and higher-trust zone, with strict rules governing what can cross each boundary.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Real segmentation design should follow data sensitivity and function, not just organizational convenience — a genuinely active defense against lateral movement, not just tidy network organization.</li>
+<li>The DMZ pattern from Path 25&#39;s OT material generalizes to any situation where a lower-trust zone needs limited, controlled access to a higher-trust one.</li>
+<li>Well-designed segmentation directly strengthens incident containment, giving defenders a genuine middle ground between isolating one device and shutting down an entire network.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/12-network-security/ids-ips-siem">IDS, IPS &amp; SIEM</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/12-network-security/network-segmentation-in-practice";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

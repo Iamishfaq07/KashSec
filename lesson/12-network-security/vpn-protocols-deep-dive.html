@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VPN Protocols: A Deep Dive — Path 12 · KashSec Academy</title>
+<meta name="description" content="The firewalls-VPNs lesson introduced VPNs at a conceptual level. This lesson gets specific about the actual protocols implementing that concept, and the genuine tradeoffs between them — directly usefu">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/12-network-security/vpn-protocols-deep-dive">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="VPN Protocols: A Deep Dive — Path 12 · KashSec Academy">
+<meta property="og:description" content="The firewalls-VPNs lesson introduced VPNs at a conceptual level. This lesson gets specific about the actual protocols implementing that concept, and the genuine tradeoffs between them — directly usefu">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/12-network-security/vpn-protocols-deep-dive">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="VPN Protocols: A Deep Dive — Path 12 · KashSec Academy">
+<meta name="twitter:description" content="The firewalls-VPNs lesson introduced VPNs at a conceptual level. This lesson gets specific about the actual protocols implementing that concept, and the genuine tradeoffs between them — directly usefu">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"VPN Protocols: A Deep Dive — Path 12 · KashSec Academy","description":"The firewalls-VPNs lesson introduced VPNs at a conceptual level. This lesson gets specific about the actual protocols implementing that concept, and the genuine tradeoffs between them — directly usefu","url":"https://kashsec.vercel.app/#/lesson/12-network-security/vpn-protocols-deep-dive","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/12-network-security/vpn-protocols-deep-dive">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 12 — Network Security</a> · VPN Protocols: A Deep Dive</div>
+  <article><h1>VPN Protocols: A Deep Dive</h1>
+<p>The firewalls-VPNs lesson introduced VPNs at a conceptual level. This lesson gets specific about the actual protocols implementing that concept, and the genuine tradeoffs between them — directly useful whether you&#39;re choosing a personal VPN provider (Path 09) or designing remote access for an organization (Path 24&#39;s Zero Trust material).</p>
+<h2>What every VPN protocol has to solve</h2>
+<p>Every VPN protocol, regardless of implementation details, solves the same underlying problem: establishing an encrypted tunnel (directly applying Path 06&#39;s cryptography concepts) between two points, so traffic passing through it is protected from anyone observing the network in between.</p>
+<h2>OpenVPN: the flexible, widely-supported standard</h2>
+<p><strong>OpenVPN</strong> has been the dominant open-source VPN protocol for years, built on the same TLS (Path 06) that secures HTTPS, offering broad platform support and genuine configurability — at the cost of being comparatively complex to configure correctly and not the fastest option available.</p>
+<h2>WireGuard: the modern, streamlined alternative</h2>
+<p><strong>WireGuard</strong> is a newer protocol built around a dramatically smaller, simpler codebase than OpenVPN — a deliberate design choice, since a smaller codebase is genuinely easier to audit and less likely to hide the kind of subtle vulnerability a full security review might otherwise miss. It uses modern cryptographic primitives (directly connecting to Path 06&#39;s elliptic-curve-cryptography lesson) and is generally faster than OpenVPN, which is why it&#39;s become the default choice for many newer VPN deployments.</p>
+<h2>IPsec: the enterprise and site-to-site standard</h2>
+<p><strong>IPsec</strong> operates at the network layer (Path 02&#39;s OSI model) rather than as an application, making it a common choice for <strong>site-to-site VPNs</strong> — connecting two entire office networks together as if they were one, rather than connecting a single individual device to a remote network. IPsec is genuinely powerful but has a reputation for being complex to configure correctly, and historical implementations have had their own documented weaknesses.</p>
+<h2>Split tunneling, revisited with more depth</h2>
+<p>Path 24&#39;s remote-work lesson already warned that split tunneling — routing only some traffic through the VPN while the rest goes directly to the internet — can recreate an implicit-trust gap. This lesson adds the mechanism: split tunneling is a configuration choice within any of these protocols, not a separate protocol itself, meaning the same underlying tunnel technology can be configured either safely (full-tunnel, everything encrypted) or in a way that reopens exactly the gap Path 24 warned about.</p>
+<h2>Why protocol choice matters for real security decisions</h2>
+<ul>
+<li><strong>A smaller, simpler codebase (WireGuard) is generally easier to trust</strong>, directly connecting to Path 06&#39;s applied-crypto lesson&#39;s &quot;use established, well-reviewed libraries&quot; principle, extended here to protocol implementations themselves</li>
+<li><strong>Site-to-site vs. remote-access needs genuinely different tooling</strong> — IPsec&#39;s network-layer operation suits connecting entire networks; OpenVPN/WireGuard&#39;s more application-level approach suits individual remote devices</li>
+<li><strong>Perfect Forward Secrecy</strong> (from Path 06&#39;s key-exchange lesson) should be confirmed as enabled in any VPN configuration, ensuring a compromised long-term key can&#39;t retroactively decrypt past VPN sessions</li>
+</ul>
+<p>Why does WireGuard&#39;s smaller codebase represent a genuine security advantage, not just a development convenience?</p>
+<details><summary>Show answer</summary>Every line of code in a security-critical system is a potential place for a subtle bug or vulnerability to hide, and a smaller, simpler codebase is both easier for security researchers to fully audit and less likely to contain an undiscovered flaw simply by virtue of having fewer total lines where one could exist. OpenVPN's larger, more flexible codebase, accumulated over many years of feature additions, is harder to review exhaustively — not because OpenVPN is poorly written, but because comprehensive security auditing scales with code complexity. This mirrors the exact same principle Path 06's applied-crypto lesson emphasized for choosing cryptographic libraries: favor implementations that have had thorough, feasible review, and a smaller codebase makes that kind of thorough review genuinely more achievable.</details><h2>Key terms</h2>
+<ul>
+<li><strong>OpenVPN</strong> — a widely-supported, TLS-based VPN protocol, flexible but comparatively complex.</li>
+<li><strong>WireGuard</strong> — a newer, smaller-codebase VPN protocol using modern cryptography, generally faster and easier to audit.</li>
+<li><strong>IPsec</strong> — a network-layer VPN protocol common for site-to-site connections between entire networks.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>OpenVPN, WireGuard, and IPsec all solve the same encrypted-tunnel problem, with genuine tradeoffs in complexity, auditability, speed, and intended use case.</li>
+<li>WireGuard&#39;s smaller codebase is a real security advantage, directly connecting to the &quot;prefer well-reviewed implementations&quot; principle from Path 06.</li>
+<li>Split tunneling is a configuration choice within any of these protocols, not a separate protocol — and Path 24 already covered why it can reopen an implicit-trust gap if configured carelessly.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/12-network-security/network-segmentation-in-practice">Network Segmentation in Practice</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/12-network-security/vpn-protocols-deep-dive";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

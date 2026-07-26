@@ -162,4 +162,4 @@ You capture traffic to a plain HTTP login form and successfully read the submitt
 - [tcpdump manual](https://www.tcpdump.org/manpages/tcpdump.1.html) — official reference.
 ???
 
-**Next up →** [Firewalls & VPNs](#/lesson/12-network-security/firewalls-vpns)
+**Next up →** [Network Forensics Basics](#/lesson/12-network-security/network-forensics-basics)

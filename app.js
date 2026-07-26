@@ -944,13 +944,23 @@ const PATHS = [
      {n:"1", id:"why-netsec",          title:"Why network security matters", desc:"Mapping, watching, filtering — the three activities."},
      {n:"2", id:"nmap",                title:"Scan networks with Nmap", desc:"The classic scanner, from -sV to NSE scripts."},
      {n:"3", id:"wireshark",           title:"See traffic with Wireshark", desc:"Watch real packets flow — plus tcpdump."},
-     {n:"4", id:"firewalls-vpns",      title:"Firewalls, VPNs, proxies", desc:"The everyday defensive stack."},
-     {n:"5", id:"ids-ips-siem",        title:"IDS, IPS & SIEM",         desc:"Modern detection: from Snort to SOC to SOAR."},
-     {n:"6", id:"wifi-security",       title:"Wi-Fi security & attacks", desc:"WPA2/3, evil twin, handshake capture."},
-     {n:"7", id:"mitm",                title:"Man-in-the-Middle",       desc:"How MITMs work, and how HTTPS defeats them."},
-     {n:"8", id:"netsec-roadmap",      title:"Your network-security path", desc:"Red, blue, or engineering — pick a track."},
-     {n:"9", id:"nmap-advanced-lab",   title:"Advanced Nmap Lab",       desc:"Master network scanning like a professional."},
-     {n:"10", id:"wireshark-advanced-lab", title:"Advanced Wireshark Lab", desc:"Go deeper with packet analysis."}
+     {n:"4", id:"network-forensics-basics", title:"Network Forensics Basics", desc:"Reconstructing what happened from a captured .pcap file after the fact."},
+     {n:"5", id:"arp-spoofing-hands-on", title:"ARP Spoofing, Hands-On", desc:"How a classic local-network MITM actually gets established."},
+     {n:"6", id:"firewalls-vpns",      title:"Firewalls, VPNs, proxies", desc:"The everyday defensive stack."},
+     {n:"7", id:"vpn-protocols-deep-dive", title:"VPN Protocols: A Deep Dive", desc:"OpenVPN, WireGuard, IPsec, and the real tradeoffs between them."},
+     {n:"8", id:"network-segmentation-in-practice", title:"Network Segmentation in Practice", desc:"Designing real segments around trust boundaries, not organizational convenience."},
+     {n:"9", id:"ids-ips-siem",        title:"IDS, IPS & SIEM",         desc:"Modern detection: from Snort to SOC to SOAR."},
+     {n:"10", id:"network-security-monitoring-tools", title:"Network Security Monitoring Tools", desc:"Zeek, Suricata, and Security Onion, named and mapped."},
+     {n:"11", id:"network-access-control", title:"Network Access Control (NAC)", desc:"802.1X and posture assessment — deciding whether a device joins at all."},
+     {n:"12", id:"wifi-security",       title:"Wi-Fi security & attacks", desc:"WPA2/3, evil twin, handshake capture."},
+     {n:"13", id:"bluetooth-iot-security", title:"Bluetooth & IoT Network Security", desc:"BlueBorne, and the Mirai botnet as the definitive default-credential case study."},
+     {n:"14", id:"dns-attacks-hands-on", title:"DNS Attacks, Hands-On", desc:"Cache poisoning, hijacking, DNSSEC, and DoH/DoT."},
+     {n:"15", id:"mitm",                title:"Man-in-the-Middle",       desc:"How MITMs work, and how HTTPS defeats them."},
+     {n:"16", id:"ddos-attacks-mitigation", title:"DDoS Attacks & Mitigation", desc:"Volumetric, protocol, and application-layer attacks, and how real infrastructure absorbs them."},
+     {n:"17", id:"cloud-network-security", title:"Cloud Network Security", desc:"Security groups and Network ACLs — this path's concepts, reimplemented in the cloud."},
+     {n:"18", id:"netsec-roadmap",      title:"Your network-security path", desc:"Red, blue, or engineering — pick a track."},
+     {n:"19", id:"nmap-advanced-lab",   title:"Advanced Nmap Lab",       desc:"Master network scanning like a professional."},
+     {n:"20", id:"wireshark-advanced-lab", title:"Advanced Wireshark Lab", desc:"Go deeper with packet analysis."}
    ]},
   {n:"13", id:"13-mobile-security", title:"Mobile App Security", level:"Intermediate→Advanced",
    desc:"Android & iOS security from the ground up — APK analysis, insecure storage, traffic interception, certificate pinning bypass, and exported component vulnerabilities.",
@@ -4832,6 +4842,11 @@ function renderLabPhishing(){
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
+  {date:'2026-07-25', title:'Path 12 doubled to 20 lessons', items:[
+    'Fifteenth batch of the course-wide content-doubling effort: Path 12 (Network Security) grows from 10 to 20 lessons.',
+    'New lessons: Network Forensics Basics, ARP Spoofing Hands-On, VPN Protocols Deep Dive, Network Segmentation in Practice, Network Security Monitoring Tools (Zeek/Suricata), Network Access Control (802.1X), Bluetooth & IoT Security, DNS Attacks Hands-On, DDoS Attacks & Mitigation, and Cloud Network Security.',
+    'The new Bluetooth/IoT lesson uses the Mirai botnet as its central case study for why default credentials matter at scale.'
+  ]},
   {date:'2026-07-25', title:'Path 11 doubled to 26 lessons', items:[
     'Fourteenth batch of the course-wide content-doubling effort: Path 11 (Web Security & Hacking) grows from 13 to 26 lessons.',
     'New lessons: Path Traversal Basics, CSRF, Clickjacking, Web Security Headers Deep Dive, Business Logic Vulnerabilities, Race Conditions in Web Applications, XXE, Local & Remote File Inclusion, Insecure Deserialization, API Security Fundamentals, GraphQL Security Basics, Web Application Firewalls, and Secure Coding for Web Developers.',

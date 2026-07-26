@@ -22,6 +22,15 @@ const GLOSSARY = [
   "subTitle": "Updates & backups: the boring habits that save you"
  },
  {
+  "term": "802.1X",
+  "def": "the standard framework for port-based network access authentication.",
+  "pathId": "12-network-security",
+  "pathN": "12",
+  "pathTitle": "Network Security",
+  "subId": "network-access-control",
+  "subTitle": "Network Access Control (NAC)"
+ },
+ {
   "term": "A / AAAA / MX / NS / TXT / CNAME",
   "def": "different DNS record types.",
   "pathId": "02-networking",
@@ -310,6 +319,15 @@ const GLOSSARY = [
   "subTitle": "TCP vs UDP"
  },
  {
+  "term": "Amplification attack",
+  "def": "using a spoofed source address to trick a third-party server into sending a large response directly to a victim, multiplying attack traffic volume.",
+  "pathId": "12-network-security",
+  "pathN": "12",
+  "pathTitle": "Network Security",
+  "subId": "ddos-attacks-mitigation",
+  "subTitle": "DDoS Attacks & Mitigation"
+ },
+ {
   "term": "`and` / `or` / `not`",
   "def": "boolean operators.",
   "pathId": "04-python",
@@ -335,6 +353,15 @@ const GLOSSARY = [
   "pathTitle": "Programming & Python",
   "subId": "password-checker",
   "subTitle": "Build a password checker"
+ },
+ {
+  "term": "Anycast routing",
+  "def": "distributing a single IP address across many physical locations, spreading attack traffic automatically.",
+  "pathId": "12-network-security",
+  "pathN": "12",
+  "pathTitle": "Network Security",
+  "subId": "ddos-attacks-mitigation",
+  "subTitle": "DDoS Attacks & Mitigation"
  },
  {
   "term": "API",
@@ -425,6 +452,15 @@ const GLOSSARY = [
   "pathTitle": "Programming & Python",
   "subId": "where-next",
   "subTitle": "Where to go next"
+ },
+ {
+  "term": "ARP cache poisoning",
+  "def": "updating a device's ARP table with a false, attacker-supplied IP-to-MAC mapping.",
+  "pathId": "12-network-security",
+  "pathN": "12",
+  "pathTitle": "Network Security",
+  "subId": "arp-spoofing-hands-on",
+  "subTitle": "ARP Spoofing, Hands-On"
  },
  {
   "term": "ARP spoofing",
@@ -929,6 +965,15 @@ const GLOSSARY = [
   "pathTitle": "Advanced Cyber Topics",
   "subId": "active-directory",
   "subTitle": "Active Directory attacks"
+ },
+ {
+  "term": "BlueBorne",
+  "def": "a 2017 Bluetooth vulnerability class allowing device takeover without pairing or user interaction.",
+  "pathId": "12-network-security",
+  "pathN": "12",
+  "pathTitle": "Network Security",
+  "subId": "bluetooth-iot-security",
+  "subTitle": "Bluetooth & IoT Network Security"
  },
  {
   "term": "BOLA",
@@ -2587,6 +2632,15 @@ const GLOSSARY = [
   "subTitle": "The Purdue Model: Segmenting IT from OT"
  },
  {
+  "term": "DMZ (Demilitarized Zone)",
+  "def": "a segment mediating between a lower-trust and higher-trust zone, with strict rules governing what can cross each boundary.",
+  "pathId": "12-network-security",
+  "pathN": "12",
+  "pathTitle": "Network Security",
+  "subId": "network-segmentation-in-practice",
+  "subTitle": "Network Segmentation in Practice"
+ },
+ {
   "term": "DNP3",
   "def": "a protocol common in utility environments, with an optional (rarely deployed) secure authentication extension",
   "pathId": "25-ot-ics-security",
@@ -2603,6 +2657,15 @@ const GLOSSARY = [
   "pathTitle": "Networking Fundamentals",
   "subId": "dns",
   "subTitle": "DNS: the phonebook"
+ },
+ {
+  "term": "DNS cache poisoning",
+  "def": "flooding a resolver with forged responses, attempting to get a malicious answer cached before the legitimate one arrives.",
+  "pathId": "12-network-security",
+  "pathN": "12",
+  "pathTitle": "Network Security",
+  "subId": "dns-attacks-hands-on",
+  "subTitle": "DNS Attacks, Hands-On"
  },
  {
   "term": "DNS (Domain Name System)",
@@ -2623,6 +2686,15 @@ const GLOSSARY = [
   "subTitle": "The page-load journey"
  },
  {
+  "term": "DNS over HTTPS (DoH) / DNS over TLS (DoT)",
+  "def": "encrypting the DNS query itself in transit, protecting confidentiality rather than authenticity.",
+  "pathId": "12-network-security",
+  "pathN": "12",
+  "pathTitle": "Network Security",
+  "subId": "dns-attacks-hands-on",
+  "subTitle": "DNS Attacks, Hands-On"
+ },
+ {
   "term": "DNS rebinding",
   "def": "changing what a hostname resolves to between validation time and use time, bypassing naive URL allow-lists",
   "pathId": "21-api-security",
@@ -2639,6 +2711,15 @@ const GLOSSARY = [
   "pathTitle": "Networking Fundamentals",
   "subId": "dns",
   "subTitle": "DNS: the phonebook"
+ },
+ {
+  "term": "DNSSEC",
+  "def": "cryptographic signatures added to DNS responses, verifying authenticity and preventing forgery.",
+  "pathId": "12-network-security",
+  "pathN": "12",
+  "pathTitle": "Network Security",
+  "subId": "dns-attacks-hands-on",
+  "subTitle": "DNS Attacks, Hands-On"
  },
  {
   "term": "DNS spoofing",
@@ -2722,6 +2803,15 @@ const GLOSSARY = [
   "subTitle": "Windows Active Directory: The Basics"
  },
  {
+  "term": "Domain Generation Algorithm (DGA)",
+  "def": "a technique malware uses to generate many candidate command-and-control domain names, evading simple blocklisting.",
+  "pathId": "12-network-security",
+  "pathN": "12",
+  "pathTitle": "Network Security",
+  "subId": "network-forensics-basics",
+  "subTitle": "Network Forensics Basics"
+ },
+ {
   "term": "Domain generation algorithm (DGA)",
   "def": "malware that algorithmically generates many candidate C2 domain names to evade blocklisting.",
   "pathId": "17-malware-re",
@@ -2783,6 +2873,15 @@ const GLOSSARY = [
   "pathTitle": "Bug Bounty",
   "subId": "what-is-bb",
   "subTitle": "What is a bug bounty?"
+ },
+ {
+  "term": "Dynamic ARP Inspection (DAI)",
+  "def": "a switch-level feature validating ARP packets against a known-good binding table.",
+  "pathId": "12-network-security",
+  "pathN": "12",
+  "pathTitle": "Network Security",
+  "subId": "arp-spoofing-hands-on",
+  "subTitle": "ARP Spoofing, Hands-On"
  },
  {
   "term": "East-west traffic",
@@ -3350,6 +3449,15 @@ const GLOSSARY = [
   "pathTitle": "Network Security",
   "subId": "wireshark",
   "subTitle": "See traffic with Wireshark"
+ },
+ {
+  "term": "Follow TCP Stream",
+  "def": "a Wireshark feature reassembling a connection's packets into the actual data exchanged.",
+  "pathId": "12-network-security",
+  "pathN": "12",
+  "pathTitle": "Network Security",
+  "subId": "network-forensics-basics",
+  "subTitle": "Network Forensics Basics"
  },
  {
   "term": "`for` loop",
@@ -4513,6 +4621,15 @@ const GLOSSARY = [
   "subTitle": "IP addresses"
  },
  {
+  "term": "IPsec",
+  "def": "a network-layer VPN protocol common for site-to-site connections between entire networks.",
+  "pathId": "12-network-security",
+  "pathN": "12",
+  "pathTitle": "Network Security",
+  "subId": "vpn-protocols-deep-dive",
+  "subTitle": "VPN Protocols: A Deep Dive"
+ },
+ {
   "term": "iptables",
   "def": "Linux's traditional, low-level firewall rule engine.",
   "pathId": "03-linux",
@@ -4844,6 +4961,15 @@ const GLOSSARY = [
   "pathTitle": "Cybersecurity Fundamentals",
   "subId": "attackers-kill-chain",
   "subTitle": "Attackers & the kill chain"
+ },
+ {
+  "term": "Lateral movement",
+  "def": "an attacker's attempt to move from an initially compromised system to other systems on the same network.",
+  "pathId": "12-network-security",
+  "pathN": "12",
+  "pathTitle": "Network Security",
+  "subId": "network-segmentation-in-practice",
+  "subTitle": "Network Segmentation in Practice"
  },
  {
   "term": "Lateral movement",
@@ -5278,6 +5404,15 @@ const GLOSSARY = [
   "subTitle": "Web Security Headers: A Deep Dive"
  },
  {
+  "term": "Mirai botnet",
+  "def": "a 2016 IoT botnet built by exploiting default credentials at massive scale, used for record-breaking DDoS attacks.",
+  "pathId": "12-network-security",
+  "pathN": "12",
+  "pathTitle": "Network Security",
+  "subId": "bluetooth-iot-security",
+  "subTitle": "Bluetooth & IoT Network Security"
+ },
+ {
   "term": "Mitigate / Accept / Transfer / Avoid",
   "def": "the four risk-response strategies.",
   "pathId": "10-fundamentals",
@@ -5459,6 +5594,15 @@ const GLOSSARY = [
  },
  {
   "term": "NAC (Network Access Control)",
+  "def": "verifying a device's identity and security posture before granting network access.",
+  "pathId": "12-network-security",
+  "pathN": "12",
+  "pathTitle": "Network Security",
+  "subId": "network-access-control",
+  "subTitle": "Network Access Control (NAC)"
+ },
+ {
+  "term": "NAC (Network Access Control)",
   "def": "older network-layer approach to checking device health, historically point-in-time rather than continuous",
   "pathId": "24-zero-trust",
   "pathN": "24",
@@ -5510,6 +5654,15 @@ const GLOSSARY = [
   "pathTitle": "Networking Fundamentals",
   "subId": "what-is-a-network",
   "subTitle": "What is a network?"
+ },
+ {
+  "term": "Network ACL",
+  "def": "a stateless, subnet-level filtering layer in cloud environments, complementary to security groups.",
+  "pathId": "12-network-security",
+  "pathN": "12",
+  "pathTitle": "Network Security",
+  "subId": "cloud-network-security",
+  "subTitle": "Cloud Network Security"
  },
  {
   "term": "Network assessment",
@@ -5771,6 +5924,15 @@ const GLOSSARY = [
   "pathTitle": "Operating Systems & Linux",
   "subId": "why-linux",
   "subTitle": "Why hackers love Linux"
+ },
+ {
+  "term": "OpenVPN",
+  "def": "a widely-supported, TLS-based VPN protocol, flexible but comparatively complex.",
+  "pathId": "12-network-security",
+  "pathN": "12",
+  "pathTitle": "Network Security",
+  "subId": "vpn-protocols-deep-dive",
+  "subTitle": "VPN Protocols: A Deep Dive"
  },
  {
   "term": "Operating System (OS)",
@@ -6545,6 +6707,15 @@ const GLOSSARY = [
   "pathTitle": "Cryptography Fundamentals",
   "subId": "post-quantum-cryptography",
   "subTitle": "Post-Quantum Cryptography"
+ },
+ {
+  "term": "Posture assessment",
+  "def": "checking a device's actual security state (patch level, antivirus status) as part of the access decision, not just its identity.",
+  "pathId": "12-network-security",
+  "pathN": "12",
+  "pathTitle": "Network Security",
+  "subId": "network-access-control",
+  "subTitle": "Network Access Control (NAC)"
  },
  {
   "term": "Predictable identifier",
@@ -7951,6 +8122,15 @@ const GLOSSARY = [
   "subTitle": "Cloud Networking Basics"
  },
  {
+  "term": "Security group",
+  "def": "a stateful, instance-level firewall in cloud environments, following the same default-deny principle as traditional firewalls.",
+  "pathId": "12-network-security",
+  "pathN": "12",
+  "pathTitle": "Network Security",
+  "subId": "cloud-network-security",
+  "subTitle": "Cloud Network Security"
+ },
+ {
   "term": "Security habit",
   "def": "a small, repeatable routine that maintains protection without requiring active daily decision-making.",
   "pathId": "00-fresher-basics",
@@ -7976,6 +8156,15 @@ const GLOSSARY = [
   "pathTitle": "Cloud Computing Basics",
   "subId": "shared-responsibility-model",
   "subTitle": "The Shared Responsibility Model"
+ },
+ {
+  "term": "Security Onion",
+  "def": "a pre-configured Linux distribution bundling several network monitoring tools together.",
+  "pathId": "12-network-security",
+  "pathN": "12",
+  "pathTitle": "Network Security",
+  "subId": "network-security-monitoring-tools",
+  "subTitle": "Network Security Monitoring Tools"
  },
  {
   "term": "Security policy",
@@ -8993,6 +9182,15 @@ const GLOSSARY = [
   "pathTitle": "Mobile App Security",
   "subId": "owasp-mobile-top-10",
   "subTitle": "OWASP Mobile Top 10"
+ },
+ {
+  "term": "Suricata",
+  "def": "an open-source IDS/IPS engine supporting both signature-based and behavioral detection.",
+  "pathId": "12-network-security",
+  "pathN": "12",
+  "pathTitle": "Network Security",
+  "subId": "network-security-monitoring-tools",
+  "subTitle": "Network Security Monitoring Tools"
  },
  {
   "term": "Surveillance audit",
@@ -10120,6 +10318,15 @@ const GLOSSARY = [
   "subTitle": "RDP & Remote Access Security"
  },
  {
+  "term": "WireGuard",
+  "def": "a newer, smaller-codebase VPN protocol using modern cryptography, generally faster and easier to audit.",
+  "pathId": "12-network-security",
+  "pathN": "12",
+  "pathTitle": "Network Security",
+  "subId": "vpn-protocols-deep-dive",
+  "subTitle": "VPN Protocols: A Deep Dive"
+ },
+ {
   "term": "Wireshark",
   "def": "the standard GUI tool for capturing and analysing network traffic.",
   "pathId": "12-network-security",
@@ -10271,6 +10478,15 @@ const GLOSSARY = [
   "pathTitle": "Career Prep",
   "subId": "building-resume",
   "subTitle": "Building your security resume"
+ },
+ {
+  "term": "Zeek",
+  "def": "a network security monitoring tool generating detailed, structured logs of traffic activity rather than relying purely on signature matching.",
+  "pathId": "12-network-security",
+  "pathN": "12",
+  "pathTitle": "Network Security",
+  "subId": "network-security-monitoring-tools",
+  "subTitle": "Network Security Monitoring Tools"
  },
  {
   "term": "Zero Trust",

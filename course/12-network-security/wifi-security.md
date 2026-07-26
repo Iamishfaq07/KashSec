@@ -128,4 +128,4 @@ Why does a strong, long Wi-Fi password specifically protect against offline hand
 - [US-CERT — Securing Wireless Networks](https://www.cisa.gov/news-events/news/securing-wireless-networks) — official US guidance.
 ???
 
-**Next up →** [Man-in-the-middle attacks](#/lesson/12-network-security/mitm)
+**Next up →** [Bluetooth & IoT Network Security](#/lesson/12-network-security/bluetooth-iot-security)

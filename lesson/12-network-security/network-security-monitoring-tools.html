@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Network Security Monitoring Tools — Path 12 · KashSec Academy</title>
+<meta name="description" content="The IDS/IPS/SIEM lesson covered the concepts. This lesson names the actual, widely-used tools implementing them — genuinely useful vocabulary for reading job postings and real security operations docu">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/12-network-security/network-security-monitoring-tools">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Network Security Monitoring Tools — Path 12 · KashSec Academy">
+<meta property="og:description" content="The IDS/IPS/SIEM lesson covered the concepts. This lesson names the actual, widely-used tools implementing them — genuinely useful vocabulary for reading job postings and real security operations docu">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/12-network-security/network-security-monitoring-tools">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Network Security Monitoring Tools — Path 12 · KashSec Academy">
+<meta name="twitter:description" content="The IDS/IPS/SIEM lesson covered the concepts. This lesson names the actual, widely-used tools implementing them — genuinely useful vocabulary for reading job postings and real security operations docu">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Network Security Monitoring Tools — Path 12 · KashSec Academy","description":"The IDS/IPS/SIEM lesson covered the concepts. This lesson names the actual, widely-used tools implementing them — genuinely useful vocabulary for reading job postings and real security operations docu","url":"https://kashsec.vercel.app/#/lesson/12-network-security/network-security-monitoring-tools","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/12-network-security/network-security-monitoring-tools">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 12 — Network Security</a> · Network Security Monitoring Tools</div>
+  <article><h1>Network Security Monitoring Tools</h1>
+<p>The IDS/IPS/SIEM lesson covered the concepts. This lesson names the actual, widely-used tools implementing them — genuinely useful vocabulary for reading job postings and real security operations documentation.</p>
+<h2>Zeek (formerly Bro): network traffic analysis</h2>
+<p><strong>Zeek</strong> doesn&#39;t work like a traditional signature-based IDS — instead of just matching known attack patterns, it generates detailed, structured logs of network activity (connections, DNS queries, HTTP transactions, and more), turning raw traffic into a genuinely queryable dataset. This directly extends the network-forensics lesson&#39;s manual pcap analysis into something automated and continuous, running against live traffic rather than a single after-the-fact capture.</p>
+<h2>Suricata: signature-based and behavioral detection</h2>
+<p><strong>Suricata</strong> is an open-source IDS/IPS engine, genuinely comparable to the classic Snort tool the ids-ips-siem lesson likely mentioned, but built with multi-threading and modern protocol support in mind — capable of both signature-based detection (matching known attack patterns) and some behavioral analysis.</p>
+<h2>Security Onion: a complete, pre-built monitoring platform</h2>
+<p><strong>Security Onion</strong> bundles Zeek, Suricata, and several other monitoring and analysis tools into a single, pre-configured Linux distribution — genuinely practical for a small organization or a home lab wanting real network security monitoring without assembling and integrating each individual tool from scratch, directly connecting to Path 03&#39;s distro-choice lesson.</p>
+<h2>Why these tools matter beyond just &quot;more logging&quot;</h2>
+<p>Directly connecting to Path 08&#39;s logging-monitoring lesson&#39;s core point: monitoring tools only provide value if they&#39;re actually configured to capture the <em>right</em> signal and someone is positioned to act on the alerts they generate. A Security Onion deployment that nobody ever reviews provides essentially the same real-world protection as no monitoring at all — the tool itself is necessary but not sufficient, exactly the &quot;controls need enforcement and measurement&quot; theme from Path 10.</p>
+<h2>How these tools connect to SIEM</h2>
+<p>A SIEM (from the ids-ips-siem lesson) typically ingests logs and alerts <em>from</em> tools like Zeek and Suricata, correlating network-level signals with the host-level logs from Path 03 and Path 07 into a single, unified view — no individual tool alone provides the complete picture an analyst actually needs during an investigation.</p>
+<p>Why does Zeek&#39;s approach — generating detailed structured logs rather than only matching known attack signatures — provide value a purely signature-based IDS can&#39;t?</p>
+<details><summary>Show answer</summary>A purely signature-based tool can only alert on patterns it already knows to look for — a genuinely novel attack technique, or one deliberately crafted to avoid a known signature, sails straight through undetected. Zeek's structured logging approach instead captures a detailed, queryable record of what actually happened on the network — every connection, every DNS query — regardless of whether any specific pattern within it matches a known attack signature. This means an analyst can retroactively investigate a newly-disclosed vulnerability or attack technique against historical Zeek logs, even if no signature existed to catch it in real time when it actually occurred, and can spot genuinely novel anomalies (unusual connection patterns, unexpected protocol usage) that a signature-only tool would have no way to flag at all.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Zeek</strong> — a network security monitoring tool generating detailed, structured logs of traffic activity rather than relying purely on signature matching.</li>
+<li><strong>Suricata</strong> — an open-source IDS/IPS engine supporting both signature-based and behavioral detection.</li>
+<li><strong>Security Onion</strong> — a pre-configured Linux distribution bundling several network monitoring tools together.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Zeek, Suricata, and Security Onion are the standard open-source tools implementing the IDS/IPS/SIEM concepts covered in the previous lesson.</li>
+<li>Zeek&#39;s structured-logging approach provides value beyond pure signature matching, enabling retroactive investigation of threats that didn&#39;t have a known signature at the time they occurred.</li>
+<li>These tools only provide real protection when properly configured and actively monitored — the same &quot;enforcement and measurement matter as much as the control itself&quot; theme from Path 10.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/12-network-security/network-access-control">Network Access Control (NAC)</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/12-network-security/network-security-monitoring-tools";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

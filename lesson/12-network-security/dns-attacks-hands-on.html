@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DNS Attacks, Hands-On — Path 12 · KashSec Academy</title>
+<meta name="description" content="Path 02's common-network-attacks-overview lesson introduced DNS spoofing by name; Path 05's caching lesson mentioned cache poisoning generally. This lesson goes properly hands-on with how DNS specific">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/12-network-security/dns-attacks-hands-on">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="DNS Attacks, Hands-On — Path 12 · KashSec Academy">
+<meta property="og:description" content="Path 02's common-network-attacks-overview lesson introduced DNS spoofing by name; Path 05's caching lesson mentioned cache poisoning generally. This lesson goes properly hands-on with how DNS specific">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/12-network-security/dns-attacks-hands-on">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="DNS Attacks, Hands-On — Path 12 · KashSec Academy">
+<meta name="twitter:description" content="Path 02's common-network-attacks-overview lesson introduced DNS spoofing by name; Path 05's caching lesson mentioned cache poisoning generally. This lesson goes properly hands-on with how DNS specific">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"DNS Attacks, Hands-On — Path 12 · KashSec Academy","description":"Path 02's common-network-attacks-overview lesson introduced DNS spoofing by name; Path 05's caching lesson mentioned cache poisoning generally. This lesson goes properly hands-on with how DNS specific","url":"https://kashsec.vercel.app/#/lesson/12-network-security/dns-attacks-hands-on","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/12-network-security/dns-attacks-hands-on">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 12 — Network Security</a> · DNS Attacks, Hands-On</div>
+  <article><h1>DNS Attacks, Hands-On</h1>
+<p>Path 02&#39;s common-network-attacks-overview lesson introduced DNS spoofing by name; Path 05&#39;s caching lesson mentioned cache poisoning generally. This lesson goes properly hands-on with how DNS specifically gets attacked, directly setting up the MITM lesson that follows.</p>
+<h2>DNS cache poisoning: the classic attack</h2>
+<p>Recall Path 02&#39;s DNS lesson: a <strong>DNS resolver</strong> caches answers to avoid repeatedly querying the same information. <strong>DNS cache poisoning</strong> exploits this caching behavior — an attacker floods a resolver with forged DNS responses, attempting to get a malicious IP address cached under a legitimate domain name before the real, authoritative answer arrives.</p>
+<p>Once poisoned, <em>every</em> user relying on that resolver receives the attacker&#39;s malicious IP address for the targeted domain, until the cache entry expires — a genuinely powerful attack, since a single successful poisoning affects every subsequent query, not just one victim.</p>
+<h2>DNS hijacking: attacking the infrastructure directly</h2>
+<p><strong>DNS hijacking</strong> takes a more direct route — compromising the actual DNS settings themselves (a home router&#39;s configured DNS server, an ISP&#39;s resolver, or even a domain&#39;s registrar account) to redirect queries to an attacker-controlled server permanently, rather than relying on a race-condition-style cache-poisoning attempt.</p>
+<h2>DNSSEC: the cryptographic defense</h2>
+<p><strong>DNSSEC (DNS Security Extensions)</strong> adds cryptographic signatures (directly applying Path 06&#39;s digital-signatures concepts) to DNS responses, letting a resolver verify that an answer genuinely came from the legitimate authoritative source and wasn&#39;t forged or tampered with in transit — directly closing the exact gap both cache poisoning and hijacking exploit.</p>
+<p>Despite being a mature, well-understood standard, DNSSEC adoption across the internet remains far from universal — configuring it correctly requires coordination between a domain owner and their registrar, and a misconfiguration can actually break a domain&#39;s DNS resolution entirely if done carelessly. This is exactly why DNS spoofing remains a genuinely real, current threat category, not a solved historical problem.</p>
+<h2>DNS over HTTPS (DoH) and DNS over TLS (DoT): protecting the query itself</h2>
+<p>Beyond verifying the <em>answer&#39;s</em> authenticity (DNSSEC&#39;s job), <strong>DoH</strong> and <strong>DoT</strong> encrypt the DNS <em>query</em> in transit, directly applying Path 06&#39;s TLS concepts to prevent an on-path attacker from even observing which domains a user is looking up — a genuinely different protection than DNSSEC, addressing confidentiality rather than integrity.</p>
+<p>Why do DNSSEC and DNS-over-HTTPS solve genuinely different problems, even though both are described as &quot;DNS security&quot; measures?</p>
+<details><summary>Show answer</summary>DNSSEC addresses <strong>integrity and authenticity</strong> — cryptographically proving that a DNS answer genuinely came from the legitimate authoritative source and wasn't forged or tampered with, directly defending against cache poisoning and hijacking. DNS-over-HTTPS addresses a completely different property, <strong>confidentiality</strong> — encrypting the query itself so an attacker positioned on the network (an ISP, a coffee shop Wi-Fi operator, an on-path attacker) can't observe which domains a user is actually looking up, even if that query's eventual answer is completely legitimate and unforged. A DNS setup could have one without the other: DNSSEC-verified answers that are still visible in plaintext to network observers, or encrypted queries whose answers still aren't cryptographically verified against forgery — which is exactly why a genuinely complete DNS security posture uses both together, each closing a different gap.</details><h2>Key terms</h2>
+<ul>
+<li><strong>DNS cache poisoning</strong> — flooding a resolver with forged responses, attempting to get a malicious answer cached before the legitimate one arrives.</li>
+<li><strong>DNSSEC</strong> — cryptographic signatures added to DNS responses, verifying authenticity and preventing forgery.</li>
+<li><strong>DNS over HTTPS (DoH) / DNS over TLS (DoT)</strong> — encrypting the DNS query itself in transit, protecting confidentiality rather than authenticity.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>DNS cache poisoning and DNS hijacking are the two main attack patterns, exploiting caching behavior and infrastructure compromise respectively.</li>
+<li>DNSSEC cryptographically verifies DNS response authenticity, directly closing the gap both attacks exploit — though adoption remains genuinely incomplete across the internet.</li>
+<li>DoH and DoT solve a separate, complementary problem — encrypting the query itself for confidentiality, distinct from DNSSEC&#39;s integrity guarantee.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/12-network-security/mitm">Man-in-the-middle attacks</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/12-network-security/dns-attacks-hands-on";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

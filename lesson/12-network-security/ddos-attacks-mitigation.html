@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DDoS Attacks &amp; Mitigation — Path 12 · KashSec Academy</title>
+<meta name="description" content="The Mirai case study in the Bluetooth/IoT lesson referenced DDoS attacks without fully explaining the mechanics. This lesson covers exactly how they work, and the layered mitigation strategies real in">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/12-network-security/ddos-attacks-mitigation">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="DDoS Attacks &amp; Mitigation — Path 12 · KashSec Academy">
+<meta property="og:description" content="The Mirai case study in the Bluetooth/IoT lesson referenced DDoS attacks without fully explaining the mechanics. This lesson covers exactly how they work, and the layered mitigation strategies real in">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/12-network-security/ddos-attacks-mitigation">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="DDoS Attacks &amp; Mitigation — Path 12 · KashSec Academy">
+<meta name="twitter:description" content="The Mirai case study in the Bluetooth/IoT lesson referenced DDoS attacks without fully explaining the mechanics. This lesson covers exactly how they work, and the layered mitigation strategies real in">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"DDoS Attacks & Mitigation — Path 12 · KashSec Academy","description":"The Mirai case study in the Bluetooth/IoT lesson referenced DDoS attacks without fully explaining the mechanics. This lesson covers exactly how they work, and the layered mitigation strategies real in","url":"https://kashsec.vercel.app/#/lesson/12-network-security/ddos-attacks-mitigation","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/12-network-security/ddos-attacks-mitigation">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 12 — Network Security</a> · DDoS Attacks &amp; Mitigation</div>
+  <article><h1>DDoS Attacks &amp; Mitigation</h1>
+<p>The Mirai case study in the Bluetooth/IoT lesson referenced DDoS attacks without fully explaining the mechanics. This lesson covers exactly how they work, and the layered mitigation strategies real infrastructure uses to withstand them — a direct availability attack against the third leg of Path 01&#39;s CIA triad.</p>
+<h2>DoS vs. DDoS: a quick distinction</h2>
+<p>A <strong>DoS (Denial of Service)</strong> attack comes from a single source, attempting to overwhelm a target&#39;s capacity to serve legitimate users. A <strong>DDoS (Distributed Denial of Service)</strong> attack does the same thing from many sources simultaneously — often a botnet of compromised devices (exactly the Mirai pattern from the previous lesson) — making it both more powerful and considerably harder to block by simply filtering one attacking IP address.</p>
+<h2>Volumetric attacks: overwhelming bandwidth</h2>
+<p>The simplest category — flooding a target with so much raw traffic volume that its network connection itself becomes saturated, with no capacity left for legitimate requests to get through at all. <strong>Amplification attacks</strong> make this dramatically more efficient: an attacker sends a small request to a third-party server (DNS, NTP) with a spoofed source address matching the victim, and the server&#39;s much larger response gets sent directly to the victim — turning a small amount of attacker-generated traffic into a much larger flood.</p>
+<h2>Protocol attacks: exploiting connection-handling logic</h2>
+<p>Path 02&#39;s common-network-attacks-overview lesson already introduced the <strong>SYN flood</strong> — exhausting a server&#39;s capacity to track pending TCP connections (Path 02&#39;s tcp-vs-udp lesson) by initiating many handshakes that never complete, rather than overwhelming raw bandwidth.</p>
+<h2>Application-layer attacks: mimicking legitimate traffic</h2>
+<p>The hardest category to defend against: requests that look completely legitimate individually — a normal-looking HTTP request to a search feature, a normal-looking login attempt — sent in overwhelming volume, exploiting the fact that some legitimate operations are inherently more expensive to process server-side than others (a complex database search versus a static file request).</p>
+<h2>Mitigation strategies, layered</h2>
+<ul>
+<li><strong>Over-provisioning and traffic scrubbing</strong> — major CDN and DDoS-protection providers (Cloudflare, AWS Shield) absorb volumetric attacks across globally distributed infrastructure with far more capacity than any single target could reasonably maintain on its own, directly extending Path 05&#39;s CDN-caching concepts to a defensive role</li>
+<li><strong>Rate limiting</strong> — directly connecting to Path 21&#39;s rate-limit-bypass lab: limiting how many requests a single source can make in a given window, meaningfully reducing (though rarely eliminating on its own) an application-layer attack&#39;s effectiveness</li>
+<li><strong>Anycast routing</strong> — distributing a single IP address across many physical locations, so attack traffic gets automatically spread across multiple data centers rather than concentrated against one</li>
+<li><strong>Behavioral analysis</strong> — distinguishing legitimate traffic patterns from attack traffic even when individual requests look valid, directly connecting to Path 24&#39;s UEBA/analytics-monitoring lesson&#39;s baseline-deviation approach</li>
+</ul>
+<p>Why are application-layer DDoS attacks generally considered harder to defend against than volumetric attacks, despite typically involving much lower total traffic volume?</p>
+<details><summary>Show answer</summary>A volumetric attack is relatively straightforward to identify — an overwhelming flood of traffic, often from recognizable patterns or sources, that scrubbing infrastructure and over-provisioned bandwidth can absorb or filter based on sheer volume and pattern recognition. An application-layer attack, by contrast, consists of requests that are individually indistinguishable from genuine legitimate traffic — the same HTTP methods, the same expected headers, the same apparent user behavior — meaning simple volume-based or pattern-based filtering can't reliably tell attack traffic apart from real users without risking blocking legitimate requests too. Effective defense requires genuine behavioral analysis (recognizing anomalous patterns in otherwise-legitimate-looking traffic) rather than just absorbing or filtering raw volume, which is a fundamentally harder problem — exactly why this category is specifically called out as the hardest to defend against in this lesson.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Amplification attack</strong> — using a spoofed source address to trick a third-party server into sending a large response directly to a victim, multiplying attack traffic volume.</li>
+<li><strong>Anycast routing</strong> — distributing a single IP address across many physical locations, spreading attack traffic automatically.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Volumetric, protocol, and application-layer attacks represent three distinct DDoS categories, each requiring a different defensive approach.</li>
+<li>Amplification attacks turn small attacker-generated traffic into much larger floods by exploiting third-party servers with spoofed source addresses.</li>
+<li>Application-layer attacks are the hardest to defend against, since individual requests look legitimate — genuine behavioral analysis, not just volume filtering, is required to distinguish them from real traffic.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/12-network-security/cloud-network-security">Cloud Network Security</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/12-network-security/ddos-attacks-mitigation";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

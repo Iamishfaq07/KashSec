@@ -163,4 +163,4 @@ An organisation's IDS alerts on 200 failed login attempts from a single IP withi
 - [SANS — What is a SOC?](https://www.sans.org/blog/what-is-a-security-operations-center-soc/) — accessible overview of SOC structure and operations.
 ???
 
-**Next up →** [Wi-Fi security](#/lesson/12-network-security/wifi-security)
+**Next up →** [Network Security Monitoring Tools](#/lesson/12-network-security/network-security-monitoring-tools)
