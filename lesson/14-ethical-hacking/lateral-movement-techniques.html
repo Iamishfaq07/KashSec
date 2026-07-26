@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lateral Movement Techniques — Path 14 · KashSec Academy</title>
+<meta name="description" content="The post-exploitation lesson mentioned pivoting briefly. This lesson goes deeper into lateral movement specifically — how an attacker (or authorized tester) with a foothold on one system actually reac">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/14-ethical-hacking/lateral-movement-techniques">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Lateral Movement Techniques — Path 14 · KashSec Academy">
+<meta property="og:description" content="The post-exploitation lesson mentioned pivoting briefly. This lesson goes deeper into lateral movement specifically — how an attacker (or authorized tester) with a foothold on one system actually reac">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/14-ethical-hacking/lateral-movement-techniques">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Lateral Movement Techniques — Path 14 · KashSec Academy">
+<meta name="twitter:description" content="The post-exploitation lesson mentioned pivoting briefly. This lesson goes deeper into lateral movement specifically — how an attacker (or authorized tester) with a foothold on one system actually reac">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Lateral Movement Techniques — Path 14 · KashSec Academy","description":"The post-exploitation lesson mentioned pivoting briefly. This lesson goes deeper into lateral movement specifically — how an attacker (or authorized tester) with a foothold on one system actually reac","url":"https://kashsec.vercel.app/#/lesson/14-ethical-hacking/lateral-movement-techniques","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/14-ethical-hacking/lateral-movement-techniques">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 14 — Ethical Hacking</a> · Lateral Movement Techniques</div>
+  <article><h1>Lateral Movement Techniques</h1>
+<p>The post-exploitation lesson mentioned pivoting briefly. This lesson goes deeper into <strong>lateral movement</strong> specifically — how an attacker (or authorized tester) with a foothold on one system actually reaches other systems on the same network, directly connecting to Path 12&#39;s segmentation-in-practice lesson from the attacker&#39;s side of that exact defense.</p>
+<h2>Why lateral movement matters, revisited</h2>
+<p>Path 12&#39;s network-segmentation lesson already framed segmentation as a defense against lateral movement without fully explaining the offensive technique it defends against. This lesson closes that loop: an initial compromised system is rarely the actual target — it&#39;s a foothold used to reach more valuable systems elsewhere on the network.</p>
+<h2>Credential reuse: the most common real-world technique</h2>
+<p>Directly connecting to Path 00&#39;s password-reuse warning, now from an attacker&#39;s perspective: if the same local administrator password is reused across many machines (a genuinely common real-world IT practice, done for convenience), compromising one machine&#39;s credentials often grants access to many others simultaneously — a single organizational habit turning one compromise into a network-wide problem.</p>
+<h2>Pass-the-Hash: using a hash without cracking it</h2>
+<p>A genuinely important Windows-specific technique: <strong>Pass-the-Hash</strong> exploits the fact that some Windows authentication protocols accept a password&#39;s <em>hash</em> directly, without ever needing the actual plaintext password — meaning an attacker who extracts password hashes from one compromised machine (directly connecting to Path 07&#39;s Active-Directory lesson&#39;s Kerberos coverage) can authenticate to other systems using just that hash, never needing to crack it into a human-readable password at all.</p>
+<h2>Remote execution tools</h2>
+<p>Directly connecting to Path 03&#39;s SSH lesson and Path 07&#39;s RDP lesson: the exact same remote-access protocols organizations legitimately use for administration are also the tools lateral movement relies on — <strong>PsExec</strong>, <strong>WMI</strong>, and legitimate remote-administration tools all let an attacker with valid (often stolen) credentials execute commands on other systems, blending in with genuinely normal administrative activity.</p>
+<h2>Living off the land: using what&#39;s already there</h2>
+<p><strong>Living off the land</strong> describes using an environment&#39;s own legitimate, pre-installed tools (PowerShell, WMI, and other built-in administrative utilities) rather than introducing new, potentially detectable malware — directly connecting to Path 03&#39;s bash-scripting and Path 07&#39;s PowerShell coverage, since the exact same tools this course taught for legitimate administration are what makes this technique so hard to distinguish from normal activity.</p>
+<h2>Why detection focuses on behavior, not just tools</h2>
+<p>Directly connecting to Path 24&#39;s UEBA/behavioral-analytics lesson: since lateral movement frequently uses legitimate credentials and legitimate administrative tools, signature-based detection (looking for &quot;known bad&quot; tools) is genuinely insufficient — detecting an unusual pattern (a workstation account suddenly authenticating to a dozen other machines it&#39;s never touched before) requires the behavioral-baseline approach that lesson described.</p>
+<p>Why is Pass-the-Hash considered a genuinely significant technique, rather than just a minor variation on regular credential theft?</p>
+<details><summary>Show answer</summary>Regular credential theft requires an attacker to actually recover a usable, plaintext password — either by cracking a stolen hash (a potentially slow, sometimes infeasible process against a strong password, per Path 00's hashing coverage) or by capturing it directly through some other means. Pass-the-Hash bypasses this entire cracking step: because certain Windows authentication protocols accept the hash itself as sufficient proof of authentication, an attacker who extracts hashes from a compromised machine's memory can immediately authenticate to other systems using those hashes directly, with no need to ever determine the actual underlying password at all — turning what would otherwise be a potentially slow or uncertain cracking process into immediate, guaranteed lateral access, which is exactly why this technique remains such a significant, well-known finding in real Windows-network penetration tests.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Lateral movement</strong> — using an initial compromised foothold to reach additional systems on the same network.</li>
+<li><strong>Pass-the-Hash</strong> — authenticating using a stolen password hash directly, without needing to crack it into plaintext.</li>
+<li><strong>Living off the land</strong> — using an environment&#39;s own legitimate, pre-installed tools rather than introducing new malware.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Lateral movement is the offensive technique Path 12&#39;s network-segmentation lesson was specifically designed to contain, closing the loop between that defensive coverage and the attacker perspective.</li>
+<li>Credential reuse, Pass-the-Hash, and living-off-the-land techniques using legitimate remote-administration tools are the most common real-world approaches.</li>
+<li>Because lateral movement frequently uses legitimate credentials and tools, effective detection requires behavioral baselining (Path 24) rather than signature-based tool detection alone.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/14-ethical-hacking/pivoting-and-tunneling">Pivoting &amp; Tunneling</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/14-ethical-hacking/lateral-movement-techniques";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

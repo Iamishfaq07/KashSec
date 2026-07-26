@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OSINT Tools, Deep Dive — Path 14 · KashSec Academy</title>
+<meta name="description" content="The recon lesson introduced OSINT tools like crt.sh and Shodan by name. This lesson goes deeper into the actual OSINT methodology and additional tools, directly connecting to Path 09's digital-footpri">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/14-ethical-hacking/osint-tools-deep-dive">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="OSINT Tools, Deep Dive — Path 14 · KashSec Academy">
+<meta property="og:description" content="The recon lesson introduced OSINT tools like crt.sh and Shodan by name. This lesson goes deeper into the actual OSINT methodology and additional tools, directly connecting to Path 09's digital-footpri">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/14-ethical-hacking/osint-tools-deep-dive">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="OSINT Tools, Deep Dive — Path 14 · KashSec Academy">
+<meta name="twitter:description" content="The recon lesson introduced OSINT tools like crt.sh and Shodan by name. This lesson goes deeper into the actual OSINT methodology and additional tools, directly connecting to Path 09's digital-footpri">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"OSINT Tools, Deep Dive — Path 14 · KashSec Academy","description":"The recon lesson introduced OSINT tools like crt.sh and Shodan by name. This lesson goes deeper into the actual OSINT methodology and additional tools, directly connecting to Path 09's digital-footpri","url":"https://kashsec.vercel.app/#/lesson/14-ethical-hacking/osint-tools-deep-dive","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/14-ethical-hacking/osint-tools-deep-dive">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 14 — Ethical Hacking</a> · OSINT Tools, Deep Dive</div>
+  <article><h1>OSINT Tools, Deep Dive</h1>
+<p>The recon lesson introduced OSINT tools like crt.sh and Shodan by name. This lesson goes deeper into the actual OSINT methodology and additional tools, directly connecting to Path 09&#39;s digital-footprint material from the opposite perspective — this time, you&#39;re the one doing the gathering.</p>
+<h2>OSINT as reconnaissance, not just curiosity</h2>
+<p><strong>OSINT (Open Source Intelligence)</strong> gathering is the systematic collection of publicly available information about a target — directly the professional, authorized application of the exact aggregation-risk concept Path 09 taught individuals to be wary of about their own digital footprint. Everything that made an individual&#39;s oversharing dangerous in Path 09 makes an organization&#39;s oversharing exploitable here.</p>
+<h2>People-focused OSINT</h2>
+<ul>
+<li><strong>Employee enumeration</strong> — LinkedIn and company &quot;About us&quot; pages reveal employee names and roles, useful for both technical reconnaissance (guessing email address formats) and social engineering pretext development (covered in this path&#39;s dedicated lesson)</li>
+<li><strong>Metadata in published documents</strong> — PDFs, Word documents, and images published by an organization frequently retain metadata (directly connecting to Path 19&#39;s EXIF CTF challenge) revealing internal usernames, software versions, and sometimes internal file paths</li>
+<li><strong>Breach data</strong> — checking whether an organization&#39;s employee email addresses appear in known breaches (Have I Been Pwned, from Path 00) reveals potentially reused, exposed credentials worth testing during a later phase (with explicit RoE authorization, per the previous lesson)</li>
+</ul>
+<h2>Infrastructure-focused OSINT</h2>
+<ul>
+<li><strong>Certificate transparency logs</strong> (crt.sh, from the recon lesson) — reveal every subdomain a certificate authority has ever issued a certificate for, often exposing internal or staging subdomains never meant to be publicly known</li>
+<li><strong>Shodan and Censys</strong> — search engines indexing internet-connected devices and services, letting a researcher find an organization&#39;s exposed infrastructure without ever sending a single packet to the target directly</li>
+<li><strong>GitHub and code repository search</strong> — searching for an organization&#39;s name or domain across public code repositories frequently reveals accidentally committed credentials or internal configuration details, directly connecting to Path 04&#39;s secure-coding lesson&#39;s warning about hardcoded secrets ending up in version control</li>
+</ul>
+<h2>Google dorking, briefly formalized</h2>
+<p>Advanced search operators (<code>site:</code>, <code>filetype:</code>, <code>intitle:</code>) let a researcher find specific, sometimes sensitive content indexed by search engines that an organization never intended to be easily discoverable — genuinely one of the oldest OSINT techniques, still surprisingly effective against organizations that haven&#39;t reviewed what search engines have actually indexed about them.</p>
+<h2>Why passive recon matters specifically</h2>
+<p>Every technique in this lesson is <strong>passive</strong> — gathering information without ever directly interacting with the target&#39;s own systems, meaning it typically requires no special authorization at all (it&#39;s already public), unlike the active scanning covered in the scan-and-enumerate lesson. This distinction genuinely matters for RoE scoping (from the previous lesson): passive OSINT often happens before formal authorization is even finalized, since it involves no direct interaction with the target whatsoever.</p>
+<p>Why might certificate transparency logs (crt.sh) reveal subdomains an organization never intended to be publicly discoverable?</p>
+<details><summary>Show answer</summary>Modern web browsers require publicly trusted TLS certificates (from Path 06) to be logged in public certificate transparency logs as a security measure, specifically so anyone can audit which certificates have been issued for which domains — a genuinely good security practice for detecting fraudulently issued certificates, but with a side effect: every subdomain that's ever had a certificate issued for it, including internal admin panels, staging environments, or forgotten legacy services never meant for public awareness, becomes permanently, publicly discoverable through these logs. An organization might believe <code>staging-admin.example.com</code> is obscure and effectively hidden simply because it's not linked from anywhere public, but the moment a certificate was issued for it, that assumption of obscurity was already false — exactly the kind of gap systematic OSINT recon is specifically designed to find.</details><h2>Key terms</h2>
+<ul>
+<li><strong>OSINT (Open Source Intelligence)</strong> — systematically gathering publicly available information about a target.</li>
+<li><strong>Passive reconnaissance</strong> — gathering information without directly interacting with the target&#39;s own systems.</li>
+<li><strong>Google dorking</strong> — using advanced search operators to find specific, sometimes unintentionally exposed content.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>OSINT applies Path 09&#39;s aggregation-risk lesson from the attacker&#39;s authorized perspective, systematically gathering an organization&#39;s publicly discoverable exposure.</li>
+<li>People-focused OSINT (employee enumeration, document metadata, breach data) and infrastructure-focused OSINT (certificate transparency, Shodan, code repository search) cover the two major categories.</li>
+<li>Passive recon requires no direct target interaction and typically no special authorization, distinct from the active scanning covered in the next phase.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/14-ethical-hacking/scan-enumerate">Scanning &amp; enumeration</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/14-ethical-hacking/osint-tools-deep-dive";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

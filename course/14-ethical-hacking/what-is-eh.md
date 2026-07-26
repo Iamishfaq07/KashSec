@@ -117,4 +117,4 @@ Two people use the exact same tools and techniques to find the exact same SQL in
 - [EC-Council — CPENT](https://www.eccouncil.org/train-certify/certified-penetration-testing-professional-cpent/) — official certification details.
 ???
 
-**Next up →** [The 5 phases of penetration testing](#/lesson/14-ethical-hacking/the-5-phases)
+**Next up →** [Rules of Engagement, Deep Dive](#/lesson/14-ethical-hacking/rules-of-engagement-deep-dive)

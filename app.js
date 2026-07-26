@@ -988,17 +988,29 @@ const PATHS = [
    desc:"The 5-phase methodology, from reconnaissance through reporting.",
    subs:[
      {n:"1", id:"what-is-eh",          title:"What ethical hacking really is", desc:"Same skills, opposite purpose. The RoE and scope."},
-     {n:"2", id:"the-5-phases",        title:"The 5 phases",            desc:"The mental map every methodology reduces to."},
-     {n:"3", id:"recon",               title:"Phase 1: Reconnaissance", desc:"OSINT, Google dorks, crt.sh, Shodan, GitHub."},
-     {n:"4", id:"scan-enumerate",      title:"Phase 2: Scan & enumerate", desc:"Nmap deeper, per-service enum, searchsploit."},
-     {n:"5", id:"exploitation",        title:"Phase 3: Exploitation",   desc:"Metasploit, reverse shells, Metasploitable lab."},
-     {n:"6", id:"post-exploitation",   title:"Phase 4: Post-exploitation", desc:"Situational awareness, privesc, pivoting."},
-     {n:"7", id:"reporting",           title:"Phase 5: Reporting",      desc:"The deliverable. CVSS, exec summary, details."},
-     {n:"8", id:"eh-roadmap",          title:"Your ethical-hacking path", desc:"Security+ → eJPT → PNPT / OSCP."},
-     {n:"9", id:"advanced-exploitation-lab", title:"Advanced Exploitation Lab", desc:"Take exploitation skills further."},
-     {n:"10", id:"metasploit-lab",     title:"Metasploit Practical Lab", desc:"Get comfortable with the most popular exploitation framework."},
-     {n:"11", id:"practical-recon-lab", title:"Practical Reconnaissance Lab", desc:"Hands-on OSINT and reconnaissance practice."},
-     {n:"12", id:"reporting-lab",      title:"Reporting Lab",           desc:"Learn to write professional penetration test reports."}
+     {n:"2", id:"rules-of-engagement-deep-dive", title:"Rules of Engagement, Deep Dive", desc:"Scope, timing, get-out-of-jail letters, and why ambiguity has real consequences."},
+     {n:"3", id:"the-5-phases",        title:"The 5 phases",            desc:"The mental map every methodology reduces to."},
+     {n:"4", id:"pentest-methodologies-standards", title:"Pentest Methodologies & Standards", desc:"PTES, OSSTMM, NIST SP 800-115, and why the named frameworks matter."},
+     {n:"5", id:"recon",               title:"Phase 1: Reconnaissance", desc:"OSINT, Google dorks, crt.sh, Shodan, GitHub."},
+     {n:"6", id:"osint-tools-deep-dive", title:"OSINT Tools, Deep Dive", desc:"Employee enumeration, document metadata, and certificate transparency logs."},
+     {n:"7", id:"scan-enumerate",      title:"Phase 2: Scan & enumerate", desc:"Nmap deeper, per-service enum, searchsploit."},
+     {n:"8", id:"vulnerability-scanning-tools", title:"Vulnerability Scanning Tools", desc:"Nessus, OpenVAS, and the honest limits of automated scanning."},
+     {n:"9", id:"exploitation",        title:"Phase 3: Exploitation",   desc:"Metasploit, reverse shells, Metasploitable lab."},
+     {n:"10", id:"exploit-development-basics", title:"Exploit Development Basics", desc:"Where Exploit-DB entries actually come from — buffer overflows, conceptually."},
+     {n:"11", id:"post-exploitation",   title:"Phase 4: Post-exploitation", desc:"Situational awareness, privesc, pivoting."},
+     {n:"12", id:"privilege-escalation-methodology", title:"Privilege Escalation Methodology", desc:"Enumeration-first thinking, tying Path 03/07's technique catalogs together."},
+     {n:"13", id:"lateral-movement-techniques", title:"Lateral Movement Techniques", desc:"Credential reuse, Pass-the-Hash, and living off the land."},
+     {n:"14", id:"pivoting-and-tunneling", title:"Pivoting & Tunneling", desc:"Reaching a segment you can't touch directly, through one you already own."},
+     {n:"15", id:"reporting",           title:"Phase 5: Reporting",      desc:"The deliverable. CVSS, exec summary, details."},
+     {n:"16", id:"red-team-vs-pentest", title:"Red Team vs. Penetration Testing", desc:"Comprehensive coverage vs. a covert, objective-driven simulation."},
+     {n:"17", id:"social-engineering-in-pentests", title:"Social Engineering in Pentests", desc:"Pretexting, phishing simulations, and the ethical line that keeps it professional."},
+     {n:"18", id:"wireless-pentesting-basics", title:"Wireless Pentesting Basics", desc:"Handshake capture, evil twins, and WPS — and why scope is harder to draw."},
+     {n:"19", id:"purple-teaming-basics", title:"Purple Teaming Basics", desc:"Red and blue working together, in real time, against the ATT&CK matrix."},
+     {n:"20", id:"eh-roadmap",          title:"Your ethical-hacking path", desc:"Security+ → eJPT → PNPT / OSCP."},
+     {n:"21", id:"advanced-exploitation-lab", title:"Advanced Exploitation Lab", desc:"Take exploitation skills further."},
+     {n:"22", id:"metasploit-lab",     title:"Metasploit Practical Lab", desc:"Get comfortable with the most popular exploitation framework."},
+     {n:"23", id:"practical-recon-lab", title:"Practical Reconnaissance Lab", desc:"Hands-on OSINT and reconnaissance practice."},
+     {n:"24", id:"reporting-lab",      title:"Reporting Lab",           desc:"Learn to write professional penetration test reports."}
    ]},
   {n:"15", id:"15-bug-bounty", title:"Bug Bounty", level:"Intermediate→Advanced",
    desc:"Programs, recon pipelines, hunting IDOR & logic bugs, reports that pay.",
@@ -4851,6 +4863,11 @@ function renderLabPhishing(){
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
+  {date:'2026-07-25', title:'Path 14 doubled to 24 lessons', items:[
+    'Seventeenth batch of the course-wide content-doubling effort: Path 14 (Ethical Hacking) grows from 12 to 24 lessons.',
+    'New lessons: Rules of Engagement Deep Dive, Pentest Methodologies & Standards (PTES/OSSTMM/NIST 800-115), OSINT Tools Deep Dive, Vulnerability Scanning Tools, Exploit Development Basics, Privilege Escalation Methodology, Lateral Movement Techniques, Pivoting & Tunneling, Red Team vs. Penetration Testing, Social Engineering in Pentests, Wireless Pentesting Basics, and Purple Teaming Basics.',
+    'The new red-team-vs-pentest and purple-teaming lessons finally give this path proper vocabulary for engagement types beyond the standard 5-phase pentest.'
+  ]},
   {date:'2026-07-25', title:'Path 13 doubled to 18 lessons', items:[
     'Sixteenth batch of the course-wide content-doubling effort: Path 13 (Mobile App Security) grows from 9 to 18 lessons.',
     'New lessons: Android Permissions Deep Dive, Reverse Engineering Mobile Apps (Frida), Mobile Authentication & Biometrics (the secure enclave), Mobile API Security, Cross-Platform Mobile Security (React Native/Flutter), Mobile App Hardening, Mobile Malware & App Store Security, Mobile Device Management (MDM), and Mobile Security Careers & Certifications.',

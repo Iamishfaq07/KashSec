@@ -120,4 +120,4 @@ During reconnaissance, a tester discovers a subdomain that appears to belong to 
 - [OWASP Testing Guide](https://owasp.org/www-project-web-security-testing-guide/) — detailed phase-by-phase web-specific methodology.
 ???
 
-**Next up →** [Reconnaissance in practice](#/lesson/14-ethical-hacking/recon)
+**Next up →** [Pentest Methodologies & Standards](#/lesson/14-ethical-hacking/pentest-methodologies-standards)

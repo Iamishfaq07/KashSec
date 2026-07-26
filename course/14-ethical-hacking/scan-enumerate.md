@@ -231,4 +231,4 @@ Why is enumeration considered a distinct, deeper phase from scanning, rather tha
 - [Metasploitable 2 documentation](https://docs.rapid7.com/metasploit/metasploitable-2/) — the deliberately vulnerable practice VM used in this lesson's lab.
 ???
 
-**Next up →** [Exploitation techniques](#/lesson/14-ethical-hacking/exploitation)
+**Next up →** [Vulnerability Scanning Tools](#/lesson/14-ethical-hacking/vulnerability-scanning-tools)

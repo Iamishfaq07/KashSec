@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rules of Engagement, Deep Dive — Path 14 · KashSec Academy</title>
+<meta name="description" content="The what-is-ethical-hacking lesson introduced Rules of Engagement (RoE) as the single word — authorization — separating a legal pentest from a crime. This lesson goes deep into what a real RoE documen">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/14-ethical-hacking/rules-of-engagement-deep-dive">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Rules of Engagement, Deep Dive — Path 14 · KashSec Academy">
+<meta property="og:description" content="The what-is-ethical-hacking lesson introduced Rules of Engagement (RoE) as the single word — authorization — separating a legal pentest from a crime. This lesson goes deep into what a real RoE documen">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/14-ethical-hacking/rules-of-engagement-deep-dive">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Rules of Engagement, Deep Dive — Path 14 · KashSec Academy">
+<meta name="twitter:description" content="The what-is-ethical-hacking lesson introduced Rules of Engagement (RoE) as the single word — authorization — separating a legal pentest from a crime. This lesson goes deep into what a real RoE documen">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Rules of Engagement, Deep Dive — Path 14 · KashSec Academy","description":"The what-is-ethical-hacking lesson introduced Rules of Engagement (RoE) as the single word — authorization — separating a legal pentest from a crime. This lesson goes deep into what a real RoE documen","url":"https://kashsec.vercel.app/#/lesson/14-ethical-hacking/rules-of-engagement-deep-dive","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/14-ethical-hacking/rules-of-engagement-deep-dive">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 14 — Ethical Hacking</a> · Rules of Engagement, Deep Dive</div>
+  <article><h1>Rules of Engagement, Deep Dive</h1>
+<p>The what-is-ethical-hacking lesson introduced Rules of Engagement (RoE) as the single word — authorization — separating a legal pentest from a crime. This lesson goes deep into what a real RoE document actually contains, since a vague or incomplete one is a genuine professional liability, not just paperwork.</p>
+<h2>Why RoE is a legal document, not a formality</h2>
+<p>Directly connecting to Path 01&#39;s CFAA-and-ethics lesson: the RoE is the actual, specific evidence of authorization that legally protects a tester — without it, or with an incomplete one, a tester has no meaningful defense if a client later disputes what was actually agreed to, regardless of how genuinely good-faith the work was.</p>
+<h2>What a real RoE document specifies</h2>
+<ul>
+<li><strong>Scope</strong> — exactly which systems, networks, and applications are in bounds, specified precisely enough to leave no ambiguity (a specific IP range, a specific domain and its subdomains, explicitly excluding anything not listed)</li>
+<li><strong>Timing</strong> — the exact window during which testing is authorized to occur, and any blackout periods (avoiding a company&#39;s peak business hours, for instance)</li>
+<li><strong>Testing techniques permitted and prohibited</strong> — some engagements explicitly exclude denial-of-service techniques, social engineering against staff, or physical security testing, even if the target systems themselves are in scope</li>
+<li><strong>Emergency contacts and escalation process</strong> — who to contact immediately if testing causes unexpected impact, and the agreed process for pausing or stopping the engagement</li>
+<li><strong>Data handling requirements</strong> — how discovered sensitive data gets handled, stored, and eventually destroyed after the engagement concludes</li>
+</ul>
+<h2>Why scope precision matters more than it seems</h2>
+<p>A genuinely common real-world problem: a client authorizes testing against &quot;our web application&quot; without specifying whether that includes third-party services the application integrates with, cloud infrastructure the application runs on, or related subdomains discovered during recon. A precise, unambiguous scope avoids exactly this kind of dispute — and directly connects to Path 15&#39;s bug bounty material, where scope violations can result in legal consequences even for a researcher acting with genuinely good intentions.</p>
+<h2>Get-out-of-jail letters</h2>
+<p>A <strong>get-out-of-jail letter</strong> (or authorization letter) is a document a tester carries during an engagement — proof of authorization that can be presented immediately if testing activity triggers a legitimate security response (a call from local law enforcement responding to reported &quot;suspicious activity,&quot; for instance) before that response escalates unnecessarily.</p>
+<h2>What happens when scope is ambiguous or exceeded</h2>
+<p>Testing a system genuinely believed to be in scope, but which turns out to belong to a different organization entirely (a shared hosting environment, a third-party CDN), can result in real legal exposure — directly connecting to Path 01&#39;s grey-hat discussion: good intent doesn&#39;t retroactively authorize access that scope never actually covered. This is exactly why precise, written scope definition — never a verbal agreement, never an assumption — is a non-negotiable professional standard, not excessive caution.</p>
+<p>Why is a verbal agreement to test a client&#39;s systems considered professionally insufficient, even if the client genuinely intended to authorize the work?</p>
+<details><summary>Show answer</summary>A verbal agreement provides no concrete, examinable evidence of exactly what was authorized — the specific scope, the specific timing, the specific techniques permitted — leaving significant room for later disagreement about what was actually agreed to, especially if something goes wrong during testing or if the client's own understanding of "authorized" turns out to differ from the tester's. A written RoE removes this ambiguity, providing a specific, mutually-agreed, referenceable document both parties can point to if a dispute arises — directly protecting the tester legally (the same CFAA/authorization concept from Path 01) and giving the client's own organization a clear record of what was actually approved, which matters especially in larger organizations where the person who verbally agreed to testing might not be the same person handling a security incident report generated by that same testing.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Rules of Engagement (RoE)</strong> — the formal document specifying scope, timing, permitted techniques, and escalation process for a pentest engagement.</li>
+<li><strong>Get-out-of-jail letter</strong> — an authorization document a tester carries to prove legitimate engagement if testing activity triggers a security response.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>A real RoE document precisely specifies scope, timing, permitted/prohibited techniques, escalation contacts, and data handling — never left as a verbal or vague agreement.</li>
+<li>Scope precision matters enormously in practice, since ambiguity about what&#39;s actually in bounds is a genuine, recurring source of real legal exposure.</li>
+<li>A get-out-of-jail letter provides immediate proof of authorization if testing activity triggers an unexpected security response.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/14-ethical-hacking/the-5-phases">The 5 phases</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/14-ethical-hacking/rules-of-engagement-deep-dive";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

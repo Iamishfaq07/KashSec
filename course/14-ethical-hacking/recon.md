@@ -192,4 +192,4 @@ A tester finds an employee's personal email address in a public breach dataset d
 - [ProjectDiscovery — httpx](https://github.com/projectdiscovery/httpx) — fast, scriptable live-host probing and tech detection.
 ???
 
-**Next up →** [Scanning & enumeration](#/lesson/14-ethical-hacking/scan-enumerate)
+**Next up →** [OSINT Tools, Deep Dive](#/lesson/14-ethical-hacking/osint-tools-deep-dive)

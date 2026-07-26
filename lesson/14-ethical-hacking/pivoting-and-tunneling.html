@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pivoting &amp; Tunneling — Path 14 · KashSec Academy</title>
+<meta name="description" content="The lateral-movement lesson covered reaching other systems on the same network. This lesson covers the genuinely distinct technique for reaching systems on a different, otherwise unreachable network s">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/14-ethical-hacking/pivoting-and-tunneling">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Pivoting &amp; Tunneling — Path 14 · KashSec Academy">
+<meta property="og:description" content="The lateral-movement lesson covered reaching other systems on the same network. This lesson covers the genuinely distinct technique for reaching systems on a different, otherwise unreachable network s">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/14-ethical-hacking/pivoting-and-tunneling">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Pivoting &amp; Tunneling — Path 14 · KashSec Academy">
+<meta name="twitter:description" content="The lateral-movement lesson covered reaching other systems on the same network. This lesson covers the genuinely distinct technique for reaching systems on a different, otherwise unreachable network s">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Pivoting & Tunneling — Path 14 · KashSec Academy","description":"The lateral-movement lesson covered reaching other systems on the same network. This lesson covers the genuinely distinct technique for reaching systems on a different, otherwise unreachable network s","url":"https://kashsec.vercel.app/#/lesson/14-ethical-hacking/pivoting-and-tunneling","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/14-ethical-hacking/pivoting-and-tunneling">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 14 — Ethical Hacking</a> · Pivoting &amp; Tunneling</div>
+  <article><h1>Pivoting &amp; Tunneling</h1>
+<p>The lateral-movement lesson covered reaching other systems on the <em>same</em> network. This lesson covers the genuinely distinct technique for reaching systems on a <em>different</em>, otherwise unreachable network segment — using an already-compromised system as a relay point.</p>
+<h2>What pivoting actually solves</h2>
+<p>Directly connecting to Path 12&#39;s network-segmentation lesson: a well-segmented network means a tester&#39;s (or attacker&#39;s) machine, positioned outside the target network entirely, simply cannot directly reach an internal-only segment — no route exists. <strong>Pivoting</strong> uses an already-compromised system that genuinely does have access to that internal segment as a relay, routing further traffic through it to reach systems that would otherwise be completely unreachable.</p>
+<h2>SSH tunneling: the foundational technique</h2>
+<p>Path 03&#39;s SSH lesson mentioned tunneling as a &quot;genuinely useful (and sometimes risky) side feature.&quot; This is exactly that feature, applied offensively: an SSH connection to a compromised system can forward traffic through it, letting a tester&#39;s tools interact with internal systems as if directly connected, using the compromised system purely as a relay.</p>
+<pre><code class="language-bash">ssh -D 9050 user@compromised-system    # dynamic port forwarding, creating a SOCKS proxy
+</code></pre>
+<h2>Port forwarding: local vs. remote</h2>
+<ul>
+<li><strong>Local port forwarding</strong> — makes a remote internal service accessible on the tester&#39;s own local machine, as if it were running locally</li>
+<li><strong>Remote port forwarding</strong> — the reverse: makes a service on the tester&#39;s machine accessible from the compromised system&#39;s network, useful for delivering additional tools into an otherwise-isolated segment</li>
+</ul>
+<h2>Proxychains: routing existing tools through a pivot</h2>
+<p><strong>Proxychains</strong> lets standard tools (Nmap, from Path 12; curl, from Path 03) route their traffic through an established SSH tunnel or SOCKS proxy without needing to be specifically rewritten for pivoting — meaning the entire toolkit this course has built throughout can be reused against a pivoted network, not just specialized pivot-only tools.</p>
+<h2>Multi-hop pivoting: chains of compromised systems</h2>
+<p>Real engagements sometimes require pivoting through <em>multiple</em> compromised systems in sequence — network A reachable only through a foothold in network B, itself only reachable through an initial foothold in network C — directly reflecting how real enterprise network segmentation (Path 12, Path 24) often layers multiple boundaries rather than just one, requiring a tester to chain multiple pivots to reach a genuinely deep target.</p>
+<p>Why does well-designed network segmentation (Path 12) make pivoting necessary at all, rather than an attacker simply being blocked from ever reaching an internal segment?</p>
+<details><summary>Show answer</summary>Segmentation controls <em>which network paths exist and are permitted</em> — it doesn't eliminate the possibility that a legitimately positioned system (one that genuinely needs access to both an external-facing segment and an internal-only one, for entirely legitimate operational reasons) exists somewhere within the architecture. Pivoting doesn't defeat segmentation directly — it uses a system that segmentation was <em>designed</em> to allow through, as a relay for additional traffic beyond what that system's own legitimate function requires. This is exactly why Path 12's own segmentation lesson emphasized designing segments around genuine trust boundaries and monitoring what crosses them, rather than assuming a segmented network is inherently safe from lateral reach — a compromised, legitimately-positioned relay point remains a real and predictable risk that segmentation alone doesn't fully close, which is exactly why monitoring what crosses segment boundaries (not just the boundaries' existence) matters as much as the segmentation itself.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Pivoting</strong> — using an already-compromised system as a relay to reach an otherwise unreachable network segment.</li>
+<li><strong>SOCKS proxy</strong> — a proxy created via SSH dynamic port forwarding, letting tools route traffic through a compromised system.</li>
+<li><strong>Proxychains</strong> — a tool routing standard command-line tools&#39; traffic through an established pivot.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Pivoting reaches network segments a tester can&#39;t access directly, using an already-compromised system with legitimate access to both networks as a relay.</li>
+<li>SSH tunneling (local and remote port forwarding) is the foundational technique, and Proxychains lets existing tools be reused against a pivoted network without modification.</li>
+<li>Multi-hop pivoting through several compromised systems in sequence reflects how real enterprise segmentation often layers multiple boundaries, requiring chained pivots to reach a genuinely deep target.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/14-ethical-hacking/reporting">Writing a penetration test report</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/14-ethical-hacking/pivoting-and-tunneling";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

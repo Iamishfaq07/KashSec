@@ -176,4 +176,4 @@ A report states: "SQL injection was found in the login form. This is bad and sho
 - [HackerOne — How to write a great vulnerability report](https://www.hackerone.com/blog/introduction-writing-great-bug-bounty-reports) — directly applicable to Path 15's bug bounty context.
 ???
 
-**Next up →** [Your ethical hacking roadmap](#/lesson/14-ethical-hacking/eh-roadmap)
+**Next up →** [Red Team vs. Penetration Testing](#/lesson/14-ethical-hacking/red-team-vs-pentest)

@@ -994,6 +994,15 @@ const GLOSSARY = [
   "subTitle": "Bluetooth & IoT Network Security"
  },
  {
+  "term": "Blue team",
+  "def": "an organization's defensive security team, whose detection and response capability a red team engagement specifically tests.",
+  "pathId": "14-ethical-hacking",
+  "pathN": "14",
+  "pathTitle": "Ethical Hacking",
+  "subId": "red-team-vs-pentest",
+  "subTitle": "Red Team vs. Penetration Testing"
+ },
+ {
   "term": "BOLA",
   "def": "the API-specific name for the same underlying bug (OWASP API Top 10 #1).",
   "pathId": "11-web-security",
@@ -1118,6 +1127,15 @@ const GLOSSARY = [
   "pathTitle": "Cloud Computing Basics",
   "subId": "cloud-storage-basics",
   "subTitle": "Cloud Storage Basics"
+ },
+ {
+  "term": "Buffer overflow",
+  "def": "writing data past a fixed-size memory buffer's boundary, potentially overwriting adjacent memory including control-flow data.",
+  "pathId": "14-ethical-hacking",
+  "pathN": "14",
+  "pathTitle": "Ethical Hacking",
+  "subId": "exploit-development-basics",
+  "subTitle": "Exploit Development Basics"
  },
  {
   "term": "Bug bounty program",
@@ -3127,6 +3145,15 @@ const GLOSSARY = [
   "subTitle": "Why API Security Matters"
  },
  {
+  "term": "Enumeration-first methodology",
+  "def": "systematically discovering a system's actual configuration and permissions before attempting any specific privilege escalation technique.",
+  "pathId": "14-ethical-hacking",
+  "pathN": "14",
+  "pathTitle": "Ethical Hacking",
+  "subId": "privilege-escalation-methodology",
+  "subTitle": "Privilege Escalation Methodology"
+ },
+ {
   "term": "Escalation path",
   "def": "the defined process for who to contact and how, for time-sensitive or critical issues.",
   "pathId": "20-career-prep",
@@ -3289,6 +3316,15 @@ const GLOSSARY = [
   "subTitle": "Your first bash script"
  },
  {
+  "term": "Exploit development",
+  "def": "the process of turning a discovered vulnerability into working code that reliably triggers it.",
+  "pathId": "14-ethical-hacking",
+  "pathN": "14",
+  "pathTitle": "Ethical Hacking",
+  "subId": "exploit-development-basics",
+  "subTitle": "Exploit Development Basics"
+ },
+ {
   "term": "Exported component",
   "def": "part of an app's functionality reachable by other apps on the device, a separate attack surface from the permission model.",
   "pathId": "13-mobile-security",
@@ -3359,6 +3395,15 @@ const GLOSSARY = [
   "pathTitle": "DevSecOps & AppSec Program",
   "subId": "sast-dast-sca",
   "subTitle": "SAST, DAST & SCA — The Core Scanning Trio"
+ },
+ {
+  "term": "False positive (scanning context)",
+  "def": "a flagged finding that, on manual verification, doesn't actually apply to the target.",
+  "pathId": "14-ethical-hacking",
+  "pathN": "14",
+  "pathTitle": "Ethical Hacking",
+  "subId": "vulnerability-scanning-tools",
+  "subTitle": "Vulnerability Scanning Tools"
  },
  {
   "term": "False positive (WAF context)",
@@ -3649,6 +3694,15 @@ const GLOSSARY = [
   "subTitle": "OWASP API Top 10 (2023)"
  },
  {
+  "term": "Fuzzing",
+  "def": "automatically feeding a program large volumes of malformed input to discover crashes and vulnerabilities.",
+  "pathId": "14-ethical-hacking",
+  "pathN": "14",
+  "pathTitle": "Ethical Hacking",
+  "subId": "exploit-development-basics",
+  "subTitle": "Exploit Development Basics"
+ },
+ {
   "term": "Gap analysis",
   "def": "comparing current maturity against target maturity to produce a prioritised roadmap",
   "pathId": "23-grc-compliance",
@@ -3683,6 +3737,15 @@ const GLOSSARY = [
   "pathTitle": "Digital Privacy & Personal Security",
   "subId": "privacy-laws-your-rights",
   "subTitle": "Privacy Laws & Your Rights"
+ },
+ {
+  "term": "Get-out-of-jail letter",
+  "def": "an authorization document a tester carries to prove legitimate engagement if testing activity triggers a security response.",
+  "pathId": "14-ethical-hacking",
+  "pathN": "14",
+  "pathTitle": "Ethical Hacking",
+  "subId": "rules-of-engagement-deep-dive",
+  "subTitle": "Rules of Engagement, Deep Dive"
  },
  {
   "term": "`getpass`",
@@ -3764,6 +3827,15 @@ const GLOSSARY = [
   "pathTitle": "Web Security & Hacking",
   "subId": "web-recon",
   "subTitle": "Web recon"
+ },
+ {
+  "term": "Google dorking",
+  "def": "using advanced search operators to find specific, sometimes unintentionally exposed content.",
+  "pathId": "14-ethical-hacking",
+  "pathN": "14",
+  "pathTitle": "Ethical Hacking",
+  "subId": "osint-tools-deep-dive",
+  "subTitle": "OSINT Tools, Deep Dive"
  },
  {
   "term": "Governance",
@@ -3908,6 +3980,15 @@ const GLOSSARY = [
   "pathTitle": "AI & AI Security",
   "subId": "why-ai-security",
   "subTitle": "Why AI security is new"
+ },
+ {
+  "term": "Handshake capture",
+  "def": "capturing the WPA2 authentication exchange for offline password-cracking attempts.",
+  "pathId": "14-ethical-hacking",
+  "pathN": "14",
+  "pathTitle": "Ethical Hacking",
+  "subId": "wireless-pentesting-basics",
+  "subTitle": "Wireless Pentesting Basics"
  },
  {
   "term": "Hardware",
@@ -5063,6 +5144,15 @@ const GLOSSARY = [
  },
  {
   "term": "Lateral movement",
+  "def": "using an initial compromised foothold to reach additional systems on the same network.",
+  "pathId": "14-ethical-hacking",
+  "pathN": "14",
+  "pathTitle": "Ethical Hacking",
+  "subId": "lateral-movement-techniques",
+  "subTitle": "Lateral Movement Techniques"
+ },
+ {
+  "term": "Lateral movement",
   "def": "an attacker moving from one compromised system to another inside a network",
   "pathId": "24-zero-trust",
   "pathN": "24",
@@ -5125,6 +5215,15 @@ const GLOSSARY = [
   "subTitle": "Linux privilege escalation"
  },
  {
+  "term": "LinPEAS / WinPEAS",
+  "def": "automated enumeration tools surfacing candidate privilege escalation paths on Linux and Windows respectively.",
+  "pathId": "14-ethical-hacking",
+  "pathN": "14",
+  "pathTitle": "Ethical Hacking",
+  "subId": "privilege-escalation-methodology",
+  "subTitle": "Privilege Escalation Methodology"
+ },
+ {
   "term": "Linux distribution (distro)",
   "def": "the Linux kernel packaged together with a specific software selection, package manager, and configuration choices.",
   "pathId": "03-linux",
@@ -5159,6 +5258,15 @@ const GLOSSARY = [
   "pathTitle": "Programming & Python",
   "subId": "lists-functions",
   "subTitle": "Lists & functions"
+ },
+ {
+  "term": "Living off the land",
+  "def": "using an environment's own legitimate, pre-installed tools rather than introducing new malware.",
+  "pathId": "14-ethical-hacking",
+  "pathN": "14",
+  "pathTitle": "Ethical Hacking",
+  "subId": "lateral-movement-techniques",
+  "subTitle": "Lateral Movement Techniques"
  },
  {
   "term": "LLM (Large Language Model)",
@@ -5539,6 +5647,15 @@ const GLOSSARY = [
   "subTitle": "Attackers & the kill chain"
  },
  {
+  "term": "MITRE ATT&CK framework",
+  "def": "a structured catalog of real-world adversary tactics and techniques, commonly used to organize purple team exercises.",
+  "pathId": "14-ethical-hacking",
+  "pathN": "14",
+  "pathTitle": "Ethical Hacking",
+  "subId": "purple-teaming-basics",
+  "subTitle": "Purple Teaming Basics"
+ },
+ {
   "term": "Modbus",
   "def": "one of the oldest and most widely deployed industrial protocols, with no built-in authentication or encryption",
   "pathId": "25-ot-ics-security",
@@ -5836,6 +5953,15 @@ const GLOSSARY = [
   "subTitle": "NIST Cybersecurity Framework Overview"
  },
  {
+  "term": "NIST SP 800-115",
+  "def": "the NIST technical guide for security testing, often required in regulated/government contexts.",
+  "pathId": "14-ethical-hacking",
+  "pathN": "14",
+  "pathTitle": "Ethical Hacking",
+  "subId": "pentest-methodologies-standards",
+  "subTitle": "Pentest Methodologies & Standards"
+ },
+ {
   "term": "nmap",
   "def": "a network scanning tool for discovering open ports and services, covered fully (with proper authorization context) in Path 14.",
   "pathId": "03-linux",
@@ -6124,6 +6250,24 @@ const GLOSSARY = [
   "subTitle": "Phase 1: Reconnaissance"
  },
  {
+  "term": "OSINT (Open Source Intelligence)",
+  "def": "systematically gathering publicly available information about a target.",
+  "pathId": "14-ethical-hacking",
+  "pathN": "14",
+  "pathTitle": "Ethical Hacking",
+  "subId": "osint-tools-deep-dive",
+  "subTitle": "OSINT Tools, Deep Dive"
+ },
+ {
+  "term": "OSSTMM",
+  "def": "a measurement-focused testing methodology covering multiple security channels beyond just networks.",
+  "pathId": "14-ethical-hacking",
+  "pathN": "14",
+  "pathTitle": "Ethical Hacking",
+  "subId": "pentest-methodologies-standards",
+  "subTitle": "Pentest Methodologies & Standards"
+ },
+ {
   "term": "OT (Operational Technology)",
   "def": "systems that directly monitor and control physical processes and equipment",
   "pathId": "25-ot-ics-security",
@@ -6367,6 +6511,15 @@ const GLOSSARY = [
   "subTitle": "Practical OT Security Controls"
  },
  {
+  "term": "Passive reconnaissance",
+  "def": "gathering information without directly interacting with the target's own systems.",
+  "pathId": "14-ethical-hacking",
+  "pathN": "14",
+  "pathTitle": "Ethical Hacking",
+  "subId": "osint-tools-deep-dive",
+  "subTitle": "OSINT Tools, Deep Dive"
+ },
+ {
   "term": "Passkey",
   "def": "a passwordless authentication method using public/private key cryptography instead of a shared secret.",
   "pathId": "00-fresher-basics",
@@ -6374,6 +6527,15 @@ const GLOSSARY = [
   "pathTitle": "Computer Basics & Security Mindset",
   "subId": "passwords-accounts",
   "subTitle": "Passwords & accounts basics"
+ },
+ {
+  "term": "Pass-the-Hash",
+  "def": "authenticating using a stolen password hash directly, without needing to crack it into plaintext.",
+  "pathId": "14-ethical-hacking",
+  "pathN": "14",
+  "pathTitle": "Ethical Hacking",
+  "subId": "lateral-movement-techniques",
+  "subTitle": "Lateral Movement Techniques"
  },
  {
   "term": "Pass-the-Hash",
@@ -6583,6 +6745,15 @@ const GLOSSARY = [
   "subTitle": "Why it matters to you"
  },
  {
+  "term": "Phishing simulation",
+  "def": "an authorized, scoped test measuring employee susceptibility to phishing, distinct from a real attack.",
+  "pathId": "14-ethical-hacking",
+  "pathN": "14",
+  "pathTitle": "Ethical Hacking",
+  "subId": "social-engineering-in-pentests",
+  "subTitle": "Social Engineering in Pentests"
+ },
+ {
   "term": "Phishing / spear phishing / whaling",
   "def": "generic, targeted, and executive-targeted email deception.",
   "pathId": "10-fundamentals",
@@ -6680,6 +6851,15 @@ const GLOSSARY = [
   "pathTitle": "Ethical Hacking",
   "subId": "post-exploitation",
   "subTitle": "Phase 4: Post-exploitation"
+ },
+ {
+  "term": "Pivoting",
+  "def": "using an already-compromised system as a relay to reach an otherwise unreachable network segment.",
+  "pathId": "14-ethical-hacking",
+  "pathN": "14",
+  "pathTitle": "Ethical Hacking",
+  "subId": "pivoting-and-tunneling",
+  "subTitle": "Pivoting & Tunneling"
  },
  {
   "term": "Plaintext / ciphertext",
@@ -6851,6 +7031,15 @@ const GLOSSARY = [
   "pathTitle": "Bug Bounty",
   "subId": "hunting-idor",
   "subTitle": "Hunting IDOR"
+ },
+ {
+  "term": "Pretexting",
+  "def": "constructing a plausible cover story to manipulate a target into providing information or access.",
+  "pathId": "14-ethical-hacking",
+  "pathN": "14",
+  "pathTitle": "Ethical Hacking",
+  "subId": "social-engineering-in-pentests",
+  "subTitle": "Social Engineering in Pentests"
  },
  {
   "term": "Pretexting / baiting / tailgating",
@@ -7150,6 +7339,15 @@ const GLOSSARY = [
   "subTitle": "How to actually test APIs"
  },
  {
+  "term": "Proxychains",
+  "def": "a tool routing standard command-line tools' traffic through an established pivot.",
+  "pathId": "14-ethical-hacking",
+  "pathN": "14",
+  "pathTitle": "Ethical Hacking",
+  "subId": "pivoting-and-tunneling",
+  "subTitle": "Pivoting & Tunneling"
+ },
+ {
   "term": "PSK vs Enterprise (802.1X)",
   "def": "shared-password vs individual-credential Wi-Fi authentication modes.",
   "pathId": "12-network-security",
@@ -7157,6 +7355,15 @@ const GLOSSARY = [
   "pathTitle": "Network Security",
   "subId": "wifi-security",
   "subTitle": "Wi-Fi security & attacks"
+ },
+ {
+  "term": "PTES (Penetration Testing Execution Standard)",
+  "def": "a seven-phase formal pentest methodology.",
+  "pathId": "14-ethical-hacking",
+  "pathN": "14",
+  "pathTitle": "Ethical Hacking",
+  "subId": "pentest-methodologies-standards",
+  "subTitle": "Pentest Methodologies & Standards"
  },
  {
   "term": "Public IP",
@@ -7193,6 +7400,15 @@ const GLOSSARY = [
   "pathTitle": "OT/ICS & Critical Infrastructure Security",
   "subId": "purdue-model",
   "subTitle": "The Purdue Model: Segmenting IT from OT"
+ },
+ {
+  "term": "Purple teaming",
+  "def": "a collaborative methodology where red and blue teams work together in real time to test and improve detection capability.",
+  "pathId": "14-ethical-hacking",
+  "pathN": "14",
+  "pathTitle": "Ethical Hacking",
+  "subId": "purple-teaming-basics",
+  "subTitle": "Purple Teaming Basics"
  },
  {
   "term": "`.py` file",
@@ -7463,6 +7679,15 @@ const GLOSSARY = [
   "pathTitle": "Operating Systems & Linux",
   "subId": "files-and-folders",
   "subTitle": "Files & folders"
+ },
+ {
+  "term": "Red team engagement",
+  "def": "a covert, objective-driven simulation of a specific adversary, testing detection and response capability, not just vulnerability coverage.",
+  "pathId": "14-ethical-hacking",
+  "pathN": "14",
+  "pathTitle": "Ethical Hacking",
+  "subId": "red-team-vs-pentest",
+  "subTitle": "Red Team vs. Penetration Testing"
  },
  {
   "term": "Red teaming",
@@ -7949,6 +8174,15 @@ const GLOSSARY = [
   "pathTitle": "Ethical Hacking",
   "subId": "what-is-eh",
   "subTitle": "What ethical hacking really is"
+ },
+ {
+  "term": "Rules of Engagement (RoE)",
+  "def": "the formal document specifying scope, timing, permitted techniques, and escalation process for a pentest engagement.",
+  "pathId": "14-ethical-hacking",
+  "pathN": "14",
+  "pathTitle": "Ethical Hacking",
+  "subId": "rules-of-engagement-deep-dive",
+  "subTitle": "Rules of Engagement, Deep Dive"
  },
  {
   "term": "Rules of Engagement (RoE)",
@@ -8903,6 +9137,15 @@ const GLOSSARY = [
   "pathTitle": "Programming & Python",
   "subId": "python-network-scripting",
   "subTitle": "Python for network scripting"
+ },
+ {
+  "term": "SOCKS proxy",
+  "def": "a proxy created via SSH dynamic port forwarding, letting tools route traffic through a compromised system.",
+  "pathId": "14-ethical-hacking",
+  "pathN": "14",
+  "pathTitle": "Ethical Hacking",
+  "subId": "pivoting-and-tunneling",
+  "subTitle": "Pivoting & Tunneling"
  },
  {
   "term": "Software",
@@ -10363,6 +10606,15 @@ const GLOSSARY = [
   "subTitle": "Reports that get paid"
  },
  {
+  "term": "Vulnerability scanner",
+  "def": "automated tooling checking discovered services against a database of known vulnerabilities.",
+  "pathId": "14-ethical-hacking",
+  "pathN": "14",
+  "pathTitle": "Ethical Hacking",
+  "subId": "vulnerability-scanning-tools",
+  "subTitle": "Vulnerability Scanning Tools"
+ },
+ {
   "term": "Web Application Firewall (WAF)",
   "def": "a tool inspecting HTTP request content for patterns resembling known attack techniques, blocking matches before they reach the application.",
   "pathId": "11-web-security",
@@ -10586,6 +10838,15 @@ const GLOSSARY = [
   "pathTitle": "Network Security",
   "subId": "wifi-security",
   "subTitle": "Wi-Fi security & attacks"
+ },
+ {
+  "term": "WPS (Wi-Fi Protected Setup)",
+  "def": "a network-joining convenience feature with well-documented cryptographic weaknesses in many implementations.",
+  "pathId": "14-ethical-hacking",
+  "pathN": "14",
+  "pathTitle": "Ethical Hacking",
+  "subId": "wireless-pentesting-basics",
+  "subTitle": "Wireless Pentesting Basics"
  },
  {
   "term": "Write-up",
