@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How browsers render pages — Path 05 · KashSec Academy</title>
+<meta name="description" content="The page-load-journey lesson walked through the request-response cycle. This lesson zooms into one specific step of that journey — what actually happens the instant HTML arrives in your browser, befor">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/05-web-basics/how-browsers-render-pages">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="How browsers render pages — Path 05 · KashSec Academy">
+<meta property="og:description" content="The page-load-journey lesson walked through the request-response cycle. This lesson zooms into one specific step of that journey — what actually happens the instant HTML arrives in your browser, befor">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/05-web-basics/how-browsers-render-pages">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="How browsers render pages — Path 05 · KashSec Academy">
+<meta name="twitter:description" content="The page-load-journey lesson walked through the request-response cycle. This lesson zooms into one specific step of that journey — what actually happens the instant HTML arrives in your browser, befor">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"How browsers render pages — Path 05 · KashSec Academy","description":"The page-load-journey lesson walked through the request-response cycle. This lesson zooms into one specific step of that journey — what actually happens the instant HTML arrives in your browser, befor","url":"https://kashsec.vercel.app/#/lesson/05-web-basics/how-browsers-render-pages","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/05-web-basics/how-browsers-render-pages">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 05 — How the Web Works</a> · How browsers render pages</div>
+  <article><h1>How browsers render pages</h1>
+<p>The page-load-journey lesson walked through the request-response cycle. This lesson zooms into one specific step of that journey — what actually happens the instant HTML arrives in your browser, before you see anything on screen at all.</p>
+<h2>Parsing HTML into the DOM</h2>
+<p>The browser reads incoming HTML top to bottom and builds the <strong>DOM (Document Object Model)</strong> — a live, in-memory tree representation of every element on the page. This is genuinely important to understand: the DOM isn&#39;t the HTML file itself, it&#39;s the browser&#39;s <em>interpretation</em> of it, and JavaScript (from the HTML-CSS-JS lesson) can modify this tree directly, changing what&#39;s displayed without ever touching the original HTML file at all.</p>
+<h2>Why this matters for understanding XSS</h2>
+<p>The DOM being <em>live and modifiable</em> is exactly what makes <strong>Cross-Site Scripting (XSS)</strong>, briefly introduced in the HTML-CSS-JS lesson, actually work: if an attacker can get their own JavaScript to run on a page, that script has the exact same ability to read and modify the DOM as the page&#39;s own legitimate code does — including reading cookies, modifying displayed content, or capturing what a user types. Understanding that the DOM is just a live tree any running script can touch is the conceptual foundation Path 11&#39;s XSS material builds on directly.</p>
+<h2>The critical rendering path, briefly</h2>
+<p>Browsers don&#39;t wait for absolutely everything to load before showing you something — they follow a <strong>critical rendering path</strong>: parse HTML, build the DOM, apply CSS, then paint pixels to the screen, updating incrementally as more resources arrive. This is why a slow-loading image doesn&#39;t block the rest of a page from appearing, but a <code>&lt;script&gt;</code> tag without special handling often does — by default, the browser pauses HTML parsing entirely to fetch and run a script, since that script might modify the DOM being built.</p>
+<h2>Why this matters for security tooling specifically</h2>
+<p>Browser DevTools (covered fully two lessons from now) let you inspect the <em>live DOM</em> directly — not the original HTML source, but what the page actually looks like right now, after every script has run. This distinction matters enormously in real security work: &quot;view page source&quot; shows you the original HTML file, while DevTools&#39; Elements panel shows you the current DOM state, and these two can be meaningfully different once JavaScript has modified the page — exactly the gap where a lot of real-world web investigation actually happens.</p>
+<p>Why might &quot;View Page Source&quot; (showing the original HTML) and a browser&#39;s DevTools Elements panel (showing the live DOM) display genuinely different content for the same page?</p>
+<details><summary>Show answer</summary>"View Page Source" shows the raw HTML file exactly as it arrived from the server, before any JavaScript has run. The DevTools Elements panel, by contrast, shows the <em>current state of the DOM</em> — which JavaScript may have already modified by adding, removing, or changing elements after the initial page load, exactly as this lesson described. A page that dynamically loads additional content, builds parts of its interface with JavaScript, or gets modified by a script (legitimate or malicious) will show meaningfully different content in these two views — which is exactly why security investigators use DevTools rather than page source when they need to see what a page <em>actually</em> currently contains, not just what it originally shipped with.</details><h2>Key terms</h2>
+<ul>
+<li><strong>DOM (Document Object Model)</strong> — the browser&#39;s live, in-memory tree representation of a page&#39;s elements, built from parsed HTML.</li>
+<li><strong>Critical rendering path</strong> — the sequence of steps (parse HTML, build DOM, apply CSS, paint) a browser follows to display a page.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>The DOM is a live, in-memory tree the browser builds from HTML — not the HTML file itself — and JavaScript can modify it directly at any time.</li>
+<li>This live, modifiable nature of the DOM is exactly what makes XSS attacks work, and it&#39;s the conceptual foundation Path 11 builds on.</li>
+<li>DevTools&#39; Elements panel shows the current, possibly-modified DOM state, meaningfully different from &quot;View Page Source&quot;&#39;s original HTML — a genuinely important distinction for real web investigation work.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/05-web-basics/html-css-js">HTML, CSS &amp; JavaScript</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/05-web-basics/how-browsers-render-pages";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

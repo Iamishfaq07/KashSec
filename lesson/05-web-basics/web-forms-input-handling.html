@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Web forms &amp; input handling — Path 05 · KashSec Academy</title>
+<meta name="description" content="You've now toured DevTools. This lesson puts that tool to direct use, examining exactly how a web form actually submits data — the entry point for an enormous share of the vulnerabilities covered thro">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/05-web-basics/web-forms-input-handling">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Web forms &amp; input handling — Path 05 · KashSec Academy">
+<meta property="og:description" content="You've now toured DevTools. This lesson puts that tool to direct use, examining exactly how a web form actually submits data — the entry point for an enormous share of the vulnerabilities covered thro">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/05-web-basics/web-forms-input-handling">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Web forms &amp; input handling — Path 05 · KashSec Academy">
+<meta name="twitter:description" content="You've now toured DevTools. This lesson puts that tool to direct use, examining exactly how a web form actually submits data — the entry point for an enormous share of the vulnerabilities covered thro">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Web forms & input handling — Path 05 · KashSec Academy","description":"You've now toured DevTools. This lesson puts that tool to direct use, examining exactly how a web form actually submits data — the entry point for an enormous share of the vulnerabilities covered thro","url":"https://kashsec.vercel.app/#/lesson/05-web-basics/web-forms-input-handling","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/05-web-basics/web-forms-input-handling">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 05 — How the Web Works</a> · Web forms &amp; input handling</div>
+  <article><h1>Web forms &amp; input handling</h1>
+<p>You&#39;ve now toured DevTools. This lesson puts that tool to direct use, examining exactly how a web form actually submits data — the entry point for an enormous share of the vulnerabilities covered throughout this entire course.</p>
+<h2>How a form actually submits data</h2>
+<pre><code class="language-html">&lt;form action=&quot;/login&quot; method=&quot;POST&quot;&gt;
+    &lt;input type=&quot;text&quot; name=&quot;username&quot;&gt;
+    &lt;input type=&quot;password&quot; name=&quot;password&quot;&gt;
+    &lt;button type=&quot;submit&quot;&gt;Log in&lt;/button&gt;
+&lt;/form&gt;
+</code></pre>
+<p>The <code>method</code> attribute determines whether this becomes a GET or POST request (from the HTTP-methods lesson), and <code>action</code> determines where it&#39;s sent. Every named <code>&lt;input&gt;</code> becomes a field in the submitted request — genuinely worth opening DevTools&#39; Network tab (from the previous lesson) and watching an actual form submission to see this happen live.</p>
+<h2>Client-side validation: a UX feature, not a security control</h2>
+<pre><code class="language-html">&lt;input type=&quot;email&quot; required minlength=&quot;5&quot;&gt;
+</code></pre>
+<p>HTML form attributes like <code>required</code>, <code>minlength</code>, and <code>type=&quot;email&quot;</code> provide immediate feedback to a legitimate user filling out the form correctly — but they run entirely in the browser, meaning an attacker can trivially bypass them by disabling JavaScript, using DevTools to remove the attribute, or simply crafting and sending the HTTP request directly (using a tool like curl, from Path 03) without ever touching the actual HTML form at all.</p>
+<p><strong>Client-side validation is a convenience feature for legitimate users, never a security control.</strong> Every single check a form performs in the browser must be performed <em>again</em>, independently, on the server — because the server can never actually trust that a request genuinely came from the form it rendered, following the rules that form&#39;s HTML happened to specify. This exact principle is the foundation of Path 11&#39;s entire web-attacks curriculum and Path 21&#39;s API security material.</p>
+<h2>Hidden fields: convenient, but not confidential</h2>
+<pre><code class="language-html">&lt;input type=&quot;hidden&quot; name=&quot;price&quot; value=&quot;49.99&quot;&gt;
+</code></pre>
+<p>A <strong>hidden field</strong> is invisible in the rendered page, but it&#39;s still fully present in the HTML source and the submitted request — meaning it&#39;s exactly as easy for an attacker to view and modify as any visible field, using DevTools or a simple request-editing tool. A price stored in a hidden field, trusted by the server without re-verification, is a real, recurring vulnerability pattern (previewed here, covered as a full hands-on CTF challenge in Path 19&#39;s &quot;Name Your Own Price&quot; challenge).</p>
+<h2>File upload forms: a genuinely high-risk input type</h2>
+<pre><code class="language-html">&lt;input type=&quot;file&quot; name=&quot;avatar&quot;&gt;
+</code></pre>
+<p>File uploads deserve their own specific scrutiny beyond ordinary text input — validating file type based only on the filename extension or the browser-reported content type (both trivially spoofable) rather than actually inspecting the file&#39;s real content is a common, exploitable mistake, covered in real depth in Path 11&#39;s web application security material.</p>
+<p>Why can&#39;t a server trust that a submitted form&#39;s data followed the validation rules its own HTML specified (like <code>required</code> or <code>minlength</code>)?</p>
+<details><summary>Show answer</summary>HTML form validation attributes run entirely inside the user's browser — the server only ever sees the final HTTP request that eventually arrives, with no way to verify that request was actually generated by submitting the rendered form through a browser that respected those attributes at all. An attacker can send a perfectly valid-looking HTTP POST request directly (using curl, a browser's DevTools, or a dedicated tool like Burp Suite covered in Path 11) with a completely empty "required" field, an intentionally malformed email, or any other value entirely — the server has absolutely no way to distinguish this from a legitimately-submitted form, because <em>from the server's perspective, they are functionally identical HTTP requests</em>. This is exactly why every meaningful validation check must be duplicated on the server, which is the only place actually capable of enforcing anything.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Client-side validation</strong> — form validation running in the browser, a usability feature that provides no actual security guarantee.</li>
+<li><strong>Hidden field</strong> — a form input invisible in the rendered page but fully present and modifiable in the HTML source and submitted request.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Every input a form collects arrives at the server as a request field, regardless of what type of input control rendered it in the browser.</li>
+<li>Client-side validation is a UX convenience, never a security control — every meaningful check must be duplicated and enforced on the server, since the server can never trust a request actually respected the browser&#39;s rules.</li>
+<li>Hidden fields and file uploads deserve specific scrutiny, since both are commonly (and mistakenly) trusted more than their actual security properties warrant.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/05-web-basics/content-security-policy-basics">Content Security Policy Basics</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/05-web-basics/web-forms-input-handling";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

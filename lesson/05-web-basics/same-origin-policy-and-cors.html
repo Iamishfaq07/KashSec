@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Same-Origin Policy &amp; CORS — Path 05 · KashSec Academy</title>
+<meta name="description" content="You now understand cookies, storage, and how the DOM works. This lesson covers arguably the single most important security boundary in the entire web platform — one that quietly protects nearly everyt">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/05-web-basics/same-origin-policy-and-cors">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Same-Origin Policy &amp; CORS — Path 05 · KashSec Academy">
+<meta property="og:description" content="You now understand cookies, storage, and how the DOM works. This lesson covers arguably the single most important security boundary in the entire web platform — one that quietly protects nearly everyt">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/05-web-basics/same-origin-policy-and-cors">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Same-Origin Policy &amp; CORS — Path 05 · KashSec Academy">
+<meta name="twitter:description" content="You now understand cookies, storage, and how the DOM works. This lesson covers arguably the single most important security boundary in the entire web platform — one that quietly protects nearly everyt">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Same-Origin Policy & CORS — Path 05 · KashSec Academy","description":"You now understand cookies, storage, and how the DOM works. This lesson covers arguably the single most important security boundary in the entire web platform — one that quietly protects nearly everyt","url":"https://kashsec.vercel.app/#/lesson/05-web-basics/same-origin-policy-and-cors","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/05-web-basics/same-origin-policy-and-cors">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 05 — How the Web Works</a> · Same-Origin Policy &amp; CORS</div>
+  <article><h1>Same-Origin Policy &amp; CORS</h1>
+<p>You now understand cookies, storage, and how the DOM works. This lesson covers arguably the single most important security boundary in the entire web platform — one that quietly protects nearly everything else you&#39;ve learned about in this path.</p>
+<h2>What an &quot;origin&quot; actually is</h2>
+<p>An <strong>origin</strong> is defined by exactly three things together: the <strong>scheme</strong> (http vs. https), the <strong>host</strong> (the domain name), and the <strong>port</strong>. Two URLs share the same origin only if all three match exactly:</p>
+<pre><code>https://example.com:443/page1   and   https://example.com:443/page2   → SAME origin
+https://example.com             and   http://example.com               → DIFFERENT origin (scheme differs)
+https://example.com             and   https://api.example.com          → DIFFERENT origin (host differs)
+https://example.com             and   https://example.com:8080         → DIFFERENT origin (port differs)
+</code></pre>
+<h2>The Same-Origin Policy: the web&#39;s default trust boundary</h2>
+<p>The <strong>Same-Origin Policy (SOP)</strong> is a browser-enforced rule: a script running on one origin cannot read data from a different origin by default — a script on <code>evil.com</code> cannot use JavaScript to read your cookies, localStorage, or the DOM content of a page open on <code>yourbank.com</code>, even if both are open in tabs at the same time. This single rule is the foundation nearly every other web security mechanism this course covers builds on top of.</p>
+<h2>CORS: deliberately relaxing the boundary, safely</h2>
+<p>Sometimes a legitimate application genuinely needs to make requests across origins — a frontend on <code>app.example.com</code> calling an API on <code>api.example.com</code>. <strong>CORS (Cross-Origin Resource Sharing)</strong> is the mechanism that lets a server explicitly opt into allowing specific cross-origin requests, via response headers:</p>
+<pre><code>Access-Control-Allow-Origin: https://app.example.com
+</code></pre>
+<p>The server, not the browser or the requesting script, decides which origins are allowed — meaning a misconfigured CORS policy is entirely a server-side mistake, not a browser flaw.</p>
+<h2>The dangerous misconfiguration: reflecting any origin</h2>
+<pre><code>Access-Control-Allow-Origin: *
+Access-Control-Allow-Credentials: true
+</code></pre>
+<p>This combination — allowing <em>any</em> origin while also allowing credentials (cookies) to be included — effectively disables the Same-Origin Policy&#39;s protection entirely for that endpoint, since literally any website can now make authenticated, credentialed requests on a logged-in user&#39;s behalf and read the response. This exact misconfiguration pattern shows up repeatedly in real-world bug bounty reports (Path 15) and is directly related to the CSRF concepts covered later in Path 11.</p>
+<h2>Why this connects directly to your earlier lessons</h2>
+<ul>
+<li><strong>Cookies</strong> — the Same-Origin Policy is exactly what prevents a malicious site from directly reading your session cookie for a different site using JavaScript (though cookies still get <em>sent</em> automatically with cross-origin requests unless additional protections are configured — the exact mechanism behind CSRF, covered fully in Path 11)</li>
+<li><strong>localStorage</strong> — protected by the same origin boundary; a script on a different origin genuinely cannot read another origin&#39;s localStorage at all, unlike the cookie-sending behavior above</li>
+<li><strong>APIs</strong> — the next lesson&#39;s API calls frequently need CORS configured correctly specifically to let a legitimate frontend talk to a backend on a different subdomain</li>
+</ul>
+<p>Why is <code>Access-Control-Allow-Origin: *</code> combined with <code>Access-Control-Allow-Credentials: true</code> considered a serious misconfiguration, rather than just an overly permissive but harmless setting?</p>
+<details><summary>Show answer</summary>Together, these two headers tell the browser "any website in the world is allowed to make requests to this endpoint, <em>and</em> include the user's credentials (cookies) with those requests, and read the response." This effectively grants every other website on the internet the ability to make authenticated API calls on behalf of any user who happens to be logged in and visiting that malicious site — reading private data, and depending on the endpoint, potentially performing actions on the user's behalf too. This is exactly why browsers actually refuse to honor this specific combination in modern implementations (a wildcard origin combined with credentials is explicitly disallowed by the CORS specification) — but developers can still accidentally create an equivalent, exploitable misconfiguration by dynamically reflecting whatever origin a request claims to be from, rather than checking it against a genuine allow-list.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Origin</strong> — the combination of scheme, host, and port that defines a security boundary on the web.</li>
+<li><strong>Same-Origin Policy (SOP)</strong> — the browser-enforced default rule preventing cross-origin script access to another site&#39;s data.</li>
+<li><strong>CORS (Cross-Origin Resource Sharing)</strong> — the server-controlled mechanism for deliberately permitting specific cross-origin requests.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>The Same-Origin Policy is the foundational browser security boundary nearly every other web security mechanism in this course builds on.</li>
+<li>CORS lets a server deliberately, explicitly relax that boundary for specific trusted origins — but a misconfigured, overly permissive CORS policy (especially combined with credentials) can effectively disable the protection entirely.</li>
+<li>This boundary is exactly what protects your cookies and localStorage from being read by a different website&#39;s script, even when both are open simultaneously.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/05-web-basics/apis-json">APIs &amp; JSON</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/05-web-basics/same-origin-policy-and-cors";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

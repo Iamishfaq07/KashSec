@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Content Security Policy basics — Path 05 · KashSec Academy</title>
+<meta name="description" content="The HTML-CSS-JS lesson mentioned XSS as a risk that exists because browsers execute whatever JavaScript a page contains. This lesson introduces the single most effective browser-enforced defense again">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/05-web-basics/content-security-policy-basics">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Content Security Policy basics — Path 05 · KashSec Academy">
+<meta property="og:description" content="The HTML-CSS-JS lesson mentioned XSS as a risk that exists because browsers execute whatever JavaScript a page contains. This lesson introduces the single most effective browser-enforced defense again">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/05-web-basics/content-security-policy-basics">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Content Security Policy basics — Path 05 · KashSec Academy">
+<meta name="twitter:description" content="The HTML-CSS-JS lesson mentioned XSS as a risk that exists because browsers execute whatever JavaScript a page contains. This lesson introduces the single most effective browser-enforced defense again">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Content Security Policy basics — Path 05 · KashSec Academy","description":"The HTML-CSS-JS lesson mentioned XSS as a risk that exists because browsers execute whatever JavaScript a page contains. This lesson introduces the single most effective browser-enforced defense again","url":"https://kashsec.vercel.app/#/lesson/05-web-basics/content-security-policy-basics","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/05-web-basics/content-security-policy-basics">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 05 — How the Web Works</a> · Content Security Policy basics</div>
+  <article><h1>Content Security Policy basics</h1>
+<p>The HTML-CSS-JS lesson mentioned XSS as a risk that exists because browsers execute whatever JavaScript a page contains. This lesson introduces the single most effective browser-enforced defense against that exact risk: <strong>Content Security Policy (CSP)</strong>.</p>
+<h2>What CSP actually does</h2>
+<p><strong>CSP</strong> is an HTTP response header (or an equivalent <code>&lt;meta&gt;</code> tag) that tells the browser exactly which sources of content — scripts, styles, images, fonts — are allowed to load and execute on a page, and which are not:</p>
+<pre><code>Content-Security-Policy: script-src &#39;self&#39; https://trusted-cdn.com
+</code></pre>
+<p>This example tells the browser: only run JavaScript that comes from this page&#39;s own origin, or from <code>trusted-cdn.com</code> — any script from anywhere else, including a script an attacker manages to inject through an XSS vulnerability, gets blocked by the browser itself, regardless of how the injection happened.</p>
+<h2>Why this is such a powerful, layered defense</h2>
+<p>This directly connects to a theme this entire course keeps returning to: <strong>defense in depth</strong>. Even if an application has an actual XSS vulnerability — a genuine flaw allowing an attacker to inject content into the page — a properly configured CSP can prevent that injected script from actually <em>executing</em>, because the browser simply refuses to run any script that doesn&#39;t match the policy&#39;s allowed sources. The underlying bug still exists and should still be fixed, but CSP meaningfully reduces the real-world impact even before that fix ships.</p>
+<h2>The dangerous shortcut: &#39;unsafe-inline&#39;</h2>
+<pre><code>Content-Security-Policy: script-src &#39;self&#39; &#39;unsafe-inline&#39;
+</code></pre>
+<p>Adding <code>&#39;unsafe-inline&#39;</code> allows inline <code>&lt;script&gt;</code> tags to run directly within the page — often added by developers as a quick fix to get an existing application working with CSP, without properly restructuring inline scripts into separate files. The problem: <code>&#39;unsafe-inline&#39;</code> re-opens almost exactly the XSS protection CSP was meant to provide in the first place, since injected inline script now runs just as freely as legitimate inline script does.</p>
+<p>A common real-world pattern worth recognizing: an application ships a CSP header, appears to have &quot;done CSP,&quot; but includes <code>&#39;unsafe-inline&#39;</code> for convenience — meaning the actual XSS protection this lesson is describing is largely undermined. Reviewing a CSP header for <code>&#39;unsafe-inline&#39;</code> (and the similarly risky <code>&#39;unsafe-eval&#39;</code>, which allows <code>eval()</code>-style dynamic code execution) is a genuinely quick, high-value check during any real web security assessment.</p>
+<h2>Other useful CSP directives, briefly</h2>
+<ul>
+<li><strong><code>default-src</code></strong> — the fallback policy applied to any resource type not explicitly specified</li>
+<li><strong><code>img-src</code></strong> — controls which sources images can load from</li>
+<li><strong><code>frame-ancestors</code></strong> — controls which sites are allowed to embed this page in an <code>&lt;iframe&gt;</code>, directly defending against clickjacking attacks</li>
+<li><strong><code>report-uri</code> / <code>report-to</code></strong> — tells the browser to send a report whenever the policy blocks something, genuinely useful for monitoring and tuning a policy over time without breaking legitimate functionality</li>
+</ul>
+<p>Why does a CSP containing <code>&#39;unsafe-inline&#39;</code> provide meaningfully weaker XSS protection than one without it, even though the application still technically &quot;has a CSP&quot;?</p>
+<details><summary>Show answer</summary>CSP's core XSS defense works by telling the browser to only execute scripts from explicitly trusted, allow-listed sources — an attacker's injected script, having no way to actually originate from a trusted external source, would normally be blocked outright. <code>'unsafe-inline'</code> specifically re-permits <em>any</em> inline script directly embedded in the page's HTML to run, with no distinction between the application's own legitimate inline scripts and an attacker's maliciously injected inline script — both are simply "inline script embedded in the page," and CSP with this directive treats them identically. This means an XSS vulnerability that injects an inline `<script>` tag (the most common form of XSS injection) executes successfully regardless of the CSP being present, largely defeating the specific protection this lesson describes, even though the header technically exists and might still provide some narrower benefit against externally-hosted malicious scripts.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Content Security Policy (CSP)</strong> — an HTTP header restricting which sources of content a page is allowed to load and execute.</li>
+<li><strong>&#39;unsafe-inline&#39;</strong> — a CSP directive that re-permits inline scripts, significantly weakening XSS protection.</li>
+<li><strong>Defense in depth</strong> — layering multiple independent security controls so a single flaw doesn&#39;t lead directly to full compromise.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>CSP tells the browser exactly which content sources are trusted, and blocks execution of anything else — including an attacker&#39;s injected script from a real XSS vulnerability.</li>
+<li>This is a genuine example of defense in depth: CSP doesn&#39;t fix the underlying bug, but it meaningfully reduces real-world impact even before that fix ships.</li>
+<li><code>&#39;unsafe-inline&#39;</code> significantly undermines CSP&#39;s core protection, and checking for it is a quick, high-value step in any real web security review.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/05-web-basics/web-anatomy">Anatomy of a modern web app</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/05-web-basics/content-security-policy-basics";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

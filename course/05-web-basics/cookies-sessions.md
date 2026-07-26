@@ -204,4 +204,4 @@ Which cookie flag would have prevented JavaScript from stealing the session cook
 - [Web.dev — SameSite cookies explained](https://web.dev/articles/samesite-cookies-explained)
 ???
 
-**Next up →** [APIs & JSON](#/lesson/05-web-basics/apis-json)
+**Next up →** [Browser storage basics](#/lesson/05-web-basics/browser-storage-basics)

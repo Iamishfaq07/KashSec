@@ -212,4 +212,4 @@ A friend says "our API is secure because our web UI hides the delete button unle
 - [PortSwigger — API testing](https://portswigger.net/web-security/api-testing)
 ???
 
-**Next up →** [Browser DevTools tour](#/lesson/05-web-basics/devtools)
+**Next up →** [WebSockets & the real-time web](#/lesson/05-web-basics/websockets-realtime-web)

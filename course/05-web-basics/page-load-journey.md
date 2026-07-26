@@ -146,4 +146,4 @@ When you type `example.com` in your browser, roughly what's the **first network 
 - [What happens when you type a URL — GitHub gist collection](https://github.com/alex/what-happens-when) — deep dive.
 ???
 
-**Next up →** [HTML, CSS & JavaScript](#/lesson/05-web-basics/html-css-js)
+**Next up →** [How browsers render pages](#/lesson/05-web-basics/how-browsers-render-pages)

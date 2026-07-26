@@ -794,14 +794,23 @@ const PATHS = [
    desc:"Requests, HTML/CSS/JS, client/server, cookies, APIs, DevTools.",
    subs:[
      {n:"1", id:"page-load-journey",   title:"The page-load journey",   desc:"Every step from click to rendered page."},
-     {n:"2", id:"html-css-js",         title:"HTML, CSS & JavaScript",  desc:"Structure, style, behaviour — and why XSS exists."},
-     {n:"3", id:"client-vs-server",    title:"Client vs server",        desc:"The single most important web-security idea."},
-     {n:"4", id:"cookies-sessions",    title:"Cookies, sessions, logins", desc:"How you stay logged in — and how attackers steal that."},
-     {n:"5", id:"apis-json",           title:"APIs & JSON",             desc:"How modern apps really talk under the hood."},
-     {n:"6", id:"devtools",            title:"Browser DevTools",        desc:"Your first hacking tool — free and built in."},
-     {n:"7", id:"web-anatomy",         title:"Anatomy of a web app",    desc:"The full picture: client, server, DB, API, cookies."},
-     {n:"8", id:"cookies-sessions-lab", title:"Cookies & Sessions Lab", desc:"Understand how authentication state is managed and attacked."},
-     {n:"9", id:"devtools-lab",        title:"Browser DevTools Lab",    desc:"Learn to use your browser as a hacking tool."}
+     {n:"2", id:"how-browsers-render-pages", title:"How browsers render pages", desc:"The DOM, the critical rendering path, and why this matters for XSS."},
+     {n:"3", id:"html-css-js",         title:"HTML, CSS & JavaScript",  desc:"Structure, style, behaviour — and why XSS exists."},
+     {n:"4", id:"client-vs-server",    title:"Client vs server",        desc:"The single most important web-security idea."},
+     {n:"5", id:"http-methods-status-codes", title:"HTTP methods & status codes", desc:"GET vs POST, the 401-vs-403 distinction, and username enumeration."},
+     {n:"6", id:"cookies-sessions",    title:"Cookies, sessions, logins", desc:"How you stay logged in — and how attackers steal that."},
+     {n:"7", id:"browser-storage-basics", title:"Browser storage basics", desc:"localStorage, sessionStorage, and why tokens belong in HttpOnly cookies instead."},
+     {n:"8", id:"same-origin-policy-and-cors", title:"Same-Origin Policy & CORS", desc:"The web's foundational trust boundary, and how it gets misconfigured."},
+     {n:"9", id:"apis-json",           title:"APIs & JSON",             desc:"How modern apps really talk under the hood."},
+     {n:"10", id:"websockets-realtime-web", title:"WebSockets & the real-time web", desc:"Persistent, bidirectional connections for chat, live updates, and games."},
+     {n:"11", id:"devtools",            title:"Browser DevTools",        desc:"Your first hacking tool — free and built in."},
+     {n:"12", id:"web-forms-input-handling", title:"Web forms & input handling", desc:"Why client-side validation is a UX feature, never a security control."},
+     {n:"13", id:"content-security-policy-basics", title:"Content Security Policy basics", desc:"The browser-enforced header that blocks injected scripts from running at all."},
+     {n:"14", id:"web-anatomy",         title:"Anatomy of a web app",    desc:"The full picture: client, server, DB, API, cookies."},
+     {n:"15", id:"web-caching-basics", title:"Web caching basics", desc:"CDNs, Cache-Control, and why caching sensitive pages is a real vulnerability."},
+     {n:"16", id:"web-frameworks-overview", title:"Web frameworks: an overview", desc:"React, Django, Express — and why framework defaults help but aren't magic."},
+     {n:"17", id:"cookies-sessions-lab", title:"Cookies & Sessions Lab", desc:"Understand how authentication state is managed and attacked."},
+     {n:"18", id:"devtools-lab",        title:"Browser DevTools Lab",    desc:"Learn to use your browser as a hacking tool."}
    ]},
   {n:"06", id:"06-crypto-fundamentals", title:"Cryptography Fundamentals", level:"Beginner",
    desc:"Crypto concepts get used everywhere in this course — this path teaches them from zero: encoding vs encryption vs hashing, AES, RSA, certificates, and the mistakes that keep breaking real systems.",
@@ -4800,6 +4809,11 @@ function renderLabPhishing(){
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
+  {date:'2026-07-25', title:'Path 05 doubled to 18 lessons', items:[
+    'Twelfth batch of the course-wide content-doubling effort: Path 05 (How the Web Works) grows from 9 to 18 lessons.',
+    'New lessons: How Browsers Render Pages (the DOM and XSS), HTTP Methods & Status Codes, Browser Storage Basics, Same-Origin Policy & CORS, WebSockets & the Real-Time Web, Web Forms & Input Handling, Content Security Policy Basics, Web Caching Basics, and Web Frameworks: An Overview.',
+    'The new Same-Origin Policy lesson covers the single foundational trust boundary nearly every other web security mechanism in this course builds on.'
+  ]},
   {date:'2026-07-25', title:'Path 04 doubled to 22 lessons', items:[
     'Eleventh batch of the course-wide content-doubling effort: Path 04 (Programming & Python) grows from 11 to 22 lessons.',
     'New lessons: Dictionaries & Sets, Error Handling & Exceptions, String Manipulation & Regex, Working with Files in Python, Python Modules & Packages, Object-Oriented Python Basics, Writing Secure Python Code, Python/requests/APIs, Python for Network Scripting, Python Security Libraries Overview, and Python Careers & Next Steps.',

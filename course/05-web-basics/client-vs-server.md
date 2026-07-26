@@ -194,4 +194,4 @@ A developer says "I made this action safe — the button is hidden if you're not
 - [Mozilla — Web security basics](https://developer.mozilla.org/en-US/docs/Web/Security)
 ???
 
-**Next up →** [Cookies & sessions](#/lesson/05-web-basics/cookies-sessions)
+**Next up →** [HTTP methods & status codes](#/lesson/05-web-basics/http-methods-status-codes)

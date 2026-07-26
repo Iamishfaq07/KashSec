@@ -697,6 +697,15 @@ const GLOSSARY = [
   "subTitle": "Poisoning & adversarial ML"
  },
  {
+  "term": "Backend framework",
+  "def": "a tool (Django, Express, Rails) providing structure for handling server-side request processing and business logic.",
+  "pathId": "05-web-basics",
+  "pathN": "05",
+  "pathTitle": "How the Web Works",
+  "subId": "web-frameworks-overview",
+  "subTitle": "Web frameworks: an overview"
+ },
+ {
   "term": "Backup",
   "def": "a separate copy of important data, kept somewhere independent of your main device.",
   "pathId": "00-fresher-basics",
@@ -1102,6 +1111,24 @@ const GLOSSARY = [
   "subTitle": "DNS: the phonebook"
  },
  {
+  "term": "Cache-Control header",
+  "def": "an HTTP header specifying how, where, and for how long a response may be cached.",
+  "pathId": "05-web-basics",
+  "pathN": "05",
+  "pathTitle": "How the Web Works",
+  "subId": "web-caching-basics",
+  "subTitle": "Web caching basics"
+ },
+ {
+  "term": "Cache poisoning",
+  "def": "manipulating a cache into storing and serving a malicious response to other users.",
+  "pathId": "05-web-basics",
+  "pathN": "05",
+  "pathTitle": "How the Web Works",
+  "subId": "web-caching-basics",
+  "subTitle": "Web caching basics"
+ },
+ {
   "term": "CCNA (Cisco Certified Network Associate)",
   "def": "a widely respected, vendor-specific networking certification.",
   "pathId": "02-networking",
@@ -1136,6 +1163,15 @@ const GLOSSARY = [
   "pathTitle": "How the Web Works",
   "subId": "page-load-journey",
   "subTitle": "The page-load journey"
+ },
+ {
+  "term": "CDN (Content Delivery Network)",
+  "def": "a distributed network of servers caching content geographically close to users.",
+  "pathId": "05-web-basics",
+  "pathN": "05",
+  "pathTitle": "How the Web Works",
+  "subId": "web-caching-basics",
+  "subTitle": "Web caching basics"
  },
  {
   "term": "CDN / WAF / load balancer",
@@ -1354,6 +1390,15 @@ const GLOSSARY = [
   "subTitle": "Client vs server"
  },
  {
+  "term": "Client-side validation",
+  "def": "form validation running in the browser, a usability feature that provides no actual security guarantee.",
+  "pathId": "05-web-basics",
+  "pathN": "05",
+  "pathTitle": "How the Web Works",
+  "subId": "web-forms-input-handling",
+  "subTitle": "Web forms & input handling"
+ },
+ {
   "term": "Cloud metadata endpoint",
   "def": "an internal-only service (e.g., `169.254.169.254`) exposing instance credentials, a classic high-impact SSRF target.",
   "pathId": "11-web-security",
@@ -1487,6 +1532,15 @@ const GLOSSARY = [
   "pathTitle": "GRC & Compliance",
   "subId": "what-is-grc",
   "subTitle": "What is GRC?"
+ },
+ {
+  "term": "Component",
+  "def": "a reusable, self-contained piece of UI in a frontend framework, managing its own portion of the DOM.",
+  "pathId": "05-web-basics",
+  "pathN": "05",
+  "pathTitle": "How the Web Works",
+  "subId": "web-frameworks-overview",
+  "subTitle": "Web frameworks: an overview"
  },
  {
   "term": "Composite risk score",
@@ -1642,6 +1696,15 @@ const GLOSSARY = [
   "subTitle": "How to actually test APIs"
  },
  {
+  "term": "Content Security Policy (CSP)",
+  "def": "an HTTP header restricting which sources of content a page is allowed to load and execute.",
+  "pathId": "05-web-basics",
+  "pathN": "05",
+  "pathTitle": "How the Web Works",
+  "subId": "content-security-policy-basics",
+  "subTitle": "Content Security Policy basics"
+ },
+ {
   "term": "Context window",
   "def": "the complete set of text (instructions, history, current input) fed into the model for a single generation.",
   "pathId": "18-ai-security",
@@ -1732,6 +1795,15 @@ const GLOSSARY = [
   "subTitle": "IDS, IPS & SIEM"
  },
  {
+  "term": "CORS (Cross-Origin Resource Sharing)",
+  "def": "the server-controlled mechanism for deliberately permitting specific cross-origin requests.",
+  "pathId": "05-web-basics",
+  "pathN": "05",
+  "pathTitle": "How the Web Works",
+  "subId": "same-origin-policy-and-cors",
+  "subTitle": "Same-Origin Policy & CORS"
+ },
+ {
   "term": "CPU",
   "def": "the component that executes instructions; modern CPUs have multiple independent cores.",
   "pathId": "00-fresher-basics",
@@ -1793,6 +1865,15 @@ const GLOSSARY = [
   "pathTitle": "Digital Privacy & Personal Security",
   "subId": "identity-theft-protection",
   "subTitle": "Identity Theft Protection"
+ },
+ {
+  "term": "Critical rendering path",
+  "def": "the sequence of steps (parse HTML, build DOM, apply CSS, paint) a browser follows to display a page.",
+  "pathId": "05-web-basics",
+  "pathN": "05",
+  "pathTitle": "How the Web Works",
+  "subId": "how-browsers-render-pages",
+  "subTitle": "How browsers render pages"
  },
  {
   "term": "cron",
@@ -2126,6 +2207,15 @@ const GLOSSARY = [
   "pathTitle": "Introduction to Cybersecurity",
   "subId": "what-is-cybersecurity",
   "subTitle": "What is cybersecurity?"
+ },
+ {
+  "term": "Defense in depth",
+  "def": "layering multiple independent security controls so a single flaw doesn't lead directly to full compromise.",
+  "pathId": "05-web-basics",
+  "pathN": "05",
+  "pathTitle": "How the Web Works",
+  "subId": "content-security-policy-basics",
+  "subTitle": "Content Security Policy basics"
  },
  {
   "term": "Defense in depth",
@@ -2495,6 +2585,15 @@ const GLOSSARY = [
   "pathTitle": "Cryptography Fundamentals",
   "subId": "digital-signatures-certificates",
   "subTitle": "Digital Signatures & Certificates"
+ },
+ {
+  "term": "DOM (Document Object Model)",
+  "def": "the browser's live, in-memory tree representation of a page's elements, built from parsed HTML.",
+  "pathId": "05-web-basics",
+  "pathN": "05",
+  "pathTitle": "How the Web Works",
+  "subId": "how-browsers-render-pages",
+  "subTitle": "How browsers render pages"
  },
  {
   "term": "Downgrade attack",
@@ -3127,6 +3226,15 @@ const GLOSSARY = [
   "subTitle": "Client vs server"
  },
  {
+  "term": "Frontend framework",
+  "def": "a tool (React, Vue, Angular) providing structure for building client-side, component-based user interfaces.",
+  "pathId": "05-web-basics",
+  "pathN": "05",
+  "pathTitle": "How the Web Works",
+  "subId": "web-frameworks-overview",
+  "subTitle": "Web frameworks: an overview"
+ },
+ {
   "term": "f-string",
   "def": "modern string formatting with `f\"...\"`.",
   "pathId": "04-python",
@@ -3487,6 +3595,15 @@ const GLOSSARY = [
   "subTitle": "Build a password checker"
  },
  {
+  "term": "Hidden field",
+  "def": "a form input invisible in the rendered page but fully present and modifiable in the HTML source and submitted request.",
+  "pathId": "05-web-basics",
+  "pathN": "05",
+  "pathTitle": "How the Web Works",
+  "subId": "web-forms-input-handling",
+  "subTitle": "Web forms & input handling"
+ },
+ {
   "term": "Hidden file",
   "def": "a file not shown by default, often used for configuration.",
   "pathId": "00-fresher-basics",
@@ -3629,6 +3746,15 @@ const GLOSSARY = [
   "pathTitle": "Networking Fundamentals",
   "subId": "http-https",
   "subTitle": "HTTP & HTTPS"
+ },
+ {
+  "term": "HTTP method",
+  "def": "the verb (GET, POST, PUT, PATCH, DELETE) describing what action a request is asking the server to perform.",
+  "pathId": "05-web-basics",
+  "pathN": "05",
+  "pathTitle": "How the Web Works",
+  "subId": "http-methods-status-codes",
+  "subTitle": "HTTP methods & status codes"
  },
  {
   "term": "HttpOnly / Secure / SameSite",
@@ -3908,6 +4034,15 @@ const GLOSSARY = [
   "pathTitle": "Programming & Python",
   "subId": "if-else",
   "subTitle": "Decisions with if/else"
+ },
+ {
+  "term": "IndexedDB",
+  "def": "a more powerful, database-like client-side storage option for larger structured data.",
+  "pathId": "05-web-basics",
+  "pathN": "05",
+  "pathTitle": "How the Web Works",
+  "subId": "browser-storage-basics",
+  "subTitle": "Browser storage basics"
  },
  {
   "term": "Indirect prompt injection",
@@ -4601,6 +4736,15 @@ const GLOSSARY = [
   "pathTitle": "How the Web Works",
   "subId": "cookies-sessions",
   "subTitle": "Cookies, sessions, logins"
+ },
+ {
+  "term": "localStorage",
+  "def": "persistent, client-side key-value storage, readable by any JavaScript on the page.",
+  "pathId": "05-web-basics",
+  "pathN": "05",
+  "pathTitle": "How the Web Works",
+  "subId": "browser-storage-basics",
+  "subTitle": "Browser storage basics"
  },
  {
   "term": "LocalSystem",
@@ -5377,6 +5521,15 @@ const GLOSSARY = [
   "subTitle": "Data Broker Opt-Outs"
  },
  {
+  "term": "Origin",
+  "def": "the combination of scheme, host, and port that defines a security boundary on the web.",
+  "pathId": "05-web-basics",
+  "pathN": "05",
+  "pathTitle": "How the Web Works",
+  "subId": "same-origin-policy-and-cors",
+  "subTitle": "Same-Origin Policy & CORS"
+ },
+ {
   "term": "OSCP",
   "def": "the industry's gold-standard hands-on offensive security certification.",
   "pathId": "20-career-prep",
@@ -5998,6 +6151,15 @@ const GLOSSARY = [
   "subTitle": "Security Governance Basics"
  },
  {
+  "term": "Polling",
+  "def": "repeatedly requesting \"anything new?\" to simulate real-time updates without a persistent connection.",
+  "pathId": "05-web-basics",
+  "pathN": "05",
+  "pathTitle": "How the Web Works",
+  "subId": "websockets-realtime-web",
+  "subTitle": "WebSockets & the real-time web"
+ },
+ {
   "term": "Port",
   "def": "a number identifying which specific service on a device a connection is meant for.",
   "pathId": "00-fresher-basics",
@@ -6320,6 +6482,15 @@ const GLOSSARY = [
   "pathTitle": "OT/ICS & Critical Infrastructure Security",
   "subId": "real-world-ics-attacks",
   "subTitle": "Real-World ICS Attacks: What They Actually Teach Us"
+ },
+ {
+  "term": "Protocol upgrade",
+  "def": "the process by which an HTTP request transitions into a WebSocket connection.",
+  "pathId": "05-web-basics",
+  "pathN": "05",
+  "pathTitle": "How the Web Works",
+  "subId": "websockets-realtime-web",
+  "subTitle": "WebSockets & the real-time web"
  },
  {
   "term": "Provenance",
@@ -7168,6 +7339,15 @@ const GLOSSARY = [
   "subTitle": "Passwords & hashing"
  },
  {
+  "term": "Same-Origin Policy (SOP)",
+  "def": "the browser-enforced default rule preventing cross-origin script access to another site's data.",
+  "pathId": "05-web-basics",
+  "pathN": "05",
+  "pathTitle": "How the Web Works",
+  "subId": "same-origin-policy-and-cors",
+  "subTitle": "Same-Origin Policy & CORS"
+ },
+ {
   "term": "Sandbox",
   "def": "an isolated, often automated environment for safely observing malware execution.",
   "pathId": "16-advanced",
@@ -7535,6 +7715,15 @@ const GLOSSARY = [
   "pathTitle": "How the Web Works",
   "subId": "cookies-sessions",
   "subTitle": "Cookies, sessions, logins"
+ },
+ {
+  "term": "sessionStorage",
+  "def": "identical to localStorage but cleared when the browser tab closes.",
+  "pathId": "05-web-basics",
+  "pathN": "05",
+  "pathTitle": "How the Web Works",
+  "subId": "browser-storage-basics",
+  "subTitle": "Browser storage basics"
  },
  {
   "term": "Set",
@@ -8210,6 +8399,15 @@ const GLOSSARY = [
   "pathTitle": "Networking Fundamentals",
   "subId": "http-https",
   "subTitle": "HTTP & HTTPS"
+ },
+ {
+  "term": "Status code",
+  "def": "the three-digit code a server returns indicating the result of a request.",
+  "pathId": "05-web-basics",
+  "pathN": "05",
+  "pathTitle": "How the Web Works",
+  "subId": "http-methods-status-codes",
+  "subTitle": "HTTP methods & status codes"
  },
  {
   "term": "stdin / stdout / stderr",
@@ -8986,6 +9184,15 @@ const GLOSSARY = [
   "subTitle": "Windows privilege escalation"
  },
  {
+  "term": "'unsafe-inline'",
+  "def": "a CSP directive that re-permits inline scripts, significantly weakening XSS protection.",
+  "pathId": "05-web-basics",
+  "pathN": "05",
+  "pathTitle": "How the Web Works",
+  "subId": "content-security-policy-basics",
+  "subTitle": "Content Security Policy basics"
+ },
+ {
   "term": "Update / patch",
   "def": "a software release that fixes bugs or security flaws.",
   "pathId": "00-fresher-basics",
@@ -9002,6 +9209,15 @@ const GLOSSARY = [
   "pathTitle": "How the Web Works",
   "subId": "page-load-journey",
   "subTitle": "The page-load journey"
+ },
+ {
+  "term": "Username enumeration",
+  "def": "determining which usernames correspond to real accounts based on subtle differences in server responses.",
+  "pathId": "05-web-basics",
+  "pathN": "05",
+  "pathTitle": "How the Web Works",
+  "subId": "http-methods-status-codes",
+  "subTitle": "HTTP methods & status codes"
  },
  {
   "term": "Username enumeration",
@@ -9299,6 +9515,15 @@ const GLOSSARY = [
   "pathTitle": "Web Security & Hacking",
   "subId": "cmd-and-upload",
   "subTitle": "Command inj. & uploads"
+ },
+ {
+  "term": "WebSocket",
+  "def": "a persistent, full-duplex connection allowing bidirectional real-time communication between client and server.",
+  "pathId": "05-web-basics",
+  "pathN": "05",
+  "pathTitle": "How the Web Works",
+  "subId": "websockets-realtime-web",
+  "subTitle": "WebSockets & the real-time web"
  },
  {
   "term": "Well-known ports",

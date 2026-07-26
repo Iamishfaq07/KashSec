@@ -160,4 +160,4 @@ You want to see the *exact* raw HTML your server sent, before any JavaScript tou
 - [PortSwigger — Using Burp alongside browser DevTools](https://portswigger.net/burp/documentation)
 ???
 
-**Next up →** [Anatomy of a modern web app](#/lesson/05-web-basics/web-anatomy)
+**Next up →** [Web forms & input handling](#/lesson/05-web-basics/web-forms-input-handling)

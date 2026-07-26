@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Web frameworks: an overview — Path 05 · KashSec Academy</title>
+<meta name="description" content="Every concept in this path so far has been explained at the level of raw HTML, HTTP, and JavaScript. This lesson is a map of the tools real-world developers actually build with — so that when a later ">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/05-web-basics/web-frameworks-overview">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Web frameworks: an overview — Path 05 · KashSec Academy">
+<meta property="og:description" content="Every concept in this path so far has been explained at the level of raw HTML, HTTP, and JavaScript. This lesson is a map of the tools real-world developers actually build with — so that when a later ">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/05-web-basics/web-frameworks-overview">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Web frameworks: an overview — Path 05 · KashSec Academy">
+<meta name="twitter:description" content="Every concept in this path so far has been explained at the level of raw HTML, HTTP, and JavaScript. This lesson is a map of the tools real-world developers actually build with — so that when a later ">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Web frameworks: an overview — Path 05 · KashSec Academy","description":"Every concept in this path so far has been explained at the level of raw HTML, HTTP, and JavaScript. This lesson is a map of the tools real-world developers actually build with — so that when a later ","url":"https://kashsec.vercel.app/#/lesson/05-web-basics/web-frameworks-overview","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/05-web-basics/web-frameworks-overview">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 05 — How the Web Works</a> · Web frameworks: an overview</div>
+  <article><h1>Web frameworks: an overview</h1>
+<p>Every concept in this path so far has been explained at the level of raw HTML, HTTP, and JavaScript. This lesson is a map of the tools real-world developers actually build with — so that when a later path (or a real job) mentions React or Django by name, you already have a rough sense of what it is and where it fits.</p>
+<p>:::</p>
+<h2>Frontend frameworks: building what the client renders</h2>
+<ul>
+<li><strong>React</strong> — the most widely used frontend framework, building interactive interfaces out of reusable <strong>components</strong>, each managing its own piece of the DOM (from the browser-rendering lesson) rather than manipulating raw HTML directly</li>
+<li><strong>Vue</strong> and <strong>Angular</strong> — genuine alternatives solving broadly the same problem (structured, component-based UI building) with different design philosophies and tradeoffs</li>
+</ul>
+<p>These frameworks don&#39;t change any of the underlying concepts this path has covered — HTTP requests, the DOM, cookies, CORS — they just provide structure and tooling for building the client-side code that ultimately does the same things a hand-written HTML/CSS/JS page would.</p>
+<h2>Backend frameworks: handling requests and business logic</h2>
+<ul>
+<li><strong>Django / Flask</strong> (Python) — Django is a full-featured framework with a lot of built-in structure; Flask is a lighter-weight alternative giving developers more control over exactly what&#39;s included</li>
+<li><strong>Express</strong> (Node.js/JavaScript) — lets developers write both frontend <em>and</em> backend code in the same language, a genuinely significant reason for JavaScript&#39;s dominance across the modern web stack</li>
+<li><strong>Ruby on Rails / Spring (Java) / ASP.NET (C#)</strong> — other major backend frameworks, each dominant in different industries and company histories</li>
+</ul>
+<p>Every backend framework, regardless of language, is ultimately doing the same fundamental job the client-vs-server lesson described: receiving HTTP requests, running server-side logic, and returning responses — the framework just provides structure, common patterns, and pre-built solutions for problems (routing, database access, authentication) nearly every web application needs to solve.</p>
+<h2>Why frameworks matter for security specifically</h2>
+<ul>
+<li><strong>Frameworks often provide built-in protections</strong> — many modern frameworks automatically escape output to prevent XSS, provide CSRF token handling by default, or use parameterized database queries preventing SQL injection out of the box — genuinely reducing an entire category of vulnerability compared to hand-rolled code, <em>when developers don&#39;t disable or bypass these protections</em></li>
+<li><strong>But frameworks aren&#39;t magic</strong> — a developer who bypasses a framework&#39;s built-in protection (using a &quot;raw&quot; or &quot;unsafe&quot; output method to skip automatic escaping, for instance) reintroduces exactly the vulnerability the framework was otherwise preventing — Path 11&#39;s web security material covers several real examples of exactly this pattern</li>
+<li><strong>Framework-specific vulnerabilities exist too</strong> — a vulnerability discovered in a widely-used framework itself can affect every application built on top of it simultaneously, which is exactly why keeping frameworks updated (directly connecting to Path 00&#39;s updates lesson) matters at the application-dependency level, not just the operating-system level</li>
+</ul>
+<h2>Recognizing a framework in the wild</h2>
+<p>A page&#39;s source often reveals its framework — React apps frequently have a <code>&lt;div id=&quot;root&quot;&gt;</code> or <code>&lt;div id=&quot;app&quot;&gt;</code> that gets populated entirely by JavaScript rather than containing visible content in the original HTML (directly connecting to the how-browsers-render-pages lesson&#39;s DOM-vs-source-code distinction), and framework-specific naming conventions in class names or attributes are often visible in DevTools&#39; Elements panel.</p>
+<p>:::challenge Test yourself
+Why might a security review specifically check whether a web application&#39;s framework has any built-in output-escaping or parameterized-query protection disabled, rather than assuming the framework&#39;s defaults are always in effect?</p>
+<details><summary>Show answer</summary>Modern frameworks frequently provide meaningful protection against entire vulnerability categories (XSS via automatic output escaping, SQL injection via parameterized queries) as sensible defaults — but developers can and sometimes do explicitly bypass these protections, often for a specific, seemingly reasonable-at-the-time reason (needing to render raw HTML content, building a dynamic query the framework's standard tools don't easily support). A security review that simply assumes "this app uses Framework X, so it's protected against XSS" without checking for these specific bypasses can miss a genuine, exploitable vulnerability hiding behind an otherwise well-protected framework — which is exactly why Path 11's web security material treats framework defaults as a helpful baseline to verify, not a guarantee to blindly trust.</details><h2>Key terms</h2>
+<ul>
+<li><strong>Frontend framework</strong> — a tool (React, Vue, Angular) providing structure for building client-side, component-based user interfaces.</li>
+<li><strong>Backend framework</strong> — a tool (Django, Express, Rails) providing structure for handling server-side request processing and business logic.</li>
+<li><strong>Component</strong> — a reusable, self-contained piece of UI in a frontend framework, managing its own portion of the DOM.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Frameworks don&#39;t change the underlying concepts this path has covered — they provide structure and pre-built solutions on top of the same HTTP, DOM, and client-server fundamentals.</li>
+<li>Many modern frameworks provide meaningful built-in protection against entire vulnerability categories by default, genuinely reducing risk — but only when developers don&#39;t explicitly bypass those protections.</li>
+<li>Recognizing a framework&#39;s presence (through DOM structure, naming conventions) is a genuinely useful skill for both development and security assessment work.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/05-web-basics/cookies-sessions-lab">Cookies &amp; Sessions Lab</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/05-web-basics/web-frameworks-overview";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

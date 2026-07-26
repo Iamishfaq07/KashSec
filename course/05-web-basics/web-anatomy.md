@@ -148,4 +148,4 @@ A tester finds that Alice, logged in normally, can view Bob's private invoice by
 
 You can now trace a full page load, distinguish HTML/CSS/JS, reason about client vs server trust boundaries, understand cookies and sessions, read and call JSON APIs, navigate DevTools fluently, and sketch the architecture of any real website. This is the complete mental model Path 11 (Web Security) builds directly on top of.
 
-**Next up →** [Cookies & Sessions Lab](#/lesson/05-web-basics/cookies-sessions-lab)
+**Next up →** [Web caching basics](#/lesson/05-web-basics/web-caching-basics)

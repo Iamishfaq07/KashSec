@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HTTP methods &amp; status codes — Path 05 · KashSec Academy</title>
+<meta name="description" content="The client-vs-server lesson established the two sides of every web conversation. This lesson gets specific about the actual vocabulary they use to talk to each other — the HTTP methods and status code">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/05-web-basics/http-methods-status-codes">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="HTTP methods &amp; status codes — Path 05 · KashSec Academy">
+<meta property="og:description" content="The client-vs-server lesson established the two sides of every web conversation. This lesson gets specific about the actual vocabulary they use to talk to each other — the HTTP methods and status code">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/05-web-basics/http-methods-status-codes">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="HTTP methods &amp; status codes — Path 05 · KashSec Academy">
+<meta name="twitter:description" content="The client-vs-server lesson established the two sides of every web conversation. This lesson gets specific about the actual vocabulary they use to talk to each other — the HTTP methods and status code">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"HTTP methods & status codes — Path 05 · KashSec Academy","description":"The client-vs-server lesson established the two sides of every web conversation. This lesson gets specific about the actual vocabulary they use to talk to each other — the HTTP methods and status code","url":"https://kashsec.vercel.app/#/lesson/05-web-basics/http-methods-status-codes","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/05-web-basics/http-methods-status-codes">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 05 — How the Web Works</a> · HTTP methods &amp; status codes</div>
+  <article><h1>HTTP methods &amp; status codes</h1>
+<p>The client-vs-server lesson established the two sides of every web conversation. This lesson gets specific about the actual <em>vocabulary</em> they use to talk to each other — the HTTP methods and status codes you&#39;ll see constantly for the rest of this course.</p>
+<h2>HTTP methods: what the client is asking for</h2>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>What it means</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>GET</strong></td>
+<td>Retrieve data — loading a page, fetching a resource. Should never change anything on the server.</td>
+</tr>
+<tr>
+<td><strong>POST</strong></td>
+<td>Submit new data — creating an account, posting a comment.</td>
+</tr>
+<tr>
+<td><strong>PUT</strong></td>
+<td>Replace an existing resource entirely.</td>
+</tr>
+<tr>
+<td><strong>PATCH</strong></td>
+<td>Partially update an existing resource.</td>
+</tr>
+<tr>
+<td><strong>DELETE</strong></td>
+<td>Remove a resource.</td>
+</tr>
+</tbody></table>
+<p>That distinction between GET and the others matters more than it might seem: GET requests are meant to be <strong>safe</strong> (no side effects) and are commonly cached, logged in browser history, and even prefetched by browsers automatically — which is exactly why a genuinely well-built application never performs a sensitive, state-changing action (like deleting an account) through a GET request, a real and recurring vulnerability pattern covered properly in Path 11.</p>
+<h2>Status codes: what the server is telling you back</h2>
+<p>Status codes come in five families, each starting with a different digit:</p>
+<pre><code>1xx — Informational (rarely seen directly)
+2xx — Success            (200 OK, 201 Created)
+3xx — Redirection        (301 Moved Permanently, 302 Found)
+4xx — Client error       (404 Not Found, 401 Unauthorized, 403 Forbidden)
+5xx — Server error       (500 Internal Server Error, 503 Service Unavailable)
+</code></pre>
+<h2>The 401 vs. 403 distinction — genuinely worth knowing precisely</h2>
+<p>A common point of confusion, and a genuinely useful one to get right: <strong>401 Unauthorized</strong> actually means &quot;you&#39;re not authenticated at all — who are you?&quot;, while <strong>403 Forbidden</strong> means &quot;I know who you are, but you&#39;re not allowed to do this.&quot; This distinction matters directly for security assessment: a 403 on an endpoint you&#39;re not logged into at all can be a meaningful signal that the endpoint exists and is doing <em>some</em> kind of access check, even before you&#39;ve authenticated — genuinely useful reconnaissance information.</p>
+<h2>Why status codes leak information, sometimes unintentionally</h2>
+<p>A server returning a different status code depending on whether a specific username exists (say, 404 for &quot;user not found&quot; versus 403 for &quot;user exists but access denied&quot;) can accidentally enable <strong>username enumeration</strong> — an attacker systematically probing many usernames and using the status code difference alone to determine which accounts are real, without ever needing a correct password. This is exactly the kind of subtle information leak Path 11&#39;s web security material covers as a genuine, common real-world finding.</p>
+<p>Why might a security-conscious application deliberately return the <em>same</em> status code and error message for &quot;wrong password&quot; and &quot;username doesn&#39;t exist,&quot; rather than distinguishing between them?</p>
+<details><summary>Show answer</summary>Returning different responses for these two cases — even something as subtle as a different status code, a different error message, or a different response time — creates a <strong>username enumeration</strong> vulnerability: an attacker can systematically try many usernames and use the response difference alone to determine which ones correspond to real accounts on the system, entirely without needing to guess a correct password at all. Once an attacker has confirmed a real username this way, they can focus password-guessing or credential-stuffing efforts (from Path 00) specifically on known-valid accounts rather than wasting effort on nonexistent ones. Returning an identical, generic response ("invalid username or password") regardless of which specific thing was actually wrong closes this information leak entirely.</details><h2>Key terms</h2>
+<ul>
+<li><strong>HTTP method</strong> — the verb (GET, POST, PUT, PATCH, DELETE) describing what action a request is asking the server to perform.</li>
+<li><strong>Status code</strong> — the three-digit code a server returns indicating the result of a request.</li>
+<li><strong>Username enumeration</strong> — determining which usernames correspond to real accounts based on subtle differences in server responses.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>GET should never change server state — a genuinely important distinction, since GET requests are cached, logged, and prefetched in ways state-changing requests shouldn&#39;t be.</li>
+<li>Status codes fall into five families (2xx success, 3xx redirect, 4xx client error, 5xx server error), and the 401-vs-403 distinction (&quot;who are you&quot; vs. &quot;you can&#39;t do that&quot;) carries real reconnaissance value.</li>
+<li>Subtle differences in server responses — including status codes — can accidentally enable username enumeration, a genuine, common real-world finding covered properly in Path 11.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/05-web-basics/cookies-sessions">Cookies, sessions, logins</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/05-web-basics/http-methods-status-codes";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

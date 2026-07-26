@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Web caching basics — Path 05 · KashSec Academy</title>
+<meta name="description" content="The web-anatomy lesson gave you the full picture of a modern web app's pieces. This lesson covers a piece that sits between those pieces, often invisibly: caching — storing a copy of content so it doe">
+<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/05-web-basics/web-caching-basics">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Web caching basics — Path 05 · KashSec Academy">
+<meta property="og:description" content="The web-anatomy lesson gave you the full picture of a modern web app's pieces. This lesson covers a piece that sits between those pieces, often invisibly: caching — storing a copy of content so it doe">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/05-web-basics/web-caching-basics">
+<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Web caching basics — Path 05 · KashSec Academy">
+<meta name="twitter:description" content="The web-anatomy lesson gave you the full picture of a modern web app's pieces. This lesson covers a piece that sits between those pieces, often invisibly: caching — storing a copy of content so it doe">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="theme-color" content="#0A0E13">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Web caching basics — Path 05 · KashSec Academy","description":"The web-anatomy lesson gave you the full picture of a modern web app's pieces. This lesson covers a piece that sits between those pieces, often invisibly: caching — storing a copy of content so it doe","url":"https://kashsec.vercel.app/#/lesson/05-web-basics/web-caching-basics","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
+.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
+.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
+.crumb a{color:var(--teal);text-decoration:none}
+h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
+h1{font-size:2rem;margin:.5rem 0 1rem}
+h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+a{color:var(--teal)}
+code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+pre code{background:transparent;color:var(--text);padding:0}
+blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+th{background:var(--surface)}
+img{max-width:100%;height:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<main>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/05-web-basics/web-caching-basics">continue here →</a></div>
+  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 05 — How the Web Works</a> · Web caching basics</div>
+  <article><h1>Web caching basics</h1>
+<p>The web-anatomy lesson gave you the full picture of a modern web app&#39;s pieces. This lesson covers a piece that sits <em>between</em> those pieces, often invisibly: <strong>caching</strong> — storing a copy of content so it doesn&#39;t need to be regenerated or re-fetched every single time, and the real security considerations that come with it.</p>
+<h2>Why caching exists</h2>
+<p>Regenerating a page from scratch, or re-fetching the same unchanged file over the network, on every single request wastes both time and server resources. <strong>Caching</strong> stores a copy of content somewhere faster to access than the original source, serving that copy for subsequent requests instead of repeating the full work.</p>
+<h2>The layers where caching actually happens</h2>
+<ul>
+<li><strong>Browser cache</strong> — your own browser stores copies of images, stylesheets, and scripts locally, so revisiting a site doesn&#39;t re-download everything</li>
+<li><strong>CDN (Content Delivery Network)</strong> — a globally distributed network of servers caching content geographically close to each user, reducing latency and load on the origin server</li>
+<li><strong>Server-side cache</strong> — the application itself caching expensive database queries or computed results in memory, avoiding repeated work for identical requests</li>
+</ul>
+<h2>Cache-Control headers: telling everyone how long to keep a copy</h2>
+<pre><code>Cache-Control: public, max-age=3600
+Cache-Control: private, no-store
+</code></pre>
+<p><code>public</code> means any cache (browser, CDN) can store this response; <code>private</code> restricts caching to the browser only; <code>no-store</code> means don&#39;t cache this at all — genuinely important for anything containing sensitive, per-user data.</p>
+<p>A page containing one user&#39;s private account information, accidentally served with caching headers permitting a CDN or shared cache to store it, can result in a <em>different</em> user later receiving that cached, personalized response meant for someone else entirely — a genuine, documented real-world vulnerability category. Sensitive or personalized responses should always be marked <code>private</code> or <code>no-store</code>, never left to a permissive default.</p>
+<h2>Cache poisoning: manipulating what gets cached</h2>
+<p><strong>Cache poisoning</strong> is an attack where an attacker manipulates a request in a way that causes a <em>malicious</em> response to get cached and subsequently served to other, legitimate users — turning a caching layer meant to improve performance into a mechanism for distributing an attacker-controlled response at scale. This is a genuinely serious vulnerability class precisely because a single successful poisoning attempt can affect every user who subsequently receives the cached, malicious response, not just the original attacker&#39;s own request.</p>
+<h2>Why this matters for security assessment specifically</h2>
+<p>Understanding caching layers explains a subtle but real class of finding: a vulnerability fix deployed to the origin server doesn&#39;t necessarily take effect immediately for every user, if a CDN or browser is still serving a stale, cached, pre-fix response — genuinely relevant when verifying that a reported security fix has actually, fully propagated.</p>
+<p>Why is serving a page containing one user&#39;s private data with <code>Cache-Control: public</code> a genuinely serious vulnerability, rather than just a minor performance-related mistake?</p>
+<details><summary>Show answer</summary><code>Cache-Control: public</code> explicitly tells every caching layer along the way — the browser, and critically, any shared CDN or intermediate cache — that this specific response is safe to store and reuse for <em>other</em> requests, not just the one that originally generated it. If that response actually contains one specific user's private, personalized data, a subsequent, completely different user requesting the same URL could receive the <em>first user's cached private data</em> instead of their own — a genuine cross-user information disclosure vulnerability, not a performance issue at all. This is exactly why personalized or sensitive responses need explicit <code>private</code> or <code>no-store</code> directives: caching's default assumption is that identical requests should get identical, shareable responses, which is fundamentally the wrong assumption for anything containing per-user, private information.</details><h2>Key terms</h2>
+<ul>
+<li><strong>CDN (Content Delivery Network)</strong> — a distributed network of servers caching content geographically close to users.</li>
+<li><strong>Cache-Control header</strong> — an HTTP header specifying how, where, and for how long a response may be cached.</li>
+<li><strong>Cache poisoning</strong> — manipulating a cache into storing and serving a malicious response to other users.</li>
+</ul>
+<h2>Recap</h2>
+<ul>
+<li>Caching happens at multiple layers (browser, CDN, server-side), each speeding up repeated requests by avoiding redundant work.</li>
+<li>Cache-Control headers determine what may be cached and by whom — personalized or sensitive content must be marked <code>private</code> or <code>no-store</code> to avoid a genuine cross-user data disclosure risk.</li>
+<li>Cache poisoning turns a performance-improving mechanism into a way of distributing a malicious response at scale, and understanding caching layers matters directly for verifying that security fixes have actually propagated.</li>
+</ul>
+<p><strong>Next up →</strong> <a href="#/lesson/05-web-basics/web-frameworks-overview">Web Frameworks: An Overview</a></p>
+</article>
+  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+</main>
+<script>
+// Redirect actual users into the SPA. Search-engine crawlers get to read
+// the content above before the redirect fires.
+(function(){
+  try {
+    var target = "https://kashsec.vercel.app/#/lesson/05-web-basics/web-caching-basics";
+    // Only redirect from the .html file, not from the SPA route itself.
+    if (location.pathname.endsWith('.html')) location.replace(target);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>
