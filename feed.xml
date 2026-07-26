@@ -5,7 +5,14 @@
     <link>https://kashsec.vercel.app/</link>
     <description>Updates to the free KashSec Academy cybersecurity course.</description>
     <language>en</language>
-    <lastBuildDate>Sun, 26 Jul 2026 18:56:46 GMT</lastBuildDate>
+    <lastBuildDate>Sun, 26 Jul 2026 21:45:43 GMT</lastBuildDate>
+    <item>
+      <title>Lessons no longer depend on a third-party CDN</title>
+      <link>https://kashsec.vercel.app/#/changelog</link>
+      <guid isPermaLink="false">kashsec-2026-07-26</guid>
+      <pubDate>Sun, 26 Jul 2026 12:00:00 GMT</pubDate>
+      <description>&lt;ul&gt;&lt;li&gt;Site-wide audit fix. The markdown renderer used to load from cdn.jsdelivr.net and was chained behind Mermaid, so a blocked or slow CDN showed "Couldn't load the lesson renderer" on every one of the 485 lessons — and the offline promise only held after one successful load.&lt;/li&gt;&lt;li&gt;marked is now vendored locally (pinned, service-worker precached) and Mermaid is strictly optional: lesson text renders immediately, diagrams fill in afterwards, and a diagram that never loads collapses to a tidy placeholder instead of dumping raw diagram source at the reader.&lt;/li&gt;&lt;li&gt;Since 60% of lessons contain no diagram at all, those lessons no longer wait on the largest library on the page. A new CI test loads lessons with the CDN blocked so this can never regress.&lt;/li&gt;&lt;li&gt;Also fixed: the homepage's SEO and social-share metadata still advertised "24 paths, 235 sub-lessons" (two content expansions out of date), two broken "Next up" links in Path 04 that dead-ended the Python chain, and all page scripts now load deferred rather than blocking the parser.&lt;/li&gt;&lt;/ul&gt;</description>
+    </item>
     <item>
       <title>Labs and Tools doubled — 42 labs, 32 tools</title>
       <link>https://kashsec.vercel.app/#/changelog</link>

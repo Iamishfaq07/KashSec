@@ -58,5 +58,9 @@ jobs:
 
       - name: Smoke test all routes
         run: npm run test:smoke
+
+      # Guards the regression where a blocked CDN blanked every lesson.
+      - name: CDN resilience (lessons render with jsdelivr blocked)
+        run: npm run test:cdn
         env:
           BASE: http://127.0.0.1:8000

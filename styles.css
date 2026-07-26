@@ -466,6 +466,14 @@ a{color:inherit}
 /* Mermaid diagrams */
 .md .mermaid{background:var(--diagram-bg);border:1px solid var(--border);border-radius:var(--r);padding:1.3rem;margin:0 0 1.4rem;text-align:center;overflow-x:auto}
 .md .mermaid svg{max-width:100%;height:auto}
+/* Mermaid is CDN-hosted and optional. If it never loads, don't dump raw
+   diagram source at the reader — collapse to a labelled placeholder that
+   still lets a curious reader expand the source. */
+.md .mermaid.mermaid-unavailable{text-align:left;font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--muted)}
+.md .mermaid.mermaid-unavailable>summary{cursor:pointer;color:var(--teal-2);font-family:'Inter',system-ui,sans-serif;font-size:.88rem;list-style:none}
+.md .mermaid.mermaid-unavailable>summary::-webkit-details-marker{display:none}
+.md .mermaid.mermaid-unavailable>summary::before{content:'◇ ';opacity:.8}
+.md .mermaid.mermaid-unavailable>pre{margin:.9rem 0 0;white-space:pre-wrap;word-break:break-word;color:var(--muted)}
 
 /* Inline SVG figures */
 .md .svg-figure{background:var(--diagram-bg);border:1px solid var(--border);border-radius:var(--r);padding:1.6rem;margin:0 0 1.4rem;text-align:center}

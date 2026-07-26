@@ -64,4 +64,4 @@ Why does the example above use a set (`{line.strip() for line in f}`) to store t
 - "w" mode overwrites a file entirely — a genuinely easy and consequential mistake to make by accident.
 - Combining file reading with a set for fast lookup is a realistic, practical pattern you'll use constantly in security scripting.
 
-**Next up →** [Python Modules & Packages](#/lesson/04-python/python-modules-and-packages)
+**Next up →** [Python Modules & Packages](#/lesson/04-python/python-modules-packages)

@@ -12,10 +12,11 @@
     "build:search": "node generate-search-index.js",
     "build:feed": "node generate-feed.js",
     "build:prerender": "node generate-prerender.js",
-    "test": "node tests/data-integrity.test.js && npm run test:smoke",
+    "test": "node tests/data-integrity.test.js && npm run test:smoke && npm run test:cdn",
     "build:hashes": "node generate-lesson-hashes.js",
     "test:data": "node tests/data-integrity.test.js",
-    "test:smoke": "node tests/smoke.spec.js"
+    "test:smoke": "node tests/smoke.spec.js",
+    "test:cdn": "node tests/cdn-resilience.spec.js"
   },
   "repository": {
     "type": "git",

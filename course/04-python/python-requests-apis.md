@@ -77,4 +77,4 @@ Why does the realistic example above use `try`/`except` around the `requests.get
 - Headers carry authentication tokens and other request metadata — which, per the secure-Python lesson, should come from environment variables rather than hardcoded values.
 - Combining requests with files, loops, and error handling produces genuinely realistic security tooling, not just toy examples.
 
-**Next up →** [Python for Network Scripting](#/lesson/04-python/python-for-network-scripting)
+**Next up →** [Python for Network Scripting](#/lesson/04-python/python-network-scripting)

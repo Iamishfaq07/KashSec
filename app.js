@@ -7,12 +7,17 @@ const REPO_BRANCH = 'main';
 document.getElementById('year').textContent = new Date().getFullYear();
 document.body.classList.add('reveal-ready');
 
-/* Lazily load marked + Mermaid only when a lesson actually needs to render
-   markdown. This means the home/course/careers/FAQ pages never depend on an
-   external CDN to appear, and a slow/blocked CDN can never leave the whole
-   site stuck on "Loading…" — only that one lesson's content is affected,
-   with a clear retry message instead of an infinite spinner. */
-let libsPromise = null;
+/* Lesson rendering splits into one required library and two optional ones.
+   marked is vendored locally (vendor/marked.min.js, precached by the service
+   worker) so lesson text renders even when a CDN is blocked, down, or the
+   visitor is offline on a first load. Mermaid and highlight.js stay on a CDN
+   because they're large and only some lessons need them — both are strictly
+   optional and can never block, delay, or fail the text. */
+const MARKED_LOCAL = 'vendor/marked.min.js';
+const MARKED_CDN   = 'https://cdn.jsdelivr.net/npm/marked@18.0.7/lib/marked.umd.js';
+const MERMAID_CDN  = 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js';
+const HLJS_CDN     = 'https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11/highlight.min.js';
+
 function loadScript(src){
   return new Promise((resolve, reject)=>{
     const s = document.createElement('script');
@@ -28,30 +33,71 @@ function withTimeout(promise, ms, label){
     new Promise((_,reject)=>setTimeout(()=>reject(new Error(label + ' timed out')), ms))
   ]);
 }
-function ensureMarkdownLibs(){
-  if(typeof marked !== 'undefined' && typeof mermaid !== 'undefined') return Promise.resolve();
-  if(libsPromise) return libsPromise;
-  libsPromise = withTimeout(
-    loadScript('https://cdn.jsdelivr.net/npm/marked/marked.min.js')
-      .then(()=>loadScript('https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js')),
+/* The one library lesson text genuinely cannot render without. Served from
+   our own origin first; the CDN is only a backstop for the unlikely case the
+   local copy 404s (e.g. a partial deploy). */
+let markedPromise = null;
+function ensureMarked(){
+  if(typeof marked !== 'undefined') return Promise.resolve();
+  if(markedPromise) return markedPromise;
+  markedPromise = withTimeout(
+    loadScript(MARKED_LOCAL).catch(()=>loadScript(MARKED_CDN)),
     12000, 'Loading the lesson renderer'
-  ).then(()=>{
-    if(typeof mermaid !== 'undefined'){
-      mermaid.initialize({
-        startOnLoad:false,
-        theme:'base',
-        themeVariables:{
-          primaryColor:'#111927', primaryTextColor:'#E9EEF3', primaryBorderColor:'#3FB6A8',
-          lineColor:'#8496A6', secondaryColor:'#152131', tertiaryColor:'#0C1119',
-          background:'#152131', mainBkg:'#111927', secondBkg:'#152131',
-          fontFamily:'Inter, system-ui, sans-serif', fontSize:'14px'
-        },
-        flowchart:{curve:'basis',padding:15},
-        sequence:{actorFontFamily:'Inter',noteFontFamily:'Inter',messageFontFamily:'Inter'}
-      });
-    }
-  }).catch(err=>{ libsPromise = null; throw err; }); // allow retry on next lesson visit
-  return libsPromise;
+  ).catch(err=>{ markedPromise = null; throw err; }); // allow retry on next lesson visit
+  return markedPromise;
+}
+
+/* Mermaid is large and only ~40% of lessons contain a diagram, so it must
+   never gate the text. This resolves even on failure — callers check for the
+   global before using it, and a lesson simply shows its diagram source as a
+   plain code block if Mermaid never arrives. */
+let mermaidPromise = null;
+function ensureMermaid(){
+  if(typeof mermaid !== 'undefined') return Promise.resolve();
+  if(mermaidPromise) return mermaidPromise;
+  mermaidPromise = loadScript(MERMAID_CDN).then(()=>{
+    if(typeof mermaid === 'undefined') return;
+    mermaid.initialize({
+      startOnLoad:false,
+      theme:'base',
+      themeVariables:{
+        primaryColor:'#111927', primaryTextColor:'#E9EEF3', primaryBorderColor:'#3FB6A8',
+        lineColor:'#8496A6', secondaryColor:'#152131', tertiaryColor:'#0C1119',
+        background:'#152131', mainBkg:'#111927', secondBkg:'#152131',
+        fontFamily:'Inter, system-ui, sans-serif', fontSize:'14px'
+      },
+      flowchart:{curve:'basis',padding:15},
+      sequence:{actorFontFamily:'Inter',noteFontFamily:'Inter',messageFontFamily:'Inter'}
+    });
+  }).catch(()=>{ mermaidPromise = null; });
+  return mermaidPromise;
+}
+
+/* Renders any .mermaid blocks already in the DOM, if Mermaid is available.
+   Safe to call unconditionally — it's a no-op when there are no diagrams. */
+function renderMermaidIn(el){
+  if(!el || !el.querySelector('.mermaid')) return Promise.resolve();
+  return ensureMermaid().then(()=>{
+    if(typeof mermaid === 'undefined') return degradeMermaid(el);
+    return mermaid.run({nodes: el.querySelectorAll('.mermaid')}).catch(()=>degradeMermaid(el));
+  }).catch(()=>degradeMermaid(el));
+}
+
+/* Turn any still-unrendered diagram into a collapsed <details> so the reader
+   sees a tidy "diagram unavailable" line instead of a wall of Mermaid DSL. */
+function degradeMermaid(el){
+  el.querySelectorAll('.mermaid:not(.mermaid-unavailable)').forEach(node=>{
+    if(node.querySelector('svg')) return; // rendered fine — leave it alone
+    const src = node.textContent;
+    const d = document.createElement('details');
+    d.className = 'mermaid mermaid-unavailable';
+    const s = document.createElement('summary');
+    s.textContent = 'Diagram couldn’t load — show its source';
+    const pre = document.createElement('pre');
+    pre.textContent = src;
+    d.append(s, pre);
+    node.replaceWith(d);
+  });
 }
 
 /* highlight.js is a nice-to-have on top of the required renderer libs —
@@ -60,7 +106,7 @@ let hljsPromise = null;
 function ensureHljs(){
   if(typeof hljs !== 'undefined') return Promise.resolve();
   if(hljsPromise) return hljsPromise;
-  hljsPromise = loadScript('https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11/highlight.min.js')
+  hljsPromise = loadScript(HLJS_CDN)
     .catch(()=>{ hljsPromise = null; });
   return hljsPromise;
 }
@@ -1589,7 +1635,7 @@ function afterRender(){
    homepage, only for genuinely new visitors, and is fully skippable.
    ============================================================ */
 const TOUR_STEPS = [
-  {sel:'#searchBtn',        title:'Search everything',      body:'Press Ctrl/Cmd + K anywhere to search all 235 lessons — or jump straight to any tool, lab, or page.'},
+  {sel:'#searchBtn',        title:'Search everything',      body:'Press Ctrl/Cmd + K anywhere to search all 485 lessons — or jump straight to any tool, lab, or page.'},
   {sel:'a[href="#/tracks"]',title:'Follow a career track',  body:'Not sure where to start? Tracks give you an ordered path for a specific job — SOC analyst, pentester, GRC, and more.'},
   {sel:'a[href="#/labs"]',  title:'Practise in the browser', body:'12 hands-on labs — SQL injection, XSS, IDOR, JWT forgery and more. All simulated, all safe, nothing to install.'},
   {sel:'#progressRingBtn',  title:'Your progress lives here', body:'Everything you complete is saved automatically in this browser. No account needed — but you can sign in to sync across devices.'}
@@ -2533,14 +2579,14 @@ async function renderSubLesson(pathId, subId){
   wireProgress();
 
   try{
-    await ensureMarkdownLibs();
+    await ensureMarked();
   }catch(e){
     if(myGen !== renderGeneration) return; // navigated away while loading — don't touch a dead DOM
     const contentEl = document.getElementById('content');
     if(!contentEl) return;
     contentEl.innerHTML = `
       <h1>Couldn't load the lesson renderer</h1>
-      <p>Your connection may be slow or blocking <code>cdn.jsdelivr.net</code>. Check your network and try again.</p>
+      <p>Something blocked <code>${escapeHtml(MARKED_LOCAL)}</code> from loading. Check your network and try again.</p>
       <p><button class="btn-amber sm" id="retryLibs" type="button">Retry</button></p>
     `;
     document.getElementById('retryLibs')?.addEventListener('click', ()=>renderSubLesson(pathId, subId));
@@ -2571,10 +2617,10 @@ async function renderSubLesson(pathId, subId){
     // End-of-lesson quick check, drawn from this path's quiz bank.
     renderMicroCheck(ctx);
 
-    // Render Mermaid diagrams
-    if(typeof mermaid !== 'undefined'){
-      try{ await mermaid.run({querySelector:'.mermaid'}); }catch(e){}
-    }
+    // Diagrams fill in progressively — deliberately not awaited, so the text
+    // above is readable immediately even on a slow connection, and stays
+    // readable if Mermaid never loads at all.
+    renderMermaidIn(contentEl);
   }catch(e){
     if(myGen !== renderGeneration) return;
     const contentEl = document.getElementById('content');
@@ -5872,6 +5918,12 @@ function renderLabLeakedSecret(){
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
+  {date:'2026-07-26', title:'Lessons no longer depend on a third-party CDN', items:[
+    'Site-wide audit fix. The markdown renderer used to load from cdn.jsdelivr.net and was chained behind Mermaid, so a blocked or slow CDN showed "Couldn\'t load the lesson renderer" on every one of the 485 lessons — and the offline promise only held after one successful load.',
+    'marked is now vendored locally (pinned, service-worker precached) and Mermaid is strictly optional: lesson text renders immediately, diagrams fill in afterwards, and a diagram that never loads collapses to a tidy placeholder instead of dumping raw diagram source at the reader.',
+    'Since 60% of lessons contain no diagram at all, those lessons no longer wait on the largest library on the page. A new CI test loads lessons with the CDN blocked so this can never regress.',
+    'Also fixed: the homepage\'s SEO and social-share metadata still advertised "24 paths, 235 sub-lessons" (two content expansions out of date), two broken "Next up" links in Path 04 that dead-ended the Python chain, and all page scripts now load deferred rather than blocking the parser.'
+  ]},
   {date:'2026-07-26', title:'Labs and Tools doubled — 42 labs, 32 tools', items:[
     'Twenty-sixth batch of the course-wide "double everything" effort, extending beyond lessons into the interactive Labs and Tools sections: LABS grows from 21 to 42, TOOLS grows from 16 to 32.',
     'New labs span web (CSRF, command injection, open redirect, clickjacking, insecure deserialization), recon (subdomain takeover, DNS recon), infrastructure (Windows/Linux privesc, Kerberoasting, cloud IAM misconfig, Docker socket escape), malware analysis (strings triage, YARA rule building), business logic (a real race-condition redemption exploit), API security (webhook HMAC forgery, OAuth redirect hijacking), and GRC/IR (vendor tiering, an incident response tabletop) — plus password cracking and a leaked-secret hunt.',

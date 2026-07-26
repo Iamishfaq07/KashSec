@@ -155,6 +155,61 @@ const listedPaths = (readme.match(/`\d\d`/g) || []).length;
 check('README path list covers every path', listedPaths >= PATHS.length,
   `README lists ${listedPaths} of ${PATHS.length}`);
 
+/* ---- 10. index.html's SEO/social counts match reality ----
+   These drove Google snippets and every social share while being two content
+   expansions out of date, because nothing checked them. */
+const indexHtml = read('index.html');
+const staleCounts = [...indexHtml.matchAll(/(\d+) paths, (\d+) sub-lessons/g)]
+  .filter(m => +m[1] !== PATHS.length || +m[2] !== totalLessons)
+  .map(m => m[0]);
+check('index.html meta counts match PATHS', staleCounts.length === 0,
+  `stale: ${[...new Set(staleCounts)].join(', ')} — should be "${PATHS.length} paths, ${totalLessons} sub-lessons"`);
+
+/* ---- 11. every internal cross-link in lesson markdown resolves ----
+   With hundreds of lessons citing each other, a renamed slug silently becomes
+   a dead end in the "Next up" chain. This catches that. */
+const validLesson = new Set();
+for (const p of PATHS) for (const s of p.subs) validLesson.add(`${p.id}/${s.id}`);
+const labIdSet = new Set(labIds);
+const toolIdSet = new Set(toolIds);
+const deadLinks = [];
+for (const p of PATHS) {
+  for (const s of p.subs) {
+    const f = `course/${p.id}/${s.id}.md`;
+    if (!fs.existsSync(path.join(ROOT, f))) continue;
+    const md = read(f);
+    for (const m of md.matchAll(/#\/lesson\/([a-z0-9-]+)\/([a-z0-9-]+)/g))
+      if (!validLesson.has(`${m[1]}/${m[2]}`)) deadLinks.push(`${f} → #/lesson/${m[1]}/${m[2]}`);
+    for (const m of md.matchAll(/#\/labs\/([a-z0-9-]+)/g))
+      if (!labIdSet.has(m[1])) deadLinks.push(`${f} → #/labs/${m[1]}`);
+    for (const m of md.matchAll(/#\/tools\/([a-z0-9-]+)/g))
+      if (!toolIdSet.has(m[1])) deadLinks.push(`${f} → #/tools/${m[1]}`);
+  }
+}
+check('every internal cross-link in lesson markdown resolves', deadLinks.length === 0,
+  deadLinks.slice(0, 8).join('\n      ') + (deadLinks.length > 8 ? `\n      …and ${deadLinks.length - 8} more` : ''));
+
+/* ---- 12. every lab and tool is actually reachable ----
+   An entry in LABS/TOOLS with no render function or no wired route renders a
+   blank page; nothing previously verified the wiring. */
+const unreachableLabs = LABS.filter(l => !new RegExp(`#/labs/${l.id}'\\)`).test(appJs)).map(l => l.id);
+check('every LABS entry has a wired route', unreachableLabs.length === 0,
+  `no #/labs/<id> route for: ${unreachableLabs.join(', ')}`);
+
+const labFns = [...appJs.matchAll(/#\/labs\/[a-z0-9-]+'\)\s*renderLab(\w+)\(\)/g)].map(m => `renderLab${m[1]}`);
+const definedFns = new Set([...appJs.matchAll(/function (renderLab\w+)\(/g)].map(m => m[1]));
+const missingLabFns = labFns.filter(fn => !definedFns.has(fn));
+check('every lab route points at a defined render function', missingLabFns.length === 0,
+  `undefined: ${missingLabFns.join(', ')}`);
+
+const toolDispatch = appJs.match(/\(\{encoder:toolEncoder[\s\S]*?\}\[id\]\)\(body\)/);
+const dispatchIds = toolDispatch
+  ? new Set([...toolDispatch[0].matchAll(/([a-z0-9]+)\s*:\s*tool\w+/gi)].map(m => m[1]))
+  : new Set();
+const unwiredTools = TOOLS.filter(t => !dispatchIds.has(t.id)).map(t => t.id);
+check('every TOOLS entry is wired into renderTool dispatch', unwiredTools.length === 0,
+  `missing dispatch for: ${unwiredTools.join(', ')}`);
+
 /* ---- report ---- */
 console.log(`\n  Data integrity — ${PATHS.length} paths, ${totalLessons} lessons, ` +
   `${Object.values(QUIZZES).reduce((s, q) => s + q.questions.length, 0)} quiz questions\n`);
