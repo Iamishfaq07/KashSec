@@ -48,6 +48,16 @@
   --maxw:1140px;
   --ease:cubic-bezier(.22,.61,.36,1);
   --ease-spring:cubic-bezier(.34,1.4,.5,1);
+  /* Motion scale. Durations were scattered literals from .12s to .6s; these
+     three cover every UI transition on the site and sit inside the
+     150-300ms band that reads as responsive rather than sluggish.
+     --dur-reveal is the one exception: entrance animations get slightly
+     longer because they travel further and only play once. */
+  --dur-1:.15s;   /* instant feedback: hover, focus, icon tint   */
+  --dur-2:.22s;   /* standard: cards, buttons, nav               */
+  --dur-3:.3s;    /* deliberate: panels, overlays                */
+  --dur-reveal:.42s;
+  --stagger:55ms;
   --shadow-sm:0 2px 8px -3px rgba(0,0,0,.5);
   --shadow-md:0 14px 40px -18px var(--shadow-color);
   --shadow-glow:0 20px 60px -22px var(--glow-amber);
@@ -275,8 +285,40 @@ a{color:inherit}
 .path-num{font-family:'JetBrains Mono';font-size:.72rem;color:var(--teal);letter-spacing:.1em;font-weight:500}
 .path-title{font-family:'Space Grotesk';font-weight:600;font-size:1.14rem;margin:.5rem 0 .55rem;letter-spacing:-.01em}
 .path-desc{color:var(--muted);font-size:.92rem;flex:1;margin-bottom:1.1rem;line-height:1.6}
-.path-meta{font-family:'JetBrains Mono';font-size:.7rem;color:var(--muted2);display:flex;align-items:center;gap:.5rem}
-.path-meta::before{content:"";flex:none;width:6px;height:6px;border-radius:50%;background:var(--teal);opacity:.7}
+.path-meta{font-family:'JetBrains Mono';font-size:.7rem;color:var(--muted2);
+  display:flex;align-items:center;gap:.55rem;flex-wrap:wrap}
+
+/* Difficulty tiers. Colour carries the tier, but never alone — the chip
+   always spells the level out, so this still works for colour-blind readers,
+   in high-contrast mode, and in print. */
+/* The tier hue is the chip's FILL, not its text. Colouring 10px uppercase
+   text with the brand hues measured 2.91:1 for advanced and 3.10:1 for
+   intermediate on the light theme — well under the 4.5:1 floor. Tinting the
+   background instead keeps the colour coding while letting the label sit at
+   full text contrast in both themes. */
+.level-chip{font-family:'JetBrains Mono';font-size:.63rem;letter-spacing:.04em;
+  text-transform:uppercase;padding:.22rem .5rem;border-radius:999px;
+  line-height:1.4;white-space:nowrap;color:var(--text);
+  background:var(--tier-fill,rgba(127,127,127,.14));
+  border:1px solid var(--tier-line,rgba(127,127,127,.3))}
+.level-chip[data-tier="start"]{--tier-fill:rgba(95,224,207,.16);--tier-line:rgba(95,224,207,.45)}
+.level-chip[data-tier="beginner"]{--tier-fill:rgba(63,182,168,.16);--tier-line:rgba(63,182,168,.45)}
+.level-chip[data-tier="intermediate"]{--tier-fill:rgba(239,164,58,.18);--tier-line:rgba(239,164,58,.5)}
+.level-chip[data-tier="advanced"]{--tier-fill:rgba(224,115,79,.18);--tier-line:rgba(224,115,79,.5)}
+.level-chip[data-tier="any"]{--tier-fill:rgba(140,150,165,.15);--tier-line:rgba(140,150,165,.4)}
+
+/* A hairline on the card edge repeats the tier, so the grid reads as
+   grouped-by-difficulty at a glance without needing to read any chip. */
+.path-card[data-tier]::after{content:"";position:absolute;left:0;top:14px;bottom:14px;
+  width:2px;border-radius:0 2px 2px 0;background:currentColor;opacity:.5;
+  transition:opacity var(--dur-2) var(--ease),top var(--dur-2) var(--ease),bottom var(--dur-2) var(--ease)}
+.path-card[data-tier="start"]::after{color:var(--teal-2)}
+.path-card[data-tier="beginner"]::after{color:var(--teal)}
+.path-card[data-tier="intermediate"]::after{color:var(--amber)}
+.path-card[data-tier="advanced"]::after{color:#E0734F}
+.path-card[data-tier="any"]::after{color:var(--muted2)}
+.path-card:hover::after{opacity:1;top:8px;bottom:8px}
+@media(prefers-reduced-motion:reduce){.path-card[data-tier]::after{transition:none}}
 
 /* Mini progress bar (path cards, sublesson list, sidebar) */
 .mini-progress{margin-top:.85rem}
@@ -503,8 +545,25 @@ a{color:inherit}
 .loading::after{content:"";display:inline-block;width:14px;height:14px;margin-left:.5rem;border:2px solid var(--line);border-top-color:var(--amber);border-radius:50%;vertical-align:middle;animation:spin .7s linear infinite}
 
 /* ---------- Scroll reveal ---------- */
-.reveal-ready [data-reveal]{opacity:0;transform:translateY(16px);transition:opacity .6s var(--ease),transform .6s var(--ease);transition-delay:calc(var(--i,0) * 60ms)}
+/* Entrance reveal. Was 600ms, which is past the point where an entrance
+   stops feeling like a reveal and starts feeling like a wait — the guidance
+   is 300-450ms for a staggered list. Displacement stays small (10px) so it
+   reads as a fade with direction rather than a slide.
+   Only opacity and transform are animated, so this stays on the compositor
+   and never triggers layout. */
+.reveal-ready [data-reveal]{opacity:0;transform:translateY(10px);
+  transition:opacity var(--dur-reveal) var(--ease),transform var(--dur-reveal) var(--ease);
+  transition-delay:calc(var(--i,0) * var(--stagger))}
 .reveal-ready [data-reveal].in{opacity:1;transform:none}
+
+/* Grid stagger. The card grids (paths, tools, labs, careers) were the one
+   place with no entrance at all — 26 to 42 cards appearing at once reads as
+   a jump. Cards inherit their index from --i, capped so the last card in a
+   long grid never waits on a 42-step chain. */
+.reveal-ready [data-reveal-grid] > *{opacity:0;transform:translateY(8px) scale(.985);
+  transition:opacity var(--dur-reveal) var(--ease),transform var(--dur-reveal) var(--ease-spring);
+  transition-delay:calc(min(var(--i,0),8) * var(--stagger))}
+.reveal-ready [data-reveal-grid].in > *{opacity:1;transform:none}
 
 /* ---------- Keyframes ---------- */
 /* ---------- Toasts (achievement unlocks) ---------- */
@@ -875,7 +934,9 @@ mark{background:rgba(239,164,58,.35);color:inherit;border-radius:3px;padding:0 1
 
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
-  .reveal-ready [data-reveal]{opacity:1;transform:none}
+  .reveal-ready [data-reveal],
+  .reveal-ready [data-reveal-grid] > *{opacity:1;transform:none;transition:none}
+  .lab-card:hover .lab-ico{transform:none}
   .path-card:hover,.career-card:hover,.feature-card:hover,.sublesson-card:hover{transform:none}
 }
 
@@ -895,12 +956,24 @@ mark{background:rgba(239,164,58,.35);color:inherit;border-radius:3px;padding:0 1
    right edge of the viewport, mirrors the in-content TOC above. */
 .toc-float{position:fixed;top:50%;right:1.1rem;transform:translateY(-50%);z-index:20;max-width:11rem}
 .toc-float ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.3rem;align-items:flex-end}
-.toc-float a{display:flex;align-items:center;gap:.5rem;text-decoration:none;color:var(--muted2);font-size:.72rem;line-height:1.2;
-  padding:.15rem 0;justify-content:flex-end}
-.toc-float .tocf-dot{flex:none;width:6px;height:6px;border-radius:50%;background:var(--border-strong);transition:background .2s var(--ease),transform .2s var(--ease)}
-.toc-float .tocf-label{max-width:8.6rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;opacity:0;transform:translateX(4px);
-  transition:opacity .2s var(--ease),transform .2s var(--ease)}
-.toc-float a:hover .tocf-label,.toc-float a.active .tocf-label{opacity:1;transform:none}
+/* The label is absolutely positioned rather than laid out inline. Inline, it
+   still occupied width while hidden at opacity:0 — and because the rows are
+   right-aligned, every row was a different width, so the dots landed at
+   different x positions. What should read as a clean vertical spine of dots
+   was a ragged scatter, and the widest label pushed its dot off the edge.
+   Taking the label out of flow makes every anchor exactly one dot wide. */
+.toc-float a{position:relative;display:flex;align-items:center;justify-content:flex-end;
+  text-decoration:none;color:var(--muted2);font-size:.72rem;line-height:1.2;padding:.2rem 0;
+  min-height:14px}
+.toc-float .tocf-dot{flex:none;width:6px;height:6px;border-radius:50%;background:var(--border-strong);
+  transition:background var(--dur-1) var(--ease),transform var(--dur-1) var(--ease)}
+.toc-float .tocf-label{position:absolute;right:14px;top:50%;
+  max-width:9.5rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  padding:.16rem .5rem;border-radius:7px;
+  background:var(--surface2);border:1px solid var(--border);box-shadow:var(--shadow-sm);
+  opacity:0;transform:translateY(-50%) translateX(4px);pointer-events:none;
+  transition:opacity var(--dur-1) var(--ease),transform var(--dur-1) var(--ease)}
+.toc-float a:hover .tocf-label,.toc-float a.active .tocf-label,.toc-float a:focus-visible .tocf-label{opacity:1;transform:translateY(-50%)}
 .toc-float a:hover .tocf-dot,.toc-float a.active .tocf-dot{background:var(--amber);transform:scale(1.3)}
 .toc-float a.active{color:var(--text)}
 @media(max-width:1200px){.toc-float{display:none}}
@@ -1042,7 +1115,23 @@ mark{background:rgba(239,164,58,.35);color:inherit;border-radius:3px;padding:0 1
 .lab-card{display:block;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);
   padding:1.3rem;text-decoration:none;color:var(--text);transition:border-color .18s var(--ease),transform .18s var(--ease)}
 .lab-card:hover{border-color:rgba(63,182,168,.5);transform:translateY(-3px)}
-.lab-ico{font-size:2.2rem;margin-bottom:.6rem}
+/* Card icons. Was font-size:2.2rem because these used to be emoji; they're
+   now inline SVG, so the box is explicit and the glyph inherits currentColor
+   — which is what lets one icon set work in both themes and high-contrast. */
+.lab-ico{width:42px;height:42px;margin-bottom:.7rem;border-radius:11px;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--overlay-1);border:1px solid var(--border);
+  color:var(--teal-2);
+  transition:color var(--dur-2) var(--ease),background var(--dur-2) var(--ease),
+             border-color var(--dur-2) var(--ease),transform var(--dur-2) var(--ease-spring)}
+.lab-ico .kico{width:21px;height:21px}
+.lab-card:hover .lab-ico,.lab-card:focus-visible .lab-ico{
+  color:var(--amber);background:var(--glow-amber-soft,rgba(239,164,58,.12));
+  border-color:rgba(239,164,58,.35);transform:scale(1.06)}
+.tool-head-ico{display:inline-flex;align-items:center;justify-content:center;
+  width:34px;height:34px;border-radius:9px;margin-right:.6rem;vertical-align:-.55rem;
+  background:var(--overlay-1);border:1px solid var(--border);color:var(--teal-2)}
+.tool-head-ico .kico{width:18px;height:18px}
 .lab-card h3{font-family:'Space Grotesk';font-size:1.1rem;margin:0 0 .5rem}
 .lab-card p{color:var(--muted);font-size:.87rem;line-height:1.55;margin:0 0 .8rem}
 .lab-related{font-family:'JetBrains Mono';font-size:.68rem;color:var(--teal-2)}
@@ -1216,7 +1305,8 @@ mark{background:rgba(239,164,58,.35);color:inherit;border-radius:3px;padding:0 1
 /* ============ Command palette rows ============ */
 .search-hint{padding:.7rem 1rem;font-size:.78rem;color:var(--muted);border-bottom:1px solid var(--border)}
 .search-result.cmd-row{display:flex;align-items:center;gap:.8rem}
-.cmd-ico{font-size:1.2rem;flex:none;width:1.6rem;text-align:center}
+.cmd-ico{flex:none;width:1.6rem;display:flex;align-items:center;justify-content:center;color:var(--muted)}
+.cmd-ico .kico{width:16px;height:16px}
 .cmd-row .sr-path{margin-top:.1rem}
 
 /* ============ Share card ============ */
@@ -1245,9 +1335,28 @@ mark{background:rgba(239,164,58,.35);color:inherit;border-radius:3px;padding:0 1
 .mock-wrap{max-width:680px}
 .mock-timer{font-family:'JetBrains Mono';font-size:.85rem;color:var(--amber);margin-bottom:.6rem}
 .mock-q{font-family:'Space Grotesk';font-size:1.2rem;font-weight:600;margin-bottom:1rem}
-.pomodoro-widget{display:flex;align-items:center;gap:.7rem;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);padding:.6rem 1rem;margin:0 0 1rem}
-.pomodoro-time{font-family:'JetBrains Mono';font-weight:700;font-size:1.1rem;min-width:3.2rem}
-.pomodoro-count{font-size:.78rem;color:var(--muted);margin-left:auto}
+/* Focus timer. This used to be a block above #content, which put a utility
+   widget above the lesson's <h1> — the title stopped being the first thing
+   on the page, and starting the timer pushed the whole lesson down.
+   A timer you glance at belongs out of the reading flow, so it's a pinned
+   pill that stays put while you read. */
+.pomodoro-widget{position:fixed;right:1.1rem;bottom:1.1rem;z-index:90;
+  display:flex;align-items:center;gap:.6rem;
+  background:var(--surface2);border:1px solid var(--border-strong);
+  border-radius:999px;padding:.5rem .8rem;box-shadow:var(--shadow-md);
+  animation:pomodoroIn var(--dur-3) var(--ease-spring)}
+.pomodoro-widget[hidden]{display:none}
+@keyframes pomodoroIn{from{opacity:0;transform:translateY(10px) scale(.96)}to{opacity:1;transform:none}}
+.pomodoro-time{font-family:'JetBrains Mono';font-weight:700;font-size:1.05rem;min-width:3.2rem;
+  font-variant-numeric:tabular-nums}
+.pomodoro-count{font-size:.78rem;color:var(--muted)}
+.ub-ico{width:17px;height:17px;flex:none;color:var(--amber)}
+.lr-btn svg{display:block}
+@media(max-width:560px){
+  .pomodoro-widget{right:.6rem;bottom:.6rem;padding:.42rem .6rem;gap:.45rem}
+  .pomodoro-time{font-size:.95rem;min-width:2.9rem}
+}
+@media(prefers-reduced-motion:reduce){.pomodoro-widget{animation:none}}
 @media print{
   body:has(.vr-print-area) *{visibility:hidden}
   .vr-print-area,.vr-print-area *{visibility:visible}

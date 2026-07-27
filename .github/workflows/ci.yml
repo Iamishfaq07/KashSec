@@ -64,3 +64,10 @@ jobs:
         run: npm run test:cdn
         env:
           BASE: http://127.0.0.1:8000
+
+      # Contrast, touch targets, focus visibility, reduced-motion, and the
+      # SVG card icons — checked in both themes.
+      - name: UI quality (accessibility + motion + icons)
+        run: npm run test:ui
+        env:
+          BASE: http://127.0.0.1:8000

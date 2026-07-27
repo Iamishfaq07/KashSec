@@ -1470,6 +1470,88 @@ const ICON = {
 };
 const svgIco = (name)=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ICON[name]}</svg>`;
 
+/* ---------- Card icon set ----------
+   Tools and labs used emoji here. Two problems with that, one cosmetic and
+   one functional. Cosmetic: emoji are full-colour bitmaps that render
+   differently on every OS, so a grid of 32 tool cards looked like a
+   ransom note next to this site's flat amber/teal stroke icons.
+   Functional: they weren't distinctive — 🌐 was subnet, ssrf AND dnsrecon;
+   🔓 was idor, jailbreak AND passwordcrack; 📄 was three more. An icon
+   that repeats across unrelated items conveys nothing.
+
+   These inherit currentColor and match the 2px stroke weight already used
+   in the nav, so they theme with the rest of the site for free. */
+const KICON = {
+  swap:'<polyline points="16 3 21 8 16 13"/><path d="M21 8H8a4 4 0 0 0-4 4"/><polyline points="8 21 3 16 8 11"/><path d="M3 16h13a4 4 0 0 0 4-4"/>',
+  fingerprint:'<path d="M12 2a10 10 0 0 0-10 10"/><path d="M12 6a6 6 0 0 0-6 6v3"/><path d="M12 10a2 2 0 0 0-2 2v6"/><path d="M14 12v8"/><path d="M18 12a6 6 0 0 0-3-5.2"/><path d="M22 12A10 10 0 0 0 17 3.3"/>',
+  ticket:'<path d="M3 8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2a2 2 0 0 0 0-4z"/><line x1="12" y1="8" x2="12" y2="16" stroke-dasharray="2 3"/>',
+  gauge:'<path d="M12 21a9 9 0 1 1 9-9"/><path d="M12 12l5-3"/><circle cx="12" cy="12" r="1.6"/>',
+  network:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a15 15 0 0 1 0 18a15 15 0 0 1 0-18z"/>',
+  key:'<circle cx="8" cy="8" r="4.2"/><path d="m11 11 8 8"/><path d="m16.5 16.5 2-2"/><path d="m19 19 1.8-1.8"/>',
+  lockKey:'<rect x="3" y="10" width="18" height="11" rx="2"/><path d="M7 10V7a5 5 0 0 1 10 0v3"/><circle cx="12" cy="15.5" r="1.4"/>',
+  asterisk:'<line x1="12" y1="4" x2="12" y2="20"/><line x1="5" y1="8" x2="19" y2="16"/><line x1="19" y1="8" x2="5" y2="16"/>',
+  search:'<circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>',
+  shield:'<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>',
+  doc:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/>',
+  idcard:'<rect x="2" y="5" width="20" height="14" rx="2"/><circle cx="8" cy="11" r="2"/><path d="M4.5 16.5a4 4 0 0 1 7 0"/><line x1="14" y1="10" x2="19" y2="10"/><line x1="14" y1="14" x2="19" y2="14"/>',
+  toolbox:'<rect x="2" y="8" width="20" height="12" rx="2"/><path d="M8 8V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="2" y1="13" x2="22" y2="13"/>',
+  codeSearch:'<circle cx="10" cy="10" r="6"/><line x1="21" y1="21" x2="15" y2="15"/><polyline points="8.5 8 7 10 8.5 12"/><polyline points="11.5 8 13 10 11.5 12"/>',
+  mapPin:'<polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/>',
+  puzzle:'<path d="M4 6a2 2 0 0 1 2-2h3.2a1.8 1.8 0 1 1 3.6 0H16a2 2 0 0 1 2 2v3.2a1.8 1.8 0 1 0 0 3.6V18a2 2 0 0 1-2 2h-3.2a1.8 1.8 0 1 0-3.6 0H6a2 2 0 0 1-2-2v-3.2a1.8 1.8 0 1 0 0-3.6z"/>',
+  calculator:'<rect x="4" y="2" width="16" height="20" rx="2"/><rect x="7" y="5" width="10" height="4" rx="1"/><line x1="8" y1="13" x2="8" y2="13"/><line x1="12" y1="13" x2="12" y2="13"/><line x1="16" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="8" y2="17"/><line x1="12" y1="17" x2="12" y2="17"/><line x1="16" y1="17" x2="16" y2="17"/>',
+  browser:'<rect x="2" y="4" width="20" height="16" rx="2"/><line x1="2" y1="9" x2="22" y2="9"/><circle cx="5.5" cy="6.5" r="0.6"/><circle cx="8" cy="6.5" r="0.6"/>',
+  dice:'<rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.3"/><circle cx="16" cy="8" r="1.3"/><circle cx="12" cy="12" r="1.3"/><circle cx="8" cy="16" r="1.3"/><circle cx="16" cy="16" r="1.3"/>',
+  send:'<path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4z"/>',
+  filter:'<polygon points="22 3 2 3 10 12.5 10 20 14 22 14 12.5 22 3"/>',
+  ledger:'<path d="M4 4a2 2 0 0 1 2-2h13v20H6a2 2 0 0 1-2-2z"/><line x1="9" y1="7" x2="16" y2="7"/><line x1="9" y1="11" x2="16" y2="11"/><line x1="9" y1="15" x2="13" y2="15"/>',
+  package:'<path d="m12 2 9 5v10l-9 5-9-5V7z"/><path d="m3 7 9 5 9-5"/><line x1="12" y1="12" x2="12" y2="22"/>',
+  mail:'<rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/>',
+  check:'<circle cx="12" cy="12" r="9"/><polyline points="8.5 12.5 11 15 16 9.5"/>',
+  ruler:'<rect x="2.5" y="8" width="19" height="8" rx="1.6"/><line x1="7" y1="8" x2="7" y2="12"/><line x1="12" y1="8" x2="12" y2="13"/><line x1="17" y1="8" x2="17" y2="12"/>',
+  microscope:'<path d="M5 21h14"/><path d="M8 21v-2h8v2"/><rect x="9.2" y="3" width="4.4" height="9" rx="2.2"/><path d="M13.6 6.5H16a3 3 0 0 1 3 3v2.5"/><path d="M7 16h9"/>',
+  clock:'<circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15.5 14"/>',
+  folders:'<path d="M2 8a2 2 0 0 1 2-2h4l2 2h6a2 2 0 0 1 2 2v1"/><path d="M4 11h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/>',
+  refresh:'<path d="M21 12a9 9 0 1 1-3-6.7"/><polyline points="21 3 21 9 15 9"/>',
+  type:'<polyline points="4 7 4 4 20 4 20 7"/><line x1="12" y1="4" x2="12" y2="20"/><line x1="9" y1="20" x2="15" y2="20"/>',
+  timer:'<circle cx="12" cy="13" r="8"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="9" y1="2" x2="15" y2="2"/><line x1="19" y1="6" x2="20.5" y2="4.5"/>',
+  monitor:'<rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>',
+  bug:'<rect x="8" y="7" width="8" height="12" rx="4"/><path d="M8 11H4M20 11h-4M8 15H5M19 15h-3M9 7 7.5 4.5M15 7l1.5-2.5"/>',
+  syringe:'<path d="m19 3 2 2"/><path d="m17 5-9 9-2 5 5-2 9-9z"/><path d="m13 9 2 2"/>',
+  hook:'<path d="M12 3v9a4 4 0 0 1-8 0"/><circle cx="12" cy="19" r="2"/>',
+  radio:'<circle cx="12" cy="12" r="2"/><path d="M7.5 7.5a6.4 6.4 0 0 0 0 9M16.5 7.5a6.4 6.4 0 0 1 0 9"/><path d="M4.5 4.5a10.6 10.6 0 0 0 0 15M19.5 4.5a10.6 10.6 0 0 1 0 15"/>',
+  unlockOpen:'<rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/>',
+  folderUp:'<path d="M3 8a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="12 17 12 11"/><polyline points="9.5 13 12 10.5 14.5 13"/>',
+  globeArrow:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a15 15 0 0 1 0 18a15 15 0 0 1 0-18z"/><path d="m16 12 3 3-3 3"/>',
+  scroll:'<path d="M6 3h11a2 2 0 0 1 2 2v14a2 2 0 0 0 2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="9" y1="12" x2="15" y2="12"/>',
+  layers:'<path d="m12 2 9 5-9 5-9-5z"/><path d="m3 12 9 5 9-5"/><path d="m3 17 9 5 9-5"/>',
+  traffic:'<rect x="7" y="2" width="10" height="20" rx="4"/><circle cx="12" cy="7" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="12" cy="17" r="1.4"/>',
+  chat:'<path d="M21 12a8 8 0 0 1-8 8H7l-4 3v-7a8 8 0 0 1 8-8h2a8 8 0 0 1 8 4z"/><line x1="9" y1="11" x2="15" y2="11"/>',
+  trap:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M8.5 15.5a3.5 3.5 0 0 1 7 0"/><line x1="12" y1="18.5" x2="12" y2="15.5"/>',
+  robot:'<rect x="4" y="8" width="16" height="12" rx="3"/><circle cx="9" cy="14" r="1.3"/><circle cx="15" cy="14" r="1.3"/><line x1="12" y1="4" x2="12" y2="8"/><circle cx="12" cy="3" r="1.4"/>',
+  castle:'<path d="M3 21V8l3 2 3-4 3 4 3-4 3 4 3-2v13z"/><path d="M10 21v-4a2 2 0 0 1 4 0v4"/>',
+  mask:'<path d="M3 7c4-2 14-2 18 0v5a9 9 0 0 1-9 9 9 9 0 0 1-9-9z"/><circle cx="8.5" cy="12" r="1.3"/><circle cx="15.5" cy="12" r="1.3"/>',
+  keyboard:'<rect x="2" y="6" width="20" height="13" rx="2"/><line x1="6" y1="10" x2="6" y2="10"/><line x1="10" y1="10" x2="10" y2="10"/><line x1="14" y1="10" x2="14" y2="10"/><line x1="18" y1="10" x2="18" y2="10"/><line x1="8" y1="15" x2="16" y2="15"/>',
+  redirect:'<polyline points="15 4 21 4 21 10"/><path d="M21 4 12 13a5 5 0 0 1-5 5H3"/>',
+  cursor:'<path d="m5 3 6 17 2.5-6.5L20 11z"/><path d="m14 14 5 5"/>',
+  house:'<path d="m3 11 9-8 9 8"/><path d="M5 10v10h14V10"/><line x1="9.5" y1="20" x2="9.5" y2="14"/><line x1="14.5" y1="20" x2="14.5" y2="14"/>',
+  window:'<rect x="3" y="3" width="18" height="18" rx="2"/><line x1="12" y1="3" x2="12" y2="21"/><line x1="3" y1="12" x2="21" y2="12"/>',
+  penguin:'<rect x="2.5" y="4" width="19" height="16" rx="2"/><polyline points="6.5 10 9 12.5 6.5 15"/><line x1="11.5" y1="15" x2="14" y2="15"/><polyline points="16 12 18 10 20 12"/><line x1="18" y1="10" x2="18" y2="16"/>',
+  cloud:'<path d="M6.5 19a4.5 4.5 0 0 1 0-9 6 6 0 0 1 11.4 1.6A4 4 0 0 1 17.5 19z"/>',
+  container:'<rect x="3" y="12" width="11" height="8" rx="1.4"/><line x1="6.5" y1="12" x2="6.5" y2="20"/><line x1="10.5" y1="12" x2="10.5" y2="20"/><polyline points="16 9 21 9 21 14"/><path d="M21 9l-6 6"/>',
+  dna:'<path d="M7 2c0 5 10 5 10 10S7 17 7 22"/><path d="M17 2c0 5-10 5-10 10s10 5 10 10"/><line x1="8.5" y1="6.5" x2="15.5" y2="6.5"/><line x1="8.5" y1="17.5" x2="15.5" y2="17.5"/>',
+  flag:'<path d="M5 21V4"/><path d="M5 4h11l-2 3.5L16 11H5"/>',
+  building:'<rect x="4" y="3" width="16" height="18" rx="1.5"/><line x1="8" y1="7" x2="8" y2="7"/><line x1="12" y1="7" x2="12" y2="7"/><line x1="16" y1="7" x2="16" y2="7"/><line x1="8" y1="11" x2="8" y2="11"/><line x1="12" y1="11" x2="12" y2="11"/><line x1="16" y1="11" x2="16" y2="11"/><path d="M10 21v-5h4v5"/>',
+  clipboard:'<rect x="5" y="4" width="14" height="17" rx="2"/><rect x="9" y="2" width="6" height="4" rx="1"/><line x1="9" y1="11" x2="15" y2="11"/><line x1="9" y1="15" x2="13" y2="15"/>',
+  hammer:'<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7.5a4 4 0 0 1 6.6-3"/><polyline points="13.5 13.5 11 16.5 13.5 17 11.5 19.5"/>',
+  keyhole:'<circle cx="10.5" cy="10.5" r="7"/><line x1="20.5" y1="20.5" x2="15.5" y2="15.5"/><circle cx="8.8" cy="9" r="2"/><path d="m10.3 10.4 3.4 3.4"/><path d="m12.6 12.7 1-1"/>',
+  webPage:'<rect x="3" y="4" width="18" height="16" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="7" y1="13" x2="13" y2="13"/><line x1="7" y1="16" x2="16" y2="16"/>',
+};
+// Falls back to rendering whatever it was given, so arrays we haven't
+// converted (achievements, tracks, CTF) keep working untouched.
+const cardIco = (name)=> KICON[name]
+  ? `<svg class="kico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">${KICON[name]}</svg>`
+  : `<span aria-hidden="true">${name||''}</span>`;
+
 const FEATURES = () => [
   {ico:"book",     t:"Plain-English first", d:"Every term is defined the moment it appears — no assumed knowledge, no jargon walls, ever."},
   {ico:"terminal", t:"Hands-on labs",       d:"Real exercises and challenges in a safe, legal lab you build yourself and fully control."},
@@ -1776,6 +1858,17 @@ function updateActiveNav(){
 
 let revealObserver;
 function setupReveal(){
+  /* Card grids reveal as one block, which for the 42-card lab index means
+     the whole grid pops in at once. Promoting the grid to a staggered
+     container here rather than at each of the eight call sites keeps the
+     markup unchanged and picks up any grid added later.
+     The index is set once, as a style property the CSS reads — no
+     per-card observer, no layout reads during scroll. */
+  app.querySelectorAll('.labs-grid[data-reveal]').forEach(grid=>{
+    if(grid.dataset.revealGrid !== undefined) return;
+    grid.setAttribute('data-reveal-grid','');
+    [...grid.children].forEach((child,i)=>child.style.setProperty('--i', i));
+  });
   const els = app.querySelectorAll('[data-reveal]');
   if(!els.length) return;
   if(prefersReduced() || !('IntersectionObserver' in window)){
@@ -2346,11 +2439,26 @@ function renderFAQ(){
   wireFAQ();
 }
 
+/* Difficulty tier from the free-text level string. Twenty-six path cards
+   were visually identical, with the level buried at the end of a grey meta
+   line — so the one thing a newcomer most needs ("where do I start, and
+   what's out of my depth?") was the least visible thing on the card.
+   Four tiers is enough to scan; the exact wording still shows on the chip. */
+function levelTier(level){
+  const l = (level || '').toLowerCase();
+  if (l.includes('fresher') || l === 'absolute beginner') return 'start';
+  if (l.startsWith('advanced')) return 'advanced';
+  if (l.includes('advanced') || l.includes('intermediate')) return 'intermediate';
+  if (l.includes('beginner')) return 'beginner';
+  return 'any';
+}
+
 function pathCardHTML(p, i){
   const prog = pathProgress(p.id);
   const done = prog.pct >= 100;
+  const tier = levelTier(p.level);
   return `
-    <a class="path-card ${done?'is-complete':''}" href="#/lesson/${p.id}" data-spotlight data-reveal style="--i:${i%3}">
+    <a class="path-card ${done?'is-complete':''}" data-tier="${tier}" href="#/lesson/${p.id}" data-spotlight data-reveal style="--i:${i%3}">
       <div class="path-title-row">
         <div class="path-num">PATH ${p.n}</div>
         <span class="path-check" title="Path complete">
@@ -2359,7 +2467,10 @@ function pathCardHTML(p, i){
       </div>
       <div class="path-title">${p.title}</div>
       <div class="path-desc">${p.desc}</div>
-      <div class="path-meta">${p.subs.length} sub-lessons · ${p.level}</div>
+      <div class="path-meta">
+        <span class="level-chip" data-tier="${tier}">${p.level}</span>
+        <span>${p.subs.length} sub-lessons</span>
+      </div>
       ${prog.done > 0 ? `
         <div class="mini-progress">
           <div class="mini-progress-track"><div class="mini-progress-fill" style="width:0%" data-pct="${prog.pct}"></div></div>
@@ -2422,9 +2533,15 @@ async function renderSubLesson(pathId, subId){
             <button class="icon-btn" id="printLessonBtn" type="button" aria-label="Print or save this lesson as PDF" title="Print / Save as PDF">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
             </button>
-            <button class="icon-btn" id="pomodoroBtn" type="button" aria-label="Start a focus timer" title="Focus timer">🍅</button>
-            <button class="icon-btn ${STATE.zenMode?'active':''}" id="zenModeBtn" type="button" aria-label="${STATE.zenMode?'Exit focus reading mode':'Enter focus reading mode'}" aria-pressed="${STATE.zenMode}" title="Focus reading mode — hide everything but the lesson">🧘</button>
-            <button class="btn-ghost sm mobile-only" id="menuBtn" aria-label="Open lesson menu">☰ Lessons</button>
+            <button class="icon-btn" id="pomodoroBtn" type="button" aria-label="Start a focus timer" title="Focus timer">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><polyline points="12 9.5 12 13 14.5 14.5"/><line x1="9" y1="2" x2="15" y2="2"/><line x1="12" y1="2" x2="12" y2="5"/></svg>
+            </button>
+            <button class="icon-btn ${STATE.zenMode?'active':''}" id="zenModeBtn" type="button" aria-label="${STATE.zenMode?'Exit focus reading mode':'Enter focus reading mode'}" aria-pressed="${STATE.zenMode}" title="Focus reading mode — hide everything but the lesson">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2-5 3 10 2.5-7 1.5 2h5"/></svg>
+            </button>
+            <button class="btn-ghost sm mobile-only" id="menuBtn" aria-label="Open lesson menu">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg> Lessons
+            </button>
           </div>
         </div>
         <div class="pomodoro-widget" id="pomodoroWidget" hidden>
@@ -2435,14 +2552,14 @@ async function renderSubLesson(pathId, subId){
         </div>
         ${lessonChangedSinceRead(pathId, subId) ? `
         <div class="updated-banner" id="updatedBanner">
-          <span>✏️</span>
+          <svg class="ub-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
           <div>This lesson has been <b>updated</b> since you marked it complete — worth a skim.</div>
           <button class="btn-ghost sm" id="dismissUpdated" type="button">Got it</button>
         </div>` : ''}
         <div class="md" id="content"><div class="loading">Loading…</div></div>
         <div id="microCheck"></div>
         <details class="notes-panel">
-          <summary>✍️ My notes on this lesson</summary>
+          <summary><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg> My notes on this lesson</summary>
           <div class="notes-panel-body">
             <textarea id="lessonNotes" placeholder="Jot down anything you want to remember — only visible to you, saved automatically.">${escapeHtml(getNote(pathId,subId))}</textarea>
             <div class="notes-status" id="notesStatus"></div>
@@ -2450,8 +2567,8 @@ async function renderSubLesson(pathId, subId){
         </details>
         <div class="lesson-rating" id="lessonRating">
           <span class="lr-label">Was this lesson helpful?</span>
-          <button class="lr-btn ${STATE.lessonRatings[lessonKey(pathId,subId)]==='up'?'active':''}" id="lrUp" type="button" aria-pressed="${STATE.lessonRatings[lessonKey(pathId,subId)]==='up'}" aria-label="Yes, helpful">👍</button>
-          <button class="lr-btn ${STATE.lessonRatings[lessonKey(pathId,subId)]==='down'?'active':''}" id="lrDown" type="button" aria-pressed="${STATE.lessonRatings[lessonKey(pathId,subId)]==='down'}" aria-label="No, not helpful">👎</button>
+          <button class="lr-btn ${STATE.lessonRatings[lessonKey(pathId,subId)]==='up'?'active':''}" id="lrUp" type="button" aria-pressed="${STATE.lessonRatings[lessonKey(pathId,subId)]==='up'}" aria-label="Yes, helpful"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 22H4a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1h3"/><path d="M7 11l4-8a2.5 2.5 0 0 1 3 3l-1 4h5a2 2 0 0 1 2 2.4l-1.4 6A2 2 0 0 1 16.6 22H7z"/></svg></button>
+          <button class="lr-btn ${STATE.lessonRatings[lessonKey(pathId,subId)]==='down'?'active':''}" id="lrDown" type="button" aria-pressed="${STATE.lessonRatings[lessonKey(pathId,subId)]==='down'}" aria-label="No, not helpful"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="transform:rotate(180deg)"><path d="M7 22H4a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1h3"/><path d="M7 11l4-8a2.5 2.5 0 0 1 3 3l-1 4h5a2 2 0 0 1 2 2.4l-1.4 6A2 2 0 0 1 16.6 22H7z"/></svg></button>
           <span class="lr-thanks" id="lrThanks">${STATE.lessonRatings[lessonKey(pathId,subId)] ? 'Thanks for the feedback!' : ''}</span>
         </div>
         <div class="reader-nav">
@@ -3388,48 +3505,48 @@ function renderTrack(id){
    evaluation runs client-side; there's no real backend involved.
    ============================================================ */
 const LABS = [
-  {id:'terminal', ico:'🖥', title:'Terminal Simulator', desc:'A safe, in-browser Linux terminal with a fake filesystem. Practice ls, cd, cat, grep, find, whoami and more without spinning up a VM.', related:'Path 03 — Linux', points:10},
-  {id:'webapp', ico:'🕸', title:'Vulnerable Web App', desc:'A tiny deliberately-broken app for practicing XSS and login-bypass. Runs entirely in-browser; no server to attack, nothing to install.', related:'Path 11 — Web Security', points:15},
-  {id:'sqli', ico:'💉', title:'SQL Injection Sandbox', desc:'A fake login backed by a simulated database. Watch your input become SQL, then bypass the login with a classic injection.', related:'Path 11 — Web Security', points:15},
-  {id:'phishing', ico:'🎣', title:'Phishing Spotter', desc:'Real email or phish? Call each one, then see the exact red flags you spotted (or missed). Trains the instinct that stops most attacks.', related:'Path 10 — Fundamentals', points:10},
-  {id:'pcap', ico:'📡', title:'Packet Capture Viewer', desc:'Load a sample capture and explore protocols, IPs, and payloads — the same "read the traffic" muscle Wireshark builds.', related:'Path 12 — Network Security', points:10},
-  {id:'idor', ico:'🔓', title:'IDOR Playground', desc:'A fake "my invoices" page. Change one number in the URL and see whose data you were never supposed to see.', related:'Path 11 — Web Security', points:15},
-  {id:'jwt', ico:'🪪', title:'JWT Forgery Lab', desc:'Tamper with a JSON Web Token — strip the signature, flip a claim, and watch a vulnerable "verify" endpoint accept it anyway.', related:'Path 11 — Web Security', points:20},
-  {id:'traversal', ico:'📂', title:'Path Traversal Playground', desc:'A fake "view file" feature that trusts the filename you give it. Climb out of the intended folder with ../ and read files you shouldn\'t.', related:'Path 11 — Web Security', points:15},
-  {id:'ssrf', ico:'🌐', title:'SSRF Playground', desc:'A "fetch this URL for me" feature with no allowlist. Point it at internal-looking addresses and see what it leaks.', related:'Path 11 — Web Security', points:20},
-  {id:'xxe', ico:'📄', title:'XXE Playground', desc:'An XML upload feature that expands external entities. Smuggle a local file read through a "harmless" XML document.', related:'Path 11 — Web Security', points:20},
-  {id:'loganalysis', ico:'📜', title:'Log Analysis / IR Lab', desc:'A messy auth.log dump from a compromised box. Reconstruct the timeline and find the breach — blue-team skills, not exploitation.', related:'Path 12 — Network Security', points:15},
-  {id:'osint', ico:'🔍', title:'OSINT Sandbox', desc:'A safe, fake company profile — practise open-source recon technique without touching anything real.', related:'Path 14 — Ethical Hacking', points:10},
-  {id:'bola-bfla', ico:'🗂', title:'BOLA/BFLA Playground', desc:'A fake employee-directory API. Read a record that isn\'t yours, then call an admin-only action with no admin role at all.', related:'Path 21 — API Security', points:20},
-  {id:'graphql-introspection', ico:'🕸', title:'GraphQL Introspection Abuse', desc:'A single /graphql endpoint. Use introspection to map the full schema, then query a field the UI never shows you.', related:'Path 21 — API Security', points:20},
-  {id:'mass-assignment', ico:'🧩', title:'Mass Assignment Toy', desc:'A "update my profile" endpoint that binds whatever JSON you send straight to your account. Find the field that shouldn\'t be writable.', related:'Path 21 — API Security', points:15},
-  {id:'rate-limit-bypass', ico:'🚦', title:'Rate-Limit Bypass Simulator', desc:'A login endpoint that blocks you after 3 bad guesses — but trusts a header you control to decide who "you" are.', related:'Path 21 — API Security', points:20},
-  {id:'prompt-injection', ico:'💬', title:'Prompt Injection Simulator', desc:'Chat with a support bot that\'s told to never reveal its system prompt. Get it to reveal it anyway.', related:'Path 18 — AI & AI Security', points:15},
-  {id:'jailbreak', ico:'🔓', title:'Jailbreak Playground', desc:'An assistant refuses to share a secret code directly. Find a roleplay or hypothetical framing that gets it to comply anyway.', related:'Path 18 — AI & AI Security', points:20},
-  {id:'indirect-injection', ico:'🪤', title:'Indirect Prompt Injection Challenge', desc:'You control a job posting an AI assistant is about to summarize for someone else. Plant an instruction it\'ll follow instead.', related:'Path 18 — AI & AI Security', points:20},
-  {id:'agentic-risk', ico:'🤖', title:'Agentic Risk Scenario', desc:'An AI agent with email tool-access is about to process an inbox. Spot and quarantine the malicious email before it acts on it.', related:'Path 18 — AI & AI Security', points:20},
-  {id:'ad-attack', ico:'🏰', title:'Active Directory Attack Lab', desc:'A guided walkthrough of BloodHound-style graph recon, Kerberoasting a weak service account, and forging a Golden Ticket.', related:'Path 16 — Advanced', points:30},
-  {id:'csrf', ico:'🎭', title:'CSRF Playground', desc:'A "bank" transfer endpoint trusts your cookie alone. Watch a malicious page forge a request on your behalf, then see a CSRF token stop it cold.', related:'Path 11 — Web Security', points:15},
-  {id:'cmdinjection', ico:'⌨️', title:'Command Injection Sandbox', desc:'A "ping this host" tool glues your input into a real shell command. Chain a second command onto the intended one.', related:'Path 11 — Web Security', points:20},
-  {id:'openredirect', ico:'↪️', title:'Open Redirect Playground', desc:'A login page trusts a returnUrl parameter completely. Turn a genuinely trusted link into a post-login phishing weapon.', related:'Path 11 — Web Security', points:10},
-  {id:'clickjacking', ico:'🖱️', title:'Clickjacking Simulator', desc:'An invisible iframe sits on top of a fake game button. See exactly how a real click lands on a hidden "delete account" button instead.', related:'Path 11 — Web Security', points:15},
-  {id:'deserialization', ico:'📦', title:'Insecure Deserialization Toy', desc:'A "remember me" cookie is a trusted, deserialized object. Add one field to grant yourself admin with zero login.', related:'Path 11 — Web Security', points:20},
-  {id:'subdomaintakeover', ico:'🏚️', title:'Subdomain Takeover Simulator', desc:'Five DNS records, one dangling CNAME pointing at a deleted third-party resource. Find it before someone else claims it.', related:'Path 15 — Bug Bounty', points:20},
-  {id:'dnsrecon', ico:'🌐', title:'DNS Recon Playground', desc:'A simulated dig. Query a target\'s likely subdomains and build a map of its real, sometimes-forgotten attack surface.', related:'Path 14 — Ethical Hacking', points:10},
-  {id:'winprivesc', ico:'🪟', title:'Windows Privesc Playground', desc:'A misconfigured service runs as SYSTEM with a writable binary path. Replace it and escalate — no exploit needed.', related:'Path 16 — Advanced', points:20},
-  {id:'linuxprivesc', ico:'🐧', title:'Linux Privesc Playground', desc:'Enumerate SUID binaries on a simulated box and find the one GTFOBins turns straight into a root shell.', related:'Path 16 — Advanced', points:20},
-  {id:'kerberoast', ico:'🎫', title:'Kerberoasting Simulator', desc:'Request a service ticket for a weak-password service account, then crack the offline-crackable hash it hands you.', related:'Path 16 — Advanced', points:25},
-  {id:'iammisconfig', ico:'☁️', title:'Cloud IAM Misconfig Playground', desc:'A role holds one deceptively small permission. Chain it into full account takeover through iam:PassRole.', related:'Path 16 — Advanced', points:25},
-  {id:'dockerescape', ico:'🐳', title:'Docker Escape Playground', desc:'A container mounts the host\'s Docker socket. Use it to spin up a privileged container and step onto the host itself.', related:'Path 16 — Advanced', points:25},
-  {id:'malwarestrings', ico:'🧬', title:'Malware Strings Triage Lab', desc:'A raw strings dump from a suspicious binary. Spot the IOCs — a C2 domain, a mutex, a registry key — before touching a disassembler.', related:'Path 17 — Malware & RE', points:20},
-  {id:'yarabuilder', ico:'🔬', title:'YARA Rule Builder Challenge', desc:'Three malware samples, one clean file. Write a YARA rule that matches every sample and nothing else.', related:'Path 17 — Malware & RE', points:20},
-  {id:'racecondition', ico:'🏁', title:'Race Condition Lab', desc:'A one-time coupon, redeemed with a check-then-act flaw. Fire requests fast enough and redeem it far more than once.', related:'Path 15 — Bug Bounty', points:25},
-  {id:'webhookforge', ico:'🪝', title:'Webhook Signature Forgery Lab', desc:'Forge an HMAC-signed webhook without the secret, then flip on signature verification and watch it get rejected.', related:'Path 21 — API Security', points:20},
-  {id:'oauthredirect', ico:'🔑', title:'OAuth Redirect URI Hijack Lab', desc:'An authorization server validates redirect_uri loosely. Steal an authorization code by redirecting it to your own endpoint.', related:'Path 21 — API Security', points:25},
-  {id:'vendortiering', ico:'🏢', title:'Vendor Risk Tiering Simulator', desc:'Six vendors, six very different data-access levels. Tier them correctly and decide who needs a full security review.', related:'Path 23 — GRC & Compliance', points:15},
-  {id:'irtabletop', ico:'📋', title:'Incident Response Tabletop', desc:'A branching ransomware scenario. Make the containment and communication calls a real incident commander has to make under pressure.', related:'Path 16 — Advanced', points:20},
-  {id:'passwordcrack', ico:'🔓', title:'Password Cracking Lab', desc:'Four hashed passwords, one wordlist. See exactly which ones fall to a dictionary attack and which survive it — and why.', related:'Path 00 — Absolute Basics', points:15},
-  {id:'clouddockersecrets', ico:'🗝️', title:'Leaked Secret Hunt', desc:'A public GitHub repo dump. Find the hardcoded API key an automated scanner would catch in minutes — before an attacker does.', related:'Path 22 — DevSecOps & AppSec', points:15}
+  {id:'terminal', ico:'monitor', title:'Terminal Simulator', desc:'A safe, in-browser Linux terminal with a fake filesystem. Practice ls, cd, cat, grep, find, whoami and more without spinning up a VM.', related:'Path 03 — Linux', points:10},
+  {id:'webapp', ico:'bug', title:'Vulnerable Web App', desc:'A tiny deliberately-broken app for practicing XSS and login-bypass. Runs entirely in-browser; no server to attack, nothing to install.', related:'Path 11 — Web Security', points:15},
+  {id:'sqli', ico:'syringe', title:'SQL Injection Sandbox', desc:'A fake login backed by a simulated database. Watch your input become SQL, then bypass the login with a classic injection.', related:'Path 11 — Web Security', points:15},
+  {id:'phishing', ico:'hook', title:'Phishing Spotter', desc:'Real email or phish? Call each one, then see the exact red flags you spotted (or missed). Trains the instinct that stops most attacks.', related:'Path 10 — Fundamentals', points:10},
+  {id:'pcap', ico:'radio', title:'Packet Capture Viewer', desc:'Load a sample capture and explore protocols, IPs, and payloads — the same "read the traffic" muscle Wireshark builds.', related:'Path 12 — Network Security', points:10},
+  {id:'idor', ico:'unlockOpen', title:'IDOR Playground', desc:'A fake "my invoices" page. Change one number in the URL and see whose data you were never supposed to see.', related:'Path 11 — Web Security', points:15},
+  {id:'jwt', ico:'ticket', title:'JWT Forgery Lab', desc:'Tamper with a JSON Web Token — strip the signature, flip a claim, and watch a vulnerable "verify" endpoint accept it anyway.', related:'Path 11 — Web Security', points:20},
+  {id:'traversal', ico:'folderUp', title:'Path Traversal Playground', desc:'A fake "view file" feature that trusts the filename you give it. Climb out of the intended folder with ../ and read files you shouldn\'t.', related:'Path 11 — Web Security', points:15},
+  {id:'ssrf', ico:'globeArrow', title:'SSRF Playground', desc:'A "fetch this URL for me" feature with no allowlist. Point it at internal-looking addresses and see what it leaks.', related:'Path 11 — Web Security', points:20},
+  {id:'xxe', ico:'scroll', title:'XXE Playground', desc:'An XML upload feature that expands external entities. Smuggle a local file read through a "harmless" XML document.', related:'Path 11 — Web Security', points:20},
+  {id:'loganalysis', ico:'filter', title:'Log Analysis / IR Lab', desc:'A messy auth.log dump from a compromised box. Reconstruct the timeline and find the breach — blue-team skills, not exploitation.', related:'Path 12 — Network Security', points:15},
+  {id:'osint', ico:'search', title:'OSINT Sandbox', desc:'A safe, fake company profile — practise open-source recon technique without touching anything real.', related:'Path 14 — Ethical Hacking', points:10},
+  {id:'bola-bfla', ico:'folders', title:'BOLA/BFLA Playground', desc:'A fake employee-directory API. Read a record that isn\'t yours, then call an admin-only action with no admin role at all.', related:'Path 21 — API Security', points:20},
+  {id:'graphql-introspection', ico:'layers', title:'GraphQL Introspection Abuse', desc:'A single /graphql endpoint. Use introspection to map the full schema, then query a field the UI never shows you.', related:'Path 21 — API Security', points:20},
+  {id:'mass-assignment', ico:'puzzle', title:'Mass Assignment Toy', desc:'A "update my profile" endpoint that binds whatever JSON you send straight to your account. Find the field that shouldn\'t be writable.', related:'Path 21 — API Security', points:15},
+  {id:'rate-limit-bypass', ico:'traffic', title:'Rate-Limit Bypass Simulator', desc:'A login endpoint that blocks you after 3 bad guesses — but trusts a header you control to decide who "you" are.', related:'Path 21 — API Security', points:20},
+  {id:'prompt-injection', ico:'chat', title:'Prompt Injection Simulator', desc:'Chat with a support bot that\'s told to never reveal its system prompt. Get it to reveal it anyway.', related:'Path 18 — AI & AI Security', points:15},
+  {id:'jailbreak', ico:'lockKey', title:'Jailbreak Playground', desc:'An assistant refuses to share a secret code directly. Find a roleplay or hypothetical framing that gets it to comply anyway.', related:'Path 18 — AI & AI Security', points:20},
+  {id:'indirect-injection', ico:'trap', title:'Indirect Prompt Injection Challenge', desc:'You control a job posting an AI assistant is about to summarize for someone else. Plant an instruction it\'ll follow instead.', related:'Path 18 — AI & AI Security', points:20},
+  {id:'agentic-risk', ico:'robot', title:'Agentic Risk Scenario', desc:'An AI agent with email tool-access is about to process an inbox. Spot and quarantine the malicious email before it acts on it.', related:'Path 18 — AI & AI Security', points:20},
+  {id:'ad-attack', ico:'castle', title:'Active Directory Attack Lab', desc:'A guided walkthrough of BloodHound-style graph recon, Kerberoasting a weak service account, and forging a Golden Ticket.', related:'Path 16 — Advanced', points:30},
+  {id:'csrf', ico:'mask', title:'CSRF Playground', desc:'A "bank" transfer endpoint trusts your cookie alone. Watch a malicious page forge a request on your behalf, then see a CSRF token stop it cold.', related:'Path 11 — Web Security', points:15},
+  {id:'cmdinjection', ico:'keyboard', title:'Command Injection Sandbox', desc:'A "ping this host" tool glues your input into a real shell command. Chain a second command onto the intended one.', related:'Path 11 — Web Security', points:20},
+  {id:'openredirect', ico:'redirect', title:'Open Redirect Playground', desc:'A login page trusts a returnUrl parameter completely. Turn a genuinely trusted link into a post-login phishing weapon.', related:'Path 11 — Web Security', points:10},
+  {id:'clickjacking', ico:'cursor', title:'Clickjacking Simulator', desc:'An invisible iframe sits on top of a fake game button. See exactly how a real click lands on a hidden "delete account" button instead.', related:'Path 11 — Web Security', points:15},
+  {id:'deserialization', ico:'package', title:'Insecure Deserialization Toy', desc:'A "remember me" cookie is a trusted, deserialized object. Add one field to grant yourself admin with zero login.', related:'Path 11 — Web Security', points:20},
+  {id:'subdomaintakeover', ico:'house', title:'Subdomain Takeover Simulator', desc:'Five DNS records, one dangling CNAME pointing at a deleted third-party resource. Find it before someone else claims it.', related:'Path 15 — Bug Bounty', points:20},
+  {id:'dnsrecon', ico:'network', title:'DNS Recon Playground', desc:'A simulated dig. Query a target\'s likely subdomains and build a map of its real, sometimes-forgotten attack surface.', related:'Path 14 — Ethical Hacking', points:10},
+  {id:'winprivesc', ico:'window', title:'Windows Privesc Playground', desc:'A misconfigured service runs as SYSTEM with a writable binary path. Replace it and escalate — no exploit needed.', related:'Path 16 — Advanced', points:20},
+  {id:'linuxprivesc', ico:'penguin', title:'Linux Privesc Playground', desc:'Enumerate SUID binaries on a simulated box and find the one GTFOBins turns straight into a root shell.', related:'Path 16 — Advanced', points:20},
+  {id:'kerberoast', ico:'key', title:'Kerberoasting Simulator', desc:'Request a service ticket for a weak-password service account, then crack the offline-crackable hash it hands you.', related:'Path 16 — Advanced', points:25},
+  {id:'iammisconfig', ico:'cloud', title:'Cloud IAM Misconfig Playground', desc:'A role holds one deceptively small permission. Chain it into full account takeover through iam:PassRole.', related:'Path 16 — Advanced', points:25},
+  {id:'dockerescape', ico:'container', title:'Docker Escape Playground', desc:'A container mounts the host\'s Docker socket. Use it to spin up a privileged container and step onto the host itself.', related:'Path 16 — Advanced', points:25},
+  {id:'malwarestrings', ico:'dna', title:'Malware Strings Triage Lab', desc:'A raw strings dump from a suspicious binary. Spot the IOCs — a C2 domain, a mutex, a registry key — before touching a disassembler.', related:'Path 17 — Malware & RE', points:20},
+  {id:'yarabuilder', ico:'microscope', title:'YARA Rule Builder Challenge', desc:'Three malware samples, one clean file. Write a YARA rule that matches every sample and nothing else.', related:'Path 17 — Malware & RE', points:20},
+  {id:'racecondition', ico:'flag', title:'Race Condition Lab', desc:'A one-time coupon, redeemed with a check-then-act flaw. Fire requests fast enough and redeem it far more than once.', related:'Path 15 — Bug Bounty', points:25},
+  {id:'webhookforge', ico:'hook', title:'Webhook Signature Forgery Lab', desc:'Forge an HMAC-signed webhook without the secret, then flip on signature verification and watch it get rejected.', related:'Path 21 — API Security', points:20},
+  {id:'oauthredirect', ico:'redirect', title:'OAuth Redirect URI Hijack Lab', desc:'An authorization server validates redirect_uri loosely. Steal an authorization code by redirecting it to your own endpoint.', related:'Path 21 — API Security', points:25},
+  {id:'vendortiering', ico:'building', title:'Vendor Risk Tiering Simulator', desc:'Six vendors, six very different data-access levels. Tier them correctly and decide who needs a full security review.', related:'Path 23 — GRC & Compliance', points:15},
+  {id:'irtabletop', ico:'clipboard', title:'Incident Response Tabletop', desc:'A branching ransomware scenario. Make the containment and communication calls a real incident commander has to make under pressure.', related:'Path 16 — Advanced', points:20},
+  {id:'passwordcrack', ico:'hammer', title:'Password Cracking Lab', desc:'Four hashed passwords, one wordlist. See exactly which ones fall to a dictionary attack and which survive it — and why.', related:'Path 00 — Absolute Basics', points:15},
+  {id:'clouddockersecrets', ico:'keyhole', title:'Leaked Secret Hunt', desc:'A public GitHub repo dump. Find the hardcoded API key an automated scanner would catch in minutes — before an attacker does.', related:'Path 22 — DevSecOps & AppSec', points:15}
 ];
 /* ============================================================
    Capstone attack-chain — a narrative wrapper around four existing
@@ -3496,7 +3613,7 @@ function renderLabsIndex(){
           <div class="mini-progress-label"><span>${sb.done}/${sb.total} labs solved</span><span>${sb.points}/${sb.totalPoints} points</span></div>
         </div>
         <div class="hero-btns" style="justify-content:flex-start;margin-top:1rem">
-          <a class="btn-amber sm" href="#/capstone">⛓️ Try the capstone attack chain →</a>
+          <a class="btn-amber sm" href="#/capstone"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-2px"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg> Try the capstone attack chain →</a>
         </div>
       </div>
       <div class="labs-grid" data-reveal style="--i:1">
@@ -3504,7 +3621,7 @@ function renderLabsIndex(){
           const done = !!STATE.labsCompleted[l.id];
           return `
           <a class="lab-card ${done?'is-complete':''}" href="#/labs/${l.id}">
-            <div class="lab-ico">${l.ico}</div>
+            <div class="lab-ico">${cardIco(l.ico)}</div>
             <h3>${l.title} ${done?'<span class="lab-done-badge" title="Solved">✅</span>':''}</h3>
             <p>${escapeHtml(l.desc)}</p>
             <div class="lab-related">Pairs with: <b>${l.related}</b> · ${l.points||10} pts</div>
@@ -5918,6 +6035,14 @@ function renderLabLeakedSecret(){
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
+  {date:'2026-07-27', title:'Interface overhaul — a real icon set, motion, and difficulty at a glance', items:[
+    'Every tool and lab card used an emoji as its icon. Beyond looking like a ransom note next to the site\'s flat stroke icons, the emoji repeated — the same globe stood for the subnet calculator, the SSRF lab and DNS recon, and the same open padlock for three unrelated labs — so the icon told you nothing. All 74 are now drawn from one 63-glyph stroke set that inherits the current text colour, so it themes automatically and works in high-contrast mode.',
+    'The focus timer used to render above the lesson title, so starting it pushed the whole lesson down and the title stopped being the first thing on the page. It is now a pinned pill that stays out of the reading flow.',
+    'Path cards show difficulty as a colour-coded chip with a matching edge marker, so 26 near-identical cards can be scanned for "where do I start" and "what is out of my depth". The level is always spelled out, never colour alone.',
+    'Card grids now fade in with a short stagger instead of appearing all at once, entrance timing came down from 600ms to 420ms, and every animation moves only opacity and transform so nothing triggers layout. All of it switches off under reduced-motion.',
+    'Fixed the floating section mini-map: hidden labels still occupied width, so the dots landed at ragged positions instead of forming a column, and the longest label pushed its dot off the screen edge.',
+    'New automated checks cover contrast in both themes, tap-target size, focus visibility, reduced-motion, and the icons — 23 in total. They caught a genuine mistake made during this work: the first version of the difficulty chips measured 2.91:1 against the light theme, well under the 4.5:1 minimum.'
+  ]},
   {date:'2026-07-27', title:'Every tool and lab page rewritten with real content', items:[
     'The 74 tool and lab pages had about 53 words of their own content each, followed by a link list naming every other item in the section — a list that made up roughly 90% of the page and was identical across all of them. Search engines treat that as thin, duplicated content, so no amount of keyword work would have made those pages rank.',
     'Each one now has a proper explanation of the concept, step-by-step instructions matching the tool\'s actual controls, the things worth taking away, and answers to the questions people genuinely search for — around 336 words per tool and 267 per lab, all newly written. The link list is down to a handful of genuinely related items.',
@@ -6375,38 +6500,38 @@ function renderInterview(){
    no data leaves the browser. Each also doubles as an SEO landing page.
    ============================================================ */
 const TOOLS = [
-  {id:'encoder',  ico:'🔤', title:'Encoder / Decoder',     desc:'Base64, URL, and Hex — encode or decode text both ways.', related:'Path 06 — Cryptography'},
-  {id:'hash',     ico:'#️⃣', title:'Hash Generator',         desc:'SHA-1, SHA-256, SHA-384, SHA-512 of any text, via the browser\'s crypto engine.', related:'Path 06 — Cryptography'},
-  {id:'jwt',      ico:'🎫', title:'JWT Decoder',            desc:'Decode a JSON Web Token\'s header and payload and read its claims. No signature verification.', related:'Path 11 — Web Security'},
-  {id:'cvss',     ico:'📊', title:'CVSS 3.1 Calculator',    desc:'Turn the base metrics of a vulnerability into a 0–10 severity score.', related:'Path 10 — Fundamentals'},
-  {id:'subnet',   ico:'🌐', title:'Subnet Calculator',      desc:'IPv4 CIDR → network, broadcast, host range, mask, and host count.', related:'Path 02 — Networking'},
-  {id:'password', ico:'🔑', title:'Password Strength',      desc:'Rough entropy and crack-time estimate for a password, with feedback.', related:'Path 06 — Cryptography'},
-  {id:'cipher',   ico:'🔐', title:'Cipher Playground',      desc:'Caesar/ROT, XOR, and Vigenère — the classic ciphers from the CTF zone.', related:'Path 19 — CTF Zone'},
-  {id:'regex',    ico:'✳️', title:'Regex Tester',           desc:'Test a regular expression against sample text with live match highlighting and capture groups.', related:'Path 04 — Python'},
-  {id:'hashid',   ico:'🕵️', title:'Hash Identifier',        desc:'Paste a hash and get likely algorithms, guessed from its length and character set.', related:'Path 06 — Cryptography'},
-  {id:'headers',  ico:'🛡', title:'Security Header Analyzer', desc:'Paste HTTP response headers and get a graded report on the security headers present and missing.', related:'Path 11 — Web Security'},
-  {id:'vulnreport', ico:'📝', title:'Vulnerability Report Writer', desc:'A guided form that forces good structure — title, severity, steps to reproduce, impact, remediation — then exports clean Markdown or a printable PDF.', related:'Path 09 — Bug Bounty'},
-  {id:'resumehelper', ico:'📄', title:'Resume/LinkedIn Keyword Helper', desc:'Paste a job description, see which security keywords you already cover (based on completed paths) and which are gaps.', related:'Path 20 — Career Prep'},
-  {id:'portfoliogen', ico:'🧰', title:'Portfolio Project Generator', desc:'Guided starter briefs for real portfolio projects, with a write-up template you can export.', related:'Path 20 — Career Prep'},
-  {id:'codereview', ico:'🔎', title:'Secure Code Review Toy', desc:'Paste a code snippet and get flagged patterns — eval, string-built SQL, hardcoded secrets. Not a real SAST tool, but trains the eye.', related:'Path 22 — DevSecOps & AppSec'},
-  {id:'attckmap', ico:'🗺️', title:'MITRE ATT&CK Mapper', desc:'A searchable reference of real ATT&CK tactics and techniques, tied back to where this course covers each one.', related:'Path 16 — Advanced Topics'},
-  {id:'stride', ico:'🧩', title:'STRIDE Threat-Model Worksheet', desc:'A guided Spoofing/Tampering/Repudiation/Info-Disclosure/DoS/Elevation worksheet, exportable as Markdown.', related:'Path 22 — DevSecOps & AppSec'},
-  {id:'cidroverlap', ico:'🧮', title:'CIDR Overlap Checker', desc:'Check whether two CIDR ranges overlap — catches conflicting firewall/routing rules before they cause an outage.', related:'Path 02 — Networking'},
-  {id:'useragent', ico:'🕵️‍♂️', title:'User-Agent String Parser', desc:'Break down a User-Agent string into OS, browser, and version — and flag common automated-client patterns.', related:'Path 12 — Network Security'},
-  {id:'entropy', ico:'🎲', title:'Entropy Calculator', desc:'Shannon entropy of any text — a genuine static-analysis signal for spotting packed or encrypted data.', related:'Path 17 — Malware & RE'},
-  {id:'httpbuilder', ico:'📨', title:'Raw HTTP Request Builder', desc:'Build a raw HTTP request from method, path, headers, and body — see exactly what goes over the wire.', related:'Path 10 — Fundamentals'},
-  {id:'logparser', ico:'📄', title:'Log Grep / Filter Playground', desc:'Filter a block of log lines with a regex — the exact "find the signal in the noise" skill IR work depends on.', related:'Path 03 — Linux'},
-  {id:'riskregister', ico:'📒', title:'Risk Register Builder', desc:'Add risks with likelihood and impact, get an auto-scored severity, and export the register as Markdown.', related:'Path 23 — GRC & Compliance'},
-  {id:'sbomcheck', ico:'📦', title:'Dependency / SBOM Risk Checker', desc:'Paste a dependency list and flag ones matching a known-vulnerable version range.', related:'Path 22 — DevSecOps & AppSec'},
-  {id:'emailheaders', ico:'📧', title:'Email Header Analyzer', desc:'Paste raw email headers and get flagged for From/Return-Path mismatches, SPF failures, and missing DKIM.', related:'Path 09 — Digital Privacy'},
-  {id:'passpolicy', ico:'✅', title:'Password Policy Checker', desc:'Test a password against a configurable length/complexity policy, rule by rule.', related:'Path 00 — Absolute Basics'},
-  {id:'vlsm', ico:'📐', title:'VLSM Subnet Planner', desc:'Plan variable-length subnets across several different host-count requirements from one base network.', related:'Path 02 — Networking'},
-  {id:'yaratester', ico:'🔬', title:'Simplified YARA Rule Tester', desc:'Test a small set of required strings against sample content and see whether your rule matches.', related:'Path 17 — Malware & RE'},
-  {id:'slacalc', ico:'⏱️', title:'Incident Severity & SLA Calculator', desc:'Impact × urgency in, a priority tier and realistic remediation SLA out.', related:'Path 22 — DevSecOps & AppSec'},
-  {id:'controlmapper', ico:'🗂️', title:'Compliance Control Mapper', desc:'Look up how one control area maps across SOC 2, ISO 27001, NIST 800-53, and PCI-DSS.', related:'Path 23 — GRC & Compliance'},
-  {id:'dhvisualizer', ico:'🔁', title:'Diffie-Hellman Key Exchange Visualizer', desc:'Watch two sides land on the same shared secret without ever transmitting it, with small real numbers.', related:'Path 06 — Cryptography'},
-  {id:'base32', ico:'🔡', title:'Base32 / Base85 Encoder', desc:'Encode or decode text in Base32 or Base85 — the less common encodings you\'ll still run into in CTFs.', related:'Path 19 — CTF Zone'},
-  {id:'timingviz', ico:'⏲️', title:'Timing Attack Visualizer', desc:'See exactly why a naive string comparison leaks how many leading characters were correct — and why constant-time comparison fixes it.', related:'Path 06 — Cryptography'}
+  {id:'encoder',  ico:'swap', title:'Encoder / Decoder',     desc:'Base64, URL, and Hex — encode or decode text both ways.', related:'Path 06 — Cryptography'},
+  {id:'hash',     ico:'fingerprint', title:'Hash Generator',         desc:'SHA-1, SHA-256, SHA-384, SHA-512 of any text, via the browser\'s crypto engine.', related:'Path 06 — Cryptography'},
+  {id:'jwt',      ico:'ticket', title:'JWT Decoder',            desc:'Decode a JSON Web Token\'s header and payload and read its claims. No signature verification.', related:'Path 11 — Web Security'},
+  {id:'cvss',     ico:'gauge', title:'CVSS 3.1 Calculator',    desc:'Turn the base metrics of a vulnerability into a 0–10 severity score.', related:'Path 10 — Fundamentals'},
+  {id:'subnet',   ico:'network', title:'Subnet Calculator',      desc:'IPv4 CIDR → network, broadcast, host range, mask, and host count.', related:'Path 02 — Networking'},
+  {id:'password', ico:'key', title:'Password Strength',      desc:'Rough entropy and crack-time estimate for a password, with feedback.', related:'Path 06 — Cryptography'},
+  {id:'cipher',   ico:'lockKey', title:'Cipher Playground',      desc:'Caesar/ROT, XOR, and Vigenère — the classic ciphers from the CTF zone.', related:'Path 19 — CTF Zone'},
+  {id:'regex',    ico:'asterisk', title:'Regex Tester',           desc:'Test a regular expression against sample text with live match highlighting and capture groups.', related:'Path 04 — Python'},
+  {id:'hashid',   ico:'codeSearch', title:'Hash Identifier',        desc:'Paste a hash and get likely algorithms, guessed from its length and character set.', related:'Path 06 — Cryptography'},
+  {id:'headers',  ico:'shield', title:'Security Header Analyzer', desc:'Paste HTTP response headers and get a graded report on the security headers present and missing.', related:'Path 11 — Web Security'},
+  {id:'vulnreport', ico:'doc', title:'Vulnerability Report Writer', desc:'A guided form that forces good structure — title, severity, steps to reproduce, impact, remediation — then exports clean Markdown or a printable PDF.', related:'Path 09 — Bug Bounty'},
+  {id:'resumehelper', ico:'idcard', title:'Resume/LinkedIn Keyword Helper', desc:'Paste a job description, see which security keywords you already cover (based on completed paths) and which are gaps.', related:'Path 20 — Career Prep'},
+  {id:'portfoliogen', ico:'toolbox', title:'Portfolio Project Generator', desc:'Guided starter briefs for real portfolio projects, with a write-up template you can export.', related:'Path 20 — Career Prep'},
+  {id:'codereview', ico:'search', title:'Secure Code Review Toy', desc:'Paste a code snippet and get flagged patterns — eval, string-built SQL, hardcoded secrets. Not a real SAST tool, but trains the eye.', related:'Path 22 — DevSecOps & AppSec'},
+  {id:'attckmap', ico:'mapPin', title:'MITRE ATT&CK Mapper', desc:'A searchable reference of real ATT&CK tactics and techniques, tied back to where this course covers each one.', related:'Path 16 — Advanced Topics'},
+  {id:'stride', ico:'puzzle', title:'STRIDE Threat-Model Worksheet', desc:'A guided Spoofing/Tampering/Repudiation/Info-Disclosure/DoS/Elevation worksheet, exportable as Markdown.', related:'Path 22 — DevSecOps & AppSec'},
+  {id:'cidroverlap', ico:'calculator', title:'CIDR Overlap Checker', desc:'Check whether two CIDR ranges overlap — catches conflicting firewall/routing rules before they cause an outage.', related:'Path 02 — Networking'},
+  {id:'useragent', ico:'browser', title:'User-Agent String Parser', desc:'Break down a User-Agent string into OS, browser, and version — and flag common automated-client patterns.', related:'Path 12 — Network Security'},
+  {id:'entropy', ico:'dice', title:'Entropy Calculator', desc:'Shannon entropy of any text — a genuine static-analysis signal for spotting packed or encrypted data.', related:'Path 17 — Malware & RE'},
+  {id:'httpbuilder', ico:'send', title:'Raw HTTP Request Builder', desc:'Build a raw HTTP request from method, path, headers, and body — see exactly what goes over the wire.', related:'Path 10 — Fundamentals'},
+  {id:'logparser', ico:'filter', title:'Log Grep / Filter Playground', desc:'Filter a block of log lines with a regex — the exact "find the signal in the noise" skill IR work depends on.', related:'Path 03 — Linux'},
+  {id:'riskregister', ico:'ledger', title:'Risk Register Builder', desc:'Add risks with likelihood and impact, get an auto-scored severity, and export the register as Markdown.', related:'Path 23 — GRC & Compliance'},
+  {id:'sbomcheck', ico:'package', title:'Dependency / SBOM Risk Checker', desc:'Paste a dependency list and flag ones matching a known-vulnerable version range.', related:'Path 22 — DevSecOps & AppSec'},
+  {id:'emailheaders', ico:'mail', title:'Email Header Analyzer', desc:'Paste raw email headers and get flagged for From/Return-Path mismatches, SPF failures, and missing DKIM.', related:'Path 09 — Digital Privacy'},
+  {id:'passpolicy', ico:'check', title:'Password Policy Checker', desc:'Test a password against a configurable length/complexity policy, rule by rule.', related:'Path 00 — Absolute Basics'},
+  {id:'vlsm', ico:'ruler', title:'VLSM Subnet Planner', desc:'Plan variable-length subnets across several different host-count requirements from one base network.', related:'Path 02 — Networking'},
+  {id:'yaratester', ico:'microscope', title:'Simplified YARA Rule Tester', desc:'Test a small set of required strings against sample content and see whether your rule matches.', related:'Path 17 — Malware & RE'},
+  {id:'slacalc', ico:'clock', title:'Incident Severity & SLA Calculator', desc:'Impact × urgency in, a priority tier and realistic remediation SLA out.', related:'Path 22 — DevSecOps & AppSec'},
+  {id:'controlmapper', ico:'folders', title:'Compliance Control Mapper', desc:'Look up how one control area maps across SOC 2, ISO 27001, NIST 800-53, and PCI-DSS.', related:'Path 23 — GRC & Compliance'},
+  {id:'dhvisualizer', ico:'refresh', title:'Diffie-Hellman Key Exchange Visualizer', desc:'Watch two sides land on the same shared secret without ever transmitting it, with small real numbers.', related:'Path 06 — Cryptography'},
+  {id:'base32', ico:'type', title:'Base32 / Base85 Encoder', desc:'Encode or decode text in Base32 or Base85 — the less common encodings you\'ll still run into in CTFs.', related:'Path 19 — CTF Zone'},
+  {id:'timingviz', ico:'timer', title:'Timing Attack Visualizer', desc:'See exactly why a naive string comparison leaks how many leading characters were correct — and why constant-time comparison fixes it.', related:'Path 06 — Cryptography'}
 ];
 
 function renderToolsIndex(){
@@ -6420,7 +6545,7 @@ function renderToolsIndex(){
       <div class="labs-grid" data-reveal style="--i:1">
         ${TOOLS.map(t=>`
           <a class="lab-card" href="#/tools/${t.id}">
-            <div class="lab-ico">${t.ico}</div>
+            <div class="lab-ico">${cardIco(t.ico)}</div>
             <h3>${t.title}</h3>
             <p>${escapeHtml(t.desc)}</p>
             <div class="lab-related">Pairs with: <b>${t.related}</b></div>
@@ -6439,7 +6564,7 @@ function renderTool(id){
     <section class="sec tool-page">
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow"><a href="#/tools" style="color:inherit;text-decoration:none">Tools</a> · ${meta.title}</div>
-        <h2>${meta.ico} ${meta.title}</h2>
+        <h2><span class="tool-head-ico">${cardIco(meta.ico)}</span>${meta.title}</h2>
         <p class="sec-lead">${escapeHtml(meta.desc)} <span class="tool-privacy">🔒 Runs locally — nothing leaves your browser.</span></p>
       </div>
       <div id="toolBody" data-reveal style="--i:1"></div>
@@ -7704,7 +7829,7 @@ function renderWeeklyIndex(){
           const done = saved.length >= qs.length && qs.length>0;
           return `
           <a class="lab-card ${done?'is-complete':''}" href="#/weekly/${c.id}">
-            <div class="lab-ico">${c.ico}</div>
+            <div class="lab-ico">${cardIco(c.ico)}</div>
             <h3>${c.title} ${done?'<span class="lab-done-badge">✅</span>':''}</h3>
             <p>${escapeHtml(c.desc)}</p>
             <div class="lab-related">${saved.length}/${qs.length} answered</div>
@@ -9486,7 +9611,7 @@ function runSearch(q){
 
 function renderCmdRow(r, i, q){
   return `<a class="search-result cmd-row ${i===0?'active':''}" href="${r.url||'#'}" data-idx="${i}">
-    <span class="cmd-ico">${r.icon||'▶'}</span>
+    <span class="cmd-ico">${r.icon ? cardIco(r.icon) : '▸'}</span>
     <div style="min-width:0">
       <div class="sr-title">${q?highlightMatch(escapeHtml(r.title),q):escapeHtml(r.title)}</div>
       <div class="sr-path">${r.ctx}</div>
