@@ -210,6 +210,80 @@ const unwiredTools = TOOLS.filter(t => !dispatchIds.has(t.id)).map(t => t.id);
 check('every TOOLS entry is wired into renderTool dispatch', unwiredTools.length === 0,
   `missing dispatch for: ${unwiredTools.join(', ')}`);
 
+/* ---- 13. prerendered pages self-canonicalise ----
+   This shipped broken and nothing caught it: every stub's canonical pointed
+   at the SPA hash route (`/#/lesson/a/b`). Google discards everything after
+   `#`, so all 587 content pages declared themselves duplicates of the
+   homepage — none of them could rank. The rule is simple enough to assert:
+   a page's canonical is its own crawlable URL, and never contains a '#'. */
+const SITE = 'https://kashsec.vercel.app';
+const prerendered = [];
+(function walk(dir) {
+  if (!fs.existsSync(path.join(ROOT, dir))) return;
+  for (const e of fs.readdirSync(path.join(ROOT, dir), { withFileTypes: true })) {
+    const rel = `${dir}/${e.name}`;
+    if (e.isDirectory()) walk(rel);
+    else if (e.name.endsWith('.html')) prerendered.push(rel);
+  }
+})('lesson');
+['tools', 'labs'].forEach(d => {
+  if (!fs.existsSync(path.join(ROOT, d))) return;
+  fs.readdirSync(path.join(ROOT, d))
+    .filter(f => f.endsWith('.html')).forEach(f => prerendered.push(`${d}/${f}`));
+});
+if (fs.existsSync(path.join(ROOT, 'faq.html'))) prerendered.push('faq.html');
+
+check('prerendered stubs exist (run npm run build)', prerendered.length > totalLessons,
+  `found ${prerendered.length} prerendered pages, expected more than ${totalLessons}`);
+
+const badCanonical = [];
+const badJsonLd = [];
+for (const rel of prerendered) {
+  const html = read(rel);
+  const canon = (html.match(/<link rel="canonical" href="([^"]+)"/) || [])[1];
+  // The URL this file is actually served at: index.html files answer to
+  // their directory, everything else to its own .html path.
+  const expected = SITE + '/' + rel.replace(/(^|\/)index\.html$/, '$1');
+  if (!canon) badCanonical.push(`${rel}: no canonical`);
+  else if (canon.includes('#')) badCanonical.push(`${rel}: canonical has a fragment — ${canon}`);
+  else if (canon !== expected) badCanonical.push(`${rel}: canonical is ${canon}, expected ${expected}`);
+
+  const og = (html.match(/<meta property="og:url" content="([^"]+)"/) || [])[1];
+  if (og !== canon) badCanonical.push(`${rel}: og:url (${og}) disagrees with canonical`);
+
+  for (const m of html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)) {
+    try {
+      const obj = JSON.parse(m[1]);
+      if (!obj['@context'] || !obj['@type']) badJsonLd.push(`${rel}: block missing @context/@type`);
+    } catch (e) { badJsonLd.push(`${rel}: ${e.message}`); }
+  }
+}
+check('every prerendered page canonicalises to its own crawlable URL (no # fragments)',
+  badCanonical.length === 0,
+  badCanonical.slice(0, 6).join('\n      ') +
+  (badCanonical.length > 6 ? `\n      …and ${badCanonical.length - 6} more` : ''));
+check('all JSON-LD parses and declares @context + @type', badJsonLd.length === 0,
+  badJsonLd.slice(0, 6).join('\n      '));
+
+/* ---- 14. the sitemap agrees with what was prerendered ----
+   A sitemap listing URLs that 404, or omitting pages that exist, wastes
+   crawl budget in both directions. */
+if (fs.existsSync(path.join(ROOT, 'sitemap.xml'))) {
+  const sm = read('sitemap.xml');
+  const locs = [...sm.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m => m[1]);
+  const locSet = new Set(locs);
+  check('no sitemap URL contains a hash fragment',
+    !locs.some(u => u.includes('#')),
+    locs.filter(u => u.includes('#')).slice(0, 4).join(', '));
+  check('every sitemap URL has a <lastmod>',
+    (sm.match(/<url>/g) || []).length === (sm.match(/<lastmod>/g) || []).length);
+  const notListed = prerendered
+    .map(rel => SITE + '/' + rel.replace(/(^|\/)index\.html$/, '$1'))
+    .filter(u => !locSet.has(u));
+  check('every prerendered page is listed in sitemap.xml', notListed.length === 0,
+    `${notListed.length} missing, e.g. ${notListed.slice(0, 3).join(', ')}`);
+}
+
 /* ---- report ---- */
 console.log(`\n  Data integrity — ${PATHS.length} paths, ${totalLessons} lessons, ` +
   `${Object.values(QUIZZES).reduce((s, q) => s + q.questions.length, 0)} quiz questions\n`);

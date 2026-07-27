@@ -5,12 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>How the internet works — Path 00 · KashSec Academy</title>
 <meta name="description" content="The internet feels like magic — you type a few words and a page appears half a world away in under a second. It isn't magic. It's an enormous, extremely well-organized relay race between computers, an">
-<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/00-fresher-basics/how-internet-works">
+<link rel="canonical" href="https://kashsec.vercel.app/lesson/00-fresher-basics/how-internet-works.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="How the internet works — Path 00 · KashSec Academy">
 <meta property="og:description" content="The internet feels like magic — you type a few words and a page appears half a world away in under a second. It isn't magic. It's an enormous, extremely well-organized relay race between computers, an">
 <meta property="og:type" content="article">
-<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/00-fresher-basics/how-internet-works">
+<meta property="og:url" content="https://kashsec.vercel.app/lesson/00-fresher-basics/how-internet-works.html">
+<meta property="og:site_name" content="KashSec Academy">
 <meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -20,7 +21,10 @@
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"How the internet works — Path 00 · KashSec Academy","description":"The internet feels like magic — you type a few words and a page appears half a world away in under a second. It isn't magic. It's an enormous, extremely well-organized relay race between computers, an","url":"https://kashsec.vercel.app/#/lesson/00-fresher-basics/how-internet-works","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 00 — Computer Basics & Security Mindset","item":"https://kashsec.vercel.app/lesson/00-fresher-basics/"},{"@type":"ListItem","position":4,"name":"How the internet works","item":"https://kashsec.vercel.app/lesson/00-fresher-basics/how-internet-works.html"}]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"How the internet works","headline":"How the internet works","description":"The internet feels like magic — you type a few words and a page appears half a world away in under a second. It isn't magic. It's an enormous, extremely well-organized relay race between computers, an","url":"https://kashsec.vercel.app/lesson/00-fresher-basics/how-internet-works.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Absolute fresher","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"From your phone to the world, in plain English.","isPartOf":{"@type":"Course","name":"Path 00: Computer Basics & Security Mindset","url":"https://kashsec.vercel.app/lesson/00-fresher-basics/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/00-fresher-basics/how-internet-works.html"}}
 </script>
 <style>
 :root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
@@ -30,6 +34,8 @@ main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
 .spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
 .crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
 .crumb a{color:var(--teal);text-decoration:none}
+.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
+.pager a{color:var(--teal);text-decoration:none}
 h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
 h1{font-size:2rem;margin:.5rem 0 1rem}
 h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
@@ -47,8 +53,8 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 </head>
 <body>
 <main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/00-fresher-basics/how-internet-works">continue here →</a></div>
-  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 00 — Computer Basics & Security Mindset</a> · How the internet works</div>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/00-fresher-basics/how-internet-works">continue here →</a></div>
+  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/00-fresher-basics/">Path 00 — Computer Basics &amp; Security Mindset</a> · How the internet works</div>
   <article><h1>How the internet works</h1>
 <p>The internet feels like magic — you type a few words and a page appears half a world away in under a second. It isn&#39;t magic. It&#39;s an enormous, extremely well-organized relay race between computers, and once you understand the stages of that race, a huge chunk of &quot;hacker stuff&quot; you&#39;ll see later (man-in-the-middle attacks, DNS spoofing, HTTPS, VPNs) stops being mysterious and starts being obvious.</p>
 <h2>The journey of a single web request</h2>
@@ -148,17 +154,17 @@ traceroute google.com
 <li><a href="https://www.icann.org/resources/pages/what-2012-02-25-en">ICANN: What does ICANN do?</a> — a free, official overview of how internet-wide coordination actually works.</li>
 </ul>
 <p><strong>Next up →</strong> <a href="#/lesson/00-fresher-basics/how-to-use-a-browser-safely">Using your web browser safely</a></p>
-</article>
-  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/00-fresher-basics/what-is-a-computer.html">← What is a computer really?</a><a href="/lesson/00-fresher-basics/how-to-use-a-browser-safely.html">Using your web browser safely →</a></nav></article>
+  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
 </main>
 <script>
 // Redirect actual users into the SPA. Search-engine crawlers get to read
 // the content above before the redirect fires.
 (function(){
   try {
-    var target = "https://kashsec.vercel.app/#/lesson/00-fresher-basics/how-internet-works";
+    var target = "/#/lesson/00-fresher-basics/how-internet-works";
     // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html')) location.replace(target);
+    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
   } catch (e) {}
 })();
 </script>

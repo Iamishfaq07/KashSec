@@ -5,12 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Packets &amp; the OSI layers — Path 02 · KashSec Academy</title>
 <meta name="description" content="Here's something that surprises most beginners: when you send a large email, watch a video, or download a file, that data does not travel as one lump. It's chopped into small pieces called packets, wh">
-<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/02-networking/packets">
+<link rel="canonical" href="https://kashsec.vercel.app/lesson/02-networking/packets.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Packets &amp; the OSI layers — Path 02 · KashSec Academy">
 <meta property="og:description" content="Here's something that surprises most beginners: when you send a large email, watch a video, or download a file, that data does not travel as one lump. It's chopped into small pieces called packets, wh">
 <meta property="og:type" content="article">
-<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/02-networking/packets">
+<meta property="og:url" content="https://kashsec.vercel.app/lesson/02-networking/packets.html">
+<meta property="og:site_name" content="KashSec Academy">
 <meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -20,7 +21,10 @@
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Packets & the OSI layers — Path 02 · KashSec Academy","description":"Here's something that surprises most beginners: when you send a large email, watch a video, or download a file, that data does not travel as one lump. It's chopped into small pieces called packets, wh","url":"https://kashsec.vercel.app/#/lesson/02-networking/packets","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 02 — Networking Fundamentals","item":"https://kashsec.vercel.app/lesson/02-networking/"},{"@type":"ListItem","position":4,"name":"Packets & the OSI layers","item":"https://kashsec.vercel.app/lesson/02-networking/packets.html"}]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Packets & the OSI layers","headline":"Packets & the OSI layers","description":"Here's something that surprises most beginners: when you send a large email, watch a video, or download a file, that data does not travel as one lump. It's chopped into small pieces called packets, wh","url":"https://kashsec.vercel.app/lesson/02-networking/packets.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"How data is chopped, wrapped, and reassembled.","isPartOf":{"@type":"Course","name":"Path 02: Networking Fundamentals","url":"https://kashsec.vercel.app/lesson/02-networking/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/02-networking/packets.html"}}
 </script>
 <style>
 :root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
@@ -30,6 +34,8 @@ main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
 .spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
 .crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
 .crumb a{color:var(--teal);text-decoration:none}
+.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
+.pager a{color:var(--teal);text-decoration:none}
 h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
 h1{font-size:2rem;margin:.5rem 0 1rem}
 h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
@@ -47,8 +53,8 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 </head>
 <body>
 <main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/02-networking/packets">continue here →</a></div>
-  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 02 — Networking Fundamentals</a> · Packets &amp; the OSI layers</div>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/02-networking/packets">continue here →</a></div>
+  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/02-networking/">Path 02 — Networking Fundamentals</a> · Packets &amp; the OSI layers</div>
   <article><h1>Packets &amp; the OSI layers</h1>
 <p>Here&#39;s something that surprises most beginners: when you send a large email, watch a video, or download a file, that data <strong>does not travel as one lump.</strong> It&#39;s chopped into small pieces called <strong>packets</strong>, which travel separately and are reassembled at the other end.</p>
 <p>A lot of both attacking and defending happens at the packet level, so this is a genuine &quot;click&quot; moment.</p>
@@ -176,17 +182,17 @@ Physical → Data Link → Network → Transport → Session → Presentation �
 <li><a href="https://nostarch.com/packetanalysis3">Practical Packet Analysis (book)</a> — Chris Sanders&#39; classic Wireshark book.</li>
 </ul>
 <p><strong>Next up →</strong> <a href="#/lesson/02-networking/switches-and-vlans">Switches &amp; VLANs</a></p>
-</article>
-  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/02-networking/ports.html">← Ports: the doors</a><a href="/lesson/02-networking/switches-and-vlans.html">Switches &amp; VLANs →</a></nav></article>
+  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
 </main>
 <script>
 // Redirect actual users into the SPA. Search-engine crawlers get to read
 // the content above before the redirect fires.
 (function(){
   try {
-    var target = "https://kashsec.vercel.app/#/lesson/02-networking/packets";
+    var target = "/#/lesson/02-networking/packets";
     // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html')) location.replace(target);
+    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
   } catch (e) {}
 })();
 </script>

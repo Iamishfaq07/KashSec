@@ -5,12 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Zero Trust for APIs &amp; Microservices — Path 24 · KashSec Academy</title>
 <meta name="description" content="The ZTNA lesson covered granting access to applications rather than networks. This lesson goes one layer deeper: applying Zero Trust principles inside an application — to the APIs and microservices th">
-<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/24-zero-trust/zero-trust-api-security">
+<link rel="canonical" href="https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-api-security.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Zero Trust for APIs &amp; Microservices — Path 24 · KashSec Academy">
 <meta property="og:description" content="The ZTNA lesson covered granting access to applications rather than networks. This lesson goes one layer deeper: applying Zero Trust principles inside an application — to the APIs and microservices th">
 <meta property="og:type" content="article">
-<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/24-zero-trust/zero-trust-api-security">
+<meta property="og:url" content="https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-api-security.html">
+<meta property="og:site_name" content="KashSec Academy">
 <meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -20,7 +21,10 @@
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Zero Trust for APIs & Microservices — Path 24 · KashSec Academy","description":"The ZTNA lesson covered granting access to applications rather than networks. This lesson goes one layer deeper: applying Zero Trust principles inside an application — to the APIs and microservices th","url":"https://kashsec.vercel.app/#/lesson/24-zero-trust/zero-trust-api-security","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 24 — Zero Trust Architecture","item":"https://kashsec.vercel.app/lesson/24-zero-trust/"},{"@type":"ListItem","position":4,"name":"Zero Trust for APIs & Microservices","item":"https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-api-security.html"}]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Zero Trust for APIs & Microservices","headline":"Zero Trust for APIs & Microservices","description":"The ZTNA lesson covered granting access to applications rather than networks. This lesson goes one layer deeper: applying Zero Trust principles inside an application — to the APIs and microservices th","url":"https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-api-security.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"mTLS, service identity, and per-service least privilege for internal service-to-service traffic.","isPartOf":{"@type":"Course","name":"Path 24: Zero Trust Architecture","url":"https://kashsec.vercel.app/lesson/24-zero-trust/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-api-security.html"}}
 </script>
 <style>
 :root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
@@ -30,6 +34,8 @@ main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
 .spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
 .crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
 .crumb a{color:var(--teal);text-decoration:none}
+.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
+.pager a{color:var(--teal);text-decoration:none}
 h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
 h1{font-size:2rem;margin:.5rem 0 1rem}
 h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
@@ -47,8 +53,8 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 </head>
 <body>
 <main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/24-zero-trust/zero-trust-api-security">continue here →</a></div>
-  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 24 — Zero Trust Architecture</a> · Zero Trust for APIs &amp; Microservices</div>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/24-zero-trust/zero-trust-api-security">continue here →</a></div>
+  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/24-zero-trust/">Path 24 — Zero Trust Architecture</a> · Zero Trust for APIs &amp; Microservices</div>
   <article><h1>Zero Trust for APIs &amp; Microservices</h1>
 <p>The ZTNA lesson covered granting access to applications rather than networks. This lesson goes one layer deeper: applying Zero Trust principles <em>inside</em> an application — to the APIs and microservices that talk to each other, often with far less scrutiny than the traffic reaching the application&#39;s front door.</p>
 <p>:::</p>
@@ -84,17 +90,17 @@ An attacker compromises a low-privilege internal reporting service through an ou
 <ul>
 <li><a href="https://csrc.nist.gov/pubs/sp/800/207/final">NIST SP 800-207 — Zero Trust Architecture</a> — covers workload-to-workload trust models</li>
 </ul>
-</article>
-  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/24-zero-trust/zero-trust-data-security.html">← Data-Centric Zero Trust</a><a href="/lesson/24-zero-trust/zero-trust-pam.html">Privileged Access Management Under Zero Trust →</a></nav></article>
+  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
 </main>
 <script>
 // Redirect actual users into the SPA. Search-engine crawlers get to read
 // the content above before the redirect fires.
 (function(){
   try {
-    var target = "https://kashsec.vercel.app/#/lesson/24-zero-trust/zero-trust-api-security";
+    var target = "/#/lesson/24-zero-trust/zero-trust-api-security";
     // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html')) location.replace(target);
+    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
   } catch (e) {}
 })();
 </script>

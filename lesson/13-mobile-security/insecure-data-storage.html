@@ -5,12 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Insecure Data Storage — Path 13 · KashSec Academy</title>
 <meta name="description" content="This is OWASP Mobile Top 10 item #9, and consistently one of the most common findings in real mobile security assessments — apps storing sensitive data locally without encryption, trusting the sandbox">
-<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/13-mobile-security/insecure-data-storage">
+<link rel="canonical" href="https://kashsec.vercel.app/lesson/13-mobile-security/insecure-data-storage.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Insecure Data Storage — Path 13 · KashSec Academy">
 <meta property="og:description" content="This is OWASP Mobile Top 10 item #9, and consistently one of the most common findings in real mobile security assessments — apps storing sensitive data locally without encryption, trusting the sandbox">
 <meta property="og:type" content="article">
-<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/13-mobile-security/insecure-data-storage">
+<meta property="og:url" content="https://kashsec.vercel.app/lesson/13-mobile-security/insecure-data-storage.html">
+<meta property="og:site_name" content="KashSec Academy">
 <meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -20,7 +21,10 @@
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Insecure Data Storage — Path 13 · KashSec Academy","description":"This is OWASP Mobile Top 10 item #9, and consistently one of the most common findings in real mobile security assessments — apps storing sensitive data locally without encryption, trusting the sandbox","url":"https://kashsec.vercel.app/#/lesson/13-mobile-security/insecure-data-storage","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 13 — Mobile App Security","item":"https://kashsec.vercel.app/lesson/13-mobile-security/"},{"@type":"ListItem","position":4,"name":"Insecure Data Storage","item":"https://kashsec.vercel.app/lesson/13-mobile-security/insecure-data-storage.html"}]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Insecure Data Storage","headline":"Insecure Data Storage","description":"This is OWASP Mobile Top 10 item #9, and consistently one of the most common findings in real mobile security assessments — apps storing sensitive data locally without encryption, trusting the sandbox","url":"https://kashsec.vercel.app/lesson/13-mobile-security/insecure-data-storage.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate→Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"The most common real-world mobile finding, hands-on.","isPartOf":{"@type":"Course","name":"Path 13: Mobile App Security","url":"https://kashsec.vercel.app/lesson/13-mobile-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/13-mobile-security/insecure-data-storage.html"}}
 </script>
 <style>
 :root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
@@ -30,6 +34,8 @@ main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
 .spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
 .crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
 .crumb a{color:var(--teal);text-decoration:none}
+.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
+.pager a{color:var(--teal);text-decoration:none}
 h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
 h1{font-size:2rem;margin:.5rem 0 1rem}
 h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
@@ -47,8 +53,8 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 </head>
 <body>
 <main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/13-mobile-security/insecure-data-storage">continue here →</a></div>
-  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 13 — Mobile App Security</a> · Insecure Data Storage</div>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/13-mobile-security/insecure-data-storage">continue here →</a></div>
+  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/13-mobile-security/">Path 13 — Mobile App Security</a> · Insecure Data Storage</div>
   <article><h1>Insecure Data Storage</h1>
 <p>This is OWASP Mobile Top 10 item #9, and consistently one of the most common findings in real mobile security assessments — apps storing sensitive data locally without encryption, trusting the sandbox alone (Path 13&#39;s fundamentals lesson) to protect it, when the sandbox boundary is exactly what a rooted device or a stolen, unlocked phone bypasses.</p>
 <h2>Where apps store data locally</h2>
@@ -132,17 +138,17 @@ EncryptedSharedPreferences.create(
 <h2>Key takeaway</h2>
 <p>Insecure local storage requires zero exploitation to abuse — just root access or a backup extraction and the willingness to look. This makes it one of the highest-yield, lowest-effort findings in mobile testing, and exactly why checking local storage should be one of the very first things you do in any mobile security assessment.</p>
 <p><strong>Next up →</strong> <a href="#/lesson/13-mobile-security/mobile-authentication-biometrics">Mobile Authentication &amp; Biometrics</a></p>
-</article>
-  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/13-mobile-security/reverse-engineering-mobile-apps.html">← Reverse Engineering Mobile Apps</a><a href="/lesson/13-mobile-security/mobile-authentication-biometrics.html">Mobile Authentication &amp; Biometrics →</a></nav></article>
+  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
 </main>
 <script>
 // Redirect actual users into the SPA. Search-engine crawlers get to read
 // the content above before the redirect fires.
 (function(){
   try {
-    var target = "https://kashsec.vercel.app/#/lesson/13-mobile-security/insecure-data-storage";
+    var target = "/#/lesson/13-mobile-security/insecure-data-storage";
     // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html')) location.replace(target);
+    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
   } catch (e) {}
 })();
 </script>

@@ -5918,6 +5918,12 @@ function renderLabLeakedSecret(){
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
+  {date:'2026-07-27', title:'Search-engine overhaul — every lesson can finally rank', items:[
+    'Fixed the single biggest thing holding the site back in search: every one of the 587 crawlable pages declared its canonical URL as the SPA hash route (`/#/lesson/...`). Google discards everything after the `#`, so all of them were telling Google they were duplicates of the homepage — meaning no lesson, tool or lab could rank on its own. Each page now points at its own real URL.',
+    'Added the structured data search engines actually read: breadcrumbs on all 590 pages, Course data on every path (the format eligible for Google\'s course results), FAQ data on a new crawlable FAQ page, and — for the first time — a description of the site itself on the homepage, which previously had none at all.',
+    'Lesson data now states reading time, level, language and last-updated date, and the sitemap carries a real last-modified date per page taken from the project history, so edits get re-crawled instead of sitting unnoticed.',
+    'New internal linking: previous/next links on every lesson, a full index of all 26 paths, and breadcrumbs that lead somewhere (they all pointed at the homepage before). Four new automated checks make the canonical mistake impossible to reintroduce.'
+  ]},
   {date:'2026-07-26', title:'Lessons no longer depend on a third-party CDN', items:[
     'Site-wide audit fix. The markdown renderer used to load from cdn.jsdelivr.net and was chained behind Mermaid, so a blocked or slow CDN showed "Couldn\'t load the lesson renderer" on every one of the 485 lessons — and the offline promise only held after one successful load.',
     'marked is now vendored locally (pinned, service-worker precached) and Mermaid is strictly optional: lesson text renders immediately, diagrams fill in afterwards, and a diagram that never loads collapses to a tidy placeholder instead of dumping raw diagram source at the reader.',

@@ -1,47 +1,59 @@
 #!/usr/bin/env node
 /*
- * Prerenders static HTML for every lesson so search engines can index all
- * 205 lesson URLs (the SPA is hash-routed, invisible to most crawlers).
+ * Prerenders static HTML for every lesson, path, tool and lab so search
+ * engines can index them (the SPA is hash-routed, invisible to crawlers).
  *
  * Each generated file at lesson/<pathId>/<subId>.html contains:
  *   - a lesson-specific <title>, <meta description>, canonical link, and
  *     og:/twitter: tags, all filled in from the lesson content
  *   - the lesson's markdown, pre-rendered to HTML with `marked` so bots
  *     see the actual content, not an empty shell
+ *   - schema.org JSON-LD (LearningResource + BreadcrumbList)
  *   - a small script that redirects real users into the SPA at
  *     `#/lesson/<pathId>/<subId>`, so navigation still uses the app
  *
- * Also regenerates sitemap.xml with entries for every lesson URL.
+ * CANONICAL RULE — the one thing to not get wrong here: the canonical URL
+ * must be the .html file itself, never the SPA hash route. Google discards
+ * everything after `#`, so `https://site/#/lesson/a/b` canonicalises to
+ * `https://site/` — pointing 500+ pages at the homepage as duplicates and
+ * stopping any of them ranking. The hash route is still used, separately,
+ * as the redirect target for real visitors (`spaPath` below). That
+ * redirect is deliberately origin-relative, so preview deployments and
+ * local servers keep visitors on the origin they actually opened.
+ *
+ * Also regenerates sitemap.xml with <lastmod> taken from git history.
  *
  * Run after any lesson content change:
  *   node generate-prerender.js
  */
 import fs from 'fs';
 import path from 'path';
+import { execFileSync } from 'child_process';
 import { fileURLToPath } from 'url';
 
 const ROOT = path.dirname(fileURLToPath(import.meta.url));
 const SITE = 'https://kashsec.vercel.app';
 
 const appJs = fs.readFileSync(path.join(ROOT, 'app.js'), 'utf8');
-const m = appJs.match(/const PATHS = \[[\s\S]*?\n\];/);
-if (!m) throw new Error('Could not find PATHS array in app.js');
-const PATHS = new Function(m[0] + '; return PATHS;')();
 
-// Tools and labs are SPA-only routes, so they need their own crawlable
-// stubs — several of them (JWT decoder, CVSS calculator, subnet
-// calculator) target real search demand and were previously invisible.
 function extractArray(name) {
   const match = appJs.match(new RegExp('const ' + name + ' = \\[[\\s\\S]*?\\n\\];'));
   if (!match) throw new Error('Could not find ' + name + ' array in app.js');
   return new Function(match[0] + '; return ' + name + ';')();
 }
+const PATHS = extractArray('PATHS');
+// Tools and labs are SPA-only routes, so they need their own crawlable
+// stubs — several of them (JWT decoder, CVSS calculator, subnet
+// calculator) target real search demand and were previously invisible.
 const TOOLS = extractArray('TOOLS');
-const LABS = extractArray('LABS');
+const LABS  = extractArray('LABS');
+// The FAQ is the site's best shot at a rich result, but it only existed as
+// an SPA route with no crawlable URL, so it could never earn one.
+const FAQS  = extractArray('FAQS');
 
 // `marked` is a devDependency (npm install marked) — only needed at build
-// time to prerender lesson HTML; the live site still loads it from CDN in
-// the browser (app.js's ensureMarkdownLibs), this is a separate copy.
+// time to prerender lesson HTML. The browser uses its own vendored copy
+// (vendor/marked.min.js); this is a separate build-time instance.
 let marked;
 try {
   marked = (await import('marked')).marked;
@@ -52,6 +64,34 @@ if (!marked) {
 }
 
 function escapeAttr(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+/* ---- last-modified dates, straight from git ----
+   A sitemap without <lastmod> gives crawlers no reason to revisit, so
+   edits to existing lessons can sit unnoticed for weeks. One `git log`
+   pass builds the whole map; git lists newest-first, so the first date we
+   see for a file is its most recent change. Falls back to build date when
+   there's no git history (fresh checkout, tarball, some CI setups). */
+const BUILD_DATE = new Date().toISOString().slice(0, 10);
+const gitDates = new Map();
+try {
+  const log = execFileSync('git',
+    ['log', '--pretty=format:@%cI', '--name-only', '--diff-filter=AMR'],
+    { cwd: ROOT, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
+  let current = null;
+  for (const line of log.split('\n')) {
+    if (line.startsWith('@')) { current = line.slice(1, 11); continue; }
+    if (line && current && !gitDates.has(line)) gitDates.set(line, current);
+  }
+} catch {
+  console.warn('git history unavailable — using build date for lastmod.');
+}
+const lastmodFor = (...files) => {
+  const dates = files.map(f => gitDates.get(f)).filter(Boolean);
+  return dates.length ? dates.sort().pop() : BUILD_DATE;
+};
+// The tool/lab/FAQ stubs are generated from data living in app.js, so
+// app.js's own last commit is the honest "last modified" for them.
+const APP_LASTMOD = lastmodFor('app.js');
 
 // Very rough description: first non-heading paragraph, first 200 chars.
 function firstPara(md){
@@ -64,19 +104,55 @@ function firstPara(md){
   return '';
 }
 
-const template = ({title, desc, canonical, ogUrl, contentHtml, pathId, subId, breadcrumb}) => `<!doctype html>
+// ISO 8601 duration from word count. 200wpm is the usual reading-speed
+// figure for technical prose; rounded to 5 minutes so it reads as the
+// estimate it is rather than false precision.
+function readingTime(text){
+  const words = (text.match(/\S+/g) || []).length;
+  return 'PT' + Math.max(5, Math.round(words / 200 / 5) * 5) + 'M';
+}
+
+/* ---- breadcrumbs ----
+   One array drives both the visible trail and the BreadcrumbList JSON-LD,
+   so the two can't drift. The previous version hand-wrote the HTML and
+   pointed every crumb at "/", which told Google nothing about hierarchy
+   and gave readers two identical links. */
+const crumbHtml = crumbs => crumbs
+  .map((c, i) => i === crumbs.length - 1
+    ? escapeAttr(c.name)
+    : `<a href="${escapeAttr(c.url)}">${escapeAttr(c.name)}</a>`)
+  .join(' · ');
+
+const breadcrumbLd = crumbs => ({
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: crumbs.map((c, i) => ({
+    '@type': 'ListItem', position: i + 1, name: c.name, item: c.url,
+  })),
+});
+
+const ORG = {
+  '@type': 'EducationalOrganization',
+  name: 'KashSec Academy',
+  url: SITE + '/',
+  logo: SITE + '/icons/icon-512.png',
+  description: 'Free cybersecurity education for complete beginners.',
+};
+
+const template = ({title, desc, canonical, spaPath, contentHtml, crumbs, jsonLd = [], ogType = 'article'}) => `<!doctype html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>${escapeAttr(title)}</title>
 <meta name="description" content="${escapeAttr(desc)}">
-<link rel="canonical" href="${canonical}">
+<link rel="canonical" href="${escapeAttr(canonical)}">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="${escapeAttr(title)}">
 <meta property="og:description" content="${escapeAttr(desc)}">
-<meta property="og:type" content="article">
-<meta property="og:url" content="${ogUrl}">
+<meta property="og:type" content="${ogType}">
+<meta property="og:url" content="${escapeAttr(canonical)}">
+<meta property="og:site_name" content="KashSec Academy">
 <meta property="og:image" content="${SITE}/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -85,9 +161,8 @@ const template = ({title, desc, canonical, ogUrl, contentHtml, pathId, subId, br
 <meta name="twitter:description" content="${escapeAttr(desc)}">
 <meta name="twitter:image" content="${SITE}/og-image.png">
 <meta name="theme-color" content="#0A0E13">
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":${JSON.stringify(title)},"description":${JSON.stringify(desc)},"url":${JSON.stringify(canonical)},"provider":{"@type":"Organization","name":"KashSec Academy","url":"${SITE}"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
-</script>
+${[breadcrumbLd(crumbs), ...jsonLd]
+  .map(o => `<script type="application/ld+json">\n${JSON.stringify(o)}\n</script>`).join('\n')}
 <style>
 :root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
 html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
@@ -96,6 +171,8 @@ main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
 .spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
 .crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
 .crumb a{color:var(--teal);text-decoration:none}
+.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
+.pager a{color:var(--teal);text-decoration:none}
 h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
 h1{font-size:2rem;margin:.5rem 0 1rem}
 h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
@@ -113,19 +190,19 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 </head>
 <body>
 <main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="${canonical}">continue here →</a></div>
-  <div class="crumb"><a href="/">KashSec Academy</a> · ${breadcrumb}</div>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="${escapeAttr(spaPath)}">continue here →</a></div>
+  <div class="crumb">${crumbHtml(crumbs)}</div>
   <article>${contentHtml}</article>
-  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
 </main>
 <script>
 // Redirect actual users into the SPA. Search-engine crawlers get to read
 // the content above before the redirect fires.
 (function(){
   try {
-    var target = ${JSON.stringify(canonical)};
+    var target = ${JSON.stringify(spaPath)};
     // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html')) location.replace(target);
+    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
   } catch (e) {}
 })();
 </script>
@@ -133,16 +210,23 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 </html>
 `;
 
+/* Every sitemap entry carries a real <lastmod>. */
+const sitemapUrls = [{ loc: SITE + '/', lastmod: lastmodFor('index.html', 'app.js'), priority: '1.0' }];
+
 let written = 0;
-const sitemapUrls = [SITE + '/'];
 for (const p of PATHS) {
-  for (const s of p.subs) {
-    const src = path.join(ROOT, 'course', p.id, s.id + '.md');
+  const flat = p.subs;
+  for (let i = 0; i < flat.length; i++) {
+    const s = flat[i];
+    const rel = `course/${p.id}/${s.id}.md`;
+    const src = path.join(ROOT, rel);
     if (!fs.existsSync(src)) continue;
     const md = fs.readFileSync(src, 'utf8');
-    const canonical = `${SITE}/#/lesson/${p.id}/${s.id}`;
+    const canonical = `${SITE}/lesson/${p.id}/${s.id}.html`;
+    const spaPath = `/#/lesson/${p.id}/${s.id}`;
     const title = `${s.title} — Path ${p.n} · KashSec Academy`;
     const desc = firstPara(md) || `${s.title}: ${s.desc || ''}`;
+    const lastmod = lastmodFor(rel);
     // Strip our custom :::callouts / ???refs / ~~~svg so marked doesn't
     // mangle them; they're stylistic only, prerender content is for bots.
     let clean = md
@@ -150,29 +234,141 @@ for (const p of PATHS) {
       .replace(/^\?{3}\s*refs\s*\n([\s\S]*?)\n\?{3}$/gm, (_, body) => '\n### References\n' + body)
       .replace(/^~{3}svg(?:\s+(.+?))?\n[\s\S]*?\n~{3}$/gm, (_, cap) => cap ? `\n*[${cap}]*\n` : '')
       .replace(/^```mermaid\n[\s\S]*?\n```$/gm, '');
-    const contentHtml = marked.parse(clean);
-    const breadcrumb = `<a href="/">Path ${p.n} — ${p.title}</a> · ${escapeAttr(s.title)}`;
+
+    // Prev/next links matter for more than convenience: without them the
+    // only inbound link to a lesson stub is its path index, so crawl depth
+    // and internal link equity both suffer across 500 pages.
+    const prev = flat[i - 1], next = flat[i + 1];
+    const pager = (prev || next) ? `<nav class="pager">` +
+      (prev ? `<a href="/lesson/${p.id}/${prev.id}.html">← ${escapeAttr(prev.title)}</a>` : '<span></span>') +
+      (next ? `<a href="/lesson/${p.id}/${next.id}.html">${escapeAttr(next.title)} →</a>` : '<span></span>') +
+      `</nav>` : '';
+
+    const contentHtml = marked.parse(clean) + pager;
+    const crumbs = [
+      { name: 'KashSec Academy', url: SITE + '/' },
+      { name: 'Learning paths', url: SITE + '/lesson/' },
+      { name: `Path ${p.n} — ${p.title}`, url: `${SITE}/lesson/${p.id}/` },
+      { name: s.title, url: canonical },
+    ];
+    const lessonLd = {
+      '@context': 'https://schema.org',
+      '@type': 'LearningResource',
+      name: s.title,
+      headline: s.title,
+      description: desc,
+      url: canonical,
+      inLanguage: 'en',
+      dateModified: lastmod,
+      learningResourceType: 'Lesson',
+      educationalLevel: p.level || 'Beginner',
+      timeRequired: readingTime(clean),
+      isAccessibleForFree: true,
+      isFamilyFriendly: true,
+      teaches: s.desc || s.title,
+      isPartOf: {
+        '@type': 'Course',
+        name: `Path ${p.n}: ${p.title}`,
+        url: `${SITE}/lesson/${p.id}/`,
+      },
+      provider: ORG,
+      publisher: ORG,
+      mainEntityOfPage: { '@type': 'WebPage', '@id': canonical },
+    };
     const outDir = path.join(ROOT, 'lesson', p.id);
     fs.mkdirSync(outDir, { recursive: true });
     fs.writeFileSync(path.join(outDir, s.id + '.html'),
-      template({title, desc, canonical, ogUrl: canonical, contentHtml, pathId:p.id, subId:s.id, breadcrumb}));
-    sitemapUrls.push(`${SITE}/lesson/${p.id}/${s.id}.html`);
+      template({ title, desc, canonical, spaPath, contentHtml, crumbs, jsonLd: [lessonLd] }));
+    sitemapUrls.push({ loc: canonical, lastmod, priority: '0.8' });
     written++;
   }
 }
 
-// Also emit path-overview stubs so #/lesson/<pathId> is indexable too.
+/* Path-overview stubs. These carry Course schema — the only page type here
+   eligible for Google's course rich results, which is why each one gets a
+   real syllabus rather than a bare link list. */
 for (const p of PATHS) {
-  const canonical = `${SITE}/#/lesson/${p.id}`;
+  const canonical = `${SITE}/lesson/${p.id}/`;
+  const spaPath = `/#/lesson/${p.id}`;
   const title = `Path ${p.n}: ${p.title} — KashSec Academy`;
   const desc = p.desc || '';
-  const contentHtml = `<h1>${escapeAttr(title)}</h1><p>${escapeAttr(desc)}</p><h2>Sub-lessons</h2><ul>` +
-    p.subs.map(s => `<li><a href="/lesson/${p.id}/${s.id}.html">${p.n}.${s.n} · ${escapeAttr(s.title)}</a> — ${escapeAttr(s.desc||'')}</li>`).join('') + '</ul>';
+  const lessonFiles = p.subs.map(s => `course/${p.id}/${s.id}.md`);
+  const lastmod = lastmodFor(...lessonFiles);
+  const contentHtml = `<h1>${escapeAttr(title)}</h1><p>${escapeAttr(desc)}</p>` +
+    `<p><strong>Level:</strong> ${escapeAttr(p.level || 'Beginner')} · <strong>${p.subs.length} lessons</strong> · Free, no account needed.</p>` +
+    `<h2>Lessons in this path</h2><ol>` +
+    p.subs.map(s => `<li><a href="/lesson/${p.id}/${s.id}.html">${escapeAttr(s.title)}</a> — ${escapeAttr(s.desc || '')}</li>`).join('') +
+    `</ol>`;
+  const crumbs = [
+    { name: 'KashSec Academy', url: SITE + '/' },
+    { name: 'Learning paths', url: SITE + '/lesson/' },
+    { name: `Path ${p.n} — ${p.title}`, url: canonical },
+  ];
+  const courseLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Course',
+    name: `Path ${p.n}: ${p.title}`,
+    description: desc,
+    url: canonical,
+    inLanguage: 'en',
+    dateModified: lastmod,
+    educationalLevel: p.level || 'Beginner',
+    isAccessibleForFree: true,
+    provider: ORG,
+    // Google's course rich result requires an offer stating the price,
+    // even when — especially when — that price is zero.
+    offers: { '@type': 'Offer', category: 'Free', price: '0', priceCurrency: 'USD' },
+    hasCourseInstance: {
+      '@type': 'CourseInstance',
+      courseMode: 'online',
+      courseWorkload: 'PT' + Math.max(1, Math.round(p.subs.length * 0.5)) + 'H',
+    },
+    syllabusSections: p.subs.map((s, i) => ({
+      '@type': 'Syllabus', name: s.title, description: s.desc || '',
+      url: `${SITE}/lesson/${p.id}/${s.id}.html`, position: i + 1,
+    })),
+    hasPart: p.subs.map(s => ({
+      '@type': 'LearningResource', name: s.title,
+      url: `${SITE}/lesson/${p.id}/${s.id}.html`,
+    })),
+  };
   const outDir = path.join(ROOT, 'lesson', p.id);
   fs.mkdirSync(outDir, { recursive: true });
   fs.writeFileSync(path.join(outDir, 'index.html'),
-    template({title, desc, canonical, ogUrl:canonical, contentHtml, pathId:p.id, subId:'', breadcrumb: `Path ${p.n} — ${escapeAttr(p.title)}`}));
-  sitemapUrls.push(`${SITE}/lesson/${p.id}/`);
+    template({ title, desc, canonical, spaPath, contentHtml, crumbs, jsonLd: [courseLd] }));
+  sitemapUrls.push({ loc: canonical, lastmod, priority: '0.9' });
+}
+
+/* A single hub linking every path. Without it the 26 path stubs are
+   reachable only from the sitemap, which is a weak signal on its own. */
+{
+  const canonical = `${SITE}/lesson/`;
+  const title = 'All learning paths — Free cybersecurity course · KashSec Academy';
+  const totalLessons = PATHS.reduce((n, p) => n + p.subs.length, 0);
+  const desc = `Every path in the free KashSec cybersecurity course — ${PATHS.length} paths and ${totalLessons} lessons, from complete beginner to advanced offensive and defensive security.`;
+  const contentHtml = `<h1>All learning paths</h1><p>${escapeAttr(desc)}</p>` +
+    PATHS.map(p => `<h2><a href="/lesson/${p.id}/">Path ${p.n}: ${escapeAttr(p.title)}</a></h2>` +
+      `<p>${escapeAttr(p.desc || '')} <em>(${escapeAttr(p.level || 'Beginner')} · ${p.subs.length} lessons)</em></p><ul>` +
+      p.subs.map(s => `<li><a href="/lesson/${p.id}/${s.id}.html">${escapeAttr(s.title)}</a></li>`).join('') +
+      '</ul>').join('');
+  const crumbs = [
+    { name: 'KashSec Academy', url: SITE + '/' },
+    { name: 'Learning paths', url: canonical },
+  ];
+  const lastmod = lastmodFor('app.js');
+  fs.mkdirSync(path.join(ROOT, 'lesson'), { recursive: true });
+  fs.writeFileSync(path.join(ROOT, 'lesson', 'index.html'), template({
+    title, desc, canonical, spaPath: '/#/course', contentHtml, crumbs, ogType: 'website',
+    jsonLd: [{
+      '@context': 'https://schema.org', '@type': 'ItemList',
+      name: 'KashSec Academy learning paths', numberOfItems: PATHS.length,
+      itemListElement: PATHS.map((p, i) => ({
+        '@type': 'ListItem', position: i + 1, name: `Path ${p.n}: ${p.title}`,
+        url: `${SITE}/lesson/${p.id}/`,
+      })),
+    }],
+  }));
+  sitemapUrls.push({ loc: canonical, lastmod, priority: '0.9' });
 }
 
 /* Crawlable stubs for each tool and lab. These are interactive
@@ -181,9 +377,12 @@ for (const p of PATHS) {
    then hands real visitors to the SPA like the lesson stubs do. */
 function writeStubSet(items, urlPrefix, dirName, kindLabel, indexTitle, indexDesc) {
   const outDir = path.join(ROOT, dirName);
+  const sectionUrl = `${SITE}/${dirName}/`;
+  const plural = kindLabel[0].toUpperCase() + kindLabel.slice(1) + 's';
   fs.mkdirSync(outDir, { recursive: true });
   for (const it of items) {
-    const canonical = `${SITE}/#/${urlPrefix}/${it.id}`;
+    const canonical = `${SITE}/${dirName}/${it.id}.html`;
+    const spaPath = `/#/${urlPrefix}/${it.id}`;
     const title = `${it.title} — Free online ${kindLabel} · KashSec Academy`;
     const desc = it.desc || '';
     const contentHtml =
@@ -195,19 +394,51 @@ function writeStubSet(items, urlPrefix, dirName, kindLabel, indexTitle, indexDes
       items.filter(o => o.id !== it.id)
            .map(o => `<li><a href="/${dirName}/${o.id}.html">${escapeAttr(o.title)}</a> — ${escapeAttr(o.desc || '')}</li>`)
            .join('') + '</ul>';
-    fs.writeFileSync(path.join(outDir, it.id + '.html'),
-      template({ title, desc, canonical, ogUrl: canonical, contentHtml, pathId: '', subId: '',
-                 breadcrumb: `<a href="/${dirName}/">${kindLabel[0].toUpperCase() + kindLabel.slice(1)}s</a> · ${escapeAttr(it.title)}` }));
-    sitemapUrls.push(`${SITE}/${dirName}/${it.id}.html`);
+    fs.writeFileSync(path.join(outDir, it.id + '.html'), template({
+      title, desc, canonical, spaPath, contentHtml,
+      crumbs: [
+        { name: 'KashSec Academy', url: SITE + '/' },
+        { name: plural, url: sectionUrl },
+        { name: it.title, url: canonical },
+      ],
+      jsonLd: [{
+        '@context': 'https://schema.org',
+        '@type': 'WebApplication',
+        name: it.title,
+        description: desc,
+        url: canonical,
+        applicationCategory: 'SecurityApplication',
+        operatingSystem: 'Any (runs in a web browser)',
+        browserRequirements: 'Requires JavaScript',
+        inLanguage: 'en',
+        dateModified: APP_LASTMOD,
+        isAccessibleForFree: true,
+        offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+        publisher: ORG,
+      }],
+    }));
+    sitemapUrls.push({ loc: canonical, lastmod: APP_LASTMOD, priority: '0.7' });
   }
   // Index stub for the section itself.
-  const canonical = `${SITE}/#/${dirName}`;
   const contentHtml = `<h1>${escapeAttr(indexTitle)}</h1><p>${escapeAttr(indexDesc)}</p><ul>` +
     items.map(o => `<li><a href="/${dirName}/${o.id}.html">${escapeAttr(o.title)}</a> — ${escapeAttr(o.desc || '')}</li>`).join('') + '</ul>';
-  fs.writeFileSync(path.join(outDir, 'index.html'),
-    template({ title: indexTitle + ' · KashSec Academy', desc: indexDesc, canonical, ogUrl: canonical,
-               contentHtml, pathId: '', subId: '', breadcrumb: escapeAttr(indexTitle) }));
-  sitemapUrls.push(`${SITE}/${dirName}/`);
+  fs.writeFileSync(path.join(outDir, 'index.html'), template({
+    title: indexTitle + ' · KashSec Academy', desc: indexDesc,
+    canonical: sectionUrl, spaPath: `/#/${dirName}`, contentHtml, ogType: 'website',
+    crumbs: [
+      { name: 'KashSec Academy', url: SITE + '/' },
+      { name: indexTitle, url: sectionUrl },
+    ],
+    jsonLd: [{
+      '@context': 'https://schema.org', '@type': 'ItemList',
+      name: indexTitle, numberOfItems: items.length,
+      itemListElement: items.map((o, i) => ({
+        '@type': 'ListItem', position: i + 1, name: o.title,
+        url: `${SITE}/${dirName}/${o.id}.html`,
+      })),
+    }],
+  }));
+  sitemapUrls.push({ loc: sectionUrl, lastmod: APP_LASTMOD, priority: '0.8' });
   return items.length;
 }
 
@@ -220,9 +451,39 @@ const labsWritten = writeStubSet(
   'Free interactive security labs',
   'Practise SQL injection, XSS, IDOR, JWT forgery, SSRF, XXE, path traversal, log analysis and more — safe, simulated, and entirely in your browser.');
 
-// Regenerate sitemap.xml with all URLs (home + lessons + paths + tools + labs).
+/* FAQ stub with FAQPage schema. The answers were already written and
+   already public — they just had no URL a crawler could reach. */
+{
+  const canonical = `${SITE}/faq.html`;
+  const title = 'Cybersecurity course FAQ — Is it free? Do I need experience? · KashSec Academy';
+  const desc = 'Answers to the questions beginners ask before starting: whether the course is really free, whether you need experience or a powerful computer, whether any of it is illegal, and how long it takes.';
+  const contentHtml = `<h1>Frequently asked questions</h1>` +
+    FAQS.map(f => `<h2>${escapeAttr(f.q)}</h2><p>${escapeAttr(f.a)}</p>`).join('') +
+    `<h2>Ready to start?</h2><p><a href="/lesson/">Browse all ${PATHS.length} learning paths</a> or jump straight into <a href="/lesson/00-fresher-basics/">Path 00 — Computer Basics</a>.</p>`;
+  fs.writeFileSync(path.join(ROOT, 'faq.html'), template({
+    title, desc, canonical, spaPath: '/#/faq', contentHtml, ogType: 'website',
+    crumbs: [
+      { name: 'KashSec Academy', url: SITE + '/' },
+      { name: 'FAQ', url: canonical },
+    ],
+    jsonLd: [{
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: FAQS.map(f => ({
+        '@type': 'Question', name: f.q,
+        acceptedAnswer: { '@type': 'Answer', text: f.a },
+      })),
+    }],
+  }));
+  sitemapUrls.push({ loc: canonical, lastmod: APP_LASTMOD, priority: '0.7' });
+}
+
+// Regenerate sitemap.xml. Priorities are relative hints only, but lastmod
+// is the field that actually earns recrawls.
 const smXml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
-  sitemapUrls.map(u => `  <url><loc>${u}</loc><changefreq>weekly</changefreq></url>`).join('\n') + '\n</urlset>\n';
+  sitemapUrls.map(u =>
+    `  <url><loc>${u.loc}</loc><lastmod>${u.lastmod}</lastmod><changefreq>weekly</changefreq><priority>${u.priority}</priority></url>`
+  ).join('\n') + '\n</urlset>\n';
 fs.writeFileSync(path.join(ROOT, 'sitemap.xml'), smXml);
 
-console.log(`Prerender complete: ${written} lesson pages + ${PATHS.length} path overviews + ${toolsWritten} tools + ${labsWritten} labs. sitemap.xml updated (${sitemapUrls.length} URLs).`);
+console.log(`Prerender complete: ${written} lesson pages + ${PATHS.length} path overviews + 1 path hub + ${toolsWritten} tools + ${labsWritten} labs + 1 FAQ. sitemap.xml updated (${sitemapUrls.length} URLs).`);

@@ -5,12 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mass Assignment &amp; Excessive Data Exposure — Path 21 · KashSec Academy</title>
 <meta name="description" content="Two related (and extremely common) problems that appear when APIs accept or return more than they should. Together they make up OWASP's API3 category — &quot;broken object property level authorization&quot; — b">
-<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/21-api-security/mass-assignment">
+<link rel="canonical" href="https://kashsec.vercel.app/lesson/21-api-security/mass-assignment.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Mass Assignment &amp; Excessive Data Exposure — Path 21 · KashSec Academy">
 <meta property="og:description" content="Two related (and extremely common) problems that appear when APIs accept or return more than they should. Together they make up OWASP's API3 category — &quot;broken object property level authorization&quot; — b">
 <meta property="og:type" content="article">
-<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/21-api-security/mass-assignment">
+<meta property="og:url" content="https://kashsec.vercel.app/lesson/21-api-security/mass-assignment.html">
+<meta property="og:site_name" content="KashSec Academy">
 <meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -20,7 +21,10 @@
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Mass Assignment & Excessive Data Exposure — Path 21 · KashSec Academy","description":"Two related (and extremely common) problems that appear when APIs accept or return more than they should. Together they make up OWASP's API3 category — \"broken object property level authorization\" — b","url":"https://kashsec.vercel.app/#/lesson/21-api-security/mass-assignment","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 21 — API Security","item":"https://kashsec.vercel.app/lesson/21-api-security/"},{"@type":"ListItem","position":4,"name":"Mass Assignment & Excessive Data Exposure","item":"https://kashsec.vercel.app/lesson/21-api-security/mass-assignment.html"}]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Mass Assignment & Excessive Data Exposure","headline":"Mass Assignment & Excessive Data Exposure","description":"Two related (and extremely common) problems that appear when APIs accept or return more than they should. Together they make up OWASP's API3 category — \"broken object property level authorization\" — b","url":"https://kashsec.vercel.app/lesson/21-api-security/mass-assignment.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"When the API accepts — or returns — more than it should.","isPartOf":{"@type":"Course","name":"Path 21: API Security","url":"https://kashsec.vercel.app/lesson/21-api-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/21-api-security/mass-assignment.html"}}
 </script>
 <style>
 :root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
@@ -30,6 +34,8 @@ main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
 .spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
 .crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
 .crumb a{color:var(--teal);text-decoration:none}
+.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
+.pager a{color:var(--teal);text-decoration:none}
 h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
 h1{font-size:2rem;margin:.5rem 0 1rem}
 h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
@@ -47,8 +53,8 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 </head>
 <body>
 <main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/21-api-security/mass-assignment">continue here →</a></div>
-  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 21 — API Security</a> · Mass Assignment &amp; Excessive Data Exposure</div>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/21-api-security/mass-assignment">continue here →</a></div>
+  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/21-api-security/">Path 21 — API Security</a> · Mass Assignment &amp; Excessive Data Exposure</div>
   <article><h1>Mass Assignment &amp; Excessive Data Exposure</h1>
 <p>Two related (and extremely common) problems that appear when APIs accept or return more than they should. Together they make up OWASP&#39;s API3 category — &quot;broken object property level authorization&quot; — because both are, at heart, a missing check on which <em>fields</em> a caller is allowed to touch, rather than which <em>object</em>.</p>
 <p>:::</p>
@@ -162,17 +168,17 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <li><a href="https://owasp.org/API-Security/editions/2023/en/0xa6-unrestricted-access-to-sensitive-business-flows/">OWASP API6:2023 Unrestricted Access to Sensitive Business Flows</a></li>
 <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Mass_Assignment_Cheat_Sheet.html">OWASP Mass Assignment Cheat Sheet</a></li>
 </ul>
-</article>
-  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/21-api-security/webhook-security.html">← Webhook Security</a><a href="/lesson/21-api-security/api-gateway-security.html">API Gateway Security →</a></nav></article>
+  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
 </main>
 <script>
 // Redirect actual users into the SPA. Search-engine crawlers get to read
 // the content above before the redirect fires.
 (function(){
   try {
-    var target = "https://kashsec.vercel.app/#/lesson/21-api-security/mass-assignment";
+    var target = "/#/lesson/21-api-security/mass-assignment";
     // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html')) location.replace(target);
+    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
   } catch (e) {}
 })();
 </script>

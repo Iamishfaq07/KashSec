@@ -5,12 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>API — The Profile Update That Went Too Far — Path 19 · KashSec Academy</title>
 <meta name="description" content="Category: API · Difficulty: Medium">
-<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/19-ctf-challenges/api-mass-assignment">
+<link rel="canonical" href="https://kashsec.vercel.app/lesson/19-ctf-challenges/api-mass-assignment.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="API — The Profile Update That Went Too Far — Path 19 · KashSec Academy">
 <meta property="og:description" content="Category: API · Difficulty: Medium">
 <meta property="og:type" content="article">
-<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/19-ctf-challenges/api-mass-assignment">
+<meta property="og:url" content="https://kashsec.vercel.app/lesson/19-ctf-challenges/api-mass-assignment.html">
+<meta property="og:site_name" content="KashSec Academy">
 <meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -20,7 +21,10 @@
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"API — The Profile Update That Went Too Far — Path 19 · KashSec Academy","description":"Category: API · Difficulty: Medium","url":"https://kashsec.vercel.app/#/lesson/19-ctf-challenges/api-mass-assignment","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 19 — CTF Challenges","item":"https://kashsec.vercel.app/lesson/19-ctf-challenges/"},{"@type":"ListItem","position":4,"name":"API — The Profile Update That Went Too Far","item":"https://kashsec.vercel.app/lesson/19-ctf-challenges/api-mass-assignment.html"}]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"API — The Profile Update That Went Too Far","headline":"API — The Profile Update That Went Too Far","description":"Category: API · Difficulty: Medium","url":"https://kashsec.vercel.app/lesson/19-ctf-challenges/api-mass-assignment.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"All levels","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Escalate privilege through an unrestricted PATCH endpoint. Medium.","isPartOf":{"@type":"Course","name":"Path 19: CTF Challenges","url":"https://kashsec.vercel.app/lesson/19-ctf-challenges/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/19-ctf-challenges/api-mass-assignment.html"}}
 </script>
 <style>
 :root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
@@ -30,6 +34,8 @@ main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
 .spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
 .crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
 .crumb a{color:var(--teal);text-decoration:none}
+.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
+.pager a{color:var(--teal);text-decoration:none}
 h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
 h1{font-size:2rem;margin:.5rem 0 1rem}
 h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
@@ -47,8 +53,8 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 </head>
 <body>
 <main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/19-ctf-challenges/api-mass-assignment">continue here →</a></div>
-  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 19 — CTF Challenges</a> · API — The Profile Update That Went Too Far</div>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/19-ctf-challenges/api-mass-assignment">continue here →</a></div>
+  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/19-ctf-challenges/">Path 19 — CTF Challenges</a> · API — The Profile Update That Went Too Far</div>
   <article><h1>API — The Profile Update That Went Too Far</h1>
 <p><strong>Category:</strong> API · <strong>Difficulty:</strong> Medium</p>
 <h2>Scenario</h2>
@@ -80,17 +86,17 @@ Cookie: session=redacted
 <details><summary>Hint</summary>You can't discover an invisible field purely by observation — but you <em>can</em> make educated guesses based on what the app clearly does (it's a forum with some kind of paid tier, based on the "verified" field hinting at premium status). Real-world mass assignment hunting often means trying plausible field names based on the app's domain, not just the ones you've already seen.</details>
 <details><summary>Show answer</summary>Sending <code>{"bio": "testing", "account_balance": 999999}</code> succeeds and the field appears in the response on your next profile fetch — confirming the server accepts and stores a completely undocumented, UI-invisible field just because it happened to exist as a column on the underlying user model. This is the honest, uncomfortable truth about testing for mass assignment against a real target: you often can't enumerate every vulnerable field from the outside. The practical defense-side lesson matters more here than the offense-side one — a server should never trust that "the field isn't in the docs" provides any real protection, which is exactly why allow-listing (not guessing what attackers might try) is the only reliable fix.</details><p>Mass assignment isn&#39;t only a privilege-escalation bug. Depending on the target model, it can just as easily let you set a price to zero, mark an unpaid invoice as paid, or flip a &quot;verified&quot; flag meant to be earned, not self-assigned. Whatever field exists on the model and isn&#39;t explicitly protected is fair game to a client that sends it.</p>
 <p><strong>Next up →</strong> <a href="#/lesson/19-ctf-challenges/api-rate-limit-bypass">API — Locked Out, Sort Of</a></p>
-</article>
-  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/19-ctf-challenges/api-bola-hunt.html">← API — The Order Number That Wasn't Yours</a><a href="/lesson/19-ctf-challenges/api-rate-limit-bypass.html">API — Locked Out, Sort Of →</a></nav></article>
+  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
 </main>
 <script>
 // Redirect actual users into the SPA. Search-engine crawlers get to read
 // the content above before the redirect fires.
 (function(){
   try {
-    var target = "https://kashsec.vercel.app/#/lesson/19-ctf-challenges/api-mass-assignment";
+    var target = "/#/lesson/19-ctf-challenges/api-mass-assignment";
     // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html')) location.replace(target);
+    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
   } catch (e) {}
 })();
 </script>

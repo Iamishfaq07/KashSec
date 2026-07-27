@@ -5,12 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Digital forensics &amp; IR — Path 16 · KashSec Academy</title>
 <meta name="description" content="Everything so far in this course has largely been offensive — finding and exploiting weaknesses. DFIR flips the perspective: when a real incident happens, how do you figure out exactly what occurred, ">
-<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/16-advanced/dfir">
+<link rel="canonical" href="https://kashsec.vercel.app/lesson/16-advanced/dfir.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Digital forensics &amp; IR — Path 16 · KashSec Academy">
 <meta property="og:description" content="Everything so far in this course has largely been offensive — finding and exploiting weaknesses. DFIR flips the perspective: when a real incident happens, how do you figure out exactly what occurred, ">
 <meta property="og:type" content="article">
-<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/16-advanced/dfir">
+<meta property="og:url" content="https://kashsec.vercel.app/lesson/16-advanced/dfir.html">
+<meta property="og:site_name" content="KashSec Academy">
 <meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -20,7 +21,10 @@
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Digital forensics & IR — Path 16 · KashSec Academy","description":"Everything so far in this course has largely been offensive — finding and exploiting weaknesses. DFIR flips the perspective: when a real incident happens, how do you figure out exactly what occurred, ","url":"https://kashsec.vercel.app/#/lesson/16-advanced/dfir","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 16 — Advanced Cyber Topics","item":"https://kashsec.vercel.app/lesson/16-advanced/"},{"@type":"ListItem","position":4,"name":"Digital forensics & IR","item":"https://kashsec.vercel.app/lesson/16-advanced/dfir.html"}]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Digital forensics & IR","headline":"Digital forensics & IR","description":"Everything so far in this course has largely been offensive — finding and exploiting weaknesses. DFIR flips the perspective: when a real incident happens, how do you figure out exactly what occurred, ","url":"https://kashsec.vercel.app/lesson/16-advanced/dfir.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"NIST 800-61, Sysmon, Volatility.","isPartOf":{"@type":"Course","name":"Path 16: Advanced Cyber Topics","url":"https://kashsec.vercel.app/lesson/16-advanced/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/16-advanced/dfir.html"}}
 </script>
 <style>
 :root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
@@ -30,6 +34,8 @@ main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
 .spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
 .crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
 .crumb a{color:var(--teal);text-decoration:none}
+.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
+.pager a{color:var(--teal);text-decoration:none}
 h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
 h1{font-size:2rem;margin:.5rem 0 1rem}
 h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
@@ -47,8 +53,8 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 </head>
 <body>
 <main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/16-advanced/dfir">continue here →</a></div>
-  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 16 — Advanced Cyber Topics</a> · Digital forensics &amp; IR</div>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/16-advanced/dfir">continue here →</a></div>
+  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/16-advanced/">Path 16 — Advanced Cyber Topics</a> · Digital forensics &amp; IR</div>
   <article><h1>Digital forensics &amp; incident response</h1>
 <p>Everything so far in this course has largely been offensive — finding and exploiting weaknesses. <strong>DFIR</strong> flips the perspective: when a real incident happens, how do you figure out exactly what occurred, contain it, and recover — while preserving evidence properly enough to support legal or insurance action if needed?</p>
 <h2>What DFIR actually covers</h2>
@@ -176,17 +182,17 @@ find / -newer /etc/hostname -type f 2&gt;/dev/null | head -50
 <li><a href="https://www.autopsy.com/">Autopsy</a> — free, GUI-based digital forensics platform.</li>
 </ul>
 <p><strong>Next up →</strong> <a href="#/lesson/16-advanced/threat-hunting-fundamentals">Threat hunting fundamentals</a></p>
-</article>
-  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/16-advanced/malware-persistence-mechanisms.html">← Malware persistence mechanisms</a><a href="/lesson/16-advanced/threat-hunting-fundamentals.html">Threat hunting fundamentals →</a></nav></article>
+  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
 </main>
 <script>
 // Redirect actual users into the SPA. Search-engine crawlers get to read
 // the content above before the redirect fires.
 (function(){
   try {
-    var target = "https://kashsec.vercel.app/#/lesson/16-advanced/dfir";
+    var target = "/#/lesson/16-advanced/dfir";
     // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html')) location.replace(target);
+    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
   } catch (e) {}
 })();
 </script>

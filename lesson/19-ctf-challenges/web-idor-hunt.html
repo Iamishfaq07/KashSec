@@ -5,12 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Web — The IDOR Hunt — Path 19 · KashSec Academy</title>
 <meta name="description" content="Category: Web · Difficulty: Easy">
-<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/19-ctf-challenges/web-idor-hunt">
+<link rel="canonical" href="https://kashsec.vercel.app/lesson/19-ctf-challenges/web-idor-hunt.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Web — The IDOR Hunt — Path 19 · KashSec Academy">
 <meta property="og:description" content="Category: Web · Difficulty: Easy">
 <meta property="og:type" content="article">
-<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/19-ctf-challenges/web-idor-hunt">
+<meta property="og:url" content="https://kashsec.vercel.app/lesson/19-ctf-challenges/web-idor-hunt.html">
+<meta property="og:site_name" content="KashSec Academy">
 <meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -20,7 +21,10 @@
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Web — The IDOR Hunt — Path 19 · KashSec Academy","description":"Category: Web · Difficulty: Easy","url":"https://kashsec.vercel.app/#/lesson/19-ctf-challenges/web-idor-hunt","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 19 — CTF Challenges","item":"https://kashsec.vercel.app/lesson/19-ctf-challenges/"},{"@type":"ListItem","position":4,"name":"Web — The IDOR Hunt","item":"https://kashsec.vercel.app/lesson/19-ctf-challenges/web-idor-hunt.html"}]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Web — The IDOR Hunt","headline":"Web — The IDOR Hunt","description":"Category: Web · Difficulty: Easy","url":"https://kashsec.vercel.app/lesson/19-ctf-challenges/web-idor-hunt.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"All levels","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Spot and explain a broken access control flaw. Easy.","isPartOf":{"@type":"Course","name":"Path 19: CTF Challenges","url":"https://kashsec.vercel.app/lesson/19-ctf-challenges/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/19-ctf-challenges/web-idor-hunt.html"}}
 </script>
 <style>
 :root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
@@ -30,6 +34,8 @@ main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
 .spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
 .crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
 .crumb a{color:var(--teal);text-decoration:none}
+.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
+.pager a{color:var(--teal);text-decoration:none}
 h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
 h1{font-size:2rem;margin:.5rem 0 1rem}
 h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
@@ -47,8 +53,8 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 </head>
 <body>
 <main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/19-ctf-challenges/web-idor-hunt">continue here →</a></div>
-  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 19 — CTF Challenges</a> · Web — The IDOR Hunt</div>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/19-ctf-challenges/web-idor-hunt">continue here →</a></div>
+  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/19-ctf-challenges/">Path 19 — CTF Challenges</a> · Web — The IDOR Hunt</div>
   <article><h1>Web — The IDOR Hunt</h1>
 <p><strong>Category:</strong> Web · <strong>Difficulty:</strong> Easy</p>
 <h2>Scenario</h2>
@@ -101,17 +107,17 @@ Cookie: session=a91f...redacted
 <details><summary>Hint</summary>The encoding is Base64 — decode it and see what you get. Does obscuring an ID's *appearance* change whether the server performs an ownership check on it?</details>
 <details><summary>Show answer</summary><code>bm90ZS04ODMw</code> decodes to <code>note-8830</code> — the exact same note ID from the main challenge, just wrapped in Base64. This is a classic beginner mistake: encoding an identifier is <strong>not</strong> the same as protecting it. Base64 (like the URL-encoding, hex, and other encodings covered in Path 05's DevTools lesson) is trivially reversible by anyone, and provides zero actual security — the server still needs the exact same ownership check on this endpoint as on the plain <code>/api/notes/{id}</code> one. A disguised IDOR is still an IDOR; only genuine server-side authorization logic fixes it, never obscuring the parameter's format.</details><p>Not every IDOR is equally severe — an IDOR exposing another user&#39;s grocery list (like note <code>8832</code> above) is a low-impact finding; one exposing board meeting passwords or financial data (like note <code>8830</code>) can be critical. Always assess and report the actual <em>impact</em> of what the exposed data allows, not just the mechanical existence of the bug — this is exactly what separates a strong bug bounty report from a weak one.</p>
 <p><strong>Next up →</strong> <a href="#/lesson/19-ctf-challenges/crypto-layered-cipher">Crypto — The Layered Cipher</a></p>
-</article>
-  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/19-ctf-challenges/ctf-briefing.html">← Welcome to the CTF Zone</a><a href="/lesson/19-ctf-challenges/crypto-layered-cipher.html">Crypto — The Layered Cipher →</a></nav></article>
+  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
 </main>
 <script>
 // Redirect actual users into the SPA. Search-engine crawlers get to read
 // the content above before the redirect fires.
 (function(){
   try {
-    var target = "https://kashsec.vercel.app/#/lesson/19-ctf-challenges/web-idor-hunt";
+    var target = "/#/lesson/19-ctf-challenges/web-idor-hunt";
     // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html')) location.replace(target);
+    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
   } catch (e) {}
 })();
 </script>

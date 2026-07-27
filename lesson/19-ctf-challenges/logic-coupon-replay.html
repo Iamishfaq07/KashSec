@@ -5,12 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Web — The Coupon That Wouldn't Quit — Path 19 · KashSec Academy</title>
 <meta name="description" content="Category: Web · Difficulty: Medium">
-<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/19-ctf-challenges/logic-coupon-replay">
+<link rel="canonical" href="https://kashsec.vercel.app/lesson/19-ctf-challenges/logic-coupon-replay.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Web — The Coupon That Wouldn't Quit — Path 19 · KashSec Academy">
 <meta property="og:description" content="Category: Web · Difficulty: Medium">
 <meta property="og:type" content="article">
-<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/19-ctf-challenges/logic-coupon-replay">
+<meta property="og:url" content="https://kashsec.vercel.app/lesson/19-ctf-challenges/logic-coupon-replay.html">
+<meta property="og:site_name" content="KashSec Academy">
 <meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -20,7 +21,10 @@
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Web — The Coupon That Wouldn't Quit — Path 19 · KashSec Academy","description":"Category: Web · Difficulty: Medium","url":"https://kashsec.vercel.app/#/lesson/19-ctf-challenges/logic-coupon-replay","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 19 — CTF Challenges","item":"https://kashsec.vercel.app/lesson/19-ctf-challenges/"},{"@type":"ListItem","position":4,"name":"Web — The Coupon That Wouldn't Quit","item":"https://kashsec.vercel.app/lesson/19-ctf-challenges/logic-coupon-replay.html"}]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Web — The Coupon That Wouldn't Quit","headline":"Web — The Coupon That Wouldn't Quit","description":"Category: Web · Difficulty: Medium","url":"https://kashsec.vercel.app/lesson/19-ctf-challenges/logic-coupon-replay.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"All levels","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"A check-then-act race condition in coupon redemption. Medium.","isPartOf":{"@type":"Course","name":"Path 19: CTF Challenges","url":"https://kashsec.vercel.app/lesson/19-ctf-challenges/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/19-ctf-challenges/logic-coupon-replay.html"}}
 </script>
 <style>
 :root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
@@ -30,6 +34,8 @@ main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
 .spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
 .crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
 .crumb a{color:var(--teal);text-decoration:none}
+.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
+.pager a{color:var(--teal);text-decoration:none}
 h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
 h1{font-size:2rem;margin:.5rem 0 1rem}
 h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
@@ -47,8 +53,8 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 </head>
 <body>
 <main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/19-ctf-challenges/logic-coupon-replay">continue here →</a></div>
-  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 19 — CTF Challenges</a> · Web — The Coupon That Wouldn't Quit</div>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/19-ctf-challenges/logic-coupon-replay">continue here →</a></div>
+  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/19-ctf-challenges/">Path 19 — CTF Challenges</a> · Web — The Coupon That Wouldn't Quit</div>
   <article><h1>Web — The Coupon That Wouldn&#39;t Quit</h1>
 <p><strong>Category:</strong> Web · <strong>Difficulty:</strong> Medium</p>
 <h2>Scenario</h2>
@@ -78,17 +84,17 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <details><summary>Hint</summary>A human manually double-clicking a button is far too slow and inconsistent to reliably land both requests inside a race window that might only be open for a few milliseconds. What tooling would give you the timing precision needed?</details>
 <details><summary>Show answer</summary>Real-world race condition testing typically uses tooling built specifically for this — Burp Suite's "Turbo Intruder" extension, for example, can fire many requests within the same network packet or with sub-millisecond timing precision, dramatically increasing the odds of landing multiple requests inside a narrow check-then-act window compared to any manual approach. The core idea (send the same request many times, as close together in time as your tooling allows, and see whether more than one "wins") stays the same as the double-click description in this challenge — it's just executed with far more precision and repetition than manual clicking could ever achieve, which is exactly why race conditions that seem like they'd only trigger "by extreme luck" are, in practice, quite reliably exploitable with the right tools.</details><p>The exact same &quot;check happens early, the state-changing action happens late&quot; shape shows up in withdrawal limits, one-time password redemption, seat reservation systems, and inventory counters. Whenever a piece of pseudocode (or your own code) checks a condition and then does something consequential several steps later, ask: could two of these run at once, and would that matter?</p>
 <p><strong>Next up →</strong> <a href="#/lesson/19-ctf-challenges/logic-skip-a-step">Web — Two Steps Forward, Zero Back</a></p>
-</article>
-  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/19-ctf-challenges/logic-price-tamper.html">← Web — Name Your Own Price</a><a href="/lesson/19-ctf-challenges/logic-skip-a-step.html">Web — Two Steps Forward, Zero Back →</a></nav></article>
+  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
 </main>
 <script>
 // Redirect actual users into the SPA. Search-engine crawlers get to read
 // the content above before the redirect fires.
 (function(){
   try {
-    var target = "https://kashsec.vercel.app/#/lesson/19-ctf-challenges/logic-coupon-replay";
+    var target = "/#/lesson/19-ctf-challenges/logic-coupon-replay";
     // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html')) location.replace(target);
+    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
   } catch (e) {}
 })();
 </script>

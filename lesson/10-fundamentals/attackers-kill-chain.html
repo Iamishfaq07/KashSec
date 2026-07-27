@@ -5,12 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Attackers &amp; the kill chain — Path 10 · KashSec Academy</title>
 <meta name="description" content="Real attacks aren't a single dramatic moment — they're a sequence of stages, each with its own techniques and its own defensive opportunities. Understanding this sequence is one of the most valuable m">
-<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/10-fundamentals/attackers-kill-chain">
+<link rel="canonical" href="https://kashsec.vercel.app/lesson/10-fundamentals/attackers-kill-chain.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Attackers &amp; the kill chain — Path 10 · KashSec Academy">
 <meta property="og:description" content="Real attacks aren't a single dramatic moment — they're a sequence of stages, each with its own techniques and its own defensive opportunities. Understanding this sequence is one of the most valuable m">
 <meta property="og:type" content="article">
-<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/10-fundamentals/attackers-kill-chain">
+<meta property="og:url" content="https://kashsec.vercel.app/lesson/10-fundamentals/attackers-kill-chain.html">
+<meta property="og:site_name" content="KashSec Academy">
 <meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -20,7 +21,10 @@
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Attackers & the kill chain — Path 10 · KashSec Academy","description":"Real attacks aren't a single dramatic moment — they're a sequence of stages, each with its own techniques and its own defensive opportunities. Understanding this sequence is one of the most valuable m","url":"https://kashsec.vercel.app/#/lesson/10-fundamentals/attackers-kill-chain","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 10 — Cybersecurity Fundamentals","item":"https://kashsec.vercel.app/lesson/10-fundamentals/"},{"@type":"ListItem","position":4,"name":"Attackers & the kill chain","item":"https://kashsec.vercel.app/lesson/10-fundamentals/attackers-kill-chain.html"}]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Attackers & the kill chain","headline":"Attackers & the kill chain","description":"Real attacks aren't a single dramatic moment — they're a sequence of stages, each with its own techniques and its own defensive opportunities. Understanding this sequence is one of the most valuable m","url":"https://kashsec.vercel.app/lesson/10-fundamentals/attackers-kill-chain.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner→Intermediate","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Who attacks and the phases of an intrusion.","isPartOf":{"@type":"Course","name":"Path 10: Cybersecurity Fundamentals","url":"https://kashsec.vercel.app/lesson/10-fundamentals/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/10-fundamentals/attackers-kill-chain.html"}}
 </script>
 <style>
 :root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
@@ -30,6 +34,8 @@ main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
 .spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
 .crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
 .crumb a{color:var(--teal);text-decoration:none}
+.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
+.pager a{color:var(--teal);text-decoration:none}
 h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
 h1{font-size:2rem;margin:.5rem 0 1rem}
 h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
@@ -47,8 +53,8 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 </head>
 <body>
 <main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/10-fundamentals/attackers-kill-chain">continue here →</a></div>
-  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 10 — Cybersecurity Fundamentals</a> · Attackers &amp; the kill chain</div>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/10-fundamentals/attackers-kill-chain">continue here →</a></div>
+  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/10-fundamentals/">Path 10 — Cybersecurity Fundamentals</a> · Attackers &amp; the kill chain</div>
   <article><h1>Attackers &amp; the kill chain</h1>
 <p>Real attacks aren&#39;t a single dramatic moment — they&#39;re a sequence of stages, each with its own techniques and its own defensive opportunities. Understanding this sequence is one of the most valuable mental models in all of security.</p>
 <h2>The Cyber Kill Chain</h2>
@@ -153,17 +159,17 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <li><a href="https://attack.mitre.org/techniques/T1218/">MITRE ATT&amp;CK — Living off the Land</a> — example LOLBin technique page.</li>
 </ul>
 <p><strong>Next up →</strong> <a href="#/lesson/10-fundamentals/insider-threats">Insider Threats</a></p>
-</article>
-  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/10-fundamentals/vulnerability-management-basics.html">← Vulnerability Management Basics</a><a href="/lesson/10-fundamentals/insider-threats.html">Insider Threats →</a></nav></article>
+  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
 </main>
 <script>
 // Redirect actual users into the SPA. Search-engine crawlers get to read
 // the content above before the redirect fires.
 (function(){
   try {
-    var target = "https://kashsec.vercel.app/#/lesson/10-fundamentals/attackers-kill-chain";
+    var target = "/#/lesson/10-fundamentals/attackers-kill-chain";
     // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html')) location.replace(target);
+    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
   } catch (e) {}
 })();
 </script>

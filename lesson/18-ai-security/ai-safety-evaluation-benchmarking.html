@@ -5,12 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AI Safety Evaluation &amp; Benchmarking — Path 18 · KashSec Academy</title>
 <meta name="description" content="The ai-red-teaming lesson established that success rates across many attempts, not binary pass/fail, are the meaningful unit of measurement. This lesson goes deep into exactly how that measurement act">
-<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/18-ai-security/ai-safety-evaluation-benchmarking">
+<link rel="canonical" href="https://kashsec.vercel.app/lesson/18-ai-security/ai-safety-evaluation-benchmarking.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="AI Safety Evaluation &amp; Benchmarking — Path 18 · KashSec Academy">
 <meta property="og:description" content="The ai-red-teaming lesson established that success rates across many attempts, not binary pass/fail, are the meaningful unit of measurement. This lesson goes deep into exactly how that measurement act">
 <meta property="og:type" content="article">
-<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/18-ai-security/ai-safety-evaluation-benchmarking">
+<meta property="og:url" content="https://kashsec.vercel.app/lesson/18-ai-security/ai-safety-evaluation-benchmarking.html">
+<meta property="og:site_name" content="KashSec Academy">
 <meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -20,7 +21,10 @@
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"AI Safety Evaluation & Benchmarking — Path 18 · KashSec Academy","description":"The ai-red-teaming lesson established that success rates across many attempts, not binary pass/fail, are the meaningful unit of measurement. This lesson goes deep into exactly how that measurement act","url":"https://kashsec.vercel.app/#/lesson/18-ai-security/ai-safety-evaluation-benchmarking","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 18 — AI & AI Security","item":"https://kashsec.vercel.app/lesson/18-ai-security/"},{"@type":"ListItem","position":4,"name":"AI Safety Evaluation & Benchmarking","item":"https://kashsec.vercel.app/lesson/18-ai-security/ai-safety-evaluation-benchmarking.html"}]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"AI Safety Evaluation & Benchmarking","headline":"AI Safety Evaluation & Benchmarking","description":"The ai-red-teaming lesson established that success rates across many attempts, not binary pass/fail, are the meaningful unit of measurement. This lesson goes deep into exactly how that measurement act","url":"https://kashsec.vercel.app/lesson/18-ai-security/ai-safety-evaluation-benchmarking.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Attack success rates, benchmarks, and rigorous measurement.","isPartOf":{"@type":"Course","name":"Path 18: AI & AI Security","url":"https://kashsec.vercel.app/lesson/18-ai-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/18-ai-security/ai-safety-evaluation-benchmarking.html"}}
 </script>
 <style>
 :root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
@@ -30,6 +34,8 @@ main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
 .spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
 .crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
 .crumb a{color:var(--teal);text-decoration:none}
+.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
+.pager a{color:var(--teal);text-decoration:none}
 h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
 h1{font-size:2rem;margin:.5rem 0 1rem}
 h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
@@ -47,8 +53,8 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 </head>
 <body>
 <main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/18-ai-security/ai-safety-evaluation-benchmarking">continue here →</a></div>
-  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 18 — AI & AI Security</a> · AI Safety Evaluation &amp; Benchmarking</div>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/18-ai-security/ai-safety-evaluation-benchmarking">continue here →</a></div>
+  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/18-ai-security/">Path 18 — AI &amp; AI Security</a> · AI Safety Evaluation &amp; Benchmarking</div>
   <article><h1>AI Safety Evaluation &amp; Benchmarking</h1>
 <p>The ai-red-teaming lesson established that success rates across many attempts, not binary pass/fail, are the meaningful unit of measurement. This lesson goes deep into exactly how that measurement actually gets done rigorously — directly connecting to Path 15&#39;s report-writing lesson&#39;s CVSS-scoring discipline, applied here to a domain where &quot;did the attack work&quot; is genuinely more ambiguous than a binary technical outcome.</p>
 <h2>Attack Success Rate — the core metric, defined carefully</h2>
@@ -76,17 +82,17 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <li>Rigorous reporting specifies the benchmark used, sample size, grading methodology, and resulting rate with appropriate uncertainty — vague claims provide no verifiable information.</li>
 </ul>
 <p><strong>Next up →</strong> <a href="#/lesson/18-ai-security/ai-career">Building an AI security career</a></p>
-</article>
-  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/18-ai-security/ai-red-teaming.html">← AI red teaming</a><a href="/lesson/18-ai-security/ai-career.html">Your AI-security career →</a></nav></article>
+  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
 </main>
 <script>
 // Redirect actual users into the SPA. Search-engine crawlers get to read
 // the content above before the redirect fires.
 (function(){
   try {
-    var target = "https://kashsec.vercel.app/#/lesson/18-ai-security/ai-safety-evaluation-benchmarking";
+    var target = "/#/lesson/18-ai-security/ai-safety-evaluation-benchmarking";
     // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html')) location.replace(target);
+    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
   } catch (e) {}
 })();
 </script>

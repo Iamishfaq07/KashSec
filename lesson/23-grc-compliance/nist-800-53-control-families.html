@@ -5,12 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NIST 800-53 &amp; Control Families — Path 23 · KashSec Academy</title>
 <meta name="description" content="The NIST CSF overview lesson covered the six high-level functions and maturity tiers. This lesson goes deep into a related but distinctly different NIST publication that GRC practitioners frequently n">
-<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/23-grc-compliance/nist-800-53-control-families">
+<link rel="canonical" href="https://kashsec.vercel.app/lesson/23-grc-compliance/nist-800-53-control-families.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="NIST 800-53 &amp; Control Families — Path 23 · KashSec Academy">
 <meta property="og:description" content="The NIST CSF overview lesson covered the six high-level functions and maturity tiers. This lesson goes deep into a related but distinctly different NIST publication that GRC practitioners frequently n">
 <meta property="og:type" content="article">
-<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/23-grc-compliance/nist-800-53-control-families">
+<meta property="og:url" content="https://kashsec.vercel.app/lesson/23-grc-compliance/nist-800-53-control-families.html">
+<meta property="og:site_name" content="KashSec Academy">
 <meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -20,7 +21,10 @@
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"NIST 800-53 & Control Families — Path 23 · KashSec Academy","description":"The NIST CSF overview lesson covered the six high-level functions and maturity tiers. This lesson goes deep into a related but distinctly different NIST publication that GRC practitioners frequently n","url":"https://kashsec.vercel.app/#/lesson/23-grc-compliance/nist-800-53-control-families","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 23 — GRC & Compliance","item":"https://kashsec.vercel.app/lesson/23-grc-compliance/"},{"@type":"ListItem","position":4,"name":"NIST 800-53 & Control Families","item":"https://kashsec.vercel.app/lesson/23-grc-compliance/nist-800-53-control-families.html"}]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"NIST 800-53 & Control Families","headline":"NIST 800-53 & Control Families","description":"The NIST CSF overview lesson covered the six high-level functions and maturity tiers. This lesson goes deep into a related but distinctly different NIST publication that GRC practitioners frequently n","url":"https://kashsec.vercel.app/lesson/23-grc-compliance/nist-800-53-control-families.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"All levels","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"The granular control catalog CSF's functions get mapped onto in practice.","isPartOf":{"@type":"Course","name":"Path 23: GRC & Compliance","url":"https://kashsec.vercel.app/lesson/23-grc-compliance/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/23-grc-compliance/nist-800-53-control-families.html"}}
 </script>
 <style>
 :root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
@@ -30,6 +34,8 @@ main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
 .spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
 .crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
 .crumb a{color:var(--teal);text-decoration:none}
+.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
+.pager a{color:var(--teal);text-decoration:none}
 h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
 h1{font-size:2rem;margin:.5rem 0 1rem}
 h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
@@ -47,8 +53,8 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 </head>
 <body>
 <main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/23-grc-compliance/nist-800-53-control-families">continue here →</a></div>
-  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 23 — GRC & Compliance</a> · NIST 800-53 &amp; Control Families</div>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/23-grc-compliance/nist-800-53-control-families">continue here →</a></div>
+  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/23-grc-compliance/">Path 23 — GRC &amp; Compliance</a> · NIST 800-53 &amp; Control Families</div>
   <article><h1>NIST 800-53 &amp; Control Families</h1>
 <p>The NIST CSF overview lesson covered the six high-level functions and maturity tiers. This lesson goes deep into a related but distinctly different NIST publication that GRC practitioners frequently need to know — <strong>NIST SP 800-53</strong> — the actual granular control catalog CSF&#39;s functions are often mapped onto in practice, directly connecting to Path 21&#39;s api-security-standards-and-frameworks lesson&#39;s OWASP-ASVS-versus-Top-10 distinction, since this is the same &quot;high-level framework versus granular control catalog&quot; relationship applied to NIST specifically.</p>
 <h2>Why CSF and 800-53 aren&#39;t competing standards</h2>
@@ -108,17 +114,17 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <li><a href="https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final">NIST SP 800-53 Rev. 5</a></li>
 <li><a href="https://www.fedramp.gov/">FedRAMP official site</a></li>
 </ul>
-</article>
-  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/23-grc-compliance/nist-csf-overview.html">← NIST Cybersecurity Framework Overview</a><a href="/lesson/23-grc-compliance/soc2-and-audits.html">SOC 2 and Audits →</a></nav></article>
+  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
 </main>
 <script>
 // Redirect actual users into the SPA. Search-engine crawlers get to read
 // the content above before the redirect fires.
 (function(){
   try {
-    var target = "https://kashsec.vercel.app/#/lesson/23-grc-compliance/nist-800-53-control-families";
+    var target = "/#/lesson/23-grc-compliance/nist-800-53-control-families";
     // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html')) location.replace(target);
+    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
   } catch (e) {}
 })();
 </script>

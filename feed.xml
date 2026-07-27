@@ -5,7 +5,14 @@
     <link>https://kashsec.vercel.app/</link>
     <description>Updates to the free KashSec Academy cybersecurity course.</description>
     <language>en</language>
-    <lastBuildDate>Sun, 26 Jul 2026 21:45:43 GMT</lastBuildDate>
+    <lastBuildDate>Mon, 27 Jul 2026 05:30:02 GMT</lastBuildDate>
+    <item>
+      <title>Search-engine overhaul — every lesson can finally rank</title>
+      <link>https://kashsec.vercel.app/#/changelog</link>
+      <guid isPermaLink="false">kashsec-2026-07-27</guid>
+      <pubDate>Mon, 27 Jul 2026 12:00:00 GMT</pubDate>
+      <description>&lt;ul&gt;&lt;li&gt;Fixed the single biggest thing holding the site back in search: every one of the 587 crawlable pages declared its canonical URL as the SPA hash route (`/#/lesson/...`). Google discards everything after the `#`, so all of them were telling Google they were duplicates of the homepage — meaning no lesson, tool or lab could rank on its own. Each page now points at its own real URL.&lt;/li&gt;&lt;li&gt;Added the structured data search engines actually read: breadcrumbs on all 590 pages, Course data on every path (the format eligible for Google's course results), FAQ data on a new crawlable FAQ page, and — for the first time — a description of the site itself on the homepage, which previously had none at all.&lt;/li&gt;&lt;li&gt;Lesson data now states reading time, level, language and last-updated date, and the sitemap carries a real last-modified date per page taken from the project history, so edits get re-crawled instead of sitting unnoticed.&lt;/li&gt;&lt;li&gt;New internal linking: previous/next links on every lesson, a full index of all 26 paths, and breadcrumbs that lead somewhere (they all pointed at the homepage before). Four new automated checks make the canonical mistake impossible to reintroduce.&lt;/li&gt;&lt;/ul&gt;</description>
+    </item>
     <item>
       <title>Lessons no longer depend on a third-party CDN</title>
       <link>https://kashsec.vercel.app/#/changelog</link>

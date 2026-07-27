@@ -5,12 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Crypto — Small Primes, Big Problem — Path 19 · KashSec Academy</title>
 <meta name="description" content="Category: Crypto · Difficulty: Hard">
-<link rel="canonical" href="https://kashsec.vercel.app/#/lesson/19-ctf-challenges/crypto-weak-rsa">
+<link rel="canonical" href="https://kashsec.vercel.app/lesson/19-ctf-challenges/crypto-weak-rsa.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Crypto — Small Primes, Big Problem — Path 19 · KashSec Academy">
 <meta property="og:description" content="Category: Crypto · Difficulty: Hard">
 <meta property="og:type" content="article">
-<meta property="og:url" content="https://kashsec.vercel.app/#/lesson/19-ctf-challenges/crypto-weak-rsa">
+<meta property="og:url" content="https://kashsec.vercel.app/lesson/19-ctf-challenges/crypto-weak-rsa.html">
+<meta property="og:site_name" content="KashSec Academy">
 <meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -20,7 +21,10 @@
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Crypto — Small Primes, Big Problem — Path 19 · KashSec Academy","description":"Category: Crypto · Difficulty: Hard","url":"https://kashsec.vercel.app/#/lesson/19-ctf-challenges/crypto-weak-rsa","provider":{"@type":"Organization","name":"KashSec Academy","url":"https://kashsec.vercel.app"},"isAccessibleForFree":true,"learningResourceType":"Lesson"}
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 19 — CTF Challenges","item":"https://kashsec.vercel.app/lesson/19-ctf-challenges/"},{"@type":"ListItem","position":4,"name":"Crypto — Small Primes, Big Problem","item":"https://kashsec.vercel.app/lesson/19-ctf-challenges/crypto-weak-rsa.html"}]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Crypto — Small Primes, Big Problem","headline":"Crypto — Small Primes, Big Problem","description":"Category: Crypto · Difficulty: Hard","url":"https://kashsec.vercel.app/lesson/19-ctf-challenges/crypto-weak-rsa.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"All levels","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Factor an undersized RSA modulus by hand and recover the private key. Hard.","isPartOf":{"@type":"Course","name":"Path 19: CTF Challenges","url":"https://kashsec.vercel.app/lesson/19-ctf-challenges/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/19-ctf-challenges/crypto-weak-rsa.html"}}
 </script>
 <style>
 :root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
@@ -30,6 +34,8 @@ main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
 .spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
 .crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
 .crumb a{color:var(--teal);text-decoration:none}
+.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
+.pager a{color:var(--teal);text-decoration:none}
 h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
 h1{font-size:2rem;margin:.5rem 0 1rem}
 h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
@@ -47,8 +53,8 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 </head>
 <body>
 <main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="https://kashsec.vercel.app/#/lesson/19-ctf-challenges/crypto-weak-rsa">continue here →</a></div>
-  <div class="crumb"><a href="/">KashSec Academy</a> · <a href="/">Path 19 — CTF Challenges</a> · Crypto — Small Primes, Big Problem</div>
+  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/19-ctf-challenges/crypto-weak-rsa">continue here →</a></div>
+  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/19-ctf-challenges/">Path 19 — CTF Challenges</a> · Crypto — Small Primes, Big Problem</div>
   <article><h1>Crypto — Small Primes, Big Problem</h1>
 <p><strong>Category:</strong> Crypto · <strong>Difficulty:</strong> Hard</p>
 <h2>Scenario</h2>
@@ -76,17 +82,17 @@ e = 3
 <details><summary>Hint</summary>Think about what happens if the same short message is encrypted with the same small exponent under three or more <em>different</em> public keys (a real scenario — e.g., the same short message broadcast to multiple recipients, each with their own RSA key but all using <code>e=3</code>).</details>
 <details><summary>Show answer</summary>This describes <strong>Håstad's broadcast attack</strong>: if the same message is encrypted with a small public exponent (commonly <code>e=3</code>) under enough different, sufficiently large moduli — mathematically, at least <code>e</code> of them — an attacker can use the Chinese Remainder Theorem to reconstruct the original message without ever factoring any of the moduli at all, even if every individual key is otherwise perfectly secure at full 2048-bit size. This is a genuinely elegant, real cryptographic attack, and it's exactly why modern RSA implementations favor a larger public exponent like <code>65537</code> combined with proper padding schemes (OAEP) — both of which independently close off this specific attack, on top of everything a sufficiently large modulus already provides.</details><p>Real RSA keys are never this small — this challenge exists purely to make the underlying mathematics tractable to work through by hand or with a basic script, so the &quot;why key size matters&quot; lesson is something you can actually verify yourself rather than just being told. Path 06&#39;s cryptography fundamentals lesson covers the real-world key size guidance this challenge is illustrating.</p>
 <p><strong>Next up →</strong> <a href="#/lesson/19-ctf-challenges/forensics-exif-trail">Forensics — The EXIF Trail</a></p>
-</article>
-  <footer>© KashSec Academy · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/19-ctf-challenges/ai-jailbreak-judge.html">← AI — Jailbreak the Judge</a><a href="/lesson/19-ctf-challenges/forensics-exif-trail.html">Forensics — The EXIF Trail →</a></nav></article>
+  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
 </main>
 <script>
 // Redirect actual users into the SPA. Search-engine crawlers get to read
 // the content above before the redirect fires.
 (function(){
   try {
-    var target = "https://kashsec.vercel.app/#/lesson/19-ctf-challenges/crypto-weak-rsa";
+    var target = "/#/lesson/19-ctf-challenges/crypto-weak-rsa";
     // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html')) location.replace(target);
+    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
   } catch (e) {}
 })();
 </script>
