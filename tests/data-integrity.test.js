@@ -284,6 +284,34 @@ if (fs.existsSync(path.join(ROOT, 'sitemap.xml'))) {
     `${notListed.length} missing, e.g. ${notListed.slice(0, 3).join(', ')}`);
 }
 
+/* ---- 15. tool and lab stubs are not thin content ----
+   These pages shipped with ~53 words of unique prose each, followed by a
+   link list naming every other item in the section — a list that was ~90%
+   of the page and identical across all of them. Google treats that shape
+   as thin, near-duplicate content, and no keyword targeting rescues it.
+   The generator throws if an item has no entry in prerender-content.js;
+   this catches the subtler regression where an entry exists but is a stub. */
+const MIN_UNIQUE_WORDS = 180;
+const stripTags = h => h
+  .replace(/<script[\s\S]*?<\/script>/g, '')
+  .replace(/<style[\s\S]*?<\/style>/g, '')
+  .replace(/<[^>]+>/g, ' ');
+const thinPages = [];
+for (const dir of ['tools', 'labs']) {
+  if (!fs.existsSync(path.join(ROOT, dir))) continue;
+  for (const f of fs.readdirSync(path.join(ROOT, dir))) {
+    if (!f.endsWith('.html') || f === 'index.html') continue;
+    const article = (read(`${dir}/${f}`).match(/<article>([\s\S]*?)<\/article>/) || [])[1] || '';
+    // Discount the shared "Related" list — it is navigation, not content.
+    const withoutNav = article.replace(/<h2>Related<\/h2><ul>[\s\S]*?<\/ul>/, '');
+    const words = (stripTags(withoutNav).match(/\S+/g) || []).length;
+    if (words < MIN_UNIQUE_WORDS) thinPages.push(`${dir}/${f} (${words} words)`);
+  }
+}
+check(`every tool and lab page carries >= ${MIN_UNIQUE_WORDS} words of its own content`,
+  thinPages.length === 0,
+  thinPages.slice(0, 6).join(', ') + (thinPages.length > 6 ? ` …and ${thinPages.length - 6} more` : ''));
+
 /* ---- report ---- */
 console.log(`\n  Data integrity — ${PATHS.length} paths, ${totalLessons} lessons, ` +
   `${Object.values(QUIZZES).reduce((s, q) => s + q.questions.length, 0)} quiz questions\n`);

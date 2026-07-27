@@ -30,6 +30,7 @@ import fs from 'fs';
 import path from 'path';
 import { execFileSync } from 'child_process';
 import { fileURLToPath } from 'url';
+import { TOOL_CONTENT, LAB_CONTENT } from './prerender-content.js';
 
 const ROOT = path.dirname(fileURLToPath(import.meta.url));
 const SITE = 'https://kashsec.vercel.app';
@@ -371,11 +372,25 @@ for (const p of PATHS) {
   sitemapUrls.push({ loc: canonical, lastmod, priority: '0.9' });
 }
 
-/* Crawlable stubs for each tool and lab. These are interactive
-   client-side pages, so there's no body content to prerender — the stub
-   carries the title, description, and context a search engine needs,
-   then hands real visitors to the SPA like the lesson stubs do. */
-function writeStubSet(items, urlPrefix, dirName, kindLabel, indexTitle, indexDesc) {
+/* Crawlable stubs for each tool and lab.
+
+   These are interactive client-side pages, so there's no lesson body to
+   prerender. That used to mean the stub was ~53 words of unique prose
+   followed by a list naming all 31 other tools — a list that was ~90% of
+   the page and byte-identical across every page in the section. Thin,
+   near-duplicate content at that ratio doesn't rank regardless of how the
+   title is worded, so the long-form entries in prerender-content.js now
+   carry each page and the link list is cut to a curated few. */
+
+// `related` ids may cross sections: 'jwt-lab' is labs/jwt, 'regex-tool' is
+// tools/regex, and a bare id stays in the current section.
+function resolveRelated(id, dirName) {
+  if (id.endsWith('-lab')) return { dir: 'labs', id: id.slice(0, -4) };
+  if (id.endsWith('-tool')) return { dir: 'tools', id: id.slice(0, -5) };
+  return { dir: dirName, id };
+}
+
+function writeStubSet(items, urlPrefix, dirName, kindLabel, indexTitle, indexDesc, content, titleFor) {
   const outDir = path.join(ROOT, dirName);
   const sectionUrl = `${SITE}/${dirName}/`;
   const plural = kindLabel[0].toUpperCase() + kindLabel.slice(1) + 's';
@@ -383,39 +398,71 @@ function writeStubSet(items, urlPrefix, dirName, kindLabel, indexTitle, indexDes
   for (const it of items) {
     const canonical = `${SITE}/${dirName}/${it.id}.html`;
     const spaPath = `/#/${urlPrefix}/${it.id}`;
-    const title = `${it.title} — Free online ${kindLabel} · KashSec Academy`;
-    const desc = it.desc || '';
-    const contentHtml =
+    const c = content[it.id];
+    if (!c) throw new Error(`No prerender content for ${dirName}/${it.id} — add it to prerender-content.js`);
+    const title = titleFor(it, c);
+    // The meta description leads with what the page explains rather than
+    // what the widget is, because that's the query it can actually win.
+    const desc = `${it.desc} ${c.intro.split('. ')[0]}.`.replace(/\s+/g, ' ').slice(0, 300);
+
+    const body =
       `<h1>${escapeAttr(it.title)}</h1>` +
-      `<p>${escapeAttr(desc)}</p>` +
-      (it.related ? `<p><strong>Pairs with:</strong> ${escapeAttr(it.related)}</p>` : '') +
-      `<p>This ${kindLabel} runs entirely in your browser — nothing is uploaded, and it's free to use with no account.</p>` +
-      `<h2>More free security ${kindLabel}s</h2><ul>` +
-      items.filter(o => o.id !== it.id)
-           .map(o => `<li><a href="/${dirName}/${o.id}.html">${escapeAttr(o.title)}</a> — ${escapeAttr(o.desc || '')}</li>`)
-           .join('') + '</ul>';
+      `<p><strong>${escapeAttr(it.desc)}</strong></p>` +
+      `<p>${escapeAttr(c.intro)}</p>` +
+      `<h2>How to use it</h2><ol>` +
+      c.steps.map(s => `<li>${escapeAttr(s)}</li>`).join('') + `</ol>` +
+      `<h2>What to take away</h2>` +
+      c.notes.map(n => `<h3>${escapeAttr(n.h)}</h3><p>${escapeAttr(n.p)}</p>`).join('') +
+      `<h2>Frequently asked questions</h2>` +
+      c.faq.map(f => `<h3>${escapeAttr(f.q)}</h3><p>${escapeAttr(f.a)}</p>`).join('') +
+      (it.related ? `<h2>Where this fits in the course</h2><p>This ${kindLabel} pairs with <strong>${escapeAttr(it.related)}</strong> — see <a href="/lesson/">all ${PATHS.length} learning paths</a>.</p>` : '') +
+      `<p>It runs entirely in your browser: nothing is uploaded, no account is needed, and it is free.</p>` +
+      `<h2>Related</h2><ul>` +
+      (c.related || []).map(rid => {
+        const r = resolveRelated(rid, dirName);
+        const src = r.dir === 'labs' ? LABS : TOOLS;
+        const target = src.find(o => o.id === r.id);
+        if (!target) throw new Error(`${dirName}/${it.id} lists related "${rid}" which does not exist`);
+        return `<li><a href="/${r.dir}/${r.id}.html">${escapeAttr(target.title)}</a> — ${escapeAttr(target.desc || '')}</li>`;
+      }).join('') +
+      `</ul><p><a href="/${dirName}/">Browse all ${items.length} ${kindLabel}s →</a></p>`;
+
     fs.writeFileSync(path.join(outDir, it.id + '.html'), template({
-      title, desc, canonical, spaPath, contentHtml,
+      title, desc, canonical, spaPath, contentHtml: body,
       crumbs: [
         { name: 'KashSec Academy', url: SITE + '/' },
         { name: plural, url: sectionUrl },
         { name: it.title, url: canonical },
       ],
-      jsonLd: [{
-        '@context': 'https://schema.org',
-        '@type': 'WebApplication',
-        name: it.title,
-        description: desc,
-        url: canonical,
-        applicationCategory: 'SecurityApplication',
-        operatingSystem: 'Any (runs in a web browser)',
-        browserRequirements: 'Requires JavaScript',
-        inLanguage: 'en',
-        dateModified: APP_LASTMOD,
-        isAccessibleForFree: true,
-        offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-        publisher: ORG,
-      }],
+      jsonLd: [
+        {
+          '@context': 'https://schema.org',
+          '@type': 'WebApplication',
+          name: it.title,
+          description: it.desc,
+          url: canonical,
+          applicationCategory: 'SecurityApplication',
+          applicationSubCategory: kindLabel,
+          operatingSystem: 'Any (runs in a web browser)',
+          browserRequirements: 'Requires JavaScript',
+          inLanguage: 'en',
+          dateModified: APP_LASTMOD,
+          isAccessibleForFree: true,
+          offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+          publisher: ORG,
+        },
+        // The FAQ blocks are the realistic rich-result opportunity here.
+        // Head terms like "jwt decoder" belong to jwt.io and Auth0; the
+        // questions underneath them are still winnable.
+        {
+          '@context': 'https://schema.org',
+          '@type': 'FAQPage',
+          mainEntity: c.faq.map(f => ({
+            '@type': 'Question', name: f.q,
+            acceptedAnswer: { '@type': 'Answer', text: f.a },
+          })),
+        },
+      ],
     }));
     sitemapUrls.push({ loc: canonical, lastmod: APP_LASTMOD, priority: '0.7' });
   }
@@ -445,11 +492,17 @@ function writeStubSet(items, urlPrefix, dirName, kindLabel, indexTitle, indexDes
 const toolsWritten = writeStubSet(
   TOOLS, 'tools', 'tools', 'security tool',
   'Free online security tools',
-  'Encoders, hash tools, a JWT decoder, CVSS and subnet calculators, and more — all free, all running locally in your browser.');
+  'Encoders, hash tools, a JWT decoder, CVSS and subnet calculators, and more — all free, all running locally in your browser.',
+  TOOL_CONTENT,
+  (it) => `${it.title} — free, runs in your browser · KashSec Academy`);
 const labsWritten = writeStubSet(
   LABS, 'labs', 'labs', 'security lab',
   'Free interactive security labs',
-  'Practise SQL injection, XSS, IDOR, JWT forgery, SSRF, XXE, path traversal, log analysis and more — safe, simulated, and entirely in your browser.');
+  'Practise SQL injection, XSS, IDOR, JWT forgery, SSRF, XXE, path traversal, log analysis and more — safe, simulated, and entirely in your browser.',
+  LAB_CONTENT,
+  // Labs compete for learner intent ("practise X safely"), which is a
+  // query a hands-on simulation genuinely answers better than an article.
+  (it) => `${it.title} — free hands-on practice, no setup · KashSec Academy`);
 
 /* FAQ stub with FAQPage schema. The answers were already written and
    already public — they just had no URL a crawler could reach. */

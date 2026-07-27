@@ -5918,6 +5918,12 @@ function renderLabLeakedSecret(){
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
+  {date:'2026-07-27', title:'Every tool and lab page rewritten with real content', items:[
+    'The 74 tool and lab pages had about 53 words of their own content each, followed by a link list naming every other item in the section — a list that made up roughly 90% of the page and was identical across all of them. Search engines treat that as thin, duplicated content, so no amount of keyword work would have made those pages rank.',
+    'Each one now has a proper explanation of the concept, step-by-step instructions matching the tool\'s actual controls, the things worth taking away, and answers to the questions people genuinely search for — around 336 words per tool and 267 per lab, all newly written. The link list is down to a handful of genuinely related items.',
+    'Those answers are also marked up as FAQ data on all 74 pages plus the FAQ itself, which is the realistic opening in search: the head terms belong to sites like jwt.io and the CVSS standards body, but the questions underneath them are still winnable — especially with a free course and a hands-on lab behind every answer.',
+    'A new automated check fails the build if any of these pages drops back below 180 words of its own content.'
+  ]},
   {date:'2026-07-27', title:'Search-engine overhaul — every lesson can finally rank', items:[
     'Fixed the single biggest thing holding the site back in search: every one of the 587 crawlable pages declared its canonical URL as the SPA hash route (`/#/lesson/...`). Google discards everything after the `#`, so all of them were telling Google they were duplicates of the homepage — meaning no lesson, tool or lab could rank on its own. Each page now points at its own real URL.',
     'Added the structured data search engines actually read: breadcrumbs on all 590 pages, Course data on every path (the format eligible for Google\'s course results), FAQ data on a new crawlable FAQ page, and — for the first time — a description of the site itself on the homepage, which previously had none at all.',
