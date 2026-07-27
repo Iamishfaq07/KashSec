@@ -5,7 +5,14 @@
     <link>https://kashsec.vercel.app/</link>
     <description>Updates to the free KashSec Academy cybersecurity course.</description>
     <language>en</language>
-    <lastBuildDate>Mon, 27 Jul 2026 06:19:45 GMT</lastBuildDate>
+    <lastBuildDate>Mon, 27 Jul 2026 20:38:43 GMT</lastBuildDate>
+    <item>
+      <title>Timed mock exams, real PDF certificates, and a search page you can link to</title>
+      <link>https://kashsec.vercel.app/#/changelog</link>
+      <guid isPermaLink="false">kashsec-2026-07-27</guid>
+      <pubDate>Mon, 27 Jul 2026 12:00:00 GMT</pubDate>
+      <description>&lt;ul&gt;&lt;li&gt;New timed mock exam (#/exam). Three papers — 90 questions in 90 minutes, 40 in 40, or a 20-question drill — drawn across all 26 paths in proportion to each path's size. Unlike the path quizzes, nothing is graded or revealed until you submit: you get a clock, free navigation, flag-for-review, and an unanswered count, which is the part that actually rehearses sitting a certification. The paper survives a refresh, an expired clock submits rather than resumes, and the score report breaks results down by path, lists every question you missed with its explanation, and feeds those questions into the existing spaced-repetition queue.&lt;/li&gt;&lt;li&gt;Certificates and transcripts are now real generated PDFs instead of browser print dialogs. Printing produced whatever each browser felt like — different margins, headers and scaling per browser — and the certificate was a screenshot of a bitmap. These are vector text at any zoom, with a multi-page transcript covering lessons, quiz results, mock exams and labs. Written as an 8KB generator using the standard PDF fonts rather than pulling in a 350KB library, because the site was deliberately moved off third-party scripts and a certificate is not a good reason to move back.&lt;/li&gt;&lt;li&gt;Search results now have their own page at #/search?q=… , so a result set can be linked, bookmarked and shared — and the site finally has a real search URL to put behind its structured data.&lt;/li&gt;&lt;li&gt;Search also stopped downloading 427KB of lesson text the instant you opened it. Nothing loads until you actually type; then a 77KB preview covering the opening of every lesson lands first, and the full index follows in the background so deeper matches fill in behind it. Opening search to jump to a page by name now costs nothing at all.&lt;/li&gt;&lt;li&gt;Thirty-six new automated checks cover all three. They earned their keep immediately: the exam suite caught that "Sit another paper" was a dead link, because the result view renders at #/exam so an anchor to #/exam changes nothing.&lt;/li&gt;&lt;/ul&gt;</description>
+    </item>
     <item>
       <title>Interface overhaul — a real icon set, motion, and difficulty at a glance</title>
       <link>https://kashsec.vercel.app/#/changelog</link>

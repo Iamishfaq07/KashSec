@@ -122,15 +122,48 @@ function ensureGlossary(){
   return glossaryPromise;
 }
 
-/* search-index.js (~530KB of lesson body text) is only needed for full-text
-   search — loaded the first time the user opens search, then cached. Title
-   search works instantly without it; body results fill in once it arrives. */
+/* pdf.js is a ~8KB PDF writer used only by the certificate and transcript.
+   Loaded on demand so it costs nothing on every other page. */
+let pdfPromise = null;
+function ensurePdf(){
+  if(typeof KashPDF !== 'undefined') return Promise.resolve();
+  if(pdfPromise) return pdfPromise;
+  pdfPromise = withTimeout(loadScript('pdf.js'), 12000, 'Loading the PDF writer')
+    .catch(err=>{ pdfPromise = null; throw err; });
+  return pdfPromise;
+}
+
+/* Body text for full-text search, in two tiers.
+
+   The full index is 427KB gzipped and used to download the instant the
+   search overlay opened — including for people who opened it and pressed
+   Escape, and for people using it as a command palette to jump to a page by
+   name, which needs no lesson text at all. Now nothing loads until a real
+   query is typed; then the 77KB preview lands (the opening of every lesson,
+   where headings and definitions live) and the full index follows in the
+   background so deep matches fill in behind it. */
+let searchPreviewPromise = null;
+function ensureSearchPreview(){
+  if(typeof SEARCH_PREVIEW !== 'undefined') return Promise.resolve();
+  if(searchPreviewPromise) return searchPreviewPromise;
+  searchPreviewPromise = loadScript('search-preview.js')
+    .catch(err=>{ searchPreviewPromise = null; throw err; });
+  return searchPreviewPromise;
+}
+
 let searchContentPromise = null;
 function ensureSearchContent(){
   if(typeof SEARCH_CONTENT !== 'undefined') return Promise.resolve();
   if(searchContentPromise) return searchContentPromise;
   searchContentPromise = loadScript('search-index.js').catch(err=>{ searchContentPromise = null; throw err; });
   return searchContentPromise;
+}
+
+/* Whichever tier is loaded, fullest first. */
+function searchBodies(){
+  if(typeof SEARCH_CONTENT !== 'undefined') return SEARCH_CONTENT;
+  if(typeof SEARCH_PREVIEW !== 'undefined') return SEARCH_PREVIEW;
+  return null;
 }
 
 /* ============================================================
@@ -267,6 +300,11 @@ function defaultState(){
     // Questions you got wrong, scheduled to come back. Keyed "pathId#index".
     // { due: "YYYY-MM-DD", interval: days, streak: N, misses: N }
     missedQuestions:{},
+    // Timed mock exam: the paper currently open (survives a refresh — losing
+    // 70 minutes of work to a stray reload would make the feature useless)
+    // and the graded history behind it.
+    examInProgress:null,
+    examAttempts:[],
     readHashes:{} // { "pathId/subId": contentHash at time of completion }
   };
 }
@@ -1595,6 +1633,7 @@ function route(){
   document.getElementById('tocFloat')?.remove();
   clearInterval(mockInterviewTimer);
   clearInterval(pomodoroInterval);
+  clearInterval(examTimer);
   // Magic-link / OAuth redirects land back on the site with auth tokens
   // riding in the URL (e.g. #access_token=...). That's not a real route —
   // show a brief loading state and let the auth bootstrap below redirect
@@ -1631,6 +1670,16 @@ function route(){
   else if(hash === '#/daily') renderDaily();
   else if(hash === '#/progress') renderProgressHub();
   else if(hash === '#/certificate') renderCertificate();
+  else if(hash === '#/search' || hash.startsWith('#/search?')){
+    const qs = hash.indexOf('?');
+    let q = '';
+    if(qs > -1){
+      const params = new URLSearchParams(hash.slice(qs+1));
+      q = params.get('q') || '';
+    }
+    renderSearchPage(q);
+  }
+  else if(hash === '#/exam') renderExam();
   else if(hash === '#/quiz/final') renderQuiz('final');
   else if(hash === '#/quiz/shuffle') renderShuffleQuiz();
   else if(hash === '#/quiz/missed') renderMissedReview();
@@ -6035,6 +6084,13 @@ function renderLabLeakedSecret(){
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
+  {date:'2026-07-27', title:'Timed mock exams, real PDF certificates, and a search page you can link to', items:[
+    'New timed mock exam (#/exam). Three papers — 90 questions in 90 minutes, 40 in 40, or a 20-question drill — drawn across all 26 paths in proportion to each path\'s size. Unlike the path quizzes, nothing is graded or revealed until you submit: you get a clock, free navigation, flag-for-review, and an unanswered count, which is the part that actually rehearses sitting a certification. The paper survives a refresh, an expired clock submits rather than resumes, and the score report breaks results down by path, lists every question you missed with its explanation, and feeds those questions into the existing spaced-repetition queue.',
+    'Certificates and transcripts are now real generated PDFs instead of browser print dialogs. Printing produced whatever each browser felt like — different margins, headers and scaling per browser — and the certificate was a screenshot of a bitmap. These are vector text at any zoom, with a multi-page transcript covering lessons, quiz results, mock exams and labs. Written as an 8KB generator using the standard PDF fonts rather than pulling in a 350KB library, because the site was deliberately moved off third-party scripts and a certificate is not a good reason to move back.',
+    'Search results now have their own page at #/search?q=… , so a result set can be linked, bookmarked and shared — and the site finally has a real search URL to put behind its structured data.',
+    'Search also stopped downloading 427KB of lesson text the instant you opened it. Nothing loads until you actually type; then a 77KB preview covering the opening of every lesson lands first, and the full index follows in the background so deeper matches fill in behind it. Opening search to jump to a page by name now costs nothing at all.',
+    'Thirty-six new automated checks cover all three. They earned their keep immediately: the exam suite caught that "Sit another paper" was a dead link, because the result view renders at #/exam so an anchor to #/exam changes nothing.'
+  ]},
   {date:'2026-07-27', title:'Interface overhaul — a real icon set, motion, and difficulty at a glance', items:[
     'Every tool and lab card used an emoji as its icon. Beyond looking like a ransom note next to the site\'s flat stroke icons, the emoji repeated — the same globe stood for the subnet calculator, the SSRF lab and DNS recon, and the same open padlock for three unrelated labs — so the icon told you nothing. All 74 are now drawn from one 63-glyph stroke set that inherits the current text colour, so it themes automatically and works in high-contrast mode.',
     'The focus timer used to render above the lesson title, so starting it pushed the whole lesson down and the title stopped being the first thing on the page. It is now a pinned pill that stays out of the reading flow.',
@@ -8151,6 +8207,404 @@ function renderShuffleQuiz(){
   paint();
 }
 
+/* ==========================================================================
+   Timed mock exam (#/exam)
+
+   The path quizzes teach: they reveal the answer the moment you pick one.
+   That is the right behaviour for learning and the wrong behaviour for
+   rehearsing a certification, where the whole difficulty is committing to
+   an answer under a clock with no feedback and rationing time across
+   questions you cannot see yet. This is the second mode.
+
+   Differences from renderQuiz that matter:
+     - nothing is graded or revealed until the paper is submitted
+     - a countdown that auto-submits at zero
+     - free navigation, plus flag-for-review, plus an unanswered count
+     - questions drawn across every path in proportion to path size, so the
+       mix approximates a real blueprint rather than one path's bank
+     - the attempt survives a refresh; losing 70 minutes of work to a
+       stray Cmd-R would make the feature worse than useless
+   ========================================================================== */
+
+const EXAM_PRESETS = {
+  full:  {id:'full',  label:'Full exam',   questions:90, minutes:90, passPct:75,
+          blurb:'Ninety questions in ninety minutes, weighted across all 26 paths — the shape of a real certification sitting.'},
+  short: {id:'short', label:'Short exam',  questions:40, minutes:40, passPct:75,
+          blurb:'Forty questions in forty minutes. Same rules, roughly half the endurance.'},
+  sprint:{id:'sprint',label:'Quick drill', questions:20, minutes:15, passPct:75,
+          blurb:'Twenty questions in fifteen minutes. Tight on time by design.'},
+};
+
+let examTimer = null;
+
+function examPool(){
+  const pool = [];
+  for(const p of PATHS){
+    const bank = (typeof QUIZZES !== 'undefined') ? QUIZZES[p.id] : null;
+    if(!bank || !Array.isArray(bank.questions) || !bank.questions.length) continue;
+    pool.push({pathId:p.id, pathN:p.n, pathTitle:p.title, size:bank.questions.length, weight:p.subs.length});
+  }
+  return pool;
+}
+
+/* Allocate N questions across paths in proportion to how much of the course
+   each path represents, using largest-remainder so the parts sum to exactly
+   N rather than drifting by a few from rounding. A path can never be asked
+   for more questions than its bank holds; the shortfall redistributes. */
+function allocateQuestions(pool, want){
+  const totalWeight = pool.reduce((n,p)=>n+p.weight,0) || 1;
+  let alloc = pool.map(p=>{
+    const exact = want * p.weight / totalWeight;
+    return {...p, exact, n: Math.min(p.size, Math.floor(exact)), rem: exact - Math.floor(exact)};
+  });
+  let assigned = alloc.reduce((n,a)=>n+a.n,0);
+  // Hand out the remaining slots to the biggest fractional remainders first,
+  // skipping any path whose bank is already exhausted.
+  const order = [...alloc].sort((a,b)=>b.rem-a.rem);
+  let guard = 0;
+  while(assigned < want && guard++ < want * 4){
+    let placed = false;
+    for(const a of order){
+      if(assigned >= want) break;
+      if(a.n < a.size){ a.n++; assigned++; placed = true; }
+    }
+    if(!placed) break; // every bank exhausted — the course simply has fewer
+  }
+  return alloc.filter(a=>a.n > 0);
+}
+
+function examShuffle(arr){
+  const a = [...arr];
+  for(let i=a.length-1;i>0;i--){ const j = Math.floor(Math.random()*(i+1)); [a[i],a[j]] = [a[j],a[i]]; }
+  return a;
+}
+
+function buildExamPaper(presetId){
+  const preset = EXAM_PRESETS[presetId] || EXAM_PRESETS.full;
+  const alloc = allocateQuestions(examPool(), preset.questions);
+  const picks = [];
+  for(const a of alloc){
+    const idx = examShuffle([...Array(a.size).keys()]).slice(0, a.n);
+    idx.forEach(i=>picks.push({pathId:a.pathId, index:i}));
+  }
+  return {preset:preset.id, picks:examShuffle(picks)};
+}
+
+function examQuestion(pick){
+  const bank = QUIZZES[pick.pathId];
+  return bank && bank.questions ? bank.questions[pick.index] : null;
+}
+
+function examRemainingMs(att){ return Math.max(0, att.endsAt - Date.now()); }
+function fmtClock(ms){
+  const s = Math.round(ms/1000);
+  return `${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
+}
+
+function renderExam(){
+  const att = STATE.examInProgress;
+  // An attempt whose clock ran out while the tab was closed is submitted on
+  // sight rather than resumed — the time is genuinely gone.
+  if(att && examRemainingMs(att) <= 0){ submitExam(true); return; }
+  if(att) return paintExamPaper();
+  return paintExamStart();
+}
+
+function paintExamStart(){
+  const history = (STATE.examAttempts || []).slice().reverse();
+  const best = history.reduce((m,a)=> a.pct > (m ? m.pct : -1) ? a : m, null);
+  const banked = examPool().reduce((n,p)=>n+p.size,0);
+
+  app.innerHTML = `
+    <section class="sec">
+      <div class="sec-eyebrow" data-reveal>Mock exam</div>
+      <h2 class="sec-title" data-reveal style="--i:1">Sit a timed paper</h2>
+      <p class="sec-sub" data-reveal style="--i:2">
+        Questions are drawn from all ${examPool().length} paths in proportion to their size, shuffled, and
+        graded only when you submit — no feedback while the clock runs. ${banked} questions in the bank.
+      </p>
+      <div class="labs-grid" data-reveal style="--i:3">
+        ${Object.values(EXAM_PRESETS).map(p=>`
+          <button class="exam-preset" data-preset="${p.id}" type="button">
+            <div class="exam-preset-h">${p.label}</div>
+            <div class="exam-preset-n">${p.questions} questions · ${p.minutes} min · pass ${p.passPct}%</div>
+            <p>${p.blurb}</p>
+            <span class="exam-preset-go">Start →</span>
+          </button>`).join('')}
+      </div>
+
+      ${best ? `<div class="exam-best" data-reveal><strong>Best so far:</strong> ${best.pct}% on the ${EXAM_PRESETS[best.preset]?.label || best.preset} — ${best.passed ? 'passed' : 'not yet passing'}.</div>` : ''}
+
+      ${history.length ? `
+        <h3 class="exam-h3" data-reveal>Previous attempts</h3>
+        <div class="exam-history" data-reveal>
+          <table class="exam-table">
+            <thead><tr><th>When</th><th>Paper</th><th>Score</th><th>Result</th><th></th></tr></thead>
+            <tbody>
+              ${history.slice(0,12).map((a,i)=>`
+                <tr>
+                  <td>${new Date(a.ts).toLocaleDateString(undefined,{day:'numeric',month:'short',year:'numeric'})}</td>
+                  <td>${EXAM_PRESETS[a.preset]?.label || a.preset}</td>
+                  <td><b>${a.pct}%</b> <span class="muted-inline">(${a.score}/${a.total})</span></td>
+                  <td><span class="exam-verdict ${a.passed?'pass':'fail'}">${a.passed?'Pass':'Below pass'}</span></td>
+                  <td><button class="btn-ghost sm" data-review="${history.length-1-i}" type="button">Review</button></td>
+                </tr>`).join('')}
+            </tbody>
+          </table>
+        </div>` : ''}
+    </section>
+  `;
+  setupReveal();
+  app.querySelectorAll('[data-preset]').forEach(b=>{
+    b.addEventListener('click', ()=>startExam(b.getAttribute('data-preset')));
+  });
+  app.querySelectorAll('[data-review]').forEach(b=>{
+    b.addEventListener('click', ()=>{
+      const a = (STATE.examAttempts||[])[parseInt(b.getAttribute('data-review'),10)];
+      if(a) paintExamResult(a);
+    });
+  });
+}
+
+function startExam(presetId){
+  const preset = EXAM_PRESETS[presetId] || EXAM_PRESETS.full;
+  const paper = buildExamPaper(preset.id);
+  if(!paper.picks.length){ alert('No questions are available yet.'); return; }
+  STATE.examInProgress = {
+    preset: preset.id,
+    picks: paper.picks,
+    answers: new Array(paper.picks.length).fill(null),
+    flags: [],
+    qi: 0,
+    startedAt: Date.now(),
+    endsAt: Date.now() + preset.minutes*60*1000,
+  };
+  saveState();
+  window.scrollTo(0,0);
+  paintExamPaper();
+}
+
+function paintExamPaper(){
+  const att = STATE.examInProgress;
+  if(!att) return paintExamStart();
+  const preset = EXAM_PRESETS[att.preset] || EXAM_PRESETS.full;
+  const total = att.picks.length;
+  const qi = Math.min(att.qi || 0, total-1);
+  const pick = att.picks[qi];
+  const q = examQuestion(pick);
+  if(!q){ submitExam(false); return; }
+  const answered = att.answers.filter(a=>a!==null).length;
+  const flagged = new Set(att.flags || []);
+
+  app.innerHTML = `
+    <section class="sec exam-sec">
+      <div class="exam-bar">
+        <div class="exam-bar-l">
+          <span class="exam-clock" id="examClock">${fmtClock(examRemainingMs(att))}</span>
+          <span class="exam-meta">${preset.label} · ${answered}/${total} answered${flagged.size?` · ${flagged.size} flagged`:''}</span>
+        </div>
+        <button class="btn-amber sm" id="examSubmitBtn" type="button">Submit paper</button>
+      </div>
+
+      <div class="quiz-wrap">
+        <div class="quiz-card">
+          <div class="quiz-qn">Question ${qi+1} of ${total}</div>
+          <div class="quiz-q">${q.q}</div>
+          <div class="quiz-options">
+            ${q.options.map((opt,oi)=>`
+              <button class="quiz-opt ${att.answers[qi]===oi?'chosen':''}" data-oi="${oi}" type="button">
+                <span class="opt-letter">${String.fromCharCode(65+oi)}</span><span>${opt}</span>
+              </button>`).join('')}
+          </div>
+          <div class="exam-qactions">
+            <button class="btn-ghost sm ${flagged.has(qi)?'active':''}" id="examFlagBtn" type="button" aria-pressed="${flagged.has(qi)}">
+              ${flagged.has(qi) ? 'Unflag' : 'Flag for review'}
+            </button>
+            ${att.answers[qi]!==null ? `<button class="btn-ghost sm" id="examClearBtn" type="button">Clear answer</button>` : ''}
+          </div>
+        </div>
+
+        <div class="exam-nav">
+          <button class="btn-ghost" id="examPrev" type="button" ${qi===0?'disabled':''}>← Previous</button>
+          <button class="btn-ghost" id="examNext" type="button" ${qi===total-1?'disabled':''}>Next →</button>
+        </div>
+
+        <div class="exam-grid" role="group" aria-label="Jump to question">
+          ${att.picks.map((_,i)=>`
+            <button class="exam-cell ${i===qi?'current':''} ${att.answers[i]!==null?'done':''} ${flagged.has(i)?'flag':''}"
+              data-jump="${i}" type="button" aria-label="Question ${i+1}${att.answers[i]!==null?', answered':''}${flagged.has(i)?', flagged':''}">${i+1}</button>`).join('')}
+        </div>
+      </div>
+    </section>
+  `;
+
+  app.querySelectorAll('.quiz-opt').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      att.answers[qi] = parseInt(btn.getAttribute('data-oi'),10);
+      saveState();
+      paintExamPaper();
+    });
+  });
+  document.getElementById('examClearBtn')?.addEventListener('click', ()=>{
+    att.answers[qi] = null; saveState(); paintExamPaper();
+  });
+  document.getElementById('examFlagBtn')?.addEventListener('click', ()=>{
+    att.flags = att.flags || [];
+    const at = att.flags.indexOf(qi);
+    if(at >= 0) att.flags.splice(at,1); else att.flags.push(qi);
+    saveState(); paintExamPaper();
+  });
+  const go = i => { att.qi = i; saveState(); window.scrollTo(0,0); paintExamPaper(); };
+  document.getElementById('examPrev')?.addEventListener('click', ()=>go(qi-1));
+  document.getElementById('examNext')?.addEventListener('click', ()=>go(qi+1));
+  app.querySelectorAll('[data-jump]').forEach(b=>
+    b.addEventListener('click', ()=>go(parseInt(b.getAttribute('data-jump'),10))));
+
+  document.getElementById('examSubmitBtn')?.addEventListener('click', ()=>{
+    const left = total - att.answers.filter(a=>a!==null).length;
+    const msg = left
+      ? `${left} question${left===1?'':'s'} still unanswered. Submit anyway?`
+      : 'Submit your paper for marking?';
+    if(confirm(msg)) submitExam(false);
+  });
+
+  clearInterval(examTimer);
+  examTimer = setInterval(()=>{
+    const el = document.getElementById('examClock');
+    if(!el || !STATE.examInProgress){ clearInterval(examTimer); return; }
+    const ms = examRemainingMs(STATE.examInProgress);
+    el.textContent = fmtClock(ms);
+    el.classList.toggle('low', ms <= 5*60*1000);
+    if(ms <= 0){ clearInterval(examTimer); submitExam(true); }
+  }, 1000);
+}
+
+function submitExam(ranOut){
+  const att = STATE.examInProgress;
+  if(!att) return paintExamStart();
+  clearInterval(examTimer);
+  const preset = EXAM_PRESETS[att.preset] || EXAM_PRESETS.full;
+
+  const perPath = {};
+  let score = 0;
+  const detail = att.picks.map((pick,i)=>{
+    const q = examQuestion(pick);
+    const chosen = att.answers[i];
+    const correct = !!q && chosen === q.correct;
+    if(correct) score++;
+    const p = perPath[pick.pathId] || (perPath[pick.pathId] = {right:0, total:0});
+    p.total++; if(correct) p.right++;
+    // Feed wrong answers into the existing spaced-repetition queue so the
+    // exam strengthens the same review loop the quizzes already drive.
+    if(!correct && chosen !== null) recordMissedQuestion(pick.pathId, pick.index);
+    return {pathId:pick.pathId, index:pick.index, chosen, correct};
+  });
+
+  const total = att.picks.length;
+  const pct = total ? Math.round(score/total*100) : 0;
+  const attempt = {
+    preset: att.preset, score, total, pct,
+    passed: pct >= preset.passPct,
+    ranOut: !!ranOut,
+    ts: Date.now(),
+    durationMs: Date.now() - att.startedAt,
+    perPath, detail,
+  };
+  STATE.examAttempts = [...(STATE.examAttempts || []), attempt].slice(-30);
+  STATE.examInProgress = null;
+  saveState();
+  checkAchievements();
+  window.scrollTo(0,0);
+  paintExamResult(attempt);
+}
+
+function paintExamResult(a){
+  const preset = EXAM_PRESETS[a.preset] || EXAM_PRESETS.full;
+  // Weakest first — the point of a score report is where to go next, not
+  // the total.
+  const rows = Object.entries(a.perPath || {}).map(([pathId,v])=>{
+    const p = findPath(pathId);
+    return {pathId, n:p?p.n:'??', title:p?p.title:pathId, ...v, pct: Math.round(v.right/v.total*100)};
+  }).sort((x,y)=> x.pct - y.pct || y.total - x.total);
+  const weak = rows.filter(r=>r.pct < 70);
+  const missed = (a.detail||[]).filter(d=>!d.correct);
+
+  app.innerHTML = `
+    <section class="sec">
+      <div class="sec-eyebrow" data-reveal>Result</div>
+      <h2 class="sec-title" data-reveal style="--i:1">${a.pct}% — ${a.passed ? 'pass' : 'below the pass mark'}</h2>
+      <p class="sec-sub" data-reveal style="--i:2">
+        ${a.score} of ${a.total} correct on the ${preset.label}, pass mark ${preset.passPct}%.
+        Finished in ${Math.round(a.durationMs/60000)} min${a.ranOut ? ' — the clock ran out, unanswered questions were marked wrong.' : '.'}
+      </p>
+
+      <div class="exam-score ${a.passed?'pass':'fail'}" data-reveal style="--i:3">
+        <div class="exam-score-bar"><div class="exam-score-fill" style="width:${a.pct}%"></div>
+          <div class="exam-score-mark" style="left:${preset.passPct}%" title="Pass mark ${preset.passPct}%"></div></div>
+        <div class="exam-score-legend"><span>0%</span><span>Pass ${preset.passPct}%</span><span>100%</span></div>
+      </div>
+
+      <h3 class="exam-h3" data-reveal>By path</h3>
+      <div class="exam-history" data-reveal>
+        <table class="exam-table">
+          <thead><tr><th>Path</th><th>Score</th><th>Rate</th></tr></thead>
+          <tbody>
+            ${rows.map(r=>`
+              <tr>
+                <td><a href="#/lesson/${r.pathId}">Path ${r.n} — ${escapeHtml(r.title)}</a></td>
+                <td>${r.right}/${r.total}</td>
+                <td><span class="exam-rate ${r.pct>=70?'ok':'low'}">${r.pct}%</span></td>
+              </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+
+      ${weak.length ? `
+        <h3 class="exam-h3" data-reveal>Where to go next</h3>
+        <p class="sec-sub" data-reveal>Under 70% on ${weak.length} path${weak.length===1?'':'s'}. Start here:</p>
+        <div class="labs-grid" data-reveal>
+          ${weak.slice(0,6).map(r=>`
+            <a class="lab-card" href="#/lesson/${r.pathId}">
+              <div class="lab-title">Path ${r.n} — ${escapeHtml(r.title)}</div>
+              <p>Scored ${r.right}/${r.total} (${r.pct}%) on this path's questions.</p>
+            </a>`).join('')}
+        </div>` : `<p class="sec-sub" data-reveal>No path fell below 70% — solid across the board.</p>`}
+
+      ${missed.length ? `
+        <h3 class="exam-h3" data-reveal>Every question you missed (${missed.length})</h3>
+        <div class="exam-missed" data-reveal>
+          ${missed.map(d=>{
+            const q = examQuestion(d);
+            if(!q) return '';
+            const p = findPath(d.pathId);
+            return `<details class="exam-missed-item">
+              <summary>${escapeHtml(q.q)}</summary>
+              <div class="exam-missed-body">
+                <div class="exam-ans wrong"><b>You chose:</b> ${d.chosen===null ? '<em>left blank</em>' : escapeHtml(q.options[d.chosen])}</div>
+                <div class="exam-ans right"><b>Correct:</b> ${escapeHtml(q.options[q.correct])}</div>
+                <p>${escapeHtml(q.explain)}</p>
+                <a href="#/lesson/${d.pathId}">Revise Path ${p?p.n:''} — ${escapeHtml(p?p.title:d.pathId)} →</a>
+              </div>
+            </details>`;
+          }).join('')}
+        </div>
+        <p class="sec-sub" data-reveal>These have been added to your spaced-repetition queue — see <a href="#/quiz/missed">missed questions</a>.</p>` : ''}
+
+      <div class="exam-nav" data-reveal>
+        <button class="btn-amber" id="examAgainBtn" type="button">Sit another paper</button>
+        <a class="btn-ghost" href="#/progress">My progress</a>
+      </div>
+    </section>
+  `;
+  setupReveal();
+  document.getElementById('examAgainBtn')?.addEventListener('click', ()=>{
+    // The result view is rendered *at* #/exam, so linking to #/exam would
+    // be a no-op — same hash means no hashchange and no re-render. Repaint.
+    window.scrollTo(0,0);
+    paintExamStart();
+  });
+}
+
 function renderQuiz(id){
   const isFinal = id === 'final';
   const quiz = isFinal ? FINAL_QUIZ : QUIZZES[id];
@@ -8591,6 +9045,184 @@ function wrapText(ctx, text, x, y, maxWidth, lineHeight){
   return lines.length;
 }
 
+/* ---------- PDF documents ----------
+   Both builders assume KashPDF is loaded (ensurePdf). Colours are the
+   site's own tokens as RGB 0-1 triples, hard-coded rather than read from
+   CSS: the PDF must look the same whichever theme the reader happens to
+   have active, and a printed certificate on a dark background would be
+   both unreadable and a crime against toner. */
+const PDF_INK   = [0.09, 0.11, 0.16];
+const PDF_MUTED = [0.42, 0.46, 0.52];
+const PDF_AMBER = [0.84, 0.60, 0.18];
+const PDF_TEAL  = [0.05, 0.55, 0.50];
+const PDF_RULE  = [0.83, 0.85, 0.88];
+
+function buildCertificatePdf(name){
+  const doc = new KashPDF.Doc({size:'A4L'});   // landscape reads as a certificate
+  const W = doc.width(), H = doc.height();
+  const mid = W/2;
+
+  doc.rect(0, 0, W, 14, PDF_AMBER);
+  doc.rect(0, H-14, W, 14, PDF_TEAL);
+  doc.line(46, 46, W-46, 46, PDF_RULE, 1);
+  doc.line(46, H-46, W-46, H-46, PDF_RULE, 1);
+  doc.line(46, 46, 46, H-46, PDF_RULE, 1);
+  doc.line(W-46, 46, W-46, H-46, PDF_RULE, 1);
+
+  doc.text('KASHSEC ACADEMY', mid, 108, {size:11, bold:true, align:'center', color:PDF_TEAL});
+  doc.text('Certificate of Completion', mid, 158, {size:30, bold:true, align:'center', color:PDF_INK});
+  doc.line(mid-90, 176, mid+90, 176, PDF_AMBER, 2);
+
+  doc.text('This certifies that', mid, 216, {size:12, align:'center', color:PDF_MUTED});
+  doc.text(name || 'A KashSec learner', mid, 262, {size:26, bold:true, align:'center', color:PDF_INK});
+  doc.line(mid-190, 278, mid+190, 278, PDF_RULE, 1);
+
+  doc.paragraph(
+    `has completed the KashSec Academy cybersecurity course — ${PATHS.length} learning paths and ` +
+    `${totalSubLessons()} sub-lessons spanning networking, Linux, cryptography, web and network ` +
+    `security, cloud, malware analysis, and governance — and passed the final exam.`,
+    mid, 312, 600, {size:12, align:'center', color:PDF_MUTED, leading:19});
+
+  const done = Object.keys(STATE.completed || {}).length;
+  const labs = Object.keys(STATE.labsCompleted || {}).length;
+  const stats = [
+    [`${done}`, 'lessons completed'],
+    [`${PATHS.length}`, 'paths'],
+    [`${labs}`, 'labs solved'],
+  ];
+  stats.forEach((st, i) => {
+    const x = mid + (i - 1) * 150;
+    doc.text(st[0], x, 408, {size:22, bold:true, align:'center', color:PDF_AMBER});
+    doc.text(st[1], x, 426, {size:9, align:'center', color:PDF_MUTED});
+  });
+
+  const issued = new Date().toLocaleDateString(undefined,{day:'numeric',month:'long',year:'numeric'});
+  doc.text(`Issued ${issued}`, mid, H-96, {size:10, align:'center', color:PDF_MUTED});
+  doc.text('kashsec.vercel.app', mid, H-78, {size:10, bold:true, align:'center', color:PDF_TEAL});
+  // Said plainly on the artefact itself. A self-issued certificate that
+  // implies accreditation would be worse than no certificate at all.
+  doc.paragraph(
+    'This certificate records self-directed study on a free, open course. It is not an accredited ' +
+    'qualification and is not issued by an examining body.',
+    mid, H-58, 500, {size:7.5, align:'center', color:PDF_MUTED, leading:10});
+  return doc;
+}
+
+function buildTranscriptPdf(name){
+  const doc = new KashPDF.Doc({size:'A4'});
+  const W = doc.width(), H = doc.height();
+  const L = 52, R = W - 52;
+  const BOTTOM = H - 64;
+  let y = 0;
+  let page = 1;
+
+  function header(){
+    doc.rect(0, 0, W, 8, PDF_AMBER);
+    doc.text('KASHSEC ACADEMY', L, 52, {size:10, bold:true, color:PDF_TEAL});
+    doc.text('Learning transcript', L, 74, {size:19, bold:true, color:PDF_INK});
+    doc.line(L, 88, R, 88, PDF_RULE, 1);
+    y = 112;
+  }
+  function footer(){
+    doc.line(L, BOTTOM+14, R, BOTTOM+14, PDF_RULE, 0.6);
+    doc.text('kashsec.vercel.app', L, BOTTOM+30, {size:8, color:PDF_MUTED});
+    doc.text(`Page ${page}`, R, BOTTOM+30, {size:8, align:'right', color:PDF_MUTED});
+  }
+  // Reserve space before writing rather than discovering the overflow after
+  // — a row split across a page break is the classic bug here.
+  function room(need){
+    if(y + need <= BOTTOM) return;
+    footer();
+    doc.newPage(); page++;
+    header();
+  }
+
+  header();
+  if(name){
+    doc.text(name, L, y, {size:14, bold:true, color:PDF_INK}); y += 20;
+  }
+  doc.text(`Generated ${new Date().toLocaleDateString(undefined,{day:'numeric',month:'long',year:'numeric'})}`,
+    L, y, {size:9, color:PDF_MUTED}); y += 26;
+
+  const completed = STATE.completed || {};
+  const totalDone = Object.keys(completed).length;
+  const overall = Math.round(totalDone / Math.max(1, totalSubLessons()) * 100);
+  doc.text(`${totalDone} of ${totalSubLessons()} sub-lessons complete (${overall}%)`,
+    L, y, {size:11, bold:true, color:PDF_INK}); y += 24;
+
+  for(const p of PATHS){
+    const subs = p.subs.filter(s => completed[lessonKey(p.id, s.id)]);
+    if(!subs.length) continue;
+    room(46);
+    doc.text(`Path ${p.n} — ${p.title}`, L, y, {size:11.5, bold:true, color:PDF_INK});
+    doc.text(`${subs.length}/${p.subs.length}`, R, y, {size:10, align:'right', color:PDF_TEAL});
+    y += 6;
+    doc.line(L, y, R, y, PDF_RULE, 0.6);
+    y += 15;
+    for(const s of subs){
+      room(15);
+      const when = new Date(completed[lessonKey(p.id, s.id)])
+        .toLocaleDateString(undefined,{day:'2-digit',month:'short',year:'numeric'});
+      doc.text(`${p.n}.${s.n}  ${s.title}`, L + 8, y, {size:9.5, color:PDF_INK});
+      doc.text(when, R, y, {size:9, align:'right', color:PDF_MUTED});
+      y += 14;
+    }
+    y += 10;
+  }
+
+  const quizzes = Object.entries(STATE.quizScores || {});
+  if(quizzes.length){
+    room(50);
+    doc.text('Quiz results', L, y, {size:12, bold:true, color:PDF_INK}); y += 6;
+    doc.line(L, y, R, y, PDF_RULE, 0.6); y += 16;
+    for(const [pid, r] of quizzes){
+      room(15);
+      const p = findPath(pid);
+      doc.text(`Path ${p ? p.n : '??'} — ${p ? p.title : pid}`, L + 8, y, {size:9.5, color:PDF_INK});
+      doc.text(`${r.pct}%`, R, y, {size:9.5, bold:true, align:'right',
+        color: r.passed ? PDF_TEAL : PDF_MUTED});
+      y += 14;
+    }
+    y += 12;
+  }
+
+  const exams = (STATE.examAttempts || []).slice(-8).reverse();
+  if(exams.length){
+    room(50);
+    doc.text('Timed mock exams', L, y, {size:12, bold:true, color:PDF_INK}); y += 6;
+    doc.line(L, y, R, y, PDF_RULE, 0.6); y += 16;
+    for(const a of exams){
+      room(15);
+      const label = (typeof EXAM_PRESETS !== 'undefined' && EXAM_PRESETS[a.preset])
+        ? EXAM_PRESETS[a.preset].label : a.preset;
+      const when = new Date(a.ts).toLocaleDateString(undefined,{day:'2-digit',month:'short',year:'numeric'});
+      doc.text(`${label} — ${when}`, L + 8, y, {size:9.5, color:PDF_INK});
+      doc.text(`${a.pct}% (${a.score}/${a.total})`, R, y, {size:9.5, bold:true, align:'right',
+        color: a.passed ? PDF_TEAL : PDF_MUTED});
+      y += 14;
+    }
+    y += 12;
+  }
+
+  const labs = Object.keys(STATE.labsCompleted || {});
+  if(labs.length){
+    room(40);
+    doc.text(`Labs solved: ${labs.length}`, L, y, {size:12, bold:true, color:PDF_INK}); y += 6;
+    doc.line(L, y, R, y, PDF_RULE, 0.6); y += 16;
+    const names = labs.map(id => (LABS.find(l=>l.id===id)||{}).title).filter(Boolean);
+    y = doc.paragraph(names.join(' · '), L + 8, y, R - L - 8, {size:9.5, color:PDF_MUTED, leading:14});
+    y += 10;
+  }
+
+  room(40);
+  y = doc.paragraph(
+    'This transcript reflects self-directed progress recorded in the learner’s own browser on ' +
+    'KashSec Academy, a free and open course. It is not an accredited qualification.',
+    L, y + 6, R - L, {size:8, color:PDF_MUTED, leading:11});
+  footer();
+  return doc;
+}
+
 function renderCertificate(){
   const passed = !!(STATE.finalQuiz && STATE.finalQuiz.passed);
 
@@ -8651,7 +9283,7 @@ function paintCertOutput(name){
     </div>
     <div class="cert-actions" data-reveal style="--i:5">
       <button class="btn-amber" id="dlPngBtn" type="button">⬇ Download PNG</button>
-      <button class="btn-ghost" id="printBtn" type="button">🖨 Print / Save as PDF</button>
+      <button class="btn-ghost" id="pdfBtn" type="button"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-2px"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg> Download PDF</button>
       <button class="btn-ghost" id="linkedinBtn" type="button">Share on LinkedIn</button>
       <button class="btn-ghost" id="twitterBtn" type="button">Share on X</button>
       <button class="btn-ghost" id="copyCaptionBtn" type="button">Copy caption</button>
@@ -8668,15 +9300,29 @@ function paintCertOutput(name){
     a.click();
   });
 
-  document.getElementById('printBtn').addEventListener('click', ()=>{
-    let printArea = document.getElementById('certPrintArea');
-    if(!printArea){
-      printArea = document.createElement('div');
-      printArea.id = 'certPrintArea';
-      document.body.appendChild(printArea);
+  // A real generated PDF rather than window.print() on a canvas image.
+  // Printing produced whatever the browser's dialog felt like — margins,
+  // headers, scaling all differed per browser, and the result was a
+  // screenshot of a bitmap. This is vector text at any zoom.
+  document.getElementById('pdfBtn').addEventListener('click', async (e)=>{
+    const btn = e.currentTarget;
+    const label = btn.innerHTML;
+    btn.disabled = true; btn.textContent = 'Preparing…';
+    try{
+      await ensurePdf();
+      // Chromium silently falls back to "download" as the filename when the
+      // download attribute contains non-ASCII, so a name with an em dash or
+      // curly quotes would lose its filename entirely. Transliterate first.
+      const slug = (name || 'learner').normalize('NFKD')
+        .replace(/[\u0300-\u036f]/g,'')      // strip combining accents
+        .replace(/[^A-Za-z0-9]+/g,'-')
+        .replace(/^-+|-+$/g,'').toLowerCase() || 'learner';
+      buildCertificatePdf(name).save(`kashsec-certificate-${slug}.pdf`);
+    }catch(err){
+      alert('Could not build the PDF. The PNG download above still works.');
+    }finally{
+      btn.disabled = false; btn.innerHTML = label;
     }
-    printArea.innerHTML = `<img src="${canvas.toDataURL('image/png')}" alt="Certificate">`;
-    window.print();
   });
 
   document.getElementById('linkedinBtn').addEventListener('click', ()=>{
@@ -8981,7 +9627,20 @@ function renderTranscript(){
     saveState();
     document.getElementById('trNameLine').innerHTML = v ? `<b>Learner:</b> ${escapeHtml(v)}` : '';
   });
-  document.getElementById('printTranscriptBtn')?.addEventListener('click', ()=>window.print());
+  document.getElementById('printTranscriptBtn')?.addEventListener('click', async (e)=>{
+    const btn = e.currentTarget;
+    const label = btn.innerHTML;
+    btn.disabled = true; btn.textContent = 'Preparing…';
+    try{
+      await ensurePdf();
+      buildTranscriptPdf(document.getElementById('transcriptName')?.value.trim() || '')
+        .save('kashsec-transcript.pdf');
+    }catch(err){
+      window.print(); // last resort — better a print dialog than nothing
+    }finally{
+      btn.disabled = false; btn.innerHTML = label;
+    }
+  });
 }
 
 /* ============================================================
@@ -9483,7 +10142,19 @@ function buildSearchOverlay(){
   document.body.appendChild(searchOverlay);
   searchOverlay.addEventListener('click', (e)=>{ if(e.target === searchOverlay) closeSearch(); });
   const input = searchOverlay.querySelector('#searchInput');
-  input.addEventListener('input', ()=> runSearch(input.value));
+  input.addEventListener('input', ()=>{
+    const q = input.value;
+    runSearch(q);
+    // First real query is what triggers the body-text download, not opening
+    // the overlay. Two characters is where body matching starts anyway.
+    if(q.trim().length >= 2){
+      loadSearchBodies(()=>{
+        if(searchOverlay && searchOverlay.classList.contains('open') && input.value.trim()){
+          runSearch(input.value);
+        }
+      });
+    }
+  });
   input.addEventListener('keydown', (e)=>{
     if(e.key === 'Escape') closeSearch();
     else if(e.key === 'ArrowDown'){ e.preventDefault(); moveSearchSelection(1); }
@@ -9544,6 +10215,90 @@ function getCommands(){
   return nav.concat(tools, labs, actions).map(c=>({...c, type:'command'}));
 }
 
+/* ---------- Search results page (#/search?q=…) ----------
+   Search was a modal only, which meant a result set could not be linked,
+   bookmarked, shared or reopened — and left the site with no search URL to
+   put behind schema.org's SearchAction. This is the same matcher rendered
+   as a page. */
+function renderSearchPage(rawQuery){
+  const q = (rawQuery || '').trim();
+  document.title = q ? `${q} — search · KashSec Academy` : 'Search · KashSec Academy';
+
+  function paint(){
+    const bodies = searchBodies();
+    const results = q ? searchAll(q) : [];
+    app.innerHTML = `
+      <section class="sec">
+        <div class="sec-eyebrow" data-reveal>Search</div>
+        <h2 class="sec-title" data-reveal style="--i:1">${q ? `Results for “${escapeHtml(q)}”` : 'Search the course'}</h2>
+        <form class="searchpage-form" id="searchPageForm" data-reveal style="--i:2" role="search">
+          <input class="searchpage-input" id="searchPageInput" type="search" name="q"
+            value="${escapeHtml(q)}" placeholder="Search ${totalSubLessons()} lessons, tools and labs…"
+            autocomplete="off" spellcheck="false" aria-label="Search the course">
+          <button class="btn-amber" type="submit">Search</button>
+        </form>
+        ${!q ? `<p class="sec-sub" data-reveal>Type above, or press <kbd>Ctrl</kbd>+<kbd>K</kbd> anywhere on the site.</p>` : `
+          <p class="sec-sub" data-reveal>
+            ${results.length ? `${results.length} result${results.length===1?'':'s'}` : 'No matches'}
+            ${!bodies ? ' · still loading lesson text…' : ''}
+          </p>
+          <div class="searchpage-results" data-reveal>
+            ${results.length ? results.map(r=>`
+              <a class="searchpage-hit" href="${r.url}">
+                <div class="sr-path">${escapeHtml(r.context || '')}${r._body ? ' · in lesson text' : ''}</div>
+                <div class="sr-title">${highlightMatch(r.title, q)}</div>
+                <div class="sr-desc">${highlightMatch(r.desc || '', q)}</div>
+              </a>`).join('')
+            : `<p class="search-empty">Nothing matched “${escapeHtml(q)}”. Try a shorter or more general term.</p>`}
+          </div>`}
+      </section>
+    `;
+    setupReveal();
+    const form = document.getElementById('searchPageForm');
+    form?.addEventListener('submit', e=>{
+      e.preventDefault();
+      const v = document.getElementById('searchPageInput').value.trim();
+      // Changing the hash re-enters the router, which repaints this page.
+      location.hash = v ? `#/search?q=${encodeURIComponent(v)}` : '#/search';
+    });
+  }
+
+  paint();
+  if(q.length >= 2) loadSearchBodies(()=>{ if(location.hash.startsWith('#/search')) paint(); });
+}
+
+/* The matcher behind both the overlay and the page. Extracted so the two
+   can never drift apart. */
+function searchAll(q){
+  const ql = q.trim().toLowerCase();
+  if(!ql) return [];
+  const titleHits = SEARCH_INDEX
+    .map(item=>{
+      const t = item.title.toLowerCase(), d = item.desc.toLowerCase();
+      let score = -1;
+      if(t.startsWith(ql)) score = 100;
+      else if(t.includes(ql)) score = 70;
+      else if(d.includes(ql)) score = 30;
+      return {...item, score};
+    })
+    .filter(item=>item.score > -1);
+  const matchedUrls = new Set(titleHits.map(r=>r.url));
+  const bodyHits = [];
+  const bodies = searchBodies();
+  if(bodies && ql.length >= 2){
+    for(const c of bodies){
+      const url = `#/lesson/${c.p}/${c.s}`;
+      if(matchedUrls.has(url)) continue;
+      const idx = c.b.toLowerCase().indexOf(ql);
+      if(idx === -1) continue;
+      const from = Math.max(0, idx - 40);
+      const snippet = (from>0?'…':'') + c.b.slice(from, idx + ql.length + 90) + '…';
+      bodyHits.push({type:'lesson', title:c.t, desc:snippet, url, context:`${c.n} · ${c.pt}`, score:15, _body:true});
+    }
+  }
+  return titleHits.concat(bodyHits).sort((a,b)=>b.score-a.score).slice(0,60);
+}
+
 function runSearch(q){
   const resultsEl = document.getElementById('searchResults');
   q = q.trim();
@@ -9576,8 +10331,9 @@ function runSearch(q){
   let bodyHits = [];
   // Full-text body matches, if the content index has loaded. Only add lessons
   // not already matched by title/desc, and attach a snippet around the hit.
-  if(typeof SEARCH_CONTENT !== 'undefined' && ql.length >= 2){
-    for(const c of SEARCH_CONTENT){
+  const bodies = searchBodies();
+  if(bodies && ql.length >= 2){
+    for(const c of bodies){
       const url = `#/lesson/${c.p}/${c.s}`;
       if(matchedUrls.has(url)) continue;
       const idx = c.b.toLowerCase().indexOf(ql);
@@ -9594,7 +10350,7 @@ function runSearch(q){
 
   searchActiveIndex = searchCurrentResults.length ? 0 : -1;
   if(!searchCurrentResults.length){
-    const loading = (typeof SEARCH_CONTENT === 'undefined');
+    const loading = !searchBodies();
     resultsEl.innerHTML = `<div class="search-empty">Nothing matched "${escapeHtml(q)}".${loading?' Searching lesson text…':''}</div>`;
     return;
   }
@@ -9652,11 +10408,22 @@ function openSearch(){
   input.value = '';
   runSearch('');
   setTimeout(()=>input.focus(), 30);
-  // Pull in the full-text index in the background; re-run once it lands so
-  // body matches appear without the user retyping.
-  ensureSearchContent().then(()=>{
-    if(overlay.classList.contains('open') && input.value.trim()) runSearch(input.value);
-  }).catch(()=>{});
+  // Deliberately no fetch here — opening the overlay costs nothing now.
+  // loadSearchBodies() is called from the input handler on the first real
+  // keystroke instead.
+}
+
+/* Called on the first keystroke of a real query. Loads the preview tier,
+   re-runs the query so results appear immediately, then pulls the full
+   index in behind it and re-runs once more. */
+let searchBodiesKicked = false;
+function loadSearchBodies(rerun){
+  if(searchBodiesKicked) return;
+  searchBodiesKicked = true;
+  ensureSearchPreview()
+    .then(()=>{ rerun(); return ensureSearchContent(); })
+    .then(()=>rerun())
+    .catch(()=>{ searchBodiesKicked = false; });
 }
 function closeSearch(){
   searchOverlay?.classList.remove('open');

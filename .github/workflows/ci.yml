@@ -71,3 +71,17 @@ jobs:
         run: npm run test:ui
         env:
           BASE: http://127.0.0.1:8000
+
+      # Nothing graded before submit, a paper that survives a refresh, an
+      # expired clock that submits rather than resumes.
+      - name: Timed mock exam
+        run: npm run test:exam
+        env:
+          BASE: http://127.0.0.1:8000
+
+      # Chiefly guards what must NOT download: opening search should cost
+      # nothing until a query is typed.
+      - name: Search (two-tier index + linkable results)
+        run: npm run test:search
+        env:
+          BASE: http://127.0.0.1:8000

@@ -12,12 +12,14 @@
     "build:search": "node generate-search-index.js",
     "build:feed": "node generate-feed.js",
     "build:prerender": "node generate-prerender.js",
-    "test": "node tests/data-integrity.test.js && npm run test:smoke && npm run test:cdn && npm run test:ui",
+    "test": "node tests/data-integrity.test.js && npm run test:smoke && npm run test:cdn && npm run test:ui && npm run test:exam && npm run test:search",
     "build:hashes": "node generate-lesson-hashes.js",
     "test:data": "node tests/data-integrity.test.js",
     "test:smoke": "node tests/smoke.spec.js",
     "test:cdn": "node tests/cdn-resilience.spec.js",
-    "test:ui": "node tests/ui-quality.spec.js"
+    "test:ui": "node tests/ui-quality.spec.js",
+    "test:exam": "node tests/exam.spec.js",
+    "test:search": "node tests/search.spec.js"
   },
   "repository": {
     "type": "git",
