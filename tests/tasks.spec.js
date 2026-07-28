@@ -77,6 +77,63 @@ t('no explanation ships in clear text', explainLeaks.length === 0, explainLeaks.
 t('tasks file does ship hashes and ciphertext',
   /"h":\[/.test(shipped) && /"e":\[/.test(shipped));
 
+/* ---- every authored answer must actually verify ----
+   The content is hand-written, so the realistic failure is an answer that
+   does not match its own hash: a typo, or a normalisation mismatch between
+   the generator and the browser. Checking a sample would miss exactly the
+   one that is broken, so every task is round-tripped here — hashed in the
+   browser, matched, and its explanation decrypted.
+
+   This reads tasks-source.js, which is the answer key and never ships. */
+const { TASK_SOURCE } = await import('../tasks-source.js');
+const roundTrip = await p.evaluate(async ({ tasks, source }) => {
+  const normalise = s => String(s).toLowerCase().trim().replace(/\s+/g, ' ').replace(/\.$/, '');
+  const normaliseNumber = s => {
+    const n = Number(String(s).replace(/[, ]/g, ''));
+    return Number.isFinite(n) ? String(n) : normalise(s);
+  };
+  const enc = new TextEncoder();
+  const sha = async str => {
+    const b = await crypto.subtle.digest('SHA-256', enc.encode(str));
+    return [...new Uint8Array(b)].map(x => x.toString(16).padStart(2, '0')).join('');
+  };
+  const decrypt = async (b64, norm) => {
+    const raw = Uint8Array.from(atob(b64), c => c.charCodeAt(0));
+    const kb = await crypto.subtle.digest('SHA-256', enc.encode(norm));
+    const key = await crypto.subtle.importKey('raw', kb, 'AES-GCM', false, ['decrypt']);
+    const pt = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: raw.slice(0, 12) }, key, raw.slice(12));
+    return new TextDecoder().decode(pt);
+  };
+  const fails = [];
+  let checked = 0;
+  for (const src of source) {
+    const task = tasks.find(t => t.id === src.id);
+    if (!task) { fails.push(`${src.id}: not in shipped file`); continue; }
+    const answers = Array.isArray(src.answer) ? src.answer : [src.answer];
+    for (const a of answers) {
+      const norm = task.match === 'number' ? normaliseNumber(a) : normalise(a);
+      const idx = task.h.indexOf(await sha(norm));
+      if (idx === -1) { fails.push(`${src.id}: "${a}" does not verify`); continue; }
+      try {
+        const text = await decrypt(task.e[idx], norm);
+        if (text !== src.explain) fails.push(`${src.id}: "${a}" decrypted the wrong text`);
+      } catch (e) { fails.push(`${src.id}: "${a}" failed to decrypt`); }
+      checked++;
+    }
+  }
+  return { checked, fails };
+}, { tasks: shippedTasks, source: TASK_SOURCE.map(t => ({ id: t.id, answer: t.answer, explain: t.explain })) });
+
+t(`every authored answer verifies and decrypts (${roundTrip.checked} answer variants)`,
+  roundTrip.fails.length === 0,
+  roundTrip.fails.slice(0, 6).join('; '));
+
+/* Every path should offer real practice, not one token task. */
+const perPath = {};
+shippedTasks.forEach(x => { perPath[x.path] = (perPath[x.path] || 0) + 1; });
+const thin = Object.entries(perPath).filter(([, n]) => n < 4).map(([k, n]) => `${k}=${n}`);
+t('every path with tasks has at least 4', thin.length === 0, thin.join(', '));
+
 /* ---- solving ---- */
 async function answer(taskId, text) {
   const card = p.locator(`.task-card[data-task="${taskId}"]`);

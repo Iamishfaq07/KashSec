@@ -6088,6 +6088,12 @@ function renderLabLeakedSecret(){
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
+  {date:'2026-07-28', title:'Practice tasks tripled — 104 tasks, every path at least four', items:[
+    'The task engine shipped with 36 tasks, which worked out at one or two per path where the platforms this is measured against run five to fifteen per unit. Now 104, and no path has fewer than four.',
+    'The new batch leans harder on work than recall: read this code and say what it prints, convert this subnet mask to CIDR, name the flaw in this endpoint, identify a file from its first four bytes, decide whether an unguessable ID actually fixes an authorisation bug. Several deliberately have an uncomfortable answer — no, a UUID is not a fix; no, you should not keep testing an out-of-scope host.',
+    'Every one of the 261 accepted answer variants is now round-tripped in a real browser on each test run: hashed, matched against the shipped hash, and used to decrypt its own explanation. Hand-written content fails through typos and normalisation mismatches, and checking a sample would miss precisely the broken one.',
+    'The build refuses to ship a hint that gives its own answer away, and caught three of mine while this batch was being written.'
+  ]},
   {date:'2026-07-28', title:'Practice tasks — type the answer, not pick it', items:[
     'Every serious security platform is built on the same loop: read, go and do something, type the answer you found, have it checked. TryHackMe rooms, Hack The Box skill assessments and PentesterLab exercises all work this way. This site had quizzes, where you recognise the right option, and labs, where you press buttons in a simulation — but nothing that made you produce an answer. Recognition is a much weaker signal than recall, and it is the difference between "I have seen this" and "I can do this". Practice tasks (#/tasks) close that gap.',
     'Tasks are typed-answer, not multiple choice, and they favour doing over defining: compute the usable hosts in a /26, write the find command that lists SUID binaries, read a phishing URL and say where it really goes, build a CVSS vector from a described flaw, decode a Base64 flag.',
