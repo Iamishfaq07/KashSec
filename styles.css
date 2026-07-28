@@ -1509,3 +1509,55 @@ mark{background:rgba(239,164,58,.35);color:inherit;border-radius:3px;padding:0 1
 .searchpage-hit .sr-title{font-weight:600;font-size:1rem;margin-bottom:.22rem}
 .searchpage-hit .sr-desc{color:var(--muted);font-size:.87rem;line-height:1.5}
 @media(prefers-reduced-motion:reduce){.searchpage-hit:hover{transform:none}}
+
+/* ---------- Practice tasks ---------- */
+.task-list{display:flex;flex-direction:column;gap:.9rem;margin-top:1.4rem}
+.task-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);
+  padding:1.1rem 1.25rem;transition:border-color var(--dur-2) var(--ease)}
+.task-card.is-solved{border-color:rgba(63,182,168,.45)}
+.task-head{display:flex;align-items:center;gap:.6rem;margin-bottom:.6rem}
+.task-n{font-family:'JetBrains Mono';font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--amber)}
+.task-pts{font-family:'JetBrains Mono';font-size:.68rem;color:var(--muted2);
+  border:1px solid var(--border);border-radius:999px;padding:.1rem .45rem}
+.task-tick{margin-left:auto;color:var(--teal-2);display:flex}
+.task-q{font-size:.97rem;line-height:1.6;margin-bottom:.9rem;white-space:normal}
+.task-form{display:flex;gap:.5rem;flex-wrap:wrap}
+.task-input{flex:1;min-width:min(240px,100%);background:var(--surface2);color:var(--text);
+  border:1px solid var(--border-strong);border-radius:9px;padding:.55rem .8rem;
+  font-family:'JetBrains Mono';font-size:.9rem;
+  transition:border-color var(--dur-1) var(--ease),box-shadow var(--dur-1) var(--ease)}
+.task-input:focus{outline:none;border-color:var(--amber);box-shadow:0 0 0 3px rgba(239,164,58,.18)}
+.task-input:disabled{opacity:.6}
+.task-feedback{min-height:1.2rem;font-size:.85rem;margin-top:.5rem;color:var(--muted)}
+.task-feedback.ok{color:var(--teal-2);font-weight:600}
+.task-feedback.bad{color:#E0734F}
+.task-hint{margin-top:.5rem;font-size:.85rem;color:var(--muted)}
+.task-hint>summary{cursor:pointer;color:var(--teal-2);font-weight:600}
+.task-hint p{margin:.45rem 0 0}
+/* The explanation only exists once decrypted, so it is genuinely absent
+   from the DOM until the answer is right — not merely hidden with CSS. */
+.task-explain{margin-top:.8rem;padding:.75rem .9rem;border-radius:10px;
+  background:var(--overlay-1);border:1px solid rgba(63,182,168,.28);
+  font-size:.88rem;line-height:1.6;color:var(--muted);white-space:pre-wrap}
+.task-explain[hidden]{display:none}
+
+.task-pathnav{display:flex;flex-wrap:wrap;gap:.5rem;margin:1.2rem 0}
+.task-pathchip{text-decoration:none;font-size:.8rem;color:var(--muted);
+  background:var(--surface2);border:1px solid var(--border);border-radius:999px;padding:.35rem .7rem;
+  transition:border-color var(--dur-1) var(--ease),color var(--dur-1) var(--ease)}
+.task-pathchip:hover{color:var(--text);border-color:var(--border-strong)}
+.task-pathchip b{font-family:'JetBrains Mono';font-size:.72rem;color:var(--amber);margin-left:.3rem}
+.task-pathchip.done{border-color:rgba(63,182,168,.5)}
+.task-pathchip.done b{color:var(--teal-2)}
+
+/* ---------- Rank ---------- */
+.rank-bar{display:flex;gap:1.2rem;align-items:center;flex-wrap:wrap;
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:1rem 1.2rem;margin:1.2rem 0}
+.rank-l{min-width:11rem}
+.rank-name{font-family:'Space Grotesk';font-weight:700;font-size:1.3rem;color:var(--amber)}
+.rank-score{font-size:.8rem;color:var(--muted)}
+.rank-r{flex:1;min-width:min(220px,100%)}
+.rank-track{height:8px;border-radius:999px;background:var(--surface2);border:1px solid var(--border);overflow:hidden}
+.rank-fill{height:100%;background:var(--grad-brand);transition:width var(--dur-3) var(--ease)}
+.rank-next{font-family:'JetBrains Mono';font-size:.7rem;color:var(--muted2);margin-top:.35rem}
+@media(prefers-reduced-motion:reduce){.rank-fill{transition:none}}

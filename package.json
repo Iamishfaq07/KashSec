@@ -6,13 +6,13 @@
   "type": "module",
   "scripts": {
     "dev": "python3 -m http.server 8000",
-    "build": "node generate-glossary.js && node generate-search-index.js && node generate-lesson-hashes.js && node generate-feed.js && node generate-og-image.js && node generate-prerender.js && node generate-sw.js",
+    "build": "node generate-glossary.js && node generate-search-index.js && node generate-lesson-hashes.js && node generate-tasks.js && node generate-feed.js && node generate-og-image.js && node generate-prerender.js && node generate-sw.js",
     "build:sw": "node generate-sw.js",
     "build:glossary": "node generate-glossary.js",
     "build:search": "node generate-search-index.js",
     "build:feed": "node generate-feed.js",
     "build:prerender": "node generate-prerender.js",
-    "test": "node tests/data-integrity.test.js && npm run test:smoke && npm run test:cdn && npm run test:ui && npm run test:exam && npm run test:search",
+    "test": "node tests/data-integrity.test.js && npm run test:smoke && npm run test:cdn && npm run test:ui && npm run test:exam && npm run test:search && npm run test:tasks",
     "build:hashes": "node generate-lesson-hashes.js",
     "test:data": "node tests/data-integrity.test.js",
     "test:smoke": "node tests/smoke.spec.js",
@@ -20,7 +20,9 @@
     "test:ui": "node tests/ui-quality.spec.js",
     "test:exam": "node tests/exam.spec.js",
     "test:search": "node tests/search.spec.js",
-    "build:og": "node generate-og-image.js"
+    "build:og": "node generate-og-image.js",
+    "build:tasks": "node generate-tasks.js",
+    "test:tasks": "node tests/tasks.spec.js"
   },
   "repository": {
     "type": "git",

@@ -305,6 +305,8 @@ function defaultState(){
     // and the graded history behind it.
     examInProgress:null,
     examAttempts:[],
+    // Practice tasks solved: { taskId: {ts, tries, usedHint} }
+    tasksSolved:{},
     readHashes:{} // { "pathId/subId": contentHash at time of completion }
   };
 }
@@ -1679,6 +1681,8 @@ function route(){
     }
     renderSearchPage(q);
   }
+  else if(hash === '#/tasks') renderTasksPage(null);
+  else if(hash.startsWith('#/tasks/')) renderTasksPage(hash.slice(8));
   else if(hash === '#/exam') renderExam();
   else if(hash === '#/quiz/final') renderQuiz('final');
   else if(hash === '#/quiz/shuffle') renderShuffleQuiz();
@@ -6084,6 +6088,14 @@ function renderLabLeakedSecret(){
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
+  {date:'2026-07-28', title:'Practice tasks — type the answer, not pick it', items:[
+    'Every serious security platform is built on the same loop: read, go and do something, type the answer you found, have it checked. TryHackMe rooms, Hack The Box skill assessments and PentesterLab exercises all work this way. This site had quizzes, where you recognise the right option, and labs, where you press buttons in a simulation — but nothing that made you produce an answer. Recognition is a much weaker signal than recall, and it is the difference between "I have seen this" and "I can do this". Practice tasks (#/tasks) close that gap.',
+    'Tasks are typed-answer, not multiple choice, and they favour doing over defining: compute the usable hosts in a /26, write the find command that lists SUID binaries, read a phishing URL and say where it really goes, build a CVSS vector from a described flaw, decode a Base64 flag.',
+    'The answers are not in the page. Only SHA-256 hashes ship, and — this is the part that actually matters — each explanation is encrypted with AES-GCM under a key derived from its own answer. Hashing the answer field alone would have been theatre, because a good explanation usually restates the answer and has to ship too. As it stands the explanation cannot be read out of the file without already knowing the answer, which also means explanations can be written properly instead of contorted to avoid naming the answer.',
+    'Answers are matched forgivingly where that is fair — case, surrounding spaces, a trailing full stop and number formatting are all ignored, and a task can accept several equivalent answers — but never so loosely that a wrong answer passes.',
+    'New rank ladder from Newcomer to Elite, drawn from everything you do: lessons read, labs solved, tasks answered, quizzes and mock exams passed. It shows on the tasks page and in your progress hub.',
+    'Nineteen new automated checks, most of them negative: that a wrong answer is refused, that it reveals nothing, and that no answer is recoverable from anything the browser downloads.'
+  ]},
   {date:'2026-07-28', title:'The share image was three expansions out of date', items:[
     'og-image.png — the card shown on every Reddit post, LinkedIn share, Twitter card, Discord embed and Slack unfurl — still advertised "23 paths · 226+ lessons" while the course had grown to 26 paths and 485 lessons. It is the first thing anyone ever sees of this site, and it was understating it by more than half, silently, because a PNG is invisible to every other check in the repo.',
     'It is now generated at build time from the same arrays the site renders from, so it cannot drift again, and the numbers baked into it are written alongside it so a test fails the moment they disagree with reality. Verified by reintroducing the exact stale counts and watching the check fire.',
@@ -8213,6 +8225,298 @@ function renderShuffleQuiz(){
 }
 
 /* ==========================================================================
+   Practice tasks (#/tasks)
+
+   The core loop every serious security platform is built on — TryHackMe
+   rooms, HTB Academy skill assessments, PentesterLab exercises — is: read,
+   go and do something, type the answer you found, have it verified. This
+   site had quizzes (recognise the right option) and labs (press buttons in
+   a simulation), but nothing that made you produce an answer. Recognition
+   is a much weaker signal than recall, and it is the difference between
+   "I've seen this" and "I can do this".
+
+   Answers are never in the page. tasks.js ships SHA-256 hashes, and each
+   explanation is AES-GCM encrypted under a key derived from its own answer,
+   so the explanation cannot be read out of the file without already knowing
+   the answer (see generate-tasks.js for why hashing alone was not enough).
+   ========================================================================== */
+
+let tasksPromise = null;
+function ensureTasks(){
+  if(typeof TASKS !== 'undefined') return Promise.resolve();
+  if(tasksPromise) return tasksPromise;
+  tasksPromise = withTimeout(loadScript('tasks.js'), 12000, 'Loading practice tasks')
+    .catch(err=>{ tasksPromise = null; throw err; });
+  return tasksPromise;
+}
+
+/* MUST stay byte-identical to normalise() in generate-tasks.js, or a
+   correct answer hashes differently here and never verifies. */
+function normaliseAnswer(s){
+  return String(s).toLowerCase().trim().replace(/\s+/g,' ').replace(/\.$/,'');
+}
+function normaliseNumberAnswer(s){
+  const n = Number(String(s).replace(/[, ]/g,''));
+  return Number.isFinite(n) ? String(n) : normaliseAnswer(s);
+}
+const taskNormalise = (task, typed) =>
+  task.match === 'number' ? normaliseNumberAnswer(typed) : normaliseAnswer(typed);
+
+async function taskHash(str){
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return [...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+
+/* Returns the index of the accepted answer variant, or -1.
+   'contains' is checked by hashing successive windows of the typed string,
+   so a command typed in full still matches a task that only requires the
+   significant fragment — without the fragment ever appearing in the file. */
+async function taskCheck(task, typed){
+  const norm = taskNormalise(task, typed);
+  if(!norm) return {idx:-1, norm};
+  const direct = task.h.indexOf(await taskHash(norm));
+  if(direct !== -1) return {idx:direct, norm};
+
+  if(task.match === 'contains'){
+    // Bounded: only windows up to 60 chars, over a trimmed input, so a
+    // pasted essay cannot turn this into thousands of digests.
+    const s = norm.slice(0, 200);
+    for(let len = Math.min(60, s.length); len >= 2; len--){
+      for(let i = 0; i + len <= s.length; i++){
+        const idx = task.h.indexOf(await taskHash(s.slice(i, i+len)));
+        if(idx !== -1) return {idx, norm: s.slice(i, i+len)};
+      }
+    }
+  }
+  return {idx:-1, norm};
+}
+
+async function taskExplain(task, idx, norm){
+  const raw = Uint8Array.from(atob(task.e[idx]), c=>c.charCodeAt(0));
+  const keyBytes = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(norm));
+  const key = await crypto.subtle.importKey('raw', keyBytes, 'AES-GCM', false, ['decrypt']);
+  const pt = await crypto.subtle.decrypt({name:'AES-GCM', iv: raw.slice(0,12)}, key, raw.slice(12));
+  return new TextDecoder().decode(pt);
+}
+
+function taskSolved(id){ return !!(STATE.tasksSolved && STATE.tasksSolved[id]); }
+function taskPoints(){
+  if(typeof TASKS === 'undefined') return {solved:0, total:0, points:0, totalPoints:0};
+  const solved = TASKS.filter(t=>taskSolved(t.id));
+  return {
+    solved: solved.length, total: TASKS.length,
+    points: solved.reduce((n,t)=>n+t.points,0),
+    totalPoints: TASKS.reduce((n,t)=>n+t.points,0),
+  };
+}
+
+function recordTaskSolved(task, tries, usedHint){
+  if(!STATE.tasksSolved) STATE.tasksSolved = {};
+  if(STATE.tasksSolved[task.id]) return false;   // never re-award
+  STATE.tasksSolved[task.id] = {ts:Date.now(), tries, usedHint:!!usedHint};
+  saveState();
+  checkAchievements();
+  return true;
+}
+
+/* ---------- rank ladder ----------
+   Modelled on TryHackMe's rank progression: one number that moves as you
+   do anything, so there is always a next thing to reach. Deliberately
+   coarse — thresholds far apart enough that a rank means something. */
+const RANKS = [
+  {min:0,    name:'Newcomer'},
+  {min:60,   name:'Apprentice'},
+  {min:180,  name:'Analyst'},
+  {min:400,  name:'Practitioner'},
+  {min:750,  name:'Operator'},
+  {min:1200, name:'Specialist'},
+  {min:1800, name:'Expert'},
+  {min:2600, name:'Elite'},
+];
+
+/* Every kind of work counts, weighted by roughly how much effort it is:
+   reading a lesson is 2, a lab is its own points, a task is its own, a
+   passed quiz is 15, a passed mock exam is 50. */
+function totalScore(){
+  const lessons = Object.keys(STATE.completed || {}).length * 2;
+  const labs = labScoreboard().points;
+  const tasks = taskPoints().points;
+  const quizzes = Object.values(STATE.quizScores || {}).filter(q=>q.passed).length * 15;
+  const exams = (STATE.examAttempts || []).filter(a=>a.passed).length * 50;
+  return lessons + labs + tasks + quizzes + exams;
+}
+
+function rankFor(score){
+  let cur = RANKS[0], next = null;
+  for(let i=0;i<RANKS.length;i++){
+    if(score >= RANKS[i].min){ cur = RANKS[i]; next = RANKS[i+1] || null; }
+  }
+  const span = next ? next.min - cur.min : 1;
+  const into = next ? score - cur.min : 1;
+  return {
+    name: cur.name, min: cur.min, next,
+    pct: next ? Math.min(100, Math.round(into / span * 100)) : 100,
+    toNext: next ? next.min - score : 0,
+  };
+}
+
+/* ---------- task card ----------
+   Rendered both inside a lesson-path page and on the tasks page. Returns
+   markup; wireTaskCards() attaches behaviour to whatever is on the page. */
+function taskCardHTML(task, i){
+  const done = taskSolved(task.id);
+  return `
+    <div class="task-card ${done?'is-solved':''}" data-task="${task.id}" data-reveal style="--i:${i%4}">
+      <div class="task-head">
+        <span class="task-n">Task ${i+1}</span>
+        <span class="task-pts">${task.points} pt${task.points===1?'':'s'}</span>
+        ${done ? `<span class="task-tick" aria-label="Solved">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.6"
+            stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>` : ''}
+      </div>
+      <div class="task-q">${escapeHtml(task.q).replace(/\n/g,'<br>')}</div>
+      <form class="task-form" autocomplete="off">
+        <input class="task-input" type="text" placeholder="${done?'Solved':'Your answer'}"
+          aria-label="Answer for task ${i+1}" ${done?'disabled':''}>
+        <button class="btn-amber sm" type="submit" ${done?'disabled':''}>${done?'Solved':'Submit'}</button>
+      </form>
+      <div class="task-feedback" role="status" aria-live="polite"></div>
+      ${task.hint ? `<details class="task-hint"><summary>Need a hint?</summary><p>${escapeHtml(task.hint)}</p></details>` : ''}
+      <div class="task-explain" hidden></div>
+    </div>`;
+}
+
+function wireTaskCards(root, onSolved){
+  (root || app).querySelectorAll('.task-card').forEach(card=>{
+    const id = card.getAttribute('data-task');
+    const task = (typeof TASKS !== 'undefined') ? TASKS.find(t=>t.id===id) : null;
+    if(!task) return;
+    const form = card.querySelector('.task-form');
+    const input = card.querySelector('.task-input');
+    const fb = card.querySelector('.task-feedback');
+    const explainEl = card.querySelector('.task-explain');
+    let tries = 0;
+
+    // Already solved on a previous visit — offer the explanation back, but
+    // only by re-deriving it from an answer, so nothing is cached in clear.
+    if(taskSolved(id)){
+      fb.className = 'task-feedback ok';
+      fb.textContent = 'Solved.';
+    }
+
+    form?.addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      const typed = input.value;
+      if(!typed.trim()) return;
+      tries++;
+      fb.className = 'task-feedback';
+      fb.textContent = 'Checking…';
+      try{
+        const {idx, norm} = await taskCheck(task, typed);
+        if(idx === -1){
+          fb.className = 'task-feedback bad';
+          fb.textContent = tries >= 3 && task.hint
+            ? 'Not quite — the hint below may help.'
+            : 'Not quite. Try again.';
+          input.select();
+          return;
+        }
+        const usedHint = card.querySelector('.task-hint')?.open;
+        const first = recordTaskSolved(task, tries, usedHint);
+        card.classList.add('is-solved');
+        input.disabled = true;
+        form.querySelector('button').disabled = true;
+        form.querySelector('button').textContent = 'Solved';
+        fb.className = 'task-feedback ok';
+        fb.textContent = first ? `Correct — +${task.points} pts` : 'Correct.';
+        const text = await taskExplain(task, idx, norm);
+        explainEl.hidden = false;
+        explainEl.textContent = text;
+        if(first && typeof onSolved === 'function') onSolved();
+      }catch(err){
+        fb.className = 'task-feedback bad';
+        // crypto.subtle is unavailable outside a secure context, which is
+        // the only realistic way this path is reached.
+        fb.textContent = window.isSecureContext
+          ? 'Could not check that answer. Please try again.'
+          : 'Answer checking needs a secure (https) connection.';
+      }
+    });
+  });
+}
+
+function renderTasksPage(pathId){
+  const paint = ()=>{
+    if(typeof TASKS === 'undefined'){
+      app.innerHTML = `<section class="sec"><div class="loading">Loading practice tasks…</div></section>`;
+      return;
+    }
+    const path = pathId ? findPath(pathId) : null;
+    const list = pathId ? TASKS.filter(t=>t.path===pathId) : TASKS;
+    const tp = taskPoints();
+    const score = totalScore();
+    const rank = rankFor(score);
+
+    const byPath = {};
+    TASKS.forEach(t=>{ (byPath[t.path] = byPath[t.path] || []).push(t); });
+
+    app.innerHTML = `
+      <section class="sec">
+        <div class="sec-eyebrow" data-reveal>Practice</div>
+        <h2 class="sec-title" data-reveal style="--i:1">${path ? `Tasks — Path ${path.n}: ${escapeHtml(path.title)}` : 'Practice tasks'}</h2>
+        <p class="sec-sub" data-reveal style="--i:2">
+          Work the answer out and type it in. Nothing is multiple choice, and the answers are not in the page —
+          they are stored as hashes, so there is nothing to peek at.
+        </p>
+
+        <div class="rank-bar" data-reveal style="--i:3">
+          <div class="rank-l">
+            <div class="rank-name">${rank.name}</div>
+            <div class="rank-score">${score} pts · ${tp.solved}/${tp.total} tasks solved</div>
+          </div>
+          <div class="rank-r">
+            <div class="rank-track"><div class="rank-fill" style="width:${rank.pct}%"></div></div>
+            <div class="rank-next">${rank.next ? `${rank.toNext} pts to ${rank.next.name}` : 'Top rank reached'}</div>
+          </div>
+        </div>
+
+        ${!pathId ? `
+          <div class="task-pathnav" data-reveal>
+            ${PATHS.filter(p=>byPath[p.id]).map(p=>{
+              const ts = byPath[p.id];
+              const solved = ts.filter(t=>taskSolved(t.id)).length;
+              return `<a class="task-pathchip ${solved===ts.length?'done':''}" href="#/tasks/${p.id}">
+                ${p.n} · ${escapeHtml(p.title)} <b>${solved}/${ts.length}</b></a>`;
+            }).join('')}
+          </div>` : `<p class="sec-sub" data-reveal><a href="#/tasks">← All practice tasks</a></p>`}
+
+        <div class="task-list" id="taskList">
+          ${list.length ? list.map((t,i)=>taskCardHTML(t,i)).join('')
+            : `<p class="search-empty">No tasks for this path yet.</p>`}
+        </div>
+      </section>`;
+    setupReveal();
+    wireTaskCards(app, ()=>{
+      // Repaint the rank bar in place so the score visibly moves, without
+      // re-rendering the cards and losing revealed explanations.
+      const s = totalScore(), r = rankFor(s), t2 = taskPoints();
+      const nameEl = app.querySelector('.rank-name');
+      if(!nameEl) return;
+      nameEl.textContent = r.name;
+      app.querySelector('.rank-score').textContent = `${s} pts · ${t2.solved}/${t2.total} tasks solved`;
+      app.querySelector('.rank-fill').style.width = r.pct + '%';
+      app.querySelector('.rank-next').textContent = r.next ? `${r.toNext} pts to ${r.next.name}` : 'Top rank reached';
+    });
+  };
+
+  paint();
+  ensureTasks().then(paint).catch(()=>{
+    app.innerHTML = `<section class="sec"><h2 class="sec-title">Practice tasks</h2>
+      <p class="sec-sub">Couldn't load the tasks. Check your connection and try again.</p></section>`;
+  });
+}
+
+/* ==========================================================================
    Timed mock exam (#/exam)
 
    The path quizzes teach: they reveal the answer the moment you pick one.
@@ -9696,6 +10000,7 @@ function renderProgressHub(){
         <div class="hub-stat"><div class="hub-stat-n">🔥 ${streakInfo().current}</div><div class="hub-stat-l">Day streak</div></div>
         <div class="hub-stat"><div class="hub-stat-n">${streakInfo().longest}</div><div class="hub-stat-l">Longest streak</div></div>
         <div class="hub-stat"><div class="hub-stat-n">${labScoreboard().points}</div><div class="hub-stat-l">Lab points</div></div>
+        <div class="hub-stat"><div class="hub-stat-n">${rankFor(totalScore()).name}</div><div class="hub-stat-l">${totalScore()} total pts</div></div>
       </div>
 
       ${(()=>{

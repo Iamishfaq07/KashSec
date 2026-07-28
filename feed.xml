@@ -5,7 +5,14 @@
     <link>https://kashsec.vercel.app/</link>
     <description>Updates to the free KashSec Academy cybersecurity course.</description>
     <language>en</language>
-    <lastBuildDate>Tue, 28 Jul 2026 21:53:26 GMT</lastBuildDate>
+    <lastBuildDate>Tue, 28 Jul 2026 22:50:19 GMT</lastBuildDate>
+    <item>
+      <title>Practice tasks — type the answer, not pick it</title>
+      <link>https://kashsec.vercel.app/#/changelog</link>
+      <guid isPermaLink="false">kashsec-2026-07-28</guid>
+      <pubDate>Tue, 28 Jul 2026 12:00:00 GMT</pubDate>
+      <description>&lt;ul&gt;&lt;li&gt;Every serious security platform is built on the same loop: read, go and do something, type the answer you found, have it checked. TryHackMe rooms, Hack The Box skill assessments and PentesterLab exercises all work this way. This site had quizzes, where you recognise the right option, and labs, where you press buttons in a simulation — but nothing that made you produce an answer. Recognition is a much weaker signal than recall, and it is the difference between "I have seen this" and "I can do this". Practice tasks (#/tasks) close that gap.&lt;/li&gt;&lt;li&gt;Tasks are typed-answer, not multiple choice, and they favour doing over defining: compute the usable hosts in a /26, write the find command that lists SUID binaries, read a phishing URL and say where it really goes, build a CVSS vector from a described flaw, decode a Base64 flag.&lt;/li&gt;&lt;li&gt;The answers are not in the page. Only SHA-256 hashes ship, and — this is the part that actually matters — each explanation is encrypted with AES-GCM under a key derived from its own answer. Hashing the answer field alone would have been theatre, because a good explanation usually restates the answer and has to ship too. As it stands the explanation cannot be read out of the file without already knowing the answer, which also means explanations can be written properly instead of contorted to avoid naming the answer.&lt;/li&gt;&lt;li&gt;Answers are matched forgivingly where that is fair — case, surrounding spaces, a trailing full stop and number formatting are all ignored, and a task can accept several equivalent answers — but never so loosely that a wrong answer passes.&lt;/li&gt;&lt;li&gt;New rank ladder from Newcomer to Elite, drawn from everything you do: lessons read, labs solved, tasks answered, quizzes and mock exams passed. It shows on the tasks page and in your progress hub.&lt;/li&gt;&lt;li&gt;Nineteen new automated checks, most of them negative: that a wrong answer is refused, that it reveals nothing, and that no answer is recoverable from anything the browser downloads.&lt;/li&gt;&lt;/ul&gt;</description>
+    </item>
     <item>
       <title>The share image was three expansions out of date</title>
       <link>https://kashsec.vercel.app/#/changelog</link>
