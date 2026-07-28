@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "python3 -m http.server 8000",
-    "build": "node generate-glossary.js && node generate-search-index.js && node generate-lesson-hashes.js && node generate-feed.js && node generate-prerender.js && node generate-sw.js",
+    "build": "node generate-glossary.js && node generate-search-index.js && node generate-lesson-hashes.js && node generate-feed.js && node generate-og-image.js && node generate-prerender.js && node generate-sw.js",
     "build:sw": "node generate-sw.js",
     "build:glossary": "node generate-glossary.js",
     "build:search": "node generate-search-index.js",
@@ -19,7 +19,8 @@
     "test:cdn": "node tests/cdn-resilience.spec.js",
     "test:ui": "node tests/ui-quality.spec.js",
     "test:exam": "node tests/exam.spec.js",
-    "test:search": "node tests/search.spec.js"
+    "test:search": "node tests/search.spec.js",
+    "build:og": "node generate-og-image.js"
   },
   "repository": {
     "type": "git",

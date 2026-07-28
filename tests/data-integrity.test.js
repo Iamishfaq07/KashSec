@@ -312,6 +312,26 @@ check(`every tool and lab page carries >= ${MIN_UNIQUE_WORDS} words of its own c
   thinPages.length === 0,
   thinPages.slice(0, 6).join(', ') + (thinPages.length > 6 ? ` …and ${thinPages.length - 6} more` : ''));
 
+/* ---- 16. the social share image is not stale ----
+   og-image.png is what every Reddit post, LinkedIn share, Twitter card and
+   Slack unfurl displays — the first thing anyone sees of this site. It sat
+   advertising "23 paths, 226+ lessons" through three content expansions,
+   understating the course by more than half, because a PNG is opaque to
+   every other check here. The generator now records the numbers it baked
+   in; this compares them to reality. */
+const ogMetaPath = path.join(ROOT, 'og-image.meta.json');
+check('og-image.png exists', fs.existsSync(path.join(ROOT, 'og-image.png')));
+check('og-image.meta.json exists (run npm run build)', fs.existsSync(ogMetaPath));
+if (fs.existsSync(ogMetaPath)) {
+  const meta = JSON.parse(read('og-image.meta.json'));
+  const want = { paths: PATHS.length, lessons: totalLessons, labs: LABS.length, tools: TOOLS.length };
+  const drift = Object.entries(want)
+    .filter(([k, v]) => meta[k] !== v)
+    .map(([k, v]) => `${k}: image says ${meta[k]}, actual ${v}`);
+  check('social share image shows current counts', drift.length === 0,
+    drift.join('; ') + ' — run npm run build:og');
+}
+
 /* ---- report ---- */
 console.log(`\n  Data integrity — ${PATHS.length} paths, ${totalLessons} lessons, ` +
   `${Object.values(QUIZZES).reduce((s, q) => s + q.questions.length, 0)} quiz questions\n`);
