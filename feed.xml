@@ -5,7 +5,14 @@
     <link>https://kashsec.vercel.app/</link>
     <description>Updates to the free KashSec Academy cybersecurity course.</description>
     <language>en</language>
-    <lastBuildDate>Tue, 28 Jul 2026 23:55:22 GMT</lastBuildDate>
+    <lastBuildDate>Thu, 30 Jul 2026 18:47:48 GMT</lastBuildDate>
+    <item>
+      <title>The three newest sections were invisible — to Google, to the palette, and to the nav</title>
+      <link>https://kashsec.vercel.app/#/changelog</link>
+      <guid isPermaLink="false">kashsec-2026-07-30</guid>
+      <pubDate>Thu, 30 Jul 2026 12:00:00 GMT</pubDate>
+      <description>&lt;ul&gt;&lt;li&gt;Practice tasks, mock exams and search all shipped as hash routes and nothing else. A hash route is not a page as far as a crawler is concerned — everything after the # is discarded — so three of the site's most substantial sections existed only for people who already knew they were there. Practice and exam now have crawlable stubs with their own schema and sitemap entries, and the practice stub lists all 104 task questions, which is safe precisely because the answers are hashed and the explanations encrypted.&lt;/li&gt;&lt;li&gt;Search deliberately has no stub. Google's own guidance is to keep internal search result pages out of the index, and following it here costs nothing.&lt;/li&gt;&lt;li&gt;The command palette was missing all three routes, so the fastest way to reach anything on the site could not reach them at all. Added — and while in there, the last 27 palette icons were converted from emoji to the stroke-drawn set the rest of the interface uses, which was the remainder of a migration that had been left half-finished.&lt;/li&gt;&lt;li&gt;Practice now appears in the top navigation, and the README no longer describes a smaller site than the one that exists.&lt;/li&gt;&lt;li&gt;Three new checks lock this down: every content section must have a crawlable stub in the sitemap, every major section must be reachable from the palette, and no palette icon may be an emoji. The first two would have caught this batch's bugs on the day they were introduced.&lt;/li&gt;&lt;/ul&gt;</description>
+    </item>
     <item>
       <title>Practice tasks tripled — 104 tasks, every path at least four</title>
       <link>https://kashsec.vercel.app/#/changelog</link>

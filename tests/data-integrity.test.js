@@ -332,6 +332,49 @@ if (fs.existsSync(ogMetaPath)) {
     drift.join('; ') + ' — run npm run build:og');
 }
 
+/* ---- 17. every content section is crawlable ----
+   Three major sections shipped as SPA-only routes while every other part of
+   the site had a static page, a sitemap entry and schema — so the two
+   features most likely to attract search traffic were the two Google could
+   not see. Adding a route without a stub is easy to do and invisible until
+   someone checks, so it is checked here.
+
+   #/search is deliberately absent: Google's guidance is to keep internal
+   search result pages out of the index. */
+const CRAWLABLE_SECTIONS = [
+  ['#/faq', 'faq.html'],
+  ['#/tasks', 'practice.html'],
+  ['#/exam', 'exam.html'],
+  ['#/labs', 'labs/index.html'],
+  ['#/tools', 'tools/index.html'],
+  ['#/course', 'lesson/index.html'],
+];
+const uncrawlable = [];
+const smText = fs.existsSync(path.join(ROOT, 'sitemap.xml')) ? read('sitemap.xml') : '';
+for (const [route, file] of CRAWLABLE_SECTIONS) {
+  if (!appJs.includes(`'${route}'`)) { uncrawlable.push(`${route}: route no longer exists`); continue; }
+  if (!fs.existsSync(path.join(ROOT, file))) { uncrawlable.push(`${route}: no stub at ${file}`); continue; }
+  const url = SITE + '/' + file.replace(/(^|\/)index\.html$/, '$1');
+  if (!smText.includes(`<loc>${url}</loc>`)) uncrawlable.push(`${route}: ${url} missing from sitemap`);
+}
+check('every content section has a crawlable stub in the sitemap',
+  uncrawlable.length === 0, uncrawlable.join('; '));
+
+// The palette is the primary navigation for repeat users; a section missing
+// from it is effectively hidden from them.
+const paletteNav = (appJs.match(/const nav = \[([\s\S]*?)\]\.map/) || [])[1] || '';
+const missingFromPalette = ['#/tasks', '#/exam', '#/labs', '#/tools', '#/course']
+  .filter(r => !paletteNav.includes(`'${r}'`));
+check('major sections are reachable from the command palette',
+  missingFromPalette.length === 0, missingFromPalette.join(', '));
+
+// cardIco() falls back to printing whatever string it gets, so an emoji left
+// in this list renders raw next to the SVG icons — a mixed set is worse than
+// either choice made consistently.
+const paletteEmoji = (paletteNav.match(/\p{Extended_Pictographic}/gu) || []).length;
+check('command palette icons are all SVG names, not emoji',
+  paletteEmoji === 0, `${paletteEmoji} emoji still in the nav command list`);
+
 /* ---- report ---- */
 console.log(`\n  Data integrity — ${PATHS.length} paths, ${totalLessons} lessons, ` +
   `${Object.values(QUIZZES).reduce((s, q) => s + q.questions.length, 0)} quiz questions\n`);

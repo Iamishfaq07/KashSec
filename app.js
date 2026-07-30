@@ -6088,6 +6088,13 @@ function renderLabLeakedSecret(){
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
+  {date:'2026-07-30', title:'The three newest sections were invisible — to Google, to the palette, and to the nav', items:[
+    'Practice tasks, mock exams and search all shipped as hash routes and nothing else. A hash route is not a page as far as a crawler is concerned — everything after the # is discarded — so three of the site\'s most substantial sections existed only for people who already knew they were there. Practice and exam now have crawlable stubs with their own schema and sitemap entries, and the practice stub lists all 104 task questions, which is safe precisely because the answers are hashed and the explanations encrypted.',
+    'Search deliberately has no stub. Google\'s own guidance is to keep internal search result pages out of the index, and following it here costs nothing.',
+    'The command palette was missing all three routes, so the fastest way to reach anything on the site could not reach them at all. Added — and while in there, the last 27 palette icons were converted from emoji to the stroke-drawn set the rest of the interface uses, which was the remainder of a migration that had been left half-finished.',
+    'Practice now appears in the top navigation, and the README no longer describes a smaller site than the one that exists.',
+    'Three new checks lock this down: every content section must have a crawlable stub in the sitemap, every major section must be reachable from the palette, and no palette icon may be an emoji. The first two would have caught this batch\'s bugs on the day they were introduced.'
+  ]},
   {date:'2026-07-28', title:'Practice tasks tripled — 104 tasks, every path at least four', items:[
     'The task engine shipped with 36 tasks, which worked out at one or two per path where the platforms this is measured against run five to fifteen per unit. Now 104, and no path has fewer than four.',
     'The new batch leans harder on work than recall: read this code and say what it prints, convert this subnet mask to CIDR, name the flaw in this endpoint, identify a file from its first four bytes, decide whether an unguessable ID actually fixes an authorisation bug. Several deliberately have an uncomfortable answer — no, a UUID is not a fix; no, you should not keep testing an out-of-scope host.',
@@ -10489,16 +10496,21 @@ function highlightMatch(text, q){
 /* Command-palette actions: navigation, tools, labs, and a couple of toggles.
    Built fresh each call so tool/lab lists stay in sync. */
 function getCommands(){
+  /* Icon names, not emoji. cardIco() renders a KICON glyph and falls back to
+     printing whatever string it is given — so leaving emoji here meant the
+     palette showed SVG for tools and labs and raw emoji for navigation, in
+     the same list. Finishing the migration is what makes it one set. */
   const nav = [
-    ['Home','#/','🏠'],['Course','#/course','📚'],['Roadmap','#/roadmap','🗺️'],
-    ['Practice tracks','#/tracks','🧭'],['Labs','#/labs','🧪'],['Tools','#/tools','🛠️'],
-    ['Glossary','#/glossary','📖'],['Flashcards','#/review','🃏'],['Daily challenge','#/daily','📅'],
-    ['Interview bank','#/interview','💼'],['Careers','#/careers','🎯'],['FAQ','#/faq','❓'],
-    ['My Progress','#/progress','📈'],['Changelog','#/changelog','📣'],['Take the Final Exam','#/quiz/final','🎓'],
-    ['Mock interview','#/interview/mock','⏱'],['Certification roadmap','#/certs','🎓'],['Skill tree','#/skilltree','🌳'],
-    ['Capstone attack chain','#/capstone','⛓️'],['Weekly challenge chains','#/weekly','📆'],
-    ['Career-fit quiz','#/career-quiz','🧭'],['Shuffle quiz','#/quiz/shuffle','🔀'],
-    ['Learning transcript','#/transcript','📄'],['Review missed questions','#/quiz/missed','🔁']
+    ['Home','#/','house'],['Course','#/course','doc'],['Roadmap','#/roadmap','mapPin'],
+    ['Practice tracks','#/tracks','layers'],['Labs','#/labs','microscope'],['Tools','#/tools','toolbox'],
+    ['Practice tasks','#/tasks','check'],['Timed mock exam','#/exam','timer'],['Search','#/search','search'],
+    ['Glossary','#/glossary','scroll'],['Flashcards','#/review','folders'],['Daily challenge','#/daily','clock'],
+    ['Interview bank','#/interview','idcard'],['Careers','#/careers','building'],['FAQ','#/faq','chat'],
+    ['My Progress','#/progress','gauge'],['Changelog','#/changelog','ledger'],['Take the Final Exam','#/quiz/final','flag'],
+    ['Mock interview','#/interview/mock','timer'],['Certification roadmap','#/certs','ticket'],['Skill tree','#/skilltree','layers'],
+    ['Capstone attack chain','#/capstone','castle'],['Weekly challenge chains','#/weekly','clipboard'],
+    ['Career-fit quiz','#/career-quiz','puzzle'],['Shuffle quiz','#/quiz/shuffle','dice'],
+    ['Learning transcript','#/transcript','doc'],['Review missed questions','#/quiz/missed','refresh']
   ].map(([t,u,i])=>({title:t, url:u, icon:i, ctx:'Go to', keywords:t.toLowerCase()}));
   const tools = (typeof TOOLS!=='undefined'?TOOLS:[]).map(t=>({title:'Tool: '+t.title, url:`#/tools/${t.id}`, icon:t.ico, ctx:'Tool', keywords:(t.title+' '+t.desc).toLowerCase()}));
   const labs = [

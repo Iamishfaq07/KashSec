@@ -2,9 +2,9 @@
 
 **A completely free cybersecurity course, from absolute zero to job-ready.**
 
-26 learning paths · 485 sub-lessons · diagrams, labs, a hands-on CTF zone & challenges · always free
+26 learning paths · 485 sub-lessons · 104 typed-answer practice tasks · 42 interactive labs · 32 browser-based tools · timed mock exams · always free
 
-[![Live Site](https://img.shields.io/badge/live-kashsec.academy-EFA43A?style=for-the-badge)](https://kashsec.vercel.app/)
+[![Live Site](https://img.shields.io/badge/live-kashsec.vercel.app-EFA43A?style=for-the-badge)](https://kashsec.vercel.app/)
 
 ## What's new
 - **New advanced path: OT/ICS & Critical Infrastructure Security** — SCADA/ICS fundamentals, industrial protocols (Modbus, DNP3) and why they lack built-in security, the Purdue Model, real-world attacks (Stuxnet, the Ukraine grid attacks, Oldsmar, Triton), practical OT controls, and a full capstone security assessment

@@ -98,21 +98,71 @@ const out = TASK_SOURCE.map(t => {
 
 if (!out.length) throw new Error('no tasks generated');
 
-/* Refuse to ship if any answer is recoverable from the file itself. The
-   question may legitimately contain a string that looks like the answer
-   (the phishing-URL task hands you the URL to read), so only the fields
-   that are supposed to be opaque are checked. */
+/* Refuse to ship if the opaque fields are not actually opaque.
+ *
+ * An earlier version of this checked the property the lazy way: lowercase
+ * the hashes and the base64 ciphertext and look for the answer as a
+ * substring. That is not a check, it is a coin flip. Base64 lowercases into
+ * a 36-symbol alphabet, so a four-letter answer turns up by chance about
+ * once per half-million characters, and this file ships roughly two hundred
+ * thousand of them — measured at 1.3% of builds failing on a task whose
+ * content nobody had touched ("drop", "fido" and "read" were the usual
+ * culprits). A build that fails one time in eighty for no reason is worse
+ * than no guard, because the first instinct is to re-run it until it passes,
+ * and by then a real failure would be re-run away too.
+ *
+ * So check the properties that are actually true or actually false, every
+ * time, for every task:
+ *   1. the hint — real plaintext, genuinely greppable — must not give the
+ *      answer away. (The question is exempt: "read this URL and say where it
+ *      really goes" cannot exist without printing the URL.)
+ *   2. every ciphertext must decrypt back to its own explanation under the
+ *      key derived from its own answer, so a typo here can't ship a task
+ *      whose explanation is unreadable to a learner who answered correctly;
+ *   3. and must NOT decrypt under any other answer's key, which is the
+ *      statement "you need the answer to read this" in its testable form;
+ *   4. the decrypted-to bytes must not simply be the plaintext, i.e.
+ *      encryption happened at all.
+ */
+function decrypt(b64, norm) {
+  const raw = Buffer.from(b64, 'base64');
+  const d = crypto.createDecipheriv('aes-256-gcm', keyFor(norm), raw.subarray(0, 12));
+  d.setAuthTag(raw.subarray(raw.length - 16));
+  return Buffer.concat([d.update(raw.subarray(12, raw.length - 16)), d.final()]).toString('utf8');
+}
+
 const leaks = [];
 out.forEach((task, i) => {
   const src = TASK_SOURCE[i];
   const answers = (Array.isArray(src.answer) ? src.answer : [src.answer]).map(String);
-  const shipped = normalise(task.hint + ' ' + JSON.stringify(task.h) + ' ' + JSON.stringify(task.e));
-  answers.forEach(a => {
-    const n = normalise(a);
-    if (n.length > 3 && shipped.includes(n)) leaks.push(`${task.id}: "${a}"`);
+  const norms = answers.map(a => (task.match === 'number' ? normaliseNumber(a) : normalise(a)));
+  const hint = normalise(task.hint);
+
+  norms.forEach((n, j) => {
+    if (n.length > 3 && hint.includes(n)) leaks.push(`${task.id}: the hint contains "${answers[j]}"`);
+
+    if (Buffer.from(task.e[j], 'base64').includes(src.explain))
+      leaks.push(`${task.id}: explanation ${j} shipped unencrypted`);
+
+    try {
+      if (decrypt(task.e[j], n) !== src.explain)
+        leaks.push(`${task.id}: "${answers[j]}" decrypts to the wrong text`);
+    } catch (e) {
+      leaks.push(`${task.id}: "${answers[j]}" does not decrypt with its own answer`);
+    }
+
+    // Distinct answers must not open each other's ciphertext. Equal norms
+    // can and do occur ("grey hat" and "greyhat" do not collide, but a
+    // number task's "62" and "62.0" both reduce to "62"), and those share a
+    // key by construction, so they are not a finding.
+    norms.forEach((other, k) => {
+      if (k === j || other === n) return;
+      try { decrypt(task.e[j], other); leaks.push(`${task.id}: "${answers[k]}" opens "${answers[j]}"`); }
+      catch (e) { /* expected: GCM rejects the wrong key */ }
+    });
   });
 });
-if (leaks.length) throw new Error('answers recoverable from shipped fields:\n  ' + leaks.join('\n  '));
+if (leaks.length) throw new Error('task answers are not opaque:\n  ' + leaks.join('\n  '));
 
 const byPath = {};
 out.forEach(t => { byPath[t.path] = (byPath[t.path] || 0) + 1; });

@@ -52,6 +52,18 @@ const LABS  = extractArray('LABS');
 // an SPA route with no crawlable URL, so it could never earn one.
 const FAQS  = extractArray('FAQS');
 
+/* Practice tasks, for the crawlable practice page. Read from the generated
+   tasks.js (questions only — answers there are hashes, and explanations are
+   encrypted, so nothing sensitive can reach a static page by accident). */
+let TASKS_META = { total: 0, tasks: [] };
+try {
+  const tasksJs = fs.readFileSync(path.join(ROOT, 'tasks.js'), 'utf8');
+  const T = new Function(tasksJs + '; return TASKS;')();
+  TASKS_META = { total: T.length, tasks: T.map(t => ({ path: t.path, q: t.q })) };
+} catch {
+  console.warn('tasks.js not found — practice page will be generated empty. Run generate-tasks.js first.');
+}
+
 // `marked` is a devDependency (npm install marked) — only needed at build
 // time to prerender lesson HTML. The browser uses its own vendored copy
 // (vendor/marked.min.js); this is a separate build-time instance.
@@ -529,6 +541,109 @@ const labsWritten = writeStubSet(
     }],
   }));
   sitemapUrls.push({ loc: canonical, lastmod: APP_LASTMOD, priority: '0.7' });
+}
+
+/* Crawlable stubs for the practice-task and mock-exam sections.
+
+   These shipped as SPA-only routes while every other section of the site
+   had a static page, a sitemap entry and schema — so the two features most
+   likely to attract search traffic were the two Google could not see.
+
+   NOT included here, deliberately: #/search. Google's own guidance is to
+   keep internal search result pages out of the index, and a results page
+   has no content of its own to offer. It stays reachable and linkable for
+   people; it just does not belong in a sitemap. */
+{
+  const canonical = `${SITE}/practice.html`;
+  const total = TASKS_META.total;
+  const title = `${total} free cybersecurity practice questions with answers · KashSec Academy`;
+  const desc = `Type the answer, don't pick it. ${total} hands-on practice tasks across ${PATHS.length} paths — subnetting, Linux commands, CVSS scoring, log reading, web and cloud security. Free, no account, answers checked in your browser.`;
+
+  // The questions are safe to publish: answers ship only as hashes, and
+  // each explanation is encrypted under a key derived from its own answer.
+  // So this page is genuinely useful crawlable content, not a doorway.
+  const byPath = {};
+  TASKS_META.tasks.forEach(t => { (byPath[t.path] = byPath[t.path] || []).push(t); });
+
+  const contentHtml =
+    `<h1>Practice tasks</h1>` +
+    `<p><strong>${desc}</strong></p>` +
+    `<p>Every task asks you to produce an answer rather than recognise one among four options — compute a subnet, write the command, read the output and name the flaw. Answers are verified in your browser against a stored hash, so nothing you type is sent anywhere and the answers are not readable in the page.</p>` +
+    PATHS.filter(p => byPath[p.id]).map(p =>
+      `<h2>Path ${p.n} — ${escapeAttr(p.title)}</h2><ul>` +
+      byPath[p.id].map(t => `<li>${escapeAttr(t.q.split('\n')[0])}</li>`).join('') +
+      `</ul><p><a href="/lesson/${p.id}/">Study Path ${p.n} first →</a></p>`
+    ).join('') +
+    `<h2>Related</h2><ul>` +
+    `<li><a href="/exam.html">Timed mock exam</a> — sit a full paper under a clock</li>` +
+    `<li><a href="/lesson/">All ${PATHS.length} learning paths</a></li>` +
+    `<li><a href="/labs/">Interactive labs</a></li></ul>`;
+
+  fs.writeFileSync(path.join(ROOT, 'practice.html'), template({
+    title, desc, canonical, spaPath: '/#/tasks', contentHtml, ogType: 'website',
+    crumbs: [
+      { name: 'KashSec Academy', url: SITE + '/' },
+      { name: 'Practice tasks', url: canonical },
+    ],
+    jsonLd: [{
+      '@context': 'https://schema.org',
+      '@type': 'LearningResource',
+      name: 'Cybersecurity practice tasks',
+      description: desc,
+      url: canonical,
+      learningResourceType: 'Practice problem set',
+      educationalUse: 'practice',
+      inLanguage: 'en',
+      dateModified: APP_LASTMOD,
+      isAccessibleForFree: true,
+      provider: ORG,
+      publisher: ORG,
+    }],
+  }));
+  sitemapUrls.push({ loc: canonical, lastmod: APP_LASTMOD, priority: '0.8' });
+}
+
+{
+  const canonical = `${SITE}/exam.html`;
+  const title = 'Free timed cybersecurity practice exam — 90 questions, 90 minutes · KashSec Academy';
+  const desc = `A timed mock exam drawn across all ${PATHS.length} paths, weighted by path size. Nothing is graded until you submit, the clock runs, and the score report breaks results down by path. Free, no account.`;
+  const contentHtml =
+    `<h1>Timed mock exam</h1>` +
+    `<p><strong>${desc}</strong></p>` +
+    `<h2>Why a timed paper is different from a quiz</h2>` +
+    `<p>The path quizzes reveal the answer the moment you pick one, which is right for learning. Sitting a certification is a different skill: committing to an answer under a clock, with no feedback, while rationing time across questions you have not seen yet. This is the second mode.</p>` +
+    `<h2>Three papers</h2><ul>` +
+    `<li><strong>Full exam</strong> — 90 questions in 90 minutes, the shape of a real certification sitting.</li>` +
+    `<li><strong>Short exam</strong> — 40 questions in 40 minutes.</li>` +
+    `<li><strong>Quick drill</strong> — 20 questions in 15 minutes, deliberately tight on time.</li></ul>` +
+    `<h2>What you get afterwards</h2>` +
+    `<p>A pass mark measured against the paper, a per-path breakdown ranked weakest first, every question you missed with its explanation, and those questions added to a spaced-repetition queue so they come back later.</p>` +
+    `<h2>Related</h2><ul>` +
+    `<li><a href="/practice.html">Practice tasks</a> — typed answers, no time limit</li>` +
+    `<li><a href="/lesson/">All ${PATHS.length} learning paths</a></li></ul>`;
+
+  fs.writeFileSync(path.join(ROOT, 'exam.html'), template({
+    title, desc, canonical, spaPath: '/#/exam', contentHtml, ogType: 'website',
+    crumbs: [
+      { name: 'KashSec Academy', url: SITE + '/' },
+      { name: 'Timed mock exam', url: canonical },
+    ],
+    jsonLd: [{
+      '@context': 'https://schema.org',
+      '@type': 'LearningResource',
+      name: 'Timed cybersecurity mock exam',
+      description: desc,
+      url: canonical,
+      learningResourceType: 'Assessment',
+      educationalUse: 'assessment',
+      inLanguage: 'en',
+      dateModified: APP_LASTMOD,
+      isAccessibleForFree: true,
+      provider: ORG,
+      publisher: ORG,
+    }],
+  }));
+  sitemapUrls.push({ loc: canonical, lastmod: APP_LASTMOD, priority: '0.8' });
 }
 
 // Regenerate sitemap.xml. Priorities are relative hints only, but lastmod
