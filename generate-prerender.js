@@ -37,6 +37,16 @@ const SITE = 'https://kashsec.vercel.app';
 
 const appJs = fs.readFileSync(path.join(ROOT, 'app.js'), 'utf8');
 
+/* AdSense site-verification tag, read from ads.js so the publisher ID has one
+   home rather than being copied into 592 files by hand. Emitted on every
+   prerendered page because these are real URLs Google can land on — verifying
+   ownership from the homepage alone leaves the rest of the site unaccounted
+   for. Empty clientId (ads disabled) emits nothing at all. */
+const adsClientId =
+  (fs.readFileSync(path.join(ROOT, 'ads.js'), 'utf8').match(/clientId:\s*'([^']*)'/) || [])[1] || '';
+const adsenseMeta = adsClientId
+  ? `\n<meta name="google-adsense-account" content="${adsClientId}">` : '';
+
 function extractArray(name) {
   const match = appJs.match(new RegExp('const ' + name + ' = \\[[\\s\\S]*?\\n\\];'));
   if (!match) throw new Error('Could not find ' + name + ' array in app.js');
@@ -173,7 +183,7 @@ const template = ({title, desc, canonical, spaPath, contentHtml, crumbs, jsonLd 
 <meta name="twitter:title" content="${escapeAttr(title)}">
 <meta name="twitter:description" content="${escapeAttr(desc)}">
 <meta name="twitter:image" content="${SITE}/og-image.png">
-<meta name="theme-color" content="#0A0E13">
+<meta name="theme-color" content="#0A0E13">${adsenseMeta}
 ${[breadcrumbLd(crumbs), ...jsonLd]
   .map(o => `<script type="application/ld+json">\n${JSON.stringify(o)}\n</script>`).join('\n')}
 <style>

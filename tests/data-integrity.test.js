@@ -399,6 +399,22 @@ check('ads.js and ads.txt name the same publisher',
   !clientId || adsTxt.includes(clientId.replace(/^ca-/, '')),
   `ads.js has ${clientId || '(none)'}, ads.txt has ${adsTxtLines[0] || '(empty)'}`);
 
+/* The verification meta tag is what Google reads to confirm site ownership,
+   and it is the only static trace of the publisher ID in the markup — the
+   adsbygoogle.js script is injected at runtime by ads.js. It has to carry the
+   full "ca-pub-…" form, unlike ads.txt, and it has to be on the prerendered
+   pages too: those are real URLs Google can land on directly. */
+const metaOf = html => (html.match(/name="google-adsense-account"\s+content="([^"]*)"/) || [])[1] || '';
+check('index.html carries the AdSense verification meta tag',
+  !clientId || metaOf(read('index.html')) === clientId,
+  `expected ${clientId}, found ${metaOf(read('index.html')) || '(absent)'}`);
+
+const prerenderSamples = ['lesson/index.html', 'faq.html', 'practice.html', 'exam.html',
+  'tools/index.html', 'labs/index.html'];
+const missingMeta = prerenderSamples.filter(f => metaOf(read(f)) !== clientId);
+check('prerendered pages carry the AdSense verification meta tag',
+  !clientId || missingMeta.length === 0, missingMeta.join(', '));
+
 /* ---- report ---- */
 console.log(`\n  Data integrity — ${PATHS.length} paths, ${totalLessons} lessons, ` +
   `${Object.values(QUIZZES).reduce((s, q) => s + q.questions.length, 0)} quiz questions\n`);
