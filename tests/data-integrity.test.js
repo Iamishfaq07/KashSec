@@ -375,6 +375,30 @@ const paletteEmoji = (paletteNav.match(/\p{Extended_Pictographic}/gu) || []).len
 check('command palette icons are all SVG names, not emoji',
   paletteEmoji === 0, `${paletteEmoji} emoji still in the nav command list`);
 
+/* ads.txt is the only file on this site whose absence costs money: without
+   it AdSense will not pay out on impressions, and the failure is silent —
+   nothing on the site looks wrong. It is also easy to break by accident,
+   because the publisher ID lives in two places that must agree. Note the
+   prefix difference is real and correct: ads.js carries "ca-pub-…" and
+   ads.txt carries "pub-…", per the IAB spec. */
+const adsTxt = fs.readFileSync(path.join(ROOT, 'ads.txt'), 'utf8').trim();
+const adsTxtLines = adsTxt.split('\n').map(l => l.trim())
+  .filter(l => l && !l.startsWith('#'));
+check('ads.txt has at least one record', adsTxtLines.length > 0);
+
+const badAdsRecords = adsTxtLines.filter(l => {
+  const f = l.split(',').map(x => x.trim());
+  return f.length < 3 || !f[0].includes('.') || !/^(DIRECT|RESELLER)$/i.test(f[2]);
+});
+check('every ads.txt record is well-formed (domain, publisher id, DIRECT/RESELLER)',
+  badAdsRecords.length === 0, badAdsRecords.join(' | '));
+
+const adsJs = fs.readFileSync(path.join(ROOT, 'ads.js'), 'utf8');
+const clientId = (adsJs.match(/clientId:\s*'([^']*)'/) || [])[1] || '';
+check('ads.js and ads.txt name the same publisher',
+  !clientId || adsTxt.includes(clientId.replace(/^ca-/, '')),
+  `ads.js has ${clientId || '(none)'}, ads.txt has ${adsTxtLines[0] || '(empty)'}`);
+
 /* ---- report ---- */
 console.log(`\n  Data integrity — ${PATHS.length} paths, ${totalLessons} lessons, ` +
   `${Object.values(QUIZZES).reduce((s, q) => s + q.questions.length, 0)} quiz questions\n`);
