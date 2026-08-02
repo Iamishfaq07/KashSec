@@ -415,6 +415,47 @@ const missingMeta = prerenderSamples.filter(f => metaOf(read(f)) !== clientId);
 check('prerendered pages carry the AdSense verification meta tag',
   !clientId || missingMeta.length === 0, missingMeta.join(', '));
 
+/* ---- AI crawler access ---- */
+/* robots.txt has one trap worth pinning: a crawler obeys only the most
+   specific group matching its user-agent and ignores every other group. So a
+   named AI-crawler group with no rules of its own would not inherit the
+   wildcard's "Allow: /" — it would leave behaviour undefined for exactly the
+   crawlers the group was added to welcome. Every group must carry its own
+   rule, and nothing here may be a Disallow. */
+const robots = read('robots.txt');
+const groups = robots.split(/\n\s*\n/).filter(b => /^\s*User-agent:/mi.test(b));
+const rulelessGroups = groups.filter(b => !/^\s*(Allow|Disallow):/mi.test(b));
+check('every robots.txt user-agent group carries its own rule',
+  rulelessGroups.length === 0,
+  `${rulelessGroups.length} group(s) name a crawler but state no rule`);
+
+check('robots.txt blocks nothing',
+  !/^\s*Disallow:\s*\S/mi.test(robots),
+  (robots.match(/^\s*Disallow:.*/gmi) || []).join(' | '));
+
+const AI_AGENTS = ['GPTBot', 'ClaudeBot', 'Google-Extended', 'PerplexityBot',
+  'CCBot', 'Applebot-Extended', 'OAI-SearchBot', 'meta-externalagent'];
+const unlisted = AI_AGENTS.filter(a => !new RegExp(`^\\s*User-agent:\\s*${a}\\s*$`, 'mi').test(robots));
+check('the major AI crawlers are named explicitly in robots.txt',
+  unlisted.length === 0, unlisted.join(', '));
+
+/* llms.txt is a map of the site handed to models. A map pointing at pages
+   that do not exist is worse than no map: it looks authoritative while
+   sending every reader to a 404. Every link is resolved against disk. */
+const llms = read('llms.txt');
+const llmsLinks = [...llms.matchAll(/\]\(https:\/\/kashsec\.vercel\.app([^)]*)\)/g)].map(m => m[1]);
+const llmsDead = llmsLinks.filter(u => !fs.existsSync(path.join(ROOT, u)));
+check('every llms.txt link resolves to a real file',
+  llmsDead.length === 0, llmsDead.slice(0, 5).join(', '));
+
+const expectedLlmsLinks = PATHS.length + totalLessons + LABS.length + TOOLS.length;
+check('llms.txt indexes every path, lesson, lab and tool',
+  llmsLinks.length >= expectedLlmsLinks,
+  `${llmsLinks.length} links, expected at least ${expectedLlmsLinks}`);
+
+check('llms.txt opens with a title and summary (llmstxt.org format)',
+  /^# \S/m.test(llms) && /^> \S/m.test(llms));
+
 /* ---- report ---- */
 console.log(`\n  Data integrity — ${PATHS.length} paths, ${totalLessons} lessons, ` +
   `${Object.values(QUIZZES).reduce((s, q) => s + q.questions.length, 0)} quiz questions\n`);

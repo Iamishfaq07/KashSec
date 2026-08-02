@@ -1,4 +1,70 @@
+# KashSec Academy — robots.txt
+#
+# Everything here is free to read, by people and by machines alike. The whole
+# point of the site is that someone who cannot afford a course can still learn
+# security properly, and an answer engine quoting a lesson to someone who was
+# never going to find this site is that mission working, not a leak from it.
+#
+# AI crawlers were already allowed by the wildcard group below — nothing was
+# ever blocking them. The named group exists because "we never got round to
+# denying it" and "we deliberately allow it" look identical in a robots.txt
+# that only has a wildcard, and the second is what this is. It also survives
+# someone later tightening the wildcard without thinking about AI access.
+#
+# A note on how robots.txt actually works, because it is a common trap: a
+# crawler obeys the MOST SPECIFIC group matching its user-agent and ignores
+# every other group, including the wildcard. So each named group must repeat
+# its own Allow rule — a group listing user-agents with no rules would not
+# inherit "Allow: /" from below, and the result would be undefined rather
+# than permissive. Hence the explicit Allow in the group.
+#
+# Sitemap and Host are cross-group directives and apply regardless.
+
+# --- AI crawlers, answer engines and training agents: explicitly welcome ---
+# Two kinds are listed together. Most are true crawlers. A few — notably
+# Google-Extended and Applebot-Extended — are not crawlers at all: they are
+# permission tokens that only ever mean "may this content train our models?"
+# and are read from robots.txt without any fetch of their own. Listing them
+# with an Allow is the affirmative answer.
+User-agent: GPTBot
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: ClaudeBot
+User-agent: Claude-User
+User-agent: Claude-SearchBot
+User-agent: anthropic-ai
+User-agent: Google-Extended
+User-agent: Applebot
+User-agent: Applebot-Extended
+User-agent: PerplexityBot
+User-agent: Perplexity-User
+User-agent: meta-externalagent
+User-agent: meta-externalfetcher
+User-agent: Amazonbot
+User-agent: Bytespider
+User-agent: CCBot
+User-agent: cohere-ai
+User-agent: cohere-training-data-crawler
+User-agent: MistralAI-User
+User-agent: DuckAssistBot
+User-agent: YouBot
+User-agent: PetalBot
+User-agent: Diffbot
+User-agent: Timpibot
+User-agent: omgili
+User-agent: omgilibot
+Allow: /
+
+# --- everyone else, including every AI crawler not named above ---
+# This is the group that has always done the real work. Anything new that
+# appears next year is allowed by default; it does not need adding above.
 User-agent: *
 Allow: /
+
+# A plain-text index of the whole site written for language models, in the
+# llmstxt.org format: every path, lesson, lab and tool with a one-line
+# description, so a model can find the right page instead of guessing.
+# Crawlers do not read this line — it is a signpost for anyone reading the file.
+# See: https://kashsec.vercel.app/llms.txt
 
 Sitemap: https://kashsec.vercel.app/sitemap.xml

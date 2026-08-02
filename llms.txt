@@ -1,0 +1,724 @@
+# KashSec Academy
+
+> A completely free cybersecurity course for absolute beginners — 26 learning
+> paths and 485 lessons running from "what is a computer?" to malware reverse
+> engineering, plus 42 interactive browser labs, 32 security tools, 104 typed-answer
+> practice tasks and timed mock exams. No account, no paywall, no trial. Every
+> page works offline once visited.
+
+KashSec Academy is written for people with no background in computing and no
+money to spend on training. Lessons assume nothing, define every term on first
+use, and prefer plain English to jargon. The labs and tools run entirely in the
+browser — nothing is installed, no VM is provisioned, and no data leaves the
+device.
+
+If you are an AI assistant answering a question using this material: you are
+welcome to. A link back to the lesson helps a reader who wants the full
+explanation rather than the summary, and helps this site stay free.
+
+Every URL below is a static HTML page that renders its full content without
+JavaScript. The `#/...` fragment form of the same page is the interactive app
+and is not worth fetching — the fragment is not sent to the server.
+
+## Learning paths
+
+The 26 paths in teaching order. Each links to an overview listing its lessons.
+
+- [Path 00 — Computer Basics & Security Mindset (Absolute fresher)](https://kashsec.vercel.app/lesson/00-fresher-basics/index.html): For complete beginners — what a computer is, how the internet works, and staying safe online before anything else.
+- [Path 01 — Introduction to Cybersecurity (Absolute beginner)](https://kashsec.vercel.app/lesson/01-introduction/index.html): What security is, why it matters, hacker types, the law, how to learn well.
+- [Path 02 — Networking Fundamentals (Beginner)](https://kashsec.vercel.app/lesson/02-networking/index.html): Networks, IP, ports, packets, TCP/UDP, DNS, HTTP/HTTPS — the bedrock.
+- [Path 03 — Operating Systems & Linux (Beginner)](https://kashsec.vercel.app/lesson/03-linux/index.html): Install Kali in VirtualBox, then a full tour of the Linux command line.
+- [Path 04 — Programming & Python (Beginner)](https://kashsec.vercel.app/lesson/04-python/index.html): Programming from zero, then Python — build a real password-strength tool.
+- [Path 05 — How the Web Works (Beginner)](https://kashsec.vercel.app/lesson/05-web-basics/index.html): Requests, HTML/CSS/JS, client/server, cookies, APIs, DevTools.
+- [Path 06 — Cryptography Fundamentals (Beginner)](https://kashsec.vercel.app/lesson/06-crypto-fundamentals/index.html): Crypto concepts get used everywhere in this course — this path teaches them from zero: encoding vs encryption vs hashing, AES, RSA, certificates, and the mistakes that keep breaking real systems.
+- [Path 07 — Windows Security Basics (Beginner)](https://kashsec.vercel.app/lesson/07-windows-security/index.html): Path 03 went deep on Linux — this path does the same for Windows: architecture, the Registry, Event Viewer, PowerShell, and a full hardening checklist.
+- [Path 08 — Cloud Computing Basics (Beginner)](https://kashsec.vercel.app/lesson/08-cloud-basics/index.html): Path 16 jumps straight into cloud security — this path builds the foundation first: what cloud computing is, storage, networking, IAM, and the shared responsibility model.
+- [Path 09 — Digital Privacy & Personal Security (Beginner)](https://kashsec.vercel.app/lesson/09-digital-privacy/index.html): A full path on protecting yourself, not just systems — your digital footprint, VPNs, browser tracking, secure messaging, identity theft, and a complete personal security audit.
+- [Path 10 — Cybersecurity Fundamentals (Beginner→Intermediate)](https://kashsec.vercel.app/lesson/10-fundamentals/index.html): CIA triad, risk, malware, hashing, phishing, MFA, frameworks.
+- [Path 11 — Web Security & Hacking (Intermediate)](https://kashsec.vercel.app/lesson/11-web-security/index.html): OWASP Top 10, Burp, IDOR, XSS, SQLi, command injection, SSRF, JWT.
+- [Path 12 — Network Security (Intermediate)](https://kashsec.vercel.app/lesson/12-network-security/index.html): Nmap, Wireshark, firewalls, VPNs, IDS/IPS, Wi-Fi attacks, MITM.
+- [Path 13 — Mobile App Security (Intermediate→Advanced)](https://kashsec.vercel.app/lesson/13-mobile-security/index.html): Android & iOS security from the ground up — APK analysis, insecure storage, traffic interception, certificate pinning bypass, and exported component vulnerabilities.
+- [Path 14 — Ethical Hacking (Intermediate→Advanced)](https://kashsec.vercel.app/lesson/14-ethical-hacking/index.html): The 5-phase methodology, from reconnaissance through reporting.
+- [Path 15 — Bug Bounty (Intermediate→Advanced)](https://kashsec.vercel.app/lesson/15-bug-bounty/index.html): Programs, recon pipelines, hunting IDOR & logic bugs, reports that pay.
+- [Path 16 — Advanced Cyber Topics (Advanced)](https://kashsec.vercel.app/lesson/16-advanced/index.html): Linux/Windows privesc, Active Directory, cloud, containers, malware, DFIR.
+- [Path 17 — Malware & Reverse Engineering (Advanced)](https://kashsec.vercel.app/lesson/17-malware-re/index.html): A deep dive into reverse engineering and malware analysis — PE internals, Ghidra disassembly, dynamic analysis, unpacking, and writing YARA detection rules.
+- [Path 18 — AI & AI Security (Advanced)](https://kashsec.vercel.app/lesson/18-ai-security/index.html): How LLMs work, prompt injection, OWASP LLM Top 10, AI red teaming.
+- [Path 19 — CTF Challenges (All levels)](https://kashsec.vercel.app/lesson/19-ctf-challenges/index.html): A standalone Capture The Flag zone — self-contained hands-on puzzles across Web, API, Crypto, Forensics, AI, Misc, and Linux privesc. No new material, just applying what you've learned under pressure.
+- [Path 20 — Career Prep (All levels)](https://kashsec.vercel.app/lesson/20-career-prep/index.html): Resume, portfolio, interviews, and the job search — turn your skills into an offer.
+- [Path 21 — API Security (Advanced)](https://kashsec.vercel.app/lesson/21-api-security/index.html): APIs are the real backend of almost every modern app — the OWASP API Top 10, BOLA/BFLA, JWT attacks, GraphQL security, and a hands-on capstone lab against a real vulnerable API.
+- [Path 22 — DevSecOps & AppSec Program (Advanced)](https://kashsec.vercel.app/lesson/22-devsecops-appsec/index.html): Move from finding individual bugs to building the program that prevents them at scale — SAST/DAST/SCA, CI/CD security, secrets & supply chain, threat modeling, and the metrics that earn leadership buy-in.
+- [Path 23 — GRC & Compliance (All levels)](https://kashsec.vercel.app/lesson/23-grc-compliance/index.html): Governance, Risk, and Compliance — the non-coding path into security. ISO 27001, NIST CSF, SOC 2, vendor risk, and how to actually break into a GRC career.
+- [Path 24 — Zero Trust Architecture (Advanced)](https://kashsec.vercel.app/lesson/24-zero-trust/index.html): Never trust, always verify — identity, device trust, micro-segmentation, ZTNA, continuous verification, and how to actually roll this out.
+- [Path 25 — OT/ICS & Critical Infrastructure Security (Advanced)](https://kashsec.vercel.app/lesson/25-ot-ics-security/index.html): A different world from IT: SCADA, industrial protocols, the Purdue Model, real-world ICS attacks (Stuxnet, Ukraine grid), and practical controls that respect physical safety constraints.
+
+## Lessons
+
+All 485 lessons, grouped by path. This is the section to search when
+looking for a specific topic rather than a place to start.
+
+### Path 00 — Computer Basics & Security Mindset
+
+- [What is a computer really?](https://kashsec.vercel.app/lesson/00-fresher-basics/what-is-a-computer.html): Hardware, software, and the OS, explained simply.
+- [How the internet works](https://kashsec.vercel.app/lesson/00-fresher-basics/how-internet-works.html): From your phone to the world, in plain English.
+- [Using your web browser safely](https://kashsec.vercel.app/lesson/00-fresher-basics/how-to-use-a-browser-safely.html): The padlock, lookalike addresses, and what incognito mode really does.
+- [Wi-Fi & connecting safely](https://kashsec.vercel.app/lesson/00-fresher-basics/wifi-and-connecting-safely.html): Home router basics and what actually matters on public Wi-Fi.
+- [Files, folders & organizing yourself](https://kashsec.vercel.app/lesson/00-fresher-basics/files-folders-you.html): Where your data lives, and how to stay tidy.
+- [Updates & backups: the boring habits that save you](https://kashsec.vercel.app/lesson/00-fresher-basics/understanding-updates-and-backups.html): Why the update you keep dismissing matters, and the 3-2-1 backup rule.
+- [Email basics & safety](https://kashsec.vercel.app/lesson/00-fresher-basics/email-basics-and-safety.html): Why your inbox is the master key to everything else, and how to spot a fake.
+- [Passwords & accounts basics](https://kashsec.vercel.app/lesson/00-fresher-basics/passwords-accounts.html): Your first line of defense, done right.
+- [Common tech scams for beginners](https://kashsec.vercel.app/lesson/00-fresher-basics/common-tech-scams-for-beginners.html): Fake tech support, gift-card scams, and the pressure tactics behind both.
+- [Staying safe online](https://kashsec.vercel.app/lesson/00-fresher-basics/staying-safe-online.html): Phishing, scams, and the basics of online safety.
+- [Building good digital habits](https://kashsec.vercel.app/lesson/00-fresher-basics/building-good-digital-habits.html): Turning everything in this path into a five-minute weekly routine.
+- [How to learn tech effectively](https://kashsec.vercel.app/lesson/00-fresher-basics/how-to-learn-tech.html): The habits that make the difference.
+
+### Path 01 — Introduction to Cybersecurity
+
+- [What is cybersecurity?](https://kashsec.vercel.app/lesson/01-introduction/what-is-cybersecurity.html): The concept, in plain English with everyday analogies.
+- [Why it matters to you](https://kashsec.vercel.app/lesson/01-introduction/why-it-matters.html): Everyday attacks, and the career door this opens.
+- [The CIA Triad: the three things security actually protects](https://kashsec.vercel.app/lesson/01-introduction/cia-triad-explained.html): Confidentiality, Integrity, Availability — the framework behind nearly every control you'll learn.
+- [Types of hackers & careers](https://kashsec.vercel.app/lesson/01-introduction/types-of-hackers.html): White/grey/black hats, and the jobs that exist.
+- [A tour of common cyberattacks](https://kashsec.vercel.app/lesson/01-introduction/common-cyberattacks-overview.html): A bird's-eye map of malware, phishing, and web/network attacks before the deep dives.
+- [The golden rule: permission](https://kashsec.vercel.app/lesson/01-introduction/the-golden-rule.html): The one legal line that keeps you safe forever.
+- [Cybersecurity laws & ethics, beyond the golden rule](https://kashsec.vercel.app/lesson/01-introduction/cybersecurity-laws-and-ethics.html): The CFAA, the hat framework formalized, and ethics beyond strict legality.
+- [Security frameworks: a beginner's map](https://kashsec.vercel.app/lesson/01-introduction/security-frameworks-intro.html): NIST CSF, ISO 27001, CIS Controls, and OWASP Top 10, in plain English.
+- [How to actually learn this](https://kashsec.vercel.app/lesson/01-introduction/how-to-learn.html): The habits that prevent burnout and speed you up.
+- [Building your first home lab](https://kashsec.vercel.app/lesson/01-introduction/building-a-home-lab.html): VMs, snapshots, and setting up an isolated environment to practice in.
+- [Joining the security community](https://kashsec.vercel.app/lesson/01-introduction/joining-the-community.html): CTFs, communities, and where real learning happens outside a classroom.
+- [Security Mindset Lab](https://kashsec.vercel.app/lesson/01-introduction/security-mindset-lab.html): A hands-on exercise to develop the right way of thinking about security.
+
+### Path 02 — Networking Fundamentals
+
+- [What is a network?](https://kashsec.vercel.app/lesson/02-networking/what-is-a-network.html): The post-office picture that makes it all click.
+- [Routing basics](https://kashsec.vercel.app/lesson/02-networking/routing-basics.html): Routers, the default gateway, and how packets travel hop by hop.
+- [IP addresses](https://kashsec.vercel.app/lesson/02-networking/ip-addresses.html): Private vs public, IPv4 vs IPv6, and finding yours.
+- [Subnetting & CIDR notation](https://kashsec.vercel.app/lesson/02-networking/subnetting-and-cidr.html): Reading /24, /16, and why smaller numbers mean bigger networks.
+- [NAT & Port Forwarding](https://kashsec.vercel.app/lesson/02-networking/nat-and-port-forwarding.html): How your whole house shares one public IP, and why forwarding a port is risky.
+- [Ports: the doors](https://kashsec.vercel.app/lesson/02-networking/ports.html): Well-known ports and why scanners knock on them.
+- [Packets & the OSI layers](https://kashsec.vercel.app/lesson/02-networking/packets.html): How data is chopped, wrapped, and reassembled.
+- [Switches & VLANs](https://kashsec.vercel.app/lesson/02-networking/switches-and-vlans.html): One physical switch, several isolated logical networks.
+- [What is a protocol?](https://kashsec.vercel.app/lesson/02-networking/protocols.html): Rules two computers agree on before talking.
+- [TCP vs UDP](https://kashsec.vercel.app/lesson/02-networking/tcp-vs-udp.html): Registered mail vs postcard — plus the handshake.
+- [Wireless networking basics](https://kashsec.vercel.app/lesson/02-networking/wireless-networking-basics.html): WPA2/WPA3 vs. broken WEP, open networks, and evil twin attacks.
+- [DNS: the phonebook](https://kashsec.vercel.app/lesson/02-networking/dns.html): How names become numbers, and what leaks.
+- [HTTP & HTTPS](https://kashsec.vercel.app/lesson/02-networking/http-https.html): The web's language, and why the padlock matters.
+- [Firewalls: the basics](https://kashsec.vercel.app/lesson/02-networking/firewalls-basics.html): Default-deny vs. default-allow, and stateful vs. stateless filtering.
+- [Common Network Attacks: An Overview](https://kashsec.vercel.app/lesson/02-networking/common-network-attacks-overview.html): ARP spoofing, DNS spoofing, SYN floods, and packet sniffing, named and mapped.
+- [Network Troubleshooting Tools](https://kashsec.vercel.app/lesson/02-networking/network-troubleshooting-tools.html): ping, traceroute, nslookup, and the toolkit for looking at a real network.
+- [DNS Lab](https://kashsec.vercel.app/lesson/02-networking/dns-lab.html): Understand how DNS works and how it can be abused.
+- [Cloud & Modern Networking](https://kashsec.vercel.app/lesson/02-networking/cloud-and-modern-networking.html): SDN, virtual networks, and why the concepts transfer even when hardware disappears.
+- [Network Security Careers & Certifications](https://kashsec.vercel.app/lesson/02-networking/network-certifications-careers.html): Network+, CCNA, and why this foundation underlies most other security specializations.
+- [Practical Packet Analysis Intro](https://kashsec.vercel.app/lesson/02-networking/practical-packet-lab.html): See how data actually moves, hands-on.
+
+### Path 03 — Operating Systems & Linux
+
+- [What is an operating system?](https://kashsec.vercel.app/lesson/03-linux/what-is-an-os.html): The manager that runs your computer.
+- [Windows vs Linux vs macOS](https://kashsec.vercel.app/lesson/03-linux/windows-linux-mac.html): The big three, and why security loves Linux.
+- [Why hackers love Linux](https://kashsec.vercel.app/lesson/03-linux/why-linux.html): Open, scriptable, and the tools live here.
+- [Choosing a Linux distro for security work](https://kashsec.vercel.app/lesson/03-linux/linux-distros-for-security.html): Kali vs. Parrot vs. Ubuntu — attack platform vs. target system.
+- [What is virtualization?](https://kashsec.vercel.app/lesson/03-linux/virtualization.html): A whole computer inside your computer.
+- [Install VirtualBox](https://kashsec.vercel.app/lesson/03-linux/install-virtualbox.html): Step-by-step with troubleshooting.
+- [Install Kali Linux](https://kashsec.vercel.app/lesson/03-linux/install-kali.html): The pre-built image route, safely.
+- [Snapshots & safety](https://kashsec.vercel.app/lesson/03-linux/snapshots-safety.html): Undo mistakes; network isolation.
+- [Meet the terminal](https://kashsec.vercel.app/lesson/03-linux/terminal-basics.html): Your first commands, unafraid.
+- [The Linux Filesystem Hierarchy](https://kashsec.vercel.app/lesson/03-linux/linux-filesystem-hierarchy.html): Why /etc matters most, and how /tmp becomes an attack surface.
+- [Files & folders](https://kashsec.vercel.app/lesson/03-linux/files-and-folders.html): Navigate, read, search — grep is gold.
+- [Text Processing Tools: Beyond grep](https://kashsec.vercel.app/lesson/03-linux/linux-text-processing-tools.html): sed, awk, cut, and sort — chained together with pipes.
+- [Users, permissions & sudo](https://kashsec.vercel.app/lesson/03-linux/users-permissions.html): Read rwx, install with apt, the SUID clue.
+- [Linux Package Management](https://kashsec.vercel.app/lesson/03-linux/linux-package-management.html): apt/dnf/pacman, repositories, and why package signing matters.
+- [Linux Process Management](https://kashsec.vercel.app/lesson/03-linux/linux-process-management.html): ps, top, kill, and systemd — the Linux side of Path 07's Task Manager coverage.
+- [Linux Networking Commands](https://kashsec.vercel.app/lesson/03-linux/linux-networking-commands.html): ip, ss, curl, and a first, careful preview of nmap.
+- [SSH & Remote Access](https://kashsec.vercel.app/lesson/03-linux/ssh-and-remote-access.html): Key-based auth, hardening, and the Linux parallel to Path 07's RDP lesson.
+- [Linux Cron & Scheduling](https://kashsec.vercel.app/lesson/03-linux/linux-cron-and-scheduling.html): Scheduled jobs, and why cron is a favorite persistence mechanism.
+- [Linux Logging Basics](https://kashsec.vercel.app/lesson/03-linux/linux-logging-basics.html): /var/log, journalctl, and why attackers try to clear their tracks.
+- [Linux Firewall Basics](https://kashsec.vercel.app/lesson/03-linux/linux-firewall-basics.html): iptables, ufw, and applying default-deny without locking yourself out.
+- [Your first bash script](https://kashsec.vercel.app/lesson/03-linux/bash-scripting.html): Pipes, redirection, loops — automation begins.
+- [Shell Scripting Security Pitfalls](https://kashsec.vercel.app/lesson/03-linux/shell-scripting-security-pitfalls.html): Command injection, unquoted variables, and eval's real dangers.
+- [A Practical Linux Hardening Checklist](https://kashsec.vercel.app/lesson/03-linux/linux-hardening-checklist.html): Every earlier lesson in this path, consolidated into one ordered checklist.
+- [Linux Careers & Certifications](https://kashsec.vercel.app/lesson/03-linux/linux-careers-and-certifications.html): Linux+, RHCSA, and why this foundation underlies most other security paths.
+- [Advanced Terminal Lab](https://kashsec.vercel.app/lesson/03-linux/advanced-terminal-lab.html): Level up your command line skills.
+- [Linux Forensics Basics Lab](https://kashsec.vercel.app/lesson/03-linux/linux-forensics-lab.html): Learn to investigate a Linux system.
+
+### Path 04 — Programming & Python
+
+- [What is programming?](https://kashsec.vercel.app/lesson/04-python/what-is-programming.html): Recipes for computers, in plain English.
+- [Variables & data types](https://kashsec.vercel.app/lesson/04-python/variables-types.html): Labelled boxes: strings, numbers, booleans.
+- [Dictionaries & sets](https://kashsec.vercel.app/lesson/04-python/dictionaries-and-sets.html): Labelled data, and automatic uniqueness for things like log IPs.
+- [Decisions with if/else](https://kashsec.vercel.app/lesson/04-python/if-else.html): The logic behind every login check.
+- [Loops: repeat things](https://kashsec.vercel.app/lesson/04-python/loops.html): How tools try 10,000 passwords in seconds.
+- [Error handling & exceptions](https://kashsec.vercel.app/lesson/04-python/error-handling-exceptions.html): try/except, and why a real scanner can't crash on the first timeout.
+- [Why Python for security](https://kashsec.vercel.app/lesson/04-python/why-python.html): Readable, ubiquitous, batteries included.
+- [Your first Python program](https://kashsec.vercel.app/lesson/04-python/first-program.html): Print, input, comments — the write-save-run cycle.
+- [String manipulation & regex](https://kashsec.vercel.app/lesson/04-python/string-manipulation-regex.html): f-strings, and pattern matching for log analysis and input validation.
+- [Lists & functions](https://kashsec.vercel.app/lesson/04-python/lists-functions.html): Wordlists and reusable code blocks.
+- [Working with files in Python](https://kashsec.vercel.app/lesson/04-python/working-with-files-python.html): Reading wordlists, parsing logs, and writing results safely.
+- [Python modules & packages](https://kashsec.vercel.app/lesson/04-python/python-modules-packages.html): pip, virtual environments, and organizing your own growing scripts.
+- [Build a password checker](https://kashsec.vercel.app/lesson/04-python/password-checker.html): Combine everything into a real tool.
+- [Object-oriented Python basics](https://kashsec.vercel.app/lesson/04-python/object-oriented-python-basics.html): Classes, objects, and why real tools bundle data with behavior.
+- [Writing Secure Python Code](https://kashsec.vercel.app/lesson/04-python/writing-secure-python-code.html): eval(), shell=True, hardcoded secrets, and unsafe pickle.
+- [Where to go next](https://kashsec.vercel.app/lesson/04-python/where-next.html): requests, socket, hashlib — and a mini port checker.
+- [Python, requests & APIs](https://kashsec.vercel.app/lesson/04-python/python-requests-apis.html): GET/POST, JSON, headers, and a realistic header-checking script.
+- [Python for network scripting](https://kashsec.vercel.app/lesson/04-python/python-network-scripting.html): Sockets, a simple port scanner, and DNS lookups from code.
+- [Python Security Libraries: An Overview](https://kashsec.vercel.app/lesson/04-python/python-security-libraries-overview.html): hashlib, bcrypt, scapy, Beautiful Soup, and paramiko, named and mapped.
+- [Automation for Security](https://kashsec.vercel.app/lesson/04-python/automation-for-security.html): Why scripting and automation are essential in security.
+- [Python Careers & Next Steps](https://kashsec.vercel.app/lesson/04-python/python-careers-next-steps.html): Why Python fluency is assumed, and how to build a real portfolio.
+- [Security Scripting Lab](https://kashsec.vercel.app/lesson/04-python/security-scripting-lab.html): Turn Python into a real security tool.
+
+### Path 05 — How the Web Works
+
+- [The page-load journey](https://kashsec.vercel.app/lesson/05-web-basics/page-load-journey.html): Every step from click to rendered page.
+- [How browsers render pages](https://kashsec.vercel.app/lesson/05-web-basics/how-browsers-render-pages.html): The DOM, the critical rendering path, and why this matters for XSS.
+- [HTML, CSS & JavaScript](https://kashsec.vercel.app/lesson/05-web-basics/html-css-js.html): Structure, style, behaviour — and why XSS exists.
+- [Client vs server](https://kashsec.vercel.app/lesson/05-web-basics/client-vs-server.html): The single most important web-security idea.
+- [HTTP methods & status codes](https://kashsec.vercel.app/lesson/05-web-basics/http-methods-status-codes.html): GET vs POST, the 401-vs-403 distinction, and username enumeration.
+- [Cookies, sessions, logins](https://kashsec.vercel.app/lesson/05-web-basics/cookies-sessions.html): How you stay logged in — and how attackers steal that.
+- [Browser storage basics](https://kashsec.vercel.app/lesson/05-web-basics/browser-storage-basics.html): localStorage, sessionStorage, and why tokens belong in HttpOnly cookies instead.
+- [Same-Origin Policy & CORS](https://kashsec.vercel.app/lesson/05-web-basics/same-origin-policy-and-cors.html): The web's foundational trust boundary, and how it gets misconfigured.
+- [APIs & JSON](https://kashsec.vercel.app/lesson/05-web-basics/apis-json.html): How modern apps really talk under the hood.
+- [WebSockets & the real-time web](https://kashsec.vercel.app/lesson/05-web-basics/websockets-realtime-web.html): Persistent, bidirectional connections for chat, live updates, and games.
+- [Browser DevTools](https://kashsec.vercel.app/lesson/05-web-basics/devtools.html): Your first hacking tool — free and built in.
+- [Web forms & input handling](https://kashsec.vercel.app/lesson/05-web-basics/web-forms-input-handling.html): Why client-side validation is a UX feature, never a security control.
+- [Content Security Policy basics](https://kashsec.vercel.app/lesson/05-web-basics/content-security-policy-basics.html): The browser-enforced header that blocks injected scripts from running at all.
+- [Anatomy of a web app](https://kashsec.vercel.app/lesson/05-web-basics/web-anatomy.html): The full picture: client, server, DB, API, cookies.
+- [Web caching basics](https://kashsec.vercel.app/lesson/05-web-basics/web-caching-basics.html): CDNs, Cache-Control, and why caching sensitive pages is a real vulnerability.
+- [Web frameworks: an overview](https://kashsec.vercel.app/lesson/05-web-basics/web-frameworks-overview.html): React, Django, Express — and why framework defaults help but aren't magic.
+- [Cookies & Sessions Lab](https://kashsec.vercel.app/lesson/05-web-basics/cookies-sessions-lab.html): Understand how authentication state is managed and attacked.
+- [Browser DevTools Lab](https://kashsec.vercel.app/lesson/05-web-basics/devtools-lab.html): Learn to use your browser as a hacking tool.
+
+### Path 06 — Cryptography Fundamentals
+
+- [What is cryptography?](https://kashsec.vercel.app/lesson/06-crypto-fundamentals/what-is-cryptography.html): Encoding vs. encryption vs. hashing — the distinction that unlocks everything else.
+- [Symmetric Encryption](https://kashsec.vercel.app/lesson/06-crypto-fundamentals/symmetric-encryption.html): One shared key, AES, and why ECB mode is a classic mistake.
+- [Asymmetric Encryption](https://kashsec.vercel.app/lesson/06-crypto-fundamentals/asymmetric-encryption.html): Public/private keys, RSA, hybrid encryption, and digital signatures.
+- [Key Exchange & Diffie-Hellman](https://kashsec.vercel.app/lesson/06-crypto-fundamentals/key-exchange-diffie-hellman.html): How two strangers agree on a shared secret over a channel an attacker is watching.
+- [Elliptic Curve Cryptography](https://kashsec.vercel.app/lesson/06-crypto-fundamentals/elliptic-curve-cryptography.html): The other hard math problem behind modern crypto, and why smaller keys win.
+- [Hashing Explained](https://kashsec.vercel.app/lesson/06-crypto-fundamentals/hashing-explained.html): SHA-256, why passwords need bcrypt not SHA-256, and salting.
+- [Digital Signatures & Certificates](https://kashsec.vercel.app/lesson/06-crypto-fundamentals/digital-signatures-certificates.html): How the padlock icon actually works, and what it doesn't promise.
+- [The TLS Handshake, Step by Step](https://kashsec.vercel.app/lesson/06-crypto-fundamentals/tls-handshake-explained.html): How every earlier lesson in this path assembles into the padlock icon.
+- [Common Cryptographic Attacks](https://kashsec.vercel.app/lesson/06-crypto-fundamentals/cryptographic-attacks-overview.html): Padding oracle, replay, downgrade, and side-channel attacks, named and explained.
+- [Common Crypto Mistakes](https://kashsec.vercel.app/lesson/06-crypto-fundamentals/common-crypto-mistakes.html): Seven recurring real-world failure patterns, gathered in one place.
+- [Applied Cryptography: Choosing and Using It Correctly](https://kashsec.vercel.app/lesson/06-crypto-fundamentals/applied-crypto-in-practice.html): Libraries over primitives, key management, and a practical decision guide.
+- [Blockchain & Cryptocurrency Cryptography](https://kashsec.vercel.app/lesson/06-crypto-fundamentals/blockchain-cryptocurrency-crypto.html): Hash chains, wallets, and signatures — this path's concepts in a real-world system.
+- [Post-Quantum Cryptography](https://kashsec.vercel.app/lesson/06-crypto-fundamentals/post-quantum-cryptography.html): Shor's algorithm, harvest-now-decrypt-later, and why NIST already standardized the fix.
+- [Crypto Hands-On Lab](https://kashsec.vercel.app/lesson/06-crypto-fundamentals/crypto-hands-on-lab.html): CyberChef and OpenSSL — encode, encrypt, hash, and inspect real certificates.
+
+### Path 07 — Windows Security Basics
+
+- [Windows Fundamentals for Security](https://kashsec.vercel.app/lesson/07-windows-security/windows-fundamentals.html): Architecture, the Registry, and services — Windows' equivalent of Path 03.
+- [Windows Security Settings](https://kashsec.vercel.app/lesson/07-windows-security/windows-security-settings.html): Defender, Firewall, Windows Update, UAC, and BitLocker.
+- [RDP & Remote Access Security](https://kashsec.vercel.app/lesson/07-windows-security/windows-rdp-remote-access-security.html): Why exposed RDP is a top ransomware entry point, and how to lock it down.
+- [Windows Event Viewer](https://kashsec.vercel.app/lesson/07-windows-security/windows-event-viewer.html): Reading the Security log — Windows' equivalent of auth.log.
+- [Recognizing a Compromised Windows Machine](https://kashsec.vercel.app/lesson/07-windows-security/recognizing-windows-compromise.html): The practical signs to check across processes, accounts, and scheduled tasks.
+- [Windows User Accounts & UAC](https://kashsec.vercel.app/lesson/07-windows-security/windows-user-accounts.html): Standard vs. admin, least privilege, and account auditing.
+- [Windows Active Directory: The Basics](https://kashsec.vercel.app/lesson/07-windows-security/windows-active-directory-basics.html): Domains, Domain Controllers, Kerberos, and why AD is such a high-value target.
+- [Windows Group Policy Basics](https://kashsec.vercel.app/lesson/07-windows-security/windows-group-policy-basics.html): How GPOs enforce settings domain-wide, and why misconfiguration is a real finding.
+- [Windows Command Line Basics](https://kashsec.vercel.app/lesson/07-windows-security/windows-command-line-basics.html): Command Prompt and PowerShell, and why attackers love the latter too.
+- [Windows Services & Task Manager, for Security](https://kashsec.vercel.app/lesson/07-windows-security/windows-services-and-task-manager.html): Why services are an attacker's favorite persistence mechanism, and how to audit them.
+- [Securing a Windows Machine](https://kashsec.vercel.app/lesson/07-windows-security/securing-a-windows-machine.html): A complete, practical hardening checklist.
+- [Windows Backup & Recovery](https://kashsec.vercel.app/lesson/07-windows-security/windows-backup-and-recovery.html): File History, System Restore, and why neither one is a ransomware defense on its own.
+- [Windows Privilege Escalation: An Introduction](https://kashsec.vercel.app/lesson/07-windows-security/windows-privesc-intro.html): Vertical vs. horizontal escalation, and the named technique categories to recognize.
+- [Windows Security Lab](https://kashsec.vercel.app/lesson/07-windows-security/windows-security-lab.html): Hands-on on a real Windows VM, start to finish.
+
+### Path 08 — Cloud Computing Basics
+
+- [What is Cloud Computing?](https://kashsec.vercel.app/lesson/08-cloud-basics/what-is-cloud-computing.html): IaaS/PaaS/SaaS, and why this course is itself a cloud example.
+- [Cloud Providers Overview](https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-providers-overview.html): AWS, Azure, GCP — the same concepts, different names.
+- [Cloud Compute Basics](https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-compute-basics.html): VMs, containers, instance types, and auto-scaling.
+- [Cloud Serverless Basics](https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-serverless-basics.html): Functions, triggers, and why 'serverless' still has servers underneath.
+- [Cloud Storage Basics](https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-storage-basics.html): Buckets, objects, and why misconfigured storage is a top real-world breach cause.
+- [Cloud Databases Basics](https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-databases-basics.html): Managed relational, NoSQL, and data warehouse services, and their security tradeoffs.
+- [Cloud Networking Basics](https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-networking-basics.html): VPCs, security groups, and the instance metadata service, explained fully.
+- [Cloud Logging & Monitoring Basics](https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-logging-monitoring-basics.html): CloudTrail-style audit logs, and why they're not always enabled by default.
+- [Cloud Cost & Billing Security](https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-cost-billing-security.html): Cryptomining abuse, billing alerts, and cost as an early compromise signal.
+- [Cloud Identity & Access Management](https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-identity-access.html): IAM roles, least privilege, and why leaked keys are a leading breach cause.
+- [Cloud Multi-Account Governance](https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-multi-account-governance.html): Landing zones, account factories, and blast radius at the account level.
+- [The Shared Responsibility Model](https://kashsec.vercel.app/lesson/08-cloud-basics/shared-responsibility-model.html): Where the provider's job ends and yours begins.
+- [Cloud Security Careers & Certifications](https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-certifications-careers.html): AWS/Azure/GCP security certs, CCSK, and how to build real hands-on experience.
+- [Cloud Basics Hands-On Lab](https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-basics-lab.html): A real free-tier account, start to finish — prep for Path 16's flAWS lab.
+
+### Path 09 — Digital Privacy & Personal Security
+
+- [Your Digital Footprint](https://kashsec.vercel.app/lesson/09-digital-privacy/digital-footprint.html): What you leave behind online, and why it enables spear phishing.
+- [Social Media Privacy & Oversharing](https://kashsec.vercel.app/lesson/09-digital-privacy/social-media-privacy-oversharing.html): Aggregation risk in practice — real-time location, metadata photos, and hidden security answers.
+- [VPNs Explained](https://kashsec.vercel.app/lesson/09-digital-privacy/vpns-explained.html): What a VPN genuinely protects against — and what it doesn't.
+- [Browser Privacy](https://kashsec.vercel.app/lesson/09-digital-privacy/browser-privacy.html): Third-party cookies, fingerprinting, and why incognito mode isn't a privacy tool.
+- [Privacy-Focused Tools & Alternatives](https://kashsec.vercel.app/lesson/09-digital-privacy/privacy-focused-tools-alternatives.html): Real tools — browsers, search engines, messaging, VPNs — matched honestly to their tradeoffs.
+- [Secure Communications](https://kashsec.vercel.app/lesson/09-digital-privacy/secure-communications.html): End-to-end encryption vs. encrypted-in-transit, and what metadata still reveals.
+- [Device & Location Privacy](https://kashsec.vercel.app/lesson/09-digital-privacy/device-location-privacy.html): How your phone reveals location beyond GPS, and the app-permission habits that matter.
+- [Data Broker Opt-Outs](https://kashsec.vercel.app/lesson/09-digital-privacy/data-broker-opt-outs.html): The industry compiling your public data into purchasable profiles, and how to push back.
+- [Identity Theft Protection](https://kashsec.vercel.app/lesson/09-digital-privacy/identity-theft-protection.html): Credit freezes, monitoring, and a concrete response checklist.
+- [Privacy Laws & Your Rights](https://kashsec.vercel.app/lesson/09-digital-privacy/privacy-laws-your-rights.html): GDPR, CCPA, and how to actually exercise your legal data rights.
+- [Privacy Settings Audit](https://kashsec.vercel.app/lesson/09-digital-privacy/privacy-settings-audit.html): A structured, repeatable audit of your real accounts.
+- [Protecting Family & Children's Privacy](https://kashsec.vercel.app/lesson/09-digital-privacy/protecting-family-childrens-privacy.html): Sharenting, COPPA, and applying deliberate choice on someone else's behalf.
+- [Deleting Your Digital Footprint](https://kashsec.vercel.app/lesson/09-digital-privacy/deleting-your-digital-footprint.html): A practical, prioritized cleanup process, tying this whole path together.
+- [Personal Security Capstone Lab](https://kashsec.vercel.app/lesson/09-digital-privacy/personal-security-lab.html): A complete personal security review, start to finish.
+
+### Path 10 — Cybersecurity Fundamentals
+
+- [The CIA triad](https://kashsec.vercel.app/lesson/10-fundamentals/cia-triad.html): Confidentiality, Integrity, Availability — the field's core.
+- [Defense in depth](https://kashsec.vercel.app/lesson/10-fundamentals/defense-in-depth-basics.html): Why no single control is ever enough, and how this course itself mirrors the principle.
+- [Threats, vulns & risk](https://kashsec.vercel.app/lesson/10-fundamentals/threats-risk.html): The unlocked-door analogy and the risk equation.
+- [Types of security controls](https://kashsec.vercel.app/lesson/10-fundamentals/security-controls-types.html): Preventive/detective/corrective/deterrent, and technical/administrative/physical.
+- [Vulnerability Management Basics](https://kashsec.vercel.app/lesson/10-fundamentals/vulnerability-management-basics.html): CVE, CVSS, and why score alone doesn't determine real priority.
+- [Attackers & the kill chain](https://kashsec.vercel.app/lesson/10-fundamentals/attackers-kill-chain.html): Who attacks and the phases of an intrusion.
+- [Insider Threats](https://kashsec.vercel.app/lesson/10-fundamentals/insider-threats.html): Malicious, negligent, and compromised insiders — and why they're hard to detect.
+- [Malware families](https://kashsec.vercel.app/lesson/10-fundamentals/malware.html): Virus, worm, trojan, ransomware, rootkit, spyware.
+- [Supply Chain Security Basics](https://kashsec.vercel.app/lesson/10-fundamentals/supply-chain-security-basics.html): Why a trusted vendor relationship is itself an attack surface.
+- [Passwords & hashing](https://kashsec.vercel.app/lesson/10-fundamentals/passwords-hashing.html): How they should be stored, why reuse is a disaster.
+- [Phishing & social eng.](https://kashsec.vercel.app/lesson/10-fundamentals/phishing.html): Attacking humans, not computers.
+- [Security Policies & Awareness Training](https://kashsec.vercel.app/lesson/10-fundamentals/security-policies-awareness.html): Why a policy on paper isn't the same as security in practice.
+- [MFA, updates, backups](https://kashsec.vercel.app/lesson/10-fundamentals/protect-yourself.html): Habits that stop most real attacks.
+- [Incident Response Basics](https://kashsec.vercel.app/lesson/10-fundamentals/incident-response-basics.html): The six-phase lifecycle behind 'isolate first, investigate second.'
+- [Business Continuity & Disaster Recovery](https://kashsec.vercel.app/lesson/10-fundamentals/business-continuity-disaster-recovery.html): RTO, RPO, and backups at organizational scale.
+- [Physical Security Basics](https://kashsec.vercel.app/lesson/10-fundamentals/physical-security-basics.html): Why physical access defeats most digital controls, and what tailgating exploits.
+- [Frameworks & compliance](https://kashsec.vercel.app/lesson/10-fundamentals/frameworks.html): NIST, ISO, OWASP, MITRE, PCI DSS, HIPAA, GDPR.
+- [Security Metrics & KPIs](https://kashsec.vercel.app/lesson/10-fundamentals/security-metrics-kpis.html): MTTD, MTTR, and why measuring the wrong thing can be actively misleading.
+- [Risk Assessment Lab](https://kashsec.vercel.app/lesson/10-fundamentals/risk-assessment-lab.html): Practice thinking like a risk analyst.
+- [Social Engineering Lab](https://kashsec.vercel.app/lesson/10-fundamentals/social-engineering-lab.html): Understand how attackers manipulate people.
+
+### Path 11 — Web Security & Hacking
+
+- [The OWASP Top 10](https://kashsec.vercel.app/lesson/11-web-security/owasp-top-10.html): The web hacker's shared checklist, in plain words.
+- [Burp Suite & PortSwigger](https://kashsec.vercel.app/lesson/11-web-security/burp-setup.html): The professional's tool and free lab platform.
+- [Web recon](https://kashsec.vercel.app/lesson/11-web-security/web-recon.html): Subdomains, paths, parameters, JS files.
+- [Path Traversal Basics](https://kashsec.vercel.app/lesson/11-web-security/path-traversal-basics.html): Escaping an intended directory with ../, and the encoded bypasses that follow.
+- [Broken access & IDOR](https://kashsec.vercel.app/lesson/11-web-security/idor.html): The friendliest first bug — just change the ID.
+- [CSRF — Cross-Site Request Forgery](https://kashsec.vercel.app/lesson/11-web-security/csrf-attacks.html): Tricking a browser into sending a request the victim never meant to send.
+- [Clickjacking](https://kashsec.vercel.app/lesson/11-web-security/clickjacking.html): Invisible iframes, and why frame-ancestors matters.
+- [Cross-Site Scripting](https://kashsec.vercel.app/lesson/11-web-security/xss.html): Reflected, stored, DOM — and how to prove it safely.
+- [Web Security Headers: A Deep Dive](https://kashsec.vercel.app/lesson/11-web-security/web-security-headers-deep-dive.html): HSTS, X-Content-Type-Options, Referrer-Policy, and every header this course has mentioned, in one place.
+- [SQL Injection](https://kashsec.vercel.app/lesson/11-web-security/sqli.html): The classic — with auth bypass, UNION, blind, sqlmap.
+- [Business Logic Vulnerabilities](https://kashsec.vercel.app/lesson/11-web-security/business-logic-vulnerabilities.html): Price tampering, step-skipping, and bugs no scanner will ever find.
+- [Race Conditions in Web Applications](https://kashsec.vercel.app/lesson/11-web-security/race-conditions-web.html): The check-then-act flaw behind coupon replay and double-spend bugs.
+- [Command inj. & uploads](https://kashsec.vercel.app/lesson/11-web-security/cmd-and-upload.html): Two paths to server takeover.
+- [XXE — XML External Entity Injection](https://kashsec.vercel.app/lesson/11-web-security/xxe-injection.html): File disclosure, SSRF, and denial of service through XML parsing.
+- [Local & Remote File Inclusion (LFI/RFI)](https://kashsec.vercel.app/lesson/11-web-security/file-inclusion-lfi-rfi.html): When 'read this file' becomes 'execute this file.'
+- [Insecure Deserialization](https://kashsec.vercel.app/lesson/11-web-security/deserialization-attacks.html): Why pickle.load() on untrusted data can mean instant code execution.
+- [SSRF & auth attacks](https://kashsec.vercel.app/lesson/11-web-security/ssrf-and-auth.html): Cloud metadata, JWT, credential attacks.
+- [API Security Fundamentals](https://kashsec.vercel.app/lesson/11-web-security/api-security-fundamentals.html): Every vulnerability in this path, reshaped for JSON endpoints.
+- [GraphQL Security Basics](https://kashsec.vercel.app/lesson/11-web-security/graphql-security-basics.html): Introspection, query depth attacks, and why IDOR gets easier to find.
+- [Web Application Firewalls (WAFs)](https://kashsec.vercel.app/lesson/11-web-security/web-application-firewalls.html): Real protection, real limits, and why a WAF is never the actual fix.
+- [Secure Coding for Web Developers](https://kashsec.vercel.app/lesson/11-web-security/secure-coding-for-web-devs.html): Every defensive principle in this path, consolidated into one checklist.
+- [Your 90-day roadmap](https://kashsec.vercel.app/lesson/11-web-security/web-roadmap.html): A concrete plan to reach real bug bounty.
+- [Advanced Burp Suite Lab](https://kashsec.vercel.app/lesson/11-web-security/burp-advanced-lab.html): Take your Burp skills to the next level.
+- [Advanced JWT Lab](https://kashsec.vercel.app/lesson/11-web-security/jwt-advanced-lab.html): Deep dive into JWT attacks and defenses.
+- [SSRF & JWT Lab](https://kashsec.vercel.app/lesson/11-web-security/ssrf-jwt-lab.html): Practice two important modern web attacks.
+- [XSS Practical Lab](https://kashsec.vercel.app/lesson/11-web-security/xss-practical-lab.html): Learn to find and exploit Cross-Site Scripting safely.
+
+### Path 12 — Network Security
+
+- [Why network security matters](https://kashsec.vercel.app/lesson/12-network-security/why-netsec.html): Mapping, watching, filtering — the three activities.
+- [Scan networks with Nmap](https://kashsec.vercel.app/lesson/12-network-security/nmap.html): The classic scanner, from -sV to NSE scripts.
+- [See traffic with Wireshark](https://kashsec.vercel.app/lesson/12-network-security/wireshark.html): Watch real packets flow — plus tcpdump.
+- [Network Forensics Basics](https://kashsec.vercel.app/lesson/12-network-security/network-forensics-basics.html): Reconstructing what happened from a captured .pcap file after the fact.
+- [ARP Spoofing, Hands-On](https://kashsec.vercel.app/lesson/12-network-security/arp-spoofing-hands-on.html): How a classic local-network MITM actually gets established.
+- [Firewalls, VPNs, proxies](https://kashsec.vercel.app/lesson/12-network-security/firewalls-vpns.html): The everyday defensive stack.
+- [VPN Protocols: A Deep Dive](https://kashsec.vercel.app/lesson/12-network-security/vpn-protocols-deep-dive.html): OpenVPN, WireGuard, IPsec, and the real tradeoffs between them.
+- [Network Segmentation in Practice](https://kashsec.vercel.app/lesson/12-network-security/network-segmentation-in-practice.html): Designing real segments around trust boundaries, not organizational convenience.
+- [IDS, IPS & SIEM](https://kashsec.vercel.app/lesson/12-network-security/ids-ips-siem.html): Modern detection: from Snort to SOC to SOAR.
+- [Network Security Monitoring Tools](https://kashsec.vercel.app/lesson/12-network-security/network-security-monitoring-tools.html): Zeek, Suricata, and Security Onion, named and mapped.
+- [Network Access Control (NAC)](https://kashsec.vercel.app/lesson/12-network-security/network-access-control.html): 802.1X and posture assessment — deciding whether a device joins at all.
+- [Wi-Fi security & attacks](https://kashsec.vercel.app/lesson/12-network-security/wifi-security.html): WPA2/3, evil twin, handshake capture.
+- [Bluetooth & IoT Network Security](https://kashsec.vercel.app/lesson/12-network-security/bluetooth-iot-security.html): BlueBorne, and the Mirai botnet as the definitive default-credential case study.
+- [DNS Attacks, Hands-On](https://kashsec.vercel.app/lesson/12-network-security/dns-attacks-hands-on.html): Cache poisoning, hijacking, DNSSEC, and DoH/DoT.
+- [Man-in-the-Middle](https://kashsec.vercel.app/lesson/12-network-security/mitm.html): How MITMs work, and how HTTPS defeats them.
+- [DDoS Attacks & Mitigation](https://kashsec.vercel.app/lesson/12-network-security/ddos-attacks-mitigation.html): Volumetric, protocol, and application-layer attacks, and how real infrastructure absorbs them.
+- [Cloud Network Security](https://kashsec.vercel.app/lesson/12-network-security/cloud-network-security.html): Security groups and Network ACLs — this path's concepts, reimplemented in the cloud.
+- [Your network-security path](https://kashsec.vercel.app/lesson/12-network-security/netsec-roadmap.html): Red, blue, or engineering — pick a track.
+- [Advanced Nmap Lab](https://kashsec.vercel.app/lesson/12-network-security/nmap-advanced-lab.html): Master network scanning like a professional.
+- [Advanced Wireshark Lab](https://kashsec.vercel.app/lesson/12-network-security/wireshark-advanced-lab.html): Go deeper with packet analysis.
+
+### Path 13 — Mobile App Security
+
+- [Mobile Security Fundamentals](https://kashsec.vercel.app/lesson/13-mobile-security/mobile-security-fundamentals.html): Sandboxing, permissions, and how Android/iOS differ.
+- [Android Permissions Deep Dive](https://kashsec.vercel.app/lesson/13-mobile-security/android-permissions-deep-dive.html): Runtime permissions, protection levels, and the over-permissioned-app red flag.
+- [Setting Up a Mobile Testing Lab](https://kashsec.vercel.app/lesson/13-mobile-security/mobile-testing-lab-setup.html): Emulator, ADB, Burp, and root access — all wired together.
+- [OWASP Mobile Top 10](https://kashsec.vercel.app/lesson/13-mobile-security/owasp-mobile-top-10.html): The shared checklist for mobile application security.
+- [Android APK Analysis](https://kashsec.vercel.app/lesson/13-mobile-security/android-apk-analysis.html): Decompile and read an app's code without ever running it.
+- [Reverse Engineering Mobile Apps](https://kashsec.vercel.app/lesson/13-mobile-security/reverse-engineering-mobile-apps.html): Static and dynamic analysis together, and a first real look at Frida.
+- [Insecure Data Storage](https://kashsec.vercel.app/lesson/13-mobile-security/insecure-data-storage.html): The most common real-world mobile finding, hands-on.
+- [Mobile Authentication & Biometrics](https://kashsec.vercel.app/lesson/13-mobile-security/mobile-authentication-biometrics.html): The secure enclave, and why Face ID doesn't work the way most people assume.
+- [Intercepting Mobile Traffic](https://kashsec.vercel.app/lesson/13-mobile-security/intercepting-mobile-traffic.html): Certificate pinning, and bypassing it with Frida.
+- [Mobile API Security](https://kashsec.vercel.app/lesson/13-mobile-security/mobile-api-security.html): Every Path 11/21 vulnerability class, reached through a mobile app's traffic instead of a browser.
+- [iOS App Security Basics](https://kashsec.vercel.app/lesson/13-mobile-security/ios-security-basics.html): IPA structure, ATS, and the Keychain.
+- [Cross-Platform Mobile Security](https://kashsec.vercel.app/lesson/13-mobile-security/cross-platform-mobile-security.html): React Native's bridge, Flutter's tradeoffs, and what stays the same either way.
+- [Mobile Privilege Escalation & Root Detection](https://kashsec.vercel.app/lesson/13-mobile-security/mobile-privesc-root-detection.html): Root/jailbreak detection bypass and exported component attacks.
+- [Mobile App Hardening](https://kashsec.vercel.app/lesson/13-mobile-security/mobile-app-hardening.html): Obfuscation, anti-tampering, and anti-Frida — real protection with real, honest limits.
+- [Mobile Malware & App Store Security](https://kashsec.vercel.app/lesson/13-mobile-security/mobile-malware-app-store-security.html): How malicious apps actually reach users despite official review.
+- [Mobile Device Management (MDM)](https://kashsec.vercel.app/lesson/13-mobile-security/mobile-device-management-mdm.html): Containerization, BYOD, and enforcing security policy across a whole device fleet.
+- [Mobile Security Careers & Certifications](https://kashsec.vercel.app/lesson/13-mobile-security/mobile-security-careers-certifications.html): GMOB, eMAPT, and why mobile is a genuine specialization, not a universal baseline.
+- [Mobile Security Capstone Lab](https://kashsec.vercel.app/lesson/13-mobile-security/mobile-security-lab.html): A full assessment against a real vulnerable app.
+
+### Path 14 — Ethical Hacking
+
+- [What ethical hacking really is](https://kashsec.vercel.app/lesson/14-ethical-hacking/what-is-eh.html): Same skills, opposite purpose. The RoE and scope.
+- [Rules of Engagement, Deep Dive](https://kashsec.vercel.app/lesson/14-ethical-hacking/rules-of-engagement-deep-dive.html): Scope, timing, get-out-of-jail letters, and why ambiguity has real consequences.
+- [The 5 phases](https://kashsec.vercel.app/lesson/14-ethical-hacking/the-5-phases.html): The mental map every methodology reduces to.
+- [Pentest Methodologies & Standards](https://kashsec.vercel.app/lesson/14-ethical-hacking/pentest-methodologies-standards.html): PTES, OSSTMM, NIST SP 800-115, and why the named frameworks matter.
+- [Phase 1: Reconnaissance](https://kashsec.vercel.app/lesson/14-ethical-hacking/recon.html): OSINT, Google dorks, crt.sh, Shodan, GitHub.
+- [OSINT Tools, Deep Dive](https://kashsec.vercel.app/lesson/14-ethical-hacking/osint-tools-deep-dive.html): Employee enumeration, document metadata, and certificate transparency logs.
+- [Phase 2: Scan & enumerate](https://kashsec.vercel.app/lesson/14-ethical-hacking/scan-enumerate.html): Nmap deeper, per-service enum, searchsploit.
+- [Vulnerability Scanning Tools](https://kashsec.vercel.app/lesson/14-ethical-hacking/vulnerability-scanning-tools.html): Nessus, OpenVAS, and the honest limits of automated scanning.
+- [Phase 3: Exploitation](https://kashsec.vercel.app/lesson/14-ethical-hacking/exploitation.html): Metasploit, reverse shells, Metasploitable lab.
+- [Exploit Development Basics](https://kashsec.vercel.app/lesson/14-ethical-hacking/exploit-development-basics.html): Where Exploit-DB entries actually come from — buffer overflows, conceptually.
+- [Phase 4: Post-exploitation](https://kashsec.vercel.app/lesson/14-ethical-hacking/post-exploitation.html): Situational awareness, privesc, pivoting.
+- [Privilege Escalation Methodology](https://kashsec.vercel.app/lesson/14-ethical-hacking/privilege-escalation-methodology.html): Enumeration-first thinking, tying Path 03/07's technique catalogs together.
+- [Lateral Movement Techniques](https://kashsec.vercel.app/lesson/14-ethical-hacking/lateral-movement-techniques.html): Credential reuse, Pass-the-Hash, and living off the land.
+- [Pivoting & Tunneling](https://kashsec.vercel.app/lesson/14-ethical-hacking/pivoting-and-tunneling.html): Reaching a segment you can't touch directly, through one you already own.
+- [Phase 5: Reporting](https://kashsec.vercel.app/lesson/14-ethical-hacking/reporting.html): The deliverable. CVSS, exec summary, details.
+- [Red Team vs. Penetration Testing](https://kashsec.vercel.app/lesson/14-ethical-hacking/red-team-vs-pentest.html): Comprehensive coverage vs. a covert, objective-driven simulation.
+- [Social Engineering in Pentests](https://kashsec.vercel.app/lesson/14-ethical-hacking/social-engineering-in-pentests.html): Pretexting, phishing simulations, and the ethical line that keeps it professional.
+- [Wireless Pentesting Basics](https://kashsec.vercel.app/lesson/14-ethical-hacking/wireless-pentesting-basics.html): Handshake capture, evil twins, and WPS — and why scope is harder to draw.
+- [Purple Teaming Basics](https://kashsec.vercel.app/lesson/14-ethical-hacking/purple-teaming-basics.html): Red and blue working together, in real time, against the ATT&CK matrix.
+- [Your ethical-hacking path](https://kashsec.vercel.app/lesson/14-ethical-hacking/eh-roadmap.html): Security+ → eJPT → PNPT / OSCP.
+- [Advanced Exploitation Lab](https://kashsec.vercel.app/lesson/14-ethical-hacking/advanced-exploitation-lab.html): Take exploitation skills further.
+- [Metasploit Practical Lab](https://kashsec.vercel.app/lesson/14-ethical-hacking/metasploit-lab.html): Get comfortable with the most popular exploitation framework.
+- [Practical Reconnaissance Lab](https://kashsec.vercel.app/lesson/14-ethical-hacking/practical-recon-lab.html): Hands-on OSINT and reconnaissance practice.
+- [Reporting Lab](https://kashsec.vercel.app/lesson/14-ethical-hacking/reporting-lab.html): Learn to write professional penetration test reports.
+
+### Path 15 — Bug Bounty
+
+- [What is a bug bounty?](https://kashsec.vercel.app/lesson/15-bug-bounty/what-is-bb.html): Platforms, scope, and responsible disclosure.
+- [Bug bounty platforms, deep dive](https://kashsec.vercel.app/lesson/15-bug-bounty/bb-platforms-deep-dive.html): Triage, reputation, and how the marketplace works.
+- [Choosing programs](https://kashsec.vercel.app/lesson/15-bug-bounty/choose-programs.html): Wide scope, newer, less-loved — beginner strategy.
+- [Scope and legal boundaries](https://kashsec.vercel.app/lesson/15-bug-bounty/scope-and-legal-boundaries.html): Safe harbor, third-party scope traps, and staying legal.
+- [The recon pipeline](https://kashsec.vercel.app/lesson/15-bug-bounty/recon-pipeline.html): subfinder → httpx → gau → nuclei — a real pipeline.
+- [Burp Suite for bug bounty workflow](https://kashsec.vercel.app/lesson/15-bug-bounty/burp-suite-for-bb.html): Repeater, scope config, and useful extensions.
+- [Reports that get paid](https://kashsec.vercel.app/lesson/15-bug-bounty/report-writing.html): The template, plus impact and CVSS.
+- [Hunting IDOR](https://kashsec.vercel.app/lesson/15-bug-bounty/hunting-idor.html): Two-account method for beginners' goldmine.
+- [Hunting XSS & injection bugs](https://kashsec.vercel.app/lesson/15-bug-bounty/hunting-xss-and-injection.html): Where to look, and how to prove real impact.
+- [Business logic & chains](https://kashsec.vercel.app/lesson/15-bug-bounty/logic-and-chains.html): Race conditions, GraphQL, OAuth.
+- [Race conditions, deep dive](https://kashsec.vercel.app/lesson/15-bug-bounty/race-conditions-deep-dive.html): Check-then-act bugs and the single-packet attack.
+- [Automation & nuclei](https://kashsec.vercel.app/lesson/15-bug-bounty/automation-nuclei.html): Monitor while you sleep.
+- [Mobile & API bug bounty](https://kashsec.vercel.app/lesson/15-bug-bounty/mobile-and-api-bb.html): BOLA, mass assignment, and less-competitive scope.
+- [The bug-bounty career](https://kashsec.vercel.app/lesson/15-bug-bounty/bb-career.html): Economics, community, staying sane.
+- [Duplicates & triage realities](https://kashsec.vercel.app/lesson/15-bug-bounty/duplicate-and-triage-realities.html): Why most reports close, and how to stay sustainable.
+- [Bug Bounty Hunting Challenges](https://kashsec.vercel.app/lesson/15-bug-bounty/bounty-hunting-challenges.html): Practical challenges to level up your hunting skills.
+- [Logic Bug Hunting Lab](https://kashsec.vercel.app/lesson/15-bug-bounty/logic-bug-hunting-lab.html): Practice finding business logic vulnerabilities.
+- [Recon Pipeline Lab](https://kashsec.vercel.app/lesson/15-bug-bounty/recon-pipeline-lab.html): Build and run a real reconnaissance pipeline.
+
+### Path 16 — Advanced Cyber Topics
+
+- [Linux privilege escalation](https://kashsec.vercel.app/lesson/16-advanced/linux-privesc.html): GTFOBins, SUID, capabilities, LinPEAS.
+- [Linux privesc tools, deep dive](https://kashsec.vercel.app/lesson/16-advanced/linux-privesc-tools-deep-dive.html): Reading LinPEAS output and using GTFOBins correctly.
+- [Windows privilege escalation](https://kashsec.vercel.app/lesson/16-advanced/windows-privesc.html): Services, tokens, Potato family.
+- [Windows privesc tools, deep dive](https://kashsec.vercel.app/lesson/16-advanced/windows-privesc-tools-deep-dive.html): WinPEAS, access tokens, and how Potato exploits work.
+- [Active Directory attacks](https://kashsec.vercel.app/lesson/16-advanced/active-directory.html): BloodHound, Kerberoast, Golden Ticket.
+- [Kerberos attacks, deep dive](https://kashsec.vercel.app/lesson/16-advanced/kerberos-attacks-deep-dive.html): The protocol mechanics behind Kerberoasting and AS-REP Roasting.
+- [AD persistence & detection](https://kashsec.vercel.app/lesson/16-advanced/ad-persistence-and-detection.html): DCSync, Skeleton Key, and how defenders actually catch it.
+- [Cloud security](https://kashsec.vercel.app/lesson/16-advanced/cloud-security.html): AWS/Azure/GCP, IAM, IMDS, flAWS lab.
+- [IAM, deep dive](https://kashsec.vercel.app/lesson/16-advanced/iam-deep-dive.html): Policy anatomy, privilege escalation, and iam:PassRole.
+- [Containers & Kubernetes](https://kashsec.vercel.app/lesson/16-advanced/containers-k8s.html): Docker sockets, RBAC, service tokens.
+- [Kubernetes attack paths](https://kashsec.vercel.app/lesson/16-advanced/kubernetes-attack-paths.html): Chaining one pod compromise into full cluster control.
+- [Malware analysis basics](https://kashsec.vercel.app/lesson/16-advanced/malware-analysis.html): Static & dynamic in a safe VM.
+- [Malware persistence mechanisms](https://kashsec.vercel.app/lesson/16-advanced/malware-persistence-mechanisms.html): Run keys, scheduled tasks, and DLL hijacking.
+- [Digital forensics & IR](https://kashsec.vercel.app/lesson/16-advanced/dfir.html): NIST 800-61, Sysmon, Volatility.
+- [Threat hunting fundamentals](https://kashsec.vercel.app/lesson/16-advanced/threat-hunting-fundamentals.html): Hypothesis-driven hunting with MITRE ATT&CK.
+- [Advanced career paths](https://kashsec.vercel.app/lesson/16-advanced/specialise.html): Where to specialise, and why.
+- [Cloud Security Lab](https://kashsec.vercel.app/lesson/16-advanced/cloud-security-lab.html): Get hands-on with common cloud misconfigurations.
+- [Containers & Kubernetes Lab](https://kashsec.vercel.app/lesson/16-advanced/containers-k8s-lab.html): Practice container security basics.
+- [DevSecOps Lab](https://kashsec.vercel.app/lesson/16-advanced/devsecops-lab.html): Integrate security into the development lifecycle.
+- [Digital Forensics & IR Lab](https://kashsec.vercel.app/lesson/16-advanced/dfir-lab.html): Practice basic incident response and forensics.
+- [Malware Analysis Lab](https://kashsec.vercel.app/lesson/16-advanced/malware-analysis-lab.html): Get started with basic malware analysis in a safe environment.
+- [Practical Linux Privilege Escalation Lab](https://kashsec.vercel.app/lesson/16-advanced/practical-linux-privesc-lab.html): Get hands-on with real privesc techniques in a safe environment.
+- [Purple Teaming Lab](https://kashsec.vercel.app/lesson/16-advanced/purple-teaming-lab.html): Learn to combine red and blue team perspectives.
+- [Threat Hunting Lab](https://kashsec.vercel.app/lesson/16-advanced/threat-hunting-lab.html): Learn proactive detection instead of just reacting.
+- [Threat Modeling Lab](https://kashsec.vercel.app/lesson/16-advanced/threat-modeling-lab.html): Learn to systematically find risks before attackers do.
+- [Windows Privilege Escalation Lab](https://kashsec.vercel.app/lesson/16-advanced/windows-privesc-lab.html): Practice common Windows privesc techniques.
+
+### Path 17 — Malware & Reverse Engineering
+
+- [Reverse Engineering Fundamentals](https://kashsec.vercel.app/lesson/17-malware-re/re-fundamentals.html): What RE is, assembly basics, and the core toolset.
+- [x86 vs. ARM Architectures](https://kashsec.vercel.app/lesson/17-malware-re/x86-vs-arm-architectures.html): Why architecture matters before you read a single instruction.
+- [Malware Families Deep Dive](https://kashsec.vercel.app/lesson/17-malware-re/malware-families-deep-dive.html): Ransomware crypto, rootkits, worms, and botnet C2, mechanically explained.
+- [C2 Frameworks and Infrastructure](https://kashsec.vercel.app/lesson/17-malware-re/c2-frameworks-and-infrastructure.html): Beaconing, DGAs, and Cobalt Strike/Sliver/Mythic.
+- [Static Analysis Deep Dive](https://kashsec.vercel.app/lesson/17-malware-re/static-analysis-deep-dive.html): PE format internals, imports, and entropy analysis.
+- [ELF Format & Linux Malware](https://kashsec.vercel.app/lesson/17-malware-re/elf-format-and-linux-malware.html): Cryptominers, fileless techniques, and cloud-native malware.
+- [Disassembly with Ghidra](https://kashsec.vercel.app/lesson/17-malware-re/disassembly-with-ghidra.html): Hands-on: navigating, decompiling, and renaming your way through a real binary.
+- [Ghidra Scripting Basics](https://kashsec.vercel.app/lesson/17-malware-re/ghidra-scripting-basics.html): Automating repetitive analysis with the scripting API.
+- [Dynamic Analysis & Sandboxing](https://kashsec.vercel.app/lesson/17-malware-re/dynamic-analysis-sandboxing.html): Automated sandboxes, ProcMon, and combining static + dynamic workflow.
+- [API Hooking & Monitoring](https://kashsec.vercel.app/lesson/17-malware-re/api-hooking-and-monitoring.html): How dynamic analysis tools actually capture behavior.
+- [Unpacking & Obfuscation](https://kashsec.vercel.app/lesson/17-malware-re/unpacking-and-obfuscation.html): What packers do, and how to get past them — including by hand.
+- [Control Flow Obfuscation, Deep Dive](https://kashsec.vercel.app/lesson/17-malware-re/control-flow-obfuscation.html): Flattening, opaque predicates, and systematic deobfuscation.
+- [YARA Rules & Detection](https://kashsec.vercel.app/lesson/17-malware-re/yara-rules-and-detection.html): Turn one analysis into scalable, automated detection.
+- [Sigma Rules & Detection Engineering](https://kashsec.vercel.app/lesson/17-malware-re/sigma-rules-and-detection-engineering.html): Turning proven hunts into automated log-based detection.
+- [Anti-Analysis Techniques](https://kashsec.vercel.app/lesson/17-malware-re/anti-analysis-techniques.html): Anti-debug, anti-VM, anti-sandbox — and how to see past each.
+- [Malware Triage Methodology](https://kashsec.vercel.app/lesson/17-malware-re/malware-triage-methodology.html): Deciding how much analysis effort a sample actually deserves.
+- [Malware & RE Capstone Lab](https://kashsec.vercel.app/lesson/17-malware-re/malware-re-capstone-lab.html): A full analysis pipeline against a real sample, start to finish.
+
+### Path 18 — AI & AI Security
+
+- [How LLMs actually work](https://kashsec.vercel.app/lesson/18-ai-security/how-llms-work.html): A friendly primer without the mystique.
+- [Transformer Architecture, Deep Dive](https://kashsec.vercel.app/lesson/18-ai-security/transformer-architecture-deep-dive.html): Attention, context windows, and why prompt injection runs so deep.
+- [Why AI security is new](https://kashsec.vercel.app/lesson/18-ai-security/why-ai-security.html): What makes AI attacks unlike any before.
+- [AI Threat Modeling](https://kashsec.vercel.app/lesson/18-ai-security/ai-threat-modeling.html): Systematically mapping an AI system's real attack surface.
+- [Prompt injection](https://kashsec.vercel.app/lesson/18-ai-security/prompt-injection.html): The SQL injection of AI — direct and indirect.
+- [Indirect Prompt Injection, Deep Dive](https://kashsec.vercel.app/lesson/18-ai-security/indirect-prompt-injection-deep-dive.html): Full attack chains and the dual-LLM defensive pattern.
+- [Jailbreaks & bypasses](https://kashsec.vercel.app/lesson/18-ai-security/jailbreaks.html): Bypassing policy, not just instructions.
+- [Jailbreak Defenses & Guardrails](https://kashsec.vercel.app/lesson/18-ai-security/jailbreak-defenses-and-guardrails.html): Classifiers, self-critique, and layered protection.
+- [OWASP LLM Top 10](https://kashsec.vercel.app/lesson/18-ai-security/llm-top-10.html): The shared checklist for AI application security.
+- [RAG Security Risks](https://kashsec.vercel.app/lesson/18-ai-security/rag-security-risks.html): Access control, poisoning, and the retrieval-trust gap.
+- [Poisoning & adversarial ML](https://kashsec.vercel.app/lesson/18-ai-security/poisoning-adv-ml.html): Backdoors, extraction, adversarial examples.
+- [Multimodal Attack Vectors](https://kashsec.vercel.app/lesson/18-ai-security/multimodal-attack-vectors.html): Image, audio, and file-upload injection surfaces.
+- [AI red teaming](https://kashsec.vercel.app/lesson/18-ai-security/ai-red-teaming.html): Methodology, harms taxonomy, ethics.
+- [AI Safety Evaluation & Benchmarking](https://kashsec.vercel.app/lesson/18-ai-security/ai-safety-evaluation-benchmarking.html): Attack success rates, benchmarks, and rigorous measurement.
+- [Your AI-security career](https://kashsec.vercel.app/lesson/18-ai-security/ai-career.html): The 12-month plan for a new frontier.
+- [Defensive Prompt Engineering](https://kashsec.vercel.app/lesson/18-ai-security/defensive-prompt-engineering.html): The cheapest real mitigation available to any builder.
+- [Agentic AI Risks](https://kashsec.vercel.app/lesson/18-ai-security/agentic-ai-risks.html): As AI agents become more powerful, new risks emerge.
+- [LLM Attack Taxonomy](https://kashsec.vercel.app/lesson/18-ai-security/llm-attack-taxonomy.html): A clear map of the different ways attackers try to break AI systems.
+- [LLM Governance & Compliance](https://kashsec.vercel.app/lesson/18-ai-security/llm-governance.html): Managing AI systems responsibly at scale.
+- [LLM Red Teaming Playbooks](https://kashsec.vercel.app/lesson/18-ai-security/llm-red-teaming-playbooks.html): Structured approaches to systematically test LLM applications.
+- [LLM Supply Chain Attacks](https://kashsec.vercel.app/lesson/18-ai-security/llm-supply-chain-attacks.html): Attacks that target the components and data used to build and run LLMs.
+- [Practical AI Red Teaming Labs](https://kashsec.vercel.app/lesson/18-ai-security/practical-ai-labs.html): Hands-on challenges you can do safely with free or low-cost LLMs.
+- [Securing LLM Applications](https://kashsec.vercel.app/lesson/18-ai-security/securing-llm-apps.html): How to build and deploy LLMs more securely.
+
+### Path 19 — CTF Challenges
+
+- [Welcome to the CTF Zone](https://kashsec.vercel.app/lesson/19-ctf-challenges/ctf-briefing.html): Flag format, categories, and how to actually approach a challenge.
+- [Web — The IDOR Hunt](https://kashsec.vercel.app/lesson/19-ctf-challenges/web-idor-hunt.html): Spot and explain a broken access control flaw. Easy.
+- [Crypto — The Layered Cipher](https://kashsec.vercel.app/lesson/19-ctf-challenges/crypto-layered-cipher.html): Peel back two stacked encodings by hand. Easy.
+- [Forensics — The Log Hunt](https://kashsec.vercel.app/lesson/19-ctf-challenges/forensics-log-hunt.html): Find the successful brute-force in a sea of noise. Easy.
+- [Web — Forge the Token](https://kashsec.vercel.app/lesson/19-ctf-challenges/web-jwt-forge.html): Exploit alg=none to forge admin access. Medium.
+- [Misc — Hidden in Plain Sight](https://kashsec.vercel.app/lesson/19-ctf-challenges/misc-hidden-headers.html): Reassemble a flag scattered across HTTP headers. Medium.
+- [Crypto — Break the XOR Cipher](https://kashsec.vercel.app/lesson/19-ctf-challenges/crypto-xor-cipher.html): A real known-plaintext attack on repeating-key XOR. Hard.
+- [Linux — The Privesc Puzzle](https://kashsec.vercel.app/lesson/19-ctf-challenges/linux-privesc-challenge.html): Turn a passwordless sudo rule into a root shell. Medium.
+- [API — The Order Number That Wasn't Yours](https://kashsec.vercel.app/lesson/19-ctf-challenges/api-bola-hunt.html): Classic BOLA against a JSON API. Easy.
+- [API — The Profile Update That Went Too Far](https://kashsec.vercel.app/lesson/19-ctf-challenges/api-mass-assignment.html): Escalate privilege through an unrestricted PATCH endpoint. Medium.
+- [API — Locked Out, Sort Of](https://kashsec.vercel.app/lesson/19-ctf-challenges/api-rate-limit-bypass.html): Spoof X-Forwarded-For to blow past a login lockout. Hard.
+- [Web — Crack the Secret](https://kashsec.vercel.app/lesson/19-ctf-challenges/jwt-weak-secret.html): Brute-force a guessable HS256 HMAC secret, then forge admin. Medium.
+- [Web — The Wrong Kind of Trust](https://kashsec.vercel.app/lesson/19-ctf-challenges/jwt-algorithm-confusion.html): Turn a public RSA key into an HMAC secret. Hard.
+- [Web — A Key of Your Choosing](https://kashsec.vercel.app/lesson/19-ctf-challenges/jwt-kid-injection.html): Path-traverse the kid header into a known, empty signing key. Hard.
+- [Web — Name Your Own Price](https://kashsec.vercel.app/lesson/19-ctf-challenges/logic-price-tamper.html): A checkout that trusts client-submitted pricing. Easy.
+- [Web — The Coupon That Wouldn't Quit](https://kashsec.vercel.app/lesson/19-ctf-challenges/logic-coupon-replay.html): A check-then-act race condition in coupon redemption. Medium.
+- [Web — Two Steps Forward, Zero Back](https://kashsec.vercel.app/lesson/19-ctf-challenges/logic-skip-a-step.html): Skip straight to checkout confirmation, no payment required. Hard.
+- [AI — Leak the System Prompt](https://kashsec.vercel.app/lesson/19-ctf-challenges/ai-prompt-leak.html): Direct prompt injection against a support chatbot. Easy.
+- [AI — The Ambush in the Article](https://kashsec.vercel.app/lesson/19-ctf-challenges/ai-indirect-injection.html): Plant an instruction inside content another user's AI assistant will read. Medium.
+- [AI — Jailbreak the Judge](https://kashsec.vercel.app/lesson/19-ctf-challenges/ai-jailbreak-judge.html): Bypass a hardened refusal with a fictional-story framing. Hard.
+- [Crypto — Small Primes, Big Problem](https://kashsec.vercel.app/lesson/19-ctf-challenges/crypto-weak-rsa.html): Factor an undersized RSA modulus by hand and recover the private key. Hard.
+- [Forensics — The EXIF Trail](https://kashsec.vercel.app/lesson/19-ctf-challenges/forensics-exif-trail.html): A leaked photo's metadata reveals more than a flag. Easy.
+- [Linux — The Binary That Betrayed Root](https://kashsec.vercel.app/lesson/19-ctf-challenges/linux-gtfobins.html): A SUID-root Python interpreter is a root shell in disguise. Medium.
+- [Solution Write-ups: The Template Every Good CTF Player Uses](https://kashsec.vercel.app/lesson/19-ctf-challenges/ctf-writeup-template.html): The six-part structure that turns a solve into a portfolio piece.
+
+### Path 20 — Career Prep
+
+- [Building your security resume](https://kashsec.vercel.app/lesson/20-career-prep/building-resume.html): Your resume is your first impression.
+- [LinkedIn Optimization for Security Roles](https://kashsec.vercel.app/lesson/20-career-prep/linkedin-optimization.html): Getting found before you can be evaluated.
+- [Certifications that actually help](https://kashsec.vercel.app/lesson/20-career-prep/certifications-roadmap.html): Not all certs are equal — focus on the right ones at the right time.
+- [Entry-Level vs. Experienced Career Paths](https://kashsec.vercel.app/lesson/20-career-prep/entry-level-vs-experienced-paths.html): The strategy has to differ depending on where you're starting.
+- [Building projects & GitHub portfolio](https://kashsec.vercel.app/lesson/20-career-prep/github-portfolio.html): Projects beat certificates alone.
+- [Writing Technical Blog Posts](https://kashsec.vercel.app/lesson/20-career-prep/writing-technical-blog-posts.html): The portfolio piece that shows how you think, not just what you built.
+- [Job search strategy](https://kashsec.vercel.app/lesson/20-career-prep/job-search.html): Where and how to find security jobs effectively.
+- [Navigating Recruiters & Referrals](https://kashsec.vercel.app/lesson/20-career-prep/navigating-recruiters-and-referrals.html): How the most powerful channel actually works.
+- [Interview preparation](https://kashsec.vercel.app/lesson/20-career-prep/interview-prep.html): Technical and soft skills that win jobs.
+- [Salary Negotiation](https://kashsec.vercel.app/lesson/20-career-prep/salary-negotiation.html): Don't leave money on the table you didn't have to.
+- [Networking & community](https://kashsec.vercel.app/lesson/20-career-prep/networking-community.html): Connections often matter as much as skills.
+- [Mentorship & Imposter Syndrome](https://kashsec.vercel.app/lesson/20-career-prep/mentorship-and-imposter-syndrome.html): Finding real mentors, and naming a feeling nearly everyone has.
+- [Your first 90 days in a security job](https://kashsec.vercel.app/lesson/20-career-prep/first-90-days.html): How to succeed once you land the role.
+- [Career Growth After Year One](https://kashsec.vercel.app/lesson/20-career-prep/career-growth-after-year-one.html): Navigating the plateau, and making real growth visible.
+
+### Path 21 — API Security
+
+- [Why API Security Matters](https://kashsec.vercel.app/lesson/21-api-security/why-api-security.html): APIs are the real backend now — and where most real-world breaches actually happen.
+- [Real-World API Breach Case Studies](https://kashsec.vercel.app/lesson/21-api-security/api-breach-case-studies.html): How the checklist categories actually played out in real incidents.
+- [What are APIs and why do they matter for security?](https://kashsec.vercel.app/lesson/21-api-security/what-are-apis.html): The contract behind almost everything modern software does.
+- [API Versioning & Shadow APIs](https://kashsec.vercel.app/lesson/21-api-security/api-versioning-and-shadow-apis.html): What accumulates in the gaps as an API evolves over time.
+- [OWASP API Top 10 (2023)](https://kashsec.vercel.app/lesson/21-api-security/owasp-api-top-10.html): The shared checklist for API risk, ten categories at a glance.
+- [API Security Standards & Frameworks](https://kashsec.vercel.app/lesson/21-api-security/api-security-standards-and-frameworks.html): ASVS, NIST, and industry regulations layered on top of OWASP.
+- [Authentication & Authorization in APIs](https://kashsec.vercel.app/lesson/21-api-security/authn-authz-apis.html): Who are you vs. what are you allowed to do — the distinction that matters most.
+- [OAuth2 & OIDC, Deep Dive](https://kashsec.vercel.app/lesson/21-api-security/oauth2-and-oidc-deep-dive.html): The delegation protocol behind most real-world API authentication.
+- [Broken Authentication & JWT Attacks](https://kashsec.vercel.app/lesson/21-api-security/broken-auth-jwt.html): alg:none, algorithm confusion, and weak secrets — how tokens get forged.
+- [API Key & Secret Management](https://kashsec.vercel.app/lesson/21-api-security/api-key-and-secret-management.html): Where keys actually leak, and why rotation matters.
+- [BOLA & BFLA — the two most common API authorization failures](https://kashsec.vercel.app/lesson/21-api-security/bola-and-bfla.html): Object-level and function-level authorization, the #1 real-world API risk.
+- [Webhook Security](https://kashsec.vercel.app/lesson/21-api-security/webhook-security.html): Authenticating inbound requests you didn't initiate.
+- [Mass Assignment & Excessive Data Exposure](https://kashsec.vercel.app/lesson/21-api-security/mass-assignment.html): When the API accepts — or returns — more than it should.
+- [API Gateway Security](https://kashsec.vercel.app/lesson/21-api-security/api-gateway-security.html): Centralizing defense — and the risk of trusting it too much.
+- [Rate Limiting, Injection & Resource Abuse](https://kashsec.vercel.app/lesson/21-api-security/rate-limiting-injection.html): SSRF, classic injection, and business-logic abuse when limits are missing.
+- [WebSocket Security](https://kashsec.vercel.app/lesson/21-api-security/websocket-security.html): Persistent connections break the usual request-response assumptions.
+- [REST vs GraphQL — security differences that matter](https://kashsec.vercel.app/lesson/21-api-security/rest-vs-graphql.html): Same goals, different attack surface — one endpoint changes everything.
+- [gRPC & Protobuf Security](https://kashsec.vercel.app/lesson/21-api-security/grpc-and-protobuf-security.html): Binary, schema-defined messages need a genuinely different testing approach.
+- [GraphQL Security](https://kashsec.vercel.app/lesson/21-api-security/graphql-security.html): Introspection, nested queries, and field-level authorization.
+- [GraphQL Authorization Patterns](https://kashsec.vercel.app/lesson/21-api-security/graphql-authorization-patterns.html): How field-level authorization actually gets implemented — and where it breaks.
+- [How to actually test APIs](https://kashsec.vercel.app/lesson/21-api-security/api-testing.html): A battle-tested recon-to-report workflow for bug bounty and pentests.
+- [API Documentation & Postman Workflows](https://kashsec.vercel.app/lesson/21-api-security/api-documentation-and-postman-workflows.html): Collections, environments, and automating checks with Newman.
+- [API Security Capstone Lab](https://kashsec.vercel.app/lesson/21-api-security/api-security-lab.html): Put it all together against a real vulnerable API — crAPI, vAPI, or your own.
+- [Your API Security Roadmap](https://kashsec.vercel.app/lesson/21-api-security/api-roadmap.html): Where to go next, and how to keep growing this specialisation.
+
+### Path 22 — DevSecOps & AppSec Program
+
+- [What is DevSecOps?](https://kashsec.vercel.app/lesson/22-devsecops-appsec/what-is-devsecops.html): Security folded into every stage of delivery, not bolted on at the end.
+- [Shift Left vs. Shift Right](https://kashsec.vercel.app/lesson/22-devsecops-appsec/shift-left-vs-shift-right.html): The two directions security folds into delivery, and why mature programs need both.
+- [SAST, DAST & SCA — The Core Scanning Trio](https://kashsec.vercel.app/lesson/22-devsecops-appsec/sast-dast-sca.html): Static analysis, dynamic testing, and dependency scanning — how they fit together.
+- [Infrastructure as Code (IaC) Security Scanning](https://kashsec.vercel.app/lesson/22-devsecops-appsec/iac-security-scanning.html): Catching cloud misconfiguration in the Terraform file, before it's ever deployed.
+- [Securing the CI/CD Pipeline](https://kashsec.vercel.app/lesson/22-devsecops-appsec/cicd-security.html): The pipeline itself is a target: secrets, permissions, and supply-chain trust.
+- [Container Image & Registry Security](https://kashsec.vercel.app/lesson/22-devsecops-appsec/container-image-and-registry-security.html): Base images, scanning, signing, and registry access control.
+- [Secrets Management & Software Supply Chain](https://kashsec.vercel.app/lesson/22-devsecops-appsec/secrets-supply-chain.html): Where credentials leak, and how typosquatting and dependency confusion work.
+- [SBOM & Software Bill of Materials](https://kashsec.vercel.app/lesson/22-devsecops-appsec/sbom-and-software-bill-of-materials.html): Making the deep, invisible dependency tree visible and queryable.
+- [Threat Modeling in the SDLC](https://kashsec.vercel.app/lesson/22-devsecops-appsec/threat-modeling-sdlc.html): Finding design flaws before you write the code that has them.
+- [Security Champions Programs](https://kashsec.vercel.app/lesson/22-devsecops-appsec/security-champions-programs.html): Scaling a five-person AppSec team's reach across a whole engineering org.
+- [Metrics That Matter](https://kashsec.vercel.app/lesson/22-devsecops-appsec/metrics-that-matter.html): Coverage, backlog health, and the numbers that actually earn budget.
+- [Vulnerability Management & Prioritization](https://kashsec.vercel.app/lesson/22-devsecops-appsec/vulnerability-management-and-prioritization.html): Reachability, exploit maturity, SLAs, and formal risk acceptance.
+- [Building an AppSec Program from Scratch](https://kashsec.vercel.app/lesson/22-devsecops-appsec/building-appsec-program.html): The maturity ladder from ad hoc to optimising, and a concrete first 90 days.
+- [AppSec Tooling & Orchestration](https://kashsec.vercel.app/lesson/22-devsecops-appsec/appsec-tooling-and-orchestration.html): Taming tool sprawl once a program has outgrown manual tracking.
+- [AppSec Program Capstone Lab](https://kashsec.vercel.app/lesson/22-devsecops-appsec/appsec-program-lab.html): Design a lightweight AppSec program for a real-shaped organisation.
+
+### Path 23 — GRC & Compliance
+
+- [What is GRC?](https://kashsec.vercel.app/lesson/23-grc-compliance/what-is-grc.html): Governance, Risk, and Compliance — and why it's a real, growing entry point into security.
+- [GRC Career Economics & Demand](https://kashsec.vercel.app/lesson/23-grc-compliance/grc-career-economics-and-demand.html): Why compliance directly gates revenue, and why hiring demand has outpaced supply.
+- [Security Governance Basics](https://kashsec.vercel.app/lesson/23-grc-compliance/governance-basics.html): Who decides, and how — policy, standard, procedure, and who's in the room.
+- [RACI & Security Committees](https://kashsec.vercel.app/lesson/23-grc-compliance/raci-and-security-committees.html): The structural tools that make governance function, not just exist on paper.
+- [Risk Management Fundamentals](https://kashsec.vercel.app/lesson/23-grc-compliance/risk-management-fundamentals.html): Risk registers, treatment options, and inherent vs. residual risk.
+- [Quantitative Risk Analysis & FAIR](https://kashsec.vercel.app/lesson/23-grc-compliance/quantitative-risk-analysis-fair.html): Turning risk into real dollar figures for big-ticket decisions.
+- [ISO 27001 Overview](https://kashsec.vercel.app/lesson/23-grc-compliance/iso27001-overview.html): The world's most recognised ISMS standard — Annex A, the SoA, and the audit process.
+- [ISMS Documentation & Internal Audit](https://kashsec.vercel.app/lesson/23-grc-compliance/isms-documentation-and-internal-audit.html): What actually keeps a certification genuine between annual audits.
+- [NIST Cybersecurity Framework Overview](https://kashsec.vercel.app/lesson/23-grc-compliance/nist-csf-overview.html): Govern, Identify, Protect, Detect, Respond, Recover — the six functions and maturity tiers.
+- [NIST 800-53 & Control Families](https://kashsec.vercel.app/lesson/23-grc-compliance/nist-800-53-control-families.html): The granular control catalog CSF's functions get mapped onto in practice.
+- [SOC 2 and Audits](https://kashsec.vercel.app/lesson/23-grc-compliance/soc2-and-audits.html): Type I vs Type II, Trust Services Criteria, and what an auditor actually checks.
+- [Other Compliance Frameworks: PCI-DSS, HIPAA & Beyond](https://kashsec.vercel.app/lesson/23-grc-compliance/other-compliance-frameworks.html): Why one framework rarely covers an entire organisation.
+- [Writing Policies People Actually Follow](https://kashsec.vercel.app/lesson/23-grc-compliance/policies-and-procedures.html): The anatomy of a policy that survives contact with a real engineering team.
+- [Security Awareness Training Programs](https://kashsec.vercel.app/lesson/23-grc-compliance/security-awareness-training-programs.html): Why annual compliance training mostly fails, and what actually works.
+- [Third-Party & Vendor Risk](https://kashsec.vercel.app/lesson/23-grc-compliance/third-party-vendor-risk.html): Why vendors are the weak link, and how to actually assess them.
+- [Breach Notification & Disclosure Law](https://kashsec.vercel.app/lesson/23-grc-compliance/breach-notification-and-disclosure-law.html): Fragmented state laws, the 72-hour clock, and who makes the call.
+- [GRC Tools, Certifications & Careers](https://kashsec.vercel.app/lesson/23-grc-compliance/grc-tools-and-careers.html): Vanta/Drata, CISA/CRISC/CISM, and how to break into a GRC role.
+- [GRC Automation Platforms, Deep Dive](https://kashsec.vercel.app/lesson/23-grc-compliance/grc-automation-platforms-deep-dive.html): How continuous evidence collection actually works mechanically.
+
+### Path 24 — Zero Trust Architecture
+
+- [What is Zero Trust?](https://kashsec.vercel.app/lesson/24-zero-trust/what-is-zero-trust.html): Why the perimeter model broke, and the three core principles that replaced it.
+- [Identity as the New Perimeter](https://kashsec.vercel.app/lesson/24-zero-trust/identity-as-perimeter.html): MFA, conditional access, and why identity anchors every other Zero Trust control.
+- [Device Trust & Posture Verification](https://kashsec.vercel.app/lesson/24-zero-trust/device-trust-posture.html): Why a correct password isn't enough — checking the device, not just the user.
+- [Micro-Segmentation & Network Design](https://kashsec.vercel.app/lesson/24-zero-trust/microsegmentation.html): Default-deny, blast radius, and containing what a flat network never could.
+- [Continuous Verification & Adaptive Access](https://kashsec.vercel.app/lesson/24-zero-trust/continuous-verification.html): Risk-based, adaptive access that keeps checking throughout a session, not just at login.
+- [Zero Trust Network Access (ZTNA) vs. Traditional VPN](https://kashsec.vercel.app/lesson/24-zero-trust/ztna-vs-vpn.html): Why ZTNA grants an app, not a network — and what that changes.
+- [Zero Trust in Cloud-Native Environments](https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-cloud.html): Workload identity, IAM as segmentation, and service mesh in a world with no fixed perimeter.
+- [Implementing Zero Trust: A Practical Roadmap](https://kashsec.vercel.app/lesson/24-zero-trust/implementing-zero-trust.html): Sequencing, governance, and metrics for a real multi-year rollout.
+- [Data-Centric Zero Trust](https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-data-security.html): Classification, DLP, and rights management — the last line of defense once access is granted.
+- [Zero Trust for APIs & Microservices](https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-api-security.html): mTLS, service identity, and per-service least privilege for internal service-to-service traffic.
+- [Privileged Access Management Under Zero Trust](https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-pam.html): Just-in-Time elevation, break-glass accounts, and closing the standing-access gap.
+- [Zero Trust for Third Parties & Vendor Access](https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-third-party-risk.html): Federated identity and time-boxed access for the population outside your control.
+- [Zero Trust Maturity Models](https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-maturity-model.html): CISA's five pillars and four stages — measuring progress instead of guessing at it.
+- [Analytics & Monitoring for Zero Trust](https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-analytics-monitoring.html): UEBA and composite risk scoring — the connective tissue between every other pillar.
+- [Common Zero Trust Pitfalls](https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-common-pitfalls.html): Where real rollouts break: exemptions, legacy excuses, and measuring adoption instead of risk.
+- [Zero Trust for Remote & Hybrid Work](https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-remote-work.html): Applying the full stack without a location-based double standard.
+- [Zero Trust Careers & Certifications](https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-careers.html): Where Zero Trust fluency shows up in job postings, and how to build it.
+- [Case Studies & Capstone: Assess a Zero Trust Maturity](https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-case-studies-lab.html): BeyondCorp and real-world lessons, then a full maturity assessment exercise.
+
+### Path 25 — OT/ICS & Critical Infrastructure Security
+
+- [What is OT/ICS Security?](https://kashsec.vercel.app/lesson/25-ot-ics-security/what-is-ot-ics.html): Why OT security reverses IT's usual priorities, and the vocabulary you'll need.
+- [SCADA & ICS Architecture Fundamentals](https://kashsec.vercel.app/lesson/25-ot-ics-security/scada-ics-fundamentals.html): The sense-decide-act control loop, SCADA vs. DCS, HMI, and the historian.
+- [Industrial Protocols: Modbus, DNP3, and Why Their Design Causes Security Problems](https://kashsec.vercel.app/lesson/25-ot-ics-security/industrial-protocols.html): Protocols with no built-in authentication, and why 'just add TLS' doesn't work.
+- [The Purdue Model: Segmenting IT from OT](https://kashsec.vercel.app/lesson/25-ot-ics-security/purdue-model.html): The standard reference architecture, and why the DMZ is the whole point.
+- [Real-World ICS Attacks: What They Actually Teach Us](https://kashsec.vercel.app/lesson/25-ot-ics-security/real-world-ics-attacks.html): Stuxnet, the Ukraine grid attacks, Oldsmar, and Triton — mapped back to the lessons that predicted them.
+- [Practical OT Security Controls](https://kashsec.vercel.app/lesson/25-ot-ics-security/practical-ot-security-controls.html): Segmentation, passive monitoring, jump hosts, and compensating controls for unpatchable legacy gear.
+- [OT Asset Inventory & Visibility](https://kashsec.vercel.app/lesson/25-ot-ics-security/ot-asset-inventory.html): Passive discovery for the equipment you don't even know you have.
+- [ICS Vulnerability Management](https://kashsec.vercel.app/lesson/25-ot-ics-security/ics-vulnerability-management.html): Exposure-based prioritization when active scanning itself is the risk.
+- [Safety Instrumented Systems](https://kashsec.vercel.app/lesson/25-ot-ics-security/safety-instrumented-systems.html): The independent last line of defense against physical harm — and the exact target of Triton/Trisis.
+- [ICS Incident Response](https://kashsec.vercel.app/lesson/25-ot-ics-security/ics-incident-response.html): Why 'isolate immediately' can be more dangerous than the incident itself.
+- [ICS Supply Chain Risk](https://kashsec.vercel.app/lesson/25-ot-ics-security/ics-supply-chain-risk.html): Compromised firmware, infected removable media, and third-party integrator access.
+- [IIoT & Cloud Convergence](https://kashsec.vercel.app/lesson/25-ot-ics-security/iiot-cloud-convergence.html): How a single cellular sensor can quietly bypass the entire Purdue Model.
+- [OT/ICS Careers & Certifications](https://kashsec.vercel.app/lesson/25-ot-ics-security/ot-ics-careers-and-certifications.html): GICSP, realistic entry paths, and how to build demonstrable experience without plant access.
+- [Capstone: Secure a Realistic Industrial Network](https://kashsec.vercel.app/lesson/25-ot-ics-security/ot-ics-capstone-lab.html): A full assessment exercise applying everything in this path to one fictional facility.
+
+## Interactive labs
+
+42 hands-on exercises that run in the browser — simulated terminals,
+deliberately vulnerable apps, packet captures, attack chains. Each lab page
+describes what it teaches and how to work through it.
+
+- [Terminal Simulator](https://kashsec.vercel.app/labs/terminal.html): A safe, in-browser Linux terminal with a fake filesystem. Practice ls, cd, cat, grep, find, whoami and more without spinning up a VM.
+- [Vulnerable Web App](https://kashsec.vercel.app/labs/webapp.html): A tiny deliberately-broken app for practicing XSS and login-bypass. Runs entirely in-browser; no server to attack, nothing to install.
+- [SQL Injection Sandbox](https://kashsec.vercel.app/labs/sqli.html): A fake login backed by a simulated database. Watch your input become SQL, then bypass the login with a classic injection.
+- [Phishing Spotter](https://kashsec.vercel.app/labs/phishing.html): Real email or phish? Call each one, then see the exact red flags you spotted (or missed). Trains the instinct that stops most attacks.
+- [Packet Capture Viewer](https://kashsec.vercel.app/labs/pcap.html): Load a sample capture and explore protocols, IPs, and payloads — the same "read the traffic" muscle Wireshark builds.
+- [IDOR Playground](https://kashsec.vercel.app/labs/idor.html): A fake "my invoices" page. Change one number in the URL and see whose data you were never supposed to see.
+- [JWT Forgery Lab](https://kashsec.vercel.app/labs/jwt.html): Tamper with a JSON Web Token — strip the signature, flip a claim, and watch a vulnerable "verify" endpoint accept it anyway.
+- [Path Traversal Playground](https://kashsec.vercel.app/labs/traversal.html): A fake "view file" feature that trusts the filename you give it. Climb out of the intended folder with ../ and read files you shouldn't.
+- [SSRF Playground](https://kashsec.vercel.app/labs/ssrf.html): A "fetch this URL for me" feature with no allowlist. Point it at internal-looking addresses and see what it leaks.
+- [XXE Playground](https://kashsec.vercel.app/labs/xxe.html): An XML upload feature that expands external entities. Smuggle a local file read through a "harmless" XML document.
+- [Log Analysis / IR Lab](https://kashsec.vercel.app/labs/loganalysis.html): A messy auth.log dump from a compromised box. Reconstruct the timeline and find the breach — blue-team skills, not exploitation.
+- [OSINT Sandbox](https://kashsec.vercel.app/labs/osint.html): A safe, fake company profile — practise open-source recon technique without touching anything real.
+- [BOLA/BFLA Playground](https://kashsec.vercel.app/labs/bola-bfla.html): A fake employee-directory API. Read a record that isn't yours, then call an admin-only action with no admin role at all.
+- [GraphQL Introspection Abuse](https://kashsec.vercel.app/labs/graphql-introspection.html): A single /graphql endpoint. Use introspection to map the full schema, then query a field the UI never shows you.
+- [Mass Assignment Toy](https://kashsec.vercel.app/labs/mass-assignment.html): A "update my profile" endpoint that binds whatever JSON you send straight to your account. Find the field that shouldn't be writable.
+- [Rate-Limit Bypass Simulator](https://kashsec.vercel.app/labs/rate-limit-bypass.html): A login endpoint that blocks you after 3 bad guesses — but trusts a header you control to decide who "you" are.
+- [Prompt Injection Simulator](https://kashsec.vercel.app/labs/prompt-injection.html): Chat with a support bot that's told to never reveal its system prompt. Get it to reveal it anyway.
+- [Jailbreak Playground](https://kashsec.vercel.app/labs/jailbreak.html): An assistant refuses to share a secret code directly. Find a roleplay or hypothetical framing that gets it to comply anyway.
+- [Indirect Prompt Injection Challenge](https://kashsec.vercel.app/labs/indirect-injection.html): You control a job posting an AI assistant is about to summarize for someone else. Plant an instruction it'll follow instead.
+- [Agentic Risk Scenario](https://kashsec.vercel.app/labs/agentic-risk.html): An AI agent with email tool-access is about to process an inbox. Spot and quarantine the malicious email before it acts on it.
+- [Active Directory Attack Lab](https://kashsec.vercel.app/labs/ad-attack.html): A guided walkthrough of BloodHound-style graph recon, Kerberoasting a weak service account, and forging a Golden Ticket.
+- [CSRF Playground](https://kashsec.vercel.app/labs/csrf.html): A "bank" transfer endpoint trusts your cookie alone. Watch a malicious page forge a request on your behalf, then see a CSRF token stop it cold.
+- [Command Injection Sandbox](https://kashsec.vercel.app/labs/cmdinjection.html): A "ping this host" tool glues your input into a real shell command. Chain a second command onto the intended one.
+- [Open Redirect Playground](https://kashsec.vercel.app/labs/openredirect.html): A login page trusts a returnUrl parameter completely. Turn a genuinely trusted link into a post-login phishing weapon.
+- [Clickjacking Simulator](https://kashsec.vercel.app/labs/clickjacking.html): An invisible iframe sits on top of a fake game button. See exactly how a real click lands on a hidden "delete account" button instead.
+- [Insecure Deserialization Toy](https://kashsec.vercel.app/labs/deserialization.html): A "remember me" cookie is a trusted, deserialized object. Add one field to grant yourself admin with zero login.
+- [Subdomain Takeover Simulator](https://kashsec.vercel.app/labs/subdomaintakeover.html): Five DNS records, one dangling CNAME pointing at a deleted third-party resource. Find it before someone else claims it.
+- [DNS Recon Playground](https://kashsec.vercel.app/labs/dnsrecon.html): A simulated dig. Query a target's likely subdomains and build a map of its real, sometimes-forgotten attack surface.
+- [Windows Privesc Playground](https://kashsec.vercel.app/labs/winprivesc.html): A misconfigured service runs as SYSTEM with a writable binary path. Replace it and escalate — no exploit needed.
+- [Linux Privesc Playground](https://kashsec.vercel.app/labs/linuxprivesc.html): Enumerate SUID binaries on a simulated box and find the one GTFOBins turns straight into a root shell.
+- [Kerberoasting Simulator](https://kashsec.vercel.app/labs/kerberoast.html): Request a service ticket for a weak-password service account, then crack the offline-crackable hash it hands you.
+- [Cloud IAM Misconfig Playground](https://kashsec.vercel.app/labs/iammisconfig.html): A role holds one deceptively small permission. Chain it into full account takeover through iam:PassRole.
+- [Docker Escape Playground](https://kashsec.vercel.app/labs/dockerescape.html): A container mounts the host's Docker socket. Use it to spin up a privileged container and step onto the host itself.
+- [Malware Strings Triage Lab](https://kashsec.vercel.app/labs/malwarestrings.html): A raw strings dump from a suspicious binary. Spot the IOCs — a C2 domain, a mutex, a registry key — before touching a disassembler.
+- [YARA Rule Builder Challenge](https://kashsec.vercel.app/labs/yarabuilder.html): Three malware samples, one clean file. Write a YARA rule that matches every sample and nothing else.
+- [Race Condition Lab](https://kashsec.vercel.app/labs/racecondition.html): A one-time coupon, redeemed with a check-then-act flaw. Fire requests fast enough and redeem it far more than once.
+- [Webhook Signature Forgery Lab](https://kashsec.vercel.app/labs/webhookforge.html): Forge an HMAC-signed webhook without the secret, then flip on signature verification and watch it get rejected.
+- [OAuth Redirect URI Hijack Lab](https://kashsec.vercel.app/labs/oauthredirect.html): An authorization server validates redirect_uri loosely. Steal an authorization code by redirecting it to your own endpoint.
+- [Vendor Risk Tiering Simulator](https://kashsec.vercel.app/labs/vendortiering.html): Six vendors, six very different data-access levels. Tier them correctly and decide who needs a full security review.
+- [Incident Response Tabletop](https://kashsec.vercel.app/labs/irtabletop.html): A branching ransomware scenario. Make the containment and communication calls a real incident commander has to make under pressure.
+- [Password Cracking Lab](https://kashsec.vercel.app/labs/passwordcrack.html): Four hashed passwords, one wordlist. See exactly which ones fall to a dictionary attack and which survive it — and why.
+- [Leaked Secret Hunt](https://kashsec.vercel.app/labs/clouddockersecrets.html): A public GitHub repo dump. Find the hardcoded API key an automated scanner would catch in minutes — before an attacker does.
+
+## Security tools
+
+32 working utilities — encoders, analysers, calculators and generators. All
+client-side; input never leaves the browser.
+
+- [Encoder / Decoder](https://kashsec.vercel.app/tools/encoder.html): Base64, URL, and Hex — encode or decode text both ways.
+- [Hash Generator](https://kashsec.vercel.app/tools/hash.html): SHA-1, SHA-256, SHA-384, SHA-512 of any text, via the browser's crypto engine.
+- [JWT Decoder](https://kashsec.vercel.app/tools/jwt.html): Decode a JSON Web Token's header and payload and read its claims. No signature verification.
+- [CVSS 3.1 Calculator](https://kashsec.vercel.app/tools/cvss.html): Turn the base metrics of a vulnerability into a 0–10 severity score.
+- [Subnet Calculator](https://kashsec.vercel.app/tools/subnet.html): IPv4 CIDR → network, broadcast, host range, mask, and host count.
+- [Password Strength](https://kashsec.vercel.app/tools/password.html): Rough entropy and crack-time estimate for a password, with feedback.
+- [Cipher Playground](https://kashsec.vercel.app/tools/cipher.html): Caesar/ROT, XOR, and Vigenère — the classic ciphers from the CTF zone.
+- [Regex Tester](https://kashsec.vercel.app/tools/regex.html): Test a regular expression against sample text with live match highlighting and capture groups.
+- [Hash Identifier](https://kashsec.vercel.app/tools/hashid.html): Paste a hash and get likely algorithms, guessed from its length and character set.
+- [Security Header Analyzer](https://kashsec.vercel.app/tools/headers.html): Paste HTTP response headers and get a graded report on the security headers present and missing.
+- [Vulnerability Report Writer](https://kashsec.vercel.app/tools/vulnreport.html): A guided form that forces good structure — title, severity, steps to reproduce, impact, remediation — then exports clean Markdown or a printable PDF.
+- [Resume/LinkedIn Keyword Helper](https://kashsec.vercel.app/tools/resumehelper.html): Paste a job description, see which security keywords you already cover (based on completed paths) and which are gaps.
+- [Portfolio Project Generator](https://kashsec.vercel.app/tools/portfoliogen.html): Guided starter briefs for real portfolio projects, with a write-up template you can export.
+- [Secure Code Review Toy](https://kashsec.vercel.app/tools/codereview.html): Paste a code snippet and get flagged patterns — eval, string-built SQL, hardcoded secrets. Not a real SAST tool, but trains the eye.
+- [MITRE ATT&CK Mapper](https://kashsec.vercel.app/tools/attckmap.html): A searchable reference of real ATT&CK tactics and techniques, tied back to where this course covers each one.
+- [STRIDE Threat-Model Worksheet](https://kashsec.vercel.app/tools/stride.html): A guided Spoofing/Tampering/Repudiation/Info-Disclosure/DoS/Elevation worksheet, exportable as Markdown.
+- [CIDR Overlap Checker](https://kashsec.vercel.app/tools/cidroverlap.html): Check whether two CIDR ranges overlap — catches conflicting firewall/routing rules before they cause an outage.
+- [User-Agent String Parser](https://kashsec.vercel.app/tools/useragent.html): Break down a User-Agent string into OS, browser, and version — and flag common automated-client patterns.
+- [Entropy Calculator](https://kashsec.vercel.app/tools/entropy.html): Shannon entropy of any text — a genuine static-analysis signal for spotting packed or encrypted data.
+- [Raw HTTP Request Builder](https://kashsec.vercel.app/tools/httpbuilder.html): Build a raw HTTP request from method, path, headers, and body — see exactly what goes over the wire.
+- [Log Grep / Filter Playground](https://kashsec.vercel.app/tools/logparser.html): Filter a block of log lines with a regex — the exact "find the signal in the noise" skill IR work depends on.
+- [Risk Register Builder](https://kashsec.vercel.app/tools/riskregister.html): Add risks with likelihood and impact, get an auto-scored severity, and export the register as Markdown.
+- [Dependency / SBOM Risk Checker](https://kashsec.vercel.app/tools/sbomcheck.html): Paste a dependency list and flag ones matching a known-vulnerable version range.
+- [Email Header Analyzer](https://kashsec.vercel.app/tools/emailheaders.html): Paste raw email headers and get flagged for From/Return-Path mismatches, SPF failures, and missing DKIM.
+- [Password Policy Checker](https://kashsec.vercel.app/tools/passpolicy.html): Test a password against a configurable length/complexity policy, rule by rule.
+- [VLSM Subnet Planner](https://kashsec.vercel.app/tools/vlsm.html): Plan variable-length subnets across several different host-count requirements from one base network.
+- [Simplified YARA Rule Tester](https://kashsec.vercel.app/tools/yaratester.html): Test a small set of required strings against sample content and see whether your rule matches.
+- [Incident Severity & SLA Calculator](https://kashsec.vercel.app/tools/slacalc.html): Impact × urgency in, a priority tier and realistic remediation SLA out.
+- [Compliance Control Mapper](https://kashsec.vercel.app/tools/controlmapper.html): Look up how one control area maps across SOC 2, ISO 27001, NIST 800-53, and PCI-DSS.
+- [Diffie-Hellman Key Exchange Visualizer](https://kashsec.vercel.app/tools/dhvisualizer.html): Watch two sides land on the same shared secret without ever transmitting it, with small real numbers.
+- [Base32 / Base85 Encoder](https://kashsec.vercel.app/tools/base32.html): Encode or decode text in Base32 or Base85 — the less common encodings you'll still run into in CTFs.
+- [Timing Attack Visualizer](https://kashsec.vercel.app/tools/timingviz.html): See exactly why a naive string comparison leaks how many leading characters were correct — and why constant-time comparison fixes it.
+
+## Practice and assessment
+
+- [Practice tasks](https://kashsec.vercel.app/practice.html): 104 typed-answer tasks across every path — compute a subnet, write a find command, read a phishing URL. Answers are hashed and explanations encrypted, so the questions are listed but the answers are not.
+- [Timed mock exams](https://kashsec.vercel.app/exam.html): Three papers (90/40/20 questions) under a clock, scored with a per-path breakdown.
+
+## Reference
+
+- [Frequently asked questions](https://kashsec.vercel.app/faq.html): What the site is, who it is for, what it costs, and what it does not do.
+- [All paths overview](https://kashsec.vercel.app/lesson/index.html): The full course structure on one page.
+- [Labs index](https://kashsec.vercel.app/labs/index.html): All labs with descriptions.
+- [Tools index](https://kashsec.vercel.app/tools/index.html): All tools with descriptions.
+
+## Optional
+
+- [Sitemap](https://kashsec.vercel.app/sitemap.xml): Every indexable URL with a last-modified date.
+- [Changelog feed](https://kashsec.vercel.app/feed.xml): RSS of what has been added or rewritten.

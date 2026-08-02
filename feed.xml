@@ -5,7 +5,14 @@
     <link>https://kashsec.vercel.app/</link>
     <description>Updates to the free KashSec Academy cybersecurity course.</description>
     <language>en</language>
-    <lastBuildDate>Thu, 30 Jul 2026 18:47:48 GMT</lastBuildDate>
+    <lastBuildDate>Sun, 02 Aug 2026 04:20:23 GMT</lastBuildDate>
+    <item>
+      <title>AI crawlers are welcome here, and now there is a map for them</title>
+      <link>https://kashsec.vercel.app/#/changelog</link>
+      <guid isPermaLink="false">kashsec-2026-08-02</guid>
+      <pubDate>Sun, 02 Aug 2026 12:00:00 GMT</pubDate>
+      <description>&lt;ul&gt;&lt;li&gt;Nothing was ever blocking AI crawlers — the wildcard rule in robots.txt already allowed every one of them. But "we never got round to denying it" and "we deliberately allow it" look identical in a file that only has a wildcard, so the major AI crawlers and answer engines are now named explicitly: GPTBot, ClaudeBot, PerplexityBot, CCBot, Google-Extended, Applebot-Extended and the rest. Two of those are not crawlers at all but permission tokens that only ever mean "may this train a model?", and the answer here is yes.&lt;/li&gt;&lt;li&gt;That is a deliberate choice, not an oversight. This site exists so that someone who cannot afford a course can still learn security properly. An answer engine quoting a lesson to a person who was never going to find this site is the mission working, not a leak from it.&lt;/li&gt;&lt;li&gt;New llms.txt: a plain-text index of the entire site written for language models, in the llmstxt.org format. robots.txt answers "may I read this?" and says nothing about what is here — and sitemap.xml is 592 bare URLs with no titles. This is the map: every path, lesson, lab and tool with its real title and a one-line description, in teaching order. 593 links, generated from the same arrays the site renders from so it cannot drift.&lt;/li&gt;&lt;li&gt;Six new checks, and one of them exists because of a genuine robots.txt trap: a crawler obeys only the most specific group matching its user-agent and ignores every other group, so a named AI group with no rule of its own would NOT inherit the wildcard's permission — it would leave behaviour undefined for exactly the crawlers it was added to welcome. Every group is now checked to carry its own rule, nothing may be disallowed, and every one of the 593 links in llms.txt is resolved against disk on each run. A map pointing at pages that do not exist is worse than no map.&lt;/li&gt;&lt;/ul&gt;</description>
+    </item>
     <item>
       <title>The three newest sections were invisible — to Google, to the palette, and to the nav</title>
       <link>https://kashsec.vercel.app/#/changelog</link>
