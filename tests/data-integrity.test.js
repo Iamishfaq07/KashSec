@@ -415,6 +415,34 @@ const missingMeta = prerenderSamples.filter(f => metaOf(read(f)) !== clientId);
 check('prerendered pages carry the AdSense verification meta tag',
   !clientId || missingMeta.length === 0, missingMeta.join(', '));
 
+/* ---- certification roadmap ---- */
+/* Every cert says which paths prepare you for it, written as prose like
+   "Paths 11–13, 19". Those numbers are typed by hand against a path list that
+   has been renumbered before, so a cert can quietly point at a path that does
+   not exist — and the page still renders, because it is only a string. */
+const CERTS = extractArray(appJs, 'CERTS');
+const pathNumbers = new Set(PATHS.map(p => p.n));
+const badPrep = [];
+CERTS.forEach(c => {
+  // Ranges are written with an en dash: "11–13" means 11, 12 and 13.
+  const cited = new Set();
+  (c.prep.match(/\d{2}(?:\s*[–-]\s*\d{2})?/g) || []).forEach(tok => {
+    const [a, b] = tok.split(/\s*[–-]\s*/).map(Number);
+    for (let i = a; i <= (b === undefined ? a : b); i++)
+      cited.add(String(i).padStart(2, '0'));
+  });
+  if (!cited.size) badPrep.push(`${c.id}: prep cites no path`);
+  cited.forEach(n => { if (!pathNumbers.has(n)) badPrep.push(`${c.id}: no path ${n}`); });
+});
+check('every certification prep list cites real paths',
+  badPrep.length === 0, badPrep.join(', '));
+
+const certIds = CERTS.map(c => c.id);
+check('certification ids unique', new Set(certIds).size === certIds.length);
+check('every certification states an exam format',
+  CERTS.every(c => c.format && c.format.length > 3),
+  CERTS.filter(c => !c.format).map(c => c.id).join(', '));
+
 /* ---- AI crawler access ---- */
 /* robots.txt has one trap worth pinning: a crawler obeys only the most
    specific group matching its user-agent and ignores every other group. So a

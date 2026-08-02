@@ -2299,14 +2299,57 @@ function renderPathOverview(pathId){
    Purely informational (no external calls); status stored locally
    (and synced, if signed in) like everything else in STATE.
    ============================================================ */
+/* Ordered as a ladder, roughly entry to advanced, because the question this
+   page answers is "what do I do next" and a list sorted by anything else
+   makes the reader do that work themselves.
+ *
+ * Deliberately no prices. They drift faster than anything else here and a
+ * stale price is worse than none — someone budgets around it. Exam FORMAT is
+ * the durable, decision-shaping fact, so that is what is recorded.
+ *
+ * The AI certifications at the bottom did not exist when this list was first
+ * written; the whole category was created in 2026. If you are reading this
+ * more than a year later, assume it is stale again and check. */
 const CERTS = [
-  {id:'security-plus', name:'CompTIA Security+', org:'CompTIA', level:'Entry', desc:'The most common "prove you know the fundamentals" cert for entry-level roles. Broad, vendor-neutral, multiple choice.', prep:'Paths 01–02, 10, 12'},
-  {id:'ejpt', name:'eJPT (Junior Penetration Tester)', org:'INE', level:'Entry', desc:'Hands-on, affordable, practical intro to pentesting — a good first hands-on cert before OSCP.', prep:'Paths 03–05, 11–12, 19'},
-  {id:'pnpt', name:'PNPT (Practical Network Penetration Tester)', org:'TCM Security', level:'Intermediate', desc:'A full practical pentest engagement against a live network, including a real written report — closely mirrors real consulting work.', prep:'Paths 05, 11–13, 19'},
-  {id:'oscp', name:'OSCP (Offensive Security Certified Professional)', org:'OffSec', level:'Intermediate', desc:'The industry-recognized "can you actually hack things" cert — a 24-hour hands-on exam. Widely respected, genuinely hard.', prep:'Paths 05, 11–13, 19'},
-  {id:'cysa-plus', name:'CompTIA CySA+', org:'CompTIA', level:'Entry-Intermediate', desc:'Blue-team focused: SOC analysis, threat detection, incident response fundamentals.', prep:'Paths 12–15, 22'},
-  {id:'ceh', name:'CEH (Certified Ethical Hacker)', org:'EC-Council', level:'Entry-Intermediate', desc:'Broad, theory-heavy overview of hacking tools and methodology — widely known, though many employers weight practical certs higher.', prep:'Paths 10–13, 19'},
-  {id:'security-plus-adv', name:'CompTIA PenTest+', org:'CompTIA', level:'Intermediate', desc:'A middle ground between Security+ and OSCP — pentesting methodology, tools, and reporting, mixed multiple-choice and performance-based questions.', prep:'Paths 11–13, 19'}
+  {id:'sec1', name:'SEC1 (Cyber Security 101)', org:'TryHackMe', level:'Entry',
+    desc:'A foundational, fully hands-on certification rather than a multiple-choice one — unusual at this level, where almost everything else tests recall. A reasonable first certificate for someone with no background at all.',
+    format:'Practical, hands-on', prep:'Paths 00–02, 10'},
+  {id:'security-plus', name:'CompTIA Security+', org:'CompTIA', level:'Entry',
+    desc:'The most common "prove you know the fundamentals" cert for entry-level roles, and the one most often named in job adverts. Broad and vendor-neutral, but it tests recognition rather than skill.',
+    format:'Multiple choice + performance-based', prep:'Paths 01–02, 10, 12'},
+  {id:'ejpt', name:'eJPT (Junior Penetration Tester)', org:'INE', level:'Entry',
+    desc:'Hands-on, affordable, practical intro to pentesting — a good first hands-on cert before OSCP.',
+    format:'Practical lab exam', prep:'Paths 03–05, 11–12, 19'},
+  {id:'sal1', name:'SAL1 (Security Analyst Level 1)', org:'TryHackMe', level:'Entry-Intermediate',
+    desc:'A SOC analyst certification scored mostly on simulated shift work: a short multiple-choice section for the theory, then two separate SOC simulations where you triage and close real alerts. The simulations carry the large majority of the marks, which is the right way round. Valid three years.',
+    format:'80 MCQs (60 min) + two 2-hour SOC simulations', prep:'Paths 02, 07, 10, 12'},
+  {id:'cysa-plus', name:'CompTIA CySA+', org:'CompTIA', level:'Entry-Intermediate',
+    desc:'Blue-team focused: SOC analysis, threat detection, incident response fundamentals.',
+    format:'Multiple choice + performance-based', prep:'Paths 12–15, 22'},
+  {id:'ceh', name:'CEH (Certified Ethical Hacker)', org:'EC-Council', level:'Entry-Intermediate',
+    desc:'Broad, theory-heavy overview of hacking tools and methodology — widely known, though many employers weight practical certs higher.',
+    format:'Multiple choice (practical variant sold separately)', prep:'Paths 10–13, 19'},
+  {id:'pt1', name:'PT1 (Junior Penetration Tester)', org:'TryHackMe', level:'Intermediate',
+    desc:'Sat inside a pentest simulator against web, network and Active Directory targets, and finished by writing a professional report. The report is not an afterthought — being unable to write up a finding is what actually stops people getting hired.',
+    format:'Practical engagement + written report', prep:'Paths 05, 07, 11–12, 14'},
+  {id:'security-plus-adv', name:'CompTIA PenTest+', org:'CompTIA', level:'Intermediate',
+    desc:'A middle ground between Security+ and OSCP — pentesting methodology, tools, and reporting, mixed multiple-choice and performance-based questions.',
+    format:'Multiple choice + performance-based', prep:'Paths 11–13, 19'},
+  {id:'pnpt', name:'PNPT (Practical Network Penetration Tester)', org:'TCM Security', level:'Intermediate',
+    desc:'A full practical pentest engagement against a live network, including a real written report — closely mirrors real consulting work.',
+    format:'5-day practical engagement + report + debrief', prep:'Paths 05, 11–13, 19'},
+  {id:'oscp', name:'OSCP (Offensive Security Certified Professional)', org:'OffSec', level:'Intermediate',
+    desc:'The industry-recognized "can you actually hack things" cert — a 24-hour hands-on exam. Widely respected, genuinely hard.',
+    format:'24-hour practical exam + report', prep:'Paths 05, 11–13, 19'},
+  {id:'giac-ai', name:'GIAC AI certifications (GOAA, GAIPS, GASAE)', org:'GIAC / SANS', level:'Intermediate-Advanced',
+    desc:'A suite of AI security certifications introduced through 2026, split by role rather than sold as one exam — offensive AI assessment, securing GenAI and LLM pipelines, and AI-driven security automation. Sat in GIAC\'s CyberLive format, which replaces multiple choice with work done on real machines. Expensive, and usually employer-funded.',
+    format:'CyberLive hands-on, virtual machines', prep:'Paths 18, 22–23'},
+  {id:'osai', name:'OSAI / OSAI+ (Advanced AI Red Teaming, AI-300)', org:'OffSec', level:'Advanced',
+    desc:'OffSec\'s AI red teaming certification, launched March 2026 — the first from the people behind OSCP. A 24-hour practical engagement against AI-integrated systems, in the same shape as the OSCP exam but aimed at model and pipeline attacks. OSAI does not expire; the OSAI+ designation lapses after three years.',
+    format:'24-hour practical red team engagement', prep:'Paths 04, 11, 18'},
+  {id:'htb-coae', name:'HTB COAE (Certified Offensive AI Expert)', org:'Hack The Box', level:'Advanced',
+    desc:'Built with Google and aligned to their Secure AI Framework. A seven-day practical engagement against AI-driven infrastructure, finished with a commercial-grade report, covering adversarial ML, model privacy attacks, LLM output abuse and supply-chain risk. Requires completing the AI Red Teamer path first — the certification and that path are different things, and are often confused.',
+    format:'7-day practical engagement + commercial report', prep:'Paths 11, 18, 21'}
 ];
 
 function renderCertTracker(){
@@ -2322,7 +2365,7 @@ function renderCertTracker(){
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow">Career</div>
         <h2>Certification roadmap</h2>
-        <p class="sec-lead">Common certs on the entry-to-mid path, with which KashSec paths prepare you for each. Track your own progress — nothing here is verified or official, it's just a personal planner.</p>
+        <p class="sec-lead">Certifications from first job to specialist, with the exam format for each and which KashSec paths prepare you. The AI security certifications at the end are new as of 2026 — that whole category did not exist before. Track your own progress; nothing here is verified or official, it's a personal planner.</p>
         <div class="mini-progress" style="max-width:22rem;margin-top:1.2rem">
           <div class="mini-progress-track"><div class="mini-progress-fill" style="width:0%" data-pct="${Math.round(passedCount/CERTS.length*100)}"></div></div>
           <div class="mini-progress-label"><span>${passedCount}/${CERTS.length} passed</span></div>
@@ -2337,6 +2380,7 @@ function renderCertTracker(){
             <h3>${escapeHtml(c.name)}</h3>
             <p>${escapeHtml(c.desc)}</p>
             <div class="lab-related">${escapeHtml(c.org)} · ${escapeHtml(c.level)}</div>
+            ${c.format?`<div class="lab-related">Exam: <b>${escapeHtml(c.format)}</b></div>`:''}
             <div class="lab-related">Prep with: <b>${escapeHtml(c.prep)}</b></div>
             <select class="fc-select cert-status-select" data-cert="${c.id}" aria-label="Status for ${escapeHtml(c.name)}" style="margin-top:.8rem">
               ${Object.entries(statusMeta).map(([k,m])=>`<option value="${k}" ${status===k?'selected':''}>${m.label}</option>`).join('')}
@@ -6088,6 +6132,13 @@ function renderLabLeakedSecret(){
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
+  {date:'2026-08-02', title:'The certification roadmap was a year out of date, and silent about it', items:[
+    'It listed seven certifications — Security+, eJPT, PNPT, OSCP, CySA+, CEH, PenTest+ — and not one of them was newer than 2025. An entire category of certification was created during 2026 and the page did not mention it, which is a worse failure than being incomplete: a reader planning their next two years would have come away thinking nothing had changed.',
+    'Six additions, now thirteen in all. TryHackMe now issue their own certifications (SEC1, SAL1, PT1), which matters because SAL1 is scored mostly on simulated SOC shift work rather than recall, and PT1 ends in a written report. Three AI security certifications did not exist a year ago: OffSec\'s OSAI, a 24-hour practical engagement in the same shape as the OSCP exam; Hack The Box\'s COAE, seven days against AI-driven infrastructure finished with a commercial-grade report, built with Google; and GIAC\'s AI suite, split by role and sat on real machines.',
+    'The list is now ordered as a ladder from first job to specialist, because the question this page answers is "what next" and any other ordering makes the reader do that sorting themselves.',
+    'Every entry now states its exam format, which is the fact that actually changes a decision — a 24-hour practical and a multiple-choice paper ask completely different things of you. Prices are deliberately absent: they drift faster than anything else here, and a stale price is worse than none because someone budgets around it.',
+    'Three checks. The one worth having verifies that every "prep with Paths 11–13" reference points at a path that exists — those numbers are hand-typed against a list that has been renumbered before, and a wrong one still renders perfectly because it is only a string.'
+  ]},
   {date:'2026-08-02', title:'AI crawlers are welcome here, and now there is a map for them', items:[
     'Nothing was ever blocking AI crawlers — the wildcard rule in robots.txt already allowed every one of them. But "we never got round to denying it" and "we deliberately allow it" look identical in a file that only has a wildcard, so the major AI crawlers and answer engines are now named explicitly: GPTBot, ClaudeBot, PerplexityBot, CCBot, Google-Extended, Applebot-Extended and the rest. Two of those are not crawlers at all but permission tokens that only ever mean "may this train a model?", and the answer here is yes.',
     'That is a deliberate choice, not an oversight. This site exists so that someone who cannot afford a course can still learn security properly. An answer engine quoting a lesson to a person who was never going to find this site is the mission working, not a leak from it.',
