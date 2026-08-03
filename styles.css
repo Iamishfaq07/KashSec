@@ -1561,3 +1561,18 @@ mark{background:rgba(239,164,58,.35);color:inherit;border-radius:3px;padding:0 1
 .rank-fill{height:100%;background:var(--grad-brand);transition:width var(--dur-3) var(--ease)}
 .rank-next{font-family:'JetBrains Mono';font-size:.7rem;color:var(--muted2);margin-top:.35rem}
 @media(prefers-reduced-motion:reduce){.rank-fill{transition:none}}
+
+/* ---- About / Contact / Privacy / Terms ----
+   Long-form prose pages. Measure is capped at 68ch because these are read
+   in full, unlike the card grids everywhere else — past about 75 characters
+   the eye loses the line start on the return sweep. */
+.legal-body{max-width:68ch;margin-top:2rem}
+.legal-body h3{font-family:'Space Grotesk',system-ui,sans-serif;font-size:1.15rem;
+  margin:2.2rem 0 .6rem;color:var(--text)}
+.legal-body h3:first-child{margin-top:0}
+.legal-body p{color:var(--text-2,var(--muted));line-height:1.75;margin:0 0 .9rem}
+.legal-body a{color:var(--teal-2,var(--teal));text-decoration:underline;
+  text-underline-offset:2px}
+.legal-body a:hover{color:var(--amber)}
+.legal-body code{font-family:'JetBrains Mono',monospace;font-size:.88em;
+  background:var(--surface-2,rgba(127,127,127,.12));padding:.12em .4em;border-radius:4px}

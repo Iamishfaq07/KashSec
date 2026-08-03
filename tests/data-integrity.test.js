@@ -415,6 +415,54 @@ const missingMeta = prerenderSamples.filter(f => metaOf(read(f)) !== clientId);
 check('prerendered pages carry the AdSense verification meta tag',
   !clientId || missingMeta.length === 0, missingMeta.join(', '));
 
+/* ---- About / Contact / Privacy / Terms ---- */
+const LEGAL = new Function(
+  appJs.match(/const LEGAL = \{[\s\S]*?\n\};/)[0] + '; return LEGAL;')();
+
+const LEGAL_FILES = { about:'about.html', contact:'contact.html',
+  privacy:'privacy.html', terms:'terms.html' };
+const missingLegal = Object.entries(LEGAL_FILES)
+  .filter(([k, f]) => !LEGAL[k] || !fs.existsSync(path.join(ROOT, f)));
+check('about, contact, privacy and terms all exist and are prerendered',
+  missingLegal.length === 0, missingLegal.map(([k]) => k).join(', '));
+
+const sitemapXml = read('sitemap.xml');
+const legalNotInSitemap = Object.values(LEGAL_FILES).filter(f => !sitemapXml.includes(`/${f}<`));
+check('the legal pages are in the sitemap',
+  legalNotInSitemap.length === 0, legalNotInSitemap.join(', '));
+
+// Ad networks and most privacy regimes expect these reachable from every
+// page, not buried. The footer is on every page; the router is not enough.
+const footerLegal = ['#/privacy', '#/terms', '#/about', '#/contact']
+  .filter(h => !indexHtml.includes(`href="${h}"`));
+check('privacy, terms, about and contact are linked from the site footer',
+  footerLegal.length === 0, footerLegal.join(', '));
+
+/* The check that earns its place. A privacy policy is only worth having if
+   it matches the code, and the realistic failure is not malice — it is
+   adding a third-party service and forgetting this page exists. So: derive
+   which third parties are ACTUALLY configured, right now, from their own
+   config files, and require the policy to name each one. */
+const privacyText = LEGAL.privacy.sections
+  .map(s => s.h + ' ' + s.p.join(' ')).join(' ').toLowerCase();
+const thirdParties = [];
+if (/const SUPABASE_URL = '(?!')/.test(read('sync.js')))
+  thirdParties.push(['supabase', 'cloud sync is configured in sync.js']);
+if (/clientId:\s*'\S/.test(read('ads.js')))
+  thirdParties.push(['adsense', 'an AdSense publisher ID is set in ads.js']);
+if (fs.existsSync(path.join(ROOT, 'web-analytics.js')))
+  thirdParties.push(['vercel', 'web-analytics.js ships on every page']);
+if (/ANALYTICS_DOMAIN = '(?!')/.test(read('analytics.js')))
+  thirdParties.push(['plausible', 'Plausible is enabled in analytics.js']);
+const undisclosed = thirdParties.filter(([name]) => !privacyText.includes(name));
+check('the privacy policy names every third party the code actually loads',
+  undisclosed.length === 0,
+  undisclosed.map(([n, why]) => `"${n}" undisclosed — ${why}`).join('; '));
+
+check('the privacy policy is substantial enough to be useful',
+  privacyText.split(/\s+/).length > 400,
+  `${privacyText.split(/\s+/).length} words`);
+
 /* ---- certification roadmap ---- */
 /* Every cert says which paths prepare you for it, written as prose like
    "Paths 11–13, 19". Those numbers are typed by hand against a path list that

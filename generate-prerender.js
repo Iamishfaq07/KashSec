@@ -656,6 +656,67 @@ const labsWritten = writeStubSet(
   sitemapUrls.push({ loc: canonical, lastmod: APP_LASTMOD, priority: '0.8' });
 }
 
+/* About / Contact / Privacy / Terms.
+ *
+ * Generated from the LEGAL object in app.js rather than written out again
+ * here, because two copies of a privacy policy is one copy too many: the
+ * crawlable version is the one an ad network and a regulator will read, and
+ * it drifting from what the site actually tells its own users is the whole
+ * failure mode. One source, both renderings.
+ *
+ * These carry real schema types — AboutPage and ContactPage are the ones
+ * Google understands as "this site is run by someone reachable", which is
+ * the exact signal a bare course site lacks. */
+{
+  const LEGAL = new Function(
+    appJs.match(/const LEGAL = \{[\s\S]*?\n\};/)[0] + '; return LEGAL;')();
+
+  const LEGAL_META = {
+    about:   { file: 'about.html',   type: 'AboutPage',   priority: '0.6' },
+    contact: { file: 'contact.html', type: 'ContactPage', priority: '0.6' },
+    privacy: { file: 'privacy.html', type: 'WebPage',     priority: '0.5' },
+    terms:   { file: 'terms.html',   type: 'WebPage',     priority: '0.5' },
+  };
+
+  for (const [kind, meta] of Object.entries(LEGAL_META)) {
+    const page = LEGAL[kind];
+    if (!page) throw new Error(`LEGAL is missing "${kind}" — prerender and app.js disagree`);
+    const canonical = `${SITE}/${meta.file}`;
+    const title = `${page.title} · KashSec Academy`;
+    const desc = page.lead;
+    const contentHtml =
+      /* escapeAttr, not a text-node escaper — there isn't one, and the
+         escaping is identical for the characters that matter here. Section
+         bodies are NOT escaped: they carry authored links, exactly as in
+         the app renderer. Safe only because LEGAL is a constant. */
+      `<h1>${escapeAttr(page.title)}</h1>` +
+      `<p><strong>${escapeAttr(page.lead)}</strong></p>` +
+      page.sections.map(s =>
+        `<h2>${escapeAttr(s.h)}</h2>` + s.p.map(t => `<p>${t}</p>`).join('')
+      ).join('');
+
+    fs.writeFileSync(path.join(ROOT, meta.file), template({
+      title, desc, canonical, spaPath: `/#/${kind}`, contentHtml, ogType: 'website',
+      crumbs: [
+        { name: 'KashSec Academy', url: SITE + '/' },
+        { name: page.title, url: canonical },
+      ],
+      jsonLd: [{
+        '@context': 'https://schema.org',
+        '@type': meta.type,
+        name: page.title,
+        description: desc,
+        url: canonical,
+        inLanguage: 'en',
+        dateModified: APP_LASTMOD,
+        isPartOf: { '@type': 'WebSite', name: 'KashSec Academy', url: SITE + '/' },
+        publisher: ORG,
+      }],
+    }));
+    sitemapUrls.push({ loc: canonical, lastmod: APP_LASTMOD, priority: meta.priority });
+  }
+}
+
 // Regenerate sitemap.xml. Priorities are relative hints only, but lastmod
 // is the field that actually earns recrawls.
 const smXml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +

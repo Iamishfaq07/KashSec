@@ -1532,6 +1532,11 @@ const KICON = {
   asterisk:'<line x1="12" y1="4" x2="12" y2="20"/><line x1="5" y1="8" x2="19" y2="16"/><line x1="19" y1="8" x2="5" y2="16"/>',
   search:'<circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>',
   shield:'<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>',
+  /* The dot is drawn as a 0-length round-capped line rather than a filled
+     circle: at 21px a <circle r="1"> renders as a grey smudge, while a
+     capped zero-length stroke inherits stroke-width and stays crisp. */
+  info:'<circle cx="12" cy="12" r="9"/><line x1="12" y1="11" x2="12" y2="16"/><line x1="12" y1="8" x2="12" y2="8"/>',
+  scale:'<line x1="12" y1="4" x2="12" y2="21"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="4" y1="7" x2="20" y2="7"/><path d="M4 7l-2.5 5a2.8 2.8 0 0 0 5 0z"/><path d="M20 7l-2.5 5a2.8 2.8 0 0 0 5 0z"/>',
   doc:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/>',
   idcard:'<rect x="2" y="5" width="20" height="14" rx="2"/><circle cx="8" cy="11" r="2"/><path d="M4.5 16.5a4 4 0 0 1 7 0"/><line x1="14" y1="10" x2="19" y2="10"/><line x1="14" y1="14" x2="19" y2="14"/>',
   toolbox:'<rect x="2" y="8" width="20" height="12" rx="2"/><path d="M8 8V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="2" y1="13" x2="22" y2="13"/>',
@@ -1655,6 +1660,10 @@ function route(){
   else if(hash === '#/course') renderCourseIndex();
   else if(hash === '#/careers') renderCareers();
   else if(hash === '#/faq') renderFAQ();
+  else if(hash === '#/about') renderLegal('about');
+  else if(hash === '#/contact') renderLegal('contact');
+  else if(hash === '#/privacy') renderLegal('privacy');
+  else if(hash === '#/terms') renderLegal('terms');
   else if(hash === '#/roadmap') renderRoadmap();
   else if(hash === '#/glossary') renderGlossary();
   else if(hash === '#/review') renderReview();
@@ -2521,6 +2530,166 @@ function renderCareers(){
       </div>
     </section>
   `;
+}
+
+/* ============================================================
+   About, Contact, Privacy and Terms.
+   ============================================================
+   These were missing entirely, which is a problem on three separate
+   counts. A site that processes email addresses and syncs progress to a
+   database owes its readers a plain account of that, whatever any ad
+   network thinks. Ad networks additionally require it — an application
+   without a privacy policy is refused. And a site with no About or
+   Contact reads as abandoned or automated, which is exactly the
+   impression a free course written by one person needs to avoid.
+
+   THE ONE RULE FOR EDITING THIS: the privacy page describes what the
+   code actually does, not what would be reassuring. Every claim below
+   was checked against sync.js, analytics.js, ads.js and the storage
+   calls in this file before being written. If you change what the site
+   collects, change this text in the same commit — a privacy policy that
+   has drifted from the code is worse than none, because readers act on
+   it. In particular: cloud sync IS configured, analytics IS on for
+   everyone, and Plausible is NOT running. Do not "tidy" those into
+   vaguer, friendlier claims.
+*/
+const LEGAL = {
+  about: {
+    eyebrow:'About', title:'About KashSec Academy',
+    lead:'A free cybersecurity course written for people who are starting from nothing.',
+    sections:[
+      {h:'Why this exists', p:[
+        'Security training is expensive. The well-known platforms charge a monthly subscription, the recognised certifications cost several hundred pounds each, and the free tiers are usually a sample designed to make you buy the rest. If you have money, that is a fair trade. If you do not, the door is shut — and it is shut hardest on exactly the people who would benefit most from walking through it.',
+        'KashSec Academy is the course I wanted to exist for those people. Everything on it is free, permanently, with no account required and no trial that expires. There is no premium tier and there is nothing held back.'
+      ]},
+      {h:'Who it is for', p:[
+        'Complete beginners. Not "beginners" in the sense of people who already write code — beginners in the sense of someone who is not sure what a network is. The first path starts at what a computer actually is, and every term is defined the first time it appears.',
+        'It is also useful if you are further along and have gaps, which almost everyone does. The paths are independent enough to drop into.'
+      ]},
+      {h:'How it is written', p:[
+        'Plain English, and long. Most free security material is either a listicle or a video; both are easy to consume and hard to learn from. The lessons here are closer to a textbook chapter: they explain why something works, not just the command that does it.',
+        'Everything practical runs in your browser. The labs simulate rather than provision — no virtual machine to install, nothing to configure, nothing that stops working when a cloud credit runs out. That is a real limitation as well as a feature, and the labs say so where it matters.'
+      ]},
+      {h:'How it is paid for', p:[
+        'It is not, particularly. The site is static and hosting it costs almost nothing. Advertising may appear on lessons to cover that; if it does, it will be modest and it will never sit between you and the content. Nothing on this site has ever been behind a payment, and that is not going to change.'
+      ]},
+      {h:'Corrections', p:[
+        'Security material goes out of date and hand-written material contains mistakes. If you find one, please say so — there is a reporting widget on every lesson, and the contact page has the other routes. Corrections are genuinely welcome and get made.'
+      ]}
+    ]
+  },
+  contact: {
+    eyebrow:'Contact', title:'Get in touch',
+    lead:'Corrections, questions, broken things, or anything else.',
+    sections:[
+      {h:'Reporting a mistake in a lesson', p:[
+        'Every lesson has a "report a mistake" control at the bottom. That is the fastest route for anything factual — a wrong command, an outdated tool, a broken link, an explanation that does not hold up. Please include which lesson, since the report does not always carry it.'
+      ]},
+      {h:'Everything else', p:[
+        'LinkedIn is the most reliable way to reach a person: <a href="https://www.linkedin.com/in/iamishfaq07/" target="_blank" rel="noopener noreferrer">linkedin.com/in/iamishfaq07</a>.',
+        'The site is open source. Bugs, suggestions and corrections can also be raised on the repository at <a href="https://github.com/iamishfaq07/KashSec" target="_blank" rel="noopener noreferrer">github.com/iamishfaq07/KashSec</a>, which is often the better place for anything technical because it leaves a record.'
+      ]},
+      {h:'Privacy and data requests', p:[
+        'If you have created an account and want your data exported or deleted, you can do both yourself from the progress page without asking anyone. If something is not working, use either route above and say what you need.'
+      ]},
+      {h:'What this is not', p:[
+        'This is not a helpdesk and there is no incident response service behind it. If you are dealing with a live compromise, contact your national cybersecurity centre or a professional responder — not a free course.'
+      ]}
+    ]
+  },
+  privacy: {
+    eyebrow:'Privacy', title:'Privacy policy',
+    lead:'What this site stores, what leaves your device, and what you can do about it. Last updated 3 August 2026.',
+    sections:[
+      {h:'The short version', p:[
+        'You can use the entire course without an account, and if you do, your progress never leaves your browser. If you choose to create an account, your progress is synced to a database so you can pick it up on another device. Page-view and performance analytics are collected for everyone. Advertising may appear and, when it does, is served by Google.',
+        'Nothing here is sold, and nothing is shared with anyone beyond the specific services named below.'
+      ]},
+      {h:'What is stored on your device', p:[
+        'One entry in your browser\'s local storage, named <code>kashsec_state_v1</code>. It holds your lesson progress, quiz and exam results, practice-task answers, flashcard scheduling, notes you have written, lessons you have rated, your streak, and your display settings such as theme and font size.',
+        'This is stored by your browser, on your device. Without an account it is never transmitted anywhere, and it is not readable by this site\'s author or anyone else. Clearing your browser storage for this site erases it permanently — there is no copy unless you have made one.'
+      ]},
+      {h:'If you create an account (optional)', p:[
+        'Accounts are optional and exist for one reason: using the site on more than one device. Sign-in is by a one-time link sent to your email address, or through Google. Authentication and storage are handled by Supabase, a third-party database service.',
+        'With an account, the following is stored on Supabase\'s servers: your email address, held for authentication; the progress record described above; your lesson ratings, if you rate any lessons; and — only if you separately opt in to the public leaderboard — a display name of your choosing and a count of lessons completed. The leaderboard is off unless you turn it on, and turning it off removes your row.',
+        'You can export everything from the progress page at any time, and deleting your account deletes the stored record.'
+      ]},
+      {h:'Analytics', p:[
+        'Two Vercel services run on every visit: Web Analytics, which counts page views, and Speed Insights, which measures how fast pages load. Both are used in aggregate to see which lessons people read and which pages are slow. They are not used to build a profile of you and are not tied to an account.',
+        'To be exact about the mechanism: these load from a third-party CDN and therefore see your IP address and browser as part of any ordinary web request.'
+      ]},
+      {h:'Advertising', p:[
+        'This site participates in Google AdSense. When ads are being served, Google and its partners may use cookies or similar identifiers to select and measure them, including based on your prior visits to this and other sites.',
+        'You can control this directly at Google\'s <a href="https://myadcenter.google.com/" target="_blank" rel="noopener noreferrer">My Ad Center</a>, and opt out of personalised advertising there or at <a href="https://optout.aboutads.info/" target="_blank" rel="noopener noreferrer">aboutads.info</a>. In the EU and UK, a consent prompt is shown before any personalised advertising cookie is set.'
+      ]},
+      {h:'What this site does not do', p:[
+        'There is no tracking pixel, no session recording, no heatmap tool, no fingerprinting script, and no advertising network other than the one named above. Your notes, your answers and your search queries are never transmitted to the author. Nothing is sold or licensed to a data broker.',
+        'The security tools on this site process everything in your browser. Text you paste into an encoder, a hash identifier or a header analyser is not uploaded anywhere.'
+      ]},
+      {h:'Children', p:[
+        'This site is not directed at children under 13 and no account should be created by one. Nothing here is knowingly collected from a child.'
+      ]},
+      {h:'Your choices', p:[
+        'Use the site without an account, and nothing about you is stored anywhere but your own browser. Delete your local data by clearing site storage in your browser settings. Export or delete an account and its data from the progress page. Opt out of personalised advertising with the links above. Block third-party analytics with any ordinary content blocker — the site works completely normally with all of it blocked.'
+      ]},
+      {h:'Changes and contact', p:[
+        'If what the site collects changes, this page changes in the same update, and the date at the top moves. Questions about any of it go through the <a href="#/contact">contact page</a>.'
+      ]}
+    ]
+  },
+  terms: {
+    eyebrow:'Terms', title:'Terms of use',
+    lead:'The conditions of using this site. Short, and mostly about not committing crimes. Last updated 3 August 2026.',
+    sections:[
+      {h:'Using the site', p:[
+        'KashSec Academy is free to use for personal learning. No account is required, no payment is taken, and no permission needs to be asked to read anything here.',
+        'The site is provided as it is, with no warranty of any kind. It may be unavailable, it may contain errors, and it may change without notice.'
+      ]},
+      {h:'Lawful use — read this one', p:[
+        'This site teaches offensive security techniques, because you cannot defend a system you do not understand how to attack. Everything taught here is intended for systems you personally own, or systems whose owner has given you explicit, documented permission to test.',
+        'Accessing a computer system without authorisation is a criminal offence in most countries — including under the Computer Misuse Act in the UK, the Computer Fraud and Abuse Act in the US, and the Information Technology Act in India. Curiosity is not a defence, "no harm was done" is not a defence, and neither is having learned the technique here.',
+        'You are solely responsible for what you do with anything you learn on this site. The author accepts no liability for it.'
+      ]},
+      {h:'Accuracy', p:[
+        'Security material dates quickly and this is written by one person. It is checked, but it is not peer-reviewed, and it is not professional advice. Do not rely on it for a decision that carries real risk — verify against vendor documentation and current advisories.'
+      ]},
+      {h:'Certificates', p:[
+        'The completion certificate this site generates is a personal record, not an accredited qualification. It is not issued by an examining body, it is not verified by anyone, and no employer is obliged to recognise it. It says you finished a free course, which is exactly what it should say.'
+      ]},
+      {h:'Content and reuse', p:[
+        'The lessons, labs, tools and code are the work of the author. You are welcome to read, quote and link to them, and to use them to teach yourself or someone else. Wholesale republication of the course as your own is not on.',
+        'Third-party names, tools and certifications mentioned throughout belong to their respective owners and are referred to descriptively.'
+      ]},
+      {h:'Changes', p:[
+        'These terms may be updated. The date above moves when they are.'
+      ]}
+    ]
+  }
+};
+
+function renderLegal(kind){
+  const page = LEGAL[kind];
+  if(!page){ location.hash = '#/'; return; }
+  /* Section headings are escaped; paragraph bodies are not, because they
+     carry authored links and <code> spans. That is safe only because LEGAL
+     is a constant in this file — never render user-supplied text through
+     this function. */
+  app.innerHTML = `
+    <section class="sec">
+      <div class="sec-head" data-reveal>
+        <div class="sec-eyebrow">${escapeHtml(page.eyebrow)}</div>
+        <h2>${escapeHtml(page.title)}</h2>
+        <p class="sec-lead">${escapeHtml(page.lead)}</p>
+      </div>
+      <div class="legal-body" data-reveal style="--i:1">
+        ${page.sections.map(s=>`
+          <h3>${escapeHtml(s.h)}</h3>
+          ${s.p.map(t=>`<p>${t}</p>`).join('')}
+        `).join('')}
+      </div>
+    </section>
+  `;
+  setupReveal();
 }
 
 function renderFAQ(){
@@ -6132,6 +6301,14 @@ function renderLabLeakedSecret(){
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
+  {date:'2026-08-03', title:'About, Contact, Privacy and Terms — pages this site should have had from the start', items:[
+    'There was no privacy policy. That is a problem on its own terms, not just an advertising one: this site can create an account, holds an email address, and syncs your progress to a database, and it was telling you none of that. A reader is owed a plain account of what happens to their data, and there was not one to read.',
+    'The privacy policy describes what the code actually does, and was written by reading the code rather than from a template. It says which single browser storage key holds your progress; that without an account nothing leaves your device at all; that accounts are handled by Supabase and store your email, your progress record, your lesson ratings, and — only if you opt in — a leaderboard name and lesson count; that Vercel analytics and speed measurement run on every visit; and that Google serves the advertising. It also says plainly what does not happen: no tracking pixels, no session recording, no fingerprinting, nothing sold, and every security tool on the site processing your input in the browser and never uploading it.',
+    'Terms of use, with the section that matters for a site like this one: everything taught here is for systems you own or have written permission to test. Unauthorised access is a criminal offence in most countries, curiosity is not a defence, and neither is having learned the technique here. The certificate section is equally blunt — it is a personal record, not an accredited qualification, and no employer is obliged to recognise it.',
+    'About and Contact, because a course written by one person with no way to reach them and no explanation of why it exists reads as abandoned, which it is not.',
+    'All four are crawlable pages with proper schema — AboutPage and ContactPage are the types that say "a reachable person runs this" — and all four are linked from the footer of every page.',
+    'The check worth having reads the config files, works out which third-party services are genuinely switched on right now, and fails the build if the privacy policy does not name each one. The realistic way a policy goes wrong is not dishonesty, it is adding a service two years later and forgetting this page exists. Verified by enabling an undisclosed analytics provider and by quietly deleting the word "Supabase" — both were caught.'
+  ]},
   {date:'2026-08-02', title:'The certification roadmap was a year out of date, and silent about it', items:[
     'It listed seven certifications — Security+, eJPT, PNPT, OSCP, CySA+, CEH, PenTest+ — and not one of them was newer than 2025. An entire category of certification was created during 2026 and the page did not mention it, which is a worse failure than being incomplete: a reader planning their next two years would have come away thinking nothing had changed.',
     'Six additions, now thirteen in all. TryHackMe now issue their own certifications (SEC1, SAL1, PT1), which matters because SAL1 is scored mostly on simulated SOC shift work rather than recall, and PT1 ends in a written report. Three AI security certifications did not exist a year ago: OffSec\'s OSAI, a 24-hour practical engagement in the same shape as the OSCP exam; Hack The Box\'s COAE, seven days against AI-driven infrastructure finished with a commercial-grade report, built with Google; and GIAC\'s AI suite, split by role and sat on real machines.',
@@ -10563,6 +10740,8 @@ function getCommands(){
     ['Practice tasks','#/tasks','check'],['Timed mock exam','#/exam','timer'],['Search','#/search','search'],
     ['Glossary','#/glossary','scroll'],['Flashcards','#/review','folders'],['Daily challenge','#/daily','clock'],
     ['Interview bank','#/interview','idcard'],['Careers','#/careers','building'],['FAQ','#/faq','chat'],
+    ['About KashSec','#/about','info'],['Contact','#/contact','mail'],
+    ['Privacy policy','#/privacy','shield'],['Terms of use','#/terms','scale'],
     ['My Progress','#/progress','gauge'],['Changelog','#/changelog','ledger'],['Take the Final Exam','#/quiz/final','flag'],
     ['Mock interview','#/interview/mock','timer'],['Certification roadmap','#/certs','ticket'],['Skill tree','#/skilltree','layers'],
     ['Capstone attack chain','#/capstone','castle'],['Weekly challenge chains','#/weekly','clipboard'],
