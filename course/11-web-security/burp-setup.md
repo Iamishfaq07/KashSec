@@ -121,7 +121,7 @@ A genuinely underused Burp feature: **Proxy → Options → Match and Replace** 
 
 ## Alternatives worth knowing
 
-- **OWASP ZAP** — free, open-source, similar proxy-based approach, popular in CI/CD pipelines for automated DAST (directly relevant to Ishfaq's professional SAST/DAST integration work).
+- **OWASP ZAP** — free, open-source, similar proxy-based approach, popular in CI/CD pipelines for automated DAST (common in professional SAST/DAST integration work).
 - **Caido** — a newer, modern Rust-based alternative gaining popularity.
 - **mitmproxy** — a Python-scriptable proxy, popular for custom automation.
 

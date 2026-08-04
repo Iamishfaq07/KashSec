@@ -1,6 +1,6 @@
 # Building a recon pipeline
 
-Path 11.3 and Path 14.3 taught recon concepts and tools individually. This lesson builds them into a genuine, automated **pipeline** — the exact kind of tooling that separates hobbyist bug hunting from serious, sustained practice, and directly mirrors Ishfaq's own real Burp Suite + MCP + Cline automation setup.
+Path 11.3 and Path 14.3 taught recon concepts and tools individually. This lesson builds them into a genuine, automated **pipeline** — the exact kind of tooling that separates hobbyist bug hunting from serious, sustained practice, and mirrors how serious hunters wire Burp Suite together with scripted automation.
 
 ## Why automation is essential in bug bounty specifically
 
@@ -171,7 +171,7 @@ echo "[+] Done. Results in $OUTDIR/"
 0 3 * * * /home/kali/recon-pipeline.sh example.com >> /home/kali/recon.log 2>&1
 ```
 
-This exact pattern — cron-scheduled, diffed, alerting only on genuine change — is precisely how experienced hunters (and Ishfaq's own real Burp Suite + MCP + Cline automation setup) sustain ongoing coverage across multiple programs without manually re-running everything from scratch every single day.
+This exact pattern — cron-scheduled, diffed, alerting only on genuine change — is precisely how experienced hunters sustain ongoing coverage across multiple programs without manually re-running everything from scratch every single day.
 
 ## Notification integration — closing the loop without babysitting a terminal
 

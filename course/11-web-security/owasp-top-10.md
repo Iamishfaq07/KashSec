@@ -57,7 +57,7 @@ Default credentials left in place, unnecessary features enabled, verbose error m
 
 ### A06: Vulnerable and Outdated Components
 
-Using libraries/frameworks with known CVEs. This is why **SCA (Software Composition Analysis)** tooling exists — directly Ishfaq's professional territory, scanning dependency trees for known-vulnerable packages.
+Using libraries/frameworks with known CVEs. This is why **SCA (Software Composition Analysis)** tooling exists — scanning dependency trees for known-vulnerable packages is core AppSec work.
 
 ### A07: Identification and Authentication Failures
 
@@ -87,7 +87,7 @@ As referenced above, OWASP began the process toward a new edition; while the exa
 
 - **As a beginner:** it's your syllabus. Each category points to a cluster of concrete, learnable bugs (which the rest of this path covers hands-on).
 - **As a pentester:** it's a useful *checklist* to ensure broad coverage, though real engagements go well beyond just these ten categories.
-- **As a defender/AppSec engineer** (Ishfaq's actual daily work): it's a shared vocabulary for prioritising fixes, mapping SAST/DAST findings to recognisable risk categories, and communicating with non-security stakeholders about *why* something matters.
+- **As a defender/AppSec engineer**: it's a shared vocabulary for prioritising fixes, mapping SAST/DAST findings to recognisable risk categories, and communicating with non-security stakeholders about *why* something matters.
 - **As a bug bounty hunter:** most public program scopes and vulnerability disclosure processes implicitly reference these categories.
 
 ## The companion projects worth knowing

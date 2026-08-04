@@ -2585,9 +2585,9 @@ const LEGAL = {
       {h:'Reporting a mistake in a lesson', p:[
         'Every lesson has a "report a mistake" control at the bottom. That is the fastest route for anything factual — a wrong command, an outdated tool, a broken link, an explanation that does not hold up. Please include which lesson, since the report does not always carry it.'
       ]},
-      {h:'Everything else', p:[
-        'LinkedIn is the most reliable way to reach a person: <a href="https://www.linkedin.com/in/iamishfaq07/" target="_blank" rel="noopener noreferrer">linkedin.com/in/iamishfaq07</a>.',
-        'The site is open source. Bugs, suggestions and corrections can also be raised on the repository at <a href="https://github.com/iamishfaq07/KashSec" target="_blank" rel="noopener noreferrer">github.com/iamishfaq07/KashSec</a>, which is often the better place for anything technical because it leaves a record.'
+      {h:'Bugs, suggestions and anything technical', p:[
+        'The site is open source, and the repository is the best place for anything beyond a single-line correction — a bug you can reproduce, a feature you think is missing, a lesson you think is wrong in a way that needs discussion. Opening an issue leaves a record, which a private message does not.',
+        'The repository link is in the footer of every lesson, under "suggest an edit".'
       ]},
       {h:'Privacy and data requests', p:[
         'If you have created an account and want your data exported or deleted, you can do both yourself from the progress page without asking anyone. If something is not working, use either route above and say what you need.'
@@ -9343,7 +9343,7 @@ function certId(name){
   return 'KS-' + Math.abs(h).toString(36).toUpperCase().slice(0,6).padStart(6,'0');
 }
 
-const CERT_SIGNER_NAME = 'Ishfaq';
+const CERT_SIGNER_NAME = 'KashSec Academy';
 const CERT_SIGNER_TITLE = 'KashSec Academy';
 
 function drawCertificate(canvas, name){

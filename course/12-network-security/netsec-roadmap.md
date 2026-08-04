@@ -118,7 +118,7 @@ That summary format — findings plus recommendations — is exactly the skeleto
 :::challenge Reflection
 Which single tool or concept from this path do you think you'll use most in your own security work — Nmap, Wireshark, firewall/VPN configuration, SIEM concepts, or MITM defence awareness? Why?
 
-<details><summary>A thought on this</summary>There's no single right answer, but it's worth noticing that for an <strong>AppSec-focused</strong role (like Ishfaq's own professional context), Wireshark and SIEM/detection concepts often come up less in daily hands-on tool use than Nmap-style reconnaissance and understanding how findings map to detection coverage — while for a <strong>SOC or network security</strong> role, IDS/IPS/SIEM concepts would likely dominate daily work instead. Recognising which of these maps most closely to your own career direction is a genuinely useful piece of self-assessment at this stage.</details>
+<details><summary>A thought on this</summary>There's no single right answer, but it's worth noticing that for an <strong>AppSec-focused</strong> role, Wireshark and SIEM/detection concepts often come up less in daily hands-on tool use than Nmap-style reconnaissance and understanding how findings map to detection coverage — while for a <strong>SOC or network security</strong> role, IDS/IPS/SIEM concepts would likely dominate daily work instead. Recognising which of these maps most closely to your own career direction is a genuinely useful piece of self-assessment at this stage.</details>
 :::
 
 ## Key terms

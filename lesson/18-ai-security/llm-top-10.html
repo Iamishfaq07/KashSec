@@ -77,7 +77,7 @@ cursor.execute(response)   # exactly the SQLi risk from Path 11.6, LLM-generated
 <h3>LLM04: Model Denial of Service</h3>
 <p>Directly analogous to Path 10.1&#39;s Availability pillar and Path 12&#39;s DDoS concepts — an attacker can craft inputs specifically designed to consume disproportionate computational resources (extremely long inputs, recursive/repetitive requests designed to maximize processing cost) degrading service for legitimate users or incurring excessive infrastructure costs for the operator.</p>
 <h3>LLM05: Supply Chain Vulnerabilities</h3>
-<p>Directly extending Path 10.4/11.5&#39;s supply chain security concepts (and Ishfaq&#39;s own professional trivy-action incident response context) into the AI-specific pipeline: vulnerable or maliciously-modified pre-trained models downloaded from public repositories, compromised fine-tuning datasets, or vulnerable third-party libraries used in the model-serving stack (echoing Path 11.1&#39;s A06, now applied to ML-specific dependencies like popular Python ML libraries).</p>
+<p>Directly extending Path 10.4/11.5&#39;s supply chain security concepts into the AI-specific pipeline: vulnerable or maliciously-modified pre-trained models downloaded from public repositories, compromised fine-tuning datasets, or vulnerable third-party libraries used in the model-serving stack (echoing Path 11.1&#39;s A06, now applied to ML-specific dependencies like popular Python ML libraries).</p>
 <pre><code class="language-bash"># Just as Path 16.5 covered scanning container images, ML-specific
 # supply chain scanning tools are an emerging, actively-developing space:
 # scanning model files themselves for embedded malicious code

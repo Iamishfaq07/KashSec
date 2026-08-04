@@ -17,7 +17,7 @@ flowchart TB
     style Side fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
 ```
 
-All three are legitimate, valuable paths — and importantly, **not mutually exclusive over time**. Many successful full-time hunters started as side-practice hobbyists; many AppSec engineers (Ishfaq's own professional context) maintain active bug bounty practice alongside full-time employment specifically because it keeps offensive skills sharp against real, current systems in a way that defensive daily work alone doesn't always provide.
+All three are legitimate, valuable paths — and importantly, **not mutually exclusive over time**. Many successful full-time hunters started as side-practice hobbyists; many AppSec engineers maintain active bug bounty practice alongside full-time employment specifically because it keeps offensive skills sharp against real, current systems in a way that defensive daily work alone doesn't always provide.
 
 ## Building a genuine track record
 
@@ -68,7 +68,7 @@ The scripts and templates you've built throughout Path 15 — the diffing script
     └── standard-report-template.md
 ```
 
-This structure — genuinely mirroring how experienced hunters (and directly, Ishfaq's own real Burp Suite + MCP + Cline automation setup) actually organise their ongoing practice — compounds in value every single session, since each new custom template or refined script immediately benefits every future target you point it at.
+This structure — genuinely mirroring how experienced hunters (typically built around Burp Suite plus scripted automation) actually organise their ongoing practice — compounds in value every single session, since each new custom template or refined script immediately benefits every future target you point it at.
 
 ## The unglamorous business side — income tracking and taxes
 

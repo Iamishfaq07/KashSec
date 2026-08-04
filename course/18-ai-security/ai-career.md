@@ -26,10 +26,10 @@ Neither state is objectively "better" — mature fields offer clearer career pat
 
 ## The roles this field is actually creating
 
-- **AI Red-teamer / AI Safety Researcher** — directly building on Path 18.7's methodology, systematically probing deployed or pre-release models for safety and security failures. This is precisely the kind of work Ishfaq has been actively doing through platforms like Mercor and Alignerr/OpenClaw, doing LLM red-teaming and model output evaluation.
+- **AI Red-teamer / AI Safety Researcher** — directly building on Path 18.7's methodology, systematically probing deployed or pre-release models for safety and security failures. This work is increasingly contracted through specialist evaluation platforms that hire red-teamers for LLM testing and model-output evaluation.
 - **AI/LLM Security Engineer** — building the defensive infrastructure (input/output filtering, instruction hierarchies from Path 18.3, agentic permission systems from Path 18.5's Excessive Agency mitigations) protecting real, deployed AI-integrated products.
 - **Prompt Injection / Jailbreak Researcher** — a genuinely specialised sub-niche within AI red-teaming, focused specifically on discovering and responsibly disclosing (Path 18.4's ethics) novel bypass techniques.
-- **ML/AI Supply Chain Security** — extending Path 10.4/11.5's supply chain concepts (and directly, Ishfaq's own professional trivy-action incident response background) into the AI-specific pipeline: model provenance, training data integrity, and the broader AI supply chain from Path 18.5's LLM05 category.
+- **ML/AI Supply Chain Security** — extending Path 10.4/11.5's supply chain concepts into the AI-specific pipeline: model provenance, training data integrity, and the broader AI supply chain from Path 18.5's LLM05 category.
 - **AI Governance and Policy** — a less purely technical, more cross-functional role translating AI security/safety findings into organisational policy, risk management (Path 10.2's framework, applied here), and regulatory compliance as AI-specific regulation continues to develop globally.
 
 ## How this connects to everything else in this course

@@ -24,7 +24,7 @@ That's it — you wrote and ran a script.
 ## Variables
 
 ```bash
-name="Ishfaq"
+name="Sam"
 echo "Hi, $name"
 
 count=5

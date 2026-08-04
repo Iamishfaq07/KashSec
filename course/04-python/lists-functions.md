@@ -107,7 +107,7 @@ def greet(name):
     """Return a friendly greeting."""
     return f"Hello, {name}!"
 
-message = greet("Ishfaq")
+message = greet("Sam")
 print(message)
 ```
 

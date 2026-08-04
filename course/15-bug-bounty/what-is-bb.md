@@ -44,7 +44,7 @@ Neither model replaces the other — most mature security programs run **both**:
 
 ## Why individuals pursue bug bounty hunting
 
-- **No formal employment relationship required** — genuinely accessible from anywhere in the world, on your own schedule, directly relevant to Ishfaq's own active practice.
+- **No formal employment relationship required** — genuinely accessible from anywhere in the world, on your own schedule — which is much of the appeal.
 - **Direct, tangible proof of skill** — a public track record of valid, disclosed findings is often more persuasive to employers than certifications alone.
 - **Real financial upside** — top bounty hunters earn substantial income; even part-time, consistent participation can meaningfully supplement other income.
 - **Genuinely enjoyable for many** — the "detective work" of finding a real, valid bug in a live system many others have already looked at has a distinct appeal beyond structured lab exercises.

@@ -1,6 +1,6 @@
 # Linux privilege escalation
 
-Path 14.6 introduced privilege escalation as a preview. This lesson delivers the full, systematic methodology — the exact skillset that turns a low-privilege foothold into root access, and a cornerstone of Ishfaq's own recent CPENT practical work.
+Path 14.6 introduced privilege escalation as a preview. This lesson delivers the full, systematic methodology — the exact skillset that turns a low-privilege foothold into root access, and a cornerstone of practical certification exams such as CPENT.
 
 ## Why privilege escalation matters so much
 

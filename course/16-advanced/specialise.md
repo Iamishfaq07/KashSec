@@ -31,9 +31,9 @@ flowchart TB
 | Cloud IAM, containers/K8s | **Cloud security** | Cloud security engineer, DevSecOps |
 | Malware analysis | **Threat research / reverse engineering** | Malware analyst, threat intelligence researcher |
 | DFIR | **Blue team / incident response** | SOC analyst, incident responder, forensics investigator |
-| A mix, with strong dev/pipeline instincts | **Application security** | AppSec engineer (Ishfaq's own current role) |
+| A mix, with strong dev/pipeline instincts | **Application security** | AppSec engineer |
 
-There's no requirement to pick just one permanently — many experienced professionals (again, directly mirroring Ishfaq's own real career, spanning AppSec engineering, active penetration testing, and bug bounty hunting simultaneously) maintain skills across several of these areas, moving between them as projects and interests evolve.
+There's no requirement to pick just one permanently — many experienced professionals (it is common to span AppSec engineering, penetration testing, and bug bounty hunting at the same time) maintain skills across several of these areas, moving between them as projects and interests evolve.
 
 ## How this path connects back to bug bounty (Path 15)
 
@@ -48,7 +48,7 @@ Recall Path 15.8's specific mention — this path directly expands what you can 
 Recall Path 14.1's certification list — the content in this path maps directly onto the practical exam content of the more advanced certifications:
 
 - **OSCP** — heavily tests Linux/Windows privilege escalation (Path 16.1/11.2) and general exploitation methodology (Path 14).
-- **CPENT** — explicitly tests AD attack chains, privilege escalation, IoT, binary exploitation, and pivoting — directly matching Ishfaq's own real, recently-completed practical exam experience referenced throughout this course's development.
+- **CPENT** — explicitly tests AD attack chains, privilege escalation, IoT, binary exploitation, and pivoting.
 - **GCFE/GCFA (SANS/GIAC)** — dedicated forensics certifications building directly on Path 16.7's DFIR content.
 - **GREM (SANS/GIAC)** — dedicated malware reverse engineering certification building on Path 16.6.
 - **Cloud-specific certifications** (AWS Certified Security - Specialty, Azure Security Engineer) — building on Path 16.4's cloud security content specifically.

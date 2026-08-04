@@ -130,7 +130,7 @@ client = boto3.client('secretsmanager')
 secret = client.get_secret_value(SecretId='prod/database/password')
 ```
 
-Hardcoded credentials accidentally committed to public GitHub repositories remain a persistent, ongoing real-world incident source — directly connecting back to Ishfaq's own professional supply-chain security context, where scanning for exactly this pattern (leaked secrets in code/CI pipelines) is a core AppSec responsibility.
+Hardcoded credentials accidentally committed to public GitHub repositories remain a persistent, ongoing real-world incident source — and scanning for exactly this pattern (leaked secrets in code and CI pipelines) is a core AppSec responsibility.
 
 ## Cloud logging and monitoring — CloudTrail and its equivalents
 

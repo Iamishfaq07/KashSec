@@ -57,7 +57,7 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
   <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/15-bug-bounty/recon-pipeline">continue here →</a></div>
   <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/15-bug-bounty/">Path 15 — Bug Bounty</a> · The recon pipeline</div>
   <article><h1>Building a recon pipeline</h1>
-<p>Path 11.3 and Path 14.3 taught recon concepts and tools individually. This lesson builds them into a genuine, automated <strong>pipeline</strong> — the exact kind of tooling that separates hobbyist bug hunting from serious, sustained practice, and directly mirrors Ishfaq&#39;s own real Burp Suite + MCP + Cline automation setup.</p>
+<p>Path 11.3 and Path 14.3 taught recon concepts and tools individually. This lesson builds them into a genuine, automated <strong>pipeline</strong> — the exact kind of tooling that separates hobbyist bug hunting from serious, sustained practice, and mirrors how serious hunters wire Burp Suite together with scripted automation.</p>
 <h2>Why automation is essential in bug bounty specifically</h2>
 <p>Recall Path 15.2 — a broad-scope program (<code>*.example.com</code>) might have hundreds of subdomains. Manually running each recon step from Path 11.3 against every one of them, repeatedly, as the target changes over time, simply doesn&#39;t scale. Serious hunters build <strong>automated pipelines</strong> that run continuously or on a schedule, surfacing new attack surface and changes automatically.</p>
 <h2>The pipeline architecture</h2>
@@ -166,7 +166,7 @@ echo &quot;[+] Done. Results in $OUTDIR/&quot;
 <pre><code class="language-bash"># Run daily via cron (recall Path 03.11&#39;s cron lesson):
 0 3 * * * /home/kali/recon-pipeline.sh example.com &gt;&gt; /home/kali/recon.log 2&gt;&amp;1
 </code></pre>
-<p>This exact pattern — cron-scheduled, diffed, alerting only on genuine change — is precisely how experienced hunters (and Ishfaq&#39;s own real Burp Suite + MCP + Cline automation setup) sustain ongoing coverage across multiple programs without manually re-running everything from scratch every single day.</p>
+<p>This exact pattern — cron-scheduled, diffed, alerting only on genuine change — is precisely how experienced hunters sustain ongoing coverage across multiple programs without manually re-running everything from scratch every single day.</p>
 <h2>Notification integration — closing the loop without babysitting a terminal</h2>
 <p>A pipeline that only writes results to a text file still requires you to remember to go look at it — the final piece that makes automation genuinely sustainable is pushing new findings somewhere you&#39;ll actually notice them, without needing to manually check in:</p>
 <pre><code class="language-bash"># Send a Slack/Discord webhook notification only when the diff script finds something new:

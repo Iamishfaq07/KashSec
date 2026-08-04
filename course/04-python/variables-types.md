@@ -7,7 +7,7 @@ You can't write programs without a way to store and label information. That's wh
 A **variable** is a labelled box you put a value into. You give it a name, put a value in, and later use the name to get the value back.
 
 ```python
-name = "Ishfaq"      # a text value
+name = "Sam"      # a text value
 age = 32             # a whole number
 is_admin = False     # a yes/no value
 score = 87.5         # a decimal number
@@ -18,8 +18,8 @@ Every one of those lines follows the same shape: **`name = value`**. The name is
 ## Reading and changing values
 
 ```python
-name = "Ishfaq"
-print(name)             # → Ishfaq
+name = "Sam"
+print(name)             # → Sam
 
 name = "Alice"          # replace the value
 print(name)             # → Alice

@@ -1,6 +1,6 @@
 # AI red-teaming methodology
 
-Every technique from Path 18.3-12.6 needs a disciplined, professional methodology to be applied usefully — exactly as Path 14 turned Paths 11-08's individual techniques into professional penetration testing practice. This lesson is AI security's direct equivalent, and closely mirrors Ishfaq's own real, active AI evaluation and red-teaming work.
+Every technique from Path 18.3-12.6 needs a disciplined, professional methodology to be applied usefully — exactly as Path 14 turned Paths 11-08's individual techniques into professional penetration testing practice. This lesson is AI security's direct equivalent, and mirrors how professional AI evaluation and red-teaming work is actually structured.
 
 ## What AI red-teaming actually means
 
@@ -159,7 +159,7 @@ For scale, dedicated tooling increasingly supports this exact methodology:
 
 - **Garak** — an open-source LLM vulnerability scanner, systematically probing for known jailbreak/prompt-injection patterns, conceptually similar to how Nuclei (Path 15.7) systematically scans for known web vulnerability patterns.
 - **PyRIT (Python Risk Identification Tool)** — Microsoft's open-source framework specifically for AI red-teaming automation.
-- **Custom evaluation harnesses** — many organisations (and platforms Ishfaq has worked with professionally, like Mercor and Alignerr/OpenClaw) build bespoke evaluation pipelines tailored to their specific deployment's threat model from Phase 1.
+- **Custom evaluation harnesses** — many organisations (and the specialist AI evaluation platforms) build bespoke evaluation pipelines tailored to their specific deployment's threat model from Phase 1.
 
 ## Choosing a target: pre-release vs. deployed systems
 

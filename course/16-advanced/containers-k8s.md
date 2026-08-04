@@ -76,15 +76,14 @@ docker run --privileged -it ubuntu chroot /host_mount sh
 Directly connecting to Path 11.1's A06 (Vulnerable and Outdated Components) — container images built from outdated base images inherit **every** unpatched vulnerability in that base layer:
 
 ```bash
-# Scan a container image for known vulnerabilities — Ishfaq's own
-# professional toolchain includes exactly this tool:
+# Scan a container image for known vulnerabilities:
 trivy image example-app:latest
 
 # Scan a Dockerfile itself for misconfigurations:
 trivy config Dockerfile
 ```
 
-**Trivy** (mentioned in Ishfaq's own professional context around the trivy-action supply-chain incident referenced earlier in this course's development) is a widely-used open-source scanner checking both known CVEs in image layers and misconfigurations in the Dockerfile/Kubernetes manifests themselves — directly relevant to the SCA (Software Composition Analysis) concept from Path 11.1.
+**Trivy** (itself the subject of a notable supply-chain incident involving its own GitHub Action) is a widely-used open-source scanner checking both known CVEs in image layers and misconfigurations in the Dockerfile/Kubernetes manifests themselves — directly relevant to the SCA (Software Composition Analysis) concept from Path 11.1.
 
 ## Kubernetes — orchestrating containers at scale, and its own attack surface
 
@@ -179,7 +178,7 @@ This directly extends the software supply-chain security theme threaded througho
 - **Never run containers as root** unless there's a specific, well-understood reason — set an explicit non-root `USER` in every Dockerfile.
 - **Never mount the Docker socket** into a container unless absolutely necessary, and treat any container that does as equivalent to full host root access.
 - **Avoid `--privileged`** entirely in production; use specific, minimal Linux capabilities instead if elevated access is genuinely required.
-- **Scan images continuously** with Trivy (or similar) integrated directly into CI/CD pipelines — exactly the kind of SAST/DAST/SCA pipeline integration work central to Ishfaq's own professional role.
+- **Scan images continuously** with Trivy (or similar) integrated directly into CI/CD pipelines — exactly the kind of SAST/DAST/SCA pipeline integration work that sits at the centre of an AppSec role.
 - **Apply least-privilege RBAC** — avoid `cluster-admin` bindings for application service accounts; scope permissions to exactly what each workload needs.
 - **Never expose the Kubernetes API or dashboard** without strong authentication and network restriction (recall Path 12.4's firewall/VPN concepts, applied here).
 - **Use Pod Security Standards** (Kubernetes' built-in mechanism for restricting privileged/risky pod configurations cluster-wide).

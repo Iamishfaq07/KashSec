@@ -53,7 +53,7 @@ Recall Path 10.1's CIA triad tension — LLM safety measures face an analogous, 
 
 ## Why this matters especially now, for your own career
 
-Recall Path 16.8's closing point about specialisation timing. AI security is a genuinely **young field** — the OWASP LLM Top 10 (Path 18.5) was first published only in 2023, and the practices, tooling, and even terminology are actively evolving as this course is being written. This creates a distinctive opportunity compared to the mature fields in Path 16: fewer established practitioners, rapidly growing organizational demand (as more companies rush to deploy LLM-powered features, per Path 18.8's career discussion), and genuine room for someone building deep expertise now to become a recognised specialist relatively quickly — directly relevant to Ishfaq's own active AI evaluation/red-teaming work (Mercor, Alignerr/OpenClaw) referenced throughout this course's development.
+Recall Path 16.8's closing point about specialisation timing. AI security is a genuinely **young field** — the OWASP LLM Top 10 (Path 18.5) was first published only in 2023, and the practices, tooling, and even terminology are actively evolving as this course is being written. This creates a distinctive opportunity compared to the mature fields in Path 16: fewer established practitioners, rapidly growing organizational demand (as more companies rush to deploy LLM-powered features, per Path 18.8's career discussion), and genuine room for someone building deep expertise now to become a recognised specialist relatively quickly.
 
 ## The confused deputy problem — an old name for a familiar pattern
 

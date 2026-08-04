@@ -1,6 +1,6 @@
 # Active Directory attacks
 
-**Active Directory (AD)** manages identity and access for the vast majority of corporate Windows networks worldwide. Understanding AD attacks is one of the highest-value skills in professional penetration testing — and directly the subject matter of Ishfaq's own recent CPENT practical exam (AD compromise chains).
+**Active Directory (AD)** manages identity and access for the vast majority of corporate Windows networks worldwide. Understanding AD attacks is one of the highest-value skills in professional penetration testing — and the core subject matter of practical certifications such as CPENT, which tests AD compromise chains directly.
 
 ## What Active Directory actually is
 

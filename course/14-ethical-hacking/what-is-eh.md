@@ -48,7 +48,7 @@ It's worth distinguishing ethical hacking from adjacent, sometimes-confused role
 | **Bug bounty** | Ongoing, crowdsourced, pay-per-valid-finding model open to many researchers simultaneously (Path 15) |
 | **AppSec engineering** | Building security *into* the development process itself (SAST/DAST pipelines, secure code review) — proactive rather than adversarial testing |
 
-Ishfaq's own real-world role spans several of these — secure SDLC and pipeline work (AppSec engineering) alongside active penetration testing and bug bounty work.
+Many real-world roles span several of these — secure SDLC and pipeline work (AppSec engineering) alongside active penetration testing and bug bounty work.
 
 ## The essential legal foundation, reinforced
 
@@ -71,7 +71,7 @@ You'll encounter these constantly in job listings and professional development:
 - **eJPT (eLearnSecurity Junior Penetration Tester)** — a well-regarded, practical entry-level certification.
 - **OSCP (Offensive Security Certified Professional)** — one of the most respected, famously difficult, hands-on penetration testing certifications in the industry.
 - **CEH (Certified Ethical Hacker)** — a widely-recognised, broad-coverage certification, often useful for HR/compliance checkbox requirements even where its practical rigor is debated among practitioners.
-- **CPENT (Certified Penetration Testing Professional)** — an advanced, heavily practical certification covering AD attack chains, binary exploitation, IoT, and pivoting — directly relevant to Ishfaq's own recent professional achievement.
+- **CPENT (Certified Penetration Testing Professional)** — an advanced, heavily practical certification covering AD attack chains, binary exploitation, IoT, and pivoting.
 - **OSCE³ / OSWE** — advanced, specialised offensive security certifications for web application exploitation and beyond.
 
 ## The mindset shift this path represents

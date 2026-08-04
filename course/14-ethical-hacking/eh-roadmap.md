@@ -85,7 +85,7 @@ flowchart LR
     style M4 fill:#2b1010,color:#E05548,stroke:#E05548
 ```
 
-This is a realistic, not overly optimistic, timeline for someone dedicating consistent part-time effort — matching well against Ishfaq's own real documented trajectory of eJPT/CEH toward CPENT and OSCP pursuit over a similar multi-month arc.
+This is a realistic, not overly optimistic, timeline for someone dedicating consistent part-time effort — and it matches the well-documented route from eJPT or CEH toward CPENT and OSCP over a similar multi-month arc.
 
 ## Freelance and consultancy paths — the business side of the craft
 

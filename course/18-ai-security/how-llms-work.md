@@ -124,7 +124,7 @@ Directly mirroring Path 11.1's OWASP Top 10 for web applications, **OWASP has pu
 
 1. Visit [OpenAI's Tokenizer tool](https://platform.openai.com/tokenizer) (works for exploring tokenization concepts generally, even though it's OpenAI-branded) and paste in a few sentences — including some unusual formatting, emoji, and non-English text. Notice how token boundaries don't always match your intuitive sense of "words."
 2. If you have access to any LLM chat interface, start a fresh conversation and ask it to "remember" a specific fact. Then start a genuinely **new, separate** conversation and ask about that fact — confirming firsthand that no memory persists outside the context window of a single conversation (unless the specific product has an explicit memory feature layered on top, which is itself just another mechanism feeding additional text into the context window).
-3. Research your own locally-run models (recall Ishfaq's own Ollama/LM Studio usage context) — check the documented **context window size** (measured in tokens) for a model you're familiar with, and consider what that means practically for how much conversation history or document content it can actually "see" at once.
+3. Research your own locally-run models (for example with Ollama or LM Studio) — check the documented **context window size** (measured in tokens) for a model you're familiar with, and consider what that means practically for how much conversation history or document content it can actually "see" at once.
 
 :::challenge Test yourself
 Why does the lack of a structural distinction between "trusted instructions" and "untrusted data" within an LLM's context window matter so much for security, compared to how traditional software typically separates code from data?

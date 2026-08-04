@@ -59,7 +59,7 @@ Directly analogous to Path 10.1's Availability pillar and Path 12's DDoS concept
 
 ### LLM05: Supply Chain Vulnerabilities
 
-Directly extending Path 10.4/11.5's supply chain security concepts (and Ishfaq's own professional trivy-action incident response context) into the AI-specific pipeline: vulnerable or maliciously-modified pre-trained models downloaded from public repositories, compromised fine-tuning datasets, or vulnerable third-party libraries used in the model-serving stack (echoing Path 11.1's A06, now applied to ML-specific dependencies like popular Python ML libraries).
+Directly extending Path 10.4/11.5's supply chain security concepts into the AI-specific pipeline: vulnerable or maliciously-modified pre-trained models downloaded from public repositories, compromised fine-tuning datasets, or vulnerable third-party libraries used in the model-serving stack (echoing Path 11.1's A06, now applied to ML-specific dependencies like popular Python ML libraries).
 
 ```bash
 # Just as Path 16.5 covered scanning container images, ML-specific

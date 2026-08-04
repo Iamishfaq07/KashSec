@@ -58,7 +58,7 @@ An American Institute of CPAs (AICPA) standard, extremely common for **SaaS and 
 
 ### HIPAA
 
-US law governing protection of health information. Directly relevant to Ishfaq's own industry context — **healthcare revenue cycle management companies handle protected health information (PHI) and must comply with HIPAA's Security Rule**, covering access controls, audit logging, encryption, and breach notification requirements. If you work in or adjacent to healthcare in the US, this framework is not optional background knowledge — it's operational reality.
+US law governing protection of health information. **Healthcare providers, and the companies that process their billing, handle protected health information (PHI) and must comply with HIPAA's Security Rule**, covering access controls, audit logging, encryption, and breach notification requirements. If you work in or adjacent to healthcare in the US, this framework is not optional background knowledge — it's operational reality.
 
 ### GDPR
 

@@ -93,14 +93,13 @@ docker run --privileged -it ubuntu chroot /host_mount sh
 <p><code>--privileged</code> should be treated as an emergency-only escape hatch, essentially equivalent to disabling container isolation almost entirely — a huge red flag in any security review.</p>
 <h3>Vulnerable base images and dependencies</h3>
 <p>Directly connecting to Path 11.1&#39;s A06 (Vulnerable and Outdated Components) — container images built from outdated base images inherit <strong>every</strong> unpatched vulnerability in that base layer:</p>
-<pre><code class="language-bash"># Scan a container image for known vulnerabilities — Ishfaq&#39;s own
-# professional toolchain includes exactly this tool:
+<pre><code class="language-bash"># Scan a container image for known vulnerabilities:
 trivy image example-app:latest
 
 # Scan a Dockerfile itself for misconfigurations:
 trivy config Dockerfile
 </code></pre>
-<p><strong>Trivy</strong> (mentioned in Ishfaq&#39;s own professional context around the trivy-action supply-chain incident referenced earlier in this course&#39;s development) is a widely-used open-source scanner checking both known CVEs in image layers and misconfigurations in the Dockerfile/Kubernetes manifests themselves — directly relevant to the SCA (Software Composition Analysis) concept from Path 11.1.</p>
+<p><strong>Trivy</strong> (itself the subject of a notable supply-chain incident involving its own GitHub Action) is a widely-used open-source scanner checking both known CVEs in image layers and misconfigurations in the Dockerfile/Kubernetes manifests themselves — directly relevant to the SCA (Software Composition Analysis) concept from Path 11.1.</p>
 <h2>Kubernetes — orchestrating containers at scale, and its own attack surface</h2>
 <p><strong>Kubernetes (K8s)</strong> manages large numbers of containers across many machines — introducing its own control plane, API, and permission model on top of the container concepts above.</p>
 <h3>RBAC misconfigurations — the Kubernetes IAM equivalent</h3>
@@ -152,7 +151,7 @@ cosign verify --key cosign.pub example-registry/example-app:latest
 <li><strong>Never run containers as root</strong> unless there&#39;s a specific, well-understood reason — set an explicit non-root <code>USER</code> in every Dockerfile.</li>
 <li><strong>Never mount the Docker socket</strong> into a container unless absolutely necessary, and treat any container that does as equivalent to full host root access.</li>
 <li><strong>Avoid <code>--privileged</code></strong> entirely in production; use specific, minimal Linux capabilities instead if elevated access is genuinely required.</li>
-<li><strong>Scan images continuously</strong> with Trivy (or similar) integrated directly into CI/CD pipelines — exactly the kind of SAST/DAST/SCA pipeline integration work central to Ishfaq&#39;s own professional role.</li>
+<li><strong>Scan images continuously</strong> with Trivy (or similar) integrated directly into CI/CD pipelines — exactly the kind of SAST/DAST/SCA pipeline integration work that sits at the centre of an AppSec role.</li>
 <li><strong>Apply least-privilege RBAC</strong> — avoid <code>cluster-admin</code> bindings for application service accounts; scope permissions to exactly what each workload needs.</li>
 <li><strong>Never expose the Kubernetes API or dashboard</strong> without strong authentication and network restriction (recall Path 12.4&#39;s firewall/VPN concepts, applied here).</li>
 <li><strong>Use Pod Security Standards</strong> (Kubernetes&#39; built-in mechanism for restricting privileged/risky pod configurations cluster-wide).</li>

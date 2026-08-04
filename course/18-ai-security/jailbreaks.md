@@ -86,7 +86,7 @@ Recall Path 18.2's probabilistic framing — jailbreak success is fundamentally 
 
 ## The responsible research and disclosure angle
 
-Directly paralleling Path 14.1's ethical hacking framing and Path 15's responsible disclosure practices — legitimate AI safety researchers (including red-teamers working through official programs, exactly like Ishfaq's own documented AI evaluation platform work) discover and report jailbreak techniques through **responsible channels** to AI labs, rather than publishing novel, highly effective techniques publicly without any advance coordination — precisely the same responsible disclosure ethic from Path 15.4, applied to this specific domain, since publicly documenting a novel, highly effective jailbreak technique before labs can address it causes real, avoidable harm at scale.
+Directly paralleling Path 14.1's ethical hacking framing and Path 15's responsible disclosure practices — legitimate AI safety researchers (including red-teamers working through official programs) discover and report jailbreak techniques through **responsible channels** to AI labs, rather than publishing novel, highly effective techniques publicly without any advance coordination — precisely the same responsible disclosure ethic from Path 15.4, applied to this specific domain, since publicly documenting a novel, highly effective jailbreak technique before labs can address it causes real, avoidable harm at scale.
 
 ## 🧪 Lab — Structured, legal jailbreak research practice
 

@@ -65,7 +65,7 @@ Path 02 gave you the vocabulary. This path teaches you to **attack and defend** 
 
 Unlike Path 11 (which leaned heavily offensive), network security has an unusually strong **defensive** flavour even in day-to-day offensive work — because so much of network security is about *visibility* (can you even see what's happening on your network?) and *segmentation* (if one thing is compromised, how far can it spread?).
 
-This connects directly to Ishfaq's real professional world: supply chain security, SOC operations, and the broader "can we detect and contain this" mindset that runs through every mature security program.
+This connects directly to real-world practice: supply chain security, SOC operations, and the broader "can we detect and contain this" mindset that runs through every mature security program.
 
 ## Zero Trust — the modern shift in network thinking
 
