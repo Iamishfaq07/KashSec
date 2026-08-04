@@ -166,6 +166,93 @@ function measureContrast() {
     `${motion.total} cards, ${motion.hidden} faded, ${motion.moved} transformed`);
   await rm.close();
 
+  /* ---- structural checks added after a full-site audit ----
+     Three defects that every existing suite walked straight past.
+
+     1. NAV OVERFLOW. The bar laid out at roughly 1366px minimum, but the
+        hamburger only took over below 900px. Between those two the row
+        overflowed — by 392px at the narrow end — and because the body sets
+        overflow-x:hidden it was clipped rather than scrollable. The Start
+        button, the site's primary call to action, was simply invisible on
+        every common laptop width. Nothing caught it because nothing here
+        had ever measured a layout at more than one viewport size.
+
+     2. NO <h1>. 25 routes had no <h1> anywhere in the document — the
+        heading a screen reader user jumps to first, and the strongest
+        on-page signal a search engine has.
+
+     3. UNLABELLED CONTROLS. Six inputs reachable by keyboard with no
+        accessible name at all. */
+  const structural = await (async () => {
+    const out = [];
+    const ROUTES = ['#/', '#/course', '#/labs', '#/tools', '#/tasks', '#/exam', '#/glossary',
+      '#/progress', '#/about', '#/privacy', '#/review', '#/daily', '#/search',
+      '#/lesson/01-introduction', '#/lesson/01-introduction/cia-triad-explained',
+      '#/labs/terminal', '#/tools/encoder', '#/quiz/01-introduction'];
+
+    // 1. the nav must fit, and the CTA must be on screen, at every width a
+    //    real visitor might use.
+    const clipped = [];
+    for (const w of [901, 1024, 1180, 1280, 1366, 1440, 1600]) {
+      const c = await browser.newContext({ viewport: { width: w, height: 800 }, serviceWorkers: 'block' });
+      const pg = await c.newPage();
+      await pg.goto(`${BASE}/index.html#/course`, { waitUntil: 'load' });
+      await pg.waitForTimeout(700);
+      const bad = await pg.evaluate(() => {
+        const vw = document.documentElement.clientWidth;
+        const start = document.querySelector('#startBtn');
+        const nav = document.querySelector('.nav');
+        return { over: nav.scrollWidth - vw, cut: Math.round(start.getBoundingClientRect().right) > vw };
+      });
+      if (bad.cut || bad.over > 1) clipped.push(`${w}px(+${bad.over}${bad.cut ? ', CTA cut off' : ''})`);
+      await c.close();
+    }
+    out.push(['the header fits and the Start button is visible at every width',
+      clipped.length === 0, clipped.join(' ')]);
+
+    // 2 + 3, measured on one pass over the routes.
+    const noH1 = [], multiH1 = [], unlabelled = [];
+    const c2 = await browser.newContext({ viewport: { width: 1280, height: 1000 }, serviceWorkers: 'block' });
+    await c2.addInitScript(() => { try { const k = 'kashsec_state_v1';
+      const st = JSON.parse(localStorage.getItem(k) || '{}');
+      st.tourDone = true; st.tourSeen = true; localStorage.setItem(k, JSON.stringify(st)); } catch (e) {} });
+    const pg2 = await c2.newPage();
+    for (const r of ROUTES) {
+      await pg2.goto(`${BASE}/index.html${r}`, { waitUntil: 'load' });
+      await pg2.waitForTimeout(700);
+      const d = await pg2.evaluate(() => {
+        const h1 = document.querySelectorAll('#app h1').length;
+        /* visibility:hidden must be excluded as well as display:none — the
+           flashcard rating buttons are visibility-hidden until a card is
+           flipped, so innerText reads empty while textContent is fine.
+           A wrapping <label> with text is a valid accessible name; only
+           checking label[for] invents failures on every tool page. */
+        const bad = [...document.querySelectorAll('#app input,#app textarea,#app select,#app button')]
+          .filter(el => {
+            if (el.offsetParent === null || getComputedStyle(el).visibility === 'hidden') return false;
+            if ((el.textContent || '').trim()) return false;
+            if (el.getAttribute('aria-label') || el.getAttribute('aria-labelledby') || el.getAttribute('title')) return false;
+            if (el.id && document.querySelector(`label[for="${el.id}"]`)) return false;
+            const w = el.closest('label');
+            if (w && w.innerText.trim()) return false;
+            return true;
+          }).map(el => `${el.tagName.toLowerCase()}#${el.id || '?'}`);
+        return { h1, bad };
+      });
+      if (d.h1 === 0) noH1.push(r);
+      else if (d.h1 > 1) multiH1.push(`${r}(${d.h1})`);
+      if (d.bad.length) unlabelled.push(`${r}: ${d.bad.join(', ')}`);
+    }
+    await c2.close();
+    out.push([`every route has exactly one <h1> (${ROUTES.length} routes)`,
+      noH1.length === 0 && multiH1.length === 0,
+      [noH1.length ? `none on ${noH1.join(', ')}` : '', multiH1.length ? `several on ${multiH1.join(', ')}` : ''].filter(Boolean).join(' | ')]);
+    out.push(['every interactive control has an accessible name',
+      unlabelled.length === 0, unlabelled.join(' | ')]);
+    return out;
+  })();
+  structural.forEach(([n, ok, d]) => record(n, ok, d));
+
   await browser.close();
 
   console.log(`\n  UI quality — ${results.length} checks\n`);

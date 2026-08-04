@@ -175,12 +175,41 @@ a{color:inherit}
   background:var(--grad-amber);color:#160f02;box-shadow:0 6px 18px -8px var(--glow-amber);transition:transform .3s var(--ease-spring)}
 .brand:hover .brand-mark{transform:rotate(-8deg) scale(1.06)}
 .brand-txt{letter-spacing:-.02em}
-.nav-links{display:flex;gap:.35rem}
-.nav-links a{color:var(--muted);font-size:.92rem;font-weight:500;text-decoration:none;padding:.45rem .7rem;border-radius:8px;position:relative;transition:color .18s var(--ease),background .18s var(--ease)}
+/* min-width:0 matters: without it a flex item refuses to shrink below its
+   content width, so the link row pushed the whole bar past the viewport and
+   .nav-cta — the Start button — was the part that fell off the end. The
+   body has overflow-x:hidden, so it was clipped rather than scrollable:
+   silently gone, on every width from 901px to 1365px. */
+.nav-links{display:flex;gap:.35rem;min-width:0}
+/* nowrap because "My Progress" was breaking onto a second line, which grew
+   the whole bar from 67px to 91px on every laptop-width screen. */
+.nav-links a{color:var(--muted);font-size:.92rem;font-weight:500;text-decoration:none;padding:.45rem .7rem;border-radius:8px;position:relative;white-space:nowrap;transition:color .18s var(--ease),background .18s var(--ease)}
 .nav-links a:hover{color:var(--text);background:var(--overlay-3)}
 .nav-links a.active{color:var(--text)}
 .nav-links a.active::after{content:"";position:absolute;left:.7rem;right:.7rem;bottom:.15rem;height:2px;border-radius:2px;background:var(--grad-brand)}
-.nav-cta{display:flex;align-items:center;gap:.4rem}
+/* flex-shrink:0 — the call to action is the one thing in this bar that must
+   never be the part that gets sacrificed for space. */
+.nav-cta{display:flex;align-items:center;gap:.4rem;flex-shrink:0}
+
+/* The laptop range. The horizontal nav needs about 1366px to lay out at full
+   size, so between the mobile breakpoint and that width everything was
+   overflowing — by 392px at the narrow end. Tightening the link row buys
+   back roughly 200px, and dropping the random-lesson button (still on the
+   R key and in the command palette) buys the rest. */
+@media(min-width:901px) and (max-width:1365px){
+  .nav{padding-left:clamp(.75rem,2vw,1.5rem);padding-right:clamp(.75rem,2vw,1.5rem)}
+  .nav-links{gap:.05rem}
+  .nav-links a{font-size:.86rem;padding:.45rem .42rem}
+  .nav-links a.active::after{left:.42rem;right:.42rem}
+  .brand{font-size:1.04rem}
+  #randomLessonBtn{display:none}
+  .nav-cta{gap:.3rem}
+}
+@media(min-width:901px) and (max-width:1100px){
+  .nav-links a{font-size:.82rem;padding:.45rem .3rem}
+  .nav-links a.active::after{left:.3rem;right:.3rem}
+  .brand-txt{display:none}
+}
 .hamb{display:none;background:none;border:1px solid var(--border);border-radius:9px;color:var(--text);cursor:pointer;padding:7px;transition:border-color .2s var(--ease),background .2s var(--ease)}
 .hamb:hover{border-color:var(--border-strong);background:var(--overlay-2)}
 
@@ -210,6 +239,17 @@ a{color:inherit}
 /* ---------- Sections ---------- */
 .sec{max-width:var(--maxw);margin:0 auto;padding:clamp(3rem,6vw,5.5rem) clamp(1rem,4vw,3rem);position:relative}
 .sec-head{max-width:46rem;margin-bottom:2.4rem}
+/* The section title is the page's <h1>. It used to be an <h2>, which left
+   25 routes with no <h1> anywhere in the document — the heading a screen
+   reader user jumps to first to answer "what is this page", and the
+   strongest on-page signal a search engine has. Sizing is repeated from the
+   global h2 rule so the change is invisible on screen. */
+.sec-head h1{font-size:clamp(1.7rem,3.6vw,2.55rem);font-weight:700}
+/* .sec-title has no size rule of its own — it was inheriting the global h2
+   sizing, so promoting it to h1 would silently hand it the browser default
+   instead. Pinned here to the size it has always rendered at. */
+.sec-title{font-size:clamp(1.7rem,3.6vw,2.55rem);font-weight:700}
+.quiz-head h1{font-size:clamp(1.7rem,3.6vw,2.55rem);font-weight:700}
 .sec-eyebrow{display:inline-flex;align-items:center;gap:.5rem;font-family:'JetBrains Mono';font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);margin-bottom:1rem}
 .sec-eyebrow::before{content:"";width:22px;height:1px;background:linear-gradient(90deg,var(--amber),transparent)}
 .sec-lead{color:var(--muted);font-size:1.05rem;margin-top:.9rem;line-height:1.7}

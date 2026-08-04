@@ -5,7 +5,14 @@
     <link>https://kashsec.vercel.app/</link>
     <description>Updates to the free KashSec Academy cybersecurity course.</description>
     <language>en</language>
-    <lastBuildDate>Mon, 03 Aug 2026 06:57:51 GMT</lastBuildDate>
+    <lastBuildDate>Tue, 04 Aug 2026 10:35:08 GMT</lastBuildDate>
+    <item>
+      <title>The Start button was invisible on most laptops, and had been for a long time</title>
+      <link>https://kashsec.vercel.app/#/changelog</link>
+      <guid isPermaLink="false">kashsec-2026-08-04</guid>
+      <pubDate>Tue, 04 Aug 2026 12:00:00 GMT</pubDate>
+      <description>&lt;ul&gt;&lt;li&gt;The header lays out at about 1366px minimum, but the mobile menu only took over below 900px. Everything between those two widths overflowed — by 392px at the narrow end — and because the page sets overflow-x:hidden it was clipped rather than scrollable. The Start button, the single most important control on the site, was simply not on screen at 1024px, 1280px, or any other common laptop width, and there was no way to scroll to it. "My Progress" was also wrapping onto a second line, which is why the header was 91px tall instead of 67px.&lt;/li&gt;&lt;li&gt;Fixed by letting the link row shrink (a flex item will not go below its content width unless told to), pinning the call to action so it can never be the thing that falls off the end, and tightening the row between 901px and 1365px. All eleven links stay visible at every width from 901px to 1920px.&lt;/li&gt;&lt;li&gt;Twenty-five pages had no &amp;lt;h1&amp;gt; anywhere in the document. That is the heading a screen reader user jumps to first to answer "what is this page", and the strongest single on-page signal a search engine has. Every page now has exactly one, and it is the visible page title rather than something hidden. Lessons and path overviews already had theirs, so nothing changed there.&lt;/li&gt;&lt;li&gt;Six controls that could be reached by keyboard had no accessible name at all — the glossary filter, three settings switches, the lesson notes box, and the terminal input in the labs. A placeholder is not a name: it vanishes the moment you type.&lt;/li&gt;&lt;li&gt;Three checks added, and they measure at seven viewport widths rather than one, which is the reason none of this was caught before — every existing check ran at a single window size. Verified by putting each of the three bugs back and watching the right check fail.&lt;/li&gt;&lt;li&gt;Two of the findings in the original audit turned out to be faults in the audit rather than the site: a wrapping &amp;lt;label&amp;gt; is a perfectly good accessible name, and the flashcard rating buttons only look nameless because they are visibility:hidden until you flip the card. Both corrections are baked into the check so it does not cry wolf.&lt;/li&gt;&lt;/ul&gt;</description>
+    </item>
     <item>
       <title>About, Contact, Privacy and Terms — pages this site should have had from the start</title>
       <link>https://kashsec.vercel.app/#/changelog</link>

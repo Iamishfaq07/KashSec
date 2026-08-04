@@ -2027,7 +2027,7 @@ function renderHome(){
     <section class="hero">
       <div class="hero-inner">
         <div class="eyebrow" data-reveal>${continueCtx ? '▶ Welcome back' : 'Free cybersecurity course · zero experience needed'}</div>
-        <h1 data-reveal style="--i:1">${continueCtx ? `Pick up right where you <span class="amber">left off</span>.` : `Start cybersecurity from <span class="amber">absolute zero</span>.`}</h1>
+        <h1 data-reveal style="--i:1">${continueCtx ? `Pick up right where you <span class="amber">left off</span>.` : `Start cybersecurity from <span class="amber">absolute zero</span>.`}</h2>
         <p class="hero-sub" data-reveal style="--i:2">
           ${continueCtx
             ? `You were on <strong>${continueCtx.path.n}.${continueCtx.sub.n} · ${continueCtx.sub.title}</strong> in ${continueCtx.path.title}. Jump back in, or explore the rest of the course — ${total}+ sub-lessons across ${PATHS.length} paths, always free.`
@@ -2123,7 +2123,7 @@ function renderCourseIndex(){
     <section class="sec">
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow">The full course</div>
-        <h2>${PATHS.length} paths, ${totalSubLessons()}+ sub-lessons</h2>
+        <h1>${PATHS.length} paths, ${totalSubLessons()}+ sub-lessons</h1>
         <p class="sec-lead">Each path is split into short focused sub-lessons. Click a path to see its map.</p>
       </div>
       <div class="paths">
@@ -2373,7 +2373,7 @@ function renderCertTracker(){
     <section class="sec">
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow">Career</div>
-        <h2>Certification roadmap</h2>
+        <h1>Certification roadmap</h1>
         <p class="sec-lead">Certifications from first job to specialist, with the exam format for each and which KashSec paths prepare you. The AI security certifications at the end are new as of 2026 — that whole category did not exist before. Track your own progress; nothing here is verified or official, it's a personal planner.</p>
         <div class="mini-progress" style="max-width:22rem;margin-top:1.2rem">
           <div class="mini-progress-track"><div class="mini-progress-fill" style="width:0%" data-pct="${Math.round(passedCount/CERTS.length*100)}"></div></div>
@@ -2470,7 +2470,7 @@ function renderCareerQuiz(){
       <section class="sec">
         <div class="sec-head" data-reveal>
           <div class="sec-eyebrow">Career-fit quiz</div>
-          <h2>Your best fit: ${escapeHtml(result.role)}</h2>
+          <h1>Your best fit: ${escapeHtml(result.role)}</h1>
           <p class="sec-lead">${escapeHtml(result.desc)}</p>
           <div class="hero-btns" style="justify-content:flex-start;margin-top:1rem">
             <a class="btn-amber" href="#/track/${result.trackId}">See the ${escapeHtml(result.role)} track →</a>
@@ -2490,7 +2490,7 @@ function renderCareerQuiz(){
       <div class="quiz-wrap">
         <div class="quiz-head" data-reveal>
           <div class="sec-eyebrow">Career-fit quiz · Question ${qi+1} of ${CAREER_QUIZ_QUESTIONS.length}</div>
-          <h2>${escapeHtml(item.q)}</h2>
+          <h1>${escapeHtml(item.q)}</h1>
         </div>
         <div class="quiz-card" data-reveal style="--i:1">
           <div class="quiz-options" id="cqOpts">
@@ -2514,7 +2514,7 @@ function renderCareers(){
     <section class="sec">
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow">Careers</div>
-        <h2>Where this course leads</h2>
+        <h1>Where this course leads</h1>
         <p class="sec-lead">Security has many careers. Here's what each does and which paths get you there.</p>
         <div class="hero-btns" style="justify-content:flex-start;margin-top:1rem">
           <a class="btn-amber sm" href="#/career-quiz">🧭 Not sure? Take the 2-minute career-fit quiz →</a>
@@ -2678,7 +2678,7 @@ function renderLegal(kind){
     <section class="sec">
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow">${escapeHtml(page.eyebrow)}</div>
-        <h2>${escapeHtml(page.title)}</h2>
+        <h1>${escapeHtml(page.title)}</h1>
         <p class="sec-lead">${escapeHtml(page.lead)}</p>
       </div>
       <div class="legal-body" data-reveal style="--i:1">
@@ -2697,7 +2697,7 @@ function renderFAQ(){
     <section class="sec">
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow">FAQ</div>
-        <h2>Common questions</h2>
+        <h1>Common questions</h1>
       </div>
       ${faqHTML(FAQS)}
     </section>
@@ -2827,7 +2827,7 @@ async function renderSubLesson(pathId, subId){
         <details class="notes-panel">
           <summary><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg> My notes on this lesson</summary>
           <div class="notes-panel-body">
-            <textarea id="lessonNotes" placeholder="Jot down anything you want to remember — only visible to you, saved automatically.">${escapeHtml(getNote(pathId,subId))}</textarea>
+            <textarea id="lessonNotes" aria-label="Your private notes for this lesson" placeholder="Jot down anything you want to remember — only visible to you, saved automatically.">${escapeHtml(getNote(pathId,subId))}</textarea>
             <div class="notes-status" id="notesStatus"></div>
           </div>
         </details>
@@ -3359,7 +3359,7 @@ async function renderPublicProfile(userId){
       <section class="sec">
         <div class="sec-head" data-reveal>
           <div class="sec-eyebrow">Profile</div>
-          <h2>Profile not available</h2>
+          <h1>Profile not available</h1>
           <p class="sec-lead">Public profiles aren't set up on this deployment.</p>
           <div class="hero-btns" style="justify-content:flex-start"><a class="btn-amber" href="#/">← Back home</a></div>
         </div>
@@ -3374,7 +3374,7 @@ async function renderPublicProfile(userId){
       <section class="sec">
         <div class="sec-head" data-reveal>
           <div class="sec-eyebrow">Profile</div>
-          <h2>This learner hasn't made their profile public</h2>
+          <h1>This learner hasn't made their profile public</h1>
           <p class="sec-lead">Or the link is out of date. Everyone's progress on KashSec is private by default — this page only shows something for accounts that explicitly opted into the public leaderboard.</p>
           <div class="hero-btns" style="justify-content:flex-start"><a class="btn-amber" href="#/">← Back home</a></div>
         </div>
@@ -3386,7 +3386,7 @@ async function renderPublicProfile(userId){
     <section class="sec">
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow">Public profile</div>
-        <h2>${escapeHtml(profile.display_name)}</h2>
+        <h1>${escapeHtml(profile.display_name)}</h1>
         <p class="sec-lead">Learning cybersecurity for free at KashSec Academy.</p>
       </div>
       <div class="hub-grid" data-reveal style="--i:1;max-width:24rem">
@@ -3405,7 +3405,7 @@ function renderNotFound(){
     <section class="sec">
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow">404</div>
-        <h2>This page wandered off</h2>
+        <h1>This page wandered off</h1>
         <p class="sec-lead">The link may be old or mistyped. Let's get you back on track.</p>
       </div>
       <div class="hero-btns" data-reveal style="--i:1">
@@ -3426,7 +3426,7 @@ async function renderGlossary(){
   try{ await ensureGlossary(); }
   catch(e){
     if(myGen !== renderGeneration) return;
-    app.innerHTML = `<section class="sec"><div class="sec-head"><h2>Couldn't load the glossary</h2>
+    app.innerHTML = `<section class="sec"><div class="sec-head"><h1>Couldn't load the glossary</h1>
       <p class="sec-lead">Check your connection and try again.</p>
       <button class="btn-amber" onclick="renderGlossary()" type="button">Retry</button></div></section>`;
     return;
@@ -3437,11 +3437,11 @@ async function renderGlossary(){
     <section class="sec">
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow">Glossary</div>
-        <h2>Every term, one place</h2>
+        <h1>Every term, one place</h1>
         <p class="sec-lead">${GLOSSARY.length} terms collected from the Key Terms of all ${totalSubLessons()} lessons. Click any term to jump to the lesson that teaches it.</p>
       </div>
       <div class="glossary-tools" data-reveal style="--i:1">
-        <input type="search" id="glossarySearch" class="glossary-search" placeholder="Filter terms… (e.g. hashing, XSS, IAM)" autocomplete="off" spellcheck="false">
+        <input type="search" id="glossarySearch" class="glossary-search" aria-label="Filter glossary terms" placeholder="Filter terms… (e.g. hashing, XSS, IAM)" autocomplete="off" spellcheck="false">
         <a class="btn-ghost sm" href="#/review">🃏 Practice as flashcards →</a>
       </div>
       <div id="glossaryList" class="glossary-list" data-reveal style="--i:2"></div>
@@ -3496,7 +3496,7 @@ async function renderReview(){
   try{ await ensureGlossary(); }
   catch(e){
     if(myGen !== renderGeneration) return;
-    app.innerHTML = `<section class="sec"><div class="sec-head"><h2>Couldn't load the flashcards</h2>
+    app.innerHTML = `<section class="sec"><div class="sec-head"><h1>Couldn't load the flashcards</h1>
       <p class="sec-lead">Check your connection and try again.</p>
       <button class="btn-amber" onclick="renderReview()" type="button">Retry</button></div></section>`;
     return;
@@ -3583,7 +3583,7 @@ async function renderReview(){
       <section class="sec">
         <div class="sec-head" data-reveal>
           <div class="sec-eyebrow">Flashcards · spaced repetition</div>
-          <h2>Active recall practice</h2>
+          <h1>Active recall practice</h1>
           <p class="sec-lead">Read the term, recall the meaning, then flip and grade yourself. Cards come back on a schedule based on how well you knew them — hard ones return tomorrow, easy ones in weeks.</p>
         </div>
         <div class="fc-tools" data-reveal style="--i:1">
@@ -3697,7 +3697,7 @@ function renderTracks(){
     <section class="sec">
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow">Practice tracks</div>
-        <h2>A curated route for the job you actually want</h2>
+        <h1>A curated route for the job you actually want</h1>
         <p class="sec-lead">The 21-path course covers everything. A track picks the exact lessons for a specific role and puts them in the right order — so you're not learning bug-bounty recon when you want to be a SOC analyst.</p>
       </div>
       <div class="tracks-grid" data-reveal style="--i:1">
@@ -3737,7 +3737,7 @@ function renderTrack(id){
       <a href="#/tracks" class="back-link" data-reveal>← All tracks</a>
       <div class="sec-head" data-reveal style="--i:1">
         <div class="sec-eyebrow">${track.ico} Practice track</div>
-        <h2>${escapeHtml(track.title)}</h2>
+        <h1>${escapeHtml(track.title)}</h1>
         <p class="sec-lead">${escapeHtml(track.desc)}</p>
       </div>
       <div class="track-hero" data-reveal style="--i:2">
@@ -3833,7 +3833,7 @@ function renderCapstone(){
     <section class="sec">
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow">Capstone challenge</div>
-        <h2>⛓️ The Attack Chain</h2>
+        <h1>⛓️ The Attack Chain</h1>
         <p class="sec-lead">Four labs you've already met, chained into one breach story. Work through them in order — recon, get in, escalate, then see what you can find. Same labs, same safety, just told as one narrative.</p>
         <div class="mini-progress" style="max-width:24rem;margin-top:1.2rem">
           <div class="mini-progress-track"><div class="mini-progress-fill" style="width:0%" data-pct="${Math.round(doneCount/CAPSTONE_CHAIN.length*100)}"></div></div>
@@ -3872,7 +3872,7 @@ function renderLabsIndex(){
     <section class="sec">
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow">Interactive labs</div>
-        <h2>Practise inside the browser</h2>
+        <h1>Practise inside the browser</h1>
         <p class="sec-lead">Real security work is hands-on. These labs run entirely client-side — nothing to install, no VMs, no risk of hitting anything you shouldn't.</p>
         <div class="mini-progress" style="max-width:22rem;margin-top:1.2rem">
           <div class="mini-progress-track"><div class="mini-progress-fill" style="width:0%" data-pct="${sb.totalPoints?Math.round(sb.points/sb.totalPoints*100):0}"></div></div>
@@ -4029,14 +4029,14 @@ function renderLabTerminal(){
       <a href="#/labs" class="back-link" data-reveal>← All labs</a>
       <div class="sec-head" data-reveal style="--i:1">
         <div class="sec-eyebrow">Interactive lab</div>
-        <h2>🖥 Terminal Simulator</h2>
+        <h1>🖥 Terminal Simulator</h1>
         <p class="sec-lead">A safe fake Linux shell. Try: <code>ls</code>, <code>cd documents</code>, <code>cat notes.md</code>, <code>grep -i password /home/user/documents/passwords.txt</code>, <code>find / -name "*.log"</code>. Nothing here is real; nothing you type touches anything outside this page.</p>
       </div>
       <div class="term-wrap" data-reveal style="--i:2">
         <div class="term-out" id="${OUTPUT_ID}">${prompt()}Type <code>help</code> to see available commands.\n${prompt()}</div>
         <form class="term-input" id="termForm">
           <span class="term-prefix" id="termPrefix">${prompt()}</span>
-          <input type="text" id="termInput" autocomplete="off" spellcheck="false" autofocus>
+          <input type="text" id="termInput" aria-label="Terminal command input" autocomplete="off" spellcheck="false" autofocus>
         </form>
       </div>
     </section>
@@ -4075,7 +4075,7 @@ function renderLabWebapp(){
       <a href="#/labs" class="back-link" data-reveal>← All labs</a>
       <div class="sec-head" data-reveal style="--i:1">
         <div class="sec-eyebrow">Interactive lab</div>
-        <h2>🕸 Vulnerable Web App Playground</h2>
+        <h1>🕸 Vulnerable Web App Playground</h1>
         <p class="sec-lead">Two deliberately-broken mini-apps for safe practice. Nothing here is real — the "XSS" fires inside an isolated iframe, the "SQL" is a fake evaluator. See if you can break each one.</p>
       </div>
 
@@ -4184,7 +4184,7 @@ function renderLabPcap(){
         <a href="#/labs" class="back-link" data-reveal>← All labs</a>
         <div class="sec-head" data-reveal style="--i:1">
           <div class="sec-eyebrow">Interactive lab</div>
-          <h2>📡 Packet Capture Viewer</h2>
+          <h1>📡 Packet Capture Viewer</h1>
           <p class="sec-lead">A sample capture from a fake host visiting a fake site. Filter by protocol or IP, click any packet to inspect its payload. Same reading-the-wire skill Wireshark trains, in a browser tab.</p>
         </div>
         <div class="pcap-tools" data-reveal style="--i:2">
@@ -4247,7 +4247,7 @@ function renderLabSqli(){
     <section class="sec">
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · SQL Injection Sandbox</div>
-        <h2>💉 SQL Injection Sandbox</h2>
+        <h1>💉 SQL Injection Sandbox</h1>
         <p class="sec-lead">This login builds its SQL query by <b>gluing your input straight into the string</b> — exactly the bug behind real SQL injection. Log in as <code>admin</code> without knowing the password. <span class="tool-privacy">🔒 Simulated locally — no real database.</span></p>
       </div>
       <div class="sqli-wrap" data-reveal style="--i:1">
@@ -4316,7 +4316,7 @@ function renderLabIdor(){
     <section class="sec">
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · IDOR Playground</div>
-        <h2>🔓 IDOR Playground</h2>
+        <h1>🔓 IDOR Playground</h1>
         <p class="sec-lead">This "my invoices" page trusts whatever ID you ask for and never checks it's actually yours. Try loading an invoice number that isn't listed below. <span class="tool-privacy">🔒 Simulated locally — no real API.</span></p>
       </div>
       <div class="idor-wrap" data-reveal style="--i:1">
@@ -4368,7 +4368,7 @@ function renderLabJwt(){
     <section class="sec">
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · JWT Forgery Lab</div>
-        <h2>🪪 JWT Forgery Lab</h2>
+        <h1>🪪 JWT Forgery Lab</h1>
         <p class="sec-lead">You're logged in as a guest. This app's "verify" endpoint has a classic bug: it accepts tokens with <code>alg:"none"</code> and skips signature verification entirely. Edit the header/payload below to become an admin. <span class="tool-privacy">🔒 Simulated locally — no real server.</span></p>
       </div>
       <div class="idor-wrap" data-reveal style="--i:1">
@@ -4427,7 +4427,7 @@ function renderLabTraversal(){
       <a href="#/labs" class="back-link" data-reveal>← All labs</a>
       <div class="sec-head" data-reveal style="--i:1">
         <div class="sec-eyebrow">Interactive lab</div>
-        <h2>📂 Path Traversal Playground</h2>
+        <h1>📂 Path Traversal Playground</h1>
         <p class="sec-lead">This "view file" feature does <code>readFile("./uploads/" + filename)</code> with zero validation. Try to read something outside the <code>uploads/</code> folder. <span class="tool-privacy">🔒 Simulated locally — no real filesystem.</span></p>
       </div>
       <div class="idor-wrap" data-reveal style="--i:2">
@@ -4479,7 +4479,7 @@ function renderLabSsrf(){
       <a href="#/labs" class="back-link" data-reveal>← All labs</a>
       <div class="sec-head" data-reveal style="--i:1">
         <div class="sec-eyebrow">Interactive lab</div>
-        <h2>🌐 SSRF Playground</h2>
+        <h1>🌐 SSRF Playground</h1>
         <p class="sec-lead">This "preview a URL" feature fetches whatever address you give it, server-side, with no allowlist. Point it at something that sounds internal. <span class="tool-privacy">🔒 Simulated locally — no real network requests.</span></p>
       </div>
       <div class="idor-wrap" data-reveal style="--i:2">
@@ -4533,7 +4533,7 @@ function renderLabXxe(){
       <a href="#/labs" class="back-link" data-reveal>← All labs</a>
       <div class="sec-head" data-reveal style="--i:1">
         <div class="sec-eyebrow">Interactive lab</div>
-        <h2>📄 XXE Playground</h2>
+        <h1>📄 XXE Playground</h1>
         <p class="sec-lead">This "import order" feature parses uploaded XML with external entities enabled (the default in a lot of older XML parsers). Craft an XML document that reads a local file through it. <span class="tool-privacy">🔒 Simulated locally — no real XML parser or filesystem.</span></p>
       </div>
       <div class="idor-wrap" data-reveal style="--i:2">
@@ -4600,7 +4600,7 @@ function renderLabLogAnalysis(){
           <a href="#/labs" class="back-link" data-reveal>← All labs</a>
           <div class="sec-head" data-reveal>
             <div class="sec-eyebrow">Interactive lab</div>
-            <h2>📜 Log Analysis complete</h2>
+            <h1>📜 Log Analysis complete</h1>
             <p class="sec-lead">${score}/${QUESTIONS.length} correct. This is the exact "read the log, tell the story" skill a SOC analyst or IR responder uses every shift.</p>
           </div>
         </section>
@@ -4615,7 +4615,7 @@ function renderLabLogAnalysis(){
         <a href="#/labs" class="back-link" data-reveal>← All labs</a>
         <div class="sec-head" data-reveal style="--i:1">
           <div class="sec-eyebrow">Interactive lab</div>
-          <h2>📜 Log Analysis / IR Lab</h2>
+          <h1>📜 Log Analysis / IR Lab</h1>
           <p class="sec-lead">A real-shaped auth.log from a compromised box. Read it, then answer ${QUESTIONS.length} questions to reconstruct what happened. Blue-team skills — no exploitation here.</p>
         </div>
         <pre class="sqli-query" data-reveal style="--i:2;max-height:20rem;overflow-y:auto">${LOG.join('\n')}</pre>
@@ -4674,7 +4674,7 @@ function renderLabOsint(){
         <a href="#/labs" class="back-link" data-reveal>← All labs</a>
         <div class="sec-head" data-reveal style="--i:1">
           <div class="sec-eyebrow">Interactive lab</div>
-          <h2>🔍 OSINT Sandbox</h2>
+          <h1>🔍 OSINT Sandbox</h1>
           <p class="sec-lead">A fake company's public footprint — a "LinkedIn," a job posting, a PDF. Click each source to see what a real attacker (or a real pentester doing recon) could learn before ever touching the target. <span class="tool-privacy">🔒 Entirely fictional — nothing here is a real person or company.</span></p>
         </div>
         <div class="osint-grid" data-reveal style="--i:2">
@@ -4739,7 +4739,7 @@ function renderLabBolaBfla(){
     <section class="sec">
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · BOLA/BFLA Playground</div>
-        <h2>🗂 BOLA/BFLA Playground</h2>
+        <h1>🗂 BOLA/BFLA Playground</h1>
         <p class="sec-lead">You're logged in as employee #${ME}, nothing more. This fake HR API has two separate bugs — find both. <span class="tool-privacy">🔒 Simulated locally — no real API, no real people.</span></p>
       </div>
       <div class="idor-wrap" data-reveal style="--i:1">
@@ -4810,7 +4810,7 @@ function renderLabGraphQLIntrospection(){
     <section class="sec">
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · GraphQL Introspection Abuse</div>
-        <h2>🕸 GraphQL Introspection Abuse</h2>
+        <h1>🕸 GraphQL Introspection Abuse</h1>
         <p class="sec-lead">One endpoint, <code>POST /graphql</code>. Introspection is left on in production, and every field is readable by anyone — nothing is authorized per-field. <span class="tool-privacy">🔒 Simulated locally — a tiny fake schema, not a real server.</span></p>
       </div>
       <div class="idor-wrap" data-reveal style="--i:1">
@@ -4869,7 +4869,7 @@ function renderLabMassAssignment(){
     <section class="sec">
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Mass Assignment Toy</div>
-        <h2>🧩 Mass Assignment Toy</h2>
+        <h1>🧩 Mass Assignment Toy</h1>
         <p class="sec-lead">This "update my profile" endpoint does <code>Object.assign(account, req.body)</code> — whatever fields you send get written, no allow-list. Your account record also has fields the UI never lets you edit. <span class="tool-privacy">🔒 Simulated locally — no real account.</span></p>
       </div>
       <div class="idor-wrap" data-reveal style="--i:1">
@@ -4917,7 +4917,7 @@ function renderLabRateLimitBypass(){
     <section class="sec">
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Rate-Limit Bypass Simulator</div>
-        <h2>🚦 Rate-Limit Bypass Simulator</h2>
+        <h1>🚦 Rate-Limit Bypass Simulator</h1>
         <p class="sec-lead">POST /api/login blocks an IP after 3 wrong passwords. It just trusts the client-supplied <code>X-Forwarded-For</code> header to decide which "IP" you are. <span class="tool-privacy">🔒 Simulated locally — no real login, no real brute force.</span></p>
       </div>
       <div class="idor-wrap" data-reveal style="--i:1">
@@ -4972,7 +4972,7 @@ function renderLabPromptInjection(){
     <section class="sec">
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Prompt Injection Simulator</div>
-        <h2>💬 Prompt Injection Simulator</h2>
+        <h1>💬 Prompt Injection Simulator</h1>
         <p class="sec-lead">CorpBot has a hidden system prompt it's told never to reveal. Get it to reveal it anyway. <span class="tool-privacy">🔒 A rule-based simulator, not a real language model — nothing you type leaves your browser.</span></p>
       </div>
       <div class="idor-wrap" data-reveal style="--i:1">
@@ -5027,7 +5027,7 @@ function renderLabJailbreak(){
     <section class="sec">
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Jailbreak Playground</div>
-        <h2>🔓 Jailbreak Playground</h2>
+        <h1>🔓 Jailbreak Playground</h1>
         <p class="sec-lead">This assistant is told to never reveal the admin override code, no matter what. Find a framing that gets it to anyway. <span class="tool-privacy">🔒 A rule-based simulator; the "secret" is a made-up code, not real sensitive content.</span></p>
       </div>
       <div class="idor-wrap" data-reveal style="--i:1">
@@ -5080,7 +5080,7 @@ function renderLabIndirectInjection(){
     <section class="sec">
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Indirect Prompt Injection Challenge</div>
-        <h2>🪤 Indirect Prompt Injection Challenge</h2>
+        <h1>🪤 Indirect Prompt Injection Challenge</h1>
         <p class="sec-lead">A victim's AI assistant is about to browse this job posting and summarize it for them. You control the posting's content — plant an instruction the AI will follow instead of just summarizing. <span class="tool-privacy">🔒 Simulated locally — a rule-based stand-in for the assistant, no real page fetch.</span></p>
       </div>
       <div class="idor-wrap" data-reveal style="--i:1">
@@ -5128,7 +5128,7 @@ function renderLabAgenticRisk(){
       <section class="sec">
         <div class="sec-head" data-reveal>
           <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Agentic Risk Scenario</div>
-          <h2>🤖 Agentic Risk Scenario</h2>
+          <h1>🤖 Agentic Risk Scenario</h1>
           <p class="sec-lead">AutoAssist is an AI agent with <code>read_email</code> and <code>send_email</code> tools. Its task: "Check my inbox and reply to anything urgent." One of these emails contains a hidden instruction aimed at AutoAssist, not at you. Quarantine it before running the agent. <span class="tool-privacy">🔒 Simulated locally — no real inbox, no real agent.</span></p>
         </div>
         <div class="labs-grid" data-reveal style="--i:1">
@@ -5219,7 +5219,7 @@ function renderLabADAttack(){
       <section class="sec">
         <div class="sec-head" data-reveal>
           <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Active Directory Attack Lab</div>
-          <h2>🏰 Active Directory Attack Lab</h2>
+          <h1>🏰 Active Directory Attack Lab</h1>
           <p class="sec-lead">A guided walkthrough of the classic AD chain: find a path to Domain Admin with BloodHound-style graph recon, Kerberoast a weak service account, then forge a Golden Ticket. <span class="tool-privacy">🔒 Simulated locally — a small fake domain, no real AD environment.</span></p>
           <div class="mini-progress" style="max-width:22rem;margin-top:1.2rem">
             <div class="mini-progress-track"><div class="mini-progress-fill" style="width:0%" data-pct="${Math.round(doneCount/3*100)}"></div></div>
@@ -5342,7 +5342,7 @@ function renderLabPhishing(){
     <section class="sec">
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Phishing Spotter</div>
-        <h2>🎣 Phishing Spotter</h2>
+        <h1>🎣 Phishing Spotter</h1>
         <p class="sec-lead">Real email or phishing attempt? Make the call, then see the red flags. This is the instinct that stops most real-world attacks (Path 10).</p>
       </div>
       <div id="phGame" data-reveal style="--i:1"></div>
@@ -5401,7 +5401,7 @@ function renderLabCsrf(){
     <section class="sec">
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · CSRF Playground</div>
-        <h2>🎭 CSRF Playground</h2>
+        <h1>🎭 CSRF Playground</h1>
         <p class="sec-lead">You're logged into a "bank" in one tab. A malicious page in another tab tries to submit a money transfer using your cookies, without your knowledge. See exactly how, and how a CSRF token stops it. <span class="tool-privacy">🔒 Simulated locally.</span></p>
       </div>
       <div class="sqli-wrap" data-reveal style="--i:1">
@@ -5443,7 +5443,7 @@ function renderLabCmdInjection(){
     <section class="sec">
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Command Injection Sandbox</div>
-        <h2>⌨️ Command Injection Sandbox</h2>
+        <h1>⌨️ Command Injection Sandbox</h1>
         <p class="sec-lead">A "network diagnostics" tool lets you ping a host — by gluing your input straight into a shell command. Escape the intended command and run something else. <span class="tool-privacy">🔒 Simulated locally — no real shell.</span></p>
       </div>
       <div class="sqli-wrap" data-reveal style="--i:1">
@@ -5484,7 +5484,7 @@ function renderLabOpenRedirect(){
     <section class="sec">
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Open Redirect Playground</div>
-        <h2>↪️ Open Redirect Playground</h2>
+        <h1>↪️ Open Redirect Playground</h1>
         <p class="sec-lead">A login page redirects you back to wherever you came from after signing in — trusting a <code>?returnUrl=</code> parameter with no validation at all. Turn a trusted link into a phishing weapon. <span class="tool-privacy">🔒 Simulated locally.</span></p>
       </div>
       <div class="sqli-wrap" data-reveal style="--i:1">
@@ -5526,7 +5526,7 @@ function renderLabClickjacking(){
     <section class="sec">
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Clickjacking Simulator</div>
-        <h2>🖱️ Clickjacking Simulator</h2>
+        <h1>🖱️ Clickjacking Simulator</h1>
         <p class="sec-lead">A malicious page overlays an invisible "Delete my account" button from another site on top of a fake game, so a real click lands on the hidden button instead. Toggle the defense and see the difference. <span class="tool-privacy">🔒 Simulated locally.</span></p>
       </div>
       <div class="sqli-wrap" data-reveal style="--i:1">
@@ -5562,7 +5562,7 @@ function renderLabDeserialization(){
     <section class="sec">
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Insecure Deserialization Toy</div>
-        <h2>📦 Insecure Deserialization Toy</h2>
+        <h1>📦 Insecure Deserialization Toy</h1>
         <p class="sec-lead">A "remember me" cookie stores a serialized user-preferences object the server deserializes and trusts completely. Craft a payload that grants yourself admin, no login required. <span class="tool-privacy">🔒 Simulated locally.</span></p>
       </div>
       <div class="sqli-wrap" data-reveal style="--i:1">
@@ -5606,7 +5606,7 @@ function renderLabSubdomainTakeover(){
     <section class="sec">
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Subdomain Takeover Simulator</div>
-        <h2>🏚️ Subdomain Takeover Simulator</h2>
+        <h1>🏚️ Subdomain Takeover Simulator</h1>
         <p class="sec-lead">Five subdomains, five CNAME records pointing at third-party services. One of them points at a service the organisation never actually claimed — find it and take it over. <span class="tool-privacy">🔒 Simulated locally.</span></p>
       </div>
       <div class="sqli-wrap" data-reveal style="--i:1">
@@ -5651,7 +5651,7 @@ function renderLabDnsRecon(){
     <section class="sec">
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · DNS Recon Playground</div>
-        <h2>🌐 DNS Recon Playground</h2>
+        <h1>🌐 DNS Recon Playground</h1>
         <p class="sec-lead">A simulated <code>dig</code>. Query records for a target domain and its likely subdomains to build a map of an organisation's real, sometimes-forgotten attack surface, entirely passively. <span class="tool-privacy">🔒 Simulated locally — no real DNS traffic.</span></p>
       </div>
       <div class="sqli-wrap" data-reveal style="--i:1">
@@ -5692,7 +5692,7 @@ function renderLabWinPrivesc(){
     <section class="sec">
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Windows Privesc Playground</div>
-        <h2>🪟 Windows Privesc Playground</h2>
+        <h1>🪟 Windows Privesc Playground</h1>
         <p class="sec-lead">Four Windows services, one runs as SYSTEM with a binary path your low-privileged account can actually write to. Find it, replace it, and escalate on next restart. <span class="tool-privacy">🔒 Simulated locally.</span></p>
       </div>
       <div class="sqli-wrap" data-reveal style="--i:1">
@@ -5735,7 +5735,7 @@ function renderLabLinuxPrivesc(){
     <section class="sec">
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Linux Privesc Playground</div>
-        <h2>🐧 Linux Privesc Playground</h2>
+        <h1>🐧 Linux Privesc Playground</h1>
         <p class="sec-lead">Run the SUID enumeration a real LinPEAS pass would do, then use GTFOBins to turn one unexpected result into a root shell. <span class="tool-privacy">🔒 Simulated locally.</span></p>
       </div>
       <div class="sqli-wrap" data-reveal style="--i:1">
@@ -5770,7 +5770,7 @@ function renderLabKerberoast(){
     <section class="sec">
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Kerberoasting Simulator</div>
-        <h2>🎫 Kerberoasting Simulator</h2>
+        <h1>🎫 Kerberoasting Simulator</h1>
         <p class="sec-lead">Any domain user can request a service ticket for any SPN — no special privilege required. Request tickets for two service accounts, then crack the one with a weak password offline. <span class="tool-privacy">🔒 Simulated locally.</span></p>
       </div>
       <div class="sqli-wrap" data-reveal style="--i:1">
@@ -5809,7 +5809,7 @@ function renderLabIamMisconfig(){
     <section class="sec">
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Cloud IAM Misconfig Playground</div>
-        <h2>☁️ Cloud IAM Misconfig Playground</h2>
+        <h1>☁️ Cloud IAM Misconfig Playground</h1>
         <p class="sec-lead">Your role holds one permission that looks harmless in isolation: <code>iam:PassRole</code>. Chain it with the ability to launch a compute instance into a full account takeover. <span class="tool-privacy">🔒 Simulated locally.</span></p>
       </div>
       <div class="sqli-wrap" data-reveal style="--i:1">
@@ -5855,7 +5855,7 @@ function renderLabDockerEscape(){
     <section class="sec">
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Docker Escape Playground</div>
-        <h2>🐳 Docker Escape Playground</h2>
+        <h1>🐳 Docker Escape Playground</h1>
         <p class="sec-lead">A "CI runner" container mounts <code>/var/run/docker.sock</code> for convenience. That socket <i>is</i> root on the host. <span class="tool-privacy">🔒 Simulated locally.</span></p>
       </div>
       <div class="sqli-wrap" data-reveal style="--i:1">
@@ -5897,7 +5897,7 @@ function renderLabMalwareStrings(){
     <section class="sec">
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Malware Strings Triage Lab</div>
-        <h2>🧬 Malware Strings Triage Lab</h2>
+        <h1>🧬 Malware Strings Triage Lab</h1>
         <p class="sec-lead">A raw <code>strings</code> dump from a suspicious binary. Click every genuine IOC — a C2 address, a persistence path, a mutex, an exfil channel — before touching a disassembler. <span class="tool-privacy">🔒 Simulated locally.</span></p>
       </div>
       <div class="sqli-wrap" data-reveal style="--i:1">
@@ -5944,7 +5944,7 @@ function renderLabYaraBuilder(){
     <section class="sec">
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · YARA Rule Builder Challenge</div>
-        <h2>🔬 YARA Rule Builder Challenge</h2>
+        <h1>🔬 YARA Rule Builder Challenge</h1>
         <p class="sec-lead">Three malware samples share one distinctive marker. Write a rule (just a string to match, simplified here) that catches all three and none of the two clean files. <span class="tool-privacy">🔒 Simulated locally.</span></p>
       </div>
       <div class="sqli-wrap" data-reveal style="--i:1">
@@ -5982,7 +5982,7 @@ function renderLabRaceCondition(){
     <section class="sec">
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Race Condition Lab</div>
-        <h2>🏁 Race Condition Lab</h2>
+        <h1>🏁 Race Condition Lab</h1>
         <p class="sec-lead">One coupon, meant to be redeemed exactly once. The server checks "is it used?" then, separately, marks it used — a genuine check-then-act gap. Fire many requests "simultaneously" and redeem it more than once. <span class="tool-privacy">🔒 Simulated locally.</span></p>
       </div>
       <div class="sqli-wrap" data-reveal style="--i:1">
@@ -6028,7 +6028,7 @@ function renderLabWebhookForge(){
     <section class="sec">
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Webhook Signature Forgery Lab</div>
-        <h2>🪝 Webhook Signature Forgery Lab</h2>
+        <h1>🪝 Webhook Signature Forgery Lab</h1>
         <p class="sec-lead">A payment webhook is verified with an HMAC signature. First, try to forge one without the secret. Then flip on verification and watch the endpoint correctly reject you. <span class="tool-privacy">🔒 Runs locally via the browser's real crypto engine.</span></p>
       </div>
       <div class="sqli-wrap" data-reveal style="--i:1">
@@ -6070,7 +6070,7 @@ function renderLabOauthRedirect(){
     <section class="sec">
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · OAuth Redirect URI Hijack Lab</div>
-        <h2>🔑 OAuth Redirect URI Hijack Lab</h2>
+        <h1>🔑 OAuth Redirect URI Hijack Lab</h1>
         <p class="sec-lead">The authorization server checks that <code>redirect_uri</code> starts with the registered app's domain — but "starts with" is a looser check than "exactly matches." Steal an authorization code. <span class="tool-privacy">🔒 Simulated locally.</span></p>
       </div>
       <div class="sqli-wrap" data-reveal style="--i:1">
@@ -6118,7 +6118,7 @@ function renderLabVendorTiering(){
     <section class="sec">
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Vendor Risk Tiering Simulator</div>
-        <h2>🏢 Vendor Risk Tiering Simulator</h2>
+        <h1>🏢 Vendor Risk Tiering Simulator</h1>
         <p class="sec-lead">Six real-shaped vendors, six different data-access levels. Tier each one correctly — over-scrutinizing a low-risk vendor wastes real time; under-scrutinizing a high-risk one is how breaches actually happen. <span class="tool-privacy">🔒 Simulated locally.</span></p>
       </div>
       <div class="sqli-wrap" data-reveal style="--i:1">
@@ -6179,7 +6179,7 @@ function renderLabIrTabletop(){
     <section class="sec">
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Incident Response Tabletop</div>
-        <h2>📋 Incident Response Tabletop</h2>
+        <h1>📋 Incident Response Tabletop</h1>
         <p class="sec-lead">A branching ransomware scenario. Make the same containment, recovery, and communication calls a real incident commander has to make under real time pressure.</p>
       </div>
       <div id="irGame" data-reveal style="--i:1"></div>
@@ -6227,7 +6227,7 @@ function renderLabPasswordCrack(){
     <section class="sec">
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Password Cracking Lab</div>
-        <h2>🔓 Password Cracking Lab</h2>
+        <h1>🔓 Password Cracking Lab</h1>
         <p class="sec-lead">Four SHA-256 password hashes, one small wordlist. Run a real dictionary attack (using your browser's actual crypto engine) and see which ones fall — and which survive even unlimited offline attempts. <span class="tool-privacy">🔒 Runs locally.</span></p>
       </div>
       <div class="sqli-wrap" data-reveal style="--i:1">
@@ -6272,7 +6272,7 @@ function renderLabLeakedSecret(){
     <section class="sec">
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Leaked Secret Hunt</div>
-        <h2>🗝️ Leaked Secret Hunt</h2>
+        <h1>🗝️ Leaked Secret Hunt</h1>
         <p class="sec-lead">Five files from a public GitHub repo dump. Find the one hardcoded secret an automated scanner (GitHub secret scanning, TruffleHog) would catch within minutes. <span class="tool-privacy">🔒 Simulated locally.</span></p>
       </div>
       <div class="sqli-wrap" data-reveal style="--i:1">
@@ -6301,6 +6301,14 @@ function renderLabLeakedSecret(){
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
+  {date:'2026-08-04', title:'The Start button was invisible on most laptops, and had been for a long time', items:[
+    'The header lays out at about 1366px minimum, but the mobile menu only took over below 900px. Everything between those two widths overflowed — by 392px at the narrow end — and because the page sets overflow-x:hidden it was clipped rather than scrollable. The Start button, the single most important control on the site, was simply not on screen at 1024px, 1280px, or any other common laptop width, and there was no way to scroll to it. "My Progress" was also wrapping onto a second line, which is why the header was 91px tall instead of 67px.',
+    'Fixed by letting the link row shrink (a flex item will not go below its content width unless told to), pinning the call to action so it can never be the thing that falls off the end, and tightening the row between 901px and 1365px. All eleven links stay visible at every width from 901px to 1920px.',
+    'Twenty-five pages had no <h1> anywhere in the document. That is the heading a screen reader user jumps to first to answer "what is this page", and the strongest single on-page signal a search engine has. Every page now has exactly one, and it is the visible page title rather than something hidden. Lessons and path overviews already had theirs, so nothing changed there.',
+    'Six controls that could be reached by keyboard had no accessible name at all — the glossary filter, three settings switches, the lesson notes box, and the terminal input in the labs. A placeholder is not a name: it vanishes the moment you type.',
+    'Three checks added, and they measure at seven viewport widths rather than one, which is the reason none of this was caught before — every existing check ran at a single window size. Verified by putting each of the three bugs back and watching the right check fail.',
+    'Two of the findings in the original audit turned out to be faults in the audit rather than the site: a wrapping <label> is a perfectly good accessible name, and the flashcard rating buttons only look nameless because they are visibility:hidden until you flip the card. Both corrections are baked into the check so it does not cry wolf.'
+  ]},
   {date:'2026-08-03', title:'About, Contact, Privacy and Terms — pages this site should have had from the start', items:[
     'There was no privacy policy. That is a problem on its own terms, not just an advertising one: this site can create an account, holds an email address, and syncs your progress to a database, and it was telling you none of that. A reader is owed a plain account of what happens to their data, and there was not one to read.',
     'The privacy policy describes what the code actually does, and was written by reading the code rather than from a template. It says which single browser storage key holds your progress; that without an account nothing leaves your device at all; that accounts are handled by Supabase and store your email, your progress record, your lesson ratings, and — only if you opt in — a leaderboard name and lesson count; that Vercel analytics and speed measurement run on every visit; and that Google serves the advertising. It also says plainly what does not happen: no tracking pixels, no session recording, no fingerprinting, nothing sold, and every security tool on the site processing your input in the browser and never uploading it.',
@@ -6636,7 +6644,7 @@ function renderChangelog(){
     <section class="sec">
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow">Changelog</div>
-        <h2>What's new</h2>
+        <h1>What's new</h1>
         <p class="sec-lead">KashSec is free and actively improved. Here's what's changed recently.</p>
       </div>
       <div class="changelog" data-reveal style="--i:1">
@@ -6717,7 +6725,7 @@ function renderMockInterview(){
       <section class="sec">
         <div class="sec-head" data-reveal>
           <div class="sec-eyebrow"><a href="#/interview" style="color:inherit;text-decoration:none">Interview bank</a> · Mock Interview</div>
-          <h2>Question ${i+1} of ${shuffled.length}</h2>
+          <h1>Question ${i+1} of ${shuffled.length}</h1>
           <p class="sec-lead">${escapeHtml(item.cat)} · Answer out loud or type it below, then reveal the model answer and score yourself honestly.</p>
         </div>
         <div class="mock-wrap" data-reveal style="--i:1">
@@ -6768,7 +6776,7 @@ function renderMockInterview(){
       <section class="sec">
         <div class="sec-head" data-reveal>
           <div class="sec-eyebrow">Mock Interview</div>
-          <h2>Round complete</h2>
+          <h1>Round complete</h1>
           <p class="sec-lead">${nailed}/${shuffled.length} nailed, ${partial} partial, ${missed} missed. Nobody's grading you but you — the point is reps.</p>
         </div>
         <div class="hero-btns" data-reveal style="--i:1">
@@ -6793,7 +6801,7 @@ function renderInterview(){
     <section class="sec">
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow">Career</div>
-        <h2>Interview question bank</h2>
+        <h1>Interview question bank</h1>
         <p class="sec-lead">Common entry-level cybersecurity interview questions, grouped by topic. Try to answer out loud first, then reveal a model answer. Pairs with Path 20 — Career Prep.</p>
         <div class="hero-btns" style="justify-content:flex-start;margin-top:1rem">
           <a class="btn-amber" href="#/interview/mock">⏱ Start a timed mock interview →</a>
@@ -6859,7 +6867,7 @@ function renderToolsIndex(){
     <section class="sec">
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow">Tools</div>
-        <h2>Handy security utilities</h2>
+        <h1>Handy security utilities</h1>
         <p class="sec-lead">Everyday tools you'll reach for while learning and working — encoders, hashing, JWT, CVSS, subnetting, and more. Everything runs entirely in your browser; nothing you type is ever sent anywhere.</p>
       </div>
       <div class="labs-grid" data-reveal style="--i:1">
@@ -6884,7 +6892,7 @@ function renderTool(id){
     <section class="sec tool-page">
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow"><a href="#/tools" style="color:inherit;text-decoration:none">Tools</a> · ${meta.title}</div>
-        <h2><span class="tool-head-ico">${cardIco(meta.ico)}</span>${meta.title}</h2>
+        <h1><span class="tool-head-ico">${cardIco(meta.ico)}</span>${meta.title}</h1>
         <p class="sec-lead">${escapeHtml(meta.desc)} <span class="tool-privacy">🔒 Runs locally — nothing leaves your browser.</span></p>
       </div>
       <div id="toolBody" data-reveal style="--i:1"></div>
@@ -8074,7 +8082,7 @@ function renderDaily(){
   const saved = STATE.daily[today];
   const qi = pool.length ? dayHash(today) % pool.length : 0;
   const item = pool[qi];
-  if(!item){ app.innerHTML = `<section class="sec"><div class="sec-head"><h2>Daily challenge</h2><p class="sec-lead">No questions available.</p></div></section>`; return; }
+  if(!item){ app.innerHTML = `<section class="sec"><div class="sec-head"><h1>Daily challenge</h1><p class="sec-lead">No questions available.</p></div></section>`; return; }
   const q = item.q;
 
   const answered = !!saved;
@@ -8083,7 +8091,7 @@ function renderDaily(){
       <div class="quiz-wrap">
         <div class="quiz-head" data-reveal>
           <div class="sec-eyebrow">Daily challenge · ${today}</div>
-          <h2>One question a day</h2>
+          <h1>One question a day</h1>
           <p class="sec-lead">A fresh question every day from across the whole course — a quick way to keep your streak alive. From ${escapeHtml(item.src)}.</p>
         </div>
         <div class="quiz-card" data-reveal style="--i:1">
@@ -8139,7 +8147,7 @@ function renderWeeklyIndex(){
     <section class="sec">
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow">Challenges</div>
-        <h2>Weekly challenge chains</h2>
+        <h1>Weekly challenge chains</h1>
         <p class="sec-lead">Themed, multi-question chains that go deeper than the daily challenge. Self-paced — no deadline, work through each chain whenever you like.</p>
       </div>
       <div class="labs-grid" data-reveal style="--i:1">
@@ -8176,7 +8184,7 @@ function renderWeeklyChain(chainId){
         <a href="#/weekly" class="back-link" data-reveal>← All chains</a>
         <div class="sec-head" data-reveal>
           <div class="sec-eyebrow">${chain.title}</div>
-          <h2>Chain complete</h2>
+          <h1>Chain complete</h1>
           <p class="sec-lead">${correctCount}/${qs.length} correct across the whole chain.</p>
         </div>
       </section>
@@ -8192,7 +8200,7 @@ function renderWeeklyChain(chainId){
       <div class="quiz-wrap">
         <div class="quiz-head" data-reveal>
           <div class="sec-eyebrow">${chain.ico} ${chain.title} · Question ${qi+1} of ${qs.length}</div>
-          <h2>${escapeHtml(q.q)}</h2>
+          <h1>${escapeHtml(q.q)}</h1>
         </div>
         <div class="quiz-card" data-reveal style="--i:1">
           <div class="quiz-options" id="weeklyOpts">
@@ -8306,7 +8314,7 @@ function renderMissedReview(){
       <section class="sec">
         <div class="sec-head" data-reveal>
           <div class="sec-eyebrow">Review</div>
-          <h2>Nothing to review yet</h2>
+          <h1>Nothing to review yet</h1>
           <p class="sec-lead">Questions you get wrong in a path quiz land here automatically, then come back on a spaced schedule until you've answered them correctly three times running.</p>
           <div class="hero-btns" style="justify-content:flex-start;margin-top:1rem">
             <a class="btn-amber" href="#/course">Browse paths</a>
@@ -8323,7 +8331,7 @@ function renderMissedReview(){
       <section class="sec">
         <div class="sec-head" data-reveal>
           <div class="sec-eyebrow">Review</div>
-          <h2>All caught up</h2>
+          <h1>All caught up</h1>
           <p class="sec-lead">${all.length} question${all.length===1?'':'s'} still being tracked, but none are due yet — the next comes back on <b>${next}</b>. Spacing them out is what makes them stick.</p>
           <div class="hero-btns" style="justify-content:flex-start;margin-top:1rem">
             <a class="btn-amber" href="#/quiz/shuffle">🔀 Practise anyway</a>
@@ -8342,7 +8350,7 @@ function renderMissedReview(){
         <section class="sec">
           <div class="sec-head" data-reveal>
             <div class="sec-eyebrow">Review complete</div>
-            <h2>${right}/${due.length} correct</h2>
+            <h1>${right}/${due.length} correct</h1>
             <p class="sec-lead">Anything you missed comes back tomorrow. Anything you got right backs off to a longer interval — and retires completely after three correct answers in a row.</p>
             <div class="hero-btns" style="justify-content:flex-start;margin-top:1rem">
               <a class="btn-amber" href="#/progress">Back to progress</a>
@@ -8360,7 +8368,7 @@ function renderMissedReview(){
         <div class="quiz-wrap">
           <div class="quiz-head" data-reveal>
             <div class="sec-eyebrow">🔁 Missed-question review · ${i+1} of ${due.length}</div>
-            <h2>${escapeHtml(q.q)}</h2>
+            <h1>${escapeHtml(q.q)}</h1>
             <p class="sec-lead">From ${item.path ? `Path ${item.path.n} — ${escapeHtml(item.path.title)}` : escapeHtml(item.pathId)} · missed ${item.rec.misses} time${item.rec.misses===1?'':'s'} before</p>
           </div>
           <div class="quiz-card" data-reveal style="--i:1">
@@ -8413,7 +8421,7 @@ function renderShuffleQuiz(){
         <section class="sec">
           <div class="sec-head" data-reveal>
             <div class="sec-eyebrow">Shuffle quiz</div>
-            <h2>${correctCount}/${deck.length} correct</h2>
+            <h1>${correctCount}/${deck.length} correct</h1>
             <p class="sec-lead">Random questions, no stakes — this doesn't count toward any path's quiz score or your final exam.</p>
             <div class="hero-btns" style="justify-content:flex-start;margin-top:1rem">
               <a class="btn-amber" href="#/quiz/shuffle" id="shuffleAgain">🔀 Shuffle again →</a>
@@ -8434,7 +8442,7 @@ function renderShuffleQuiz(){
         <div class="quiz-wrap">
           <div class="quiz-head" data-reveal>
             <div class="sec-eyebrow">🔀 Shuffle quiz · Question ${qi+1} of ${deck.length}</div>
-            <h2>${escapeHtml(q.q)}</h2>
+            <h1>${escapeHtml(q.q)}</h1>
             <p class="sec-lead">From ${escapeHtml(item.src)}.</p>
           </div>
           <div class="quiz-card" data-reveal style="--i:1">
@@ -8710,7 +8718,7 @@ function renderTasksPage(pathId){
     app.innerHTML = `
       <section class="sec">
         <div class="sec-eyebrow" data-reveal>Practice</div>
-        <h2 class="sec-title" data-reveal style="--i:1">${path ? `Tasks — Path ${path.n}: ${escapeHtml(path.title)}` : 'Practice tasks'}</h2>
+        <h1 class="sec-title" data-reveal style="--i:1">${path ? `Tasks — Path ${path.n}: ${escapeHtml(path.title)}` : 'Practice tasks'}</h1>
         <p class="sec-sub" data-reveal style="--i:2">
           Work the answer out and type it in. Nothing is multiple choice, and the answers are not in the page —
           they are stored as hashes, so there is nothing to peek at.
@@ -8758,7 +8766,7 @@ function renderTasksPage(pathId){
 
   paint();
   ensureTasks().then(paint).catch(()=>{
-    app.innerHTML = `<section class="sec"><h2 class="sec-title">Practice tasks</h2>
+    app.innerHTML = `<section class="sec"><h1 class="sec-title">Practice tasks</h1>
       <p class="sec-sub">Couldn't load the tasks. Check your connection and try again.</p></section>`;
   });
 }
@@ -8874,7 +8882,7 @@ function paintExamStart(){
   app.innerHTML = `
     <section class="sec">
       <div class="sec-eyebrow" data-reveal>Mock exam</div>
-      <h2 class="sec-title" data-reveal style="--i:1">Sit a timed paper</h2>
+      <h1 class="sec-title" data-reveal style="--i:1">Sit a timed paper</h1>
       <p class="sec-sub" data-reveal style="--i:2">
         Questions are drawn from all ${examPool().length} paths in proportion to their size, shuffled, and
         graded only when you submit — no feedback while the clock runs. ${banked} questions in the bank.
@@ -9088,7 +9096,7 @@ function paintExamResult(a){
   app.innerHTML = `
     <section class="sec">
       <div class="sec-eyebrow" data-reveal>Result</div>
-      <h2 class="sec-title" data-reveal style="--i:1">${a.pct}% — ${a.passed ? 'pass' : 'below the pass mark'}</h2>
+      <h1 class="sec-title" data-reveal style="--i:1">${a.pct}% — ${a.passed ? 'pass' : 'below the pass mark'}</h1>
       <p class="sec-sub" data-reveal style="--i:2">
         ${a.score} of ${a.total} correct on the ${preset.label}, pass mark ${preset.passPct}%.
         Finished in ${Math.round(a.durationMs/60000)} min${a.ranOut ? ' — the clock ran out, unanswered questions were marked wrong.' : '.'}
@@ -9187,7 +9195,7 @@ function renderQuiz(id){
         <div class="quiz-wrap">
           <div class="quiz-head" data-reveal>
             <div class="sec-eyebrow">${isFinal ? 'Final Exam' : `Path ${path.n} Quiz`}</div>
-            <h2>${quiz.title}</h2>
+            <h1>${quiz.title}</h1>
           </div>
           <div class="quiz-progress-dots">
             ${quiz.questions.map((_,i)=>`<div class="quiz-dot ${i===qi?'current':answers[i]!==null?'answered':''}"></div>`).join('')}
@@ -9928,7 +9936,7 @@ function renderSkillTree(){
     <section class="sec">
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow">Roadmap</div>
-        <h2>Skill tree</h2>
+        <h1>Skill tree</h1>
         <p class="sec-lead">The same course, seen as three tiers instead of one line. Nothing is actually locked — jump anywhere — but later tiers build on earlier ones.</p>
         <div class="hero-btns" style="justify-content:flex-start;margin-top:1rem">
           <a class="btn-ghost sm" href="#/roadmap">← Linear roadmap view</a>
@@ -10027,7 +10035,7 @@ function renderRoadmap(){
     <section class="sec">
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow">Roadmap</div>
-        <h2>Your journey through KashSec</h2>
+        <h1>Your journey through KashSec</h1>
         <p class="sec-lead">Every path, in order. Click any node to jump straight in — your progress is tracked automatically.</p>
         <div class="mini-progress" style="max-width:26rem;margin-top:1.3rem">
           <div class="mini-progress-track"><div class="mini-progress-fill" style="width:0%" data-pct="${overall.pct}"></div></div>
@@ -10220,7 +10228,7 @@ function renderProgressHub(){
     <section class="sec">
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow">Your progress</div>
-        <h2>Track everything in one place</h2>
+        <h1>Track everything in one place</h1>
         <p class="sec-lead">Progress, bookmarks, notes, achievements, and your certificate — all saved locally in this browser.</p>
       </div>
 
@@ -10417,11 +10425,11 @@ function renderProgressHub(){
         </div>
         <div class="hub-list-item" style="cursor:default">
           <div><div class="hli-t">Legibility boost</div><div class="hli-d">Switches lessons to a high-legibility font with extra letter and line spacing — easier for dyslexic readers.</div></div>
-          <label class="switch"><input type="checkbox" id="legibleToggle" ${STATE.readingPrefs?.legible?'checked':''}><span class="switch-track"></span></label>
+          <label class="switch"><input type="checkbox" id="legibleToggle" aria-label="Legibility boost" ${STATE.readingPrefs?.legible?'checked':''}><span class="switch-track"></span></label>
         </div>
         <div class="hub-list-item" style="cursor:default">
           <div><div class="hli-t">High-contrast mode</div><div class="hli-d">Stronger colour contrast site-wide, on top of your dark/light choice — for low-vision or bright-room reading.</div></div>
-          <label class="switch"><input type="checkbox" id="highContrastToggle" ${STATE.highContrast?'checked':''}><span class="switch-track"></span></label>
+          <label class="switch"><input type="checkbox" id="highContrastToggle" aria-label="High-contrast mode" ${STATE.highContrast?'checked':''}><span class="switch-track"></span></label>
         </div>
         ${StreakNotify.supported ? `
         <div class="hub-list-item" style="cursor:default">
@@ -10429,7 +10437,7 @@ function renderProgressHub(){
             <div class="hli-t">🔥 Streak reminders</div>
             <div class="hli-d">Nudges you when your streak is about to lapse. These are <b>local</b> notifications — they appear when KashSec is open or when you next visit, not while the site is closed (that would need a server this free site doesn't run).</div>
           </div>
-          <label class="switch"><input type="checkbox" id="notifyStreakToggle" ${STATE.notifyStreak?'checked':''}><span class="switch-track"></span></label>
+          <label class="switch"><input type="checkbox" id="notifyStreakToggle" aria-label="Streak reminders" ${STATE.notifyStreak?'checked':''}><span class="switch-track"></span></label>
         </div>` : ''}
       </div>
 
@@ -10794,7 +10802,7 @@ function renderSearchPage(rawQuery){
     app.innerHTML = `
       <section class="sec">
         <div class="sec-eyebrow" data-reveal>Search</div>
-        <h2 class="sec-title" data-reveal style="--i:1">${q ? `Results for “${escapeHtml(q)}”` : 'Search the course'}</h2>
+        <h1 class="sec-title" data-reveal style="--i:1">${q ? `Results for “${escapeHtml(q)}”` : 'Search the course'}</h1>
         <form class="searchpage-form" id="searchPageForm" data-reveal style="--i:2" role="search">
           <input class="searchpage-input" id="searchPageInput" type="search" name="q"
             value="${escapeHtml(q)}" placeholder="Search ${totalSubLessons()} lessons, tools and labs…"
