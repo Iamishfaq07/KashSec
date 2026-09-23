@@ -57,7 +57,7 @@ Example rubric:
 
 ## Lab 5: Tool-Access Blast Radius Exercise
 
-**Goal**: Reason through excessive agency (OWASP LLM08) without needing real tool access.
+**Goal**: Reason through excessive agency (OWASP LLM03:2026; LLM08 in the 2023–24 edition) without needing real tool access.
 
 **Setup**: Without actually connecting any tools, describe a hypothetical AI agent to yourself (or, if you have access to one, an actual agentic coding/browsing tool) with three tool permissions: read files, write files, and run shell commands.
 

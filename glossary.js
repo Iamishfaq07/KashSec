@@ -3811,8 +3811,8 @@ const GLOSSARY = [
   "subTitle": "Writing Policies People Actually Follow"
  },
  {
-  "term": "Excessive Agency",
-  "def": "granting an AI system more autonomy/permissions than its task genuinely requires.",
+  "term": "Excessive agency",
+  "def": "tool permissions or autonomy greater than the authorized task requires.",
   "pathId": "18-ai-security",
   "pathN": "18",
   "pathTitle": "AI & AI Security",
@@ -4774,6 +4774,15 @@ const GLOSSARY = [
   "subTitle": "Build a password checker"
  },
  {
+  "term": "Hidden context exposure",
+  "def": "disclosure of protected instructions, memory, or other internal context.",
+  "pathId": "18-ai-security",
+  "pathN": "18",
+  "pathTitle": "AI & AI Security",
+  "subId": "llm-top-10",
+  "subTitle": "OWASP LLM Top 10"
+ },
+ {
   "term": "Hidden field",
   "def": "a form input invisible in the rendered page but fully present and modifiable in the HTML source and submitted request.",
   "pathId": "05-web-basics",
@@ -5287,6 +5296,15 @@ const GLOSSARY = [
   "subTitle": "Continuous Verification & Adaptive Access"
  },
  {
+  "term": "Improper output handling",
+  "def": "unsafe use of model output by another component.",
+  "pathId": "18-ai-security",
+  "pathN": "18",
+  "pathTitle": "AI & AI Security",
+  "subId": "llm-top-10",
+  "subTitle": "OWASP LLM Top 10"
+ },
+ {
   "term": "`in`",
   "def": "membership check.",
   "pathId": "04-python",
@@ -5420,15 +5438,6 @@ const GLOSSARY = [
   "pathTitle": "Web Security & Hacking",
   "subId": "deserialization-attacks",
   "subTitle": "Insecure Deserialization"
- },
- {
-  "term": "Insecure Output Handling",
-  "def": "the AI-era descendant of XSS/SQLi, when LLM output is trusted blindly downstream.",
-  "pathId": "18-ai-security",
-  "pathN": "18",
-  "pathTitle": "AI & AI Security",
-  "subId": "llm-top-10",
-  "subTitle": "OWASP LLM Top 10"
  },
  {
   "term": "Insider threat",
@@ -7420,15 +7429,6 @@ const GLOSSARY = [
   "subTitle": "Cloud & Modern Networking"
  },
  {
-  "term": "Overreliance",
-  "def": "a human/organisational risk of trusting LLM output without adequate verification.",
-  "pathId": "18-ai-security",
-  "pathN": "18",
-  "pathTitle": "AI & AI Security",
-  "subId": "llm-top-10",
-  "subTitle": "OWASP LLM Top 10"
- },
- {
   "term": "Oversharing (security sense)",
   "def": "revealing information that, combined with other public details, meaningfully lowers the cost of an attack against you.",
   "pathId": "09-digital-privacy",
@@ -7474,6 +7474,15 @@ const GLOSSARY = [
   "subTitle": "API Security Standards & Frameworks"
  },
  {
+  "term": "OWASP LLM Top 10:2026",
+  "def": "the current, versioned risk categories for applications powered by LLMs.",
+  "pathId": "18-ai-security",
+  "pathN": "18",
+  "pathTitle": "AI & AI Security",
+  "subId": "llm-top-10",
+  "subTitle": "OWASP LLM Top 10"
+ },
+ {
   "term": "OWASP Mobile Application Security (MAS)",
   "def": "the project behind MASVS requirements, MASWE weaknesses, and MASTG testing guidance; the Mobile Top 10 is a separate OWASP project.",
   "pathId": "13-mobile-security",
@@ -7517,15 +7526,6 @@ const GLOSSARY = [
   "pathTitle": "Web Security & Hacking",
   "subId": "owasp-top-10",
   "subTitle": "The OWASP Top 10"
- },
- {
-  "term": "OWASP Top 10 for LLM Applications",
-  "def": "the ten-category framework organising the AI-specific risk landscape.",
-  "pathId": "18-ai-security",
-  "pathN": "18",
-  "pathTitle": "AI & AI Security",
-  "subId": "llm-top-10",
-  "subTitle": "OWASP LLM Top 10"
  },
  {
   "term": "Package manager",
@@ -11954,6 +11954,15 @@ const GLOSSARY = [
   "pathTitle": "Introduction to Cybersecurity",
   "subId": "the-golden-rule",
   "subTitle": "The golden rule: permission"
+ },
+ {
+  "term": "Unbounded consumption",
+  "def": "resource or cost exhaustion through uncontrolled model use.",
+  "pathId": "18-ai-security",
+  "pathN": "18",
+  "pathTitle": "AI & AI Security",
+  "subId": "llm-top-10",
+  "subTitle": "OWASP LLM Top 10"
  },
  {
   "term": "Unidirectional gateway (data diode)",

@@ -1,6 +1,6 @@
 # Data poisoning & adversarial ML
 
-Path 18.5's overview introduced training data poisoning as LLM03. This lesson goes deeper into the broader field of **adversarial machine learning** — attacks targeting the model-building and inference pipeline itself, distinct from the runtime, conversation-level attacks of Path 18.3/12.4.
+Path 18.5's overview introduced data and model poisoning as LLM05:2026 (LLM03 in the 2023–24 edition). This lesson goes deeper into **adversarial machine learning** — attacks targeting the model-building and inference pipeline itself, distinct from the runtime, conversation-level attacks of Path 18.3/12.4.
 
 ## The key distinction from prompt injection/jailbreaking
 
@@ -156,7 +156,7 @@ Why is a backdoor-style data poisoning attack specifically designed to remain do
 
 ???refs
 - [MITRE ATLAS](https://atlas.mitre.org/) — a comprehensive, continuously-updated knowledge base of real-world adversarial ML attack techniques.
-- [OWASP LLM03: Training Data Poisoning](https://owasp.org/www-project-top-10-for-large-language-model-applications/) — the official framework entry.
+- [OWASP LLM05:2026 Data and Model Poisoning](https://genai.owasp.org/resource/owasp-genai-llm-top-10-2026/) — the current framework entry.
 - [NIST — Adversarial Machine Learning: A Taxonomy and Terminology](https://csrc.nist.gov/pubs/ai/100/2/e2023/final) — official US government technical reference.
 - [Anthropic Research](https://www.anthropic.com/research) — ongoing published research on AI safety and robustness from a leading AI lab.
 ???

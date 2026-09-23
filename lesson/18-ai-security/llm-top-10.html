@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>OWASP LLM Top 10 — Path 18 · KashSec Academy</title>
-<meta name="description" content="Directly mirroring Path 11.1's role for web security, the OWASP Top 10 for LLM Applications organises the full landscape of AI security risk into ten categories. You've already covered two in depth (p">
+<meta name="description" content="Edition matters. OWASP published a 2026 edition of its LLM application risk list. The numbers in older reports cannot be read as if they refer to the same risks: for example, LLM03 meant training-data">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/18-ai-security/llm-top-10.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="OWASP LLM Top 10 — Path 18 · KashSec Academy">
-<meta property="og:description" content="Directly mirroring Path 11.1's role for web security, the OWASP Top 10 for LLM Applications organises the full landscape of AI security risk into ten categories. You've already covered two in depth (p">
+<meta property="og:description" content="Edition matters. OWASP published a 2026 edition of its LLM application risk list. The numbers in older reports cannot be read as if they refer to the same risks: for example, LLM03 meant training-data">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/18-ai-security/llm-top-10.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="OWASP LLM Top 10 — Path 18 · KashSec Academy">
-<meta name="twitter:description" content="Directly mirroring Path 11.1's role for web security, the OWASP Top 10 for LLM Applications organises the full landscape of AI security risk into ten categories. You've already covered two in depth (p">
+<meta name="twitter:description" content="Edition matters. OWASP published a 2026 edition of its LLM application risk list. The numbers in older reports cannot be read as if they refer to the same risks: for example, LLM03 meant training-data">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 18 — AI & AI Security","item":"https://kashsec.vercel.app/lesson/18-ai-security/"},{"@type":"ListItem","position":4,"name":"OWASP LLM Top 10","item":"https://kashsec.vercel.app/lesson/18-ai-security/llm-top-10.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"OWASP LLM Top 10","headline":"OWASP LLM Top 10","description":"Directly mirroring Path 11.1's role for web security, the OWASP Top 10 for LLM Applications organises the full landscape of AI security risk into ten categories. You've already covered two in depth (p","url":"https://kashsec.vercel.app/lesson/18-ai-security/llm-top-10.html","inLanguage":"en","dateModified":"2026-08-04","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"The shared checklist for AI application security.","isPartOf":{"@type":"Course","name":"Path 18: AI & AI Security","url":"https://kashsec.vercel.app/lesson/18-ai-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/18-ai-security/llm-top-10.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"OWASP LLM Top 10","headline":"OWASP LLM Top 10","description":"Edition matters. OWASP published a 2026 edition of its LLM application risk list. The numbers in older reports cannot be read as if they refer to the same risks: for example, LLM03 meant training-data","url":"https://kashsec.vercel.app/lesson/18-ai-security/llm-top-10.html","inLanguage":"en","dateModified":"2026-09-24","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"The shared checklist for AI application security.","isPartOf":{"@type":"Course","name":"Path 18: AI & AI Security","url":"https://kashsec.vercel.app/lesson/18-ai-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/18-ai-security/llm-top-10.html"}}
 </script>
 </head>
 <body>
@@ -87,81 +87,113 @@
 <main id="app" tabindex="-1">
   <div class="reader-wrap"><div class="reader-main">
     <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/18-ai-security/">Path 18 — AI &amp; AI Security</a> · OWASP LLM Top 10</nav>
-    <div class="md" id="content"><article><h1>The OWASP LLM Top 10</h1>
-<p>Directly mirroring Path 11.1's role for web security, the <strong>OWASP Top 10 for LLM Applications</strong> organises the full landscape of AI security risk into ten categories. You've already covered two in depth (prompt injection, jailbreak-adjacent content); this lesson completes the picture.</p>
-<h2>The full list</h2>
-<h3>LLM01: Prompt Injection</h3>
-<p>Fully covered in Path 18.3 — untrusted input interpreted as instructions rather than data.</p>
-<h3>LLM02: Insecure Output Handling</h3>
-<p><strong>The direct AI-era descendant of Path 11.5/07.6's XSS/SQLi lessons.</strong> If an application takes an LLM's output and passes it <strong>directly</strong> into another system — rendering it as HTML, executing it as code, using it to build a database query — without proper validation, exactly the same downstream vulnerabilities apply, just with the LLM as an intermediate untrusted-content generator rather than a human attacker directly.</p>
-<pre><code class="language-python"># VULNERABLE — LLM output directly rendered as HTML, no escaping:
-response = llm.generate(user_prompt)
-return f"&lt;div&gt;{response}&lt;/div&gt;"   # if response contains &lt;script&gt;, this is XSS!
-
-# VULNERABLE — LLM output used directly in a database query:
-response = llm.generate("Generate a SQL query for: " + user_request)
-cursor.execute(response)   # exactly the SQLi risk from Path 11.6, LLM-generated
-</code></pre>
-<p>The fix is exactly the same discipline from Path 11 — <strong>never trust downstream content blindly</strong>, whether it came from a human attacker or an LLM: output-encode for HTML contexts, use parameterised queries for SQL, sandbox any code execution.</p>
-<h3>LLM03: Training Data Poisoning</h3>
-<p>Introduced conceptually in Path 18.2 — an attacker who can influence a model's training data (or fine-tuning data, or retrieval-augmented generation sources) can embed subtle backdoors or biases activating under specific conditions. Defending against this requires supply-chain-style rigor (Path 10.4/11.5's SCA concepts, applied to training datasets) around data provenance and integrity.</p>
-<h3>LLM04: Model Denial of Service</h3>
-<p>Directly analogous to Path 10.1's Availability pillar and Path 12's DDoS concepts — an attacker can craft inputs specifically designed to consume disproportionate computational resources (extremely long inputs, recursive/repetitive requests designed to maximize processing cost) degrading service for legitimate users or incurring excessive infrastructure costs for the operator.</p>
-<h3>LLM05: Supply Chain Vulnerabilities</h3>
-<p>Directly extending Path 10.4/11.5's supply chain security concepts into the AI-specific pipeline: vulnerable or maliciously-modified pre-trained models downloaded from public repositories, compromised fine-tuning datasets, or vulnerable third-party libraries used in the model-serving stack (echoing Path 11.1's A06, now applied to ML-specific dependencies like popular Python ML libraries).</p>
-<pre><code class="language-bash"># Just as Path 16.5 covered scanning container images, ML-specific
-# supply chain scanning tools are an emerging, actively-developing space:
-# scanning model files themselves for embedded malicious code
-# (some ML model serialization formats have historically allowed
-# arbitrary code execution on load — a direct parallel to Path 10's
-# insecure deserialization concept)
-</code></pre>
-<h3>LLM06: Sensitive Information Disclosure</h3>
-<p>An LLM might inadvertently reveal sensitive information from its training data (if that data included private/proprietary content it shouldn't have), or reveal sensitive details about its own system prompt/configuration (recall Path 18.4's "prompt leaking" technique), or leak one user's conversation content to another user in a poorly-isolated multi-tenant system — directly echoing Path 11.4's IDOR concept, just applied to conversational context rather than database records.</p>
-<h3>LLM07: Insecure Plugin Design</h3>
-<p>Directly extending Path 18.1's agentic systems discussion — when an LLM can call external plugins/tools/APIs, each one is a potential attack surface exactly like any API endpoint from Path 11's entire lesson set. A plugin that doesn't properly validate the parameters an LLM passes to it (recall: the LLM itself might be manipulated via prompt injection into passing malicious parameters) reintroduces every classic vulnerability — injection, broken access control, SSRF — with the LLM now acting as an additional, manipulable layer between the user and the vulnerable plugin code.</p>
-<h3>LLM08: Excessive Agency</h3>
-<p>Perhaps the most distinctly AI-native risk category on this list, directly building on Path 18.1's agentic systems discussion and Path 14.6's least-privilege principle: granting an LLM-based system <strong>more autonomy, tool access, or permissions than its actual task requires</strong>. An email assistant that can both read AND send AND delete emails, when its actual job only requires reading and drafting (for human review before sending), has excessive agency — any successful prompt injection (Path 18.3) or hallucinated bad decision has a correspondingly larger blast radius than necessary.</p>
-<h3>LLM09: Overreliance</h3>
-<p>A distinctly human/organisational-process risk rather than a purely technical one: humans trusting LLM outputs (code, legal analysis, medical information, security assessments) without adequate verification, given the hallucination risk from Path 18.2. This connects directly to responsible AI use practices — treating LLM output as a <strong>draft or starting point requiring human verification</strong> for consequential decisions, rather than an authoritative final answer.</p>
-<h3>LLM10: Model Theft</h3>
-<p>Introduced conceptually in Path 18.2 as "model extraction" — an attacker systematically querying a deployed model to reconstruct a functionally similar copy, or directly exfiltrating model weights through infrastructure compromise (echoing Path 16.4's cloud security and Path 11.1's broken access control concepts, now protecting model artifacts specifically as the sensitive asset).</p>
-<h2>How the categories interconnect — a realistic attack chain</h2>
-<p>Recall Path 14.2 and Path 15.6's chaining concepts — real AI security incidents rarely involve just one isolated category:</p>
-<p>This exact chaining pattern — individually-modest AI security weaknesses combining into a critical real-world impact — is precisely the kind of narrative that makes for a compelling, well-documented finding, directly applying Path 15.6's chaining methodology to this genuinely different but structurally similar domain.</p>
-<h2>Why this list keeps changing faster than the original OWASP Top 10</h2>
-<p>Recall Path 11.9's discussion of why the original web-focused OWASP Top 10 refreshes every 3-4 years — the LLM version is updating on a noticeably faster cycle, reflecting just how quickly the underlying technology and its real-world deployment patterns are shifting. Categories that felt speculative at first publication (LLM08's Excessive Agency, in particular) have become dramatically more urgent as agentic systems moved from research demos to production tools handling real user data and real-world actions in the span of roughly a year — a pace of category-relevance shift that the original web Top 10 essentially never experiences, since HTTP and browser fundamentals change far more slowly than what LLM applications are actually being asked to do. Treating this list as a living document you revisit periodically, rather than a fixed reference memorised once, is genuinely more important here than for almost any other framework in this course.</p>
-<h2>Using this framework practically</h2>
-<p>Just as Path 11.1's OWASP Top 10 serves as a testing checklist, syllabus, and shared vocabulary — this framework serves the same three purposes for AI systems specifically:</p>
+    <div class="md" id="content"><article><h1>OWASP Top 10 for LLM Applications: 2026</h1>
+<p><strong>Edition matters.</strong> OWASP published a 2026 edition of its LLM application risk list. The numbers in older reports cannot be read as if they refer to the same risks: for example, LLM03 meant training-data poisoning in the 2023–24 list, while <strong>LLM03:2026 means excessive agency</strong>. Always cite the year with the code. The <a href="https://genai.owasp.org/resource/owasp-genai-llm-top-10-2026/">OWASP 2026 guide</a> is the source for this lesson.</p>
+<h2>The 2026 list at a glance</h2>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>OWASP category</th>
+<th>What to examine in a real application</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>LLM01:2026</td>
+<td>Prompt Injection</td>
+<td>Can untrusted prompts, retrieved text, tool results, or media redirect model behavior?</td>
+</tr>
+<tr>
+<td>LLM02:2026</td>
+<td>Sensitive Information Disclosure</td>
+<td>Can responses expose private user data, secrets, or confidential material?</td>
+</tr>
+<tr>
+<td>LLM03:2026</td>
+<td>Excessive Agency</td>
+<td>Can the model invoke tools or change data beyond its legitimate task?</td>
+</tr>
+<tr>
+<td>LLM04:2026</td>
+<td>Supply Chain</td>
+<td>Are models, datasets, packages, and deployment artifacts authentic and trustworthy?</td>
+</tr>
+<tr>
+<td>LLM05:2026</td>
+<td>Data and Model Poisoning</td>
+<td>Can an attacker corrupt training, fine-tuning, retrieval, or model behavior?</td>
+</tr>
+<tr>
+<td>LLM06:2026</td>
+<td>Unbounded Consumption</td>
+<td>Can requests consume disproportionate compute, tokens, money, or capacity?</td>
+</tr>
+<tr>
+<td>LLM07:2026</td>
+<td>Misinformation</td>
+<td>Can confident but false output drive a consequential decision or action?</td>
+</tr>
+<tr>
+<td>LLM08:2026</td>
+<td>Hidden Context Exposure</td>
+<td>Can protected context, prompts, memory, or internal instructions leak?</td>
+</tr>
+<tr>
+<td>LLM09:2026</td>
+<td>Vector and Embedding Weaknesses</td>
+<td>Can retrieval indexing or similarity search cross a trust or tenant boundary?</td>
+</tr>
+<tr>
+<td>LLM10:2026</td>
+<td>Improper Output Handling</td>
+<td>Is model output passed to HTML, code, commands, or queries without validation?</td>
+</tr>
+</tbody></table>
+<p>The list concerns <strong>applications using an LLM</strong>. An autonomous agent also needs the separate <a href="https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/">OWASP Top 10 for Agentic Applications:2026</a>, which focuses on tool use, identity, memory, delegation, and cascading actions. Neither list alone is a complete test plan.</p>
+<h2>Follow the trust boundary, not just the prompt</h2>
+<p>Consider an assistant that summarizes a third-party page and can send email. The page is <strong>data</strong>, not an authorized user instruction. If hidden text on that page persuades the assistant to send a private document, several risks interact:</p>
+<ol>
+<li><strong>LLM01</strong>: the page's instructions cross from untrusted content into the assistant's decision-making.</li>
+<li><strong>LLM03</strong>: email-sending authority is available to a task that only needs to summarize.</li>
+<li><strong>LLM02</strong>: the resulting message discloses private material.</li>
+</ol>
+<p>An effective design narrows tool permissions, checks each tool call against the user's actual request, and requires approval for consequential sends. A prompt telling the model to “ignore malicious instructions” is useful context but cannot enforce an authorization boundary by itself.</p>
+<h2>Output and retrieval risks</h2>
+<p>An LLM response is untrusted data. If a website inserts that response directly into HTML, it can create XSS. If an application executes a model-generated SQL statement, it can alter or disclose data. <strong>LLM10:2026</strong> therefore calls for the same concrete controls used elsewhere in this course: context-aware HTML encoding or sanitization, parameterized database operations, and isolation for code execution. The model's confidence does not make its output safe.</p>
+<p>Retrieval adds a different boundary. A vector search may return another tenant's private document because of a missing authorization filter, or a poisoned document may rank highly and carry attacker instructions. Treat <strong>LLM09</strong> as a retrieval-system issue and <strong>LLM01</strong> as the instruction-following failure that can follow from a poisoned result. Test both the data-access control and the assistant's behavior.</p>
+<h2>Earlier editions are still useful when labeled</h2>
+<p>The 2023–24 edition listed <em>Insecure Output Handling</em> as <strong>LLM02</strong>, <em>Training Data Poisoning</em> as <strong>LLM03</strong>, <em>Model Denial of Service</em> as <strong>LLM04</strong>, and <em>Excessive Agency</em> as <strong>LLM08</strong>. Those topics remain relevant, but their current identifiers are <strong>LLM10:2026</strong>, <strong>LLM05:2026</strong>, <strong>LLM06:2026</strong>, and <strong>LLM03:2026</strong> respectively. The 2025 edition also used a different ordering. When reading an old assessment, preserve its original code and year rather than silently relabeling its evidence.</p>
+<p>The 2026 guide broadens prompt-injection examples to include multimodal input and persistent memory. It also treats hidden context more broadly than the older “system prompt leakage” label. These changes reflect how LLM applications now combine models with retrieval, memory, and tools; they do not make earlier case studies useless.</p>
+<h2>Practice — assess a coding assistant</h2>
+<p>Imagine a coding assistant that should read a repository and suggest a patch. It can also run shell commands and publish releases. On a project you own or a toy design, write down:</p>
+<ol>
+<li>Which permissions are needed for the stated task, and which should be removed? (<strong>LLM03</strong>)</li>
+<li>What could happen if a README contains instructions aimed at the assistant? (<strong>LLM01</strong>)</li>
+<li>How will you review code, commands, and any HTML produced by the model before use? (<strong>LLM10</strong>)</li>
+<li>How will you limit token use and repeated tool calls? (<strong>LLM06</strong>)</li>
+<li>What evidence would show that a suggested claim is correct before a human acts on it? (<strong>LLM07</strong>)</li>
+</ol>
+<p>A report from 2023 calls an overly powerful AI tool “LLM08.” Which code names that risk in the 2026 LLM list, and what additional OWASP list should you consult if the tool acts autonomously?</p>
+<details><summary>Show answer</summary><strong>LLM03:2026, Excessive Agency.</strong> Also consult the OWASP Top 10 for Agentic Applications:2026. The 2023 code must retain its year when quoted.</details><h2>Key terms</h2>
 <ul>
-<li><strong>As a learner</strong>: a syllabus, exactly as this entire Path 18 has been structured around it.</li>
-<li><strong>As an AI red-teamer</strong> (Path 18.7): a systematic checklist ensuring broad coverage across all ten categories, not just the most obviously "exciting" ones (prompt injection) at the expense of quieter, easily-overlooked ones (excessive agency, overreliance).</li>
-<li><strong>As an AI system builder</strong>: a shared vocabulary for discussing and prioritising AI-specific security work, directly analogous to how Path 11.1's framework shapes real AppSec conversations today.</li>
-</ul>
-<h2>🧪 Lab — Map an AI product you use to this framework</h2>
-<p>Pick any AI-powered product or feature you use regularly (a coding assistant, an AI browsing tool, a customer service chatbot). For each of the ten categories above, write one sentence considering: <em>does this risk plausibly apply to this specific product, and if so, what would a reasonable mitigation look like?</em></p>
-<p>This exercise — directly mirroring Path 11.1's own "map what you already know" lab — builds the same kind of systematic, category-by-category thinking that makes the rest of this path's hands-on lessons click faster.</p>
-<p>An LLM-powered coding assistant is granted permission to read, write, AND execute arbitrary shell commands on a developer's machine, even though its actual task only ever requires reading and suggesting code changes for human review. Which OWASP LLM Top 10 category does this best represent?</p>
-<details><summary>Show answer</summary><strong>LLM08: Excessive Agency.</strong> The system has been granted far more capability (arbitrary shell execution) than its actual intended task (suggesting code changes for human review) requires. This directly increases the potential blast radius of any prompt injection, hallucination, or other failure mode — exactly the least-privilege violation pattern familiar from Path 14.6 and Path 16.4, now applied to an AI system's own tool permissions specifically.</details><h2>Key terms</h2>
-<ul>
-<li><strong>OWASP Top 10 for LLM Applications</strong> — the ten-category framework organising the AI-specific risk landscape.</li>
-<li><strong>Insecure Output Handling</strong> — the AI-era descendant of XSS/SQLi, when LLM output is trusted blindly downstream.</li>
-<li><strong>Excessive Agency</strong> — granting an AI system more autonomy/permissions than its task genuinely requires.</li>
-<li><strong>Overreliance</strong> — a human/organisational risk of trusting LLM output without adequate verification.</li>
+<li><strong>OWASP LLM Top 10:2026</strong> — the current, versioned risk categories for applications powered by LLMs.</li>
+<li><strong>Excessive agency</strong> — tool permissions or autonomy greater than the authorized task requires.</li>
+<li><strong>Improper output handling</strong> — unsafe use of model output by another component.</li>
+<li><strong>Hidden context exposure</strong> — disclosure of protected instructions, memory, or other internal context.</li>
+<li><strong>Unbounded consumption</strong> — resource or cost exhaustion through uncontrolled model use.</li>
 </ul>
 <h2>Recap</h2>
 <ul>
-<li>The OWASP LLM Top 10 provides the same syllabus/checklist/vocabulary function for AI security that the original OWASP Top 10 provides for web security.</li>
-<li>Several categories directly parallel familiar web vulnerabilities (Insecure Output Handling ≈ XSS/SQLi, Sensitive Information Disclosure ≈ IDOR); others are genuinely AI-native (Excessive Agency, Training Data Poisoning, Model Theft).</li>
-<li>Real incidents frequently chain multiple categories together, exactly mirroring Path 15.6's chaining methodology in this new domain.</li>
-<li>The framework serves learners, red-teamers, and system builders alike, directly mirroring Path 11.1's role in web security.</li>
+<li>Name the edition when citing an LLM risk code; several numbers changed between 2023–24, 2025, and 2026.</li>
+<li>Test authorization, retrieval isolation, output handling, and resource limits alongside prompt injection.</li>
+<li>Pair the LLM list with the Agentic Applications:2026 list when the model can take actions.</li>
 </ul>
 <h3>References</h3>
 <ul>
-<li><a href="https://owasp.org/www-project-top-10-for-large-language-model-applications/">OWASP Top 10 for LLM Applications</a> — the official, complete framework documentation.</li>
-<li><a href="https://owasp.org/www-project-top-10-for-large-language-model-applications/">OWASP — LLM AI Security &amp; Governance Checklist</a> — practical implementation guidance.</li>
-<li><a href="https://atlas.mitre.org/">MITRE ATLAS</a> — a MITRE ATT&amp;CK-style knowledge base specifically for AI system attacks, directly echoing Path 10.3's framework in this new domain.</li>
-<li><a href="https://www.nist.gov/itl/ai-risk-management-framework">NIST AI Risk Management Framework</a> — official US government AI risk guidance.</li>
+<li><a href="https://genai.owasp.org/resource/owasp-genai-llm-top-10-2026/">OWASP GenAI LLM Top 10 2026</a> — current guide and downloadable full text.</li>
+<li><a href="https://genai.owasp.org/llm-top-10/">OWASP LLM 2025 list</a> — historical comparison.</li>
+<li><a href="https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/">OWASP Top 10 for Agentic Applications 2026</a> — complementary guidance for tool-using agents.</li>
+<li><a href="https://www.nist.gov/itl/ai-risk-management-framework">NIST AI Risk Management Framework</a> — broader AI risk-management context.</li>
 </ul>
 <p><strong>Next up →</strong> <a href="#/lesson/18-ai-security/rag-security-risks">RAG Security Risks</a></p>
 <nav class="pager"><a href="/lesson/18-ai-security/jailbreak-defenses-and-guardrails.html">← Jailbreak Defenses &amp; Guardrails</a><a href="/lesson/18-ai-security/rag-security-risks.html">RAG Security Risks →</a></nav></article></div>

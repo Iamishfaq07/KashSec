@@ -168,9 +168,8 @@ function searchBodies(){
 
 /* ============================================================
    PWA — service worker registration, install prompt, and
-   offline/update indicators. Once installed, sw.js has already
-   precached the app shell and all 205 lessons, so the whole
-   course works with no network at all.
+   offline/update indicators. The shell is saved at install; lessons are
+   saved on visit or when the reader explicitly downloads a path.
    ============================================================ */
 function pwaToastHost(){
   let host = document.getElementById('toastHost');
@@ -2311,8 +2310,10 @@ function renderPathOverview(pathId){
           <div class="hero-btns" style="justify-content:flex-start;margin-bottom:0">
             <a class="btn-amber" href="#/lesson/${p.id}/${firstUnfinished.id}">${startLabel} →</a>
             ${quiz ? `<a class="btn-ghost" href="#/quiz/${p.id}">${quizResult ? (quizResult.passed?'✅ Retake quiz':'Retake quiz') : '📝 Take the path quiz'}</a>` : ''}
+            <button class="btn-ghost" id="savePathOfflineBtn" type="button">Save path for offline use</button>
             <button class="btn-ghost" id="downloadPackBtn" type="button">⬇ Download offline pack (.zip)</button>
           </div>
+          <p id="offlinePathStatus" class="tool-note" role="status" aria-live="polite"></p>
         </div>
         <div class="sublesson-grid">
           ${p.subs.map((s,i)=>`
@@ -2330,6 +2331,49 @@ function renderPathOverview(pathId){
       </div>
     </section>
   `;
+
+  document.getElementById('savePathOfflineBtn')?.addEventListener('click', async e=>{
+    const btn = e.currentTarget;
+    const status = document.getElementById('offlinePathStatus');
+    btn.disabled = true;
+    status.textContent = 'Preparing offline storage…';
+    try {
+      if (!('serviceWorker' in navigator)) throw new Error('Offline saving is unavailable in this browser.');
+      const registration = await Promise.race([
+        navigator.serviceWorker.ready,
+        new Promise((_, reject)=>setTimeout(()=>reject(new Error('Offline storage is not ready. Reload and try again.')), 10000))
+      ]);
+      if (!registration.active) throw new Error('Offline storage is not ready. Reload and try again.');
+      const result = await new Promise((resolve, reject)=>{
+        const channel = new MessageChannel();
+        let timer;
+        const armTimer = ()=>{
+          clearTimeout(timer);
+          timer = setTimeout(()=>{ channel.port1.close(); reject(new Error('The download stopped responding. Try again.')); }, 30000);
+        };
+        channel.port1.onmessage = ({data})=>{
+          if(data?.type === 'progress'){
+            status.textContent = `Saved ${data.saved} of ${data.total} lessons${data.failed ? `; ${data.failed} failed` : ''}…`;
+            armTimer();
+          } else if(data?.type === 'done' || data?.type === 'error'){
+            clearTimeout(timer);
+            channel.port1.close();
+            if(data.type === 'error') reject(new Error(data.message));
+            else resolve(data);
+          }
+        };
+        armTimer();
+        registration.active.postMessage({type:'CACHE_PATH', pathId:p.id}, [channel.port2]);
+      });
+      status.textContent = result.failed
+        ? `${result.saved} of ${result.total} lessons saved. ${result.failed} failed; try again while online.`
+        : `All ${result.total} lessons saved for offline use on this device.`;
+    } catch (error) {
+      status.textContent = error.message || 'Could not save this path. Try again while online.';
+    } finally {
+      btn.disabled = false;
+    }
+  });
 
   document.getElementById('downloadPackBtn')?.addEventListener('click', async (e)=>{
     const btn = e.currentTarget;
@@ -3499,7 +3543,8 @@ async function renderGlossary(){
     if(myGen !== renderGeneration) return;
     app.innerHTML = `<section class="sec"><div class="sec-head"><h1>Couldn't load the glossary</h1>
       <p class="sec-lead">Check your connection and try again.</p>
-      <button class="btn-amber" onclick="renderGlossary()" type="button">Retry</button></div></section>`;
+      <button class="btn-amber" id="glossaryRetry" type="button">Retry</button></div></section>`;
+    document.getElementById('glossaryRetry').addEventListener('click', renderGlossary);
     return;
   }
   if(myGen !== renderGeneration) return;
@@ -3569,7 +3614,8 @@ async function renderReview(){
     if(myGen !== renderGeneration) return;
     app.innerHTML = `<section class="sec"><div class="sec-head"><h1>Couldn't load the flashcards</h1>
       <p class="sec-lead">Check your connection and try again.</p>
-      <button class="btn-amber" onclick="renderReview()" type="button">Retry</button></div></section>`;
+      <button class="btn-amber" id="reviewRetry" type="button">Retry</button></div></section>`;
+    document.getElementById('reviewRetry').addEventListener('click', renderReview);
     return;
   }
   if(myGen !== renderGeneration) return;
@@ -6378,6 +6424,12 @@ function renderLabLeakedSecret(){
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
+  {date:'2026-09-23', title:'AI security lessons updated for the 2026 OWASP editions', items:[
+    'The LLM Top 10 lesson now uses the 2026 categories and shows how older risk numbers changed, so a learner does not mistake an old identifier for a current one.',
+    'The agentic AI lesson adds OWASP\'s separate 2026 agentic risk map and a tool-authorization exercise. Related lessons and the Path 18 quiz now cite the right edition.',
+    'The API standards lesson names ASVS 5.0.0 and encourages versioned requirement IDs. Glossary and flashcard retry controls now use normal event listeners.',
+    'Installing the site now saves its shell without silently downloading every lesson. Opened lessons cache on use; each path page has an explicit Save path for offline use button with progress and partial-failure feedback.'
+  ]},
   {date:'2026-08-04', title:'The Start button was invisible on most laptops, and had been for a long time', items:[
     'The header lays out at about 1366px minimum, but the mobile menu only took over below 900px. Everything between those two widths overflowed — by 392px at the narrow end — and because the page sets overflow-x:hidden it was clipped rather than scrollable. The Start button, the single most important control on the site, was simply not on screen at 1024px, 1280px, or any other common laptop width, and there was no way to scroll to it. "My Progress" was also wrapping onto a second line, which is why the header was 91px tall instead of 67px.',
     'Fixed by letting the link row shrink (a flex item will not go below its content width unless told to), pinning the call to action so it can never be the thing that falls off the end, and tightening the row between 901px and 1365px. All eleven links stay visible at every width from 901px to 1920px.',

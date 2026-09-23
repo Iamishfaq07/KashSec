@@ -29,7 +29,7 @@ Neither state is objectively "better" — mature fields offer clearer career pat
 - **AI Red-teamer / AI Safety Researcher** — directly building on Path 18.7's methodology, systematically probing deployed or pre-release models for safety and security failures. This work is increasingly contracted through specialist evaluation platforms that hire red-teamers for LLM testing and model-output evaluation.
 - **AI/LLM Security Engineer** — building the defensive infrastructure (input/output filtering, instruction hierarchies from Path 18.3, agentic permission systems from Path 18.5's Excessive Agency mitigations) protecting real, deployed AI-integrated products.
 - **Prompt Injection / Jailbreak Researcher** — a genuinely specialised sub-niche within AI red-teaming, focused specifically on discovering and responsibly disclosing (Path 18.4's ethics) novel bypass techniques.
-- **ML/AI Supply Chain Security** — extending Path 10.4/11.5's supply chain concepts into the AI-specific pipeline: model provenance, training data integrity, and the broader AI supply chain from Path 18.5's LLM05 category.
+- **ML/AI Supply Chain Security** — extending Path 10.4/11.5's supply chain concepts into the AI-specific pipeline: model provenance, training data integrity, and the broader AI supply chain from Path 18.5's LLM04:2026 category.
 - **AI Governance and Policy** — a less purely technical, more cross-functional role translating AI security/safety findings into organisational policy, risk management (Path 10.2's framework, applied here), and regulatory compliance as AI-specific regulation continues to develop globally.
 
 ## How this connects to everything else in this course
@@ -98,7 +98,7 @@ Looking back across everything from Path 01's very first lesson on what cybersec
 - The recurring trust-boundary pattern, seen throughout this entire course, is the most durable, transferable lesson to carry forward into whatever comes next.
 
 ???refs
-- [OWASP Top 10 for LLM Applications](https://owasp.org/www-project-top-10-for-large-language-model-applications/) — continue following as this framework evolves.
+- [OWASP Top 10 for LLM Applications:2026](https://genai.owasp.org/resource/owasp-genai-llm-top-10-2026/) — current edition; continue following future revisions.
 - [MITRE ATLAS](https://atlas.mitre.org/) — the continuously-updated adversarial ML technique knowledge base.
 - [Simon Willison's blog](https://simonwillison.net/) — ongoing, grounded, practitioner-level AI security writing.
 - [Anthropic Research](https://www.anthropic.com/research) and [OpenAI Safety](https://openai.com/safety/) — published research from leading AI labs, worth following as the field matures.

@@ -175,7 +175,7 @@ Why is indirect prompt injection generally considered more dangerous in practice
 
 ???refs
 - [Simon Willison — Prompt injection writing](https://simonwillison.net/series/prompt-injection/) — extensive, grounded, foundational writing on this exact topic.
-- [OWASP LLM01: Prompt Injection](https://owasp.org/www-project-top-10-for-large-language-model-applications/) — the official OWASP LLM Top 10 entry, covered fully in Path 18.5.
+- [OWASP LLM01:2026 Prompt Injection](https://genai.owasp.org/resource/owasp-genai-llm-top-10-2026/) — the current OWASP LLM Top 10 entry, covered fully in Path 18.5.
 - [Gandalf by Lakera](https://gandalf.lakera.ai/) — free, hands-on, gamified prompt injection practice.
 - [Anthropic — Prompt injection mitigation research](https://www.anthropic.com/research) — ongoing research from a leading AI lab on this exact problem.
 ???
