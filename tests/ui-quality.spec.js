@@ -270,6 +270,16 @@ function measureContrast() {
       if(excess > 2) mobileOverflow.push(`${name}@${width}px (+${excess}px)`);
     }
     if(width === 320){
+      await mobilePage.locator('#hamb').focus();
+      await mobilePage.keyboard.press('Enter');
+      const focusedFirstLink = await mobilePage.evaluate(() =>
+        document.activeElement === document.querySelector('#navLinks a'));
+      if(!focusedFirstLink) mobileOverflow.push('keyboard focus did not enter mobile menu');
+      await mobilePage.keyboard.press('Escape');
+      const menuClosed = await mobilePage.evaluate(() =>
+        document.activeElement === document.querySelector('#hamb') &&
+        document.querySelector('#hamb').getAttribute('aria-expanded') === 'false');
+      if(!menuClosed) mobileOverflow.push('Escape did not close mobile menu and restore focus');
       await mobilePage.locator('#hamb').click();
       const randomVisible = await mobilePage.locator('#randomMobileBtn').isVisible();
       if(!randomVisible) mobileOverflow.push('random lesson missing from mobile menu');

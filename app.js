@@ -10848,15 +10848,26 @@ function renderProgressHub(){
 /* Mobile nav */
 const hamb = document.getElementById('hamb');
 const navLinks = document.getElementById('navLinks');
+function setMobileMenuOpen(open, restoreFocus = false){
+  navLinks.classList.toggle('open', open);
+  hamb.setAttribute('aria-expanded', String(open));
+  hamb.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+  if(open) navLinks.querySelector('a, button')?.focus();
+  else if(restoreFocus) hamb.focus();
+}
 hamb.addEventListener('click',()=>{
-  const open = navLinks.classList.toggle('open');
-  hamb.setAttribute('aria-expanded', open ? 'true' : 'false');
+  setMobileMenuOpen(!navLinks.classList.contains('open'));
 });
 document.querySelectorAll('#navLinks a').forEach(a=>{
   a.addEventListener('click',()=>{
-    navLinks.classList.remove('open');
-    hamb.setAttribute('aria-expanded','false');
+    setMobileMenuOpen(false);
   });
+});
+document.addEventListener('keydown', e=>{
+  if(e.key === 'Escape' && navLinks.classList.contains('open') &&
+      (navLinks.contains(document.activeElement) || document.activeElement === hamb)){
+    setMobileMenuOpen(false, true);
+  }
 });
 
 /* Sticky-nav shadow on scroll */
@@ -10873,8 +10884,7 @@ function jumpRandomLesson(){
 }
 document.getElementById('randomLessonBtn')?.addEventListener('click', jumpRandomLesson);
 document.getElementById('randomMobileBtn')?.addEventListener('click', ()=>{
-  navLinks.classList.remove('open');
-  hamb.setAttribute('aria-expanded','false');
+  setMobileMenuOpen(false);
   jumpRandomLesson();
 });
 
