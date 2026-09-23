@@ -181,6 +181,7 @@ a{color:inherit}
    body has overflow-x:hidden, so it was clipped rather than scrollable:
    silently gone, on every width from 901px to 1365px. */
 .nav-links{display:flex;gap:.35rem;min-width:0}
+.nav-links .mobile-random{display:none}
 /* nowrap because "My Progress" was breaking onto a second line, which grew
    the whole bar from 67px to 91px on every laptop-width screen. */
 .nav-links a{color:var(--muted);font-size:.92rem;font-weight:500;text-decoration:none;padding:.45rem .7rem;border-radius:8px;position:relative;white-space:nowrap;transition:color .18s var(--ease),background .18s var(--ease)}
@@ -291,6 +292,7 @@ a{color:inherit}
 }
 .hero-sub{color:var(--muted);font-size:clamp(1.02rem,1.6vw,1.18rem);max-width:44rem;margin:0 auto 2.1rem;line-height:1.7}
 .hero-btns{display:flex;gap:.85rem;justify-content:center;flex-wrap:wrap;margin-bottom:3rem}
+.career-quiz-cta{max-width:100%;white-space:normal;text-align:center}
 .hero-stats{display:flex;justify-content:center;gap:.8rem;flex-wrap:wrap}
 .hero-stats>div{
   min-width:118px;padding:1rem 1.2rem;border-radius:var(--r);
@@ -638,6 +640,8 @@ a{color:inherit}
   .nav-links{display:none}
   .nav-links.open{display:flex;position:absolute;top:100%;left:0;right:0;background:var(--nav-bg-mobile);backdrop-filter:blur(14px);flex-direction:column;padding:.8rem clamp(1rem,4vw,3rem) 1.1rem;gap:.15rem;border-bottom:1px solid var(--border);box-shadow:var(--shadow-md)}
   .nav-links.open a{padding:.7rem .7rem}
+  .nav-links.open .mobile-random{display:block;width:100%;padding:.7rem;text-align:left;color:var(--muted);font-family:inherit;font-size:.92rem;font-weight:500;background:none;border:0;border-radius:8px;cursor:pointer}
+  .nav-links.open .mobile-random:hover,.nav-links.open .mobile-random:focus-visible{color:var(--text);background:var(--overlay-3)}
   .nav-links a.active::after{display:none}
   .hamb{display:inline-flex}
   .reader-wrap{grid-template-columns:1fr}
@@ -652,11 +656,15 @@ a{color:inherit}
   .reader-nav .btn-ghost,.reader-nav .btn-amber{max-width:100%}
   .hero-stats>div{min-width:calc(50% - .4rem)}
 }
-/* Below ~420px the nav can't fit search + theme + progress ring + Start +
+/* Below ~480px the nav can't fit search + theme + progress ring + Start +
    hamburger. Drop the two that are reachable another way (progress ring
-   duplicates the "My Progress" nav link; Start duplicates the hero CTA). */
-@media(max-width:420px){
+   duplicates the "My Progress" nav link; Start duplicates the hero CTA).
+   At the narrowest width, Random lesson remains in the mobile menu. */
+@media(max-width:480px){
   .progress-ring-btn,#startBtn{display:none}
+}
+@media(max-width:350px){
+  #randomLessonBtn{display:none}
 }
 /* ============================================================
    Quiz engine

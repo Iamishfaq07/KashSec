@@ -253,6 +253,36 @@ function measureContrast() {
   })();
   structural.forEach(([n, ok, d]) => record(n, ok, d));
 
+  const mobileOverflow = [];
+  for(const width of [320, 360, 390, 430, 768]){
+    const mobile = await browser.newContext({viewport:{width,height:900}, serviceWorkers:'block'});
+    await mobile.addInitScript(() => { try {
+      const key = 'kashsec_state_v1';
+      const state = JSON.parse(localStorage.getItem(key) || '{}');
+      state.tourDone = true; state.tourSeen = true; state.onboarded = true;
+      localStorage.setItem(key, JSON.stringify(state));
+    } catch (_) {} });
+    const mobilePage = await mobile.newPage();
+    for(const [name, route] of [['home','/'], ['careers','/index.html#/careers'], ['lesson','/lesson/11-web-security/xss.html']]){
+      await mobilePage.goto(`${BASE}${route}`, {waitUntil:'load'});
+      const excess = await mobilePage.evaluate(() =>
+        document.documentElement.scrollWidth - document.documentElement.clientWidth);
+      if(excess > 2) mobileOverflow.push(`${name}@${width}px (+${excess}px)`);
+    }
+    if(width === 320){
+      await mobilePage.locator('#hamb').click();
+      const randomVisible = await mobilePage.locator('#randomMobileBtn').isVisible();
+      if(!randomVisible) mobileOverflow.push('random lesson missing from mobile menu');
+      else {
+        await mobilePage.locator('#randomMobileBtn').click();
+        await mobilePage.waitForURL(url => url.pathname.startsWith('/lesson/') && url.pathname.endsWith('.html'));
+      }
+    }
+    await mobile.close();
+  }
+  record('mobile pages fit 320–768px and keep random lesson available',
+    mobileOverflow.length === 0, mobileOverflow.join(', '));
+
   await browser.close();
 
   console.log(`\n  UI quality — ${results.length} checks\n`);

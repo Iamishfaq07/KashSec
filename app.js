@@ -2622,7 +2622,7 @@ function renderCareers(){
         <h1>Where this course leads</h1>
         <p class="sec-lead">Security has many careers. Here's what each does and which paths get you there.</p>
         <div class="hero-btns" style="justify-content:flex-start;margin-top:1rem">
-          <a class="btn-amber sm" href="#/career-quiz">🧭 Not sure? Take the 2-minute career-fit quiz →</a>
+          <a class="btn-amber sm career-quiz-cta" href="#/career-quiz">🧭 Not sure? Take the 2-minute career-fit quiz →</a>
         </div>
       </div>
       <div class="careers">
@@ -6424,6 +6424,10 @@ function renderLabLeakedSecret(){
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
+  {date:'2026-09-24', title:'Small-screen navigation and career action fit the viewport', items:[
+    'The header no longer extends past the screen at 320px or 430px. Narrow layouts hide duplicate header controls and offer Random lesson from the mobile menu.',
+    'The career-fit quiz action wraps within a phone screen. Browser checks now cover page width and the mobile random-lesson action across representative small widths.'
+  ]},
   {date:'2026-09-23', title:'AI security lessons updated for the 2026 OWASP editions', items:[
     'The LLM Top 10 lesson now uses the 2026 categories and shows how older risk numbers changed, so a learner does not mistake an old identifier for a current one.',
     'The agentic AI lesson adds OWASP\'s separate 2026 agentic risk map and a tool-authorization exercise. Related lessons and the Path 18 quiz now cite the right edition.',
@@ -10863,9 +10867,15 @@ onScroll();
 
 /* Theme toggle */
 document.getElementById('themeToggle').addEventListener('click', toggleTheme);
-document.getElementById('randomLessonBtn')?.addEventListener('click', ()=>{
+function jumpRandomLesson(){
   const {pathId, subId} = pickRandomLesson();
   location.hash = `#/lesson/${pathId}/${subId}`;
+}
+document.getElementById('randomLessonBtn')?.addEventListener('click', jumpRandomLesson);
+document.getElementById('randomMobileBtn')?.addEventListener('click', ()=>{
+  navLinks.classList.remove('open');
+  hamb.setAttribute('aria-expanded','false');
+  jumpRandomLesson();
 });
 
 /* Progress ring: reflects overall completion, links to the progress hub */
