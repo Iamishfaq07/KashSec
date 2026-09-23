@@ -16,7 +16,7 @@
 - **Glossary & flashcards** — all 600+ Key Terms from every lesson in one searchable A–Z glossary (`#/glossary`), plus an active-recall flashcard mode (`#/review`) that remembers which terms you already know
 - **Better lesson reading** — reading-time estimates, an "On this page" table of contents on longer lessons, one-click copy buttons and syntax highlighting on code blocks
 - **Streaks, backups & shortcuts** — a visible day-streak counter, JSON export/import of all your progress (no account needed), quiz "review your last attempt", and keyboard shortcuts (`[` / `]` between lessons, `?` for the cheatsheet)
-- **Installable & works offline** — KashSec is a full PWA now. Install it from the browser (or "Add to Home Screen" on mobile) and the entire course — app shell plus all 485 lessons — is available with zero network connection. See [Offline / PWA support](#offline--pwa-support) below.
+- **Installable & works offline** — Install KashSec from the browser (or "Add to Home Screen" on mobile). The app shell is saved automatically; lessons you open and paths you explicitly save are available offline. See [Offline / PWA support](#offline--pwa-support) below.
 - **Four new beginner-friendly paths**: **Cryptography Fundamentals** (encoding vs. encryption vs. hashing, from zero), **Windows Security Basics** (Path 03's Linux depth, now for Windows), **Cloud Computing Basics** (the foundation Path 16's cloud security assumes), and **Digital Privacy & Personal Security** (your footprint, VPNs, secure messaging, identity theft)
 - **Path 17 — Malware & Reverse Engineering**: PE internals, hands-on Ghidra disassembly, dynamic analysis and sandboxing, unpacking/obfuscation, and writing YARA detection rules, capped with a full analysis pipeline lab
 - **Path 13 — Mobile App Security**: Android & iOS from the ground up — APK analysis, insecure storage, traffic interception, certificate pinning bypass, and exported component vulnerabilities, capped with a full assessment lab
@@ -115,7 +115,7 @@ configured, the sign-in UI stays hidden and nothing changes.
 
 ## 📴 Offline / PWA support
 
-KashSec is an installable Progressive Web App. Its service worker (`sw.js`) caches the app shell immediately and downloads lesson files in the background. Previously visited lessons work offline; the rest become available after their download completes. Canonical lesson links use the cached shell when their individual HTML page has not been saved. Cloud sync and external resources still require a connection.
+KashSec is an installable Progressive Web App. Its service worker (`sw.js`) caches the app shell at install. Lessons are cached when opened. On any path overview, **Save path for offline use** downloads that path's lessons into the browser cache and reports progress or partial failures. The separate ZIP offline pack is also available there. Canonical lesson links use the cached shell when their individual HTML page has not been saved. Cloud sync and external resources still require a connection.
 
 - **Install it**: most browsers show an install icon in the address bar, or use the install button in the site header (desktop Chrome/Edge, Android). On iOS Safari, use Share → **Add to Home Screen**.
 - **Regenerating the precache list**: `sw.js` is generated, not hand-written. After adding, removing, or renaming any path or lesson, run:

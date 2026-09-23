@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Poisoning &amp; adversarial ML — Path 18 · KashSec Academy</title>
-<meta name="description" content="Path 18.5's overview introduced training data poisoning as LLM03. This lesson goes deeper into the broader field of adversarial machine learning — attacks targeting the model-building and inference pi">
+<meta name="description" content="Path 18.5's overview introduced data and model poisoning as LLM05:2026 (LLM03 in the 2023–24 edition). This lesson goes deeper into adversarial machine learning — attacks targeting the model-building ">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/18-ai-security/poisoning-adv-ml.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Poisoning &amp; adversarial ML — Path 18 · KashSec Academy">
-<meta property="og:description" content="Path 18.5's overview introduced training data poisoning as LLM03. This lesson goes deeper into the broader field of adversarial machine learning — attacks targeting the model-building and inference pi">
+<meta property="og:description" content="Path 18.5's overview introduced data and model poisoning as LLM05:2026 (LLM03 in the 2023–24 edition). This lesson goes deeper into adversarial machine learning — attacks targeting the model-building ">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/18-ai-security/poisoning-adv-ml.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Poisoning &amp; adversarial ML — Path 18 · KashSec Academy">
-<meta name="twitter:description" content="Path 18.5's overview introduced training data poisoning as LLM03. This lesson goes deeper into the broader field of adversarial machine learning — attacks targeting the model-building and inference pi">
+<meta name="twitter:description" content="Path 18.5's overview introduced data and model poisoning as LLM05:2026 (LLM03 in the 2023–24 edition). This lesson goes deeper into adversarial machine learning — attacks targeting the model-building ">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 18 — AI & AI Security","item":"https://kashsec.vercel.app/lesson/18-ai-security/"},{"@type":"ListItem","position":4,"name":"Poisoning & adversarial ML","item":"https://kashsec.vercel.app/lesson/18-ai-security/poisoning-adv-ml.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Poisoning & adversarial ML","headline":"Poisoning & adversarial ML","description":"Path 18.5's overview introduced training data poisoning as LLM03. This lesson goes deeper into the broader field of adversarial machine learning — attacks targeting the model-building and inference pi","url":"https://kashsec.vercel.app/lesson/18-ai-security/poisoning-adv-ml.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Backdoors, extraction, adversarial examples.","isPartOf":{"@type":"Course","name":"Path 18: AI & AI Security","url":"https://kashsec.vercel.app/lesson/18-ai-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/18-ai-security/poisoning-adv-ml.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Poisoning & adversarial ML","headline":"Poisoning & adversarial ML","description":"Path 18.5's overview introduced data and model poisoning as LLM05:2026 (LLM03 in the 2023–24 edition). This lesson goes deeper into adversarial machine learning — attacks targeting the model-building ","url":"https://kashsec.vercel.app/lesson/18-ai-security/poisoning-adv-ml.html","inLanguage":"en","dateModified":"2026-09-24","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Backdoors, extraction, adversarial examples.","isPartOf":{"@type":"Course","name":"Path 18: AI & AI Security","url":"https://kashsec.vercel.app/lesson/18-ai-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/18-ai-security/poisoning-adv-ml.html"}}
 </script>
 </head>
 <body>
@@ -88,7 +88,7 @@
   <div class="reader-wrap"><div class="reader-main">
     <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/18-ai-security/">Path 18 — AI &amp; AI Security</a> · Poisoning &amp; adversarial ML</nav>
     <div class="md" id="content"><article><h1>Data poisoning &amp; adversarial ML</h1>
-<p>Path 18.5's overview introduced training data poisoning as LLM03. This lesson goes deeper into the broader field of <strong>adversarial machine learning</strong> — attacks targeting the model-building and inference pipeline itself, distinct from the runtime, conversation-level attacks of Path 18.3/12.4.</p>
+<p>Path 18.5's overview introduced data and model poisoning as LLM05:2026 (LLM03 in the 2023–24 edition). This lesson goes deeper into <strong>adversarial machine learning</strong> — attacks targeting the model-building and inference pipeline itself, distinct from the runtime, conversation-level attacks of Path 18.3/12.4.</p>
 <h2>The key distinction from prompt injection/jailbreaking</h2>
 <p>Recall Path 18.3-12.4 — those attacks target a model <strong>at inference time</strong>, through the input it's given in a single conversation. Adversarial ML attacks in this lesson target either the <strong>training process itself</strong> (poisoning) or exploit <strong>fundamental mathematical properties</strong> of how neural networks make decisions (adversarial examples) — a genuinely different attack surface and timeline.</p>
 <h2>Training data poisoning — in depth</h2>
@@ -174,7 +174,7 @@ a human observer
 <h3>References</h3>
 <ul>
 <li><a href="https://atlas.mitre.org/">MITRE ATLAS</a> — a comprehensive, continuously-updated knowledge base of real-world adversarial ML attack techniques.</li>
-<li><a href="https://owasp.org/www-project-top-10-for-large-language-model-applications/">OWASP LLM03: Training Data Poisoning</a> — the official framework entry.</li>
+<li><a href="https://genai.owasp.org/resource/owasp-genai-llm-top-10-2026/">OWASP LLM05:2026 Data and Model Poisoning</a> — the current framework entry.</li>
 <li><a href="https://csrc.nist.gov/pubs/ai/100/2/e2023/final">NIST — Adversarial Machine Learning: A Taxonomy and Terminology</a> — official US government technical reference.</li>
 <li><a href="https://www.anthropic.com/research">Anthropic Research</a> — ongoing published research on AI safety and robustness from a leading AI lab.</li>
 </ul>

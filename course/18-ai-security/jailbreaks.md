@@ -119,7 +119,7 @@ Why might a gradual, multi-turn escalation technique succeed against a model tha
 ???refs
 - [Gandalf by Lakera](https://gandalf.lakera.ai/) — free, hands-on, structured jailbreak-resistance practice.
 - [Anthropic — Constitutional AI paper](https://www.anthropic.com/research/constitutional-ai-harmlessness-from-ai-feedback) — foundational research on this alignment approach.
-- [OWASP LLM01: Prompt Injection](https://owasp.org/www-project-top-10-for-large-language-model-applications/) — covers jailbreak-adjacent content within the broader OWASP LLM Top 10.
+- [OWASP LLM01:2026 Prompt Injection](https://genai.owasp.org/resource/owasp-genai-llm-top-10-2026/) — current guidance, including jailbreak-adjacent attacks.
 - [Lakera — Prompt Injection & Jailbreak resource hub](https://www.lakera.ai/blog) — accessible, regularly-updated practitioner content on this exact topic.
 ???
 

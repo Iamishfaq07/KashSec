@@ -63,7 +63,7 @@ Design a secure architecture for an LLM application that allows tool use (web se
 - LLM application security requires ongoing, recurring red teaming, not a one-time pre-launch check, since both the underlying models and the application itself change over time.
 
 ???refs
-- [OWASP Top 10 for LLM Applications](https://owasp.org/www-project-top-10-for-large-language-model-applications/) — the umbrella reference for every control category in this lesson.
+- [OWASP Top 10 for LLM Applications:2026](https://genai.owasp.org/resource/owasp-genai-llm-top-10-2026/) — current application-risk reference for the controls in this lesson.
 - [NIST AI Risk Management Framework](https://www.nist.gov/itl/ai-risk-management-framework) — pairs directly with the governance lesson for organizational-level implementation guidance.
 ???
 

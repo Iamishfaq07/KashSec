@@ -135,14 +135,17 @@ check('sw.js exists', swExists);
 if (swExists) {
   const sw = read('sw.js');
   const lessonUrls = JSON.parse(sw.match(/const LESSON_URLS = (\[[\s\S]*?\]);/)[1]);
-  check('sw.js precache list matches lesson count (artifacts rebuilt)',
+  check('sw.js lesson registry matches lesson count (artifacts rebuilt)',
     lessonUrls.length === totalLessons,
     `sw.js has ${lessonUrls.length}, PATHS has ${totalLessons} — run npm run build`);
   // The large on-demand bundles must stay OUT of the blocking shell list.
   const shell = JSON.parse(sw.match(/const SHELL_URLS = (\[[\s\S]*?\]);/)[1]);
   check('search-index.js is not in the blocking precache shell',
-    !shell.includes('search-index.js'),
-    'a 600KB bundle in SHELL_URLS blocks service-worker install for everyone');
+      !shell.includes('search-index.js'),
+      'a 600KB bundle in SHELL_URLS blocks service-worker install for everyone');
+  check('service-worker install does not download the entire course',
+      !/\.addAll\(LESSON_URLS\)|\.addAll\(DEFERRED_URLS\)/.test(sw),
+      'lesson and feature bundles must download only on use or explicit request');
 }
 
 /* ---- 9. README counts match reality ---- */

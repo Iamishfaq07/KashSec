@@ -46,9 +46,18 @@ try {
   await offlinePage.goto(BASE + '/');
   await offlinePage.evaluate(() => navigator.serviceWorker.ready);
   await offlinePage.waitForFunction(() => !!navigator.serviceWorker.controller);
+  const initialLessons = await offlinePage.evaluate(async () => {
+    const cache = await caches.open('kashsec-content');
+    return (await cache.keys()).length;
+  });
+  assert.equal(initialLessons, 0, 'service-worker install does not fetch lesson files');
+  await offlinePage.goto(BASE + '/lesson/03-linux/');
+  await offlinePage.locator('#savePathOfflineBtn').click();
+  await offlinePage.locator('#offlinePathStatus').getByText(/All \d+ lessons saved/).waitFor();
   const offlineLesson = '/lesson/03-linux/users-permissions.html';
   await offlinePage.evaluate(async () => {
-    await fetch('/course/03-linux/users-permissions.md');
+    const cache = await caches.open('kashsec-content');
+    if (!await cache.match('/course/03-linux/users-permissions.md')) throw new Error('path download missed a lesson');
     for (const name of await caches.keys()) {
       await (await caches.open(name)).delete('/lesson/03-linux/users-permissions.html');
     }
