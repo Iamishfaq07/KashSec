@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>TCP vs UDP — Path 02 · KashSec Academy</title>
-<meta name="description" content="TCP vs UDP: Registered mail vs postcard — plus the handshake.">
+<meta name="description" content="Almost everything on the internet is carried by one of two protocols: TCP or UDP. They make opposite trade-offs, and scanning, attacks, and defences behave differently on each. Learn the difference de">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/02-networking/tcp-vs-udp.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="TCP vs UDP — Path 02 · KashSec Academy">
-<meta property="og:description" content="TCP vs UDP: Registered mail vs postcard — plus the handshake.">
+<meta property="og:description" content="Almost everything on the internet is carried by one of two protocols: TCP or UDP. They make opposite trade-offs, and scanning, attacks, and defences behave differently on each. Learn the difference de">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/02-networking/tcp-vs-udp.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="TCP vs UDP — Path 02 · KashSec Academy">
-<meta name="twitter:description" content="TCP vs UDP: Registered mail vs postcard — plus the handshake.">
+<meta name="twitter:description" content="Almost everything on the internet is carried by one of two protocols: TCP or UDP. They make opposite trade-offs, and scanning, attacks, and defences behave differently on each. Learn the difference de">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 02 — Networking Fundamentals","item":"https://kashsec.vercel.app/lesson/02-networking/"},{"@type":"ListItem","position":4,"name":"TCP vs UDP","item":"https://kashsec.vercel.app/lesson/02-networking/tcp-vs-udp.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"TCP vs UDP","headline":"TCP vs UDP","description":"TCP vs UDP: Registered mail vs postcard — plus the handshake.","url":"https://kashsec.vercel.app/lesson/02-networking/tcp-vs-udp.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Registered mail vs postcard — plus the handshake.","isPartOf":{"@type":"Course","name":"Path 02: Networking Fundamentals","url":"https://kashsec.vercel.app/lesson/02-networking/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/02-networking/tcp-vs-udp.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"TCP vs UDP","headline":"TCP vs UDP","description":"Almost everything on the internet is carried by one of two protocols: TCP or UDP. They make opposite trade-offs, and scanning, attacks, and defences behave differently on each. Learn the difference de","url":"https://kashsec.vercel.app/lesson/02-networking/tcp-vs-udp.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Registered mail vs postcard — plus the handshake.","isPartOf":{"@type":"Course","name":"Path 02: Networking Fundamentals","url":"https://kashsec.vercel.app/lesson/02-networking/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/02-networking/tcp-vs-udp.html"}}
 </script>
 </head>
 <body>
@@ -97,25 +97,13 @@
 <p>This is perfect when <strong>speed beats perfection</strong>: live video calls, online games, DNS queries. If one video frame is lost, you'd rather the call keep going than freeze while it re-sends an old frame. A tiny glitch beats a delay.</p>
 <h2>The TCP three-way handshake</h2>
 <p>Before TCP sends any real data, the two computers do a quick three-step greeting to agree to talk, called the <strong>three-way handshake</strong>:</p>
-<pre><code class="language-mermaid">sequenceDiagram
-    participant C as Client
-    participant S as Server
-    C-&gt;&gt;S: SYN (Hello, can we talk? seq=100)
-    S-&gt;&gt;C: SYN-ACK (Yes, can you hear me? seq=500, ack=101)
-    C-&gt;&gt;S: ACK (Yes — let's begin. ack=501)
-    Note over C,S: Connection established, real data flows now
-    C-&gt;&gt;S: HTTP GET /page
-    S-&gt;&gt;C: HTTP 200 OK + page contents
-</code></pre>
 <ul>
 <li><strong>SYN</strong> — "Hello, can we talk?"</li>
 <li><strong>SYN-ACK</strong> — "Yes, can you hear me?"</li>
 <li><strong>ACK</strong> — "Yes — let's begin."</li>
 </ul>
 <p>You'll hear these terms constantly. Every TCP connection begins with this ritual.</p>
-<p>:::tip WHY A SECURITY LEARNER CARES
-Port scanners (like Nmap) work by <em>starting</em> this handshake with each port to see which answer — a door that completes the handshake is "open." Attackers can also <em>abuse</em> it: flooding a server with endless SYN "hello" requests it must try to answer is an attack called a <strong>SYN flood</strong> (a type of denial-of-service).
-:::</p>
+<p>Port scanners (like Nmap) work by <em>starting</em> this handshake with each port to see which answer — a door that completes the handshake is "open." Attackers can also <em>abuse</em> it: flooding a server with endless SYN "hello" requests it must try to answer is an attack called a <strong>SYN flood</strong> (a type of denial-of-service).</p>
 <h2>Ending a TCP connection — the teardown</h2>
 <p>Just as TCP opens carefully with a three-way handshake, it closes carefully too, using <strong>FIN</strong> (finish) and <strong>ACK</strong> packets exchanged by both sides — a graceful four-step process ensuring both computers agree the conversation is genuinely over before either discards its connection state, rather than one side abruptly vanishing mid-conversation. An abrupt, ungraceful termination instead uses a <strong>RST (reset)</strong> packet — immediately killing the connection with no negotiation, normally used to signal an error condition (like connecting to a closed port, referenced in the previous ports lesson) rather than a normal, planned goodbye. This distinction between a clean FIN-based close and an abrupt RST matters directly in Path 12's Wireshark labs, since it's one of the first things worth checking when a captured connection looks unusual — a graceful close suggests normal application behavior, while an unexpected RST often signals something worth investigating further.</p>
 <h2>Connection states — a brief preview</h2>
@@ -197,13 +185,9 @@ Port scanners (like Nmap) work by <em>starting</em> this handshake with each por
 </li>
 </ul>
 <p>You'll see these in detail in Path 12.</p>
-<p>:::lab TRY IT: SEE A REAL HANDSHAKE
-Open Wireshark (Path 12 covers install). Start a capture. In a browser, visit <code>http://example.com</code>. Stop the capture. Filter for <code>tcp.flags.syn == 1</code>. You'll see the three-way handshake in the first three packets — SYN, SYN-ACK, ACK — before the actual HTTP request. Magic made visible.
-:::</p>
-<p>:::challenge Test yourself
-Which protocol re-sends any lost pieces and guarantees delivery — TCP or UDP?</p>
-<details><summary>Show answer</summary>TCP — the "registered mail" one that checks everything arrives.</details>
-:::<h2>Key terms</h2>
+<p>Open Wireshark (Path 12 covers install). Start a capture. In a browser, visit <code>http://example.com</code>. Stop the capture. Filter for <code>tcp.flags.syn == 1</code>. You'll see the three-way handshake in the first three packets — SYN, SYN-ACK, ACK — before the actual HTTP request. Magic made visible.</p>
+<p>Which protocol re-sends any lost pieces and guarantees delivery — TCP or UDP?</p>
+<details><summary>Show answer</summary>TCP — the "registered mail" one that checks everything arrives.</details><h2>Key terms</h2>
 <ul>
 <li><strong>TCP</strong> — reliable, ordered delivery (registered mail).</li>
 <li><strong>UDP</strong> — fast, unchecked delivery (postcard).</li>

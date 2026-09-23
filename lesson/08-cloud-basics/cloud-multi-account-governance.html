@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Cloud Multi-Account Governance — Path 08 · KashSec Academy</title>
-<meta name="description" content="Cloud Multi-Account Governance: Landing zones, account factories, and blast radius at the account level.">
+<meta name="description" content="Every lesson so far has implicitly assumed a single cloud account. This lesson covers how real organizations — beyond a certain size — actually structure their cloud presence: not one account, but man">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-multi-account-governance.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Cloud Multi-Account Governance — Path 08 · KashSec Academy">
-<meta property="og:description" content="Cloud Multi-Account Governance: Landing zones, account factories, and blast radius at the account level.">
+<meta property="og:description" content="Every lesson so far has implicitly assumed a single cloud account. This lesson covers how real organizations — beyond a certain size — actually structure their cloud presence: not one account, but man">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-multi-account-governance.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Cloud Multi-Account Governance — Path 08 · KashSec Academy">
-<meta name="twitter:description" content="Cloud Multi-Account Governance: Landing zones, account factories, and blast radius at the account level.">
+<meta name="twitter:description" content="Every lesson so far has implicitly assumed a single cloud account. This lesson covers how real organizations — beyond a certain size — actually structure their cloud presence: not one account, but man">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 08 — Cloud Computing Basics","item":"https://kashsec.vercel.app/lesson/08-cloud-basics/"},{"@type":"ListItem","position":4,"name":"Cloud Multi-Account Governance","item":"https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-multi-account-governance.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Cloud Multi-Account Governance","headline":"Cloud Multi-Account Governance","description":"Cloud Multi-Account Governance: Landing zones, account factories, and blast radius at the account level.","url":"https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-multi-account-governance.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Landing zones, account factories, and blast radius at the account level.","isPartOf":{"@type":"Course","name":"Path 08: Cloud Computing Basics","url":"https://kashsec.vercel.app/lesson/08-cloud-basics/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-multi-account-governance.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Cloud Multi-Account Governance","headline":"Cloud Multi-Account Governance","description":"Every lesson so far has implicitly assumed a single cloud account. This lesson covers how real organizations — beyond a certain size — actually structure their cloud presence: not one account, but man","url":"https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-multi-account-governance.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Landing zones, account factories, and blast radius at the account level.","isPartOf":{"@type":"Course","name":"Path 08: Cloud Computing Basics","url":"https://kashsec.vercel.app/lesson/08-cloud-basics/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-multi-account-governance.html"}}
 </script>
 </head>
 <body>
@@ -89,9 +89,7 @@
     <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/08-cloud-basics/">Path 08 — Cloud Computing Basics</a> · Cloud Multi-Account Governance</nav>
     <div class="md" id="content"><article><h1>Cloud Multi-Account Governance</h1>
 <p>Every lesson so far has implicitly assumed a single cloud account. This lesson covers how real organizations — beyond a certain size — actually structure their cloud presence: not one account, but many, deliberately, and the governance layer that keeps that structure coherent.</p>
-<p>:::tip
-This might sound like unnecessary complexity at first. By the end of this lesson, the case for multiple accounts should feel like a natural extension of the least-privilege and blast-radius principles already covered throughout this path — applied at the account level instead of just the permission level.
-:::</p>
+<p>:::</p>
 <h2>Why one account isn't enough at real scale</h2>
 <p>A single cloud account sharing everything — production and development environments, every team's resources, every project — creates exactly the kind of large blast radius the microsegmentation lesson in Path 24 warned about, just applied to cloud infrastructure: a misconfiguration or compromise anywhere in that one account can potentially reach anything else in it. Real organizations instead adopt a <strong>multi-account strategy</strong>, deliberately splitting resources across separate accounts along meaningful boundaries.</p>
 <h2>Common account separation patterns</h2>
@@ -107,15 +105,12 @@ This might sound like unnecessary complexity at first. By the end of this lesson
 <p>:::challenge Evaluate a governance gap
 An organization has properly separated development and production into different accounts, following this lesson's environment-separation pattern. However, they set up each new account manually and inconsistently over several years, and a recent audit finds that three older accounts never had audit logging enabled at all, while newer accounts do.</p>
 <details><summary>Hint</summary>What specific tool from this lesson exists precisely to prevent this kind of inconsistency, and why would it have caught this gap automatically?</details>
-<details><summary>Show answer</summary>This is exactly the failure mode a landing zone and account factory are designed to prevent — manual, ad-hoc account setup over time inevitably drifts, with older accounts missing baseline controls (like audit logging) that later became standard practice. A landing zone bakes required controls into the account creation process itself, so every account — old or new — starts from the same reviewed, secure baseline, and an account factory ensures that baseline gets applied consistently rather than depending on whoever happened to set up a given account remembering every required step. The organization's fix here isn't just enabling logging on the three gap accounts — it's establishing (or retrofitting) a proper landing zone so this exact inconsistency can't recur as they continue creating new accounts going forward.</details>
-:::<h2>🧪 Hands-on lab — design an account structure</h2>
+<details><summary>Show answer</summary>This is exactly the failure mode a landing zone and account factory are designed to prevent — manual, ad-hoc account setup over time inevitably drifts, with older accounts missing baseline controls (like audit logging) that later became standard practice. A landing zone bakes required controls into the account creation process itself, so every account — old or new — starts from the same reviewed, secure baseline, and an account factory ensures that baseline gets applied consistently rather than depending on whoever happened to set up a given account remembering every required step. The organization's fix here isn't just enabling logging on the three gap accounts — it's establishing (or retrofitting) a proper landing zone so this exact inconsistency can't recur as they continue creating new accounts going forward.</details><h2>🧪 Hands-on lab — design an account structure</h2>
 <p>For a hypothetical mid-size company with three teams (Engineering, Marketing, Data Science) and separate development/production needs, sketch a multi-account structure using at least two of the separation patterns from this lesson, and identify one organization-wide control (logging, IAM baseline) that should apply uniformly across every account in your structure.</p>
-<p>:::challenge Test yourself</p>
 <ol>
 <li>Why does a single shared cloud account create a large blast radius, in the same sense the microsegmentation lesson used that term?</li>
 <li>What problem does a landing zone solve that ad-hoc, manual account creation doesn't?</li>
-<li>Why is organization-wide centralized logging necessary once an organization adopts a multi-account strategy?
-:::</li>
+<li>Why is organization-wide centralized logging necessary once an organization adopts a multi-account strategy?</li>
 </ol>
 <h2>Key terms</h2>
 <ul>

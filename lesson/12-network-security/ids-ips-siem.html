@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>IDS, IPS &amp; SIEM — Path 12 · KashSec Academy</title>
-<meta name="description" content="IDS, IPS &amp; SIEM: Modern detection: from Snort to SOC to SOAR.">
+<meta name="description" content="Firewalls decide what traffic is allowed. But allowed traffic can still be malicious — a valid login attempt that's actually a brute-force attack, legitimate-looking HTTP requests that are actually SQ">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/12-network-security/ids-ips-siem.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="IDS, IPS &amp; SIEM — Path 12 · KashSec Academy">
-<meta property="og:description" content="IDS, IPS &amp; SIEM: Modern detection: from Snort to SOC to SOAR.">
+<meta property="og:description" content="Firewalls decide what traffic is allowed. But allowed traffic can still be malicious — a valid login attempt that's actually a brute-force attack, legitimate-looking HTTP requests that are actually SQ">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/12-network-security/ids-ips-siem.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="IDS, IPS &amp; SIEM — Path 12 · KashSec Academy">
-<meta name="twitter:description" content="IDS, IPS &amp; SIEM: Modern detection: from Snort to SOC to SOAR.">
+<meta name="twitter:description" content="Firewalls decide what traffic is allowed. But allowed traffic can still be malicious — a valid login attempt that's actually a brute-force attack, legitimate-looking HTTP requests that are actually SQ">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 12 — Network Security","item":"https://kashsec.vercel.app/lesson/12-network-security/"},{"@type":"ListItem","position":4,"name":"IDS, IPS & SIEM","item":"https://kashsec.vercel.app/lesson/12-network-security/ids-ips-siem.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"IDS, IPS & SIEM","headline":"IDS, IPS & SIEM","description":"IDS, IPS & SIEM: Modern detection: from Snort to SOC to SOAR.","url":"https://kashsec.vercel.app/lesson/12-network-security/ids-ips-siem.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Modern detection: from Snort to SOC to SOAR.","isPartOf":{"@type":"Course","name":"Path 12: Network Security","url":"https://kashsec.vercel.app/lesson/12-network-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/12-network-security/ids-ips-siem.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"IDS, IPS & SIEM","headline":"IDS, IPS & SIEM","description":"Firewalls decide what traffic is allowed. But allowed traffic can still be malicious — a valid login attempt that's actually a brute-force attack, legitimate-looking HTTP requests that are actually SQ","url":"https://kashsec.vercel.app/lesson/12-network-security/ids-ips-siem.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Modern detection: from Snort to SOC to SOAR.","isPartOf":{"@type":"Course","name":"Path 12: Network Security","url":"https://kashsec.vercel.app/lesson/12-network-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/12-network-security/ids-ips-siem.html"}}
 </script>
 </head>
 <body>
@@ -108,46 +108,12 @@ alert tcp any any -&gt; any 80 (msg:"Possible SQL injection attempt"; content:"U
 <p>This rule alerts whenever any TCP traffic to port 80 contains the literal string "UNION SELECT" — directly recognisable from Path 11.6's SQL injection lesson. Real rule sets (like Snort's community rules, or the commercial Emerging Threats ruleset) contain thousands of such signatures covering known exploits, malware C2 patterns, and scanning behaviour.</p>
 <h2>IPS — Intrusion Prevention System</h2>
 <p>An <strong>IPS</strong> does everything an IDS does, but sits <strong>inline</strong> (directly in the traffic path, not just passively monitoring a copy) and can actively <strong>block</strong> malicious traffic in real time, rather than just alerting after the fact.</p>
-<pre><code class="language-mermaid">flowchart LR
-    subgraph IDS["IDS — Detect only"]
-        T1["Traffic"] --&gt; Mirror["Passive copy"] --&gt; Alert["🔔 Alert"]
-        T1 --&gt; Continues1["Traffic continues unimpeded"]
-    end
-    subgraph IPS["IPS — Detect AND block"]
-        T2["Traffic"] --&gt; Inline["Inline inspection"] --&gt; Decision{"Malicious?"}
-        Decision --&gt;|"Yes"| Block["🚫 Blocked"]
-        Decision --&gt;|"No"| Continues2["Traffic continues"]
-    end
-
-    style Alert fill:#2b1f0a,color:#EFA43A,stroke:#EFA43A
-    style Block fill:#2b1010,color:#E05548,stroke:#E05548
-    style Continues1 fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
-    style Continues2 fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
-</code></pre>
 <p>The tradeoff: an IPS can actually stop an attack in progress, but a <strong>false positive</strong> means legitimate traffic gets blocked too — a much higher-stakes mistake than a false alert from a passive IDS. Tuning an IPS's rules carefully (and often starting new rules in "alert only" mode before enabling active blocking) is a genuine, ongoing operational discipline.</p>
 <h2>EDR — the modern host-level evolution</h2>
 <p>Recall <strong>EDR (Endpoint Detection and Response)</strong> from Path 10.4 — it's essentially a modern, far more sophisticated evolution of HIDS, combining signature and behavioural detection with active response capability (isolating a compromised machine from the network, killing malicious processes) and deep forensic visibility for investigators.</p>
 <h2>SIEM — Security Information and Event Management</h2>
 <p>Real organisations generate an overwhelming volume of security-relevant data — firewall logs, IDS alerts, authentication logs, application logs, cloud service logs — from dozens or hundreds of different systems. A <strong>SIEM</strong> centralises, correlates, and helps analysts make sense of all of it in one place.</p>
 <h3>What a SIEM actually does</h3>
-<pre><code class="language-mermaid">flowchart TB
-    FW["🔥 Firewall logs"] --&gt; SIEM["📊 SIEM&lt;br/&gt;(centralised correlation)"]
-    IDS_["🔔 IDS/IPS alerts"] --&gt; SIEM
-    Auth["🔑 Authentication logs"] --&gt; SIEM
-    App["🖥 Application logs"] --&gt; SIEM
-    Cloud["☁️ Cloud service logs"] --&gt; SIEM
-    SIEM --&gt; Correlate["🧠 Correlation rules&lt;br/&gt;e.g. failed logins + new admin account"]
-    Correlate --&gt; Alert2["🚨 Prioritised alert&lt;br/&gt;to a human analyst"]
-
-    style FW fill:#111927,color:#8496A6,stroke:#8496A6
-    style IDS_ fill:#111927,color:#8496A6,stroke:#8496A6
-    style Auth fill:#111927,color:#8496A6,stroke:#8496A6
-    style App fill:#111927,color:#8496A6,stroke:#8496A6
-    style Cloud fill:#111927,color:#8496A6,stroke:#8496A6
-    style SIEM fill:#2b1f0a,color:#EFA43A,stroke:#EFA43A
-    style Correlate fill:#2b1f0a,color:#EFA43A,stroke:#EFA43A
-    style Alert2 fill:#2b1010,color:#E05548,stroke:#E05548
-</code></pre>
 <p>The real value is <strong>correlation</strong> — individually, "50 failed logins from an unusual country" and "a new admin account created 5 minutes later" might each seem low-priority in isolation, but a SIEM correlation rule connecting the two events in sequence produces a much higher-confidence, higher-priority alert than either alone.</p>
 <h3>Popular SIEM platforms</h3>
 <ul>
@@ -205,10 +171,8 @@ sudo useradd testuser
 sudo ausearch -k passwd_changes
 </code></pre>
 <p>You've just built a tiny, genuine example of exactly the kind of host-level monitoring that HIDS/EDR tools do at much larger scale — watching a sensitive resource and logging who touched it and when.</p>
-<p>:::challenge Test yourself
-An organisation's IDS alerts on 200 failed login attempts from a single IP within one minute. Five minutes later, a SIEM correlation rule also notices a new admin-level account was created on the same server. Individually, why might a Tier 1 analyst underrate either event alone, and why does the SIEM's correlation of both together matter?</p>
-<details><summary>Show answer</summary>Failed logins alone are extremely common (typos, expired passwords, automated bots) and often low-priority individually. A new admin account alone might just be routine IT activity. But <strong>correlated in sequence</strong> — a burst of failed logins immediately followed by a new privileged account being created on that same system — strongly suggests a successful brute-force compromise followed by privilege escalation, exactly the kind of pattern a SIEM is specifically designed to surface that a human reviewing isolated log streams might otherwise miss.</details>
-:::<h2>Key terms</h2>
+<p>An organisation's IDS alerts on 200 failed login attempts from a single IP within one minute. Five minutes later, a SIEM correlation rule also notices a new admin-level account was created on the same server. Individually, why might a Tier 1 analyst underrate either event alone, and why does the SIEM's correlation of both together matter?</p>
+<details><summary>Show answer</summary>Failed logins alone are extremely common (typos, expired passwords, automated bots) and often low-priority individually. A new admin account alone might just be routine IT activity. But <strong>correlated in sequence</strong> — a burst of failed logins immediately followed by a new privileged account being created on that same system — strongly suggests a successful brute-force compromise followed by privilege escalation, exactly the kind of pattern a SIEM is specifically designed to surface that a human reviewing isolated log streams might otherwise miss.</details><h2>Key terms</h2>
 <ul>
 <li><strong>IDS / IPS</strong> — detect-only vs detect-and-block network/host monitoring systems.</li>
 <li><strong>Signature-based / anomaly-based detection</strong> — matching known patterns vs flagging deviations from a baseline.</li>

@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Routing basics — Path 02 · KashSec Academy</title>
-<meta name="description" content="Routing basics: Routers, the default gateway, and how packets travel hop by hop.">
+<meta name="description" content="The what-is-a-network lesson used the post office as an analogy. This lesson introduces the actual postal worker in that analogy: the router, the device that decides which direction a packet needs to ">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/02-networking/routing-basics.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Routing basics — Path 02 · KashSec Academy">
-<meta property="og:description" content="Routing basics: Routers, the default gateway, and how packets travel hop by hop.">
+<meta property="og:description" content="The what-is-a-network lesson used the post office as an analogy. This lesson introduces the actual postal worker in that analogy: the router, the device that decides which direction a packet needs to ">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/02-networking/routing-basics.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Routing basics — Path 02 · KashSec Academy">
-<meta name="twitter:description" content="Routing basics: Routers, the default gateway, and how packets travel hop by hop.">
+<meta name="twitter:description" content="The what-is-a-network lesson used the post office as an analogy. This lesson introduces the actual postal worker in that analogy: the router, the device that decides which direction a packet needs to ">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 02 — Networking Fundamentals","item":"https://kashsec.vercel.app/lesson/02-networking/"},{"@type":"ListItem","position":4,"name":"Routing basics","item":"https://kashsec.vercel.app/lesson/02-networking/routing-basics.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Routing basics","headline":"Routing basics","description":"Routing basics: Routers, the default gateway, and how packets travel hop by hop.","url":"https://kashsec.vercel.app/lesson/02-networking/routing-basics.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Routers, the default gateway, and how packets travel hop by hop.","isPartOf":{"@type":"Course","name":"Path 02: Networking Fundamentals","url":"https://kashsec.vercel.app/lesson/02-networking/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/02-networking/routing-basics.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Routing basics","headline":"Routing basics","description":"The what-is-a-network lesson used the post office as an analogy. This lesson introduces the actual postal worker in that analogy: the router, the device that decides which direction a packet needs to ","url":"https://kashsec.vercel.app/lesson/02-networking/routing-basics.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Routers, the default gateway, and how packets travel hop by hop.","isPartOf":{"@type":"Course","name":"Path 02: Networking Fundamentals","url":"https://kashsec.vercel.app/lesson/02-networking/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/02-networking/routing-basics.html"}}
 </script>
 </head>
 <body>
@@ -91,26 +91,15 @@
 <p>The what-is-a-network lesson used the post office as an analogy. This lesson introduces the actual postal worker in that analogy: the <strong>router</strong>, the device that decides which direction a packet needs to travel next.</p>
 <h2>What a router actually does</h2>
 <p>Every network you've ever used — your home Wi-Fi, your phone's mobile data, a coffee shop's guest network — sits behind at least one router. A <strong>router</strong>'s single job is looking at a packet's destination IP address (the next lesson goes deeper on IP addresses) and deciding which direction to forward it, based on a <strong>routing table</strong> — essentially a list of "if the destination looks like this, send it this way" rules.</p>
-<pre><code class="language-mermaid">flowchart LR
-    A[Your laptop] --&gt; B[Home router]
-    B --&gt; C[Your ISP's router]
-    C --&gt; D[Another router...]
-    D --&gt; E[...and another...]
-    E --&gt; F[Destination server]
-</code></pre>
 <h2>The default gateway: your network's exit door</h2>
 <p>Your device has a setting called the <strong>default gateway</strong> — the address of the router your device sends traffic to whenever it doesn't already know how to reach a destination directly. For almost every home device, the default gateway is your home router, and virtually all outbound traffic passes through it on its way anywhere else.</p>
-<p>:::note Finding your own default gateway
-On Windows, <code>ipconfig</code> shows a line labeled "Default Gateway." On Mac/Linux, <code>ip route</code> (or the older <code>netstat -nr</code>) shows the same thing. It's almost always something like <code>192.168.1.1</code> — the same private-range address style covered in the upcoming IP-addresses lesson.
-:::</p>
+<p>On Windows, <code>ipconfig</code> shows a line labeled "Default Gateway." On Mac/Linux, <code>ip route</code> (or the older <code>netstat -nr</code>) shows the same thing. It's almost always something like <code>192.168.1.1</code> — the same private-range address style covered in the upcoming IP-addresses lesson.</p>
 <h2>Hop by hop: how a packet actually crosses the internet</h2>
 <p>A packet rarely reaches its destination in one jump. It travels <strong>hop by hop</strong> — router to router — with each router only needing to know "which direction gets this packet closer," not the entire path from start to finish. This is genuinely similar to asking for directions in an unfamiliar city: each person you ask doesn't need to know the whole route, just the next useful step.</p>
 <h2>Why this matters for security</h2>
 <p>Understanding routing explains a real attack category you'll meet properly in Path 12: <strong>rogue routers and route manipulation</strong>. If an attacker can trick your device into using a router they control as its default gateway (or manipulate the routing tables along the path), they can potentially intercept, inspect, or alter traffic passing through — the same "man-in-the-middle" positioning idea that keeps showing up throughout this course.</p>
-<p>:::challenge Test yourself
-Why does a router only need to know "which direction gets a packet closer," rather than the entire path to every possible destination?</p>
-<details><summary>Show answer</summary>The internet is far too large for any single router to store a complete map of every possible destination and exact route. Instead, each router only needs to know enough to make one good local decision — forward the packet toward a router that's "closer" in some sense — and trust that the next router will do the same. This hop-by-hop design is what lets the internet scale to billions of devices: no single point needs global knowledge, just good local decisions repeated many times.</details>
-:::<h2>Key terms</h2>
+<p>Why does a router only need to know "which direction gets a packet closer," rather than the entire path to every possible destination?</p>
+<details><summary>Show answer</summary>The internet is far too large for any single router to store a complete map of every possible destination and exact route. Instead, each router only needs to know enough to make one good local decision — forward the packet toward a router that's "closer" in some sense — and trust that the next router will do the same. This hop-by-hop design is what lets the internet scale to billions of devices: no single point needs global knowledge, just good local decisions repeated many times.</details><h2>Key terms</h2>
 <ul>
 <li><strong>Router</strong> — a device that forwards packets toward their destination based on a routing table.</li>
 <li><strong>Default gateway</strong> — the router your device sends traffic to when it doesn't know a more direct path.</li>

@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>SOC 2 and Audits — Path 23 · KashSec Academy</title>
-<meta name="description" content="SOC 2 and Audits: Type I vs Type II, Trust Services Criteria, and what an auditor actually checks.">
+<meta name="description" content="If ISO 27001 is the international standard, SOC 2 is the one you'll hear about constantly if you work at (or sell software to) a US-based SaaS company.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/23-grc-compliance/soc2-and-audits.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="SOC 2 and Audits — Path 23 · KashSec Academy">
-<meta property="og:description" content="SOC 2 and Audits: Type I vs Type II, Trust Services Criteria, and what an auditor actually checks.">
+<meta property="og:description" content="If ISO 27001 is the international standard, SOC 2 is the one you'll hear about constantly if you work at (or sell software to) a US-based SaaS company.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/23-grc-compliance/soc2-and-audits.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="SOC 2 and Audits — Path 23 · KashSec Academy">
-<meta name="twitter:description" content="SOC 2 and Audits: Type I vs Type II, Trust Services Criteria, and what an auditor actually checks.">
+<meta name="twitter:description" content="If ISO 27001 is the international standard, SOC 2 is the one you'll hear about constantly if you work at (or sell software to) a US-based SaaS company.">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 23 — GRC & Compliance","item":"https://kashsec.vercel.app/lesson/23-grc-compliance/"},{"@type":"ListItem","position":4,"name":"SOC 2 and Audits","item":"https://kashsec.vercel.app/lesson/23-grc-compliance/soc2-and-audits.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"SOC 2 and Audits","headline":"SOC 2 and Audits","description":"SOC 2 and Audits: Type I vs Type II, Trust Services Criteria, and what an auditor actually checks.","url":"https://kashsec.vercel.app/lesson/23-grc-compliance/soc2-and-audits.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"All levels","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Type I vs Type II, Trust Services Criteria, and what an auditor actually checks.","isPartOf":{"@type":"Course","name":"Path 23: GRC & Compliance","url":"https://kashsec.vercel.app/lesson/23-grc-compliance/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/23-grc-compliance/soc2-and-audits.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"SOC 2 and Audits","headline":"SOC 2 and Audits","description":"If ISO 27001 is the international standard, SOC 2 is the one you'll hear about constantly if you work at (or sell software to) a US-based SaaS company.","url":"https://kashsec.vercel.app/lesson/23-grc-compliance/soc2-and-audits.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"All levels","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Type I vs Type II, Trust Services Criteria, and what an auditor actually checks.","isPartOf":{"@type":"Course","name":"Path 23: GRC & Compliance","url":"https://kashsec.vercel.app/lesson/23-grc-compliance/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/23-grc-compliance/soc2-and-audits.html"}}
 </script>
 </head>
 <body>
@@ -89,9 +89,7 @@
     <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/23-grc-compliance/">Path 23 — GRC &amp; Compliance</a> · SOC 2 and Audits</nav>
     <div class="md" id="content"><article><h1>SOC 2 and Audits</h1>
 <p>If ISO 27001 is the international standard, <strong>SOC 2</strong> is the one you'll hear about constantly if you work at (or sell software to) a US-based SaaS company.</p>
-<p>:::tip
-"We're SOC 2 compliant" is a common phrase, but technically imprecise — you don't "pass" or "fail" SOC 2 the way you certify against ISO 27001. You receive a <em>report</em>, and its content (not a pass/fail stamp) is what customers actually read.
-:::</p>
+<p>:::</p>
 <h2>What SOC 2 actually is</h2>
 <p>SOC 2 (System and Organization Controls 2) is an audit report — not a certification — issued under AICPA standards by a licensed CPA firm. It proves an organisation's controls meet the <strong>Trust Services Criteria</strong>:</p>
 <ul>
@@ -157,23 +155,25 @@
 </ul>
 <p>An exception doesn't automatically fail the report — auditors document it, and the company responds with a remediation plan. What kills deals is a <em>pattern</em> of exceptions suggesting the control isn't real.</p>
 <p>:::warn
-A single exception in a Type II report is normal — audits exist precisely because organisations aren't perfect, and a report with zero exceptions across an entire year sometimes makes sophisticated customers <em>more</em> suspicious, not less, because it can suggest a sample too small or too friendly to catch real gaps. What matters is the pattern and the quality of the remediation response, not a fantasy of zero findings.
-:::</p>
+A single exception in a Type II report is normal — audits exist precisely because organisations aren't perfect, and a report with zero exceptions across an entire year sometimes makes sophisticated customers <em>more</em> suspicious, not less, because it can suggest a sample too small or too friendly to catch real gaps. What matters is the pattern and the quality of the remediation response, not a fantasy of zero findings.</p>
 <h2>GRC's day-to-day role around audits</h2>
 <p>In practice, a GRC analyst spends a lot of time on <strong>evidence collection</strong> — gathering screenshots, exports, and tickets that prove controls operated, often using a compliance automation platform (Vanta, Drata, Secureframe) that continuously pulls evidence from AWS, GitHub, Okta, etc. Knowing these tools exist — and roughly what they automate — is genuinely useful for interviews in this field.</p>
 <h2>🧪 Hands-on lab — design an evidence collection plan</h2>
 <ol>
-<li>Pick three controls a SaaS company would need for a SOC 2 Security audit (e.g. "MFA enforced on all admin accounts," "quarterly access reviews," "vulnerability scans run monthly").</li>
-<li>For each control, write down: what specific evidence would prove it operated, not just that it exists as a policy?</li>
-<li>For each, decide: could this evidence realistically be automated (pulled continuously from a tool like Okta or AWS), or does it require a manual step (someone filling out a form, taking a screenshot)?</li>
-<li>Sketch a rough calendar for a 6-month Type II audit period: what evidence would need to be collected monthly vs. quarterly vs. just once?</li>
-</ol>
-<p>:::challenge Test yourself</p>
-<ol>
-<li>Why does a Type II report generally carry more weight with enterprise customers than a Type I report?</li>
-<li>In the offboarding example, why is the auditor's finding recorded as an "exception" rather than an automatic failure of the whole report?</li>
-<li>Why might a SOC 2 report with zero exceptions across an entire year actually raise suspicion for a sophisticated customer reviewing it?
-:::</li>
+<li><p>Pick three controls a SaaS company would need for a SOC 2 Security audit (e.g. "MFA enforced on all admin accounts," "quarterly access reviews," "vulnerability scans run monthly").</p>
+</li>
+<li><p>For each control, write down: what specific evidence would prove it operated, not just that it exists as a policy?</p>
+</li>
+<li><p>For each, decide: could this evidence realistically be automated (pulled continuously from a tool like Okta or AWS), or does it require a manual step (someone filling out a form, taking a screenshot)?</p>
+</li>
+<li><p>Sketch a rough calendar for a 6-month Type II audit period: what evidence would need to be collected monthly vs. quarterly vs. just once?</p>
+</li>
+<li><p>Why does a Type II report generally carry more weight with enterprise customers than a Type I report?</p>
+</li>
+<li><p>In the offboarding example, why is the auditor's finding recorded as an "exception" rather than an automatic failure of the whole report?</p>
+</li>
+<li><p>Why might a SOC 2 report with zero exceptions across an entire year actually raise suspicion for a sophisticated customer reviewing it?</p>
+</li>
 </ol>
 <h2>Key terms</h2>
 <ul>

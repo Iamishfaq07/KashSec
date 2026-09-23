@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Cloud Security Lab — Path 16 · KashSec Academy</title>
-<meta name="description" content="Cloud Security Lab: Get hands-on with common cloud misconfigurations.">
+<meta name="description" content="This lab turns the concepts from the Cloud security lesson — IAM misconfiguration, exposed storage, and the instance metadata service (IMDS) — into hands-on practice against a purpose-built vulnerable">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/16-advanced/cloud-security-lab.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Cloud Security Lab — Path 16 · KashSec Academy">
-<meta property="og:description" content="Cloud Security Lab: Get hands-on with common cloud misconfigurations.">
+<meta property="og:description" content="This lab turns the concepts from the Cloud security lesson — IAM misconfiguration, exposed storage, and the instance metadata service (IMDS) — into hands-on practice against a purpose-built vulnerable">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/16-advanced/cloud-security-lab.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Cloud Security Lab — Path 16 · KashSec Academy">
-<meta name="twitter:description" content="Cloud Security Lab: Get hands-on with common cloud misconfigurations.">
+<meta name="twitter:description" content="This lab turns the concepts from the Cloud security lesson — IAM misconfiguration, exposed storage, and the instance metadata service (IMDS) — into hands-on practice against a purpose-built vulnerable">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 16 — Advanced Cyber Topics","item":"https://kashsec.vercel.app/lesson/16-advanced/"},{"@type":"ListItem","position":4,"name":"Cloud Security Lab","item":"https://kashsec.vercel.app/lesson/16-advanced/cloud-security-lab.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Cloud Security Lab","headline":"Cloud Security Lab","description":"Cloud Security Lab: Get hands-on with common cloud misconfigurations.","url":"https://kashsec.vercel.app/lesson/16-advanced/cloud-security-lab.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Get hands-on with common cloud misconfigurations.","isPartOf":{"@type":"Course","name":"Path 16: Advanced Cyber Topics","url":"https://kashsec.vercel.app/lesson/16-advanced/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/16-advanced/cloud-security-lab.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Cloud Security Lab","headline":"Cloud Security Lab","description":"This lab turns the concepts from the Cloud security lesson — IAM misconfiguration, exposed storage, and the instance metadata service (IMDS) — into hands-on practice against a purpose-built vulnerable","url":"https://kashsec.vercel.app/lesson/16-advanced/cloud-security-lab.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Get hands-on with common cloud misconfigurations.","isPartOf":{"@type":"Course","name":"Path 16: Advanced Cyber Topics","url":"https://kashsec.vercel.app/lesson/16-advanced/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/16-advanced/cloud-security-lab.html"}}
 </script>
 </head>
 <body>
@@ -105,12 +105,8 @@
 <li><p><strong>Cross-reference each flAWS level against the shared responsibility model.</strong> For every level you complete, explicitly note: was this misconfiguration something AWS's own infrastructure should have prevented, or something squarely within the <em>customer's</em> configuration responsibility (per the main lesson's shared responsibility diagram)? You'll notice every single flAWS level falls on the customer side — a genuinely useful, concrete confirmation of just how much of real cloud security risk lives in configuration choices rather than provider-side flaws.</p>
 </li>
 </ol>
-<p>:::tip Use the AWS CLI, not just the browser
-Several flAWS levels are far more instructive when solved with the AWS CLI (<code>aws s3 ls s3://bucket-name --no-sign-request</code> for public buckets) rather than just clicking through a browser — this mirrors the actual tooling used in real cloud security assessments and cloud-focused bug bounty hunting.
-:::</p>
-<p>:::challenge Report it like a real finding
-Pick the single level you found most interesting and write it up as if it were a real bug bounty report: <strong>Title</strong>, <strong>Severity</strong> (use the CVSS reasoning from Path 14's Reporting lesson), <strong>Steps to reproduce</strong>, <strong>Impact</strong>, and <strong>Fix</strong>. This is exactly the deliverable a real cloud security assessment produces.
-:::</p>
+<p>Several flAWS levels are far more instructive when solved with the AWS CLI (<code>aws s3 ls s3://bucket-name --no-sign-request</code> for public buckets) rather than just clicking through a browser — this mirrors the actual tooling used in real cloud security assessments and cloud-focused bug bounty hunting.</p>
+<p>Pick the single level you found most interesting and write it up as if it were a real bug bounty report: <strong>Title</strong>, <strong>Severity</strong> (use the CVSS reasoning from Path 14's Reporting lesson), <strong>Steps to reproduce</strong>, <strong>Impact</strong>, and <strong>Fix</strong>. This is exactly the deliverable a real cloud security assessment produces.</p>
 <h2>Key takeaway</h2>
 <p>Cloud misconfigurations are overwhelmingly about <strong>defaults and permissions</strong>, not exotic exploits — a publicly readable S3 bucket or an over-permissioned IAM role requires no "hacking" at all, just noticing what was left open. This is precisely why cloud security assessments spend so much time on configuration review rather than traditional exploitation.</p>
 <p><strong>Next up →</strong> <a href="#/lesson/16-advanced/containers-k8s-lab">Containers &amp; Kubernetes Lab</a></p>

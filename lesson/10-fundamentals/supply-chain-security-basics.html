@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Supply Chain Security Basics — Path 10 · KashSec Academy</title>
-<meta name="description" content="Supply Chain Security Basics: Why a trusted vendor relationship is itself an attack surface.">
+<meta name="description" content="The malware lesson covered how malicious software actually behaves. This lesson covers a specific, increasingly significant way malware (and other compromise) actually reaches an organization in the f">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/10-fundamentals/supply-chain-security-basics.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Supply Chain Security Basics — Path 10 · KashSec Academy">
-<meta property="og:description" content="Supply Chain Security Basics: Why a trusted vendor relationship is itself an attack surface.">
+<meta property="og:description" content="The malware lesson covered how malicious software actually behaves. This lesson covers a specific, increasingly significant way malware (and other compromise) actually reaches an organization in the f">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/10-fundamentals/supply-chain-security-basics.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Supply Chain Security Basics — Path 10 · KashSec Academy">
-<meta name="twitter:description" content="Supply Chain Security Basics: Why a trusted vendor relationship is itself an attack surface.">
+<meta name="twitter:description" content="The malware lesson covered how malicious software actually behaves. This lesson covers a specific, increasingly significant way malware (and other compromise) actually reaches an organization in the f">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 10 — Cybersecurity Fundamentals","item":"https://kashsec.vercel.app/lesson/10-fundamentals/"},{"@type":"ListItem","position":4,"name":"Supply Chain Security Basics","item":"https://kashsec.vercel.app/lesson/10-fundamentals/supply-chain-security-basics.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Supply Chain Security Basics","headline":"Supply Chain Security Basics","description":"Supply Chain Security Basics: Why a trusted vendor relationship is itself an attack surface.","url":"https://kashsec.vercel.app/lesson/10-fundamentals/supply-chain-security-basics.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner→Intermediate","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Why a trusted vendor relationship is itself an attack surface.","isPartOf":{"@type":"Course","name":"Path 10: Cybersecurity Fundamentals","url":"https://kashsec.vercel.app/lesson/10-fundamentals/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/10-fundamentals/supply-chain-security-basics.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Supply Chain Security Basics","headline":"Supply Chain Security Basics","description":"The malware lesson covered how malicious software actually behaves. This lesson covers a specific, increasingly significant way malware (and other compromise) actually reaches an organization in the f","url":"https://kashsec.vercel.app/lesson/10-fundamentals/supply-chain-security-basics.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner→Intermediate","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Why a trusted vendor relationship is itself an attack surface.","isPartOf":{"@type":"Course","name":"Path 10: Cybersecurity Fundamentals","url":"https://kashsec.vercel.app/lesson/10-fundamentals/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/10-fundamentals/supply-chain-security-basics.html"}}
 </script>
 </head>
 <body>
@@ -107,10 +107,8 @@
 <li><strong>Least privilege for third-party access</strong> — a vendor or contractor should have access to exactly what they need, for exactly as long as they need it, directly extending the least-privilege principle from throughout this course</li>
 <li><strong>Monitoring vendor and dependency updates</strong> — treating a third-party update with the same scrutiny (where feasible) as internally-developed code, rather than assuming "it came from a trusted vendor" is sufficient on its own</li>
 </ul>
-<p>:::challenge Test yourself
-Why does a supply chain attack often succeed even against organizations with genuinely strong perimeter defenses?</p>
-<details><summary>Show answer</summary>Perimeter defenses (firewalls, network segmentation, access controls) are built to stop <em>unauthorized</em> traffic and actors from getting in — but a supply chain attack arrives disguised as something the organization already trusts and has explicitly permitted: a legitimate, properly-signed software update from a vendor relationship that predates the attack entirely. The malicious code doesn't need to breach the perimeter at all, because it's delivered through a channel (the vendor's own update mechanism) that the organization's own defenses were specifically configured to allow. This is exactly why supply chain security requires a fundamentally different set of controls — vendor assessment, SBOMs, monitoring dependencies — rather than simply strengthening the same perimeter defenses that were never actually positioned to catch this specific attack pattern in the first place.</details>
-:::<h2>Key terms</h2>
+<p>Why does a supply chain attack often succeed even against organizations with genuinely strong perimeter defenses?</p>
+<details><summary>Show answer</summary>Perimeter defenses (firewalls, network segmentation, access controls) are built to stop <em>unauthorized</em> traffic and actors from getting in — but a supply chain attack arrives disguised as something the organization already trusts and has explicitly permitted: a legitimate, properly-signed software update from a vendor relationship that predates the attack entirely. The malicious code doesn't need to breach the perimeter at all, because it's delivered through a channel (the vendor's own update mechanism) that the organization's own defenses were specifically configured to allow. This is exactly why supply chain security requires a fundamentally different set of controls — vendor assessment, SBOMs, monitoring dependencies — rather than simply strengthening the same perimeter defenses that were never actually positioned to catch this specific attack pattern in the first place.</details><h2>Key terms</h2>
 <ul>
 <li><strong>Supply chain attack</strong> — compromising an organization by attacking a trusted vendor, dependency, or third party it relies on.</li>
 <li><strong>Software Bill of Materials (SBOM)</strong> — a detailed inventory of a software product's components and dependencies.</li>

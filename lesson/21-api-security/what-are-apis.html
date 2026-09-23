@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>What are APIs and why do they matter for security? — Path 21 · KashSec Academy</title>
-<meta name="description" content="What are APIs and why do they matter for security?: The contract behind almost everything modern software does.">
+<meta name="description" content="APIs (Application Programming Interfaces) are how modern software talks to other software. When your phone app shows your bank balance, when a website loads comments, when one microservice asks anothe">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/21-api-security/what-are-apis.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="What are APIs and why do they matter for security? — Path 21 · KashSec Academy">
-<meta property="og:description" content="What are APIs and why do they matter for security?: The contract behind almost everything modern software does.">
+<meta property="og:description" content="APIs (Application Programming Interfaces) are how modern software talks to other software. When your phone app shows your bank balance, when a website loads comments, when one microservice asks anothe">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/21-api-security/what-are-apis.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="What are APIs and why do they matter for security? — Path 21 · KashSec Academy">
-<meta name="twitter:description" content="What are APIs and why do they matter for security?: The contract behind almost everything modern software does.">
+<meta name="twitter:description" content="APIs (Application Programming Interfaces) are how modern software talks to other software. When your phone app shows your bank balance, when a website loads comments, when one microservice asks anothe">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 21 — API Security","item":"https://kashsec.vercel.app/lesson/21-api-security/"},{"@type":"ListItem","position":4,"name":"What are APIs and why do they matter for security?","item":"https://kashsec.vercel.app/lesson/21-api-security/what-are-apis.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"What are APIs and why do they matter for security?","headline":"What are APIs and why do they matter for security?","description":"What are APIs and why do they matter for security?: The contract behind almost everything modern software does.","url":"https://kashsec.vercel.app/lesson/21-api-security/what-are-apis.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"The contract behind almost everything modern software does.","isPartOf":{"@type":"Course","name":"Path 21: API Security","url":"https://kashsec.vercel.app/lesson/21-api-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/21-api-security/what-are-apis.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"What are APIs and why do they matter for security?","headline":"What are APIs and why do they matter for security?","description":"APIs (Application Programming Interfaces) are how modern software talks to other software. When your phone app shows your bank balance, when a website loads comments, when one microservice asks anothe","url":"https://kashsec.vercel.app/lesson/21-api-security/what-are-apis.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"The contract behind almost everything modern software does.","isPartOf":{"@type":"Course","name":"Path 21: API Security","url":"https://kashsec.vercel.app/lesson/21-api-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/21-api-security/what-are-apis.html"}}
 </script>
 </head>
 <body>
@@ -90,9 +90,7 @@
     <div class="md" id="content"><article><h1>What are APIs and why do they matter for security?</h1>
 <p>APIs (Application Programming Interfaces) are how modern software talks to other software. When your phone app shows your bank balance, when a website loads comments, when one microservice asks another for user data — an API is doing the work.</p>
 <p>In 2026, <strong>most of the attack surface of a modern application is its APIs</strong>, not the classic HTML forms of the 2000s.</p>
-<p>:::tip
-Every API call you'll ever analyze answers the same three questions: who is asking, what are they asking for, and should they be allowed to have it? Almost every API vulnerability in this path is a broken answer to one of those three.
-:::</p>
+<p>:::</p>
 <h2>The simple picture</h2>
 <p>Think of a restaurant:</p>
 <ul>
@@ -135,8 +133,7 @@ Every API call you'll ever analyze answers the same three questions: who is aski
 <li><strong>They are everywhere</strong> — mobile apps, SPAs, microservices, third-party integrations, IoT devices. Every one of these is a separate client hitting the same API, and the API has to defend itself against all of them equally, including the ones its developers never anticipated.</li>
 </ol>
 <p>:::warn
-Response over-exposure is one of the easiest API bugs to miss during development, because the developer testing the feature only ever looks at what the <em>UI displays</em> — not at the raw JSON the server actually sent. Always inspect the full response body, not just what renders on screen.
-:::</p>
+Response over-exposure is one of the easiest API bugs to miss during development, because the developer testing the feature only ever looks at what the <em>UI displays</em> — not at the raw JSON the server actually sent. Always inspect the full response body, not just what renders on screen.</p>
 <h2>Core terms you'll see everywhere</h2>
 <ul>
 <li><strong>Endpoint</strong> — a specific URL + method combination (e.g. <code>GET /api/v1/users/42</code>)</li>
@@ -179,24 +176,26 @@ Content-Type: application/json
 <p>This is the exact analytical habit the rest of this path builds into muscle memory.</p>
 <h2>🧪 Hands-on lab — map an API from its traffic</h2>
 <ol>
-<li>Open browser DevTools (Network tab) on a web app you're authorized to use.</li>
-<li>Perform 3–4 different actions (view a list, view a detail page, submit a form, search).</li>
-<li>For each resulting API call, write down: method, path, and every field present in the <em>response</em> body — not just what the UI shows.</li>
-<li>Circle any response field that doesn't appear anywhere in the rendered page. Each one is a candidate for "the UI hid this, but the API sent it anyway."</li>
-<li>For one endpoint, note what identifier (ID, slug, token) it uses to select which record to return — this is what you'll target with the BOLA techniques two lessons ahead.</li>
-</ol>
-<p>:::challenge Test yourself</p>
-<ol>
-<li>In the restaurant analogy, what does "the kitchen can make things that aren't on the menu" correspond to in real API terms?</li>
-<li>Why is "the response contains data the UI doesn't render" still a security bug, even if a normal user would never see it?</li>
-<li>List the six-question checklist from memory, in your own words.
-:::</li>
+<li><p>Open browser DevTools (Network tab) on a web app you're authorized to use.</p>
+</li>
+<li><p>Perform 3–4 different actions (view a list, view a detail page, submit a form, search).</p>
+</li>
+<li><p>For each resulting API call, write down: method, path, and every field present in the <em>response</em> body — not just what the UI shows.</p>
+</li>
+<li><p>Circle any response field that doesn't appear anywhere in the rendered page. Each one is a candidate for "the UI hid this, but the API sent it anyway."</p>
+</li>
+<li><p>For one endpoint, note what identifier (ID, slug, token) it uses to select which record to return — this is what you'll target with the BOLA techniques two lessons ahead.</p>
+</li>
+<li><p>In the restaurant analogy, what does "the kitchen can make things that aren't on the menu" correspond to in real API terms?</p>
+</li>
+<li><p>Why is "the response contains data the UI doesn't render" still a security bug, even if a normal user would never see it?</p>
+</li>
+<li><p>List the six-question checklist from memory, in your own words.</p>
+</li>
 </ol>
 <h2>Key takeaway</h2>
 <p>APIs are the new front door. Most real-world breaches in the last few years involved API-level authorization failures, excessive data exposure, or broken authentication — not sophisticated zero-days.</p>
-<p>:::tip
-If you only remember one thing: <strong>never trust the client</strong>. The mobile app or SPA can be modified, decompiled, or bypassed entirely. All real security decisions must happen on the server.
-:::</p>
+<p>If you only remember one thing: <strong>never trust the client</strong>. The mobile app or SPA can be modified, decompiled, or bypassed entirely. All real security decisions must happen on the server.</p>
 <h2>Recap</h2>
 <p>An API is a contract between client and server, but the contract is only as strong as what the server actually enforces — documentation, UI hiding, and client-side checks are suggestions, not security controls. The habit of reading full request/response pairs, not just what the UI shows, is the single most useful skill for everything that follows in this path.</p>
 <h3>References</h3>

@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>The Shared Responsibility Model — Path 08 · KashSec Academy</title>
-<meta name="description" content="The Shared Responsibility Model: Where the provider's job ends and yours begins.">
+<meta name="description" content="This lesson ties together every concept from this path — service models, storage, networking, IAM — into the single framework cloud providers use to explain exactly where their security responsibility">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/08-cloud-basics/shared-responsibility-model.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="The Shared Responsibility Model — Path 08 · KashSec Academy">
-<meta property="og:description" content="The Shared Responsibility Model: Where the provider's job ends and yours begins.">
+<meta property="og:description" content="This lesson ties together every concept from this path — service models, storage, networking, IAM — into the single framework cloud providers use to explain exactly where their security responsibility">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/08-cloud-basics/shared-responsibility-model.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="The Shared Responsibility Model — Path 08 · KashSec Academy">
-<meta name="twitter:description" content="The Shared Responsibility Model: Where the provider's job ends and yours begins.">
+<meta name="twitter:description" content="This lesson ties together every concept from this path — service models, storage, networking, IAM — into the single framework cloud providers use to explain exactly where their security responsibility">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 08 — Cloud Computing Basics","item":"https://kashsec.vercel.app/lesson/08-cloud-basics/"},{"@type":"ListItem","position":4,"name":"The Shared Responsibility Model","item":"https://kashsec.vercel.app/lesson/08-cloud-basics/shared-responsibility-model.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"The Shared Responsibility Model","headline":"The Shared Responsibility Model","description":"The Shared Responsibility Model: Where the provider's job ends and yours begins.","url":"https://kashsec.vercel.app/lesson/08-cloud-basics/shared-responsibility-model.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Where the provider's job ends and yours begins.","isPartOf":{"@type":"Course","name":"Path 08: Cloud Computing Basics","url":"https://kashsec.vercel.app/lesson/08-cloud-basics/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/08-cloud-basics/shared-responsibility-model.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"The Shared Responsibility Model","headline":"The Shared Responsibility Model","description":"This lesson ties together every concept from this path — service models, storage, networking, IAM — into the single framework cloud providers use to explain exactly where their security responsibility","url":"https://kashsec.vercel.app/lesson/08-cloud-basics/shared-responsibility-model.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Where the provider's job ends and yours begins.","isPartOf":{"@type":"Course","name":"Path 08: Cloud Computing Basics","url":"https://kashsec.vercel.app/lesson/08-cloud-basics/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/08-cloud-basics/shared-responsibility-model.html"}}
 </script>
 </head>
 <body>
@@ -91,19 +91,6 @@
 <p>This lesson ties together every concept from this path — service models, storage, networking, IAM — into the single framework cloud providers use to explain exactly where their security responsibility ends and yours begins. Misunderstanding this boundary is, itself, a leading real-world cause of cloud breaches.</p>
 <h2>"Security OF the cloud" vs. "security IN the cloud"</h2>
 <p>Every major cloud provider frames their shared responsibility model with roughly this split: the provider is responsible for the security <strong>of</strong> the cloud (physical data centers, the underlying hardware, the virtualization layer, network infrastructure at the provider level) — while the customer is responsible for security <strong>in</strong> the cloud (how they configure the services they use, their data, their IAM policies, their operating systems on IaaS).</p>
-<pre><code class="language-mermaid">flowchart TD
-    subgraph Provider["Provider's Responsibility\n(security OF the cloud)"]
-        A[Physical Data Centers]
-        B[Hardware &amp; Virtualization]
-        C[Provider's Global Network]
-    end
-    subgraph Customer["Customer's Responsibility\n(security IN the cloud)"]
-        D[Data]
-        E[IAM Configuration]
-        F["Network Configuration\n(security groups, VPCs)"]
-        G["OS &amp; Application\n(IaaS specifically)"]
-    end
-</code></pre>
 <h2>The line shifts depending on the service model</h2>
 <p>Path 08's first lesson introduced IaaS/PaaS/SaaS — this is exactly where that distinction matters most concretely:</p>
 <table>
@@ -137,16 +124,12 @@
 <li><strong>Overly broad IAM policies</strong> (Path 08's identity lesson) — the provider secures the IAM system's underlying mechanics; <em>what permissions you actually grant</em> are entirely your call.</li>
 </ul>
 <p>None of these are failures of the cloud provider's own infrastructure — they're customer configuration mistakes, made possible by (correctly) assuming the provider handles everything "below" their responsibility line, while forgetting that everything "above" it remains entirely on them.</p>
-<p>:::danger "The cloud is secure" is a dangerous half-truth
-The underlying cloud infrastructure genuinely is, in most well-documented cases, extremely secure — major providers invest enormous resources in physical and infrastructure-level security that few individual organizations could match on their own. But this fact says nothing about whether <em>your specific configuration</em> on top of that infrastructure is secure. "AWS is secure" and "my S3 bucket is secure" are two completely separate claims, and conflating them is exactly the misunderstanding behind most real-world cloud breaches.
-:::</p>
+<p>The underlying cloud infrastructure genuinely is, in most well-documented cases, extremely secure — major providers invest enormous resources in physical and infrastructure-level security that few individual organizations could match on their own. But this fact says nothing about whether <em>your specific configuration</em> on top of that infrastructure is secure. "AWS is secure" and "my S3 bucket is secure" are two completely separate claims, and conflating them is exactly the misunderstanding behind most real-world cloud breaches.</p>
 <h2>Compliance responsibility follows the same split</h2>
 <p>Recall Path 10.8's compliance frameworks (PCI DSS, HIPAA, SOC 2, GDPR) — the shared responsibility model applies directly to regulatory compliance too, and this is a genuinely common source of costly confusion for organizations new to the cloud. A cloud provider can be independently audited and certified as compliant with a given framework at the infrastructure level (AWS, Azure, and GCP all hold various compliance certifications for their own data centers and platform), but that certification covers only the provider's side of the responsibility line — it does <strong>not</strong> automatically make an organization's <em>specific application, built on top of that infrastructure</em>, compliant with the same framework. A healthcare company storing patient data in a HIPAA-eligible cloud service still bears full responsibility for correctly configuring access controls, encryption, and audit logging on their own resources — the provider's compliance certification is a necessary foundation, not a substitute for the customer's own compliance work. This exact confusion ("we use AWS, and AWS is SOC 2 compliant, so we're compliant too") has led to real, costly compliance failures at real organizations, making it worth stating as explicitly as the security version of the same principle above.</p>
 <h2>Applying this framework to Path 16's cloud security material</h2>
 <p>With this full path's foundation now in place, Path 16's cloud security lesson and flAWS lab should read very differently than before: every vulnerability in that lab — public buckets, IMDS exposure, overly broad IAM — sits squarely on the <em>customer's</em> side of the shared responsibility line. flAWS isn't demonstrating a flaw in AWS itself; it's demonstrating exactly the class of customer-configuration mistakes this lesson has been describing, deliberately built as a teaching tool.</p>
-<p>:::challenge Map responsibilities for a real scenario
-For a hypothetical company running a web application on a cloud IaaS virtual machine, with its database in the provider's managed database service (a PaaS-style offering), and using the provider's SaaS-style email service for internal communication — list, for each of the three services, specifically what falls on the provider's side of the responsibility line versus the customer's, using the framework from this lesson.
-:::</p>
+<p>For a hypothetical company running a web application on a cloud IaaS virtual machine, with its database in the provider's managed database service (a PaaS-style offering), and using the provider's SaaS-style email service for internal communication — list, for each of the three services, specifically what falls on the provider's side of the responsibility line versus the customer's, using the framework from this lesson.</p>
 <h2>Key terms</h2>
 <ul>
 <li><strong>Shared responsibility model</strong> — the framework defining which security responsibilities belong to the cloud provider versus the customer.</li>

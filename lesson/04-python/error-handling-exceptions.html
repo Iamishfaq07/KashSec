@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Error handling &amp; exceptions — Path 04 · KashSec Academy</title>
-<meta name="description" content="Error handling &amp; exceptions: try/except, and why a real scanner can't crash on the first timeout.">
+<meta name="description" content="Every program you've written so far has assumed everything goes right. Real programs — especially security tools reaching out to real networks and real files — constantly encounter things going wrong.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/04-python/error-handling-exceptions.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Error handling &amp; exceptions — Path 04 · KashSec Academy">
-<meta property="og:description" content="Error handling &amp; exceptions: try/except, and why a real scanner can't crash on the first timeout.">
+<meta property="og:description" content="Every program you've written so far has assumed everything goes right. Real programs — especially security tools reaching out to real networks and real files — constantly encounter things going wrong.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/04-python/error-handling-exceptions.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Error handling &amp; exceptions — Path 04 · KashSec Academy">
-<meta name="twitter:description" content="Error handling &amp; exceptions: try/except, and why a real scanner can't crash on the first timeout.">
+<meta name="twitter:description" content="Every program you've written so far has assumed everything goes right. Real programs — especially security tools reaching out to real networks and real files — constantly encounter things going wrong.">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 04 — Programming & Python","item":"https://kashsec.vercel.app/lesson/04-python/"},{"@type":"ListItem","position":4,"name":"Error handling & exceptions","item":"https://kashsec.vercel.app/lesson/04-python/error-handling-exceptions.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Error handling & exceptions","headline":"Error handling & exceptions","description":"Error handling & exceptions: try/except, and why a real scanner can't crash on the first timeout.","url":"https://kashsec.vercel.app/lesson/04-python/error-handling-exceptions.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"try/except, and why a real scanner can't crash on the first timeout.","isPartOf":{"@type":"Course","name":"Path 04: Programming & Python","url":"https://kashsec.vercel.app/lesson/04-python/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/04-python/error-handling-exceptions.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Error handling & exceptions","headline":"Error handling & exceptions","description":"Every program you've written so far has assumed everything goes right. Real programs — especially security tools reaching out to real networks and real files — constantly encounter things going wrong.","url":"https://kashsec.vercel.app/lesson/04-python/error-handling-exceptions.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"try/except, and why a real scanner can't crash on the first timeout.","isPartOf":{"@type":"Course","name":"Path 04: Programming & Python","url":"https://kashsec.vercel.app/lesson/04-python/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/04-python/error-handling-exceptions.html"}}
 </script>
 </head>
 <body>
@@ -131,10 +131,8 @@ except ConnectionError:
     print("Network issue, skipping this target.")
 </code></pre>
 <p>Catching every possible exception with a bare <code>except:</code> is a genuinely common beginner mistake — it silently swallows real bugs along with the errors you actually expected, making problems far harder to diagnose later. Catching specific exception types keeps your error handling honest about what you actually anticipated.</p>
-<p>:::challenge Test yourself
-Why is <code>except:</code> (catching everything) considered worse practice than <code>except ConnectionError:</code> (catching something specific), even though both technically "handle" errors?</p>
-<details><summary>Show answer</summary>A bare <code>except:</code> catches every possible error, including genuine bugs in your own code that have nothing to do with the specific risky operation you were trying to handle — a typo in a variable name, a logic error, anything at all gets silently swallowed and hidden, making it far harder to notice and fix real problems in your script. Catching a specific exception type like <code>ConnectionError</code> only handles the exact failure mode you actually anticipated and know how to respond to sensibly, while letting genuinely unexpected errors surface loudly so you can actually see and fix them, rather than having your script silently misbehave with no indication anything went wrong at all.</details>
-:::<h2>Key terms</h2>
+<p>Why is <code>except:</code> (catching everything) considered worse practice than <code>except ConnectionError:</code> (catching something specific), even though both technically "handle" errors?</p>
+<details><summary>Show answer</summary>A bare <code>except:</code> catches every possible error, including genuine bugs in your own code that have nothing to do with the specific risky operation you were trying to handle — a typo in a variable name, a logic error, anything at all gets silently swallowed and hidden, making it far harder to notice and fix real problems in your script. Catching a specific exception type like <code>ConnectionError</code> only handles the exact failure mode you actually anticipated and know how to respond to sensibly, while letting genuinely unexpected errors surface loudly so you can actually see and fix them, rather than having your script silently misbehave with no indication anything went wrong at all.</details><h2>Key terms</h2>
 <ul>
 <li><strong>Exception</strong> — an error Python raises when something goes wrong during execution.</li>
 <li><strong>try/except</strong> — the structure for attempting risky code and handling specific failures gracefully.</li>

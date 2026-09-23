@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Threat Hunting Lab — Path 16 · KashSec Academy</title>
-<meta name="description" content="Threat Hunting Lab: Learn proactive detection instead of just reacting.">
+<meta name="description" content="Threat hunting flips the usual security posture on its head: instead of waiting for an alert, you proactively assume a breach has already happened somewhere in your environment and go looking for evid">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/16-advanced/threat-hunting-lab.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Threat Hunting Lab — Path 16 · KashSec Academy">
-<meta property="og:description" content="Threat Hunting Lab: Learn proactive detection instead of just reacting.">
+<meta property="og:description" content="Threat hunting flips the usual security posture on its head: instead of waiting for an alert, you proactively assume a breach has already happened somewhere in your environment and go looking for evid">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/16-advanced/threat-hunting-lab.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Threat Hunting Lab — Path 16 · KashSec Academy">
-<meta name="twitter:description" content="Threat Hunting Lab: Learn proactive detection instead of just reacting.">
+<meta name="twitter:description" content="Threat hunting flips the usual security posture on its head: instead of waiting for an alert, you proactively assume a breach has already happened somewhere in your environment and go looking for evid">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 16 — Advanced Cyber Topics","item":"https://kashsec.vercel.app/lesson/16-advanced/"},{"@type":"ListItem","position":4,"name":"Threat Hunting Lab","item":"https://kashsec.vercel.app/lesson/16-advanced/threat-hunting-lab.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Threat Hunting Lab","headline":"Threat Hunting Lab","description":"Threat Hunting Lab: Learn proactive detection instead of just reacting.","url":"https://kashsec.vercel.app/lesson/16-advanced/threat-hunting-lab.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Learn proactive detection instead of just reacting.","isPartOf":{"@type":"Course","name":"Path 16: Advanced Cyber Topics","url":"https://kashsec.vercel.app/lesson/16-advanced/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/16-advanced/threat-hunting-lab.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Threat Hunting Lab","headline":"Threat Hunting Lab","description":"Threat hunting flips the usual security posture on its head: instead of waiting for an alert, you proactively assume a breach has already happened somewhere in your environment and go looking for evid","url":"https://kashsec.vercel.app/lesson/16-advanced/threat-hunting-lab.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Learn proactive detection instead of just reacting.","isPartOf":{"@type":"Course","name":"Path 16: Advanced Cyber Topics","url":"https://kashsec.vercel.app/lesson/16-advanced/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/16-advanced/threat-hunting-lab.html"}}
 </script>
 </head>
 <body>
@@ -104,12 +104,8 @@
 <li><p><strong>Baseline "normal" before hunting for "unusual."</strong> Before flagging anything as suspicious, spend time establishing what routine activity actually looks like in your sample data — what times do legitimate logins normally cluster around, which accounts normally use <code>sudo</code>, which processes normally spawn from a web server. Without this baseline, "unusual" is just a guess; with it, an anomaly-based hunt (echoing Path 12.5's anomaly-detection concept) becomes a genuinely defensible, evidence-grounded finding rather than a hunch dressed up as analysis.</p>
 </li>
 </ol>
-<p>:::tip Threat hunting starts with a hypothesis, not a random search
-Real threat hunting doesn't mean scrolling through logs hoping something looks wrong — it starts with a specific, testable hypothesis: "if an attacker has compromised our web server, I'd expect to see outbound connections to unusual destinations from that host." You then go verify or disprove that specific hypothesis against the data. Structure your hunt this way rather than browsing aimlessly.
-:::</p>
-<p>:::challenge Write three hunting hypotheses
-Before touching any data, write three specific, testable hypotheses about what a compromise might look like in your environment (e.g., "if credential stuffing succeeded against any account, I'd expect a burst of failures immediately followed by a success from the same source"). Then go validate each one against your sample data — for each, state clearly whether it was confirmed, disproven, or inconclusive, and why.
-:::</p>
+<p>Real threat hunting doesn't mean scrolling through logs hoping something looks wrong — it starts with a specific, testable hypothesis: "if an attacker has compromised our web server, I'd expect to see outbound connections to unusual destinations from that host." You then go verify or disprove that specific hypothesis against the data. Structure your hunt this way rather than browsing aimlessly.</p>
+<p>Before touching any data, write three specific, testable hypotheses about what a compromise might look like in your environment (e.g., "if credential stuffing succeeded against any account, I'd expect a burst of failures immediately followed by a success from the same source"). Then go validate each one against your sample data — for each, state clearly whether it was confirmed, disproven, or inconclusive, and why.</p>
 <h2>Key takeaway</h2>
 <p>Threat hunting is a mindset shift as much as a technique: <strong>assume compromise, then go look for evidence, rather than waiting for a tool to tell you something's wrong.</strong> This proactive posture catches slow, careful attackers — the kind who deliberately avoid tripping automated alerts — that purely reactive detection consistently misses.</p>
 <p><strong>Next up →</strong> <a href="#/lesson/16-advanced/threat-modeling-lab">Threat Modeling Lab</a></p>

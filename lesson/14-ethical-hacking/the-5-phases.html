@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>The 5 phases — Path 14 · KashSec Academy</title>
-<meta name="description" content="The 5 phases: The mental map every methodology reduces to.">
+<meta name="description" content="Every professional penetration test follows a broadly consistent structure. Understanding this framework turns scattered technique knowledge (Paths 11-08) into a repeatable, professional methodology.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/14-ethical-hacking/the-5-phases.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="The 5 phases — Path 14 · KashSec Academy">
-<meta property="og:description" content="The 5 phases: The mental map every methodology reduces to.">
+<meta property="og:description" content="Every professional penetration test follows a broadly consistent structure. Understanding this framework turns scattered technique knowledge (Paths 11-08) into a repeatable, professional methodology.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/14-ethical-hacking/the-5-phases.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="The 5 phases — Path 14 · KashSec Academy">
-<meta name="twitter:description" content="The 5 phases: The mental map every methodology reduces to.">
+<meta name="twitter:description" content="Every professional penetration test follows a broadly consistent structure. Understanding this framework turns scattered technique knowledge (Paths 11-08) into a repeatable, professional methodology.">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 14 — Ethical Hacking","item":"https://kashsec.vercel.app/lesson/14-ethical-hacking/"},{"@type":"ListItem","position":4,"name":"The 5 phases","item":"https://kashsec.vercel.app/lesson/14-ethical-hacking/the-5-phases.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"The 5 phases","headline":"The 5 phases","description":"The 5 phases: The mental map every methodology reduces to.","url":"https://kashsec.vercel.app/lesson/14-ethical-hacking/the-5-phases.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate→Advanced","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"The mental map every methodology reduces to.","isPartOf":{"@type":"Course","name":"Path 14: Ethical Hacking","url":"https://kashsec.vercel.app/lesson/14-ethical-hacking/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/14-ethical-hacking/the-5-phases.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"The 5 phases","headline":"The 5 phases","description":"Every professional penetration test follows a broadly consistent structure. Understanding this framework turns scattered technique knowledge (Paths 11-08) into a repeatable, professional methodology.","url":"https://kashsec.vercel.app/lesson/14-ethical-hacking/the-5-phases.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate→Advanced","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"The mental map every methodology reduces to.","isPartOf":{"@type":"Course","name":"Path 14: Ethical Hacking","url":"https://kashsec.vercel.app/lesson/14-ethical-hacking/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/14-ethical-hacking/the-5-phases.html"}}
 </script>
 </head>
 <body>
@@ -90,18 +90,6 @@
     <div class="md" id="content"><article><h1>The 5 phases of penetration testing</h1>
 <p>Every professional penetration test follows a broadly consistent structure. Understanding this framework turns scattered technique knowledge (Paths 11-08) into a repeatable, professional methodology.</p>
 <h2>The five phases</h2>
-<pre><code class="language-mermaid">flowchart LR
-    P1["1️⃣ Pre-engagement&lt;br/&gt;&amp; Scoping"] --&gt; P2["2️⃣ Reconnaissance"]
-    P2 --&gt; P3["3️⃣ Scanning &amp;&lt;br/&gt;Enumeration"]
-    P3 --&gt; P4["4️⃣ Exploitation"]
-    P4 --&gt; P5["5️⃣ Post-Exploitation&lt;br/&gt;&amp; Reporting"]
-
-    style P1 fill:#111927,color:#8496A6,stroke:#8496A6
-    style P2 fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
-    style P3 fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
-    style P4 fill:#2b1010,color:#E05548,stroke:#E05548
-    style P5 fill:#2b1f0a,color:#EFA43A,stroke:#EFA43A
-</code></pre>
 <p>This lesson gives the overview of all five; the next lessons in this path go deep on Recon, Scanning/Enumeration, Exploitation, and Post-Exploitation/Reporting individually.</p>
 <h2>Phase 1: Pre-engagement &amp; Scoping</h2>
 <p>Before any technical activity begins, the tester and client agree on:</p>
@@ -153,10 +141,8 @@ EMERGENCY CONTACT: security-oncall@example.com, +1-555-0100
 <li>An emergency contact process (invented, but realistic).</li>
 </ol>
 <p>This exercise — thinking like the <em>client</em> defining boundaries, not just the tester executing techniques — is genuinely valuable perspective-building for anyone entering this field professionally.</p>
-<p>:::challenge Test yourself
-During reconnaissance, a tester discovers a subdomain that appears to belong to the target company but wasn't explicitly listed in the agreed scope document. What's the correct professional action?</p>
-<details><summary>Show answer</summary><strong>Pause and clarify with the client before testing it further.</strong> Scope documents are the legal and ethical boundary of the entire engagement — an unlisted subdomain might be intentionally excluded (third-party hosted, a different business unit, explicitly out of bounds for a specific reason), or it might simply be an oversight the client would want added. Either way, assuming permission and proceeding without clarification is exactly the kind of scope-boundary mistake that turns legitimate work into a serious professional and legal problem.</details>
-:::<h2>Key terms</h2>
+<p>During reconnaissance, a tester discovers a subdomain that appears to belong to the target company but wasn't explicitly listed in the agreed scope document. What's the correct professional action?</p>
+<details><summary>Show answer</summary><strong>Pause and clarify with the client before testing it further.</strong> Scope documents are the legal and ethical boundary of the entire engagement — an unlisted subdomain might be intentionally excluded (third-party hosted, a different business unit, explicitly out of bounds for a specific reason), or it might simply be an oversight the client would want added. Either way, assuming permission and proceeding without clarification is exactly the kind of scope-boundary mistake that turns legitimate work into a serious professional and legal problem.</details><h2>Key terms</h2>
 <ul>
 <li><strong>Scope</strong> — the explicitly defined systems/applications authorized for testing.</li>
 <li><strong>Rules of Engagement (RoE)</strong> — the formal document defining testing windows, prohibited techniques, and procedures.</li>

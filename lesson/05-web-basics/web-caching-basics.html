@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Web caching basics — Path 05 · KashSec Academy</title>
-<meta name="description" content="Web caching basics: CDNs, Cache-Control, and why caching sensitive pages is a real vulnerability.">
+<meta name="description" content="The web-anatomy lesson gave you the full picture of a modern web app's pieces. This lesson covers a piece that sits between those pieces, often invisibly: caching — storing a copy of content so it doe">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/05-web-basics/web-caching-basics.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Web caching basics — Path 05 · KashSec Academy">
-<meta property="og:description" content="Web caching basics: CDNs, Cache-Control, and why caching sensitive pages is a real vulnerability.">
+<meta property="og:description" content="The web-anatomy lesson gave you the full picture of a modern web app's pieces. This lesson covers a piece that sits between those pieces, often invisibly: caching — storing a copy of content so it doe">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/05-web-basics/web-caching-basics.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Web caching basics — Path 05 · KashSec Academy">
-<meta name="twitter:description" content="Web caching basics: CDNs, Cache-Control, and why caching sensitive pages is a real vulnerability.">
+<meta name="twitter:description" content="The web-anatomy lesson gave you the full picture of a modern web app's pieces. This lesson covers a piece that sits between those pieces, often invisibly: caching — storing a copy of content so it doe">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 05 — How the Web Works","item":"https://kashsec.vercel.app/lesson/05-web-basics/"},{"@type":"ListItem","position":4,"name":"Web caching basics","item":"https://kashsec.vercel.app/lesson/05-web-basics/web-caching-basics.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Web caching basics","headline":"Web caching basics","description":"Web caching basics: CDNs, Cache-Control, and why caching sensitive pages is a real vulnerability.","url":"https://kashsec.vercel.app/lesson/05-web-basics/web-caching-basics.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"CDNs, Cache-Control, and why caching sensitive pages is a real vulnerability.","isPartOf":{"@type":"Course","name":"Path 05: How the Web Works","url":"https://kashsec.vercel.app/lesson/05-web-basics/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/05-web-basics/web-caching-basics.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Web caching basics","headline":"Web caching basics","description":"The web-anatomy lesson gave you the full picture of a modern web app's pieces. This lesson covers a piece that sits between those pieces, often invisibly: caching — storing a copy of content so it doe","url":"https://kashsec.vercel.app/lesson/05-web-basics/web-caching-basics.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"CDNs, Cache-Control, and why caching sensitive pages is a real vulnerability.","isPartOf":{"@type":"Course","name":"Path 05: How the Web Works","url":"https://kashsec.vercel.app/lesson/05-web-basics/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/05-web-basics/web-caching-basics.html"}}
 </script>
 </head>
 <body>
@@ -92,11 +92,6 @@
 <h2>Why caching exists</h2>
 <p>Regenerating a page from scratch, or re-fetching the same unchanged file over the network, on every single request wastes both time and server resources. <strong>Caching</strong> stores a copy of content somewhere faster to access than the original source, serving that copy for subsequent requests instead of repeating the full work.</p>
 <h2>The layers where caching actually happens</h2>
-<pre><code class="language-mermaid">flowchart LR
-    A[Browser cache] --&gt; B[CDN cache]
-    B --&gt; C[Server-side cache]
-    C --&gt; D[Origin server / database]
-</code></pre>
 <ul>
 <li><strong>Browser cache</strong> — your own browser stores copies of images, stylesheets, and scripts locally, so revisiting a site doesn't re-download everything</li>
 <li><strong>CDN (Content Delivery Network)</strong> — a globally distributed network of servers caching content geographically close to each user, reducing latency and load on the origin server</li>
@@ -107,17 +102,13 @@
 Cache-Control: private, no-store
 </code></pre>
 <p><code>public</code> means any cache (browser, CDN) can store this response; <code>private</code> restricts caching to the browser only; <code>no-store</code> means don't cache this at all — genuinely important for anything containing sensitive, per-user data.</p>
-<p>:::danger Caching sensitive, personalized content is a real vulnerability pattern
-A page containing one user's private account information, accidentally served with caching headers permitting a CDN or shared cache to store it, can result in a <em>different</em> user later receiving that cached, personalized response meant for someone else entirely — a genuine, documented real-world vulnerability category. Sensitive or personalized responses should always be marked <code>private</code> or <code>no-store</code>, never left to a permissive default.
-:::</p>
+<p>A page containing one user's private account information, accidentally served with caching headers permitting a CDN or shared cache to store it, can result in a <em>different</em> user later receiving that cached, personalized response meant for someone else entirely — a genuine, documented real-world vulnerability category. Sensitive or personalized responses should always be marked <code>private</code> or <code>no-store</code>, never left to a permissive default.</p>
 <h2>Cache poisoning: manipulating what gets cached</h2>
 <p><strong>Cache poisoning</strong> is an attack where an attacker manipulates a request in a way that causes a <em>malicious</em> response to get cached and subsequently served to other, legitimate users — turning a caching layer meant to improve performance into a mechanism for distributing an attacker-controlled response at scale. This is a genuinely serious vulnerability class precisely because a single successful poisoning attempt can affect every user who subsequently receives the cached, malicious response, not just the original attacker's own request.</p>
 <h2>Why this matters for security assessment specifically</h2>
 <p>Understanding caching layers explains a subtle but real class of finding: a vulnerability fix deployed to the origin server doesn't necessarily take effect immediately for every user, if a CDN or browser is still serving a stale, cached, pre-fix response — genuinely relevant when verifying that a reported security fix has actually, fully propagated.</p>
-<p>:::challenge Test yourself
-Why is serving a page containing one user's private data with <code>Cache-Control: public</code> a genuinely serious vulnerability, rather than just a minor performance-related mistake?</p>
-<details><summary>Show answer</summary><code>Cache-Control: public</code> explicitly tells every caching layer along the way — the browser, and critically, any shared CDN or intermediate cache — that this specific response is safe to store and reuse for <em>other</em> requests, not just the one that originally generated it. If that response actually contains one specific user's private, personalized data, a subsequent, completely different user requesting the same URL could receive the <em>first user's cached private data</em> instead of their own — a genuine cross-user information disclosure vulnerability, not a performance issue at all. This is exactly why personalized or sensitive responses need explicit <code>private</code> or <code>no-store</code> directives: caching's default assumption is that identical requests should get identical, shareable responses, which is fundamentally the wrong assumption for anything containing per-user, private information.</details>
-:::<h2>Key terms</h2>
+<p>Why is serving a page containing one user's private data with <code>Cache-Control: public</code> a genuinely serious vulnerability, rather than just a minor performance-related mistake?</p>
+<details><summary>Show answer</summary><code>Cache-Control: public</code> explicitly tells every caching layer along the way — the browser, and critically, any shared CDN or intermediate cache — that this specific response is safe to store and reuse for <em>other</em> requests, not just the one that originally generated it. If that response actually contains one specific user's private, personalized data, a subsequent, completely different user requesting the same URL could receive the <em>first user's cached private data</em> instead of their own — a genuine cross-user information disclosure vulnerability, not a performance issue at all. This is exactly why personalized or sensitive responses need explicit <code>private</code> or <code>no-store</code> directives: caching's default assumption is that identical requests should get identical, shareable responses, which is fundamentally the wrong assumption for anything containing per-user, private information.</details><h2>Key terms</h2>
 <ul>
 <li><strong>CDN (Content Delivery Network)</strong> — a distributed network of servers caching content geographically close to users.</li>
 <li><strong>Cache-Control header</strong> — an HTTP header specifying how, where, and for how long a response may be cached.</li>

@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Crypto — The Layered Cipher — Path 19 · KashSec Academy</title>
-<meta name="description" content="Crypto — The Layered Cipher: Peel back two stacked encodings by hand. Easy.">
+<meta name="description" content="Category: Crypto · Difficulty: Easy">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/19-ctf-challenges/crypto-layered-cipher.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Crypto — The Layered Cipher — Path 19 · KashSec Academy">
-<meta property="og:description" content="Crypto — The Layered Cipher: Peel back two stacked encodings by hand. Easy.">
+<meta property="og:description" content="Category: Crypto · Difficulty: Easy">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/19-ctf-challenges/crypto-layered-cipher.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Crypto — The Layered Cipher — Path 19 · KashSec Academy">
-<meta name="twitter:description" content="Crypto — The Layered Cipher: Peel back two stacked encodings by hand. Easy.">
+<meta name="twitter:description" content="Category: Crypto · Difficulty: Easy">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 19 — CTF Challenges","item":"https://kashsec.vercel.app/lesson/19-ctf-challenges/"},{"@type":"ListItem","position":4,"name":"Crypto — The Layered Cipher","item":"https://kashsec.vercel.app/lesson/19-ctf-challenges/crypto-layered-cipher.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Crypto — The Layered Cipher","headline":"Crypto — The Layered Cipher","description":"Crypto — The Layered Cipher: Peel back two stacked encodings by hand. Easy.","url":"https://kashsec.vercel.app/lesson/19-ctf-challenges/crypto-layered-cipher.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"All levels","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Peel back two stacked encodings by hand. Easy.","isPartOf":{"@type":"Course","name":"Path 19: CTF Challenges","url":"https://kashsec.vercel.app/lesson/19-ctf-challenges/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/19-ctf-challenges/crypto-layered-cipher.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Crypto — The Layered Cipher","headline":"Crypto — The Layered Cipher","description":"Category: Crypto · Difficulty: Easy","url":"https://kashsec.vercel.app/lesson/19-ctf-challenges/crypto-layered-cipher.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"All levels","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Peel back two stacked encodings by hand. Easy.","isPartOf":{"@type":"Course","name":"Path 19: CTF Challenges","url":"https://kashsec.vercel.app/lesson/19-ctf-challenges/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/19-ctf-challenges/crypto-layered-cipher.html"}}
 </script>
 </head>
 <body>
@@ -96,15 +96,13 @@
 </code></pre>
 <h2>Your task</h2>
 <p>Recover the original flag. You'll need to identify and reverse <strong>two separate layers</strong> of encoding, in the correct order.</p>
-<p>:::challenge Work through it step by step</p>
 <details><summary>Hint 1 — identifying the outer layer</summary>Look at the character set: only letters, numbers, and possibly <code>=</code> padding at the end. That specific alphabet is a strong signal for one very common, easily reversible encoding. It's not encryption at all — just a different way of representing bytes as text.</details>
 <details><summary>Hint 2 — decoding the outer layer</summary>Any online base64 decoder, or a single command-line tool, reverses this instantly: <code>echo "UkhaT1pMSntqNGx6NHlfNHVrX2k0emw2NF9zNGZseXp9" | base64 -d</code>. What you get back won't be readable English yet — that's the second layer underneath.</details>
 <details><summary>Hint 3 — identifying the inner layer</summary>After decoding the base64, you should see something like <code>RHZOZLJ{j4lz4y_...}</code> — note that the curly braces are still in the same place as a real flag would be, and the text has a consistent "shifted" pattern (compare where <code>{</code> lands versus a real <code>KASHSEC{</code> flag). This is the signature of a classic substitution cipher taught back in Path 10/07's cryptography-adjacent material: each letter is shifted a fixed number of places through the alphabet, non-letters (digits, punctuation) left untouched.</details>
 <details><summary>Hint 4 — cracking the shift</summary>You know the flag must start with <code>KASHSEC{</code> — every challenge in this section uses that exact prefix. Compare <code>R</code> (first letter of the shifted text) to <code>K</code> (first letter it should decrypt to) to work out the exact shift amount, then apply that same shift <em>backward</em> to every letter in the string. Digits and symbols (the underscores, braces, the "4"s) don't shift — only letters do.</details>
 <details><summary>Show full answer</summary>
 <strong>Layer 1 — Base64:</strong> The string uses only letters, digits, and clean padding — the classic signature of Base64, which is an encoding (freely reversible, no secret key) rather than encryption. Decoding it gives: <code>RHZOZLJ{j4lz4y_4uk_i4zl64_s4flyz}</code>.<br /><br />
-<strong>Layer 2 — Caesar cipher:</strong> Comparing <code>R</code> → <code>K</code> shows a shift of 7 places forward was applied to encode it (R is 7 letters after K in the alphabet), so decoding requires shifting every letter <em>back</em> by 7, leaving digits/symbols untouched. Applying that: <code>R→K, H→A, V→O</code>... wait — walking the full string through a −7 shift on every letter yields the original flag below.</details>
-:::<h2>The flag</h2>
+<strong>Layer 2 — Caesar cipher:</strong> Comparing <code>R</code> → <code>K</code> shows a shift of 7 places forward was applied to encode it (R is 7 letters after K in the alphabet), so decoding requires shifting every letter <em>back</em> by 7, leaving digits/symbols untouched. Applying that: <code>R→K, H→A, V→O</code>... wait — walking the full string through a −7 shift on every letter yields the original flag below.</details><h2>The flag</h2>
 <pre><code>KASHSEC{c4es4r_4nd_b4se64_l4yers}
 </code></pre>
 <h2>Why this matters beyond the CTF</h2>
@@ -115,12 +113,8 @@
 B) KASHSEC%7Bfast%5Frecon%7D
 C) S0FTSFNFQ3tsYXllcmVkX2VuY29kaW5nfQ==
 </code></pre>
-<p>:::challenge Name each encoding by sight</p>
 <details><summary>Hint</summary>Look at the alphabet each one uses: does it only contain <code>0-9a-f</code>? Does it contain <code>%</code> followed by two characters? Does it end in <code>=</code> padding with a mixed-case alphanumeric body?</details>
-<details><summary>Show answer</summary><strong>A</strong> is <strong>hex</strong> — only characters 0-9 and a-f appear, always in pairs (each pair represents one byte). <strong>B</strong> is <strong>URL encoding</strong> — the <code>%7B</code>/<code>%7D</code>/<code>%5F</code> sequences are percent-encoded special characters (<code>{</code>, <code>}</code>, <code>_</code>), exactly the format from Path 05's HTTP lessons for safely transmitting special characters in a URL. <strong>C</strong> is <strong>Base64</strong> — mixed-case letters and digits with trailing <code>=</code> padding. All three decode to a real <code>KASHSEC{...}</code> flag if you want to confirm it yourself — but the actual point of this drill is recognizing the format <em>instantly, without needing to decode first</em>, since in real forensic or bug bounty work you'll often triage dozens of encoded strings and need to know at a glance which decoder to reach for.</details>
-:::<p>:::warn Encoding is not encryption
-Base64 has no secret key and no security property at all — anyone can decode it instantly. Confusing "encoded" with "encrypted" is a genuinely common and dangerous mistake: teams sometimes base64-encode sensitive data and mistakenly believe it's now "protected." It isn't. Real confidentiality requires actual encryption (AES, etc.) with a properly managed secret key — a distinction worth internalizing permanently.
-:::</p>
+<details><summary>Show answer</summary><strong>A</strong> is <strong>hex</strong> — only characters 0-9 and a-f appear, always in pairs (each pair represents one byte). <strong>B</strong> is <strong>URL encoding</strong> — the <code>%7B</code>/<code>%7D</code>/<code>%5F</code> sequences are percent-encoded special characters (<code>{</code>, <code>}</code>, <code>_</code>), exactly the format from Path 05's HTTP lessons for safely transmitting special characters in a URL. <strong>C</strong> is <strong>Base64</strong> — mixed-case letters and digits with trailing <code>=</code> padding. All three decode to a real <code>KASHSEC{...}</code> flag if you want to confirm it yourself — but the actual point of this drill is recognizing the format <em>instantly, without needing to decode first</em>, since in real forensic or bug bounty work you'll often triage dozens of encoded strings and need to know at a glance which decoder to reach for.</details><p>Base64 has no secret key and no security property at all — anyone can decode it instantly. Confusing "encoded" with "encrypted" is a genuinely common and dangerous mistake: teams sometimes base64-encode sensitive data and mistakenly believe it's now "protected." It isn't. Real confidentiality requires actual encryption (AES, etc.) with a properly managed secret key — a distinction worth internalizing permanently.</p>
 <p><strong>Next up →</strong> <a href="#/lesson/19-ctf-challenges/forensics-log-hunt">Forensics — The Log Hunt</a></p>
 <nav class="pager"><a href="/lesson/19-ctf-challenges/web-idor-hunt.html">← Web — The IDOR Hunt</a><a href="/lesson/19-ctf-challenges/forensics-log-hunt.html">Forensics — The Log Hunt →</a></nav></article></div>
   </div></div>

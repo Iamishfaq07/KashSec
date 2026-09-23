@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Burp Suite &amp; PortSwigger — Path 11 · KashSec Academy</title>
-<meta name="description" content="Burp Suite &amp; PortSwigger: The professional's tool and free lab platform.">
+<meta name="description" content="Burp Suite is the single most important tool in web security testing. It's a proxy that sits between your browser and the target, letting you see, intercept, and modify every request — the professiona">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/11-web-security/burp-setup.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Burp Suite &amp; PortSwigger — Path 11 · KashSec Academy">
-<meta property="og:description" content="Burp Suite &amp; PortSwigger: The professional's tool and free lab platform.">
+<meta property="og:description" content="Burp Suite is the single most important tool in web security testing. It's a proxy that sits between your browser and the target, letting you see, intercept, and modify every request — the professiona">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/11-web-security/burp-setup.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Burp Suite &amp; PortSwigger — Path 11 · KashSec Academy">
-<meta name="twitter:description" content="Burp Suite &amp; PortSwigger: The professional's tool and free lab platform.">
+<meta name="twitter:description" content="Burp Suite is the single most important tool in web security testing. It's a proxy that sits between your browser and the target, letting you see, intercept, and modify every request — the professiona">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 11 — Web Security & Hacking","item":"https://kashsec.vercel.app/lesson/11-web-security/"},{"@type":"ListItem","position":4,"name":"Burp Suite & PortSwigger","item":"https://kashsec.vercel.app/lesson/11-web-security/burp-setup.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Burp Suite & PortSwigger","headline":"Burp Suite & PortSwigger","description":"Burp Suite & PortSwigger: The professional's tool and free lab platform.","url":"https://kashsec.vercel.app/lesson/11-web-security/burp-setup.html","inLanguage":"en","dateModified":"2026-08-04","learningResourceType":"Lesson","educationalLevel":"Intermediate","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"The professional's tool and free lab platform.","isPartOf":{"@type":"Course","name":"Path 11: Web Security & Hacking","url":"https://kashsec.vercel.app/lesson/11-web-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/11-web-security/burp-setup.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Burp Suite & PortSwigger","headline":"Burp Suite & PortSwigger","description":"Burp Suite is the single most important tool in web security testing. It's a proxy that sits between your browser and the target, letting you see, intercept, and modify every request — the professiona","url":"https://kashsec.vercel.app/lesson/11-web-security/burp-setup.html","inLanguage":"en","dateModified":"2026-08-04","learningResourceType":"Lesson","educationalLevel":"Intermediate","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"The professional's tool and free lab platform.","isPartOf":{"@type":"Course","name":"Path 11: Web Security & Hacking","url":"https://kashsec.vercel.app/lesson/11-web-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/11-web-security/burp-setup.html"}}
 </script>
 </head>
 <body>
@@ -91,16 +91,6 @@
 <p>Burp Suite is the single most important tool in web security testing. It's a proxy that sits between your browser and the target, letting you see, intercept, and modify every request — the professional version of the DevTools Network panel you already know from Path 05.</p>
 <h2>What Burp actually is</h2>
 <p>Burp is a <strong>local HTTP proxy</strong>: your browser sends requests to Burp instead of directly to the internet, Burp forwards them (optionally after you've inspected or edited them), and does the same in reverse for responses.</p>
-<pre><code class="language-mermaid">flowchart LR
-    Browser["🌐 Browser"] --&gt;|"1. Request"| Burp["🔧 Burp Suite&lt;br/&gt;(proxy on 127.0.0.1:8080)"]
-    Burp --&gt;|"2. Forwarded (maybe edited)"| Target["🎯 Target server"]
-    Target --&gt;|"3. Response"| Burp
-    Burp --&gt;|"4. Forwarded (maybe edited)"| Browser
-
-    style Browser fill:#111927,color:#3FB6A8,stroke:#3FB6A8
-    style Burp fill:#2b1f0a,color:#EFA43A,stroke:#EFA43A
-    style Target fill:#2b1010,color:#E05548,stroke:#E05548
-</code></pre>
 <p>This one architectural idea — putting yourself in the middle — is the foundation of almost all manual web testing.</p>
 <h2>Community vs Professional edition</h2>
 <p>Kali ships with <strong>Burp Suite Community Edition</strong> pre-installed — free, fully capable for learning, with two limitations vs Pro: no automated active vulnerability <strong>Scanner</strong>, and <strong>Intruder</strong> is heavily rate-limited. Everything in this course works fine on Community; when you're ready for professional work, Pro (paid) removes those limits and adds more automation.</p>
@@ -116,9 +106,7 @@ burpsuite
 <li>HTTP Proxy: <code>127.0.0.1</code>, Port: <code>8080</code>. Check <strong>"Also use this proxy for HTTPS."</strong></li>
 <li>No proxy for: leave blank (or add exceptions later if needed).</li>
 </ol>
-<p>:::tip USE A SEPARATE FIREFOX PROFILE FOR TESTING
-Run <code>firefox -P</code> to create a dedicated "pentesting" profile with the proxy configured, separate from your everyday browsing profile. Keeps your normal browsing fast (no proxy) and your testing setup clean and reusable.
-:::</p>
+<p>Run <code>firefox -P</code> to create a dedicated "pentesting" profile with the proxy configured, separate from your everyday browsing profile. Keeps your normal browsing fast (no proxy) and your testing setup clean and reusable.</p>
 <h2>Step 3 — Install Burp's CA certificate (for HTTPS)</h2>
 <p>Because Burp sits in the middle of an HTTPS connection, it needs to present its own certificate to your browser (otherwise your browser would correctly flag it as a suspicious man-in-the-middle — which, technically, it is, just one you've deliberately set up).</p>
 <ol>
@@ -128,21 +116,6 @@ Run <code>firefox -P</code> to create a dedicated "pentesting" profile with the 
 </ol>
 <p>Now Burp can transparently inspect HTTPS traffic between your browser and any target — this is exactly how legitimate security testing tools do it, and exactly why installing <em>unknown</em> root certificates from untrusted sources is dangerous (it grants exactly this level of visibility).</p>
 <h2>Step 4 — The core tabs</h2>
-<pre><code class="language-mermaid">flowchart TB
-    Proxy["📡 Proxy&lt;br/&gt;intercept &amp; view live traffic"]
-    Target["🎯 Target&lt;br/&gt;site map, scope"]
-    Repeater["🔁 Repeater&lt;br/&gt;resend &amp; tweak individual requests"]
-    Intruder["⚡ Intruder&lt;br/&gt;automated fuzzing/brute force"]
-    Decoder["🔓 Decoder&lt;br/&gt;encode/decode/hash data"]
-    Comparer["🔍 Comparer&lt;br/&gt;diff two responses"]
-
-    style Proxy fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
-    style Target fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
-    style Repeater fill:#2b1f0a,color:#EFA43A,stroke:#EFA43A
-    style Intruder fill:#2b1f0a,color:#EFA43A,stroke:#EFA43A
-    style Decoder fill:#111927,color:#8496A6,stroke:#8496A6
-    style Comparer fill:#111927,color:#8496A6,stroke:#8496A6
-</code></pre>
 <ul>
 <li><strong>Proxy</strong> — the live intercept view. Turn "Intercept" on to pause every request for manual review/edit before it's sent; turn it off to just passively log traffic while you browse normally.</li>
 <li><strong>Target → Site map</strong> — automatically builds a tree of every URL you've visited through the proxy, great for understanding a site's structure.</li>
@@ -194,10 +167,8 @@ Run <code>firefox -P</code> to create a dedicated "pentesting" profile with the 
 <li>In Decoder, paste any Base64-looking string you spot in a cookie or parameter and decode it.</li>
 </ol>
 <p>You now have a fully working professional web-testing setup — everything from here builds directly on it.</p>
-<p>:::challenge Test yourself
-Why does Burp need you to manually install its CA certificate for HTTPS traffic to be inspectable, rather than just working automatically?</p>
-<details><summary>Show answer</summary>HTTPS is specifically designed to detect and prevent exactly this kind of interception (a "man in the middle") from anyone who <em>hasn't</em> been explicitly trusted. By manually importing Burp's certificate, you're telling your browser "I trust this specific proxy to see my HTTPS traffic" — a deliberate, informed choice you make for testing, which is precisely why installing unknown certificates from untrusted sources elsewhere is dangerous.</details>
-:::<h2>Key terms</h2>
+<p>Why does Burp need you to manually install its CA certificate for HTTPS traffic to be inspectable, rather than just working automatically?</p>
+<details><summary>Show answer</summary>HTTPS is specifically designed to detect and prevent exactly this kind of interception (a "man in the middle") from anyone who <em>hasn't</em> been explicitly trusted. By manually importing Burp's certificate, you're telling your browser "I trust this specific proxy to see my HTTPS traffic" — a deliberate, informed choice you make for testing, which is precisely why installing unknown certificates from untrusted sources elsewhere is dangerous.</details><h2>Key terms</h2>
 <ul>
 <li><strong>Proxy</strong> — an intermediary that requests pass through before reaching their destination.</li>
 <li><strong>Intercept</strong> — pausing a request in Burp before forwarding it.</li>

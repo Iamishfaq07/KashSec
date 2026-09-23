@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Zero Trust in Cloud-Native Environments — Path 24 · KashSec Academy</title>
-<meta name="description" content="Zero Trust in Cloud-Native Environments: Workload identity, IAM as segmentation, and service mesh in a world with no fixed perimeter.">
+<meta name="description" content="Every lesson so far has largely described Zero Trust as if there's a network to segment and a perimeter to dissolve. In cloud-native environments, there often isn't a traditional network at all — work">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-cloud.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Zero Trust in Cloud-Native Environments — Path 24 · KashSec Academy">
-<meta property="og:description" content="Zero Trust in Cloud-Native Environments: Workload identity, IAM as segmentation, and service mesh in a world with no fixed perimeter.">
+<meta property="og:description" content="Every lesson so far has largely described Zero Trust as if there's a network to segment and a perimeter to dissolve. In cloud-native environments, there often isn't a traditional network at all — work">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-cloud.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Zero Trust in Cloud-Native Environments — Path 24 · KashSec Academy">
-<meta name="twitter:description" content="Zero Trust in Cloud-Native Environments: Workload identity, IAM as segmentation, and service mesh in a world with no fixed perimeter.">
+<meta name="twitter:description" content="Every lesson so far has largely described Zero Trust as if there's a network to segment and a perimeter to dissolve. In cloud-native environments, there often isn't a traditional network at all — work">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 24 — Zero Trust Architecture","item":"https://kashsec.vercel.app/lesson/24-zero-trust/"},{"@type":"ListItem","position":4,"name":"Zero Trust in Cloud-Native Environments","item":"https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-cloud.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Zero Trust in Cloud-Native Environments","headline":"Zero Trust in Cloud-Native Environments","description":"Zero Trust in Cloud-Native Environments: Workload identity, IAM as segmentation, and service mesh in a world with no fixed perimeter.","url":"https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-cloud.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Workload identity, IAM as segmentation, and service mesh in a world with no fixed perimeter.","isPartOf":{"@type":"Course","name":"Path 24: Zero Trust Architecture","url":"https://kashsec.vercel.app/lesson/24-zero-trust/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-cloud.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Zero Trust in Cloud-Native Environments","headline":"Zero Trust in Cloud-Native Environments","description":"Every lesson so far has largely described Zero Trust as if there's a network to segment and a perimeter to dissolve. In cloud-native environments, there often isn't a traditional network at all — work","url":"https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-cloud.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Workload identity, IAM as segmentation, and service mesh in a world with no fixed perimeter.","isPartOf":{"@type":"Course","name":"Path 24: Zero Trust Architecture","url":"https://kashsec.vercel.app/lesson/24-zero-trust/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-cloud.html"}}
 </script>
 </head>
 <body>
@@ -89,9 +89,7 @@
     <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/24-zero-trust/">Path 24 — Zero Trust Architecture</a> · Zero Trust in Cloud-Native Environments</nav>
     <div class="md" id="content"><article><h1>Zero Trust in Cloud-Native Environments</h1>
 <p>Every lesson so far has largely described Zero Trust as if there's a network to segment and a perimeter to dissolve. In cloud-native environments, there often isn't a traditional network at all — workloads are ephemeral, infrastructure is defined in code, and "the network" might be entirely virtual and reconfigured on every deployment. Zero Trust principles still apply, but the mechanics look different.</p>
-<p>:::tip
-The recurring theme in this lesson: everything from earlier lessons (identity, device trust, segmentation, continuous verification) still applies — but "device" often means "workload," and "network location" is even less meaningful in the cloud than it was on-premises.
-:::</p>
+<p>:::</p>
 <h2>Why cloud makes the perimeter problem worse, not better</h2>
 <p>On-premises, at least there was a physical perimeter to reason about, however leaky. In the cloud:</p>
 <ul>
@@ -127,8 +125,7 @@ The recurring theme in this lesson: everything from earlier lessons (identity, d
 <h2>IAM as the new segmentation</h2>
 <p>In traditional networking, segmentation meant firewall rules between subnets. In the cloud, the equivalent control is often <strong>IAM (Identity and Access Management) policy</strong> — which service, function, or role can call which API, on which resource, under which conditions. A misconfigured IAM policy that grants a function broader permissions than it needs is functionally the same mistake as a flat, unsegmented network — it's just expressed as a JSON policy document instead of a firewall rule.</p>
 <p>:::danger
-Overly broad IAM roles are one of the single most common real-world cloud security findings — a Lambda function or service account granted <code>*</code> (wildcard) permissions "to make it work" during development, that never gets scoped down before production. This is least privilege failing in exactly the way the first lesson in this path warned about, just in IAM syntax instead of network syntax.
-:::</p>
+Overly broad IAM roles are one of the single most common real-world cloud security findings — a Lambda function or service account granted <code>*</code> (wildcard) permissions "to make it work" during development, that never gets scoped down before production. This is least privilege failing in exactly the way the first lesson in this path warned about, just in IAM syntax instead of network syntax.</p>
 <h2>Service mesh: micro-segmentation for microservices</h2>
 <p>A <strong>service mesh</strong> (Istio, Linkerd, and similar tools) provides, for service-to-service traffic inside a cloud-native application, roughly what micro-segmentation provides for a traditional network: mutual authentication between services (via workload identity), encrypted traffic by default, and fine-grained policy over which service can call which other service. This is the direct cloud-native descendant of the "default-deny, explicitly allow what's needed" model from the segmentation lesson — just implemented at the application layer instead of the network layer, because in Kubernetes especially, the underlying network is often too dynamic to segment meaningfully on its own.</p>
 <h2>The shared responsibility wrinkle</h2>
@@ -139,17 +136,20 @@ Overly broad IAM roles are one of the single most common real-world cloud securi
 <p><strong>With Zero Trust discipline applied</strong>: the Lambda function's IAM role is scoped to exactly the one database table it needs to read and the one specific bucket it needs to write to — nothing else. Its identity is short-lived and tied to that specific deployment. If it's compromised, the attacker inherits exactly that narrow scope, not the whole account — the cloud-native equivalent of the three-tier segmentation example from the earlier lesson.</p>
 <h2>🧪 Hands-on lab — audit a cloud IAM policy for least privilege</h2>
 <ol>
-<li>Pick a cloud service you're familiar with (AWS Lambda, a GCP Cloud Function, or a hypothetical equivalent) and sketch what it actually needs to do (e.g., "read from one S3 bucket, write to one DynamoDB table").</li>
-<li>Write out the absolute minimum IAM permissions that would satisfy that need — specific resource ARNs/paths, not wildcards.</li>
-<li>Now write the overly broad version a rushed developer might actually deploy (e.g., <code>s3:*</code> on <code>*</code>, or a role reused from an unrelated project).</li>
-<li>For the broad version, write a concrete scenario of what an attacker could do if that specific function were compromised, that the scoped version would have prevented.</li>
-</ol>
-<p>:::challenge Test yourself</p>
-<ol>
-<li>Why does "the network" become a less meaningful security boundary in cloud-native environments than it was on-premises?</li>
-<li>Explain workload identity in your own words, and name its closest analog from the device-trust lesson.</li>
-<li>A cloud provider advertises strong physical data-center security. Why doesn't that address an overly permissive IAM role you configured?
-:::</li>
+<li><p>Pick a cloud service you're familiar with (AWS Lambda, a GCP Cloud Function, or a hypothetical equivalent) and sketch what it actually needs to do (e.g., "read from one S3 bucket, write to one DynamoDB table").</p>
+</li>
+<li><p>Write out the absolute minimum IAM permissions that would satisfy that need — specific resource ARNs/paths, not wildcards.</p>
+</li>
+<li><p>Now write the overly broad version a rushed developer might actually deploy (e.g., <code>s3:*</code> on <code>*</code>, or a role reused from an unrelated project).</p>
+</li>
+<li><p>For the broad version, write a concrete scenario of what an attacker could do if that specific function were compromised, that the scoped version would have prevented.</p>
+</li>
+<li><p>Why does "the network" become a less meaningful security boundary in cloud-native environments than it was on-premises?</p>
+</li>
+<li><p>Explain workload identity in your own words, and name its closest analog from the device-trust lesson.</p>
+</li>
+<li><p>A cloud provider advertises strong physical data-center security. Why doesn't that address an overly permissive IAM role you configured?</p>
+</li>
 </ol>
 <h2>Key terms</h2>
 <ul>

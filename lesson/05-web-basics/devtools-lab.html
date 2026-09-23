@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Browser DevTools Lab — Path 05 · KashSec Academy</title>
-<meta name="description" content="Browser DevTools Lab: Learn to use your browser as a hacking tool.">
+<meta name="description" content="DevTools is, genuinely, your very first hacking tool — free, built into every modern browser, and capable of far more than most casual users ever realize. This lab is the capstone of Path 05, tying to">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/05-web-basics/devtools-lab.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Browser DevTools Lab — Path 05 · KashSec Academy">
-<meta property="og:description" content="Browser DevTools Lab: Learn to use your browser as a hacking tool.">
+<meta property="og:description" content="DevTools is, genuinely, your very first hacking tool — free, built into every modern browser, and capable of far more than most casual users ever realize. This lab is the capstone of Path 05, tying to">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/05-web-basics/devtools-lab.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Browser DevTools Lab — Path 05 · KashSec Academy">
-<meta name="twitter:description" content="Browser DevTools Lab: Learn to use your browser as a hacking tool.">
+<meta name="twitter:description" content="DevTools is, genuinely, your very first hacking tool — free, built into every modern browser, and capable of far more than most casual users ever realize. This lab is the capstone of Path 05, tying to">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 05 — How the Web Works","item":"https://kashsec.vercel.app/lesson/05-web-basics/"},{"@type":"ListItem","position":4,"name":"Browser DevTools Lab","item":"https://kashsec.vercel.app/lesson/05-web-basics/devtools-lab.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Browser DevTools Lab","headline":"Browser DevTools Lab","description":"Browser DevTools Lab: Learn to use your browser as a hacking tool.","url":"https://kashsec.vercel.app/lesson/05-web-basics/devtools-lab.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Learn to use your browser as a hacking tool.","isPartOf":{"@type":"Course","name":"Path 05: How the Web Works","url":"https://kashsec.vercel.app/lesson/05-web-basics/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/05-web-basics/devtools-lab.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Browser DevTools Lab","headline":"Browser DevTools Lab","description":"DevTools is, genuinely, your very first hacking tool — free, built into every modern browser, and capable of far more than most casual users ever realize. This lab is the capstone of Path 05, tying to","url":"https://kashsec.vercel.app/lesson/05-web-basics/devtools-lab.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Learn to use your browser as a hacking tool.","isPartOf":{"@type":"Course","name":"Path 05: How the Web Works","url":"https://kashsec.vercel.app/lesson/05-web-basics/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/05-web-basics/devtools-lab.html"}}
 </script>
 </head>
 <body>
@@ -106,12 +106,8 @@
 <li><p><strong>Throttle your connection.</strong> In the Network tab's throttling dropdown, switch from "No throttling" to "Slow 3G" and reload the page. Watch how the loading order changes and which resources block the page longest — a direct hands-on look at the critical rendering path concept from this path's very first lesson, now visible as an actual timeline instead of an abstract idea.</p>
 </li>
 </ol>
-<p>:::tip DevTools works on almost anything
-This entire lab works on virtually any website — you don't need a special vulnerable lab environment for these particular exercises (though never submit forms, modify persisted server-side data, or attempt anything beyond passive inspection on a site without authorization). Practicing comfort with DevTools itself, on ordinary sites, is the actual goal here.
-:::</p>
-<p>:::challenge Prove a DevTools-based finding
-Find a way to make a page's visible content say something different using only DevTools element editing, and take a screenshot as a simple proof-of-concept. Then, separately, use the Network tab to find one API call a page makes that you didn't expect, and note what data it sends or receives — many sites reveal more than intended in these background calls, exactly the kind of "always check every request" habit Path 11's recon lesson builds on.
-:::</p>
+<p>This entire lab works on virtually any website — you don't need a special vulnerable lab environment for these particular exercises (though never submit forms, modify persisted server-side data, or attempt anything beyond passive inspection on a site without authorization). Practicing comfort with DevTools itself, on ordinary sites, is the actual goal here.</p>
+<p>Find a way to make a page's visible content say something different using only DevTools element editing, and take a screenshot as a simple proof-of-concept. Then, separately, use the Network tab to find one API call a page makes that you didn't expect, and note what data it sends or receives — many sites reveal more than intended in these background calls, exactly the kind of "always check every request" habit Path 11's recon lesson builds on.</p>
 <h2>Key takeaway</h2>
 <p>DevTools removes the mystery from "how does this website actually work" — every request, every cookie, every line of rendered HTML is fully inspectable, and comfort navigating it fluidly is a genuine prerequisite for effective web security testing in every path that follows.</p>
 <p><strong>Explore more →</strong> <a href="#/lesson/10-fundamentals">Path 10 — Cybersecurity Fundamentals</a></p>

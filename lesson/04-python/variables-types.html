@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Variables &amp; data types — Path 04 · KashSec Academy</title>
-<meta name="description" content="Variables &amp; data types: Labelled boxes: strings, numbers, booleans.">
+<meta name="description" content="You can't write programs without a way to store and label information. That's what variables and types are for.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/04-python/variables-types.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Variables &amp; data types — Path 04 · KashSec Academy">
-<meta property="og:description" content="Variables &amp; data types: Labelled boxes: strings, numbers, booleans.">
+<meta property="og:description" content="You can't write programs without a way to store and label information. That's what variables and types are for.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/04-python/variables-types.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Variables &amp; data types — Path 04 · KashSec Academy">
-<meta name="twitter:description" content="Variables &amp; data types: Labelled boxes: strings, numbers, booleans.">
+<meta name="twitter:description" content="You can't write programs without a way to store and label information. That's what variables and types are for.">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 04 — Programming & Python","item":"https://kashsec.vercel.app/lesson/04-python/"},{"@type":"ListItem","position":4,"name":"Variables & data types","item":"https://kashsec.vercel.app/lesson/04-python/variables-types.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Variables & data types","headline":"Variables & data types","description":"Variables & data types: Labelled boxes: strings, numbers, booleans.","url":"https://kashsec.vercel.app/lesson/04-python/variables-types.html","inLanguage":"en","dateModified":"2026-08-04","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Labelled boxes: strings, numbers, booleans.","isPartOf":{"@type":"Course","name":"Path 04: Programming & Python","url":"https://kashsec.vercel.app/lesson/04-python/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/04-python/variables-types.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Variables & data types","headline":"Variables & data types","description":"You can't write programs without a way to store and label information. That's what variables and types are for.","url":"https://kashsec.vercel.app/lesson/04-python/variables-types.html","inLanguage":"en","dateModified":"2026-08-04","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Labelled boxes: strings, numbers, booleans.","isPartOf":{"@type":"Course","name":"Path 04: Programming & Python","url":"https://kashsec.vercel.app/lesson/04-python/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/04-python/variables-types.html"}}
 </script>
 </head>
 <body>
@@ -230,9 +230,7 @@ s = str(x)      # "42" as string
 count = input("How many? ")   # input() ALWAYS returns a string!
 count = int(count)            # convert before doing maths
 </code></pre>
-<p>:::warn A CLASSIC BEGINNER BUG
-<code>input()</code> gives you back a string, always. If you try <code>input("Number: ") + 1</code>, Python complains it can't add a string to an int. Convert first with <code>int(...)</code> or <code>float(...)</code>.
-:::</p>
+<p><code>input()</code> gives you back a string, always. If you try <code>input("Number: ") + 1</code>, Python complains it can't add a string to an int. Convert first with <code>int(...)</code> or <code>float(...)</code>.</p>
 <h2>Variable naming conventions</h2>
 <p>Naming matters more than beginners realise — future-you (and code reviewers) read your code far more often than you write it.</p>
 <pre><code class="language-python"># Good
@@ -303,10 +301,8 @@ if result is None:
 &gt;&gt;&gt; exit()
 </code></pre>
 <p>Type <code>exit()</code> or press Ctrl+D to leave. The REPL is where you'll experiment throughout learning Python — always open a second terminal with <code>python3</code> running.</p>
-<p>:::challenge Test yourself
-<code>age = input("How old? ")</code>; then you write <code>age + 1</code>. Python errors. What's the fix?</p>
-<details><summary>Show answer</summary><code>input()</code> always returns a string. Convert with <code>age = int(input("How old? "))</code> before doing arithmetic.</details>
-:::<h2>Key terms</h2>
+<p><code>age = input("How old? ")</code>; then you write <code>age + 1</code>. Python errors. What's the fix?</p>
+<details><summary>Show answer</summary><code>input()</code> always returns a string. Convert with <code>age = int(input("How old? "))</code> before doing arithmetic.</details><h2>Key terms</h2>
 <ul>
 <li><strong>Variable</strong> — a labelled box for a value.</li>
 <li><strong>Type</strong> — the kind of value (<code>str</code>, <code>int</code>, <code>bool</code>, <code>list</code>, <code>dict</code>, ...).</li>

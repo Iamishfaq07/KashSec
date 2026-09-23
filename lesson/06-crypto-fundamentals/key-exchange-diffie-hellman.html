@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Key Exchange &amp; Diffie-Hellman — Path 06 · KashSec Academy</title>
-<meta name="description" content="Key Exchange &amp; Diffie-Hellman: How two strangers agree on a shared secret over a channel an attacker is watching.">
+<meta name="description" content="The asymmetric encryption lesson showed how public/private key pairs solve the &quot;how do two strangers communicate securely&quot; problem. This lesson covers a related but distinct problem, and the clever so">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/06-crypto-fundamentals/key-exchange-diffie-hellman.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Key Exchange &amp; Diffie-Hellman — Path 06 · KashSec Academy">
-<meta property="og:description" content="Key Exchange &amp; Diffie-Hellman: How two strangers agree on a shared secret over a channel an attacker is watching.">
+<meta property="og:description" content="The asymmetric encryption lesson showed how public/private key pairs solve the &quot;how do two strangers communicate securely&quot; problem. This lesson covers a related but distinct problem, and the clever so">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/06-crypto-fundamentals/key-exchange-diffie-hellman.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Key Exchange &amp; Diffie-Hellman — Path 06 · KashSec Academy">
-<meta name="twitter:description" content="Key Exchange &amp; Diffie-Hellman: How two strangers agree on a shared secret over a channel an attacker is watching.">
+<meta name="twitter:description" content="The asymmetric encryption lesson showed how public/private key pairs solve the &quot;how do two strangers communicate securely&quot; problem. This lesson covers a related but distinct problem, and the clever so">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 06 — Cryptography Fundamentals","item":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/"},{"@type":"ListItem","position":4,"name":"Key Exchange & Diffie-Hellman","item":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/key-exchange-diffie-hellman.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Key Exchange & Diffie-Hellman","headline":"Key Exchange & Diffie-Hellman","description":"Key Exchange & Diffie-Hellman: How two strangers agree on a shared secret over a channel an attacker is watching.","url":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/key-exchange-diffie-hellman.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"How two strangers agree on a shared secret over a channel an attacker is watching.","isPartOf":{"@type":"Course","name":"Path 06: Cryptography Fundamentals","url":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/key-exchange-diffie-hellman.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Key Exchange & Diffie-Hellman","headline":"Key Exchange & Diffie-Hellman","description":"The asymmetric encryption lesson showed how public/private key pairs solve the \"how do two strangers communicate securely\" problem. This lesson covers a related but distinct problem, and the clever so","url":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/key-exchange-diffie-hellman.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"How two strangers agree on a shared secret over a channel an attacker is watching.","isPartOf":{"@type":"Course","name":"Path 06: Cryptography Fundamentals","url":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/key-exchange-diffie-hellman.html"}}
 </script>
 </head>
 <body>
@@ -89,9 +89,7 @@
     <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/06-crypto-fundamentals/">Path 06 — Cryptography Fundamentals</a> · Key Exchange &amp; Diffie-Hellman</nav>
     <div class="md" id="content"><article><h1>Key Exchange &amp; Diffie-Hellman</h1>
 <p>The asymmetric encryption lesson showed how public/private key pairs solve the "how do two strangers communicate securely" problem. This lesson covers a related but distinct problem, and the clever solution to it: how do two parties who've never met agree on a <em>shared secret key</em> over a channel an attacker might be watching the whole time?</p>
-<p>:::tip
-Diffie-Hellman doesn't encrypt anything by itself. It solves exactly one problem — letting two parties compute the same shared secret independently, without ever transmitting that secret over the network — and that shared secret then gets used for fast symmetric encryption (from the symmetric-encryption lesson) for the rest of the conversation.
-:::</p>
+<p>:::</p>
 <h2>The problem Diffie-Hellman solves</h2>
 <p>Symmetric encryption is fast, but requires both sides to already share a secret key — and transmitting that key over the same network an eavesdropper might be watching defeats the purpose entirely. Asymmetric encryption solves key distribution differently, but it's computationally expensive for encrypting large amounts of data. <strong>Diffie-Hellman key exchange</strong> gives you the best of both: a way to establish a shared symmetric key over a public channel, even with an eavesdropper listening to every message exchanged.</p>
 <h2>The paint-mixing analogy</h2>
@@ -110,15 +108,12 @@ Diffie-Hellman doesn't encrypt anything by itself. It solves exactly one problem
 <p>:::challenge Explain forward secrecy
 A company's server is compromised, and its long-term private key is stolen. An attacker who recorded all of the company's encrypted HTTPS traffic over the past year tries to decrypt it using the stolen key.</p>
 <details><summary>Hint</summary>What does Diffie-Hellman's "ephemeral" property mean for keys that were used in the past, versus the long-term key that was just stolen?</details>
-<details><summary>Show answer</summary>With forward secrecy (via ephemeral Diffie-Hellman), the attacker's attempt fails. Each past connection used its own freshly-negotiated, temporary shared secret that was never transmitted over the network and was discarded after that session ended — the long-term private key was only ever used to authenticate the server's identity during the handshake, not to directly encrypt the traffic. Stealing today's long-term key doesn't retroactively expose yesterday's traffic, because yesterday's actual encryption key genuinely no longer exists anywhere to be recovered. This is exactly why modern TLS configurations are specifically built to require forward secrecy.</details>
-:::<h2>🧪 Hands-on lab — walk through the paint analogy with real numbers</h2>
+<details><summary>Show answer</summary>With forward secrecy (via ephemeral Diffie-Hellman), the attacker's attempt fails. Each past connection used its own freshly-negotiated, temporary shared secret that was never transmitted over the network and was discarded after that session ended — the long-term private key was only ever used to authenticate the server's identity during the handshake, not to directly encrypt the traffic. Stealing today's long-term key doesn't retroactively expose yesterday's traffic, because yesterday's actual encryption key genuinely no longer exists anywhere to be recovered. This is exactly why modern TLS configurations are specifically built to require forward secrecy.</details><h2>🧪 Hands-on lab — walk through the paint analogy with real numbers</h2>
 <p>Using small numbers you can compute by hand (public base = 5, public modulus = 23, your secret = 6, a partner's secret = 15), compute each side's public value and the final shared secret using modular exponentiation, and confirm both directions arrive at the same result. (A search for "Diffie-Hellman worked example" will show the exact formula if you want to check your work.)</p>
-<p>:::challenge Test yourself</p>
 <ol>
 <li>What specific problem does Diffie-Hellman solve that plain symmetric encryption alone can't?</li>
 <li>Why can an eavesdropper watch every message in a Diffie-Hellman exchange and still not recover the shared secret?</li>
-<li>What does "ephemeral" add to Diffie-Hellman, and why does it matter for forward secrecy?
-:::</li>
+<li>What does "ephemeral" add to Diffie-Hellman, and why does it matter for forward secrecy?</li>
 </ol>
 <h2>Key terms</h2>
 <ul>

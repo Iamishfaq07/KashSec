@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Setting Up a Mobile Testing Lab — Path 13 · KashSec Academy</title>
-<meta name="description" content="Setting Up a Mobile Testing Lab: Emulator, ADB, Burp, and root access — all wired together.">
+<meta name="description" content="Before testing a single app, you need a proper lab — a controlled, safe environment where you can install, inspect, and intercept traffic from mobile apps without risking a real device or real account">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/13-mobile-security/mobile-testing-lab-setup.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Setting Up a Mobile Testing Lab — Path 13 · KashSec Academy">
-<meta property="og:description" content="Setting Up a Mobile Testing Lab: Emulator, ADB, Burp, and root access — all wired together.">
+<meta property="og:description" content="Before testing a single app, you need a proper lab — a controlled, safe environment where you can install, inspect, and intercept traffic from mobile apps without risking a real device or real account">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/13-mobile-security/mobile-testing-lab-setup.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Setting Up a Mobile Testing Lab — Path 13 · KashSec Academy">
-<meta name="twitter:description" content="Setting Up a Mobile Testing Lab: Emulator, ADB, Burp, and root access — all wired together.">
+<meta name="twitter:description" content="Before testing a single app, you need a proper lab — a controlled, safe environment where you can install, inspect, and intercept traffic from mobile apps without risking a real device or real account">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 13 — Mobile App Security","item":"https://kashsec.vercel.app/lesson/13-mobile-security/"},{"@type":"ListItem","position":4,"name":"Setting Up a Mobile Testing Lab","item":"https://kashsec.vercel.app/lesson/13-mobile-security/mobile-testing-lab-setup.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Setting Up a Mobile Testing Lab","headline":"Setting Up a Mobile Testing Lab","description":"Setting Up a Mobile Testing Lab: Emulator, ADB, Burp, and root access — all wired together.","url":"https://kashsec.vercel.app/lesson/13-mobile-security/mobile-testing-lab-setup.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Intermediate→Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Emulator, ADB, Burp, and root access — all wired together.","isPartOf":{"@type":"Course","name":"Path 13: Mobile App Security","url":"https://kashsec.vercel.app/lesson/13-mobile-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/13-mobile-security/mobile-testing-lab-setup.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Setting Up a Mobile Testing Lab","headline":"Setting Up a Mobile Testing Lab","description":"Before testing a single app, you need a proper lab — a controlled, safe environment where you can install, inspect, and intercept traffic from mobile apps without risking a real device or real account","url":"https://kashsec.vercel.app/lesson/13-mobile-security/mobile-testing-lab-setup.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Intermediate→Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Emulator, ADB, Burp, and root access — all wired together.","isPartOf":{"@type":"Course","name":"Path 13: Mobile App Security","url":"https://kashsec.vercel.app/lesson/13-mobile-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/13-mobile-security/mobile-testing-lab-setup.html"}}
 </script>
 </head>
 <body>
@@ -90,12 +90,6 @@
     <div class="md" id="content"><article><h1>Setting Up a Mobile Testing Lab</h1>
 <p>Before testing a single app, you need a proper lab — a controlled, safe environment where you can install, inspect, and intercept traffic from mobile apps without risking a real device or real accounts. This lesson gets that environment fully working.</p>
 <h2>The core components</h2>
-<pre><code class="language-mermaid">flowchart LR
-    A[Android Emulator\nor rooted test device] --&gt;|traffic| B[Proxy: Burp Suite]
-    B --&gt;|forwarded| C[Internet / Target API]
-    A --&gt; D[ADB - Android Debug Bridge]
-    D --&gt; E[Install APKs,\npull files, run shell commands]
-</code></pre>
 <h2>1. An Android emulator</h2>
 <p><strong>Android Studio's built-in emulator</strong> (free, from <a href="https://developer.android.com/studio">developer.android.com/studio</a>) is the standard starting point — it lets you create virtual Android devices (AVDs) of any Android version, with root access available on emulator images without Google Play Services (choose a "Google APIs" image, not a "Google Play" image, specifically because the Play Store variant blocks root access by design).</p>
 <pre><code class="language-bash"># List available emulators once set up:
@@ -103,9 +97,7 @@ emulator -list-avds
 # Launch one:
 emulator -avd Pixel_6_API_33
 </code></pre>
-<p>:::tip Genymotion is a solid alternative
-<a href="https://www.genymotion.com/">Genymotion</a> offers a free personal-use tier with generally faster performance than the stock Android Studio emulator, and is popular specifically among security testers for this reason.
-:::</p>
+<p><a href="https://www.genymotion.com/">Genymotion</a> offers a free personal-use tier with generally faster performance than the stock Android Studio emulator, and is popular specifically among security testers for this reason.</p>
 <h2>2. ADB — Android Debug Bridge</h2>
 <p><strong>ADB</strong> is the command-line bridge between your computer and an Android device (emulated or physical) — it's how you'll install apps, pull files off the device, and run shell commands, and it ships with Android Studio's SDK tools.</p>
 <pre><code class="language-bash">adb devices                          # confirm your emulator/device is connected
@@ -126,9 +118,7 @@ adb pull /data/data/com.example.app/ ./extracted/   # pull an app's private data
 adb remount
 </code></pre>
 <p>On a genuinely dedicated physical test device (never your primary phone), tools like <strong>Magisk</strong> provide root access while keeping the modification cleanly manageable and reversible.</p>
-<p>:::danger Never test against real, unauthorized targets
-Everything in this path should be practiced against apps you've built yourself, deliberately vulnerable practice apps (covered in this path's capstone lab), or apps with an explicit, current bug bounty program covering mobile testing. The same golden rule from Path 01 applies here without exception — mobile app testing against apps you don't have authorization for is unauthorized access, full stop.
-:::</p>
+<p>Everything in this path should be practiced against apps you've built yourself, deliberately vulnerable practice apps (covered in this path's capstone lab), or apps with an explicit, current bug bounty program covering mobile testing. The same golden rule from Path 01 applies here without exception — mobile app testing against apps you don't have authorization for is unauthorized access, full stop.</p>
 <h2>Snapshotting your lab state, the same discipline as Path 03</h2>
 <p>Recall Path 03.7's VM snapshot habit — apply the exact same discipline to your mobile lab. Before installing an unfamiliar or deliberately vulnerable app, snapshot your emulator's clean state (<code>emulator -avd Pixel_6_API_33 -snapshot-name clean</code>), so you can instantly revert if a test app misbehaves, corrupts the emulator's storage, or you simply want to re-run a test from a known-clean starting point rather than manually uninstalling and resetting app data by hand. This matters more in mobile testing than you might expect: some deliberately-vulnerable practice apps intentionally leave persistent artifacts (planted "flags," modified system settings, root-detection bypass hooks) specifically to simulate a compromised device state, and reverting cleanly between exercises keeps your results for each individual lesson's lab genuinely isolated from whatever you tested previously.</p>
 <h2>Frida and Objection — instrumentation you'll need soon</h2>
@@ -139,9 +129,7 @@ frida-ps -U   # list running processes on a connected USB device/emulator
 <p>Getting these installed and confirmed working now — rather than mid-lesson later in this path — means the certificate-pinning bypass and root-detection lessons ahead can focus entirely on the actual technique instead of troubleshooting a fresh tool installation under time pressure.</p>
 <h2>5. A deliberately vulnerable practice app</h2>
 <p>Install <strong>DIVA (Damn Insecure and Vulnerable App)</strong> or <strong>InsecureBankv2</strong> — both free, open-source, deliberately flawed Android apps built specifically for learning mobile security hands-on, referenced again in this path's capstone lab.</p>
-<p>:::challenge Verify your lab end to end
-Set up an emulator, confirm ADB can see and shell into it, configure Burp's proxy and certificate, and install one of the deliberately vulnerable practice apps. Capture and inspect one piece of network traffic from that app in Burp as a confirmation your full pipeline works.
-:::</p>
+<p>Set up an emulator, confirm ADB can see and shell into it, configure Burp's proxy and certificate, and install one of the deliberately vulnerable practice apps. Capture and inspect one piece of network traffic from that app in Burp as a confirmation your full pipeline works.</p>
 <h2>Key takeaway</h2>
 <p>A properly configured mobile lab — emulator, ADB, Burp with its certificate installed, and root access — is the foundation every other lesson in this path builds on. Getting this right once, carefully, saves significant frustration in every hands-on exercise that follows.</p>
 <p><strong>Next up →</strong> <a href="#/lesson/13-mobile-security/owasp-mobile-top-10">OWASP Mobile Top 10</a></p>

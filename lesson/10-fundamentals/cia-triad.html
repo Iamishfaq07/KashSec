@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>The CIA triad — Path 10 · KashSec Academy</title>
-<meta name="description" content="The CIA triad: Confidentiality, Integrity, Availability — the field's core.">
+<meta name="description" content="Every security concept you'll ever learn — every vulnerability, every control, every risk conversation — traces back to three words: Confidentiality, Integrity, Availability. This is the foundational ">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/10-fundamentals/cia-triad.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="The CIA triad — Path 10 · KashSec Academy">
-<meta property="og:description" content="The CIA triad: Confidentiality, Integrity, Availability — the field's core.">
+<meta property="og:description" content="Every security concept you'll ever learn — every vulnerability, every control, every risk conversation — traces back to three words: Confidentiality, Integrity, Availability. This is the foundational ">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/10-fundamentals/cia-triad.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="The CIA triad — Path 10 · KashSec Academy">
-<meta name="twitter:description" content="The CIA triad: Confidentiality, Integrity, Availability — the field's core.">
+<meta name="twitter:description" content="Every security concept you'll ever learn — every vulnerability, every control, every risk conversation — traces back to three words: Confidentiality, Integrity, Availability. This is the foundational ">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 10 — Cybersecurity Fundamentals","item":"https://kashsec.vercel.app/lesson/10-fundamentals/"},{"@type":"ListItem","position":4,"name":"The CIA triad","item":"https://kashsec.vercel.app/lesson/10-fundamentals/cia-triad.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"The CIA triad","headline":"The CIA triad","description":"The CIA triad: Confidentiality, Integrity, Availability — the field's core.","url":"https://kashsec.vercel.app/lesson/10-fundamentals/cia-triad.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner→Intermediate","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Confidentiality, Integrity, Availability — the field's core.","isPartOf":{"@type":"Course","name":"Path 10: Cybersecurity Fundamentals","url":"https://kashsec.vercel.app/lesson/10-fundamentals/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/10-fundamentals/cia-triad.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"The CIA triad","headline":"The CIA triad","description":"Every security concept you'll ever learn — every vulnerability, every control, every risk conversation — traces back to three words: Confidentiality, Integrity, Availability. This is the foundational ","url":"https://kashsec.vercel.app/lesson/10-fundamentals/cia-triad.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner→Intermediate","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Confidentiality, Integrity, Availability — the field's core.","isPartOf":{"@type":"Course","name":"Path 10: Cybersecurity Fundamentals","url":"https://kashsec.vercel.app/lesson/10-fundamentals/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/10-fundamentals/cia-triad.html"}}
 </script>
 </head>
 <body>
@@ -90,20 +90,6 @@
     <div class="md" id="content"><article><h1>The CIA Triad</h1>
 <p>Every security concept you'll ever learn — every vulnerability, every control, every risk conversation — traces back to three words: <strong>Confidentiality, Integrity, Availability</strong>. This is the foundational model of the entire field.</p>
 <h2>The three pillars</h2>
-<pre><code class="language-mermaid">flowchart TB
-    CIA["🔺 CIA Triad"]
-    C["🔒 Confidentiality&lt;br/&gt;Keep secrets secret"]
-    I["✅ Integrity&lt;br/&gt;Keep data accurate &amp; untampered"]
-    A["⏱ Availability&lt;br/&gt;Keep systems accessible"]
-    CIA --&gt; C
-    CIA --&gt; I
-    CIA --&gt; A
-
-    style CIA fill:#111927,color:#EFA43A,stroke:#EFA43A
-    style C fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
-    style I fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
-    style A fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
-</code></pre>
 <h3>Confidentiality</h3>
 <p><strong>Only authorised people can see the data.</strong> The classic "keeping secrets" pillar.</p>
 <ul>
@@ -138,15 +124,6 @@
 <p>When something goes wrong, you can classify it in seconds: <em>"Was data exposed (C), altered (I), or made unavailable (A)?"</em> — and often it's more than one at once.</p>
 <h2>The tension between the three</h2>
 <p>Here's the part beginners miss: <strong>these three pillars often pull against each other.</strong></p>
-<pre><code class="language-mermaid">flowchart LR
-    C[Confidentiality] -.-&gt;|"More encryption/access checks&lt;br/&gt;= slower access"| A[Availability]
-    A -.-&gt;|"More redundancy/backups&lt;br/&gt;= more copies of data to protect"| C
-    I[Integrity] -.-&gt;|"More validation/locking&lt;br/&gt;= friction on legitimate changes"| A
-
-    style C fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
-    style I fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
-    style A fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
-</code></pre>
 <ul>
 <li>Lock a system down hard for confidentiality (multi-factor auth, strict firewalls) and you risk hurting availability (legitimate users locked out, slower access).</li>
 <li>Maximise availability (public access, no friction) and you often hurt confidentiality.</li>
@@ -210,10 +187,8 @@
 <li>What control, if it had existed or worked properly, might have prevented it?</li>
 </ol>
 <p>This is exactly the kind of thinking you'll do constantly as a security professional — mapping a messy real-world event back onto the model.</p>
-<p>:::challenge Test yourself
-An attacker doesn't steal or change any data — they simply flood a company's servers with traffic until the website goes down for six hours. Which pillar of the CIA triad is primarily violated?</p>
-<details><summary>Show answer</summary><strong>Availability.</strong> No data was disclosed (Confidentiality) or altered (Integrity) — the system was simply made inaccessible to legitimate users.</details>
-:::<h2>Key terms</h2>
+<p>An attacker doesn't steal or change any data — they simply flood a company's servers with traffic until the website goes down for six hours. Which pillar of the CIA triad is primarily violated?</p>
+<details><summary>Show answer</summary><strong>Availability.</strong> No data was disclosed (Confidentiality) or altered (Integrity) — the system was simply made inaccessible to legitimate users.</details><h2>Key terms</h2>
 <ul>
 <li><strong>CIA Triad</strong> — Confidentiality, Integrity, Availability.</li>
 <li><strong>Confidentiality</strong> — only authorised access.</li>

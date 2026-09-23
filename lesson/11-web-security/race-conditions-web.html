@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Race Conditions in Web Applications — Path 11 · KashSec Academy</title>
-<meta name="description" content="Race Conditions in Web Applications: The check-then-act flaw behind coupon replay and double-spend bugs.">
+<meta name="description" content="The business-logic lesson mentioned coupon replay as a race-condition-driven example. This lesson explains exactly what a race condition actually is, and why timing itself — not any malicious input — ">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/11-web-security/race-conditions-web.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Race Conditions in Web Applications — Path 11 · KashSec Academy">
-<meta property="og:description" content="Race Conditions in Web Applications: The check-then-act flaw behind coupon replay and double-spend bugs.">
+<meta property="og:description" content="The business-logic lesson mentioned coupon replay as a race-condition-driven example. This lesson explains exactly what a race condition actually is, and why timing itself — not any malicious input — ">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/11-web-security/race-conditions-web.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Race Conditions in Web Applications — Path 11 · KashSec Academy">
-<meta name="twitter:description" content="Race Conditions in Web Applications: The check-then-act flaw behind coupon replay and double-spend bugs.">
+<meta name="twitter:description" content="The business-logic lesson mentioned coupon replay as a race-condition-driven example. This lesson explains exactly what a race condition actually is, and why timing itself — not any malicious input — ">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 11 — Web Security & Hacking","item":"https://kashsec.vercel.app/lesson/11-web-security/"},{"@type":"ListItem","position":4,"name":"Race Conditions in Web Applications","item":"https://kashsec.vercel.app/lesson/11-web-security/race-conditions-web.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Race Conditions in Web Applications","headline":"Race Conditions in Web Applications","description":"Race Conditions in Web Applications: The check-then-act flaw behind coupon replay and double-spend bugs.","url":"https://kashsec.vercel.app/lesson/11-web-security/race-conditions-web.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"The check-then-act flaw behind coupon replay and double-spend bugs.","isPartOf":{"@type":"Course","name":"Path 11: Web Security & Hacking","url":"https://kashsec.vercel.app/lesson/11-web-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/11-web-security/race-conditions-web.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Race Conditions in Web Applications","headline":"Race Conditions in Web Applications","description":"The business-logic lesson mentioned coupon replay as a race-condition-driven example. This lesson explains exactly what a race condition actually is, and why timing itself — not any malicious input — ","url":"https://kashsec.vercel.app/lesson/11-web-security/race-conditions-web.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"The check-then-act flaw behind coupon replay and double-spend bugs.","isPartOf":{"@type":"Course","name":"Path 11: Web Security & Hacking","url":"https://kashsec.vercel.app/lesson/11-web-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/11-web-security/race-conditions-web.html"}}
 </script>
 </head>
 <body>
@@ -97,15 +97,6 @@
 2. ACT: "Redeem the coupon, mark it as used"
 </code></pre>
 <p>If an attacker sends many identical requests simultaneously, several of them can pass step 1 (the check) <em>before any of them completes step 2</em> (marking it as used) — each request independently sees "not yet used" during its own check, and all of them proceed to redeem the coupon, even though it should only have been usable once.</p>
-<pre><code class="language-mermaid">sequenceDiagram
-    participant A as Request A
-    participant B as Request B
-    participant DB as Database
-    A-&gt;&gt;DB: Check: coupon used? → No
-    B-&gt;&gt;DB: Check: coupon used? → No (A hasn't marked it yet)
-    A-&gt;&gt;DB: Redeem coupon, mark used
-    B-&gt;&gt;DB: Redeem coupon, mark used (already too late — both succeeded)
-</code></pre>
 <h2>Where race conditions show up in the real world</h2>
 <ul>
 <li><strong>Coupon/discount redemption</strong> — exactly the Path 19 example, redeeming a single-use code multiple times</li>
@@ -119,10 +110,8 @@
 <li><strong>Locking</strong> — explicitly locking a resource during the check-and-act sequence, preventing a second concurrent request from reading a stale, pre-update state</li>
 <li><strong>Idempotency keys</strong> — a unique identifier for a specific intended action, letting the server recognize and reject a duplicate, simultaneously-submitted request as the same action already being processed rather than a legitimately separate one</li>
 </ul>
-<p>:::challenge Test yourself
-Why doesn't simply adding a "has this coupon been used?" check prevent the race-condition vulnerability described in this lesson, if that check already exists?</p>
-<details><summary>Show answer</summary>The check itself isn't the problem — the problem is the <em>gap in time</em> between the check completing and the corresponding update (marking the coupon as used) actually being committed. If multiple identical requests arrive within that gap, each one independently performs its own check <em>before</em> any of them has finished updating the database, meaning each check genuinely, correctly returns "not yet used" at the moment it runs — the check isn't lying, it's just running against stale information because the update from a concurrent, simultaneous request hasn't landed yet. The fix isn't a better or more frequent check — it's eliminating the gap entirely, by making the check-and-update a single atomic operation that no other concurrent request can interleave with, which is exactly what database transactions and proper locking are designed to guarantee.</details>
-:::<h2>Key terms</h2>
+<p>Why doesn't simply adding a "has this coupon been used?" check prevent the race-condition vulnerability described in this lesson, if that check already exists?</p>
+<details><summary>Show answer</summary>The check itself isn't the problem — the problem is the <em>gap in time</em> between the check completing and the corresponding update (marking the coupon as used) actually being committed. If multiple identical requests arrive within that gap, each one independently performs its own check <em>before</em> any of them has finished updating the database, meaning each check genuinely, correctly returns "not yet used" at the moment it runs — the check isn't lying, it's just running against stale information because the update from a concurrent, simultaneous request hasn't landed yet. The fix isn't a better or more frequent check — it's eliminating the gap entirely, by making the check-and-update a single atomic operation that no other concurrent request can interleave with, which is exactly what database transactions and proper locking are designed to guarantee.</details><h2>Key terms</h2>
 <ul>
 <li><strong>Race condition</strong> — a flaw where correctness depends on operation ordering the application doesn't actually enforce.</li>
 <li><strong>Check-then-act flaw</strong> — the classic race-condition pattern, where a gap between a check and its corresponding action allows concurrent requests to both pass the check before either completes the action.</li>

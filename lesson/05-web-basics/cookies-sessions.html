@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Cookies, sessions, logins — Path 05 · KashSec Academy</title>
-<meta name="description" content="Cookies, sessions, logins: How you stay logged in — and how attackers steal that.">
+<meta name="description" content="HTTP is stateless — every request stands alone, and the server has no memory of who you are between requests. So how does a site know you're logged in on page 5 when you logged in on page 1?">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/05-web-basics/cookies-sessions.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Cookies, sessions, logins — Path 05 · KashSec Academy">
-<meta property="og:description" content="Cookies, sessions, logins: How you stay logged in — and how attackers steal that.">
+<meta property="og:description" content="HTTP is stateless — every request stands alone, and the server has no memory of who you are between requests. So how does a site know you're logged in on page 5 when you logged in on page 1?">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/05-web-basics/cookies-sessions.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Cookies, sessions, logins — Path 05 · KashSec Academy">
-<meta name="twitter:description" content="Cookies, sessions, logins: How you stay logged in — and how attackers steal that.">
+<meta name="twitter:description" content="HTTP is stateless — every request stands alone, and the server has no memory of who you are between requests. So how does a site know you're logged in on page 5 when you logged in on page 1?">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 05 — How the Web Works","item":"https://kashsec.vercel.app/lesson/05-web-basics/"},{"@type":"ListItem","position":4,"name":"Cookies, sessions, logins","item":"https://kashsec.vercel.app/lesson/05-web-basics/cookies-sessions.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Cookies, sessions, logins","headline":"Cookies, sessions, logins","description":"Cookies, sessions, logins: How you stay logged in — and how attackers steal that.","url":"https://kashsec.vercel.app/lesson/05-web-basics/cookies-sessions.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"How you stay logged in — and how attackers steal that.","isPartOf":{"@type":"Course","name":"Path 05: How the Web Works","url":"https://kashsec.vercel.app/lesson/05-web-basics/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/05-web-basics/cookies-sessions.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Cookies, sessions, logins","headline":"Cookies, sessions, logins","description":"HTTP is stateless — every request stands alone, and the server has no memory of who you are between requests. So how does a site know you're logged in on page 5 when you logged in on page 1?","url":"https://kashsec.vercel.app/lesson/05-web-basics/cookies-sessions.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"How you stay logged in — and how attackers steal that.","isPartOf":{"@type":"Course","name":"Path 05: How the Web Works","url":"https://kashsec.vercel.app/lesson/05-web-basics/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/05-web-basics/cookies-sessions.html"}}
 </script>
 </head>
 <body>
@@ -93,18 +93,6 @@
 <h2>Why cookies exist</h2>
 <p>Imagine every page reload asked you to log in again. Unusable. Servers need a way to say "I know this browser — it's Alice, logged in three minutes ago." Cookies are that memory.</p>
 <p>The dance:</p>
-<pre><code class="language-mermaid">sequenceDiagram
-    autonumber
-    participant B as Browser
-    participant S as Server
-    B-&gt;&gt;S: POST /login {user, password}
-    S-&gt;&gt;B: Set-Cookie: session=abc123; HttpOnly; Secure
-    Note right of B: Browser stores the cookie
-    B-&gt;&gt;S: GET /profile&lt;br/&gt;Cookie: session=abc123
-    S-&gt;&gt;B: 200 OK — welcome Alice
-    B-&gt;&gt;S: GET /orders&lt;br/&gt;Cookie: session=abc123
-    S-&gt;&gt;B: 200 OK — Alice's orders
-</code></pre>
 <ol>
 <li>You log in.</li>
 <li>The server sends <code>Set-Cookie: session=abc123</code> in the response.</li>
@@ -229,13 +217,9 @@ abc123def456 → { user_id: 42, role: "user", logged_in_at: ..., cart: [...] }
 <li>(If comfortable) copy the cookie value, log out via the UI, then paste it back in another browser profile. Does the session still work, or did the server invalidate it on logout? A well-designed site kills the server-side session on logout — a lazy one leaves it valid.</li>
 </ol>
 <p>Congratulations — you've just done a real session-cookie audit.</p>
-<p>:::warn ONLY ON YOUR OWN ACCOUNTS
-Session cookies are essentially passwords. Never grab or paste someone else's. Only ever experiment with sessions belonging to accounts you own.
-:::</p>
-<p>:::challenge Test yourself
-Which cookie flag would have prevented JavaScript from stealing the session cookie if XSS were present on the site?</p>
-<details><summary>Show answer</summary><code>HttpOnly</code>. When set, the cookie is invisible to <code>document.cookie</code> and thus to any JS running on the page.</details>
-:::<h2>Key terms</h2>
+<p>Session cookies are essentially passwords. Never grab or paste someone else's. Only ever experiment with sessions belonging to accounts you own.</p>
+<p>Which cookie flag would have prevented JavaScript from stealing the session cookie if XSS were present on the site?</p>
+<details><summary>Show answer</summary><code>HttpOnly</code>. When set, the cookie is invisible to <code>document.cookie</code> and thus to any JS running on the page.</details><h2>Key terms</h2>
 <ul>
 <li><strong>Session</strong> — the concept of "who this browser is right now."</li>
 <li><strong>Cookie</strong> — the mechanism the browser uses to remember state per site.</li>

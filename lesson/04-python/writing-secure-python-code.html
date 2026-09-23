@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Writing Secure Python Code — Path 04 · KashSec Academy</title>
-<meta name="description" content="Writing Secure Python Code: eval(), shell=True, hardcoded secrets, and unsafe pickle.">
+<meta name="description" content="Path 03's shell-scripting lesson covered command injection in bash. This lesson covers the same underlying danger, plus a few genuinely Python-specific pitfalls, worth knowing before your scripts star">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/04-python/writing-secure-python-code.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Writing Secure Python Code — Path 04 · KashSec Academy">
-<meta property="og:description" content="Writing Secure Python Code: eval(), shell=True, hardcoded secrets, and unsafe pickle.">
+<meta property="og:description" content="Path 03's shell-scripting lesson covered command injection in bash. This lesson covers the same underlying danger, plus a few genuinely Python-specific pitfalls, worth knowing before your scripts star">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/04-python/writing-secure-python-code.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Writing Secure Python Code — Path 04 · KashSec Academy">
-<meta name="twitter:description" content="Writing Secure Python Code: eval(), shell=True, hardcoded secrets, and unsafe pickle.">
+<meta name="twitter:description" content="Path 03's shell-scripting lesson covered command injection in bash. This lesson covers the same underlying danger, plus a few genuinely Python-specific pitfalls, worth knowing before your scripts star">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 04 — Programming & Python","item":"https://kashsec.vercel.app/lesson/04-python/"},{"@type":"ListItem","position":4,"name":"Writing Secure Python Code","item":"https://kashsec.vercel.app/lesson/04-python/writing-secure-python-code.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Writing Secure Python Code","headline":"Writing Secure Python Code","description":"Writing Secure Python Code: eval(), shell=True, hardcoded secrets, and unsafe pickle.","url":"https://kashsec.vercel.app/lesson/04-python/writing-secure-python-code.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"eval(), shell=True, hardcoded secrets, and unsafe pickle.","isPartOf":{"@type":"Course","name":"Path 04: Programming & Python","url":"https://kashsec.vercel.app/lesson/04-python/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/04-python/writing-secure-python-code.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Writing Secure Python Code","headline":"Writing Secure Python Code","description":"Path 03's shell-scripting lesson covered command injection in bash. This lesson covers the same underlying danger, plus a few genuinely Python-specific pitfalls, worth knowing before your scripts star","url":"https://kashsec.vercel.app/lesson/04-python/writing-secure-python-code.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"eval(), shell=True, hardcoded secrets, and unsafe pickle.","isPartOf":{"@type":"Course","name":"Path 04: Programming & Python","url":"https://kashsec.vercel.app/lesson/04-python/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/04-python/writing-secure-python-code.html"}}
 </script>
 </head>
 <body>
@@ -121,13 +121,9 @@ API_KEY = os.environ.get("API_KEY")
 data = pickle.load(untrusted_file)
 </code></pre>
 <p>Python's <code>pickle</code> module can serialize and deserialize almost any Python object — but deserializing (<code>load</code>) data from a source you don't fully trust can execute arbitrary code embedded in that data, a genuinely surprising and serious risk most beginners never expect from what looks like ordinary data loading. For untrusted data, formats like JSON (which can only represent plain data, never executable code) are the safer choice.</p>
-<p>:::danger The common thread across every example in this lesson
-Every single pitfall here shares the same root cause: <strong>treating untrusted input as if it were trusted code or trusted data.</strong> This is the exact same lesson Path 03 taught for shell scripts and Path 11 will teach for web applications — the specific mechanism differs by language and context, but the underlying principle (never let untrusted input control what your program actually executes) is genuinely universal across this entire course.
-:::</p>
-<p>:::challenge Test yourself
-Why is <code>subprocess.run(["cat", filename])</code> meaningfully safer than <code>subprocess.run(f"cat {filename}", shell=True)</code>, even though both ultimately run the same <code>cat</code> command?</p>
-<details><summary>Show answer</summary>With <code>shell=True</code> and a formatted string, the entire string gets handed to the system shell for interpretation — meaning shell special characters embedded in <code>filename</code> (like a semicolon starting a second, separate command) get interpreted and executed by the shell, exactly the command-injection risk covered in Path 03. Passing arguments as a list (<code>["cat", filename]</code>) bypasses shell interpretation entirely — Python passes <code>filename</code>'s exact literal value directly to the <code>cat</code> program as a single argument, with no shell ever getting a chance to reinterpret special characters within it. This is precisely why the list form is the recommended default whenever you're building a command from a variable, especially one that might contain data you don't fully control.</details>
-:::<h2>Key terms</h2>
+<p>Every single pitfall here shares the same root cause: <strong>treating untrusted input as if it were trusted code or trusted data.</strong> This is the exact same lesson Path 03 taught for shell scripts and Path 11 will teach for web applications — the specific mechanism differs by language and context, but the underlying principle (never let untrusted input control what your program actually executes) is genuinely universal across this entire course.</p>
+<p>Why is <code>subprocess.run(["cat", filename])</code> meaningfully safer than <code>subprocess.run(f"cat {filename}", shell=True)</code>, even though both ultimately run the same <code>cat</code> command?</p>
+<details><summary>Show answer</summary>With <code>shell=True</code> and a formatted string, the entire string gets handed to the system shell for interpretation — meaning shell special characters embedded in <code>filename</code> (like a semicolon starting a second, separate command) get interpreted and executed by the shell, exactly the command-injection risk covered in Path 03. Passing arguments as a list (<code>["cat", filename]</code>) bypasses shell interpretation entirely — Python passes <code>filename</code>'s exact literal value directly to the <code>cat</code> program as a single argument, with no shell ever getting a chance to reinterpret special characters within it. This is precisely why the list form is the recommended default whenever you're building a command from a variable, especially one that might contain data you don't fully control.</details><h2>Key terms</h2>
 <ul>
 <li><strong>eval() / exec()</strong> — Python functions that interpret and run a string as actual code, dangerous with untrusted input.</li>
 <li><strong>shell=True</strong> — a subprocess option that hands a command string to the system shell for interpretation, reintroducing shell-injection risk.</li>

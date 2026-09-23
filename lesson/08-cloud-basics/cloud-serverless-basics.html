@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Cloud Serverless Basics — Path 08 · KashSec Academy</title>
-<meta name="description" content="Cloud Serverless Basics: Functions, triggers, and why 'serverless' still has servers underneath.">
+<meta name="description" content="The compute lesson covered VMs and containers — infrastructure you provision and manage, even if the cloud makes that easier than on-premises hardware. This lesson covers a fundamentally different mod">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-serverless-basics.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Cloud Serverless Basics — Path 08 · KashSec Academy">
-<meta property="og:description" content="Cloud Serverless Basics: Functions, triggers, and why 'serverless' still has servers underneath.">
+<meta property="og:description" content="The compute lesson covered VMs and containers — infrastructure you provision and manage, even if the cloud makes that easier than on-premises hardware. This lesson covers a fundamentally different mod">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-serverless-basics.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Cloud Serverless Basics — Path 08 · KashSec Academy">
-<meta name="twitter:description" content="Cloud Serverless Basics: Functions, triggers, and why 'serverless' still has servers underneath.">
+<meta name="twitter:description" content="The compute lesson covered VMs and containers — infrastructure you provision and manage, even if the cloud makes that easier than on-premises hardware. This lesson covers a fundamentally different mod">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 08 — Cloud Computing Basics","item":"https://kashsec.vercel.app/lesson/08-cloud-basics/"},{"@type":"ListItem","position":4,"name":"Cloud Serverless Basics","item":"https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-serverless-basics.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Cloud Serverless Basics","headline":"Cloud Serverless Basics","description":"Cloud Serverless Basics: Functions, triggers, and why 'serverless' still has servers underneath.","url":"https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-serverless-basics.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Functions, triggers, and why 'serverless' still has servers underneath.","isPartOf":{"@type":"Course","name":"Path 08: Cloud Computing Basics","url":"https://kashsec.vercel.app/lesson/08-cloud-basics/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-serverless-basics.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Cloud Serverless Basics","headline":"Cloud Serverless Basics","description":"The compute lesson covered VMs and containers — infrastructure you provision and manage, even if the cloud makes that easier than on-premises hardware. This lesson covers a fundamentally different mod","url":"https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-serverless-basics.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Functions, triggers, and why 'serverless' still has servers underneath.","isPartOf":{"@type":"Course","name":"Path 08: Cloud Computing Basics","url":"https://kashsec.vercel.app/lesson/08-cloud-basics/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-serverless-basics.html"}}
 </script>
 </head>
 <body>
@@ -89,9 +89,7 @@
     <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/08-cloud-basics/">Path 08 — Cloud Computing Basics</a> · Cloud Serverless Basics</nav>
     <div class="md" id="content"><article><h1>Cloud Serverless Basics</h1>
 <p>The compute lesson covered VMs and containers — infrastructure you provision and manage, even if the cloud makes that easier than on-premises hardware. This lesson covers a fundamentally different model: <strong>serverless computing</strong>, where you stop thinking about servers at all.</p>
-<p>:::tip
-"Serverless" doesn't mean there are no servers — there absolutely are, running somewhere in the provider's infrastructure. It means <em>you</em> never provision, patch, or manage them; you write code, and the cloud provider handles literally everything else about running it.
-:::</p>
+<p>:::</p>
 <h2>What a serverless function actually is</h2>
 <p>A <strong>serverless function</strong> (AWS Lambda, Azure Functions, Google Cloud Functions) is a small piece of code that runs in response to a <strong>trigger</strong> — an HTTP request, a new file uploaded to storage (from the cloud-storage-basics lesson), a scheduled time — and automatically stops running the moment it finishes, with the provider handling all the underlying compute provisioning invisibly. You're billed only for the actual execution time, often down to the millisecond, rather than paying for an always-running server whether it's doing useful work or not.</p>
 <h2>Why this is such a different mental model</h2>
@@ -111,15 +109,12 @@
 <p>:::challenge Choose the right tool
 A company needs to: (1) run a continuously-active web application handling steady, predictable traffic all day, and (2) process and resize an image every time one is uploaded to a storage bucket, which happens sporadically throughout the day.</p>
 <details><summary>Hint</summary>Which workload matches serverless's "event-driven, intermittent" sweet spot, and which matches the compute lesson's "continuously running" use case better?</details>
-<details><summary>Show answer</summary>Workload (1) — steady, predictable, continuously-active traffic — is generally a better fit for traditional compute (VMs or containers, possibly with auto-scaling from the compute lesson), since the workload runs consistently enough that serverless's per-invocation billing model and cold-start overhead don't offer much advantage over an always-on server sized appropriately for the load. Workload (2) — sporadic, event-triggered image processing — is a textbook serverless use case: a function triggered directly by the storage upload event, running only when needed, with zero cost during the idle periods between uploads. This exact split (steady traffic on traditional compute, event-driven bursts on serverless) is a common, sensible real-world architecture pattern.</details>
-:::<h2>🧪 Hands-on lab — design a serverless workflow</h2>
+<details><summary>Show answer</summary>Workload (1) — steady, predictable, continuously-active traffic — is generally a better fit for traditional compute (VMs or containers, possibly with auto-scaling from the compute lesson), since the workload runs consistently enough that serverless's per-invocation billing model and cold-start overhead don't offer much advantage over an always-on server sized appropriately for the load. Workload (2) — sporadic, event-triggered image processing — is a textbook serverless use case: a function triggered directly by the storage upload event, running only when needed, with zero cost during the idle periods between uploads. This exact split (steady traffic on traditional compute, event-driven bursts on serverless) is a common, sensible real-world architecture pattern.</details><h2>🧪 Hands-on lab — design a serverless workflow</h2>
 <p>Sketch a simple serverless architecture for a hypothetical app that needs to send a welcome email every time a new user signs up. Identify the trigger, the function's single responsibility, and the minimal IAM permissions it would actually need.</p>
-<p>:::challenge Test yourself</p>
 <ol>
 <li>What does "serverless" actually mean, given that servers obviously still exist somewhere?</li>
 <li>Why is serverless a poor fit for a long-running, continuously-active process?</li>
-<li>Why does function-level IAM permission scoping matter especially in a serverless architecture?
-:::</li>
+<li>Why does function-level IAM permission scoping matter especially in a serverless architecture?</li>
 </ol>
 <h2>Key terms</h2>
 <ul>

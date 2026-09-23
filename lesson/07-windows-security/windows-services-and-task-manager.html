@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Windows Services &amp; Task Manager, for Security — Path 07 · KashSec Academy</title>
-<meta name="description" content="Windows Services &amp; Task Manager, for Security: Why services are an attacker's favorite persistence mechanism, and how to audit them.">
+<meta name="description" content="The command-line lesson gave you PowerShell as a tool. This lesson covers two specific things worth investigating with it (and with their GUI equivalents): services, the background processes Windows a">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/07-windows-security/windows-services-and-task-manager.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Windows Services &amp; Task Manager, for Security — Path 07 · KashSec Academy">
-<meta property="og:description" content="Windows Services &amp; Task Manager, for Security: Why services are an attacker's favorite persistence mechanism, and how to audit them.">
+<meta property="og:description" content="The command-line lesson gave you PowerShell as a tool. This lesson covers two specific things worth investigating with it (and with their GUI equivalents): services, the background processes Windows a">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/07-windows-security/windows-services-and-task-manager.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Windows Services &amp; Task Manager, for Security — Path 07 · KashSec Academy">
-<meta name="twitter:description" content="Windows Services &amp; Task Manager, for Security: Why services are an attacker's favorite persistence mechanism, and how to audit them.">
+<meta name="twitter:description" content="The command-line lesson gave you PowerShell as a tool. This lesson covers two specific things worth investigating with it (and with their GUI equivalents): services, the background processes Windows a">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 07 — Windows Security Basics","item":"https://kashsec.vercel.app/lesson/07-windows-security/"},{"@type":"ListItem","position":4,"name":"Windows Services & Task Manager, for Security","item":"https://kashsec.vercel.app/lesson/07-windows-security/windows-services-and-task-manager.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Windows Services & Task Manager, for Security","headline":"Windows Services & Task Manager, for Security","description":"Windows Services & Task Manager, for Security: Why services are an attacker's favorite persistence mechanism, and how to audit them.","url":"https://kashsec.vercel.app/lesson/07-windows-security/windows-services-and-task-manager.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Why services are an attacker's favorite persistence mechanism, and how to audit them.","isPartOf":{"@type":"Course","name":"Path 07: Windows Security Basics","url":"https://kashsec.vercel.app/lesson/07-windows-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/07-windows-security/windows-services-and-task-manager.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Windows Services & Task Manager, for Security","headline":"Windows Services & Task Manager, for Security","description":"The command-line lesson gave you PowerShell as a tool. This lesson covers two specific things worth investigating with it (and with their GUI equivalents): services, the background processes Windows a","url":"https://kashsec.vercel.app/lesson/07-windows-security/windows-services-and-task-manager.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Why services are an attacker's favorite persistence mechanism, and how to audit them.","isPartOf":{"@type":"Course","name":"Path 07: Windows Security Basics","url":"https://kashsec.vercel.app/lesson/07-windows-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/07-windows-security/windows-services-and-task-manager.html"}}
 </script>
 </head>
 <body>
@@ -89,9 +89,7 @@
     <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/07-windows-security/">Path 07 — Windows Security Basics</a> · Windows Services &amp; Task Manager, for Security</nav>
     <div class="md" id="content"><article><h1>Windows Services &amp; Task Manager, for Security</h1>
 <p>The command-line lesson gave you PowerShell as a tool. This lesson covers two specific things worth investigating with it (and with their GUI equivalents): <strong>services</strong>, the background processes Windows and installed software depend on, and how to actually use <strong>Task Manager</strong> as a security tool rather than just a performance monitor.</p>
-<p>:::tip
-The recognizing-compromise lesson mentioned unfamiliar processes and services as compromise indicators. This lesson goes deeper — what a service actually is, how it differs from a normal process, and specifically how attackers abuse the service model for persistence.
-:::</p>
+<p>:::</p>
 <h2>What a Windows service actually is</h2>
 <p>A <strong>Windows service</strong> is a background process that runs independently of any logged-in user — starting automatically at boot, running continuously, with no visible window. Windows itself relies on dozens of services for core functionality, and legitimate installed software (antivirus, backup tools, database servers) commonly installs its own services too.</p>
 <h2>Why services matter specifically for security</h2>
@@ -121,15 +119,12 @@ The recognizing-compromise lesson mentioned unfamiliar processes and services as
 <p>:::challenge Spot the anomaly
 A service named "Windows Update Assistant Service" is set to Automatic startup and running under LocalSystem. Investigating its file path in Task Manager's Details tab shows it's running from <code>C:\ProgramData\WinUpdate\svc.exe</code>.</p>
 <details><summary>Hint</summary>Where would you expect a genuine, official Windows Update–related service to actually run from, and does this path match?</details>
-<details><summary>Show answer</summary>This is a strong indicator of a malicious service disguised with a legitimate-sounding name. Genuine core Windows services run from well-known system paths (typically under <code>C:\Windows\System32</code>), not from a generic, user-writable-adjacent location like <code>C:\ProgramData\WinUpdate</code> with a generically-named executable (<code>svc.exe</code>) that gives no real indication of what it actually does. Combined with LocalSystem privileges and Automatic startup — exactly the persistence-plus-privilege combination this lesson described as the structural reason services are attractive to attackers — this warrants immediate further investigation, following the same isolate-first instinct the recognizing-compromise lesson established.</details>
-:::<h2>🧪 Hands-on lab — audit your own services</h2>
+<details><summary>Show answer</summary>This is a strong indicator of a malicious service disguised with a legitimate-sounding name. Genuine core Windows services run from well-known system paths (typically under <code>C:\Windows\System32</code>), not from a generic, user-writable-adjacent location like <code>C:\ProgramData\WinUpdate</code> with a generically-named executable (<code>svc.exe</code>) that gives no real indication of what it actually does. Combined with LocalSystem privileges and Automatic startup — exactly the persistence-plus-privilege combination this lesson described as the structural reason services are attractive to attackers — this warrants immediate further investigation, following the same isolate-first instinct the recognizing-compromise lesson established.</details><h2>🧪 Hands-on lab — audit your own services</h2>
 <p>On a Windows machine or VM you control, open <code>services.msc</code> and review the list, or run <code>Get-Service</code> in PowerShell. Pick five services you don't immediately recognize and look up what each one actually does — building the habit of knowing what "normal" looks like on a machine you're responsible for, before you ever need to spot what's abnormal.</p>
-<p>:::challenge Test yourself</p>
 <ol>
 <li>Why are services a particularly attractive persistence mechanism for attackers, compared to a normal process?</li>
 <li>What single piece of information in Task Manager's Details tab is most useful for spotting a disguised malicious process or service?</li>
-<li>Name two ways to inspect the list of installed services on a Windows machine.
-:::</li>
+<li>Name two ways to inspect the list of installed services on a Windows machine.</li>
 </ol>
 <h2>Key terms</h2>
 <ul>

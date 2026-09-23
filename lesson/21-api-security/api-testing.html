@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>How to actually test APIs — Path 21 · KashSec Academy</title>
-<meta name="description" content="How to actually test APIs: A battle-tested recon-to-report workflow for bug bounty and pentests.">
+<meta name="description" content="Theory is useless without a practical testing workflow. Here's a battle-tested approach you can use on real targets (bug bounty, pentests, or your own apps) — it pulls together every vulnerability cla">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/21-api-security/api-testing.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="How to actually test APIs — Path 21 · KashSec Academy">
-<meta property="og:description" content="How to actually test APIs: A battle-tested recon-to-report workflow for bug bounty and pentests.">
+<meta property="og:description" content="Theory is useless without a practical testing workflow. Here's a battle-tested approach you can use on real targets (bug bounty, pentests, or your own apps) — it pulls together every vulnerability cla">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/21-api-security/api-testing.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="How to actually test APIs — Path 21 · KashSec Academy">
-<meta name="twitter:description" content="How to actually test APIs: A battle-tested recon-to-report workflow for bug bounty and pentests.">
+<meta name="twitter:description" content="Theory is useless without a practical testing workflow. Here's a battle-tested approach you can use on real targets (bug bounty, pentests, or your own apps) — it pulls together every vulnerability cla">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 21 — API Security","item":"https://kashsec.vercel.app/lesson/21-api-security/"},{"@type":"ListItem","position":4,"name":"How to actually test APIs","item":"https://kashsec.vercel.app/lesson/21-api-security/api-testing.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"How to actually test APIs","headline":"How to actually test APIs","description":"How to actually test APIs: A battle-tested recon-to-report workflow for bug bounty and pentests.","url":"https://kashsec.vercel.app/lesson/21-api-security/api-testing.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"A battle-tested recon-to-report workflow for bug bounty and pentests.","isPartOf":{"@type":"Course","name":"Path 21: API Security","url":"https://kashsec.vercel.app/lesson/21-api-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/21-api-security/api-testing.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"How to actually test APIs","headline":"How to actually test APIs","description":"Theory is useless without a practical testing workflow. Here's a battle-tested approach you can use on real targets (bug bounty, pentests, or your own apps) — it pulls together every vulnerability cla","url":"https://kashsec.vercel.app/lesson/21-api-security/api-testing.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"A battle-tested recon-to-report workflow for bug bounty and pentests.","isPartOf":{"@type":"Course","name":"Path 21: API Security","url":"https://kashsec.vercel.app/lesson/21-api-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/21-api-security/api-testing.html"}}
 </script>
 </head>
 <body>
@@ -89,9 +89,7 @@
     <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/21-api-security/">Path 21 — API Security</a> · How to actually test APIs</nav>
     <div class="md" id="content"><article><h1>How to actually test APIs</h1>
 <p>Theory is useless without a practical testing workflow. Here's a battle-tested approach you can use on real targets (bug bounty, pentests, or your own apps) — it pulls together every vulnerability class covered earlier in this path into one repeatable process.</p>
-<p>:::tip
-The best API testers don't memorize a hundred payloads — they run the same small set of questions (who's allowed, what fields, what limits, what happens on error) against every single endpoint, methodically. Consistency beats cleverness here.
-:::</p>
+<p>:::</p>
 <h2>1. Discover the attack surface</h2>
 <ul>
 <li><strong>Official documentation</strong> — OpenAPI/Swagger, Postman collections, GraphQL introspection</li>
@@ -193,14 +191,11 @@ The best API testers don't memorize a hundred payloads — they run the same sma
 <li>Compare your finding count and categories against the OWASP API Top 10 list from earlier — how many categories did you personally trigger?</li>
 </ol>
 <p>:::lab
-Pick a deliberately vulnerable API lab (crAPI, vAPI, Damn Vulnerable GraphQL Application, or PortSwigger's API labs). Work through the core test cases above and write a short report for at least one BOLA finding.
-:::</p>
-<p>:::challenge Test yourself</p>
+Pick a deliberately vulnerable API lab (crAPI, vAPI, Damn Vulnerable GraphQL Application, or PortSwigger's API labs). Work through the core test cases above and write a short report for at least one BOLA finding.</p>
 <ol>
 <li>Why does creating two accounts before you start testing matter more for APIs than for a typical single-user web app test?</li>
 <li>In the worked example above, which finding would you report first, and why — rank by likely impact.</li>
-<li>What's one reason automated scanners alone tend to under-perform on API testing compared to a human working the manual workflow above?
-:::</li>
+<li>What's one reason automated scanners alone tend to under-perform on API testing compared to a human working the manual workflow above?</li>
 </ol>
 <h2>Key terms</h2>
 <ul>

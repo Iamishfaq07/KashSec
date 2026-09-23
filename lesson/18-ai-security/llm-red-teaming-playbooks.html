@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>LLM Red Teaming Playbooks — Path 18 · KashSec Academy</title>
-<meta name="description" content="LLM Red Teaming Playbooks: Structured approaches to systematically test LLM applications.">
+<meta name="description" content="Path 18's AI red teaming lesson introduced the methodology at a conceptual level. This lesson gets practical: how to actually structure a repeatable, systematic testing process — a playbook — that tur">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/18-ai-security/llm-red-teaming-playbooks.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="LLM Red Teaming Playbooks — Path 18 · KashSec Academy">
-<meta property="og:description" content="LLM Red Teaming Playbooks: Structured approaches to systematically test LLM applications.">
+<meta property="og:description" content="Path 18's AI red teaming lesson introduced the methodology at a conceptual level. This lesson gets practical: how to actually structure a repeatable, systematic testing process — a playbook — that tur">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/18-ai-security/llm-red-teaming-playbooks.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="LLM Red Teaming Playbooks — Path 18 · KashSec Academy">
-<meta name="twitter:description" content="LLM Red Teaming Playbooks: Structured approaches to systematically test LLM applications.">
+<meta name="twitter:description" content="Path 18's AI red teaming lesson introduced the methodology at a conceptual level. This lesson gets practical: how to actually structure a repeatable, systematic testing process — a playbook — that tur">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 18 — AI & AI Security","item":"https://kashsec.vercel.app/lesson/18-ai-security/"},{"@type":"ListItem","position":4,"name":"LLM Red Teaming Playbooks","item":"https://kashsec.vercel.app/lesson/18-ai-security/llm-red-teaming-playbooks.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"LLM Red Teaming Playbooks","headline":"LLM Red Teaming Playbooks","description":"LLM Red Teaming Playbooks: Structured approaches to systematically test LLM applications.","url":"https://kashsec.vercel.app/lesson/18-ai-security/llm-red-teaming-playbooks.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Structured approaches to systematically test LLM applications.","isPartOf":{"@type":"Course","name":"Path 18: AI & AI Security","url":"https://kashsec.vercel.app/lesson/18-ai-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/18-ai-security/llm-red-teaming-playbooks.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"LLM Red Teaming Playbooks","headline":"LLM Red Teaming Playbooks","description":"Path 18's AI red teaming lesson introduced the methodology at a conceptual level. This lesson gets practical: how to actually structure a repeatable, systematic testing process — a playbook — that tur","url":"https://kashsec.vercel.app/lesson/18-ai-security/llm-red-teaming-playbooks.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Structured approaches to systematically test LLM applications.","isPartOf":{"@type":"Course","name":"Path 18: AI & AI Security","url":"https://kashsec.vercel.app/lesson/18-ai-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/18-ai-security/llm-red-teaming-playbooks.html"}}
 </script>
 </head>
 <body>
@@ -91,12 +91,6 @@
 <p>Path 18's AI red teaming lesson introduced the <em>methodology</em> at a conceptual level. This lesson gets practical: how to actually structure a repeatable, systematic testing process — a <strong>playbook</strong> — that turns ad-hoc probing into something a team can run consistently, track over time, and hand off to new testers.</p>
 <h2>Why a playbook, not just improvisation</h2>
 <p>Testing an LLM application by just "trying things" finds real issues, but produces inconsistent, unrepeatable coverage — different testers probe different things, nothing is tracked over time, and there's no way to confirm a fix actually held when the model or prompt changes later. A playbook solves this the same way a penetration testing methodology (Path 14) solves it for traditional applications: structure, defined scope, and repeatability.</p>
-<pre><code class="language-mermaid">flowchart TD
-    A[1. Define Scope\n&amp; Success Criteria] --&gt; B["2. Recon &amp; Map\nthe LLM Surface"]
-    B --&gt; C[3. Run Structured\nTest Categories]
-    C --&gt; D[4. Document Bypasses\n&amp; Mitigations]
-    D --&gt; E[5. Measure &amp;\nRe-test Over Time]
-</code></pre>
 <h2>1. Define scope and success criteria</h2>
 <p>Exactly like a traditional pentest's rules of engagement (Path 14), define upfront: which specific LLM-powered features are in scope, what counts as a genuine finding versus expected/acceptable behavior, and what severity framework you'll use to rate findings (adapting the CVSS-style reasoning from Path 14's reporting lesson to AI-specific impact: does a successful jailbreak produce merely embarrassing output, or does it enable a real harmful action via tool access, per Path 18's agentic AI risks lesson?).</p>
 <h2>2. Recon and map the LLM surface</h2>
@@ -118,12 +112,8 @@
 <p>Unlike a traditional codebase, an LLM application's behavior can shift without any code change at all — the underlying model gets updated by its provider, the system prompt gets tweaked, new tools get added. Re-running your playbook's test suite periodically (and specifically after any of these changes) is how you catch regressions — a previously-fixed jailbreak silently working again after a model version update is a genuinely common real-world occurrence.</p>
 <h2>Calibrating severity with actual stakeholders</h2>
 <p>A playbook's severity ratings mean little if they're set in isolation from the people who'll actually act on them. Before finalizing your severity framework (step 1 above), sit down with whoever owns the product's risk decisions — the same "writing for two audiences" discipline from Path 14.7's reporting lesson applies here directly, since a security tester's intuitive sense of "this is bad" doesn't always match the product owner's actual risk tolerance for their specific deployment. A jailbreak that produces mildly inappropriate humor might be a non-issue for an internal developer tool but a genuine incident for a children's education product — the technique and success rate are identical, but the calibrated severity should differ sharply based on real deployment context, exactly the kind of judgment call a playbook built in isolation from stakeholders will consistently get wrong.</p>
-<p>:::tip Automate what you can, but never fully replace manual testing
-Simple test cases (direct injection attempts, known jailbreak templates) can be scripted and run automatically as a fast regression check. But novel, creative bypass techniques — the kind that actually reveal new risk — still require a human tester thinking adversarially, exactly the same balance between automated scanning and manual testing found throughout Path 11 and Path 15's web security material.
-:::</p>
-<p>:::challenge Build a mini playbook
-Design a playbook with at least 10 specific test cases for a fictional customer support LLM application that has access to two tools: looking up order status and issuing refunds. Organize your test cases by category (per the structure above), and include at least 2 tests specifically targeting the tool-access risk from the agentic AI risks lesson.
-:::</p>
+<p>Simple test cases (direct injection attempts, known jailbreak templates) can be scripted and run automatically as a fast regression check. But novel, creative bypass techniques — the kind that actually reveal new risk — still require a human tester thinking adversarially, exactly the same balance between automated scanning and manual testing found throughout Path 11 and Path 15's web security material.</p>
+<p>Design a playbook with at least 10 specific test cases for a fictional customer support LLM application that has access to two tools: looking up order status and issuing refunds. Organize your test cases by category (per the structure above), and include at least 2 tests specifically targeting the tool-access risk from the agentic AI risks lesson.</p>
 <h2>Key terms</h2>
 <ul>
 <li><strong>Red team playbook</strong> — a structured, repeatable set of test categories and cases for systematically probing an AI system.</li>

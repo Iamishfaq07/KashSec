@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Advanced JWT Lab — Path 11 · KashSec Academy</title>
-<meta name="description" content="Advanced JWT Lab: Deep dive into JWT attacks and defenses.">
+<meta name="description" content="This course's CTF Zone already walked you through one specific JWT attack (alg=none forgery) as a self-contained puzzle. This lab goes broader — practicing the full range of real JWT attacks against a">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/11-web-security/jwt-advanced-lab.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Advanced JWT Lab — Path 11 · KashSec Academy">
-<meta property="og:description" content="Advanced JWT Lab: Deep dive into JWT attacks and defenses.">
+<meta property="og:description" content="This course's CTF Zone already walked you through one specific JWT attack (alg=none forgery) as a self-contained puzzle. This lab goes broader — practicing the full range of real JWT attacks against a">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/11-web-security/jwt-advanced-lab.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Advanced JWT Lab — Path 11 · KashSec Academy">
-<meta name="twitter:description" content="Advanced JWT Lab: Deep dive into JWT attacks and defenses.">
+<meta name="twitter:description" content="This course's CTF Zone already walked you through one specific JWT attack (alg=none forgery) as a self-contained puzzle. This lab goes broader — practicing the full range of real JWT attacks against a">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 11 — Web Security & Hacking","item":"https://kashsec.vercel.app/lesson/11-web-security/"},{"@type":"ListItem","position":4,"name":"Advanced JWT Lab","item":"https://kashsec.vercel.app/lesson/11-web-security/jwt-advanced-lab.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Advanced JWT Lab","headline":"Advanced JWT Lab","description":"Advanced JWT Lab: Deep dive into JWT attacks and defenses.","url":"https://kashsec.vercel.app/lesson/11-web-security/jwt-advanced-lab.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Intermediate","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Deep dive into JWT attacks and defenses.","isPartOf":{"@type":"Course","name":"Path 11: Web Security & Hacking","url":"https://kashsec.vercel.app/lesson/11-web-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/11-web-security/jwt-advanced-lab.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Advanced JWT Lab","headline":"Advanced JWT Lab","description":"This course's CTF Zone already walked you through one specific JWT attack (alg=none forgery) as a self-contained puzzle. This lab goes broader — practicing the full range of real JWT attacks against a","url":"https://kashsec.vercel.app/lesson/11-web-security/jwt-advanced-lab.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Intermediate","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Deep dive into JWT attacks and defenses.","isPartOf":{"@type":"Course","name":"Path 11: Web Security & Hacking","url":"https://kashsec.vercel.app/lesson/11-web-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/11-web-security/jwt-advanced-lab.html"}}
 </script>
 </head>
 <body>
@@ -91,31 +91,22 @@
 <p>This course's CTF Zone already walked you through one specific JWT attack (<code>alg=none</code> forgery) as a self-contained puzzle. This lab goes broader — practicing the full range of real JWT attacks against a live vulnerable lab, plus (just as importantly) implementing the fix correctly.</p>
 <h2>Lab tasks</h2>
 <ol>
-<li><strong>Exploit the <code>alg: none</code> vulnerability</strong>, exactly as practiced in the CTF Zone's <strong>Forge the Token</strong> challenge — but this time against a real, interactive lab (PortSwigger's JWT-focused labs are the best free option) rather than a static puzzle. Notice how much slower real exploitation is compared to a pre-packaged CTF challenge — you have to discover the vulnerability exists in the first place, not just solve a puzzle already framed for you.</li>
-<li><strong>Perform a key confusion attack, if the lab supports it.</strong> This is a more advanced JWT attack: some servers use asymmetric signing (RS256, where a private key signs and a public key verifies) but fail to check <em>which</em> algorithm was actually used — an attacker who knows the server's public key can sign a forged token with HMAC (HS256), using the public key itself as the HMAC secret, and a careless server will incorrectly treat it as validly signed.</li>
-<li><strong>Crack a weak secret with hashcat.</strong> If the lab provides a token signed with a symmetric (HS256) algorithm and a weak, guessable secret, extract the token's signing material and attempt a dictionary attack:<pre><code class="language-bash">hashcat -a 0 -m 16500 jwt.txt rockyou.txt
+<li><p><strong>Exploit the <code>alg: none</code> vulnerability</strong>, exactly as practiced in the CTF Zone's <strong>Forge the Token</strong> challenge — but this time against a real, interactive lab (PortSwigger's JWT-focused labs are the best free option) rather than a static puzzle. Notice how much slower real exploitation is compared to a pre-packaged CTF challenge — you have to discover the vulnerability exists in the first place, not just solve a puzzle already framed for you.</p>
+</li>
+<li><p><strong>Perform a key confusion attack, if the lab supports it.</strong> This is a more advanced JWT attack: some servers use asymmetric signing (RS256, where a private key signs and a public key verifies) but fail to check <em>which</em> algorithm was actually used — an attacker who knows the server's public key can sign a forged token with HMAC (HS256), using the public key itself as the HMAC secret, and a careless server will incorrectly treat it as validly signed.</p>
+</li>
+<li><p><strong>Crack a weak secret with hashcat.</strong> If the lab provides a token signed with a symmetric (HS256) algorithm and a weak, guessable secret, extract the token's signing material and attempt a dictionary attack:</p>
+<pre><code class="language-bash">hashcat -a 0 -m 16500 jwt.txt rockyou.txt
 </code></pre>
-(<code>rockyou.txt</code> is a widely used, freely available password wordlist referenced throughout password-cracking exercises in this course.) A JWT secured with a weak, short, or dictionary-word secret is exploitable exactly the same way a weak login password is.</li>
-<li><strong>Implement proper validation — the defensive half of this lab.</strong> Using pseudocode or a real language of your choice, write out what correct JWT validation looks like: the server must hardcode which algorithm(s) it accepts (never trust the token's own <code>alg</code> header to decide), and must explicitly check <code>exp</code> (expiration), <code>aud</code> (intended audience), and <code>iss</code> (issuer) claims — not just verify the signature and stop there.</li>
+<p>(<code>rockyou.txt</code> is a widely used, freely available password wordlist referenced throughout password-cracking exercises in this course.) A JWT secured with a weak, short, or dictionary-word secret is exploitable exactly the same way a weak login password is.</p>
+</li>
+<li><p><strong>Implement proper validation — the defensive half of this lab.</strong> Using pseudocode or a real language of your choice, write out what correct JWT validation looks like: the server must hardcode which algorithm(s) it accepts (never trust the token's own <code>alg</code> header to decide), and must explicitly check <code>exp</code> (expiration), <code>aud</code> (intended audience), and <code>iss</code> (issuer) claims — not just verify the signature and stop there.</p>
+</li>
+<li><p><strong>Test for JWT expiration and revocation gaps.</strong> Capture a valid token, note its <code>exp</code> claim, then test two separate scenarios: does the server actually reject the token once <code>exp</code> has passed (some implementations only check this client-side), and — separately — if the lab has a "log out" feature, does the <em>same</em> token still work after logout? Many JWT-based systems have no server-side revocation list at all, meaning a stolen token remains valid until its natural expiry regardless of any logout action, a meaningfully different risk profile from the server-side session model in Path 05.4 where logout can immediately invalidate the session store entry.</p>
+</li>
 </ol>
-<pre><code class="language-mermaid">flowchart TD
-    A[Received JWT] --&gt; B{alg matches\nserver's hardcoded\nexpectation?}
-    B --&gt;|No| C[Reject immediately]
-    B --&gt;|Yes| D{Signature valid\nwith server's own key?}
-    D --&gt;|No| C
-    D --&gt;|Yes| E{exp, aud, iss\nall valid?}
-    E --&gt;|No| C
-    E --&gt;|Yes| F[Accept token]
-</code></pre>
-<ol>
-<li><strong>Test for JWT expiration and revocation gaps.</strong> Capture a valid token, note its <code>exp</code> claim, then test two separate scenarios: does the server actually reject the token once <code>exp</code> has passed (some implementations only check this client-side), and — separately — if the lab has a "log out" feature, does the <em>same</em> token still work after logout? Many JWT-based systems have no server-side revocation list at all, meaning a stolen token remains valid until its natural expiry regardless of any logout action, a meaningfully different risk profile from the server-side session model in Path 05.4 where logout can immediately invalidate the session store entry.</li>
-</ol>
-<p>:::warn Never reuse rockyou.txt-style wordlists outside authorized labs
-Everything in Task 3 must happen against a lab you own or are explicitly authorized to test — cracking attempts against real production systems without permission cross directly from "practice" into unauthorized access, exactly the line Path 01's golden rule establishes.
-:::</p>
-<p>:::challenge Bypass, then fix
-Using your lab environment, successfully bypass authentication with at least two different JWT attacks from this lab. Then — this is the part many learners skip — actually write out (or implement, if you're comfortable with code) the corrected validation logic that would have stopped both attacks. Understanding the fix as deeply as the exploit is what separates a tester from someone who can only break things.
-:::</p>
+<p>Everything in Task 3 must happen against a lab you own or are explicitly authorized to test — cracking attempts against real production systems without permission cross directly from "practice" into unauthorized access, exactly the line Path 01's golden rule establishes.</p>
+<p>Using your lab environment, successfully bypass authentication with at least two different JWT attacks from this lab. Then — this is the part many learners skip — actually write out (or implement, if you're comfortable with code) the corrected validation logic that would have stopped both attacks. Understanding the fix as deeply as the exploit is what separates a tester from someone who can only break things.</p>
 <h2>Key takeaway</h2>
 <p>Every JWT attack in this lab shares one root cause: <strong>trusting client-supplied metadata to decide how to validate the client's own data</strong> (algorithm choice, in every case here). This generalizes far beyond JWTs — it's one of the most common security anti-patterns across web applications broadly, and recognizing the pattern is more valuable than memorizing any single JWT-specific technique.</p>
 <p><strong>Next up →</strong> <a href="#/lesson/11-web-security/ssrf-jwt-lab">SSRF &amp; JWT Lab</a></p>

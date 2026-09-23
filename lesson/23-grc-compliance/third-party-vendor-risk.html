@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Third-Party &amp; Vendor Risk — Path 23 · KashSec Academy</title>
-<meta name="description" content="Third-Party &amp; Vendor Risk: Why vendors are the weak link, and how to actually assess them.">
+<meta name="description" content="Some of the most damaging breaches in history didn't start inside the victim company at all — they started with a vendor. Target (2013), SolarWinds (2020), and countless smaller incidents all trace ba">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/23-grc-compliance/third-party-vendor-risk.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Third-Party &amp; Vendor Risk — Path 23 · KashSec Academy">
-<meta property="og:description" content="Third-Party &amp; Vendor Risk: Why vendors are the weak link, and how to actually assess them.">
+<meta property="og:description" content="Some of the most damaging breaches in history didn't start inside the victim company at all — they started with a vendor. Target (2013), SolarWinds (2020), and countless smaller incidents all trace ba">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/23-grc-compliance/third-party-vendor-risk.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Third-Party &amp; Vendor Risk — Path 23 · KashSec Academy">
-<meta name="twitter:description" content="Third-Party &amp; Vendor Risk: Why vendors are the weak link, and how to actually assess them.">
+<meta name="twitter:description" content="Some of the most damaging breaches in history didn't start inside the victim company at all — they started with a vendor. Target (2013), SolarWinds (2020), and countless smaller incidents all trace ba">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 23 — GRC & Compliance","item":"https://kashsec.vercel.app/lesson/23-grc-compliance/"},{"@type":"ListItem","position":4,"name":"Third-Party & Vendor Risk","item":"https://kashsec.vercel.app/lesson/23-grc-compliance/third-party-vendor-risk.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Third-Party & Vendor Risk","headline":"Third-Party & Vendor Risk","description":"Third-Party & Vendor Risk: Why vendors are the weak link, and how to actually assess them.","url":"https://kashsec.vercel.app/lesson/23-grc-compliance/third-party-vendor-risk.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"All levels","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Why vendors are the weak link, and how to actually assess them.","isPartOf":{"@type":"Course","name":"Path 23: GRC & Compliance","url":"https://kashsec.vercel.app/lesson/23-grc-compliance/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/23-grc-compliance/third-party-vendor-risk.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Third-Party & Vendor Risk","headline":"Third-Party & Vendor Risk","description":"Some of the most damaging breaches in history didn't start inside the victim company at all — they started with a vendor. Target (2013), SolarWinds (2020), and countless smaller incidents all trace ba","url":"https://kashsec.vercel.app/lesson/23-grc-compliance/third-party-vendor-risk.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"All levels","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Why vendors are the weak link, and how to actually assess them.","isPartOf":{"@type":"Course","name":"Path 23: GRC & Compliance","url":"https://kashsec.vercel.app/lesson/23-grc-compliance/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/23-grc-compliance/third-party-vendor-risk.html"}}
 </script>
 </head>
 <body>
@@ -89,9 +89,7 @@
     <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/23-grc-compliance/">Path 23 — GRC &amp; Compliance</a> · Third-Party &amp; Vendor Risk</nav>
     <div class="md" id="content"><article><h1>Third-Party &amp; Vendor Risk</h1>
 <p>Some of the most damaging breaches in history didn't start inside the victim company at all — they started with a vendor. Target (2013), SolarWinds (2020), and countless smaller incidents all trace back to third-party risk.</p>
-<p>:::tip
-Vendor risk isn't just about vendors who touch your data directly. A vendor whose <em>software</em> you install (like SolarWinds' Orion) can compromise you even with zero data access, just by shipping malicious updates.
-:::</p>
+<p>:::</p>
 <h2>Why vendors are the weak link</h2>
 <p>Your organisation might have a mature security program — but if you give a vendor access to your data, your network, or your customers' data, your security posture is now only as strong as <em>theirs</em>. Attackers know this and specifically target smaller, less-secured vendors as a way into larger, better-defended targets.</p>
 <h3>The Target breach, briefly</h3>
@@ -105,8 +103,7 @@ Vendor risk isn't just about vendors who touch your data directly. A vendor whos
 <li><strong>Offboarding</strong> — revoke access promptly when the relationship ends. Forgotten vendor access is a classic audit finding.</li>
 </ol>
 <p>:::warn
-Stage 4 (ongoing monitoring) is the one organisations skip most often, because it's the least urgent-feeling step. A vendor assessed as low-risk at onboarding two years ago may have since suffered a breach, changed ownership, or quietly outsourced their infrastructure to a provider you've never vetted. "We checked them once" is not the same as "we know their current risk."
-:::</p>
+Stage 4 (ongoing monitoring) is the one organisations skip most often, because it's the least urgent-feeling step. A vendor assessed as low-risk at onboarding two years ago may have since suffered a breach, changed ownership, or quietly outsourced their infrastructure to a provider you've never vetted. "We checked them once" is not the same as "we know their current risk."</p>
 <h2>Tiering vendors by risk</h2>
 <p>Not every vendor deserves the same scrutiny — the office snack delivery service doesn't need the same review as your cloud hosting provider. A simple tiering model:</p>
 <ul>
@@ -158,17 +155,20 @@ Stage 4 (ongoing monitoring) is the one organisations skip most often, because i
 <p>A lot of vendor risk assessment is really "asking the same questions this course teaches you to answer technically" — encryption, access control, incident response — just from the outside, based on documentation and attestation rather than hands-on testing. That overlap is exactly why technical security knowledge makes you a much stronger GRC analyst.</p>
 <h2>🧪 Hands-on lab — tier and assess a vendor</h2>
 <ol>
-<li>Pick three real or hypothetical vendors a mid-size company might use: one clearly Tier 1 (e.g. a payments processor), one Tier 2, one Tier 3.</li>
-<li>For the Tier 1 vendor, draft five questions you'd put on a security questionnaire, going beyond the generic list above — tailor them to what that specific vendor actually does.</li>
-<li>Research (or imagine) what subprocessors that Tier 1 vendor might realistically use, and note the fourth-party risk this introduces.</li>
-<li>Write a one-paragraph justification for why the Tier 3 vendor gets minimal review — what makes it genuinely low risk, not just "seems fine"?</li>
-</ol>
-<p>:::challenge Test yourself</p>
-<ol>
-<li>In the Target breach, why did an HVAC vendor's limited network access matter at all to a retailer's point-of-sale security?</li>
-<li>Why is "ongoing monitoring" the vendor risk lifecycle stage organisations skip most often, and what's the practical cost of skipping it?</li>
-<li>Explain the fourth-party problem in your own words, using an example different from the one in this lesson.
-:::</li>
+<li><p>Pick three real or hypothetical vendors a mid-size company might use: one clearly Tier 1 (e.g. a payments processor), one Tier 2, one Tier 3.</p>
+</li>
+<li><p>For the Tier 1 vendor, draft five questions you'd put on a security questionnaire, going beyond the generic list above — tailor them to what that specific vendor actually does.</p>
+</li>
+<li><p>Research (or imagine) what subprocessors that Tier 1 vendor might realistically use, and note the fourth-party risk this introduces.</p>
+</li>
+<li><p>Write a one-paragraph justification for why the Tier 3 vendor gets minimal review — what makes it genuinely low risk, not just "seems fine"?</p>
+</li>
+<li><p>In the Target breach, why did an HVAC vendor's limited network access matter at all to a retailer's point-of-sale security?</p>
+</li>
+<li><p>Why is "ongoing monitoring" the vendor risk lifecycle stage organisations skip most often, and what's the practical cost of skipping it?</p>
+</li>
+<li><p>Explain the fourth-party problem in your own words, using an example different from the one in this lesson.</p>
+</li>
 </ol>
 <h2>Key terms</h2>
 <ul>

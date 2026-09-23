@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Authentication &amp; Authorization in APIs — Path 21 · KashSec Academy</title>
-<meta name="description" content="Authentication &amp; Authorization in APIs: Who are you vs. what are you allowed to do — the distinction that matters most.">
+<meta name="description" content="These two words get mixed up constantly. Getting them right is the foundation of API security — nearly every vulnerability class in this path is, at its core, one of these two checks being missing, we">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/21-api-security/authn-authz-apis.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Authentication &amp; Authorization in APIs — Path 21 · KashSec Academy">
-<meta property="og:description" content="Authentication &amp; Authorization in APIs: Who are you vs. what are you allowed to do — the distinction that matters most.">
+<meta property="og:description" content="These two words get mixed up constantly. Getting them right is the foundation of API security — nearly every vulnerability class in this path is, at its core, one of these two checks being missing, we">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/21-api-security/authn-authz-apis.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Authentication &amp; Authorization in APIs — Path 21 · KashSec Academy">
-<meta name="twitter:description" content="Authentication &amp; Authorization in APIs: Who are you vs. what are you allowed to do — the distinction that matters most.">
+<meta name="twitter:description" content="These two words get mixed up constantly. Getting them right is the foundation of API security — nearly every vulnerability class in this path is, at its core, one of these two checks being missing, we">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 21 — API Security","item":"https://kashsec.vercel.app/lesson/21-api-security/"},{"@type":"ListItem","position":4,"name":"Authentication & Authorization in APIs","item":"https://kashsec.vercel.app/lesson/21-api-security/authn-authz-apis.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Authentication & Authorization in APIs","headline":"Authentication & Authorization in APIs","description":"Authentication & Authorization in APIs: Who are you vs. what are you allowed to do — the distinction that matters most.","url":"https://kashsec.vercel.app/lesson/21-api-security/authn-authz-apis.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Who are you vs. what are you allowed to do — the distinction that matters most.","isPartOf":{"@type":"Course","name":"Path 21: API Security","url":"https://kashsec.vercel.app/lesson/21-api-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/21-api-security/authn-authz-apis.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Authentication & Authorization in APIs","headline":"Authentication & Authorization in APIs","description":"These two words get mixed up constantly. Getting them right is the foundation of API security — nearly every vulnerability class in this path is, at its core, one of these two checks being missing, we","url":"https://kashsec.vercel.app/lesson/21-api-security/authn-authz-apis.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Who are you vs. what are you allowed to do — the distinction that matters most.","isPartOf":{"@type":"Course","name":"Path 21: API Security","url":"https://kashsec.vercel.app/lesson/21-api-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/21-api-security/authn-authz-apis.html"}}
 </script>
 </head>
 <body>
@@ -89,9 +89,7 @@
     <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/21-api-security/">Path 21 — API Security</a> · Authentication &amp; Authorization in APIs</nav>
     <div class="md" id="content"><article><h1>Authentication &amp; Authorization in APIs</h1>
 <p>These two words get mixed up constantly. Getting them right is the foundation of API security — nearly every vulnerability class in this path is, at its core, one of these two checks being missing, weak, or applied at the wrong point in the code.</p>
-<p>:::tip
-A quick way to keep them straight: authentication happens once, at the door. Authorization has to happen again, every single time, for every single thing the caller tries to touch. A system can nail authentication perfectly and still be completely broken if it stops there.
-:::</p>
+<p>:::</p>
 <h2>Authentication = Who are you?</h2>
 <p>Proving identity. Common mechanisms in APIs:</p>
 <table>
@@ -222,14 +220,11 @@ if (order.ownerId !== req.user.id &amp;&amp; !req.user.isAdmin) return 403;
 <ol>
 <li>Explain why "the request has a valid JWT" is authentication evidence, not authorization evidence.</li>
 <li>In the "wrong layer" scenario above, what's the one sentence you'd tell the backend team to fix the architecture, not just the bug?</li>
-<li>Why is <code>X-User-Id</code> sent by the client never a safe way to determine whose data to return?
-:::</li>
+<li>Why is <code>X-User-Id</code> sent by the client never a safe way to determine whose data to return?</li>
 </ol>
 <h2>Key takeaway</h2>
 <p>Authentication answers "who?". Authorization answers "are they allowed to do <em>this specific thing</em> to <em>this specific object</em>?". Most API vulnerabilities are failures of the second question — and the fix is almost always the same shape: fetch the object first, then explicitly compare it against the verified identity, every single time.</p>
-<p>:::lab
-Take any API you use (or a public demo API). Find one endpoint that returns data belonging to a user. Ask yourself: if I change the ID, does the server still give me the data? That single question finds a huge number of real bugs.
-:::</p>
+<p>Take any API you use (or a public demo API). Find one endpoint that returns data belonging to a user. Ask yourself: if I change the ID, does the server still give me the data? That single question finds a huge number of real bugs.</p>
 <h2>Key terms</h2>
 <ul>
 <li><strong>Authentication</strong> — proving who you are</li>

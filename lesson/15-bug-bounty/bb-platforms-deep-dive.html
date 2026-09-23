@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Bug bounty platforms, deep dive — Path 15 · KashSec Academy</title>
-<meta name="description" content="Bug bounty platforms, deep dive: Triage, reputation, and how the marketplace works.">
+<meta name="description" content="The what-is-bb lesson named HackerOne, Bugcrowd, and Intigriti in passing. This lesson goes deeper into how these platforms actually operate — the mechanics behind the marketplace, directly connecting">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/15-bug-bounty/bb-platforms-deep-dive.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Bug bounty platforms, deep dive — Path 15 · KashSec Academy">
-<meta property="og:description" content="Bug bounty platforms, deep dive: Triage, reputation, and how the marketplace works.">
+<meta property="og:description" content="The what-is-bb lesson named HackerOne, Bugcrowd, and Intigriti in passing. This lesson goes deeper into how these platforms actually operate — the mechanics behind the marketplace, directly connecting">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/15-bug-bounty/bb-platforms-deep-dive.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Bug bounty platforms, deep dive — Path 15 · KashSec Academy">
-<meta name="twitter:description" content="Bug bounty platforms, deep dive: Triage, reputation, and how the marketplace works.">
+<meta name="twitter:description" content="The what-is-bb lesson named HackerOne, Bugcrowd, and Intigriti in passing. This lesson goes deeper into how these platforms actually operate — the mechanics behind the marketplace, directly connecting">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 15 — Bug Bounty","item":"https://kashsec.vercel.app/lesson/15-bug-bounty/"},{"@type":"ListItem","position":4,"name":"Bug bounty platforms, deep dive","item":"https://kashsec.vercel.app/lesson/15-bug-bounty/bb-platforms-deep-dive.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Bug bounty platforms, deep dive","headline":"Bug bounty platforms, deep dive","description":"Bug bounty platforms, deep dive: Triage, reputation, and how the marketplace works.","url":"https://kashsec.vercel.app/lesson/15-bug-bounty/bb-platforms-deep-dive.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate→Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Triage, reputation, and how the marketplace works.","isPartOf":{"@type":"Course","name":"Path 15: Bug Bounty","url":"https://kashsec.vercel.app/lesson/15-bug-bounty/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/15-bug-bounty/bb-platforms-deep-dive.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Bug bounty platforms, deep dive","headline":"Bug bounty platforms, deep dive","description":"The what-is-bb lesson named HackerOne, Bugcrowd, and Intigriti in passing. This lesson goes deeper into how these platforms actually operate — the mechanics behind the marketplace, directly connecting","url":"https://kashsec.vercel.app/lesson/15-bug-bounty/bb-platforms-deep-dive.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate→Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Triage, reputation, and how the marketplace works.","isPartOf":{"@type":"Course","name":"Path 15: Bug Bounty","url":"https://kashsec.vercel.app/lesson/15-bug-bounty/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/15-bug-bounty/bb-platforms-deep-dive.html"}}
 </script>
 </head>
 <body>
@@ -103,10 +103,8 @@
 </ul>
 <h2>Why this matters for where you start</h2>
 <p>Directly connecting to the next lesson's program-selection guidance: understanding that private programs are reputation-gated (not just randomly harder to get into) explains why the standard beginner advice is to build reputation on public programs first — it's not just about skill development, it's about the platform's own gating mechanism requiring a track record before better-paying opportunities open up.</p>
-<p>:::challenge Test yourself
-Why does report quality affect triage speed, not just the eventual bounty payout?</p>
-<details><summary>Show answer</summary>A triager's job is to quickly verify whether a reported vulnerability is real and reproducible before forwarding it to the client's engineering team — a report with vague reproduction steps forces the triager to spend extra time (or fail entirely) attempting to recreate the issue themselves, which either delays the report while they request clarification from the researcher or results in the report being closed as unreproducible even if the underlying vulnerability is genuinely real. A precise, complete report (exact steps, exact payload, clear impact) lets the triager verify and forward it quickly, which matters because triage capacity is a genuinely limited resource shared across every researcher submitting to that program — a report that's easy to triage moves faster through the queue purely as a side effect of being easy to verify, independent of the vulnerability's actual underlying severity.</details>
-:::<h2>Key terms</h2>
+<p>Why does report quality affect triage speed, not just the eventual bounty payout?</p>
+<details><summary>Show answer</summary>A triager's job is to quickly verify whether a reported vulnerability is real and reproducible before forwarding it to the client's engineering team — a report with vague reproduction steps forces the triager to spend extra time (or fail entirely) attempting to recreate the issue themselves, which either delays the report while they request clarification from the researcher or results in the report being closed as unreproducible even if the underlying vulnerability is genuinely real. A precise, complete report (exact steps, exact payload, clear impact) lets the triager verify and forward it quickly, which matters because triage capacity is a genuinely limited resource shared across every researcher submitting to that program — a report that's easy to triage moves faster through the queue purely as a side effect of being easy to verify, independent of the vulnerability's actual underlying severity.</details><h2>Key terms</h2>
 <ul>
 <li><strong>Triage</strong> — the review process a submitted report passes through before reaching the client's engineering team.</li>
 <li><strong>Reputation score</strong> — a platform's running signal of a researcher's accepted reports, severity, and false-positive rate.</li>

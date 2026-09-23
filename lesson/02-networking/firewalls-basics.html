@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Firewalls: the basics — Path 02 · KashSec Academy</title>
-<meta name="description" content="Firewalls: the basics: Default-deny vs. default-allow, and stateful vs. stateless filtering.">
+<meta name="description" content="You've now met routers, switches, NAT, and VLANs — the pieces that move and organize traffic. This lesson introduces the piece whose entire job is deciding what traffic is even allowed to move at all:">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/02-networking/firewalls-basics.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Firewalls: the basics — Path 02 · KashSec Academy">
-<meta property="og:description" content="Firewalls: the basics: Default-deny vs. default-allow, and stateful vs. stateless filtering.">
+<meta property="og:description" content="You've now met routers, switches, NAT, and VLANs — the pieces that move and organize traffic. This lesson introduces the piece whose entire job is deciding what traffic is even allowed to move at all:">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/02-networking/firewalls-basics.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Firewalls: the basics — Path 02 · KashSec Academy">
-<meta name="twitter:description" content="Firewalls: the basics: Default-deny vs. default-allow, and stateful vs. stateless filtering.">
+<meta name="twitter:description" content="You've now met routers, switches, NAT, and VLANs — the pieces that move and organize traffic. This lesson introduces the piece whose entire job is deciding what traffic is even allowed to move at all:">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 02 — Networking Fundamentals","item":"https://kashsec.vercel.app/lesson/02-networking/"},{"@type":"ListItem","position":4,"name":"Firewalls: the basics","item":"https://kashsec.vercel.app/lesson/02-networking/firewalls-basics.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Firewalls: the basics","headline":"Firewalls: the basics","description":"Firewalls: the basics: Default-deny vs. default-allow, and stateful vs. stateless filtering.","url":"https://kashsec.vercel.app/lesson/02-networking/firewalls-basics.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Default-deny vs. default-allow, and stateful vs. stateless filtering.","isPartOf":{"@type":"Course","name":"Path 02: Networking Fundamentals","url":"https://kashsec.vercel.app/lesson/02-networking/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/02-networking/firewalls-basics.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Firewalls: the basics","headline":"Firewalls: the basics","description":"You've now met routers, switches, NAT, and VLANs — the pieces that move and organize traffic. This lesson introduces the piece whose entire job is deciding what traffic is even allowed to move at all:","url":"https://kashsec.vercel.app/lesson/02-networking/firewalls-basics.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Default-deny vs. default-allow, and stateful vs. stateless filtering.","isPartOf":{"@type":"Course","name":"Path 02: Networking Fundamentals","url":"https://kashsec.vercel.app/lesson/02-networking/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/02-networking/firewalls-basics.html"}}
 </script>
 </head>
 <body>
@@ -91,11 +91,6 @@
 <p>You've now met routers, switches, NAT, and VLANs — the pieces that move and organize traffic. This lesson introduces the piece whose entire job is deciding what traffic is even <em>allowed</em> to move at all: the <strong>firewall</strong>.</p>
 <h2>What a firewall actually does</h2>
 <p>A <strong>firewall</strong> inspects network traffic against a set of rules and decides whether to allow or block it — the network-level equivalent of the Windows Firewall setting covered in Path 07, but this lesson focuses on <strong>network firewalls</strong>: dedicated devices or software protecting an entire network segment, not just a single machine.</p>
-<pre><code class="language-mermaid">flowchart LR
-    A[Internet] --&gt; F{Firewall}
-    F --&gt;|allowed| B[Internal network]
-    F --&gt;|blocked| X[✗ dropped]
-</code></pre>
 <h2>Rule logic: allow-lists vs. deny-lists</h2>
 <p>Firewall rules generally work one of two ways:</p>
 <ul>
@@ -115,10 +110,8 @@
 </ul>
 <h2>Why a firewall alone isn't a complete defense</h2>
 <p>A genuinely important point, worth stating directly: a firewall controls <em>what's allowed to connect</em>, but it can't inspect encrypted traffic's actual content in most configurations, and it does nothing to stop an attack riding along on traffic the firewall was specifically configured to allow (a SQL injection attack traveling over an already-permitted HTTPS connection to a web server, for instance). This is exactly why this course covers dozens of other controls (from encryption to input validation to monitoring) rather than treating "we have a firewall" as sufficient on its own.</p>
-<p>:::challenge Test yourself
-Why is a default-deny firewall policy generally considered more secure than a default-allow policy, even though it requires more upfront configuration work?</p>
-<details><summary>Show answer</summary>A default-deny policy only allows traffic that's been explicitly reviewed and approved, meaning anything unanticipated — a new attack technique, a misconfigured service accidentally listening on an unexpected port — is blocked by default rather than allowed through simply because nobody thought to add a rule blocking it specifically. A default-allow policy requires anticipating every possible bad thing in advance and writing a rule to block each one, which is a losing race against attackers who only need to find one thing the defenders didn't think to block. This is exactly the same reasoning behind the default-deny principle covered throughout this course, from micro-segmentation to least-privilege access control.</details>
-:::<h2>Key terms</h2>
+<p>Why is a default-deny firewall policy generally considered more secure than a default-allow policy, even though it requires more upfront configuration work?</p>
+<details><summary>Show answer</summary>A default-deny policy only allows traffic that's been explicitly reviewed and approved, meaning anything unanticipated — a new attack technique, a misconfigured service accidentally listening on an unexpected port — is blocked by default rather than allowed through simply because nobody thought to add a rule blocking it specifically. A default-allow policy requires anticipating every possible bad thing in advance and writing a rule to block each one, which is a losing race against attackers who only need to find one thing the defenders didn't think to block. This is exactly the same reasoning behind the default-deny principle covered throughout this course, from micro-segmentation to least-privilege access control.</details><h2>Key terms</h2>
 <ul>
 <li><strong>Firewall</strong> — a device or software that inspects traffic and allows or blocks it based on defined rules.</li>
 <li><strong>Default-deny</strong> — a rule policy blocking everything except explicitly permitted traffic.</li>

@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>SSRF &amp; auth attacks — Path 11 · KashSec Academy</title>
-<meta name="description" content="SSRF &amp; auth attacks: Cloud metadata, JWT, credential attacks.">
+<meta name="description" content="Two more categories from the OWASP Top 10 (Path 11.1): SSRF (A10) — a bug where the server itself becomes the attacker's proxy — and authentication failures (A07), the flaws that undermine the entire ">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/11-web-security/ssrf-and-auth.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="SSRF &amp; auth attacks — Path 11 · KashSec Academy">
-<meta property="og:description" content="SSRF &amp; auth attacks: Cloud metadata, JWT, credential attacks.">
+<meta property="og:description" content="Two more categories from the OWASP Top 10 (Path 11.1): SSRF (A10) — a bug where the server itself becomes the attacker's proxy — and authentication failures (A07), the flaws that undermine the entire ">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/11-web-security/ssrf-and-auth.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="SSRF &amp; auth attacks — Path 11 · KashSec Academy">
-<meta name="twitter:description" content="SSRF &amp; auth attacks: Cloud metadata, JWT, credential attacks.">
+<meta name="twitter:description" content="Two more categories from the OWASP Top 10 (Path 11.1): SSRF (A10) — a bug where the server itself becomes the attacker's proxy — and authentication failures (A07), the flaws that undermine the entire ">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 11 — Web Security & Hacking","item":"https://kashsec.vercel.app/lesson/11-web-security/"},{"@type":"ListItem","position":4,"name":"SSRF & auth attacks","item":"https://kashsec.vercel.app/lesson/11-web-security/ssrf-and-auth.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"SSRF & auth attacks","headline":"SSRF & auth attacks","description":"SSRF & auth attacks: Cloud metadata, JWT, credential attacks.","url":"https://kashsec.vercel.app/lesson/11-web-security/ssrf-and-auth.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Cloud metadata, JWT, credential attacks.","isPartOf":{"@type":"Course","name":"Path 11: Web Security & Hacking","url":"https://kashsec.vercel.app/lesson/11-web-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/11-web-security/ssrf-and-auth.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"SSRF & auth attacks","headline":"SSRF & auth attacks","description":"Two more categories from the OWASP Top 10 (Path 11.1): SSRF (A10) — a bug where the server itself becomes the attacker's proxy — and authentication failures (A07), the flaws that undermine the entire ","url":"https://kashsec.vercel.app/lesson/11-web-security/ssrf-and-auth.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Cloud metadata, JWT, credential attacks.","isPartOf":{"@type":"Course","name":"Path 11: Web Security & Hacking","url":"https://kashsec.vercel.app/lesson/11-web-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/11-web-security/ssrf-and-auth.html"}}
 </script>
 </head>
 <body>
@@ -99,15 +99,6 @@ return response.content
 </code></pre>
 <p>This looks like an innocent "fetch an image from a URL to display" feature. But the server is making the request, from <strong>inside</strong> the company's network — somewhere the attacker, sitting outside on the public internet, cannot reach directly.</p>
 <h3>Why this is so dangerous — reaching internal-only systems</h3>
-<pre><code class="language-mermaid">flowchart LR
-    Attacker["🧑‍💻 Attacker&lt;br/&gt;(public internet)"] --&gt;|"image_url=http://169.254.169.254/..."| App["🖥 Vulnerable App Server"]
-    App -.-&gt;|"❌ Attacker can't reach directly"| Internal["🔒 Internal-only services&lt;br/&gt;(admin panels, databases, cloud metadata)"]
-    App --&gt;|"✅ Server CAN reach these"| Internal
-
-    style Attacker fill:#2b1010,color:#E05548,stroke:#E05548
-    style App fill:#2b1f0a,color:#EFA43A,stroke:#EFA43A
-    style Internal fill:#111927,color:#8496A6,stroke:#8496A6
-</code></pre>
 <p>Classic SSRF targets:</p>
 <ul>
 <li><strong>Cloud metadata endpoints</strong> — <code>http://169.254.169.254/</code> on AWS/GCP/Azure often exposes temporary cloud credentials, instance metadata, and sometimes even IAM role tokens, with <strong>zero authentication required</strong>, precisely because it's assumed only the instance itself would ever query it. SSRF breaks that assumption entirely — one of the most impactful SSRF outcomes in real breaches (a real, well-documented example: the 2019 Capital One breach originated from exactly this pattern).</li>
@@ -180,10 +171,8 @@ print(json.loads(base64.urlsafe_b64decode(payload + '==')))
 </ol>
 <h2>🎉 You've finished the core vulnerability lessons of Path 11</h2>
 <p>You've now covered every major OWASP Top 10 category hands-on: access control/IDOR, injection (XSS, SQLi, command injection), file upload flaws, SSRF, and authentication failures. One lesson remains to tie it all together into a practical roadmap.</p>
-<p>:::challenge Test yourself
-An app blocks any <code>image_url</code> input containing the literal string <code>localhost</code> or <code>127.0.0.1</code> to prevent SSRF. Name one bypass technique from this lesson that would defeat this specific filter.</p>
-<details><summary>Show answer</summary>Several work: <code>http://127.1/</code> (shortened form), <code>http://[::1]/</code> (IPv6 loopback), <code>http://2130706433/</code> (decimal IP representation), or <code>http://0x7f.0x0.0x0.0x1/</code> (hex representation) — all resolve to the same loopback address while containing neither blocked string, demonstrating exactly why blocklisting specific strings is structurally weaker than allowlisting permitted destinations.</details>
-:::<h2>Key terms</h2>
+<p>An app blocks any <code>image_url</code> input containing the literal string <code>localhost</code> or <code>127.0.0.1</code> to prevent SSRF. Name one bypass technique from this lesson that would defeat this specific filter.</p>
+<details><summary>Show answer</summary>Several work: <code>http://127.1/</code> (shortened form), <code>http://[::1]/</code> (IPv6 loopback), <code>http://2130706433/</code> (decimal IP representation), or <code>http://0x7f.0x0.0x0.0x1/</code> (hex representation) — all resolve to the same loopback address while containing neither blocked string, demonstrating exactly why blocklisting specific strings is structurally weaker than allowlisting permitted destinations.</details><h2>Key terms</h2>
 <ul>
 <li><strong>SSRF</strong> — tricking a server into making requests on the attacker's behalf, reaching internal-only systems.</li>
 <li><strong>Cloud metadata endpoint</strong> — an internal-only service (e.g., <code>169.254.169.254</code>) exposing instance credentials, a classic high-impact SSRF target.</li>

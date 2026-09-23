@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>HTTP &amp; HTTPS — Path 02 · KashSec Academy</title>
-<meta name="description" content="HTTP &amp; HTTPS: The web's language, and why the padlock matters.">
+<meta name="description" content="This is the protocol you'll spend the most time with, because most modern hacking is web hacking. Every time you open a website, your browser and the site's server have a conversation using a protocol">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/02-networking/http-https.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="HTTP &amp; HTTPS — Path 02 · KashSec Academy">
-<meta property="og:description" content="HTTP &amp; HTTPS: The web's language, and why the padlock matters.">
+<meta property="og:description" content="This is the protocol you'll spend the most time with, because most modern hacking is web hacking. Every time you open a website, your browser and the site's server have a conversation using a protocol">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/02-networking/http-https.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="HTTP &amp; HTTPS — Path 02 · KashSec Academy">
-<meta name="twitter:description" content="HTTP &amp; HTTPS: The web's language, and why the padlock matters.">
+<meta name="twitter:description" content="This is the protocol you'll spend the most time with, because most modern hacking is web hacking. Every time you open a website, your browser and the site's server have a conversation using a protocol">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 02 — Networking Fundamentals","item":"https://kashsec.vercel.app/lesson/02-networking/"},{"@type":"ListItem","position":4,"name":"HTTP & HTTPS","item":"https://kashsec.vercel.app/lesson/02-networking/http-https.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"HTTP & HTTPS","headline":"HTTP & HTTPS","description":"HTTP & HTTPS: The web's language, and why the padlock matters.","url":"https://kashsec.vercel.app/lesson/02-networking/http-https.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"The web's language, and why the padlock matters.","isPartOf":{"@type":"Course","name":"Path 02: Networking Fundamentals","url":"https://kashsec.vercel.app/lesson/02-networking/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/02-networking/http-https.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"HTTP & HTTPS","headline":"HTTP & HTTPS","description":"This is the protocol you'll spend the most time with, because most modern hacking is web hacking. Every time you open a website, your browser and the site's server have a conversation using a protocol","url":"https://kashsec.vercel.app/lesson/02-networking/http-https.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"The web's language, and why the padlock matters.","isPartOf":{"@type":"Course","name":"Path 02: Networking Fundamentals","url":"https://kashsec.vercel.app/lesson/02-networking/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/02-networking/http-https.html"}}
 </script>
 </head>
 <body>
@@ -91,9 +91,7 @@
 <p>This is the protocol you'll spend the most time with, because most modern hacking is <em>web</em> hacking. Every time you open a website, your browser and the site's <strong>server</strong> have a conversation using a protocol called <strong>HTTP</strong> — the HyperText Transfer Protocol. It's the language of the web.</p>
 <h2>Request and response</h2>
 <p>HTTP is a simple back-and-forth. Your browser sends a <strong>request</strong> ("please give me this page"), and the server sends back a <strong>response</strong> (the page).</p>
-<p>:::tip THE TWO WORDS TO REMEMBER FOREVER
-<strong>Request</strong> and <strong>response.</strong> Almost all web hacking is crafting clever requests and studying the responses. Burn these two words into memory.
-:::</p>
+<p><strong>Request</strong> and <strong>response.</strong> Almost all web hacking is crafting clever requests and studying the responses. Burn these two words into memory.</p>
 <h2>Anatomy of a request</h2>
 <pre><code class="language-http">GET /products?id=42 HTTP/1.1
 Host: shop.example.com
@@ -191,9 +189,7 @@ Set-Cookie: session=xyz789; HttpOnly; Secure
 <td><strong>500 Internal Server Error</strong>, 502 Bad Gateway, 503 Service Unavailable</td>
 </tr>
 </tbody></table>
-<p>:::tip 5XX = YOU TOUCHED SOMETHING
-When you see a 500 during testing, it often means the server crashed on your input — a big hint that a bug might live there. 403 says "you're not allowed" (interesting: it means something IS there). 404 usually means "not there at all."
-:::</p>
+<p>When you see a 500 during testing, it often means the server crashed on your input — a big hint that a bug might live there. 403 says "you're not allowed" (interesting: it means something IS there). 404 usually means "not there at all."</p>
 <h2>HTTP versions</h2>
 <ul>
 <li><strong>HTTP/1.1</strong> — the classic, still very common.</li>
@@ -204,43 +200,14 @@ When you see a 500 during testing, it often means the server crashed on your inp
 <h2>The 'S' is for Secure</h2>
 <p>Plain HTTP sends everything in <strong>plain text</strong>. Remember packets travel shared roads where others might read them? With plain HTTP, anyone in the middle — on the same Wi-Fi or along the route — could read everything, including your password as you type it.</p>
 <p><strong>HTTPS</strong> fixes this. The 'S' stands for <strong>Secure</strong>: the whole conversation is <strong>encrypted</strong> using <strong>TLS</strong> — scrambled into gibberish only your browser and the real server can unscramble.</p>
-<pre><code class="language-svg">&lt;svg viewBox="0 0 700 240" xmlns="http://www.w3.org/2000/svg" font-family="Inter, sans-serif"&gt;
-  &lt;g font-size="12"&gt;
-    &lt;!-- HTTP --&gt;
-    &lt;rect x="30" y="30" width="140" height="180" rx="8" fill="#111927" stroke="#E05548" stroke-width="2"/&gt;
-    &lt;text x="100" y="55" text-anchor="middle" fill="#E05548" font-weight="700" font-size="15"&gt;HTTP (port 80)&lt;/text&gt;
-    &lt;rect x="45" y="70" width="110" height="130" rx="4" fill="#080c12" stroke="#E05548" stroke-dasharray="3"/&gt;
-    &lt;text x="100" y="95" text-anchor="middle" fill="#E9EEF3" font-size="11"&gt;POST /login&lt;/text&gt;
-    &lt;text x="100" y="115" text-anchor="middle" fill="#E9EEF3" font-size="11"&gt;user=alice&lt;/text&gt;
-    &lt;text x="100" y="135" text-anchor="middle" fill="#E05548" font-size="11" font-weight="700"&gt;pass=hunter2&lt;/text&gt;
-    &lt;text x="100" y="180" text-anchor="middle" fill="#8496A6" font-size="10"&gt;Readable!&lt;/text&gt;
-    &lt;!-- HTTPS --&gt;
-    &lt;rect x="200" y="30" width="140" height="180" rx="8" fill="#111927" stroke="#3FB6A8" stroke-width="2"/&gt;
-    &lt;text x="270" y="55" text-anchor="middle" fill="#3FB6A8" font-weight="700" font-size="15"&gt;🔒 HTTPS (port 443)&lt;/text&gt;
-    &lt;rect x="215" y="70" width="110" height="130" rx="4" fill="#080c12" stroke="#3FB6A8" stroke-dasharray="3"/&gt;
-    &lt;text x="270" y="95" text-anchor="middle" fill="#8496A6" font-size="11"&gt;a3f9b2c0e1d4&lt;/text&gt;
-    &lt;text x="270" y="115" text-anchor="middle" fill="#8496A6" font-size="11"&gt;7e8c2a1b6d5f&lt;/text&gt;
-    &lt;text x="270" y="135" text-anchor="middle" fill="#8496A6" font-size="11"&gt;4b9a0c1e3d7&lt;/text&gt;
-    &lt;text x="270" y="180" text-anchor="middle" fill="#3FB6A8" font-size="10"&gt;Encrypted!&lt;/text&gt;
-    &lt;!-- Arrow to explanation --&gt;
-    &lt;text x="500" y="80" text-anchor="middle" fill="#E9EEF3" font-weight="600"&gt;🔐 TLS wraps HTTP&lt;/text&gt;
-    &lt;text x="500" y="105" text-anchor="middle" fill="#8496A6" font-size="11"&gt;1. Certificate check&lt;/text&gt;
-    &lt;text x="500" y="125" text-anchor="middle" fill="#8496A6" font-size="11"&gt;2. Key exchange&lt;/text&gt;
-    &lt;text x="500" y="145" text-anchor="middle" fill="#8496A6" font-size="11"&gt;3. Encrypted channel&lt;/text&gt;
-    &lt;text x="500" y="170" text-anchor="middle" fill="#EFA43A" font-size="11"&gt;The padlock 🔒&lt;/text&gt;
-    &lt;text x="500" y="185" text-anchor="middle" fill="#8496A6" font-size="10"&gt;= this is working&lt;/text&gt;
-  &lt;/g&gt;
-&lt;/svg&gt;
-</code></pre>
+<p><em>[HTTP vs HTTPS on the wire]</em></p>
 <ul>
 <li><strong>HTTP</strong> — plain text; anyone in the middle can read it. Never for anything private.</li>
 <li><strong>HTTPS</strong> — encrypted; safe from eavesdroppers. What virtually all real sites use today.</li>
 </ul>
 <h2>The TLS handshake (in one paragraph)</h2>
 <p>When you connect over HTTPS, the browser and server perform a <strong>TLS handshake</strong> first: the server presents a <strong>certificate</strong> proving its identity (signed by a trusted Certificate Authority), they agree on a session key, and then all future traffic is encrypted with that key. If the certificate is missing, expired, or from an untrusted CA — the browser shows a scary red warning.</p>
-<p>:::danger NEVER CLICK THROUGH CERTIFICATE WARNINGS
-On a real site, a certificate warning often means someone is trying to intercept your connection (a <strong>man-in-the-middle</strong> attack). Don't click "proceed anyway" on sites where you'll enter passwords or personal data.
-:::</p>
+<p>On a real site, a certificate warning often means someone is trying to intercept your connection (a <strong>man-in-the-middle</strong> attack). Don't click "proceed anyway" on sites where you'll enter passwords or personal data.</p>
 <h2>Idempotency and "safe" methods — a distinction that matters for testing</h2>
 <p>Two properties worth understanding about HTTP methods, since they directly affect how you test safely: a method is <strong>safe</strong> if it's not supposed to change anything on the server (GET, HEAD — just retrieving data), and a method is <strong>idempotent</strong> if calling it multiple times has the same effect as calling it once (GET, PUT, DELETE all qualify — deleting the same resource twice leaves it deleted either way; POST notably does <em>not</em> qualify, since submitting the same form twice might create two separate orders). This matters directly in testing: automated scanners and tools like Burp's Intruder (Path 11) are generally safe to run against GET requests repeatedly, but running the same destructive POST request many times during testing can have real, compounding side effects on the target application — worth being deliberate about, especially during authorized testing where causing unintended damage reflects poorly regardless of your actual intentions.</p>
 <h2>HTTP headers worth knowing</h2>
@@ -297,10 +264,8 @@ On a real site, a certificate warning often means someone is trying to intercept
 <li>Click one request and explore: its <strong>method</strong> (GET/POST), its <strong>status code</strong>, its <strong>headers</strong>, and the <strong>response</strong>. You're now looking at raw HTTP — the exact thing web hackers study.</li>
 </ol>
 <p>We go deep on DevTools in <strong>Path 05</strong>.</p>
-<p>:::challenge Test yourself
-You send a request and get back a <strong>500 Internal Server Error</strong>. What does that suggest as a tester?</p>
-<details><summary>Show answer</summary>The server crashed on your input — you *touched something*. That's often a hint that a bug may live in that endpoint. Investigate what specifically caused it.</details>
-:::<h2>Key terms</h2>
+<p>You send a request and get back a <strong>500 Internal Server Error</strong>. What does that suggest as a tester?</p>
+<details><summary>Show answer</summary>The server crashed on your input — you *touched something*. That's often a hint that a bug may live in that endpoint. Investigate what specifically caused it.</details><h2>Key terms</h2>
 <ul>
 <li><strong>HTTP</strong> — the web's request/response protocol.</li>
 <li><strong>Request / response</strong> — what your browser sends and the server returns.</li>

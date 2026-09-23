@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Insider Threats — Path 10 · KashSec Academy</title>
-<meta name="description" content="Insider Threats: Malicious, negligent, and compromised insiders — and why they're hard to detect.">
+<meta name="description" content="The attackers-kill-chain lesson focused on external attackers working their way in. This lesson covers a genuinely different, often under-appreciated risk category: people who already have legitimate ">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/10-fundamentals/insider-threats.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Insider Threats — Path 10 · KashSec Academy">
-<meta property="og:description" content="Insider Threats: Malicious, negligent, and compromised insiders — and why they're hard to detect.">
+<meta property="og:description" content="The attackers-kill-chain lesson focused on external attackers working their way in. This lesson covers a genuinely different, often under-appreciated risk category: people who already have legitimate ">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/10-fundamentals/insider-threats.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Insider Threats — Path 10 · KashSec Academy">
-<meta name="twitter:description" content="Insider Threats: Malicious, negligent, and compromised insiders — and why they're hard to detect.">
+<meta name="twitter:description" content="The attackers-kill-chain lesson focused on external attackers working their way in. This lesson covers a genuinely different, often under-appreciated risk category: people who already have legitimate ">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 10 — Cybersecurity Fundamentals","item":"https://kashsec.vercel.app/lesson/10-fundamentals/"},{"@type":"ListItem","position":4,"name":"Insider Threats","item":"https://kashsec.vercel.app/lesson/10-fundamentals/insider-threats.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Insider Threats","headline":"Insider Threats","description":"Insider Threats: Malicious, negligent, and compromised insiders — and why they're hard to detect.","url":"https://kashsec.vercel.app/lesson/10-fundamentals/insider-threats.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner→Intermediate","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Malicious, negligent, and compromised insiders — and why they're hard to detect.","isPartOf":{"@type":"Course","name":"Path 10: Cybersecurity Fundamentals","url":"https://kashsec.vercel.app/lesson/10-fundamentals/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/10-fundamentals/insider-threats.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Insider Threats","headline":"Insider Threats","description":"The attackers-kill-chain lesson focused on external attackers working their way in. This lesson covers a genuinely different, often under-appreciated risk category: people who already have legitimate ","url":"https://kashsec.vercel.app/lesson/10-fundamentals/insider-threats.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner→Intermediate","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Malicious, negligent, and compromised insiders — and why they're hard to detect.","isPartOf":{"@type":"Course","name":"Path 10: Cybersecurity Fundamentals","url":"https://kashsec.vercel.app/lesson/10-fundamentals/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/10-fundamentals/insider-threats.html"}}
 </script>
 </head>
 <body>
@@ -107,10 +107,8 @@
 <li><strong>Monitoring and logging</strong> — exactly the audit trail Path 08's logging lesson described, applied here specifically to catch insider misuse, not just external compromise</li>
 <li><strong>Offboarding discipline</strong> — promptly revoking access when someone leaves an organization; a former employee's still-active credentials are a genuinely common, entirely preventable insider risk</li>
 </ul>
-<p>:::challenge Test yourself
-Why does a compromised employee account (taken over through phishing) count as a form of "insider threat," even though the actual attacker is an external party?</p>
-<details><summary>Show answer</summary>Once an external attacker successfully phishes an employee's credentials, every system the employee's account is legitimately permitted to access becomes accessible to the attacker too — from the system's own perspective, every action taken is performed by a properly authenticated, legitimately-privileged account, with no obvious external-attacker signal like an unfamiliar login source necessarily present (especially if the attacker uses techniques to blend in). This is exactly why this lesson categorizes "compromised insiders" as its own distinct category: the actual person behind the action is an external attacker, but the access, privileges, and behavioral blending-in are functionally identical to a genuine insider, meaning the same detection challenges and mitigations (least privilege, behavioral baselining, monitoring) apply regardless of who's actually behind the keyboard.</details>
-:::<h2>Key terms</h2>
+<p>Why does a compromised employee account (taken over through phishing) count as a form of "insider threat," even though the actual attacker is an external party?</p>
+<details><summary>Show answer</summary>Once an external attacker successfully phishes an employee's credentials, every system the employee's account is legitimately permitted to access becomes accessible to the attacker too — from the system's own perspective, every action taken is performed by a properly authenticated, legitimately-privileged account, with no obvious external-attacker signal like an unfamiliar login source necessarily present (especially if the attacker uses techniques to blend in). This is exactly why this lesson categorizes "compromised insiders" as its own distinct category: the actual person behind the action is an external attacker, but the access, privileges, and behavioral blending-in are functionally identical to a genuine insider, meaning the same detection challenges and mitigations (least privilege, behavioral baselining, monitoring) apply regardless of who's actually behind the keyboard.</details><h2>Key terms</h2>
 <ul>
 <li><strong>Insider threat</strong> — risk arising from someone who already has legitimate, authorized access to a system.</li>
 <li><strong>Separation of duties</strong> — requiring more than one person to complete a sensitive action, preventing any single insider from acting alone.</li>

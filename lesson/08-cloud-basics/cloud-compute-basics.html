@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Cloud Compute Basics — Path 08 · KashSec Academy</title>
-<meta name="description" content="Cloud Compute Basics: VMs, containers, instance types, and auto-scaling.">
+<meta name="description" content="The providers-overview lesson named IaaS, PaaS, and SaaS. This lesson goes hands-on with the most fundamental IaaS building block across every major provider: compute — the actual virtual machines and">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-compute-basics.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Cloud Compute Basics — Path 08 · KashSec Academy">
-<meta property="og:description" content="Cloud Compute Basics: VMs, containers, instance types, and auto-scaling.">
+<meta property="og:description" content="The providers-overview lesson named IaaS, PaaS, and SaaS. This lesson goes hands-on with the most fundamental IaaS building block across every major provider: compute — the actual virtual machines and">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-compute-basics.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Cloud Compute Basics — Path 08 · KashSec Academy">
-<meta name="twitter:description" content="Cloud Compute Basics: VMs, containers, instance types, and auto-scaling.">
+<meta name="twitter:description" content="The providers-overview lesson named IaaS, PaaS, and SaaS. This lesson goes hands-on with the most fundamental IaaS building block across every major provider: compute — the actual virtual machines and">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 08 — Cloud Computing Basics","item":"https://kashsec.vercel.app/lesson/08-cloud-basics/"},{"@type":"ListItem","position":4,"name":"Cloud Compute Basics","item":"https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-compute-basics.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Cloud Compute Basics","headline":"Cloud Compute Basics","description":"Cloud Compute Basics: VMs, containers, instance types, and auto-scaling.","url":"https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-compute-basics.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"VMs, containers, instance types, and auto-scaling.","isPartOf":{"@type":"Course","name":"Path 08: Cloud Computing Basics","url":"https://kashsec.vercel.app/lesson/08-cloud-basics/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-compute-basics.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Cloud Compute Basics","headline":"Cloud Compute Basics","description":"The providers-overview lesson named IaaS, PaaS, and SaaS. This lesson goes hands-on with the most fundamental IaaS building block across every major provider: compute — the actual virtual machines and","url":"https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-compute-basics.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"VMs, containers, instance types, and auto-scaling.","isPartOf":{"@type":"Course","name":"Path 08: Cloud Computing Basics","url":"https://kashsec.vercel.app/lesson/08-cloud-basics/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-compute-basics.html"}}
 </script>
 </head>
 <body>
@@ -89,9 +89,7 @@
     <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/08-cloud-basics/">Path 08 — Cloud Computing Basics</a> · Cloud Compute Basics</nav>
     <div class="md" id="content"><article><h1>Cloud Compute Basics</h1>
 <p>The providers-overview lesson named IaaS, PaaS, and SaaS. This lesson goes hands-on with the most fundamental IaaS building block across every major provider: <strong>compute</strong> — the actual virtual machines and containers that run your code.</p>
-<p>:::tip
-Nearly every other cloud service in this path — storage, databases, serverless functions — ultimately runs <em>on</em> compute infrastructure somewhere, even when the provider abstracts that away from you. Understanding compute is understanding the foundation everything else sits on.
-:::</p>
+<p>:::</p>
 <h2>Virtual machines in the cloud</h2>
 <p>A cloud <strong>virtual machine (VM)</strong> — Amazon calls it an <strong>EC2 instance</strong>, Azure a <strong>Virtual Machine</strong>, Google Cloud a <strong>Compute Engine instance</strong> — is conceptually the same thing the home-lab lesson back in Path 01 introduced: an isolated, software-defined computer. The cloud version adds one major difference: you can create, resize, or destroy one in seconds through an API call, rather than needing physical hardware, and you pay only for the time it actually runs.</p>
 <h2>Instance types: matching resources to the job</h2>
@@ -109,15 +107,12 @@ Nearly every other cloud service in this path — storage, databases, serverless
 <p>:::challenge Evaluate a scaling decision
 A company runs a web application on a single, large, constantly-running VM sized for their highest expected traffic (Black Friday), even though daily traffic the rest of the year is a small fraction of that peak.</p>
 <details><summary>Hint</summary>What does this configuration cost the company during the 360+ days a year that aren't Black Friday, and what cloud-native alternative would this lesson suggest?</details>
-<details><summary>Show answer</summary>This configuration wastes significant money for most of the year — the company is paying for peak-capacity compute 24/7, even though that capacity sits mostly idle outside of the actual peak period. An auto-scaling configuration would instead run a smaller baseline of instances most of the time, automatically adding capacity as real demand rises (during Black Friday specifically) and scaling back down afterward — matching actual cost to actual demand, precisely the elasticity advantage that distinguishes cloud compute from traditional fixed-capacity on-premises hardware.</details>
-:::<h2>🧪 Hands-on lab — compare instance types</h2>
+<details><summary>Show answer</summary>This configuration wastes significant money for most of the year — the company is paying for peak-capacity compute 24/7, even though that capacity sits mostly idle outside of the actual peak period. An auto-scaling configuration would instead run a smaller baseline of instances most of the time, automatically adding capacity as real demand rises (during Black Friday specifically) and scaling back down afterward — matching actual cost to actual demand, precisely the elasticity advantage that distinguishes cloud compute from traditional fixed-capacity on-premises hardware.</details><h2>🧪 Hands-on lab — compare instance types</h2>
 <p>Using a cloud provider's public pricing page (no account required), compare the specs and hourly cost of a small general-purpose instance type against a larger, compute-optimized instance type. Identify what kind of workload each would realistically be suited for.</p>
-<p>:::challenge Test yourself</p>
 <ol>
 <li>What's the key structural difference between a container and a full virtual machine?</li>
 <li>Why does auto-scaling matter for cost, not just performance?</li>
-<li>Why does the instance metadata service's security matter specifically for compute instances?
-:::</li>
+<li>Why does the instance metadata service's security matter specifically for compute instances?</li>
 </ol>
 <h2>Key terms</h2>
 <ul>

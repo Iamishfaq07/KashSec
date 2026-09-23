@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Bug Bounty Hunting Challenges — Path 15 · KashSec Academy</title>
-<meta name="description" content="Bug Bounty Hunting Challenges: Practical challenges to level up your hunting skills.">
+<meta name="description" content="This lab bridges everything you've learned across Path 11 (web security) and this path's earlier lessons into real hunting practice — starting with beginner-friendly vulnerability classes before pushi">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/15-bug-bounty/bounty-hunting-challenges.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Bug Bounty Hunting Challenges — Path 15 · KashSec Academy">
-<meta property="og:description" content="Bug Bounty Hunting Challenges: Practical challenges to level up your hunting skills.">
+<meta property="og:description" content="This lab bridges everything you've learned across Path 11 (web security) and this path's earlier lessons into real hunting practice — starting with beginner-friendly vulnerability classes before pushi">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/15-bug-bounty/bounty-hunting-challenges.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Bug Bounty Hunting Challenges — Path 15 · KashSec Academy">
-<meta name="twitter:description" content="Bug Bounty Hunting Challenges: Practical challenges to level up your hunting skills.">
+<meta name="twitter:description" content="This lab bridges everything you've learned across Path 11 (web security) and this path's earlier lessons into real hunting practice — starting with beginner-friendly vulnerability classes before pushi">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 15 — Bug Bounty","item":"https://kashsec.vercel.app/lesson/15-bug-bounty/"},{"@type":"ListItem","position":4,"name":"Bug Bounty Hunting Challenges","item":"https://kashsec.vercel.app/lesson/15-bug-bounty/bounty-hunting-challenges.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Bug Bounty Hunting Challenges","headline":"Bug Bounty Hunting Challenges","description":"Bug Bounty Hunting Challenges: Practical challenges to level up your hunting skills.","url":"https://kashsec.vercel.app/lesson/15-bug-bounty/bounty-hunting-challenges.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Intermediate→Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Practical challenges to level up your hunting skills.","isPartOf":{"@type":"Course","name":"Path 15: Bug Bounty","url":"https://kashsec.vercel.app/lesson/15-bug-bounty/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/15-bug-bounty/bounty-hunting-challenges.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Bug Bounty Hunting Challenges","headline":"Bug Bounty Hunting Challenges","description":"This lab bridges everything you've learned across Path 11 (web security) and this path's earlier lessons into real hunting practice — starting with beginner-friendly vulnerability classes before pushi","url":"https://kashsec.vercel.app/lesson/15-bug-bounty/bounty-hunting-challenges.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Intermediate→Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Practical challenges to level up your hunting skills.","isPartOf":{"@type":"Course","name":"Path 15: Bug Bounty","url":"https://kashsec.vercel.app/lesson/15-bug-bounty/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/15-bug-bounty/bounty-hunting-challenges.html"}}
 </script>
 </head>
 <body>
@@ -112,12 +112,8 @@
 <li><strong><a href="https://github.com/projectdiscovery/subfinder">Subfinder</a></strong> — fast subdomain enumeration, the starting point of the recon pipeline covered next in this path.</li>
 </ul>
 <h2>Building good hunting habits</h2>
-<p>:::tip Read the program's scope and policy before touching anything
-Every bug bounty program defines exactly what's in scope (which domains, which vulnerability types) and what's explicitly disallowed (often things like automated scanning at high volume, social engineering, or physical testing). Reading this document fully, every time, before testing a new program is non-negotiable — testing outside scope, even accidentally, can get your account banned or, in rare cases, cross into legal risk.
-:::</p>
-<p>:::challenge Submit a real report this month
-Pick one program on <strong>HackerOne</strong> or <strong>Intigriti</strong> (both host large numbers of legitimate, well-run programs, many with generous scope for beginners), read its policy fully, and submit at least one valid, well-written report using the structure from Path 14's Reporting lab — even a low-severity, informational finding is a genuine, real accomplishment worth completing and documenting in your GitHub portfolio (Path 20).
-:::</p>
+<p>Every bug bounty program defines exactly what's in scope (which domains, which vulnerability types) and what's explicitly disallowed (often things like automated scanning at high volume, social engineering, or physical testing). Reading this document fully, every time, before testing a new program is non-negotiable — testing outside scope, even accidentally, can get your account banned or, in rare cases, cross into legal risk.</p>
+<p>Pick one program on <strong>HackerOne</strong> or <strong>Intigriti</strong> (both host large numbers of legitimate, well-run programs, many with generous scope for beginners), read its policy fully, and submit at least one valid, well-written report using the structure from Path 14's Reporting lab — even a low-severity, informational finding is a genuine, real accomplishment worth completing and documenting in your GitHub portfolio (Path 20).</p>
 <h2>Key takeaway</h2>
 <p>The beginner-friendly vulnerability classes covered here — IDOR, open redirects, stored XSS — remain consistently among the most commonly <em>found and paid</em> bug bounty categories precisely because they require careful, methodical testing rather than exotic technique, which is exactly the skill this lab (and this entire course) has been building toward.</p>
 <p><strong>Next up →</strong> <a href="#/lesson/15-bug-bounty/logic-bug-hunting-lab">Logic Bug Hunting Lab</a></p>

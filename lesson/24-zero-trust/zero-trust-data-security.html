@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Data-Centric Zero Trust — Path 24 · KashSec Academy</title>
-<meta name="description" content="Data-Centric Zero Trust: Classification, DLP, and rights management — the last line of defense once access is granted.">
+<meta name="description" content="Every lesson so far has protected the paths to data — identity, device posture, segmentation, ZTNA. This lesson flips the focus onto the data itself: what happens when the access controls are bypassed">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-data-security.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Data-Centric Zero Trust — Path 24 · KashSec Academy">
-<meta property="og:description" content="Data-Centric Zero Trust: Classification, DLP, and rights management — the last line of defense once access is granted.">
+<meta property="og:description" content="Every lesson so far has protected the paths to data — identity, device posture, segmentation, ZTNA. This lesson flips the focus onto the data itself: what happens when the access controls are bypassed">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-data-security.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Data-Centric Zero Trust — Path 24 · KashSec Academy">
-<meta name="twitter:description" content="Data-Centric Zero Trust: Classification, DLP, and rights management — the last line of defense once access is granted.">
+<meta name="twitter:description" content="Every lesson so far has protected the paths to data — identity, device posture, segmentation, ZTNA. This lesson flips the focus onto the data itself: what happens when the access controls are bypassed">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 24 — Zero Trust Architecture","item":"https://kashsec.vercel.app/lesson/24-zero-trust/"},{"@type":"ListItem","position":4,"name":"Data-Centric Zero Trust","item":"https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-data-security.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Data-Centric Zero Trust","headline":"Data-Centric Zero Trust","description":"Data-Centric Zero Trust: Classification, DLP, and rights management — the last line of defense once access is granted.","url":"https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-data-security.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Classification, DLP, and rights management — the last line of defense once access is granted.","isPartOf":{"@type":"Course","name":"Path 24: Zero Trust Architecture","url":"https://kashsec.vercel.app/lesson/24-zero-trust/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-data-security.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Data-Centric Zero Trust","headline":"Data-Centric Zero Trust","description":"Every lesson so far has protected the paths to data — identity, device posture, segmentation, ZTNA. This lesson flips the focus onto the data itself: what happens when the access controls are bypassed","url":"https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-data-security.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Classification, DLP, and rights management — the last line of defense once access is granted.","isPartOf":{"@type":"Course","name":"Path 24: Zero Trust Architecture","url":"https://kashsec.vercel.app/lesson/24-zero-trust/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-data-security.html"}}
 </script>
 </head>
 <body>
@@ -89,9 +89,7 @@
     <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/24-zero-trust/">Path 24 — Zero Trust Architecture</a> · Data-Centric Zero Trust</nav>
     <div class="md" id="content"><article><h1>Data-Centric Zero Trust</h1>
 <p>Every lesson so far has protected the <em>paths</em> to data — identity, device posture, segmentation, ZTNA. This lesson flips the focus onto the data itself: what happens when the access controls are bypassed anyway, and the data is the last line of defense.</p>
-<p>:::tip
-A useful mental model: every other Zero Trust control in this path answers "should this request reach the data?" Data-centric controls answer a different question: "if it does reach the data, what can it actually do with it?" Real Zero Trust programs need both.
-:::</p>
+<p>:::</p>
 <h2>Why data-centric controls matter even with everything else in place</h2>
 <p>Perfect identity verification, perfect device posture checks, and perfect micro-segmentation still leave one gap: a legitimate, verified, healthy device belonging to a legitimate, verified user can still be the source of a data breach — through a compromised session, an insider threat, or simple human error like an accidental share. Data-centric controls are what limits the blast radius <em>after</em> every upstream control has already been satisfied.</p>
 <h2>The core techniques</h2>
@@ -106,15 +104,12 @@ A useful mental model: every other Zero Trust control in this path answers "shou
 <p>:::challenge Design the missing control
 A sales employee's laptop passes every device-posture check and their login satisfies MFA. Mid-session, they attempt to export the entire customer database to a personal USB drive — a volume and pattern of access completely inconsistent with their normal daily use.</p>
 <details><summary>Hint</summary>Every identity and device check this employee passed was correct and legitimate at login. What kind of control catches a legitimate, authenticated user doing something their role doesn't justify, in the moment it happens?</details>
-<details><summary>Show answer</summary>This is exactly the gap data-centric controls close. Data classification would have flagged the customer database as sensitive; DLP monitoring tied to that classification would recognize an export of this volume and destination as anomalous regardless of the user's valid authentication; and continuous verification's risk-scoring could trigger an automatic block or require step-up authentication before the export completes. No identity or device check alone would have caught this — the user genuinely was who they claimed to be, on a genuinely healthy device. The control that matters here operates on the data and the *behavior*, not the identity.</details>
-:::<h2>🧪 Hands-on lab — classify and control</h2>
+<details><summary>Show answer</summary>This is exactly the gap data-centric controls close. Data classification would have flagged the customer database as sensitive; DLP monitoring tied to that classification would recognize an export of this volume and destination as anomalous regardless of the user's valid authentication; and continuous verification's risk-scoring could trigger an automatic block or require step-up authentication before the export completes. No identity or device check alone would have caught this — the user genuinely was who they claimed to be, on a genuinely healthy device. The control that matters here operates on the data and the *behavior*, not the identity.</details><h2>🧪 Hands-on lab — classify and control</h2>
 <p>Pick three types of data a fictional company handles (customer PII, source code, internal financial reports). For each, assign a classification tier and specify one concrete data-centric control (DLP rule, rights-management setting, or encryption policy) appropriate to that tier.</p>
-<p>:::challenge Test yourself</p>
 <ol>
 <li>Why are data-centric controls necessary even when identity and device controls are working correctly?</li>
 <li>What's the practical benefit of tying decryption rights to the same identity signals used for access decisions elsewhere?</li>
-<li>How does continuous verification connect to data-centric enforcement in practice?
-:::</li>
+<li>How does continuous verification connect to data-centric enforcement in practice?</li>
 </ol>
 <h2>Key terms</h2>
 <ul>

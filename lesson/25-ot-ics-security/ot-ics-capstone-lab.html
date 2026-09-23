@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Capstone: Secure a Realistic Industrial Network — Path 25 · KashSec Academy</title>
-<meta name="description" content="Capstone: Secure a Realistic Industrial Network: A full assessment exercise applying everything in this path to one fictional facility.">
+<meta name="description" content="This closing lesson pulls together everything from the path — control loops, protocols, the Purdue Model, real-world incident patterns, and practical controls — into one applied exercise: assessing an">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/25-ot-ics-security/ot-ics-capstone-lab.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Capstone: Secure a Realistic Industrial Network — Path 25 · KashSec Academy">
-<meta property="og:description" content="Capstone: Secure a Realistic Industrial Network: A full assessment exercise applying everything in this path to one fictional facility.">
+<meta property="og:description" content="This closing lesson pulls together everything from the path — control loops, protocols, the Purdue Model, real-world incident patterns, and practical controls — into one applied exercise: assessing an">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/25-ot-ics-security/ot-ics-capstone-lab.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Capstone: Secure a Realistic Industrial Network — Path 25 · KashSec Academy">
-<meta name="twitter:description" content="Capstone: Secure a Realistic Industrial Network: A full assessment exercise applying everything in this path to one fictional facility.">
+<meta name="twitter:description" content="This closing lesson pulls together everything from the path — control loops, protocols, the Purdue Model, real-world incident patterns, and practical controls — into one applied exercise: assessing an">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 25 — OT/ICS & Critical Infrastructure Security","item":"https://kashsec.vercel.app/lesson/25-ot-ics-security/"},{"@type":"ListItem","position":4,"name":"Capstone: Secure a Realistic Industrial Network","item":"https://kashsec.vercel.app/lesson/25-ot-ics-security/ot-ics-capstone-lab.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Capstone: Secure a Realistic Industrial Network","headline":"Capstone: Secure a Realistic Industrial Network","description":"Capstone: Secure a Realistic Industrial Network: A full assessment exercise applying everything in this path to one fictional facility.","url":"https://kashsec.vercel.app/lesson/25-ot-ics-security/ot-ics-capstone-lab.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"A full assessment exercise applying everything in this path to one fictional facility.","isPartOf":{"@type":"Course","name":"Path 25: OT/ICS & Critical Infrastructure Security","url":"https://kashsec.vercel.app/lesson/25-ot-ics-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/25-ot-ics-security/ot-ics-capstone-lab.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Capstone: Secure a Realistic Industrial Network","headline":"Capstone: Secure a Realistic Industrial Network","description":"This closing lesson pulls together everything from the path — control loops, protocols, the Purdue Model, real-world incident patterns, and practical controls — into one applied exercise: assessing an","url":"https://kashsec.vercel.app/lesson/25-ot-ics-security/ot-ics-capstone-lab.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"A full assessment exercise applying everything in this path to one fictional facility.","isPartOf":{"@type":"Course","name":"Path 25: OT/ICS & Critical Infrastructure Security","url":"https://kashsec.vercel.app/lesson/25-ot-ics-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/25-ot-ics-security/ot-ics-capstone-lab.html"}}
 </script>
 </head>
 <body>
@@ -89,9 +89,7 @@
     <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/25-ot-ics-security/">Path 25 — OT/ICS &amp; Critical Infrastructure Security</a> · Capstone: Secure a Realistic Industrial Network</nav>
     <div class="md" id="content"><article><h1>Capstone: Secure a Realistic Industrial Network</h1>
 <p>This closing lesson pulls together everything from the path — control loops, protocols, the Purdue Model, real-world incident patterns, and practical controls — into one applied exercise: assessing and securing a realistic (fictional) industrial facility.</p>
-<p>:::tip
-Treat this the way a real OT security assessment actually works: you're not being asked to eliminate every theoretical risk, you're being asked to make the specific, prioritized, realistic recommendations that matter most given real constraints — exactly the discipline the practical-controls lesson modeled.
-:::</p>
+<p>:::</p>
 <h2>The scenario: Meridian Water Treatment Facility</h2>
 <p>Meridian is a mid-size municipal water treatment plant. Current state, based on a walkthrough with their engineering team:</p>
 <ul>
@@ -133,8 +131,7 @@ Treat this the way a real OT security assessment actually works: you're not bein
 <ol>
 <li>Which of Meridian's weaknesses represents the clearest DMZ-bypass failure, and why?</li>
 <li>Why is "just replace the unsupported legacy PLCs" not a realistic top-priority recommendation, even though it would technically solve several problems at once?</li>
-<li>In your remote-access redesign, what specifically stops a compromised personal laptop from directly reaching Level 2, the way it could today?
-:::</li>
+<li>In your remote-access redesign, what specifically stops a compromised personal laptop from directly reaching Level 2, the way it could today?</li>
 </ol>
 <h2>Key terms</h2>
 <ul>

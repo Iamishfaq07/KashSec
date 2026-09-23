@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Windows Active Directory: The Basics — Path 07 · KashSec Academy</title>
-<meta name="description" content="Windows Active Directory: The Basics: Domains, Domain Controllers, Kerberos, and why AD is such a high-value target.">
+<meta name="description" content="The user-accounts lesson covered individual machine accounts. This lesson introduces the system that manages accounts, permissions, and policy across an entire organization's Windows machines at once ">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/07-windows-security/windows-active-directory-basics.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Windows Active Directory: The Basics — Path 07 · KashSec Academy">
-<meta property="og:description" content="Windows Active Directory: The Basics: Domains, Domain Controllers, Kerberos, and why AD is such a high-value target.">
+<meta property="og:description" content="The user-accounts lesson covered individual machine accounts. This lesson introduces the system that manages accounts, permissions, and policy across an entire organization's Windows machines at once ">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/07-windows-security/windows-active-directory-basics.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Windows Active Directory: The Basics — Path 07 · KashSec Academy">
-<meta name="twitter:description" content="Windows Active Directory: The Basics: Domains, Domain Controllers, Kerberos, and why AD is such a high-value target.">
+<meta name="twitter:description" content="The user-accounts lesson covered individual machine accounts. This lesson introduces the system that manages accounts, permissions, and policy across an entire organization's Windows machines at once ">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 07 — Windows Security Basics","item":"https://kashsec.vercel.app/lesson/07-windows-security/"},{"@type":"ListItem","position":4,"name":"Windows Active Directory: The Basics","item":"https://kashsec.vercel.app/lesson/07-windows-security/windows-active-directory-basics.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Windows Active Directory: The Basics","headline":"Windows Active Directory: The Basics","description":"Windows Active Directory: The Basics: Domains, Domain Controllers, Kerberos, and why AD is such a high-value target.","url":"https://kashsec.vercel.app/lesson/07-windows-security/windows-active-directory-basics.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Domains, Domain Controllers, Kerberos, and why AD is such a high-value target.","isPartOf":{"@type":"Course","name":"Path 07: Windows Security Basics","url":"https://kashsec.vercel.app/lesson/07-windows-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/07-windows-security/windows-active-directory-basics.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Windows Active Directory: The Basics","headline":"Windows Active Directory: The Basics","description":"The user-accounts lesson covered individual machine accounts. This lesson introduces the system that manages accounts, permissions, and policy across an entire organization's Windows machines at once ","url":"https://kashsec.vercel.app/lesson/07-windows-security/windows-active-directory-basics.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Domains, Domain Controllers, Kerberos, and why AD is such a high-value target.","isPartOf":{"@type":"Course","name":"Path 07: Windows Security Basics","url":"https://kashsec.vercel.app/lesson/07-windows-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/07-windows-security/windows-active-directory-basics.html"}}
 </script>
 </head>
 <body>
@@ -89,9 +89,7 @@
     <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/07-windows-security/">Path 07 — Windows Security Basics</a> · Windows Active Directory: The Basics</nav>
     <div class="md" id="content"><article><h1>Windows Active Directory: The Basics</h1>
 <p>The user-accounts lesson covered individual machine accounts. This lesson introduces the system that manages accounts, permissions, and policy across an <em>entire organization's</em> Windows machines at once — foundational knowledge for Path 16's Active Directory attack lab, which assumes you already understand what AD actually is.</p>
-<p>:::tip
-Nearly every mid-size-or-larger organization running Windows uses Active Directory. Understanding it isn't optional context for a security career — it's close to a baseline expectation, which is exactly why Path 16 builds an entire hands-on attack lab (Kerberoasting, Golden Tickets) directly on top of this lesson's foundation.
-:::</p>
+<p>:::</p>
 <h2>What Active Directory actually is</h2>
 <p><strong>Active Directory (AD)</strong> is Microsoft's directory service — a centralized database of every user, computer, and group in an organization, along with the permissions and policies governing them. Instead of each individual Windows machine managing its own separate local accounts (the model the user-accounts lesson covered), AD lets an entire organization's machines share one centralized identity and policy system.</p>
 <h2>The core building blocks</h2>
@@ -108,15 +106,12 @@ Nearly every mid-size-or-larger organization running Windows uses Active Directo
 <p>:::challenge Reason about blast radius
 Compare two scenarios: (1) an attacker compromises one user's password on a standalone machine with only local accounts, and (2) an attacker compromises one ordinary user's password on a machine joined to a large organization's Active Directory domain.</p>
 <details><summary>Hint</summary>What does the compromised account actually have access to in each scenario — just this one machine, or something bigger?</details>
-<details><summary>Show answer</summary>Scenario 1's blast radius is contained to that single standalone machine — the local account has no connection to any other system. Scenario 2 is far more dangerous, even though the initial compromise looks identical from the attacker's perspective: a domain-joined account exists within AD's interconnected permission graph, potentially providing a starting point for further reconnaissance (mapping out group memberships, permissions, and misconfigurations across the entire domain) toward more privileged access, exactly the kind of path-to-Domain-Admin scenario BloodHound is designed to reveal. This is precisely why AD compromise is treated as such a high-severity finding in real security assessments — the interconnectedness that makes AD administratively convenient is the same property that makes a single compromised account potentially dangerous far beyond its own machine.</details>
-:::<h2>🧪 Hands-on lab — map the concepts</h2>
+<details><summary>Show answer</summary>Scenario 1's blast radius is contained to that single standalone machine — the local account has no connection to any other system. Scenario 2 is far more dangerous, even though the initial compromise looks identical from the attacker's perspective: a domain-joined account exists within AD's interconnected permission graph, potentially providing a starting point for further reconnaissance (mapping out group memberships, permissions, and misconfigurations across the entire domain) toward more privileged access, exactly the kind of path-to-Domain-Admin scenario BloodHound is designed to reveal. This is precisely why AD compromise is treated as such a high-severity finding in real security assessments — the interconnectedness that makes AD administratively convenient is the same property that makes a single compromised account potentially dangerous far beyond its own machine.</details><h2>🧪 Hands-on lab — map the concepts</h2>
 <p>For a hypothetical company with a Sales department and an IT department, sketch a simple AD structure: one domain, two OUs (Sales, IT), and one group each with appropriate permissions. Note which OU would reasonably contain the Domain Controller's own computer account, and why IT staff typically need broader group permissions than Sales.</p>
-<p>:::challenge Test yourself</p>
 <ol>
 <li>What's the relationship between a domain and a Domain Controller?</li>
 <li>Why does Kerberos use time-limited tickets instead of resending a password for every resource request?</li>
-<li>Why is a single compromised domain account potentially more dangerous than a single compromised local account?
-:::</li>
+<li>Why is a single compromised domain account potentially more dangerous than a single compromised local account?</li>
 </ol>
 <h2>Key terms</h2>
 <ul>

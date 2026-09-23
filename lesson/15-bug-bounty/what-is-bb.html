@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>What is a bug bounty? — Path 15 · KashSec Academy</title>
-<meta name="description" content="What is a bug bounty?: Platforms, scope, and responsible disclosure.">
+<meta name="description" content="Path 14 gave you the formal, contracted penetration testing model. Bug bounty is a different, increasingly dominant model for the same underlying goal — and it's where much of the individual, self-dir">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/15-bug-bounty/what-is-bb.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="What is a bug bounty? — Path 15 · KashSec Academy">
-<meta property="og:description" content="What is a bug bounty?: Platforms, scope, and responsible disclosure.">
+<meta property="og:description" content="Path 14 gave you the formal, contracted penetration testing model. Bug bounty is a different, increasingly dominant model for the same underlying goal — and it's where much of the individual, self-dir">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/15-bug-bounty/what-is-bb.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="What is a bug bounty? — Path 15 · KashSec Academy">
-<meta name="twitter:description" content="What is a bug bounty?: Platforms, scope, and responsible disclosure.">
+<meta name="twitter:description" content="Path 14 gave you the formal, contracted penetration testing model. Bug bounty is a different, increasingly dominant model for the same underlying goal — and it's where much of the individual, self-dir">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 15 — Bug Bounty","item":"https://kashsec.vercel.app/lesson/15-bug-bounty/"},{"@type":"ListItem","position":4,"name":"What is a bug bounty?","item":"https://kashsec.vercel.app/lesson/15-bug-bounty/what-is-bb.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"What is a bug bounty?","headline":"What is a bug bounty?","description":"What is a bug bounty?: Platforms, scope, and responsible disclosure.","url":"https://kashsec.vercel.app/lesson/15-bug-bounty/what-is-bb.html","inLanguage":"en","dateModified":"2026-08-04","learningResourceType":"Lesson","educationalLevel":"Intermediate→Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Platforms, scope, and responsible disclosure.","isPartOf":{"@type":"Course","name":"Path 15: Bug Bounty","url":"https://kashsec.vercel.app/lesson/15-bug-bounty/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/15-bug-bounty/what-is-bb.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"What is a bug bounty?","headline":"What is a bug bounty?","description":"Path 14 gave you the formal, contracted penetration testing model. Bug bounty is a different, increasingly dominant model for the same underlying goal — and it's where much of the individual, self-dir","url":"https://kashsec.vercel.app/lesson/15-bug-bounty/what-is-bb.html","inLanguage":"en","dateModified":"2026-08-04","learningResourceType":"Lesson","educationalLevel":"Intermediate→Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Platforms, scope, and responsible disclosure.","isPartOf":{"@type":"Course","name":"Path 15: Bug Bounty","url":"https://kashsec.vercel.app/lesson/15-bug-bounty/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/15-bug-bounty/what-is-bb.html"}}
 </script>
 </head>
 <body>
@@ -91,21 +91,6 @@
 <p>Path 14 gave you the formal, contracted penetration testing model. Bug bounty is a different, increasingly dominant model for the same underlying goal — and it's where much of the individual, self-directed side of this entire field now lives.</p>
 <h2>The core model</h2>
 <p>A <strong>bug bounty program</strong> is an ongoing, standing invitation from an organisation for <strong>any</strong> researcher (not just contracted testers) to find and responsibly report vulnerabilities in their defined scope, in exchange for a <strong>reward</strong> — typically money, but sometimes recognition/swag for lower-severity findings.</p>
-<pre><code class="language-mermaid">flowchart LR
-    Org["🏢 Organisation&lt;br/&gt;defines scope + rewards"]
-    Platform["🌐 Bug bounty platform&lt;br/&gt;(HackerOne, Bugcrowd)"]
-    Researchers["👥 Many researchers&lt;br/&gt;worldwide, simultaneously"]
-    Finding["🔍 Valid finding submitted"]
-    Reward["💰 Reward paid"]
-
-    Org --&gt; Platform --&gt; Researchers --&gt; Finding --&gt; Reward
-
-    style Org fill:#111927,color:#8496A6,stroke:#8496A6
-    style Platform fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
-    style Researchers fill:#2b1f0a,color:#EFA43A,stroke:#EFA43A
-    style Finding fill:#2b1010,color:#E05548,stroke:#E05548
-    style Reward fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
-</code></pre>
 <h2>Bug bounty vs. traditional penetration testing</h2>
 <table>
 <thead>
@@ -216,10 +201,8 @@
 <li>For each report you read, identify: what vulnerability class (map it back to the OWASP Top 10 from Path 11.1), what severity, and how clearly the four-part reporting structure from Path 14.7 was followed.</li>
 </ol>
 <p>This is genuinely one of the best uses of time for anyone starting in this field — real, disclosed reports teach patterns no course alone fully replicates.</p>
-<p>:::challenge Test yourself
-Two researchers independently discover and report the exact same SQL injection vulnerability on the same program, four hours apart. What typically happens regarding payment for the second report?</p>
-<details><summary>Show answer</summary>Most programs operate on a <strong>"first valid report wins"</strong> basis — the second researcher's report is typically marked as a <strong>duplicate</strong> and does not receive payment, even though their finding was independently discovered and equally valid technically. This is a well-known, sometimes frustrating reality of the field, and part of why speed/consistency in hunting genuinely matters, alongside pure technical skill.</details>
-:::<h2>Key terms</h2>
+<p>Two researchers independently discover and report the exact same SQL injection vulnerability on the same program, four hours apart. What typically happens regarding payment for the second report?</p>
+<details><summary>Show answer</summary>Most programs operate on a <strong>"first valid report wins"</strong> basis — the second researcher's report is typically marked as a <strong>duplicate</strong> and does not receive payment, even though their finding was independently discovered and equally valid technically. This is a well-known, sometimes frustrating reality of the field, and part of why speed/consistency in hunting genuinely matters, alongside pure technical skill.</details><h2>Key terms</h2>
 <ul>
 <li><strong>Bug bounty program</strong> — an ongoing, standing invitation for researchers to find and report vulnerabilities for reward.</li>
 <li><strong>Scope / policy</strong> — the program's defined boundaries, the bug bounty analogue of a pentest's RoE.</li>

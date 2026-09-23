@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Mobile Privilege Escalation &amp; Root Detection — Path 13 · KashSec Academy</title>
-<meta name="description" content="Mobile Privilege Escalation &amp; Root Detection: Root/jailbreak detection bypass and exported component attacks.">
+<meta name="description" content="This lesson covers two related mobile-specific topics: how apps try to detect (and refuse to run on) rooted/jailbroken devices, and the ways insecure inter-app communication can let one app escalate a">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/13-mobile-security/mobile-privesc-root-detection.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Mobile Privilege Escalation &amp; Root Detection — Path 13 · KashSec Academy">
-<meta property="og:description" content="Mobile Privilege Escalation &amp; Root Detection: Root/jailbreak detection bypass and exported component attacks.">
+<meta property="og:description" content="This lesson covers two related mobile-specific topics: how apps try to detect (and refuse to run on) rooted/jailbroken devices, and the ways insecure inter-app communication can let one app escalate a">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/13-mobile-security/mobile-privesc-root-detection.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Mobile Privilege Escalation &amp; Root Detection — Path 13 · KashSec Academy">
-<meta name="twitter:description" content="Mobile Privilege Escalation &amp; Root Detection: Root/jailbreak detection bypass and exported component attacks.">
+<meta name="twitter:description" content="This lesson covers two related mobile-specific topics: how apps try to detect (and refuse to run on) rooted/jailbroken devices, and the ways insecure inter-app communication can let one app escalate a">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 13 — Mobile App Security","item":"https://kashsec.vercel.app/lesson/13-mobile-security/"},{"@type":"ListItem","position":4,"name":"Mobile Privilege Escalation & Root Detection","item":"https://kashsec.vercel.app/lesson/13-mobile-security/mobile-privesc-root-detection.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Mobile Privilege Escalation & Root Detection","headline":"Mobile Privilege Escalation & Root Detection","description":"Mobile Privilege Escalation & Root Detection: Root/jailbreak detection bypass and exported component attacks.","url":"https://kashsec.vercel.app/lesson/13-mobile-security/mobile-privesc-root-detection.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate→Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Root/jailbreak detection bypass and exported component attacks.","isPartOf":{"@type":"Course","name":"Path 13: Mobile App Security","url":"https://kashsec.vercel.app/lesson/13-mobile-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/13-mobile-security/mobile-privesc-root-detection.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Mobile Privilege Escalation & Root Detection","headline":"Mobile Privilege Escalation & Root Detection","description":"This lesson covers two related mobile-specific topics: how apps try to detect (and refuse to run on) rooted/jailbroken devices, and the ways insecure inter-app communication can let one app escalate a","url":"https://kashsec.vercel.app/lesson/13-mobile-security/mobile-privesc-root-detection.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate→Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Root/jailbreak detection bypass and exported component attacks.","isPartOf":{"@type":"Course","name":"Path 13: Mobile App Security","url":"https://kashsec.vercel.app/lesson/13-mobile-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/13-mobile-security/mobile-privesc-root-detection.html"}}
 </script>
 </head>
 <body>
@@ -127,10 +127,6 @@ frida -U -f com.example.bankingapp -l root-detection-bypass.js --no-pause
 </code></pre>
 <h2>Insecure inter-app communication — Android's IPC surface</h2>
 <p>Android apps can communicate with each other through defined mechanisms: <strong>Intents</strong>, <strong>Content Providers</strong>, <strong>Broadcast Receivers</strong>, and <strong>Services</strong>. When one of these components is marked <code>exported="true"</code> in the manifest (covered in the APK analysis lesson) without a matching permission requirement, <em>any other app installed on the device</em> — even a malicious one with no special permissions of its own — can potentially interact with it directly.</p>
-<pre><code class="language-mermaid">flowchart LR
-    A[Malicious App\nno special permissions] --&gt;|sends crafted Intent| B["Vulnerable App's\nexported, unprotected\nActivity/Service"]
-    B --&gt; C["Bypasses the vulnerable\napp's own UI/login screen,\nreaches privileged functionality directly"]
-</code></pre>
 <p>A classic real-world example: an exported Activity intended only to be launched from within the app itself (say, an "admin settings" screen assuming the user already authenticated through the main UI) can sometimes be launched directly by any other app via an explicit Intent, completely bypassing whatever authentication gate the normal UI flow enforces — the mobile equivalent of a broken access control finding from Path 11.</p>
 <h2>Content Provider SQL injection — a distinct exported-component risk</h2>
 <p>Beyond simply reaching restricted screens, an exported <strong>Content Provider</strong> carries its own specific, more severe risk: many Content Providers are backed directly by a SQLite database, and if the provider builds its underlying query by concatenating caller-supplied input rather than using parameterised queries, it's vulnerable to exactly the SQL injection technique from Path 11.6 — just reached via Android's IPC mechanism instead of an HTTP request:</p>
@@ -147,12 +143,8 @@ adb shell dumpsys package com.example.vulnerableapp | grep -A 3 "android:exporte
 adb shell am start -n com.example.vulnerableapp/.AdminActivity
 </code></pre>
 <p>If that command successfully opens a screen you were never meant to reach without prior authentication within the app, you've just demonstrated exactly the class of vulnerability described above.</p>
-<p>:::danger Only test on your own apps or authorized targets
-As with every other lesson in this path, root-detection bypass and exported-component testing must stay confined to your own test devices, apps you built, or explicitly authorized vulnerable practice apps (DIVA and InsecureBankv2 both include exported-component challenges specifically for this purpose).
-:::</p>
-<p>:::challenge Find and exploit an exported component
-Using DIVA or InsecureBankv2 on your rooted emulator, use <code>dumpsys package</code> to find an exported component, and attempt to launch or interact with it directly via <code>adb shell am start</code> (or <code>adb shell content query</code> for an exported Content Provider). Document what you were able to reach, and what the correct fix would look like (setting <code>exported="false"</code>, or adding a custom permission requirement).
-:::</p>
+<p>As with every other lesson in this path, root-detection bypass and exported-component testing must stay confined to your own test devices, apps you built, or explicitly authorized vulnerable practice apps (DIVA and InsecureBankv2 both include exported-component challenges specifically for this purpose).</p>
+<p>Using DIVA or InsecureBankv2 on your rooted emulator, use <code>dumpsys package</code> to find an exported component, and attempt to launch or interact with it directly via <code>adb shell am start</code> (or <code>adb shell content query</code> for an exported Content Provider). Document what you were able to reach, and what the correct fix would look like (setting <code>exported="false"</code>, or adding a custom permission requirement).</p>
 <h2>Key takeaway</h2>
 <p>Root/jailbreak detection is a genuine but ultimately bypassable speed bump, not a real security control — real security must come from proper server-side authorization and data protection, not from hoping the client environment stays untampered. Separately, exported components represent a mobile-specific access control risk with no web equivalent, and checking for them is a standard, high-value step in any Android security review.</p>
 <p><strong>Next up →</strong> <a href="#/lesson/13-mobile-security/mobile-app-hardening">Mobile App Hardening</a></p>

@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Real-World ICS Attacks: What They Actually Teach Us — Path 25 · KashSec Academy</title>
-<meta name="description" content="Real-World ICS Attacks: What They Actually Teach Us: Stuxnet, the Ukraine grid attacks, Oldsmar, and Triton — mapped back to the lessons that predicted them.">
+<meta name="description" content="Every concept in this path so far has been explained through hypothetical examples. This lesson grounds all of it in real, publicly documented incidents — not for shock value, but because each one dem">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/25-ot-ics-security/real-world-ics-attacks.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Real-World ICS Attacks: What They Actually Teach Us — Path 25 · KashSec Academy">
-<meta property="og:description" content="Real-World ICS Attacks: What They Actually Teach Us: Stuxnet, the Ukraine grid attacks, Oldsmar, and Triton — mapped back to the lessons that predicted them.">
+<meta property="og:description" content="Every concept in this path so far has been explained through hypothetical examples. This lesson grounds all of it in real, publicly documented incidents — not for shock value, but because each one dem">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/25-ot-ics-security/real-world-ics-attacks.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Real-World ICS Attacks: What They Actually Teach Us — Path 25 · KashSec Academy">
-<meta name="twitter:description" content="Real-World ICS Attacks: What They Actually Teach Us: Stuxnet, the Ukraine grid attacks, Oldsmar, and Triton — mapped back to the lessons that predicted them.">
+<meta name="twitter:description" content="Every concept in this path so far has been explained through hypothetical examples. This lesson grounds all of it in real, publicly documented incidents — not for shock value, but because each one dem">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 25 — OT/ICS & Critical Infrastructure Security","item":"https://kashsec.vercel.app/lesson/25-ot-ics-security/"},{"@type":"ListItem","position":4,"name":"Real-World ICS Attacks: What They Actually Teach Us","item":"https://kashsec.vercel.app/lesson/25-ot-ics-security/real-world-ics-attacks.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Real-World ICS Attacks: What They Actually Teach Us","headline":"Real-World ICS Attacks: What They Actually Teach Us","description":"Real-World ICS Attacks: What They Actually Teach Us: Stuxnet, the Ukraine grid attacks, Oldsmar, and Triton — mapped back to the lessons that predicted them.","url":"https://kashsec.vercel.app/lesson/25-ot-ics-security/real-world-ics-attacks.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Stuxnet, the Ukraine grid attacks, Oldsmar, and Triton — mapped back to the lessons that predicted them.","isPartOf":{"@type":"Course","name":"Path 25: OT/ICS & Critical Infrastructure Security","url":"https://kashsec.vercel.app/lesson/25-ot-ics-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/25-ot-ics-security/real-world-ics-attacks.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Real-World ICS Attacks: What They Actually Teach Us","headline":"Real-World ICS Attacks: What They Actually Teach Us","description":"Every concept in this path so far has been explained through hypothetical examples. This lesson grounds all of it in real, publicly documented incidents — not for shock value, but because each one dem","url":"https://kashsec.vercel.app/lesson/25-ot-ics-security/real-world-ics-attacks.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Stuxnet, the Ukraine grid attacks, Oldsmar, and Triton — mapped back to the lessons that predicted them.","isPartOf":{"@type":"Course","name":"Path 25: OT/ICS & Critical Infrastructure Security","url":"https://kashsec.vercel.app/lesson/25-ot-ics-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/25-ot-ics-security/real-world-ics-attacks.html"}}
 </script>
 </head>
 <body>
@@ -89,9 +89,7 @@
     <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/25-ot-ics-security/">Path 25 — OT/ICS &amp; Critical Infrastructure Security</a> · Real-World ICS Attacks: What They Actually Teach Us</nav>
     <div class="md" id="content"><article><h1>Real-World ICS Attacks: What They Actually Teach Us</h1>
 <p>Every concept in this path so far has been explained through hypothetical examples. This lesson grounds all of it in real, publicly documented incidents — not for shock value, but because each one demonstrates a specific failure mode this path has already named, and seeing the theory play out in reality is what makes it stick.</p>
-<p>:::tip
-As you read each case study, actively map it back to an earlier lesson: which assumption failed? A protocol with no authentication? A DMZ bypass? An air gap that wasn't real? That mapping exercise is more valuable than memorizing the incidents themselves.
-:::</p>
+<p>:::</p>
 <h2>Stuxnet (discovered 2010)</h2>
 <p>Stuxnet remains the most studied ICS attack in history — a highly sophisticated piece of malware that specifically targeted the PLCs controlling uranium enrichment centrifuges at an Iranian nuclear facility.</p>
 <p><strong>What made it remarkable</strong>: Stuxnet didn't just disrupt the process — it manipulated the PLC logic to spin centrifuges outside safe operating parameters, physically damaging them over time, <strong>while simultaneously feeding falsified "everything is normal" readings back to the HMI and operators</strong>. This is the exact HMI-manipulation danger flagged in the SCADA fundamentals lesson, demonstrated at nation-state sophistication: the attack didn't just compromise the physical process, it compromised operators' <em>awareness</em> that anything was wrong at all.</p>
@@ -154,8 +152,7 @@ As you read each case study, actively map it back to an earlier lesson: which as
 <ol>
 <li>What specifically made Stuxnet more dangerous than "just" damaging the centrifuges, per the HMI-manipulation detail?</li>
 <li>Explain the difference between how the 2015 and 2016 Ukraine attacks gained the ability to issue control commands.</li>
-<li>Why do security professionals treat Triton/Trisis as an especially alarming case, beyond "it was ICS malware"?
-:::</li>
+<li>Why do security professionals treat Triton/Trisis as an especially alarming case, beyond "it was ICS malware"?</li>
 </ol>
 <h2>Key terms</h2>
 <ul>

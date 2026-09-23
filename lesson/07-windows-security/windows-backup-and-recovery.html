@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Windows Backup &amp; Recovery — Path 07 · KashSec Academy</title>
-<meta name="description" content="Windows Backup &amp; Recovery: File History, System Restore, and why neither one is a ransomware defense on its own.">
+<meta name="description" content="Path 00's updates-and-backups lesson made the general case for backups. This lesson goes Windows-specific — the actual built-in tools, what each one protects against, and the recovery plan every harde">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/07-windows-security/windows-backup-and-recovery.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Windows Backup &amp; Recovery — Path 07 · KashSec Academy">
-<meta property="og:description" content="Windows Backup &amp; Recovery: File History, System Restore, and why neither one is a ransomware defense on its own.">
+<meta property="og:description" content="Path 00's updates-and-backups lesson made the general case for backups. This lesson goes Windows-specific — the actual built-in tools, what each one protects against, and the recovery plan every harde">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/07-windows-security/windows-backup-and-recovery.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Windows Backup &amp; Recovery — Path 07 · KashSec Academy">
-<meta name="twitter:description" content="Windows Backup &amp; Recovery: File History, System Restore, and why neither one is a ransomware defense on its own.">
+<meta name="twitter:description" content="Path 00's updates-and-backups lesson made the general case for backups. This lesson goes Windows-specific — the actual built-in tools, what each one protects against, and the recovery plan every harde">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 07 — Windows Security Basics","item":"https://kashsec.vercel.app/lesson/07-windows-security/"},{"@type":"ListItem","position":4,"name":"Windows Backup & Recovery","item":"https://kashsec.vercel.app/lesson/07-windows-security/windows-backup-and-recovery.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Windows Backup & Recovery","headline":"Windows Backup & Recovery","description":"Windows Backup & Recovery: File History, System Restore, and why neither one is a ransomware defense on its own.","url":"https://kashsec.vercel.app/lesson/07-windows-security/windows-backup-and-recovery.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"File History, System Restore, and why neither one is a ransomware defense on its own.","isPartOf":{"@type":"Course","name":"Path 07: Windows Security Basics","url":"https://kashsec.vercel.app/lesson/07-windows-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/07-windows-security/windows-backup-and-recovery.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Windows Backup & Recovery","headline":"Windows Backup & Recovery","description":"Path 00's updates-and-backups lesson made the general case for backups. This lesson goes Windows-specific — the actual built-in tools, what each one protects against, and the recovery plan every harde","url":"https://kashsec.vercel.app/lesson/07-windows-security/windows-backup-and-recovery.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"File History, System Restore, and why neither one is a ransomware defense on its own.","isPartOf":{"@type":"Course","name":"Path 07: Windows Security Basics","url":"https://kashsec.vercel.app/lesson/07-windows-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/07-windows-security/windows-backup-and-recovery.html"}}
 </script>
 </head>
 <body>
@@ -89,9 +89,7 @@
     <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/07-windows-security/">Path 07 — Windows Security Basics</a> · Windows Backup &amp; Recovery</nav>
     <div class="md" id="content"><article><h1>Windows Backup &amp; Recovery</h1>
 <p>Path 00's updates-and-backups lesson made the general case for backups. This lesson goes Windows-specific — the actual built-in tools, what each one protects against, and the recovery plan every hardened Windows machine should genuinely have ready before it's needed.</p>
-<p>:::tip
-The securing-a-windows-machine lesson's hardening checklist reduces the <em>chance</em> of a successful attack. This lesson covers the plan for when prevention fails anyway — because even a well-hardened machine can still be compromised, and a tested recovery plan is what turns that scenario from a disaster into an inconvenience.
-:::</p>
+<p>:::</p>
 <h2>The Windows-specific backup and recovery tools</h2>
 <ul>
 <li><strong>File History</strong> — automatically backs up copies of files in your libraries, desktop, and contacts to a separate drive over time, letting you restore a previous version of a specific file — useful for accidental deletion or corruption, though it doesn't capture a full system state</li>
@@ -102,8 +100,7 @@ The securing-a-windows-machine lesson's hardening checklist reduces the <em>chan
 <h2>Why System Restore is not a substitute for a real backup</h2>
 <p>A genuinely common misunderstanding worth correcting directly: <strong>System Restore does not protect your personal files, and it is not a defense against ransomware.</strong> It only captures system configuration and installed software state — it does not back up your documents, photos, or other personal data, and modern ransomware frequently deletes or encrypts Windows's own restore points specifically <em>because</em> attackers know victims might otherwise rely on them to recover for free.</p>
 <p>:::danger
-Never treat System Restore as your only backup strategy. It solves a different problem (undoing a bad system change) than the one a real backup solves (recovering personal files after loss, corruption, or ransomware). You need both — they are not interchangeable.
-:::</p>
+Never treat System Restore as your only backup strategy. It solves a different problem (undoing a bad system change) than the one a real backup solves (recovering personal files after loss, corruption, or ransomware). You need both — they are not interchangeable.</p>
 <h2>Building a real recovery plan, not just enabling backup features</h2>
 <ul>
 <li><strong>Follow the 3-2-1 rule</strong> (from Path 00): a local backup (File History or a System Image) plus a physically or logically separate copy (cloud backup, an external drive stored elsewhere)</li>
@@ -111,22 +108,22 @@ Never treat System Restore as your only backup strategy. It solves a different p
 <li><strong>Test recovery, not just backup</strong> — exactly the same principle Path 00's updates-and-backups lesson emphasized: an untested backup is only a guess that it will work, and the first time you try to actually restore from it shouldn't be during a genuine emergency</li>
 <li><strong>Document the recovery process</strong> — a written, step-by-step recovery procedure, so restoring doesn't depend entirely on one person's memory of how it's supposed to work under the stress of an actual incident</li>
 </ul>
-<p>:::challenge Evaluate a backup strategy
-An organization backs up all its Windows machines to a dedicated backup server that stays permanently connected to the same network as those machines, and hasn't tested a full restore in over a year.</p>
+<p>An organization backs up all its Windows machines to a dedicated backup server that stays permanently connected to the same network as those machines, and hasn't tested a full restore in over a year.</p>
 <details><summary>Hint</summary>What happens to this backup strategy specifically in a ransomware scenario, given how ransomware often behaves once it gains network access? And separately, what's the risk in never having tested a restore?</details>
-<details><summary>Show answer</summary>This strategy has two serious, independent weaknesses. First, a permanently-connected backup server on the same network is a realistic ransomware target itself — ransomware that spreads across a network specifically seeks out and encrypts backup systems precisely because organizations rely on them for recovery, meaning this backup could be destroyed in the very incident it was meant to protect against. Second, never testing a restore means the organization genuinely doesn't know whether their backups actually work — corrupted backup files, incomplete backup jobs, and configuration drift are all common, silent failure modes that only surface at restore time, which is exactly the wrong moment to discover them. The fix: keep at least one backup copy offline or immutable, and schedule regular test restores as a standing practice, not a one-time setup step.</details>
-:::<h2>🧪 Hands-on lab — set up and test real recovery</h2>
+<details><summary>Show answer</summary>This strategy has two serious, independent weaknesses. First, a permanently-connected backup server on the same network is a realistic ransomware target itself — ransomware that spreads across a network specifically seeks out and encrypts backup systems precisely because organizations rely on them for recovery, meaning this backup could be destroyed in the very incident it was meant to protect against. Second, never testing a restore means the organization genuinely doesn't know whether their backups actually work — corrupted backup files, incomplete backup jobs, and configuration drift are all common, silent failure modes that only surface at restore time, which is exactly the wrong moment to discover them. The fix: keep at least one backup copy offline or immutable, and schedule regular test restores as a standing practice, not a one-time setup step.</details><h2>🧪 Hands-on lab — set up and test real recovery</h2>
 <ol>
-<li>On a Windows machine or VM you control, enable File History or configure a System Image backup to an external drive.</li>
-<li>Create a System Restore point manually, then make a small, reversible system change (like installing a test application) and practice rolling it back.</li>
-<li>Actually test restoring a single file from your backup, confirming it opens correctly — not just assuming the backup succeeded.</li>
-</ol>
-<p>:::challenge Test yourself</p>
-<ol>
-<li>Why is System Restore not a substitute for a real personal-file backup?</li>
-<li>Why can a permanently-connected backup drive or server be a liability during a ransomware incident?</li>
-<li>What does "testing recovery" actually mean, and why does it matter as much as having a backup in the first place?
-:::</li>
+<li><p>On a Windows machine or VM you control, enable File History or configure a System Image backup to an external drive.</p>
+</li>
+<li><p>Create a System Restore point manually, then make a small, reversible system change (like installing a test application) and practice rolling it back.</p>
+</li>
+<li><p>Actually test restoring a single file from your backup, confirming it opens correctly — not just assuming the backup succeeded.</p>
+</li>
+<li><p>Why is System Restore not a substitute for a real personal-file backup?</p>
+</li>
+<li><p>Why can a permanently-connected backup drive or server be a liability during a ransomware incident?</p>
+</li>
+<li><p>What does "testing recovery" actually mean, and why does it matter as much as having a backup in the first place?</p>
+</li>
 </ol>
 <h2>Key terms</h2>
 <ul>

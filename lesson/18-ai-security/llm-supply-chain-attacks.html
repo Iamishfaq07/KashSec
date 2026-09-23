@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>LLM Supply Chain Attacks — Path 18 · KashSec Academy</title>
-<meta name="description" content="LLM Supply Chain Attacks: Attacks that target the components and data used to build and run LLMs.">
+<meta name="description" content="Every other lesson in this path largely assumes the model itself is trustworthy and focuses on how it's manipulated at runtime. This lesson questions that assumption directly: what if the model — or t">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/18-ai-security/llm-supply-chain-attacks.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="LLM Supply Chain Attacks — Path 18 · KashSec Academy">
-<meta property="og:description" content="LLM Supply Chain Attacks: Attacks that target the components and data used to build and run LLMs.">
+<meta property="og:description" content="Every other lesson in this path largely assumes the model itself is trustworthy and focuses on how it's manipulated at runtime. This lesson questions that assumption directly: what if the model — or t">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/18-ai-security/llm-supply-chain-attacks.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="LLM Supply Chain Attacks — Path 18 · KashSec Academy">
-<meta name="twitter:description" content="LLM Supply Chain Attacks: Attacks that target the components and data used to build and run LLMs.">
+<meta name="twitter:description" content="Every other lesson in this path largely assumes the model itself is trustworthy and focuses on how it's manipulated at runtime. This lesson questions that assumption directly: what if the model — or t">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 18 — AI & AI Security","item":"https://kashsec.vercel.app/lesson/18-ai-security/"},{"@type":"ListItem","position":4,"name":"LLM Supply Chain Attacks","item":"https://kashsec.vercel.app/lesson/18-ai-security/llm-supply-chain-attacks.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"LLM Supply Chain Attacks","headline":"LLM Supply Chain Attacks","description":"LLM Supply Chain Attacks: Attacks that target the components and data used to build and run LLMs.","url":"https://kashsec.vercel.app/lesson/18-ai-security/llm-supply-chain-attacks.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Attacks that target the components and data used to build and run LLMs.","isPartOf":{"@type":"Course","name":"Path 18: AI & AI Security","url":"https://kashsec.vercel.app/lesson/18-ai-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/18-ai-security/llm-supply-chain-attacks.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"LLM Supply Chain Attacks","headline":"LLM Supply Chain Attacks","description":"Every other lesson in this path largely assumes the model itself is trustworthy and focuses on how it's manipulated at runtime. This lesson questions that assumption directly: what if the model — or t","url":"https://kashsec.vercel.app/lesson/18-ai-security/llm-supply-chain-attacks.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Attacks that target the components and data used to build and run LLMs.","isPartOf":{"@type":"Course","name":"Path 18: AI & AI Security","url":"https://kashsec.vercel.app/lesson/18-ai-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/18-ai-security/llm-supply-chain-attacks.html"}}
 </script>
 </head>
 <body>
@@ -90,14 +90,6 @@
     <div class="md" id="content"><article><h1>LLM Supply Chain Attacks</h1>
 <p>Every other lesson in this path largely assumes the model itself is trustworthy and focuses on how it's manipulated at runtime. This lesson questions that assumption directly: what if the model — or the data and components that built it — was compromised before you ever sent it a single prompt?</p>
 <h2>The AI supply chain, mapped</h2>
-<pre><code class="language-mermaid">flowchart LR
-    A[Training Data] --&gt; B[Base Model Training]
-    B --&gt; C[Fine-tuning Data]
-    C --&gt; D[Fine-tuned Model]
-    D --&gt; E[Third-party Plugins/Tools]
-    E --&gt; F[Deployed Application]
-    G[Model Hosting/Inference Service] --&gt; F
-</code></pre>
 <p>Every stage in this chain is a potential compromise point — and this is directly the AI-specific version of the general software supply chain risk referenced throughout this course (Path 18's OWASP LLM Top 10 lesson already flags this category briefly; this lesson goes deeper).</p>
 <h2>Poisoned training and fine-tuning data</h2>
 <p>Path 18's poisoning &amp; adversarial ML lesson already covered the mechanics of data poisoning as an attack technique. The <em>supply chain</em> angle specifically concerns <strong>where that data comes from</strong>: models trained or fine-tuned on large-scale scraped internet data, crowdsourced datasets, or third-party data vendors all inherit whatever was quietly embedded in that data by anyone with the ability to influence it upstream — including, in documented research demonstrations, deliberately planted poisoned examples designed to survive into the final trained model's behavior.</p>
@@ -121,9 +113,7 @@
 <li><strong>Model signing and integrity checks</strong> — where supported, verify a model file's cryptographic signature before deployment, the AI equivalent of code signing (Path 17's static analysis lesson covers the same concept for traditional executables).</li>
 <li><strong>Monitor production behavior for anomalies</strong> — a model behaving subtly differently than expected post-deployment can be a signal of a supply chain compromise, not just normal model drift (Path 18's governance lesson).</li>
 </ul>
-<p>:::challenge Research a real (or close analog) example
-Find one documented real-world LLM/ML supply chain incident, or a close analog from traditional software supply chain attacks (Path 16's DevSecOps lab references this broader category), and summarize: what was compromised, how, and what specific defense from this lesson could have prevented or caught it.
-:::</p>
+<p>Find one documented real-world LLM/ML supply chain incident, or a close analog from traditional software supply chain attacks (Path 16's DevSecOps lab references this broader category), and summarize: what was compromised, how, and what specific defense from this lesson could have prevented or caught it.</p>
 <h2>Key terms</h2>
 <ul>
 <li><strong>AI supply chain</strong> — the full pipeline from training data through fine-tuning, plugins, and hosting to a deployed application.</li>

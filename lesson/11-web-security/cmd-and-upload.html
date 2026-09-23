@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Command inj. &amp; uploads — Path 11 · KashSec Academy</title>
-<meta name="description" content="Command inj. &amp; uploads: Two paths to server takeover.">
+<meta name="description" content="Two more injection-family bugs — both frequently lead to the most severe possible outcome in web security: full remote code execution (RCE) on the server itself.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/11-web-security/cmd-and-upload.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Command inj. &amp; uploads — Path 11 · KashSec Academy">
-<meta property="og:description" content="Command inj. &amp; uploads: Two paths to server takeover.">
+<meta property="og:description" content="Two more injection-family bugs — both frequently lead to the most severe possible outcome in web security: full remote code execution (RCE) on the server itself.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/11-web-security/cmd-and-upload.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Command inj. &amp; uploads — Path 11 · KashSec Academy">
-<meta name="twitter:description" content="Command inj. &amp; uploads: Two paths to server takeover.">
+<meta name="twitter:description" content="Two more injection-family bugs — both frequently lead to the most severe possible outcome in web security: full remote code execution (RCE) on the server itself.">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 11 — Web Security & Hacking","item":"https://kashsec.vercel.app/lesson/11-web-security/"},{"@type":"ListItem","position":4,"name":"Command inj. & uploads","item":"https://kashsec.vercel.app/lesson/11-web-security/cmd-and-upload.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Command inj. & uploads","headline":"Command inj. & uploads","description":"Command inj. & uploads: Two paths to server takeover.","url":"https://kashsec.vercel.app/lesson/11-web-security/cmd-and-upload.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Two paths to server takeover.","isPartOf":{"@type":"Course","name":"Path 11: Web Security & Hacking","url":"https://kashsec.vercel.app/lesson/11-web-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/11-web-security/cmd-and-upload.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Command inj. & uploads","headline":"Command inj. & uploads","description":"Two more injection-family bugs — both frequently lead to the most severe possible outcome in web security: full remote code execution (RCE) on the server itself.","url":"https://kashsec.vercel.app/lesson/11-web-security/cmd-and-upload.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Two paths to server takeover.","isPartOf":{"@type":"Course","name":"Path 11: Web Security & Hacking","url":"https://kashsec.vercel.app/lesson/11-web-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/11-web-security/cmd-and-upload.html"}}
 </script>
 </head>
 <body>
@@ -225,10 +225,8 @@ result = subprocess.run(["ping", "-c", "4", hostname], capture_output=True)
 <li>Then work through <a href="https://portswigger.net/web-security/file-upload">PortSwigger's File upload vulnerabilities labs</a> — practise the extension/content-type/magic-bytes bypass techniques described above, in a safe, legal, hosted environment.</li>
 </ol>
 <p>These labs let you safely practise techniques that would otherwise require setting up your own deliberately-vulnerable server — exactly the kind of hands-on repetition that builds real skill.</p>
-<p>:::challenge Test yourself
-A file upload feature checks the <code>Content-Type</code> header to ensure only <code>image/jpeg</code> or <code>image/png</code> are accepted. Why is this check, on its own, essentially worthless as a security control?</p>
-<details><summary>Show answer</summary>The <code>Content-Type</code> header is set entirely by the <strong>client</strong> (the browser or, more relevantly, an attacker using a proxy like Burp) and can be changed to any arbitrary value regardless of the file's actual content. An attacker simply intercepts the upload request and sets <code>Content-Type: image/jpeg</code> while the file body itself remains a fully functional malicious script — the header claims one thing while the bytes are something else entirely.</details>
-:::<h2>Key terms</h2>
+<p>A file upload feature checks the <code>Content-Type</code> header to ensure only <code>image/jpeg</code> or <code>image/png</code> are accepted. Why is this check, on its own, essentially worthless as a security control?</p>
+<details><summary>Show answer</summary>The <code>Content-Type</code> header is set entirely by the <strong>client</strong> (the browser or, more relevantly, an attacker using a proxy like Burp) and can be changed to any arbitrary value regardless of the file's actual content. An attacker simply intercepts the upload request and sets <code>Content-Type: image/jpeg</code> while the file body itself remains a fully functional malicious script — the header claims one thing while the bytes are something else entirely.</details><h2>Key terms</h2>
 <ul>
 <li><strong>Command injection</strong> — attacker input executed as an OS shell command.</li>
 <li><strong>Shell metacharacters</strong> — <code>;</code>, <code>&amp;&amp;</code>, <code>\|</code>, <code>`</code>, <code>$()</code> — used to chain or substitute commands.</li>

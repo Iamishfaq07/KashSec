@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>AI red teaming — Path 18 · KashSec Academy</title>
-<meta name="description" content="AI red teaming: Methodology, harms taxonomy, ethics.">
+<meta name="description" content="Every technique from Path 18.3-12.6 needs a disciplined, professional methodology to be applied usefully — exactly as Path 14 turned Paths 11-08's individual techniques into professional penetration t">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/18-ai-security/ai-red-teaming.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="AI red teaming — Path 18 · KashSec Academy">
-<meta property="og:description" content="AI red teaming: Methodology, harms taxonomy, ethics.">
+<meta property="og:description" content="Every technique from Path 18.3-12.6 needs a disciplined, professional methodology to be applied usefully — exactly as Path 14 turned Paths 11-08's individual techniques into professional penetration t">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/18-ai-security/ai-red-teaming.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="AI red teaming — Path 18 · KashSec Academy">
-<meta name="twitter:description" content="AI red teaming: Methodology, harms taxonomy, ethics.">
+<meta name="twitter:description" content="Every technique from Path 18.3-12.6 needs a disciplined, professional methodology to be applied usefully — exactly as Path 14 turned Paths 11-08's individual techniques into professional penetration t">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 18 — AI & AI Security","item":"https://kashsec.vercel.app/lesson/18-ai-security/"},{"@type":"ListItem","position":4,"name":"AI red teaming","item":"https://kashsec.vercel.app/lesson/18-ai-security/ai-red-teaming.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"AI red teaming","headline":"AI red teaming","description":"AI red teaming: Methodology, harms taxonomy, ethics.","url":"https://kashsec.vercel.app/lesson/18-ai-security/ai-red-teaming.html","inLanguage":"en","dateModified":"2026-08-04","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Methodology, harms taxonomy, ethics.","isPartOf":{"@type":"Course","name":"Path 18: AI & AI Security","url":"https://kashsec.vercel.app/lesson/18-ai-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/18-ai-security/ai-red-teaming.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"AI red teaming","headline":"AI red teaming","description":"Every technique from Path 18.3-12.6 needs a disciplined, professional methodology to be applied usefully — exactly as Path 14 turned Paths 11-08's individual techniques into professional penetration t","url":"https://kashsec.vercel.app/lesson/18-ai-security/ai-red-teaming.html","inLanguage":"en","dateModified":"2026-08-04","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Methodology, harms taxonomy, ethics.","isPartOf":{"@type":"Course","name":"Path 18: AI & AI Security","url":"https://kashsec.vercel.app/lesson/18-ai-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/18-ai-security/ai-red-teaming.html"}}
 </script>
 </head>
 <body>
@@ -93,17 +93,6 @@
 <p><strong>AI red-teaming</strong> is the systematic, adversarial testing of an AI system to discover failure modes — safety violations, jailbreaks, prompt injection vulnerabilities, harmful outputs, biased behaviour — before real users or malicious actors encounter them. It directly parallels Path 14's penetration testing methodology, applied to a probabilistic system (Path 18.2) rather than deterministic code.</p>
 <h2>Why the probabilistic nature changes the methodology</h2>
 <p>Recall Path 18.2's core framing — a single failed jailbreak attempt doesn't prove safety, and a single success doesn't guarantee reliable reproducibility. This has a direct methodological consequence:</p>
-<pre><code class="language-mermaid">flowchart TB
-    subgraph Trad2["Traditional pentest methodology (Path 14)"]
-        T1["Try exploit once"] --&gt; T2["Binary result:&lt;br/&gt;works or doesn't"]
-    end
-    subgraph AIRed["AI red-teaming methodology"]
-        A1["Try attack pattern&lt;br/&gt;MANY times, with variations"] --&gt; A2["Measure SUCCESS RATE&lt;br/&gt;across attempts"]
-    end
-
-    style Trad2 fill:#0f2b26,color:#E9EEF3,stroke:#3FB6A8
-    style AIRed fill:#2b1010,color:#E9EEF3,stroke:#E05548
-</code></pre>
 <p>AI red-teaming requires <strong>statistical rigor</strong> — running the same attack category across dozens or hundreds of variations and phrasings, then reporting findings as rates ("this jailbreak pattern succeeded in approximately 15% of attempts across 200 variations") rather than simple pass/fail, directly informing how much genuine risk a given weakness represents in real-world deployment at scale.</p>
 <h2>A systematic methodology, phase by phase</h2>
 <h3>Phase 1: Scoping and threat modeling</h3>
@@ -236,10 +225,8 @@ within this specific risk category.
 <li>Calculate a rough success/failure rate by technique family.</li>
 <li>Write a mini finding using the reporting structure above — even a "no significant issues found across N attempts" result is a genuinely valid, useful finding, directly mirroring Path 15.1's realistic expectation-setting about bug bounty hunting.</li>
 </ol>
-<p>:::challenge Test yourself
-Why does professional AI red-teaming require reporting findings as success <em>rates</em> across many attempts, rather than a simple "vulnerable" or "not vulnerable" determination the way a traditional penetration test might report a SQL injection finding?</p>
-<details><summary>Show answer</summary>Because LLM behaviour is <strong>probabilistic</strong> (Path 18.2), the exact same input can produce different results across separate attempts, even against an identical model and configuration. A single successful jailbreak attempt doesn't reliably predict future behaviour, and a single failed attempt doesn't prove the system is safe from that entire technique family. Reporting a <strong>quantified success rate across many systematic variations</strong> gives a genuinely meaningful, statistically-grounded measure of real-world risk — directly informing how urgently a finding needs addressing and how effective any subsequent mitigation actually is, in a way a simple binary determination cannot.</details>
-:::<h2>Key terms</h2>
+<p>Why does professional AI red-teaming require reporting findings as success <em>rates</em> across many attempts, rather than a simple "vulnerable" or "not vulnerable" determination the way a traditional penetration test might report a SQL injection finding?</p>
+<details><summary>Show answer</summary>Because LLM behaviour is <strong>probabilistic</strong> (Path 18.2), the exact same input can produce different results across separate attempts, even against an identical model and configuration. A single successful jailbreak attempt doesn't reliably predict future behaviour, and a single failed attempt doesn't prove the system is safe from that entire technique family. Reporting a <strong>quantified success rate across many systematic variations</strong> gives a genuinely meaningful, statistically-grounded measure of real-world risk — directly informing how urgently a finding needs addressing and how effective any subsequent mitigation actually is, in a way a simple binary determination cannot.</details><h2>Key terms</h2>
 <ul>
 <li><strong>AI red-teaming</strong> — systematic, adversarial testing of AI systems for safety and security failure modes.</li>
 <li><strong>Success rate</strong> — the statistical measure (successes/total attempts) central to AI red-teaming findings, replacing binary pass/fail.</li>

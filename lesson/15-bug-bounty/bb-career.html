@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>The bug-bounty career — Path 15 · KashSec Academy</title>
-<meta name="description" content="The bug-bounty career: Economics, community, staying sane.">
+<meta name="description" content="You've now covered the complete practical toolkit — program selection, recon automation, IDOR/access control hunting, business logic and chaining, and Nuclei automation. This closing lesson looks at t">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/15-bug-bounty/bb-career.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="The bug-bounty career — Path 15 · KashSec Academy">
-<meta property="og:description" content="The bug-bounty career: Economics, community, staying sane.">
+<meta property="og:description" content="You've now covered the complete practical toolkit — program selection, recon automation, IDOR/access control hunting, business logic and chaining, and Nuclei automation. This closing lesson looks at t">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/15-bug-bounty/bb-career.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="The bug-bounty career — Path 15 · KashSec Academy">
-<meta name="twitter:description" content="The bug-bounty career: Economics, community, staying sane.">
+<meta name="twitter:description" content="You've now covered the complete practical toolkit — program selection, recon automation, IDOR/access control hunting, business logic and chaining, and Nuclei automation. This closing lesson looks at t">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 15 — Bug Bounty","item":"https://kashsec.vercel.app/lesson/15-bug-bounty/"},{"@type":"ListItem","position":4,"name":"The bug-bounty career","item":"https://kashsec.vercel.app/lesson/15-bug-bounty/bb-career.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"The bug-bounty career","headline":"The bug-bounty career","description":"The bug-bounty career: Economics, community, staying sane.","url":"https://kashsec.vercel.app/lesson/15-bug-bounty/bb-career.html","inLanguage":"en","dateModified":"2026-08-04","learningResourceType":"Lesson","educationalLevel":"Intermediate→Advanced","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Economics, community, staying sane.","isPartOf":{"@type":"Course","name":"Path 15: Bug Bounty","url":"https://kashsec.vercel.app/lesson/15-bug-bounty/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/15-bug-bounty/bb-career.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"The bug-bounty career","headline":"The bug-bounty career","description":"You've now covered the complete practical toolkit — program selection, recon automation, IDOR/access control hunting, business logic and chaining, and Nuclei automation. This closing lesson looks at t","url":"https://kashsec.vercel.app/lesson/15-bug-bounty/bb-career.html","inLanguage":"en","dateModified":"2026-08-04","learningResourceType":"Lesson","educationalLevel":"Intermediate→Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Economics, community, staying sane.","isPartOf":{"@type":"Course","name":"Path 15: Bug Bounty","url":"https://kashsec.vercel.app/lesson/15-bug-bounty/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/15-bug-bounty/bb-career.html"}}
 </script>
 </head>
 <body>
@@ -90,17 +90,6 @@
     <div class="md" id="content"><article><h1>Building a bug bounty career</h1>
 <p>You've now covered the complete practical toolkit — program selection, recon automation, IDOR/access control hunting, business logic and chaining, and Nuclei automation. This closing lesson looks at the bigger picture: building this into a sustainable practice, whether as a side pursuit, a career, or a stepping stone into other security roles.</p>
 <h2>The three broad paths bug bounty hunters take</h2>
-<pre><code class="language-mermaid">flowchart TB
-    BB["Bug Bounty Experience"]
-    BB --&gt; Full["🎯 Full-time independent hunter&lt;br/&gt;(a small minority, high variance income)"]
-    BB --&gt; Career["💼 Career stepping stone&lt;br/&gt;(into AppSec, pentesting, security research roles)"]
-    BB --&gt; Side["⏰ Ongoing side practice&lt;br/&gt;(alongside a full-time security role)"]
-
-    style BB fill:#111927,color:#EFA43A,stroke:#EFA43A
-    style Full fill:#2b1010,color:#E05548,stroke:#E05548
-    style Career fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
-    style Side fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
-</code></pre>
 <p>All three are legitimate, valuable paths — and importantly, <strong>not mutually exclusive over time</strong>. Many successful full-time hunters started as side-practice hobbyists; many AppSec engineers maintain active bug bounty practice alongside full-time employment specifically because it keeps offensive skills sharp against real, current systems in a way that defensive daily work alone doesn't always provide.</p>
 <h2>Building a genuine track record</h2>
 <p>Recall Path 14.8's career-building section — bug bounty provides something particularly powerful: <strong>verifiable, public proof of skill</strong>, independent of where you went to school or who you know.</p>
@@ -148,16 +137,6 @@
 <h2>The unglamorous business side — income tracking and taxes</h2>
 <p>A genuinely practical detail that catches many hunters off guard once bounty income becomes real: in most jurisdictions, bug bounty earnings count as taxable income, and platforms may issue tax forms once payouts cross a reporting threshold — treating it as a genuine side income stream from the start (keeping a simple spreadsheet of each payout, date, and program) saves real headaches later compared to reconstructing a year's worth of scattered payments from memory. It's also worth understanding that payouts often arrive in different forms depending on the platform and your location — direct bank transfer, PayPal, or platform-specific credit — each with its own fees and processing time, which matters when comparing programs' <em>effective</em> reward value, not just their headline numbers. None of this is exciting work, but treating bounty hunting as a genuine income stream from day one — with the same basic financial discipline as any other freelance work — is exactly the kind of unglamorous professionalism that separates a sustainable practice from one that creates problems down the road.</p>
 <h2>How this connects to the rest of your security journey</h2>
-<pre><code class="language-mermaid">flowchart LR
-    P10["Path 15&lt;br/&gt;Bug Bounty"] --&gt; P11["Path 16&lt;br/&gt;Advanced Topics&lt;br/&gt;(privesc, AD, cloud — deepens&lt;br/&gt;what you can find &amp; chain)"]
-    P10 --&gt; P12["Path 18&lt;br/&gt;AI Security&lt;br/&gt;(an emerging, less-saturated&lt;br/&gt;bug bounty frontier)"]
-    P10 --&gt; Career2["💼 AppSec / Pentest career&lt;br/&gt;(your track record is&lt;br/&gt;genuine, verifiable proof)"]
-
-    style P10 fill:#2b1010,color:#E9EEF3,stroke:#E05548
-    style P11 fill:#111927,color:#3FB6A8,stroke:#3FB6A8
-    style P12 fill:#111927,color:#3FB6A8,stroke:#3FB6A8
-    style Career2 fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
-</code></pre>
 <ul>
 <li><strong>Path 16</strong> directly deepens what you're capable of finding and chaining — privilege escalation and Active Directory knowledge, in particular, massively expand the scope of realistic post-access impact you can demonstrate in a report (recall Path 15.6's chaining lesson).</li>
 <li><strong>Path 18 (AI Security)</strong> represents a genuinely emerging, comparatively under-saturated bug bounty frontier as more companies deploy LLM-powered features and correspondingly launch AI-specific bounty scope — an area worth watching closely given the field's current early-stage maturity.</li>
@@ -173,10 +152,8 @@
 <li>How will you track your own progress and learning, independent of whether you find a paid bug this month?</li>
 </ol>
 <p>This plan — genuinely written for yourself, not as an abstract exercise — is exactly the kind of self-directed structure that turns course content into sustained, real-world practice.</p>
-<p>:::challenge Reflection
-Across this entire path, which single concept do you think will matter most for your own long-term practice: program selection strategy, recon automation, the IDOR/access-control methodology, business logic thinking, or Nuclei template-writing?</p>
-<details><summary>A thought on this</summary>There's no universally correct answer, but it's worth noticing that <strong>program selection</strong> and <strong>business logic thinking</strong> are the two skills that scale entirely independent of any specific tool — they're durable, transferable judgment that will still matter even as specific tools evolve or get replaced over the coming years, while tool-specific skills (a particular Nuclei syntax, a particular platform's UI) will need periodic refreshing as the ecosystem changes. Building strong fundamentals in the durable, judgment-based skills tends to pay off longest.</details>
-:::<h2>Key terms</h2>
+<p>Across this entire path, which single concept do you think will matter most for your own long-term practice: program selection strategy, recon automation, the IDOR/access-control methodology, business logic thinking, or Nuclei template-writing?</p>
+<details><summary>A thought on this</summary>There's no universally correct answer, but it's worth noticing that <strong>program selection</strong> and <strong>business logic thinking</strong> are the two skills that scale entirely independent of any specific tool — they're durable, transferable judgment that will still matter even as specific tools evolve or get replaced over the coming years, while tool-specific skills (a particular Nuclei syntax, a particular platform's UI) will need periodic refreshing as the ecosystem changes. Building strong fundamentals in the durable, judgment-based skills tends to pay off longest.</details><h2>Key terms</h2>
 <ul>
 <li><strong>Track record</strong> — the accumulated, publicly verifiable body of valid findings and platform reputation.</li>
 <li><strong>Specialisation</strong> — focusing deeply on a specific bug class, tech stack, or platform type for competitive advantage.</li>

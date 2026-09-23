@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Same-Origin Policy &amp; CORS — Path 05 · KashSec Academy</title>
-<meta name="description" content="Same-Origin Policy &amp; CORS: The web's foundational trust boundary, and how it gets misconfigured.">
+<meta name="description" content="You now understand cookies, storage, and how the DOM works. This lesson covers arguably the single most important security boundary in the entire web platform — one that quietly protects nearly everyt">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/05-web-basics/same-origin-policy-and-cors.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Same-Origin Policy &amp; CORS — Path 05 · KashSec Academy">
-<meta property="og:description" content="Same-Origin Policy &amp; CORS: The web's foundational trust boundary, and how it gets misconfigured.">
+<meta property="og:description" content="You now understand cookies, storage, and how the DOM works. This lesson covers arguably the single most important security boundary in the entire web platform — one that quietly protects nearly everyt">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/05-web-basics/same-origin-policy-and-cors.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Same-Origin Policy &amp; CORS — Path 05 · KashSec Academy">
-<meta name="twitter:description" content="Same-Origin Policy &amp; CORS: The web's foundational trust boundary, and how it gets misconfigured.">
+<meta name="twitter:description" content="You now understand cookies, storage, and how the DOM works. This lesson covers arguably the single most important security boundary in the entire web platform — one that quietly protects nearly everyt">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 05 — How the Web Works","item":"https://kashsec.vercel.app/lesson/05-web-basics/"},{"@type":"ListItem","position":4,"name":"Same-Origin Policy & CORS","item":"https://kashsec.vercel.app/lesson/05-web-basics/same-origin-policy-and-cors.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Same-Origin Policy & CORS","headline":"Same-Origin Policy & CORS","description":"Same-Origin Policy & CORS: The web's foundational trust boundary, and how it gets misconfigured.","url":"https://kashsec.vercel.app/lesson/05-web-basics/same-origin-policy-and-cors.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"The web's foundational trust boundary, and how it gets misconfigured.","isPartOf":{"@type":"Course","name":"Path 05: How the Web Works","url":"https://kashsec.vercel.app/lesson/05-web-basics/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/05-web-basics/same-origin-policy-and-cors.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Same-Origin Policy & CORS","headline":"Same-Origin Policy & CORS","description":"You now understand cookies, storage, and how the DOM works. This lesson covers arguably the single most important security boundary in the entire web platform — one that quietly protects nearly everyt","url":"https://kashsec.vercel.app/lesson/05-web-basics/same-origin-policy-and-cors.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"The web's foundational trust boundary, and how it gets misconfigured.","isPartOf":{"@type":"Course","name":"Path 05: How the Web Works","url":"https://kashsec.vercel.app/lesson/05-web-basics/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/05-web-basics/same-origin-policy-and-cors.html"}}
 </script>
 </head>
 <body>
@@ -98,31 +98,24 @@ https://example.com             and   https://example.com:8080         → DIFFE
 </code></pre>
 <h2>The Same-Origin Policy: the web's default trust boundary</h2>
 <p>The <strong>Same-Origin Policy (SOP)</strong> is a browser-enforced rule: a script running on one origin cannot read data from a different origin by default — a script on <code>evil.com</code> cannot use JavaScript to read your cookies, localStorage, or the DOM content of a page open on <code>yourbank.com</code>, even if both are open in tabs at the same time. This single rule is the foundation nearly every other web security mechanism this course covers builds on top of.</p>
-<pre><code class="language-mermaid">flowchart LR
-    A["Script on evil.com"] --&gt;|"Blocked by default"| B["Read data from\nyourbank.com"]
-</code></pre>
 <h2>CORS: deliberately relaxing the boundary, safely</h2>
 <p>Sometimes a legitimate application genuinely needs to make requests across origins — a frontend on <code>app.example.com</code> calling an API on <code>api.example.com</code>. <strong>CORS (Cross-Origin Resource Sharing)</strong> is the mechanism that lets a server explicitly opt into allowing specific cross-origin requests, via response headers:</p>
 <pre><code>Access-Control-Allow-Origin: https://app.example.com
 </code></pre>
 <p>The server, not the browser or the requesting script, decides which origins are allowed — meaning a misconfigured CORS policy is entirely a server-side mistake, not a browser flaw.</p>
 <h2>The dangerous misconfiguration: reflecting any origin</h2>
-<p>:::danger A genuinely common, serious CORS misconfiguration</p>
 <pre><code>Access-Control-Allow-Origin: *
 Access-Control-Allow-Credentials: true
 </code></pre>
-<p>This combination — allowing <em>any</em> origin while also allowing credentials (cookies) to be included — effectively disables the Same-Origin Policy's protection entirely for that endpoint, since literally any website can now make authenticated, credentialed requests on a logged-in user's behalf and read the response. This exact misconfiguration pattern shows up repeatedly in real-world bug bounty reports (Path 15) and is directly related to the CSRF concepts covered later in Path 11.
-:::</p>
+<p>This combination — allowing <em>any</em> origin while also allowing credentials (cookies) to be included — effectively disables the Same-Origin Policy's protection entirely for that endpoint, since literally any website can now make authenticated, credentialed requests on a logged-in user's behalf and read the response. This exact misconfiguration pattern shows up repeatedly in real-world bug bounty reports (Path 15) and is directly related to the CSRF concepts covered later in Path 11.</p>
 <h2>Why this connects directly to your earlier lessons</h2>
 <ul>
 <li><strong>Cookies</strong> — the Same-Origin Policy is exactly what prevents a malicious site from directly reading your session cookie for a different site using JavaScript (though cookies still get <em>sent</em> automatically with cross-origin requests unless additional protections are configured — the exact mechanism behind CSRF, covered fully in Path 11)</li>
 <li><strong>localStorage</strong> — protected by the same origin boundary; a script on a different origin genuinely cannot read another origin's localStorage at all, unlike the cookie-sending behavior above</li>
 <li><strong>APIs</strong> — the next lesson's API calls frequently need CORS configured correctly specifically to let a legitimate frontend talk to a backend on a different subdomain</li>
 </ul>
-<p>:::challenge Test yourself
-Why is <code>Access-Control-Allow-Origin: *</code> combined with <code>Access-Control-Allow-Credentials: true</code> considered a serious misconfiguration, rather than just an overly permissive but harmless setting?</p>
-<details><summary>Show answer</summary>Together, these two headers tell the browser "any website in the world is allowed to make requests to this endpoint, <em>and</em> include the user's credentials (cookies) with those requests, and read the response." This effectively grants every other website on the internet the ability to make authenticated API calls on behalf of any user who happens to be logged in and visiting that malicious site — reading private data, and depending on the endpoint, potentially performing actions on the user's behalf too. This is exactly why browsers actually refuse to honor this specific combination in modern implementations (a wildcard origin combined with credentials is explicitly disallowed by the CORS specification) — but developers can still accidentally create an equivalent, exploitable misconfiguration by dynamically reflecting whatever origin a request claims to be from, rather than checking it against a genuine allow-list.</details>
-:::<h2>Key terms</h2>
+<p>Why is <code>Access-Control-Allow-Origin: *</code> combined with <code>Access-Control-Allow-Credentials: true</code> considered a serious misconfiguration, rather than just an overly permissive but harmless setting?</p>
+<details><summary>Show answer</summary>Together, these two headers tell the browser "any website in the world is allowed to make requests to this endpoint, <em>and</em> include the user's credentials (cookies) with those requests, and read the response." This effectively grants every other website on the internet the ability to make authenticated API calls on behalf of any user who happens to be logged in and visiting that malicious site — reading private data, and depending on the endpoint, potentially performing actions on the user's behalf too. This is exactly why browsers actually refuse to honor this specific combination in modern implementations (a wildcard origin combined with credentials is explicitly disallowed by the CORS specification) — but developers can still accidentally create an equivalent, exploitable misconfiguration by dynamically reflecting whatever origin a request claims to be from, rather than checking it against a genuine allow-list.</details><h2>Key terms</h2>
 <ul>
 <li><strong>Origin</strong> — the combination of scheme, host, and port that defines a security boundary on the web.</li>
 <li><strong>Same-Origin Policy (SOP)</strong> — the browser-enforced default rule preventing cross-origin script access to another site's data.</li>

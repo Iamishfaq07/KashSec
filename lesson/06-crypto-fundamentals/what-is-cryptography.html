@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>What is cryptography? — Path 06 · KashSec Academy</title>
-<meta name="description" content="What is cryptography?: Encoding vs. encryption vs. hashing — the distinction that unlocks everything else.">
+<meta name="description" content="You've already met cryptography scattered throughout this course — Base64 encoding in the CTF Zone, password hashing in Path 10, AES and RSA in ransomware's mechanics (Path 17). This path starts from ">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/06-crypto-fundamentals/what-is-cryptography.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="What is cryptography? — Path 06 · KashSec Academy">
-<meta property="og:description" content="What is cryptography?: Encoding vs. encryption vs. hashing — the distinction that unlocks everything else.">
+<meta property="og:description" content="You've already met cryptography scattered throughout this course — Base64 encoding in the CTF Zone, password hashing in Path 10, AES and RSA in ransomware's mechanics (Path 17). This path starts from ">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/06-crypto-fundamentals/what-is-cryptography.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="What is cryptography? — Path 06 · KashSec Academy">
-<meta name="twitter:description" content="What is cryptography?: Encoding vs. encryption vs. hashing — the distinction that unlocks everything else.">
+<meta name="twitter:description" content="You've already met cryptography scattered throughout this course — Base64 encoding in the CTF Zone, password hashing in Path 10, AES and RSA in ransomware's mechanics (Path 17). This path starts from ">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 06 — Cryptography Fundamentals","item":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/"},{"@type":"ListItem","position":4,"name":"What is cryptography?","item":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/what-is-cryptography.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"What is cryptography?","headline":"What is cryptography?","description":"What is cryptography?: Encoding vs. encryption vs. hashing — the distinction that unlocks everything else.","url":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/what-is-cryptography.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Encoding vs. encryption vs. hashing — the distinction that unlocks everything else.","isPartOf":{"@type":"Course","name":"Path 06: Cryptography Fundamentals","url":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/what-is-cryptography.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"What is cryptography?","headline":"What is cryptography?","description":"You've already met cryptography scattered throughout this course — Base64 encoding in the CTF Zone, password hashing in Path 10, AES and RSA in ransomware's mechanics (Path 17). This path starts from ","url":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/what-is-cryptography.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Encoding vs. encryption vs. hashing — the distinction that unlocks everything else.","isPartOf":{"@type":"Course","name":"Path 06: Cryptography Fundamentals","url":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/what-is-cryptography.html"}}
 </script>
 </head>
 <body>
@@ -115,12 +115,6 @@
 <td>No — one-way, by design</td>
 </tr>
 </tbody></table>
-<pre><code class="language-mermaid">flowchart TD
-    A[Original Data] --&gt; B{What are you\ntrying to do?}
-    B --&gt;|Represent differently,\nno secrecy needed| C["Encoding\n(Base64, hex, URL encoding)"]
-    B --&gt;|Keep it secret,\nrecoverable later| D["Encryption\n(AES, RSA)"]
-    B --&gt;|Verify integrity or\nstore irreversibly| E["Hashing\n(SHA-256)"]
-</code></pre>
 <h2>Encoding — not security at all</h2>
 <p>This course's CTF Zone crypto challenges already demonstrated this directly: Base64 is <strong>encoding</strong>, not encryption — anyone can decode it instantly, with no secret required. Encoding exists purely to represent data in a different, more convenient format (binary data as printable text, for instance) — it provides zero confidentiality. Treating encoded data as "protected" is a genuinely common, genuinely dangerous real-world mistake.</p>
 <h2>Encryption — scrambling with a recoverable secret</h2>
@@ -141,13 +135,9 @@ SHA-256("password124") = 8a9c1b5a...  (completely different output — even a ti
 <p>Cryptography is far older than computing itself, and knowing a little of that history helps ground why the field is structured the way it is today. Military and diplomatic communication drove cryptography's development for millennia — the Caesar cipher above genuinely was used by Roman military commanders; centuries later, the German Enigma machine's mechanical rotor-based encryption, and the Allied codebreaking effort at Bletchley Park (involving Alan Turing, widely regarded as a founder of computer science) that eventually broke it, is often cited as a pivotal moment in World War II and a direct ancestor of modern computing itself. The core lesson that keeps repeating across this entire history, right up to the present day: a cipher that seems unbreakable to its own designers often has a flaw invisible to them but findable by dedicated, motivated adversaries — which is exactly why "never roll your own crypto" (a phrase you'll see repeated throughout this path) isn't overcautious advice, but the hard-won, historically-proven lesson of a field with a long track record of confident designers being wrong.</p>
 <h2>Kerckhoffs's principle — a foundational design rule</h2>
 <p>A specific historical lesson worth naming directly, since it shapes essentially every modern cryptographic system: <strong>Kerckhoffs's principle</strong>, formulated in the 19th century, states that a cryptographic system should remain secure even if everything about it — the algorithm, the implementation, the design — is publicly known, with the sole exception of the key. This is precisely why AES and RSA (covered in the next two lessons) are open, published, publicly-scrutinized algorithms rather than secret proprietary designs — a system's security should never depend on attackers not knowing <em>how</em> it works, only on them not having the <em>specific secret key</em>. A corollary worth internalizing: "security through obscurity" (hiding how a system works, hoping attackers won't figure it out) is not a substitute for genuine cryptographic security, and a design that only holds up as long as its inner workings stay secret should be treated as fundamentally broken, not merely unproven.</p>
-<p>:::tip A quick way to remember the distinction
-Ask: "Do I need to get the original data back?" If yes, and you don't mind anyone being able to reverse it, that's <strong>encoding</strong>. If yes, but only someone with a secret should be able to, that's <strong>encryption</strong>. If no — you only ever need to <em>verify</em>, never <em>recover</em> — that's <strong>hashing</strong>.
-:::</p>
-<p>:::challenge Test yourself
-Why is it a serious security mistake to "encrypt" a password with a reversible scheme instead of hashing it, even if the encryption key itself is kept perfectly secret?</p>
-<details><summary>Show answer</summary>Encryption is designed to be reversible by anyone holding the key — which means whoever controls that key (the service operator, or an attacker who steals it) can recover every user's actual plaintext password at once. Hashing has no key to steal in the first place; even the service itself cannot recover the original password, only verify a match. Since password reuse across sites is extremely common (Path 00's passwords lesson), a reversible scheme turns a single leaked key into a mass password-recovery event across every user, while a properly hashed database (even if stolen) requires attackers to crack each hash individually — dramatically slower and, with a strong unique password, often practically infeasible.</details>
-:::<h2>Key terms</h2>
+<p>Ask: "Do I need to get the original data back?" If yes, and you don't mind anyone being able to reverse it, that's <strong>encoding</strong>. If yes, but only someone with a secret should be able to, that's <strong>encryption</strong>. If no — you only ever need to <em>verify</em>, never <em>recover</em> — that's <strong>hashing</strong>.</p>
+<p>Why is it a serious security mistake to "encrypt" a password with a reversible scheme instead of hashing it, even if the encryption key itself is kept perfectly secret?</p>
+<details><summary>Show answer</summary>Encryption is designed to be reversible by anyone holding the key — which means whoever controls that key (the service operator, or an attacker who steals it) can recover every user's actual plaintext password at once. Hashing has no key to steal in the first place; even the service itself cannot recover the original password, only verify a match. Since password reuse across sites is extremely common (Path 00's passwords lesson), a reversible scheme turns a single leaked key into a mass password-recovery event across every user, while a properly hashed database (even if stolen) requires attackers to crack each hash individually — dramatically slower and, with a strong unique password, often practically infeasible.</details><h2>Key terms</h2>
 <ul>
 <li><strong>Plaintext / ciphertext</strong> — readable original data, and its encrypted, unreadable form.</li>
 <li><strong>Key</strong> — the secret value controlling an encryption/decryption operation.</li>

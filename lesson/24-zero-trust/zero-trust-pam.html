@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Privileged Access Management Under Zero Trust — Path 24 · KashSec Academy</title>
-<meta name="description" content="Privileged Access Management Under Zero Trust: Just-in-Time elevation, break-glass accounts, and closing the standing-access gap.">
+<meta name="description" content="Every control covered so far in this path applies to ordinary users and services. This lesson covers the highest-stakes identity category of all: privileged accounts — admins, root, domain controllers">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-pam.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Privileged Access Management Under Zero Trust — Path 24 · KashSec Academy">
-<meta property="og:description" content="Privileged Access Management Under Zero Trust: Just-in-Time elevation, break-glass accounts, and closing the standing-access gap.">
+<meta property="og:description" content="Every control covered so far in this path applies to ordinary users and services. This lesson covers the highest-stakes identity category of all: privileged accounts — admins, root, domain controllers">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-pam.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Privileged Access Management Under Zero Trust — Path 24 · KashSec Academy">
-<meta name="twitter:description" content="Privileged Access Management Under Zero Trust: Just-in-Time elevation, break-glass accounts, and closing the standing-access gap.">
+<meta name="twitter:description" content="Every control covered so far in this path applies to ordinary users and services. This lesson covers the highest-stakes identity category of all: privileged accounts — admins, root, domain controllers">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 24 — Zero Trust Architecture","item":"https://kashsec.vercel.app/lesson/24-zero-trust/"},{"@type":"ListItem","position":4,"name":"Privileged Access Management Under Zero Trust","item":"https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-pam.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Privileged Access Management Under Zero Trust","headline":"Privileged Access Management Under Zero Trust","description":"Privileged Access Management Under Zero Trust: Just-in-Time elevation, break-glass accounts, and closing the standing-access gap.","url":"https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-pam.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Just-in-Time elevation, break-glass accounts, and closing the standing-access gap.","isPartOf":{"@type":"Course","name":"Path 24: Zero Trust Architecture","url":"https://kashsec.vercel.app/lesson/24-zero-trust/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-pam.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Privileged Access Management Under Zero Trust","headline":"Privileged Access Management Under Zero Trust","description":"Every control covered so far in this path applies to ordinary users and services. This lesson covers the highest-stakes identity category of all: privileged accounts — admins, root, domain controllers","url":"https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-pam.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Just-in-Time elevation, break-glass accounts, and closing the standing-access gap.","isPartOf":{"@type":"Course","name":"Path 24: Zero Trust Architecture","url":"https://kashsec.vercel.app/lesson/24-zero-trust/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-pam.html"}}
 </script>
 </head>
 <body>
@@ -89,9 +89,7 @@
     <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/24-zero-trust/">Path 24 — Zero Trust Architecture</a> · Privileged Access Management Under Zero Trust</nav>
     <div class="md" id="content"><article><h1>Privileged Access Management Under Zero Trust</h1>
 <p>Every control covered so far in this path applies to ordinary users and services. This lesson covers the highest-stakes identity category of all: privileged accounts — admins, root, domain controllers — where a single compromised credential can undo every other Zero Trust control this path has built.</p>
-<p>:::tip
-A blunt but accurate way to frame this lesson: <strong>standing privileged access is the single largest gap in most "Zero Trust" rollouts that otherwise look complete.</strong> An organization can nail identity, device posture, and micro-segmentation for its regular workforce and still have a domain admin account with a permanent, always-on, MFA-optional login sitting untouched since the servers were first set up.
-:::</p>
+<p>:::</p>
 <h2>Why privileged accounts break the "never trust, always verify" model by default</h2>
 <p>Privileged accounts, historically, are exactly the opposite of Zero Trust: broad, standing (always-active) access, often exempted from the MFA and conditional-access policies applied to regular users specifically <em>because</em> administrators found those controls inconvenient for frequent, urgent work. That convenience is precisely what makes a compromised privileged credential so devastating — it inherits every exemption that was granted for operational convenience.</p>
 <h2>Just-in-Time (JIT) access: the core Zero Trust answer</h2>
@@ -106,15 +104,12 @@ A blunt but accurate way to frame this lesson: <strong>standing privileged acces
 <p>:::challenge Evaluate a real PAM gap
 An organization has fully implemented Zero Trust for its 500 regular employees — MFA, device posture, conditional access, all enforced. Its 12 domain administrator accounts use a shared password last rotated two years ago, and MFA is technically enabled but exempted "for operational reasons" during business hours.</p>
 <details><summary>Hint</summary>What does an attacker's realistic best target look like in this environment, given everything else is well-defended?</details>
-<details><summary>Show answer</summary>The domain admin accounts are now the obvious, highest-value target precisely *because* everything else is well-defended — an attacker who can compromise even one of the 12 shared credentials inherits standing, MFA-exempt, broad privileged access that bypasses every other control in the environment. The fix mirrors this lesson's core techniques directly: eliminate the shared password in favor of individual, vaulted, automatically-rotated credentials; remove the business-hours MFA exemption entirely; and replace standing admin access with Just-in-Time elevation so that even a compromised credential doesn't grant usable privilege unless a legitimate elevation request happens to be active at that moment.</details>
-:::<h2>🧪 Hands-on lab — design a JIT elevation workflow</h2>
+<details><summary>Show answer</summary>The domain admin accounts are now the obvious, highest-value target precisely *because* everything else is well-defended — an attacker who can compromise even one of the 12 shared credentials inherits standing, MFA-exempt, broad privileged access that bypasses every other control in the environment. The fix mirrors this lesson's core techniques directly: eliminate the shared password in favor of individual, vaulted, automatically-rotated credentials; remove the business-hours MFA exemption entirely; and replace standing admin access with Just-in-Time elevation so that even a compromised credential doesn't grant usable privilege unless a legitimate elevation request happens to be active at that moment.</details><h2>🧪 Hands-on lab — design a JIT elevation workflow</h2>
 <p>Sketch a Just-in-Time access workflow for a hypothetical database administrator who occasionally needs production access: what triggers a request, who approves it, how long the elevation lasts, and what gets logged.</p>
-<p>:::challenge Test yourself</p>
 <ol>
 <li>Why do privileged accounts often end up exempted from controls applied to regular users, and why is that dangerous?</li>
 <li>What does Just-in-Time access change about how elevated privilege is granted?</li>
-<li>Why does a break-glass account need tighter controls than routine privileged access, not looser ones?
-:::</li>
+<li>Why does a break-glass account need tighter controls than routine privileged access, not looser ones?</li>
 </ol>
 <h2>Key terms</h2>
 <ul>

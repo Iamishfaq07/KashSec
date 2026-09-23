@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Linux Forensics Basics Lab — Path 03 · KashSec Academy</title>
-<meta name="description" content="Linux Forensics Basics Lab: Learn to investigate a Linux system.">
+<meta name="description" content="This lab is a first, gentler pass at the same skill Path 16's DFIR Lab covers in depth later: investigating a Linux system for signs of compromise. Everything here uses only commands built into virtua">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/03-linux/linux-forensics-lab.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Linux Forensics Basics Lab — Path 03 · KashSec Academy">
-<meta property="og:description" content="Linux Forensics Basics Lab: Learn to investigate a Linux system.">
+<meta property="og:description" content="This lab is a first, gentler pass at the same skill Path 16's DFIR Lab covers in depth later: investigating a Linux system for signs of compromise. Everything here uses only commands built into virtua">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/03-linux/linux-forensics-lab.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Linux Forensics Basics Lab — Path 03 · KashSec Academy">
-<meta name="twitter:description" content="Linux Forensics Basics Lab: Learn to investigate a Linux system.">
+<meta name="twitter:description" content="This lab is a first, gentler pass at the same skill Path 16's DFIR Lab covers in depth later: investigating a Linux system for signs of compromise. Everything here uses only commands built into virtua">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 03 — Operating Systems & Linux","item":"https://kashsec.vercel.app/lesson/03-linux/"},{"@type":"ListItem","position":4,"name":"Linux Forensics Basics Lab","item":"https://kashsec.vercel.app/lesson/03-linux/linux-forensics-lab.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Linux Forensics Basics Lab","headline":"Linux Forensics Basics Lab","description":"Linux Forensics Basics Lab: Learn to investigate a Linux system.","url":"https://kashsec.vercel.app/lesson/03-linux/linux-forensics-lab.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Learn to investigate a Linux system.","isPartOf":{"@type":"Course","name":"Path 03: Operating Systems & Linux","url":"https://kashsec.vercel.app/lesson/03-linux/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/03-linux/linux-forensics-lab.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Linux Forensics Basics Lab","headline":"Linux Forensics Basics Lab","description":"This lab is a first, gentler pass at the same skill Path 16's DFIR Lab covers in depth later: investigating a Linux system for signs of compromise. Everything here uses only commands built into virtua","url":"https://kashsec.vercel.app/lesson/03-linux/linux-forensics-lab.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Learn to investigate a Linux system.","isPartOf":{"@type":"Course","name":"Path 03: Operating Systems & Linux","url":"https://kashsec.vercel.app/lesson/03-linux/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/03-linux/linux-forensics-lab.html"}}
 </script>
 </head>
 <body>
@@ -125,12 +125,8 @@ ls -la /etc/cron.d/ /etc/cron.daily/
 <li><p><strong>Check shell history for command evidence.</strong> <code>cat ~/.bash_history</code> (or the equivalent for the shell in use) shows every command a user has typed — genuinely revealing during an investigation, though be aware a careful attacker may have cleared or disabled this file, which is itself a suspicious finding worth noting.</p>
 </li>
 </ol>
-<p>:::tip Build a mental baseline first
-Real incident response is far easier when you already know what "normal" looks like for a given system — the processes that always run, the accounts that should exist, the typical login pattern. Run through these same four commands on your own everyday machine right now (nothing suspicious expected), just to build the habit of noticing what a "clean" baseline actually looks like before you ever need to spot an anomaly against it.
-:::</p>
-<p>:::challenge Write an incident summary
-Imagine you've been asked to investigate a Linux server after a report of "unusual activity." Using the four task categories above (processes/connections, users/logins, logs, modified files) as your checklist, write a short summary of what you'd check and, for at least one category, what a genuinely suspicious finding would look like versus a benign one.
-:::</p>
+<p>Real incident response is far easier when you already know what "normal" looks like for a given system — the processes that always run, the accounts that should exist, the typical login pattern. Run through these same four commands on your own everyday machine right now (nothing suspicious expected), just to build the habit of noticing what a "clean" baseline actually looks like before you ever need to spot an anomaly against it.</p>
+<p>Imagine you've been asked to investigate a Linux server after a report of "unusual activity." Using the four task categories above (processes/connections, users/logins, logs, modified files) as your checklist, write a short summary of what you'd check and, for at least one category, what a genuinely suspicious finding would look like versus a benign one.</p>
 <h2>Key takeaway</h2>
 <p>Linux forensics fundamentals don't require exotic tools — <code>ps</code>, <code>ss</code>, <code>last</code>, <code>grep</code>, and <code>find</code> cover an enormous amount of ground, and knowing exactly what "normal" looks like on a system you're responsible for is often more valuable than any single tool, because it's what lets you actually recognize when something's wrong.</p>
 <p><strong>Explore more →</strong> <a href="#/lesson/04-python">Path 04 — Programming &amp; Python</a></p>

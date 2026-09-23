@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>WebSocket Security — Path 21 · KashSec Academy</title>
-<meta name="description" content="WebSocket Security: Persistent connections break the usual request-response assumptions.">
+<meta name="description" content="The rate-limiting-injection lesson covered request-response API abuse patterns. This lesson covers a genuinely different communication model increasingly common in real-time applications — WebSockets ">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/21-api-security/websocket-security.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="WebSocket Security — Path 21 · KashSec Academy">
-<meta property="og:description" content="WebSocket Security: Persistent connections break the usual request-response assumptions.">
+<meta property="og:description" content="The rate-limiting-injection lesson covered request-response API abuse patterns. This lesson covers a genuinely different communication model increasingly common in real-time applications — WebSockets ">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/21-api-security/websocket-security.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="WebSocket Security — Path 21 · KashSec Academy">
-<meta name="twitter:description" content="WebSocket Security: Persistent connections break the usual request-response assumptions.">
+<meta name="twitter:description" content="The rate-limiting-injection lesson covered request-response API abuse patterns. This lesson covers a genuinely different communication model increasingly common in real-time applications — WebSockets ">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 21 — API Security","item":"https://kashsec.vercel.app/lesson/21-api-security/"},{"@type":"ListItem","position":4,"name":"WebSocket Security","item":"https://kashsec.vercel.app/lesson/21-api-security/websocket-security.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"WebSocket Security","headline":"WebSocket Security","description":"WebSocket Security: Persistent connections break the usual request-response assumptions.","url":"https://kashsec.vercel.app/lesson/21-api-security/websocket-security.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Persistent connections break the usual request-response assumptions.","isPartOf":{"@type":"Course","name":"Path 21: API Security","url":"https://kashsec.vercel.app/lesson/21-api-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/21-api-security/websocket-security.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"WebSocket Security","headline":"WebSocket Security","description":"The rate-limiting-injection lesson covered request-response API abuse patterns. This lesson covers a genuinely different communication model increasingly common in real-time applications — WebSockets ","url":"https://kashsec.vercel.app/lesson/21-api-security/websocket-security.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Persistent connections break the usual request-response assumptions.","isPartOf":{"@type":"Course","name":"Path 21: API Security","url":"https://kashsec.vercel.app/lesson/21-api-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/21-api-security/websocket-security.html"}}
 </script>
 </head>
 <body>
@@ -95,23 +95,11 @@
 <p>A genuinely important structural difference: a typical REST API re-authenticates (or at minimum re-validates a token) on every single request. A WebSocket connection typically authenticates <strong>once</strong>, at the initial handshake, then trusts every subsequent message sent over that same connection for its entire lifetime. This means a connection authenticated at 9am might still be trusted at 5pm, hours after a token would normally have expired in a request-response model — directly connecting to the broken-auth-jwt lesson's token-expiration coverage, a WebSocket implementation needs its own explicit mechanism (periodic re-authentication, connection timeout, or server-side token expiration checks mid-connection) rather than assuming standard token expiration logic applies automatically.</p>
 <h2>Cross-Site WebSocket Hijacking</h2>
 <p>Directly connecting to Path 05's CSRF lesson: the WebSocket handshake begins as a regular HTTP request, meaning it's subject to the exact same cross-origin risk CSRF exploits — a malicious page can initiate a WebSocket connection to your application on behalf of a logged-in victim's browser, and if your server doesn't validate the <code>Origin</code> header during the handshake, that connection succeeds, authenticated as the victim, entirely without the victim's awareness. This is called <strong>Cross-Site WebSocket Hijacking (CSWSH)</strong>, and unlike traditional CSRF (which typically triggers a single unwanted action), a hijacked WebSocket connection gives the attacker a persistent, bidirectional channel for the connection's entire lifetime.</p>
-<pre><code class="language-mermaid">sequenceDiagram
-    participant Victim as Victim's Browser
-    participant Malicious as attacker.com page
-    participant Server as Your WebSocket Server
-
-    Victim-&gt;&gt;Malicious: Victim visits malicious page (already logged into your app)
-    Malicious-&gt;&gt;Server: Initiates WebSocket connection\n(browser sends victim's cookies automatically)
-    Server-&gt;&gt;Malicious: Connection accepted (no Origin check)\nauthenticated as victim
-    Malicious-&gt;&gt;Server: Sends/receives messages as the victim
-</code></pre>
 <h2>Message-level authorization — the part that's easy to forget</h2>
 <p>A genuinely common real-world gap: a WebSocket connection is correctly authenticated at handshake time, but individual messages sent over that connection never get their own authorization check — directly connecting to the BOLA-and-BFLA lesson's core lesson, an authenticated user sending a message like <code>{"action": "join_room", "room_id": 4471}</code> still needs the exact same object-level authorization check ("does this user actually have access to room 4471?") that any REST endpoint returning room data would require, even though there's no discrete HTTP request per message to hang that check on architecturally.</p>
 <h2>Rate limiting and resource exhaustion, WebSocket-specific</h2>
 <p>Directly connecting to the rate-limiting-injection lesson: a persistent connection changes the resource-exhaustion calculus — rather than rate-limiting discrete requests, a WebSocket server needs to limit the number of concurrent connections per user/IP, the message rate within an active connection, and the maximum connection lifetime, since a single malicious client can otherwise hold open thousands of connections or flood messages at a rate no traditional per-request rate limiter was designed to catch.</p>
-<p>:::challenge Test yourself
-Why does Cross-Site WebSocket Hijacking potentially cause more damage than a traditional CSRF attack against the equivalent REST endpoint, given that both exploit the same missing-origin-validation root cause?
-:::</p>
+<p>Why does Cross-Site WebSocket Hijacking potentially cause more damage than a traditional CSRF attack against the equivalent REST endpoint, given that both exploit the same missing-origin-validation root cause?</p>
 <h2>Key terms</h2>
 <ul>
 <li><strong>WebSocket</strong> — a persistent, bidirectional connection protocol, architecturally distinct from request-response REST/GraphQL APIs.</li>

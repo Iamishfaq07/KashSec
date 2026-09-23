@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Install Kali Linux — Path 03 · KashSec Academy</title>
-<meta name="description" content="Install Kali Linux: The pre-built image route, safely.">
+<meta name="description" content="Kali is the security-focused Linux distribution most professionals learn on. It comes pre-loaded with hundreds of security tools — Nmap, Burp Suite, Metasploit, Wireshark, John the Ripper, and more — ">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/03-linux/install-kali.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Install Kali Linux — Path 03 · KashSec Academy">
-<meta property="og:description" content="Install Kali Linux: The pre-built image route, safely.">
+<meta property="og:description" content="Kali is the security-focused Linux distribution most professionals learn on. It comes pre-loaded with hundreds of security tools — Nmap, Burp Suite, Metasploit, Wireshark, John the Ripper, and more — ">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/03-linux/install-kali.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Install Kali Linux — Path 03 · KashSec Academy">
-<meta name="twitter:description" content="Install Kali Linux: The pre-built image route, safely.">
+<meta name="twitter:description" content="Kali is the security-focused Linux distribution most professionals learn on. It comes pre-loaded with hundreds of security tools — Nmap, Burp Suite, Metasploit, Wireshark, John the Ripper, and more — ">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 03 — Operating Systems & Linux","item":"https://kashsec.vercel.app/lesson/03-linux/"},{"@type":"ListItem","position":4,"name":"Install Kali Linux","item":"https://kashsec.vercel.app/lesson/03-linux/install-kali.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Install Kali Linux","headline":"Install Kali Linux","description":"Install Kali Linux: The pre-built image route, safely.","url":"https://kashsec.vercel.app/lesson/03-linux/install-kali.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"The pre-built image route, safely.","isPartOf":{"@type":"Course","name":"Path 03: Operating Systems & Linux","url":"https://kashsec.vercel.app/lesson/03-linux/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/03-linux/install-kali.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Install Kali Linux","headline":"Install Kali Linux","description":"Kali is the security-focused Linux distribution most professionals learn on. It comes pre-loaded with hundreds of security tools — Nmap, Burp Suite, Metasploit, Wireshark, John the Ripper, and more — ","url":"https://kashsec.vercel.app/lesson/03-linux/install-kali.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"The pre-built image route, safely.","isPartOf":{"@type":"Course","name":"Path 03: Operating Systems & Linux","url":"https://kashsec.vercel.app/lesson/03-linux/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/03-linux/install-kali.html"}}
 </script>
 </head>
 <body>
@@ -111,9 +111,7 @@ shasum -a 256 kali-linux-*.7z
 Get-FileHash kali-linux-*.7z -Algorithm SHA256
 </code></pre>
 <p>Compare the output to the hash on kali.org. Match = good file. Mismatch = re-download.</p>
-<p>:::tip WHY WE HASH DOWNLOADS
-If an attacker replaced the file on a mirror with a malicious one, the hash would be different. Verifying hashes is a cheap habit that has caught real supply-chain attacks. Do it every time you download tools.
-:::</p>
+<p>If an attacker replaced the file on a mirror with a malicious one, the hash would be different. Verifying hashes is a cheap habit that has caught real supply-chain attacks. Do it every time you download tools.</p>
 <h2>Step 2 — Extract the archive</h2>
 <p>The download is a <code>.7z</code> archive. Extract it with <strong>7-Zip</strong> (Windows), <strong>The Unarchiver</strong> (Mac), or <code>7z x kali-linux-*.7z</code> on Linux.</p>
 <p>Inside you'll find a folder with <code>.vbox</code> and <code>.vmdk</code> files — that's the pre-built VM.</p>
@@ -137,32 +135,7 @@ If an attacker replaced the file on a mirror with a malicious one, the hash woul
 Password: kali
 </code></pre>
 <p><strong>Change the password immediately</strong> with the <code>passwd</code> command after logging in (next lesson).</p>
-<pre><code class="language-svg">&lt;svg viewBox="0 0 700 300" xmlns="http://www.w3.org/2000/svg" font-family="Inter, sans-serif"&gt;
-  &lt;g font-size="12"&gt;
-    &lt;!-- Host frame --&gt;
-    &lt;rect x="20" y="20" width="660" height="260" rx="10" fill="#0C1119" stroke="#213043" stroke-width="1.5"/&gt;
-    &lt;text x="45" y="40" fill="#8496A6" font-size="11"&gt;VirtualBox window on your host&lt;/text&gt;
-    &lt;!-- Kali desktop --&gt;
-    &lt;rect x="45" y="55" width="610" height="205" rx="6" fill="#080c12" stroke="#3FB6A8"/&gt;
-    &lt;!-- Top bar --&gt;
-    &lt;rect x="45" y="55" width="610" height="20" rx="0" fill="#111927"/&gt;
-    &lt;text x="60" y="70" fill="#3FB6A8" font-size="11" font-weight="700"&gt;🐉 Kali&lt;/text&gt;
-    &lt;text x="600" y="70" fill="#8496A6" font-size="10" text-anchor="end"&gt;kali@kali&lt;/text&gt;
-    &lt;!-- Wallpaper text --&gt;
-    &lt;text x="350" y="140" text-anchor="middle" fill="#3FB6A8" font-size="30" font-weight="700"&gt;KALI&lt;/text&gt;
-    &lt;text x="350" y="165" text-anchor="middle" fill="#8496A6" font-size="11"&gt;The tools of the trade, ready&lt;/text&gt;
-    &lt;!-- Bottom bar --&gt;
-    &lt;rect x="45" y="230" width="610" height="30" rx="0" fill="#111927"/&gt;
-    &lt;text x="55" y="248" fill="#E9EEF3" font-size="10"&gt;📁 Files&lt;/text&gt;
-    &lt;text x="105" y="248" fill="#E9EEF3" font-size="10"&gt;🌐 Firefox&lt;/text&gt;
-    &lt;text x="170" y="248" fill="#E9EEF3" font-size="10"&gt;💻 Terminal&lt;/text&gt;
-    &lt;text x="240" y="248" fill="#EFA43A" font-size="10"&gt;🕷 Burp&lt;/text&gt;
-    &lt;text x="290" y="248" fill="#EFA43A" font-size="10"&gt;🎯 Metasploit&lt;/text&gt;
-    &lt;text x="370" y="248" fill="#EFA43A" font-size="10"&gt;📡 Wireshark&lt;/text&gt;
-    &lt;text x="450" y="248" fill="#EFA43A" font-size="10"&gt;🔍 Nmap&lt;/text&gt;
-  &lt;/g&gt;
-&lt;/svg&gt;
-</code></pre>
+<p><em>[Your first Kali desktop]</em></p>
 <p>You should see the Kali desktop — a dark theme, a menu with dozens of security tools, and a terminal you can open. Congratulations: <strong>you now own a hacker's workstation.</strong></p>
 <h2>Step 5 — First updates</h2>
 <p>Open a terminal (top-left menu, or Ctrl+Alt+T) and run:</p>
@@ -214,9 +187,7 @@ sudo apt update &amp;&amp; sudo apt upgrade -y
 <li><strong>Forensics</strong> — Autopsy, Volatility (Path 16's DFIR lab).</li>
 </ul>
 <p>You'll formally meet most of these tools by name throughout the rest of this course — this browse is just so the menu feels familiar rather than overwhelming the first time you actually need something from it.</p>
-<p>:::note Kali defaults to a non-root user, and that's intentional
-Older Kali versions ran everything as <code>root</code> by default — a convenient but genuinely risky default, since any tool you ran (or any mistake you made) had full system privileges automatically. Modern Kali defaults to a standard, non-root <code>kali</code> user instead, requiring explicit <code>sudo</code> for privileged actions — directly applying the principle of least privilege from Path 00's fundamentals, now to your own primary security workstation.
-:::</p>
+<p>Older Kali versions ran everything as <code>root</code> by default — a convenient but genuinely risky default, since any tool you ran (or any mistake you made) had full system privileges automatically. Modern Kali defaults to a standard, non-root <code>kali</code> user instead, requiring explicit <code>sudo</code> for privileged actions — directly applying the principle of least privilege from Path 00's fundamentals, now to your own primary security workstation.</p>
 <h2>Alternative — Kali in Docker or WSL</h2>
 <p>For lighter footprints:</p>
 <ul>
@@ -232,10 +203,8 @@ Older Kali versions ran everything as <code>root</code> by default — a conveni
 <li>Click <strong>Take</strong> and name it <strong><code>fresh-install</code></strong>.</li>
 </ol>
 <p>Now if you ever break Kali beyond repair, you can restore this snapshot in seconds. We'll use snapshots deliberately in the next lesson.</p>
-<p>:::challenge Test yourself
-What single command updates the package lists and applies all available updates in Kali?</p>
-<details><summary>Show answer</summary><code>sudo apt update &amp;&amp; sudo apt upgrade -y</code></details>
-:::<h2>Key terms</h2>
+<p>What single command updates the package lists and applies all available updates in Kali?</p>
+<details><summary>Show answer</summary><code>sudo apt update &amp;&amp; sudo apt upgrade -y</code></details><h2>Key terms</h2>
 <ul>
 <li><strong>Kali Linux</strong> — Debian-based security distro pre-loaded with tools.</li>
 <li><strong>VirtualBox image (OVA/VMDK)</strong> — pre-built VM you import instead of installing.</li>

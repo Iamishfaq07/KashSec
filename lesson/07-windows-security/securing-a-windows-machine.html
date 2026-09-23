@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Securing a Windows Machine — Path 07 · KashSec Academy</title>
-<meta name="description" content="Securing a Windows Machine: A complete, practical hardening checklist.">
+<meta name="description" content="This lesson pulls together everything from this path so far into a single, practical hardening checklist — exactly the kind of concrete deliverable a junior IT security role or a home-network security">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/07-windows-security/securing-a-windows-machine.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Securing a Windows Machine — Path 07 · KashSec Academy">
-<meta property="og:description" content="Securing a Windows Machine: A complete, practical hardening checklist.">
+<meta property="og:description" content="This lesson pulls together everything from this path so far into a single, practical hardening checklist — exactly the kind of concrete deliverable a junior IT security role or a home-network security">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/07-windows-security/securing-a-windows-machine.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Securing a Windows Machine — Path 07 · KashSec Academy">
-<meta name="twitter:description" content="Securing a Windows Machine: A complete, practical hardening checklist.">
+<meta name="twitter:description" content="This lesson pulls together everything from this path so far into a single, practical hardening checklist — exactly the kind of concrete deliverable a junior IT security role or a home-network security">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 07 — Windows Security Basics","item":"https://kashsec.vercel.app/lesson/07-windows-security/"},{"@type":"ListItem","position":4,"name":"Securing a Windows Machine","item":"https://kashsec.vercel.app/lesson/07-windows-security/securing-a-windows-machine.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Securing a Windows Machine","headline":"Securing a Windows Machine","description":"Securing a Windows Machine: A complete, practical hardening checklist.","url":"https://kashsec.vercel.app/lesson/07-windows-security/securing-a-windows-machine.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"A complete, practical hardening checklist.","isPartOf":{"@type":"Course","name":"Path 07: Windows Security Basics","url":"https://kashsec.vercel.app/lesson/07-windows-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/07-windows-security/securing-a-windows-machine.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Securing a Windows Machine","headline":"Securing a Windows Machine","description":"This lesson pulls together everything from this path so far into a single, practical hardening checklist — exactly the kind of concrete deliverable a junior IT security role or a home-network security","url":"https://kashsec.vercel.app/lesson/07-windows-security/securing-a-windows-machine.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"A complete, practical hardening checklist.","isPartOf":{"@type":"Course","name":"Path 07: Windows Security Basics","url":"https://kashsec.vercel.app/lesson/07-windows-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/07-windows-security/securing-a-windows-machine.html"}}
 </script>
 </head>
 <body>
@@ -90,16 +90,6 @@
     <div class="md" id="content"><article><h1>Securing a Windows Machine</h1>
 <p>This lesson pulls together everything from this path so far into a single, practical hardening checklist — exactly the kind of concrete deliverable a junior IT security role or a home-network security review actually requires.</p>
 <h2>The hardening checklist</h2>
-<pre><code class="language-mermaid">flowchart TD
-    A[Secure a Windows Machine] --&gt; B["Updates &amp; Patching"]
-    A --&gt; C["Account Hygiene"]
-    A --&gt; D["Defender &amp; Firewall\nconfiguration"]
-    A --&gt; E["Encryption\nBitLocker"]
-    A --&gt; F["Logging &amp;\nAudit Policy"]
-    A --&gt; G["Unnecessary Services\n&amp; Software"]
-    A --&gt; H["Network Protocol\nHardening"]
-    A --&gt; I["Application\nAllowlisting"]
-</code></pre>
 <h3>1. Updates and patching</h3>
 <p>Confirm Windows Update is set to install automatically (this path's security settings lesson) — and don't stop at the OS itself: third-party software (browsers, PDF readers, and similar) is a genuinely common attack vector precisely because it's easy to forget updating, unlike Windows itself, which nags visibly.</p>
 <h3>2. Account hygiene</h3>
@@ -131,12 +121,8 @@ Write-Host "=== Windows Update Status ==="
 Get-WmiObject -Class Win32_QuickFixEngineering | Sort-Object InstalledOn -Descending | Select-Object -First 5
 </code></pre>
 <p>This kind of small, purpose-built script is exactly the "automate the tedious, repetitive part" philosophy from Path 04's automation lesson, applied here to a recurring Windows security review rather than a recon pipeline.</p>
-<p>:::tip Group Policy for managing many machines at once
-Everything in this checklist is straightforward to configure on a single machine manually — but in a real organization with hundreds or thousands of Windows machines, <strong>Group Policy</strong> (or modern cloud-based equivalents like Microsoft Intune) lets administrators push these same settings consistently across an entire fleet from one central location, rather than configuring each machine by hand.
-:::</p>
-<p>:::challenge Complete a full hardening pass
-On a test VM (never a machine you depend on, in case something needs undoing), work through all 8 checklist categories above, documenting exactly what you changed and why. Then run the PowerShell audit script and interpret its output — does everything look as expected for a machine you just hardened?
-:::</p>
+<p>Everything in this checklist is straightforward to configure on a single machine manually — but in a real organization with hundreds or thousands of Windows machines, <strong>Group Policy</strong> (or modern cloud-based equivalents like Microsoft Intune) lets administrators push these same settings consistently across an entire fleet from one central location, rather than configuring each machine by hand.</p>
+<p>On a test VM (never a machine you depend on, in case something needs undoing), work through all 8 checklist categories above, documenting exactly what you changed and why. Then run the PowerShell audit script and interpret its output — does everything look as expected for a machine you just hardened?</p>
 <h2>Key takeaway</h2>
 <p>Windows security hardening is fundamentally a checklist discipline, not a single silver-bullet setting — updates, account hygiene, Defender/Firewall configuration, encryption, logging, and reduced attack surface each close off a different category of risk, and real security comes from consistently applying all of them together, not from any single control alone.</p>
 <p><strong>Next up →</strong> <a href="#/lesson/07-windows-security/windows-backup-and-recovery">Windows Backup &amp; Recovery</a></p>

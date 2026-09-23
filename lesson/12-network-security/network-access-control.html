@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Network Access Control (NAC) — Path 12 · KashSec Academy</title>
-<meta name="description" content="Network Access Control (NAC): 802.1X and posture assessment — deciding whether a device joins at all.">
+<meta name="description" content="Every control covered so far in this path assumes a device has already joined the network. This lesson covers the layer that decides whether a device gets to join at all — genuinely the network-level ">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/12-network-security/network-access-control.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Network Access Control (NAC) — Path 12 · KashSec Academy">
-<meta property="og:description" content="Network Access Control (NAC): 802.1X and posture assessment — deciding whether a device joins at all.">
+<meta property="og:description" content="Every control covered so far in this path assumes a device has already joined the network. This lesson covers the layer that decides whether a device gets to join at all — genuinely the network-level ">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/12-network-security/network-access-control.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Network Access Control (NAC) — Path 12 · KashSec Academy">
-<meta name="twitter:description" content="Network Access Control (NAC): 802.1X and posture assessment — deciding whether a device joins at all.">
+<meta name="twitter:description" content="Every control covered so far in this path assumes a device has already joined the network. This lesson covers the layer that decides whether a device gets to join at all — genuinely the network-level ">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 12 — Network Security","item":"https://kashsec.vercel.app/lesson/12-network-security/"},{"@type":"ListItem","position":4,"name":"Network Access Control (NAC)","item":"https://kashsec.vercel.app/lesson/12-network-security/network-access-control.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Network Access Control (NAC)","headline":"Network Access Control (NAC)","description":"Network Access Control (NAC): 802.1X and posture assessment — deciding whether a device joins at all.","url":"https://kashsec.vercel.app/lesson/12-network-security/network-access-control.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"802.1X and posture assessment — deciding whether a device joins at all.","isPartOf":{"@type":"Course","name":"Path 12: Network Security","url":"https://kashsec.vercel.app/lesson/12-network-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/12-network-security/network-access-control.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Network Access Control (NAC)","headline":"Network Access Control (NAC)","description":"Every control covered so far in this path assumes a device has already joined the network. This lesson covers the layer that decides whether a device gets to join at all — genuinely the network-level ","url":"https://kashsec.vercel.app/lesson/12-network-security/network-access-control.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"802.1X and posture assessment — deciding whether a device joins at all.","isPartOf":{"@type":"Course","name":"Path 12: Network Security","url":"https://kashsec.vercel.app/lesson/12-network-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/12-network-security/network-access-control.html"}}
 </script>
 </head>
 <body>
@@ -93,25 +93,13 @@
 <p><strong>Network Access Control (NAC)</strong> verifies a device's identity and security posture <em>before</em> granting it network access, rather than trusting any device that can physically connect — directly extending Path 24's device-trust-posture lesson from an individual endpoint decision to a network-wide enforcement point.</p>
 <h2>802.1X: the standard authentication framework</h2>
 <p><strong>802.1X</strong> is the widely-used standard for port-based network access control, requiring a device to authenticate (often via a certificate or credentials) before a switch port or Wi-Fi access point allows any other traffic through at all:</p>
-<pre><code class="language-mermaid">sequenceDiagram
-    participant D as Device
-    participant S as Switch/AP
-    participant A as Authentication Server
-    D-&gt;&gt;S: Attempts to connect
-    S-&gt;&gt;D: "Authenticate first" (all other traffic blocked)
-    D-&gt;&gt;A: Credentials/certificate
-    A-&gt;&gt;S: "Authenticated — grant access"
-    S-&gt;&gt;D: Full network access now granted
-</code></pre>
 <p>Until authentication succeeds, the device can only communicate with the authentication server itself — genuinely no other network access exists at all, directly applying the default-deny principle from Path 02's firewalls lesson at the physical connection point itself.</p>
 <h2>Posture assessment: checking more than just identity</h2>
 <p>Modern NAC deployments often go beyond simple authentication, checking a connecting device's actual security posture — is its antivirus up to date (Path 00's updates lesson), is its OS patched, is it free of known malware — before granting full access, and can quarantine non-compliant devices to a restricted remediation network instead of the full production network.</p>
 <h2>Why NAC matters specifically for BYOD and guest scenarios</h2>
 <p>Directly connecting to Path 24's remote-work lesson's coverage of BYOD: an organization allowing personal devices onto its network faces a genuine dilemma — refusing all personal devices hurts productivity, but trusting them unconditionally expands the attack surface significantly. NAC provides a practical middle ground: personal devices can connect, but only after meeting a defined posture bar, and often routed to a more restricted network segment (directly connecting to this path's segmentation lesson) regardless of how well they check out.</p>
-<p>:::challenge Test yourself
-Why is 802.1X described as enforcing access control "at the physical connection point itself," and why does that matter compared to a firewall rule applied later?</p>
-<details><summary>Show answer</summary>802.1X operates directly at the switch port or wireless access point a device is physically connecting through — before that device is granted any meaningful network access at all, it can only reach the authentication server, with every other destination blocked by default. A firewall rule applied later in the network path assumes the device has already gained <em>some</em> level of network connectivity to reach that firewall in the first place — meaning an unauthenticated or non-compliant device could potentially reach and interact with other systems on the same local segment before ever hitting a downstream firewall rule that might catch it. Enforcing access control at the very first point of physical connection closes this gap entirely: a non-compliant device simply never gets network connectivity to attempt anything at all, rather than being caught and blocked somewhere further down the path after it's already had some opportunity to act.</details>
-:::<h2>Key terms</h2>
+<p>Why is 802.1X described as enforcing access control "at the physical connection point itself," and why does that matter compared to a firewall rule applied later?</p>
+<details><summary>Show answer</summary>802.1X operates directly at the switch port or wireless access point a device is physically connecting through — before that device is granted any meaningful network access at all, it can only reach the authentication server, with every other destination blocked by default. A firewall rule applied later in the network path assumes the device has already gained <em>some</em> level of network connectivity to reach that firewall in the first place — meaning an unauthenticated or non-compliant device could potentially reach and interact with other systems on the same local segment before ever hitting a downstream firewall rule that might catch it. Enforcing access control at the very first point of physical connection closes this gap entirely: a non-compliant device simply never gets network connectivity to attempt anything at all, rather than being caught and blocked somewhere further down the path after it's already had some opportunity to act.</details><h2>Key terms</h2>
 <ul>
 <li><strong>NAC (Network Access Control)</strong> — verifying a device's identity and security posture before granting network access.</li>
 <li><strong>802.1X</strong> — the standard framework for port-based network access authentication.</li>

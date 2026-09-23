@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Post-Quantum Cryptography — Path 06 · KashSec Academy</title>
-<meta name="description" content="Post-Quantum Cryptography: Shor's algorithm, harvest-now-decrypt-later, and why NIST already standardized the fix.">
+<meta name="description" content="Every algorithm covered in this path so far — RSA, Diffie-Hellman, elliptic curve cryptography — relies on math problems that are hard for today's computers. This closing conceptual lesson covers a ge">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/06-crypto-fundamentals/post-quantum-cryptography.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Post-Quantum Cryptography — Path 06 · KashSec Academy">
-<meta property="og:description" content="Post-Quantum Cryptography: Shor's algorithm, harvest-now-decrypt-later, and why NIST already standardized the fix.">
+<meta property="og:description" content="Every algorithm covered in this path so far — RSA, Diffie-Hellman, elliptic curve cryptography — relies on math problems that are hard for today's computers. This closing conceptual lesson covers a ge">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/06-crypto-fundamentals/post-quantum-cryptography.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Post-Quantum Cryptography — Path 06 · KashSec Academy">
-<meta name="twitter:description" content="Post-Quantum Cryptography: Shor's algorithm, harvest-now-decrypt-later, and why NIST already standardized the fix.">
+<meta name="twitter:description" content="Every algorithm covered in this path so far — RSA, Diffie-Hellman, elliptic curve cryptography — relies on math problems that are hard for today's computers. This closing conceptual lesson covers a ge">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 06 — Cryptography Fundamentals","item":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/"},{"@type":"ListItem","position":4,"name":"Post-Quantum Cryptography","item":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/post-quantum-cryptography.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Post-Quantum Cryptography","headline":"Post-Quantum Cryptography","description":"Post-Quantum Cryptography: Shor's algorithm, harvest-now-decrypt-later, and why NIST already standardized the fix.","url":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/post-quantum-cryptography.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Shor's algorithm, harvest-now-decrypt-later, and why NIST already standardized the fix.","isPartOf":{"@type":"Course","name":"Path 06: Cryptography Fundamentals","url":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/post-quantum-cryptography.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Post-Quantum Cryptography","headline":"Post-Quantum Cryptography","description":"Every algorithm covered in this path so far — RSA, Diffie-Hellman, elliptic curve cryptography — relies on math problems that are hard for today's computers. This closing conceptual lesson covers a ge","url":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/post-quantum-cryptography.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Shor's algorithm, harvest-now-decrypt-later, and why NIST already standardized the fix.","isPartOf":{"@type":"Course","name":"Path 06: Cryptography Fundamentals","url":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/post-quantum-cryptography.html"}}
 </script>
 </head>
 <body>
@@ -89,9 +89,7 @@
     <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/06-crypto-fundamentals/">Path 06 — Cryptography Fundamentals</a> · Post-Quantum Cryptography</nav>
     <div class="md" id="content"><article><h1>Post-Quantum Cryptography</h1>
 <p>Every algorithm covered in this path so far — RSA, Diffie-Hellman, elliptic curve cryptography — relies on math problems that are hard for <em>today's</em> computers. This closing conceptual lesson covers a genuinely different kind of computer that's specifically good at exactly those problems, and what the cryptography world is doing about it well before it's a practical threat.</p>
-<p>:::tip
-This isn't a lesson about something happening tomorrow. Practical, cryptographically-relevant quantum computers likely remain years away — but cryptographic transitions take years to roll out safely too, which is exactly why this preparation is already well underway across the industry today, not something to worry about only once it's urgent.
-:::</p>
+<p>:::</p>
 <h2>What makes quantum computers different, at a conceptual level</h2>
 <p>A <strong>quantum computer</strong> doesn't just run today's algorithms faster — it can run fundamentally different algorithms that exploit quantum mechanical properties to solve certain specific classes of math problems dramatically faster than any classical computer ever could. Critically, <strong>Shor's algorithm</strong>, a quantum algorithm developed in 1994, can efficiently solve exactly the two hard-math problems that RSA (factoring) and Diffie-Hellman/ECC (discrete logarithm problems) depend on — the same "easy forward, hard to reverse" asymmetry that the asymmetric-encryption and elliptic-curve lessons built their entire security case on.</p>
 <h2>"Harvest now, decrypt later" — why this matters today, not just in the future</h2>
@@ -108,15 +106,12 @@ This isn't a lesson about something happening tomorrow. Practical, cryptographic
 <p>:::challenge Reason about a migration decision
 A government agency handling records that must stay confidential for 50 years is deciding whether to wait for post-quantum cryptography to become more widely deployed before switching, or to start migrating now using hybrid classical/post-quantum encryption.</p>
 <details><summary>Hint</summary>Given the "harvest now, decrypt later" threat model, does waiting actually reduce risk here, or does it just delay when the exposure window opens?</details>
-<details><summary>Show answer</summary>Given a 50-year confidentiality requirement and the harvest-now-decrypt-later threat, waiting is the riskier choice, not the safer one. Any data encrypted today using only classical algorithms could be captured now and decrypted decades from now once quantum computers mature — well within this agency's 50-year window. Migrating now to hybrid classical/post-quantum encryption protects data being encrypted starting today, while still relying on the well-tested classical algorithm as a safety net in case an unexpected weakness is later found in the newer post-quantum algorithm. This is exactly the reasoning driving early PQC adoption among organizations with genuinely long confidentiality requirements.</details>
-:::<h2>🧪 Hands-on lab — check your own exposure</h2>
+<details><summary>Show answer</summary>Given a 50-year confidentiality requirement and the harvest-now-decrypt-later threat, waiting is the riskier choice, not the safer one. Any data encrypted today using only classical algorithms could be captured now and decrypted decades from now once quantum computers mature — well within this agency's 50-year window. Migrating now to hybrid classical/post-quantum encryption protects data being encrypted starting today, while still relying on the well-tested classical algorithm as a safety net in case an unexpected weakness is later found in the newer post-quantum algorithm. This is exactly the reasoning driving early PQC adoption among organizations with genuinely long confidentiality requirements.</details><h2>🧪 Hands-on lab — check your own exposure</h2>
 <p>Using your browser's developer tools, check whether a major site you visit (many large tech companies have already deployed this) is using a hybrid post-quantum key exchange in its TLS connection — the cipher suite or key exchange details in the connection security panel will sometimes show this explicitly (look for names containing "Kyber" or "ML-KEM").</p>
-<p>:::challenge Test yourself</p>
 <ol>
 <li>Which two algorithm families covered earlier in this path does Shor's algorithm specifically threaten, and why?</li>
 <li>What is the "harvest now, decrypt later" threat, and why does it matter even before quantum computers are practical?</li>
-<li>Why does hybrid classical/post-quantum key exchange make sense as a transition strategy, rather than switching entirely to post-quantum algorithms immediately?
-:::</li>
+<li>Why does hybrid classical/post-quantum key exchange make sense as a transition strategy, rather than switching entirely to post-quantum algorithms immediately?</li>
 </ol>
 <h2>Key terms</h2>
 <ul>

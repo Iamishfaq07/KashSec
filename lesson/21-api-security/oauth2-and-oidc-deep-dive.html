@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>OAuth2 &amp; OIDC, Deep Dive — Path 21 · KashSec Academy</title>
-<meta name="description" content="OAuth2 &amp; OIDC, Deep Dive: The delegation protocol behind most real-world API authentication.">
+<meta name="description" content="The authn-authz-apis lesson covered authentication and authorization conceptually. This lesson goes deep into the specific, extremely widely-deployed protocol most real-world APIs actually use to impl">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/21-api-security/oauth2-and-oidc-deep-dive.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="OAuth2 &amp; OIDC, Deep Dive — Path 21 · KashSec Academy">
-<meta property="og:description" content="OAuth2 &amp; OIDC, Deep Dive: The delegation protocol behind most real-world API authentication.">
+<meta property="og:description" content="The authn-authz-apis lesson covered authentication and authorization conceptually. This lesson goes deep into the specific, extremely widely-deployed protocol most real-world APIs actually use to impl">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/21-api-security/oauth2-and-oidc-deep-dive.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="OAuth2 &amp; OIDC, Deep Dive — Path 21 · KashSec Academy">
-<meta name="twitter:description" content="OAuth2 &amp; OIDC, Deep Dive: The delegation protocol behind most real-world API authentication.">
+<meta name="twitter:description" content="The authn-authz-apis lesson covered authentication and authorization conceptually. This lesson goes deep into the specific, extremely widely-deployed protocol most real-world APIs actually use to impl">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 21 — API Security","item":"https://kashsec.vercel.app/lesson/21-api-security/"},{"@type":"ListItem","position":4,"name":"OAuth2 & OIDC, Deep Dive","item":"https://kashsec.vercel.app/lesson/21-api-security/oauth2-and-oidc-deep-dive.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"OAuth2 & OIDC, Deep Dive","headline":"OAuth2 & OIDC, Deep Dive","description":"OAuth2 & OIDC, Deep Dive: The delegation protocol behind most real-world API authentication.","url":"https://kashsec.vercel.app/lesson/21-api-security/oauth2-and-oidc-deep-dive.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"The delegation protocol behind most real-world API authentication.","isPartOf":{"@type":"Course","name":"Path 21: API Security","url":"https://kashsec.vercel.app/lesson/21-api-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/21-api-security/oauth2-and-oidc-deep-dive.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"OAuth2 & OIDC, Deep Dive","headline":"OAuth2 & OIDC, Deep Dive","description":"The authn-authz-apis lesson covered authentication and authorization conceptually. This lesson goes deep into the specific, extremely widely-deployed protocol most real-world APIs actually use to impl","url":"https://kashsec.vercel.app/lesson/21-api-security/oauth2-and-oidc-deep-dive.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"The delegation protocol behind most real-world API authentication.","isPartOf":{"@type":"Course","name":"Path 21: API Security","url":"https://kashsec.vercel.app/lesson/21-api-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/21-api-security/oauth2-and-oidc-deep-dive.html"}}
 </script>
 </head>
 <body>
@@ -92,20 +92,6 @@
 <h2>OAuth2 solves delegation, not authentication</h2>
 <p>A genuinely important, frequently-confused distinction: <strong>OAuth 2.0</strong> is fundamentally a delegation protocol — it lets a user grant a third-party application limited access to their data on another service, without ever sharing their actual password with that third party ("let this app read your calendar" without giving the app your Google password). OAuth2 alone says nothing about <em>who</em> the user actually is; that's what <strong>OpenID Connect (OIDC)</strong>, built on top of OAuth2, actually adds — a standardized identity layer providing a verifiable "this is genuinely the user" assertion.</p>
 <h2>The authorization code flow, the one that actually matters</h2>
-<pre><code class="language-mermaid">sequenceDiagram
-    participant User
-    participant App as Client App
-    participant Auth as Authorization Server
-    participant API as Resource API
-
-    User-&gt;&gt;App: Clicks "Login with Google"
-    App-&gt;&gt;Auth: Redirect to authorization endpoint
-    User-&gt;&gt;Auth: Logs in, approves scope
-    Auth-&gt;&gt;App: Redirects back with authorization code
-    App-&gt;&gt;Auth: Exchanges code for access token (server-side)
-    Auth-&gt;&gt;App: Returns access token
-    App-&gt;&gt;API: Calls API with access token
-</code></pre>
 <p>The <strong>authorization code flow</strong> is the current recommended standard for essentially every real-world scenario involving a server-side component, specifically because the actual access token exchange happens server-to-server (the "App→Auth: Exchanges code" step above), never passing through the user's browser at all — a genuinely important security property, since anything passing through the browser is exposed to browser-based attacks like XSS (Path 11).</p>
 <h2>Scopes — the actual authorization boundary</h2>
 <p>Directly connecting to the authn-authz-apis lesson's authorization coverage: <strong>scopes</strong> define exactly what an issued token is authorized to do — <code>read:calendar</code>, <code>write:profile</code>, and similar granular permission strings. A genuinely common real-world misconfiguration is a token issued with far broader scope than the requesting application actually needs, directly violating least-privilege (Path 12) — an app that only ever needs to read a user's profile shouldn't be issued a token also capable of modifying it.</p>
@@ -118,9 +104,7 @@
 </ul>
 <h2>OIDC's ID token — the identity assertion</h2>
 <p>Directly connecting to the broken-auth-jwt lesson: OIDC's <strong>ID token</strong> is itself a JWT, cryptographically signed by the authorization server, containing verifiable claims about the authenticated user (their unique identifier, when they authenticated, sometimes their email). Critically, the ID token proves identity to the <em>client application</em> — it should never be sent to a resource API as though it were an access token, a genuinely common implementation mistake that conflates two tokens serving structurally different purposes.</p>
-<p>:::challenge Test yourself
-Why does the authorization code flow's server-to-server token exchange step provide a meaningfully stronger security property than the deprecated implicit flow's direct browser-based token issuance?
-:::</p>
+<p>Why does the authorization code flow's server-to-server token exchange step provide a meaningfully stronger security property than the deprecated implicit flow's direct browser-based token issuance?</p>
 <h2>Key terms</h2>
 <ul>
 <li><strong>OAuth 2.0</strong> — a delegation protocol letting a user grant limited third-party access without sharing credentials.</li>

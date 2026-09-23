@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Windows vs Linux vs macOS — Path 03 · KashSec Academy</title>
-<meta name="description" content="Windows vs Linux vs macOS: The big three, and why security loves Linux.">
+<meta name="description" content="You'll meet all three operating systems as a security professional — as your own workstation, and as systems you defend or test. Knowing their characters helps you pick the right tool and understand y">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/03-linux/windows-linux-mac.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Windows vs Linux vs macOS — Path 03 · KashSec Academy">
-<meta property="og:description" content="Windows vs Linux vs macOS: The big three, and why security loves Linux.">
+<meta property="og:description" content="You'll meet all three operating systems as a security professional — as your own workstation, and as systems you defend or test. Knowing their characters helps you pick the right tool and understand y">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/03-linux/windows-linux-mac.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Windows vs Linux vs macOS — Path 03 · KashSec Academy">
-<meta name="twitter:description" content="Windows vs Linux vs macOS: The big three, and why security loves Linux.">
+<meta name="twitter:description" content="You'll meet all three operating systems as a security professional — as your own workstation, and as systems you defend or test. Knowing their characters helps you pick the right tool and understand y">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 03 — Operating Systems & Linux","item":"https://kashsec.vercel.app/lesson/03-linux/"},{"@type":"ListItem","position":4,"name":"Windows vs Linux vs macOS","item":"https://kashsec.vercel.app/lesson/03-linux/windows-linux-mac.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Windows vs Linux vs macOS","headline":"Windows vs Linux vs macOS","description":"Windows vs Linux vs macOS: The big three, and why security loves Linux.","url":"https://kashsec.vercel.app/lesson/03-linux/windows-linux-mac.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"The big three, and why security loves Linux.","isPartOf":{"@type":"Course","name":"Path 03: Operating Systems & Linux","url":"https://kashsec.vercel.app/lesson/03-linux/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/03-linux/windows-linux-mac.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Windows vs Linux vs macOS","headline":"Windows vs Linux vs macOS","description":"You'll meet all three operating systems as a security professional — as your own workstation, and as systems you defend or test. Knowing their characters helps you pick the right tool and understand y","url":"https://kashsec.vercel.app/lesson/03-linux/windows-linux-mac.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"The big three, and why security loves Linux.","isPartOf":{"@type":"Course","name":"Path 03: Operating Systems & Linux","url":"https://kashsec.vercel.app/lesson/03-linux/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/03-linux/windows-linux-mac.html"}}
 </script>
 </head>
 <body>
@@ -129,21 +129,6 @@
 </ul>
 <h2>Why "flavours" of Linux exist</h2>
 <p>Linux isn't one single product — it comes in many versions called <strong>distributions</strong> (or "distros"), each a different bundling of the same core system.</p>
-<pre><code class="language-mermaid">flowchart TD
-    Kernel[Linux Kernel] --&gt; D[Distributions]
-    D --&gt; Ubuntu[Ubuntu — general purpose, easy]
-    D --&gt; Debian[Debian — stable, on which Ubuntu builds]
-    D --&gt; Fedora[Fedora — cutting-edge]
-    D --&gt; Arch[Arch — DIY, minimal]
-    D --&gt; Kali[Kali — pre-loaded with security tools]
-    D --&gt; Parrot[Parrot OS — security &amp; privacy]
-    D --&gt; Raspbian[Raspberry Pi OS — for Pi hardware]
-
-    style Kernel fill:#EFA43A,color:#160f02,stroke:#C77F1E
-    style D fill:#152131,color:#3FB6A8,stroke:#3FB6A8
-    style Kali fill:#3FB6A8,color:#04120f,stroke:#3FB6A8
-    style Parrot fill:#3FB6A8,color:#04120f,stroke:#3FB6A8
-</code></pre>
 <ul>
 <li><strong>Ubuntu</strong> and <strong>Debian</strong> are popular general-purpose ones.</li>
 <li><strong>Kali Linux</strong> and <strong>Parrot OS</strong> are special distros pre-loaded with hundreds of security tools — you'll install Kali shortly.</li>
@@ -151,9 +136,7 @@
 </ul>
 <h2>You don't have to abandon your current system</h2>
 <p>Here's the reassuring part: you do <strong>not</strong> need to wipe your laptop and switch to Linux. In the next module you'll run Linux <em>inside</em> your existing Windows or Mac, in a window, using virtualization. You keep everything you have and gain a safe Linux playground on top. Best of both worlds.</p>
-<p>:::tip WHICH DISTRO SHOULD I USE FOR SECURITY?
-As a beginner: <strong>Kali Linux</strong> in a VM. Later, some prefer <strong>Parrot</strong> or a custom <strong>Ubuntu</strong> with tools they install themselves. There's no wrong answer — Kali is the friendliest starting point.
-:::</p>
+<p>As a beginner: <strong>Kali Linux</strong> in a VM. Later, some prefer <strong>Parrot</strong> or a custom <strong>Ubuntu</strong> with tools they install themselves. There's no wrong answer — Kali is the friendliest starting point.</p>
 <h2>Market share and why it shapes the threat landscape</h2>
 <p>Windows' dominance on desktops directly explains a huge share of malware statistics you'll encounter throughout this course: attackers, like any efficient actor, target where the largest number of potential victims are, which is exactly why the overwhelming majority of consumer malware historically targets Windows specifically — not because Windows is inherently less secure architecturally, but because building one exploit that works against the most common target reaches the most victims. Linux's dominance on <em>servers</em>, by contrast, means Linux-specific attacks tend to focus on web application vulnerabilities and server misconfigurations (Path 11, Path 12) rather than desktop malware. This "attackers follow the numbers" pattern is worth remembering broadly — it explains a lot of asymmetries you'll notice throughout this course.</p>
 <h2>Open source vs. closed source — a security-relevant distinction</h2>
@@ -202,10 +185,8 @@ As a beginner: <strong>Kali Linux</strong> in a VM. Later, some prefer <strong>P
 </tr>
 </tbody></table>
 <p>You'll get comfortable with all of these — but Linux commands are the one you'll type most.</p>
-<p>:::challenge Test yourself
-What's the word for a specific version/bundle of Linux, like Ubuntu or Kali?</p>
-<details><summary>Show answer</summary>A <strong>distribution</strong> (or "distro").</details>
-:::<h2>Key terms</h2>
+<p>What's the word for a specific version/bundle of Linux, like Ubuntu or Kali?</p>
+<details><summary>Show answer</summary>A <strong>distribution</strong> (or "distro").</details><h2>Key terms</h2>
 <ul>
 <li><strong>Windows / macOS / Linux</strong> — the three major operating systems.</li>
 <li><strong>Unix</strong> — the older family macOS and Linux both descend from.</li>

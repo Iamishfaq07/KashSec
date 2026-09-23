@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>OT Asset Inventory &amp; Visibility — Path 25 · KashSec Academy</title>
-<meta name="description" content="OT Asset Inventory &amp; Visibility: Passive discovery for the equipment you don't even know you have.">
+<meta name="description" content="Every control covered so far — segmentation, monitoring, vulnerability triage — depends on one unglamorous prerequisite: knowing exactly what's actually on your OT network. This lesson covers why that">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/25-ot-ics-security/ot-asset-inventory.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="OT Asset Inventory &amp; Visibility — Path 25 · KashSec Academy">
-<meta property="og:description" content="OT Asset Inventory &amp; Visibility: Passive discovery for the equipment you don't even know you have.">
+<meta property="og:description" content="Every control covered so far — segmentation, monitoring, vulnerability triage — depends on one unglamorous prerequisite: knowing exactly what's actually on your OT network. This lesson covers why that">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/25-ot-ics-security/ot-asset-inventory.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="OT Asset Inventory &amp; Visibility — Path 25 · KashSec Academy">
-<meta name="twitter:description" content="OT Asset Inventory &amp; Visibility: Passive discovery for the equipment you don't even know you have.">
+<meta name="twitter:description" content="Every control covered so far — segmentation, monitoring, vulnerability triage — depends on one unglamorous prerequisite: knowing exactly what's actually on your OT network. This lesson covers why that">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 25 — OT/ICS & Critical Infrastructure Security","item":"https://kashsec.vercel.app/lesson/25-ot-ics-security/"},{"@type":"ListItem","position":4,"name":"OT Asset Inventory & Visibility","item":"https://kashsec.vercel.app/lesson/25-ot-ics-security/ot-asset-inventory.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"OT Asset Inventory & Visibility","headline":"OT Asset Inventory & Visibility","description":"OT Asset Inventory & Visibility: Passive discovery for the equipment you don't even know you have.","url":"https://kashsec.vercel.app/lesson/25-ot-ics-security/ot-asset-inventory.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Passive discovery for the equipment you don't even know you have.","isPartOf":{"@type":"Course","name":"Path 25: OT/ICS & Critical Infrastructure Security","url":"https://kashsec.vercel.app/lesson/25-ot-ics-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/25-ot-ics-security/ot-asset-inventory.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"OT Asset Inventory & Visibility","headline":"OT Asset Inventory & Visibility","description":"Every control covered so far — segmentation, monitoring, vulnerability triage — depends on one unglamorous prerequisite: knowing exactly what's actually on your OT network. This lesson covers why that","url":"https://kashsec.vercel.app/lesson/25-ot-ics-security/ot-asset-inventory.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Passive discovery for the equipment you don't even know you have.","isPartOf":{"@type":"Course","name":"Path 25: OT/ICS & Critical Infrastructure Security","url":"https://kashsec.vercel.app/lesson/25-ot-ics-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/25-ot-ics-security/ot-asset-inventory.html"}}
 </script>
 </head>
 <body>
@@ -89,9 +89,7 @@
     <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/25-ot-ics-security/">Path 25 — OT/ICS &amp; Critical Infrastructure Security</a> · OT Asset Inventory &amp; Visibility</nav>
     <div class="md" id="content"><article><h1>OT Asset Inventory &amp; Visibility</h1>
 <p>Every control covered so far — segmentation, monitoring, vulnerability triage — depends on one unglamorous prerequisite: knowing exactly what's actually on your OT network. This lesson covers why that's harder than it sounds, and how it's actually done.</p>
-<p>:::tip
-A recurring finding in real ICS security assessments: the facility's official network diagram and the facility's <em>actual</em> network rarely match. Undocumented devices, forgotten test connections, and vendor-installed equipment nobody logged are the norm, not the exception.
-:::</p>
+<p>:::</p>
 <h2>Why OT asset inventory is uniquely hard</h2>
 <ul>
 <li><strong>Decades of accumulated equipment</strong> — some OT networks have devices installed before anyone thought to document them, some from vendors who no longer exist</li>
@@ -110,15 +108,12 @@ A recurring finding in real ICS security assessments: the facility's official ne
 <p>:::challenge Spot the gap
 A facility's official asset inventory lists 40 PLCs. A passive discovery tool deployed for one week identifies 47 distinct devices communicating on the OT network.</p>
 <details><summary>Hint</summary>What are the realistic explanations for a gap this size, and why does each one matter from a security standpoint even if it turns out to be "nothing malicious"?</details>
-<details><summary>Show answer</summary>The seven undocumented devices could be anything from a forgotten vendor diagnostic laptop to an engineering workstation nobody logged to, in a worse case, something genuinely unauthorized. Regardless of the specific explanation, **every one of those seven devices was previously invisible to every other control in this path** — they weren't in scope for vulnerability triage, weren't accounted for in segmentation design, and their traffic wasn't part of the monitoring baseline. This is exactly why asset visibility is treated as a prerequisite control, not an optional nice-to-have: every other control's effectiveness is capped by how complete the underlying inventory actually is.</details>
-:::<h2>🧪 Hands-on lab — design a passive discovery rollout</h2>
+<details><summary>Show answer</summary>The seven undocumented devices could be anything from a forgotten vendor diagnostic laptop to an engineering workstation nobody logged to, in a worse case, something genuinely unauthorized. Regardless of the specific explanation, **every one of those seven devices was previously invisible to every other control in this path** — they weren't in scope for vulnerability triage, weren't accounted for in segmentation design, and their traffic wasn't part of the monitoring baseline. This is exactly why asset visibility is treated as a prerequisite control, not an optional nice-to-have: every other control's effectiveness is capped by how complete the underlying inventory actually is.</details><h2>🧪 Hands-on lab — design a passive discovery rollout</h2>
 <p>Sketch a plan for deploying passive asset discovery across a hypothetical three-segment OT network (Level 0/1 field devices, Level 2 control room, Level 3 DMZ). For each segment, specify where you'd place the network tap or mirrored port and what you'd expect a "normal" device list to look like.</p>
-<p>:::challenge Test yourself</p>
 <ol>
 <li>Why is active network scanning specifically discouraged for OT asset discovery?</li>
 <li>Name two pieces of information a useful OT asset inventory records beyond "a device is present."</li>
-<li>Why does incomplete asset visibility undermine the effectiveness of segmentation and monitoring controls, even if those controls are otherwise well-designed?
-:::</li>
+<li>Why does incomplete asset visibility undermine the effectiveness of segmentation and monitoring controls, even if those controls are otherwise well-designed?</li>
 </ol>
 <h2>Key terms</h2>
 <ul>

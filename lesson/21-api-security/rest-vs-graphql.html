@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>REST vs GraphQL — security differences that matter — Path 21 · KashSec Academy</title>
-<meta name="description" content="REST vs GraphQL — security differences that matter: Same goals, different attack surface — one endpoint changes everything.">
+<meta name="description" content="Most APIs you'll meet fall into two camps: REST and GraphQL. They look different, and their security failure modes are different too — knowing which style you're facing changes exactly which questions">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/21-api-security/rest-vs-graphql.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="REST vs GraphQL — security differences that matter — Path 21 · KashSec Academy">
-<meta property="og:description" content="REST vs GraphQL — security differences that matter: Same goals, different attack surface — one endpoint changes everything.">
+<meta property="og:description" content="Most APIs you'll meet fall into two camps: REST and GraphQL. They look different, and their security failure modes are different too — knowing which style you're facing changes exactly which questions">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/21-api-security/rest-vs-graphql.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="REST vs GraphQL — security differences that matter — Path 21 · KashSec Academy">
-<meta name="twitter:description" content="REST vs GraphQL — security differences that matter: Same goals, different attack surface — one endpoint changes everything.">
+<meta name="twitter:description" content="Most APIs you'll meet fall into two camps: REST and GraphQL. They look different, and their security failure modes are different too — knowing which style you're facing changes exactly which questions">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 21 — API Security","item":"https://kashsec.vercel.app/lesson/21-api-security/"},{"@type":"ListItem","position":4,"name":"REST vs GraphQL — security differences that matter","item":"https://kashsec.vercel.app/lesson/21-api-security/rest-vs-graphql.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"REST vs GraphQL — security differences that matter","headline":"REST vs GraphQL — security differences that matter","description":"REST vs GraphQL — security differences that matter: Same goals, different attack surface — one endpoint changes everything.","url":"https://kashsec.vercel.app/lesson/21-api-security/rest-vs-graphql.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Same goals, different attack surface — one endpoint changes everything.","isPartOf":{"@type":"Course","name":"Path 21: API Security","url":"https://kashsec.vercel.app/lesson/21-api-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/21-api-security/rest-vs-graphql.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"REST vs GraphQL — security differences that matter","headline":"REST vs GraphQL — security differences that matter","description":"Most APIs you'll meet fall into two camps: REST and GraphQL. They look different, and their security failure modes are different too — knowing which style you're facing changes exactly which questions","url":"https://kashsec.vercel.app/lesson/21-api-security/rest-vs-graphql.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Same goals, different attack surface — one endpoint changes everything.","isPartOf":{"@type":"Course","name":"Path 21: API Security","url":"https://kashsec.vercel.app/lesson/21-api-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/21-api-security/rest-vs-graphql.html"}}
 </script>
 </head>
 <body>
@@ -89,9 +89,7 @@
     <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/21-api-security/">Path 21 — API Security</a> · REST vs GraphQL — security differences that matter</nav>
     <div class="md" id="content"><article><h1>REST vs GraphQL — security differences that matter</h1>
 <p>Most APIs you'll meet fall into two camps: <strong>REST</strong> and <strong>GraphQL</strong>. They look different, and their security failure modes are different too — knowing which style you're facing changes exactly which questions you ask first.</p>
-<p>:::tip
-The one-line summary: REST spreads authorization across many endpoints, so you can miss a check on any one of them. GraphQL concentrates almost everything behind one endpoint, so a missing check at the field level is invisible unless you know to look for it.
-:::</p>
+<p>:::</p>
 <h2>REST in one minute</h2>
 <p>REST treats the API as a collection of <strong>resources</strong> identified by URLs:</p>
 <pre><code>GET    /api/users/42          → get user 42
@@ -175,8 +173,7 @@ GET    /api/users/42/orders   → list orders for user 42
 <li><strong>Batching</strong> — many operations in one HTTP request bypass simple rate limits built around "one request per action"</li>
 </ul>
 <p>:::danger
-In GraphQL, "the endpoint is authorized" is not enough. Every sensitive field needs its own authorization check. A resolver for <code>user.orders</code> might correctly check that you're allowed to see this user's orders, while the resolver for <code>user.paymentMethods</code>, added later by a different developer, forgets to.
-:::</p>
+In GraphQL, "the endpoint is authorized" is not enough. Every sensitive field needs its own authorization check. A resolver for <code>user.orders</code> might correctly check that you're allowed to see this user's orders, while the resolver for <code>user.paymentMethods</code>, added later by a different developer, forgets to.</p>
 <h2>A worked example: the nested query attack</h2>
 <pre><code class="language-graphql">query {
   users {
@@ -212,16 +209,18 @@ In GraphQL, "the endpoint is authorized" is not enough. Every sensitive field ne
 </ul>
 <h2>🧪 Hands-on lab — compare the two styles hands-on</h2>
 <ol>
-<li>Find (or spin up) a small public GraphQL API — many "awesome-graphql" lists on GitHub link to safe public playgrounds — and try the introspection query above. Note how much of the schema is exposed.</li>
-<li>Using the same target (or a REST API you're authorized to test), compare: how many separate endpoints would it take to build the equivalent of one moderately nested GraphQL query?</li>
-<li>Write down, for each style, one sentence answering: "where would a missing authorization check hide, and how would you find it?"</li>
-</ol>
-<p>:::challenge Test yourself</p>
-<ol>
-<li>Why does a REST API rarely need "query depth limits" the way a GraphQL API does?</li>
-<li>An attacker runs an introspection query against a production GraphQL endpoint and finds a field called <code>adminNotes</code> on the <code>User</code> type. What should you check next?</li>
-<li>Explain in one sentence why "the resolver for one field is authorized" doesn't guarantee the resolver for a related field is too.
-:::</li>
+<li><p>Find (or spin up) a small public GraphQL API — many "awesome-graphql" lists on GitHub link to safe public playgrounds — and try the introspection query above. Note how much of the schema is exposed.</p>
+</li>
+<li><p>Using the same target (or a REST API you're authorized to test), compare: how many separate endpoints would it take to build the equivalent of one moderately nested GraphQL query?</p>
+</li>
+<li><p>Write down, for each style, one sentence answering: "where would a missing authorization check hide, and how would you find it?"</p>
+</li>
+<li><p>Why does a REST API rarely need "query depth limits" the way a GraphQL API does?</p>
+</li>
+<li><p>An attacker runs an introspection query against a production GraphQL endpoint and finds a field called <code>adminNotes</code> on the <code>User</code> type. What should you check next?</p>
+</li>
+<li><p>Explain in one sentence why "the resolver for one field is authorized" doesn't guarantee the resolver for a related field is too.</p>
+</li>
 </ol>
 <h2>Key takeaway</h2>
 <p>REST and GraphQL fail in different places, but the root cause is usually the same: <strong>authorization was implemented at the wrong layer or not at all</strong>. REST's many small endpoints hide the missing check in plain sight, one at a time; GraphQL's single flexible endpoint hides it inside a resolver tree that's easy to under-review.</p>

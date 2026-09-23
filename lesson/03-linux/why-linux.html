@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Why hackers love Linux — Path 03 · KashSec Academy</title>
-<meta name="description" content="Why hackers love Linux: Open, scriptable, and the tools live here.">
+<meta name="description" content="There's a reason nearly every security course, tool, and job assumes Linux. Understanding why will motivate you to get comfortable with it rather than avoid it.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/03-linux/why-linux.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Why hackers love Linux — Path 03 · KashSec Academy">
-<meta property="og:description" content="Why hackers love Linux: Open, scriptable, and the tools live here.">
+<meta property="og:description" content="There's a reason nearly every security course, tool, and job assumes Linux. Understanding why will motivate you to get comfortable with it rather than avoid it.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/03-linux/why-linux.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Why hackers love Linux — Path 03 · KashSec Academy">
-<meta name="twitter:description" content="Why hackers love Linux: Open, scriptable, and the tools live here.">
+<meta name="twitter:description" content="There's a reason nearly every security course, tool, and job assumes Linux. Understanding why will motivate you to get comfortable with it rather than avoid it.">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 03 — Operating Systems & Linux","item":"https://kashsec.vercel.app/lesson/03-linux/"},{"@type":"ListItem","position":4,"name":"Why hackers love Linux","item":"https://kashsec.vercel.app/lesson/03-linux/why-linux.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Why hackers love Linux","headline":"Why hackers love Linux","description":"Why hackers love Linux: Open, scriptable, and the tools live here.","url":"https://kashsec.vercel.app/lesson/03-linux/why-linux.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Open, scriptable, and the tools live here.","isPartOf":{"@type":"Course","name":"Path 03: Operating Systems & Linux","url":"https://kashsec.vercel.app/lesson/03-linux/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/03-linux/why-linux.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Why hackers love Linux","headline":"Why hackers love Linux","description":"There's a reason nearly every security course, tool, and job assumes Linux. Understanding why will motivate you to get comfortable with it rather than avoid it.","url":"https://kashsec.vercel.app/lesson/03-linux/why-linux.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Open, scriptable, and the tools live here.","isPartOf":{"@type":"Course","name":"Path 03: Operating Systems & Linux","url":"https://kashsec.vercel.app/lesson/03-linux/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/03-linux/why-linux.html"}}
 </script>
 </head>
 <body>
@@ -135,21 +135,7 @@
 <h2>The mindset shift</h2>
 <p>Beginners often fear the terminal because it looks bare and unforgiving. But that bareness is <em>power</em>: instead of hunting through menus, you tell the computer precisely what to do and it does exactly that, instantly, repeatably. Once it clicks, going back to clicking through menus feels slow.</p>
 <p>You're about to make that shift.</p>
-<pre><code class="language-mermaid">flowchart LR
-    A["Click through menus&lt;br/&gt;slow, error-prone"] --&gt; B["Type commands&lt;br/&gt;precise, repeatable"]
-    B --&gt; C["Chain commands with pipes&lt;br/&gt;| grep | sort | uniq"]
-    C --&gt; D["Save as script&lt;br/&gt;automation"]
-    D --&gt; E["Build real tools&lt;br/&gt;you now think in code"]
-
-    style A fill:#2b1010,color:#E05548,stroke:#E05548
-    style B fill:#111927,color:#EFA43A,stroke:#EFA43A
-    style C fill:#111927,color:#EFA43A,stroke:#EFA43A
-    style D fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
-    style E fill:#3FB6A8,color:#04120f,stroke:#3FB6A8
-</code></pre>
-<p>:::tip THE GOAL IS COMFORT, NOT MASTERY
-You don't need to become a Linux expert overnight. You need to become <strong>comfortable and unafraid.</strong> Comfort comes from doing the labs, making mistakes in your safe lab, and slowly building muscle memory.
-:::</p>
+<p>You don't need to become a Linux expert overnight. You need to become <strong>comfortable and unafraid.</strong> Comfort comes from doing the labs, making mistakes in your safe lab, and slowly building muscle memory.</p>
 <h2>The Unix philosophy — why chaining commands works so well</h2>
 <p>Linux's command-line power comes from a deliberate design philosophy inherited from Unix: <strong>write small programs that each do one thing well, and let them work together.</strong> Rather than one giant, monolithic tool trying to do everything, you get dozens of small, focused tools (<code>grep</code> searches text, <code>sort</code> sorts lines, <code>uniq</code> removes duplicates, <code>wc</code> counts) that you combine using the pipe (<code>|</code>) — exactly the pattern Path 03's later Advanced Terminal Lab builds real skill in. This is precisely why Linux feels so composable once it clicks: instead of hoping a single tool has the exact feature you need, you combine several simple, well-understood pieces into something new, tailored exactly to your specific problem.</p>
 <h2>A concrete example — the same task, two ways</h2>
@@ -163,10 +149,8 @@ You don't need to become a Linux expert overnight. You need to become <strong>co
 wsl --install
 </code></pre>
 <p>That single command installs WSL with Ubuntu. Log out, log back in, open "Ubuntu" from the Start menu, and you're in a real Linux shell. <strong>Genuinely magic</strong> the first time.</p>
-<p>:::challenge Test yourself
-Give one reason security tools are usually built for Linux rather than Windows.</p>
-<details><summary>Show answer</summary>Any of: it's free and open (easy to build on), it's powerful and scriptable from the command line, most servers run Linux, or it's transparent about what's happening. Any one is correct.</details>
-:::<h2>Key terms</h2>
+<p>Give one reason security tools are usually built for Linux rather than Windows.</p>
+<details><summary>Show answer</summary>Any of: it's free and open (easy to build on), it's powerful and scriptable from the command line, most servers run Linux, or it's transparent about what's happening. Any one is correct.</details><h2>Key terms</h2>
 <ul>
 <li><strong>Open source</strong> — software whose code anyone can view and modify.</li>
 <li><strong>Automation / scripting</strong> — chaining commands to run tasks automatically.</li>

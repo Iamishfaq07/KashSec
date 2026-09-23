@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Client vs server — Path 05 · KashSec Academy</title>
-<meta name="description" content="Client vs server: The single most important web-security idea.">
+<meta name="description" content="Half of web security comes down to one question: whose machine is this running on, and can I trust it? Let's make that distinction concrete.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/05-web-basics/client-vs-server.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Client vs server — Path 05 · KashSec Academy">
-<meta property="og:description" content="Client vs server: The single most important web-security idea.">
+<meta property="og:description" content="Half of web security comes down to one question: whose machine is this running on, and can I trust it? Let's make that distinction concrete.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/05-web-basics/client-vs-server.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Client vs server — Path 05 · KashSec Academy">
-<meta name="twitter:description" content="Client vs server: The single most important web-security idea.">
+<meta name="twitter:description" content="Half of web security comes down to one question: whose machine is this running on, and can I trust it? Let's make that distinction concrete.">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 05 — How the Web Works","item":"https://kashsec.vercel.app/lesson/05-web-basics/"},{"@type":"ListItem","position":4,"name":"Client vs server","item":"https://kashsec.vercel.app/lesson/05-web-basics/client-vs-server.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Client vs server","headline":"Client vs server","description":"Client vs server: The single most important web-security idea.","url":"https://kashsec.vercel.app/lesson/05-web-basics/client-vs-server.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"The single most important web-security idea.","isPartOf":{"@type":"Course","name":"Path 05: How the Web Works","url":"https://kashsec.vercel.app/lesson/05-web-basics/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/05-web-basics/client-vs-server.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Client vs server","headline":"Client vs server","description":"Half of web security comes down to one question: whose machine is this running on, and can I trust it? Let's make that distinction concrete.","url":"https://kashsec.vercel.app/lesson/05-web-basics/client-vs-server.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"The single most important web-security idea.","isPartOf":{"@type":"Course","name":"Path 05: How the Web Works","url":"https://kashsec.vercel.app/lesson/05-web-basics/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/05-web-basics/client-vs-server.html"}}
 </script>
 </head>
 <body>
@@ -95,25 +95,6 @@
 <li><strong>Server</strong> — the machine on the internet the client talks to. Runs the business logic, has the database, holds the secrets.</li>
 </ul>
 <p>Every HTTP conversation has both ends. The words "front-end" and "back-end" are the same distinction from a developer's angle.</p>
-<pre><code class="language-mermaid">flowchart LR
-    subgraph Client["👤 Client (your browser)"]
-        HTML[HTML/CSS/JS]
-        DevTools[F12 = full access]
-    end
-    subgraph Server["🖥 Server (in a datacentre)"]
-        Code[Application code]
-        DB[(Database)]
-        Secrets[API keys, hashes]
-    end
-    HTML &lt;--&gt;|HTTP over the internet| Code
-    Code --&gt; DB
-    Code --&gt; Secrets
-
-    style Client fill:#2b1010,color:#E9EEF3,stroke:#E05548
-    style Server fill:#0f2b26,color:#E9EEF3,stroke:#3FB6A8
-    style DevTools fill:#2b1010,color:#EFA43A,stroke:#EFA43A
-    style Secrets fill:#0f2b26,color:#EFA43A,stroke:#EFA43A
-</code></pre>
 <h2>The unshakeable rule</h2>
 <p><strong>Never trust anything the client sends.</strong></p>
 <p>The user controls the browser. They can:</p>
@@ -234,10 +215,8 @@ fetch("/checkout", { method: "POST", body: JSON.stringify({ total }) });
 <p>You didn't hack anything — you edited <em>your own copy</em> of the page. The server is untouched. If you reload, your change is gone.</p>
 <p><strong>Point of the lab:</strong> what you see in DevTools is <em>your</em> browser's state. Attackers changing "their" copy of a page changes <em>nothing</em> about a server; that would be pointless. Attacks that matter always involve making the <em>server</em> do something wrong (steal data, change state, run code).</p>
 <p>The dangerous thing they <em>can</em> do in DevTools is change what their browser <em>sends back</em> to the server. That's the boundary the server has to defend.</p>
-<p>:::challenge Test yourself
-A developer says "I made this action safe — the button is hidden if you're not an admin." What's the missing sentence you'd add?</p>
-<details><summary>Show answer</summary>"And the server also checks the user's role before performing the action." UI hiding is UX, not security. Without a server-side check, the attacker just calls the endpoint directly.</details>
-:::<h2>Key terms</h2>
+<p>A developer says "I made this action safe — the button is hidden if you're not an admin." What's the missing sentence you'd add?</p>
+<details><summary>Show answer</summary>"And the server also checks the user's role before performing the action." UI hiding is UX, not security. Without a server-side check, the attacker just calls the endpoint directly.</details><h2>Key terms</h2>
 <ul>
 <li><strong>Client / server</strong> — user's machine / the internet-facing service machine.</li>
 <li><strong>Front-end / back-end</strong> — same distinction from a dev's angle.</li>

@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>WebSockets &amp; the real-time web — Path 05 · KashSec Academy</title>
-<meta name="description" content="WebSockets &amp; the real-time web: Persistent, bidirectional connections for chat, live updates, and games.">
+<meta name="description" content="Everything covered so far in this path follows the same basic pattern: the client asks, the server answers, the conversation ends. This lesson covers what happens when an application needs something m">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/05-web-basics/websockets-realtime-web.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="WebSockets &amp; the real-time web — Path 05 · KashSec Academy">
-<meta property="og:description" content="WebSockets &amp; the real-time web: Persistent, bidirectional connections for chat, live updates, and games.">
+<meta property="og:description" content="Everything covered so far in this path follows the same basic pattern: the client asks, the server answers, the conversation ends. This lesson covers what happens when an application needs something m">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/05-web-basics/websockets-realtime-web.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="WebSockets &amp; the real-time web — Path 05 · KashSec Academy">
-<meta name="twitter:description" content="WebSockets &amp; the real-time web: Persistent, bidirectional connections for chat, live updates, and games.">
+<meta name="twitter:description" content="Everything covered so far in this path follows the same basic pattern: the client asks, the server answers, the conversation ends. This lesson covers what happens when an application needs something m">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 05 — How the Web Works","item":"https://kashsec.vercel.app/lesson/05-web-basics/"},{"@type":"ListItem","position":4,"name":"WebSockets & the real-time web","item":"https://kashsec.vercel.app/lesson/05-web-basics/websockets-realtime-web.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"WebSockets & the real-time web","headline":"WebSockets & the real-time web","description":"WebSockets & the real-time web: Persistent, bidirectional connections for chat, live updates, and games.","url":"https://kashsec.vercel.app/lesson/05-web-basics/websockets-realtime-web.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Persistent, bidirectional connections for chat, live updates, and games.","isPartOf":{"@type":"Course","name":"Path 05: How the Web Works","url":"https://kashsec.vercel.app/lesson/05-web-basics/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/05-web-basics/websockets-realtime-web.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"WebSockets & the real-time web","headline":"WebSockets & the real-time web","description":"Everything covered so far in this path follows the same basic pattern: the client asks, the server answers, the conversation ends. This lesson covers what happens when an application needs something m","url":"https://kashsec.vercel.app/lesson/05-web-basics/websockets-realtime-web.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Persistent, bidirectional connections for chat, live updates, and games.","isPartOf":{"@type":"Course","name":"Path 05: How the Web Works","url":"https://kashsec.vercel.app/lesson/05-web-basics/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/05-web-basics/websockets-realtime-web.html"}}
 </script>
 </head>
 <body>
@@ -93,16 +93,6 @@
 <p>Standard HTTP requests (from the methods-and-status-codes lesson) are fundamentally request-response: the client initiates, the server responds, done. For a chat application to show a new message the instant it arrives, without WebSockets, the client would need to repeatedly ask the server "anything new yet?" — a technique called <strong>polling</strong> — which is wasteful and introduces real delay between when something happens and when the client actually finds out.</p>
 <h2>What a WebSocket actually is</h2>
 <p>A <strong>WebSocket</strong> connection starts as a normal HTTP request, then <strong>upgrades</strong> into a persistent, full-duplex connection — meaning both the client and server can send messages to each other at any time, without either side needing to initiate a new request first. Once established, the connection stays open, genuinely enabling real-time, bidirectional communication.</p>
-<pre><code class="language-mermaid">sequenceDiagram
-    participant C as Client
-    participant S as Server
-    C-&gt;&gt;S: HTTP request with "Upgrade: websocket" header
-    S-&gt;&gt;C: 101 Switching Protocols
-    Note over C,S: Connection is now a persistent WebSocket
-    C-&gt;&gt;S: message (anytime)
-    S-&gt;&gt;C: message (anytime)
-    S-&gt;&gt;C: message (anytime, no request needed)
-</code></pre>
 <h2>Security considerations specific to WebSockets</h2>
 <ul>
 <li><strong>The Same-Origin Policy applies differently</strong> — WebSockets aren't fully governed by the same-origin restrictions the previous lesson covered for standard requests; a server needs to explicitly validate the <code>Origin</code> header itself if it wants to restrict which sites can open a WebSocket connection to it</li>
@@ -111,10 +101,8 @@
 </ul>
 <h2>Where you'll actually encounter WebSockets</h2>
 <p>Live chat applications, real-time collaborative editing tools, live sports scores and stock tickers, and multiplayer browser games all commonly use WebSockets — genuinely worth recognizing the pattern when you see a page updating without ever appearing to reload or make a visible new page request.</p>
-<p>:::challenge Test yourself
-Why does a WebSocket-based application need a deliberate authentication strategy, rather than simply relying on the same cookie-based session pattern a standard web page uses?</p>
-<details><summary>Show answer</summary>A standard HTTP request automatically carries cookies (from the cookies-sessions lesson) with every single request, letting the server authenticate the user on each individual request independently. A WebSocket connection, once established, stays open and handles many messages over that single connection — there's no repeated per-message "request" carrying fresh authentication data the way standard HTTP does. This means the server needs to authenticate the connection once, at the point it's established (commonly by validating a token passed during the initial handshake), and then trust that the connection remains legitimately tied to that same authenticated user for as long as it stays open — a genuinely different security model than the per-request authentication pattern the rest of this path has covered, and one that introduces its own considerations around session hijacking if the initial handshake isn't properly secured.</details>
-:::<h2>Key terms</h2>
+<p>Why does a WebSocket-based application need a deliberate authentication strategy, rather than simply relying on the same cookie-based session pattern a standard web page uses?</p>
+<details><summary>Show answer</summary>A standard HTTP request automatically carries cookies (from the cookies-sessions lesson) with every single request, letting the server authenticate the user on each individual request independently. A WebSocket connection, once established, stays open and handles many messages over that single connection — there's no repeated per-message "request" carrying fresh authentication data the way standard HTTP does. This means the server needs to authenticate the connection once, at the point it's established (commonly by validating a token passed during the initial handshake), and then trust that the connection remains legitimately tied to that same authenticated user for as long as it stays open — a genuinely different security model than the per-request authentication pattern the rest of this path has covered, and one that introduces its own considerations around session hijacking if the initial handshake isn't properly secured.</details><h2>Key terms</h2>
 <ul>
 <li><strong>WebSocket</strong> — a persistent, full-duplex connection allowing bidirectional real-time communication between client and server.</li>
 <li><strong>Polling</strong> — repeatedly requesting "anything new?" to simulate real-time updates without a persistent connection.</li>

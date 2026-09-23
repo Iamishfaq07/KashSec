@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Applied Cryptography: Choosing and Using It Correctly — Path 06 · KashSec Academy</title>
-<meta name="description" content="Applied Cryptography: Choosing and Using It Correctly: Libraries over primitives, key management, and a practical decision guide.">
+<meta name="description" content="You now understand the individual algorithms, the attacks against them, and the common implementation mistakes. This lesson is the practical synthesis: what should you actually reach for, as a working">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/06-crypto-fundamentals/applied-crypto-in-practice.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Applied Cryptography: Choosing and Using It Correctly — Path 06 · KashSec Academy">
-<meta property="og:description" content="Applied Cryptography: Choosing and Using It Correctly: Libraries over primitives, key management, and a practical decision guide.">
+<meta property="og:description" content="You now understand the individual algorithms, the attacks against them, and the common implementation mistakes. This lesson is the practical synthesis: what should you actually reach for, as a working">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/06-crypto-fundamentals/applied-crypto-in-practice.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Applied Cryptography: Choosing and Using It Correctly — Path 06 · KashSec Academy">
-<meta name="twitter:description" content="Applied Cryptography: Choosing and Using It Correctly: Libraries over primitives, key management, and a practical decision guide.">
+<meta name="twitter:description" content="You now understand the individual algorithms, the attacks against them, and the common implementation mistakes. This lesson is the practical synthesis: what should you actually reach for, as a working">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 06 — Cryptography Fundamentals","item":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/"},{"@type":"ListItem","position":4,"name":"Applied Cryptography: Choosing and Using It Correctly","item":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/applied-crypto-in-practice.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Applied Cryptography: Choosing and Using It Correctly","headline":"Applied Cryptography: Choosing and Using It Correctly","description":"Applied Cryptography: Choosing and Using It Correctly: Libraries over primitives, key management, and a practical decision guide.","url":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/applied-crypto-in-practice.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Libraries over primitives, key management, and a practical decision guide.","isPartOf":{"@type":"Course","name":"Path 06: Cryptography Fundamentals","url":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/applied-crypto-in-practice.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Applied Cryptography: Choosing and Using It Correctly","headline":"Applied Cryptography: Choosing and Using It Correctly","description":"You now understand the individual algorithms, the attacks against them, and the common implementation mistakes. This lesson is the practical synthesis: what should you actually reach for, as a working","url":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/applied-crypto-in-practice.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Libraries over primitives, key management, and a practical decision guide.","isPartOf":{"@type":"Course","name":"Path 06: Cryptography Fundamentals","url":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/applied-crypto-in-practice.html"}}
 </script>
 </head>
 <body>
@@ -89,9 +89,7 @@
     <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/06-crypto-fundamentals/">Path 06 — Cryptography Fundamentals</a> · Applied Cryptography: Choosing and Using It Correctly</nav>
     <div class="md" id="content"><article><h1>Applied Cryptography: Choosing and Using It Correctly</h1>
 <p>You now understand the individual algorithms, the attacks against them, and the common implementation mistakes. This lesson is the practical synthesis: what should you actually reach for, as a working developer or security professional, when a real system needs cryptography?</p>
-<p>:::danger The single most important rule in this entire path
-<strong>Never implement your own cryptographic algorithms or protocols.</strong> Not because you're not smart enough — because cryptographic security depends on decades of adversarial review by the entire global research community, and a novel implementation, however clever, hasn't had any of that scrutiny. This single rule prevents more real-world crypto failures than almost anything else in this lesson.
-:::</p>
+<p><strong>Never implement your own cryptographic algorithms or protocols.</strong> Not because you're not smart enough — because cryptographic security depends on decades of adversarial review by the entire global research community, and a novel implementation, however clever, hasn't had any of that scrutiny. This single rule prevents more real-world crypto failures than almost anything else in this lesson.</p>
 <h2>Use established libraries, not raw primitives</h2>
 <p>Rather than manually combining an encryption algorithm, a mode, and a padding scheme yourself (exactly the kind of assembly that produces the mistakes covered in the next lesson), use a high-level, well-reviewed library that handles the details correctly by default:</p>
 <ul>
@@ -142,18 +140,14 @@
 </ul>
 <h2>When cryptography isn't actually the answer</h2>
 <p>A genuinely important, often-overlooked point: cryptography protects data <em>in specific states</em> (in transit, at rest) — it doesn't substitute for proper access control, input validation, or authorization logic. Encrypting a database doesn't stop a SQL injection vulnerability (Path 11) from letting an attacker read data through the application's own legitimate, authorized access path — the encryption is irrelevant if the application itself hands over the plaintext willingly to anyone who asks correctly.</p>
-<p>:::challenge Evaluate a design decision
-A team building a new internal tool decides to write their own lightweight encryption function rather than adding a dependency on an established library, reasoning that "it's just for internal use, and the extra library adds bloat."</p>
+<p>A team building a new internal tool decides to write their own lightweight encryption function rather than adding a dependency on an established library, reasoning that "it's just for internal use, and the extra library adds bloat."</p>
 <details><summary>Hint</summary>Does "internal use" change whether decades of adversarial review matter? What's actually at risk if their custom function has a subtle flaw nobody catches?</details>
-<details><summary>Show answer</summary>This decision violates the single most important rule in this lesson, and "internal use only" doesn't meaningfully reduce the risk — internal systems still get compromised, and a custom, unreviewed encryption function is exactly the kind of code most likely to contain a subtle, exploitable flaw that a well-reviewed library would have avoided by design. The "bloat" concern is also usually overstated: libraries like libsodium are small and specifically designed for exactly this kind of lightweight use case. The right call is using an established library regardless of how internal or low-stakes the use case seems, precisely because "this seemed low-stakes" is a common thread running through many real-world crypto incidents after the fact.</details>
-:::<h2>🧪 Hands-on lab — audit a hypothetical system design</h2>
+<details><summary>Show answer</summary>This decision violates the single most important rule in this lesson, and "internal use only" doesn't meaningfully reduce the risk — internal systems still get compromised, and a custom, unreviewed encryption function is exactly the kind of code most likely to contain a subtle, exploitable flaw that a well-reviewed library would have avoided by design. The "bloat" concern is also usually overstated: libraries like libsodium are small and specifically designed for exactly this kind of lightweight use case. The right call is using an established library regardless of how internal or low-stakes the use case seems, precisely because "this seemed low-stakes" is a common thread running through many real-world crypto incidents after the fact.</details><h2>🧪 Hands-on lab — audit a hypothetical system design</h2>
 <p>For a hypothetical app storing user passwords, encrypting uploaded files, and verifying webhook signatures from a third-party service, specify exactly which cryptographic tool from the decision guide above you'd use for each of the three needs, and justify each choice in one sentence.</p>
-<p>:::challenge Test yourself</p>
 <ol>
 <li>Why is "never implement your own cryptography" considered the single most important rule in applied crypto?</li>
 <li>Why is a password hashing algorithm like bcrypt the right choice for passwords, while SHA-256 alone is the right choice for file-integrity checks?</li>
-<li>Why doesn't encrypting a database protect against a SQL injection vulnerability in the application using it?
-:::</li>
+<li>Why doesn't encrypting a database protect against a SQL injection vulnerability in the application using it?</li>
 </ol>
 <h2>Key terms</h2>
 <ul>

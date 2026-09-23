@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Windows Privilege Escalation: An Introduction — Path 07 · KashSec Academy</title>
-<meta name="description" content="Windows Privilege Escalation: An Introduction: Vertical vs. horizontal escalation, and the named technique categories to recognize.">
+<meta name="description" content="Every lesson in this path so far has been defensive — hardening, monitoring, backing up. This closing conceptual lesson flips the perspective, in overview form, to show you what an attacker actually d">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/07-windows-security/windows-privesc-intro.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Windows Privilege Escalation: An Introduction — Path 07 · KashSec Academy">
-<meta property="og:description" content="Windows Privilege Escalation: An Introduction: Vertical vs. horizontal escalation, and the named technique categories to recognize.">
+<meta property="og:description" content="Every lesson in this path so far has been defensive — hardening, monitoring, backing up. This closing conceptual lesson flips the perspective, in overview form, to show you what an attacker actually d">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/07-windows-security/windows-privesc-intro.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Windows Privilege Escalation: An Introduction — Path 07 · KashSec Academy">
-<meta name="twitter:description" content="Windows Privilege Escalation: An Introduction: Vertical vs. horizontal escalation, and the named technique categories to recognize.">
+<meta name="twitter:description" content="Every lesson in this path so far has been defensive — hardening, monitoring, backing up. This closing conceptual lesson flips the perspective, in overview form, to show you what an attacker actually d">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 07 — Windows Security Basics","item":"https://kashsec.vercel.app/lesson/07-windows-security/"},{"@type":"ListItem","position":4,"name":"Windows Privilege Escalation: An Introduction","item":"https://kashsec.vercel.app/lesson/07-windows-security/windows-privesc-intro.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Windows Privilege Escalation: An Introduction","headline":"Windows Privilege Escalation: An Introduction","description":"Windows Privilege Escalation: An Introduction: Vertical vs. horizontal escalation, and the named technique categories to recognize.","url":"https://kashsec.vercel.app/lesson/07-windows-security/windows-privesc-intro.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Vertical vs. horizontal escalation, and the named technique categories to recognize.","isPartOf":{"@type":"Course","name":"Path 07: Windows Security Basics","url":"https://kashsec.vercel.app/lesson/07-windows-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/07-windows-security/windows-privesc-intro.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Windows Privilege Escalation: An Introduction","headline":"Windows Privilege Escalation: An Introduction","description":"Every lesson in this path so far has been defensive — hardening, monitoring, backing up. This closing conceptual lesson flips the perspective, in overview form, to show you what an attacker actually d","url":"https://kashsec.vercel.app/lesson/07-windows-security/windows-privesc-intro.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Vertical vs. horizontal escalation, and the named technique categories to recognize.","isPartOf":{"@type":"Course","name":"Path 07: Windows Security Basics","url":"https://kashsec.vercel.app/lesson/07-windows-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/07-windows-security/windows-privesc-intro.html"}}
 </script>
 </head>
 <body>
@@ -89,9 +89,7 @@
     <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/07-windows-security/">Path 07 — Windows Security Basics</a> · Windows Privilege Escalation: An Introduction</nav>
     <div class="md" id="content"><article><h1>Windows Privilege Escalation: An Introduction</h1>
 <p>Every lesson in this path so far has been defensive — hardening, monitoring, backing up. This closing conceptual lesson flips the perspective, in overview form, to show you what an attacker actually does <em>after</em> gaining that first limited foothold this whole path has been trying to prevent — full hands-on technique lives in Path 16's dedicated Windows privesc lab, which assumes exactly this lesson as its starting foundation.</p>
-<p>:::tip
-"Privilege escalation" isn't one single technique — it's a whole category of methods for turning limited access into greater access. This lesson's job is giving you the map of that category, the same way Path 01's cyberattacks-overview lesson mapped attack types broadly before later paths went deep on each one.
-:::</p>
+<p>:::</p>
 <h2>Why privilege escalation matters even to defenders</h2>
 <p>An attacker's initial foothold — a phishing-compromised standard user account (Path 00), a webshell dropped through a vulnerable application — is rarely the end goal. The standard-user restrictions the windows-user-accounts lesson described are specifically designed to limit what that initial foothold can actually do. <strong>Privilege escalation</strong> is the process of turning that limited foothold into broader access — ideally, from the attacker's perspective, all the way to SYSTEM or Domain Admin (from the Active Directory lesson).</p>
 <h2>Two broad categories: vertical and horizontal</h2>
@@ -112,15 +110,12 @@
 <p>:::challenge Categorize the technique
 An attacker with standard-user access discovers that a Windows service configured to run as SYSTEM has its executable file located in a folder the attacker's account has write permission to.</p>
 <details><summary>Hint</summary>Which named technique category from this lesson does replacing that executable and restarting the service fall under?</details>
-<details><summary>Show answer</summary>This is <strong>misconfigured service permissions</strong> — a form of vertical privilege escalation. The attacker doesn't need to break any authentication or exploit a software vulnerability at all; the misconfiguration (a standard user having write access to a SYSTEM-privileged service's executable) directly hands over an escalation path. Replacing the legitimate executable with a malicious one, then triggering the service to restart, causes the malicious code to run with the service's SYSTEM privileges rather than the attacker's original standard-user privileges — turning a limited foothold into full system control. This exact technique category, and the file-permission auditing that catches it, is covered hands-on in Path 16's Windows privesc lab.</details>
-:::<h2>🧪 Hands-on lab — reason about defenses, not just attacks</h2>
+<details><summary>Show answer</summary>This is <strong>misconfigured service permissions</strong> — a form of vertical privilege escalation. The attacker doesn't need to break any authentication or exploit a software vulnerability at all; the misconfiguration (a standard user having write access to a SYSTEM-privileged service's executable) directly hands over an escalation path. Replacing the legitimate executable with a malicious one, then triggering the service to restart, causes the malicious code to run with the service's SYSTEM privileges rather than the attacker's original standard-user privileges — turning a limited foothold into full system control. This exact technique category, and the file-permission auditing that catches it, is covered hands-on in Path 16's Windows privesc lab.</details><h2>🧪 Hands-on lab — reason about defenses, not just attacks</h2>
 <p>For each of the five technique categories named in this lesson, write one sentence identifying which earlier lesson in this path already covers a relevant defensive control (services auditing, GPO password/account policy, patching discipline, and so on).</p>
-<p>:::challenge Test yourself</p>
 <ol>
 <li>What's the difference between vertical and horizontal privilege escalation?</li>
 <li>Why is a misconfigured service permission a privilege escalation risk specifically when the service runs as SYSTEM?</li>
-<li>Why does patching matter for privilege escalation defense, not just for preventing initial compromise?
-:::</li>
+<li>Why does patching matter for privilege escalation defense, not just for preventing initial compromise?</li>
 </ol>
 <h2>Key terms</h2>
 <ul>

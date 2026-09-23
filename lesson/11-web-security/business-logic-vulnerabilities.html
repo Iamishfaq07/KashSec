@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Business Logic Vulnerabilities — Path 11 · KashSec Academy</title>
-<meta name="description" content="Business Logic Vulnerabilities: Price tampering, step-skipping, and bugs no scanner will ever find.">
+<meta name="description" content="Every vulnerability class covered so far in this path — IDOR, XSS, SQL injection — involves the application failing to properly handle malicious input. This lesson covers something genuinely different">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/11-web-security/business-logic-vulnerabilities.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Business Logic Vulnerabilities — Path 11 · KashSec Academy">
-<meta property="og:description" content="Business Logic Vulnerabilities: Price tampering, step-skipping, and bugs no scanner will ever find.">
+<meta property="og:description" content="Every vulnerability class covered so far in this path — IDOR, XSS, SQL injection — involves the application failing to properly handle malicious input. This lesson covers something genuinely different">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/11-web-security/business-logic-vulnerabilities.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Business Logic Vulnerabilities — Path 11 · KashSec Academy">
-<meta name="twitter:description" content="Business Logic Vulnerabilities: Price tampering, step-skipping, and bugs no scanner will ever find.">
+<meta name="twitter:description" content="Every vulnerability class covered so far in this path — IDOR, XSS, SQL injection — involves the application failing to properly handle malicious input. This lesson covers something genuinely different">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 11 — Web Security & Hacking","item":"https://kashsec.vercel.app/lesson/11-web-security/"},{"@type":"ListItem","position":4,"name":"Business Logic Vulnerabilities","item":"https://kashsec.vercel.app/lesson/11-web-security/business-logic-vulnerabilities.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Business Logic Vulnerabilities","headline":"Business Logic Vulnerabilities","description":"Business Logic Vulnerabilities: Price tampering, step-skipping, and bugs no scanner will ever find.","url":"https://kashsec.vercel.app/lesson/11-web-security/business-logic-vulnerabilities.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Price tampering, step-skipping, and bugs no scanner will ever find.","isPartOf":{"@type":"Course","name":"Path 11: Web Security & Hacking","url":"https://kashsec.vercel.app/lesson/11-web-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/11-web-security/business-logic-vulnerabilities.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Business Logic Vulnerabilities","headline":"Business Logic Vulnerabilities","description":"Every vulnerability class covered so far in this path — IDOR, XSS, SQL injection — involves the application failing to properly handle malicious input. This lesson covers something genuinely different","url":"https://kashsec.vercel.app/lesson/11-web-security/business-logic-vulnerabilities.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Price tampering, step-skipping, and bugs no scanner will ever find.","isPartOf":{"@type":"Course","name":"Path 11: Web Security & Hacking","url":"https://kashsec.vercel.app/lesson/11-web-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/11-web-security/business-logic-vulnerabilities.html"}}
 </script>
 </head>
 <body>
@@ -106,10 +106,8 @@
 </ul>
 <h2>Why finding these requires understanding the application, not just attacking it</h2>
 <p>Unlike injection-based attacks, which follow a repeatable technical pattern regardless of what the application actually does, finding business logic flaws genuinely requires understanding <em>what the application is supposed to do</em> well enough to spot where its actual implementation diverges from that intent — a fundamentally different skill than pattern-matching known vulnerability signatures, and one that becomes considerably easier with the systematic recon habits from the web-recon lesson earlier in this path.</p>
-<p>:::challenge Test yourself
-Why are business logic vulnerabilities notoriously difficult for automated scanners to detect, compared to something like SQL injection?</p>
-<details><summary>Show answer</summary>Automated scanners work primarily by recognizing known malicious patterns — a SQL injection payload contains a recognizable structure (quotes, SQL keywords in unexpected places) that a scanner can pattern-match against, regardless of what the underlying application actually does. A business logic vulnerability involves no malicious-looking input at all — every individual request is perfectly well-formed and legitimate on its own; the flaw only becomes apparent when you understand the application's intended <em>workflow</em> and recognize that a particular sequence or combination of otherwise-valid actions produces an outcome the developers never intended. A scanner has no generic way to know what a specific application's business logic is <em>supposed</em> to look like, which is exactly why finding these bugs requires genuine human understanding of the target, not automated pattern-matching.</details>
-:::<h2>Key terms</h2>
+<p>Why are business logic vulnerabilities notoriously difficult for automated scanners to detect, compared to something like SQL injection?</p>
+<details><summary>Show answer</summary>Automated scanners work primarily by recognizing known malicious patterns — a SQL injection payload contains a recognizable structure (quotes, SQL keywords in unexpected places) that a scanner can pattern-match against, regardless of what the underlying application actually does. A business logic vulnerability involves no malicious-looking input at all — every individual request is perfectly well-formed and legitimate on its own; the flaw only becomes apparent when you understand the application's intended <em>workflow</em> and recognize that a particular sequence or combination of otherwise-valid actions produces an outcome the developers never intended. A scanner has no generic way to know what a specific application's business logic is <em>supposed</em> to look like, which is exactly why finding these bugs requires genuine human understanding of the target, not automated pattern-matching.</details><h2>Key terms</h2>
 <ul>
 <li><strong>Business logic vulnerability</strong> — a flaw in an application's intended workflow, exploited through legitimate-looking requests in an unanticipated sequence or combination.</li>
 </ul>

@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Containers &amp; Kubernetes Lab — Path 16 · KashSec Academy</title>
-<meta name="description" content="Containers &amp; Kubernetes Lab: Practice container security basics.">
+<meta name="description" content="Container escapes and Kubernetes misconfigurations are an increasingly common finding in real-world assessments as more infrastructure moves to containerized deployments. This lab builds hands-on intu">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/16-advanced/containers-k8s-lab.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Containers &amp; Kubernetes Lab — Path 16 · KashSec Academy">
-<meta property="og:description" content="Containers &amp; Kubernetes Lab: Practice container security basics.">
+<meta property="og:description" content="Container escapes and Kubernetes misconfigurations are an increasingly common finding in real-world assessments as more infrastructure moves to containerized deployments. This lab builds hands-on intu">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/16-advanced/containers-k8s-lab.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Containers &amp; Kubernetes Lab — Path 16 · KashSec Academy">
-<meta name="twitter:description" content="Containers &amp; Kubernetes Lab: Practice container security basics.">
+<meta name="twitter:description" content="Container escapes and Kubernetes misconfigurations are an increasingly common finding in real-world assessments as more infrastructure moves to containerized deployments. This lab builds hands-on intu">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 16 — Advanced Cyber Topics","item":"https://kashsec.vercel.app/lesson/16-advanced/"},{"@type":"ListItem","position":4,"name":"Containers & Kubernetes Lab","item":"https://kashsec.vercel.app/lesson/16-advanced/containers-k8s-lab.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Containers & Kubernetes Lab","headline":"Containers & Kubernetes Lab","description":"Containers & Kubernetes Lab: Practice container security basics.","url":"https://kashsec.vercel.app/lesson/16-advanced/containers-k8s-lab.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Practice container security basics.","isPartOf":{"@type":"Course","name":"Path 16: Advanced Cyber Topics","url":"https://kashsec.vercel.app/lesson/16-advanced/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/16-advanced/containers-k8s-lab.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Containers & Kubernetes Lab","headline":"Containers & Kubernetes Lab","description":"Container escapes and Kubernetes misconfigurations are an increasingly common finding in real-world assessments as more infrastructure moves to containerized deployments. This lab builds hands-on intu","url":"https://kashsec.vercel.app/lesson/16-advanced/containers-k8s-lab.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Practice container security basics.","isPartOf":{"@type":"Course","name":"Path 16: Advanced Cyber Topics","url":"https://kashsec.vercel.app/lesson/16-advanced/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/16-advanced/containers-k8s-lab.html"}}
 </script>
 </head>
 <body>
@@ -109,12 +109,8 @@ docker ps
 <li><p><strong>Scan your own test images with Trivy.</strong> Pull a deliberately outdated image (<code>docker pull nginx:1.18</code>) and scan it: <code>trivy image nginx:1.18</code>. Compare the results against scanning a current image (<code>nginx:latest</code>) — note how many known CVEs the older image carries versus the current one, a direct, hands-on demonstration of why base-image freshness matters as much as application-level code security.</p>
 </li>
 </ol>
-<p>:::warn Only ever test containers/clusters you built or own
-Everything above must be run against your own local Docker/Kubernetes setup — never against infrastructure you don't have explicit authorization to test, exactly as with every other lab in this course.
-:::</p>
-<p>:::challenge Document a full escalation path
-Pick one issue you found (Docker socket exposure is the most dramatic and recommended starting point) and write it up: what the misconfiguration was, exactly how you exploited it step by step, what access it granted, and the specific fix (e.g., "never mount the Docker socket into untrusted containers; use rootless Docker or a dedicated sidecar if socket access is genuinely required").
-:::</p>
+<p>Everything above must be run against your own local Docker/Kubernetes setup — never against infrastructure you don't have explicit authorization to test, exactly as with every other lab in this course.</p>
+<p>Pick one issue you found (Docker socket exposure is the most dramatic and recommended starting point) and write it up: what the misconfiguration was, exactly how you exploited it step by step, what access it granted, and the specific fix (e.g., "never mount the Docker socket into untrusted containers; use rootless Docker or a dedicated sidecar if socket access is genuinely required").</p>
 <h2>Key takeaway</h2>
 <p>Container and Kubernetes security failures are almost always <strong>configuration failures</strong>, not flaws in Docker or Kubernetes themselves — mounted sockets, overly broad RBAC roles, and secrets stored as plain environment variables are the recurring root causes behind the vast majority of real container escapes reported in the wild.</p>
 <p><strong>Next up →</strong> <a href="#/lesson/16-advanced/devsecops-lab">DevSecOps Lab</a></p>

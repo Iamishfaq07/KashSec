@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Python modules &amp; packages — Path 04 · KashSec Academy</title>
-<meta name="description" content="Python modules &amp; packages: pip, virtual environments, and organizing your own growing scripts.">
+<meta name="description" content="Everything you've written so far has lived in one file, using only Python's built-in features. This lesson covers modules — how to organize and reuse your own code — and packages — how to use code oth">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/04-python/python-modules-packages.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Python modules &amp; packages — Path 04 · KashSec Academy">
-<meta property="og:description" content="Python modules &amp; packages: pip, virtual environments, and organizing your own growing scripts.">
+<meta property="og:description" content="Everything you've written so far has lived in one file, using only Python's built-in features. This lesson covers modules — how to organize and reuse your own code — and packages — how to use code oth">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/04-python/python-modules-packages.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Python modules &amp; packages — Path 04 · KashSec Academy">
-<meta name="twitter:description" content="Python modules &amp; packages: pip, virtual environments, and organizing your own growing scripts.">
+<meta name="twitter:description" content="Everything you've written so far has lived in one file, using only Python's built-in features. This lesson covers modules — how to organize and reuse your own code — and packages — how to use code oth">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 04 — Programming & Python","item":"https://kashsec.vercel.app/lesson/04-python/"},{"@type":"ListItem","position":4,"name":"Python modules & packages","item":"https://kashsec.vercel.app/lesson/04-python/python-modules-packages.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Python modules & packages","headline":"Python modules & packages","description":"Python modules & packages: pip, virtual environments, and organizing your own growing scripts.","url":"https://kashsec.vercel.app/lesson/04-python/python-modules-packages.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"pip, virtual environments, and organizing your own growing scripts.","isPartOf":{"@type":"Course","name":"Path 04: Programming & Python","url":"https://kashsec.vercel.app/lesson/04-python/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/04-python/python-modules-packages.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Python modules & packages","headline":"Python modules & packages","description":"Everything you've written so far has lived in one file, using only Python's built-in features. This lesson covers modules — how to organize and reuse your own code — and packages — how to use code oth","url":"https://kashsec.vercel.app/lesson/04-python/python-modules-packages.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"pip, virtual environments, and organizing your own growing scripts.","isPartOf":{"@type":"Course","name":"Path 04: Programming & Python","url":"https://kashsec.vercel.app/lesson/04-python/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/04-python/python-modules-packages.html"}}
 </script>
 </head>
 <body>
@@ -114,9 +114,7 @@ source myproject-env/bin/activate    # Linux/Mac, from Path 03
 myproject-env\Scripts\activate       # Windows
 pip install requests
 </code></pre>
-<p>:::tip Why this matters more than it might seem
-Without virtual environments, installing a package for one project can silently break a different project relying on an older, incompatible version of that same package. This is a genuinely common, entirely avoidable source of "it worked yesterday" frustration — creating a dedicated virtual environment per project is a small habit that prevents it entirely.
-:::</p>
+<p>Without virtual environments, installing a package for one project can silently break a different project relying on an older, incompatible version of that same package. This is a genuinely common, entirely avoidable source of "it worked yesterday" frustration — creating a dedicated virtual environment per project is a small habit that prevents it entirely.</p>
 <h2>Organizing your own code into modules</h2>
 <p>As scripts grow beyond a single file, you can split your own code into separate files and import between them, exactly like a built-in module:</p>
 <pre><code class="language-python"># helpers.py
@@ -128,10 +126,8 @@ def is_valid_ip(address):
 from helpers import is_valid_ip
 print(is_valid_ip("192.168.1.1"))
 </code></pre>
-<p>:::challenge Test yourself
-Why might two different Python projects on the same machine need genuinely different, even conflicting versions of the same third-party package?</p>
-<details><summary>Show answer</summary>Software projects are frequently built and tested against a specific version of a dependency, and a newer version of that same package can sometimes introduce changes that break code written for the older version — meaning a project written a year ago might genuinely require an older package version to keep working correctly, while a brand-new project might require the latest version to access a feature that didn't exist before. Without virtual environments, installing the version one project needs can silently break the other project relying on a different version, since there'd only be one shared, global installation of that package on the entire machine. A virtual environment solves this by giving each project its own genuinely isolated set of installed packages, entirely independent of any other project's requirements.</details>
-:::<h2>Key terms</h2>
+<p>Why might two different Python projects on the same machine need genuinely different, even conflicting versions of the same third-party package?</p>
+<details><summary>Show answer</summary>Software projects are frequently built and tested against a specific version of a dependency, and a newer version of that same package can sometimes introduce changes that break code written for the older version — meaning a project written a year ago might genuinely require an older package version to keep working correctly, while a brand-new project might require the latest version to access a feature that didn't exist before. Without virtual environments, installing the version one project needs can silently break the other project relying on a different version, since there'd only be one shared, global installation of that package on the entire machine. A virtual environment solves this by giving each project its own genuinely isolated set of installed packages, entirely independent of any other project's requirements.</details><h2>Key terms</h2>
 <ul>
 <li><strong>Module</strong> — a file containing reusable Python code, imported with <code>import</code>.</li>
 <li><strong>pip</strong> — Python's standard package installer for third-party libraries.</li>

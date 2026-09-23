@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>SQL Injection — Path 11 · KashSec Academy</title>
-<meta name="description" content="SQL Injection: The classic — with auth bypass, UNION, blind, sqlmap.">
+<meta name="description" content="If XSS is the most famous client-side bug, SQL injection (SQLi) is its server-side counterpart — and arguably the single most damaging vulnerability class in web history, responsible for some of the l">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/11-web-security/sqli.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="SQL Injection — Path 11 · KashSec Academy">
-<meta property="og:description" content="SQL Injection: The classic — with auth bypass, UNION, blind, sqlmap.">
+<meta property="og:description" content="If XSS is the most famous client-side bug, SQL injection (SQLi) is its server-side counterpart — and arguably the single most damaging vulnerability class in web history, responsible for some of the l">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/11-web-security/sqli.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="SQL Injection — Path 11 · KashSec Academy">
-<meta name="twitter:description" content="SQL Injection: The classic — with auth bypass, UNION, blind, sqlmap.">
+<meta name="twitter:description" content="If XSS is the most famous client-side bug, SQL injection (SQLi) is its server-side counterpart — and arguably the single most damaging vulnerability class in web history, responsible for some of the l">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 11 — Web Security & Hacking","item":"https://kashsec.vercel.app/lesson/11-web-security/"},{"@type":"ListItem","position":4,"name":"SQL Injection","item":"https://kashsec.vercel.app/lesson/11-web-security/sqli.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"SQL Injection","headline":"SQL Injection","description":"SQL Injection: The classic — with auth bypass, UNION, blind, sqlmap.","url":"https://kashsec.vercel.app/lesson/11-web-security/sqli.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"The classic — with auth bypass, UNION, blind, sqlmap.","isPartOf":{"@type":"Course","name":"Path 11: Web Security & Hacking","url":"https://kashsec.vercel.app/lesson/11-web-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/11-web-security/sqli.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"SQL Injection","headline":"SQL Injection","description":"If XSS is the most famous client-side bug, SQL injection (SQLi) is its server-side counterpart — and arguably the single most damaging vulnerability class in web history, responsible for some of the l","url":"https://kashsec.vercel.app/lesson/11-web-security/sqli.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"The classic — with auth bypass, UNION, blind, sqlmap.","isPartOf":{"@type":"Course","name":"Path 11: Web Security & Hacking","url":"https://kashsec.vercel.app/lesson/11-web-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/11-web-security/sqli.html"}}
 </script>
 </head>
 <body>
@@ -208,12 +208,10 @@ user = session.query(User).filter_by(username=username, password_hash=hash_pw(pa
 <li><strong>WAF (Web Application Firewall)</strong> — can catch and block many common SQLi patterns, though sophisticated attackers routinely find bypasses (never rely on WAF alone).</li>
 <li><strong>ORMs used correctly</strong> — but beware of "raw query" escape hatches many ORMs still offer, which reintroduce the exact same risk if used carelessly.</li>
 </ul>
-<p>:::danger EVEN "SAFE" ORMS CAN BE MISUSED</p>
 <pre><code class="language-python"># Still vulnerable, even using an ORM's raw query feature:
 User.objects.raw(f"SELECT * FROM users WHERE username = '{username}'")
 </code></pre>
-<p>Using an ORM doesn't automatically guarantee safety — string-formatting your way into any "raw SQL" escape hatch reintroduces the exact same vulnerability. The safety comes from parameterisation, not from which library you're using.
-:::</p>
+<p>Using an ORM doesn't automatically guarantee safety — string-formatting your way into any "raw SQL" escape hatch reintroduces the exact same vulnerability. The safety comes from parameterisation, not from which library you're using.</p>
 <h2>Second-order SQLi — the delayed detonation</h2>
 <p>Every example so far assumes the injected input reaches the database in the <em>same request</em> where it's typed. <strong>Second-order SQLi</strong> is subtler: the malicious input is safely stored on first submission (perhaps even correctly escaped at that point), but later gets pulled out of the database and used, unsafely, to build a <em>different</em> query — for example, a username containing injection syntax is stored cleanly during registration, then used unsanitised months later when an admin panel builds a "recent activity for this user" report. This delay between injection and detonation makes second-order SQLi genuinely hard to spot with straightforward single-request testing, since the vulnerable query never appears anywhere near the form that actually introduced the malicious data.</p>
 <h2>NoSQL injection — same idea, different syntax</h2>
@@ -233,10 +231,8 @@ User.objects.raw(f"SELECT * FROM users WHERE username = '{username}'")
 <ol>
 <li>Compare what sqlmap found automatically to what you found manually — this comparison is genuinely instructive about both the tool's power and its limits.</li>
 </ol>
-<p>:::challenge Test yourself
-Why is a parameterised query fundamentally safer than "carefully sanitising" user input by stripping out dangerous characters like quotes before concatenating it into a SQL string?</p>
-<details><summary>Show answer</summary>Sanitisation/blocklisting tries to <em>predict every dangerous pattern</em> in advance — and attackers routinely find encoding tricks, alternate syntax, or edge cases that slip past incomplete filters. Parameterised queries instead make the database engine itself treat the input as <strong>pure data, never as executable SQL syntax</strong>, structurally — there's no filter to bypass because the input can never be interpreted as code in the first place, regardless of its content.</details>
-:::<h2>Key terms</h2>
+<p>Why is a parameterised query fundamentally safer than "carefully sanitising" user input by stripping out dangerous characters like quotes before concatenating it into a SQL string?</p>
+<details><summary>Show answer</summary>Sanitisation/blocklisting tries to <em>predict every dangerous pattern</em> in advance — and attackers routinely find encoding tricks, alternate syntax, or edge cases that slip past incomplete filters. Parameterised queries instead make the database engine itself treat the input as <strong>pure data, never as executable SQL syntax</strong>, structurally — there's no filter to bypass because the input can never be interpreted as code in the first place, regardless of its content.</details><h2>Key terms</h2>
 <ul>
 <li><strong>SQL injection (SQLi)</strong> — attacker-controlled input alters the structure/logic of a database query.</li>
 <li><strong>UNION-based / error-based / blind (boolean, time) / out-of-band</strong> — the main SQLi extraction techniques.</li>

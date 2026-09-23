@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Incident Response Basics — Path 10 · KashSec Academy</title>
-<meta name="description" content="Incident Response Basics: The six-phase lifecycle behind 'isolate first, investigate second.'">
+<meta name="description" content="You've now covered prevention (protect-yourself) and detection concepts (security controls) throughout this path. This lesson introduces what happens next: incident response — the structured process f">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/10-fundamentals/incident-response-basics.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Incident Response Basics — Path 10 · KashSec Academy">
-<meta property="og:description" content="Incident Response Basics: The six-phase lifecycle behind 'isolate first, investigate second.'">
+<meta property="og:description" content="You've now covered prevention (protect-yourself) and detection concepts (security controls) throughout this path. This lesson introduces what happens next: incident response — the structured process f">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/10-fundamentals/incident-response-basics.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Incident Response Basics — Path 10 · KashSec Academy">
-<meta name="twitter:description" content="Incident Response Basics: The six-phase lifecycle behind 'isolate first, investigate second.'">
+<meta name="twitter:description" content="You've now covered prevention (protect-yourself) and detection concepts (security controls) throughout this path. This lesson introduces what happens next: incident response — the structured process f">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 10 — Cybersecurity Fundamentals","item":"https://kashsec.vercel.app/lesson/10-fundamentals/"},{"@type":"ListItem","position":4,"name":"Incident Response Basics","item":"https://kashsec.vercel.app/lesson/10-fundamentals/incident-response-basics.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Incident Response Basics","headline":"Incident Response Basics","description":"Incident Response Basics: The six-phase lifecycle behind 'isolate first, investigate second.'","url":"https://kashsec.vercel.app/lesson/10-fundamentals/incident-response-basics.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner→Intermediate","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"The six-phase lifecycle behind 'isolate first, investigate second.'","isPartOf":{"@type":"Course","name":"Path 10: Cybersecurity Fundamentals","url":"https://kashsec.vercel.app/lesson/10-fundamentals/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/10-fundamentals/incident-response-basics.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Incident Response Basics","headline":"Incident Response Basics","description":"You've now covered prevention (protect-yourself) and detection concepts (security controls) throughout this path. This lesson introduces what happens next: incident response — the structured process f","url":"https://kashsec.vercel.app/lesson/10-fundamentals/incident-response-basics.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner→Intermediate","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"The six-phase lifecycle behind 'isolate first, investigate second.'","isPartOf":{"@type":"Course","name":"Path 10: Cybersecurity Fundamentals","url":"https://kashsec.vercel.app/lesson/10-fundamentals/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/10-fundamentals/incident-response-basics.html"}}
 </script>
 </head>
 <body>
@@ -92,13 +92,6 @@
 <h2>Why "prevention will eventually fail" is the right starting assumption</h2>
 <p>Every path in this course has emphasized layered, defense-in-depth thinking specifically because no single control, and no combination of controls, provides perfect prevention indefinitely. A mature security program plans for the moment prevention fails, not just for preventing failure — which is exactly what incident response actually is.</p>
 <h2>The incident response lifecycle, at a glance</h2>
-<pre><code class="language-mermaid">flowchart LR
-    A[Preparation] --&gt; B[Detection &amp; Analysis]
-    B --&gt; C[Containment]
-    C --&gt; D[Eradication]
-    D --&gt; E[Recovery]
-    E --&gt; F["Lessons Learned\n(feeds back into Preparation)"]
-</code></pre>
 <ul>
 <li><strong>Preparation</strong> — having a plan, trained people, and the right tools <em>before</em> an incident happens — genuinely the phase that determines how well every later phase goes</li>
 <li><strong>Detection &amp; Analysis</strong> — noticing something happened and figuring out what it actually is, drawing directly on the logging and monitoring concepts from Path 08</li>
@@ -110,13 +103,9 @@
 <h2>Why "isolate first, investigate second" keeps appearing throughout this course</h2>
 <p>Path 07's Windows compromise-recognition lesson and Path 03's Linux logging lesson both independently arrived at the same instinct: disconnect a suspected-compromised system from the network before doing anything else. This is the <strong>containment</strong> phase of the incident-response lifecycle, applied at the individual-machine level — this lesson names the broader framework those earlier, specific pieces of advice were always part of.</p>
 <h2>Why having a written plan matters, even for a small organization</h2>
-<p>:::tip A plan you've never used is still better than no plan at all
-An incident is, by definition, a high-stress, time-pressured situation — exactly the wrong moment to be inventing a response process from scratch. Even a simple, written plan (who to contact, what to isolate first, who has authority to make key decisions) meaningfully improves outcomes compared to improvising entirely under pressure, directly connecting to Path 24's common-pitfalls lesson emphasis on structured rather than ad-hoc security practice.
-:::</p>
-<p>:::challenge Test yourself
-Why is "Lessons Learned" considered a genuinely important phase of incident response, rather than an optional formality after the real work is already done?</p>
-<details><summary>Show answer</summary>Every real incident reveals something about an organization's actual security posture that wasn't fully visible beforehand — a detection gap that let the incident go unnoticed longer than it should have, a containment step that took too long, a preparation gap that made response harder than necessary. Skipping the Lessons Learned phase means an organization pays the full cost of experiencing an incident without capturing the corresponding benefit of actually improving for next time — the exact same incident, or a very similar one, becomes meaningfully more likely to recur in a similar way. This is precisely why the lifecycle diagram in this lesson shows Lessons Learned feeding back into Preparation: incident response isn't a one-time linear process, it's a cycle that should make each future incident easier to handle than the last.</details>
-:::<h2>Key terms</h2>
+<p>An incident is, by definition, a high-stress, time-pressured situation — exactly the wrong moment to be inventing a response process from scratch. Even a simple, written plan (who to contact, what to isolate first, who has authority to make key decisions) meaningfully improves outcomes compared to improvising entirely under pressure, directly connecting to Path 24's common-pitfalls lesson emphasis on structured rather than ad-hoc security practice.</p>
+<p>Why is "Lessons Learned" considered a genuinely important phase of incident response, rather than an optional formality after the real work is already done?</p>
+<details><summary>Show answer</summary>Every real incident reveals something about an organization's actual security posture that wasn't fully visible beforehand — a detection gap that let the incident go unnoticed longer than it should have, a containment step that took too long, a preparation gap that made response harder than necessary. Skipping the Lessons Learned phase means an organization pays the full cost of experiencing an incident without capturing the corresponding benefit of actually improving for next time — the exact same incident, or a very similar one, becomes meaningfully more likely to recur in a similar way. This is precisely why the lifecycle diagram in this lesson shows Lessons Learned feeding back into Preparation: incident response isn't a one-time linear process, it's a cycle that should make each future incident easier to handle than the last.</details><h2>Key terms</h2>
 <ul>
 <li><strong>Incident response lifecycle</strong> — the structured process (preparation, detection/analysis, containment, eradication, recovery, lessons learned) for handling a security incident.</li>
 <li><strong>Containment</strong> — the incident-response phase focused on stopping an incident from spreading further.</li>

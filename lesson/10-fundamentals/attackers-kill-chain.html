@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Attackers &amp; the kill chain — Path 10 · KashSec Academy</title>
-<meta name="description" content="Attackers &amp; the kill chain: Who attacks and the phases of an intrusion.">
+<meta name="description" content="Real attacks aren't a single dramatic moment — they're a sequence of stages, each with its own techniques and its own defensive opportunities. Understanding this sequence is one of the most valuable m">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/10-fundamentals/attackers-kill-chain.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Attackers &amp; the kill chain — Path 10 · KashSec Academy">
-<meta property="og:description" content="Attackers &amp; the kill chain: Who attacks and the phases of an intrusion.">
+<meta property="og:description" content="Real attacks aren't a single dramatic moment — they're a sequence of stages, each with its own techniques and its own defensive opportunities. Understanding this sequence is one of the most valuable m">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/10-fundamentals/attackers-kill-chain.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Attackers &amp; the kill chain — Path 10 · KashSec Academy">
-<meta name="twitter:description" content="Attackers &amp; the kill chain: Who attacks and the phases of an intrusion.">
+<meta name="twitter:description" content="Real attacks aren't a single dramatic moment — they're a sequence of stages, each with its own techniques and its own defensive opportunities. Understanding this sequence is one of the most valuable m">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 10 — Cybersecurity Fundamentals","item":"https://kashsec.vercel.app/lesson/10-fundamentals/"},{"@type":"ListItem","position":4,"name":"Attackers & the kill chain","item":"https://kashsec.vercel.app/lesson/10-fundamentals/attackers-kill-chain.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Attackers & the kill chain","headline":"Attackers & the kill chain","description":"Attackers & the kill chain: Who attacks and the phases of an intrusion.","url":"https://kashsec.vercel.app/lesson/10-fundamentals/attackers-kill-chain.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner→Intermediate","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Who attacks and the phases of an intrusion.","isPartOf":{"@type":"Course","name":"Path 10: Cybersecurity Fundamentals","url":"https://kashsec.vercel.app/lesson/10-fundamentals/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/10-fundamentals/attackers-kill-chain.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Attackers & the kill chain","headline":"Attackers & the kill chain","description":"Real attacks aren't a single dramatic moment — they're a sequence of stages, each with its own techniques and its own defensive opportunities. Understanding this sequence is one of the most valuable m","url":"https://kashsec.vercel.app/lesson/10-fundamentals/attackers-kill-chain.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner→Intermediate","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Who attacks and the phases of an intrusion.","isPartOf":{"@type":"Course","name":"Path 10: Cybersecurity Fundamentals","url":"https://kashsec.vercel.app/lesson/10-fundamentals/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/10-fundamentals/attackers-kill-chain.html"}}
 </script>
 </head>
 <body>
@@ -91,22 +91,6 @@
 <p>Real attacks aren't a single dramatic moment — they're a sequence of stages, each with its own techniques and its own defensive opportunities. Understanding this sequence is one of the most valuable mental models in all of security.</p>
 <h2>The Cyber Kill Chain</h2>
 <p>Developed by Lockheed Martin, this is the classic 7-stage model of how an intrusion unfolds:</p>
-<pre><code class="language-mermaid">flowchart LR
-    R[1. Reconnaissance] --&gt; W[2. Weaponization]
-    W --&gt; D[3. Delivery]
-    D --&gt; E[4. Exploitation]
-    E --&gt; I[5. Installation]
-    I --&gt; C[6. Command &amp; Control]
-    C --&gt; Ac[7. Actions on Objectives]
-
-    style R fill:#111927,color:#3FB6A8,stroke:#3FB6A8
-    style W fill:#111927,color:#3FB6A8,stroke:#3FB6A8
-    style D fill:#2b1f0a,color:#EFA43A,stroke:#EFA43A
-    style E fill:#2b1010,color:#E05548,stroke:#E05548
-    style I fill:#2b1010,color:#E05548,stroke:#E05548
-    style C fill:#2b1010,color:#E05548,stroke:#E05548
-    style Ac fill:#2b1010,color:#E05548,stroke:#E05548
-</code></pre>
 <ol>
 <li><strong>Reconnaissance</strong> — the attacker researches the target: employee names on LinkedIn, technologies in use, exposed services, public breach data. (This is exactly what Path 11 and Path 15 teach you to do — ethically, with permission.)</li>
 <li><strong>Weaponization</strong> — the attacker builds or acquires their tool: a malicious document, a crafted exploit, a phishing kit.</li>
@@ -119,20 +103,6 @@
 <p><strong>The defensive insight:</strong> breaking the chain at <em>any single link</em> stops the whole attack. This is why defence-in-depth (Path 10.7) matters so much — you don't need one perfect control, you need enough friction at enough stages.</p>
 <h2>MITRE ATT&amp;CK — the modern, detailed successor</h2>
 <p>The Kill Chain is a great mental model, but real defenders today mostly use <strong>MITRE ATT&amp;CK</strong> — a much more detailed, continuously-updated knowledge base of real-world attacker techniques, organised by <strong>tactic</strong> (the "why") and <strong>technique</strong> (the "how").</p>
-<pre><code class="language-mermaid">flowchart TB
-    Tactic["Tactic: Initial Access&lt;br/&gt;(the 'why')"]
-    T1["Technique: Phishing"]
-    T2["Technique: Exploit Public-Facing App"]
-    T3["Technique: Valid Accounts"]
-    Tactic --&gt; T1
-    Tactic --&gt; T2
-    Tactic --&gt; T3
-
-    style Tactic fill:#111927,color:#EFA43A,stroke:#EFA43A
-    style T1 fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
-    style T2 fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
-    style T3 fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
-</code></pre>
 <p>ATT&amp;CK's tactics (roughly matching and expanding on the Kill Chain): Reconnaissance, Resource Development, Initial Access, Execution, Persistence, Privilege Escalation, Defense Evasion, Credential Access, Discovery, Lateral Movement, Collection, Command and Control, Exfiltration, Impact.</p>
 <p>Every real technique has a page with detection ideas, mitigations, and real-world examples of which threat groups use it. Professionals reference ATT&amp;CK IDs like <code>T1566</code> (Phishing) constantly in reports and tooling — you'll see it throughout your career.</p>
 <h2>The attacker's actual toolkit, by stage</h2>
@@ -196,10 +166,8 @@
 <li>Which single stage, if blocked, would have stopped the whole chain?</li>
 </ol>
 <p>This kind of "attack reconstruction" thinking is exactly what incident responders and threat intelligence analysts do professionally.</p>
-<p>:::challenge Test yourself
-An organisation has excellent email filtering (blocking most phishing) but very weak internal network segmentation. Using the kill chain, which later stage becomes especially dangerous if an attacker <em>does</em> get through?</p>
-<details><summary>Show answer</summary><strong>Lateral movement / Actions on Objectives.</strong> If delivery/exploitation succeeds despite the filtering, weak segmentation means the attacker can move freely to other systems once inside — turning one compromised machine into a much bigger breach.</details>
-:::<h2>Key terms</h2>
+<p>An organisation has excellent email filtering (blocking most phishing) but very weak internal network segmentation. Using the kill chain, which later stage becomes especially dangerous if an attacker <em>does</em> get through?</p>
+<details><summary>Show answer</summary><strong>Lateral movement / Actions on Objectives.</strong> If delivery/exploitation succeeds despite the filtering, weak segmentation means the attacker can move freely to other systems once inside — turning one compromised machine into a much bigger breach.</details><h2>Key terms</h2>
 <ul>
 <li><strong>Cyber Kill Chain</strong> — the 7-stage model of an intrusion (Lockheed Martin).</li>
 <li><strong>MITRE ATT&amp;CK</strong> — the detailed, real-world tactic/technique knowledge base.</li>

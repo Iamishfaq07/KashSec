@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>ICS Incident Response — Path 25 · KashSec Academy</title>
-<meta name="description" content="ICS Incident Response: Why 'isolate immediately' can be more dangerous than the incident itself.">
+<meta name="description" content="Path 16's general incident response lesson covers the standard IT-focused lifecycle. This lesson covers what changes when the &quot;system&quot; being responded to also controls a physical process — where the u">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/25-ot-ics-security/ics-incident-response.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="ICS Incident Response — Path 25 · KashSec Academy">
-<meta property="og:description" content="ICS Incident Response: Why 'isolate immediately' can be more dangerous than the incident itself.">
+<meta property="og:description" content="Path 16's general incident response lesson covers the standard IT-focused lifecycle. This lesson covers what changes when the &quot;system&quot; being responded to also controls a physical process — where the u">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/25-ot-ics-security/ics-incident-response.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="ICS Incident Response — Path 25 · KashSec Academy">
-<meta name="twitter:description" content="ICS Incident Response: Why 'isolate immediately' can be more dangerous than the incident itself.">
+<meta name="twitter:description" content="Path 16's general incident response lesson covers the standard IT-focused lifecycle. This lesson covers what changes when the &quot;system&quot; being responded to also controls a physical process — where the u">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 25 — OT/ICS & Critical Infrastructure Security","item":"https://kashsec.vercel.app/lesson/25-ot-ics-security/"},{"@type":"ListItem","position":4,"name":"ICS Incident Response","item":"https://kashsec.vercel.app/lesson/25-ot-ics-security/ics-incident-response.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"ICS Incident Response","headline":"ICS Incident Response","description":"ICS Incident Response: Why 'isolate immediately' can be more dangerous than the incident itself.","url":"https://kashsec.vercel.app/lesson/25-ot-ics-security/ics-incident-response.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Why 'isolate immediately' can be more dangerous than the incident itself.","isPartOf":{"@type":"Course","name":"Path 25: OT/ICS & Critical Infrastructure Security","url":"https://kashsec.vercel.app/lesson/25-ot-ics-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/25-ot-ics-security/ics-incident-response.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"ICS Incident Response","headline":"ICS Incident Response","description":"Path 16's general incident response lesson covers the standard IT-focused lifecycle. This lesson covers what changes when the \"system\" being responded to also controls a physical process — where the u","url":"https://kashsec.vercel.app/lesson/25-ot-ics-security/ics-incident-response.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Why 'isolate immediately' can be more dangerous than the incident itself.","isPartOf":{"@type":"Course","name":"Path 25: OT/ICS & Critical Infrastructure Security","url":"https://kashsec.vercel.app/lesson/25-ot-ics-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/25-ot-ics-security/ics-incident-response.html"}}
 </script>
 </head>
 <body>
@@ -89,9 +89,7 @@
     <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/25-ot-ics-security/">Path 25 — OT/ICS &amp; Critical Infrastructure Security</a> · ICS Incident Response</nav>
     <div class="md" id="content"><article><h1>ICS Incident Response</h1>
 <p>Path 16's general incident response lesson covers the standard IT-focused lifecycle. This lesson covers what changes when the "system" being responded to also controls a physical process — where the usual first instinct in IT IR, isolate and contain immediately, can itself cause the exact physical harm the response is trying to prevent.</p>
-<p>:::tip
-The single hardest judgment call in ICS incident response: <strong>is it safer to keep a possibly-compromised system running under close watch, or to shut it down immediately?</strong> In IT, the answer is almost always "contain now." In OT, an uncontrolled shutdown of the wrong system can be more dangerous than the incident itself.
-:::</p>
+<p>:::</p>
 <h2>Why "pull the plug" isn't automatically the right move</h2>
 <p>Standard IT incident response often defaults to isolating a compromised host immediately. Applied naively to OT, this can:</p>
 <ul>
@@ -112,15 +110,12 @@ The single hardest judgment call in ICS incident response: <strong>is it safer t
 <p>:::challenge Make the call
 A monitoring alert flags unusual command traffic reaching a PLC that controls a chemical mixing process. The traffic pattern resembles the reconnaissance stage seen in a past real-world ICS attack. The process is currently mid-batch.</p>
 <details><summary>Hint</summary>What determines whether the correct move is an immediate hard stop versus a coordinated, closely-monitored shutdown — and who needs to be involved in that decision that a pure security team wouldn't normally include?</details>
-<details><summary>Show answer</summary>This is exactly the scenario where process engineers and (if applicable) safety officers need to be looped in immediately, alongside the security team, rather than security making a unilateral isolation call. An uncontrolled stop mid-batch could itself create a hazardous condition depending on the specific chemistry involved — information the security team has no way to evaluate on its own. The realistic response is heightened monitoring plus an urgent, jointly-made decision: either a controlled shutdown sequence specific to this process, or continued closely-watched operation while containment measures (like tightening segmentation around that PLC's segment) are put in place — with the Safety Instrumented System, if present and unaffected, providing a real backstop either way.</details>
-:::<h2>🧪 Hands-on lab — draft an ICS IR escalation path</h2>
+<details><summary>Show answer</summary>This is exactly the scenario where process engineers and (if applicable) safety officers need to be looped in immediately, alongside the security team, rather than security making a unilateral isolation call. An uncontrolled stop mid-batch could itself create a hazardous condition depending on the specific chemistry involved — information the security team has no way to evaluate on its own. The realistic response is heightened monitoring plus an urgent, jointly-made decision: either a controlled shutdown sequence specific to this process, or continued closely-watched operation while containment measures (like tightening segmentation around that PLC's segment) are put in place — with the Safety Instrumented System, if present and unaffected, providing a real backstop either way.</details><h2>🧪 Hands-on lab — draft an ICS IR escalation path</h2>
 <p>Sketch a simple escalation flowchart for a hypothetical facility: who gets notified first when OT-specific monitoring fires an alert, in what order, and at what point (if any) does the decision authority shift from the security team to process engineering or safety officers.</p>
-<p>:::challenge Test yourself</p>
 <ol>
 <li>Why can an immediate, IT-style isolation response sometimes be more dangerous in OT than the incident itself?</li>
 <li>Who does ICS incident response typically involve that standard IT incident response doesn't?</li>
-<li>Why does ICS incident forensics need to account for availability constraints in a way IT forensics usually doesn't?
-:::</li>
+<li>Why does ICS incident forensics need to account for availability constraints in a way IT forensics usually doesn't?</li>
 </ol>
 <h2>Key terms</h2>
 <ul>

@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Digital forensics &amp; IR — Path 16 · KashSec Academy</title>
-<meta name="description" content="Digital forensics &amp; IR: NIST 800-61, Sysmon, Volatility.">
+<meta name="description" content="Everything so far in this course has largely been offensive — finding and exploiting weaknesses. DFIR flips the perspective: when a real incident happens, how do you figure out exactly what occurred, ">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/16-advanced/dfir.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Digital forensics &amp; IR — Path 16 · KashSec Academy">
-<meta property="og:description" content="Digital forensics &amp; IR: NIST 800-61, Sysmon, Volatility.">
+<meta property="og:description" content="Everything so far in this course has largely been offensive — finding and exploiting weaknesses. DFIR flips the perspective: when a real incident happens, how do you figure out exactly what occurred, ">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/16-advanced/dfir.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Digital forensics &amp; IR — Path 16 · KashSec Academy">
-<meta name="twitter:description" content="Digital forensics &amp; IR: NIST 800-61, Sysmon, Volatility.">
+<meta name="twitter:description" content="Everything so far in this course has largely been offensive — finding and exploiting weaknesses. DFIR flips the perspective: when a real incident happens, how do you figure out exactly what occurred, ">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 16 — Advanced Cyber Topics","item":"https://kashsec.vercel.app/lesson/16-advanced/"},{"@type":"ListItem","position":4,"name":"Digital forensics & IR","item":"https://kashsec.vercel.app/lesson/16-advanced/dfir.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Digital forensics & IR","headline":"Digital forensics & IR","description":"Digital forensics & IR: NIST 800-61, Sysmon, Volatility.","url":"https://kashsec.vercel.app/lesson/16-advanced/dfir.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"NIST 800-61, Sysmon, Volatility.","isPartOf":{"@type":"Course","name":"Path 16: Advanced Cyber Topics","url":"https://kashsec.vercel.app/lesson/16-advanced/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/16-advanced/dfir.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Digital forensics & IR","headline":"Digital forensics & IR","description":"Everything so far in this course has largely been offensive — finding and exploiting weaknesses. DFIR flips the perspective: when a real incident happens, how do you figure out exactly what occurred, ","url":"https://kashsec.vercel.app/lesson/16-advanced/dfir.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"NIST 800-61, Sysmon, Volatility.","isPartOf":{"@type":"Course","name":"Path 16: Advanced Cyber Topics","url":"https://kashsec.vercel.app/lesson/16-advanced/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/16-advanced/dfir.html"}}
 </script>
 </head>
 <body>
@@ -95,20 +95,6 @@
 <li><strong>Digital Forensics</strong> — the rigorous, evidence-preserving process of examining digital systems to reconstruct what happened.</li>
 <li><strong>Incident Response (IR)</strong> — the operational process of detecting, containing, eradicating, and recovering from a security incident.</li>
 </ul>
-<pre><code class="language-mermaid">flowchart LR
-    Prep["1️⃣ Preparation"] --&gt; Detect["2️⃣ Detection &amp;&lt;br/&gt;Analysis"]
-    Detect --&gt; Contain["3️⃣ Containment"]
-    Contain --&gt; Eradicate["4️⃣ Eradication"]
-    Eradicate --&gt; Recover["5️⃣ Recovery"]
-    Recover --&gt; Lessons["6️⃣ Lessons Learned"]
-
-    style Prep fill:#111927,color:#8496A6,stroke:#8496A6
-    style Detect fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
-    style Contain fill:#2b1010,color:#E05548,stroke:#E05548
-    style Eradicate fill:#2b1010,color:#E05548,stroke:#E05548
-    style Recover fill:#2b1f0a,color:#EFA43A,stroke:#EFA43A
-    style Lessons fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
-</code></pre>
 <p>This six-phase model (based on NIST's incident response framework) is the DFIR analogue of Path 14's five-phase penetration testing methodology — a repeatable, professional structure rather than ad-hoc firefighting.</p>
 <h2>Phase 1: Preparation</h2>
 <p>Everything done <strong>before</strong> an incident occurs to make response actually possible:</p>
@@ -120,9 +106,7 @@
 <h2>Phase 2: Detection &amp; Analysis</h2>
 <p>Recognising that an incident is actually occurring — often via the SIEM alerts and correlation rules from Path 12.5, or an external notification (a customer report, a law enforcement tip, a bug bounty report per Path 15 revealing active exploitation).</p>
 <h3>The forensic principle: preserve, then analyse — never the reverse</h3>
-<p>:::danger THE CARDINAL RULE OF DIGITAL FORENSICS
-Never analyse original evidence directly — always work from a <strong>verified forensic copy</strong>, preserving the original completely untouched. Investigating directly on a live, compromised system risks altering timestamps, overwriting deleted-but-recoverable data, or destroying evidence needed for legal proceedings.
-:::</p>
+<p>Never analyse original evidence directly — always work from a <strong>verified forensic copy</strong>, preserving the original completely untouched. Investigating directly on a live, compromised system risks altering timestamps, overwriting deleted-but-recoverable data, or destroying evidence needed for legal proceedings.</p>
 <pre><code class="language-bash"># Creating a forensic disk image with proper integrity verification:
 dd if=/dev/sdb of=evidence-image.dd bs=4M status=progress
 sha256sum /dev/sdb &gt; original-hash.txt
@@ -205,10 +189,8 @@ find / -newer /etc/hostname -type f 2&gt;/dev/null | head -50
 <li>Write a short "incident summary" as if this were a genuine investigation — what happened, when, and what containment/eradication steps would you recommend if this had been a real, unauthorized compromise.</li>
 </ol>
 <p>This exercise — looking at your <strong>own</strong> prior lab activity through a forensic investigator's lens — is a genuinely effective way to internalise how much (or how little) evidence ordinary system usage leaves behind, directly informing both your offensive OPSEC awareness and your defensive logging priorities going forward.</p>
-<p>:::challenge Test yourself
-Why must a forensic investigator always work from a verified disk image copy rather than analysing the original, potentially-compromised system directly?</p>
-<details><summary>Show answer</summary>Analysing a live system directly risks <strong>altering evidence</strong> — accessing files changes their access timestamps, running additional processes could overwrite deleted-but-recoverable data in unallocated disk space, and any interaction with a potentially still-active attacker's tooling could trigger anti-forensic or destructive behaviour. Working from a <strong>hash-verified copy</strong> preserves the original completely untouched, ensuring the evidence remains both accurate and legally admissible if the incident ever leads to legal or insurance proceedings, while still allowing thorough, even destructive, analysis techniques on the copy itself.</details>
-:::<h2>Key terms</h2>
+<p>Why must a forensic investigator always work from a verified disk image copy rather than analysing the original, potentially-compromised system directly?</p>
+<details><summary>Show answer</summary>Analysing a live system directly risks <strong>altering evidence</strong> — accessing files changes their access timestamps, running additional processes could overwrite deleted-but-recoverable data in unallocated disk space, and any interaction with a potentially still-active attacker's tooling could trigger anti-forensic or destructive behaviour. Working from a <strong>hash-verified copy</strong> preserves the original completely untouched, ensuring the evidence remains both accurate and legally admissible if the incident ever leads to legal or insurance proceedings, while still allowing thorough, even destructive, analysis techniques on the copy itself.</details><h2>Key terms</h2>
 <ul>
 <li><strong>DFIR</strong> — Digital Forensics and Incident Response, combining evidence-preservation with operational incident handling.</li>
 <li><strong>Chain of custody</strong> — documented record of who handled evidence and when, essential for legal admissibility.</li>

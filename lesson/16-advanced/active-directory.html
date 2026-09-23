@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Active Directory attacks — Path 16 · KashSec Academy</title>
-<meta name="description" content="Active Directory attacks: BloodHound, Kerberoast, Golden Ticket.">
+<meta name="description" content="Active Directory (AD) manages identity and access for the vast majority of corporate Windows networks worldwide. Understanding AD attacks is one of the highest-value skills in professional penetration">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/16-advanced/active-directory.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Active Directory attacks — Path 16 · KashSec Academy">
-<meta property="og:description" content="Active Directory attacks: BloodHound, Kerberoast, Golden Ticket.">
+<meta property="og:description" content="Active Directory (AD) manages identity and access for the vast majority of corporate Windows networks worldwide. Understanding AD attacks is one of the highest-value skills in professional penetration">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/16-advanced/active-directory.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Active Directory attacks — Path 16 · KashSec Academy">
-<meta name="twitter:description" content="Active Directory attacks: BloodHound, Kerberoast, Golden Ticket.">
+<meta name="twitter:description" content="Active Directory (AD) manages identity and access for the vast majority of corporate Windows networks worldwide. Understanding AD attacks is one of the highest-value skills in professional penetration">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 16 — Advanced Cyber Topics","item":"https://kashsec.vercel.app/lesson/16-advanced/"},{"@type":"ListItem","position":4,"name":"Active Directory attacks","item":"https://kashsec.vercel.app/lesson/16-advanced/active-directory.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Active Directory attacks","headline":"Active Directory attacks","description":"Active Directory attacks: BloodHound, Kerberoast, Golden Ticket.","url":"https://kashsec.vercel.app/lesson/16-advanced/active-directory.html","inLanguage":"en","dateModified":"2026-08-04","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"BloodHound, Kerberoast, Golden Ticket.","isPartOf":{"@type":"Course","name":"Path 16: Advanced Cyber Topics","url":"https://kashsec.vercel.app/lesson/16-advanced/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/16-advanced/active-directory.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Active Directory attacks","headline":"Active Directory attacks","description":"Active Directory (AD) manages identity and access for the vast majority of corporate Windows networks worldwide. Understanding AD attacks is one of the highest-value skills in professional penetration","url":"https://kashsec.vercel.app/lesson/16-advanced/active-directory.html","inLanguage":"en","dateModified":"2026-08-04","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"BloodHound, Kerberoast, Golden Ticket.","isPartOf":{"@type":"Course","name":"Path 16: Advanced Cyber Topics","url":"https://kashsec.vercel.app/lesson/16-advanced/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/16-advanced/active-directory.html"}}
 </script>
 </head>
 <body>
@@ -91,34 +91,9 @@
 <p><strong>Active Directory (AD)</strong> manages identity and access for the vast majority of corporate Windows networks worldwide. Understanding AD attacks is one of the highest-value skills in professional penetration testing — and the core subject matter of practical certifications such as CPENT, which tests AD compromise chains directly.</p>
 <h2>What Active Directory actually is</h2>
 <p>AD is Microsoft's directory service — a centralised database of users, computers, groups, and permissions across an entire organisation's Windows network. Instead of every server maintaining its own separate list of users, they all trust a central <strong>Domain Controller (DC)</strong> for authentication and authorization decisions.</p>
-<pre><code class="language-mermaid">flowchart TB
-    DC["🏛 Domain Controller&lt;br/&gt;(the central authority)"]
-    DC --&gt; U1["👤 User accounts"]
-    DC --&gt; U2["💻 Computer accounts"]
-    DC --&gt; G["👥 Groups &amp; permissions&lt;br/&gt;(Domain Admins, etc.)"]
-    U1 --&gt;|"Authenticates against"| DC
-    U2 --&gt;|"Authenticates against"| DC
-
-    style DC fill:#2b1010,color:#E9EEF3,stroke:#E05548
-    style U1 fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
-    style U2 fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
-    style G fill:#2b1f0a,color:#EFA43A,stroke:#EFA43A
-</code></pre>
 <p>The ultimate goal in most AD-focused engagements: escalate from an initial low-privilege foothold on <strong>any single domain-joined machine</strong> all the way to <strong>Domain Admin</strong> — full control over the entire network.</p>
 <h2>Kerberos — the authentication protocol underpinning AD</h2>
 <p>AD uses <strong>Kerberos</strong> for authentication, involving <strong>tickets</strong> rather than passwords being sent repeatedly:</p>
-<pre><code class="language-mermaid">sequenceDiagram
-    participant U as User
-    participant KDC as Domain Controller (KDC)
-    participant Svc as Target Service
-
-    U-&gt;&gt;KDC: Request TGT (Ticket Granting Ticket)&lt;br/&gt;using password hash
-    KDC-&gt;&gt;U: TGT issued
-    U-&gt;&gt;KDC: Request Service Ticket using TGT
-    KDC-&gt;&gt;U: Service Ticket issued&lt;br/&gt;(encrypted with SERVICE's password hash)
-    U-&gt;&gt;Svc: Present Service Ticket
-    Svc-&gt;&gt;U: Access granted
-</code></pre>
 <p>Understanding this flow is essential because several major AD attacks directly target specific steps in it.</p>
 <h2>Initial enumeration — mapping the domain</h2>
 <pre><code class="language-bash"># BloodHound — the essential AD attack-path visualisation tool:
@@ -168,20 +143,6 @@ secretsdump.py example.local/username:password@dc-ip -just-dc
 </code></pre>
 <p>What makes DCSync especially dangerous is that it requires no code execution on the Domain Controller at all — the attacker simply uses a legitimate AD replication protocol from any machine with the right permission, meaning it can be far quieter than exploiting a service or planting a ticket. Monitoring for this specific pattern (any non-Domain-Controller account issuing directory replication requests) is a genuinely high-value SIEM detection rule precisely because a legitimate reason for that pattern almost never exists.</p>
 <h2>The general AD attack chain, assembled</h2>
-<pre><code class="language-mermaid">flowchart LR
-    Foothold["🎯 Initial foothold&lt;br/&gt;(any domain-joined machine)"] --&gt; Enum["🔍 BloodHound enumeration"]
-    Enum --&gt; Roast["⚔️ Kerberoasting/AS-REP roasting&lt;br/&gt;OR abuse a discovered&lt;br/&gt;permission delegation"]
-    Roast --&gt; Lateral["↔️ Lateral movement&lt;br/&gt;(Pass-the-Hash, valid creds)"]
-    Lateral --&gt; DA["👑 Domain Admin achieved"]
-    DA --&gt; Persist["📌 Golden Ticket&lt;br/&gt;(persistence, if in scope)"]
-
-    style Foothold fill:#111927,color:#8496A6,stroke:#8496A6
-    style Enum fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
-    style Roast fill:#2b1f0a,color:#EFA43A,stroke:#EFA43A
-    style Lateral fill:#2b1f0a,color:#EFA43A,stroke:#EFA43A
-    style DA fill:#2b1010,color:#E05548,stroke:#E05548
-    style Persist fill:#2b1010,color:#E05548,stroke:#E05548
-</code></pre>
 <p>This exact chain — foothold, BloodHound enumeration, Kerberoasting or delegation abuse, lateral movement, Domain Admin — is precisely the kind of scenario tested in advanced certifications like CPENT, and represents the realistic anatomy of a huge fraction of actual corporate ransomware incidents (the kill chain from Path 10.3, now fully fleshed out in an AD-specific context).</p>
 <h2>The defender's view</h2>
 <ul>
@@ -200,10 +161,8 @@ secretsdump.py example.local/username:password@dc-ip -just-dc
 <li><strong>GOAD (Game Of Active Directory)</strong> — a free, deployable, deliberately vulnerable multi-machine AD lab you can run entirely in your own virtualised environment (a natural extension of Path 03.7's VM skills, at a larger scale).</li>
 </ul>
 <p>Work through BloodHound data collection and visualisation on any of these platforms, then attempt Kerberoasting against any service accounts you discover, following the exact command patterns in this lesson.</p>
-<p>:::challenge Test yourself
-Why is Kerberoasting considered such a consistently effective real-world attack, even against organisations with otherwise reasonably strong security practices?</p>
-<details><summary>Show answer</summary>Service accounts are frequently created once, assigned a password at setup, and then <strong>never rotated</strong> or monitored the way human user passwords typically are (through policies, expiry reminders, or awareness training). Since <em>any</em> authenticated domain user can request a service ticket for <em>any</em> account with a registered SPN — requiring zero special privileges — and that ticket can be cracked entirely <strong>offline</strong> (no risk of triggering account lockout from repeated failed login attempts), a single weak service account password anywhere in a large organisation is often enough to compromise it, regardless of how strong human user passwords are elsewhere.</details>
-:::<h2>Key terms</h2>
+<p>Why is Kerberoasting considered such a consistently effective real-world attack, even against organisations with otherwise reasonably strong security practices?</p>
+<details><summary>Show answer</summary>Service accounts are frequently created once, assigned a password at setup, and then <strong>never rotated</strong> or monitored the way human user passwords typically are (through policies, expiry reminders, or awareness training). Since <em>any</em> authenticated domain user can request a service ticket for <em>any</em> account with a registered SPN — requiring zero special privileges — and that ticket can be cracked entirely <strong>offline</strong> (no risk of triggering account lockout from repeated failed login attempts), a single weak service account password anywhere in a large organisation is often enough to compromise it, regardless of how strong human user passwords are elsewhere.</details><h2>Key terms</h2>
 <ul>
 <li><strong>Active Directory (AD) / Domain Controller (DC)</strong> — Microsoft's centralised directory and identity service for Windows networks.</li>
 <li><strong>Kerberos / TGT / Service Ticket</strong> — the ticket-based authentication protocol underlying AD.</li>

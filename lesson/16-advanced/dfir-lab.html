@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Digital Forensics &amp; IR Lab — Path 16 · KashSec Academy</title>
-<meta name="description" content="Digital Forensics &amp; IR Lab: Practice basic incident response and forensics.">
+<meta name="description" content="The DFIR lesson covered the theory — NIST 800-61's phases, the tools of the trade. This lab gets you actually reconstructing an incident timeline from real artifacts, which is the core skill the job i">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/16-advanced/dfir-lab.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Digital Forensics &amp; IR Lab — Path 16 · KashSec Academy">
-<meta property="og:description" content="Digital Forensics &amp; IR Lab: Practice basic incident response and forensics.">
+<meta property="og:description" content="The DFIR lesson covered the theory — NIST 800-61's phases, the tools of the trade. This lab gets you actually reconstructing an incident timeline from real artifacts, which is the core skill the job i">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/16-advanced/dfir-lab.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Digital Forensics &amp; IR Lab — Path 16 · KashSec Academy">
-<meta name="twitter:description" content="Digital Forensics &amp; IR Lab: Practice basic incident response and forensics.">
+<meta name="twitter:description" content="The DFIR lesson covered the theory — NIST 800-61's phases, the tools of the trade. This lab gets you actually reconstructing an incident timeline from real artifacts, which is the core skill the job i">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 16 — Advanced Cyber Topics","item":"https://kashsec.vercel.app/lesson/16-advanced/"},{"@type":"ListItem","position":4,"name":"Digital Forensics & IR Lab","item":"https://kashsec.vercel.app/lesson/16-advanced/dfir-lab.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Digital Forensics & IR Lab","headline":"Digital Forensics & IR Lab","description":"Digital Forensics & IR Lab: Practice basic incident response and forensics.","url":"https://kashsec.vercel.app/lesson/16-advanced/dfir-lab.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Practice basic incident response and forensics.","isPartOf":{"@type":"Course","name":"Path 16: Advanced Cyber Topics","url":"https://kashsec.vercel.app/lesson/16-advanced/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/16-advanced/dfir-lab.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Digital Forensics & IR Lab","headline":"Digital Forensics & IR Lab","description":"The DFIR lesson covered the theory — NIST 800-61's phases, the tools of the trade. This lab gets you actually reconstructing an incident timeline from real artifacts, which is the core skill the job i","url":"https://kashsec.vercel.app/lesson/16-advanced/dfir-lab.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Practice basic incident response and forensics.","isPartOf":{"@type":"Course","name":"Path 16: Advanced Cyber Topics","url":"https://kashsec.vercel.app/lesson/16-advanced/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/16-advanced/dfir-lab.html"}}
 </script>
 </head>
 <body>
@@ -114,12 +114,8 @@
 <li><p><strong>Extract IOCs and check them against threat intel.</strong> From your Task 1/2 findings, pull out the suspicious process name, file path, and any external IPs into a simple list, then check each IP against a free reputation source like <a href="https://www.abuseipdb.com/">AbuseIPDB</a> or VirusTotal (Path 16.6's tool, applied here to network indicators instead of files). Confirming an IOC against external threat intelligence, rather than relying purely on "this looks weird," is exactly the extra verification step that turns a hunch into a defensible finding.</p>
 </li>
 </ol>
-<p>:::tip Work from a copy, always
-Real forensic practice never analyzes evidence directly — always work from a verified copy (in a real investigation, verified with a cryptographic hash to prove it wasn't altered) and preserve the original untouched. This "forensic soundness" principle matters even in lab practice, because building the habit now prevents a career-ending mistake later.
-:::</p>
-<p>:::challenge Write it up as a real incident report
-Using your findings from all four tasks, write a short incident report with the sections used throughout Path 14's Reporting lesson: <strong>Executive Summary</strong>, <strong>Timeline</strong>, <strong>Indicators of Compromise (IOCs)</strong> found (suspicious process names, IPs, file paths), and <strong>Recommendations</strong>. This is exactly the artifact a real DFIR engagement produces for stakeholders.
-:::</p>
+<p>Real forensic practice never analyzes evidence directly — always work from a verified copy (in a real investigation, verified with a cryptographic hash to prove it wasn't altered) and preserve the original untouched. This "forensic soundness" principle matters even in lab practice, because building the habit now prevents a career-ending mistake later.</p>
+<p>Using your findings from all four tasks, write a short incident report with the sections used throughout Path 14's Reporting lesson: <strong>Executive Summary</strong>, <strong>Timeline</strong>, <strong>Indicators of Compromise (IOCs)</strong> found (suspicious process names, IPs, file paths), and <strong>Recommendations</strong>. This is exactly the artifact a real DFIR engagement produces for stakeholders.</p>
 <h2>Key takeaway</h2>
 <p>Forensics is fundamentally about <strong>reconstructing a story from fragments</strong> — no single artifact (a process list, a network connection, a deleted file) tells the whole story alone, but correlating several together, in the right order, does. That correlation skill is what separates a junior analyst running tools from a senior investigator who can actually explain what happened.</p>
 <p><strong>Next up →</strong> <a href="#/lesson/16-advanced/malware-analysis-lab">Malware Analysis Lab</a></p>

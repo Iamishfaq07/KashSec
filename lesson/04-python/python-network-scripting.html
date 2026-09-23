@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Python for network scripting — Path 04 · KashSec Academy</title>
-<meta name="description" content="Python for network scripting: Sockets, a simple port scanner, and DNS lookups from code.">
+<meta name="description" content="The requests-and-APIs lesson covered the web-application layer. This lesson drops down to the raw networking layer from Path 02 — sockets, port checking, and the exact building blocks behind real netw">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/04-python/python-network-scripting.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Python for network scripting — Path 04 · KashSec Academy">
-<meta property="og:description" content="Python for network scripting: Sockets, a simple port scanner, and DNS lookups from code.">
+<meta property="og:description" content="The requests-and-APIs lesson covered the web-application layer. This lesson drops down to the raw networking layer from Path 02 — sockets, port checking, and the exact building blocks behind real netw">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/04-python/python-network-scripting.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Python for network scripting — Path 04 · KashSec Academy">
-<meta name="twitter:description" content="Python for network scripting: Sockets, a simple port scanner, and DNS lookups from code.">
+<meta name="twitter:description" content="The requests-and-APIs lesson covered the web-application layer. This lesson drops down to the raw networking layer from Path 02 — sockets, port checking, and the exact building blocks behind real netw">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 04 — Programming & Python","item":"https://kashsec.vercel.app/lesson/04-python/"},{"@type":"ListItem","position":4,"name":"Python for network scripting","item":"https://kashsec.vercel.app/lesson/04-python/python-network-scripting.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Python for network scripting","headline":"Python for network scripting","description":"Python for network scripting: Sockets, a simple port scanner, and DNS lookups from code.","url":"https://kashsec.vercel.app/lesson/04-python/python-network-scripting.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Sockets, a simple port scanner, and DNS lookups from code.","isPartOf":{"@type":"Course","name":"Path 04: Programming & Python","url":"https://kashsec.vercel.app/lesson/04-python/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/04-python/python-network-scripting.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Python for network scripting","headline":"Python for network scripting","description":"The requests-and-APIs lesson covered the web-application layer. This lesson drops down to the raw networking layer from Path 02 — sockets, port checking, and the exact building blocks behind real netw","url":"https://kashsec.vercel.app/lesson/04-python/python-network-scripting.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Sockets, a simple port scanner, and DNS lookups from code.","isPartOf":{"@type":"Course","name":"Path 04: Programming & Python","url":"https://kashsec.vercel.app/lesson/04-python/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/04-python/python-network-scripting.html"}}
 </script>
 </head>
 <body>
@@ -123,9 +123,7 @@ for port in common_ports:
     if scan_port(target, port):
         print(f"Port {port} is open")
 </code></pre>
-<p>:::danger This is exactly nmap's job, done far more simply
-This lesson's simple scanner exists to teach the underlying concept, not to replace nmap (previewed back in Path 03, covered properly with full legal and ethical context in Path 14). A real scan of a network you don't have explicit permission to test remains exactly as prohibited here as anywhere else in this course — the golden rule from Path 01 applies to code you write yourself just as much as to any pre-built tool.
-:::</p>
+<p>This lesson's simple scanner exists to teach the underlying concept, not to replace nmap (previewed back in Path 03, covered properly with full legal and ethical context in Path 14). A real scan of a network you don't have explicit permission to test remains exactly as prohibited here as anywhere else in this course — the golden rule from Path 01 applies to code you write yourself just as much as to any pre-built tool.</p>
 <h2>DNS lookups from Python</h2>
 <pre><code class="language-python">import socket
 
@@ -145,10 +143,8 @@ print(response.decode())
 sock.close()
 </code></pre>
 <p>Notice this is manually building the exact HTTP request structure Path 02's HTTP/HTTPS lesson described in theory — genuinely useful for cementing that this isn't magic, it's a specifically formatted piece of text sent over a TCP connection.</p>
-<p>:::challenge Test yourself
-Why does the simple port scanner example in this lesson still require explicit authorization to run against a real target, even though it's "just Python code you wrote yourself" rather than a pre-built tool like nmap?</p>
-<details><summary>Show answer</summary>The golden rule from Path 01 and the CFAA coverage from that same path's laws-and-ethics lesson focus on <em>authorization to access a system</em>, not on which specific tool or technique was used to attempt that access. Whether you scan a target using nmap, a custom Python script, or any other method, the underlying action — probing a system's ports without permission — is what the law and ethical norms actually care about, not whether the code happened to be pre-built or something you wrote yourself. "I wrote it myself, so it's different" is not a meaningful legal or ethical distinction; the same permission requirement from Path 01 applies regardless of which tool executes the actual network traffic.</details>
-:::<h2>Key terms</h2>
+<p>Why does the simple port scanner example in this lesson still require explicit authorization to run against a real target, even though it's "just Python code you wrote yourself" rather than a pre-built tool like nmap?</p>
+<details><summary>Show answer</summary>The golden rule from Path 01 and the CFAA coverage from that same path's laws-and-ethics lesson focus on <em>authorization to access a system</em>, not on which specific tool or technique was used to attempt that access. Whether you scan a target using nmap, a custom Python script, or any other method, the underlying action — probing a system's ports without permission — is what the law and ethical norms actually care about, not whether the code happened to be pre-built or something you wrote yourself. "I wrote it myself, so it's different" is not a meaningful legal or ethical distinction; the same permission requirement from Path 01 applies regardless of which tool executes the actual network traffic.</details><h2>Key terms</h2>
 <ul>
 <li><strong>socket</strong> — Python's built-in module for low-level network connections.</li>
 <li><strong>connect_ex()</strong> — a socket method that attempts a connection and returns a result code rather than raising an exception on failure, convenient for scanning.</li>

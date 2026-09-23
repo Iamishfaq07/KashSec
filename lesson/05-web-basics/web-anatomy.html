@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Anatomy of a web app — Path 05 · KashSec Academy</title>
-<meta name="description" content="Anatomy of a web app: The full picture: client, server, DB, API, cookies.">
+<meta name="description" content="Let's zoom all the way out and assemble every piece from Path 05 into one map. By the end you'll be able to look at any website and mentally sketch its architecture — the skill that makes every later ">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/05-web-basics/web-anatomy.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Anatomy of a web app — Path 05 · KashSec Academy">
-<meta property="og:description" content="Anatomy of a web app: The full picture: client, server, DB, API, cookies.">
+<meta property="og:description" content="Let's zoom all the way out and assemble every piece from Path 05 into one map. By the end you'll be able to look at any website and mentally sketch its architecture — the skill that makes every later ">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/05-web-basics/web-anatomy.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Anatomy of a web app — Path 05 · KashSec Academy">
-<meta name="twitter:description" content="Anatomy of a web app: The full picture: client, server, DB, API, cookies.">
+<meta name="twitter:description" content="Let's zoom all the way out and assemble every piece from Path 05 into one map. By the end you'll be able to look at any website and mentally sketch its architecture — the skill that makes every later ">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 05 — How the Web Works","item":"https://kashsec.vercel.app/lesson/05-web-basics/"},{"@type":"ListItem","position":4,"name":"Anatomy of a web app","item":"https://kashsec.vercel.app/lesson/05-web-basics/web-anatomy.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Anatomy of a web app","headline":"Anatomy of a web app","description":"Anatomy of a web app: The full picture: client, server, DB, API, cookies.","url":"https://kashsec.vercel.app/lesson/05-web-basics/web-anatomy.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"The full picture: client, server, DB, API, cookies.","isPartOf":{"@type":"Course","name":"Path 05: How the Web Works","url":"https://kashsec.vercel.app/lesson/05-web-basics/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/05-web-basics/web-anatomy.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Anatomy of a web app","headline":"Anatomy of a web app","description":"Let's zoom all the way out and assemble every piece from Path 05 into one map. By the end you'll be able to look at any website and mentally sketch its architecture — the skill that makes every later ","url":"https://kashsec.vercel.app/lesson/05-web-basics/web-anatomy.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"The full picture: client, server, DB, API, cookies.","isPartOf":{"@type":"Course","name":"Path 05: How the Web Works","url":"https://kashsec.vercel.app/lesson/05-web-basics/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/05-web-basics/web-anatomy.html"}}
 </script>
 </head>
 <body>
@@ -90,45 +90,6 @@
     <div class="md" id="content"><article><h1>Anatomy of a modern web app</h1>
 <p>Let's zoom all the way out and assemble every piece from Path 05 into one map. By the end you'll be able to look at <em>any</em> website and mentally sketch its architecture — the skill that makes every later path click faster.</p>
 <h2>The full stack, layer by layer</h2>
-<pre><code class="language-mermaid">flowchart TB
-    User[👤 User's browser]
-    CDN["🌍 CDN&lt;br/&gt;(static assets, DDoS shield)"]
-    LB["⚖️ Load balancer"]
-    WAF["🛡 WAF&lt;br/&gt;(filters malicious requests)"]
-    App1["🖥 App server #1"]
-    App2["🖥 App server #2"]
-    Cache["⚡ Cache&lt;br/&gt;(Redis/Memcached)"]
-    DB[("🗄 Database")]
-    Queue["📬 Message queue"]
-    Worker["⚙️ Background worker"]
-    ThirdParty["🔌 Third-party APIs&lt;br/&gt;(payments, email, analytics)"]
-
-    User --&gt;|HTTPS| CDN
-    CDN --&gt; WAF
-    WAF --&gt; LB
-    LB --&gt; App1
-    LB --&gt; App2
-    App1 --&gt; Cache
-    App2 --&gt; Cache
-    App1 --&gt; DB
-    App2 --&gt; DB
-    App1 --&gt; Queue
-    Queue --&gt; Worker
-    Worker --&gt; DB
-    App1 --&gt; ThirdParty
-
-    style User fill:#111927,color:#3FB6A8,stroke:#3FB6A8
-    style CDN fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
-    style WAF fill:#2b1010,color:#E05548,stroke:#E05548
-    style LB fill:#111927,color:#EFA43A,stroke:#EFA43A
-    style App1 fill:#111927,color:#EFA43A,stroke:#EFA43A
-    style App2 fill:#111927,color:#EFA43A,stroke:#EFA43A
-    style Cache fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
-    style DB fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
-    style Queue fill:#111927,color:#8496A6,stroke:#8496A6
-    style Worker fill:#111927,color:#8496A6,stroke:#8496A6
-    style ThirdParty fill:#2b1f0a,color:#EFA43A,stroke:#EFA43A
-</code></pre>
 <p>Not every site has all of this — a small blog might just be CDN → single server → database. A large SaaS platform has every layer and more. But this is the mental map to reach for.</p>
 <h2>What each layer does — and its typical bug class</h2>
 <table>
@@ -222,10 +183,8 @@ dig example.com
 <h2>🧪 Lab — Architect-sketch three real sites</h2>
 <p>Pick three websites you use regularly. For each, spend five minutes with the checklist above and sketch (on paper or in a notes app) your best guess at their architecture: CDN? WAF? SSR or SPA? Third parties loaded? Any exposed API docs?</p>
 <p>Compare your sketches. You'll likely notice big, well-funded sites have more defensive layers (WAF, CDN, strict CSP) than small ones — a pattern that holds broadly across the industry and matters when you're prioritising targets in Path 15.</p>
-<p>:::challenge Test yourself
-A tester finds that Alice, logged in normally, can view Bob's private invoice by changing an ID in the URL. Is this an authentication bug or an authorization bug?</p>
-<details><summary>Show answer</summary><strong>Authorization.</strong> Alice's identity is correctly authenticated — the app knows she's Alice. The bug is that it fails to check whether Alice is <em>allowed</em> to view that specific invoice. This is the classic IDOR pattern.</details>
-:::<h2>Key terms</h2>
+<p>A tester finds that Alice, logged in normally, can view Bob's private invoice by changing an ID in the URL. Is this an authentication bug or an authorization bug?</p>
+<details><summary>Show answer</summary><strong>Authorization.</strong> Alice's identity is correctly authenticated — the app knows she's Alice. The bug is that it fails to check whether Alice is <em>allowed</em> to view that specific invoice. This is the classic IDOR pattern.</details><h2>Key terms</h2>
 <ul>
 <li><strong>CDN / WAF / load balancer</strong> — the layers in front of your app server.</li>
 <li><strong>Monolith / microservices</strong> — one big app vs many small ones.</li>

@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Analytics &amp; Monitoring for Zero Trust — Path 24 · KashSec Academy</title>
-<meta name="description" content="Analytics &amp; Monitoring for Zero Trust: UEBA and composite risk scoring — the connective tissue between every other pillar.">
+<meta name="description" content="Every control in this path — identity, device, network, application, data — generates signal. This lesson covers the piece that ties them together: the analytics layer that turns those separate signal">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-analytics-monitoring.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Analytics &amp; Monitoring for Zero Trust — Path 24 · KashSec Academy">
-<meta property="og:description" content="Analytics &amp; Monitoring for Zero Trust: UEBA and composite risk scoring — the connective tissue between every other pillar.">
+<meta property="og:description" content="Every control in this path — identity, device, network, application, data — generates signal. This lesson covers the piece that ties them together: the analytics layer that turns those separate signal">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-analytics-monitoring.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Analytics &amp; Monitoring for Zero Trust — Path 24 · KashSec Academy">
-<meta name="twitter:description" content="Analytics &amp; Monitoring for Zero Trust: UEBA and composite risk scoring — the connective tissue between every other pillar.">
+<meta name="twitter:description" content="Every control in this path — identity, device, network, application, data — generates signal. This lesson covers the piece that ties them together: the analytics layer that turns those separate signal">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 24 — Zero Trust Architecture","item":"https://kashsec.vercel.app/lesson/24-zero-trust/"},{"@type":"ListItem","position":4,"name":"Analytics & Monitoring for Zero Trust","item":"https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-analytics-monitoring.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Analytics & Monitoring for Zero Trust","headline":"Analytics & Monitoring for Zero Trust","description":"Analytics & Monitoring for Zero Trust: UEBA and composite risk scoring — the connective tissue between every other pillar.","url":"https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-analytics-monitoring.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"UEBA and composite risk scoring — the connective tissue between every other pillar.","isPartOf":{"@type":"Course","name":"Path 24: Zero Trust Architecture","url":"https://kashsec.vercel.app/lesson/24-zero-trust/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-analytics-monitoring.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Analytics & Monitoring for Zero Trust","headline":"Analytics & Monitoring for Zero Trust","description":"Every control in this path — identity, device, network, application, data — generates signal. This lesson covers the piece that ties them together: the analytics layer that turns those separate signal","url":"https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-analytics-monitoring.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"UEBA and composite risk scoring — the connective tissue between every other pillar.","isPartOf":{"@type":"Course","name":"Path 24: Zero Trust Architecture","url":"https://kashsec.vercel.app/lesson/24-zero-trust/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-analytics-monitoring.html"}}
 </script>
 </head>
 <body>
@@ -89,9 +89,7 @@
     <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/24-zero-trust/">Path 24 — Zero Trust Architecture</a> · Analytics &amp; Monitoring for Zero Trust</nav>
     <div class="md" id="content"><article><h1>Analytics &amp; Monitoring for Zero Trust</h1>
 <p>Every control in this path — identity, device, network, application, data — generates signal. This lesson covers the piece that ties them together: the analytics layer that turns those separate signals into the risk-based decisions the continuous-verification lesson described.</p>
-<p>:::tip
-Zero Trust without strong analytics is just a collection of independently configured controls that happen to sit next to each other. The analytics layer is what makes them behave as a <em>system</em> — where a weak signal from one pillar (an unusual login location) combines with a weak signal from another (an unusual data access pattern) to produce a strong, actionable risk score that neither signal alone would justify.
-:::</p>
+<p>:::</p>
 <h2>Why single-signal decisions aren't enough</h2>
 <p>A login from an unfamiliar country isn't automatically malicious — plenty of legitimate travel produces exactly that signal. A large data export isn't automatically malicious either — some jobs require it routinely. Evaluated in isolation, most individual signals are too noisy to act on confidently. Evaluated <em>together</em>, an unfamiliar-location login followed shortly by an unusual data export from an account that's never done either before is a very different picture — and building that combined picture requires an analytics layer, not a set of independent alerting rules.</p>
 <h2>User and Entity Behavior Analytics (UEBA)</h2>
@@ -108,15 +106,12 @@ Zero Trust without strong analytics is just a collection of independently config
 <p>:::challenge Correlate the signals
 Three individually unremarkable events occur within twenty minutes: (1) a login from a new device that passes MFA, (2) a device posture check that comes back "compliant" but with an unusually old patch report timestamp, (3) an attempt to access a customer database the user has never touched before.</p>
 <details><summary>Hint</summary>Would any single one of these three events alone justify blocking the session? What changes when an analytics layer considers all three together?</details>
-<details><summary>Show answer</summary>Individually, none of these three events would typically justify blocking access — new devices happen, slightly stale posture reports happen, and job roles genuinely change. Correlated together by a UEBA-style analytics layer, the combination is a meaningfully different signal: a new device, with a posture check that's technically compliant but suspiciously stale (worth investigating on its own), immediately followed by access to a sensitive resource this specific user has never touched. This is exactly the kind of composite risk score the continuous-verification lesson described being used for step-up authentication or a temporary data-access restriction — not because any one signal is damning, but because the combination deviates sharply from this user's established baseline.</details>
-:::<h2>🧪 Hands-on lab — design a correlation rule</h2>
+<details><summary>Show answer</summary>Individually, none of these three events would typically justify blocking access — new devices happen, slightly stale posture reports happen, and job roles genuinely change. Correlated together by a UEBA-style analytics layer, the combination is a meaningfully different signal: a new device, with a posture check that's technically compliant but suspiciously stale (worth investigating on its own), immediately followed by access to a sensitive resource this specific user has never touched. This is exactly the kind of composite risk score the continuous-verification lesson described being used for step-up authentication or a temporary data-access restriction — not because any one signal is damning, but because the combination deviates sharply from this user's established baseline.</details><h2>🧪 Hands-on lab — design a correlation rule</h2>
 <p>Pick two signal types from different pillars (for example, an identity signal and a data signal). Write a one-sentence correlation rule that would flag a session as elevated risk only when <em>both</em> signals are present together, and explain why neither alone should trigger the same response.</p>
-<p>:::challenge Test yourself</p>
 <ol>
 <li>Why are single-signal alerts often too noisy to act on confidently by themselves?</li>
 <li>What does UEBA baseline behavior <em>against</em>, and why does that matter compared to a single fixed rule for all users?</li>
-<li>Why is the analytics layer described as "connective tissue" between the five Zero Trust pillars rather than a pillar of its own?
-:::</li>
+<li>Why is the analytics layer described as "connective tissue" between the five Zero Trust pillars rather than a pillar of its own?</li>
 </ol>
 <h2>Key terms</h2>
 <ul>

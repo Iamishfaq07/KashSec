@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Cookies &amp; Sessions Lab — Path 05 · KashSec Academy</title>
-<meta name="description" content="Cookies &amp; Sessions Lab: Understand how authentication state is managed and attacked.">
+<meta name="description" content="The main lesson explained why cookies and sessions exist. This lab has you actually inspect, break, and understand real session mechanics using nothing but your browser's built-in tools.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/05-web-basics/cookies-sessions-lab.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Cookies &amp; Sessions Lab — Path 05 · KashSec Academy">
-<meta property="og:description" content="Cookies &amp; Sessions Lab: Understand how authentication state is managed and attacked.">
+<meta property="og:description" content="The main lesson explained why cookies and sessions exist. This lab has you actually inspect, break, and understand real session mechanics using nothing but your browser's built-in tools.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/05-web-basics/cookies-sessions-lab.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Cookies &amp; Sessions Lab — Path 05 · KashSec Academy">
-<meta name="twitter:description" content="Cookies &amp; Sessions Lab: Understand how authentication state is managed and attacked.">
+<meta name="twitter:description" content="The main lesson explained why cookies and sessions exist. This lab has you actually inspect, break, and understand real session mechanics using nothing but your browser's built-in tools.">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 05 — How the Web Works","item":"https://kashsec.vercel.app/lesson/05-web-basics/"},{"@type":"ListItem","position":4,"name":"Cookies & Sessions Lab","item":"https://kashsec.vercel.app/lesson/05-web-basics/cookies-sessions-lab.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Cookies & Sessions Lab","headline":"Cookies & Sessions Lab","description":"Cookies & Sessions Lab: Understand how authentication state is managed and attacked.","url":"https://kashsec.vercel.app/lesson/05-web-basics/cookies-sessions-lab.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Understand how authentication state is managed and attacked.","isPartOf":{"@type":"Course","name":"Path 05: How the Web Works","url":"https://kashsec.vercel.app/lesson/05-web-basics/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/05-web-basics/cookies-sessions-lab.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Cookies & Sessions Lab","headline":"Cookies & Sessions Lab","description":"The main lesson explained why cookies and sessions exist. This lab has you actually inspect, break, and understand real session mechanics using nothing but your browser's built-in tools.","url":"https://kashsec.vercel.app/lesson/05-web-basics/cookies-sessions-lab.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Understand how authentication state is managed and attacked.","isPartOf":{"@type":"Course","name":"Path 05: How the Web Works","url":"https://kashsec.vercel.app/lesson/05-web-basics/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/05-web-basics/cookies-sessions-lab.html"}}
 </script>
 </head>
 <body>
@@ -104,12 +104,8 @@
 <li><p><strong>Compare logout behaviour.</strong> Log into a test account, copy its session cookie value somewhere safe, then log out through the site's normal UI. Try pasting the old cookie value back in (a private/incognito window is a clean way to test this). If the page still shows you logged in, the server never actually invalidated the session — it just told your browser to forget the cookie, which is a meaningfully weaker form of "logout" than most users assume.</p>
 </li>
 </ol>
-<p>:::tip Try tampering with a cookie value yourself
-In a lab environment you're authorized to test (PortSwigger's labs are ideal for this), try manually editing a cookie value in DevTools — even something as simple as changing a numeric user ID stored in a cookie — and reload the page. If the app blindly trusts what it receives, you've just found a real vulnerability class covered directly in Path 11's IDOR lesson.
-:::</p>
-<p>:::challenge Document a session vulnerability
-Using a PortSwigger lab (or another legal, purpose-built vulnerable target), find and exploit one session-related flaw — a missing <code>HttpOnly</code> flag combined with a reflected XSS, a predictable session token, or a session fixation issue. Write it up: what the flaw was, how you exploited it, and what the real-world impact would be for actual users.
-:::</p>
+<p>In a lab environment you're authorized to test (PortSwigger's labs are ideal for this), try manually editing a cookie value in DevTools — even something as simple as changing a numeric user ID stored in a cookie — and reload the page. If the app blindly trusts what it receives, you've just found a real vulnerability class covered directly in Path 11's IDOR lesson.</p>
+<p>Using a PortSwigger lab (or another legal, purpose-built vulnerable target), find and exploit one session-related flaw — a missing <code>HttpOnly</code> flag combined with a reflected XSS, a predictable session token, or a session fixation issue. Write it up: what the flaw was, how you exploited it, and what the real-world impact would be for actual users.</p>
 <h2>Key takeaway</h2>
 <p>Session cookies are, functionally, the single credential proving your identity on every request after login — the three flags (<code>HttpOnly</code>, <code>Secure</code>, <code>SameSite</code>) exist specifically to protect that one value from the three most common ways it gets stolen or abused (script access, network interception, and cross-site forgery), and checking for them takes seconds once you know where to look.</p>
 <p><strong>Next up →</strong> <a href="#/lesson/05-web-basics/devtools-lab">Browser DevTools Lab</a></p>

@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Web — Name Your Own Price — Path 19 · KashSec Academy</title>
-<meta name="description" content="Web — Name Your Own Price: A checkout that trusts client-submitted pricing. Easy.">
+<meta name="description" content="Category: Web · Difficulty: Easy">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/19-ctf-challenges/logic-price-tamper.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Web — Name Your Own Price — Path 19 · KashSec Academy">
-<meta property="og:description" content="Web — Name Your Own Price: A checkout that trusts client-submitted pricing. Easy.">
+<meta property="og:description" content="Category: Web · Difficulty: Easy">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/19-ctf-challenges/logic-price-tamper.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Web — Name Your Own Price — Path 19 · KashSec Academy">
-<meta name="twitter:description" content="Web — Name Your Own Price: A checkout that trusts client-submitted pricing. Easy.">
+<meta name="twitter:description" content="Category: Web · Difficulty: Easy">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 19 — CTF Challenges","item":"https://kashsec.vercel.app/lesson/19-ctf-challenges/"},{"@type":"ListItem","position":4,"name":"Web — Name Your Own Price","item":"https://kashsec.vercel.app/lesson/19-ctf-challenges/logic-price-tamper.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Web — Name Your Own Price","headline":"Web — Name Your Own Price","description":"Web — Name Your Own Price: A checkout that trusts client-submitted pricing. Easy.","url":"https://kashsec.vercel.app/lesson/19-ctf-challenges/logic-price-tamper.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"All levels","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"A checkout that trusts client-submitted pricing. Easy.","isPartOf":{"@type":"Course","name":"Path 19: CTF Challenges","url":"https://kashsec.vercel.app/lesson/19-ctf-challenges/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/19-ctf-challenges/logic-price-tamper.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Web — Name Your Own Price","headline":"Web — Name Your Own Price","description":"Category: Web · Difficulty: Easy","url":"https://kashsec.vercel.app/lesson/19-ctf-challenges/logic-price-tamper.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"All levels","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"A checkout that trusts client-submitted pricing. Easy.","isPartOf":{"@type":"Course","name":"Path 19: CTF Challenges","url":"https://kashsec.vercel.app/lesson/19-ctf-challenges/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/19-ctf-challenges/logic-price-tamper.html"}}
 </script>
 </head>
 <body>
@@ -103,11 +103,9 @@ item_id=771&amp;quantity=1&amp;unit_price=249.99&amp;total=249.99&amp;shipping=s
 </code></pre>
 <h2>Your task</h2>
 <p>Notice that <code>unit_price</code> and <code>total</code> are submitted <em>by the browser</em>, as plain form fields — not looked up server-side from a product catalog. Find the flag hidden in what happens when you change them before submitting.</p>
-<p>:::challenge What should the server actually trust here?</p>
 <details><summary>Hint 1</summary>A price is exactly the kind of value that should never be trusted from client input at all — the server should look up the real price for <code>item_id 771</code> from its own database and compute the total itself, ignoring whatever the client happened to send.</details>
 <details><summary>Hint 2</summary>Try resubmitting the exact same request, but with <code>unit_price=0.01</code> and <code>total=0.01</code> instead of the real price.</details>
-<details><summary>Show full answer</summary>The server accepts the client-submitted price at face value and returns: <code>{"order_id": 9013, "status": "confirmed", "charged": 0.01, "flag": "KASHSEC{cl13nt_s1d3_pr1c1ng_1s_n0_pr1c1ng}"}</code>. This is a classic <strong>business logic vulnerability</strong> — there's no injection, no broken authentication, nothing that a vulnerability scanner would ever flag. The application is working exactly as coded; the code itself just trusts data (a price) that must always be recomputed server-side from a trusted source, never accepted as client input at all.</details>
-:::<h2>The flag</h2>
+<details><summary>Show full answer</summary>The server accepts the client-submitted price at face value and returns: <code>{"order_id": 9013, "status": "confirmed", "charged": 0.01, "flag": "KASHSEC{cl13nt_s1d3_pr1c1ng_1s_n0_pr1c1ng}"}</code>. This is a classic <strong>business logic vulnerability</strong> — there's no injection, no broken authentication, nothing that a vulnerability scanner would ever flag. The application is working exactly as coded; the code itself just trusts data (a price) that must always be recomputed server-side from a trusted source, never accepted as client input at all.</details><h2>The flag</h2>
 <pre><code>KASHSEC{cl13nt_s1d3_pr1c1ng_1s_n0_pr1c1ng}
 </code></pre>
 <h2>Why this matters beyond the CTF</h2>
@@ -119,12 +117,8 @@ Content-Type: application/x-www-form-urlencoded
 
 item_id=771&amp;quantity=1&amp;unit_price=249.99&amp;total=224.99&amp;discount_code=LAUNCH10
 </code></pre>
-<p>:::challenge What if the server DOES recompute the price, but still trusts one input too many?</p>
 <details><summary>Hint</summary>Suppose (unlike the main challenge) this endpoint correctly ignores your submitted <code>unit_price</code> and <code>total</code> entirely, and looks up the real price server-side. It still accepts <code>discount_code</code> as client input, and applies whatever percentage that code maps to. What field remains attacker-controlled that could still cause damage?</details>
-<details><summary>Show answer</summary>Even with price properly server-derived, the <code>quantity</code> field is still worth scrutinizing on its own — a negative quantity (<code>quantity=-5</code>) could, on a naively implemented server, produce a negative total, which some payment processors or internal ledger systems might process as a <em>credit</em>
-:::<p>:::tip Why scanners miss this entire category
-Automated vulnerability scanners are built to recognize known bad patterns — injection syntax, known CVE signatures, malformed input causing errors. A request with a suspiciously low but syntactically perfect price field looks completely normal to a scanner; there's no error, no crash, no telltale signature. Finding business logic bugs requires actually understanding what the application is <em>supposed</em> to enforce, then checking whether it actually does — which is exactly why this category rewards careful human thinking over automated tooling.
-:::</p>
+<details><summary>Show answer</summary>Even with price properly server-derived, the <code>quantity</code> field is still worth scrutinizing on its own — a negative quantity (<code>quantity=-5</code>) could, on a naively implemented server, produce a negative total, which some payment processors or internal ledger systems might process as a <em>credit</em><p>Automated vulnerability scanners are built to recognize known bad patterns — injection syntax, known CVE signatures, malformed input causing errors. A request with a suspiciously low but syntactically perfect price field looks completely normal to a scanner; there's no error, no crash, no telltale signature. Finding business logic bugs requires actually understanding what the application is <em>supposed</em> to enforce, then checking whether it actually does — which is exactly why this category rewards careful human thinking over automated tooling.</p>
 <p><strong>Next up →</strong> <a href="#/lesson/19-ctf-challenges/logic-coupon-replay">Web — The Coupon That Wouldn't Quit</a></p>
 <nav class="pager"><a href="/lesson/19-ctf-challenges/jwt-kid-injection.html">← Web — A Key of Your Choosing</a><a href="/lesson/19-ctf-challenges/logic-coupon-replay.html">Web — The Coupon That Wouldn't Quit →</a></nav></details></article></div>
   </div></div>

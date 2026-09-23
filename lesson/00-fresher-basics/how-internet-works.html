@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>How the internet works — Path 00 · KashSec Academy</title>
-<meta name="description" content="How the internet works: From your phone to the world, in plain English.">
+<meta name="description" content="The internet feels like magic — you type a few words and a page appears half a world away in under a second. It isn't magic. It's an enormous, extremely well-organized relay race between computers, an">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/00-fresher-basics/how-internet-works.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="How the internet works — Path 00 · KashSec Academy">
-<meta property="og:description" content="How the internet works: From your phone to the world, in plain English.">
+<meta property="og:description" content="The internet feels like magic — you type a few words and a page appears half a world away in under a second. It isn't magic. It's an enormous, extremely well-organized relay race between computers, an">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/00-fresher-basics/how-internet-works.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="How the internet works — Path 00 · KashSec Academy">
-<meta name="twitter:description" content="How the internet works: From your phone to the world, in plain English.">
+<meta name="twitter:description" content="The internet feels like magic — you type a few words and a page appears half a world away in under a second. It isn't magic. It's an enormous, extremely well-organized relay race between computers, an">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 00 — Computer Basics & Security Mindset","item":"https://kashsec.vercel.app/lesson/00-fresher-basics/"},{"@type":"ListItem","position":4,"name":"How the internet works","item":"https://kashsec.vercel.app/lesson/00-fresher-basics/how-internet-works.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"How the internet works","headline":"How the internet works","description":"How the internet works: From your phone to the world, in plain English.","url":"https://kashsec.vercel.app/lesson/00-fresher-basics/how-internet-works.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Absolute fresher","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"From your phone to the world, in plain English.","isPartOf":{"@type":"Course","name":"Path 00: Computer Basics & Security Mindset","url":"https://kashsec.vercel.app/lesson/00-fresher-basics/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/00-fresher-basics/how-internet-works.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"How the internet works","headline":"How the internet works","description":"The internet feels like magic — you type a few words and a page appears half a world away in under a second. It isn't magic. It's an enormous, extremely well-organized relay race between computers, an","url":"https://kashsec.vercel.app/lesson/00-fresher-basics/how-internet-works.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Absolute fresher","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"From your phone to the world, in plain English.","isPartOf":{"@type":"Course","name":"Path 00: Computer Basics & Security Mindset","url":"https://kashsec.vercel.app/lesson/00-fresher-basics/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/00-fresher-basics/how-internet-works.html"}}
 </script>
 </head>
 <body>
@@ -91,20 +91,6 @@
 <p>The internet feels like magic — you type a few words and a page appears half a world away in under a second. It isn't magic. It's an enormous, extremely well-organized relay race between computers, and once you understand the stages of that race, a huge chunk of "hacker stuff" you'll see later (man-in-the-middle attacks, DNS spoofing, HTTPS, VPNs) stops being mysterious and starts being obvious.</p>
 <h2>The journey of a single web request</h2>
 <p>Say you type <code>google.com</code> into your browser. Here's what actually happens, step by step:</p>
-<pre><code class="language-mermaid">sequenceDiagram
-    participant You as Your Device
-    participant DNS as DNS Server
-    participant ISP as Router/ISP
-    participant Server as google.com's Server
-
-    You-&gt;&gt;DNS: "What's the address for google.com?"
-    DNS--&gt;&gt;You: "It's 142.250.80.14"
-    You-&gt;&gt;ISP: Send request to 142.250.80.14
-    ISP-&gt;&gt;Server: Forward the request (through many routers)
-    Server--&gt;&gt;ISP: Here's the webpage
-    ISP--&gt;&gt;You: Deliver the webpage
-    You-&gt;&gt;You: Browser renders the page
-</code></pre>
 <ol>
 <li><strong>DNS lookup</strong> — your device doesn't actually know where "google.com" lives. It asks a <strong>DNS (Domain Name System)</strong> server, which works like a phone book, translating human-friendly names into numeric <strong>IP addresses</strong> (e.g., <code>142.250.80.14</code>).</li>
 <li><strong>Routing</strong> — your request is broken into small chunks called <strong>packets</strong> and sent out through your router, then through your Internet Service Provider (ISP), then through a chain of other routers across the internet — often a dozen or more "hops" — until it reaches the destination server.</li>
@@ -120,11 +106,6 @@
 </ul>
 <h3>Public vs. private IP addresses, and why your home router matters</h3>
 <p>Not every device has its own globally unique IP address directly. Inside your home, your phone, laptop, and smart TV each get a <strong>private IP address</strong> (usually something starting with <code>192.168.</code> or <code>10.</code>) — only meaningful <em>within</em> your home network. Your router itself has one <strong>public IP address</strong> that represents your entire household to the rest of the internet, and uses a technique called <strong>NAT (Network Address Translation)</strong> to figure out which of your internal devices each incoming reply is actually meant for.</p>
-<pre><code class="language-mermaid">flowchart LR
-    A["Your laptop\n192.168.1.5"] --&gt;|request| R[Your Router\nNAT + one public IP]
-    B["Your phone\n192.168.1.8"] --&gt;|request| R
-    R --&gt;|appears as ONE\npublic IP address| I[Internet]
-</code></pre>
 <p>This matters for security in a genuinely practical way: your home router's NAT accidentally provides a real, useful side benefit — devices behind it generally aren't directly reachable from the open internet unless you (or malware) specifically configure the router to forward a connection through (a technique called <strong>port forwarding</strong>). This is one reason your home network feels a bit "sheltered" compared to a device with a direct public IP address, like a cloud server.</p>
 <h2>What a "port" is, briefly</h2>
 <p>A single IP address can run many different services at once, distinguished by <strong>port numbers</strong> — think of the IP address as a building's street address, and the port number as which specific apartment or office within it. Web traffic conventionally uses port 80 (unencrypted HTTP) or 443 (encrypted HTTPS); email, file transfer, and countless other services each have their own conventional ports. This is only a brief preview here — Path 02 dedicates an entire lesson to ports, since they matter enormously once you start scanning networks and understanding what services are actually exposed on a given machine.</p>
@@ -155,12 +136,9 @@
 </tr>
 </tbody></table>
 <p>This is exactly why <strong>HTTPS</strong> (the padlock icon in your browser) exists — it encrypts traffic between you and the server so that even if someone is watching the network in between, they can't read or tamper with it. A <strong>VPN (Virtual Private Network)</strong> adds another layer, encrypting <em>all</em> your traffic and routing it through a trusted server, hiding your activity from your ISP and from anyone else on your local network (like on public Wi-Fi). Path 09 of this course covers VPNs in much more depth, including exactly what they do and don't actually protect against.</p>
-<p>:::tip
-When you type a website address, your browser is silently asking a DNS server for the real numeric address <em>before</em> it can send anything — that lookup is invisible to you, but it happens on nearly every request.
-:::</p>
+<p>:::</p>
 <p>:::warn Public Wi-Fi is a shared room, not a private line
-On open (password-free) public Wi-Fi, other people on the same network can potentially see unencrypted traffic. HTTPS protects the content of what you send, but a VPN adds extra protection for <em>which sites</em> you're even visiting. Never do sensitive logins (banking, work accounts) on open public Wi-Fi without a VPN if you can help it.
-:::</p>
+On open (password-free) public Wi-Fi, other people on the same network can potentially see unencrypted traffic. HTTPS protects the content of what you send, but a VPN adds extra protection for <em>which sites</em> you're even visiting. Never do sensitive logins (banking, work accounts) on open public Wi-Fi without a VPN if you can help it.</p>
 <h2>Who actually owns "the internet"?</h2>
 <p>A genuinely common beginner question: no single company or government owns the internet. It's a decentralized network of networks, held together by voluntary cooperation between ISPs, and by organizations like <strong>ICANN</strong>, which coordinates the domain name system and IP address allocation globally, so that "google.com" reliably means the same thing no matter which country you're browsing from. This decentralization is deliberate — it's part of why the internet is remarkably resilient to any single point of failure, even though it also makes globally coordinated security responses to internet-wide threats genuinely difficult to organize.</p>
 <h2>🧪 Hands-on lab — trace your own request</h2>
@@ -180,10 +158,8 @@ traceroute google.com
 <li>Open your browser, visit any HTTPS website, and click the padlock icon next to the address bar to see the certificate details — this is the proof that your connection to that specific site is encrypted.</li>
 <li>Find your own device's private IP address (Windows: <code>ipconfig</code>; macOS/Linux: <code>ifconfig</code> or <code>ip addr</code>) and separately search "what is my IP" in a browser to see your router's public IP address — confirm they're genuinely different numbers, directly demonstrating this lesson's NAT discussion.</li>
 </ol>
-<p>:::challenge Test yourself
-If DNS is just "asking a server for an IP address," why is DNS spoofing (an attacker lying about that answer) such a dangerous attack — even if the real destination server is perfectly secure?</p>
-<details><summary>Show answer</summary>Because DNS spoofing happens <em>before</em> you ever reach the real server — if an attacker can trick your device into believing a fake IP address is the correct one for, say, "yourbank.com," your browser will happily connect to the attacker's server instead, which can display a near-perfect copy of the real site to steal your login credentials. The real server being secure is irrelevant if you never actually reach it. This is exactly why HTTPS certificates matter: a fake site can copy the look of a real one, but it generally cannot present a valid certificate for a domain it doesn't own, which is your main defense against this class of attack.</details>
-:::<h2>Key terms</h2>
+<p>If DNS is just "asking a server for an IP address," why is DNS spoofing (an attacker lying about that answer) such a dangerous attack — even if the real destination server is perfectly secure?</p>
+<details><summary>Show answer</summary>Because DNS spoofing happens <em>before</em> you ever reach the real server — if an attacker can trick your device into believing a fake IP address is the correct one for, say, "yourbank.com," your browser will happily connect to the attacker's server instead, which can display a near-perfect copy of the real site to steal your login credentials. The real server being secure is irrelevant if you never actually reach it. This is exactly why HTTPS certificates matter: a fake site can copy the look of a real one, but it generally cannot present a valid certificate for a domain it doesn't own, which is your main defense against this class of attack.</details><h2>Key terms</h2>
 <ul>
 <li><strong>DNS (Domain Name System)</strong> — translates domain names into IP addresses.</li>
 <li><strong>IP address</strong> — a device's unique numeric address on the internet; public (internet-facing) or private (local network only).</li>

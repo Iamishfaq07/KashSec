@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Windows privilege escalation — Path 16 · KashSec Academy</title>
-<meta name="description" content="Windows privilege escalation: Services, tokens, Potato family.">
+<meta name="description" content="Windows privesc shares the same enumeration-first philosophy as Linux (previous lesson) but with an entirely different set of mechanisms — services, registry keys, tokens, and scheduled tasks replace ">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/16-advanced/windows-privesc.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Windows privilege escalation — Path 16 · KashSec Academy">
-<meta property="og:description" content="Windows privilege escalation: Services, tokens, Potato family.">
+<meta property="og:description" content="Windows privesc shares the same enumeration-first philosophy as Linux (previous lesson) but with an entirely different set of mechanisms — services, registry keys, tokens, and scheduled tasks replace ">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/16-advanced/windows-privesc.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Windows privilege escalation — Path 16 · KashSec Academy">
-<meta name="twitter:description" content="Windows privilege escalation: Services, tokens, Potato family.">
+<meta name="twitter:description" content="Windows privesc shares the same enumeration-first philosophy as Linux (previous lesson) but with an entirely different set of mechanisms — services, registry keys, tokens, and scheduled tasks replace ">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 16 — Advanced Cyber Topics","item":"https://kashsec.vercel.app/lesson/16-advanced/"},{"@type":"ListItem","position":4,"name":"Windows privilege escalation","item":"https://kashsec.vercel.app/lesson/16-advanced/windows-privesc.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Windows privilege escalation","headline":"Windows privilege escalation","description":"Windows privilege escalation: Services, tokens, Potato family.","url":"https://kashsec.vercel.app/lesson/16-advanced/windows-privesc.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Services, tokens, Potato family.","isPartOf":{"@type":"Course","name":"Path 16: Advanced Cyber Topics","url":"https://kashsec.vercel.app/lesson/16-advanced/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/16-advanced/windows-privesc.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Windows privilege escalation","headline":"Windows privilege escalation","description":"Windows privesc shares the same enumeration-first philosophy as Linux (previous lesson) but with an entirely different set of mechanisms — services, registry keys, tokens, and scheduled tasks replace ","url":"https://kashsec.vercel.app/lesson/16-advanced/windows-privesc.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Services, tokens, Potato family.","isPartOf":{"@type":"Course","name":"Path 16: Advanced Cyber Topics","url":"https://kashsec.vercel.app/lesson/16-advanced/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/16-advanced/windows-privesc.html"}}
 </script>
 </head>
 <body>
@@ -176,25 +176,6 @@ procmon.exe /AcceptEula
 </code></pre>
 <p>Finding a legitimate application that's missing an expected DLL, running with elevated privileges, and writable by a lower-privileged user in its load path is a classic, high-value discovery — exactly the kind of finding the LOLBAS reference below catalogues extensively.</p>
 <h2>A systematic Windows privesc checklist</h2>
-<pre><code class="language-mermaid">flowchart TB
-    Start["🎯 Low-privilege shell obtained"]
-    Start --&gt; Enum["Run WinPEAS / whoami /all /priv"]
-    Enum --&gt; Unq["Check unquoted service paths"]
-    Enum --&gt; Svc["Check weak service/binary permissions"]
-    Enum --&gt; AIE["Check AlwaysInstallElevated registry keys"]
-    Enum --&gt; Task["Check scheduled tasks"]
-    Enum --&gt; Token["Check SeImpersonatePrivilege → Potato attacks"]
-    Enum --&gt; Cred["Search for stored/unattended credentials"]
-
-    style Start fill:#111927,color:#8496A6,stroke:#8496A6
-    style Enum fill:#2b1f0a,color:#EFA43A,stroke:#EFA43A
-    style Unq fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
-    style Svc fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
-    style AIE fill:#2b1010,color:#E05548,stroke:#E05548
-    style Task fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
-    style Token fill:#2b1010,color:#E05548,stroke:#E05548
-    style Cred fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
-</code></pre>
 <h3>8. Registry AutoRuns and startup persistence as an escalation clue</h3>
 <p>Beyond the credential-hunting registry check above, worth a dedicated look: entries in <code>HKLM\...\Run</code> and startup folders reveal what executes automatically at boot or logon, often <em>as SYSTEM</em> or as a specific service account. If any of those startup entries point to a script or executable writable by a lower-privileged user, replacing it achieves the same "wait for it to run with elevated privileges" outcome as the cron/scheduled-task techniques above — Sysinternals' <strong>Autoruns</strong> tool is the standard way to enumerate every such entry on a system in one pass rather than checking each registry location manually.</p>
 <h2>The defender's view</h2>
@@ -224,10 +205,8 @@ whoami /priv
 wmic service get name,pathname,startmode | findstr /i /v "C:\Windows"
 </code></pre>
 <p>Work through at least one TryHackMe or HackTheBox Windows privesc room, deliberately identifying the specific vector before consulting a walkthrough — the pattern-recognition muscle matters more than memorising any single technique.</p>
-<p>:::challenge Test yourself
-<code>whoami /priv</code> shows your current token has <code>SeImpersonatePrivilege</code> enabled. Which well-known family of exploits does this specifically enable, and what's the general mechanism?</p>
-<details><summary>Show answer</summary>The <strong>"Potato" family</strong> of exploits (JuicyPotato, RoguePotato, PrintSpoofer, and successors). These tools trick a privileged Windows service or component (often via a coerced NTLM authentication or a local RPC/COM interaction) into handing over a <strong>SYSTEM-level access token</strong> to the process holding <code>SeImpersonatePrivilege</code>, effectively letting a service-account-level foothold escalate directly to full SYSTEM privileges without needing to exploit a separate memory-corruption vulnerability at all.</details>
-:::<h2>Key terms</h2>
+<p><code>whoami /priv</code> shows your current token has <code>SeImpersonatePrivilege</code> enabled. Which well-known family of exploits does this specifically enable, and what's the general mechanism?</p>
+<details><summary>Show answer</summary>The <strong>"Potato" family</strong> of exploits (JuicyPotato, RoguePotato, PrintSpoofer, and successors). These tools trick a privileged Windows service or component (often via a coerced NTLM authentication or a local RPC/COM interaction) into handing over a <strong>SYSTEM-level access token</strong> to the process holding <code>SeImpersonatePrivilege</code>, effectively letting a service-account-level foothold escalate directly to full SYSTEM privileges without needing to exploit a separate memory-corruption vulnerability at all.</details><h2>Key terms</h2>
 <ul>
 <li><strong>WinPEAS</strong> — the Windows-specific automated privesc enumeration script.</li>
 <li><strong>Unquoted service path</strong> — a vulnerable service configuration allowing binary planting via ambiguous path parsing.</li>

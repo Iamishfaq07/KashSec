@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Meet the terminal — Path 03 · KashSec Academy</title>
-<meta name="description" content="Meet the terminal: Your first commands, unafraid.">
+<meta name="description" content="Time to demystify the black window with green text. The terminal is where the real power lives, and after this lesson you'll be unafraid of it.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/03-linux/terminal-basics.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Meet the terminal — Path 03 · KashSec Academy">
-<meta property="og:description" content="Meet the terminal: Your first commands, unafraid.">
+<meta property="og:description" content="Time to demystify the black window with green text. The terminal is where the real power lives, and after this lesson you'll be unafraid of it.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/03-linux/terminal-basics.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Meet the terminal — Path 03 · KashSec Academy">
-<meta name="twitter:description" content="Meet the terminal: Your first commands, unafraid.">
+<meta name="twitter:description" content="Time to demystify the black window with green text. The terminal is where the real power lives, and after this lesson you'll be unafraid of it.">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 03 — Operating Systems & Linux","item":"https://kashsec.vercel.app/lesson/03-linux/"},{"@type":"ListItem","position":4,"name":"Meet the terminal","item":"https://kashsec.vercel.app/lesson/03-linux/terminal-basics.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Meet the terminal","headline":"Meet the terminal","description":"Meet the terminal: Your first commands, unafraid.","url":"https://kashsec.vercel.app/lesson/03-linux/terminal-basics.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Your first commands, unafraid.","isPartOf":{"@type":"Course","name":"Path 03: Operating Systems & Linux","url":"https://kashsec.vercel.app/lesson/03-linux/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/03-linux/terminal-basics.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Meet the terminal","headline":"Meet the terminal","description":"Time to demystify the black window with green text. The terminal is where the real power lives, and after this lesson you'll be unafraid of it.","url":"https://kashsec.vercel.app/lesson/03-linux/terminal-basics.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Your first commands, unafraid.","isPartOf":{"@type":"Course","name":"Path 03: Operating Systems & Linux","url":"https://kashsec.vercel.app/lesson/03-linux/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/03-linux/terminal-basics.html"}}
 </script>
 </head>
 <body>
@@ -138,9 +138,7 @@ what to do   how          on what
 ls --help     # a shorter usage summary
 </code></pre>
 <p><code>man</code> (short for "manual") is a mini book on every command. Use it constantly. When you finish this lesson, <code>man man</code> gets meta and reads you the manual on the manual system.</p>
-<p>:::tip THE PROFESSIONAL'S HABIT
-Real hackers spend a huge amount of time reading <code>man</code> pages and searching. Being lost is normal — being able to find the answer efficiently is the skill.
-:::</p>
+<p>Real hackers spend a huge amount of time reading <code>man</code> pages and searching. Being lost is normal — being able to find the answer efficiently is the skill.</p>
 <h2>Command history — you type less than you think</h2>
 <ul>
 <li><strong>↑ and ↓ arrow keys</strong> — cycle through previous commands.</li>
@@ -245,10 +243,8 @@ cat first-note.txt     # print its contents
 cd ..                  # go back up
 </code></pre>
 <p>You've just navigated, created, edited, and read a file entirely from the keyboard. This is how everything in this course now works.</p>
-<p>:::challenge Test yourself
-Which command shows the full manual for another command? And how do you exit it?</p>
-<details><summary>Show answer</summary><code>man &lt;command&gt;</code>. Exit by pressing <strong>q</strong>.</details>
-:::<h2>Key terms</h2>
+<p>Which command shows the full manual for another command? And how do you exit it?</p>
+<details><summary>Show answer</summary><code>man &lt;command&gt;</code>. Exit by pressing <strong>q</strong>.</details><h2>Key terms</h2>
 <ul>
 <li><strong>Terminal / shell</strong> — the text interface for typing commands.</li>
 <li><strong>Prompt</strong> — the <code>user@host:path$</code> line waiting for input.</li>

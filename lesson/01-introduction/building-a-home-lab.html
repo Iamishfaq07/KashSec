@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Building your first home lab — Path 01 · KashSec Academy</title>
-<meta name="description" content="Building your first home lab: VMs, snapshots, and setting up an isolated environment to practice in.">
+<meta name="description" content="Reading about security only gets you so far — real skill comes from actually doing things, safely, on systems you're allowed to break. This lesson covers how to set up your own practice environment be">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/01-introduction/building-a-home-lab.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Building your first home lab — Path 01 · KashSec Academy">
-<meta property="og:description" content="Building your first home lab: VMs, snapshots, and setting up an isolated environment to practice in.">
+<meta property="og:description" content="Reading about security only gets you so far — real skill comes from actually doing things, safely, on systems you're allowed to break. This lesson covers how to set up your own practice environment be">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/01-introduction/building-a-home-lab.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Building your first home lab — Path 01 · KashSec Academy">
-<meta name="twitter:description" content="Building your first home lab: VMs, snapshots, and setting up an isolated environment to practice in.">
+<meta name="twitter:description" content="Reading about security only gets you so far — real skill comes from actually doing things, safely, on systems you're allowed to break. This lesson covers how to set up your own practice environment be">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 01 — Introduction to Cybersecurity","item":"https://kashsec.vercel.app/lesson/01-introduction/"},{"@type":"ListItem","position":4,"name":"Building your first home lab","item":"https://kashsec.vercel.app/lesson/01-introduction/building-a-home-lab.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Building your first home lab","headline":"Building your first home lab","description":"Building your first home lab: VMs, snapshots, and setting up an isolated environment to practice in.","url":"https://kashsec.vercel.app/lesson/01-introduction/building-a-home-lab.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Absolute beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"VMs, snapshots, and setting up an isolated environment to practice in.","isPartOf":{"@type":"Course","name":"Path 01: Introduction to Cybersecurity","url":"https://kashsec.vercel.app/lesson/01-introduction/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/01-introduction/building-a-home-lab.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Building your first home lab","headline":"Building your first home lab","description":"Reading about security only gets you so far — real skill comes from actually doing things, safely, on systems you're allowed to break. This lesson covers how to set up your own practice environment be","url":"https://kashsec.vercel.app/lesson/01-introduction/building-a-home-lab.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Absolute beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"VMs, snapshots, and setting up an isolated environment to practice in.","isPartOf":{"@type":"Course","name":"Path 01: Introduction to Cybersecurity","url":"https://kashsec.vercel.app/lesson/01-introduction/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/01-introduction/building-a-home-lab.html"}}
 </script>
 </head>
 <body>
@@ -89,9 +89,7 @@
     <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/01-introduction/">Path 01 — Introduction to Cybersecurity</a> · Building your first home lab</nav>
     <div class="md" id="content"><article><h1>Building your first home lab</h1>
 <p>Reading about security only gets you so far — real skill comes from actually doing things, safely, on systems you're allowed to break. This lesson covers how to set up your own practice environment before you dive into the more technical paths ahead.</p>
-<p>:::danger
-Everything in this lesson is about practicing on systems <em>you own and control</em>, in an isolated environment. The golden-rule lesson's permission principle applies here too — a home lab is specifically how you get unlimited "permission," legally and safely, to practice attack and defense techniques.
-:::</p>
+<p>:::</p>
 <h2>What a home lab actually is</h2>
 <p>A <strong>home lab</strong> is a small, isolated practice environment — usually one or more virtual machines running on your own computer — where you can install vulnerable software, practice attacks, break things, and reset everything back to a clean state whenever you want, all without any risk to a real system or network.</p>
 <h2>Virtual machines: the core building block</h2>
@@ -109,22 +107,25 @@ Everything in this lesson is about practicing on systems <em>you own and control
 <h2>Isolating your lab network — the step beginners skip</h2>
 <p>The single most important lab configuration detail: set your VMs to use an <strong>isolated (or "host-only") network</strong> rather than bridging them directly to your home network. This ensures that anything you're deliberately running — a vulnerable web app, malware samples in later paths — can't accidentally reach your real home devices or the wider internet.</p>
 <p>:::tip
-Getting this right now means you won't have to relearn it later — Path 03's Linux fundamentals, Path 11's web security labs, and nearly every hands-on exercise in this course from here forward assume you have a working, isolated lab environment ready to go.
-:::</p>
+Getting this right now means you won't have to relearn it later — Path 03's Linux fundamentals, Path 11's web security labs, and nearly every hands-on exercise in this course from here forward assume you have a working, isolated lab environment ready to go.</p>
 <h2>🧪 Hands-on lab — set up your first environment</h2>
 <ol>
-<li>Download and install VirtualBox (or VMware Workstation Player) — both are free for personal use.</li>
-<li>Download Kali Linux's official VM image and import it into your virtualization software.</li>
-<li>Configure the VM's network adapter to "Host-only" or "Internal Network" rather than "Bridged," so it's isolated from your home network.</li>
-<li>Take a snapshot of the freshly installed Kali VM before you do anything else with it — this becomes your clean starting point to roll back to later.</li>
-<li>Boot the VM once and confirm it starts up successfully.</li>
-</ol>
-<p>:::challenge Test yourself</p>
-<ol>
-<li>Why are VMs specifically well-suited to security practice, compared to installing tools directly on your main computer?</li>
-<li>What does a snapshot let you do that would otherwise require a full reinstall?</li>
-<li>Why should a lab's network be isolated rather than bridged to your home network?
-:::</li>
+<li><p>Download and install VirtualBox (or VMware Workstation Player) — both are free for personal use.</p>
+</li>
+<li><p>Download Kali Linux's official VM image and import it into your virtualization software.</p>
+</li>
+<li><p>Configure the VM's network adapter to "Host-only" or "Internal Network" rather than "Bridged," so it's isolated from your home network.</p>
+</li>
+<li><p>Take a snapshot of the freshly installed Kali VM before you do anything else with it — this becomes your clean starting point to roll back to later.</p>
+</li>
+<li><p>Boot the VM once and confirm it starts up successfully.</p>
+</li>
+<li><p>Why are VMs specifically well-suited to security practice, compared to installing tools directly on your main computer?</p>
+</li>
+<li><p>What does a snapshot let you do that would otherwise require a full reinstall?</p>
+</li>
+<li><p>Why should a lab's network be isolated rather than bridged to your home network?</p>
+</li>
 </ol>
 <h2>Key terms</h2>
 <ul>

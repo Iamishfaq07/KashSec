@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Your 90-day roadmap — Path 11 · KashSec Academy</title>
-<meta name="description" content="Your 90-day roadmap: A concrete plan to reach real bug bounty.">
+<meta name="description" content="You've covered the core of practical web application security hands-on. This closing lesson consolidates everything into a repeatable methodology and a clear path for continued growth.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/11-web-security/web-roadmap.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Your 90-day roadmap — Path 11 · KashSec Academy">
-<meta property="og:description" content="Your 90-day roadmap: A concrete plan to reach real bug bounty.">
+<meta property="og:description" content="You've covered the core of practical web application security hands-on. This closing lesson consolidates everything into a repeatable methodology and a clear path for continued growth.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/11-web-security/web-roadmap.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Your 90-day roadmap — Path 11 · KashSec Academy">
-<meta name="twitter:description" content="Your 90-day roadmap: A concrete plan to reach real bug bounty.">
+<meta name="twitter:description" content="You've covered the core of practical web application security hands-on. This closing lesson consolidates everything into a repeatable methodology and a clear path for continued growth.">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 11 — Web Security & Hacking","item":"https://kashsec.vercel.app/lesson/11-web-security/"},{"@type":"ListItem","position":4,"name":"Your 90-day roadmap","item":"https://kashsec.vercel.app/lesson/11-web-security/web-roadmap.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Your 90-day roadmap","headline":"Your 90-day roadmap","description":"Your 90-day roadmap: A concrete plan to reach real bug bounty.","url":"https://kashsec.vercel.app/lesson/11-web-security/web-roadmap.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Intermediate","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"A concrete plan to reach real bug bounty.","isPartOf":{"@type":"Course","name":"Path 11: Web Security & Hacking","url":"https://kashsec.vercel.app/lesson/11-web-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/11-web-security/web-roadmap.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Your 90-day roadmap","headline":"Your 90-day roadmap","description":"You've covered the core of practical web application security hands-on. This closing lesson consolidates everything into a repeatable methodology and a clear path for continued growth.","url":"https://kashsec.vercel.app/lesson/11-web-security/web-roadmap.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Intermediate","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"A concrete plan to reach real bug bounty.","isPartOf":{"@type":"Course","name":"Path 11: Web Security & Hacking","url":"https://kashsec.vercel.app/lesson/11-web-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/11-web-security/web-roadmap.html"}}
 </script>
 </head>
 <body>
@@ -90,21 +90,6 @@
     <div class="md" id="content"><article><h1>Your web security roadmap</h1>
 <p>You've covered the core of practical web application security hands-on. This closing lesson consolidates everything into a repeatable methodology and a clear path for continued growth.</p>
 <h2>The complete picture, assembled</h2>
-<pre><code class="language-mermaid">flowchart TB
-    Recon["🔍 Recon&lt;br/&gt;subdomains, tech stack, crawling"]
-    Map["🗺 Map the app&lt;br/&gt;Burp site map, every parameter/endpoint"]
-    Test["🧪 Test each area&lt;br/&gt;access control, injection, auth, upload, SSRF"]
-    Verify["✅ Verify &amp; assess impact"]
-    Report["📝 Report clearly"]
-
-    Recon --&gt; Map --&gt; Test --&gt; Verify --&gt; Report
-
-    style Recon fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
-    style Map fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
-    style Test fill:#2b1f0a,color:#EFA43A,stroke:#EFA43A
-    style Verify fill:#2b1f0a,color:#EFA43A,stroke:#EFA43A
-    style Report fill:#2b1010,color:#E05548,stroke:#E05548
-</code></pre>
 <p>This is the same shape whether you're doing a formal penetration test (Path 14), hunting bug bounties (Path 15), or reviewing your own company's application as an AppSec engineer.</p>
 <h2>A practical testing checklist</h2>
 <p>For any web application you're authorised to test, work through:</p>
@@ -173,18 +158,6 @@ docker run -p 8080:8080 webgoat/webgoat
 <li><strong>Burp extensions</strong> (via the BApp Store) — hundreds of community add-ons extending Burp's capability for specific bug classes.</li>
 </ul>
 <h2>How this path connects to what comes next</h2>
-<pre><code class="language-mermaid">flowchart LR
-    P7["Path 11&lt;br/&gt;Web Security"] --&gt; P8["Path 12&lt;br/&gt;Network Security"]
-    P7 --&gt; P9["Path 14&lt;br/&gt;Ethical Hacking"]
-    P7 --&gt; P10["Path 15&lt;br/&gt;Bug Bounty"]
-    P7 --&gt; P11["Path 16&lt;br/&gt;Advanced Topics"]
-
-    style P7 fill:#2b1010,color:#E9EEF3,stroke:#E05548
-    style P8 fill:#111927,color:#3FB6A8,stroke:#3FB6A8
-    style P9 fill:#111927,color:#3FB6A8,stroke:#3FB6A8
-    style P10 fill:#111927,color:#3FB6A8,stroke:#3FB6A8
-    style P11 fill:#111927,color:#3FB6A8,stroke:#3FB6A8
-</code></pre>
 <ul>
 <li><strong>Path 12 (Network Security)</strong> teaches the infrastructure layer beneath the web app — often the entry point in real penetration tests.</li>
 <li><strong>Path 14 (Ethical Hacking)</strong> formalises the <em>methodology and legal/professional framing</em> around everything you've practised here.</li>
@@ -200,10 +173,8 @@ docker run -p 8080:8080 webgoat/webgoat
 <li><strong>Impact</strong> — what could an attacker actually do with this.</li>
 </ol>
 <p>This exact four-part structure — what, where, how, impact — is the skeleton of every professional vulnerability report you'll ever write, formalised further in Path 14.7.</p>
-<p>:::challenge Reflection
-Of the six vulnerability classes covered in this path (IDOR, XSS, SQLi, command injection, file upload, SSRF), which one do you find most intuitive so far, and which one do you want to revisit and practise more before moving on?</p>
-<details><summary>A thought on this</summary>There's no wrong answer here — but a genuinely useful habit is returning to PortSwigger's labs for whichever category felt least intuitive, <em>before</em> moving to Path 12. A shaky foundation in even one core category will show up repeatedly in later, more advanced paths that build directly on top of these concepts.</details>
-:::<h2>Key terms</h2>
+<p>Of the six vulnerability classes covered in this path (IDOR, XSS, SQLi, command injection, file upload, SSRF), which one do you find most intuitive so far, and which one do you want to revisit and practise more before moving on?</p>
+<details><summary>A thought on this</summary>There's no wrong answer here — but a genuinely useful habit is returning to PortSwigger's labs for whichever category felt least intuitive, <em>before</em> moving to Path 12. A shaky foundation in even one core category will show up repeatedly in later, more advanced paths that build directly on top of these concepts.</details><h2>Key terms</h2>
 <ul>
 <li><strong>Business logic flaw</strong> — abuse of legitimate application behaviour rather than a classic injection/access-control bug.</li>
 <li><strong>Race condition</strong> — exploiting a timing window between a check and an action.</li>

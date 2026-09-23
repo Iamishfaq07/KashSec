@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Cloud security — Path 16 · KashSec Academy</title>
-<meta name="description" content="Cloud security: AWS/Azure/GCP, IAM, IMDS, flAWS lab.">
+<meta name="description" content="Recall Path 12.1's brief mention — cloud environments have their own networking and access-control concepts, distinct enough from traditional on-premise infrastructure to warrant dedicated treatment. ">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/16-advanced/cloud-security.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Cloud security — Path 16 · KashSec Academy">
-<meta property="og:description" content="Cloud security: AWS/Azure/GCP, IAM, IMDS, flAWS lab.">
+<meta property="og:description" content="Recall Path 12.1's brief mention — cloud environments have their own networking and access-control concepts, distinct enough from traditional on-premise infrastructure to warrant dedicated treatment. ">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/16-advanced/cloud-security.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Cloud security — Path 16 · KashSec Academy">
-<meta name="twitter:description" content="Cloud security: AWS/Azure/GCP, IAM, IMDS, flAWS lab.">
+<meta name="twitter:description" content="Recall Path 12.1's brief mention — cloud environments have their own networking and access-control concepts, distinct enough from traditional on-premise infrastructure to warrant dedicated treatment. ">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 16 — Advanced Cyber Topics","item":"https://kashsec.vercel.app/lesson/16-advanced/"},{"@type":"ListItem","position":4,"name":"Cloud security","item":"https://kashsec.vercel.app/lesson/16-advanced/cloud-security.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Cloud security","headline":"Cloud security","description":"Cloud security: AWS/Azure/GCP, IAM, IMDS, flAWS lab.","url":"https://kashsec.vercel.app/lesson/16-advanced/cloud-security.html","inLanguage":"en","dateModified":"2026-08-04","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"AWS/Azure/GCP, IAM, IMDS, flAWS lab.","isPartOf":{"@type":"Course","name":"Path 16: Advanced Cyber Topics","url":"https://kashsec.vercel.app/lesson/16-advanced/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/16-advanced/cloud-security.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Cloud security","headline":"Cloud security","description":"Recall Path 12.1's brief mention — cloud environments have their own networking and access-control concepts, distinct enough from traditional on-premise infrastructure to warrant dedicated treatment. ","url":"https://kashsec.vercel.app/lesson/16-advanced/cloud-security.html","inLanguage":"en","dateModified":"2026-08-04","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"AWS/Azure/GCP, IAM, IMDS, flAWS lab.","isPartOf":{"@type":"Course","name":"Path 16: Advanced Cyber Topics","url":"https://kashsec.vercel.app/lesson/16-advanced/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/16-advanced/cloud-security.html"}}
 </script>
 </head>
 <body>
@@ -91,22 +91,6 @@
 <p>Recall Path 12.1's brief mention — cloud environments have their own networking and access-control concepts, distinct enough from traditional on-premise infrastructure to warrant dedicated treatment. This lesson covers the fundamentals across AWS, Azure, and GCP, with a focus on the misconfigurations that show up constantly in both bug bounty programs (Path 15) and real breaches.</p>
 <h2>The shared responsibility model</h2>
 <p>The single most important cloud security concept to internalise first:</p>
-<pre><code class="language-mermaid">flowchart TB
-    subgraph Provider["☁️ Cloud Provider's Responsibility"]
-        Physical["Physical data center security"]
-        Hypervisor["Hypervisor / infrastructure"]
-        Network_["Underlying network infrastructure"]
-    end
-    subgraph Customer["🏢 YOUR Responsibility"]
-        Config["Configuration&lt;br/&gt;(IAM, security groups, storage permissions)"]
-        Data["Your data"]
-        AppSec_["Application-level security"]
-        Access["Access management"]
-    end
-
-    style Provider fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
-    style Customer fill:#2b1010,color:#E05548,stroke:#E05548
-</code></pre>
 <p>Cloud providers secure the underlying infrastructure — but <strong>you</strong> remain fully responsible for how you configure everything built on top of it. The overwhelming majority of real cloud security incidents stem from <strong>customer misconfiguration</strong>, not a flaw in AWS/Azure/GCP's own infrastructure — a crucial distinction that shapes this entire lesson.</p>
 <h2>IAM — Identity and Access Management</h2>
 <p>Cloud IAM controls <strong>who can do what</strong> to <strong>which resources</strong> — the cloud-native evolution of the access control concepts from Path 11.1 (A01: Broken Access Control) and Path 10's authorization principles, now applied to infrastructure itself rather than application data.</p>
@@ -196,13 +180,9 @@ secret = client.get_secret_value(SecretId='prod/database/password')
 <li>If you're using IMDSv1-compatible instances, research how to enforce IMDSv2 specifically.</li>
 <li>Search your own code repositories (even personal projects) for accidentally hardcoded credentials — this is a genuinely valuable habit-building exercise regardless of cloud provider.</li>
 </ol>
-<p>:::danger FREE-TIER ACCOUNTS AND COST AWARENESS
-Cloud free tiers have usage limits — always monitor your usage and set up billing alerts to avoid unexpected charges while experimenting. Never scan or test cloud infrastructure you don't own or have explicit authorization for, exactly as established throughout this entire course.
-:::</p>
-<p>:::challenge Test yourself
-An IAM policy grants a user permission to attach any IAM policy to their own user account. Why is this specific permission itself a serious privilege escalation risk, even if their current explicit permissions seem limited?</p>
-<details><summary>Show answer</summary>A user with permission to <strong>attach policies to themselves</strong> can simply attach a highly-privileged (or fully administrative) policy to their own account, instantly escalating their effective permissions far beyond whatever they were originally granted — regardless of how limited their <em>starting</em> explicit permissions appeared. This is directly analogous to a Linux user who can modify their own sudoers entry, or a Windows user who can modify their own group memberships — the specific <em>permission to grant more permissions</em> is itself the vulnerability, a pattern IAM privilege escalation tools like Pacu specifically hunt for.</details>
-:::<h2>Key terms</h2>
+<p>Cloud free tiers have usage limits — always monitor your usage and set up billing alerts to avoid unexpected charges while experimenting. Never scan or test cloud infrastructure you don't own or have explicit authorization for, exactly as established throughout this entire course.</p>
+<p>An IAM policy grants a user permission to attach any IAM policy to their own user account. Why is this specific permission itself a serious privilege escalation risk, even if their current explicit permissions seem limited?</p>
+<details><summary>Show answer</summary>A user with permission to <strong>attach policies to themselves</strong> can simply attach a highly-privileged (or fully administrative) policy to their own account, instantly escalating their effective permissions far beyond whatever they were originally granted — regardless of how limited their <em>starting</em> explicit permissions appeared. This is directly analogous to a Linux user who can modify their own sudoers entry, or a Windows user who can modify their own group memberships — the specific <em>permission to grant more permissions</em> is itself the vulnerability, a pattern IAM privilege escalation tools like Pacu specifically hunt for.</details><h2>Key terms</h2>
 <ul>
 <li><strong>Shared responsibility model</strong> — the division between provider-secured infrastructure and customer-secured configuration.</li>
 <li><strong>IAM (Identity and Access Management)</strong> — cloud-native access control, the infrastructure-level analogue of application authorization.</li>

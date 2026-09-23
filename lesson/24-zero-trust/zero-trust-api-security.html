@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Zero Trust for APIs &amp; Microservices — Path 24 · KashSec Academy</title>
-<meta name="description" content="Zero Trust for APIs &amp; Microservices: mTLS, service identity, and per-service least privilege for internal service-to-service traffic.">
+<meta name="description" content="The ZTNA lesson covered granting access to applications rather than networks. This lesson goes one layer deeper: applying Zero Trust principles inside an application — to the APIs and microservices th">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-api-security.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Zero Trust for APIs &amp; Microservices — Path 24 · KashSec Academy">
-<meta property="og:description" content="Zero Trust for APIs &amp; Microservices: mTLS, service identity, and per-service least privilege for internal service-to-service traffic.">
+<meta property="og:description" content="The ZTNA lesson covered granting access to applications rather than networks. This lesson goes one layer deeper: applying Zero Trust principles inside an application — to the APIs and microservices th">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-api-security.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Zero Trust for APIs &amp; Microservices — Path 24 · KashSec Academy">
-<meta name="twitter:description" content="Zero Trust for APIs &amp; Microservices: mTLS, service identity, and per-service least privilege for internal service-to-service traffic.">
+<meta name="twitter:description" content="The ZTNA lesson covered granting access to applications rather than networks. This lesson goes one layer deeper: applying Zero Trust principles inside an application — to the APIs and microservices th">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 24 — Zero Trust Architecture","item":"https://kashsec.vercel.app/lesson/24-zero-trust/"},{"@type":"ListItem","position":4,"name":"Zero Trust for APIs & Microservices","item":"https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-api-security.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Zero Trust for APIs & Microservices","headline":"Zero Trust for APIs & Microservices","description":"Zero Trust for APIs & Microservices: mTLS, service identity, and per-service least privilege for internal service-to-service traffic.","url":"https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-api-security.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"mTLS, service identity, and per-service least privilege for internal service-to-service traffic.","isPartOf":{"@type":"Course","name":"Path 24: Zero Trust Architecture","url":"https://kashsec.vercel.app/lesson/24-zero-trust/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-api-security.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Zero Trust for APIs & Microservices","headline":"Zero Trust for APIs & Microservices","description":"The ZTNA lesson covered granting access to applications rather than networks. This lesson goes one layer deeper: applying Zero Trust principles inside an application — to the APIs and microservices th","url":"https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-api-security.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"mTLS, service identity, and per-service least privilege for internal service-to-service traffic.","isPartOf":{"@type":"Course","name":"Path 24: Zero Trust Architecture","url":"https://kashsec.vercel.app/lesson/24-zero-trust/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-api-security.html"}}
 </script>
 </head>
 <body>
@@ -89,9 +89,7 @@
     <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/24-zero-trust/">Path 24 — Zero Trust Architecture</a> · Zero Trust for APIs &amp; Microservices</nav>
     <div class="md" id="content"><article><h1>Zero Trust for APIs &amp; Microservices</h1>
 <p>The ZTNA lesson covered granting access to applications rather than networks. This lesson goes one layer deeper: applying Zero Trust principles <em>inside</em> an application — to the APIs and microservices that talk to each other, often with far less scrutiny than the traffic reaching the application's front door.</p>
-<p>:::danger
-A common and dangerous assumption: "this traffic is inside our network, between our own services, so it doesn't need the same scrutiny as external traffic." Zero Trust's core principle — never trust, always verify — applies exactly as much to service-to-service traffic as it does to a user logging in from the internet. Path 21's API Security material covers BOLA and mass assignment in detail; this lesson is about the architecture that prevents an attacker who reaches one internal service from moving freely to the next.
-:::</p>
+<p>:::</p>
 <h2>Why internal API traffic deserves Zero Trust treatment</h2>
 <p>In a traditional perimeter model, once traffic is "inside," it's implicitly trusted. Modern microservice architectures make that assumption dangerous: a single compromised service — through a vulnerable dependency, a misconfigured container, or a stolen credential — becomes a launchpad for reaching every other service it can talk to, if internal traffic isn't independently verified. This is the microsegmentation lesson's blast-radius principle, applied specifically to service-to-service API calls rather than network subnets.</p>
 <h2>The core techniques</h2>
@@ -106,15 +104,12 @@ A common and dangerous assumption: "this traffic is inside our network, between 
 <p>:::challenge Trace an attack path
 An attacker compromises a low-privilege internal reporting service through an outdated dependency. The reporting service, once compromised, attempts to call the customer payment service directly.</p>
 <details><summary>Hint</summary>In a flat, implicitly-trusted internal network, what would stop this call? In an API-layer Zero Trust architecture, what specifically would?</details>
-<details><summary>Show answer</summary>In a traditional flat internal network, likely nothing — "inside the network" was treated as sufficient trust, and the call would succeed. In a Zero Trust API architecture, the call fails at multiple points: mTLS would require the reporting service to present a valid cryptographic identity, but even if it has one (it's a legitimate service, after all), per-service least privilege means the reporting service was never granted the authorization to call the payment service in the first place — that's simply not part of its function. The API gateway or service mesh enforcing policy at that specific hop rejects the call regardless of network location, containing the compromise to the reporting service alone rather than letting it become a path to the payment system.</details>
-:::<h2>🧪 Hands-on lab — design a service authorization matrix</h2>
+<details><summary>Show answer</summary>In a traditional flat internal network, likely nothing — "inside the network" was treated as sufficient trust, and the call would succeed. In a Zero Trust API architecture, the call fails at multiple points: mTLS would require the reporting service to present a valid cryptographic identity, but even if it has one (it's a legitimate service, after all), per-service least privilege means the reporting service was never granted the authorization to call the payment service in the first place — that's simply not part of its function. The API gateway or service mesh enforcing policy at that specific hop rejects the call regardless of network location, containing the compromise to the reporting service alone rather than letting it become a path to the payment system.</details><h2>🧪 Hands-on lab — design a service authorization matrix</h2>
 <p>For a hypothetical e-commerce system with five microservices (auth, catalog, cart, payment, reporting), draw a simple matrix of which services should be allowed to call which others, applying least privilege. Identify at least one call that a flat-trust network would allow but your matrix correctly denies.</p>
-<p>:::challenge Test yourself</p>
 <ol>
 <li>Why is "the traffic is internal" an unsafe justification for skipping authentication between services?</li>
 <li>What does mTLS verify that a plain TLS connection to an internal service does not?</li>
-<li>What role does a service mesh typically play in enforcing Zero Trust between microservices?
-:::</li>
+<li>What role does a service mesh typically play in enforcing Zero Trust between microservices?</li>
 </ol>
 <h2>Key terms</h2>
 <ul>

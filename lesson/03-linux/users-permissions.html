@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Users, permissions &amp; sudo — Path 03 · KashSec Academy</title>
-<meta name="description" content="Users, permissions &amp; sudo: Read rwx, install with apt, the SUID clue.">
+<meta name="description" content="The single most important security concept in any OS is who is allowed to do what. In Linux this is beautifully explicit. Master this and you understand half of Linux security instantly.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/03-linux/users-permissions.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Users, permissions &amp; sudo — Path 03 · KashSec Academy">
-<meta property="og:description" content="Users, permissions &amp; sudo: Read rwx, install with apt, the SUID clue.">
+<meta property="og:description" content="The single most important security concept in any OS is who is allowed to do what. In Linux this is beautifully explicit. Master this and you understand half of Linux security instantly.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/03-linux/users-permissions.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Users, permissions &amp; sudo — Path 03 · KashSec Academy">
-<meta name="twitter:description" content="Users, permissions &amp; sudo: Read rwx, install with apt, the SUID clue.">
+<meta name="twitter:description" content="The single most important security concept in any OS is who is allowed to do what. In Linux this is beautifully explicit. Master this and you understand half of Linux security instantly.">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 03 — Operating Systems & Linux","item":"https://kashsec.vercel.app/lesson/03-linux/"},{"@type":"ListItem","position":4,"name":"Users, permissions & sudo","item":"https://kashsec.vercel.app/lesson/03-linux/users-permissions.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Users, permissions & sudo","headline":"Users, permissions & sudo","description":"Users, permissions & sudo: Read rwx, install with apt, the SUID clue.","url":"https://kashsec.vercel.app/lesson/03-linux/users-permissions.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Read rwx, install with apt, the SUID clue.","isPartOf":{"@type":"Course","name":"Path 03: Operating Systems & Linux","url":"https://kashsec.vercel.app/lesson/03-linux/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/03-linux/users-permissions.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Users, permissions & sudo","headline":"Users, permissions & sudo","description":"The single most important security concept in any OS is who is allowed to do what. In Linux this is beautifully explicit. Master this and you understand half of Linux security instantly.","url":"https://kashsec.vercel.app/lesson/03-linux/users-permissions.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Read rwx, install with apt, the SUID clue.","isPartOf":{"@type":"Course","name":"Path 03: Operating Systems & Linux","url":"https://kashsec.vercel.app/lesson/03-linux/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/03-linux/users-permissions.html"}}
 </script>
 </head>
 <body>
@@ -110,9 +110,7 @@ sudo apt update         # works — you're temporarily root for this command
 sudo -i                 # open a root shell (careful!)
 </code></pre>
 <p>Sudo asks for <strong>your own password</strong>, not root's. It's logged in <code>/var/log/auth.log</code>, so misuse leaves a trail.</p>
-<p>:::tip THE ROOT PROMPT LOOKS DIFFERENT
-When you're a normal user, the prompt ends in <code>$</code>. When you're root (via <code>sudo -i</code> or the root user directly), it ends in <code>#</code>. That single character is a constant reminder: <strong>you can do damage right now — be careful.</strong>
-:::</p>
+<p>When you're a normal user, the prompt ends in <code>$</code>. When you're root (via <code>sudo -i</code> or the root user directly), it ends in <code>#</code>. That single character is a constant reminder: <strong>you can do damage right now — be careful.</strong></p>
 <h2>File permissions — the rwx model</h2>
 <p>Every file and folder has three sets of permissions for three classes of users:</p>
 <pre><code>-rwxr-xr--  1  alice  developers  4096  Jan 10  script.sh
@@ -217,9 +215,7 @@ sudo chown -R kali:kali ~/project      # recursive on a folder
 # Find every SUID binary on the system (privesc clue!):
 find / -perm -4000 -type f 2&gt;/dev/null
 </code></pre>
-<p>:::danger SUID IS A PRIVESC GOLDMINE
-A SUID binary owned by root that has any exploitable behaviour (like an old version, or one that spawns a shell) can turn a low-privileged user into root. This is huge in Path 16. Sites like <strong>GTFOBins</strong> catalogue every abusable SUID binary. Sneak preview: <code>sudo -l</code> on a target and see if <code>find</code>, <code>vim</code>, or <code>less</code> are in the list.
-:::</p>
+<p>A SUID binary owned by root that has any exploitable behaviour (like an old version, or one that spawns a shell) can turn a low-privileged user into root. This is huge in Path 16. Sites like <strong>GTFOBins</strong> catalogue every abusable SUID binary. Sneak preview: <code>sudo -l</code> on a target and see if <code>find</code>, <code>vim</code>, or <code>less</code> are in the list.</p>
 <h2>Linux capabilities — a more modern, finer-grained alternative to SUID</h2>
 <p>SUID is genuinely all-or-nothing — a SUID binary runs with the <em>entire</em> privilege set of its owner, even if it only needs one small piece of that power. Modern Linux offers <strong>capabilities</strong> as a more surgical alternative: splitting root's traditionally monolithic power into dozens of individual, independently grantable privileges (<code>CAP_NET_BIND_SERVICE</code> to bind low-numbered network ports, <code>CAP_DAC_OVERRIDE</code> to bypass file permission checks, and many more). A binary can be granted just the one specific capability it genuinely needs, rather than full root-equivalent power via SUID — a direct, practical application of least privilege at the binary level. Check a binary's granted capabilities with:</p>
 <pre><code class="language-bash">getcap -r / 2&gt;/dev/null
@@ -261,10 +257,8 @@ find / -perm -4000 -type f 2&gt;/dev/null | head
 sudo apt install seclists -y
 ls /usr/share/seclists    # a huge wordlist collection you'll use in Path 11/10
 </code></pre>
-<p>:::challenge Test yourself
-A file's permissions show as <code>-rwxr-xr--</code>. Which class of users cannot execute it?</p>
-<details><summary>Show answer</summary>Others (people not the owner and not in the group). The "others" triplet is <code>r--</code> — read only, no execute.</details>
-:::<h2>Key terms</h2>
+<p>A file's permissions show as <code>-rwxr-xr--</code>. Which class of users cannot execute it?</p>
+<details><summary>Show answer</summary>Others (people not the owner and not in the group). The "others" triplet is <code>r--</code> — read only, no execute.</details><h2>Key terms</h2>
 <ul>
 <li><strong>root / UID 0</strong> — the all-powerful superuser.</li>
 <li><strong>sudo</strong> — run one command as root, using <em>your</em> password.</li>

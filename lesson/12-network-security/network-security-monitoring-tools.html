@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Network Security Monitoring Tools — Path 12 · KashSec Academy</title>
-<meta name="description" content="Network Security Monitoring Tools: Zeek, Suricata, and Security Onion, named and mapped.">
+<meta name="description" content="The IDS/IPS/SIEM lesson covered the concepts. This lesson names the actual, widely-used tools implementing them — genuinely useful vocabulary for reading job postings and real security operations docu">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/12-network-security/network-security-monitoring-tools.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Network Security Monitoring Tools — Path 12 · KashSec Academy">
-<meta property="og:description" content="Network Security Monitoring Tools: Zeek, Suricata, and Security Onion, named and mapped.">
+<meta property="og:description" content="The IDS/IPS/SIEM lesson covered the concepts. This lesson names the actual, widely-used tools implementing them — genuinely useful vocabulary for reading job postings and real security operations docu">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/12-network-security/network-security-monitoring-tools.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Network Security Monitoring Tools — Path 12 · KashSec Academy">
-<meta name="twitter:description" content="Network Security Monitoring Tools: Zeek, Suricata, and Security Onion, named and mapped.">
+<meta name="twitter:description" content="The IDS/IPS/SIEM lesson covered the concepts. This lesson names the actual, widely-used tools implementing them — genuinely useful vocabulary for reading job postings and real security operations docu">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 12 — Network Security","item":"https://kashsec.vercel.app/lesson/12-network-security/"},{"@type":"ListItem","position":4,"name":"Network Security Monitoring Tools","item":"https://kashsec.vercel.app/lesson/12-network-security/network-security-monitoring-tools.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Network Security Monitoring Tools","headline":"Network Security Monitoring Tools","description":"Network Security Monitoring Tools: Zeek, Suricata, and Security Onion, named and mapped.","url":"https://kashsec.vercel.app/lesson/12-network-security/network-security-monitoring-tools.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Zeek, Suricata, and Security Onion, named and mapped.","isPartOf":{"@type":"Course","name":"Path 12: Network Security","url":"https://kashsec.vercel.app/lesson/12-network-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/12-network-security/network-security-monitoring-tools.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Network Security Monitoring Tools","headline":"Network Security Monitoring Tools","description":"The IDS/IPS/SIEM lesson covered the concepts. This lesson names the actual, widely-used tools implementing them — genuinely useful vocabulary for reading job postings and real security operations docu","url":"https://kashsec.vercel.app/lesson/12-network-security/network-security-monitoring-tools.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Zeek, Suricata, and Security Onion, named and mapped.","isPartOf":{"@type":"Course","name":"Path 12: Network Security","url":"https://kashsec.vercel.app/lesson/12-network-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/12-network-security/network-security-monitoring-tools.html"}}
 </script>
 </head>
 <body>
@@ -99,16 +99,8 @@
 <p>Directly connecting to Path 08's logging-monitoring lesson's core point: monitoring tools only provide value if they're actually configured to capture the <em>right</em> signal and someone is positioned to act on the alerts they generate. A Security Onion deployment that nobody ever reviews provides essentially the same real-world protection as no monitoring at all — the tool itself is necessary but not sufficient, exactly the "controls need enforcement and measurement" theme from Path 10.</p>
 <h2>How these tools connect to SIEM</h2>
 <p>A SIEM (from the ids-ips-siem lesson) typically ingests logs and alerts <em>from</em> tools like Zeek and Suricata, correlating network-level signals with the host-level logs from Path 03 and Path 07 into a single, unified view — no individual tool alone provides the complete picture an analyst actually needs during an investigation.</p>
-<pre><code class="language-mermaid">flowchart LR
-    A[Zeek] --&gt; D[SIEM]
-    B[Suricata] --&gt; D
-    C["Host logs\n(Path 03, Path 07)"] --&gt; D
-    D --&gt; E["Unified alerting\n&amp; correlation"]
-</code></pre>
-<p>:::challenge Test yourself
-Why does Zeek's approach — generating detailed structured logs rather than only matching known attack signatures — provide value a purely signature-based IDS can't?</p>
-<details><summary>Show answer</summary>A purely signature-based tool can only alert on patterns it already knows to look for — a genuinely novel attack technique, or one deliberately crafted to avoid a known signature, sails straight through undetected. Zeek's structured logging approach instead captures a detailed, queryable record of what actually happened on the network — every connection, every DNS query — regardless of whether any specific pattern within it matches a known attack signature. This means an analyst can retroactively investigate a newly-disclosed vulnerability or attack technique against historical Zeek logs, even if no signature existed to catch it in real time when it actually occurred, and can spot genuinely novel anomalies (unusual connection patterns, unexpected protocol usage) that a signature-only tool would have no way to flag at all.</details>
-:::<h2>Key terms</h2>
+<p>Why does Zeek's approach — generating detailed structured logs rather than only matching known attack signatures — provide value a purely signature-based IDS can't?</p>
+<details><summary>Show answer</summary>A purely signature-based tool can only alert on patterns it already knows to look for — a genuinely novel attack technique, or one deliberately crafted to avoid a known signature, sails straight through undetected. Zeek's structured logging approach instead captures a detailed, queryable record of what actually happened on the network — every connection, every DNS query — regardless of whether any specific pattern within it matches a known attack signature. This means an analyst can retroactively investigate a newly-disclosed vulnerability or attack technique against historical Zeek logs, even if no signature existed to catch it in real time when it actually occurred, and can spot genuinely novel anomalies (unusual connection patterns, unexpected protocol usage) that a signature-only tool would have no way to flag at all.</details><h2>Key terms</h2>
 <ul>
 <li><strong>Zeek</strong> — a network security monitoring tool generating detailed, structured logs of traffic activity rather than relying purely on signature matching.</li>
 <li><strong>Suricata</strong> — an open-source IDS/IPS engine supporting both signature-based and behavioral detection.</li>

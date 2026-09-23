@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Broken access &amp; IDOR — Path 11 · KashSec Academy</title>
-<meta name="description" content="Broken access &amp; IDOR: The friendliest first bug — just change the ID.">
+<meta name="description" content="You met the concept in Path 05.7 and Path 11.1 — now let's find, exploit, and fix it hands-on. IDOR is consistently one of the most commonly found bugs in real bug bounty programs, and it's often the ">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/11-web-security/idor.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Broken access &amp; IDOR — Path 11 · KashSec Academy">
-<meta property="og:description" content="Broken access &amp; IDOR: The friendliest first bug — just change the ID.">
+<meta property="og:description" content="You met the concept in Path 05.7 and Path 11.1 — now let's find, exploit, and fix it hands-on. IDOR is consistently one of the most commonly found bugs in real bug bounty programs, and it's often the ">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/11-web-security/idor.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Broken access &amp; IDOR — Path 11 · KashSec Academy">
-<meta name="twitter:description" content="Broken access &amp; IDOR: The friendliest first bug — just change the ID.">
+<meta name="twitter:description" content="You met the concept in Path 05.7 and Path 11.1 — now let's find, exploit, and fix it hands-on. IDOR is consistently one of the most commonly found bugs in real bug bounty programs, and it's often the ">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 11 — Web Security & Hacking","item":"https://kashsec.vercel.app/lesson/11-web-security/"},{"@type":"ListItem","position":4,"name":"Broken access & IDOR","item":"https://kashsec.vercel.app/lesson/11-web-security/idor.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Broken access & IDOR","headline":"Broken access & IDOR","description":"Broken access & IDOR: The friendliest first bug — just change the ID.","url":"https://kashsec.vercel.app/lesson/11-web-security/idor.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"The friendliest first bug — just change the ID.","isPartOf":{"@type":"Course","name":"Path 11: Web Security & Hacking","url":"https://kashsec.vercel.app/lesson/11-web-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/11-web-security/idor.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Broken access & IDOR","headline":"Broken access & IDOR","description":"You met the concept in Path 05.7 and Path 11.1 — now let's find, exploit, and fix it hands-on. IDOR is consistently one of the most commonly found bugs in real bug bounty programs, and it's often the ","url":"https://kashsec.vercel.app/lesson/11-web-security/idor.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"The friendliest first bug — just change the ID.","isPartOf":{"@type":"Course","name":"Path 11: Web Security & Hacking","url":"https://kashsec.vercel.app/lesson/11-web-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/11-web-security/idor.html"}}
 </script>
 </head>
 <body>
@@ -91,15 +91,6 @@
 <p>You met the concept in Path 05.7 and Path 11.1 — now let's find, exploit, and fix it hands-on. <strong>IDOR</strong> is consistently one of the most commonly found bugs in real bug bounty programs, and it's often the very first vulnerability class beginners successfully find on their own.</p>
 <h2>What IDOR actually is</h2>
 <p><strong>IDOR</strong> = Insecure Direct Object Reference. It happens when an application uses a direct, guessable/predictable reference (like a database ID) to access an object — and fails to verify that the <em>requesting user</em> is actually authorised to access <em>that specific object</em>.</p>
-<pre><code class="language-mermaid">sequenceDiagram
-    participant Alice as Alice (logged in)
-    participant App as Application
-
-    Alice-&gt;&gt;App: GET /invoices/1001&lt;br/&gt;(Cookie: session=alice-session)
-    Note right of App: Server checks: does session belong&lt;br/&gt;to a valid user? ✅ Yes
-    Note right of App: Server does NOT check:&lt;br/&gt;does invoice 1001 belong to Alice? ❌
-    App-&gt;&gt;Alice: 200 OK — Bob's invoice data!
-</code></pre>
 <p>The authentication is completely fine (Alice really is logged in as Alice) — the failure is purely in <strong>authorization</strong>: nobody checked whether invoice 1001 actually belongs to Alice before returning it.</p>
 <h2>The classic pattern</h2>
 <pre><code class="language-http">GET /api/user/profile?id=1024 HTTP/1.1
@@ -188,10 +179,8 @@ def get_invoice(invoice_id):
 <li>Use Burp (configured in Path 11.2) to intercept, modify, and replay requests inside each lab.</li>
 </ol>
 <p>These labs are how most professional web testers actually learned this material — genuinely worth the time.</p>
-<p>:::challenge Test yourself
-An app shows only your own orders in its UI, and the "Order ID" is never visible on screen. Is it safe from IDOR?</p>
-<details><summary>Show answer</summary>Not necessarily. Even if the <em>UI</em> never displays the raw ID, the underlying <strong>API request</strong> the JavaScript makes behind the scenes very likely still includes it (in the URL, body, or a hidden field) — recall Path 05.6's DevTools Network panel. An attacker inspects the actual HTTP traffic, not just what's rendered on screen, and can still attempt to change that ID directly. "Not shown in the UI" is not the same as "not exploitable."</details>
-:::<h2>Key terms</h2>
+<p>An app shows only your own orders in its UI, and the "Order ID" is never visible on screen. Is it safe from IDOR?</p>
+<details><summary>Show answer</summary>Not necessarily. Even if the <em>UI</em> never displays the raw ID, the underlying <strong>API request</strong> the JavaScript makes behind the scenes very likely still includes it (in the URL, body, or a hidden field) — recall Path 05.6's DevTools Network panel. An attacker inspects the actual HTTP traffic, not just what's rendered on screen, and can still attempt to change that ID directly. "Not shown in the UI" is not the same as "not exploitable."</details><h2>Key terms</h2>
 <ul>
 <li><strong>IDOR</strong> — Insecure Direct Object Reference; missing per-object authorization check.</li>
 <li><strong>BOLA</strong> — the API-specific name for the same underlying bug (OWASP API Top 10 #1).</li>

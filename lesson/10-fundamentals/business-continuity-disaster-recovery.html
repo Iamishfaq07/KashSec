@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Business Continuity &amp; Disaster Recovery — Path 10 · KashSec Academy</title>
-<meta name="description" content="Business Continuity &amp; Disaster Recovery: RTO, RPO, and backups at organizational scale.">
+<meta name="description" content="The incident-response lesson covered security incidents specifically. This lesson broadens the lens: what happens when anything — a security incident, a natural disaster, a major hardware failure — th">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/10-fundamentals/business-continuity-disaster-recovery.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Business Continuity &amp; Disaster Recovery — Path 10 · KashSec Academy">
-<meta property="og:description" content="Business Continuity &amp; Disaster Recovery: RTO, RPO, and backups at organizational scale.">
+<meta property="og:description" content="The incident-response lesson covered security incidents specifically. This lesson broadens the lens: what happens when anything — a security incident, a natural disaster, a major hardware failure — th">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/10-fundamentals/business-continuity-disaster-recovery.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Business Continuity &amp; Disaster Recovery — Path 10 · KashSec Academy">
-<meta name="twitter:description" content="Business Continuity &amp; Disaster Recovery: RTO, RPO, and backups at organizational scale.">
+<meta name="twitter:description" content="The incident-response lesson covered security incidents specifically. This lesson broadens the lens: what happens when anything — a security incident, a natural disaster, a major hardware failure — th">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 10 — Cybersecurity Fundamentals","item":"https://kashsec.vercel.app/lesson/10-fundamentals/"},{"@type":"ListItem","position":4,"name":"Business Continuity & Disaster Recovery","item":"https://kashsec.vercel.app/lesson/10-fundamentals/business-continuity-disaster-recovery.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Business Continuity & Disaster Recovery","headline":"Business Continuity & Disaster Recovery","description":"Business Continuity & Disaster Recovery: RTO, RPO, and backups at organizational scale.","url":"https://kashsec.vercel.app/lesson/10-fundamentals/business-continuity-disaster-recovery.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner→Intermediate","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"RTO, RPO, and backups at organizational scale.","isPartOf":{"@type":"Course","name":"Path 10: Cybersecurity Fundamentals","url":"https://kashsec.vercel.app/lesson/10-fundamentals/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/10-fundamentals/business-continuity-disaster-recovery.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Business Continuity & Disaster Recovery","headline":"Business Continuity & Disaster Recovery","description":"The incident-response lesson covered security incidents specifically. This lesson broadens the lens: what happens when anything — a security incident, a natural disaster, a major hardware failure — th","url":"https://kashsec.vercel.app/lesson/10-fundamentals/business-continuity-disaster-recovery.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner→Intermediate","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"RTO, RPO, and backups at organizational scale.","isPartOf":{"@type":"Course","name":"Path 10: Cybersecurity Fundamentals","url":"https://kashsec.vercel.app/lesson/10-fundamentals/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/10-fundamentals/business-continuity-disaster-recovery.html"}}
 </script>
 </head>
 <body>
@@ -101,17 +101,11 @@
 <li><strong>RTO (Recovery Time Objective)</strong> — how long can this system realistically be down before the impact becomes unacceptable? A customer-facing payment system might have an RTO of minutes; an internal reporting tool might tolerate a full day</li>
 <li><strong>RPO (Recovery Point Objective)</strong> — how much data loss is acceptable, measured in time? An RPO of one hour means backups need to run at least hourly, since anything more than an hour old at the moment of failure would be lost</li>
 </ul>
-<pre><code class="language-mermaid">flowchart LR
-    A["Last backup"] --&gt;|"RPO: max acceptable\ndata loss window"| B["Incident occurs"]
-    B --&gt;|"RTO: max acceptable\ndowntime"| C["System restored"]
-</code></pre>
 <p>Different systems genuinely warrant different RTO/RPO targets — not every system needs the same aggressive, expensive recovery guarantees, and defining these numbers explicitly (rather than assuming) is exactly what turns a vague "we have backups" into an actual, measurable recovery plan.</p>
 <h2>Why untested plans fail exactly when they're needed most</h2>
 <p>Directly echoing Path 00's "test your backups, don't just trust them" principle and Path 07's Windows-backup lesson: a BCP/DR plan that's written but never actually tested (through a tabletop exercise or a real failover drill) is genuinely likely to reveal gaps — outdated contact information, a dependency nobody accounted for, a recovery step that assumes access to a system that's itself part of the outage — exactly at the worst possible moment to discover them.</p>
-<p>:::challenge Test yourself
-A company sets its RPO for a critical database at 4 hours but only actually backs up that database once every 24 hours. What's the real, practical consequence of this mismatch?</p>
-<details><summary>Show answer</summary>The company's <em>stated</em> RPO (4 hours) and its <em>actual</em> backup frequency (24 hours) are badly mismatched — meaning if a failure occurs shortly before the next scheduled 24-hour backup, the organization could lose up to a full day's worth of data, nearly six times worse than what the 4-hour RPO target was supposed to guarantee. This is exactly the kind of gap a tested, honest DR plan is designed to catch before it matters: the RPO target should directly determine the actual backup frequency needed to meet it (in this case, backups would need to run at least every 4 hours, not once daily), and any organization that defines an RPO without verifying its actual backup infrastructure can meet it has a plan that looks reassuring on paper but would fail exactly when it's needed most.</details>
-:::<h2>Key terms</h2>
+<p>A company sets its RPO for a critical database at 4 hours but only actually backs up that database once every 24 hours. What's the real, practical consequence of this mismatch?</p>
+<details><summary>Show answer</summary>The company's <em>stated</em> RPO (4 hours) and its <em>actual</em> backup frequency (24 hours) are badly mismatched — meaning if a failure occurs shortly before the next scheduled 24-hour backup, the organization could lose up to a full day's worth of data, nearly six times worse than what the 4-hour RPO target was supposed to guarantee. This is exactly the kind of gap a tested, honest DR plan is designed to catch before it matters: the RPO target should directly determine the actual backup frequency needed to meet it (in this case, backups would need to run at least every 4 hours, not once daily), and any organization that defines an RPO without verifying its actual backup infrastructure can meet it has a plan that looks reassuring on paper but would fail exactly when it's needed most.</details><h2>Key terms</h2>
 <ul>
 <li><strong>Business Continuity Planning (BCP)</strong> — planning for how an organization continues functioning during a major disruption.</li>
 <li><strong>Disaster Recovery (DR)</strong> — the technical subset of BCP focused on restoring IT systems and data.</li>

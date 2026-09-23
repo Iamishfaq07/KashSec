@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Advanced Burp Suite Lab — Path 11 · KashSec Academy</title>
-<meta name="description" content="Advanced Burp Suite Lab: Take your Burp skills to the next level.">
+<meta name="description" content="You've learned Burp's basics and the core vulnerability classes throughout this path. This lab has you combine them, using Burp as your primary tool the way a real web security assessment actually wor">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/11-web-security/burp-advanced-lab.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Advanced Burp Suite Lab — Path 11 · KashSec Academy">
-<meta property="og:description" content="Advanced Burp Suite Lab: Take your Burp skills to the next level.">
+<meta property="og:description" content="You've learned Burp's basics and the core vulnerability classes throughout this path. This lab has you combine them, using Burp as your primary tool the way a real web security assessment actually wor">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/11-web-security/burp-advanced-lab.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Advanced Burp Suite Lab — Path 11 · KashSec Academy">
-<meta name="twitter:description" content="Advanced Burp Suite Lab: Take your Burp skills to the next level.">
+<meta name="twitter:description" content="You've learned Burp's basics and the core vulnerability classes throughout this path. This lab has you combine them, using Burp as your primary tool the way a real web security assessment actually wor">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 11 — Web Security & Hacking","item":"https://kashsec.vercel.app/lesson/11-web-security/"},{"@type":"ListItem","position":4,"name":"Advanced Burp Suite Lab","item":"https://kashsec.vercel.app/lesson/11-web-security/burp-advanced-lab.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Advanced Burp Suite Lab","headline":"Advanced Burp Suite Lab","description":"Advanced Burp Suite Lab: Take your Burp skills to the next level.","url":"https://kashsec.vercel.app/lesson/11-web-security/burp-advanced-lab.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Intermediate","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Take your Burp skills to the next level.","isPartOf":{"@type":"Course","name":"Path 11: Web Security & Hacking","url":"https://kashsec.vercel.app/lesson/11-web-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/11-web-security/burp-advanced-lab.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Advanced Burp Suite Lab","headline":"Advanced Burp Suite Lab","description":"You've learned Burp's basics and the core vulnerability classes throughout this path. This lab has you combine them, using Burp as your primary tool the way a real web security assessment actually wor","url":"https://kashsec.vercel.app/lesson/11-web-security/burp-advanced-lab.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Intermediate","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Take your Burp skills to the next level.","isPartOf":{"@type":"Course","name":"Path 11: Web Security & Hacking","url":"https://kashsec.vercel.app/lesson/11-web-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/11-web-security/burp-advanced-lab.html"}}
 </script>
 </head>
 <body>
@@ -107,12 +107,8 @@
 </li>
 </ol>
 <p><strong>Success goal</strong>: Find at least 2 different vulnerabilities using this workflow, and note how much of the process was really just "intercept → modify in Repeater → observe the response" repeated with different payloads.</p>
-<p>:::tip Build a personal payload cheat-sheet
-As you work through this lab (and the JWT and SSRF labs that follow), start keeping your own running list of payloads that worked, organized by vulnerability type. This becomes genuinely useful personal reference material fast, and is a legitimate, common practice among working security testers.
-:::</p>
-<p>:::challenge Write it up
-Pick your best finding from this lab and write a short report following the structure from Path 14's Reporting lesson: title, severity, steps to reproduce (exact requests/payloads used), impact, and fix. This is the actual deliverable format used across the industry, not just a course exercise.
-:::</p>
+<p>As you work through this lab (and the JWT and SSRF labs that follow), start keeping your own running list of payloads that worked, organized by vulnerability type. This becomes genuinely useful personal reference material fast, and is a legitimate, common practice among working security testers.</p>
+<p>Pick your best finding from this lab and write a short report following the structure from Path 14's Reporting lesson: title, severity, steps to reproduce (exact requests/payloads used), impact, and fix. This is the actual deliverable format used across the industry, not just a course exercise.</p>
 <h2>Key takeaway</h2>
 <p>Burp's real power isn't any single feature — it's the intercept → modify → observe loop, repeated systematically across every input a web application exposes. Once that loop becomes second nature, finding vulnerabilities becomes far less about memorizing exploits and far more about disciplined, methodical testing.</p>
 <p><strong>Next up →</strong> <a href="#/lesson/11-web-security/jwt-advanced-lab">Advanced JWT Lab</a></p>

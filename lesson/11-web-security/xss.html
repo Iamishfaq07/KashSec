@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Cross-Site Scripting — Path 11 · KashSec Academy</title>
-<meta name="description" content="Cross-Site Scripting: Reflected, stored, DOM — and how to prove it safely.">
+<meta name="description" content="You planted the seed for this back in Path 05.2. Now let's fully understand, find, and exploit Cross-Site Scripting — one of the most historically significant web vulnerability classes, and still huge">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/11-web-security/xss.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Cross-Site Scripting — Path 11 · KashSec Academy">
-<meta property="og:description" content="Cross-Site Scripting: Reflected, stored, DOM — and how to prove it safely.">
+<meta property="og:description" content="You planted the seed for this back in Path 05.2. Now let's fully understand, find, and exploit Cross-Site Scripting — one of the most historically significant web vulnerability classes, and still huge">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/11-web-security/xss.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Cross-Site Scripting — Path 11 · KashSec Academy">
-<meta name="twitter:description" content="Cross-Site Scripting: Reflected, stored, DOM — and how to prove it safely.">
+<meta name="twitter:description" content="You planted the seed for this back in Path 05.2. Now let's fully understand, find, and exploit Cross-Site Scripting — one of the most historically significant web vulnerability classes, and still huge">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 11 — Web Security & Hacking","item":"https://kashsec.vercel.app/lesson/11-web-security/"},{"@type":"ListItem","position":4,"name":"Cross-Site Scripting","item":"https://kashsec.vercel.app/lesson/11-web-security/xss.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Cross-Site Scripting","headline":"Cross-Site Scripting","description":"Cross-Site Scripting: Reflected, stored, DOM — and how to prove it safely.","url":"https://kashsec.vercel.app/lesson/11-web-security/xss.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Reflected, stored, DOM — and how to prove it safely.","isPartOf":{"@type":"Course","name":"Path 11: Web Security & Hacking","url":"https://kashsec.vercel.app/lesson/11-web-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/11-web-security/xss.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Cross-Site Scripting","headline":"Cross-Site Scripting","description":"You planted the seed for this back in Path 05.2. Now let's fully understand, find, and exploit Cross-Site Scripting — one of the most historically significant web vulnerability classes, and still huge","url":"https://kashsec.vercel.app/lesson/11-web-security/xss.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Reflected, stored, DOM — and how to prove it safely.","isPartOf":{"@type":"Course","name":"Path 11: Web Security & Hacking","url":"https://kashsec.vercel.app/lesson/11-web-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/11-web-security/xss.html"}}
 </script>
 </head>
 <body>
@@ -112,27 +112,6 @@ document.getElementById("greeting").innerHTML = "Hello, " + name;
 </code></pre>
 <p>Visiting <code>https://example.com/?name=&lt;img src=x onerror=alert(1)&gt;</code> triggers execution purely client-side — the server logs might show nothing unusual at all, since the payload never left the browser.</p>
 <h2>A visual comparison</h2>
-<pre><code class="language-mermaid">flowchart TB
-    subgraph Reflected["Reflected XSS"]
-        R1[Attacker crafts URL] --&gt; R2[Victim clicks link]
-        R2 --&gt; R3[Server echoes payload in response]
-        R3 --&gt; R4[Executes in victim's browser]
-    end
-    subgraph Stored["Stored XSS"]
-        S1[Attacker submits payload] --&gt; S2[Server stores it - DB, file]
-        S2 --&gt; S3[Any visitor loads the page]
-        S3 --&gt; S4[Executes in every visitor's browser]
-    end
-    subgraph DOM["DOM-based XSS"]
-        D1[Attacker crafts URL] --&gt; D2[Victim clicks link]
-        D2 --&gt; D3[Client JS reads URL, inserts unsafely]
-        D3 --&gt; D4[Executes — server never involved]
-    end
-
-    style R4 fill:#2b1010,color:#E05548,stroke:#E05548
-    style S4 fill:#2b1010,color:#E05548,stroke:#E05548
-    style D4 fill:#2b1010,color:#E05548,stroke:#E05548
-</code></pre>
 <h2>What an attacker actually does with it</h2>
 <p>Once JavaScript executes on a victim's page, in the site's own origin, the attacker can:</p>
 <ul>
@@ -230,10 +209,8 @@ javascript:alert(1)
 <li>For each, use Burp Repeater to understand exactly how your input reaches the vulnerable sink, then craft the specific payload the lab's context requires.</li>
 </ol>
 <p>Also try the browser console exercise from Path 05.2 again with fresh eyes — you now understand <em>how</em> an attacker's script would land there in the first place, not just what it can do once it has.</p>
-<p>:::challenge Test yourself
-An attacker submits a malicious comment on a blog post. The comment is saved to the database, and every visitor who later reads that post automatically executes the attacker's script. Which type of XSS is this?</p>
-<details><summary>Show answer</summary><strong>Stored XSS.</strong> The payload persists on the server (in the database) and is served to every visitor who views that content — no crafted link or tricking a specific victim into clicking anything is required.</details>
-:::<h2>Key terms</h2>
+<p>An attacker submits a malicious comment on a blog post. The comment is saved to the database, and every visitor who later reads that post automatically executes the attacker's script. Which type of XSS is this?</p>
+<details><summary>Show answer</summary><strong>Stored XSS.</strong> The payload persists on the server (in the database) and is served to every visitor who views that content — no crafted link or tricking a specific victim into clicking anything is required.</details><h2>Key terms</h2>
 <ul>
 <li><strong>XSS</strong> — injecting attacker-controlled JavaScript that executes in another user's browser, in the site's own context.</li>
 <li><strong>Reflected / Stored / DOM-based XSS</strong> — the three types, differing in where the payload lives and how it reaches the victim.</li>

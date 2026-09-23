@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Kubernetes attack paths — Path 16 · KashSec Academy</title>
-<meta name="description" content="Kubernetes attack paths: Chaining one pod compromise into full cluster control.">
+<meta name="description" content="The containers-and-Kubernetes lesson introduced RBAC misconfiguration briefly. This lesson chains together a full, realistic Kubernetes compromise path from a single vulnerable pod to full cluster con">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/16-advanced/kubernetes-attack-paths.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Kubernetes attack paths — Path 16 · KashSec Academy">
-<meta property="og:description" content="Kubernetes attack paths: Chaining one pod compromise into full cluster control.">
+<meta property="og:description" content="The containers-and-Kubernetes lesson introduced RBAC misconfiguration briefly. This lesson chains together a full, realistic Kubernetes compromise path from a single vulnerable pod to full cluster con">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/16-advanced/kubernetes-attack-paths.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Kubernetes attack paths — Path 16 · KashSec Academy">
-<meta name="twitter:description" content="Kubernetes attack paths: Chaining one pod compromise into full cluster control.">
+<meta name="twitter:description" content="The containers-and-Kubernetes lesson introduced RBAC misconfiguration briefly. This lesson chains together a full, realistic Kubernetes compromise path from a single vulnerable pod to full cluster con">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 16 — Advanced Cyber Topics","item":"https://kashsec.vercel.app/lesson/16-advanced/"},{"@type":"ListItem","position":4,"name":"Kubernetes attack paths","item":"https://kashsec.vercel.app/lesson/16-advanced/kubernetes-attack-paths.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Kubernetes attack paths","headline":"Kubernetes attack paths","description":"Kubernetes attack paths: Chaining one pod compromise into full cluster control.","url":"https://kashsec.vercel.app/lesson/16-advanced/kubernetes-attack-paths.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Chaining one pod compromise into full cluster control.","isPartOf":{"@type":"Course","name":"Path 16: Advanced Cyber Topics","url":"https://kashsec.vercel.app/lesson/16-advanced/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/16-advanced/kubernetes-attack-paths.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Kubernetes attack paths","headline":"Kubernetes attack paths","description":"The containers-and-Kubernetes lesson introduced RBAC misconfiguration briefly. This lesson chains together a full, realistic Kubernetes compromise path from a single vulnerable pod to full cluster con","url":"https://kashsec.vercel.app/lesson/16-advanced/kubernetes-attack-paths.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Chaining one pod compromise into full cluster control.","isPartOf":{"@type":"Course","name":"Path 16: Advanced Cyber Topics","url":"https://kashsec.vercel.app/lesson/16-advanced/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/16-advanced/kubernetes-attack-paths.html"}}
 </script>
 </head>
 <body>
@@ -101,21 +101,10 @@
 <h2>Path three: exposed dashboards and etcd</h2>
 <p>Kubernetes clusters occasionally expose administrative interfaces without proper authentication — the <strong>Kubernetes Dashboard</strong>, if misconfigured with excessive default permissions, or <strong>etcd</strong> (the cluster's backing datastore, storing every Secret in the cluster, sometimes in plaintext depending on encryption-at-rest configuration) left reachable without authentication represents one of the most severe possible findings, since etcd access is effectively equivalent to full cluster compromise — every Secret, every ConfigMap, every credential the cluster manages is stored there.</p>
 <h2>Chaining it together: a realistic attack narrative</h2>
-<pre><code class="language-mermaid">flowchart LR
-    A["Exploit vulnerable\nweb app in a pod"] --&gt; B["Read pod's mounted\nservice account token"]
-    B --&gt; C{"RBAC permissions\ntoo broad?"}
-    C --&gt;|Yes| D["Enumerate/modify\ncluster resources via API"]
-    C --&gt;|No| E["Try node metadata\nservice for cloud creds"]
-    D --&gt; F["Locate and read\ncluster Secrets"]
-    E --&gt; F
-    F --&gt; G["Full cluster and/or\ncloud account compromise"]
-</code></pre>
 <h2>Why this matters for real-world defense</h2>
 <p>Directly connecting to the previous lesson's Trivy and RBAC coverage: this chained attack narrative is precisely why Kubernetes security can't be reduced to "scan container images for vulnerabilities" alone — the actual severe compromise path in most real incidents runs through RBAC over-permissioning and metadata service exposure, not through a vulnerable base image, meaning defensive priority has to include the identity and network layers this lesson covers, not just image scanning alone.</p>
-<p>:::challenge Test yourself
-Why does a compromised pod's default service account token represent a genuine escalation risk even when the pod itself was never granted any explicit permissions by name?</p>
-<details><summary>Show answer</summary>Kubernetes mounts a default service account token into every pod automatically unless explicitly disabled, and that default service account frequently has RBAC bindings attached at the namespace or cluster level that were configured for entirely different purposes — sometimes bound broadly during initial cluster setup for convenience, sometimes inherited from a namespace-wide default that was never revisited once the cluster moved from testing into production. An attacker who compromises the application doesn't need the pod itself to have been granted anything special by name; they simply need to read the token file already sitting on disk in every pod by default, then use it to authenticate as whatever that default service account already happens to be permitted to do — meaning the actual risk isn't about what permissions the vulnerable application was intentionally given, it's about what permissions the cluster's overall RBAC configuration happens to grant to the service account that pod runs under, which is exactly why auditing default service account bindings is a standard first step in any real Kubernetes security review.</details>
-:::<h2>Key terms</h2>
+<p>Why does a compromised pod's default service account token represent a genuine escalation risk even when the pod itself was never granted any explicit permissions by name?</p>
+<details><summary>Show answer</summary>Kubernetes mounts a default service account token into every pod automatically unless explicitly disabled, and that default service account frequently has RBAC bindings attached at the namespace or cluster level that were configured for entirely different purposes — sometimes bound broadly during initial cluster setup for convenience, sometimes inherited from a namespace-wide default that was never revisited once the cluster moved from testing into production. An attacker who compromises the application doesn't need the pod itself to have been granted anything special by name; they simply need to read the token file already sitting on disk in every pod by default, then use it to authenticate as whatever that default service account already happens to be permitted to do — meaning the actual risk isn't about what permissions the vulnerable application was intentionally given, it's about what permissions the cluster's overall RBAC configuration happens to grant to the service account that pod runs under, which is exactly why auditing default service account bindings is a standard first step in any real Kubernetes security review.</details><h2>Key terms</h2>
 <ul>
 <li><strong>Service account token</strong> — a credential automatically mounted into every pod, authenticating it to the Kubernetes API as its assigned service account.</li>
 <li><strong>etcd</strong> — Kubernetes' backing datastore, storing every Secret and ConfigMap; unauthenticated access is equivalent to full cluster compromise.</li>

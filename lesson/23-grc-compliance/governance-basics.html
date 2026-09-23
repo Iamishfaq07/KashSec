@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Security Governance Basics — Path 23 · KashSec Academy</title>
-<meta name="description" content="Security Governance Basics: Who decides, and how — policy, standard, procedure, and who's in the room.">
+<meta name="description" content="Governance is the &quot;who decides, and how&quot; layer of security. Without it, even good technical controls drift — nobody owns keeping them alive, and the moment the person who built a control leaves, so do">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/23-grc-compliance/governance-basics.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Security Governance Basics — Path 23 · KashSec Academy">
-<meta property="og:description" content="Security Governance Basics: Who decides, and how — policy, standard, procedure, and who's in the room.">
+<meta property="og:description" content="Governance is the &quot;who decides, and how&quot; layer of security. Without it, even good technical controls drift — nobody owns keeping them alive, and the moment the person who built a control leaves, so do">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/23-grc-compliance/governance-basics.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Security Governance Basics — Path 23 · KashSec Academy">
-<meta name="twitter:description" content="Security Governance Basics: Who decides, and how — policy, standard, procedure, and who's in the room.">
+<meta name="twitter:description" content="Governance is the &quot;who decides, and how&quot; layer of security. Without it, even good technical controls drift — nobody owns keeping them alive, and the moment the person who built a control leaves, so do">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 23 — GRC & Compliance","item":"https://kashsec.vercel.app/lesson/23-grc-compliance/"},{"@type":"ListItem","position":4,"name":"Security Governance Basics","item":"https://kashsec.vercel.app/lesson/23-grc-compliance/governance-basics.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Security Governance Basics","headline":"Security Governance Basics","description":"Security Governance Basics: Who decides, and how — policy, standard, procedure, and who's in the room.","url":"https://kashsec.vercel.app/lesson/23-grc-compliance/governance-basics.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"All levels","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Who decides, and how — policy, standard, procedure, and who's in the room.","isPartOf":{"@type":"Course","name":"Path 23: GRC & Compliance","url":"https://kashsec.vercel.app/lesson/23-grc-compliance/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/23-grc-compliance/governance-basics.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Security Governance Basics","headline":"Security Governance Basics","description":"Governance is the \"who decides, and how\" layer of security. Without it, even good technical controls drift — nobody owns keeping them alive, and the moment the person who built a control leaves, so do","url":"https://kashsec.vercel.app/lesson/23-grc-compliance/governance-basics.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"All levels","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Who decides, and how — policy, standard, procedure, and who's in the room.","isPartOf":{"@type":"Course","name":"Path 23: GRC & Compliance","url":"https://kashsec.vercel.app/lesson/23-grc-compliance/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/23-grc-compliance/governance-basics.html"}}
 </script>
 </head>
 <body>
@@ -89,9 +89,7 @@
     <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/23-grc-compliance/">Path 23 — GRC &amp; Compliance</a> · Security Governance Basics</nav>
     <div class="md" id="content"><article><h1>Security Governance Basics</h1>
 <p>Governance is the "who decides, and how" layer of security. Without it, even good technical controls drift — nobody owns keeping them alive, and the moment the person who built a control leaves, so does the institutional knowledge of why it exists.</p>
-<p>:::tip
-A useful test for whether governance is real: pick any security control at random and ask "who would notice if this silently broke, and how long would it take them to find out?" If the honest answer is "nobody, probably never," governance has a gap.
-:::</p>
+<p>:::</p>
 <h2>What governance actually covers</h2>
 <ul>
 <li><strong>Ownership</strong> — who is accountable for security outcomes? (Often a CISO, but in smaller companies it might be a single engineering lead wearing many hats.)</li>
@@ -100,8 +98,7 @@ A useful test for whether governance is real: pick any security control at rando
 <li><strong>Oversight</strong> — how leadership (and sometimes the board) gets visibility into security posture and risk.</li>
 </ul>
 <p>:::warn
-A policy that exists only as a PDF nobody reads isn't governance — it's paperwork. Real governance means the policy is followed, reviewed, and enforced. Auditors are increasingly good at spotting the difference: ask for the last three access-review tickets, not just the access-review policy document.
-:::</p>
+A policy that exists only as a PDF nobody reads isn't governance — it's paperwork. Real governance means the policy is followed, reviewed, and enforced. Auditors are increasingly good at spotting the difference: ask for the last three access-review tickets, not just the access-review policy document.</p>
 <h2>The governance hierarchy</h2>
 <p>Most mature security programs have a layered structure:</p>
 <ol>
@@ -157,18 +154,22 @@ A policy that exists only as a PDF nobody reads isn't governance — it's paperw
 <h2>🧪 Hands-on lab — build a policy hierarchy</h2>
 <p>Pick a security topic you care about (e.g. "how we handle laptops that get lost or stolen").</p>
 <ol>
-<li>Write one sentence at the <strong>policy</strong> level — the high-level commitment.</li>
-<li>Write one sentence at the <strong>standard</strong> level — the specific measurable rule.</li>
-<li>Write a short numbered <strong>procedure</strong> — the actual steps someone follows.</li>
-<li>Write one optional <strong>guideline</strong> — a recommendation, not a requirement.</li>
-<li>Identify: who should approve each level, and how often should each realistically be reviewed?</li>
-</ol>
-<p>:::challenge Test yourself</p>
-<ol>
-<li>Why does putting a policy change through a heavier approval process than a procedure change make sense operationally?</li>
-<li>In the self-reporting compliance example, what's the simplest governance fix that would have caught the "hotfix" exclusion sooner?</li>
-<li>Name one security control at your own job (or a hypothetical one) and answer: who would notice if it silently broke?
-:::</li>
+<li><p>Write one sentence at the <strong>policy</strong> level — the high-level commitment.</p>
+</li>
+<li><p>Write one sentence at the <strong>standard</strong> level — the specific measurable rule.</p>
+</li>
+<li><p>Write a short numbered <strong>procedure</strong> — the actual steps someone follows.</p>
+</li>
+<li><p>Write one optional <strong>guideline</strong> — a recommendation, not a requirement.</p>
+</li>
+<li><p>Identify: who should approve each level, and how often should each realistically be reviewed?</p>
+</li>
+<li><p>Why does putting a policy change through a heavier approval process than a procedure change make sense operationally?</p>
+</li>
+<li><p>In the self-reporting compliance example, what's the simplest governance fix that would have caught the "hotfix" exclusion sooner?</p>
+</li>
+<li><p>Name one security control at your own job (or a hypothetical one) and answer: who would notice if it silently broke?</p>
+</li>
 </ol>
 <h2>Key terms</h2>
 <ul>

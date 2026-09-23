@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Phase 5: Reporting — Path 14 · KashSec Academy</title>
-<meta name="description" content="Phase 5: Reporting: The deliverable. CVSS, exec summary, details.">
+<meta name="description" content="Here's an uncomfortable truth every professional tester eventually learns: a brilliant finding that's poorly communicated helps no one. The report is the actual deliverable a client pays for — not the">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/14-ethical-hacking/reporting.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Phase 5: Reporting — Path 14 · KashSec Academy">
-<meta property="og:description" content="Phase 5: Reporting: The deliverable. CVSS, exec summary, details.">
+<meta property="og:description" content="Here's an uncomfortable truth every professional tester eventually learns: a brilliant finding that's poorly communicated helps no one. The report is the actual deliverable a client pays for — not the">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/14-ethical-hacking/reporting.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Phase 5: Reporting — Path 14 · KashSec Academy">
-<meta name="twitter:description" content="Phase 5: Reporting: The deliverable. CVSS, exec summary, details.">
+<meta name="twitter:description" content="Here's an uncomfortable truth every professional tester eventually learns: a brilliant finding that's poorly communicated helps no one. The report is the actual deliverable a client pays for — not the">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 14 — Ethical Hacking","item":"https://kashsec.vercel.app/lesson/14-ethical-hacking/"},{"@type":"ListItem","position":4,"name":"Phase 5: Reporting","item":"https://kashsec.vercel.app/lesson/14-ethical-hacking/reporting.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Phase 5: Reporting","headline":"Phase 5: Reporting","description":"Phase 5: Reporting: The deliverable. CVSS, exec summary, details.","url":"https://kashsec.vercel.app/lesson/14-ethical-hacking/reporting.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate→Advanced","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"The deliverable. CVSS, exec summary, details.","isPartOf":{"@type":"Course","name":"Path 14: Ethical Hacking","url":"https://kashsec.vercel.app/lesson/14-ethical-hacking/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/14-ethical-hacking/reporting.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Phase 5: Reporting","headline":"Phase 5: Reporting","description":"Here's an uncomfortable truth every professional tester eventually learns: a brilliant finding that's poorly communicated helps no one. The report is the actual deliverable a client pays for — not the","url":"https://kashsec.vercel.app/lesson/14-ethical-hacking/reporting.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate→Advanced","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"The deliverable. CVSS, exec summary, details.","isPartOf":{"@type":"Course","name":"Path 14: Ethical Hacking","url":"https://kashsec.vercel.app/lesson/14-ethical-hacking/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/14-ethical-hacking/reporting.html"}}
 </script>
 </head>
 <body>
@@ -92,23 +92,6 @@
 <h2>Why the report matters more than beginners expect</h2>
 <p>The client didn't hire you to have fun hacking their systems — they hired you to <strong>understand their risk and know how to fix it</strong>. A report that's technically impressive but unclear, poorly prioritised, or missing remediation guidance fails the actual purpose of the entire engagement, no matter how skilled the underlying testing was.</p>
 <h2>The anatomy of a professional report</h2>
-<pre><code class="language-mermaid">flowchart TB
-    Exec["📋 Executive Summary&lt;br/&gt;(for leadership — no jargon)"]
-    Scope["🎯 Scope &amp; Methodology"]
-    Findings["🔍 Detailed Findings&lt;br/&gt;(one section per vulnerability)"]
-    Risk["📊 Risk Ratings &amp; Prioritisation"]
-    Remediation["🛠 Remediation Guidance"]
-    Appendix["📎 Appendix&lt;br/&gt;(raw evidence, tool output)"]
-
-    Exec --&gt; Scope --&gt; Findings --&gt; Risk --&gt; Remediation --&gt; Appendix
-
-    style Exec fill:#2b1f0a,color:#EFA43A,stroke:#EFA43A
-    style Scope fill:#111927,color:#8496A6,stroke:#8496A6
-    style Findings fill:#2b1010,color:#E05548,stroke:#E05548
-    style Risk fill:#2b1f0a,color:#EFA43A,stroke:#EFA43A
-    style Remediation fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
-    style Appendix fill:#111927,color:#8496A6,stroke:#8496A6
-</code></pre>
 <h3>Executive Summary</h3>
 <p>Written for <strong>non-technical leadership</strong> — the people who read one page and make budget/priority decisions based on it. No jargon, no CVE numbers, no code snippets. Answer three questions: <em>What did we test? What did we find, in business terms? What should you do about it, urgently or otherwise?</em></p>
 <pre><code class="language-markdown">## Executive Summary
@@ -223,10 +206,8 @@ detailed guidance: [link]
 <li>Remediation guidance (specific, actionable)</li>
 </ol>
 <p>This single exercise — writing one finding properly — is more valuable practice than reading ten more pages of theory, and directly transferable to real bug bounty submissions in the very next path.</p>
-<p>:::challenge Test yourself
-A report states: "SQL injection was found in the login form. This is bad and should be fixed." What's missing that would make this a professional-quality finding?</p>
-<details><summary>Show answer</summary>Nearly everything from the four-part structure: <strong>exact reproduction steps</strong> (which field, what payload, what request), <strong>concrete impact</strong> (what could actually be accessed/done — full database dump? authentication bypass?), a <strong>severity rating</strong> grounded in a consistent methodology like CVSS, and <strong>specific remediation guidance</strong> (parameterised queries, not just "fix it"). "This is bad and should be fixed" is an opinion, not a professional finding — it gives the reader no way to verify, prioritise, or act on it.</details>
-:::<h2>Key terms</h2>
+<p>A report states: "SQL injection was found in the login form. This is bad and should be fixed." What's missing that would make this a professional-quality finding?</p>
+<details><summary>Show answer</summary>Nearly everything from the four-part structure: <strong>exact reproduction steps</strong> (which field, what payload, what request), <strong>concrete impact</strong> (what could actually be accessed/done — full database dump? authentication bypass?), a <strong>severity rating</strong> grounded in a consistent methodology like CVSS, and <strong>specific remediation guidance</strong> (parameterised queries, not just "fix it"). "This is bad and should be fixed" is an opinion, not a professional finding — it gives the reader no way to verify, prioritise, or act on it.</details><h2>Key terms</h2>
 <ul>
 <li><strong>Executive Summary</strong> — the non-technical, business-focused opening section for leadership readers.</li>
 <li><strong>CVSS score/vector</strong> — the standardised severity scoring system (Path 10.2), giving objective comparability across findings.</li>

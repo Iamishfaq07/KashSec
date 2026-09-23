@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Where to go next — Path 04 · KashSec Academy</title>
-<meta name="description" content="Where to go next: requests, socket, hashlib — and a mini port checker.">
+<meta name="description" content="You've written real code. Here's a compact tour of the Python you'll want next — the libraries and idioms that turn &quot;beginner&quot; into &quot;self-sufficient security scripter.&quot;">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/04-python/where-next.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Where to go next — Path 04 · KashSec Academy">
-<meta property="og:description" content="Where to go next: requests, socket, hashlib — and a mini port checker.">
+<meta property="og:description" content="You've written real code. Here's a compact tour of the Python you'll want next — the libraries and idioms that turn &quot;beginner&quot; into &quot;self-sufficient security scripter.&quot;">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/04-python/where-next.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Where to go next — Path 04 · KashSec Academy">
-<meta name="twitter:description" content="Where to go next: requests, socket, hashlib — and a mini port checker.">
+<meta name="twitter:description" content="You've written real code. Here's a compact tour of the Python you'll want next — the libraries and idioms that turn &quot;beginner&quot; into &quot;self-sufficient security scripter.&quot;">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 04 — Programming & Python","item":"https://kashsec.vercel.app/lesson/04-python/"},{"@type":"ListItem","position":4,"name":"Where to go next","item":"https://kashsec.vercel.app/lesson/04-python/where-next.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Where to go next","headline":"Where to go next","description":"Where to go next: requests, socket, hashlib — and a mini port checker.","url":"https://kashsec.vercel.app/lesson/04-python/where-next.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"requests, socket, hashlib — and a mini port checker.","isPartOf":{"@type":"Course","name":"Path 04: Programming & Python","url":"https://kashsec.vercel.app/lesson/04-python/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/04-python/where-next.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Where to go next","headline":"Where to go next","description":"You've written real code. Here's a compact tour of the Python you'll want next — the libraries and idioms that turn \"beginner\" into \"self-sufficient security scripter.\"","url":"https://kashsec.vercel.app/lesson/04-python/where-next.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"requests, socket, hashlib — and a mini port checker.","isPartOf":{"@type":"Course","name":"Path 04: Programming & Python","url":"https://kashsec.vercel.app/lesson/04-python/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/04-python/where-next.html"}}
 </script>
 </head>
 <body>
@@ -284,30 +284,15 @@ def test_long():
 </ul>
 <p>Even a small tool with all these boxes ticked screams "real developer."</p>
 <h2>The Python + security career loop</h2>
-<pre><code class="language-mermaid">flowchart LR
-    Learn[Learn a concept] --&gt; Build[Build a tiny tool with it]
-    Build --&gt; Publish[Publish on GitHub]
-    Publish --&gt; Share[Share on Twitter/LinkedIn]
-    Share --&gt; Meet[Meet others doing similar]
-    Meet --&gt; Learn
-
-    style Learn fill:#111927,color:#3FB6A8,stroke:#3FB6A8
-    style Build fill:#2b1f0a,color:#EFA43A,stroke:#EFA43A
-    style Publish fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
-    style Share fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
-    style Meet fill:#111927,color:#3FB6A8,stroke:#3FB6A8
-</code></pre>
 <p>This loop is how careers compound in security. Every small tool becomes a portfolio piece, a conversation starter, and — often — a job lead.</p>
-<p>:::challenge Reflection
-Name one <strong>specific tiny tool</strong> you'll build in the next two weeks using what you've learned. Write it in your notes now.</p>
+<p>Name one <strong>specific tiny tool</strong> you'll build in the next two weeks using what you've learned. Write it in your notes now.</p>
 <details><summary>Show some ideas</summary>
 - A CLI that resolves a list of subdomains and prints the ones with a specific HTTP status code.<br />
 - A password-strength API server (Flask, tiny).<br />
 - A log-file grep tool with coloured output using <code>rich</code>.<br />
 - A tiny recon aggregator that runs whois, dig, and curl -I on a target.<br />
 - A HIBP-check email tool that reads a list and prints breach counts.
-</details>
-:::<h2>Key terms</h2>
+</details><h2>Key terms</h2>
 <ul>
 <li><strong>requests</strong> — Python's standard HTTP client.</li>
 <li><strong>argparse</strong> — build proper command-line interfaces.</li>

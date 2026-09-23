@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>SAST, DAST &amp; SCA — The Core Scanning Trio — Path 22 · KashSec Academy</title>
-<meta name="description" content="SAST, DAST &amp; SCA — The Core Scanning Trio: Static analysis, dynamic testing, and dependency scanning — how they fit together.">
+<meta name="description" content="Three families of tools form the backbone of most AppSec programs. They find genuinely different things, which is why mature programs run all three rather than arguing about which is best.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/22-devsecops-appsec/sast-dast-sca.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="SAST, DAST &amp; SCA — The Core Scanning Trio — Path 22 · KashSec Academy">
-<meta property="og:description" content="SAST, DAST &amp; SCA — The Core Scanning Trio: Static analysis, dynamic testing, and dependency scanning — how they fit together.">
+<meta property="og:description" content="Three families of tools form the backbone of most AppSec programs. They find genuinely different things, which is why mature programs run all three rather than arguing about which is best.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/22-devsecops-appsec/sast-dast-sca.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="SAST, DAST &amp; SCA — The Core Scanning Trio — Path 22 · KashSec Academy">
-<meta name="twitter:description" content="SAST, DAST &amp; SCA — The Core Scanning Trio: Static analysis, dynamic testing, and dependency scanning — how they fit together.">
+<meta name="twitter:description" content="Three families of tools form the backbone of most AppSec programs. They find genuinely different things, which is why mature programs run all three rather than arguing about which is best.">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 22 — DevSecOps & AppSec Program","item":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/"},{"@type":"ListItem","position":4,"name":"SAST, DAST & SCA — The Core Scanning Trio","item":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/sast-dast-sca.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"SAST, DAST & SCA — The Core Scanning Trio","headline":"SAST, DAST & SCA — The Core Scanning Trio","description":"SAST, DAST & SCA — The Core Scanning Trio: Static analysis, dynamic testing, and dependency scanning — how they fit together.","url":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/sast-dast-sca.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Static analysis, dynamic testing, and dependency scanning — how they fit together.","isPartOf":{"@type":"Course","name":"Path 22: DevSecOps & AppSec Program","url":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/sast-dast-sca.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"SAST, DAST & SCA — The Core Scanning Trio","headline":"SAST, DAST & SCA — The Core Scanning Trio","description":"Three families of tools form the backbone of most AppSec programs. They find genuinely different things, which is why mature programs run all three rather than arguing about which is best.","url":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/sast-dast-sca.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Static analysis, dynamic testing, and dependency scanning — how they fit together.","isPartOf":{"@type":"Course","name":"Path 22: DevSecOps & AppSec Program","url":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/sast-dast-sca.html"}}
 </script>
 </head>
 <body>
@@ -89,9 +89,7 @@
     <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/22-devsecops-appsec/">Path 22 — DevSecOps &amp; AppSec Program</a> · SAST, DAST &amp; SCA — The Core Scanning Trio</nav>
     <div class="md" id="content"><article><h1>SAST, DAST &amp; SCA — The Core Scanning Trio</h1>
 <p>Three families of tools form the backbone of most AppSec programs. They find genuinely different things, which is why mature programs run all three rather than arguing about which is best.</p>
-<p>:::tip
-The one-line version: <strong>SAST reads your code, DAST attacks your running app, SCA checks everyone else's code that you shipped.</strong>
-:::</p>
+<p>:::</p>
 <h2>SAST — Static Application Security Testing</h2>
 <p>Analyses source code or bytecode <em>without running the application</em>. Think of it as a very pedantic reviewer who has read every line but has never seen the program actually execute.</p>
 <p><strong>Strengths</strong></p>
@@ -135,8 +133,7 @@ db.execute(query)
 </ul>
 <p><strong>Examples</strong>: OWASP ZAP, Burp Suite Enterprise, Nuclei</p>
 <p>:::warn
-The most common DAST failure is <strong>authentication</strong>. If the scanner can't log in, it tests only your marketing pages and reports a clean bill of health for an application it never actually touched. Always check the coverage report, not just the findings count.
-:::</p>
+The most common DAST failure is <strong>authentication</strong>. If the scanner can't log in, it tests only your marketing pages and reports a clean bill of health for an application it never actually touched. Always check the coverage report, not just the findings count.</p>
 <h2>SCA — Software Composition Analysis</h2>
 <p>Looks at third-party dependencies (npm, Maven, pip, Go modules) and flags known vulnerabilities, license risk, and outdated packages.</p>
 <p>This matters more than people expect. A typical modern web application is <strong>80–90% code you did not write</strong>. Your own logic is a thin shell around a mountain of dependencies.</p>
@@ -237,9 +234,7 @@ Release
 <li><strong>Introduce DAST once staging is stable</strong> and you can script authentication properly.</li>
 <li><strong>Always pair tools with a triage process.</strong> Findings that nobody owns will rot, and a rotting backlog is worse than nothing because it creates the illusion of coverage.</li>
 </ol>
-<p>:::tip
-On GitHub, a solid free-tier starter stack is Dependabot (SCA) + CodeQL (SAST) + secret scanning. All three are configurable from the Settings → Code security page, and for public repositories they cost nothing.
-:::</p>
+<p>:::</p>
 <h2>🧪 Hands-on lab — run all three against one app</h2>
 <p>Use OWASP Juice Shop, a deliberately vulnerable app built for exactly this.</p>
 <p><strong>SCA (5 minutes)</strong></p>
@@ -263,8 +258,7 @@ semgrep --config=auto .
 <ol>
 <li>Your SAST tool flags a SQL injection in code that takes input from an internal config file, not from users. Real issue or false positive? What extra information would change your answer?</li>
 <li>A DAST scan of your app returns zero findings. Name three reasons that might be bad news rather than good news.</li>
-<li>SCA reports a critical CVE in a library your app depends on, but the vulnerable function is never called. Do you fix it? Argue both sides.
-:::</li>
+<li>SCA reports a critical CVE in a library your app depends on, but the vulnerable function is never called. Do you fix it? Argue both sides.</li>
 </ol>
 <h2>Key terms</h2>
 <ul>

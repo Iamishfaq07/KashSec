@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Object-oriented Python basics — Path 04 · KashSec Academy</title>
-<meta name="description" content="Object-oriented Python basics: Classes, objects, and why real tools bundle data with behavior.">
+<meta name="description" content="You've built the password checker using functions and data working together, but kept somewhat separate. This lesson introduces classes — Python's way of bundling data and the functions that operate o">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/04-python/object-oriented-python-basics.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Object-oriented Python basics — Path 04 · KashSec Academy">
-<meta property="og:description" content="Object-oriented Python basics: Classes, objects, and why real tools bundle data with behavior.">
+<meta property="og:description" content="You've built the password checker using functions and data working together, but kept somewhat separate. This lesson introduces classes — Python's way of bundling data and the functions that operate o">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/04-python/object-oriented-python-basics.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Object-oriented Python basics — Path 04 · KashSec Academy">
-<meta name="twitter:description" content="Object-oriented Python basics: Classes, objects, and why real tools bundle data with behavior.">
+<meta name="twitter:description" content="You've built the password checker using functions and data working together, but kept somewhat separate. This lesson introduces classes — Python's way of bundling data and the functions that operate o">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 04 — Programming & Python","item":"https://kashsec.vercel.app/lesson/04-python/"},{"@type":"ListItem","position":4,"name":"Object-oriented Python basics","item":"https://kashsec.vercel.app/lesson/04-python/object-oriented-python-basics.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Object-oriented Python basics","headline":"Object-oriented Python basics","description":"Object-oriented Python basics: Classes, objects, and why real tools bundle data with behavior.","url":"https://kashsec.vercel.app/lesson/04-python/object-oriented-python-basics.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Classes, objects, and why real tools bundle data with behavior.","isPartOf":{"@type":"Course","name":"Path 04: Programming & Python","url":"https://kashsec.vercel.app/lesson/04-python/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/04-python/object-oriented-python-basics.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Object-oriented Python basics","headline":"Object-oriented Python basics","description":"You've built the password checker using functions and data working together, but kept somewhat separate. This lesson introduces classes — Python's way of bundling data and the functions that operate o","url":"https://kashsec.vercel.app/lesson/04-python/object-oriented-python-basics.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Classes, objects, and why real tools bundle data with behavior.","isPartOf":{"@type":"Course","name":"Path 04: Programming & Python","url":"https://kashsec.vercel.app/lesson/04-python/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/04-python/object-oriented-python-basics.html"}}
 </script>
 </head>
 <body>
@@ -132,13 +132,9 @@ for target in targets:
     print(f"{target.ip_address}:{target.port} is {status}")
 </code></pre>
 <p>Each <code>ScanTarget</code> object independently tracks its own state — this pattern of "one object per real-world thing being tracked" is genuinely how many real security tools (vulnerability scanners, asset inventory tools) are actually structured internally.</p>
-<p>:::tip You don't need to master this immediately
-Object-oriented programming is a genuinely deep topic, and plenty of useful, working security scripts get written using just functions and dictionaries, the way earlier lessons in this path did. The goal here is recognition — knowing what a class is and roughly why it's useful — so that when you read real-world security tool source code (and you will, constantly, in this field) the pattern looks familiar rather than mysterious.
-:::</p>
-<p>:::challenge Test yourself
-Why might bundling <code>ip_address</code>, <code>port</code>, and <code>is_open</code> together inside a <code>ScanTarget</code> class be more organized than tracking the same information using three separate lists (one for IPs, one for ports, one for results)?</p>
-<details><summary>Show answer</summary>With three separate lists, you'd need to carefully keep track of which index in each list corresponds to the same target — item 5 in the IP list, item 5 in the port list, and item 5 in the results list would all need to line up correctly, and it's genuinely easy to introduce a bug where one list gets out of sync with the others (say, after sorting one list but not the others). Bundling the related data into a single <code>ScanTarget</code> object keeps everything about one specific target — its address, its port, its result — inherently together as one unit, making it structurally impossible for that specific target's own data to get mismatched with a different target's data, regardless of how the collection of targets gets sorted, filtered, or reordered.</details>
-:::<h2>Key terms</h2>
+<p>Object-oriented programming is a genuinely deep topic, and plenty of useful, working security scripts get written using just functions and dictionaries, the way earlier lessons in this path did. The goal here is recognition — knowing what a class is and roughly why it's useful — so that when you read real-world security tool source code (and you will, constantly, in this field) the pattern looks familiar rather than mysterious.</p>
+<p>Why might bundling <code>ip_address</code>, <code>port</code>, and <code>is_open</code> together inside a <code>ScanTarget</code> class be more organized than tracking the same information using three separate lists (one for IPs, one for ports, one for results)?</p>
+<details><summary>Show answer</summary>With three separate lists, you'd need to carefully keep track of which index in each list corresponds to the same target — item 5 in the IP list, item 5 in the port list, and item 5 in the results list would all need to line up correctly, and it's genuinely easy to introduce a bug where one list gets out of sync with the others (say, after sorting one list but not the others). Bundling the related data into a single <code>ScanTarget</code> object keeps everything about one specific target — its address, its port, its result — inherently together as one unit, making it structurally impossible for that specific target's own data to get mismatched with a different target's data, regardless of how the collection of targets gets sorted, filtered, or reordered.</details><h2>Key terms</h2>
 <ul>
 <li><strong>Class</strong> — a blueprint for creating objects that bundle data and behavior together.</li>
 <li><strong>Object</strong> — a specific instance created from a class.</li>

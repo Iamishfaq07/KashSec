@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Linux Networking Commands — Path 03 · KashSec Academy</title>
-<meta name="description" content="Linux Networking Commands: ip, ss, curl, and a first, careful preview of nmap.">
+<meta name="description" content="Path 02 covered networking concepts and cross-platform troubleshooting tools. This lesson is the Linux-specific practical follow-up — the exact commands you'll use constantly once you're actually work">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/03-linux/linux-networking-commands.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Linux Networking Commands — Path 03 · KashSec Academy">
-<meta property="og:description" content="Linux Networking Commands: ip, ss, curl, and a first, careful preview of nmap.">
+<meta property="og:description" content="Path 02 covered networking concepts and cross-platform troubleshooting tools. This lesson is the Linux-specific practical follow-up — the exact commands you'll use constantly once you're actually work">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/03-linux/linux-networking-commands.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Linux Networking Commands — Path 03 · KashSec Academy">
-<meta name="twitter:description" content="Linux Networking Commands: ip, ss, curl, and a first, careful preview of nmap.">
+<meta name="twitter:description" content="Path 02 covered networking concepts and cross-platform troubleshooting tools. This lesson is the Linux-specific practical follow-up — the exact commands you'll use constantly once you're actually work">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 03 — Operating Systems & Linux","item":"https://kashsec.vercel.app/lesson/03-linux/"},{"@type":"ListItem","position":4,"name":"Linux Networking Commands","item":"https://kashsec.vercel.app/lesson/03-linux/linux-networking-commands.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Linux Networking Commands","headline":"Linux Networking Commands","description":"Linux Networking Commands: ip, ss, curl, and a first, careful preview of nmap.","url":"https://kashsec.vercel.app/lesson/03-linux/linux-networking-commands.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"ip, ss, curl, and a first, careful preview of nmap.","isPartOf":{"@type":"Course","name":"Path 03: Operating Systems & Linux","url":"https://kashsec.vercel.app/lesson/03-linux/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/03-linux/linux-networking-commands.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Linux Networking Commands","headline":"Linux Networking Commands","description":"Path 02 covered networking concepts and cross-platform troubleshooting tools. This lesson is the Linux-specific practical follow-up — the exact commands you'll use constantly once you're actually work","url":"https://kashsec.vercel.app/lesson/03-linux/linux-networking-commands.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"ip, ss, curl, and a first, careful preview of nmap.","isPartOf":{"@type":"Course","name":"Path 03: Operating Systems & Linux","url":"https://kashsec.vercel.app/lesson/03-linux/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/03-linux/linux-networking-commands.html"}}
 </script>
 </head>
 <body>
@@ -112,13 +112,9 @@ wget https://example.com/file.zip            # download a file directly
 <p><code>curl</code> in particular is genuinely essential throughout security work — testing an API (Path 21), checking HTTP security headers (the tool from Path 11's material), or simply confirming a web service is responding as expected, all without ever opening a browser.</p>
 <h2>nmap: the network scanner you'll meet properly in Path 14</h2>
 <p>A brief preview, since you'll see the name constantly from here forward: <strong><code>nmap</code></strong> scans a target for open ports and running services — one of the single most important tools in a security professional's toolkit, covered in full, careful, authorized-use-only depth in Path 14's ethical hacking material. Mentioned here specifically so the name is already familiar when it reappears with the legal and ethical context it deserves.</p>
-<p>:::danger nmap needs the same permission the golden rule requires
-Exactly like Path 01's golden-rule lesson emphasized: scanning a network or system you don't have explicit permission to test is not something to casually try "just to see what it does." Save hands-on <code>nmap</code> practice for your own lab environment (Path 01's home-lab lesson) or Path 14's properly authorized material.
-:::</p>
-<p>:::challenge Test yourself
-Why is checking active listening connections (<code>netstat</code>/<code>ss</code>) a genuinely valuable security habit, not just a networking curiosity?</p>
-<details><summary>Show answer</summary>A listening port represents a service actively waiting to accept incoming connections — and an unexpected listening port is one of the clearest, most direct signs that something on the system is reachable that shouldn't be, whether that's a misconfigured service accidentally exposed to the network or an actual backdoor an attacker installed. This directly extends the recognizing-compromise principle from Path 07 (originally covered for Windows) to Linux: knowing what "normal" looks like on a system you're responsible for — which ports should legitimately be listening — is exactly what makes an unexpected one stand out as worth investigating.</details>
-:::<h2>Key terms</h2>
+<p>Exactly like Path 01's golden-rule lesson emphasized: scanning a network or system you don't have explicit permission to test is not something to casually try "just to see what it does." Save hands-on <code>nmap</code> practice for your own lab environment (Path 01's home-lab lesson) or Path 14's properly authorized material.</p>
+<p>Why is checking active listening connections (<code>netstat</code>/<code>ss</code>) a genuinely valuable security habit, not just a networking curiosity?</p>
+<details><summary>Show answer</summary>A listening port represents a service actively waiting to accept incoming connections — and an unexpected listening port is one of the clearest, most direct signs that something on the system is reachable that shouldn't be, whether that's a misconfigured service accidentally exposed to the network or an actual backdoor an attacker installed. This directly extends the recognizing-compromise principle from Path 07 (originally covered for Windows) to Linux: knowing what "normal" looks like on a system you're responsible for — which ports should legitimately be listening — is exactly what makes an unexpected one stand out as worth investigating.</details><h2>Key terms</h2>
 <ul>
 <li><strong>ss</strong> — the modern replacement for <code>netstat</code>, showing active network connections and listening ports.</li>
 <li><strong>curl</strong> — a command-line tool for making HTTP requests directly from the terminal.</li>

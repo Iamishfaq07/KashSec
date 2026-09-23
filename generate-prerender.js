@@ -243,7 +243,9 @@ for (const p of PATHS) {
     const rel = `course/${p.id}/${s.id}.md`;
     const src = path.join(ROOT, rel);
     if (!fs.existsSync(src)) continue;
-    const md = fs.readFileSync(src, 'utf8');
+    // Git checkouts may use CRLF on Windows and LF in CI. Normalize before
+    // Markdown parsing so committed HTML is byte-identical on both.
+    const md = fs.readFileSync(src, 'utf8').replace(/\r\n?/g, '\n');
     const canonical = `${SITE}/lesson/${p.id}/${s.id}.html`;
     const spaPath = `/#/lesson/${p.id}/${s.id}`;
     const title = `${s.title} — Path ${p.n} · KashSec Academy`;

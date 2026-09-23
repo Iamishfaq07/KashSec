@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>What is Cloud Computing? — Path 08 · KashSec Academy</title>
-<meta name="description" content="What is Cloud Computing?: IaaS/PaaS/SaaS, and why this course is itself a cloud example.">
+<meta name="description" content="Path 16's cloud security lesson and its flAWS lab jump straight into cloud misconfigurations — S3 buckets, IAM roles, IMDS exploitation. This path backs up to fundamentals first: what cloud computing ">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/08-cloud-basics/what-is-cloud-computing.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="What is Cloud Computing? — Path 08 · KashSec Academy">
-<meta property="og:description" content="What is Cloud Computing?: IaaS/PaaS/SaaS, and why this course is itself a cloud example.">
+<meta property="og:description" content="Path 16's cloud security lesson and its flAWS lab jump straight into cloud misconfigurations — S3 buckets, IAM roles, IMDS exploitation. This path backs up to fundamentals first: what cloud computing ">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/08-cloud-basics/what-is-cloud-computing.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="What is Cloud Computing? — Path 08 · KashSec Academy">
-<meta name="twitter:description" content="What is Cloud Computing?: IaaS/PaaS/SaaS, and why this course is itself a cloud example.">
+<meta name="twitter:description" content="Path 16's cloud security lesson and its flAWS lab jump straight into cloud misconfigurations — S3 buckets, IAM roles, IMDS exploitation. This path backs up to fundamentals first: what cloud computing ">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 08 — Cloud Computing Basics","item":"https://kashsec.vercel.app/lesson/08-cloud-basics/"},{"@type":"ListItem","position":4,"name":"What is Cloud Computing?","item":"https://kashsec.vercel.app/lesson/08-cloud-basics/what-is-cloud-computing.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"What is Cloud Computing?","headline":"What is Cloud Computing?","description":"What is Cloud Computing?: IaaS/PaaS/SaaS, and why this course is itself a cloud example.","url":"https://kashsec.vercel.app/lesson/08-cloud-basics/what-is-cloud-computing.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"IaaS/PaaS/SaaS, and why this course is itself a cloud example.","isPartOf":{"@type":"Course","name":"Path 08: Cloud Computing Basics","url":"https://kashsec.vercel.app/lesson/08-cloud-basics/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/08-cloud-basics/what-is-cloud-computing.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"What is Cloud Computing?","headline":"What is Cloud Computing?","description":"Path 16's cloud security lesson and its flAWS lab jump straight into cloud misconfigurations — S3 buckets, IAM roles, IMDS exploitation. This path backs up to fundamentals first: what cloud computing ","url":"https://kashsec.vercel.app/lesson/08-cloud-basics/what-is-cloud-computing.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"IaaS/PaaS/SaaS, and why this course is itself a cloud example.","isPartOf":{"@type":"Course","name":"Path 08: Cloud Computing Basics","url":"https://kashsec.vercel.app/lesson/08-cloud-basics/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/08-cloud-basics/what-is-cloud-computing.html"}}
 </script>
 </head>
 <body>
@@ -91,10 +91,6 @@
 <p>Path 16's cloud security lesson and its flAWS lab jump straight into cloud <em>misconfigurations</em> — S3 buckets, IAM roles, IMDS exploitation. This path backs up to fundamentals first: what cloud computing actually is, before you can meaningfully secure it. If you've felt like Path 16's cloud content assumed knowledge you didn't quite have, this path fills that gap.</p>
 <h2>The core idea — renting computing instead of owning it</h2>
 <p>Before cloud computing, running a website or application meant buying physical servers, housing them somewhere with power and cooling, and maintaining the hardware yourself. <strong>Cloud computing</strong> replaces this with renting computing resources — servers, storage, databases — from a provider's massive, shared infrastructure, paying only for what you actually use, scaling up or down on demand.</p>
-<pre><code class="language-mermaid">flowchart LR
-    A["Traditional:\nbuy &amp; maintain\nyour own servers"] -.-&gt;|slow, expensive,\nfixed capacity| B[Your Application]
-    C["Cloud:\nrent capacity from\na provider on-demand"] --&gt;|fast, flexible,\nscales as needed| B
-</code></pre>
 <h2>The three service models</h2>
 <p>Cloud services are typically categorized by how much you manage yourself versus how much the provider handles:</p>
 <table>
@@ -125,10 +121,6 @@
 <td>Gmail, Salesforce, this very course's own hosting via Vercel</td>
 </tr>
 </tbody></table>
-<pre><code class="language-mermaid">flowchart TD
-    A[IaaS - most control,\nmost responsibility] --&gt; B[PaaS - balanced]
-    B --&gt; C[SaaS - least control,\nleast responsibility]
-</code></pre>
 <p>This spectrum matters enormously for security, and directly sets up Path 16's cloud security lesson: the less you manage yourself, the less <em>you're</em> directly responsible for securing — but also the less control you have. This tradeoff has a name — the <strong>shared responsibility model</strong> — covered in depth in a dedicated lesson later in this path.</p>
 <h2>Why cloud computing matters for security specifically</h2>
 <p>A huge and growing share of modern infrastructure runs in the cloud — meaning a huge share of real-world security work now involves cloud-specific concepts: identity and access management (IAM), storage buckets, virtual networks, and container orchestration (Path 16's containers/Kubernetes lab), none of which map perfectly onto the traditional on-premises security model this course built up through Paths 02-03 and 08.</p>
@@ -142,13 +134,9 @@
 <p>Beyond the three classic models above, <strong>serverless computing</strong> (AWS Lambda, Azure Functions, Google Cloud Functions) deserves its own mention, since it's increasingly common and doesn't fit neatly into IaaS/PaaS/SaaS. Despite the name, servers absolutely still exist underneath — "serverless" means the provider handles all server management entirely invisibly, and you simply write a small function that runs in response to an event (an HTTP request, a file upload, a scheduled timer), paying only for the exact compute time your function actually consumes, down to fractions of a second, with zero cost when it's not running at all. This takes the PaaS trend even further: you don't even choose an instance size or manage a running server process — you just supply code and an event trigger. Security-wise, this shifts the model again: you're now responsible for securing your function's code and its permissions (exactly the "excessive agency"-style over-permissioning risk from Path 18's AI security material, applied to serverless IAM roles instead of AI tool access) while the provider handles literally everything below your function's own logic.</p>
 <h2>Scalability and elasticity — the core value proposition</h2>
 <p>Beyond just "renting instead of owning," cloud computing's genuine value comes from <strong>elasticity</strong> — automatically scaling resources up during high demand (a sudden traffic spike) and back down when demand drops, paying only for what's actually used at any given moment. This is a fundamentally different operational model than traditional fixed-capacity infrastructure, and it introduces its own security considerations: newly auto-provisioned resources need to inherit the same security configuration as everything else, or they become an unmonitored gap the moment they spin up.</p>
-<p>:::tip This course is itself a cloud computing example
-KashSec Academy is hosted on Vercel — a <strong>PaaS</strong> platform, per the table above. You (or whoever manages this course) never had to provision a physical server, configure an operating system, or manage scaling — just push code, and the platform handles everything below that layer. This is genuinely the same model powering an enormous share of modern web applications.
-:::</p>
-<p>:::challenge Test yourself
-Why does the IaaS/PaaS/SaaS spectrum matter directly for security responsibility, not just cost and convenience?</p>
-<details><summary>Show answer</summary>Each layer of the stack you don't manage yourself is a layer the <em>provider</em> is responsible for securing instead of you — but it's also a layer you have no direct control or visibility over. With IaaS, you're responsible for patching your own operating system and configuring your own firewall rules (much like the Windows/Linux hardening practiced elsewhere in this course), while the provider only guarantees the physical hardware and virtualization layer beneath you. With SaaS, you have almost no infrastructure to secure directly — but you're also trusting the provider entirely for the security of everything below your own data and configuration, with essentially no visibility into how well they're actually doing that. This exact tradeoff — control versus responsibility — is what the shared responsibility model formalizes, and understanding which service model you're using is the very first question in any cloud security assessment, since it defines what's actually in scope for you to test or fix versus what's the provider's job entirely.</details>
-:::<h2>Key terms</h2>
+<p>KashSec Academy is hosted on Vercel — a <strong>PaaS</strong> platform, per the table above. You (or whoever manages this course) never had to provision a physical server, configure an operating system, or manage scaling — just push code, and the platform handles everything below that layer. This is genuinely the same model powering an enormous share of modern web applications.</p>
+<p>Why does the IaaS/PaaS/SaaS spectrum matter directly for security responsibility, not just cost and convenience?</p>
+<details><summary>Show answer</summary>Each layer of the stack you don't manage yourself is a layer the <em>provider</em> is responsible for securing instead of you — but it's also a layer you have no direct control or visibility over. With IaaS, you're responsible for patching your own operating system and configuring your own firewall rules (much like the Windows/Linux hardening practiced elsewhere in this course), while the provider only guarantees the physical hardware and virtualization layer beneath you. With SaaS, you have almost no infrastructure to secure directly — but you're also trusting the provider entirely for the security of everything below your own data and configuration, with essentially no visibility into how well they're actually doing that. This exact tradeoff — control versus responsibility — is what the shared responsibility model formalizes, and understanding which service model you're using is the very first question in any cloud security assessment, since it defines what's actually in scope for you to test or fix versus what's the provider's job entirely.</details><h2>Key terms</h2>
 <ul>
 <li><strong>IaaS / PaaS / SaaS</strong> — the three cloud service models, differing in how much of the stack you manage versus the provider.</li>
 <li><strong>Elasticity</strong> — automatically scaling resources up or down based on real-time demand.</li>

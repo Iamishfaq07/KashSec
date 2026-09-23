@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Industrial Protocols: Modbus, DNP3, and Why Their Design Causes Security Problems — Path 25 · KashSec Academy</title>
-<meta name="description" content="Industrial Protocols: Modbus, DNP3, and Why Their Design Causes Security Problems: Protocols with no built-in authentication, and why 'just add TLS' doesn't work.">
+<meta name="description" content="The previous lesson described the sense-decide-act loop conceptually. This lesson gets concrete about how the pieces actually talk to each other — and why the protocols carrying that conversation are,">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/25-ot-ics-security/industrial-protocols.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Industrial Protocols: Modbus, DNP3, and Why Their Design Causes Security Problems — Path 25 · KashSec Academy">
-<meta property="og:description" content="Industrial Protocols: Modbus, DNP3, and Why Their Design Causes Security Problems: Protocols with no built-in authentication, and why 'just add TLS' doesn't work.">
+<meta property="og:description" content="The previous lesson described the sense-decide-act loop conceptually. This lesson gets concrete about how the pieces actually talk to each other — and why the protocols carrying that conversation are,">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/25-ot-ics-security/industrial-protocols.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Industrial Protocols: Modbus, DNP3, and Why Their Design Causes Security Problems — Path 25 · KashSec Academy">
-<meta name="twitter:description" content="Industrial Protocols: Modbus, DNP3, and Why Their Design Causes Security Problems: Protocols with no built-in authentication, and why 'just add TLS' doesn't work.">
+<meta name="twitter:description" content="The previous lesson described the sense-decide-act loop conceptually. This lesson gets concrete about how the pieces actually talk to each other — and why the protocols carrying that conversation are,">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 25 — OT/ICS & Critical Infrastructure Security","item":"https://kashsec.vercel.app/lesson/25-ot-ics-security/"},{"@type":"ListItem","position":4,"name":"Industrial Protocols: Modbus, DNP3, and Why Their Design Causes Security Problems","item":"https://kashsec.vercel.app/lesson/25-ot-ics-security/industrial-protocols.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Industrial Protocols: Modbus, DNP3, and Why Their Design Causes Security Problems","headline":"Industrial Protocols: Modbus, DNP3, and Why Their Design Causes Security Problems","description":"Industrial Protocols: Modbus, DNP3, and Why Their Design Causes Security Problems: Protocols with no built-in authentication, and why 'just add TLS' doesn't work.","url":"https://kashsec.vercel.app/lesson/25-ot-ics-security/industrial-protocols.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Protocols with no built-in authentication, and why 'just add TLS' doesn't work.","isPartOf":{"@type":"Course","name":"Path 25: OT/ICS & Critical Infrastructure Security","url":"https://kashsec.vercel.app/lesson/25-ot-ics-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/25-ot-ics-security/industrial-protocols.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Industrial Protocols: Modbus, DNP3, and Why Their Design Causes Security Problems","headline":"Industrial Protocols: Modbus, DNP3, and Why Their Design Causes Security Problems","description":"The previous lesson described the sense-decide-act loop conceptually. This lesson gets concrete about how the pieces actually talk to each other — and why the protocols carrying that conversation are,","url":"https://kashsec.vercel.app/lesson/25-ot-ics-security/industrial-protocols.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Protocols with no built-in authentication, and why 'just add TLS' doesn't work.","isPartOf":{"@type":"Course","name":"Path 25: OT/ICS & Critical Infrastructure Security","url":"https://kashsec.vercel.app/lesson/25-ot-ics-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/25-ot-ics-security/industrial-protocols.html"}}
 </script>
 </head>
 <body>
@@ -89,9 +89,7 @@
     <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/25-ot-ics-security/">Path 25 — OT/ICS &amp; Critical Infrastructure Security</a> · Industrial Protocols: Modbus, DNP3, and Why Their Design Causes Security Problems</nav>
     <div class="md" id="content"><article><h1>Industrial Protocols: Modbus, DNP3, and Why Their Design Causes Security Problems</h1>
 <p>The previous lesson described the sense-decide-act loop conceptually. This lesson gets concrete about how the pieces actually talk to each other — and why the protocols carrying that conversation are, from a security standpoint, a genuinely different problem than anything covered elsewhere in this course.</p>
-<p>:::tip
-The single fact that explains almost every protocol-level ICS vulnerability you'll encounter: <strong>most industrial protocols were designed with zero built-in authentication or encryption, because the original threat model assumed only trusted engineers on a physically isolated network would ever send these commands.</strong> That assumption is the root cause, and it's worth remembering every time a new protocol quirk comes up in this lesson.
-:::</p>
+<p>:::</p>
 <h2>Modbus: simple, ubiquitous, and trusting by design</h2>
 <p><strong>Modbus</strong> is one of the oldest and most widely deployed industrial protocols, originally developed in 1979. Its enduring popularity comes from genuine simplicity — a small set of function codes for reading and writing data (read a coil, write a register, and a handful of others), transmitted in plain text with no authentication whatsoever.</p>
 <ul>
@@ -156,24 +154,26 @@ The single fact that explains almost every protocol-level ICS vulnerability you'
 </ul>
 <p>This is exactly why OT security leans so heavily on <strong>network-level controls</strong> (segmentation, monitoring, strict access control) rather than "fix the protocol" — the protocol often genuinely can't be fixed at scale without replacing hardware that's expected to run for another decade or two.</p>
 <p>:::warn
-A common, dangerous assumption: "we use Modbus, but it's on our internal network, so it's fine." The protocol provides zero authentication regardless of network location — the <em>entire</em> security of a Modbus deployment rests on nothing reaching that network segment that shouldn't. If segmentation fails even once, the protocol itself offers no second line of defense.
-:::</p>
+A common, dangerous assumption: "we use Modbus, but it's on our internal network, so it's fine." The protocol provides zero authentication regardless of network location — the <em>entire</em> security of a Modbus deployment rests on nothing reaching that network segment that shouldn't. If segmentation fails even once, the protocol itself offers no second line of defense.</p>
 <h2>A worked example: what an unauthenticated write actually looks like</h2>
 <p>A Modbus "write single register" command is, in essence: function code, register address, value — sent as a simple, well-documented, unauthenticated packet. If an attacker can reach the network segment a PLC is on, crafting and sending that exact packet requires no special exploit, no vulnerability research, and no credentials — just knowledge of the (publicly documented) protocol and the target's address. This is a meaningful difference from most IT vulnerabilities, which typically require finding and exploiting an actual bug. In classic ICS/Modbus attacks, there's frequently no bug to find at all — the protocol is working exactly as designed, and the "vulnerability" is that it was ever reachable by an untrusted party in the first place.</p>
 <h2>🧪 Hands-on lab — read a real Modbus packet capture (conceptually)</h2>
 <p>You don't need real ICS hardware for this exercise — the goal is understanding the protocol's shape.</p>
 <ol>
-<li>Research the basic structure of a Modbus "read holding registers" request and response (function code, address, data — publicly documented, safe to look up).</li>
-<li>Write out, in plain English, what information in that request an attacker could learn just by observing it on the wire (no decryption needed, since there's nothing encrypted).</li>
-<li>Now do the same for a "write single register" request — what could an attacker change, and what would they need to know to target a specific piece of equipment?</li>
-<li>Write one paragraph explaining why network segmentation is effectively the <em>only</em> real defense for a device that only speaks unauthenticated Modbus.</li>
-</ol>
-<p>:::challenge Test yourself</p>
-<ol>
-<li>Why does Modbus have no built-in authentication, and why does that matter more in 2026 than it did in 1979?</li>
-<li>Explain why "just add TLS to it" is harder in OT than the equivalent fix would be for a typical IT web service.</li>
-<li>In the "unauthenticated write" example, why is this not really a "vulnerability" in the traditional bug-hunting sense?
-:::</li>
+<li><p>Research the basic structure of a Modbus "read holding registers" request and response (function code, address, data — publicly documented, safe to look up).</p>
+</li>
+<li><p>Write out, in plain English, what information in that request an attacker could learn just by observing it on the wire (no decryption needed, since there's nothing encrypted).</p>
+</li>
+<li><p>Now do the same for a "write single register" request — what could an attacker change, and what would they need to know to target a specific piece of equipment?</p>
+</li>
+<li><p>Write one paragraph explaining why network segmentation is effectively the <em>only</em> real defense for a device that only speaks unauthenticated Modbus.</p>
+</li>
+<li><p>Why does Modbus have no built-in authentication, and why does that matter more in 2026 than it did in 1979?</p>
+</li>
+<li><p>Explain why "just add TLS to it" is harder in OT than the equivalent fix would be for a typical IT web service.</p>
+</li>
+<li><p>In the "unauthenticated write" example, why is this not really a "vulnerability" in the traditional bug-hunting sense?</p>
+</li>
 </ol>
 <h2>Key terms</h2>
 <ul>

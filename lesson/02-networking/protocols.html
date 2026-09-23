@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>What is a protocol? — Path 02 · KashSec Academy</title>
-<meta name="description" content="What is a protocol?: Rules two computers agree on before talking.">
+<meta name="description" content="Computers &quot;talk,&quot; but talking only works if both sides follow the same rules. Those rules are protocols, and the rest of this path is about the specific ones that run the internet.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/02-networking/protocols.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="What is a protocol? — Path 02 · KashSec Academy">
-<meta property="og:description" content="What is a protocol?: Rules two computers agree on before talking.">
+<meta property="og:description" content="Computers &quot;talk,&quot; but talking only works if both sides follow the same rules. Those rules are protocols, and the rest of this path is about the specific ones that run the internet.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/02-networking/protocols.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="What is a protocol? — Path 02 · KashSec Academy">
-<meta name="twitter:description" content="What is a protocol?: Rules two computers agree on before talking.">
+<meta name="twitter:description" content="Computers &quot;talk,&quot; but talking only works if both sides follow the same rules. Those rules are protocols, and the rest of this path is about the specific ones that run the internet.">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 02 — Networking Fundamentals","item":"https://kashsec.vercel.app/lesson/02-networking/"},{"@type":"ListItem","position":4,"name":"What is a protocol?","item":"https://kashsec.vercel.app/lesson/02-networking/protocols.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"What is a protocol?","headline":"What is a protocol?","description":"What is a protocol?: Rules two computers agree on before talking.","url":"https://kashsec.vercel.app/lesson/02-networking/protocols.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Rules two computers agree on before talking.","isPartOf":{"@type":"Course","name":"Path 02: Networking Fundamentals","url":"https://kashsec.vercel.app/lesson/02-networking/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/02-networking/protocols.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"What is a protocol?","headline":"What is a protocol?","description":"Computers \"talk,\" but talking only works if both sides follow the same rules. Those rules are protocols, and the rest of this path is about the specific ones that run the internet.","url":"https://kashsec.vercel.app/lesson/02-networking/protocols.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Rules two computers agree on before talking.","isPartOf":{"@type":"Course","name":"Path 02: Networking Fundamentals","url":"https://kashsec.vercel.app/lesson/02-networking/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/02-networking/protocols.html"}}
 </script>
 </head>
 <body>
@@ -92,27 +92,9 @@
 <h2>Just an agreed set of rules</h2>
 <p>Think about a phone call. You both follow unspoken rules: one says "hello" first, you take turns, you speak a shared language, and someone says "goodbye" to end it. Without those rules, chaos.</p>
 <p>A <strong>protocol</strong> is exactly that for computers: an agreed set of rules for how two machines communicate — how they start, what format messages take, how they confirm receipt, and how they end.</p>
-<p>:::tip THE ONE RULE
-<strong>Both machines must use the same protocol.</strong> Just as two people must share a language, a Windows machine speaking HTTP can talk to a Linux server speaking HTTP — but neither can suddenly understand a machine speaking a random invented protocol.
-:::</p>
+<p><strong>Both machines must use the same protocol.</strong> Just as two people must share a language, a Windows machine speaking HTTP can talk to a Linux server speaking HTTP — but neither can suddenly understand a machine speaking a random invented protocol.</p>
 <h2>Why there are many protocols</h2>
 <p>Different jobs have different needs, and rules perfect for one job are clumsy for another.</p>
-<pre><code class="language-mermaid">flowchart TD
-    Need{"What does the job need?"} --&gt; R1["Reliable delivery&lt;br/&gt;(every bit matters)"]
-    Need --&gt; R2["Speed above all&lt;br/&gt;(live data)"]
-    Need --&gt; R3["Name lookups"]
-    Need --&gt; R4["Fetching content"]
-    R1 --&gt; P1[TCP-based:&lt;br/&gt;HTTP, SSH, SMTP]
-    R2 --&gt; P2[UDP-based:&lt;br/&gt;DNS queries, VoIP, games]
-    R3 --&gt; P3[DNS]
-    R4 --&gt; P4[HTTP / HTTPS]
-
-    style Need fill:#152131,color:#EFA43A,stroke:#EFA43A
-    style R1 fill:#111927,color:#3FB6A8,stroke:#3FB6A8
-    style R2 fill:#111927,color:#3FB6A8,stroke:#3FB6A8
-    style R3 fill:#111927,color:#3FB6A8,stroke:#3FB6A8
-    style R4 fill:#111927,color:#3FB6A8,stroke:#3FB6A8
-</code></pre>
 <p>Loading a web page, sending an email, and running a live video call all need different rules. So we have many specialised protocols, each tuned to its purpose.</p>
 <p>Over the next three lessons you'll meet the ones that matter most:</p>
 <ul>
@@ -150,13 +132,9 @@ QUIT
 <li><strong>RFC 1035</strong> — DNS</li>
 <li><strong>RFC 793</strong> — TCP (superseded by RFC 9293)</li>
 </ul>
-<p>:::note YOU DON'T NEED TO MEMORISE PROTOCOLS
-As a beginner, just <strong>recognise the main ones and know what each is for.</strong> Recognition, not memorisation. That's enough to understand what's happening in any packet capture or scan output.
-:::</p>
-<p>:::challenge Test yourself
-Why do we have TCP <em>and</em> UDP instead of one universal transport protocol?</p>
-<details><summary>Show answer</summary>Because different jobs have different needs. Some (web, email) need every bit to arrive reliably in order; others (video calls, games) prioritise speed over perfect delivery. One-size-fits-all would be worse at both.</details>
-:::<h2>Key terms</h2>
+<p>As a beginner, just <strong>recognise the main ones and know what each is for.</strong> Recognition, not memorisation. That's enough to understand what's happening in any packet capture or scan output.</p>
+<p>Why do we have TCP <em>and</em> UDP instead of one universal transport protocol?</p>
+<details><summary>Show answer</summary>Because different jobs have different needs. Some (web, email) need every bit to arrive reliably in order; others (video calls, games) prioritise speed over perfect delivery. One-size-fits-all would be worse at both.</details><h2>Key terms</h2>
 <ul>
 <li><strong>Protocol</strong> — an agreed set of rules for how computers communicate.</li>
 <li><strong>RFC</strong> — the formal specification document for a protocol.</li>

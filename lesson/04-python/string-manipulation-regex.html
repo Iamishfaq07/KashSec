@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>String manipulation &amp; regex — Path 04 · KashSec Academy</title>
-<meta name="description" content="String manipulation &amp; regex: f-strings, and pattern matching for log analysis and input validation.">
+<meta name="description" content="Your first Python program worked with plain text. This lesson goes deeper into manipulating strings — and introduces regular expressions, the pattern-matching tool that shows up constantly throughout ">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/04-python/string-manipulation-regex.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="String manipulation &amp; regex — Path 04 · KashSec Academy">
-<meta property="og:description" content="String manipulation &amp; regex: f-strings, and pattern matching for log analysis and input validation.">
+<meta property="og:description" content="Your first Python program worked with plain text. This lesson goes deeper into manipulating strings — and introduces regular expressions, the pattern-matching tool that shows up constantly throughout ">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/04-python/string-manipulation-regex.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="String manipulation &amp; regex — Path 04 · KashSec Academy">
-<meta name="twitter:description" content="String manipulation &amp; regex: f-strings, and pattern matching for log analysis and input validation.">
+<meta name="twitter:description" content="Your first Python program worked with plain text. This lesson goes deeper into manipulating strings — and introduces regular expressions, the pattern-matching tool that shows up constantly throughout ">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 04 — Programming & Python","item":"https://kashsec.vercel.app/lesson/04-python/"},{"@type":"ListItem","position":4,"name":"String manipulation & regex","item":"https://kashsec.vercel.app/lesson/04-python/string-manipulation-regex.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"String manipulation & regex","headline":"String manipulation & regex","description":"String manipulation & regex: f-strings, and pattern matching for log analysis and input validation.","url":"https://kashsec.vercel.app/lesson/04-python/string-manipulation-regex.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"f-strings, and pattern matching for log analysis and input validation.","isPartOf":{"@type":"Course","name":"Path 04: Programming & Python","url":"https://kashsec.vercel.app/lesson/04-python/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/04-python/string-manipulation-regex.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"String manipulation & regex","headline":"String manipulation & regex","description":"Your first Python program worked with plain text. This lesson goes deeper into manipulating strings — and introduces regular expressions, the pattern-matching tool that shows up constantly throughout ","url":"https://kashsec.vercel.app/lesson/04-python/string-manipulation-regex.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"f-strings, and pattern matching for log analysis and input validation.","isPartOf":{"@type":"Course","name":"Path 04: Programming & Python","url":"https://kashsec.vercel.app/lesson/04-python/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/04-python/string-manipulation-regex.html"}}
 </script>
 </head>
 <body>
@@ -146,10 +146,8 @@ if match:
 </tbody></table>
 <h2>Why this matters directly for security work</h2>
 <p>Extracting IP addresses from log files, validating that user input matches an expected format (a password-complexity check, an email format), and searching through large amounts of unstructured text for a specific pattern are all genuinely everyday security-scripting tasks, and regex is the standard tool for all three — directly extending the text-processing toolkit (<code>grep</code>, <code>sed</code>, <code>awk</code>) from Path 03 into Python itself.</p>
-<p>:::challenge Test yourself
-Why is a regex pattern like <code>\d+\.\d+\.\d+\.\d+</code> more useful for finding IP addresses in a log file than searching for one exact, specific IP address string?</p>
-<details><summary>Show answer</summary>Searching for one exact string only finds that <em>one specific</em> IP address, which is rarely the actual goal — a real log file contains many different IP addresses, and you generally want to find <em>any</em> text matching the general shape of an IP address, not one you already know in advance. A regex pattern describes that general shape (digits, a dot, digits, a dot, and so on) rather than a specific value, letting <code>re.search()</code> or <code>re.findall()</code> locate every IP-shaped string in the text regardless of its actual numbers — exactly the flexibility that makes regex genuinely essential for real-world log analysis and input validation, where you rarely know the exact value you're looking for in advance.</details>
-:::<h2>Key terms</h2>
+<p>Why is a regex pattern like <code>\d+\.\d+\.\d+\.\d+</code> more useful for finding IP addresses in a log file than searching for one exact, specific IP address string?</p>
+<details><summary>Show answer</summary>Searching for one exact string only finds that <em>one specific</em> IP address, which is rarely the actual goal — a real log file contains many different IP addresses, and you generally want to find <em>any</em> text matching the general shape of an IP address, not one you already know in advance. A regex pattern describes that general shape (digits, a dot, digits, a dot, and so on) rather than a specific value, letting <code>re.search()</code> or <code>re.findall()</code> locate every IP-shaped string in the text regardless of its actual numbers — exactly the flexibility that makes regex genuinely essential for real-world log analysis and input validation, where you rarely know the exact value you're looking for in advance.</details><h2>Key terms</h2>
 <ul>
 <li><strong>f-string</strong> — Python's syntax for embedding variables directly inside a string.</li>
 <li><strong>Regular expression (regex)</strong> — a pattern describing the general shape of text to match, rather than an exact string.</li>

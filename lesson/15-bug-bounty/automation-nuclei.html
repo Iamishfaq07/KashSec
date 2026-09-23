@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Automation &amp; nuclei — Path 15 · KashSec Academy</title>
-<meta name="description" content="Automation &amp; nuclei: Monitor while you sleep.">
+<meta name="description" content="Path 15.3's pipeline introduced Nuclei as one stage among many. This lesson goes deep specifically on Nuclei — writing custom templates, understanding template categories properly, and integrating fin">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/15-bug-bounty/automation-nuclei.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Automation &amp; nuclei — Path 15 · KashSec Academy">
-<meta property="og:description" content="Automation &amp; nuclei: Monitor while you sleep.">
+<meta property="og:description" content="Path 15.3's pipeline introduced Nuclei as one stage among many. This lesson goes deep specifically on Nuclei — writing custom templates, understanding template categories properly, and integrating fin">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/15-bug-bounty/automation-nuclei.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Automation &amp; nuclei — Path 15 · KashSec Academy">
-<meta name="twitter:description" content="Automation &amp; nuclei: Monitor while you sleep.">
+<meta name="twitter:description" content="Path 15.3's pipeline introduced Nuclei as one stage among many. This lesson goes deep specifically on Nuclei — writing custom templates, understanding template categories properly, and integrating fin">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 15 — Bug Bounty","item":"https://kashsec.vercel.app/lesson/15-bug-bounty/"},{"@type":"ListItem","position":4,"name":"Automation & nuclei","item":"https://kashsec.vercel.app/lesson/15-bug-bounty/automation-nuclei.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Automation & nuclei","headline":"Automation & nuclei","description":"Automation & nuclei: Monitor while you sleep.","url":"https://kashsec.vercel.app/lesson/15-bug-bounty/automation-nuclei.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate→Advanced","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Monitor while you sleep.","isPartOf":{"@type":"Course","name":"Path 15: Bug Bounty","url":"https://kashsec.vercel.app/lesson/15-bug-bounty/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/15-bug-bounty/automation-nuclei.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Automation & nuclei","headline":"Automation & nuclei","description":"Path 15.3's pipeline introduced Nuclei as one stage among many. This lesson goes deep specifically on Nuclei — writing custom templates, understanding template categories properly, and integrating fin","url":"https://kashsec.vercel.app/lesson/15-bug-bounty/automation-nuclei.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate→Advanced","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Monitor while you sleep.","isPartOf":{"@type":"Course","name":"Path 15: Bug Bounty","url":"https://kashsec.vercel.app/lesson/15-bug-bounty/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/15-bug-bounty/automation-nuclei.html"}}
 </script>
 </head>
 <body>
@@ -227,9 +227,7 @@ python3 nuclei-to-report.py
 </code></pre>
 <p>This is a direct, practical extension of Path 04's Python automation skills — turning raw scanner output into <strong>draft report skeletons</strong>, ready for you to manually verify (never submit an unverified automated finding, per Path 15.4's warning), add a proper PoC, and refine before submission.</p>
 <h2>Critical discipline: automated findings still require manual verification</h2>
-<p>:::danger NEVER SUBMIT UNVERIFIED SCANNER OUTPUT
-Recall Path 15.4's explicit warning against "spamming low-quality/automated-scanner output." Nuclei is a phenomenal <strong>discovery</strong> tool but produces false positives, and even true positives often need manual investigation to determine <em>actual</em> exploitability and impact before they're submission-ready. Always manually verify every automated finding — confirm it with Burp, understand the real impact, and write a proper PoC — before ever submitting it as a report.
-:::</p>
+<p>Recall Path 15.4's explicit warning against "spamming low-quality/automated-scanner output." Nuclei is a phenomenal <strong>discovery</strong> tool but produces false positives, and even true positives often need manual investigation to determine <em>actual</em> exploitability and impact before they're submission-ready. Always manually verify every automated finding — confirm it with Burp, understand the real impact, and write a proper PoC — before ever submitting it as a report.</p>
 <h2>Detecting blind vulnerabilities with Interactsh</h2>
 <p>Nuclei's built-in <strong>Interactsh</strong> integration extends its detection well beyond simple response-matching, directly addressing the blind SSRF and blind command injection scenarios from Path 11's lessons. Rather than checking a response body for a specific string, a template can inject a unique, per-scan callback URL into a request and then watch a free, hosted out-of-band service for any resulting DNS or HTTP interaction — proving execution happened even when the vulnerable response never shows any visible sign of it:</p>
 <pre><code class="language-yaml">id: blind-ssrf-check
@@ -264,10 +262,8 @@ nuclei -tl | wc -l    # count total available templates
 <li>If you have access to your shortlisted program's in-scope assets (Path 15.2), run your custom template across the full live-host list generated by Path 15.3's pipeline.</li>
 </ol>
 <p>Building even one working custom template is a genuinely significant milestone — it demonstrates you understand detection logic deeply enough to codify it yourself, not just run tools others have built.</p>
-<p>:::challenge Test yourself
-A Nuclei scan flags a "high severity" finding on one of your targets. What's the correct next step before drafting a bug bounty submission?</p>
-<details><summary>Show answer</summary><strong>Manually verify the finding first.</strong> Confirm the vulnerability is genuinely exploitable (not a false positive), understand its actual real-world impact on this specific target, and construct a proper, concrete Proof of Concept (per Path 15.4's guidance) — never submit raw automated scanner output directly as a report. Automated tools are discovery aids, not submission-ready evidence on their own.</details>
-:::<h2>Key terms</h2>
+<p>A Nuclei scan flags a "high severity" finding on one of your targets. What's the correct next step before drafting a bug bounty submission?</p>
+<details><summary>Show answer</summary><strong>Manually verify the finding first.</strong> Confirm the vulnerability is genuinely exploitable (not a false positive), understand its actual real-world impact on this specific target, and construct a proper, concrete Proof of Concept (per Path 15.4's guidance) — never submit raw automated scanner output directly as a report. Automated tools are discovery aids, not submission-ready evidence on their own.</details><h2>Key terms</h2>
 <ul>
 <li><strong>Nuclei template</strong> — a YAML-defined detection check specifying request logic and match conditions.</li>
 <li><strong>DSL (Domain Specific Language)</strong> — Nuclei's expression syntax for combining match conditions.</li>

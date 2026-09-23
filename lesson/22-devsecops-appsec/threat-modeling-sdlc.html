@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Threat Modeling in the SDLC — Path 22 · KashSec Academy</title>
-<meta name="description" content="Threat Modeling in the SDLC: Finding design flaws before you write the code that has them.">
+<meta name="description" content="Threat modeling is the practice of thinking about what can go wrong before you write or ship the code. Done well, it prevents entire classes of bugs instead of finding them later — it's the one activi">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/22-devsecops-appsec/threat-modeling-sdlc.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Threat Modeling in the SDLC — Path 22 · KashSec Academy">
-<meta property="og:description" content="Threat Modeling in the SDLC: Finding design flaws before you write the code that has them.">
+<meta property="og:description" content="Threat modeling is the practice of thinking about what can go wrong before you write or ship the code. Done well, it prevents entire classes of bugs instead of finding them later — it's the one activi">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/22-devsecops-appsec/threat-modeling-sdlc.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Threat Modeling in the SDLC — Path 22 · KashSec Academy">
-<meta name="twitter:description" content="Threat Modeling in the SDLC: Finding design flaws before you write the code that has them.">
+<meta name="twitter:description" content="Threat modeling is the practice of thinking about what can go wrong before you write or ship the code. Done well, it prevents entire classes of bugs instead of finding them later — it's the one activi">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 22 — DevSecOps & AppSec Program","item":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/"},{"@type":"ListItem","position":4,"name":"Threat Modeling in the SDLC","item":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/threat-modeling-sdlc.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Threat Modeling in the SDLC","headline":"Threat Modeling in the SDLC","description":"Threat Modeling in the SDLC: Finding design flaws before you write the code that has them.","url":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/threat-modeling-sdlc.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Finding design flaws before you write the code that has them.","isPartOf":{"@type":"Course","name":"Path 22: DevSecOps & AppSec Program","url":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/threat-modeling-sdlc.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Threat Modeling in the SDLC","headline":"Threat Modeling in the SDLC","description":"Threat modeling is the practice of thinking about what can go wrong before you write or ship the code. Done well, it prevents entire classes of bugs instead of finding them later — it's the one activi","url":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/threat-modeling-sdlc.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Finding design flaws before you write the code that has them.","isPartOf":{"@type":"Course","name":"Path 22: DevSecOps & AppSec Program","url":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/threat-modeling-sdlc.html"}}
 </script>
 </head>
 <body>
@@ -89,9 +89,7 @@
     <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/22-devsecops-appsec/">Path 22 — DevSecOps &amp; AppSec Program</a> · Threat Modeling in the SDLC</nav>
     <div class="md" id="content"><article><h1>Threat Modeling in the SDLC</h1>
 <p>Threat modeling is the practice of thinking about what can go wrong <em>before</em> you write or ship the code. Done well, it prevents entire classes of bugs instead of finding them later — it's the one activity in this whole path that operates purely on design, before a single line exists to scan.</p>
-<p>:::tip
-The question threat modeling answers is not "is this code secure?" — that's what scanners are for. It's "is this <em>design</em> secure, even if every line of code is implemented perfectly?"
-:::</p>
+<p>:::</p>
 <h2>Why it belongs in DevSecOps</h2>
 <p>Scanning tools find known patterns. Threat modeling finds design flaws — the expensive ones that scanners miss entirely, because there's nothing pattern-matchable about them:</p>
 <ul>
@@ -177,23 +175,26 @@ The question threat modeling answers is not "is this code secure?" — that's wh
 <li>Treating it as a one-time gate instead of a recurring design habit — a system's threat model goes stale the moment the architecture changes and nobody updates it</li>
 </ul>
 <p>:::danger
-The most dangerous outcome of threat modeling is not "we missed a threat" — it's "we found threats, wrote them down, and never assigned an owner or a decision." A threat model that produces no action is worse than not having done one, because it creates the appearance of due diligence without the substance.
-:::</p>
+The most dangerous outcome of threat modeling is not "we missed a threat" — it's "we found threats, wrote them down, and never assigned an owner or a decision." A threat model that produces no action is worse than not having done one, because it creates the appearance of due diligence without the substance.</p>
 <h2>🧪 Hands-on lab — threat model a real feature</h2>
 <p>Pick a feature from a project you're working on, or use "users can reset their password by email" as a stand-in if you don't have one handy.</p>
 <ol>
-<li>Draw the data flow: user → browser → app server → email service → database. Mark where trust changes.</li>
-<li>Walk through all six STRIDE categories against this flow. For each, write down at least one concrete threat — even a rough one.</li>
-<li>For your three highest-impact threats, write a one-line mitigation each.</li>
-<li>For one threat you decide <em>not</em> to mitigate right now, write the "accepted because..." justification a real team would need to write down.</li>
-<li>Time yourself. If this took under 45 minutes, you've just demonstrated that lightweight threat modeling is genuinely fast enough to do routinely.</li>
-</ol>
-<p>:::challenge Test yourself</p>
-<ol>
-<li>A team says "we don't need to threat model, we already run SAST and DAST on everything." What's wrong with that reasoning?</li>
-<li>Using STRIDE, name one threat category that a "forgot password" feature is especially prone to, and explain why.</li>
-<li>Why is "accept the risk with a documented reason" a legitimate outcome of threat modeling, rather than a failure to fix everything?
-:::</li>
+<li><p>Draw the data flow: user → browser → app server → email service → database. Mark where trust changes.</p>
+</li>
+<li><p>Walk through all six STRIDE categories against this flow. For each, write down at least one concrete threat — even a rough one.</p>
+</li>
+<li><p>For your three highest-impact threats, write a one-line mitigation each.</p>
+</li>
+<li><p>For one threat you decide <em>not</em> to mitigate right now, write the "accepted because..." justification a real team would need to write down.</p>
+</li>
+<li><p>Time yourself. If this took under 45 minutes, you've just demonstrated that lightweight threat modeling is genuinely fast enough to do routinely.</p>
+</li>
+<li><p>A team says "we don't need to threat model, we already run SAST and DAST on everything." What's wrong with that reasoning?</p>
+</li>
+<li><p>Using STRIDE, name one threat category that a "forgot password" feature is especially prone to, and explain why.</p>
+</li>
+<li><p>Why is "accept the risk with a documented reason" a legitimate outcome of threat modeling, rather than a failure to fix everything?</p>
+</li>
 </ol>
 <h2>Key terms</h2>
 <ul>

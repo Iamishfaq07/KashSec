@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Cloud Logging &amp; Monitoring Basics — Path 08 · KashSec Academy</title>
-<meta name="description" content="Cloud Logging &amp; Monitoring Basics: CloudTrail-style audit logs, and why they're not always enabled by default.">
+<meta name="description" content="The identity-access lesson explained who can do what in a cloud account. This lesson covers the equally important other half: knowing what actually happened — every action taken, by whom, and when.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-logging-monitoring-basics.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Cloud Logging &amp; Monitoring Basics — Path 08 · KashSec Academy">
-<meta property="og:description" content="Cloud Logging &amp; Monitoring Basics: CloudTrail-style audit logs, and why they're not always enabled by default.">
+<meta property="og:description" content="The identity-access lesson explained who can do what in a cloud account. This lesson covers the equally important other half: knowing what actually happened — every action taken, by whom, and when.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-logging-monitoring-basics.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Cloud Logging &amp; Monitoring Basics — Path 08 · KashSec Academy">
-<meta name="twitter:description" content="Cloud Logging &amp; Monitoring Basics: CloudTrail-style audit logs, and why they're not always enabled by default.">
+<meta name="twitter:description" content="The identity-access lesson explained who can do what in a cloud account. This lesson covers the equally important other half: knowing what actually happened — every action taken, by whom, and when.">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 08 — Cloud Computing Basics","item":"https://kashsec.vercel.app/lesson/08-cloud-basics/"},{"@type":"ListItem","position":4,"name":"Cloud Logging & Monitoring Basics","item":"https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-logging-monitoring-basics.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Cloud Logging & Monitoring Basics","headline":"Cloud Logging & Monitoring Basics","description":"Cloud Logging & Monitoring Basics: CloudTrail-style audit logs, and why they're not always enabled by default.","url":"https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-logging-monitoring-basics.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"CloudTrail-style audit logs, and why they're not always enabled by default.","isPartOf":{"@type":"Course","name":"Path 08: Cloud Computing Basics","url":"https://kashsec.vercel.app/lesson/08-cloud-basics/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-logging-monitoring-basics.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Cloud Logging & Monitoring Basics","headline":"Cloud Logging & Monitoring Basics","description":"The identity-access lesson explained who can do what in a cloud account. This lesson covers the equally important other half: knowing what actually happened — every action taken, by whom, and when.","url":"https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-logging-monitoring-basics.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"CloudTrail-style audit logs, and why they're not always enabled by default.","isPartOf":{"@type":"Course","name":"Path 08: Cloud Computing Basics","url":"https://kashsec.vercel.app/lesson/08-cloud-basics/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-logging-monitoring-basics.html"}}
 </script>
 </head>
 <body>
@@ -89,14 +89,11 @@
     <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/08-cloud-basics/">Path 08 — Cloud Computing Basics</a> · Cloud Logging &amp; Monitoring Basics</nav>
     <div class="md" id="content"><article><h1>Cloud Logging &amp; Monitoring Basics</h1>
 <p>The identity-access lesson explained who can do what in a cloud account. This lesson covers the equally important other half: knowing what actually <em>happened</em> — every action taken, by whom, and when.</p>
-<p>:::tip
-This lesson is the cloud-specific counterpart to Path 07's Windows Event Viewer lesson and Path 03's Linux log-file coverage — same underlying principle (you can't investigate or detect what you never recorded), applied to a cloud account instead of a single machine.
-:::</p>
+<p>:::</p>
 <h2>The cloud audit log: recording every API call</h2>
 <p>Every major provider offers a service that logs essentially every action taken within an account — <strong>AWS CloudTrail</strong>, <strong>Azure Monitor / Activity Log</strong>, <strong>Google Cloud Audit Logs</strong>. Because virtually everything in the cloud happens through an API call (creating a VM, modifying a storage bucket's permissions, changing an IAM policy), this audit log captures an extraordinarily complete record: who made the request, what they requested, when, and from where.</p>
 <p>:::danger Audit logging is not automatically enabled everywhere by default
-A genuinely common real-world finding in cloud security assessments: audit logging exists as a capability, but was never actually enabled for a specific account, region, or service — meaning an investigation after an incident has nothing to work from. Confirming audit logging is actually turned on, account-wide, is one of the highest-value, lowest-effort cloud security checks that exists.
-:::</p>
+A genuinely common real-world finding in cloud security assessments: audit logging exists as a capability, but was never actually enabled for a specific account, region, or service — meaning an investigation after an incident has nothing to work from. Confirming audit logging is actually turned on, account-wide, is one of the highest-value, lowest-effort cloud security checks that exists.</p>
 <h2>Monitoring vs. logging: a useful distinction</h2>
 <ul>
 <li><strong>Logging</strong> — the raw record of what happened, stored for later review or investigation</li>
@@ -111,18 +108,14 @@ A genuinely common real-world finding in cloud security assessments: audit loggi
 </ul>
 <h2>Why this connects directly to incident response</h2>
 <p>Path 16's incident-response material and Path 22's DevSecOps content both depend on exactly this foundation: a security incident investigation is only as good as the logs actually available to investigate — precisely the same principle the recognizing-Windows-compromise lesson in Path 07 established for individual machines, now applied at the scale of an entire cloud account and every resource within it.</p>
-<p>:::challenge Diagnose a gap
-A company suffers a cloud security incident — an attacker gained access and created several new IAM users with administrative privileges. During the investigation, the security team discovers that CloudTrail logging had been disabled in one specific AWS region six months earlier, and that's exactly the region where the malicious activity occurred.</p>
+<p>A company suffers a cloud security incident — an attacker gained access and created several new IAM users with administrative privileges. During the investigation, the security team discovers that CloudTrail logging had been disabled in one specific AWS region six months earlier, and that's exactly the region where the malicious activity occurred.</p>
 <details><summary>Hint</summary>Was this an unlucky coincidence, or does it suggest something about how the attacker chose where to operate?</details>
-<details><summary>Show answer</summary>This is very unlikely to be a coincidence — attackers who gain sufficient access commonly check for exactly this kind of gap deliberately, specifically looking for regions or services where logging isn't enabled, precisely because operating there leaves far less evidence for a later investigation to find. This is exactly why the danger callout in this lesson emphasizes confirming audit logging is enabled <em>account-wide</em>, not just in the regions or services a team happens to actively use — an attacker doesn't need to respect which regions your team considers "in scope."</details>
-:::<h2>🧪 Hands-on lab — design an alert rule</h2>
+<details><summary>Show answer</summary>This is very unlikely to be a coincidence — attackers who gain sufficient access commonly check for exactly this kind of gap deliberately, specifically looking for regions or services where logging isn't enabled, precisely because operating there leaves far less evidence for a later investigation to find. This is exactly why the danger callout in this lesson emphasizes confirming audit logging is enabled <em>account-wide</em>, not just in the regions or services a team happens to actively use — an attacker doesn't need to respect which regions your team considers "in scope."</details><h2>🧪 Hands-on lab — design an alert rule</h2>
 <p>Sketch a monitoring alert rule for a hypothetical cloud account: what specific event or metric would you watch (choose one from this lesson's "security-relevant" list), what threshold or condition would trigger it, and who should be notified when it fires.</p>
-<p>:::challenge Test yourself</p>
 <ol>
 <li>What's the practical difference between logging and monitoring, and why does a mature setup need both?</li>
 <li>Why is confirming audit logging is enabled account-wide considered such high-value, low-effort work?</li>
-<li>Why might an attacker specifically target a region or service where logging is known to be disabled?
-:::</li>
+<li>Why might an attacker specifically target a region or service where logging is known to be disabled?</li>
 </ol>
 <h2>Key terms</h2>
 <ul>

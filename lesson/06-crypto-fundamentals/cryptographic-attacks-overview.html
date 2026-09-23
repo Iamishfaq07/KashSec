@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Common Cryptographic Attacks — Path 06 · KashSec Academy</title>
-<meta name="description" content="Common Cryptographic Attacks: Padding oracle, replay, downgrade, and side-channel attacks, named and explained.">
+<meta name="description" content="The common-crypto-mistakes lesson (later in this path) covers implementation-level errors. This lesson is different — a tour of specific, named attack techniques against cryptographic systems, so you ">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/06-crypto-fundamentals/cryptographic-attacks-overview.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Common Cryptographic Attacks — Path 06 · KashSec Academy">
-<meta property="og:description" content="Common Cryptographic Attacks: Padding oracle, replay, downgrade, and side-channel attacks, named and explained.">
+<meta property="og:description" content="The common-crypto-mistakes lesson (later in this path) covers implementation-level errors. This lesson is different — a tour of specific, named attack techniques against cryptographic systems, so you ">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/06-crypto-fundamentals/cryptographic-attacks-overview.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Common Cryptographic Attacks — Path 06 · KashSec Academy">
-<meta name="twitter:description" content="Common Cryptographic Attacks: Padding oracle, replay, downgrade, and side-channel attacks, named and explained.">
+<meta name="twitter:description" content="The common-crypto-mistakes lesson (later in this path) covers implementation-level errors. This lesson is different — a tour of specific, named attack techniques against cryptographic systems, so you ">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 06 — Cryptography Fundamentals","item":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/"},{"@type":"ListItem","position":4,"name":"Common Cryptographic Attacks","item":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/cryptographic-attacks-overview.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Common Cryptographic Attacks","headline":"Common Cryptographic Attacks","description":"Common Cryptographic Attacks: Padding oracle, replay, downgrade, and side-channel attacks, named and explained.","url":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/cryptographic-attacks-overview.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Padding oracle, replay, downgrade, and side-channel attacks, named and explained.","isPartOf":{"@type":"Course","name":"Path 06: Cryptography Fundamentals","url":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/cryptographic-attacks-overview.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Common Cryptographic Attacks","headline":"Common Cryptographic Attacks","description":"The common-crypto-mistakes lesson (later in this path) covers implementation-level errors. This lesson is different — a tour of specific, named attack techniques against cryptographic systems, so you ","url":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/cryptographic-attacks-overview.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Padding oracle, replay, downgrade, and side-channel attacks, named and explained.","isPartOf":{"@type":"Course","name":"Path 06: Cryptography Fundamentals","url":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/cryptographic-attacks-overview.html"}}
 </script>
 </head>
 <body>
@@ -89,9 +89,7 @@
     <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/06-crypto-fundamentals/">Path 06 — Cryptography Fundamentals</a> · Common Cryptographic Attacks</nav>
     <div class="md" id="content"><article><h1>Common Cryptographic Attacks</h1>
 <p>The common-crypto-mistakes lesson (later in this path) covers implementation-level errors. This lesson is different — a tour of specific, named attack techniques against cryptographic systems, so you recognize them by name when you encounter them in later paths and real-world security news.</p>
-<p>:::tip
-None of these attacks require you to be a mathematician to understand at a conceptual level. Each one exploits a specific, identifiable gap between "the algorithm is theoretically secure" and "the system using it was built correctly" — exactly the gap this whole path has been building your intuition for.
-:::</p>
+<p>:::</p>
 <h2>Padding oracle attacks</h2>
 <p>Block ciphers (from the symmetric-encryption lesson) that don't neatly divide data into exact block sizes use <strong>padding</strong> to fill out the last block. A <strong>padding oracle attack</strong> exploits a system that reveals — even indirectly, through subtly different error messages or response times — whether decrypted padding was valid or invalid. An attacker who can repeatedly probe this "oracle" can, through many careful queries, decrypt an entire ciphertext without ever knowing the key, purely by exploiting what the padding-validity signal leaks.</p>
 <h2>Length extension attacks</h2>
@@ -107,15 +105,12 @@ None of these attacks require you to be a mathematician to understand at a conce
 <p>:::challenge Diagnose the attack
 A web application's error messages differ subtly depending on whether decrypted ciphertext padding was valid: "Invalid request" for bad padding, "Access denied" for good padding but a wrong key. An attacker notices this difference and starts sending thousands of slightly modified ciphertexts, tracking which error message comes back each time.</p>
 <details><summary>Hint</summary>What specific attack from this lesson exploits exactly this kind of subtle, indirect signal about padding validity?</details>
-<details><summary>Show answer</summary>This is a textbook <strong>padding oracle attack</strong>. The application never intended to leak information about padding validity — but the subtly different error messages act as an "oracle" the attacker can repeatedly query, and through enough carefully chosen queries, an attacker can decrypt the original ciphertext entirely without ever recovering the actual encryption key. The fix isn't stronger encryption — it's eliminating the observable difference entirely: using the exact same generic error message and response time regardless of *why* decryption failed, so there's no signal left to exploit.</details>
-:::<h2>🧪 Hands-on lab — match the defense to the attack</h2>
+<details><summary>Show answer</summary>This is a textbook <strong>padding oracle attack</strong>. The application never intended to leak information about padding validity — but the subtly different error messages act as an "oracle" the attacker can repeatedly query, and through enough carefully chosen queries, an attacker can decrypt the original ciphertext entirely without ever recovering the actual encryption key. The fix isn't stronger encryption — it's eliminating the observable difference entirely: using the exact same generic error message and response time regardless of *why* decryption failed, so there's no signal left to exploit.</details><h2>🧪 Hands-on lab — match the defense to the attack</h2>
 <p>For each attack in this lesson, write one sentence naming the specific defense that closes it (some are named directly in this lesson — HMAC, nonces, removing weak cipher suite support, constant-time comparison for side-channels, longer hash outputs for birthday attacks).</p>
-<p>:::challenge Test yourself</p>
 <ol>
 <li>What makes a padding oracle attack possible, even when the underlying encryption algorithm itself is secure?</li>
 <li>Why doesn't a replay attack require breaking any cryptography at all?</li>
-<li>Why are side-channel attacks considered especially hard to defend against?
-:::</li>
+<li>Why are side-channel attacks considered especially hard to defend against?</li>
 </ol>
 <h2>Key terms</h2>
 <ul>

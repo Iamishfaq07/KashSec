@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Windows Security Settings — Path 07 · KashSec Academy</title>
-<meta name="description" content="Windows Security Settings: Defender, Firewall, Windows Update, UAC, and BitLocker.">
+<meta name="description" content="Windows ships with a genuinely capable set of built-in security tools — many users (and even some IT professionals) never explore beyond the defaults. This lesson tours the settings that matter most, ">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/07-windows-security/windows-security-settings.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Windows Security Settings — Path 07 · KashSec Academy">
-<meta property="og:description" content="Windows Security Settings: Defender, Firewall, Windows Update, UAC, and BitLocker.">
+<meta property="og:description" content="Windows ships with a genuinely capable set of built-in security tools — many users (and even some IT professionals) never explore beyond the defaults. This lesson tours the settings that matter most, ">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/07-windows-security/windows-security-settings.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Windows Security Settings — Path 07 · KashSec Academy">
-<meta name="twitter:description" content="Windows Security Settings: Defender, Firewall, Windows Update, UAC, and BitLocker.">
+<meta name="twitter:description" content="Windows ships with a genuinely capable set of built-in security tools — many users (and even some IT professionals) never explore beyond the defaults. This lesson tours the settings that matter most, ">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 07 — Windows Security Basics","item":"https://kashsec.vercel.app/lesson/07-windows-security/"},{"@type":"ListItem","position":4,"name":"Windows Security Settings","item":"https://kashsec.vercel.app/lesson/07-windows-security/windows-security-settings.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Windows Security Settings","headline":"Windows Security Settings","description":"Windows Security Settings: Defender, Firewall, Windows Update, UAC, and BitLocker.","url":"https://kashsec.vercel.app/lesson/07-windows-security/windows-security-settings.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Defender, Firewall, Windows Update, UAC, and BitLocker.","isPartOf":{"@type":"Course","name":"Path 07: Windows Security Basics","url":"https://kashsec.vercel.app/lesson/07-windows-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/07-windows-security/windows-security-settings.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Windows Security Settings","headline":"Windows Security Settings","description":"Windows ships with a genuinely capable set of built-in security tools — many users (and even some IT professionals) never explore beyond the defaults. This lesson tours the settings that matter most, ","url":"https://kashsec.vercel.app/lesson/07-windows-security/windows-security-settings.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Defender, Firewall, Windows Update, UAC, and BitLocker.","isPartOf":{"@type":"Course","name":"Path 07: Windows Security Basics","url":"https://kashsec.vercel.app/lesson/07-windows-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/07-windows-security/windows-security-settings.html"}}
 </script>
 </head>
 <body>
@@ -99,14 +99,7 @@
 </ul>
 <h2>Windows Firewall</h2>
 <p>Windows Firewall, enabled by default, controls which network connections are allowed in and out — the same core concept from Path 12's firewalls lesson, here with its actual Windows-specific interface. Access advanced rules via <code>wf.msc</code> (Windows Firewall with Advanced Security), where you can review and create specific inbound/outbound rules by program, port, or IP range.</p>
-<pre><code class="language-mermaid">flowchart LR
-    A[Inbound Connection Attempt] --&gt; B{Matches an\nallow rule?}
-    B --&gt;|Yes| C[Connection permitted]
-    B --&gt;|No, default deny| D[Connection blocked]
-</code></pre>
-<p>:::tip Check what's actually listening
-Run <code>netstat -ano</code> in a Command Prompt to see every open port and which process owns it — cross-reference unfamiliar entries against Task Manager's process list (match the PID) exactly like the port/service enumeration practiced in Path 12's Nmap lessons, just run locally instead of scanning a remote target.
-:::</p>
+<p>Run <code>netstat -ano</code> in a Command Prompt to see every open port and which process owns it — cross-reference unfamiliar entries against Task Manager's process list (match the PID) exactly like the port/service enumeration practiced in Path 12's Nmap lessons, just run locally instead of scanning a remote target.</p>
 <h2>Windows Update — the single most important setting</h2>
 <p>Path 10's fundamentals lesson already established that unpatched vulnerabilities are consistently among the most exploited real-world weaknesses. Windows Update (<strong>Settings → Windows Update</strong>) should always be set to install updates automatically — delaying security patches leaves known, often publicly documented vulnerabilities (with working exploit code frequently available, as referenced in Path 14's exploitation lesson) unpatched for longer than necessary.</p>
 <h2>User Account Control (UAC)</h2>
@@ -117,9 +110,7 @@ Run <code>netstat -ano</code> in a Command Prompt to see every open port and whi
 <p>Beyond the widely-known antivirus scanning, Windows Security includes two considerably less-visible but genuinely valuable layers worth knowing about. <strong>Attack Surface Reduction (ASR) rules</strong> let you block specific, well-documented behaviors commonly abused by malware — blocking Office applications from creating child processes (a common macro-malware technique), or blocking credential-stealing tools from accessing LSASS memory (directly countering the Mimikatz-style credential extraction referenced in Path 16's Active Directory lesson) — each rule targeting one specific, narrow attack pattern rather than trying to catch malware generically. <strong>Exploit Protection</strong> (accessible via Windows Security → App &amp; browser control → Exploit protection) configures system-wide and per-application memory protections like DEP (Data Execution Prevention, preventing code from executing in memory regions marked as data-only) and ASLR (Address Space Layout Randomization, randomizing where a program's components load in memory to make memory-corruption exploits far harder to write reliably) — both foundational mitigations that make many classic buffer-overflow-style exploitation techniques dramatically less reliable even against unpatched software.</p>
 <h2>SmartScreen — reputation-based protection</h2>
 <p><strong>Windows SmartScreen</strong> checks downloaded files and visited websites against Microsoft's reputation database, warning before running unrecognized or known-malicious executables — a useful additional layer specifically against the kind of disguised-executable social engineering covered in Path 00's files-and-folders lesson.</p>
-<p>:::challenge Perform a full settings audit
-On your own machine (or a test VM), walk through every setting in this lesson: confirm Defender's real-time protection and controlled folder access are on, review your firewall's advanced rules for anything unexpected, confirm Windows Update is set to automatic, and check whether BitLocker is enabled. Document your findings and any changes you made.
-:::</p>
+<p>On your own machine (or a test VM), walk through every setting in this lesson: confirm Defender's real-time protection and controlled folder access are on, review your firewall's advanced rules for anything unexpected, confirm Windows Update is set to automatic, and check whether BitLocker is enabled. Document your findings and any changes you made.</p>
 <h2>Key terms</h2>
 <ul>
 <li><strong>Windows Defender</strong> — Microsoft's built-in antivirus and endpoint protection suite.</li>

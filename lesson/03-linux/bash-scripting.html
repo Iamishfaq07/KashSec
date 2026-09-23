@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Your first bash script — Path 03 · KashSec Academy</title>
-<meta name="description" content="Your first bash script: Pipes, redirection, loops — automation begins.">
+<meta name="description" content="You've learned commands. Now let's chain them into a script — a file the shell runs top to bottom. This is the moment &quot;using Linux&quot; becomes &quot;automating Linux,&quot; and it's genuinely a superpower.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/03-linux/bash-scripting.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Your first bash script — Path 03 · KashSec Academy">
-<meta property="og:description" content="Your first bash script: Pipes, redirection, loops — automation begins.">
+<meta property="og:description" content="You've learned commands. Now let's chain them into a script — a file the shell runs top to bottom. This is the moment &quot;using Linux&quot; becomes &quot;automating Linux,&quot; and it's genuinely a superpower.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/03-linux/bash-scripting.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Your first bash script — Path 03 · KashSec Academy">
-<meta name="twitter:description" content="Your first bash script: Pipes, redirection, loops — automation begins.">
+<meta name="twitter:description" content="You've learned commands. Now let's chain them into a script — a file the shell runs top to bottom. This is the moment &quot;using Linux&quot; becomes &quot;automating Linux,&quot; and it's genuinely a superpower.">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 03 — Operating Systems & Linux","item":"https://kashsec.vercel.app/lesson/03-linux/"},{"@type":"ListItem","position":4,"name":"Your first bash script","item":"https://kashsec.vercel.app/lesson/03-linux/bash-scripting.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Your first bash script","headline":"Your first bash script","description":"Your first bash script: Pipes, redirection, loops — automation begins.","url":"https://kashsec.vercel.app/lesson/03-linux/bash-scripting.html","inLanguage":"en","dateModified":"2026-08-04","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Pipes, redirection, loops — automation begins.","isPartOf":{"@type":"Course","name":"Path 03: Operating Systems & Linux","url":"https://kashsec.vercel.app/lesson/03-linux/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/03-linux/bash-scripting.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Your first bash script","headline":"Your first bash script","description":"You've learned commands. Now let's chain them into a script — a file the shell runs top to bottom. This is the moment \"using Linux\" becomes \"automating Linux,\" and it's genuinely a superpower.","url":"https://kashsec.vercel.app/lesson/03-linux/bash-scripting.html","inLanguage":"en","dateModified":"2026-08-04","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Pipes, redirection, loops — automation begins.","isPartOf":{"@type":"Course","name":"Path 03: Operating Systems & Linux","url":"https://kashsec.vercel.app/lesson/03-linux/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/03-linux/bash-scripting.html"}}
 </script>
 </head>
 <body>
@@ -298,10 +298,8 @@ curl -sI "https://$target"  &gt; "$outdir/https-headers.txt" 2&gt;&amp;1 || true
 echo "[+] Done. See $outdir/"
 </code></pre>
 <p>Run it: <code>./recon.sh example.com</code>. Explore the folder it produces. You've written a real starter recon tool.</p>
-<p>:::challenge Test yourself
-What does the shebang line <code>#!/bin/bash</code> do at the top of a script?</p>
-<details><summary>Show answer</summary>Tells the system which interpreter to use for the rest of the file — in this case, Bash. Without it, the script may be run by whichever shell you happen to have, which can behave differently.</details>
-:::<h2>Key terms</h2>
+<p>What does the shebang line <code>#!/bin/bash</code> do at the top of a script?</p>
+<details><summary>Show answer</summary>Tells the system which interpreter to use for the rest of the file — in this case, Bash. Without it, the script may be run by whichever shell you happen to have, which can behave differently.</details><h2>Key terms</h2>
 <ul>
 <li><strong>Shebang</strong> — <code>#!</code> line naming the interpreter.</li>
 <li><strong>Variable / interpolation</strong> — <code>x=1</code>, <code>$x</code>.</li>

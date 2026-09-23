@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>SBOM &amp; Software Bill of Materials — Path 22 · KashSec Academy</title>
-<meta name="description" content="SBOM &amp; Software Bill of Materials: Making the deep, invisible dependency tree visible and queryable.">
+<meta name="description" content="The secrets-supply-chain lesson covered typosquatting and dependency confusion as supply-chain attack vectors. This lesson covers the defensive tool increasingly mandated specifically to manage that s">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/22-devsecops-appsec/sbom-and-software-bill-of-materials.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="SBOM &amp; Software Bill of Materials — Path 22 · KashSec Academy">
-<meta property="og:description" content="SBOM &amp; Software Bill of Materials: Making the deep, invisible dependency tree visible and queryable.">
+<meta property="og:description" content="The secrets-supply-chain lesson covered typosquatting and dependency confusion as supply-chain attack vectors. This lesson covers the defensive tool increasingly mandated specifically to manage that s">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/22-devsecops-appsec/sbom-and-software-bill-of-materials.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="SBOM &amp; Software Bill of Materials — Path 22 · KashSec Academy">
-<meta name="twitter:description" content="SBOM &amp; Software Bill of Materials: Making the deep, invisible dependency tree visible and queryable.">
+<meta name="twitter:description" content="The secrets-supply-chain lesson covered typosquatting and dependency confusion as supply-chain attack vectors. This lesson covers the defensive tool increasingly mandated specifically to manage that s">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 22 — DevSecOps & AppSec Program","item":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/"},{"@type":"ListItem","position":4,"name":"SBOM & Software Bill of Materials","item":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/sbom-and-software-bill-of-materials.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"SBOM & Software Bill of Materials","headline":"SBOM & Software Bill of Materials","description":"SBOM & Software Bill of Materials: Making the deep, invisible dependency tree visible and queryable.","url":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/sbom-and-software-bill-of-materials.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Making the deep, invisible dependency tree visible and queryable.","isPartOf":{"@type":"Course","name":"Path 22: DevSecOps & AppSec Program","url":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/sbom-and-software-bill-of-materials.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"SBOM & Software Bill of Materials","headline":"SBOM & Software Bill of Materials","description":"The secrets-supply-chain lesson covered typosquatting and dependency confusion as supply-chain attack vectors. This lesson covers the defensive tool increasingly mandated specifically to manage that s","url":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/sbom-and-software-bill-of-materials.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Making the deep, invisible dependency tree visible and queryable.","isPartOf":{"@type":"Course","name":"Path 22: DevSecOps & AppSec Program","url":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/sbom-and-software-bill-of-materials.html"}}
 </script>
 </head>
 <body>
@@ -109,9 +109,7 @@
 <p>Directly connecting to the SAST/DAST/SCA lesson's SCA (Software Composition Analysis) coverage: most modern SCA tools can generate an SBOM directly as part of their normal scanning process — the practical workflow is generating an SBOM automatically on every build (via tools like <strong>Syft</strong>), storing it alongside the built artifact, and then, when a new vulnerability is publicly disclosed in any component, querying stored SBOMs across the entire organization's software inventory to instantly identify every affected application, rather than manually checking each application's dependencies one at a time.</p>
 <h2>Regulatory and contractual momentum behind SBOMs</h2>
 <p>Directly connecting to Path 23's GRC/compliance coverage: SBOM requirements have moved from voluntary best practice into explicit mandate in several contexts — US federal government software procurement now requires SBOMs from vendors under a 2021 executive order, and several industry-specific regulatory frameworks are moving in the same direction. This means SBOM generation is increasingly not just a defensive security practice but a genuine compliance and contractual requirement an AppSec program needs to actively support.</p>
-<p>:::challenge Test yourself
-Why does a vulnerability disclosed in a transitive dependency several layers deep in an application's dependency tree pose a genuine risk-visibility problem, even for a development team that carefully vets every dependency they directly choose?
-:::</p>
+<p>Why does a vulnerability disclosed in a transitive dependency several layers deep in an application's dependency tree pose a genuine risk-visibility problem, even for a development team that carefully vets every dependency they directly choose?</p>
 <h2>Key terms</h2>
 <ul>
 <li><strong>SBOM (Software Bill of Materials)</strong> — a formal, machine-readable inventory of every component in a piece of software, including transitive dependencies.</li>

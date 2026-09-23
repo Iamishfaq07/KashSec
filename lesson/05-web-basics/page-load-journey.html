@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>The page-load journey — Path 05 · KashSec Academy</title>
-<meta name="description" content="The page-load journey: Every step from click to rendered page.">
+<meta name="description" content="Web hacking makes far more sense once you can picture what actually happens when a page loads. In this lesson we trace every step from click to rendered page — the mental model everything else in Path">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/05-web-basics/page-load-journey.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="The page-load journey — Path 05 · KashSec Academy">
-<meta property="og:description" content="The page-load journey: Every step from click to rendered page.">
+<meta property="og:description" content="Web hacking makes far more sense once you can picture what actually happens when a page loads. In this lesson we trace every step from click to rendered page — the mental model everything else in Path">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/05-web-basics/page-load-journey.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="The page-load journey — Path 05 · KashSec Academy">
-<meta name="twitter:description" content="The page-load journey: Every step from click to rendered page.">
+<meta name="twitter:description" content="Web hacking makes far more sense once you can picture what actually happens when a page loads. In this lesson we trace every step from click to rendered page — the mental model everything else in Path">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 05 — How the Web Works","item":"https://kashsec.vercel.app/lesson/05-web-basics/"},{"@type":"ListItem","position":4,"name":"The page-load journey","item":"https://kashsec.vercel.app/lesson/05-web-basics/page-load-journey.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"The page-load journey","headline":"The page-load journey","description":"The page-load journey: Every step from click to rendered page.","url":"https://kashsec.vercel.app/lesson/05-web-basics/page-load-journey.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Every step from click to rendered page.","isPartOf":{"@type":"Course","name":"Path 05: How the Web Works","url":"https://kashsec.vercel.app/lesson/05-web-basics/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/05-web-basics/page-load-journey.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"The page-load journey","headline":"The page-load journey","description":"Web hacking makes far more sense once you can picture what actually happens when a page loads. In this lesson we trace every step from click to rendered page — the mental model everything else in Path","url":"https://kashsec.vercel.app/lesson/05-web-basics/page-load-journey.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Every step from click to rendered page.","isPartOf":{"@type":"Course","name":"Path 05: How the Web Works","url":"https://kashsec.vercel.app/lesson/05-web-basics/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/05-web-basics/page-load-journey.html"}}
 </script>
 </head>
 <body>
@@ -101,27 +101,6 @@
 <p>This lesson stitches them into one continuous story.</p>
 <h2>The 8 steps of loading a page</h2>
 <p>You type <code>https://example.com/products?id=42</code> and hit Enter. Behind the scenes:</p>
-<pre><code class="language-mermaid">sequenceDiagram
-    autonumber
-    participant U as You
-    participant B as Browser
-    participant DNS as DNS Resolver
-    participant S as Server (example.com)
-    participant DB as Database
-
-    U-&gt;&gt;B: Enter URL, hit Enter
-    B-&gt;&gt;DNS: What's example.com's IP?
-    DNS-&gt;&gt;B: 93.184.216.34
-    B-&gt;&gt;S: TCP handshake to 93.184.216.34:443
-    B-&gt;&gt;S: TLS handshake (cert check, key exchange)
-    B-&gt;&gt;S: HTTP GET /products?id=42 (with cookies, headers)
-    S-&gt;&gt;DB: Query products WHERE id=42
-    DB-&gt;&gt;S: Row 42
-    S-&gt;&gt;B: HTTP 200 OK + HTML
-    B-&gt;&gt;S: GET /style.css, /app.js, /logo.png (all in parallel)
-    S-&gt;&gt;B: Assets returned
-    B-&gt;&gt;U: 🎨 Rendered page
-</code></pre>
 <p>Step by step:</p>
 <ol>
 <li><strong>URL parsed.</strong> The browser splits your URL into scheme (<code>https</code>), host (<code>example.com</code>), port (<code>443</code> by default for HTTPS), path (<code>/products</code>), and parameters (<code>id=42</code>).</li>
@@ -231,10 +210,8 @@
 </li>
 </ol>
 <p>You've just watched every step of the journey with your own eyes.</p>
-<p>:::challenge Test yourself
-When you type <code>example.com</code> in your browser, roughly what's the <strong>first network activity</strong> that happens after your keystroke?</p>
-<details><summary>Show answer</summary>A <strong>DNS lookup</strong> — the browser needs to translate <code>example.com</code> to an IP address before it can open a TCP connection.</details>
-:::<h2>Key terms</h2>
+<p>When you type <code>example.com</code> in your browser, roughly what's the <strong>first network activity</strong> that happens after your keystroke?</p>
+<details><summary>Show answer</summary>A <strong>DNS lookup</strong> — the browser needs to translate <code>example.com</code> to an IP address before it can open a TCP connection.</details><h2>Key terms</h2>
 <ul>
 <li><strong>URL parts</strong> — scheme, host, port, path, query.</li>
 <li><strong>DNS lookup / TCP handshake / TLS handshake</strong> — the three "before you ever see HTTP" steps.</li>

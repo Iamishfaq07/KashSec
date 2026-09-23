@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Logic Bug Hunting Lab — Path 15 · KashSec Academy</title>
-<meta name="description" content="Logic Bug Hunting Lab: Practice finding business logic vulnerabilities.">
+<meta name="description" content="Business logic vulnerabilities are, in many ways, harder to find than technical bugs like SQLi or XSS — no scanner catches them, because there's no malformed input involved at all, only a legitimate r">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/15-bug-bounty/logic-bug-hunting-lab.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Logic Bug Hunting Lab — Path 15 · KashSec Academy">
-<meta property="og:description" content="Logic Bug Hunting Lab: Practice finding business logic vulnerabilities.">
+<meta property="og:description" content="Business logic vulnerabilities are, in many ways, harder to find than technical bugs like SQLi or XSS — no scanner catches them, because there's no malformed input involved at all, only a legitimate r">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/15-bug-bounty/logic-bug-hunting-lab.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Logic Bug Hunting Lab — Path 15 · KashSec Academy">
-<meta name="twitter:description" content="Logic Bug Hunting Lab: Practice finding business logic vulnerabilities.">
+<meta name="twitter:description" content="Business logic vulnerabilities are, in many ways, harder to find than technical bugs like SQLi or XSS — no scanner catches them, because there's no malformed input involved at all, only a legitimate r">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 15 — Bug Bounty","item":"https://kashsec.vercel.app/lesson/15-bug-bounty/"},{"@type":"ListItem","position":4,"name":"Logic Bug Hunting Lab","item":"https://kashsec.vercel.app/lesson/15-bug-bounty/logic-bug-hunting-lab.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Logic Bug Hunting Lab","headline":"Logic Bug Hunting Lab","description":"Logic Bug Hunting Lab: Practice finding business logic vulnerabilities.","url":"https://kashsec.vercel.app/lesson/15-bug-bounty/logic-bug-hunting-lab.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Intermediate→Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Practice finding business logic vulnerabilities.","isPartOf":{"@type":"Course","name":"Path 15: Bug Bounty","url":"https://kashsec.vercel.app/lesson/15-bug-bounty/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/15-bug-bounty/logic-bug-hunting-lab.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Logic Bug Hunting Lab","headline":"Logic Bug Hunting Lab","description":"Business logic vulnerabilities are, in many ways, harder to find than technical bugs like SQLi or XSS — no scanner catches them, because there's no malformed input involved at all, only a legitimate r","url":"https://kashsec.vercel.app/lesson/15-bug-bounty/logic-bug-hunting-lab.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Intermediate→Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Practice finding business logic vulnerabilities.","isPartOf":{"@type":"Course","name":"Path 15: Bug Bounty","url":"https://kashsec.vercel.app/lesson/15-bug-bounty/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/15-bug-bounty/logic-bug-hunting-lab.html"}}
 </script>
 </head>
 <body>
@@ -108,22 +108,9 @@
 </ul>
 <h2>Lab approach</h2>
 <p>Use a deliberately vulnerable app (several free options exist for business-logic-specific practice, or a wide-scope real bug bounty program) and, critically, spend real time <em>understanding the intended workflow first</em> — read through the checkout flow, the coupon redemption flow, the account settings flow, end to end, as a normal user would use it — before trying to break any assumption within it. This is the actual methodology, not a shortcut you can skip.</p>
-<pre><code class="language-mermaid">flowchart LR
-    A["Understand the\nintended workflow fully"] --&gt; B["Identify assumptions\nthe app relies on"]
-    B --&gt; C["Test breaking each\nassumption individually"]
-    C --&gt; D{"App behaves\nincorrectly?"}
-    D --&gt;|Yes| E["Document the logic flaw\n+ business impact"]
-    D --&gt;|No| B
-</code></pre>
-<p>:::tip Ask "what is this workflow assuming?" for every step
-This is the exact same core question from Path 01's Security Mindset Lab, applied specifically to application workflows: does this checkout flow assume the price sent by the client matches what was actually displayed? Does this coupon-redeem endpoint assume it can only be called once? Does this password reset assume the token can only be used by the person who requested it? Every assumption is a hypothesis worth testing directly.
-:::</p>
-<p>:::tip Keep a running "assumptions log" per target
-As you work through an application's workflows, write down every assumption you notice the moment you notice it — even ones you haven't tested yet — in a simple running list. Revisiting this log after finishing your first pass often surfaces two or three assumptions you noted but forgot to actually go back and test, which is a genuinely common way real findings slip through even careful manual testing.
-:::</p>
-<p>:::challenge Find and document a logic flaw
-In a test environment (or, if you have a specific wide-scope program's explicit permission, a real target), find at least one business logic flaw and document it: what the intended workflow was supposed to enforce, exactly what assumption broke, how you exploited it, and — critically — the <strong>business impact</strong> in plain terms (e.g., "an attacker could redeem the same one-time discount code unlimited times," not just "found a race condition").
-:::</p>
+<p>This is the exact same core question from Path 01's Security Mindset Lab, applied specifically to application workflows: does this checkout flow assume the price sent by the client matches what was actually displayed? Does this coupon-redeem endpoint assume it can only be called once? Does this password reset assume the token can only be used by the person who requested it? Every assumption is a hypothesis worth testing directly.</p>
+<p>As you work through an application's workflows, write down every assumption you notice the moment you notice it — even ones you haven't tested yet — in a simple running list. Revisiting this log after finishing your first pass often surfaces two or three assumptions you noted but forgot to actually go back and test, which is a genuinely common way real findings slip through even careful manual testing.</p>
+<p>In a test environment (or, if you have a specific wide-scope program's explicit permission, a real target), find at least one business logic flaw and document it: what the intended workflow was supposed to enforce, exactly what assumption broke, how you exploited it, and — critically — the <strong>business impact</strong> in plain terms (e.g., "an attacker could redeem the same one-time discount code unlimited times," not just "found a race condition").</p>
 <h2>Key takeaway</h2>
 <p>Logic bugs require genuinely understanding how an application is <em>supposed</em> to work before you can find where that intention breaks down — no automated scanner replaces this understanding, which is exactly why skilled logic-bug hunters remain in high demand even as automated tooling improves at finding technical vulnerability classes.</p>
 <p><strong>Next up →</strong> <a href="#/lesson/15-bug-bounty/recon-pipeline-lab">Recon Pipeline Lab</a></p>

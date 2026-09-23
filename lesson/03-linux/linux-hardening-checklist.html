@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>A Practical Linux Hardening Checklist — Path 03 · KashSec Academy</title>
-<meta name="description" content="A Practical Linux Hardening Checklist: Every earlier lesson in this path, consolidated into one ordered checklist.">
+<meta name="description" content="You've now covered users and permissions, package management, SSH, cron, logging, and firewalls. This lesson pulls all of it together into a single, practical checklist — the Linux-side counterpart to">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/03-linux/linux-hardening-checklist.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="A Practical Linux Hardening Checklist — Path 03 · KashSec Academy">
-<meta property="og:description" content="A Practical Linux Hardening Checklist: Every earlier lesson in this path, consolidated into one ordered checklist.">
+<meta property="og:description" content="You've now covered users and permissions, package management, SSH, cron, logging, and firewalls. This lesson pulls all of it together into a single, practical checklist — the Linux-side counterpart to">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/03-linux/linux-hardening-checklist.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="A Practical Linux Hardening Checklist — Path 03 · KashSec Academy">
-<meta name="twitter:description" content="A Practical Linux Hardening Checklist: Every earlier lesson in this path, consolidated into one ordered checklist.">
+<meta name="twitter:description" content="You've now covered users and permissions, package management, SSH, cron, logging, and firewalls. This lesson pulls all of it together into a single, practical checklist — the Linux-side counterpart to">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 03 — Operating Systems & Linux","item":"https://kashsec.vercel.app/lesson/03-linux/"},{"@type":"ListItem","position":4,"name":"A Practical Linux Hardening Checklist","item":"https://kashsec.vercel.app/lesson/03-linux/linux-hardening-checklist.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"A Practical Linux Hardening Checklist","headline":"A Practical Linux Hardening Checklist","description":"A Practical Linux Hardening Checklist: Every earlier lesson in this path, consolidated into one ordered checklist.","url":"https://kashsec.vercel.app/lesson/03-linux/linux-hardening-checklist.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Every earlier lesson in this path, consolidated into one ordered checklist.","isPartOf":{"@type":"Course","name":"Path 03: Operating Systems & Linux","url":"https://kashsec.vercel.app/lesson/03-linux/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/03-linux/linux-hardening-checklist.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"A Practical Linux Hardening Checklist","headline":"A Practical Linux Hardening Checklist","description":"You've now covered users and permissions, package management, SSH, cron, logging, and firewalls. This lesson pulls all of it together into a single, practical checklist — the Linux-side counterpart to","url":"https://kashsec.vercel.app/lesson/03-linux/linux-hardening-checklist.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Every earlier lesson in this path, consolidated into one ordered checklist.","isPartOf":{"@type":"Course","name":"Path 03: Operating Systems & Linux","url":"https://kashsec.vercel.app/lesson/03-linux/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/03-linux/linux-hardening-checklist.html"}}
 </script>
 </head>
 <body>
@@ -89,9 +89,7 @@
     <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/03-linux/">Path 03 — Operating Systems &amp; Linux</a> · A Practical Linux Hardening Checklist</nav>
     <div class="md" id="content"><article><h1>A Practical Linux Hardening Checklist</h1>
 <p>You've now covered users and permissions, package management, SSH, cron, logging, and firewalls. This lesson pulls all of it together into a single, practical checklist — the Linux-side counterpart to Path 07's "Securing a Windows Machine" lesson.</p>
-<p>:::tip
-Nothing in this checklist is new information — every single item traces back to a specific lesson earlier in this path. The value here is having it all in one place, in a sensible order, the way you'd actually work through it on a real system.
-:::</p>
+<p>:::</p>
 <h2>The checklist</h2>
 <ol>
 <li><strong>Keep packages updated</strong> — <code>apt update &amp;&amp; apt upgrade</code> (or your distro's equivalent) on a regular schedule, from the package-management lesson</li>
@@ -113,8 +111,7 @@ Nothing in this checklist is new information — every single item traces back t
 <p>Notice the checklist's sequence isn't arbitrary: updates and account hygiene come first (foundational, low-risk to change), SSH and firewall hardening come next (higher-impact, needs care not to lock yourself out), and auditing/review steps come last (checking your own work). Working through hardening in a sensible order — rather than randomly — reduces the chance of a mistake locking you out or breaking something mid-process.</p>
 <p>:::challenge Test yourself
 Why does this lesson recommend confirming SSH key-based authentication actually works <em>before</em> disabling password authentication entirely, rather than doing both steps simultaneously?</p>
-<details><summary>Show answer</summary>If key-based authentication isn't actually configured correctly — a public key not properly installed, incorrect file permissions on the <code>.ssh</code> directory — and password authentication gets disabled at the same time, you can end up completely locked out of the machine with no working authentication method left at all, especially painful on a remote server with no console access. The safe sequence is: set up and thoroughly test key-based login first, confirm it genuinely works from a fresh connection, and only then disable password authentication as a separate, deliberate follow-up step — directly applying the same "verify before you cut off your own access" caution the firewall-basics lesson gave for enabling default-deny remotely.</details>
-:::<h2>🧪 Hands-on lab — run the checklist on your own VM</h2>
+<details><summary>Show answer</summary>If key-based authentication isn't actually configured correctly — a public key not properly installed, incorrect file permissions on the <code>.ssh</code> directory — and password authentication gets disabled at the same time, you can end up completely locked out of the machine with no working authentication method left at all, especially painful on a remote server with no console access. The safe sequence is: set up and thoroughly test key-based login first, confirm it genuinely works from a fresh connection, and only then disable password authentication as a separate, deliberate follow-up step — directly applying the same "verify before you cut off your own access" caution the firewall-basics lesson gave for enabling default-deny remotely.</details><h2>🧪 Hands-on lab — run the checklist on your own VM</h2>
 <p>Using the Kali or Ubuntu VM from earlier in this path, work through this lesson's ten-item checklist one item at a time, noting what you find at each step. If Lynis is available in your distro's repositories, install it and compare its automated findings against your own manual review.</p>
 <h2>Key terms</h2>
 <ul>

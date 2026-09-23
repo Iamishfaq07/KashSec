@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Web frameworks: an overview — Path 05 · KashSec Academy</title>
-<meta name="description" content="Web frameworks: an overview: React, Django, Express — and why framework defaults help but aren't magic.">
+<meta name="description" content="Every concept in this path so far has been explained at the level of raw HTML, HTTP, and JavaScript. This lesson is a map of the tools real-world developers actually build with — so that when a later ">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/05-web-basics/web-frameworks-overview.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Web frameworks: an overview — Path 05 · KashSec Academy">
-<meta property="og:description" content="Web frameworks: an overview: React, Django, Express — and why framework defaults help but aren't magic.">
+<meta property="og:description" content="Every concept in this path so far has been explained at the level of raw HTML, HTTP, and JavaScript. This lesson is a map of the tools real-world developers actually build with — so that when a later ">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/05-web-basics/web-frameworks-overview.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Web frameworks: an overview — Path 05 · KashSec Academy">
-<meta name="twitter:description" content="Web frameworks: an overview: React, Django, Express — and why framework defaults help but aren't magic.">
+<meta name="twitter:description" content="Every concept in this path so far has been explained at the level of raw HTML, HTTP, and JavaScript. This lesson is a map of the tools real-world developers actually build with — so that when a later ">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 05 — How the Web Works","item":"https://kashsec.vercel.app/lesson/05-web-basics/"},{"@type":"ListItem","position":4,"name":"Web frameworks: an overview","item":"https://kashsec.vercel.app/lesson/05-web-basics/web-frameworks-overview.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Web frameworks: an overview","headline":"Web frameworks: an overview","description":"Web frameworks: an overview: React, Django, Express — and why framework defaults help but aren't magic.","url":"https://kashsec.vercel.app/lesson/05-web-basics/web-frameworks-overview.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"React, Django, Express — and why framework defaults help but aren't magic.","isPartOf":{"@type":"Course","name":"Path 05: How the Web Works","url":"https://kashsec.vercel.app/lesson/05-web-basics/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/05-web-basics/web-frameworks-overview.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Web frameworks: an overview","headline":"Web frameworks: an overview","description":"Every concept in this path so far has been explained at the level of raw HTML, HTTP, and JavaScript. This lesson is a map of the tools real-world developers actually build with — so that when a later ","url":"https://kashsec.vercel.app/lesson/05-web-basics/web-frameworks-overview.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"React, Django, Express — and why framework defaults help but aren't magic.","isPartOf":{"@type":"Course","name":"Path 05: How the Web Works","url":"https://kashsec.vercel.app/lesson/05-web-basics/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/05-web-basics/web-frameworks-overview.html"}}
 </script>
 </head>
 <body>
@@ -89,9 +89,7 @@
     <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/05-web-basics/">Path 05 — How the Web Works</a> · Web frameworks: an overview</nav>
     <div class="md" id="content"><article><h1>Web frameworks: an overview</h1>
 <p>Every concept in this path so far has been explained at the level of raw HTML, HTTP, and JavaScript. This lesson is a map of the tools real-world developers actually build with — so that when a later path (or a real job) mentions React or Django by name, you already have a rough sense of what it is and where it fits.</p>
-<p>:::tip
-Exactly like Path 01's cyberattacks-overview lesson, this is recognition, not mastery. You don't need to learn any of these frameworks right now — the goal is knowing what category each one belongs to and roughly what problem it solves.
-:::</p>
+<p>:::</p>
 <h2>Frontend frameworks: building what the client renders</h2>
 <ul>
 <li><strong>React</strong> — the most widely used frontend framework, building interactive interfaces out of reusable <strong>components</strong>, each managing its own piece of the DOM (from the browser-rendering lesson) rather than manipulating raw HTML directly</li>
@@ -115,8 +113,7 @@ Exactly like Path 01's cyberattacks-overview lesson, this is recognition, not ma
 <p>A page's source often reveals its framework — React apps frequently have a <code>&lt;div id="root"&gt;</code> or <code>&lt;div id="app"&gt;</code> that gets populated entirely by JavaScript rather than containing visible content in the original HTML (directly connecting to the how-browsers-render-pages lesson's DOM-vs-source-code distinction), and framework-specific naming conventions in class names or attributes are often visible in DevTools' Elements panel.</p>
 <p>:::challenge Test yourself
 Why might a security review specifically check whether a web application's framework has any built-in output-escaping or parameterized-query protection disabled, rather than assuming the framework's defaults are always in effect?</p>
-<details><summary>Show answer</summary>Modern frameworks frequently provide meaningful protection against entire vulnerability categories (XSS via automatic output escaping, SQL injection via parameterized queries) as sensible defaults — but developers can and sometimes do explicitly bypass these protections, often for a specific, seemingly reasonable-at-the-time reason (needing to render raw HTML content, building a dynamic query the framework's standard tools don't easily support). A security review that simply assumes "this app uses Framework X, so it's protected against XSS" without checking for these specific bypasses can miss a genuine, exploitable vulnerability hiding behind an otherwise well-protected framework — which is exactly why Path 11's web security material treats framework defaults as a helpful baseline to verify, not a guarantee to blindly trust.</details>
-:::<h2>Key terms</h2>
+<details><summary>Show answer</summary>Modern frameworks frequently provide meaningful protection against entire vulnerability categories (XSS via automatic output escaping, SQL injection via parameterized queries) as sensible defaults — but developers can and sometimes do explicitly bypass these protections, often for a specific, seemingly reasonable-at-the-time reason (needing to render raw HTML content, building a dynamic query the framework's standard tools don't easily support). A security review that simply assumes "this app uses Framework X, so it's protected against XSS" without checking for these specific bypasses can miss a genuine, exploitable vulnerability hiding behind an otherwise well-protected framework — which is exactly why Path 11's web security material treats framework defaults as a helpful baseline to verify, not a guarantee to blindly trust.</details><h2>Key terms</h2>
 <ul>
 <li><strong>Frontend framework</strong> — a tool (React, Vue, Angular) providing structure for building client-side, component-based user interfaces.</li>
 <li><strong>Backend framework</strong> — a tool (Django, Express, Rails) providing structure for handling server-side request processing and business logic.</li>

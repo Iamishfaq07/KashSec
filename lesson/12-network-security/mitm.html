@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Man-in-the-Middle — Path 12 · KashSec Academy</title>
-<meta name="description" content="Man-in-the-Middle: How MITMs work, and how HTTPS defeats them.">
+<meta name="description" content="You've been using a man-in-the-middle setup deliberately and legitimately throughout Path 11 — that's exactly what Burp Suite does. This lesson covers the same fundamental technique used maliciously, ">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/12-network-security/mitm.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Man-in-the-Middle — Path 12 · KashSec Academy">
-<meta property="og:description" content="Man-in-the-Middle: How MITMs work, and how HTTPS defeats them.">
+<meta property="og:description" content="You've been using a man-in-the-middle setup deliberately and legitimately throughout Path 11 — that's exactly what Burp Suite does. This lesson covers the same fundamental technique used maliciously, ">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/12-network-security/mitm.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Man-in-the-Middle — Path 12 · KashSec Academy">
-<meta name="twitter:description" content="Man-in-the-Middle: How MITMs work, and how HTTPS defeats them.">
+<meta name="twitter:description" content="You've been using a man-in-the-middle setup deliberately and legitimately throughout Path 11 — that's exactly what Burp Suite does. This lesson covers the same fundamental technique used maliciously, ">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 12 — Network Security","item":"https://kashsec.vercel.app/lesson/12-network-security/"},{"@type":"ListItem","position":4,"name":"Man-in-the-Middle","item":"https://kashsec.vercel.app/lesson/12-network-security/mitm.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Man-in-the-Middle","headline":"Man-in-the-Middle","description":"Man-in-the-Middle: How MITMs work, and how HTTPS defeats them.","url":"https://kashsec.vercel.app/lesson/12-network-security/mitm.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"How MITMs work, and how HTTPS defeats them.","isPartOf":{"@type":"Course","name":"Path 12: Network Security","url":"https://kashsec.vercel.app/lesson/12-network-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/12-network-security/mitm.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Man-in-the-Middle","headline":"Man-in-the-Middle","description":"You've been using a man-in-the-middle setup deliberately and legitimately throughout Path 11 — that's exactly what Burp Suite does. This lesson covers the same fundamental technique used maliciously, ","url":"https://kashsec.vercel.app/lesson/12-network-security/mitm.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"How MITMs work, and how HTTPS defeats them.","isPartOf":{"@type":"Course","name":"Path 12: Network Security","url":"https://kashsec.vercel.app/lesson/12-network-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/12-network-security/mitm.html"}}
 </script>
 </head>
 <body>
@@ -91,17 +91,6 @@
 <p>You've been using a man-in-the-middle setup deliberately and legitimately throughout Path 11 — that's exactly what Burp Suite does. This lesson covers the same fundamental technique used <strong>maliciously</strong>, and how to defend against it.</p>
 <h2>The core concept</h2>
 <p>A <strong>man-in-the-middle (MITM)</strong> attack happens when an attacker secretly positions themselves between two communicating parties, able to intercept, read, and potentially modify traffic passing between them — while both parties believe they're communicating directly with each other.</p>
-<pre><code class="language-mermaid">sequenceDiagram
-    participant V as Victim
-    participant A as 🧑‍💻 Attacker (MITM)
-    participant S as Real Server
-
-    V-&gt;&gt;A: "Request to server" (thinks it's going direct)
-    A-&gt;&gt;S: Forwards (possibly modified) request
-    S-&gt;&gt;A: Response
-    A-&gt;&gt;V: Forwards (possibly modified) response
-    Note over V,S: Victim believes they're talking directly to the server
-</code></pre>
 <p>The victim's traffic still appears to work normally — pages load, logins succeed — while the attacker silently observes or tampers with everything passing through.</p>
 <h2>How attackers actually get into the middle</h2>
 <h3>ARP spoofing (on a local network)</h3>
@@ -163,13 +152,9 @@ echo 1 | sudo tee /proc/sys/net/ipv4/ip_forward
 <li>You should see a genuine, unmistakable <strong>certificate warning</strong> — this is exactly the browser protection this lesson describes, catching an MITM attempt in real time, precisely because trust wasn't established beforehand.</li>
 </ol>
 <p>That contrast — trusted vs. untrusted proxy certificate — is the entire mechanism by which HTTPS defeats real-world MITM attacks, made directly visible using a tool you already know how to use.</p>
-<p>:::danger AUTHORIZATION REQUIRED
-ARP spoofing and MITM techniques against real networks and devices you don't own or lack explicit written authorization for are illegal, exactly as established throughout Path 01 and reinforced in the previous Wi-Fi lesson. Only practise ARP spoofing techniques within your own isolated lab network (Path 03.7's Host-only setup), never against production networks, public Wi-Fi, or any device you don't have clear written authorization to test.
-:::</p>
-<p>:::challenge Test yourself
-A victim's browser displays a certificate warning while connecting to their bank's website over public Wi-Fi. What should they do, and why does this warning specifically suggest a possible MITM attempt?</p>
-<details><summary>Show answer</summary>They should <strong>not proceed</strong> — close the connection and try again on a trusted network, ideally using cellular data or a VPN instead. The warning means the certificate presented doesn't match what the browser expects/trusts for that domain, which is <em>exactly</em> what happens when an attacker intercepts the connection and presents their own certificate instead of the bank's genuine one — the core mechanism this entire lesson describes. While misconfiguration is a more common innocent cause than an actual attack, the correct response is identical either way: don't proceed until the warning is resolved through a trusted channel.</details>
-:::<h2>Key terms</h2>
+<p>ARP spoofing and MITM techniques against real networks and devices you don't own or lack explicit written authorization for are illegal, exactly as established throughout Path 01 and reinforced in the previous Wi-Fi lesson. Only practise ARP spoofing techniques within your own isolated lab network (Path 03.7's Host-only setup), never against production networks, public Wi-Fi, or any device you don't have clear written authorization to test.</p>
+<p>A victim's browser displays a certificate warning while connecting to their bank's website over public Wi-Fi. What should they do, and why does this warning specifically suggest a possible MITM attempt?</p>
+<details><summary>Show answer</summary>They should <strong>not proceed</strong> — close the connection and try again on a trusted network, ideally using cellular data or a VPN instead. The warning means the certificate presented doesn't match what the browser expects/trusts for that domain, which is <em>exactly</em> what happens when an attacker intercepts the connection and presents their own certificate instead of the bank's genuine one — the core mechanism this entire lesson describes. While misconfiguration is a more common innocent cause than an actual attack, the correct response is identical either way: don't proceed until the warning is resolved through a trusted channel.</details><h2>Key terms</h2>
 <ul>
 <li><strong>MITM (man-in-the-middle)</strong> — an attacker secretly intercepting communication between two parties who believe they're communicating directly.</li>
 <li><strong>ARP spoofing</strong> — forging ARP replies to redirect local network traffic through an attacker's machine.</li>

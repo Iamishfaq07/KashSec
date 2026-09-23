@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Files &amp; folders — Path 03 · KashSec Academy</title>
-<meta name="description" content="Files &amp; folders: Navigate, read, search — grep is gold.">
+<meta name="description" content="You navigate, read, and search files constantly during real work. This lesson is the toolbelt: the small handful of commands that cover 90% of what you'll ever do to files in Linux.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/03-linux/files-and-folders.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Files &amp; folders — Path 03 · KashSec Academy">
-<meta property="og:description" content="Files &amp; folders: Navigate, read, search — grep is gold.">
+<meta property="og:description" content="You navigate, read, and search files constantly during real work. This lesson is the toolbelt: the small handful of commands that cover 90% of what you'll ever do to files in Linux.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/03-linux/files-and-folders.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Files &amp; folders — Path 03 · KashSec Academy">
-<meta name="twitter:description" content="Files &amp; folders: Navigate, read, search — grep is gold.">
+<meta name="twitter:description" content="You navigate, read, and search files constantly during real work. This lesson is the toolbelt: the small handful of commands that cover 90% of what you'll ever do to files in Linux.">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 03 — Operating Systems & Linux","item":"https://kashsec.vercel.app/lesson/03-linux/"},{"@type":"ListItem","position":4,"name":"Files & folders","item":"https://kashsec.vercel.app/lesson/03-linux/files-and-folders.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Files & folders","headline":"Files & folders","description":"Files & folders: Navigate, read, search — grep is gold.","url":"https://kashsec.vercel.app/lesson/03-linux/files-and-folders.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Navigate, read, search — grep is gold.","isPartOf":{"@type":"Course","name":"Path 03: Operating Systems & Linux","url":"https://kashsec.vercel.app/lesson/03-linux/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/03-linux/files-and-folders.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Files & folders","headline":"Files & folders","description":"You navigate, read, and search files constantly during real work. This lesson is the toolbelt: the small handful of commands that cover 90% of what you'll ever do to files in Linux.","url":"https://kashsec.vercel.app/lesson/03-linux/files-and-folders.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Navigate, read, search — grep is gold.","isPartOf":{"@type":"Course","name":"Path 03: Operating Systems & Linux","url":"https://kashsec.vercel.app/lesson/03-linux/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/03-linux/files-and-folders.html"}}
 </script>
 </head>
 <body>
@@ -144,10 +144,8 @@ rm file.txt             # delete a file (careful — no recycle bin!)
 rm -r folder            # delete a folder and everything in it
 rm -rf folder           # forceful. Genuinely dangerous. Read on.
 </code></pre>
-<p>:::danger THE MOST FEARED COMMAND
-<code>rm -rf /</code> (or <code>rm -rf ~</code>) will happily delete everything you have. There is no undo in Linux. Modern shells warn on <code>/</code>, but not always on subfolders or scripts using variables that resolve to empty strings.</p>
-<p><strong>Habit:</strong> double-check the target before running <code>rm -r</code>, and never run destructive commands as root without pausing.
-:::</p>
+<p><code>rm -rf /</code> (or <code>rm -rf ~</code>) will happily delete everything you have. There is no undo in Linux. Modern shells warn on <code>/</code>, but not always on subfolders or scripts using variables that resolve to empty strings.</p>
+<p><strong>Habit:</strong> double-check the target before running <code>rm -r</code>, and never run destructive commands as root without pausing.</p>
 <h2>Reading files</h2>
 <pre><code class="language-bash">cat file.txt              # dump whole file to screen
 less file.txt             # scrollable view (q to quit, / to search)
@@ -205,32 +203,7 @@ command 2&gt; err.log   # send errors to a file
 command &gt; out 2&gt;&amp;1   # send both to the same file
 command &lt; input.txt  # read stdin from a file
 </code></pre>
-<pre><code class="language-svg">&lt;svg viewBox="0 0 700 240" xmlns="http://www.w3.org/2000/svg" font-family="Inter, sans-serif"&gt;
-  &lt;g font-size="12"&gt;
-    &lt;text x="350" y="30" text-anchor="middle" fill="#E9EEF3" font-weight="700" font-size="14"&gt;Pipe: output of one → input of next&lt;/text&gt;
-    &lt;rect x="40" y="60" width="140" height="50" rx="6" fill="#111927" stroke="#3FB6A8"/&gt;
-    &lt;text x="110" y="90" text-anchor="middle" fill="#3FB6A8" font-family="JetBrains Mono"&gt;cat auth.log&lt;/text&gt;
-    &lt;line x1="185" y1="85" x2="230" y2="85" stroke="#EFA43A" stroke-width="2" marker-end="url(#a7)"/&gt;
-    &lt;text x="207" y="75" text-anchor="middle" fill="#EFA43A" font-weight="700"&gt;|&lt;/text&gt;
-    &lt;rect x="235" y="60" width="140" height="50" rx="6" fill="#111927" stroke="#3FB6A8"/&gt;
-    &lt;text x="305" y="90" text-anchor="middle" fill="#3FB6A8" font-family="JetBrains Mono"&gt;grep Failed&lt;/text&gt;
-    &lt;line x1="380" y1="85" x2="425" y2="85" stroke="#EFA43A" stroke-width="2" marker-end="url(#a7)"/&gt;
-    &lt;text x="402" y="75" text-anchor="middle" fill="#EFA43A" font-weight="700"&gt;|&lt;/text&gt;
-    &lt;rect x="430" y="60" width="140" height="50" rx="6" fill="#111927" stroke="#3FB6A8"/&gt;
-    &lt;text x="500" y="90" text-anchor="middle" fill="#3FB6A8" font-family="JetBrains Mono"&gt;sort | uniq -c&lt;/text&gt;
-    &lt;line x1="575" y1="85" x2="620" y2="85" stroke="#EFA43A" stroke-width="2" marker-end="url(#a7)"/&gt;
-    &lt;text x="640" y="90" fill="#E9EEF3"&gt;📊&lt;/text&gt;
-    &lt;text x="350" y="150" text-anchor="middle" fill="#E9EEF3" font-weight="700" font-size="14"&gt;Redirect: output → file&lt;/text&gt;
-    &lt;rect x="180" y="180" width="140" height="40" rx="6" fill="#111927" stroke="#3FB6A8"/&gt;
-    &lt;text x="250" y="205" text-anchor="middle" fill="#3FB6A8" font-family="JetBrains Mono"&gt;ls -la&lt;/text&gt;
-    &lt;line x1="325" y1="200" x2="365" y2="200" stroke="#EFA43A" stroke-width="2" marker-end="url(#a7)"/&gt;
-    &lt;text x="345" y="192" text-anchor="middle" fill="#EFA43A" font-weight="700"&gt;&amp;gt;&lt;/text&gt;
-    &lt;rect x="370" y="180" width="140" height="40" rx="6" fill="#0f2b26" stroke="#3FB6A8"/&gt;
-    &lt;text x="440" y="205" text-anchor="middle" fill="#3FB6A8" font-family="JetBrains Mono"&gt;files.txt&lt;/text&gt;
-    &lt;defs&gt;&lt;marker id="a7" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"&gt;&lt;polygon points="0 0, 10 3, 0 6" fill="#EFA43A"/&gt;&lt;/marker&gt;&lt;/defs&gt;
-  &lt;/g&gt;
-&lt;/svg&gt;
-</code></pre>
+<p><em>[Pipes and redirects visualised]</em></p>
 <p>Pipes are what let a Linux user do enormous work in one line. Every serious security workflow you'll see uses them heavily.</p>
 <h2>Compression &amp; archives</h2>
 <pre><code class="language-bash">tar cvf out.tar folder/          # create tar archive
@@ -260,10 +233,8 @@ lsblk &gt;&gt; ~/kashsec-notes/system-info.txt
 cat ~/kashsec-notes/system-info.txt
 </code></pre>
 <p>You've just done a real recon-style flow with basic commands.</p>
-<p>:::challenge Test yourself
-What does the pipe symbol <code>|</code> do between two commands? Give a one-sentence answer.</p>
-<details><summary>Show answer</summary>It sends the standard output of the first command as the standard input of the second command.</details>
-:::<h2>Key terms</h2>
+<p>What does the pipe symbol <code>|</code> do between two commands? Give a one-sentence answer.</p>
+<details><summary>Show answer</summary>It sends the standard output of the first command as the standard input of the second command.</details><h2>Key terms</h2>
 <ul>
 <li><strong>Absolute vs relative path</strong> — <code>/etc/passwd</code> vs <code>./notes/day1.md</code>.</li>
 <li><strong><code>grep</code></strong> — search for text inside files or streams.</li>

@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Threats, vulns &amp; risk — Path 10 · KashSec Academy</title>
-<meta name="description" content="Threats, vulns &amp; risk: The unlocked-door analogy and the risk equation.">
+<meta name="description" content="Three words that get used interchangeably by beginners — and mean precisely different things to professionals. Getting this right will make every future conversation with a security team, every report">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/10-fundamentals/threats-risk.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Threats, vulns &amp; risk — Path 10 · KashSec Academy">
-<meta property="og:description" content="Threats, vulns &amp; risk: The unlocked-door analogy and the risk equation.">
+<meta property="og:description" content="Three words that get used interchangeably by beginners — and mean precisely different things to professionals. Getting this right will make every future conversation with a security team, every report">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/10-fundamentals/threats-risk.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Threats, vulns &amp; risk — Path 10 · KashSec Academy">
-<meta name="twitter:description" content="Threats, vulns &amp; risk: The unlocked-door analogy and the risk equation.">
+<meta name="twitter:description" content="Three words that get used interchangeably by beginners — and mean precisely different things to professionals. Getting this right will make every future conversation with a security team, every report">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 10 — Cybersecurity Fundamentals","item":"https://kashsec.vercel.app/lesson/10-fundamentals/"},{"@type":"ListItem","position":4,"name":"Threats, vulns & risk","item":"https://kashsec.vercel.app/lesson/10-fundamentals/threats-risk.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Threats, vulns & risk","headline":"Threats, vulns & risk","description":"Threats, vulns & risk: The unlocked-door analogy and the risk equation.","url":"https://kashsec.vercel.app/lesson/10-fundamentals/threats-risk.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner→Intermediate","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"The unlocked-door analogy and the risk equation.","isPartOf":{"@type":"Course","name":"Path 10: Cybersecurity Fundamentals","url":"https://kashsec.vercel.app/lesson/10-fundamentals/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/10-fundamentals/threats-risk.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Threats, vulns & risk","headline":"Threats, vulns & risk","description":"Three words that get used interchangeably by beginners — and mean precisely different things to professionals. Getting this right will make every future conversation with a security team, every report","url":"https://kashsec.vercel.app/lesson/10-fundamentals/threats-risk.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner→Intermediate","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"The unlocked-door analogy and the risk equation.","isPartOf":{"@type":"Course","name":"Path 10: Cybersecurity Fundamentals","url":"https://kashsec.vercel.app/lesson/10-fundamentals/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/10-fundamentals/threats-risk.html"}}
 </script>
 </head>
 <body>
@@ -107,18 +107,6 @@
 <li><strong>Risk:</strong> the actual chance of a break-in and how bad it would be (what's inside, insurance, etc.)</li>
 </ul>
 <p>If you live somewhere with zero burglars (no threat), the broken lock (vulnerability) is a much lower risk than if you live somewhere burglary is common. Same vulnerability, wildly different risk depending on the threat landscape.</p>
-<pre><code class="language-mermaid">flowchart LR
-    V["🔓 Vulnerability&lt;br/&gt;(broken lock)"] --&gt; R{"⚠️ Risk"}
-    T["🕵️ Threat&lt;br/&gt;(burglars nearby)"] --&gt; R
-    Im["💰 Impact&lt;br/&gt;(what's inside)"] --&gt; R
-    R --&gt; Decision["Decide: accept, mitigate,&lt;br/&gt;transfer, or avoid"]
-
-    style V fill:#2b1010,color:#E05548,stroke:#E05548
-    style T fill:#2b1f0a,color:#EFA43A,stroke:#EFA43A
-    style Im fill:#111927,color:#8496A6,stroke:#8496A6
-    style R fill:#111927,color:#EFA43A,stroke:#EFA43A
-    style Decision fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
-</code></pre>
 <h2>In software terms</h2>
 <ul>
 <li><strong>Vulnerability:</strong> a specific bug — say, an SQL injection flaw in a login form.</li>
@@ -202,20 +190,6 @@
 <p>The bigger and more complex a system, the bigger its attack surface — and the more places vulnerabilities can hide. A core job of security engineering is <strong>reducing</strong> attack surface wherever possible (turning off unused services, removing unnecessary permissions, decommissioning old systems).</p>
 <h2>Likelihood and impact — the two risk knobs</h2>
 <p>Professionals often score risk on two axes:</p>
-<pre><code class="language-mermaid">quadrantChart
-    title Risk Prioritisation Matrix
-    x-axis Low Likelihood --&gt; High Likelihood
-    y-axis Low Impact --&gt; High Impact
-    quadrant-1 Critical - fix now
-    quadrant-2 Monitor closely
-    quadrant-3 Low priority
-    quadrant-4 Fix when convenient
-    "Public SQLi on login": [0.8, 0.9]
-    "Internal tool XSS, VPN-only": [0.3, 0.3]
-    "Unpatched public RCE": [0.9, 0.95]
-    "Weak password policy": [0.6, 0.5]
-    "Verbose error messages": [0.4, 0.2]
-</code></pre>
 <p>Something both <strong>likely</strong> and <strong>high impact</strong> (top-right) gets fixed first. Something <strong>unlikely</strong> and <strong>low impact</strong> (bottom-left) might reasonably wait, or even be formally accepted.</p>
 <h2>The four ways to handle a risk</h2>
 <p>Once you've identified a risk, you have exactly four options:</p>
@@ -246,10 +220,8 @@
 <li><strong>Which of the four risk responses</strong> would you choose for each, and why?</li>
 </ol>
 <p>This exact exercise — scaled up — is what security teams do continuously for entire organisations.</p>
-<p>:::challenge Test yourself
-A company has a serious vulnerability in an internal admin tool, but that tool is only reachable from inside a locked, badge-access-only office, with no remote access at all. Is the risk automatically zero?</p>
-<details><summary>Show answer</summary>No — reduced, not zero. The vulnerability still exists, and the threat isn't eliminated (a malicious employee, a visitor with temporary badge access, or a compromised internal machine could still reach it). The <em>likelihood</em> is much lower because the attack surface is restricted, but "no remote access" doesn't mean "no risk." This is exactly the kind of nuance a good risk assessment captures instead of assuming a hard zero.</details>
-:::<h2>Key terms</h2>
+<p>A company has a serious vulnerability in an internal admin tool, but that tool is only reachable from inside a locked, badge-access-only office, with no remote access at all. Is the risk automatically zero?</p>
+<details><summary>Show answer</summary>No — reduced, not zero. The vulnerability still exists, and the threat isn't eliminated (a malicious employee, a visitor with temporary badge access, or a compromised internal machine could still reach it). The <em>likelihood</em> is much lower because the attack surface is restricted, but "no remote access" doesn't mean "no risk." This is exactly the kind of nuance a good risk assessment captures instead of assuming a hard zero.</details><h2>Key terms</h2>
 <ul>
 <li><strong>Vulnerability</strong> — a weakness that could be exploited.</li>
 <li><strong>Threat</strong> — someone/something capable of exploiting a vulnerability.</li>

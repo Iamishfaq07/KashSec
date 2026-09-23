@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Ports: the doors — Path 02 · KashSec Academy</title>
-<meta name="description" content="Ports: the doors: Well-known ports and why scanners knock on them.">
+<meta name="description" content="An IP address gets you to the right building. But a computer runs many services at once — a website, an email server, a database, a remote-login service — so once your letter arrives, how does it reac">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/02-networking/ports.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Ports: the doors — Path 02 · KashSec Academy">
-<meta property="og:description" content="Ports: the doors: Well-known ports and why scanners knock on them.">
+<meta property="og:description" content="An IP address gets you to the right building. But a computer runs many services at once — a website, an email server, a database, a remote-login service — so once your letter arrives, how does it reac">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/02-networking/ports.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Ports: the doors — Path 02 · KashSec Academy">
-<meta name="twitter:description" content="Ports: the doors: Well-known ports and why scanners knock on them.">
+<meta name="twitter:description" content="An IP address gets you to the right building. But a computer runs many services at once — a website, an email server, a database, a remote-login service — so once your letter arrives, how does it reac">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 02 — Networking Fundamentals","item":"https://kashsec.vercel.app/lesson/02-networking/"},{"@type":"ListItem","position":4,"name":"Ports: the doors","item":"https://kashsec.vercel.app/lesson/02-networking/ports.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Ports: the doors","headline":"Ports: the doors","description":"Ports: the doors: Well-known ports and why scanners knock on them.","url":"https://kashsec.vercel.app/lesson/02-networking/ports.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Well-known ports and why scanners knock on them.","isPartOf":{"@type":"Course","name":"Path 02: Networking Fundamentals","url":"https://kashsec.vercel.app/lesson/02-networking/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/02-networking/ports.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Ports: the doors","headline":"Ports: the doors","description":"An IP address gets you to the right building. But a computer runs many services at once — a website, an email server, a database, a remote-login service — so once your letter arrives, how does it reac","url":"https://kashsec.vercel.app/lesson/02-networking/ports.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Well-known ports and why scanners knock on them.","isPartOf":{"@type":"Course","name":"Path 02: Networking Fundamentals","url":"https://kashsec.vercel.app/lesson/02-networking/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/02-networking/ports.html"}}
 </script>
 </head>
 <body>
@@ -92,44 +92,7 @@
 <p>Understanding ports is the heart of scanning — one of the first things every pentester does on any target.</p>
 <h2>Ports are numbered doors</h2>
 <p>A <strong>port</strong> is a number (from 1 to 65,535) that identifies a specific service on a computer. Picture the building again: the IP gets you to the building, and the port is the specific <strong>door</strong> you knock on.</p>
-<pre><code class="language-svg">&lt;svg viewBox="0 0 700 260" xmlns="http://www.w3.org/2000/svg" font-family="Inter, sans-serif"&gt;
-  &lt;g font-size="12"&gt;
-    &lt;rect x="200" y="30" width="300" height="200" rx="10" fill="#111927" stroke="#EFA43A" stroke-width="2"/&gt;
-    &lt;text x="350" y="55" text-anchor="middle" fill="#EFA43A" font-weight="700"&gt;Server at 192.168.1.20&lt;/text&gt;
-    &lt;!-- Doors --&gt;
-    &lt;rect x="230" y="80" width="70" height="60" rx="4" fill="#152131" stroke="#3FB6A8"/&gt;
-    &lt;text x="265" y="102" text-anchor="middle" font-size="20"&gt;🌐&lt;/text&gt;
-    &lt;text x="265" y="125" text-anchor="middle" fill="#3FB6A8" font-weight="700"&gt;:80&lt;/text&gt;
-    &lt;text x="265" y="155" text-anchor="middle" fill="#8496A6" font-size="10"&gt;Website&lt;/text&gt;
-    &lt;rect x="315" y="80" width="70" height="60" rx="4" fill="#152131" stroke="#3FB6A8"/&gt;
-    &lt;text x="350" y="102" text-anchor="middle" font-size="20"&gt;🔒&lt;/text&gt;
-    &lt;text x="350" y="125" text-anchor="middle" fill="#3FB6A8" font-weight="700"&gt;:443&lt;/text&gt;
-    &lt;text x="350" y="155" text-anchor="middle" fill="#8496A6" font-size="10"&gt;HTTPS&lt;/text&gt;
-    &lt;rect x="400" y="80" width="70" height="60" rx="4" fill="#152131" stroke="#3FB6A8"/&gt;
-    &lt;text x="435" y="102" text-anchor="middle" font-size="20"&gt;💻&lt;/text&gt;
-    &lt;text x="435" y="125" text-anchor="middle" fill="#3FB6A8" font-weight="700"&gt;:22&lt;/text&gt;
-    &lt;text x="435" y="155" text-anchor="middle" fill="#8496A6" font-size="10"&gt;SSH&lt;/text&gt;
-    &lt;rect x="230" y="160" width="70" height="45" rx="4" fill="#2b1010" stroke="#E05548" stroke-dasharray="3"/&gt;
-    &lt;text x="265" y="185" text-anchor="middle" fill="#E05548" font-size="11"&gt;closed&lt;/text&gt;
-    &lt;text x="265" y="200" text-anchor="middle" fill="#8496A6" font-size="10"&gt;:3306&lt;/text&gt;
-    &lt;rect x="315" y="160" width="70" height="45" rx="4" fill="#2b1010" stroke="#E05548" stroke-dasharray="3"/&gt;
-    &lt;text x="350" y="185" text-anchor="middle" fill="#E05548" font-size="11"&gt;closed&lt;/text&gt;
-    &lt;text x="350" y="200" text-anchor="middle" fill="#8496A6" font-size="10"&gt;:23&lt;/text&gt;
-    &lt;rect x="400" y="160" width="70" height="45" rx="4" fill="#2b1010" stroke="#E05548" stroke-dasharray="3"/&gt;
-    &lt;text x="435" y="185" text-anchor="middle" fill="#E05548" font-size="11"&gt;closed&lt;/text&gt;
-    &lt;text x="435" y="200" text-anchor="middle" fill="#8496A6" font-size="10"&gt;:21&lt;/text&gt;
-    &lt;!-- attacker --&gt;
-    &lt;text x="80" y="120" text-anchor="middle" font-size="35"&gt;🔎&lt;/text&gt;
-    &lt;text x="80" y="150" text-anchor="middle" fill="#E05548" font-weight="600"&gt;Scanner&lt;/text&gt;
-    &lt;text x="80" y="170" text-anchor="middle" fill="#8496A6" font-size="10"&gt;Knocks on&lt;/text&gt;
-    &lt;text x="80" y="185" text-anchor="middle" fill="#8496A6" font-size="10"&gt;every door&lt;/text&gt;
-    &lt;line x1="130" y1="130" x2="195" y2="115" stroke="#EFA43A" stroke-width="1.2" marker-end="url(#a3)"/&gt;
-    &lt;line x1="130" y1="140" x2="195" y2="140" stroke="#EFA43A" stroke-width="1.2" marker-end="url(#a3)"/&gt;
-    &lt;line x1="130" y1="150" x2="195" y2="165" stroke="#EFA43A" stroke-width="1.2" marker-end="url(#a3)"/&gt;
-    &lt;defs&gt;&lt;marker id="a3" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"&gt;&lt;polygon points="0 0, 10 3, 0 6" fill="#EFA43A"/&gt;&lt;/marker&gt;&lt;/defs&gt;
-  &lt;/g&gt;
-&lt;/svg&gt;
-</code></pre>
+<p><em>[IP + Port = full address]</em></p>
 <p>Ports let one machine offer many services without messages getting mixed up. There are <strong>65,535</strong> possible ports on every machine.</p>
 <h2>The well-known ports</h2>
 <p>A small set of "well-known" ports are used again and again for the same jobs, everywhere in the world:</p>
@@ -213,9 +176,7 @@
 </tr>
 </tbody></table>
 <p>You don't need to memorise the whole table — but <strong><code>22</code>, <code>80</code>, <code>443</code>, and <code>53</code></strong> should become second nature.</p>
-<p>:::tip HOW PORTS ARE CATEGORISED
-Ports 0–1023 are <strong>well-known ports</strong> (assigned by IANA). 1024–49151 are <strong>registered ports</strong>. 49152–65535 are <strong>dynamic/private</strong> ports used for short-lived client-side connections. The service you're scanning nearly always lives in the first range.
-:::</p>
+<p>Ports 0–1023 are <strong>well-known ports</strong> (assigned by IANA). 1024–49151 are <strong>registered ports</strong>. 49152–65535 are <strong>dynamic/private</strong> ports used for short-lived client-side connections. The service you're scanning nearly always lives in the first range.</p>
 <h2>Open, closed, filtered</h2>
 <p>A port can be in one of three states you'll see constantly:</p>
 <ul>
@@ -233,19 +194,6 @@ Ports 0–1023 are <strong>well-known ports</strong> (assigned by IANA). 1024–
 <p>A <strong>firewall</strong> (covered in full in Path 12) makes its allow/block decisions largely based on ports — a basic firewall rule might say "allow anything on port 443 (HTTPS), block everything on port 3389 (remote desktop) from outside the local network." This is exactly why an unnecessarily open port is a real security risk even before any vulnerability in the service behind it is considered: every open port is one more thing a firewall has to deliberately allow, and one more potential entry point an attacker can find during reconnaissance. The general security principle — <strong>close every port you don't genuinely need running</strong> — is a direct, practical application of the "attack surface" concept from Path 01.</p>
 <h2>Scanning = knocking on doors</h2>
 <p>When you hear a hacker "scanned" a machine, this is exactly what they did: they knocked on many doors to see which open.</p>
-<pre><code class="language-mermaid">sequenceDiagram
-    participant S as Scanner
-    participant T as Target 192.168.1.20
-    S-&gt;&gt;T: Knock on port 22
-    T-&gt;&gt;S: Yes, I'm here (open)
-    S-&gt;&gt;T: Knock on port 80
-    T-&gt;&gt;S: Yes, I'm here (open)
-    S-&gt;&gt;T: Knock on port 3306
-    T--&gt;&gt;S: (no reply — filtered)
-    S-&gt;&gt;T: Knock on port 21
-    T-&gt;&gt;S: No such service (closed)
-    Note over S,T: Each open door = a service to investigate
-</code></pre>
 <p>Each open door is a service to investigate and a potential way in. In <strong>Path 12</strong> you'll run <strong>Nmap</strong> to do this for real, legally, on <code>scanme.nmap.org</code>.</p>
 <h2>🧪 Lab — Match the ports (paper exercise)</h2>
 <p>Without looking back, write down what these ports are for:</p>
@@ -257,15 +205,11 @@ Ports 0–1023 are <strong>well-known ports</strong> (assigned by IANA). 1024–
 <li><code>3389</code></li>
 </ul>
 <p>Then scroll up and check yourself. Repeat until you can do all five instantly — these five come up constantly.</p>
-<p>:::lab BONUS: SEE OPEN PORTS ON YOUR OWN MACHINE
-On Linux/Mac, run <code>ss -tulnp</code> (or <code>netstat -tulnp</code> on older systems).
+<p>On Linux/Mac, run <code>ss -tulnp</code> (or <code>netstat -tulnp</code> on older systems).
 On Windows, run <code>netstat -ano</code>.
-You'll see every port currently <em>listening</em> on your own computer. Notice how many services are quietly running — even a fresh laptop usually has several.
-:::</p>
-<p>:::challenge Test yourself
-Secure websites (the padlock ones) listen on which port?</p>
-<details><summary>Show answer</summary>Port <strong>443</strong> — the secure version of the normal web port, 80.</details>
-:::<h2>Key terms</h2>
+You'll see every port currently <em>listening</em> on your own computer. Notice how many services are quietly running — even a fresh laptop usually has several.</p>
+<p>Secure websites (the padlock ones) listen on which port?</p>
+<details><summary>Show answer</summary>Port <strong>443</strong> — the secure version of the normal web port, 80.</details><h2>Key terms</h2>
 <ul>
 <li><strong>Port</strong> — a numbered door for a specific service (0–65535).</li>
 <li><strong>Well-known ports</strong> — 0–1023, reserved for standard services.</li>

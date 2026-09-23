@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>DNS Lab — Path 02 · KashSec Academy</title>
-<meta name="description" content="DNS Lab: Understand how DNS works and how it can be abused.">
+<meta name="description" content="DNS is the internet's phonebook — this lab has you actually query it directly, the way real reconnaissance and troubleshooting both do, rather than just trusting whatever a browser silently resolves b">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/02-networking/dns-lab.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="DNS Lab — Path 02 · KashSec Academy">
-<meta property="og:description" content="DNS Lab: Understand how DNS works and how it can be abused.">
+<meta property="og:description" content="DNS is the internet's phonebook — this lab has you actually query it directly, the way real reconnaissance and troubleshooting both do, rather than just trusting whatever a browser silently resolves b">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/02-networking/dns-lab.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="DNS Lab — Path 02 · KashSec Academy">
-<meta name="twitter:description" content="DNS Lab: Understand how DNS works and how it can be abused.">
+<meta name="twitter:description" content="DNS is the internet's phonebook — this lab has you actually query it directly, the way real reconnaissance and troubleshooting both do, rather than just trusting whatever a browser silently resolves b">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 02 — Networking Fundamentals","item":"https://kashsec.vercel.app/lesson/02-networking/"},{"@type":"ListItem","position":4,"name":"DNS Lab","item":"https://kashsec.vercel.app/lesson/02-networking/dns-lab.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"DNS Lab","headline":"DNS Lab","description":"DNS Lab: Understand how DNS works and how it can be abused.","url":"https://kashsec.vercel.app/lesson/02-networking/dns-lab.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Understand how DNS works and how it can be abused.","isPartOf":{"@type":"Course","name":"Path 02: Networking Fundamentals","url":"https://kashsec.vercel.app/lesson/02-networking/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/02-networking/dns-lab.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"DNS Lab","headline":"DNS Lab","description":"DNS is the internet's phonebook — this lab has you actually query it directly, the way real reconnaissance and troubleshooting both do, rather than just trusting whatever a browser silently resolves b","url":"https://kashsec.vercel.app/lesson/02-networking/dns-lab.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Understand how DNS works and how it can be abused.","isPartOf":{"@type":"Course","name":"Path 02: Networking Fundamentals","url":"https://kashsec.vercel.app/lesson/02-networking/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/02-networking/dns-lab.html"}}
 </script>
 </head>
 <body>
@@ -121,12 +121,8 @@ dig example.com NS      # authoritative nameservers
 <p>Only run this against a domain you own or that has an explicit, current bug bounty program permitting this kind of active enumeration.</p>
 </li>
 </ol>
-<p>:::tip DNS is a reconnaissance goldmine, not just plumbing
-Path 14's reconnaissance lesson and Path 15's recon pipeline both lean heavily on DNS enumeration for exactly this reason — subdomain discovery, mail infrastructure mapping, and third-party service fingerprinting all start here, often before a single request even hits the target's actual web server.
-:::</p>
-<p>:::challenge Map a domain's DNS footprint
-Pick a domain (your own site, or any organization that publishes a public bug bounty scope — never an arbitrary company without permission), and produce a short report: its nameservers, mail infrastructure (MX + relevant TXT records), any subdomains you can find via historical data tools, and one observation about what this data reveals about their infrastructure choices.
-:::</p>
+<p>Path 14's reconnaissance lesson and Path 15's recon pipeline both lean heavily on DNS enumeration for exactly this reason — subdomain discovery, mail infrastructure mapping, and third-party service fingerprinting all start here, often before a single request even hits the target's actual web server.</p>
+<p>Pick a domain (your own site, or any organization that publishes a public bug bounty scope — never an arbitrary company without permission), and produce a short report: its nameservers, mail infrastructure (MX + relevant TXT records), any subdomains you can find via historical data tools, and one observation about what this data reveals about their infrastructure choices.</p>
 <h2>Key takeaway</h2>
 <p>DNS records are public by design, and querying them directly (rather than relying only on what a browser shows you) reveals a surprising amount about an organization's infrastructure — which is exactly why DNS enumeration is one of the very first steps in almost every real penetration test and bug bounty engagement.</p>
 <p><strong>Next up →</strong> <a href="#/lesson/02-networking/cloud-and-modern-networking">Cloud &amp; Modern Networking</a></p>

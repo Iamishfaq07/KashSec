@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Why Python for security — Path 04 · KashSec Academy</title>
-<meta name="description" content="Why Python for security: Readable, ubiquitous, batteries included.">
+<meta name="description" content="You've written a bit of Python now. Let's zoom out: why is Python the language of security tooling, and what shape do real security scripts take?">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/04-python/why-python.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Why Python for security — Path 04 · KashSec Academy">
-<meta property="og:description" content="Why Python for security: Readable, ubiquitous, batteries included.">
+<meta property="og:description" content="You've written a bit of Python now. Let's zoom out: why is Python the language of security tooling, and what shape do real security scripts take?">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/04-python/why-python.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Why Python for security — Path 04 · KashSec Academy">
-<meta name="twitter:description" content="Why Python for security: Readable, ubiquitous, batteries included.">
+<meta name="twitter:description" content="You've written a bit of Python now. Let's zoom out: why is Python the language of security tooling, and what shape do real security scripts take?">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 04 — Programming & Python","item":"https://kashsec.vercel.app/lesson/04-python/"},{"@type":"ListItem","position":4,"name":"Why Python for security","item":"https://kashsec.vercel.app/lesson/04-python/why-python.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Why Python for security","headline":"Why Python for security","description":"Why Python for security: Readable, ubiquitous, batteries included.","url":"https://kashsec.vercel.app/lesson/04-python/why-python.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Readable, ubiquitous, batteries included.","isPartOf":{"@type":"Course","name":"Path 04: Programming & Python","url":"https://kashsec.vercel.app/lesson/04-python/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/04-python/why-python.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Why Python for security","headline":"Why Python for security","description":"You've written a bit of Python now. Let's zoom out: why is Python the language of security tooling, and what shape do real security scripts take?","url":"https://kashsec.vercel.app/lesson/04-python/why-python.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Readable, ubiquitous, batteries included.","isPartOf":{"@type":"Course","name":"Path 04: Programming & Python","url":"https://kashsec.vercel.app/lesson/04-python/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/04-python/why-python.html"}}
 </script>
 </head>
 <body>
@@ -180,9 +180,7 @@ pip list                        # what's installed
 pip freeze &gt; requirements.txt   # snapshot current versions
 </code></pre>
 <p>Most real Python projects have a <code>requirements.txt</code> listing everything they need. Include one when you ship your own scripts.</p>
-<p>:::warn PyPI packages are a real supply chain risk
-Anyone can publish a package to PyPI (Python's public package index) — and attackers have repeatedly published malicious packages with names deliberately similar to popular ones (<code>reqeusts</code> instead of <code>requests</code>), banking on typos, exactly the <strong>typosquatting</strong> concept from Path 00's phishing lesson, applied here to package names instead of domains. Before installing an unfamiliar package, a quick check of its download count, GitHub repo, and recent activity is a cheap, worthwhile habit — directly connecting to the supply chain security material in Path 16's DevSecOps lab and Path 18's LLM supply chain lesson.
-:::</p>
+<p>Anyone can publish a package to PyPI (Python's public package index) — and attackers have repeatedly published malicious packages with names deliberately similar to popular ones (<code>reqeusts</code> instead of <code>requests</code>), banking on typos, exactly the <strong>typosquatting</strong> concept from Path 00's phishing lesson, applied here to package names instead of domains. Before installing an unfamiliar package, a quick check of its download count, GitHub repo, and recent activity is a cheap, worthwhile habit — directly connecting to the supply chain security material in Path 16's DevSecOps lab and Path 18's LLM supply chain lesson.</p>
 <h2>The shape of a real security script</h2>
 <p>Every professional-looking script tends to have this shape. Learn it now:</p>
 <pre><code class="language-python">#!/usr/bin/env python3
@@ -254,10 +252,8 @@ print(args.target, args.ports, args.timeout, args.verbose)
 <li><strong>Weeks 9–12:</strong> read the source of a small existing tool (e.g., <code>dnsx</code>, <code>waybackpy</code>). Add a feature. This is how skill compounds.</li>
 <li><strong>Later:</strong> Scapy for packet crafting (Path 12), Impacket for AD (Path 16), custom exploits (Path 14/11).</li>
 </ul>
-<p>:::challenge Test yourself
-Why should you use a virtual environment for each Python project?</p>
-<details><summary>Show answer</summary>To keep each project's dependencies isolated. Two projects may need different versions of the same library; without venvs they conflict globally. Venvs also make projects reproducible via a <code>requirements.txt</code> lock.</details>
-:::<h2>Key terms</h2>
+<p>Why should you use a virtual environment for each Python project?</p>
+<details><summary>Show answer</summary>To keep each project's dependencies isolated. Two projects may need different versions of the same library; without venvs they conflict globally. Venvs also make projects reproducible via a <code>requirements.txt</code> lock.</details><h2>Key terms</h2>
 <ul>
 <li><strong>pip</strong> — Python's package installer.</li>
 <li><strong>venv</strong> — isolated per-project Python environment.</li>

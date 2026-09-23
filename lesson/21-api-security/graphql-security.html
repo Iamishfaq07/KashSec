@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>GraphQL Security — Path 21 · KashSec Academy</title>
-<meta name="description" content="GraphQL Security: Introspection, nested queries, and field-level authorization.">
+<meta name="description" content="GraphQL gives clients the power to ask for exactly the data they need. That power is also an attack surface — everything that made GraphQL attractive to developers (one endpoint, client-shaped queries">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/21-api-security/graphql-security.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="GraphQL Security — Path 21 · KashSec Academy">
-<meta property="og:description" content="GraphQL Security: Introspection, nested queries, and field-level authorization.">
+<meta property="og:description" content="GraphQL gives clients the power to ask for exactly the data they need. That power is also an attack surface — everything that made GraphQL attractive to developers (one endpoint, client-shaped queries">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/21-api-security/graphql-security.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="GraphQL Security — Path 21 · KashSec Academy">
-<meta name="twitter:description" content="GraphQL Security: Introspection, nested queries, and field-level authorization.">
+<meta name="twitter:description" content="GraphQL gives clients the power to ask for exactly the data they need. That power is also an attack surface — everything that made GraphQL attractive to developers (one endpoint, client-shaped queries">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 21 — API Security","item":"https://kashsec.vercel.app/lesson/21-api-security/"},{"@type":"ListItem","position":4,"name":"GraphQL Security","item":"https://kashsec.vercel.app/lesson/21-api-security/graphql-security.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"GraphQL Security","headline":"GraphQL Security","description":"GraphQL Security: Introspection, nested queries, and field-level authorization.","url":"https://kashsec.vercel.app/lesson/21-api-security/graphql-security.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Introspection, nested queries, and field-level authorization.","isPartOf":{"@type":"Course","name":"Path 21: API Security","url":"https://kashsec.vercel.app/lesson/21-api-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/21-api-security/graphql-security.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"GraphQL Security","headline":"GraphQL Security","description":"GraphQL gives clients the power to ask for exactly the data they need. That power is also an attack surface — everything that made GraphQL attractive to developers (one endpoint, client-shaped queries","url":"https://kashsec.vercel.app/lesson/21-api-security/graphql-security.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Introspection, nested queries, and field-level authorization.","isPartOf":{"@type":"Course","name":"Path 21: API Security","url":"https://kashsec.vercel.app/lesson/21-api-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/21-api-security/graphql-security.html"}}
 </script>
 </head>
 <body>
@@ -89,9 +89,7 @@
     <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/21-api-security/">Path 21 — API Security</a> · GraphQL Security</nav>
     <div class="md" id="content"><article><h1>GraphQL Security</h1>
 <p>GraphQL gives clients the power to ask for exactly the data they need. That power is also an attack surface — everything that made GraphQL attractive to developers (one endpoint, client-shaped queries, self-documenting schema) is exactly what a tester or attacker leans on first.</p>
-<p>:::tip
-When you land on any GraphQL target, your first move should always be the same: try introspection. It's the single fastest way to understand what an application can actually do, often revealing fields and mutations no UI ever exposes.
-:::</p>
+<p>:::</p>
 <h2>Why GraphQL is different</h2>
 <p>Instead of many fixed REST endpoints, there is usually one endpoint (<code>/graphql</code>) that accepts queries and mutations. The client decides the shape of the response.</p>
 <pre><code class="language-graphql">query {
@@ -145,8 +143,7 @@ When you land on any GraphQL target, your first move should always be the same: 
 <li>Check whether suggestions / error messages leak schema details.</li>
 </ol>
 <p>:::tip
-Tools: GraphQL Voyager, InQL (Burp), Altair, GraphiQL, and the browser network tab are enough to get started.
-:::</p>
+Tools: GraphQL Voyager, InQL (Burp), Altair, GraphiQL, and the browser network tab are enough to get started.</p>
 <h2>Defenses (summary)</h2>
 <ul>
 <li>Disable or protect introspection in production</li>
@@ -155,9 +152,7 @@ Tools: GraphQL Voyager, InQL (Burp), Altair, GraphiQL, and the browser network t
 <li>Use persisted / allow-listed queries for public clients when possible</li>
 <li>Apply the same input validation and output encoding you would for REST</li>
 </ul>
-<p>:::danger
-"We authorize at the top-level query" is the GraphQL equivalent of "we checked authentication but not authorization" from earlier in this path. Every resolver, at every depth, is a place where a check can be silently missing — and unlike REST's separate endpoints, these are all invisible inside a single <code>/graphql</code> URL in your access logs.
-:::</p>
+<p>:::</p>
 <h2>🧪 Hands-on lab — map and probe a GraphQL API</h2>
 <ol>
 <li>Find a GraphQL playground or lab endpoint (many public "awesome-graphql" repos link to intentionally practice-friendly targets, or use a course lab if available).</li>
@@ -170,8 +165,7 @@ Tools: GraphQL Voyager, InQL (Burp), Altair, GraphiQL, and the browser network t
 <ol>
 <li>Why doesn't disabling introspection fully close off schema discovery?</li>
 <li>Explain, using the <code>user.paymentMethods</code> example, why authorization at the top-level query is not sufficient in GraphQL.</li>
-<li>What single technique lets an attacker bypass a rate limiter that only counts "requests per second" against a login mutation?
-:::</li>
+<li>What single technique lets an attacker bypass a rate limiter that only counts "requests per second" against a login mutation?</li>
 </ol>
 <h2>Key terms</h2>
 <ul>

@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Defense in depth — Path 10 · KashSec Academy</title>
-<meta name="description" content="Defense in depth: Why no single control is ever enough, and how this course itself mirrors the principle.">
+<meta name="description" content="The CIA triad told you what security protects. This lesson introduces the strategy for actually protecting it: defense in depth — a concept you'll see referenced constantly for the rest of this course">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/10-fundamentals/defense-in-depth-basics.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Defense in depth — Path 10 · KashSec Academy">
-<meta property="og:description" content="Defense in depth: Why no single control is ever enough, and how this course itself mirrors the principle.">
+<meta property="og:description" content="The CIA triad told you what security protects. This lesson introduces the strategy for actually protecting it: defense in depth — a concept you'll see referenced constantly for the rest of this course">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/10-fundamentals/defense-in-depth-basics.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Defense in depth — Path 10 · KashSec Academy">
-<meta name="twitter:description" content="Defense in depth: Why no single control is ever enough, and how this course itself mirrors the principle.">
+<meta name="twitter:description" content="The CIA triad told you what security protects. This lesson introduces the strategy for actually protecting it: defense in depth — a concept you'll see referenced constantly for the rest of this course">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 10 — Cybersecurity Fundamentals","item":"https://kashsec.vercel.app/lesson/10-fundamentals/"},{"@type":"ListItem","position":4,"name":"Defense in depth","item":"https://kashsec.vercel.app/lesson/10-fundamentals/defense-in-depth-basics.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Defense in depth","headline":"Defense in depth","description":"Defense in depth: Why no single control is ever enough, and how this course itself mirrors the principle.","url":"https://kashsec.vercel.app/lesson/10-fundamentals/defense-in-depth-basics.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner→Intermediate","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Why no single control is ever enough, and how this course itself mirrors the principle.","isPartOf":{"@type":"Course","name":"Path 10: Cybersecurity Fundamentals","url":"https://kashsec.vercel.app/lesson/10-fundamentals/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/10-fundamentals/defense-in-depth-basics.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Defense in depth","headline":"Defense in depth","description":"The CIA triad told you what security protects. This lesson introduces the strategy for actually protecting it: defense in depth — a concept you'll see referenced constantly for the rest of this course","url":"https://kashsec.vercel.app/lesson/10-fundamentals/defense-in-depth-basics.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner→Intermediate","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Why no single control is ever enough, and how this course itself mirrors the principle.","isPartOf":{"@type":"Course","name":"Path 10: Cybersecurity Fundamentals","url":"https://kashsec.vercel.app/lesson/10-fundamentals/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/10-fundamentals/defense-in-depth-basics.html"}}
 </script>
 </head>
 <body>
@@ -91,24 +91,14 @@
 <p>The CIA triad told you <em>what</em> security protects. This lesson introduces the strategy for actually protecting it: <strong>defense in depth</strong> — a concept you'll see referenced constantly for the rest of this course, now formally introduced with its own name and reasoning.</p>
 <h2>The core idea: no single control is ever enough</h2>
 <p><strong>Defense in depth</strong> means layering multiple, independent security controls so that if one fails — and every single control eventually can fail, whether through a bug, a misconfiguration, or a genuinely novel attack technique — the others still stand between an attacker and the actual asset being protected.</p>
-<pre><code class="language-mermaid">flowchart LR
-    A[Attacker] --&gt; B[Perimeter firewall]
-    B --&gt; C[Network segmentation]
-    C --&gt; D[Host-based firewall]
-    D --&gt; E[Application input validation]
-    E --&gt; F[Encryption at rest]
-    F --&gt; G["The actual data\n(still protected even\nif one layer fails)"]
-</code></pre>
 <h2>A concrete example, drawing on lessons you've already seen</h2>
 <p>Think back to Path 05's Content Security Policy lesson: even if an application has an actual XSS vulnerability (one layer failing), a properly configured CSP can still prevent the injected script from executing (a second, independent layer catching what the first missed). Neither layer alone is a complete defense — the actual input validation that would have prevented the XSS in the first place still matters — but together, they mean one single mistake doesn't automatically become a full compromise.</p>
 <h2>The castle analogy, made concrete</h2>
 <p>A medieval castle didn't rely on just one wall — it layered a moat, an outer wall, an inner wall, and a keep, each providing a fallback if an earlier layer was breached. Modern defense in depth follows the same logic, just with firewalls, access controls, monitoring, and encryption instead of stone and water.</p>
 <h2>Why this principle explains so much of this course's structure</h2>
 <p>Nearly every path in this course adds a distinct layer to the same overall picture: network segmentation (Path 02, Path 24), strong authentication (Path 00), input validation (Path 05, Path 11), monitoring and logging (Path 08, Path 03), and encryption (Path 06) are all <em>independent</em> layers, each catching different failure modes. This is exactly why no single path in this course claims to be "the" solution to security — the entire structure of this curriculum mirrors the defense-in-depth principle itself.</p>
-<p>:::challenge Test yourself
-Why is relying on a single, even very strong, security control (say, an excellent firewall) considered poor practice, even if that one control genuinely works well?</p>
-<details><summary>Show answer</summary>Every security control, no matter how strong, has some way it can fail — a firewall can be misconfigured, bypassed through a legitimate but abused channel, or rendered irrelevant by an attack that doesn't need to cross it at all (an insider threat, a phishing-compromised credential used through the front door). Relying on a single control means that one specific failure mode becomes a complete compromise with nothing else standing in the way. Defense in depth accepts that any individual layer might fail and asks a different question: even if this specific control fails, what else is still standing between the attacker and the actual asset? This is exactly why a genuinely mature security posture is measured by how many independent layers exist, not by how strong any single layer is.</details>
-:::<h2>Key terms</h2>
+<p>Why is relying on a single, even very strong, security control (say, an excellent firewall) considered poor practice, even if that one control genuinely works well?</p>
+<details><summary>Show answer</summary>Every security control, no matter how strong, has some way it can fail — a firewall can be misconfigured, bypassed through a legitimate but abused channel, or rendered irrelevant by an attack that doesn't need to cross it at all (an insider threat, a phishing-compromised credential used through the front door). Relying on a single control means that one specific failure mode becomes a complete compromise with nothing else standing in the way. Defense in depth accepts that any individual layer might fail and asks a different question: even if this specific control fails, what else is still standing between the attacker and the actual asset? This is exactly why a genuinely mature security posture is measured by how many independent layers exist, not by how strong any single layer is.</details><h2>Key terms</h2>
 <ul>
 <li><strong>Defense in depth</strong> — layering multiple independent security controls so a single failure doesn't lead directly to full compromise.</li>
 </ul>

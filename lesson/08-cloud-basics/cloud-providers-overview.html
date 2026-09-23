@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Cloud Providers Overview — Path 08 · KashSec Academy</title>
-<meta name="description" content="Cloud Providers Overview: AWS, Azure, GCP — the same concepts, different names.">
+<meta name="description" content="Path 08's first lesson covered cloud computing conceptually. This lesson gets concrete — the three dominant providers you'll encounter constantly in real security work, their rough equivalent services">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-providers-overview.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Cloud Providers Overview — Path 08 · KashSec Academy">
-<meta property="og:description" content="Cloud Providers Overview: AWS, Azure, GCP — the same concepts, different names.">
+<meta property="og:description" content="Path 08's first lesson covered cloud computing conceptually. This lesson gets concrete — the three dominant providers you'll encounter constantly in real security work, their rough equivalent services">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-providers-overview.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Cloud Providers Overview — Path 08 · KashSec Academy">
-<meta name="twitter:description" content="Cloud Providers Overview: AWS, Azure, GCP — the same concepts, different names.">
+<meta name="twitter:description" content="Path 08's first lesson covered cloud computing conceptually. This lesson gets concrete — the three dominant providers you'll encounter constantly in real security work, their rough equivalent services">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 08 — Cloud Computing Basics","item":"https://kashsec.vercel.app/lesson/08-cloud-basics/"},{"@type":"ListItem","position":4,"name":"Cloud Providers Overview","item":"https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-providers-overview.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Cloud Providers Overview","headline":"Cloud Providers Overview","description":"Cloud Providers Overview: AWS, Azure, GCP — the same concepts, different names.","url":"https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-providers-overview.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"AWS, Azure, GCP — the same concepts, different names.","isPartOf":{"@type":"Course","name":"Path 08: Cloud Computing Basics","url":"https://kashsec.vercel.app/lesson/08-cloud-basics/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-providers-overview.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Cloud Providers Overview","headline":"Cloud Providers Overview","description":"Path 08's first lesson covered cloud computing conceptually. This lesson gets concrete — the three dominant providers you'll encounter constantly in real security work, their rough equivalent services","url":"https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-providers-overview.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"AWS, Azure, GCP — the same concepts, different names.","isPartOf":{"@type":"Course","name":"Path 08: Cloud Computing Basics","url":"https://kashsec.vercel.app/lesson/08-cloud-basics/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-providers-overview.html"}}
 </script>
 </head>
 <body>
@@ -90,11 +90,6 @@
     <div class="md" id="content"><article><h1>Cloud Providers Overview</h1>
 <p>Path 08's first lesson covered cloud computing conceptually. This lesson gets concrete — the three dominant providers you'll encounter constantly in real security work, their rough equivalent services, and why Path 16's flAWS lab specifically targets one of them.</p>
 <h2>The "big three"</h2>
-<pre><code class="language-mermaid">flowchart TD
-    A[Cloud Provider Market] --&gt; B["AWS\nAmazon Web Services\nlargest market share,\noldest, most services"]
-    A --&gt; C["Microsoft Azure\ndeep enterprise/Windows\nintegration"]
-    A --&gt; D["Google Cloud Platform\nGCP - strong in data/ML,\nKubernetes origins"]
-</code></pre>
 <ul>
 <li><strong>AWS (Amazon Web Services)</strong> — the largest and oldest major provider, with the broadest range of services and, correspondingly, the most extensively documented security research and misconfiguration patterns — exactly why Path 16's flAWS lab specifically targets AWS: it's the most common real-world environment you'll encounter professionally.</li>
 <li><strong>Microsoft Azure</strong> — particularly dominant in enterprises already invested in Microsoft's ecosystem (Windows Server, Active Directory — directly connecting to Path 16's Active Directory attacks lesson, since Azure AD/Entra ID extends those same identity concepts into the cloud).</li>
@@ -154,13 +149,9 @@
 <li><strong>CLI (Command Line Interface)</strong> — each provider ships a free CLI tool (<code>aws</code>, <code>az</code>, <code>gcloud</code>) for scripting and automation — genuinely essential for the automation principles from Path 04, applied to cloud infrastructure.</li>
 <li><strong>Infrastructure as Code (IaC)</strong> — tools like Terraform (provider-agnostic) or CloudFormation (AWS-specific) let you define entire cloud environments in version-controlled configuration files rather than manual clicking — increasingly the standard for real production environments, and worth knowing exists even before you go deep with it, since a misconfigured IaC template can replicate the exact same vulnerability across dozens of environments simultaneously.</li>
 </ul>
-<p>:::tip Free tiers exist for genuine hands-on practice
-All three major providers offer free tiers with real, limited resource allowances — genuinely useful for building hands-on familiarity beyond Path 16's flAWS lab, though always set up billing alerts before experimenting, since accidentally exceeding free tier limits can produce a real bill.
-:::</p>
-<p>:::challenge Test yourself
-Why might understanding "S3" (AWS's object storage service) transfer well to Azure's "Blob Storage" or GCP's "Cloud Storage," even though you've never used either of the latter two before?</p>
-<details><summary>Show answer</summary>All three services implement the same underlying concept — a scalable object storage system for storing files/data outside of a traditional file system, accessible via API calls, with configurable access permissions determining who can read or write to it. The specific commands, console layout, and exact terminology differ between providers, but the conceptual model (buckets/containers holding objects, with permission policies controlling access, and the exact same class of misconfiguration risk — an accidentally public bucket exposing sensitive data) is essentially identical across all three. This is why cloud security skills, once you understand the underlying concepts rather than just memorizing one provider's specific commands, transfer reasonably well between providers — you're relearning syntax and console navigation, not the fundamental security model.</details>
-:::<h2>Key terms</h2>
+<p>All three major providers offer free tiers with real, limited resource allowances — genuinely useful for building hands-on familiarity beyond Path 16's flAWS lab, though always set up billing alerts before experimenting, since accidentally exceeding free tier limits can produce a real bill.</p>
+<p>Why might understanding "S3" (AWS's object storage service) transfer well to Azure's "Blob Storage" or GCP's "Cloud Storage," even though you've never used either of the latter two before?</p>
+<details><summary>Show answer</summary>All three services implement the same underlying concept — a scalable object storage system for storing files/data outside of a traditional file system, accessible via API calls, with configurable access permissions determining who can read or write to it. The specific commands, console layout, and exact terminology differ between providers, but the conceptual model (buckets/containers holding objects, with permission policies controlling access, and the exact same class of misconfiguration risk — an accidentally public bucket exposing sensitive data) is essentially identical across all three. This is why cloud security skills, once you understand the underlying concepts rather than just memorizing one provider's specific commands, transfer reasonably well between providers — you're relearning syntax and console navigation, not the fundamental security model.</details><h2>Key terms</h2>
 <ul>
 <li><strong>AWS / Azure / GCP</strong> — the three dominant public cloud providers.</li>
 <li><strong>CLI (Command Line Interface)</strong> — a provider's command-line tool for scripting cloud interactions.</li>

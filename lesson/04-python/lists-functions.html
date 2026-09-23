@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Lists &amp; functions — Path 04 · KashSec Academy</title>
-<meta name="description" content="Lists &amp; functions: Wordlists and reusable code blocks.">
+<meta name="description" content="Two of Python's most useful ideas: lists for handling collections of things (like wordlists and scan results), and functions for packaging code you'll reuse.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/04-python/lists-functions.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Lists &amp; functions — Path 04 · KashSec Academy">
-<meta property="og:description" content="Lists &amp; functions: Wordlists and reusable code blocks.">
+<meta property="og:description" content="Two of Python's most useful ideas: lists for handling collections of things (like wordlists and scan results), and functions for packaging code you'll reuse.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/04-python/lists-functions.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Lists &amp; functions — Path 04 · KashSec Academy">
-<meta name="twitter:description" content="Lists &amp; functions: Wordlists and reusable code blocks.">
+<meta name="twitter:description" content="Two of Python's most useful ideas: lists for handling collections of things (like wordlists and scan results), and functions for packaging code you'll reuse.">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 04 — Programming & Python","item":"https://kashsec.vercel.app/lesson/04-python/"},{"@type":"ListItem","position":4,"name":"Lists & functions","item":"https://kashsec.vercel.app/lesson/04-python/lists-functions.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Lists & functions","headline":"Lists & functions","description":"Lists & functions: Wordlists and reusable code blocks.","url":"https://kashsec.vercel.app/lesson/04-python/lists-functions.html","inLanguage":"en","dateModified":"2026-08-04","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Wordlists and reusable code blocks.","isPartOf":{"@type":"Course","name":"Path 04: Programming & Python","url":"https://kashsec.vercel.app/lesson/04-python/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/04-python/lists-functions.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Lists & functions","headline":"Lists & functions","description":"Two of Python's most useful ideas: lists for handling collections of things (like wordlists and scan results), and functions for packaging code you'll reuse.","url":"https://kashsec.vercel.app/lesson/04-python/lists-functions.html","inLanguage":"en","dateModified":"2026-08-04","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Wordlists and reusable code blocks.","isPartOf":{"@type":"Course","name":"Path 04: Programming & Python","url":"https://kashsec.vercel.app/lesson/04-python/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/04-python/lists-functions.html"}}
 </script>
 </head>
 <body>
@@ -288,9 +288,7 @@ if __name__ == "__main__":
     main()
 </code></pre>
 <p>Every function has one clear job. Every function has a docstring. This is now a genuinely maintainable script — the shape you'll build every future tool around.</p>
-<p>:::tip THE ONE-JOB RULE
-Each function should do <em>one</em> thing well. If you can't summarise it in a single sentence, split it into smaller functions. This one habit makes code far cleaner over time.
-:::</p>
+<p>Each function should do <em>one</em> thing well. If you can't summarise it in a single sentence, split it into smaller functions. This one habit makes code far cleaner over time.</p>
 <h2>🧪 Lab — Build a subdomain resolver</h2>
 <p>Save as <code>resolve.py</code>. Reads names from a wordlist, tries to resolve each, prints the ones that exist:</p>
 <pre><code class="language-python">#!/usr/bin/env python3
@@ -334,10 +332,8 @@ if __name__ == "__main__":
 <pre><code class="language-bash">python3 resolve.py example.com wl.txt
 </code></pre>
 <p>You just wrote a real subdomain enumerator. In Path 15, you'll extend this with wildcards, threading, and API-based recon.</p>
-<p>:::challenge Test yourself
-In the code below, what does <code>[t for t in tools if len(t) &lt; 6]</code> produce, given <code>tools = ["nmap", "burp", "sqlmap"]</code>?</p>
-<details><summary>Show answer</summary><code>['nmap', 'burp']</code> — <code>sqlmap</code> has 6 characters, so it fails the <code>&lt; 6</code> check.</details>
-:::<h2>Key terms</h2>
+<p>In the code below, what does <code>[t for t in tools if len(t) &lt; 6]</code> produce, given <code>tools = ["nmap", "burp", "sqlmap"]</code>?</p>
+<details><summary>Show answer</summary><code>['nmap', 'burp']</code> — <code>sqlmap</code> has 6 characters, so it fails the <code>&lt; 6</code> check.</details><h2>Key terms</h2>
 <ul>
 <li><strong>List / tuple / set</strong> — mutable ordered / immutable ordered / unordered unique.</li>
 <li><strong>Comprehension</strong> — one-line list building.</li>

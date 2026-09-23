@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Dictionaries &amp; sets — Path 04 · KashSec Academy</title>
-<meta name="description" content="Dictionaries &amp; sets: Labelled data, and automatic uniqueness for things like log IPs.">
+<meta name="description" content="Variables gave you one labelled box at a time. This lesson gives you two more powerful containers: dictionaries, which pair a label with a value, and sets, which automatically keep every item unique.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/04-python/dictionaries-and-sets.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Dictionaries &amp; sets — Path 04 · KashSec Academy">
-<meta property="og:description" content="Dictionaries &amp; sets: Labelled data, and automatic uniqueness for things like log IPs.">
+<meta property="og:description" content="Variables gave you one labelled box at a time. This lesson gives you two more powerful containers: dictionaries, which pair a label with a value, and sets, which automatically keep every item unique.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/04-python/dictionaries-and-sets.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Dictionaries &amp; sets — Path 04 · KashSec Academy">
-<meta name="twitter:description" content="Dictionaries &amp; sets: Labelled data, and automatic uniqueness for things like log IPs.">
+<meta name="twitter:description" content="Variables gave you one labelled box at a time. This lesson gives you two more powerful containers: dictionaries, which pair a label with a value, and sets, which automatically keep every item unique.">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 04 — Programming & Python","item":"https://kashsec.vercel.app/lesson/04-python/"},{"@type":"ListItem","position":4,"name":"Dictionaries & sets","item":"https://kashsec.vercel.app/lesson/04-python/dictionaries-and-sets.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Dictionaries & sets","headline":"Dictionaries & sets","description":"Dictionaries & sets: Labelled data, and automatic uniqueness for things like log IPs.","url":"https://kashsec.vercel.app/lesson/04-python/dictionaries-and-sets.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Labelled data, and automatic uniqueness for things like log IPs.","isPartOf":{"@type":"Course","name":"Path 04: Programming & Python","url":"https://kashsec.vercel.app/lesson/04-python/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/04-python/dictionaries-and-sets.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Dictionaries & sets","headline":"Dictionaries & sets","description":"Variables gave you one labelled box at a time. This lesson gives you two more powerful containers: dictionaries, which pair a label with a value, and sets, which automatically keep every item unique.","url":"https://kashsec.vercel.app/lesson/04-python/dictionaries-and-sets.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Labelled data, and automatic uniqueness for things like log IPs.","isPartOf":{"@type":"Course","name":"Path 04: Programming & Python","url":"https://kashsec.vercel.app/lesson/04-python/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/04-python/dictionaries-and-sets.html"}}
 </script>
 </head>
 <body>
@@ -115,10 +115,8 @@ print(suspicious_ips)   # {"10.0.0.5", "10.0.0.9"} — the duplicate is gone aut
 unique_ips = set(all_ips)
 print(len(unique_ips))   # 3 — three distinct addresses appeared
 </code></pre>
-<p>:::challenge Test yourself
-You have a list of 10,000 IP addresses extracted from a log file, and you want to know how many <em>distinct</em> addresses appear. Why is converting the list to a set a faster, simpler solution than writing your own loop to check for duplicates manually?</p>
-<details><summary>Show answer</summary>A set's entire job, built directly into the language, is guaranteeing every item it contains is unique — converting a list to a set (<code>set(all_ips)</code>) does in one line exactly what a hand-written duplicate-checking loop would take several lines and much more careful logic to achieve correctly. Sets are also implemented internally for fast lookups, meaning checking "is this item already in the set?" is significantly faster than manually scanning a list every time, which matters when you're working with genuinely large amounts of data like a real log file. This is a good example of a broader Python habit worth building: before writing your own logic for something, check whether a built-in data type already solves the problem more simply.</details>
-:::<h2>Key terms</h2>
+<p>You have a list of 10,000 IP addresses extracted from a log file, and you want to know how many <em>distinct</em> addresses appear. Why is converting the list to a set a faster, simpler solution than writing your own loop to check for duplicates manually?</p>
+<details><summary>Show answer</summary>A set's entire job, built directly into the language, is guaranteeing every item it contains is unique — converting a list to a set (<code>set(all_ips)</code>) does in one line exactly what a hand-written duplicate-checking loop would take several lines and much more careful logic to achieve correctly. Sets are also implemented internally for fast lookups, meaning checking "is this item already in the set?" is significantly faster than manually scanning a list every time, which matters when you're working with genuinely large amounts of data like a real log file. This is a good example of a broader Python habit worth building: before writing your own logic for something, check whether a built-in data type already solves the problem more simply.</details><h2>Key terms</h2>
 <ul>
 <li><strong>Dictionary</strong> — a collection of key-value pairs, accessed by meaningful key rather than numeric position.</li>
 <li><strong>Set</strong> — a collection that automatically enforces uniqueness among its items.</li>

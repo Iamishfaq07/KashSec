@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Jailbreaks &amp; bypasses — Path 18 · KashSec Academy</title>
-<meta name="description" content="Jailbreaks &amp; bypasses: Bypassing policy, not just instructions.">
+<meta name="description" content="Path 18.3 introduced the distinction: prompt injection overrides instructions, jailbreaking bypasses safety training specifically. This lesson covers jailbreaking as its own distinct discipline — unde">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/18-ai-security/jailbreaks.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Jailbreaks &amp; bypasses — Path 18 · KashSec Academy">
-<meta property="og:description" content="Jailbreaks &amp; bypasses: Bypassing policy, not just instructions.">
+<meta property="og:description" content="Path 18.3 introduced the distinction: prompt injection overrides instructions, jailbreaking bypasses safety training specifically. This lesson covers jailbreaking as its own distinct discipline — unde">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/18-ai-security/jailbreaks.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Jailbreaks &amp; bypasses — Path 18 · KashSec Academy">
-<meta name="twitter:description" content="Jailbreaks &amp; bypasses: Bypassing policy, not just instructions.">
+<meta name="twitter:description" content="Path 18.3 introduced the distinction: prompt injection overrides instructions, jailbreaking bypasses safety training specifically. This lesson covers jailbreaking as its own distinct discipline — unde">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 18 — AI & AI Security","item":"https://kashsec.vercel.app/lesson/18-ai-security/"},{"@type":"ListItem","position":4,"name":"Jailbreaks & bypasses","item":"https://kashsec.vercel.app/lesson/18-ai-security/jailbreaks.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Jailbreaks & bypasses","headline":"Jailbreaks & bypasses","description":"Jailbreaks & bypasses: Bypassing policy, not just instructions.","url":"https://kashsec.vercel.app/lesson/18-ai-security/jailbreaks.html","inLanguage":"en","dateModified":"2026-08-04","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Bypassing policy, not just instructions.","isPartOf":{"@type":"Course","name":"Path 18: AI & AI Security","url":"https://kashsec.vercel.app/lesson/18-ai-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/18-ai-security/jailbreaks.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Jailbreaks & bypasses","headline":"Jailbreaks & bypasses","description":"Path 18.3 introduced the distinction: prompt injection overrides instructions, jailbreaking bypasses safety training specifically. This lesson covers jailbreaking as its own distinct discipline — unde","url":"https://kashsec.vercel.app/lesson/18-ai-security/jailbreaks.html","inLanguage":"en","dateModified":"2026-08-04","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Bypassing policy, not just instructions.","isPartOf":{"@type":"Course","name":"Path 18: AI & AI Security","url":"https://kashsec.vercel.app/lesson/18-ai-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/18-ai-security/jailbreaks.html"}}
 </script>
 </head>
 <body>
@@ -148,10 +148,8 @@ Turn 4: [gradually narrowing toward genuinely harmful, specific detail]
 <li>Research <strong>published, historical</strong> jailbreak techniques (many are documented in academic papers and security blogs, specifically because responsible disclosure timelines have already passed) — read 2-3 technique write-ups and identify which broad family (role-play, encoding, gradual escalation) each falls into.</li>
 <li>If you have access to an LLM API allowing custom system prompts, design your own simple safety instruction (e.g., "never discuss topic X") and test a few techniques from this lesson against your own test setup — directly building the pattern-recognition muscle for Path 18.7's more formal red-teaming methodology.</li>
 </ol>
-<p>:::challenge Test yourself
-Why might a gradual, multi-turn escalation technique succeed against a model that would immediately refuse the exact same harmful request if asked directly, in a single message?</p>
-<details><summary>Show answer</summary>Safety judgment that evaluates <strong>only the most recent message in isolation</strong>, without adequately accounting for the full trajectory and context of the conversation, may fail to recognise that a sequence of individually-innocuous-seeming messages is cumulatively building toward a genuinely harmful endpoint. This is precisely why robust safety behaviour must reason about the <strong>entire conversation context</strong> (echoing Path 18.1's context window discussion) rather than treating each turn as an independent, isolated decision — a known, actively-researched challenge in AI safety training.</details>
-:::<h2>Key terms</h2>
+<p>Why might a gradual, multi-turn escalation technique succeed against a model that would immediately refuse the exact same harmful request if asked directly, in a single message?</p>
+<details><summary>Show answer</summary>Safety judgment that evaluates <strong>only the most recent message in isolation</strong>, without adequately accounting for the full trajectory and context of the conversation, may fail to recognise that a sequence of individually-innocuous-seeming messages is cumulatively building toward a genuinely harmful endpoint. This is precisely why robust safety behaviour must reason about the <strong>entire conversation context</strong> (echoing Path 18.1's context window discussion) rather than treating each turn as an independent, isolated decision — a known, actively-researched challenge in AI safety training.</details><h2>Key terms</h2>
 <ul>
 <li><strong>Jailbreaking</strong> — crafting input specifically designed to bypass a model's trained safety behaviour.</li>
 <li><strong>Role-play/persona framing</strong> — attempting to create narrative distance from direct responsibility for harmful output.</li>

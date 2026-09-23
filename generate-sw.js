@@ -78,7 +78,11 @@ const deferredUrls = [
 const cacheHash = createHash('sha256');
 for (const url of [...shellUrls, ...deferredUrls]) {
   const rel = url === './' ? 'index.html' : url;
-  cacheHash.update(rel).update(fs.readFileSync(path.join(ROOT, rel)));
+  const bytes = fs.readFileSync(path.join(ROOT, rel));
+  // Text files use CRLF in some Windows checkouts and LF on Linux. Hash the
+  // normalized content so both platforms produce the same cache version.
+  const content = rel.endsWith('.png') ? bytes : Buffer.from(bytes.toString('utf8').replace(/\r\n?/g, '\n'));
+  cacheHash.update(rel).update(content);
 }
 const CACHE_VERSION = 'v' + cacheHash.digest('hex').slice(0, 12);
 

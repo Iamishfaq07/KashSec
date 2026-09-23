@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>MFA, updates, backups — Path 10 · KashSec Academy</title>
-<meta name="description" content="MFA, updates, backups: Habits that stop most real attacks.">
+<meta name="description" content="Time for the practical payoff of this entire path. Here's a genuinely thorough personal security checklist — the exact set of changes worth making to your own devices and accounts this week.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/10-fundamentals/protect-yourself.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="MFA, updates, backups — Path 10 · KashSec Academy">
-<meta property="og:description" content="MFA, updates, backups: Habits that stop most real attacks.">
+<meta property="og:description" content="Time for the practical payoff of this entire path. Here's a genuinely thorough personal security checklist — the exact set of changes worth making to your own devices and accounts this week.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/10-fundamentals/protect-yourself.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="MFA, updates, backups — Path 10 · KashSec Academy">
-<meta name="twitter:description" content="MFA, updates, backups: Habits that stop most real attacks.">
+<meta name="twitter:description" content="Time for the practical payoff of this entire path. Here's a genuinely thorough personal security checklist — the exact set of changes worth making to your own devices and accounts this week.">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 10 — Cybersecurity Fundamentals","item":"https://kashsec.vercel.app/lesson/10-fundamentals/"},{"@type":"ListItem","position":4,"name":"MFA, updates, backups","item":"https://kashsec.vercel.app/lesson/10-fundamentals/protect-yourself.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"MFA, updates, backups","headline":"MFA, updates, backups","description":"MFA, updates, backups: Habits that stop most real attacks.","url":"https://kashsec.vercel.app/lesson/10-fundamentals/protect-yourself.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner→Intermediate","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Habits that stop most real attacks.","isPartOf":{"@type":"Course","name":"Path 10: Cybersecurity Fundamentals","url":"https://kashsec.vercel.app/lesson/10-fundamentals/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/10-fundamentals/protect-yourself.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"MFA, updates, backups","headline":"MFA, updates, backups","description":"Time for the practical payoff of this entire path. Here's a genuinely thorough personal security checklist — the exact set of changes worth making to your own devices and accounts this week.","url":"https://kashsec.vercel.app/lesson/10-fundamentals/protect-yourself.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner→Intermediate","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Habits that stop most real attacks.","isPartOf":{"@type":"Course","name":"Path 10: Cybersecurity Fundamentals","url":"https://kashsec.vercel.app/lesson/10-fundamentals/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/10-fundamentals/protect-yourself.html"}}
 </script>
 </head>
 <body>
@@ -91,23 +91,6 @@
 <p>Time for the practical payoff of this entire path. Here's a genuinely thorough personal security checklist — the exact set of changes worth making to your own devices and accounts this week.</p>
 <h2>Defense in depth — the core philosophy</h2>
 <p>No single control is perfect. <strong>Defense in depth</strong> means layering multiple, independent controls so that if one fails, others still protect you — the same principle as the kill chain lesson, applied to your personal life.</p>
-<pre><code class="language-mermaid">flowchart TB
-    L1["🔑 Layer 1: Strong unique passwords"]
-    L2["📱 Layer 2: MFA everywhere"]
-    L3["🔄 Layer 3: Regular updates"]
-    L4["🛡 Layer 4: Antivirus / built-in OS protection"]
-    L5["🧠 Layer 5: Awareness / scepticism"]
-    L6["💾 Layer 6: Backups"]
-
-    L1 --&gt; L2 --&gt; L3 --&gt; L4 --&gt; L5 --&gt; L6
-
-    style L1 fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
-    style L2 fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
-    style L3 fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
-    style L4 fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
-    style L5 fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
-    style L6 fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
-</code></pre>
 <h2>1. Passwords — the foundation</h2>
 <ul>
 <li><strong>Install a password manager today</strong> if you don't have one: Bitwarden (free, open-source) or 1Password are excellent choices.</li>
@@ -199,10 +182,8 @@
 <li> Searched your own name to see your public footprint</li>
 </ul>
 <p>Whatever's unchecked, pick one to actually complete before moving to the next lesson. Small, real action beats a perfect plan you never start.</p>
-<p>:::challenge Test yourself
-Why is enabling MFA on your <strong>email account</strong> specifically considered higher priority than almost any other account?</p>
-<details><summary>Show answer</summary>Email is typically the <strong>account recovery mechanism</strong> for nearly everything else — banking, social media, work accounts. If an attacker controls your email, they can usually trigger "forgot password" resets to take over most of your other accounts too. It's the single highest-leverage account to protect.</details>
-:::<h2>Key terms</h2>
+<p>Why is enabling MFA on your <strong>email account</strong> specifically considered higher priority than almost any other account?</p>
+<details><summary>Show answer</summary>Email is typically the <strong>account recovery mechanism</strong> for nearly everything else — banking, social media, work accounts. If an attacker controls your email, they can usually trigger "forgot password" resets to take over most of your other accounts too. It's the single highest-leverage account to protect.</details><h2>Key terms</h2>
 <ul>
 <li><strong>Defense in depth</strong> — layering multiple independent controls.</li>
 <li><strong>3-2-1 backup rule</strong> — 3 copies, 2 media types, 1 off-site.</li>

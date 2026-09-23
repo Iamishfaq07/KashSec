@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Recognizing a Compromised Windows Machine — Path 07 · KashSec Academy</title>
-<meta name="description" content="Recognizing a Compromised Windows Machine: The practical signs to check across processes, accounts, and scheduled tasks.">
+<meta name="description" content="The Event Viewer lesson taught you where Windows records evidence. This lesson teaches you what to actually look for — the practical, recognizable signs that a Windows machine has been compromised, be">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/07-windows-security/recognizing-windows-compromise.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Recognizing a Compromised Windows Machine — Path 07 · KashSec Academy">
-<meta property="og:description" content="Recognizing a Compromised Windows Machine: The practical signs to check across processes, accounts, and scheduled tasks.">
+<meta property="og:description" content="The Event Viewer lesson taught you where Windows records evidence. This lesson teaches you what to actually look for — the practical, recognizable signs that a Windows machine has been compromised, be">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/07-windows-security/recognizing-windows-compromise.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Recognizing a Compromised Windows Machine — Path 07 · KashSec Academy">
-<meta name="twitter:description" content="Recognizing a Compromised Windows Machine: The practical signs to check across processes, accounts, and scheduled tasks.">
+<meta name="twitter:description" content="The Event Viewer lesson taught you where Windows records evidence. This lesson teaches you what to actually look for — the practical, recognizable signs that a Windows machine has been compromised, be">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 07 — Windows Security Basics","item":"https://kashsec.vercel.app/lesson/07-windows-security/"},{"@type":"ListItem","position":4,"name":"Recognizing a Compromised Windows Machine","item":"https://kashsec.vercel.app/lesson/07-windows-security/recognizing-windows-compromise.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Recognizing a Compromised Windows Machine","headline":"Recognizing a Compromised Windows Machine","description":"Recognizing a Compromised Windows Machine: The practical signs to check across processes, accounts, and scheduled tasks.","url":"https://kashsec.vercel.app/lesson/07-windows-security/recognizing-windows-compromise.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"The practical signs to check across processes, accounts, and scheduled tasks.","isPartOf":{"@type":"Course","name":"Path 07: Windows Security Basics","url":"https://kashsec.vercel.app/lesson/07-windows-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/07-windows-security/recognizing-windows-compromise.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Recognizing a Compromised Windows Machine","headline":"Recognizing a Compromised Windows Machine","description":"The Event Viewer lesson taught you where Windows records evidence. This lesson teaches you what to actually look for — the practical, recognizable signs that a Windows machine has been compromised, be","url":"https://kashsec.vercel.app/lesson/07-windows-security/recognizing-windows-compromise.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"The practical signs to check across processes, accounts, and scheduled tasks.","isPartOf":{"@type":"Course","name":"Path 07: Windows Security Basics","url":"https://kashsec.vercel.app/lesson/07-windows-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/07-windows-security/recognizing-windows-compromise.html"}}
 </script>
 </head>
 <body>
@@ -89,9 +89,7 @@
     <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/07-windows-security/">Path 07 — Windows Security Basics</a> · Recognizing a Compromised Windows Machine</nav>
     <div class="md" id="content"><article><h1>Recognizing a Compromised Windows Machine</h1>
 <p>The Event Viewer lesson taught you where Windows records evidence. This lesson teaches you what to actually look for — the practical, recognizable signs that a Windows machine has been compromised, before Path 16's full incident-response material goes much deeper.</p>
-<p>:::tip
-None of the signs in this lesson are proof on their own — each one has a legitimate, non-malicious explanation too. The skill this lesson builds is noticing when <em>several</em> of them show up together, which is a much stronger signal than any single indicator alone.
-:::</p>
+<p>:::</p>
 <h2>Unusual process and resource activity</h2>
 <ul>
 <li><strong>Unfamiliar processes in Task Manager</strong> — a process name you don't recognize, especially one using significant CPU or network activity while the machine is supposedly idle</li>
@@ -119,20 +117,15 @@ None of the signs in this lesson are proof on their own — each one has a legit
 </ol>
 <h2>What to do if you genuinely suspect compromise</h2>
 <p>:::danger
-If you have real reason to believe a machine is compromised, disconnect it from the network (unplug the ethernet cable, disable Wi-Fi) before doing anything else — this stops an attacker's ongoing access and prevents malware from spreading further, without destroying evidence the way a full power-off might. Path 16's incident-response lesson covers the full process in depth; for now, know that "isolate first, investigate second" is the correct instinct.
-:::</p>
-<p>:::challenge Evaluate the evidence
-A user reports their laptop "feels slow." Investigation reveals: one unfamiliar process running from <code>C:\Users\Public\svchost.exe</code> (note the location — not the legitimate System32 path), a new scheduled task running every hour with no description, and three failed login attempts at 3 AM when the user was asleep.</p>
+If you have real reason to believe a machine is compromised, disconnect it from the network (unplug the ethernet cable, disable Wi-Fi) before doing anything else — this stops an attacker's ongoing access and prevents malware from spreading further, without destroying evidence the way a full power-off might. Path 16's incident-response lesson covers the full process in depth; for now, know that "isolate first, investigate second" is the correct instinct.</p>
+<p>A user reports their laptop "feels slow." Investigation reveals: one unfamiliar process running from <code>C:\Users\Public\svchost.exe</code> (note the location — not the legitimate System32 path), a new scheduled task running every hour with no description, and three failed login attempts at 3 AM when the user was asleep.</p>
 <details><summary>Hint</summary>Is any single one of these three findings, alone, definitive proof of compromise? What does seeing all three together tell you that one alone wouldn't?</details>
-<details><summary>Show answer</summary>Each finding individually has some innocent explanation in isolation, but together they form a strong, coherent picture of compromise. The process name <code>svchost.exe</code> is a legitimate Windows process name — but legitimate <code>svchost.exe</code> only ever runs from <code>C:\Windows\System32</code>, so a file with that exact name running from a user-writable location like <code>C:\Users\Public</code> is a classic malware trick relying on a user glancing at the name without checking the path. Combined with an unexplained recurring scheduled task (a persistence mechanism) and failed logins at an hour the legitimate user wasn't active, this is a strong, multi-signal indicator of compromise — exactly the "several signs together" pattern this lesson emphasizes over any single indicator alone. The correct next step is isolating the machine from the network and escalating, not just removing the one suspicious file and calling it resolved.</details>
-:::<h2>🧪 Hands-on lab — build your own checklist</h2>
+<details><summary>Show answer</summary>Each finding individually has some innocent explanation in isolation, but together they form a strong, coherent picture of compromise. The process name <code>svchost.exe</code> is a legitimate Windows process name — but legitimate <code>svchost.exe</code> only ever runs from <code>C:\Windows\System32</code>, so a file with that exact name running from a user-writable location like <code>C:\Users\Public</code> is a classic malware trick relying on a user glancing at the name without checking the path. Combined with an unexplained recurring scheduled task (a persistence mechanism) and failed logins at an hour the legitimate user wasn't active, this is a strong, multi-signal indicator of compromise — exactly the "several signs together" pattern this lesson emphasizes over any single indicator alone. The correct next step is isolating the machine from the network and escalating, not just removing the one suspicious file and calling it resolved.</details><h2>🧪 Hands-on lab — build your own checklist</h2>
 <p>Using the four checkpoints from this lesson (Task Manager, Event Viewer, Task Scheduler, Defender history), write yourself a short, repeatable checklist you could run through on any Windows machine you're asked to investigate, noting specifically what "normal" looks like at each checkpoint so you have a baseline to compare against later.</p>
-<p>:::challenge Test yourself</p>
 <ol>
 <li>Why is a process's file location often a stronger compromise indicator than its process name alone?</li>
 <li>Name two places on a Windows machine where a persistence mechanism might show up.</li>
-<li>Why should a suspected-compromised machine be disconnected from the network before further investigation, rather than powered off immediately?
-:::</li>
+<li>Why should a suspected-compromised machine be disconnected from the network before further investigation, rather than powered off immediately?</li>
 </ol>
 <h2>Key terms</h2>
 <ul>

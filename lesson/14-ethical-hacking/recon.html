@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Phase 1: Reconnaissance — Path 14 · KashSec Academy</title>
-<meta name="description" content="Phase 1: Reconnaissance: OSINT, Google dorks, crt.sh, Shodan, GitHub.">
+<meta name="description" content="Path 11.3 taught web-focused recon techniques. This lesson broadens that into the fuller reconnaissance discipline used across an entire professional engagement — covering people, infrastructure, and ">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/14-ethical-hacking/recon.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Phase 1: Reconnaissance — Path 14 · KashSec Academy">
-<meta property="og:description" content="Phase 1: Reconnaissance: OSINT, Google dorks, crt.sh, Shodan, GitHub.">
+<meta property="og:description" content="Path 11.3 taught web-focused recon techniques. This lesson broadens that into the fuller reconnaissance discipline used across an entire professional engagement — covering people, infrastructure, and ">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/14-ethical-hacking/recon.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Phase 1: Reconnaissance — Path 14 · KashSec Academy">
-<meta name="twitter:description" content="Phase 1: Reconnaissance: OSINT, Google dorks, crt.sh, Shodan, GitHub.">
+<meta name="twitter:description" content="Path 11.3 taught web-focused recon techniques. This lesson broadens that into the fuller reconnaissance discipline used across an entire professional engagement — covering people, infrastructure, and ">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 14 — Ethical Hacking","item":"https://kashsec.vercel.app/lesson/14-ethical-hacking/"},{"@type":"ListItem","position":4,"name":"Phase 1: Reconnaissance","item":"https://kashsec.vercel.app/lesson/14-ethical-hacking/recon.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Phase 1: Reconnaissance","headline":"Phase 1: Reconnaissance","description":"Phase 1: Reconnaissance: OSINT, Google dorks, crt.sh, Shodan, GitHub.","url":"https://kashsec.vercel.app/lesson/14-ethical-hacking/recon.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate→Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"OSINT, Google dorks, crt.sh, Shodan, GitHub.","isPartOf":{"@type":"Course","name":"Path 14: Ethical Hacking","url":"https://kashsec.vercel.app/lesson/14-ethical-hacking/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/14-ethical-hacking/recon.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Phase 1: Reconnaissance","headline":"Phase 1: Reconnaissance","description":"Path 11.3 taught web-focused recon techniques. This lesson broadens that into the fuller reconnaissance discipline used across an entire professional engagement — covering people, infrastructure, and ","url":"https://kashsec.vercel.app/lesson/14-ethical-hacking/recon.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate→Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"OSINT, Google dorks, crt.sh, Shodan, GitHub.","isPartOf":{"@type":"Course","name":"Path 14: Ethical Hacking","url":"https://kashsec.vercel.app/lesson/14-ethical-hacking/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/14-ethical-hacking/recon.html"}}
 </script>
 </head>
 <body>
@@ -124,18 +124,6 @@ metagoofil -d example.com -t pdf,doc,xls -l 20 -o metadata-results
 <p>Finding real internal usernames (<code>jsmith</code>, <code>a.patel</code>) via document metadata is a classic, quietly effective recon technique — those usernames become the basis for later password-spraying attempts (within agreed RoE) in the exploitation phase.</p>
 <h2>Combining OSINT with active recon</h2>
 <p>Recall the passive/active distinction from Path 11.3. A full professional recon phase layers both:</p>
-<pre><code class="language-mermaid">flowchart TB
-    Passive["🕵️ Passive OSINT&lt;br/&gt;LinkedIn, DNS/CT logs, Shodan,&lt;br/&gt;document metadata, breach data"]
-    Active["🎯 Active Recon&lt;br/&gt;(within agreed RoE)&lt;br/&gt;Nmap scanning, directory brute-force,&lt;br/&gt;banner grabbing"]
-    Combined["📋 Combined Attack Surface Map"]
-
-    Passive --&gt; Combined
-    Active --&gt; Combined
-
-    style Passive fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
-    style Active fill:#2b1f0a,color:#EFA43A,stroke:#EFA43A
-    style Combined fill:#2b1010,color:#E9EEF3,stroke:#E05548
-</code></pre>
 <p>The output of this phase is a genuinely comprehensive picture: every subdomain, every employee name that could inform password guessing or phishing simulation (if in scope), every technology in use and its likely CVEs, and every publicly-exposed document that might contain something sensitive.</p>
 <h2>Building a recon report — even at this early stage</h2>
 <p>Professional recon doesn't just collect data — it's organised into something the next phases (and eventually the client) can act on:</p>
@@ -218,10 +206,8 @@ if __name__ == "__main__":
 <li>Compile a short summary in the format shown above.</li>
 </ol>
 <p>This is a genuinely safe way to practise the <em>research and synthesis</em> skill of recon without any active-technique legal concerns at all.</p>
-<p>:::challenge Test yourself
-A tester finds an employee's personal email address in a public breach dataset during OSINT recon. Is directly emailing that employee to "test" whether they'd click a phishing link an appropriate next step?</p>
-<details><summary>Show answer</summary>Only if <strong>social engineering testing of employees is explicitly authorized</strong> in the signed Rules of Engagement. Absent that specific authorization, contacting employees directly — even with good intentions, even using legitimately-found public information — falls outside the recon phase's passive/OSINT boundary and could constitute an unauthorized action. This finding should instead be documented as a <em>risk observation</em> ("credential reuse risk identified") for the report, not acted upon directly without explicit separate approval.</details>
-:::<h2>Key terms</h2>
+<p>A tester finds an employee's personal email address in a public breach dataset during OSINT recon. Is directly emailing that employee to "test" whether they'd click a phishing link an appropriate next step?</p>
+<details><summary>Show answer</summary>Only if <strong>social engineering testing of employees is explicitly authorized</strong> in the signed Rules of Engagement. Absent that specific authorization, contacting employees directly — even with good intentions, even using legitimately-found public information — falls outside the recon phase's passive/OSINT boundary and could constitute an unauthorized action. This finding should instead be documented as a <em>risk observation</em> ("credential reuse risk identified") for the report, not acted upon directly without explicit separate approval.</details><h2>Key terms</h2>
 <ul>
 <li><strong>OSINT</strong> — intelligence gathered entirely from publicly available sources.</li>
 <li><strong>Document metadata</strong> — hidden data embedded in files, often revealing usernames or internal software versions.</li>

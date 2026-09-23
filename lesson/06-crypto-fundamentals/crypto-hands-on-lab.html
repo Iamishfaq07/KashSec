@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Crypto Hands-On Lab — Path 06 · KashSec Academy</title>
-<meta name="description" content="Crypto Hands-On Lab: CyberChef and OpenSSL — encode, encrypt, hash, and inspect real certificates.">
+<meta name="description" content="This capstone lab turns every concept from this path — encoding vs. encryption vs. hashing, symmetric and asymmetric encryption, digital certificates — into hands-on practice using free, beginner-frie">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/06-crypto-fundamentals/crypto-hands-on-lab.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Crypto Hands-On Lab — Path 06 · KashSec Academy">
-<meta property="og:description" content="Crypto Hands-On Lab: CyberChef and OpenSSL — encode, encrypt, hash, and inspect real certificates.">
+<meta property="og:description" content="This capstone lab turns every concept from this path — encoding vs. encryption vs. hashing, symmetric and asymmetric encryption, digital certificates — into hands-on practice using free, beginner-frie">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/06-crypto-fundamentals/crypto-hands-on-lab.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Crypto Hands-On Lab — Path 06 · KashSec Academy">
-<meta name="twitter:description" content="Crypto Hands-On Lab: CyberChef and OpenSSL — encode, encrypt, hash, and inspect real certificates.">
+<meta name="twitter:description" content="This capstone lab turns every concept from this path — encoding vs. encryption vs. hashing, symmetric and asymmetric encryption, digital certificates — into hands-on practice using free, beginner-frie">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 06 — Cryptography Fundamentals","item":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/"},{"@type":"ListItem","position":4,"name":"Crypto Hands-On Lab","item":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/crypto-hands-on-lab.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Crypto Hands-On Lab","headline":"Crypto Hands-On Lab","description":"Crypto Hands-On Lab: CyberChef and OpenSSL — encode, encrypt, hash, and inspect real certificates.","url":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/crypto-hands-on-lab.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"CyberChef and OpenSSL — encode, encrypt, hash, and inspect real certificates.","isPartOf":{"@type":"Course","name":"Path 06: Cryptography Fundamentals","url":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/crypto-hands-on-lab.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Crypto Hands-On Lab","headline":"Crypto Hands-On Lab","description":"This capstone lab turns every concept from this path — encoding vs. encryption vs. hashing, symmetric and asymmetric encryption, digital certificates — into hands-on practice using free, beginner-frie","url":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/crypto-hands-on-lab.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"CyberChef and OpenSSL — encode, encrypt, hash, and inspect real certificates.","isPartOf":{"@type":"Course","name":"Path 06: Cryptography Fundamentals","url":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/crypto-hands-on-lab.html"}}
 </script>
 </head>
 <body>
@@ -128,9 +128,7 @@ openssl req -in lab.csr -noout -text
 <p>Reading the CSR's decoded output (the last command) shows exactly the identity information — the domain name in <code>CN</code>, the public key — that a CA would review and sign, connecting directly to this path's certificate-issuance diagram.</p>
 </li>
 </ol>
-<p>:::challenge Build a mini crypto reference sheet
-Using everything from this lab, create your own one-page cheat sheet: when to use encoding vs. encryption vs. hashing, when to use symmetric vs. asymmetric encryption, and the 8 crypto mistakes from the previous lesson, each with a one-line "how to avoid it." Save it in your notes — this is exactly the kind of reference that pays off constantly across the rest of this course.
-:::</p>
+<p>Using everything from this lab, create your own one-page cheat sheet: when to use encoding vs. encryption vs. hashing, when to use symmetric vs. asymmetric encryption, and the 8 crypto mistakes from the previous lesson, each with a one-line "how to avoid it." Save it in your notes — this is exactly the kind of reference that pays off constantly across the rest of this course.</p>
 <h2>Where crypto concepts show up throughout this course</h2>
 <p>Now that you've built this foundation, revisit (or look forward to) exactly where it applies: Path 02's HTTPS discussion, Path 11's JWT lessons and labs, Path 13's mobile Keystore/Keychain lessons, Path 17's ransomware mechanics and static analysis entropy checks, and this course's CTF Zone's layered-cipher and XOR challenges — every one of these now has real conceptual grounding behind it, rather than being isolated vocabulary.</p>
 <h2>Key takeaway</h2>

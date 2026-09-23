@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Common Zero Trust Pitfalls — Path 24 · KashSec Academy</title>
-<meta name="description" content="Common Zero Trust Pitfalls: Where real rollouts break: exemptions, legacy excuses, and measuring adoption instead of risk.">
+<meta name="description" content="You've now covered the full technical scope of Zero Trust across identity, devices, networks, applications, and data. This lesson covers where real rollouts actually go wrong — the gap between the arc">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-common-pitfalls.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Common Zero Trust Pitfalls — Path 24 · KashSec Academy">
-<meta property="og:description" content="Common Zero Trust Pitfalls: Where real rollouts break: exemptions, legacy excuses, and measuring adoption instead of risk.">
+<meta property="og:description" content="You've now covered the full technical scope of Zero Trust across identity, devices, networks, applications, and data. This lesson covers where real rollouts actually go wrong — the gap between the arc">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-common-pitfalls.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Common Zero Trust Pitfalls — Path 24 · KashSec Academy">
-<meta name="twitter:description" content="Common Zero Trust Pitfalls: Where real rollouts break: exemptions, legacy excuses, and measuring adoption instead of risk.">
+<meta name="twitter:description" content="You've now covered the full technical scope of Zero Trust across identity, devices, networks, applications, and data. This lesson covers where real rollouts actually go wrong — the gap between the arc">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 24 — Zero Trust Architecture","item":"https://kashsec.vercel.app/lesson/24-zero-trust/"},{"@type":"ListItem","position":4,"name":"Common Zero Trust Pitfalls","item":"https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-common-pitfalls.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Common Zero Trust Pitfalls","headline":"Common Zero Trust Pitfalls","description":"Common Zero Trust Pitfalls: Where real rollouts break: exemptions, legacy excuses, and measuring adoption instead of risk.","url":"https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-common-pitfalls.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Where real rollouts break: exemptions, legacy excuses, and measuring adoption instead of risk.","isPartOf":{"@type":"Course","name":"Path 24: Zero Trust Architecture","url":"https://kashsec.vercel.app/lesson/24-zero-trust/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-common-pitfalls.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Common Zero Trust Pitfalls","headline":"Common Zero Trust Pitfalls","description":"You've now covered the full technical scope of Zero Trust across identity, devices, networks, applications, and data. This lesson covers where real rollouts actually go wrong — the gap between the arc","url":"https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-common-pitfalls.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Where real rollouts break: exemptions, legacy excuses, and measuring adoption instead of risk.","isPartOf":{"@type":"Course","name":"Path 24: Zero Trust Architecture","url":"https://kashsec.vercel.app/lesson/24-zero-trust/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-common-pitfalls.html"}}
 </script>
 </head>
 <body>
@@ -89,9 +89,7 @@
     <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/24-zero-trust/">Path 24 — Zero Trust Architecture</a> · Common Zero Trust Pitfalls</nav>
     <div class="md" id="content"><article><h1>Common Zero Trust Pitfalls</h1>
 <p>You've now covered the full technical scope of Zero Trust across identity, devices, networks, applications, and data. This lesson covers where real rollouts actually go wrong — the gap between the architecture as designed and the architecture as it ends up deployed under real organizational pressure.</p>
-<p>:::danger
-The single most common Zero Trust failure isn't a missing technology — it's an exemption. Every pitfall in this lesson is, at its core, some version of "we made a reasonable-sounding exception, and the exception became the actual attack path."
-:::</p>
+<p>:::</p>
 <h2>Pitfall 1: "Zero Trust" as a product purchase, not an architecture</h2>
 <p>Buying a vendor's "Zero Trust" product suite doesn't automatically produce a Zero Trust architecture — the maturity model lesson's whole point is that maturity is assessed pillar by pillar, and a product can genuinely strengthen one pillar (say, ZTNA for network access) while leaving others (data classification, privileged access) completely untouched. Organizations that treat a single purchase as "done" typically end up with an uneven, exploitable maturity profile exactly like the imbalance covered in that lesson's worked example.</p>
 <h2>Pitfall 2: Exempting privileged or "trusted" users</h2>
@@ -107,15 +105,12 @@ The single most common Zero Trust failure isn't a missing technology — it's an
 <p>:::challenge Diagnose a rollout
 An organization proudly reports: "Zero Trust rollout complete — MFA on all accounts, ZTNA fully replacing VPN, and micro-segmentation deployed across the data center." Six months later, they suffer a significant data breach originating from a compromised third-party vendor's shared support credential, which had standing access to an internal reporting database with no monitoring or expiration.</p>
 <details><summary>Hint</summary>Which specific pitfall from this lesson does this scenario match, and why did the organization's confident "complete" announcement fail to catch it?</details>
-<details><summary>Show answer</summary>This is Pitfall 5 (no plan for third parties) compounding with Pitfall 6 (measuring by deployment, not risk). The organization's rollout was genuinely strong across identity, network, and segmentation for its own workforce — but "complete" was declared based on internal-facing metrics that never accounted for the third-party population at all. A shared, standing, unmonitored vendor credential is precisely the old-model shortcut the third-party-risk lesson warned bypasses every control built for employees. A maturity-model-style pillar assessment, applied honestly and including third-party access as part of the Identity pillar's scope, would have surfaced this gap before an attacker did.</details>
-:::<h2>🧪 Hands-on lab — pitfall-proof a rollout announcement</h2>
+<details><summary>Show answer</summary>This is Pitfall 5 (no plan for third parties) compounding with Pitfall 6 (measuring by deployment, not risk). The organization's rollout was genuinely strong across identity, network, and segmentation for its own workforce — but "complete" was declared based on internal-facing metrics that never accounted for the third-party population at all. A shared, standing, unmonitored vendor credential is precisely the old-model shortcut the third-party-risk lesson warned bypasses every control built for employees. A maturity-model-style pillar assessment, applied honestly and including third-party access as part of the Identity pillar's scope, would have surfaced this gap before an attacker did.</details><h2>🧪 Hands-on lab — pitfall-proof a rollout announcement</h2>
 <p>Take the "complete" rollout announcement from the challenge above and rewrite it as an honest, pillar-by-pillar status update that would have surfaced the third-party gap before it became a breach.</p>
-<p>:::challenge Test yourself</p>
 <ol>
 <li>Why is buying Zero Trust products not the same as achieving a mature Zero Trust architecture?</li>
 <li>Which pitfall does exempting privileged accounts from MFA represent, and why is it especially dangerous?</li>
-<li>Why can "percentage of users with MFA deployed" be a misleading measure of overall Zero Trust progress?
-:::</li>
+<li>Why can "percentage of users with MFA deployed" be a misleading measure of overall Zero Trust progress?</li>
 </ol>
 <h2>Key terms</h2>
 <ul>

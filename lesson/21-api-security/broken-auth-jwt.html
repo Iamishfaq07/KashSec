@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Broken Authentication &amp; JWT Attacks — Path 21 · KashSec Academy</title>
-<meta name="description" content="Broken Authentication &amp; JWT Attacks: alg:none, algorithm confusion, and weak secrets — how tokens get forged.">
+<meta name="description" content="Authentication in APIs usually means tokens — most commonly JWTs. When token handling is weak, an attacker can become any user, including an admin, without ever guessing a password.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/21-api-security/broken-auth-jwt.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Broken Authentication &amp; JWT Attacks — Path 21 · KashSec Academy">
-<meta property="og:description" content="Broken Authentication &amp; JWT Attacks: alg:none, algorithm confusion, and weak secrets — how tokens get forged.">
+<meta property="og:description" content="Authentication in APIs usually means tokens — most commonly JWTs. When token handling is weak, an attacker can become any user, including an admin, without ever guessing a password.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/21-api-security/broken-auth-jwt.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Broken Authentication &amp; JWT Attacks — Path 21 · KashSec Academy">
-<meta name="twitter:description" content="Broken Authentication &amp; JWT Attacks: alg:none, algorithm confusion, and weak secrets — how tokens get forged.">
+<meta name="twitter:description" content="Authentication in APIs usually means tokens — most commonly JWTs. When token handling is weak, an attacker can become any user, including an admin, without ever guessing a password.">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 21 — API Security","item":"https://kashsec.vercel.app/lesson/21-api-security/"},{"@type":"ListItem","position":4,"name":"Broken Authentication & JWT Attacks","item":"https://kashsec.vercel.app/lesson/21-api-security/broken-auth-jwt.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Broken Authentication & JWT Attacks","headline":"Broken Authentication & JWT Attacks","description":"Broken Authentication & JWT Attacks: alg:none, algorithm confusion, and weak secrets — how tokens get forged.","url":"https://kashsec.vercel.app/lesson/21-api-security/broken-auth-jwt.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"alg:none, algorithm confusion, and weak secrets — how tokens get forged.","isPartOf":{"@type":"Course","name":"Path 21: API Security","url":"https://kashsec.vercel.app/lesson/21-api-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/21-api-security/broken-auth-jwt.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Broken Authentication & JWT Attacks","headline":"Broken Authentication & JWT Attacks","description":"Authentication in APIs usually means tokens — most commonly JWTs. When token handling is weak, an attacker can become any user, including an admin, without ever guessing a password.","url":"https://kashsec.vercel.app/lesson/21-api-security/broken-auth-jwt.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"alg:none, algorithm confusion, and weak secrets — how tokens get forged.","isPartOf":{"@type":"Course","name":"Path 21: API Security","url":"https://kashsec.vercel.app/lesson/21-api-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/21-api-security/broken-auth-jwt.html"}}
 </script>
 </head>
 <body>
@@ -89,9 +89,7 @@
     <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/21-api-security/">Path 21 — API Security</a> · Broken Authentication &amp; JWT Attacks</nav>
     <div class="md" id="content"><article><h1>Broken Authentication &amp; JWT Attacks</h1>
 <p>Authentication in APIs usually means tokens — most commonly JWTs. When token handling is weak, an attacker can become any user, including an admin, without ever guessing a password.</p>
-<p>:::tip
-JWTs are signed, not encrypted. Anyone can Base64-decode the payload and read it — the signature only stops <em>tampering</em>, not <em>reading</em>. Never put a password, secret, or anything sensitive inside a JWT payload, even a token you fully control.
-:::</p>
+<p>:::</p>
 <h2>Common authentication failures</h2>
 <ul>
 <li>No rate limiting on login or password-reset endpoints</li>
@@ -177,8 +175,7 @@ Attacker forges:</p>
 <li>Look for sensitive data in the payload (it is only Base64, not encrypted).</li>
 </ol>
 <p>:::lab
-Use the JWT tool in KashSec (<code>#/tools/jwt</code>) to decode tokens you capture in labs. Then try the PortSwigger JWT labs.
-:::</p>
+Use the JWT tool in KashSec (<code>#/tools/jwt</code>) to decode tokens you capture in labs. Then try the PortSwigger JWT labs.</p>
 <h2>Defenses</h2>
 <ul>
 <li>Always verify the signature with a strict allow-list of algorithms — reject anything not on that list, including <code>none</code>, explicitly.</li>
@@ -187,9 +184,7 @@ Use the JWT tool in KashSec (<code>#/tools/jwt</code>) to decode tokens you capt
 <li>Never put secrets or passwords in the payload.</li>
 <li>Invalidate tokens on logout / password change when possible — a short-lived access token plus a server-side check on the refresh token is the common practical answer to "how do I revoke a JWT."</li>
 </ul>
-<p>:::danger
-"We use JWTs so we don't need session state" is a common but dangerous oversimplification. True stateless JWTs cannot be revoked before they expire — which is exactly why most production systems keep the access-token lifetime very short (minutes) and put revocation logic on the longer-lived refresh token instead.
-:::</p>
+<p>:::</p>
 <h2>🧪 Hands-on lab — attack a JWT</h2>
 <ol>
 <li>Use the KashSec JWT tool (<code>#/tools/jwt</code>) or jwt.io to decode a sample JWT and identify its algorithm and claims.</li>
@@ -201,8 +196,7 @@ Use the JWT tool in KashSec (<code>#/tools/jwt</code>) to decode tokens you capt
 <ol>
 <li>Why is "the payload is Base64-encoded" not a security control, and what should never go inside a JWT payload as a result?</li>
 <li>Explain algorithm confusion (RS256 → HS256) in your own words — why does the public key being public matter here?</li>
-<li>A team says "we don't need to check token expiry server-side, the client won't send an expired token." What's wrong with trusting that?
-:::</li>
+<li>A team says "we don't need to check token expiry server-side, the client won't send an expired token." What's wrong with trusting that?</li>
 </ol>
 <h2>Key terms</h2>
 <ul>

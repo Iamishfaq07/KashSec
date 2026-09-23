@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Purple Teaming Basics — Path 14 · KashSec Academy</title>
-<meta name="description" content="Purple Teaming Basics: Red and blue working together, in real time, against the ATT&amp;CK matrix.">
+<meta name="description" content="The red-team-vs-pentest lesson previewed purple teaming as a collaborative alternative. This closing conceptual lesson covers exactly what that collaboration looks like in practice, before this path's">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/14-ethical-hacking/purple-teaming-basics.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Purple Teaming Basics — Path 14 · KashSec Academy">
-<meta property="og:description" content="Purple Teaming Basics: Red and blue working together, in real time, against the ATT&amp;CK matrix.">
+<meta property="og:description" content="The red-team-vs-pentest lesson previewed purple teaming as a collaborative alternative. This closing conceptual lesson covers exactly what that collaboration looks like in practice, before this path's">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/14-ethical-hacking/purple-teaming-basics.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Purple Teaming Basics — Path 14 · KashSec Academy">
-<meta name="twitter:description" content="Purple Teaming Basics: Red and blue working together, in real time, against the ATT&amp;CK matrix.">
+<meta name="twitter:description" content="The red-team-vs-pentest lesson previewed purple teaming as a collaborative alternative. This closing conceptual lesson covers exactly what that collaboration looks like in practice, before this path's">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 14 — Ethical Hacking","item":"https://kashsec.vercel.app/lesson/14-ethical-hacking/"},{"@type":"ListItem","position":4,"name":"Purple Teaming Basics","item":"https://kashsec.vercel.app/lesson/14-ethical-hacking/purple-teaming-basics.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Purple Teaming Basics","headline":"Purple Teaming Basics","description":"Purple Teaming Basics: Red and blue working together, in real time, against the ATT&CK matrix.","url":"https://kashsec.vercel.app/lesson/14-ethical-hacking/purple-teaming-basics.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate→Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Red and blue working together, in real time, against the ATT&CK matrix.","isPartOf":{"@type":"Course","name":"Path 14: Ethical Hacking","url":"https://kashsec.vercel.app/lesson/14-ethical-hacking/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/14-ethical-hacking/purple-teaming-basics.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Purple Teaming Basics","headline":"Purple Teaming Basics","description":"The red-team-vs-pentest lesson previewed purple teaming as a collaborative alternative. This closing conceptual lesson covers exactly what that collaboration looks like in practice, before this path's","url":"https://kashsec.vercel.app/lesson/14-ethical-hacking/purple-teaming-basics.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate→Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Red and blue working together, in real time, against the ATT&CK matrix.","isPartOf":{"@type":"Course","name":"Path 14: Ethical Hacking","url":"https://kashsec.vercel.app/lesson/14-ethical-hacking/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/14-ethical-hacking/purple-teaming-basics.html"}}
 </script>
 </head>
 <body>
@@ -91,11 +91,6 @@
 <p>The red-team-vs-pentest lesson previewed purple teaming as a collaborative alternative. This closing conceptual lesson covers exactly what that collaboration looks like in practice, before this path's roadmap and hands-on labs — genuinely the approach that ties offense and defense together most directly.</p>
 <h2>What purple teaming actually is</h2>
 <p><strong>Purple teaming</strong> isn't a separate team at all — it's a collaborative methodology where red team (offense, everything this path has taught) and blue team (defense, Path 08's monitoring and Path 16's DFIR material) work together in real time, rather than the red team operating covertly the way a true red team engagement does.</p>
-<pre><code class="language-mermaid">flowchart LR
-    A[Red Team] --&gt;|"Executes a specific\ntechnique, live"| C[Shared Session]
-    B[Blue Team] --&gt;|"Attempts to detect\nit, in real time"| C
-    C --&gt;|"Immediate feedback:\ndid detection work?"| D["Tune detection rules\nand repeat"]
-</code></pre>
 <h2>Why the collaborative approach solves a real limitation</h2>
 <p>A covert red team engagement (from the previous lesson) tests detection capability, but only reveals the <em>outcome</em> — did the blue team catch it or not — without necessarily revealing <em>why</em> a specific technique succeeded or failed to trigger detection. Purple teaming closes this gap directly: the red team executes a specific, known technique, and the blue team simultaneously attempts to detect it, with immediate feedback and discussion about exactly what did or didn't trigger an alert.</p>
 <h2>MITRE ATT&amp;CK as the shared vocabulary</h2>
@@ -110,10 +105,8 @@
 </ol>
 <h2>Why organizations increasingly prefer this approach</h2>
 <p>Directly connecting to Path 10's security-metrics lesson: purple teaming produces genuinely measurable, technique-by-technique detection coverage data — a concrete answer to "which specific attacker techniques would we actually catch" — rather than the more binary, less specific "did the red team get caught or not" signal a covert engagement alone provides. This makes purple teaming genuinely well-suited to organizations wanting to systematically build and measure detection capability over time, not just periodically test it.</p>
-<p>:::challenge Test yourself
-Why does purple teaming provide more actionable, specific feedback than a covert red team engagement, even though both ultimately test detection capability?</p>
-<details><summary>Show answer</summary>A covert red team engagement provides a valuable but relatively coarse signal — the blue team either detected the overall campaign or didn't, often without clear visibility into exactly which specific techniques, among potentially dozens used throughout the engagement, actually triggered (or failed to trigger) a detection response. Purple teaming isolates and tests one specific, named technique at a time with both teams collaborating and observing simultaneously, producing immediate, specific feedback: "this exact technique, executed this exact way, did or didn't generate an alert, and here's precisely why." This technique-by-technique granularity is exactly what lets a blue team make targeted, specific improvements to their detection rules — tuning the exact gap just identified — rather than needing to infer, from a single overall pass/fail outcome, which of many possible techniques used throughout a longer covert engagement was actually the one that slipped past detection.</details>
-:::<h2>Key terms</h2>
+<p>Why does purple teaming provide more actionable, specific feedback than a covert red team engagement, even though both ultimately test detection capability?</p>
+<details><summary>Show answer</summary>A covert red team engagement provides a valuable but relatively coarse signal — the blue team either detected the overall campaign or didn't, often without clear visibility into exactly which specific techniques, among potentially dozens used throughout the engagement, actually triggered (or failed to trigger) a detection response. Purple teaming isolates and tests one specific, named technique at a time with both teams collaborating and observing simultaneously, producing immediate, specific feedback: "this exact technique, executed this exact way, did or didn't generate an alert, and here's precisely why." This technique-by-technique granularity is exactly what lets a blue team make targeted, specific improvements to their detection rules — tuning the exact gap just identified — rather than needing to infer, from a single overall pass/fail outcome, which of many possible techniques used throughout a longer covert engagement was actually the one that slipped past detection.</details><h2>Key terms</h2>
 <ul>
 <li><strong>Purple teaming</strong> — a collaborative methodology where red and blue teams work together in real time to test and improve detection capability.</li>
 <li><strong>MITRE ATT&amp;CK framework</strong> — a structured catalog of real-world adversary tactics and techniques, commonly used to organize purple team exercises.</li>

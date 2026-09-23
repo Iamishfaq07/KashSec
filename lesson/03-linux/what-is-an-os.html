@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>What is an operating system? — Path 03 · KashSec Academy</title>
-<meta name="description" content="What is an operating system?: The manager that runs your computer.">
+<meta name="description" content="You'll spend your whole career working on top of operating systems, and many attacks target them directly. If you don't know what an OS actually does, a lot of security will feel like guesswork.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/03-linux/what-is-an-os.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="What is an operating system? — Path 03 · KashSec Academy">
-<meta property="og:description" content="What is an operating system?: The manager that runs your computer.">
+<meta property="og:description" content="You'll spend your whole career working on top of operating systems, and many attacks target them directly. If you don't know what an OS actually does, a lot of security will feel like guesswork.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/03-linux/what-is-an-os.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="What is an operating system? — Path 03 · KashSec Academy">
-<meta name="twitter:description" content="What is an operating system?: The manager that runs your computer.">
+<meta name="twitter:description" content="You'll spend your whole career working on top of operating systems, and many attacks target them directly. If you don't know what an OS actually does, a lot of security will feel like guesswork.">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 03 — Operating Systems & Linux","item":"https://kashsec.vercel.app/lesson/03-linux/"},{"@type":"ListItem","position":4,"name":"What is an operating system?","item":"https://kashsec.vercel.app/lesson/03-linux/what-is-an-os.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"What is an operating system?","headline":"What is an operating system?","description":"What is an operating system?: The manager that runs your computer.","url":"https://kashsec.vercel.app/lesson/03-linux/what-is-an-os.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"The manager that runs your computer.","isPartOf":{"@type":"Course","name":"Path 03: Operating Systems & Linux","url":"https://kashsec.vercel.app/lesson/03-linux/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/03-linux/what-is-an-os.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"What is an operating system?","headline":"What is an operating system?","description":"You'll spend your whole career working on top of operating systems, and many attacks target them directly. If you don't know what an OS actually does, a lot of security will feel like guesswork.","url":"https://kashsec.vercel.app/lesson/03-linux/what-is-an-os.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"The manager that runs your computer.","isPartOf":{"@type":"Course","name":"Path 03: Operating Systems & Linux","url":"https://kashsec.vercel.app/lesson/03-linux/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/03-linux/what-is-an-os.html"}}
 </script>
 </head>
 <body>
@@ -92,21 +92,7 @@
 <h2>The definition</h2>
 <p>An <strong>operating system</strong> (OS) is the main software that runs a computer. It's the <strong>manager</strong> sitting between you and the physical hardware, quietly making everything work together.</p>
 <p>When you click an icon, type a key, or save a file, the OS is what actually makes it happen. Without it, a computer is just a lifeless box of parts.</p>
-<pre><code class="language-svg">&lt;svg viewBox="0 0 700 260" xmlns="http://www.w3.org/2000/svg" font-family="Inter, sans-serif"&gt;
-  &lt;g font-size="13"&gt;
-    &lt;rect x="60" y="20" width="580" height="55" rx="8" fill="#111927" stroke="#3FB6A8" stroke-width="2"/&gt;
-    &lt;text x="350" y="52" text-anchor="middle" fill="#3FB6A8" font-weight="700"&gt;👤 You (and your apps)&lt;/text&gt;
-    &lt;line x1="350" y1="80" x2="350" y2="100" stroke="#8496A6" stroke-width="1.5" marker-end="url(#a5)"/&gt;
-    &lt;rect x="60" y="105" width="580" height="70" rx="8" fill="#2b1f0a" stroke="#EFA43A" stroke-width="2"/&gt;
-    &lt;text x="350" y="135" text-anchor="middle" fill="#EFA43A" font-weight="700"&gt;🧠 The Operating System (OS)&lt;/text&gt;
-    &lt;text x="350" y="155" text-anchor="middle" fill="#E9EEF3" font-size="11"&gt;Runs programs · Manages files · Talks to hardware · Enforces permissions&lt;/text&gt;
-    &lt;line x1="350" y1="180" x2="350" y2="200" stroke="#8496A6" stroke-width="1.5" marker-end="url(#a5)"/&gt;
-    &lt;rect x="60" y="205" width="580" height="45" rx="8" fill="#111927" stroke="#E05548" stroke-width="2"/&gt;
-    &lt;text x="350" y="232" text-anchor="middle" fill="#E05548" font-weight="700"&gt;⚙ Hardware (CPU, RAM, disk, screen, network card)&lt;/text&gt;
-    &lt;defs&gt;&lt;marker id="a5" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"&gt;&lt;polygon points="0 0, 10 3, 0 6" fill="#8496A6"/&gt;&lt;/marker&gt;&lt;/defs&gt;
-  &lt;/g&gt;
-&lt;/svg&gt;
-</code></pre>
+<p><em>[The OS sits between you and the hardware]</em></p>
 <h2>What the manager actually manages</h2>
 <ul>
 <li><strong>The hardware</strong> — the screen, keyboard, storage, memory, and processor. The OS translates your clicks and keystrokes into instructions the hardware understands.</li>
@@ -117,9 +103,7 @@
 <h2>Why security people care so deeply</h2>
 <p>Because the OS controls access, <strong>taking control of the OS usually means taking control of everything on the machine</strong> — files, data, network connections. A giant portion of hacking is about escalating from limited access to full control.</p>
 <p>When you later hear the phrases "<strong>getting root</strong>" (Linux) or "<strong>getting SYSTEM</strong>" (Windows), it means becoming the all-powerful user the OS answers to.</p>
-<p>:::tip THE KEYS METAPHOR
-Think of the OS as the <strong>building manager who holds every key.</strong> Convince or trick the manager, and every door in the building opens. That's why attackers target it.
-:::</p>
+<p>Think of the OS as the <strong>building manager who holds every key.</strong> Convince or trick the manager, and every door in the building opens. That's why attackers target it.</p>
 <h2>What's inside an OS (a first look)</h2>
 <p>Without going deep, an OS has a few big pieces:</p>
 <ul>
@@ -134,10 +118,8 @@ Think of the OS as the <strong>building manager who holds every key.</strong> Co
 <p>Modern CPUs support different privilege levels, often called <strong>rings</strong> — <strong>ring 0</strong> (kernel mode) has unrestricted access to hardware and memory, while <strong>ring 3</strong> (user mode) is deliberately restricted, unable to directly touch hardware or another program's memory. Your normal applications — a browser, a game, a word processor — all run in user mode; only the kernel itself runs in ring 0. When a user-mode program needs something only the kernel can do (open a file, send network data, allocate memory), it makes a <strong>system call</strong> — a tightly controlled, well-defined request to the kernel, which validates it before acting. This boundary is exactly what a <strong>kernel exploit</strong> breaks through: a bug allowing user-mode code to somehow execute with kernel-mode privileges, instantly escalating from "one restricted program" to "total control of the machine" — precisely the escalation Path 16's privilege escalation lessons study in depth.</p>
 <h2>The boot process, briefly</h2>
 <p>When you power on a computer, the OS doesn't appear instantly — it loads through a specific sequence: firmware (BIOS or the more modern UEFI) initializes basic hardware and locates a <strong>bootloader</strong> (GRUB on most Linux systems), which then loads the kernel into memory and hands off control to it. The kernel initializes drivers and core services, then starts the first user-space process, which cascades into starting every other background service and eventually your login screen. This sequence matters for security because it's a common <strong>persistence</strong> target — malware (or a legitimate but malicious modification) that hooks into an early stage of this boot sequence can potentially load before most security software even starts running, referenced again in Path 17's rootkit/bootkit discussion.</p>
-<p>:::challenge Test yourself
-Name the OS's job that is essentially a built-in security system.</p>
-<details><summary>Show answer</summary>Managing <strong>access and permissions</strong> — deciding who is allowed to do what.</details>
-:::<h2>Key terms</h2>
+<p>Name the OS's job that is essentially a built-in security system.</p>
+<details><summary>Show answer</summary>Managing <strong>access and permissions</strong> — deciding who is allowed to do what.</details><h2>Key terms</h2>
 <ul>
 <li><strong>Operating system (OS)</strong> — the manager software running a computer.</li>
 <li><strong>Kernel</strong> — the innermost, most trusted part of the OS.</li>

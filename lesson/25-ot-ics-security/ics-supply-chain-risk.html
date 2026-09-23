@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>ICS Supply Chain Risk — Path 25 · KashSec Academy</title>
-<meta name="description" content="ICS Supply Chain Risk: Compromised firmware, infected removable media, and third-party integrator access.">
+<meta name="description" content="Every control covered so far assumes the equipment itself, once deployed, is trustworthy — that the PLC does what its documentation says and nothing more. This lesson covers what happens when that ass">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/25-ot-ics-security/ics-supply-chain-risk.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="ICS Supply Chain Risk — Path 25 · KashSec Academy">
-<meta property="og:description" content="ICS Supply Chain Risk: Compromised firmware, infected removable media, and third-party integrator access.">
+<meta property="og:description" content="Every control covered so far assumes the equipment itself, once deployed, is trustworthy — that the PLC does what its documentation says and nothing more. This lesson covers what happens when that ass">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/25-ot-ics-security/ics-supply-chain-risk.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="ICS Supply Chain Risk — Path 25 · KashSec Academy">
-<meta name="twitter:description" content="ICS Supply Chain Risk: Compromised firmware, infected removable media, and third-party integrator access.">
+<meta name="twitter:description" content="Every control covered so far assumes the equipment itself, once deployed, is trustworthy — that the PLC does what its documentation says and nothing more. This lesson covers what happens when that ass">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 25 — OT/ICS & Critical Infrastructure Security","item":"https://kashsec.vercel.app/lesson/25-ot-ics-security/"},{"@type":"ListItem","position":4,"name":"ICS Supply Chain Risk","item":"https://kashsec.vercel.app/lesson/25-ot-ics-security/ics-supply-chain-risk.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"ICS Supply Chain Risk","headline":"ICS Supply Chain Risk","description":"ICS Supply Chain Risk: Compromised firmware, infected removable media, and third-party integrator access.","url":"https://kashsec.vercel.app/lesson/25-ot-ics-security/ics-supply-chain-risk.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Compromised firmware, infected removable media, and third-party integrator access.","isPartOf":{"@type":"Course","name":"Path 25: OT/ICS & Critical Infrastructure Security","url":"https://kashsec.vercel.app/lesson/25-ot-ics-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/25-ot-ics-security/ics-supply-chain-risk.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"ICS Supply Chain Risk","headline":"ICS Supply Chain Risk","description":"Every control covered so far assumes the equipment itself, once deployed, is trustworthy — that the PLC does what its documentation says and nothing more. This lesson covers what happens when that ass","url":"https://kashsec.vercel.app/lesson/25-ot-ics-security/ics-supply-chain-risk.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Compromised firmware, infected removable media, and third-party integrator access.","isPartOf":{"@type":"Course","name":"Path 25: OT/ICS & Critical Infrastructure Security","url":"https://kashsec.vercel.app/lesson/25-ot-ics-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/25-ot-ics-security/ics-supply-chain-risk.html"}}
 </script>
 </head>
 <body>
@@ -89,9 +89,7 @@
     <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/25-ot-ics-security/">Path 25 — OT/ICS &amp; Critical Infrastructure Security</a> · ICS Supply Chain Risk</nav>
     <div class="md" id="content"><article><h1>ICS Supply Chain Risk</h1>
 <p>Every control covered so far assumes the equipment itself, once deployed, is trustworthy — that the PLC does what its documentation says and nothing more. This lesson covers what happens when that assumption fails before the equipment ever reaches the facility.</p>
-<p>:::tip
-ICS supply chain risk isn't hypothetical caution — it's the exact mechanism behind Stuxnet, covered in the real-world attacks lesson: the malware reportedly reached its target via infected USB media carried through the supply chain, not through a direct network compromise of an air-gapped facility.
-:::</p>
+<p>:::</p>
 <h2>Where ICS supply chain risk actually enters</h2>
 <ul>
 <li><strong>Third-party components</strong> — a PLC vendor's product may itself depend on software libraries or components sourced from other vendors, any of which could introduce a vulnerability or, worse, a deliberate backdoor</li>
@@ -111,15 +109,12 @@ ICS supply chain risk isn't hypothetical caution — it's the exact mechanism be
 <p>:::challenge Trace an infection path
 A facility's engineering workstation gets infected with malware. Investigation shows the malware entered via a USB drive that a system integrator's technician used to transfer configuration files during a legitimate, scheduled maintenance visit two weeks earlier — the drive had been used on the technician's own laptop, which was separately compromised, in between visits to other client sites.</p>
 <details><summary>Hint</summary>At which of the mitigations listed above would this specific infection path have actually been stopped, and where did the facility's controls fail?</details>
-<details><summary>Show answer</summary>This is a supply chain compromise via the removable-media and third-party-integrator vectors combined — the technician's laptop was compromised at a different client, and the same USB drive carried that compromise into this facility's OT environment during otherwise-legitimate maintenance. Strict removable media control (a single-purpose, facility-owned, scanned drive used only for that transfer — never the technician's personal media crossing between client sites) would have closed this specific path. This is exactly why the mitigation list treats "controlled, scanned, single-purpose media" as a distinct, dedicated control rather than assuming general good hygiene from third parties is sufficient — the technician had no way of knowing their own laptop was compromised, and the facility had no visibility into it either.</details>
-:::<h2>🧪 Hands-on lab — write a vendor security checklist</h2>
+<details><summary>Show answer</summary>This is a supply chain compromise via the removable-media and third-party-integrator vectors combined — the technician's laptop was compromised at a different client, and the same USB drive carried that compromise into this facility's OT environment during otherwise-legitimate maintenance. Strict removable media control (a single-purpose, facility-owned, scanned drive used only for that transfer — never the technician's personal media crossing between client sites) would have closed this specific path. This is exactly why the mitigation list treats "controlled, scanned, single-purpose media" as a distinct, dedicated control rather than assuming general good hygiene from third parties is sufficient — the technician had no way of knowing their own laptop was compromised, and the facility had no visibility into it either.</details><h2>🧪 Hands-on lab — write a vendor security checklist</h2>
 <p>Draft a five-item checklist a facility should evaluate before selecting a new ICS equipment vendor, covering at least: firmware update integrity, vulnerability disclosure practices, and third-party component transparency.</p>
-<p>:::challenge Test yourself</p>
 <ol>
 <li>Which real-world attack from earlier in this path is a documented example of the removable-media supply chain vector?</li>
 <li>Why is visibility into ICS firmware contents typically worse than visibility into a modern software application's dependencies?</li>
-<li>Why does system integrator access deserve its own specific mitigation, separate from general vendor risk?
-:::</li>
+<li>Why does system integrator access deserve its own specific mitigation, separate from general vendor risk?</li>
 </ol>
 <h2>Key terms</h2>
 <ul>

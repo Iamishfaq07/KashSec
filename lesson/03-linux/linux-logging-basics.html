@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Linux Logging Basics — Path 03 · KashSec Academy</title>
-<meta name="description" content="Linux Logging Basics: /var/log, journalctl, and why attackers try to clear their tracks.">
+<meta name="description" content="The filesystem-hierarchy lesson pointed to /var/log as where logs live. This lesson explains what's actually in there, how to read it, and why this is the exact foundation the linux-forensics-lab at t">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/03-linux/linux-logging-basics.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Linux Logging Basics — Path 03 · KashSec Academy">
-<meta property="og:description" content="Linux Logging Basics: /var/log, journalctl, and why attackers try to clear their tracks.">
+<meta property="og:description" content="The filesystem-hierarchy lesson pointed to /var/log as where logs live. This lesson explains what's actually in there, how to read it, and why this is the exact foundation the linux-forensics-lab at t">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/03-linux/linux-logging-basics.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Linux Logging Basics — Path 03 · KashSec Academy">
-<meta name="twitter:description" content="Linux Logging Basics: /var/log, journalctl, and why attackers try to clear their tracks.">
+<meta name="twitter:description" content="The filesystem-hierarchy lesson pointed to /var/log as where logs live. This lesson explains what's actually in there, how to read it, and why this is the exact foundation the linux-forensics-lab at t">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 03 — Operating Systems & Linux","item":"https://kashsec.vercel.app/lesson/03-linux/"},{"@type":"ListItem","position":4,"name":"Linux Logging Basics","item":"https://kashsec.vercel.app/lesson/03-linux/linux-logging-basics.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Linux Logging Basics","headline":"Linux Logging Basics","description":"Linux Logging Basics: /var/log, journalctl, and why attackers try to clear their tracks.","url":"https://kashsec.vercel.app/lesson/03-linux/linux-logging-basics.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"/var/log, journalctl, and why attackers try to clear their tracks.","isPartOf":{"@type":"Course","name":"Path 03: Operating Systems & Linux","url":"https://kashsec.vercel.app/lesson/03-linux/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/03-linux/linux-logging-basics.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Linux Logging Basics","headline":"Linux Logging Basics","description":"The filesystem-hierarchy lesson pointed to /var/log as where logs live. This lesson explains what's actually in there, how to read it, and why this is the exact foundation the linux-forensics-lab at t","url":"https://kashsec.vercel.app/lesson/03-linux/linux-logging-basics.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"/var/log, journalctl, and why attackers try to clear their tracks.","isPartOf":{"@type":"Course","name":"Path 03: Operating Systems & Linux","url":"https://kashsec.vercel.app/lesson/03-linux/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/03-linux/linux-logging-basics.html"}}
 </script>
 </head>
 <body>
@@ -112,13 +112,9 @@ grep "Accepted password" /var/log/auth.log
 <p>A pattern of repeated <code>Failed password</code> entries from the same source address is the Linux-side equivalent of the failed-login-pattern Path 07's Event Viewer lesson taught you to recognize on Windows — a potential brute-force attempt worth investigating further.</p>
 <h2>Why logging configuration itself is a security decision</h2>
 <p>Exactly like Path 08's cloud-logging lesson warned that audit logging isn't automatically enabled everywhere, Linux logging has its own version of this gap: log rotation settings that delete logs too aggressively, services not configured to log security-relevant events at all, or <code>journalctl</code>'s storage limits silently discarding older entries — any of these can leave you with nothing to investigate after an incident, precisely when you need it most.</p>
-<p>:::danger Attackers actively clear or tamper with logs
-A sufficiently privileged attacker will frequently attempt to clear or edit logs to cover their tracks — directly connecting to the log-analysis and incident-response material in Path 16. This is exactly why <strong>centralized, remote log forwarding</strong> (sending logs to a separate system the attacker can't easily reach, even if they compromise the original machine) is considered a real security best practice, not just an operational convenience.
-:::</p>
-<p>:::challenge Test yourself
-Why might an organization specifically forward its logs to a separate, remote logging system rather than relying solely on logs stored locally on each machine?</p>
-<details><summary>Show answer</summary>Logs stored only locally on a machine are entirely within an attacker's reach the moment they compromise that machine with sufficient privilege — a sophisticated attacker can simply edit or delete the log entries documenting their own activity, exactly the "clearing tracks" behavior this lesson described. Forwarding logs to a separate, remote system in near-real-time means that even if the original machine is fully compromised afterward, the log entries already sent to the remote system remain intact and available for investigation — the attacker would need to separately compromise the remote logging system too, a meaningfully higher bar. This is precisely the same principle behind Path 08's cloud audit-logging coverage, applied to on-premises Linux infrastructure.</details>
-:::<h2>Key terms</h2>
+<p>A sufficiently privileged attacker will frequently attempt to clear or edit logs to cover their tracks — directly connecting to the log-analysis and incident-response material in Path 16. This is exactly why <strong>centralized, remote log forwarding</strong> (sending logs to a separate system the attacker can't easily reach, even if they compromise the original machine) is considered a real security best practice, not just an operational convenience.</p>
+<p>Why might an organization specifically forward its logs to a separate, remote logging system rather than relying solely on logs stored locally on each machine?</p>
+<details><summary>Show answer</summary>Logs stored only locally on a machine are entirely within an attacker's reach the moment they compromise that machine with sufficient privilege — a sophisticated attacker can simply edit or delete the log entries documenting their own activity, exactly the "clearing tracks" behavior this lesson described. Forwarding logs to a separate, remote system in near-real-time means that even if the original machine is fully compromised afterward, the log entries already sent to the remote system remain intact and available for investigation — the attacker would need to separately compromise the remote logging system too, a meaningfully higher bar. This is precisely the same principle behind Path 08's cloud audit-logging coverage, applied to on-premises Linux infrastructure.</details><h2>Key terms</h2>
 <ul>
 <li><strong>journalctl</strong> — the command for querying systemd's unified, structured log.</li>
 <li><strong>auth.log / secure</strong> — the log files recording authentication events on Debian-based and RHEL-based systems respectively.</li>

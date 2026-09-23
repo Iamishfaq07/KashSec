@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Security Champions Programs — Path 22 · KashSec Academy</title>
-<meta name="description" content="Security Champions Programs: Scaling a five-person AppSec team's reach across a whole engineering org.">
+<meta name="description" content="The threat-modeling-in-the-SDLC lesson covered a specific technical practice for finding design flaws early. This lesson covers the organizational structure that most successfully scales that practice">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/22-devsecops-appsec/security-champions-programs.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Security Champions Programs — Path 22 · KashSec Academy">
-<meta property="og:description" content="Security Champions Programs: Scaling a five-person AppSec team's reach across a whole engineering org.">
+<meta property="og:description" content="The threat-modeling-in-the-SDLC lesson covered a specific technical practice for finding design flaws early. This lesson covers the organizational structure that most successfully scales that practice">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/22-devsecops-appsec/security-champions-programs.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Security Champions Programs — Path 22 · KashSec Academy">
-<meta name="twitter:description" content="Security Champions Programs: Scaling a five-person AppSec team's reach across a whole engineering org.">
+<meta name="twitter:description" content="The threat-modeling-in-the-SDLC lesson covered a specific technical practice for finding design flaws early. This lesson covers the organizational structure that most successfully scales that practice">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 22 — DevSecOps & AppSec Program","item":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/"},{"@type":"ListItem","position":4,"name":"Security Champions Programs","item":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/security-champions-programs.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Security Champions Programs","headline":"Security Champions Programs","description":"Security Champions Programs: Scaling a five-person AppSec team's reach across a whole engineering org.","url":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/security-champions-programs.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Scaling a five-person AppSec team's reach across a whole engineering org.","isPartOf":{"@type":"Course","name":"Path 22: DevSecOps & AppSec Program","url":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/security-champions-programs.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Security Champions Programs","headline":"Security Champions Programs","description":"The threat-modeling-in-the-SDLC lesson covered a specific technical practice for finding design flaws early. This lesson covers the organizational structure that most successfully scales that practice","url":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/security-champions-programs.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Scaling a five-person AppSec team's reach across a whole engineering org.","isPartOf":{"@type":"Course","name":"Path 22: DevSecOps & AppSec Program","url":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/security-champions-programs.html"}}
 </script>
 </head>
 <body>
@@ -93,16 +93,6 @@
 <p>Directly connecting to the building-appsec-program lesson's maturity ladder: a central AppSec team, no matter how skilled, is almost always dramatically outnumbered by the total engineering organization it's responsible for supporting — a five-person AppSec team supporting two hundred developers across dozens of teams simply cannot personally review every design, attend every planning meeting, or manually threat-model every feature. Something has to scale beyond direct central-team involvement, or security work becomes an unavoidable bottleneck everyone resents.</p>
 <h2>What a Security Champion actually is</h2>
 <p>A <strong>Security Champion</strong> is a developer, embedded within a regular engineering team (not a member of the central AppSec team itself), who takes on additional responsibility for security within that specific team — serving as the first point of contact for security questions, helping triage and prioritize findings relevant to their team's codebase, and acting as a local advocate who understands both their team's specific technical context and enough security knowledge to bridge the gap to the central AppSec team when needed.</p>
-<pre><code class="language-mermaid">flowchart TB
-    A["Central AppSec Team\n(5 people)"] --&gt; B["Champion: Team Alpha"]
-    A --&gt; C["Champion: Team Beta"]
-    A --&gt; D["Champion: Team Gamma"]
-    A --&gt; E["Champion: Team Delta"]
-    B --&gt; B1["Team Alpha\n(15 developers)"]
-    C --&gt; C1["Team Beta\n(12 developers)"]
-    D --&gt; D1["Team Gamma\n(18 developers)"]
-    E --&gt; E1["Team Delta\n(20 developers)"]
-</code></pre>
 <h2>Why this genuinely scales, not just distributes work</h2>
 <p>The key structural insight, directly connecting to the metrics-that-matter lesson's coverage of trust-building: a Champion isn't simply doing the central AppSec team's job for free — they bring genuine local context (which parts of their team's codebase are legacy and fragile, which upcoming features carry real risk, how their specific team actually works) that a central team, however skilled, structurally can't have for every single team simultaneously. This local context makes security guidance genuinely more actionable and better-targeted than a one-size-fits-all central mandate could be, while also giving the central team a scalable communication channel into every team at once.</p>
 <h2>What makes a Champions program succeed, versus fail</h2>
@@ -114,9 +104,7 @@
 </ul>
 <h2>Champions as a recruiting pipeline for the security team itself</h2>
 <p>A genuinely valuable, often underused side effect: a well-run Champions program frequently becomes an organic pipeline for identifying developers with genuine security aptitude and interest, who go on to formally transition into the central AppSec team itself — directly connecting to Path 16's specialise lesson and Path 20's entry-level-vs-experienced-paths coverage, this internal pathway is often a more reliable source of strong AppSec hires than external recruiting alone, since a Champion has already demonstrated genuine interest and real, observed competence within the organization's own specific context.</p>
-<p>:::challenge Test yourself
-Why does a Security Champions program scale an AppSec team's effective reach in a way that simply hiring more central AppSec staff, at the same headcount cost, generally can't replicate?
-:::</p>
+<p>Why does a Security Champions program scale an AppSec team's effective reach in a way that simply hiring more central AppSec staff, at the same headcount cost, generally can't replicate?</p>
 <h2>Key terms</h2>
 <ul>
 <li><strong>Security Champion</strong> — a developer embedded within a regular engineering team, taking on additional local security responsibility without being a formal AppSec team member.</li>

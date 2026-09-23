@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Why network security matters — Path 12 · KashSec Academy</title>
-<meta name="description" content="Why network security matters: Mapping, watching, filtering — the three activities.">
+<meta name="description" content="Path 11 lived entirely at the application layer — HTTP, HTML, databases. Path 12 drops down a level: the network itself. Even a perfectly-coded application can be compromised through the infrastructur">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/12-network-security/why-netsec.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Why network security matters — Path 12 · KashSec Academy">
-<meta property="og:description" content="Why network security matters: Mapping, watching, filtering — the three activities.">
+<meta property="og:description" content="Path 11 lived entirely at the application layer — HTTP, HTML, databases. Path 12 drops down a level: the network itself. Even a perfectly-coded application can be compromised through the infrastructur">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/12-network-security/why-netsec.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Why network security matters — Path 12 · KashSec Academy">
-<meta name="twitter:description" content="Why network security matters: Mapping, watching, filtering — the three activities.">
+<meta name="twitter:description" content="Path 11 lived entirely at the application layer — HTTP, HTML, databases. Path 12 drops down a level: the network itself. Even a perfectly-coded application can be compromised through the infrastructur">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 12 — Network Security","item":"https://kashsec.vercel.app/lesson/12-network-security/"},{"@type":"ListItem","position":4,"name":"Why network security matters","item":"https://kashsec.vercel.app/lesson/12-network-security/why-netsec.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Why network security matters","headline":"Why network security matters","description":"Why network security matters: Mapping, watching, filtering — the three activities.","url":"https://kashsec.vercel.app/lesson/12-network-security/why-netsec.html","inLanguage":"en","dateModified":"2026-08-04","learningResourceType":"Lesson","educationalLevel":"Intermediate","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Mapping, watching, filtering — the three activities.","isPartOf":{"@type":"Course","name":"Path 12: Network Security","url":"https://kashsec.vercel.app/lesson/12-network-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/12-network-security/why-netsec.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Why network security matters","headline":"Why network security matters","description":"Path 11 lived entirely at the application layer — HTTP, HTML, databases. Path 12 drops down a level: the network itself. Even a perfectly-coded application can be compromised through the infrastructur","url":"https://kashsec.vercel.app/lesson/12-network-security/why-netsec.html","inLanguage":"en","dateModified":"2026-08-04","learningResourceType":"Lesson","educationalLevel":"Intermediate","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Mapping, watching, filtering — the three activities.","isPartOf":{"@type":"Course","name":"Path 12: Network Security","url":"https://kashsec.vercel.app/lesson/12-network-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/12-network-security/why-netsec.html"}}
 </script>
 </head>
 <body>
@@ -90,21 +90,6 @@
     <div class="md" id="content"><article><h1>Why network security matters</h1>
 <p>Path 11 lived entirely at the application layer — HTTP, HTML, databases. Path 12 drops down a level: the network itself. Even a perfectly-coded application can be compromised through the infrastructure carrying its traffic.</p>
 <h2>Two different worlds, one target</h2>
-<pre><code class="language-mermaid">flowchart TB
-    subgraph AppSec["Path 11: Application Security"]
-        Code["Application code&lt;br/&gt;SQLi, XSS, IDOR"]
-    end
-    subgraph NetSec["Path 12: Network Security"]
-        Wire["The network itself&lt;br/&gt;packets, protocols, devices"]
-    end
-    Target["🎯 Same organisation,&lt;br/&gt;same overall risk"]
-    AppSec --&gt; Target
-    NetSec --&gt; Target
-
-    style Code fill:#2b1010,color:#E9EEF3,stroke:#E05548
-    style Wire fill:#0f2b26,color:#E9EEF3,stroke:#3FB6A8
-    style Target fill:#111927,color:#EFA43A,stroke:#EFA43A
-</code></pre>
 <p>An attacker doesn't care which layer gets them in. If the web app is perfectly secured but the Wi-Fi is using outdated encryption, or an internal server exposes an unauthenticated database port to the internet, that's the path they'll take instead.</p>
 <h2>What network security actually protects</h2>
 <p>Recall the CIA triad from Path 10.1, now applied at the network layer:</p>
@@ -176,10 +161,8 @@
 <li>Check whether the router's <strong>admin password</strong> is still the factory default (a huge, hugely common real-world vulnerability, as covered in Path 10.7).</li>
 </ol>
 <p>This is a miniature version of exactly the kind of network reconnaissance and hardening review you'll formalise throughout this entire path.</p>
-<p>:::challenge Test yourself
-Why might an organisation with a "perfectly secure" web application still suffer a serious breach through network-layer weaknesses?</p>
-<details><summary>Show answer</summary>Attackers target whichever layer offers the easiest path in — application security and network security are <em>separate</em> attack surfaces protecting the same overall organisation. A hardened web app doesn't protect against, say, an exposed unauthenticated database port, weak Wi-Fi encryption, or a compromised VPN — the attacker simply routes around the strong layer and through the weak one.</details>
-:::<h2>Key terms</h2>
+<p>Why might an organisation with a "perfectly secure" web application still suffer a serious breach through network-layer weaknesses?</p>
+<details><summary>Show answer</summary>Attackers target whichever layer offers the easiest path in — application security and network security are <em>separate</em> attack surfaces protecting the same overall organisation. A hardened web app doesn't protect against, say, an exposed unauthenticated database port, weak Wi-Fi encryption, or a compromised VPN — the attacker simply routes around the strong layer and through the weak one.</details><h2>Key terms</h2>
 <ul>
 <li><strong>Network security</strong> — protecting the confidentiality, integrity, and availability of data in transit and the infrastructure carrying it.</li>
 <li><strong>Segmentation</strong> — dividing a network into isolated zones to limit how far a compromise can spread.</li>

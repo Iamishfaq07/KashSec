@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Webhook Security — Path 21 · KashSec Academy</title>
-<meta name="description" content="Webhook Security: Authenticating inbound requests you didn't initiate.">
+<meta name="description" content="The BOLA &amp; BFLA lesson covered the two most common authorization failures in APIs that receive requests. This lesson covers the security of APIs on the opposite side of that relationship — webhooks, w">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/21-api-security/webhook-security.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Webhook Security — Path 21 · KashSec Academy">
-<meta property="og:description" content="Webhook Security: Authenticating inbound requests you didn't initiate.">
+<meta property="og:description" content="The BOLA &amp; BFLA lesson covered the two most common authorization failures in APIs that receive requests. This lesson covers the security of APIs on the opposite side of that relationship — webhooks, w">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/21-api-security/webhook-security.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Webhook Security — Path 21 · KashSec Academy">
-<meta name="twitter:description" content="Webhook Security: Authenticating inbound requests you didn't initiate.">
+<meta name="twitter:description" content="The BOLA &amp; BFLA lesson covered the two most common authorization failures in APIs that receive requests. This lesson covers the security of APIs on the opposite side of that relationship — webhooks, w">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 21 — API Security","item":"https://kashsec.vercel.app/lesson/21-api-security/"},{"@type":"ListItem","position":4,"name":"Webhook Security","item":"https://kashsec.vercel.app/lesson/21-api-security/webhook-security.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Webhook Security","headline":"Webhook Security","description":"Webhook Security: Authenticating inbound requests you didn't initiate.","url":"https://kashsec.vercel.app/lesson/21-api-security/webhook-security.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Authenticating inbound requests you didn't initiate.","isPartOf":{"@type":"Course","name":"Path 21: API Security","url":"https://kashsec.vercel.app/lesson/21-api-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/21-api-security/webhook-security.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Webhook Security","headline":"Webhook Security","description":"The BOLA & BFLA lesson covered the two most common authorization failures in APIs that receive requests. This lesson covers the security of APIs on the opposite side of that relationship — webhooks, w","url":"https://kashsec.vercel.app/lesson/21-api-security/webhook-security.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Authenticating inbound requests you didn't initiate.","isPartOf":{"@type":"Course","name":"Path 21: API Security","url":"https://kashsec.vercel.app/lesson/21-api-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/21-api-security/webhook-security.html"}}
 </script>
 </head>
 <body>
@@ -111,9 +111,7 @@ Mismatch? → Reject immediately, log the attempt
 <li>Validate and restrict any outbound webhook URLs your own application allows users to configure, using an allowlist approach rather than a blocklist</li>
 <li>Never trust webhook payload content for authorization decisions without independently verifying the referenced resource still exists and belongs to the expected account</li>
 </ul>
-<p>:::challenge Test yourself
-Why does signature verification alone fail to prevent a webhook replay attack, even though the replayed request's signature remains mathematically valid?
-:::</p>
+<p>Why does signature verification alone fail to prevent a webhook replay attack, even though the replayed request's signature remains mathematically valid?</p>
 <h2>Key terms</h2>
 <ul>
 <li><strong>Webhook</strong> — a callback mechanism where a third-party service sends an event notification directly to your application's endpoint.</li>

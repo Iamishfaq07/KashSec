@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Practical Linux Privilege Escalation Lab — Path 16 · KashSec Academy</title>
-<meta name="description" content="Practical Linux Privilege Escalation Lab: Get hands-on with real privesc techniques in a safe environment.">
+<meta name="description" content="The main Linux privilege escalation lesson covered the theory — GTFOBins, SUID binaries, capabilities. This lab is where you actually execute a full escalation chain end-to-end against a real (legal) ">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/16-advanced/practical-linux-privesc-lab.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Practical Linux Privilege Escalation Lab — Path 16 · KashSec Academy">
-<meta property="og:description" content="Practical Linux Privilege Escalation Lab: Get hands-on with real privesc techniques in a safe environment.">
+<meta property="og:description" content="The main Linux privilege escalation lesson covered the theory — GTFOBins, SUID binaries, capabilities. This lab is where you actually execute a full escalation chain end-to-end against a real (legal) ">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/16-advanced/practical-linux-privesc-lab.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Practical Linux Privilege Escalation Lab — Path 16 · KashSec Academy">
-<meta name="twitter:description" content="Practical Linux Privilege Escalation Lab: Get hands-on with real privesc techniques in a safe environment.">
+<meta name="twitter:description" content="The main Linux privilege escalation lesson covered the theory — GTFOBins, SUID binaries, capabilities. This lab is where you actually execute a full escalation chain end-to-end against a real (legal) ">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 16 — Advanced Cyber Topics","item":"https://kashsec.vercel.app/lesson/16-advanced/"},{"@type":"ListItem","position":4,"name":"Practical Linux Privilege Escalation Lab","item":"https://kashsec.vercel.app/lesson/16-advanced/practical-linux-privesc-lab.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Practical Linux Privilege Escalation Lab","headline":"Practical Linux Privilege Escalation Lab","description":"Practical Linux Privilege Escalation Lab: Get hands-on with real privesc techniques in a safe environment.","url":"https://kashsec.vercel.app/lesson/16-advanced/practical-linux-privesc-lab.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Get hands-on with real privesc techniques in a safe environment.","isPartOf":{"@type":"Course","name":"Path 16: Advanced Cyber Topics","url":"https://kashsec.vercel.app/lesson/16-advanced/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/16-advanced/practical-linux-privesc-lab.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Practical Linux Privilege Escalation Lab","headline":"Practical Linux Privilege Escalation Lab","description":"The main Linux privilege escalation lesson covered the theory — GTFOBins, SUID binaries, capabilities. This lab is where you actually execute a full escalation chain end-to-end against a real (legal) ","url":"https://kashsec.vercel.app/lesson/16-advanced/practical-linux-privesc-lab.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Get hands-on with real privesc techniques in a safe environment.","isPartOf":{"@type":"Course","name":"Path 16: Advanced Cyber Topics","url":"https://kashsec.vercel.app/lesson/16-advanced/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/16-advanced/practical-linux-privesc-lab.html"}}
 </script>
 </head>
 <body>
@@ -94,31 +94,22 @@
 <p>Alternatively, build your own vulnerable Docker container with an intentionally weak SUID binary or sudo rule configured yourself — this is actually a great exercise in its own right, since building the vulnerability teaches you as much as exploiting it.</p>
 <h2>Key techniques to practice</h2>
 <ol>
-<li><strong>SUID binaries.</strong> Once you have a low-privileged shell, hunt for SUID binaries:<pre><code class="language-bash">find / -perm -4000 -type f 2&gt;/dev/null
+<li><p><strong>SUID binaries.</strong> Once you have a low-privileged shell, hunt for SUID binaries:</p>
+<pre><code class="language-bash">find / -perm -4000 -type f 2&gt;/dev/null
 </code></pre>
-Compare every result against <a href="https://gtfobins.github.io/">GTFOBins</a> to check whether that specific binary has a documented privilege escalation technique — exactly the workflow from this course's CTF Zone's Linux privesc challenge, now against a real multi-step target instead of a single isolated puzzle.</li>
-<li><strong>Sudo misconfigurations.</strong> Run <code>sudo -l</code> and check every listed binary against GTFOBins the same way. Metasploitable 2 and similar training VMs frequently have at least one exploitable entry here.</li>
-<li><strong>Kernel exploits.</strong> Check the kernel version (<code>uname -a</code>) and search for known CVEs against that specific version (<code>searchsploit linux kernel &lt;version&gt;</code>). This is a "last resort" technique in real assessments (kernel exploits can crash a system) but is worth understanding — older training VMs like Metasploitable 2 are specifically useful here because they run intentionally outdated kernels.</li>
-<li><strong>PATH hijacking.</strong> Check if any script run with elevated privileges calls a command without a full path (e.g., <code>service</code> instead of <code>/usr/sbin/service</code>) — if you can place a malicious binary earlier in the <code>$PATH</code> that gets resolved first, you can hijack that call. <code>cat</code> a few <code>cron</code> jobs or startup scripts (if readable) to hunt for this pattern.</li>
+<p>Compare every result against <a href="https://gtfobins.github.io/">GTFOBins</a> to check whether that specific binary has a documented privilege escalation technique — exactly the workflow from this course's CTF Zone's Linux privesc challenge, now against a real multi-step target instead of a single isolated puzzle.</p>
+</li>
+<li><p><strong>Sudo misconfigurations.</strong> Run <code>sudo -l</code> and check every listed binary against GTFOBins the same way. Metasploitable 2 and similar training VMs frequently have at least one exploitable entry here.</p>
+</li>
+<li><p><strong>Kernel exploits.</strong> Check the kernel version (<code>uname -a</code>) and search for known CVEs against that specific version (<code>searchsploit linux kernel &lt;version&gt;</code>). This is a "last resort" technique in real assessments (kernel exploits can crash a system) but is worth understanding — older training VMs like Metasploitable 2 are specifically useful here because they run intentionally outdated kernels.</p>
+</li>
+<li><p><strong>PATH hijacking.</strong> Check if any script run with elevated privileges calls a command without a full path (e.g., <code>service</code> instead of <code>/usr/sbin/service</code>) — if you can place a malicious binary earlier in the <code>$PATH</code> that gets resolved first, you can hijack that call. <code>cat</code> a few <code>cron</code> jobs or startup scripts (if readable) to hunt for this pattern.</p>
+</li>
+<li><p><strong>Run LinPEAS as a cross-check, after your manual pass.</strong> Only once you've worked through tasks 1-4 manually, run <a href="https://github.com/peass-ng/PEASS-ng">LinPEAS</a> and compare its output against what you found by hand. Note anything it flagged that you missed entirely — a genuinely honest way to calibrate how thorough your own manual enumeration actually was, rather than reaching for the automated tool first and never building the underlying instinct.</p>
+</li>
 </ol>
-<pre><code class="language-mermaid">flowchart TD
-    A[Low-privileged shell] --&gt; B["find SUID binaries\n+ sudo -l"]
-    B --&gt; C{Match on\nGTFOBins?}
-    C --&gt;|Yes| D[Exploit directly]
-    C --&gt;|No| E["Check kernel version\n+ cron/PATH issues"]
-    E --&gt; F{Known CVE or\nhijack opportunity?}
-    F --&gt;|Yes| D
-    D --&gt; G["root shell —\ndocument the chain"]
-</code></pre>
-<ol>
-<li><strong>Run LinPEAS as a cross-check, after your manual pass.</strong> Only once you've worked through tasks 1-4 manually, run <a href="https://github.com/peass-ng/PEASS-ng">LinPEAS</a> and compare its output against what you found by hand. Note anything it flagged that you missed entirely — a genuinely honest way to calibrate how thorough your own manual enumeration actually was, rather than reaching for the automated tool first and never building the underlying instinct.</li>
-</ol>
-<p>:::warn Only on systems you own or have explicit permission to test
-Metasploitable 2 and your own Docker containers are safe, legal targets built specifically for this. Never attempt any of these techniques against a system you don't have explicit written authorization to test — the golden rule from Path 01 applies here as strictly as anywhere else in this course.
-:::</p>
-<p>:::challenge Document the full chain
-Escalate from your initial low-privileged shell all the way to <code>root</code>, and write up <strong>every step you took</strong> — not just the final winning technique, but the dead ends too. Real reports (and real learning) benefit from showing the full investigative path, not just the answer.
-:::</p>
+<p>Metasploitable 2 and your own Docker containers are safe, legal targets built specifically for this. Never attempt any of these techniques against a system you don't have explicit written authorization to test — the golden rule from Path 01 applies here as strictly as anywhere else in this course.</p>
+<p>Escalate from your initial low-privileged shell all the way to <code>root</code>, and write up <strong>every step you took</strong> — not just the final winning technique, but the dead ends too. Real reports (and real learning) benefit from showing the full investigative path, not just the answer.</p>
 <h2>Key takeaway</h2>
 <p>Real privilege escalation is rarely one dramatic exploit — it's systematic enumeration (SUID, sudo, kernel version, cron jobs, PATH) checked methodically against known technique databases like GTFOBins, until one match opens the door. The "boring" enumeration step is where most of the actual work happens.</p>
 <p><strong>Next up →</strong> <a href="#/lesson/16-advanced/purple-teaming-lab">Purple Teaming Lab</a></p>

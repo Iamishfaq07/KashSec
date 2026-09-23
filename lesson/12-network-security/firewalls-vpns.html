@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Firewalls, VPNs, proxies — Path 12 · KashSec Academy</title>
-<meta name="description" content="Firewalls, VPNs, proxies: The everyday defensive stack.">
+<meta name="description" content="Two of the most fundamental network security controls — one restricts what traffic is allowed, the other protects what traffic can be seen. Every organisation's network relies on both, in various form">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/12-network-security/firewalls-vpns.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Firewalls, VPNs, proxies — Path 12 · KashSec Academy">
-<meta property="og:description" content="Firewalls, VPNs, proxies: The everyday defensive stack.">
+<meta property="og:description" content="Two of the most fundamental network security controls — one restricts what traffic is allowed, the other protects what traffic can be seen. Every organisation's network relies on both, in various form">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/12-network-security/firewalls-vpns.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Firewalls, VPNs, proxies — Path 12 · KashSec Academy">
-<meta name="twitter:description" content="Firewalls, VPNs, proxies: The everyday defensive stack.">
+<meta name="twitter:description" content="Two of the most fundamental network security controls — one restricts what traffic is allowed, the other protects what traffic can be seen. Every organisation's network relies on both, in various form">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 12 — Network Security","item":"https://kashsec.vercel.app/lesson/12-network-security/"},{"@type":"ListItem","position":4,"name":"Firewalls, VPNs, proxies","item":"https://kashsec.vercel.app/lesson/12-network-security/firewalls-vpns.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Firewalls, VPNs, proxies","headline":"Firewalls, VPNs, proxies","description":"Firewalls, VPNs, proxies: The everyday defensive stack.","url":"https://kashsec.vercel.app/lesson/12-network-security/firewalls-vpns.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"The everyday defensive stack.","isPartOf":{"@type":"Course","name":"Path 12: Network Security","url":"https://kashsec.vercel.app/lesson/12-network-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/12-network-security/firewalls-vpns.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Firewalls, VPNs, proxies","headline":"Firewalls, VPNs, proxies","description":"Two of the most fundamental network security controls — one restricts what traffic is allowed, the other protects what traffic can be seen. Every organisation's network relies on both, in various form","url":"https://kashsec.vercel.app/lesson/12-network-security/firewalls-vpns.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"The everyday defensive stack.","isPartOf":{"@type":"Course","name":"Path 12: Network Security","url":"https://kashsec.vercel.app/lesson/12-network-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/12-network-security/firewalls-vpns.html"}}
 </script>
 </head>
 <body>
@@ -92,16 +92,6 @@
 <h2>Firewalls — the gatekeeper</h2>
 <p>A <strong>firewall</strong> inspects network traffic and allows or blocks it based on a set of rules. Conceptually, it's a checkpoint between two zones of differing trust — most commonly, between your internal network and the wider internet.</p>
 <h3>Types of firewalls, by generation</h3>
-<pre><code class="language-mermaid">flowchart LR
-    Packet["📦 Packet-filtering&lt;br/&gt;(rules on IP/port only)"] --&gt; Stateful["🔄 Stateful&lt;br/&gt;(tracks connection state)"]
-    Stateful --&gt; NGFW["🧠 Next-Gen (NGFW)&lt;br/&gt;(app-aware, deep inspection)"]
-    NGFW --&gt; WAF["🛡 WAF&lt;br/&gt;(HTTP-specific, app-layer)"]
-
-    style Packet fill:#111927,color:#8496A6,stroke:#8496A6
-    style Stateful fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
-    style NGFW fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
-    style WAF fill:#2b1f0a,color:#EFA43A,stroke:#EFA43A
-</code></pre>
 <ul>
 <li><strong>Packet-filtering firewalls</strong> — the earliest generation. Inspect individual packets against static rules (source/destination IP, port, protocol) with <strong>no memory</strong> of previous packets. Fast but simplistic.</li>
 <li><strong>Stateful firewalls</strong> — track the state of active connections (recall the TCP handshake). Understands that an incoming packet is a legitimate <em>response</em> to an outbound request you initiated, vs. an unsolicited inbound connection attempt — a massive security improvement over stateless filtering.</li>
@@ -145,14 +135,6 @@ sudo ufw status verbose
 <li><strong>Encrypted</strong> in transit, unreadable to anyone intercepting it along the path (recall your own Wireshark experiment from the previous lesson).</li>
 <li><strong>Appear to originate</strong> from the VPN server's location/IP, rather than your own.</li>
 </ul>
-<pre><code class="language-mermaid">flowchart LR
-    Device["💻 Your device"] --&gt;|"🔒 Encrypted tunnel"| VPNServer["🌐 VPN server"]
-    VPNServer --&gt;|"Normal traffic"| Internet["🌍 Rest of the internet"]
-
-    style Device fill:#111927,color:#3FB6A8,stroke:#3FB6A8
-    style VPNServer fill:#0f2b26,color:#EFA43A,stroke:#EFA43A
-    style Internet fill:#111927,color:#8496A6,stroke:#8496A6
-</code></pre>
 <h3>Two very different use cases, often confused</h3>
 <ul>
 <li><strong>Corporate/remote-access VPN</strong> — lets employees securely connect to internal company resources (servers, internal tools) as if they were physically on the office network, while working remotely. This is the VPN context most relevant to enterprise security work.</li>
@@ -196,16 +178,6 @@ sudo wg-quick down wg0   # bring it down
 </code></pre>
 <p>WireGuard's config simplicity (compared to older OpenVPN configs) is a major reason for its rapid adoption industry-wide.</p>
 <h2>Firewalls and VPNs working together — a typical enterprise pattern</h2>
-<pre><code class="language-mermaid">flowchart TB
-    Remote["👤 Remote employee"] --&gt;|"VPN tunnel"| Gateway["🔒 VPN Gateway&lt;br/&gt;+ Firewall"]
-    Gateway --&gt;|"Only specific allowed traffic"| Internal["🏢 Internal network&lt;br/&gt;(servers, internal tools)"]
-    Internet["🌍 Public internet"] -.-&gt;|"Blocked by default"| Gateway
-
-    style Remote fill:#111927,color:#3FB6A8,stroke:#3FB6A8
-    style Gateway fill:#2b1f0a,color:#EFA43A,stroke:#EFA43A
-    style Internal fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
-    style Internet fill:#2b1010,color:#E05548,stroke:#E05548
-</code></pre>
 <p>An employee's traffic is encrypted via VPN in transit, then the firewall at the gateway enforces exactly which internal resources that authenticated tunnel is allowed to reach — layering encryption (confidentiality) with access control (least privilege), rather than relying on either alone.</p>
 <h2>Forward vs reverse proxies — the other traffic middlemen</h2>
 <p>Beyond firewalls and VPNs, <strong>proxies</strong> are the third major traffic-control primitive, and the two directions are easy to confuse. A <strong>forward proxy</strong> sits in front of <em>clients</em>, making requests on their behalf — Burp Suite (Path 11.2) is literally a forward proxy, and so are corporate web filters that route every employee's outbound traffic through a central checkpoint for content filtering and logging. A <strong>reverse proxy</strong> sits in front of <em>servers</em> instead, receiving all inbound requests and distributing them to backend systems — this is exactly the load balancer role from Path 05's web-anatomy lesson, and tools like Nginx and Cloudflare routinely serve as reverse proxies, terminating TLS, caching content, and shielding the real backend server's IP address from direct exposure to the internet. The one-sentence distinction worth remembering: forward proxies protect and represent <em>clients</em>, reverse proxies protect and represent <em>servers</em>.</p>
@@ -232,10 +204,8 @@ sudo ufw status verbose
 # and confirm the connection is refused/blocked as expected.
 </code></pre>
 <p>You've just hardened your own lab machine using exactly the default-deny principle covered in this lesson.</p>
-<p>:::challenge Test yourself
-An employee's VPN client successfully establishes an encrypted tunnel to the company network. Does that alone guarantee they can access every internal server? Why or why not?</p>
-<details><summary>Show answer</summary>No. The VPN provides an <strong>encrypted, authenticated path into the network</strong> — but the <strong>firewall</strong> (and any further internal access controls) still determines exactly which specific internal resources that connection is permitted to reach. Encryption and access control are separate, complementary layers; a VPN alone doesn't imply unrestricted internal access, especially under a properly-implemented Zero Trust model.</details>
-:::<h2>Key terms</h2>
+<p>An employee's VPN client successfully establishes an encrypted tunnel to the company network. Does that alone guarantee they can access every internal server? Why or why not?</p>
+<details><summary>Show answer</summary>No. The VPN provides an <strong>encrypted, authenticated path into the network</strong> — but the <strong>firewall</strong> (and any further internal access controls) still determines exactly which specific internal resources that connection is permitted to reach. Encryption and access control are separate, complementary layers; a VPN alone doesn't imply unrestricted internal access, especially under a properly-implemented Zero Trust model.</details><h2>Key terms</h2>
 <ul>
 <li><strong>Firewall</strong> — inspects and allows/blocks traffic based on rules.</li>
 <li><strong>Stateful inspection</strong> — tracking connection state rather than evaluating packets in isolation.</li>

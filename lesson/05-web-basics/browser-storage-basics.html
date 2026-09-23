@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Browser storage basics — Path 05 · KashSec Academy</title>
-<meta name="description" content="Browser storage basics: localStorage, sessionStorage, and why tokens belong in HttpOnly cookies instead.">
+<meta name="description" content="The cookies-sessions lesson covered cookies specifically. This lesson covers the other ways a website can store data directly in your browser — genuinely important to know both as a developer and as s">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/05-web-basics/browser-storage-basics.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Browser storage basics — Path 05 · KashSec Academy">
-<meta property="og:description" content="Browser storage basics: localStorage, sessionStorage, and why tokens belong in HttpOnly cookies instead.">
+<meta property="og:description" content="The cookies-sessions lesson covered cookies specifically. This lesson covers the other ways a website can store data directly in your browser — genuinely important to know both as a developer and as s">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/05-web-basics/browser-storage-basics.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Browser storage basics — Path 05 · KashSec Academy">
-<meta name="twitter:description" content="Browser storage basics: localStorage, sessionStorage, and why tokens belong in HttpOnly cookies instead.">
+<meta name="twitter:description" content="The cookies-sessions lesson covered cookies specifically. This lesson covers the other ways a website can store data directly in your browser — genuinely important to know both as a developer and as s">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 05 — How the Web Works","item":"https://kashsec.vercel.app/lesson/05-web-basics/"},{"@type":"ListItem","position":4,"name":"Browser storage basics","item":"https://kashsec.vercel.app/lesson/05-web-basics/browser-storage-basics.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Browser storage basics","headline":"Browser storage basics","description":"Browser storage basics: localStorage, sessionStorage, and why tokens belong in HttpOnly cookies instead.","url":"https://kashsec.vercel.app/lesson/05-web-basics/browser-storage-basics.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"localStorage, sessionStorage, and why tokens belong in HttpOnly cookies instead.","isPartOf":{"@type":"Course","name":"Path 05: How the Web Works","url":"https://kashsec.vercel.app/lesson/05-web-basics/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/05-web-basics/browser-storage-basics.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Browser storage basics","headline":"Browser storage basics","description":"The cookies-sessions lesson covered cookies specifically. This lesson covers the other ways a website can store data directly in your browser — genuinely important to know both as a developer and as s","url":"https://kashsec.vercel.app/lesson/05-web-basics/browser-storage-basics.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"localStorage, sessionStorage, and why tokens belong in HttpOnly cookies instead.","isPartOf":{"@type":"Course","name":"Path 05: How the Web Works","url":"https://kashsec.vercel.app/lesson/05-web-basics/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/05-web-basics/browser-storage-basics.html"}}
 </script>
 </head>
 <body>
@@ -97,9 +97,7 @@ localStorage.getItem("theme");   // "dark"
 <h2>sessionStorage: the same idea, but temporary</h2>
 <p><strong>sessionStorage</strong> works identically to localStorage, except it's cleared automatically when the browser tab closes — genuinely useful for data that should only persist for one browsing session, like a multi-step form's in-progress state.</p>
 <h2>Why storing sensitive data in localStorage is a real, common mistake</h2>
-<p>:::danger A genuinely common real-world vulnerability
-Storing an authentication token or session identifier in localStorage, rather than in a properly configured cookie, is a widespread real-world mistake — because unlike a cookie with the <code>HttpOnly</code> flag (which the cookies-sessions lesson should have introduced), localStorage is fully readable by <em>any</em> JavaScript running on the page, including malicious JavaScript injected through an XSS vulnerability. A successful XSS attack against a page storing its auth token in localStorage can trivially steal that token; the same attack against a properly <code>HttpOnly</code>-flagged cookie cannot, since <code>HttpOnly</code> cookies are specifically inaccessible to JavaScript entirely.
-:::</p>
+<p>Storing an authentication token or session identifier in localStorage, rather than in a properly configured cookie, is a widespread real-world mistake — because unlike a cookie with the <code>HttpOnly</code> flag (which the cookies-sessions lesson should have introduced), localStorage is fully readable by <em>any</em> JavaScript running on the page, including malicious JavaScript injected through an XSS vulnerability. A successful XSS attack against a page storing its auth token in localStorage can trivially steal that token; the same attack against a properly <code>HttpOnly</code>-flagged cookie cannot, since <code>HttpOnly</code> cookies are specifically inaccessible to JavaScript entirely.</p>
 <h2>IndexedDB: for genuinely large amounts of structured data</h2>
 <p><strong>IndexedDB</strong> is a more powerful, database-like browser storage option for applications needing to store significant amounts of structured data client-side (an offline-capable app, a large cached dataset) — genuinely overkill for simple key-value needs, but worth recognizing by name since you'll encounter it in more complex web applications.</p>
 <h2>Comparing the storage options</h2>
@@ -143,10 +141,8 @@ Storing an authentication token or session identifier in localStorage, rather th
 <td>Yes</td>
 </tr>
 </tbody></table>
-<p>:::challenge Test yourself
-Why does storing an authentication token in localStorage create meaningfully more risk from an XSS attack than storing it in an <code>HttpOnly</code> cookie?</p>
-<details><summary>Show answer</summary>An <code>HttpOnly</code> cookie is specifically designed to be inaccessible to JavaScript entirely — even if an attacker successfully injects malicious JavaScript onto the page through an XSS vulnerability, that script has no way to read the cookie's value, since the browser enforces this restriction at a level JavaScript simply can't bypass. localStorage, by contrast, has no equivalent protection — <em>any</em> JavaScript running on the page, including injected malicious code, can freely read and exfiltrate whatever is stored there. This means an XSS vulnerability that would be relatively contained against a properly <code>HttpOnly</code>-protected session becomes a full account-takeover vector the moment the same application stores its authentication token in localStorage instead — the underlying XSS bug is identical, but its real-world impact is dramatically different depending on where the sensitive token actually lives.</details>
-:::<h2>Key terms</h2>
+<p>Why does storing an authentication token in localStorage create meaningfully more risk from an XSS attack than storing it in an <code>HttpOnly</code> cookie?</p>
+<details><summary>Show answer</summary>An <code>HttpOnly</code> cookie is specifically designed to be inaccessible to JavaScript entirely — even if an attacker successfully injects malicious JavaScript onto the page through an XSS vulnerability, that script has no way to read the cookie's value, since the browser enforces this restriction at a level JavaScript simply can't bypass. localStorage, by contrast, has no equivalent protection — <em>any</em> JavaScript running on the page, including injected malicious code, can freely read and exfiltrate whatever is stored there. This means an XSS vulnerability that would be relatively contained against a properly <code>HttpOnly</code>-protected session becomes a full account-takeover vector the moment the same application stores its authentication token in localStorage instead — the underlying XSS bug is identical, but its real-world impact is dramatically different depending on where the sensitive token actually lives.</details><h2>Key terms</h2>
 <ul>
 <li><strong>localStorage</strong> — persistent, client-side key-value storage, readable by any JavaScript on the page.</li>
 <li><strong>sessionStorage</strong> — identical to localStorage but cleared when the browser tab closes.</li>

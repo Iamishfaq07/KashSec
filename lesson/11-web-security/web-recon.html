@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Web recon — Path 11 · KashSec Academy</title>
-<meta name="description" content="Web recon: Subdomains, paths, parameters, JS files.">
+<meta name="description" content="Before you can find a bug, you need to understand what you're actually looking at. Recon is the unglamorous, essential first phase of every real web assessment — and where a huge fraction of eventual ">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/11-web-security/web-recon.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Web recon — Path 11 · KashSec Academy">
-<meta property="og:description" content="Web recon: Subdomains, paths, parameters, JS files.">
+<meta property="og:description" content="Before you can find a bug, you need to understand what you're actually looking at. Recon is the unglamorous, essential first phase of every real web assessment — and where a huge fraction of eventual ">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/11-web-security/web-recon.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Web recon — Path 11 · KashSec Academy">
-<meta name="twitter:description" content="Web recon: Subdomains, paths, parameters, JS files.">
+<meta name="twitter:description" content="Before you can find a bug, you need to understand what you're actually looking at. Recon is the unglamorous, essential first phase of every real web assessment — and where a huge fraction of eventual ">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 11 — Web Security & Hacking","item":"https://kashsec.vercel.app/lesson/11-web-security/"},{"@type":"ListItem","position":4,"name":"Web recon","item":"https://kashsec.vercel.app/lesson/11-web-security/web-recon.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Web recon","headline":"Web recon","description":"Web recon: Subdomains, paths, parameters, JS files.","url":"https://kashsec.vercel.app/lesson/11-web-security/web-recon.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Subdomains, paths, parameters, JS files.","isPartOf":{"@type":"Course","name":"Path 11: Web Security & Hacking","url":"https://kashsec.vercel.app/lesson/11-web-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/11-web-security/web-recon.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Web recon","headline":"Web recon","description":"Before you can find a bug, you need to understand what you're actually looking at. Recon is the unglamorous, essential first phase of every real web assessment — and where a huge fraction of eventual ","url":"https://kashsec.vercel.app/lesson/11-web-security/web-recon.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Subdomains, paths, parameters, JS files.","isPartOf":{"@type":"Course","name":"Path 11: Web Security & Hacking","url":"https://kashsec.vercel.app/lesson/11-web-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/11-web-security/web-recon.html"}}
 </script>
 </head>
 <body>
@@ -173,22 +173,6 @@ arjun -u https://example.com/profile
 <p>A parameter like <code>?debug=true</code>, <code>?admin=1</code>, or <code>?format=xml</code> that the UI never sends can sometimes unlock behaviour the developers assumed was safely hidden simply because nothing in the visible interface exposed it.</p>
 <h2>Building a recon pipeline</h2>
 <p>Professional recon chains multiple tools together, each feeding the next:</p>
-<pre><code class="language-mermaid">flowchart LR
-    Domain["Target domain"] --&gt; Sub["Subdomain enum&lt;br/&gt;(subfinder, amass, crt.sh)"]
-    Sub --&gt; Resolve["Resolve &amp; filter live hosts&lt;br/&gt;(dnsx, httpx)"]
-    Resolve --&gt; Crawl["Crawl&lt;br/&gt;(katana)"]
-    Crawl --&gt; Fuzz["Directory fuzz&lt;br/&gt;(ffuf, gobuster)"]
-    Fuzz --&gt; Tech["Tech fingerprint&lt;br/&gt;(whatweb, wappalyzer)"]
-    Tech --&gt; Manual["Manual testing&lt;br/&gt;(Burp)"]
-
-    style Domain fill:#111927,color:#8496A6,stroke:#8496A6
-    style Sub fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
-    style Resolve fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
-    style Crawl fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
-    style Fuzz fill:#2b1f0a,color:#EFA43A,stroke:#EFA43A
-    style Tech fill:#2b1f0a,color:#EFA43A,stroke:#EFA43A
-    style Manual fill:#2b1010,color:#E05548,stroke:#E05548
-</code></pre>
 <p>You'll build a real, automated version of this exact pipeline in Path 15 (Bug Bounty) using your Python and Bash skills from Paths 03–04.</p>
 <h2>What you're actually looking for</h2>
 <p>Recon isn't just "collect data" — it's collecting data <strong>with specific questions in mind</strong>:</p>
@@ -227,13 +211,9 @@ gobuster dir -u http://testphp.vulnweb.com \
 cat gobuster-results.txt
 </code></pre>
 <p>Write a short summary of what you learned: technologies detected, interesting paths found, anything that surprised you. This is exactly the kind of summary that opens a real penetration test report.</p>
-<p>:::danger SCOPE DISCIPLINE
-Active recon tools generate real traffic against real servers. Only ever run active techniques (brute-forcing, crawling, scanning) against targets you explicitly own or have written authorization to test — like the practice targets linked throughout this course. Passive recon (WHOIS, crt.sh, Wayback Machine, Shodan searches) is generally lower-risk since you're querying third-party public records, not the target directly — but always respect each service's own terms of use.
-:::</p>
-<p>:::challenge Test yourself
-Why are Certificate Transparency logs (crt.sh) such a powerful passive subdomain enumeration technique?</p>
-<details><summary>Show answer</summary>Every publicly-trusted TLS certificate issued by any Certificate Authority is <strong>permanently and publicly logged</strong> as part of the CT system (designed to prevent fraudulently-issued certificates). Since getting HTTPS on a subdomain requires a certificate, this means virtually every subdomain that's ever had HTTPS enabled — including old, forgotten, or supposedly "hidden" ones — is discoverable in these logs, with zero direct interaction with the target required.</details>
-:::<h2>Key terms</h2>
+<p>Active recon tools generate real traffic against real servers. Only ever run active techniques (brute-forcing, crawling, scanning) against targets you explicitly own or have written authorization to test — like the practice targets linked throughout this course. Passive recon (WHOIS, crt.sh, Wayback Machine, Shodan searches) is generally lower-risk since you're querying third-party public records, not the target directly — but always respect each service's own terms of use.</p>
+<p>Why are Certificate Transparency logs (crt.sh) such a powerful passive subdomain enumeration technique?</p>
+<details><summary>Show answer</summary>Every publicly-trusted TLS certificate issued by any Certificate Authority is <strong>permanently and publicly logged</strong> as part of the CT system (designed to prevent fraudulently-issued certificates). Since getting HTTPS on a subdomain requires a certificate, this means virtually every subdomain that's ever had HTTPS enabled — including old, forgotten, or supposedly "hidden" ones — is discoverable in these logs, with zero direct interaction with the target required.</details><h2>Key terms</h2>
 <ul>
 <li><strong>Passive / active recon</strong> — without vs with direct interaction with the target.</li>
 <li><strong>Certificate Transparency (CT) logs</strong> — public, permanent record of issued TLS certificates.</li>

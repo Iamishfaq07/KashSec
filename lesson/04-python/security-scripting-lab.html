@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Security Scripting Lab — Path 04 · KashSec Academy</title>
-<meta name="description" content="Security Scripting Lab: Turn Python into a real security tool.">
+<meta name="description" content="This is the capstone lab for Path 04 — turning everything from variables and loops through to the password checker project into genuinely useful security tools, the same category of small custom scrip">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/04-python/security-scripting-lab.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Security Scripting Lab — Path 04 · KashSec Academy">
-<meta property="og:description" content="Security Scripting Lab: Turn Python into a real security tool.">
+<meta property="og:description" content="This is the capstone lab for Path 04 — turning everything from variables and loops through to the password checker project into genuinely useful security tools, the same category of small custom scrip">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/04-python/security-scripting-lab.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Security Scripting Lab — Path 04 · KashSec Academy">
-<meta name="twitter:description" content="Security Scripting Lab: Turn Python into a real security tool.">
+<meta name="twitter:description" content="This is the capstone lab for Path 04 — turning everything from variables and loops through to the password checker project into genuinely useful security tools, the same category of small custom scrip">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 04 — Programming & Python","item":"https://kashsec.vercel.app/lesson/04-python/"},{"@type":"ListItem","position":4,"name":"Security Scripting Lab","item":"https://kashsec.vercel.app/lesson/04-python/security-scripting-lab.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Security Scripting Lab","headline":"Security Scripting Lab","description":"Security Scripting Lab: Turn Python into a real security tool.","url":"https://kashsec.vercel.app/lesson/04-python/security-scripting-lab.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Turn Python into a real security tool.","isPartOf":{"@type":"Course","name":"Path 04: Programming & Python","url":"https://kashsec.vercel.app/lesson/04-python/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/04-python/security-scripting-lab.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Security Scripting Lab","headline":"Security Scripting Lab","description":"This is the capstone lab for Path 04 — turning everything from variables and loops through to the password checker project into genuinely useful security tools, the same category of small custom scrip","url":"https://kashsec.vercel.app/lesson/04-python/security-scripting-lab.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Turn Python into a real security tool.","isPartOf":{"@type":"Course","name":"Path 04: Programming & Python","url":"https://kashsec.vercel.app/lesson/04-python/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/04-python/security-scripting-lab.html"}}
 </script>
 </head>
 <body>
@@ -152,12 +152,8 @@ with ThreadPoolExecutor(max_workers=50) as executor:
 <li><p><strong>Add rate limiting to your URL checker.</strong> Revisit Task 1's URL status checker and add a small <code>time.sleep()</code> delay between requests, per this path's automation lesson — practice the responsible-automation habit now, on your own small script, before it matters on a real authorized engagement.</p>
 </li>
 </ol>
-<p>:::tip Combine what you've built
-Each of these four scripts does one thing well — the real skill, and the direction Path 15's recon pipeline lesson goes next, is chaining small single-purpose tools together into a pipeline, exactly like real tools such as <code>subfinder → httpx → gau → nuclei</code> do.
-:::</p>
-<p>:::challenge Build a combined recon script
-Write one script that takes a domain as input, checks whether it responds on port 80 and 443 using your port-scanning knowledge, and — if it does — fetches the page and prints its <code>&lt;title&gt;</code> tag using BeautifulSoup. This "open ports + HTTP title" pattern is a genuinely useful, portfolio-worthy mini recon tool, and a great addition to the GitHub portfolio Path 20 recommends building.
-:::</p>
+<p>Each of these four scripts does one thing well — the real skill, and the direction Path 15's recon pipeline lesson goes next, is chaining small single-purpose tools together into a pipeline, exactly like real tools such as <code>subfinder → httpx → gau → nuclei</code> do.</p>
+<p>Write one script that takes a domain as input, checks whether it responds on port 80 and 443 using your port-scanning knowledge, and — if it does — fetches the page and prints its <code>&lt;title&gt;</code> tag using BeautifulSoup. This "open ports + HTTP title" pattern is a genuinely useful, portfolio-worthy mini recon tool, and a great addition to the GitHub portfolio Path 20 recommends building.</p>
 <h2>Key takeaway</h2>
 <p>Every one of these scripts is short — 10 to 20 lines — but each one automates something that would take minutes to do by hand, and minutes saved per target compounds fast once you're testing dozens or hundreds of hosts. This is exactly why scripting ability, even at a modest level, is such a consistent multiplier across every offensive and defensive security role.</p>
 <p><strong>Explore more →</strong> <a href="#/lesson/05-web-basics">Path 05 — How the Web Works</a></p>

@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Zero Trust Maturity Models — Path 24 · KashSec Academy</title>
-<meta name="description" content="Zero Trust Maturity Models: CISA's five pillars and four stages — measuring progress instead of guessing at it.">
+<meta name="description" content="The implementing-Zero-Trust lesson covered sequencing a real rollout. This lesson covers how to actually measure progress along that rollout — the difference between &quot;we bought some Zero Trust product">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-maturity-model.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Zero Trust Maturity Models — Path 24 · KashSec Academy">
-<meta property="og:description" content="Zero Trust Maturity Models: CISA's five pillars and four stages — measuring progress instead of guessing at it.">
+<meta property="og:description" content="The implementing-Zero-Trust lesson covered sequencing a real rollout. This lesson covers how to actually measure progress along that rollout — the difference between &quot;we bought some Zero Trust product">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-maturity-model.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Zero Trust Maturity Models — Path 24 · KashSec Academy">
-<meta name="twitter:description" content="Zero Trust Maturity Models: CISA's five pillars and four stages — measuring progress instead of guessing at it.">
+<meta name="twitter:description" content="The implementing-Zero-Trust lesson covered sequencing a real rollout. This lesson covers how to actually measure progress along that rollout — the difference between &quot;we bought some Zero Trust product">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 24 — Zero Trust Architecture","item":"https://kashsec.vercel.app/lesson/24-zero-trust/"},{"@type":"ListItem","position":4,"name":"Zero Trust Maturity Models","item":"https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-maturity-model.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Zero Trust Maturity Models","headline":"Zero Trust Maturity Models","description":"Zero Trust Maturity Models: CISA's five pillars and four stages — measuring progress instead of guessing at it.","url":"https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-maturity-model.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"CISA's five pillars and four stages — measuring progress instead of guessing at it.","isPartOf":{"@type":"Course","name":"Path 24: Zero Trust Architecture","url":"https://kashsec.vercel.app/lesson/24-zero-trust/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-maturity-model.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Zero Trust Maturity Models","headline":"Zero Trust Maturity Models","description":"The implementing-Zero-Trust lesson covered sequencing a real rollout. This lesson covers how to actually measure progress along that rollout — the difference between \"we bought some Zero Trust product","url":"https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-maturity-model.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"CISA's five pillars and four stages — measuring progress instead of guessing at it.","isPartOf":{"@type":"Course","name":"Path 24: Zero Trust Architecture","url":"https://kashsec.vercel.app/lesson/24-zero-trust/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-maturity-model.html"}}
 </script>
 </head>
 <body>
@@ -89,9 +89,7 @@
     <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/24-zero-trust/">Path 24 — Zero Trust Architecture</a> · Zero Trust Maturity Models</nav>
     <div class="md" id="content"><article><h1>Zero Trust Maturity Models</h1>
 <p>The implementing-Zero-Trust lesson covered sequencing a real rollout. This lesson covers how to actually <em>measure</em> progress along that rollout — the difference between "we bought some Zero Trust products" and "we can demonstrate, pillar by pillar, how mature our implementation actually is."</p>
-<p>:::tip
-A maturity model's real value isn't the score itself — it's that it forces a structured, pillar-by-pillar self-assessment instead of a single vague "are we Zero Trust yet?" question that's nearly impossible to answer honestly without one.
-:::</p>
+<p>:::</p>
 <h2>The CISA Zero Trust Maturity Model's five pillars</h2>
 <p>CISA's widely-referenced maturity model organizes Zero Trust into five pillars, each assessed independently:</p>
 <ol>
@@ -114,15 +112,12 @@ A maturity model's real value isn't the score itself — it's that it forces a s
 <p>:::challenge Interpret an assessment
 An organization's CISA maturity self-assessment shows: Identity — Advanced, Devices — Advanced, Networks — Initial, Applications — Initial, Data — Traditional.</p>
 <details><summary>Hint</summary>Given everything this path has taught about how these pillars interact — recall the API security lesson's point about internal traffic and the data-centric lesson's point about the last line of defense — where's the most urgent gap, and why?</details>
-<details><summary>Show answer</summary>Data is the most urgent gap. This organization has strong identity and device verification getting requests *to* their destination, but almost no maturity in what happens once a request (legitimate or otherwise) reaches the data itself — no classification, no DLP, no rights management. Given the data-centric lesson's point that data controls are the last line of defense when everything upstream is satisfied by a legitimate-but-misbehaving session, this is the pillar where a real incident is most likely to turn into an actual large-scale data loss rather than being contained. The Networks and Applications gaps matter too, but Data being stuck at Traditional while Identity and Devices are Advanced is the specific imbalance a pillar-by-pillar model is designed to expose.</details>
-:::<h2>🧪 Hands-on lab — self-assess a hypothetical organization</h2>
+<details><summary>Show answer</summary>Data is the most urgent gap. This organization has strong identity and device verification getting requests *to* their destination, but almost no maturity in what happens once a request (legitimate or otherwise) reaches the data itself — no classification, no DLP, no rights management. Given the data-centric lesson's point that data controls are the last line of defense when everything upstream is satisfied by a legitimate-but-misbehaving session, this is the pillar where a real incident is most likely to turn into an actual large-scale data loss rather than being contained. The Networks and Applications gaps matter too, but Data being stuck at Traditional while Identity and Devices are Advanced is the specific imbalance a pillar-by-pillar model is designed to expose.</details><h2>🧪 Hands-on lab — self-assess a hypothetical organization</h2>
 <p>For a fictional company of your choosing, assign a maturity stage (Traditional/Initial/Advanced/Optimal) to each of the five pillars based on a few sentences of assumed context you invent. Identify the pillar most in need of investment and justify it using at least one earlier lesson from this path.</p>
-<p>:::challenge Test yourself</p>
 <ol>
 <li>Name the five pillars of the CISA Zero Trust Maturity Model.</li>
 <li>Why can a single blended maturity score be misleading compared to a pillar-by-pillar assessment?</li>
-<li>What does "Optimal" maturity require that "Advanced" does not?
-:::</li>
+<li>What does "Optimal" maturity require that "Advanced" does not?</li>
 </ol>
 <h2>Key terms</h2>
 <ul>

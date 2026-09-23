@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Browser DevTools — Path 05 · KashSec Academy</title>
-<meta name="description" content="Browser DevTools: Your first hacking tool — free and built in.">
+<meta name="description" content="DevTools is the single most-used &quot;tool&quot; in web security — and it's already sitting in every browser, free. This lesson is a proper tour so you're fluent before Path 11's hands-on labs.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/05-web-basics/devtools.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Browser DevTools — Path 05 · KashSec Academy">
-<meta property="og:description" content="Browser DevTools: Your first hacking tool — free and built in.">
+<meta property="og:description" content="DevTools is the single most-used &quot;tool&quot; in web security — and it's already sitting in every browser, free. This lesson is a proper tour so you're fluent before Path 11's hands-on labs.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/05-web-basics/devtools.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Browser DevTools — Path 05 · KashSec Academy">
-<meta name="twitter:description" content="Browser DevTools: Your first hacking tool — free and built in.">
+<meta name="twitter:description" content="DevTools is the single most-used &quot;tool&quot; in web security — and it's already sitting in every browser, free. This lesson is a proper tour so you're fluent before Path 11's hands-on labs.">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 05 — How the Web Works","item":"https://kashsec.vercel.app/lesson/05-web-basics/"},{"@type":"ListItem","position":4,"name":"Browser DevTools","item":"https://kashsec.vercel.app/lesson/05-web-basics/devtools.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Browser DevTools","headline":"Browser DevTools","description":"Browser DevTools: Your first hacking tool — free and built in.","url":"https://kashsec.vercel.app/lesson/05-web-basics/devtools.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Your first hacking tool — free and built in.","isPartOf":{"@type":"Course","name":"Path 05: How the Web Works","url":"https://kashsec.vercel.app/lesson/05-web-basics/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/05-web-basics/devtools.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Browser DevTools","headline":"Browser DevTools","description":"DevTools is the single most-used \"tool\" in web security — and it's already sitting in every browser, free. This lesson is a proper tour so you're fluent before Path 11's hands-on labs.","url":"https://kashsec.vercel.app/lesson/05-web-basics/devtools.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Your first hacking tool — free and built in.","isPartOf":{"@type":"Course","name":"Path 05: How the Web Works","url":"https://kashsec.vercel.app/lesson/05-web-basics/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/05-web-basics/devtools.html"}}
 </script>
 </head>
 <body>
@@ -96,22 +96,6 @@
 </ul>
 <p>We'll use Firefox (pre-installed on Kali), but Chrome's DevTools are nearly identical.</p>
 <h2>The panels that matter</h2>
-<pre><code class="language-mermaid">flowchart TD
-    DT[DevTools] --&gt; Insp[Inspector&lt;br/&gt;— view/edit the DOM live]
-    DT --&gt; Console[Console&lt;br/&gt;— run JS, see errors/logs]
-    DT --&gt; Net[Network&lt;br/&gt;— every request the page makes]
-    DT --&gt; Store[Storage&lt;br/&gt;— cookies, localStorage, cache]
-    DT --&gt; Debug[Debugger&lt;br/&gt;— step through JS line by line]
-    DT --&gt; App[Application/Security&lt;br/&gt;— headers, certs, manifest]
-
-    style DT fill:#111927,color:#EFA43A,stroke:#EFA43A
-    style Insp fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
-    style Console fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
-    style Net fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
-    style Store fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
-    style Debug fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
-    style App fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
-</code></pre>
 <h3>Inspector — the DOM, live</h3>
 <p>Right-click any element → <strong>Inspect</strong>. You'll see the HTML tree with that element highlighted. Click any tag to select it; edit text or attributes by double-clicking. Changes are <strong>local only</strong> — refresh and they vanish (you learned why in Path 05.3).</p>
 <p>Useful sub-panel: the <strong>Rules</strong> view on the right shows every CSS rule affecting the selected element, in priority order — invaluable for understanding <em>why</em> something looks the way it does.</p>
@@ -132,9 +116,7 @@ fetch("/api/me").then(r =&gt; r.json()).then(console.log)  // call an API from c
 <li><strong>Timing</strong> — where time was spent (DNS, TLS, waiting, downloading)</li>
 </ul>
 <p>Filter by type (<strong>XHR/Fetch</strong> to see only API calls), right-click any request → <strong>Copy as cURL</strong> (as you practised last lesson).</p>
-<p>:::tip PRESERVE LOG
-Enable <strong>Preserve log</strong> at the top of the Network panel before you navigate — otherwise the list clears on every page load, and you'll lose the request that mattered.
-:::</p>
+<p>Enable <strong>Preserve log</strong> at the top of the Network panel before you navigate — otherwise the list clears on every page load, and you'll lose the request that mattered.</p>
 <h3>Storage (or "Application" in Chrome)</h3>
 <p>Shows <strong>Cookies</strong>, <strong>Local Storage</strong>, <strong>Session Storage</strong>, <strong>IndexedDB</strong>, and <strong>Cache</strong>. This is where you did your cookie audit last lesson. Also useful: <strong>Service Workers</strong> (offline caching logic) if a site uses them.</p>
 <h3>Debugger — step through JavaScript</h3>
@@ -183,10 +165,8 @@ document.evaluate("//comment()", document, null, XPathResult.ORDERED_NODE_SNAPSH
 <li><strong>View Source vs Inspector:</strong> compare the two. Are they identical or very different? What does that tell you about how the site is built (SSR vs SPA)?</li>
 </ol>
 <p>Write down your five answers. You've just performed a genuine reconnaissance pass using nothing but a browser.</p>
-<p>:::challenge Test yourself
-You want to see the <em>exact</em> raw HTML your server sent, before any JavaScript touched it. Which keyboard shortcut do you use?</p>
-<details><summary>Show answer</summary><strong>Ctrl+U</strong> — View Source. The Inspector panel shows the live, JS-modified DOM instead.</details>
-:::<h2>Key terms</h2>
+<p>You want to see the <em>exact</em> raw HTML your server sent, before any JavaScript touched it. Which keyboard shortcut do you use?</p>
+<details><summary>Show answer</summary><strong>Ctrl+U</strong> — View Source. The Inspector panel shows the live, JS-modified DOM instead.</details><h2>Key terms</h2>
 <ul>
 <li><strong>DevTools</strong> — the browser's built-in inspection suite.</li>
 <li><strong>Inspector</strong> — live DOM tree viewer/editor.</li>

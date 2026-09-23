@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Wireless networking basics — Path 02 · KashSec Academy</title>
-<meta name="description" content="Wireless networking basics: WPA2/WPA3 vs. broken WEP, open networks, and evil twin attacks.">
+<meta name="description" content="Everything covered so far in this path works the same whether devices connect by cable or by air — but wireless networking adds a few genuinely distinct concepts and risks worth understanding on their">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/02-networking/wireless-networking-basics.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Wireless networking basics — Path 02 · KashSec Academy">
-<meta property="og:description" content="Wireless networking basics: WPA2/WPA3 vs. broken WEP, open networks, and evil twin attacks.">
+<meta property="og:description" content="Everything covered so far in this path works the same whether devices connect by cable or by air — but wireless networking adds a few genuinely distinct concepts and risks worth understanding on their">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/02-networking/wireless-networking-basics.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Wireless networking basics — Path 02 · KashSec Academy">
-<meta name="twitter:description" content="Wireless networking basics: WPA2/WPA3 vs. broken WEP, open networks, and evil twin attacks.">
+<meta name="twitter:description" content="Everything covered so far in this path works the same whether devices connect by cable or by air — but wireless networking adds a few genuinely distinct concepts and risks worth understanding on their">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 02 — Networking Fundamentals","item":"https://kashsec.vercel.app/lesson/02-networking/"},{"@type":"ListItem","position":4,"name":"Wireless networking basics","item":"https://kashsec.vercel.app/lesson/02-networking/wireless-networking-basics.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Wireless networking basics","headline":"Wireless networking basics","description":"Wireless networking basics: WPA2/WPA3 vs. broken WEP, open networks, and evil twin attacks.","url":"https://kashsec.vercel.app/lesson/02-networking/wireless-networking-basics.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"WPA2/WPA3 vs. broken WEP, open networks, and evil twin attacks.","isPartOf":{"@type":"Course","name":"Path 02: Networking Fundamentals","url":"https://kashsec.vercel.app/lesson/02-networking/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/02-networking/wireless-networking-basics.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Wireless networking basics","headline":"Wireless networking basics","description":"Everything covered so far in this path works the same whether devices connect by cable or by air — but wireless networking adds a few genuinely distinct concepts and risks worth understanding on their","url":"https://kashsec.vercel.app/lesson/02-networking/wireless-networking-basics.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"WPA2/WPA3 vs. broken WEP, open networks, and evil twin attacks.","isPartOf":{"@type":"Course","name":"Path 02: Networking Fundamentals","url":"https://kashsec.vercel.app/lesson/02-networking/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/02-networking/wireless-networking-basics.html"}}
 </script>
 </head>
 <body>
@@ -99,13 +99,9 @@
 <p>An <strong>open network</strong> (no password required) provides zero encryption between your device and the access point — anyone else connected to that same open network can potentially observe unencrypted traffic passing over it, which is exactly why Path 00's Wi-Fi lesson recommended caution on unfamiliar open networks, and why HTTPS (Path 06's TLS-handshake lesson) matters so much regardless of which network you're on.</p>
 <h2>Evil twin attacks: a wireless-specific threat</h2>
 <p>An <strong>evil twin attack</strong> is when an attacker sets up a rogue access point broadcasting the <em>same</em> SSID as a legitimate network — a fake "Coffee Shop WiFi" sitting right next to the real one — hoping victims connect to the attacker's version instead, letting the attacker observe or manipulate all resulting traffic. This is precisely the "fake public Wi-Fi network with a plausible name" risk Path 00 warned about, now with the specific technical name and mechanism behind it.</p>
-<p>:::danger Your device can't always tell the difference on its own
-Devices generally connect based on SSID name and signal strength, not any deeper verification of who's actually running the access point — meaning an evil twin with a strong signal and the right name can genuinely fool an unsuspecting device, or even auto-reconnect a device that's connected to that network name before.
-:::</p>
-<p>:::challenge Test yourself
-Why does WEP's vulnerability matter regardless of how strong the actual Wi-Fi password chosen is?</p>
-<details><summary>Show answer</summary>WEP's weakness is in the underlying cryptographic protocol itself — the way it generates and reuses certain values during encryption — not in the specific password chosen. This means a WEP network protected by a genuinely long, random, hard-to-guess password is <em>still</em> breakable through the same documented cryptographic attack, in roughly the same amount of time as a network using a weak password, because the attack doesn't work by guessing the password directly — it exploits a flaw in how WEP encrypts data regardless of what that password actually is. This is exactly why WPA2/WPA3 replaced WEP entirely, rather than WEP simply needing "stronger passwords."</details>
-:::<h2>Key terms</h2>
+<p>Devices generally connect based on SSID name and signal strength, not any deeper verification of who's actually running the access point — meaning an evil twin with a strong signal and the right name can genuinely fool an unsuspecting device, or even auto-reconnect a device that's connected to that network name before.</p>
+<p>Why does WEP's vulnerability matter regardless of how strong the actual Wi-Fi password chosen is?</p>
+<details><summary>Show answer</summary>WEP's weakness is in the underlying cryptographic protocol itself — the way it generates and reuses certain values during encryption — not in the specific password chosen. This means a WEP network protected by a genuinely long, random, hard-to-guess password is <em>still</em> breakable through the same documented cryptographic attack, in roughly the same amount of time as a network using a weak password, because the attack doesn't work by guessing the password directly — it exploits a flaw in how WEP encrypts data regardless of what that password actually is. This is exactly why WPA2/WPA3 replaced WEP entirely, rather than WEP simply needing "stronger passwords."</details><h2>Key terms</h2>
 <ul>
 <li><strong>SSID</strong> — the broadcast name of a Wi-Fi network.</li>
 <li><strong>Open network</strong> — a Wi-Fi network requiring no password, providing no encryption between device and access point.</li>

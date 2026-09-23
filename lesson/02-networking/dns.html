@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>DNS: the phonebook — Path 02 · KashSec Academy</title>
-<meta name="description" content="DNS: the phonebook: How names become numbers, and what leaks.">
+<meta name="description" content="You type names, computers use numbers. DNS is the translator in between — and it quietly leaks a target's structure, making it a favourite of both attackers and defenders.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/02-networking/dns.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="DNS: the phonebook — Path 02 · KashSec Academy">
-<meta property="og:description" content="DNS: the phonebook: How names become numbers, and what leaks.">
+<meta property="og:description" content="You type names, computers use numbers. DNS is the translator in between — and it quietly leaks a target's structure, making it a favourite of both attackers and defenders.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/02-networking/dns.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="DNS: the phonebook — Path 02 · KashSec Academy">
-<meta name="twitter:description" content="DNS: the phonebook: How names become numbers, and what leaks.">
+<meta name="twitter:description" content="You type names, computers use numbers. DNS is the translator in between — and it quietly leaks a target's structure, making it a favourite of both attackers and defenders.">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 02 — Networking Fundamentals","item":"https://kashsec.vercel.app/lesson/02-networking/"},{"@type":"ListItem","position":4,"name":"DNS: the phonebook","item":"https://kashsec.vercel.app/lesson/02-networking/dns.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"DNS: the phonebook","headline":"DNS: the phonebook","description":"DNS: the phonebook: How names become numbers, and what leaks.","url":"https://kashsec.vercel.app/lesson/02-networking/dns.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"How names become numbers, and what leaks.","isPartOf":{"@type":"Course","name":"Path 02: Networking Fundamentals","url":"https://kashsec.vercel.app/lesson/02-networking/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/02-networking/dns.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"DNS: the phonebook","headline":"DNS: the phonebook","description":"You type names, computers use numbers. DNS is the translator in between — and it quietly leaks a target's structure, making it a favourite of both attackers and defenders.","url":"https://kashsec.vercel.app/lesson/02-networking/dns.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"How names become numbers, and what leaks.","isPartOf":{"@type":"Course","name":"Path 02: Networking Fundamentals","url":"https://kashsec.vercel.app/lesson/02-networking/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/02-networking/dns.html"}}
 </script>
 </head>
 <body>
@@ -94,23 +94,6 @@
 <p>You give it a name, it gives back the number. Without it, you'd have to memorise numeric addresses for every site you visit.</p>
 <h2>How a lookup actually works</h2>
 <p>When you hit Enter on an address, before the page can load, this happens in a fraction of a second:</p>
-<pre><code class="language-mermaid">sequenceDiagram
-    autonumber
-    participant U as Your browser
-    participant R as Your DNS resolver&lt;br/&gt;(usually your ISP or 8.8.8.8)
-    participant Root as . (Root servers)
-    participant TLD as .com (TLD servers)
-    participant Auth as google.com&lt;br/&gt;(Authoritative server)
-    U-&gt;&gt;R: What's the IP for google.com?
-    R-&gt;&gt;Root: Who runs .com?
-    Root-&gt;&gt;R: Ask these TLD servers
-    R-&gt;&gt;TLD: Who runs google.com?
-    TLD-&gt;&gt;R: Ask these authoritative servers
-    R-&gt;&gt;Auth: What's the IP for google.com?
-    Auth-&gt;&gt;R: 142.250.190.14
-    R-&gt;&gt;U: 142.250.190.14
-    Note over U,Auth: Now your browser can send the actual HTTP request
-</code></pre>
 <p>Almost all these lookups are <strong>cached</strong> so they only really happen once in a while — but this is the flow behind every website you ever open.</p>
 <h2>Types of DNS records</h2>
 <p>DNS stores different kinds of entries. Knowing a few helps in recon:</p>
@@ -197,13 +180,9 @@ dog google.com
 <li><strong>DoH / DoT</strong> — DNS over HTTPS / TLS; encrypts your queries so ISPs and eavesdroppers can't see them.</li>
 <li><strong>DNS filtering</strong> — services like Cloudflare 1.1.1.1 for Families or Quad9 block known-malicious domains at resolution time.</li>
 </ul>
-<p>:::tip A REAL SPEED / PRIVACY TIP
-Change your device's DNS server to <strong>1.1.1.1</strong> (Cloudflare) or <strong>8.8.8.8</strong> (Google) or <strong>9.9.9.9</strong> (Quad9). Usually faster than your ISP's default and often better for privacy.
-:::</p>
-<p>:::challenge Test yourself
-Which DNS record type tells you a domain's mail servers?</p>
-<details><summary>Show answer</summary>The <strong>MX</strong> record (Mail eXchange).</details>
-:::<h2>Key terms</h2>
+<p>Change your device's DNS server to <strong>1.1.1.1</strong> (Cloudflare) or <strong>8.8.8.8</strong> (Google) or <strong>9.9.9.9</strong> (Quad9). Usually faster than your ISP's default and often better for privacy.</p>
+<p>Which DNS record type tells you a domain's mail servers?</p>
+<details><summary>Show answer</summary>The <strong>MX</strong> record (Mail eXchange).</details><h2>Key terms</h2>
 <ul>
 <li><strong>DNS</strong> — turns names into IP addresses (the internet's phonebook).</li>
 <li><strong>A / AAAA / MX / NS / TXT / CNAME</strong> — different DNS record types.</li>

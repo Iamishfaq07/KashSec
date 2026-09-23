@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Mobile Security Fundamentals — Path 13 · KashSec Academy</title>
-<meta name="description" content="Mobile Security Fundamentals: Sandboxing, permissions, and how Android/iOS differ.">
+<meta name="description" content="Everything you've learned so far — web security, network security, Linux — transfers partially to mobile, but mobile apps live in a genuinely different world: a sandboxed, permission-gated environment">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/13-mobile-security/mobile-security-fundamentals.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Mobile Security Fundamentals — Path 13 · KashSec Academy">
-<meta property="og:description" content="Mobile Security Fundamentals: Sandboxing, permissions, and how Android/iOS differ.">
+<meta property="og:description" content="Everything you've learned so far — web security, network security, Linux — transfers partially to mobile, but mobile apps live in a genuinely different world: a sandboxed, permission-gated environment">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/13-mobile-security/mobile-security-fundamentals.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Mobile Security Fundamentals — Path 13 · KashSec Academy">
-<meta name="twitter:description" content="Mobile Security Fundamentals: Sandboxing, permissions, and how Android/iOS differ.">
+<meta name="twitter:description" content="Everything you've learned so far — web security, network security, Linux — transfers partially to mobile, but mobile apps live in a genuinely different world: a sandboxed, permission-gated environment">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 13 — Mobile App Security","item":"https://kashsec.vercel.app/lesson/13-mobile-security/"},{"@type":"ListItem","position":4,"name":"Mobile Security Fundamentals","item":"https://kashsec.vercel.app/lesson/13-mobile-security/mobile-security-fundamentals.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Mobile Security Fundamentals","headline":"Mobile Security Fundamentals","description":"Mobile Security Fundamentals: Sandboxing, permissions, and how Android/iOS differ.","url":"https://kashsec.vercel.app/lesson/13-mobile-security/mobile-security-fundamentals.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate→Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Sandboxing, permissions, and how Android/iOS differ.","isPartOf":{"@type":"Course","name":"Path 13: Mobile App Security","url":"https://kashsec.vercel.app/lesson/13-mobile-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/13-mobile-security/mobile-security-fundamentals.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Mobile Security Fundamentals","headline":"Mobile Security Fundamentals","description":"Everything you've learned so far — web security, network security, Linux — transfers partially to mobile, but mobile apps live in a genuinely different world: a sandboxed, permission-gated environment","url":"https://kashsec.vercel.app/lesson/13-mobile-security/mobile-security-fundamentals.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate→Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Sandboxing, permissions, and how Android/iOS differ.","isPartOf":{"@type":"Course","name":"Path 13: Mobile App Security","url":"https://kashsec.vercel.app/lesson/13-mobile-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/13-mobile-security/mobile-security-fundamentals.html"}}
 </script>
 </head>
 <body>
@@ -129,46 +129,16 @@
 <p>Android's relative openness is exactly why most of this path's hands-on labs focus there first — it's dramatically more accessible for learning without expensive jailbreak tooling, and the underlying security concepts transfer directly to iOS once you understand them.</p>
 <h2>App sandboxing — the core security model</h2>
 <p>Both platforms enforce <strong>app sandboxing</strong>: every app runs in its own isolated environment with its own private storage, and by default cannot read another app's data or interfere with its execution. This is the mobile equivalent of process isolation and user permissions from Path 03's Linux material — but enforced far more strictly, since mobile apps come from far less trusted sources (any developer can publish to app stores) than the software most people install on a traditional computer.</p>
-<pre><code class="language-mermaid">flowchart TB
-    subgraph Device
-        subgraph "App A Sandbox"
-            A1[App A private storage]
-            A2[App A process]
-        end
-        subgraph "App B Sandbox"
-            B1[App B private storage]
-            B2[App B process]
-        end
-        OS["OS enforces isolation\n(no direct access\nbetween sandboxes)"]
-    end
-    A2 -.-&gt;|blocked by default| B1
-    B2 -.-&gt;|blocked by default| A1
-</code></pre>
 <h2>The permission model</h2>
 <p>Rather than trusting an app with everything by default, both platforms use <strong>runtime permissions</strong> — an app must explicitly request access to sensitive resources (camera, location, contacts, microphone), and the user grants or denies each one, often individually, often at the moment the app first tries to use it rather than all at once at install time. This is a direct, hands-on illustration of the <strong>principle of least privilege</strong> referenced throughout this course: an app should only be granted the specific access it genuinely needs, nothing more.</p>
-<p>:::tip Check your own phone's permissions right now
-Go to your phone's Settings → Apps → [any app] → Permissions, and look at what it's been granted. You'll likely find at least one app with access that seems disproportionate to what it actually needs (a flashlight app requesting contacts access, for instance) — a genuinely common real-world red flag, and exactly the kind of over-permissioning this path's later lessons teach you to identify and test for deliberately.
-:::</p>
+<p>Go to your phone's Settings → Apps → [any app] → Permissions, and look at what it's been granted. You'll likely find at least one app with access that seems disproportionate to what it actually needs (a flashlight app requesting contacts access, for instance) — a genuinely common real-world red flag, and exactly the kind of over-permissioning this path's later lessons teach you to identify and test for deliberately.</p>
 <h2>The mobile attack surface, mapped to what you already know</h2>
 <p>Every mobile app has roughly four distinct layers worth reasoning about separately, and each maps directly onto a concept from earlier in this course. The <strong>client-side code</strong> itself (the compiled app on the device) is analogous to a desktop application's binary — reverse-engineerable, and never trustworthy to store secrets in, exactly the "never trust the client" principle from Path 05.3, just with the client now living on a device the attacker can physically hold. The <strong>local storage</strong> layer (databases, preference files, cached data sitting on the device) is a genuinely new attack surface with no clean web parallel — a web app's "storage" mostly lives server-side, while a mobile app routinely persists substantial data directly on a device an attacker might gain physical or rooted access to. The <strong>network layer</strong> (API calls to a backend) is almost entirely familiar territory from Path 11 — the same injection, IDOR, and authentication vulnerabilities apply, just reached via a mobile app's traffic instead of a browser's. And the <strong>backend API</strong> itself is, again, just Path 11's entire web security curriculum, since most mobile apps are ultimately thin clients calling the same kinds of REST or GraphQL APIs a web app would.</p>
-<pre><code class="language-mermaid">flowchart TB
-    Code["Client-side code\n(reverse-engineerable,\nnever trust with secrets)"]
-    Storage["Local storage\n(genuinely new surface —\nweb apps rarely have this)"]
-    Network["Network layer\n(Path 11's web vulns,\nreached via mobile traffic)"]
-    Backend["Backend API\n(same as any web API)"]
-
-    style Code fill:#2b1010,color:#E9EEF3,stroke:#E05548
-    style Storage fill:#2b1f0a,color:#E9EEF3,stroke:#EFA43A
-    style Network fill:#0f2b26,color:#E9EEF3,stroke:#3FB6A8
-    style Backend fill:#111927,color:#8496A6,stroke:#8496A6
-</code></pre>
 <p>Recognising which of these four layers a given finding belongs to is genuinely useful triage — it tells you immediately which earlier path's toolkit and mindset to reach for, rather than treating "mobile security" as an entirely foreign discipline requiring completely new first principles.</p>
 <h2>Where mobile vulnerabilities actually come from</h2>
 <p>Despite sandboxing and permissions, mobile apps remain vulnerable in ways this path covers in depth: insecure local data storage (sensitive data saved unencrypted where a rooted/jailbroken device — or a stolen, unlocked one — can read it), weak network communication (skipping certificate validation, allowing traffic interception), reverse-engineerable code (since APKs can be decompiled far more easily than most people expect), and the same web-adjacent vulnerabilities from Path 11 wherever an app embeds a web view or talks to a backend API.</p>
-<p>:::challenge Test yourself
-Why does mobile app sandboxing alone not guarantee an app's data is actually safe, even though it prevents other apps from directly reading it?</p>
-<details><summary>Show answer</summary>Sandboxing only protects data <em>from other apps</em> on the same device under normal conditions — it says nothing about whether the data itself is stored securely within the app's own sandbox. If an app stores sensitive data in plain text inside its private storage, that data is still exposed to anyone with physical access to an unlocked device, anyone who can extract a backup of the device, or — critically — anyone using a rooted or jailbroken device, where the sandboxing boundary itself can be bypassed entirely. Sandboxing narrows <em>who</em> can normally reach the data; it does nothing to protect the data's confidentiality once that boundary is crossed, which is exactly why proper encryption of sensitive local data (covered later in this path) remains essential regardless of sandboxing.</details>
-:::<h2>Key terms</h2>
+<p>Why does mobile app sandboxing alone not guarantee an app's data is actually safe, even though it prevents other apps from directly reading it?</p>
+<details><summary>Show answer</summary>Sandboxing only protects data <em>from other apps</em> on the same device under normal conditions — it says nothing about whether the data itself is stored securely within the app's own sandbox. If an app stores sensitive data in plain text inside its private storage, that data is still exposed to anyone with physical access to an unlocked device, anyone who can extract a backup of the device, or — critically — anyone using a rooted or jailbroken device, where the sandboxing boundary itself can be bypassed entirely. Sandboxing narrows <em>who</em> can normally reach the data; it does nothing to protect the data's confidentiality once that boundary is crossed, which is exactly why proper encryption of sensitive local data (covered later in this path) remains essential regardless of sandboxing.</details><h2>Key terms</h2>
 <ul>
 <li><strong>Sandboxing</strong> — isolating each app's process and storage from every other app by default.</li>
 <li><strong>Runtime permissions</strong> — explicit, often individually-grantable user consent for sensitive resource access.</li>

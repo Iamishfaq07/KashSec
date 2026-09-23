@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Container Image &amp; Registry Security — Path 22 · KashSec Academy</title>
-<meta name="description" content="Container Image &amp; Registry Security: Base images, scanning, signing, and registry access control.">
+<meta name="description" content="The CI/CD security lesson covered the pipeline itself as a target. This lesson covers a specific artifact that pipeline typically produces and ships — the container image — directly connecting to Path">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/22-devsecops-appsec/container-image-and-registry-security.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Container Image &amp; Registry Security — Path 22 · KashSec Academy">
-<meta property="og:description" content="Container Image &amp; Registry Security: Base images, scanning, signing, and registry access control.">
+<meta property="og:description" content="The CI/CD security lesson covered the pipeline itself as a target. This lesson covers a specific artifact that pipeline typically produces and ships — the container image — directly connecting to Path">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/22-devsecops-appsec/container-image-and-registry-security.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Container Image &amp; Registry Security — Path 22 · KashSec Academy">
-<meta name="twitter:description" content="Container Image &amp; Registry Security: Base images, scanning, signing, and registry access control.">
+<meta name="twitter:description" content="The CI/CD security lesson covered the pipeline itself as a target. This lesson covers a specific artifact that pipeline typically produces and ships — the container image — directly connecting to Path">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 22 — DevSecOps & AppSec Program","item":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/"},{"@type":"ListItem","position":4,"name":"Container Image & Registry Security","item":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/container-image-and-registry-security.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Container Image & Registry Security","headline":"Container Image & Registry Security","description":"Container Image & Registry Security: Base images, scanning, signing, and registry access control.","url":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/container-image-and-registry-security.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Base images, scanning, signing, and registry access control.","isPartOf":{"@type":"Course","name":"Path 22: DevSecOps & AppSec Program","url":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/container-image-and-registry-security.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Container Image & Registry Security","headline":"Container Image & Registry Security","description":"The CI/CD security lesson covered the pipeline itself as a target. This lesson covers a specific artifact that pipeline typically produces and ships — the container image — directly connecting to Path","url":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/container-image-and-registry-security.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Base images, scanning, signing, and registry access control.","isPartOf":{"@type":"Course","name":"Path 22: DevSecOps & AppSec Program","url":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/container-image-and-registry-security.html"}}
 </script>
 </head>
 <body>
@@ -95,22 +95,13 @@
 <p>A genuinely high-leverage decision, made once but affecting every image built from it afterward: choosing a minimal, actively-maintained <strong>base image</strong> dramatically reduces the attack surface inherited by every application built on top of it. A full general-purpose OS base image carries dozens of unnecessary packages, each a potential source of vulnerabilities; a minimal or <strong>distroless</strong> base image (containing only the exact runtime dependencies an application actually needs, nothing else) meaningfully shrinks that inherited risk before a single line of application code is even added.</p>
 <h2>Image scanning at every pipeline stage, not just once</h2>
 <p>Directly connecting to the SAST/DAST/SCA lesson's scanning-trio framing: container image scanning (checking every layer for known-vulnerable package versions, again typically via <strong>Trivy</strong>, <strong>Grype</strong>, or similar tools) belongs at multiple points, not just once — scanning during the build stage catches issues before an image is ever pushed to a registry, and scanning images already sitting in the registry catches newly-disclosed vulnerabilities in packages that were secure when the image was originally built but have since had a CVE published against them.</p>
-<pre><code class="language-mermaid">flowchart LR
-    A[Build image] --&gt; B["Scan at build time\n(block on critical findings)"]
-    B --&gt; C[Push to registry]
-    C --&gt; D["Continuous registry scanning\n(newly disclosed CVEs)"]
-    D --&gt; E{New critical finding?}
-    E --&gt;|Yes| F[Alert + trigger rebuild]
-</code></pre>
 <h2>Image signing and provenance — verifying what actually gets deployed</h2>
 <p>Directly connecting to the secrets-supply-chain lesson's supply-chain trust concerns: <strong>image signing</strong> (using tools like <strong>Cosign</strong>) cryptographically signs a built image, letting a deployment pipeline verify that the image about to be deployed genuinely came from the expected, trusted build process, and hasn't been tampered with or substituted somewhere between build and deployment — directly connecting to Path 00's digital-signature cryptography coverage, applied here to the specific software-supply-chain problem of ensuring "what we tested is actually what gets deployed."</p>
 <h2>Registry access control — an often-overlooked layer</h2>
 <p>A genuinely common gap: a container registry (where built images are stored before deployment) left with overly permissive access, letting anyone with basic credentials push new images — directly connecting to Path 16's iam-deep-dive lesson, this creates a genuine supply-chain risk, since an attacker who can push a malicious image to a trusted registry can potentially get that image deployed to production simply by having it match an expected naming/tagging convention, without ever needing to compromise the actual build pipeline at all.</p>
 <h2>Runtime image immutability</h2>
 <p>A genuinely valuable operational practice: treating deployed containers as <strong>immutable</strong> — never patching or modifying a running container directly, instead always rebuilding a new image from the updated source and redeploying it. This ensures the image scanning and signing verification described above actually reflects what's running in production at all times, rather than production drifting away from what was originally scanned and verified through ad-hoc, undocumented runtime changes.</p>
-<p>:::challenge Test yourself
-Why does scanning a container image only once, at build time, fail to catch every vulnerability that image will eventually be exposed to over its deployed lifetime?
-:::</p>
+<p>Why does scanning a container image only once, at build time, fail to catch every vulnerability that image will eventually be exposed to over its deployed lifetime?</p>
 <h2>Key terms</h2>
 <ul>
 <li><strong>Base image</strong> — the foundational OS/runtime layer a container image is built on top of, shaping its inherited attack surface.</li>

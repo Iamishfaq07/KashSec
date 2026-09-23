@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Intercepting Mobile Traffic — Path 13 · KashSec Academy</title>
-<meta name="description" content="Intercepting Mobile Traffic: Certificate pinning, and bypassing it with Frida.">
+<meta name="description" content="Path 13's lab setup lesson got Burp configured to see mobile traffic in principle. This lesson covers the reality: many production apps actively fight back against exactly this, using certificate pinn">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/13-mobile-security/intercepting-mobile-traffic.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Intercepting Mobile Traffic — Path 13 · KashSec Academy">
-<meta property="og:description" content="Intercepting Mobile Traffic: Certificate pinning, and bypassing it with Frida.">
+<meta property="og:description" content="Path 13's lab setup lesson got Burp configured to see mobile traffic in principle. This lesson covers the reality: many production apps actively fight back against exactly this, using certificate pinn">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/13-mobile-security/intercepting-mobile-traffic.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Intercepting Mobile Traffic — Path 13 · KashSec Academy">
-<meta name="twitter:description" content="Intercepting Mobile Traffic: Certificate pinning, and bypassing it with Frida.">
+<meta name="twitter:description" content="Path 13's lab setup lesson got Burp configured to see mobile traffic in principle. This lesson covers the reality: many production apps actively fight back against exactly this, using certificate pinn">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 13 — Mobile App Security","item":"https://kashsec.vercel.app/lesson/13-mobile-security/"},{"@type":"ListItem","position":4,"name":"Intercepting Mobile Traffic","item":"https://kashsec.vercel.app/lesson/13-mobile-security/intercepting-mobile-traffic.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Intercepting Mobile Traffic","headline":"Intercepting Mobile Traffic","description":"Intercepting Mobile Traffic: Certificate pinning, and bypassing it with Frida.","url":"https://kashsec.vercel.app/lesson/13-mobile-security/intercepting-mobile-traffic.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate→Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Certificate pinning, and bypassing it with Frida.","isPartOf":{"@type":"Course","name":"Path 13: Mobile App Security","url":"https://kashsec.vercel.app/lesson/13-mobile-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/13-mobile-security/intercepting-mobile-traffic.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Intercepting Mobile Traffic","headline":"Intercepting Mobile Traffic","description":"Path 13's lab setup lesson got Burp configured to see mobile traffic in principle. This lesson covers the reality: many production apps actively fight back against exactly this, using certificate pinn","url":"https://kashsec.vercel.app/lesson/13-mobile-security/intercepting-mobile-traffic.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate→Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Certificate pinning, and bypassing it with Frida.","isPartOf":{"@type":"Course","name":"Path 13: Mobile App Security","url":"https://kashsec.vercel.app/lesson/13-mobile-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/13-mobile-security/intercepting-mobile-traffic.html"}}
 </script>
 </head>
 <body>
@@ -91,16 +91,6 @@
 <p>Path 13's lab setup lesson got Burp configured to see mobile traffic in principle. This lesson covers the reality: many production apps actively fight back against exactly this, using <strong>certificate pinning</strong>, and you'll learn how (and why) to work around it in your own authorized lab.</p>
 <h2>Why apps resist interception</h2>
 <p>A standard Burp Suite MITM setup works by presenting Burp's own certificate to the app instead of the real server's — the app trusts it (because you installed Burp's CA certificate, per the lab setup lesson), decrypts through Burp, and Burp forwards the traffic on. <strong>Certificate pinning</strong> defeats this specific technique: the app hardcodes which exact certificate (or public key) it expects from its real server, and rejects <em>any</em> other certificate — including a perfectly valid one from your device's trusted certificate store — refusing to connect if the fingerprint doesn't match exactly.</p>
-<pre><code class="language-mermaid">sequenceDiagram
-    participant App
-    participant Burp
-    participant Server
-    App-&gt;&gt;Burp: HTTPS request (thinks it's talking to Server)
-    Burp-&gt;&gt;App: Burp's certificate
-    App-&gt;&gt;App: Check cert against pinned fingerprint
-    App--xBurp: Pin mismatch — connection refused
-    Note over App,Burp: Without pinning, this same swap&lt;br/&gt;would succeed silently
-</code></pre>
 <h2>Bypassing pinning with Frida</h2>
 <p><strong><a href="https://frida.re/">Frida</a></strong> is a free, powerful dynamic instrumentation toolkit — it lets you inject JavaScript into a running app's process and hook (intercept and modify) specific function calls at runtime, without needing the app's source code.</p>
 <pre><code class="language-bash">pip install frida-tools
@@ -129,15 +119,9 @@ android sslpinning disable
 <p>Because this file is plain, unobfuscated XML sitting in the decompiled resources folder, a tester can — with apktool's rebuild capability from Path 13.4 — simply delete or relax the <code>pin-set</code> entry, then re-sign and reinstall the modified APK, bypassing pinning entirely without touching Frida at all. This is a genuinely faster path than runtime instrumentation whenever it's available, and worth checking for before reaching for Frida/Objection as the default first move.</p>
 <h2>What to look for once traffic is visible</h2>
 <p>Once pinning is bypassed and Burp can see the app's real traffic, apply everything from Path 11 directly: unencrypted parameters, IDOR opportunities in API calls (Path 11/10), tokens or API keys visible in headers (this course's CTF Zone's hidden-headers challenge), and — specifically mobile-relevant — whether the app falls back to <em>any</em> plaintext HTTP endpoints at all, even briefly during startup or analytics calls.</p>
-<p>:::tip Not every app pins certificates
-Certificate pinning adds real engineering overhead and complicates an app's own maintenance (the pinned certificate must be updated before the server's real certificate expires, or the app breaks entirely) — many apps, especially smaller or less security-mature ones, skip it entirely, meaning the basic Burp setup from the lab setup lesson works immediately with no bypass needed at all.
-:::</p>
-<p>:::danger Root/jailbreak detection often needs bypassing too
-Some apps check whether they're running on a rooted/jailbroken device and refuse to function (or silently limit functionality) if so — Objection includes bypass commands for common root-detection techniques as well (<code>android root disable</code>), and this exact cat-and-mouse dynamic between apps trying to detect tampering and testers bypassing that detection is a recurring theme throughout real mobile security work.
-:::</p>
-<p>:::challenge Bypass pinning on a practice app
-Using your rooted emulator and Frida (or Objection), attempt to bypass certificate pinning on one of this path's recommended vulnerable practice apps, or any app you've built yourself with pinning deliberately enabled. Confirm success by capturing its traffic in Burp afterward and finding at least one interesting request/response pair.
-:::</p>
+<p>Certificate pinning adds real engineering overhead and complicates an app's own maintenance (the pinned certificate must be updated before the server's real certificate expires, or the app breaks entirely) — many apps, especially smaller or less security-mature ones, skip it entirely, meaning the basic Burp setup from the lab setup lesson works immediately with no bypass needed at all.</p>
+<p>Some apps check whether they're running on a rooted/jailbroken device and refuse to function (or silently limit functionality) if so — Objection includes bypass commands for common root-detection techniques as well (<code>android root disable</code>), and this exact cat-and-mouse dynamic between apps trying to detect tampering and testers bypassing that detection is a recurring theme throughout real mobile security work.</p>
+<p>Using your rooted emulator and Frida (or Objection), attempt to bypass certificate pinning on one of this path's recommended vulnerable practice apps, or any app you've built yourself with pinning deliberately enabled. Confirm success by capturing its traffic in Burp afterward and finding at least one interesting request/response pair.</p>
 <h2>Key takeaway</h2>
 <p>Certificate pinning raises the bar for traffic interception but doesn't make it impossible — runtime instrumentation tools like Frida can patch an app's own trust decision at the exact moment it's made, which is exactly why defense-in-depth (proper server-side authorization, not relying on pinning alone) matters as much on mobile as everywhere else in this course.</p>
 <p><strong>Next up →</strong> <a href="#/lesson/13-mobile-security/mobile-api-security">Mobile API Security</a></p>

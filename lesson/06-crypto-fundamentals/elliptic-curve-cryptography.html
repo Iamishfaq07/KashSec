@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Elliptic Curve Cryptography — Path 06 · KashSec Academy</title>
-<meta name="description" content="Elliptic Curve Cryptography: The other hard math problem behind modern crypto, and why smaller keys win.">
+<meta name="description" content="The asymmetric-encryption lesson covered RSA, built on the hardness of factoring large numbers. This lesson covers the other major approach in wide modern use — Elliptic Curve Cryptography (ECC) — bui">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/06-crypto-fundamentals/elliptic-curve-cryptography.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Elliptic Curve Cryptography — Path 06 · KashSec Academy">
-<meta property="og:description" content="Elliptic Curve Cryptography: The other hard math problem behind modern crypto, and why smaller keys win.">
+<meta property="og:description" content="The asymmetric-encryption lesson covered RSA, built on the hardness of factoring large numbers. This lesson covers the other major approach in wide modern use — Elliptic Curve Cryptography (ECC) — bui">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/06-crypto-fundamentals/elliptic-curve-cryptography.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Elliptic Curve Cryptography — Path 06 · KashSec Academy">
-<meta name="twitter:description" content="Elliptic Curve Cryptography: The other hard math problem behind modern crypto, and why smaller keys win.">
+<meta name="twitter:description" content="The asymmetric-encryption lesson covered RSA, built on the hardness of factoring large numbers. This lesson covers the other major approach in wide modern use — Elliptic Curve Cryptography (ECC) — bui">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 06 — Cryptography Fundamentals","item":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/"},{"@type":"ListItem","position":4,"name":"Elliptic Curve Cryptography","item":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/elliptic-curve-cryptography.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Elliptic Curve Cryptography","headline":"Elliptic Curve Cryptography","description":"Elliptic Curve Cryptography: The other hard math problem behind modern crypto, and why smaller keys win.","url":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/elliptic-curve-cryptography.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"The other hard math problem behind modern crypto, and why smaller keys win.","isPartOf":{"@type":"Course","name":"Path 06: Cryptography Fundamentals","url":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/elliptic-curve-cryptography.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Elliptic Curve Cryptography","headline":"Elliptic Curve Cryptography","description":"The asymmetric-encryption lesson covered RSA, built on the hardness of factoring large numbers. This lesson covers the other major approach in wide modern use — Elliptic Curve Cryptography (ECC) — bui","url":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/elliptic-curve-cryptography.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"The other hard math problem behind modern crypto, and why smaller keys win.","isPartOf":{"@type":"Course","name":"Path 06: Cryptography Fundamentals","url":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/elliptic-curve-cryptography.html"}}
 </script>
 </head>
 <body>
@@ -89,9 +89,7 @@
     <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/06-crypto-fundamentals/">Path 06 — Cryptography Fundamentals</a> · Elliptic Curve Cryptography</nav>
     <div class="md" id="content"><article><h1>Elliptic Curve Cryptography</h1>
 <p>The asymmetric-encryption lesson covered RSA, built on the hardness of factoring large numbers. This lesson covers the other major approach in wide modern use — <strong>Elliptic Curve Cryptography (ECC)</strong> — built on a completely different hard math problem, and increasingly the default choice for new systems.</p>
-<p>:::tip
-You don't need to understand the underlying elliptic curve math deeply to use this lesson well. What matters practically: ECC provides equivalent security to RSA using dramatically smaller keys, which is exactly why it's become the modern default for TLS, SSH, cryptocurrency wallets, and passkeys (from Path 00's passwords lesson).
-:::</p>
+<p>:::</p>
 <h2>What an elliptic curve actually is, at a glance</h2>
 <p>An <strong>elliptic curve</strong> is a specific type of mathematical curve with a special property: given any two points on the curve, there's a well-defined way to "add" them together to get a third point, also on the curve. This "point addition" operation, repeated many times starting from a fixed public point, is easy to compute forward but extremely hard to reverse — you can easily compute "start at point G, add it to itself 47 times" but given only the starting point and the final result, recovering "47" is computationally infeasible at real-world key sizes. That asymmetry — easy forward, hard to reverse — is the exact same shape of hard problem RSA relies on with factoring, just built from different math.</p>
 <h2>Why smaller keys matter in practice</h2>
@@ -113,15 +111,12 @@ You don't need to understand the underlying elliptic curve math deeply to use th
 <p>:::challenge Compare key sizes
 A colleague argues that a system using 2048-bit RSA keys is automatically more secure than one using 256-bit ECC keys, purely because the number is bigger.</p>
 <details><summary>Hint</summary>Does "number of bits" mean the same thing across two completely different underlying mathematical problems?</details>
-<details><summary>Show answer</summary>This reasoning is incorrect, and it's a genuinely common misconception. Key size only makes sense as a security comparison *within* the same underlying algorithm family — RSA's hardness comes from factoring, ECC's comes from the elliptic curve discrete logarithm problem, and these problems don't get harder at the same rate as key size grows. In practice, a 256-bit ECC key provides security roughly comparable to a 3072-bit RSA key — meaning the 2048-bit RSA key in this scenario is actually somewhat *weaker*, not stronger, despite having a "bigger" number attached to it. Comparing raw bit counts across different algorithms is a meaningless comparison on its own.</details>
-:::<h2>🧪 Hands-on lab — inspect real ECC usage</h2>
+<details><summary>Show answer</summary>This reasoning is incorrect, and it's a genuinely common misconception. Key size only makes sense as a security comparison *within* the same underlying algorithm family — RSA's hardness comes from factoring, ECC's comes from the elliptic curve discrete logarithm problem, and these problems don't get harder at the same rate as key size grows. In practice, a 256-bit ECC key provides security roughly comparable to a 3072-bit RSA key — meaning the 2048-bit RSA key in this scenario is actually somewhat *weaker*, not stronger, despite having a "bigger" number attached to it. Comparing raw bit counts across different algorithms is a meaningless comparison on its own.</details><h2>🧪 Hands-on lab — inspect real ECC usage</h2>
 <p>Using a browser's developer tools (or an online SSL checker), inspect the certificate details of an HTTPS website you visit regularly, and identify whether it's using an RSA or ECC (often labeled ECDSA) key, and if ECC, which curve.</p>
-<p>:::challenge Test yourself</p>
 <ol>
 <li>What hard mathematical problem underlies elliptic curve cryptography's security?</li>
 <li>Why does a smaller ECC key provide comparable security to a much larger RSA key?</li>
-<li>Why does curve choice matter, and what does Curve25519 specifically get right?
-:::</li>
+<li>Why does curve choice matter, and what does Curve25519 specifically get right?</li>
 </ol>
 <h2>Key terms</h2>
 <ul>

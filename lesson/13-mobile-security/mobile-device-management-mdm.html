@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Mobile Device Management (MDM) — Path 13 · KashSec Academy</title>
-<meta name="description" content="Mobile Device Management (MDM): Containerization, BYOD, and enforcing security policy across a whole device fleet.">
+<meta name="description" content="Every lesson so far has focused on a single app's security. This lesson zooms out to how organizations manage security across an entire fleet of mobile devices at once — directly connecting to Path 24">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/13-mobile-security/mobile-device-management-mdm.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Mobile Device Management (MDM) — Path 13 · KashSec Academy">
-<meta property="og:description" content="Mobile Device Management (MDM): Containerization, BYOD, and enforcing security policy across a whole device fleet.">
+<meta property="og:description" content="Every lesson so far has focused on a single app's security. This lesson zooms out to how organizations manage security across an entire fleet of mobile devices at once — directly connecting to Path 24">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/13-mobile-security/mobile-device-management-mdm.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Mobile Device Management (MDM) — Path 13 · KashSec Academy">
-<meta name="twitter:description" content="Mobile Device Management (MDM): Containerization, BYOD, and enforcing security policy across a whole device fleet.">
+<meta name="twitter:description" content="Every lesson so far has focused on a single app's security. This lesson zooms out to how organizations manage security across an entire fleet of mobile devices at once — directly connecting to Path 24">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 13 — Mobile App Security","item":"https://kashsec.vercel.app/lesson/13-mobile-security/"},{"@type":"ListItem","position":4,"name":"Mobile Device Management (MDM)","item":"https://kashsec.vercel.app/lesson/13-mobile-security/mobile-device-management-mdm.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Mobile Device Management (MDM)","headline":"Mobile Device Management (MDM)","description":"Mobile Device Management (MDM): Containerization, BYOD, and enforcing security policy across a whole device fleet.","url":"https://kashsec.vercel.app/lesson/13-mobile-security/mobile-device-management-mdm.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate→Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Containerization, BYOD, and enforcing security policy across a whole device fleet.","isPartOf":{"@type":"Course","name":"Path 13: Mobile App Security","url":"https://kashsec.vercel.app/lesson/13-mobile-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/13-mobile-security/mobile-device-management-mdm.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Mobile Device Management (MDM)","headline":"Mobile Device Management (MDM)","description":"Every lesson so far has focused on a single app's security. This lesson zooms out to how organizations manage security across an entire fleet of mobile devices at once — directly connecting to Path 24","url":"https://kashsec.vercel.app/lesson/13-mobile-security/mobile-device-management-mdm.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate→Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Containerization, BYOD, and enforcing security policy across a whole device fleet.","isPartOf":{"@type":"Course","name":"Path 13: Mobile App Security","url":"https://kashsec.vercel.app/lesson/13-mobile-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/13-mobile-security/mobile-device-management-mdm.html"}}
 </script>
 </head>
 <body>
@@ -98,12 +98,6 @@
 </ul>
 <h2>Containerization: solving the BYOD privacy tension</h2>
 <p>Modern MDM solutions commonly use <strong>containerization</strong> (also called work profiles on Android) — creating a genuinely separate, encrypted, managed workspace on a personal device, containing only work apps and data, entirely isolated from the user's personal apps and data on the same physical phone. The organization can enforce policy and even remotely wipe the work container without ever touching (or even being able to see) the user's personal photos, messages, or apps.</p>
-<pre><code class="language-mermaid">flowchart TD
-    A[Personal Device] --&gt; B["Personal profile\n(user's own apps, photos, messages)"]
-    A --&gt; C["Work profile\n(managed, encrypted, org-controlled)"]
-    D[MDM] --&gt;|"Full visibility &amp; control"| C
-    D -.-&gt;|"No access"| B
-</code></pre>
 <h2>Why MDM matters for the security fundamentals covered earlier in this path</h2>
 <ul>
 <li><strong>Enforcing encryption and passcode requirements</strong> device-wide, directly connecting to Path 06's applied-crypto principles and Path 00's passwords lesson, applied at fleet scale rather than trusting each individual user's own choices</li>
@@ -113,10 +107,8 @@
 </ul>
 <h2>The genuine privacy tension worth naming honestly</h2>
 <p>Even with containerization, MDM enrollment involves real tradeoffs an employee should understand — some MDM configurations retain visibility into device-level information (location, installed app inventory, network activity) beyond just the work container, and the specific boundaries vary meaningfully by product and configuration. This is exactly the same "be deliberate and transparent about the tradeoff, not just assume it's fine" principle Path 09's family-privacy lesson raised for parental monitoring, applied here to the employer-employee relationship instead.</p>
-<p>:::challenge Test yourself
-Why does containerization specifically address the core tension in BYOD security, rather than just being a nice-to-have feature?</p>
-<details><summary>Show answer</summary>Without containerization, an organization enforcing meaningful security policy on a personal device (remote wipe capability, mandatory encryption, app restrictions) would need visibility and control over the <em>entire device</em> — including the user's personal photos, messages, and unrelated apps — creating a genuine, reasonable reason for an employee to resist enrollment entirely, since accepting corporate security policy would mean surrendering control over clearly personal, unrelated data. Containerization resolves this by creating a genuinely separate, isolated managed workspace: the organization gets full enforcement capability over the work container specifically (encryption, remote wipe, app control), while the user's personal profile remains genuinely outside the organization's reach, addressing the legitimate privacy concern directly rather than asking the employee to simply trust that the organization won't misuse broader access it doesn't actually need to have in the first place.</details>
-:::<h2>Key terms</h2>
+<p>Why does containerization specifically address the core tension in BYOD security, rather than just being a nice-to-have feature?</p>
+<details><summary>Show answer</summary>Without containerization, an organization enforcing meaningful security policy on a personal device (remote wipe capability, mandatory encryption, app restrictions) would need visibility and control over the <em>entire device</em> — including the user's personal photos, messages, and unrelated apps — creating a genuine, reasonable reason for an employee to resist enrollment entirely, since accepting corporate security policy would mean surrendering control over clearly personal, unrelated data. Containerization resolves this by creating a genuinely separate, isolated managed workspace: the organization gets full enforcement capability over the work container specifically (encryption, remote wipe, app control), while the user's personal profile remains genuinely outside the organization's reach, addressing the legitimate privacy concern directly rather than asking the employee to simply trust that the organization won't misuse broader access it doesn't actually need to have in the first place.</details><h2>Key terms</h2>
 <ul>
 <li><strong>MDM (Mobile Device Management)</strong> — software for centrally enforcing security policy and managing a fleet of mobile devices.</li>
 <li><strong>Containerization / work profile</strong> — a separate, encrypted, organization-managed workspace isolated from a personal device's personal data.</li>

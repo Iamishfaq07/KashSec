@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Files, folders &amp; organizing yourself — Path 00 · KashSec Academy</title>
-<meta name="description" content="Files, folders &amp; organizing yourself: Where your data lives, and how to stay tidy.">
+<meta name="description" content="This lesson looks basic — and it is — but skipping it is one of the most common reasons beginners get stuck later in this course. Nearly every hands-on lab from here on involves navigating folders, ru">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/00-fresher-basics/files-folders-you.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Files, folders &amp; organizing yourself — Path 00 · KashSec Academy">
-<meta property="og:description" content="Files, folders &amp; organizing yourself: Where your data lives, and how to stay tidy.">
+<meta property="og:description" content="This lesson looks basic — and it is — but skipping it is one of the most common reasons beginners get stuck later in this course. Nearly every hands-on lab from here on involves navigating folders, ru">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/00-fresher-basics/files-folders-you.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Files, folders &amp; organizing yourself — Path 00 · KashSec Academy">
-<meta name="twitter:description" content="Files, folders &amp; organizing yourself: Where your data lives, and how to stay tidy.">
+<meta name="twitter:description" content="This lesson looks basic — and it is — but skipping it is one of the most common reasons beginners get stuck later in this course. Nearly every hands-on lab from here on involves navigating folders, ru">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 00 — Computer Basics & Security Mindset","item":"https://kashsec.vercel.app/lesson/00-fresher-basics/"},{"@type":"ListItem","position":4,"name":"Files, folders & organizing yourself","item":"https://kashsec.vercel.app/lesson/00-fresher-basics/files-folders-you.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Files, folders & organizing yourself","headline":"Files, folders & organizing yourself","description":"Files, folders & organizing yourself: Where your data lives, and how to stay tidy.","url":"https://kashsec.vercel.app/lesson/00-fresher-basics/files-folders-you.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Absolute fresher","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Where your data lives, and how to stay tidy.","isPartOf":{"@type":"Course","name":"Path 00: Computer Basics & Security Mindset","url":"https://kashsec.vercel.app/lesson/00-fresher-basics/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/00-fresher-basics/files-folders-you.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Files, folders & organizing yourself","headline":"Files, folders & organizing yourself","description":"This lesson looks basic — and it is — but skipping it is one of the most common reasons beginners get stuck later in this course. Nearly every hands-on lab from here on involves navigating folders, ru","url":"https://kashsec.vercel.app/lesson/00-fresher-basics/files-folders-you.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Absolute fresher","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Where your data lives, and how to stay tidy.","isPartOf":{"@type":"Course","name":"Path 00: Computer Basics & Security Mindset","url":"https://kashsec.vercel.app/lesson/00-fresher-basics/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/00-fresher-basics/files-folders-you.html"}}
 </script>
 </head>
 <body>
@@ -95,14 +95,6 @@
 <li><strong>Folder (directory)</strong> — a container that holds files and other folders, used purely for organization. Folders can be nested inside other folders, forming a tree.</li>
 <li><strong>Path</strong> — the full "address" of a file or folder, describing exactly where it lives in that tree.</li>
 </ul>
-<pre><code class="language-mermaid">flowchart TD
-    Root["/ (root)"] --&gt; Home["Users/you"]
-    Home --&gt; Docs["Documents"]
-    Home --&gt; Down["Downloads"]
-    Docs --&gt; Notes["MySecurityNotes/"]
-    Notes --&gt; File1["passwords-policy.txt"]
-    Notes --&gt; File2["phishing-examples.png"]
-</code></pre>
 <h2>Absolute vs. relative paths</h2>
 <p>There are two ways to describe where a file lives:</p>
 <ul>
@@ -116,21 +108,16 @@
 <li>Attackers sometimes hide malicious files by naming them like normal hidden system files, hoping you won't look closely.</li>
 <li>Sensitive configuration — like saved passwords for tools, API keys, or SSH credentials — often lives in these hidden files, which is exactly why they're a common target once an attacker gains access to a machine.</li>
 </ul>
-<p>:::tip
-On Windows, show hidden files via File Explorer → View → check "Hidden items." On macOS, press <code>Cmd + Shift + .</code> inside Finder. On Linux, run <code>ls -a</code> in a terminal. You'll be surprised how much lives in those "hidden" folders.
-:::</p>
+<p>:::</p>
 <h2>File extensions can lie</h2>
 <p>An extension is just a <em>hint</em>, not a guarantee, about what a file actually is — the operating system mostly trusts it, and so does the human looking at it. Attackers exploit this constantly:</p>
 <p>:::danger Double extensions and disguised malware
-A file named <code>invoice.pdf.exe</code> might display with just a PDF icon on a system configured to hide "known" extensions — tricking a victim into thinking they're opening a harmless PDF when they're actually launching an executable program. Always be suspicious of unexpected attachments, and configure your OS to always show full file extensions (Windows: File Explorer → View → check "File name extensions").
-:::</p>
+A file named <code>invoice.pdf.exe</code> might display with just a PDF icon on a system configured to hide "known" extensions — tricking a victim into thinking they're opening a harmless PDF when they're actually launching an executable program. Always be suspicious of unexpected attachments, and configure your OS to always show full file extensions (Windows: File Explorer → View → check "File name extensions").</p>
 <h2>File permissions — a brief preview</h2>
 <p>Every file also has <strong>permissions</strong> attached to it — rules about who can read, write, or execute it. On a shared or multi-user computer, this is what stops one user from reading another's private documents by default. Path 03 covers Linux's permission model (<code>rwx</code>, <code>chmod</code>) in full depth once you're comfortable in a terminal, but the underlying idea is simple even now: a file isn't just data, it's data <em>plus a set of rules about who's allowed to touch it</em>, and those rules are exactly what an attacker is trying to bypass whenever you hear about a "privilege escalation" or "unauthorized access" vulnerability later in this course.</p>
 <h2>Metadata — the hidden data inside your files</h2>
 <p>Beyond a file's visible content, many file types carry <strong>metadata</strong> — extra information embedded inside the file itself, often invisible unless you specifically look for it. The most well-known example is <strong>EXIF data</strong> in photos: modern phone cameras automatically embed the exact date, time, camera model, and — critically — often the precise <strong>GPS coordinates</strong> of where a photo was taken, directly inside the image file.</p>
-<p>:::warn Photos can leak your exact location without you realizing it
-Posting a photo online without stripping its EXIF data can reveal your home address, workplace, or real-time location to anyone who downloads and inspects the file — a genuinely real privacy risk, and directly relevant to Path 09's digital footprint lesson later in this course. Most social media platforms strip this data automatically on upload, but messaging apps and direct file sharing often don't. Check your phone's camera settings for an option to disable location tagging, or use a metadata-removal tool before sharing sensitive photos elsewhere.
-:::</p>
+<p>Posting a photo online without stripping its EXIF data can reveal your home address, workplace, or real-time location to anyone who downloads and inspects the file — a genuinely real privacy risk, and directly relevant to Path 09's digital footprint lesson later in this course. Most social media platforms strip this data automatically on upload, but messaging apps and direct file sharing often don't. Check your phone's camera settings for an option to disable location tagging, or use a metadata-removal tool before sharing sensitive photos elsewhere.</p>
 <h2>Archives and compression — files within files</h2>
 <p>A <strong>compressed archive</strong> (<code>.zip</code>, <code>.tar.gz</code>, and similar) packages multiple files into one, often shrinking their total size in the process. These are genuinely useful for organizing and sharing, but worth knowing as a security-relevant format too: archives are a common way malware gets smuggled past email filters (some scanners don't automatically inspect <em>inside</em> a zip file), and a maliciously crafted archive can sometimes exploit flaws in the software that unpacks it — always be as cautious opening an unexpected <code>.zip</code> attachment as you would an unexpected executable.</p>
 <h2>Cloud sync folders — convenience with a privacy tradeoff</h2>
@@ -145,10 +132,8 @@ Posting a photo online without stripping its EXIF data can reveal your home addr
 <li>Take a photo with your phone (or use an existing one) and check its metadata — on a computer, right-click → Properties/Get Info often shows basic details; free online EXIF viewer tools (or a photo-metadata app) will show the full picture, including GPS coordinates if location tagging is enabled. Note whether your phone is currently embedding location data by default.</li>
 <li>Right-click any file on your system and check its permissions/properties (Windows: Properties → Security tab; macOS: Get Info → Sharing &amp; Permissions) — you don't need to change anything, just notice that this concept exists and is already actively protecting your files today.</li>
 </ol>
-<p>:::challenge Test yourself
-Why is "always show file extensions" considered a security best practice, rather than just a cosmetic preference?</p>
-<details><summary>Show answer</summary>When extensions are hidden, an attacker can name a malicious executable something like <code>photo.jpg.exe</code>, and depending on OS settings, it may display to the victim as simply <code>photo.jpg</code> with an image-like icon — hiding the fact that it's actually a runnable program. Showing full extensions removes that disguise: you'd immediately see <code>photo.jpg.exe</code> and recognize it as suspicious. It's a small setting that closes off an entire category of social-engineering trick.</details>
-:::<h2>Key terms</h2>
+<p>Why is "always show file extensions" considered a security best practice, rather than just a cosmetic preference?</p>
+<details><summary>Show answer</summary>When extensions are hidden, an attacker can name a malicious executable something like <code>photo.jpg.exe</code>, and depending on OS settings, it may display to the victim as simply <code>photo.jpg</code> with an image-like icon — hiding the fact that it's actually a runnable program. Showing full extensions removes that disguise: you'd immediately see <code>photo.jpg.exe</code> and recognize it as suspicious. It's a small setting that closes off an entire category of social-engineering trick.</details><h2>Key terms</h2>
 <ul>
 <li><strong>File</strong> — a single unit of stored data, identified by a name and extension.</li>
 <li><strong>Folder / directory</strong> — a container for organizing files and other folders.</li>

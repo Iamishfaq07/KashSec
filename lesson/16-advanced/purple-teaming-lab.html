@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Purple Teaming Lab — Path 16 · KashSec Academy</title>
-<meta name="description" content="Purple Teaming Lab: Learn to combine red and blue team perspectives.">
+<meta name="description" content="Purple teaming isn't a separate discipline from red and blue — it's the deliberate practice of running both simultaneously, using each attack as a live test of your own detection capability. This lab ">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/16-advanced/purple-teaming-lab.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Purple Teaming Lab — Path 16 · KashSec Academy">
-<meta property="og:description" content="Purple Teaming Lab: Learn to combine red and blue team perspectives.">
+<meta property="og:description" content="Purple teaming isn't a separate discipline from red and blue — it's the deliberate practice of running both simultaneously, using each attack as a live test of your own detection capability. This lab ">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/16-advanced/purple-teaming-lab.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Purple Teaming Lab — Path 16 · KashSec Academy">
-<meta name="twitter:description" content="Purple Teaming Lab: Learn to combine red and blue team perspectives.">
+<meta name="twitter:description" content="Purple teaming isn't a separate discipline from red and blue — it's the deliberate practice of running both simultaneously, using each attack as a live test of your own detection capability. This lab ">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 16 — Advanced Cyber Topics","item":"https://kashsec.vercel.app/lesson/16-advanced/"},{"@type":"ListItem","position":4,"name":"Purple Teaming Lab","item":"https://kashsec.vercel.app/lesson/16-advanced/purple-teaming-lab.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Purple Teaming Lab","headline":"Purple Teaming Lab","description":"Purple Teaming Lab: Learn to combine red and blue team perspectives.","url":"https://kashsec.vercel.app/lesson/16-advanced/purple-teaming-lab.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Learn to combine red and blue team perspectives.","isPartOf":{"@type":"Course","name":"Path 16: Advanced Cyber Topics","url":"https://kashsec.vercel.app/lesson/16-advanced/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/16-advanced/purple-teaming-lab.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Purple Teaming Lab","headline":"Purple Teaming Lab","description":"Purple teaming isn't a separate discipline from red and blue — it's the deliberate practice of running both simultaneously, using each attack as a live test of your own detection capability. This lab ","url":"https://kashsec.vercel.app/lesson/16-advanced/purple-teaming-lab.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Learn to combine red and blue team perspectives.","isPartOf":{"@type":"Course","name":"Path 16: Advanced Cyber Topics","url":"https://kashsec.vercel.app/lesson/16-advanced/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/16-advanced/purple-teaming-lab.html"}}
 </script>
 </head>
 <body>
@@ -93,28 +93,21 @@
 <p>You'll need a target you can both attack and monitor — a vulnerable VM (Metasploitable 2, or one of your own deliberately misconfigured setups from earlier labs in this path) with basic logging enabled, plus a way to review those logs afterward (even a simple <code>grep</code> through <code>/var/log/auth.log</code> is a legitimate starting point; a free tool like the ELK stack or Wazuh is a strong next step if you want to go further).</p>
 <h2>Tasks</h2>
 <ol>
-<li><strong>Attack (red hat on).</strong> Pick one technique you've practiced elsewhere in this course — an SSH brute-force attempt (Path 12's Wi-Fi/MITM material or the CTF Zone's forensics challenge both reference this exact attack pattern), a web exploit against a vulnerable app, or a privilege escalation chain from the previous lab. Execute it fully against your own lab target.</li>
-<li><strong>Detect (blue hat on).</strong> Now switch roles entirely. Without relying on your memory of exactly what you just did, go back to the logs and evidence <em>as if you were a SOC analyst seeing this incident cold</em> — could you have actually spotted this attack from the logs alone? What specific log lines, timestamps, or patterns would a detection rule need to key on?</li>
-<li><strong>Find the detection gap.</strong> Almost always, your first pass reveals something the logs <em>don't</em> capture well, or a detail that would be easy to miss buried in noise. Write down exactly what's missing — maybe the logging level was too low, maybe there's no alert threshold configured, maybe the relevant log source isn't being collected at all.</li>
-<li><strong>Improve the control.</strong> Based on the gap you found, make one concrete improvement — write a simple detection rule (even a <code>grep</code>/<code>awk</code> script counting failed logins per source IP within a time window is a legitimate, real starting point that mirrors what a SIEM correlation rule does under the hood), or adjust a logging configuration to capture what was missing.</li>
-<li><strong>Repeat with a second technique.</strong> Pick a different attack type and run the same attack → detect → gap → improve cycle again — the second pass is usually faster and sharper because you already know what to look for.</li>
+<li><p><strong>Attack (red hat on).</strong> Pick one technique you've practiced elsewhere in this course — an SSH brute-force attempt (Path 12's Wi-Fi/MITM material or the CTF Zone's forensics challenge both reference this exact attack pattern), a web exploit against a vulnerable app, or a privilege escalation chain from the previous lab. Execute it fully against your own lab target.</p>
+</li>
+<li><p><strong>Detect (blue hat on).</strong> Now switch roles entirely. Without relying on your memory of exactly what you just did, go back to the logs and evidence <em>as if you were a SOC analyst seeing this incident cold</em> — could you have actually spotted this attack from the logs alone? What specific log lines, timestamps, or patterns would a detection rule need to key on?</p>
+</li>
+<li><p><strong>Find the detection gap.</strong> Almost always, your first pass reveals something the logs <em>don't</em> capture well, or a detail that would be easy to miss buried in noise. Write down exactly what's missing — maybe the logging level was too low, maybe there's no alert threshold configured, maybe the relevant log source isn't being collected at all.</p>
+</li>
+<li><p><strong>Improve the control.</strong> Based on the gap you found, make one concrete improvement — write a simple detection rule (even a <code>grep</code>/<code>awk</code> script counting failed logins per source IP within a time window is a legitimate, real starting point that mirrors what a SIEM correlation rule does under the hood), or adjust a logging configuration to capture what was missing.</p>
+</li>
+<li><p><strong>Repeat with a second technique.</strong> Pick a different attack type and run the same attack → detect → gap → improve cycle again — the second pass is usually faster and sharper because you already know what to look for.</p>
+</li>
+<li><p><strong>Map each technique to MITRE ATT&amp;CK before and after.</strong> For each attack you run, look up its corresponding ATT&amp;CK technique ID (an SSH brute-force maps to T1110, for instance) and explicitly note whether your detection rule, once written, actually covers that technique's documented detection guidance. This habit — deliberately checking your own coverage against a shared, industry-standard reference — is exactly how real purple team programs track detection coverage systematically across an entire organisation, rather than one improvised rule at a time.</p>
+</li>
 </ol>
-<pre><code class="language-mermaid">flowchart LR
-    A["Red: Attack"] --&gt; B["Blue: Detect\n(using only the evidence,\nnot memory of the attack)"]
-    B --&gt; C{"Gap found?"}
-    C --&gt;|Yes| D["Improve detection\n(rule, logging, alert)"]
-    D --&gt; A
-    C --&gt;|No, fully detected| E["Document what worked\nand why"]
-</code></pre>
-<ol>
-<li><strong>Map each technique to MITRE ATT&amp;CK before and after.</strong> For each attack you run, look up its corresponding ATT&amp;CK technique ID (an SSH brute-force maps to T1110, for instance) and explicitly note whether your detection rule, once written, actually covers that technique's documented detection guidance. This habit — deliberately checking your own coverage against a shared, industry-standard reference — is exactly how real purple team programs track detection coverage systematically across an entire organisation, rather than one improvised rule at a time.</li>
-</ol>
-<p>:::tip This exact loop is a real, named methodology
-What you just practiced is a compressed version of real <strong>purple team engagements</strong>, which some organizations run as formal, ongoing programs specifically because this attack-detect-improve loop is far more effective at hardening detection than a one-off red team engagement followed by a report nobody acts on.
-:::</p>
-<p>:::challenge Write the purple team report
-Document one complete cycle in full: the attack technique used, what the logs showed (or didn't), the specific detection gap identified, and the exact improvement made (the actual rule or config change). Include a before/after — did your improved detection actually catch the <em>second</em> technique you tried, or reveal it needs further tuning?
-:::</p>
+<p>What you just practiced is a compressed version of real <strong>purple team engagements</strong>, which some organizations run as formal, ongoing programs specifically because this attack-detect-improve loop is far more effective at hardening detection than a one-off red team engagement followed by a report nobody acts on.</p>
+<p>Document one complete cycle in full: the attack technique used, what the logs showed (or didn't), the specific detection gap identified, and the exact improvement made (the actual rule or config change). Include a before/after — did your improved detection actually catch the <em>second</em> technique you tried, or reveal it needs further tuning?</p>
 <h2>Key takeaway</h2>
 <p>The value of purple teaming isn't the attack, and it isn't the detection — it's the <strong>feedback loop between them</strong>. Red team findings that never inform blue team improvements, and blue team rules that are never tested against a real attack, both waste most of their potential value in isolation.</p>
 <p><strong>Next up →</strong> <a href="#/lesson/16-advanced/threat-hunting-lab">Threat Hunting Lab</a></p>

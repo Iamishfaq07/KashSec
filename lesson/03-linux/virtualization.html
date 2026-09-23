@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>What is virtualization? — Path 03 · KashSec Academy</title>
-<meta name="description" content="What is virtualization?: A whole computer inside your computer.">
+<meta name="description" content="You need a place to practise where breaking things is safe and legal. Virtualization gives you exactly that: a disposable second computer you fully own, living inside your real one.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/03-linux/virtualization.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="What is virtualization? — Path 03 · KashSec Academy">
-<meta property="og:description" content="What is virtualization?: A whole computer inside your computer.">
+<meta property="og:description" content="You need a place to practise where breaking things is safe and legal. Virtualization gives you exactly that: a disposable second computer you fully own, living inside your real one.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/03-linux/virtualization.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="What is virtualization? — Path 03 · KashSec Academy">
-<meta name="twitter:description" content="What is virtualization?: A whole computer inside your computer.">
+<meta name="twitter:description" content="You need a place to practise where breaking things is safe and legal. Virtualization gives you exactly that: a disposable second computer you fully own, living inside your real one.">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 03 — Operating Systems & Linux","item":"https://kashsec.vercel.app/lesson/03-linux/"},{"@type":"ListItem","position":4,"name":"What is virtualization?","item":"https://kashsec.vercel.app/lesson/03-linux/virtualization.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"What is virtualization?","headline":"What is virtualization?","description":"What is virtualization?: A whole computer inside your computer.","url":"https://kashsec.vercel.app/lesson/03-linux/virtualization.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"A whole computer inside your computer.","isPartOf":{"@type":"Course","name":"Path 03: Operating Systems & Linux","url":"https://kashsec.vercel.app/lesson/03-linux/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/03-linux/virtualization.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"What is virtualization?","headline":"What is virtualization?","description":"You need a place to practise where breaking things is safe and legal. Virtualization gives you exactly that: a disposable second computer you fully own, living inside your real one.","url":"https://kashsec.vercel.app/lesson/03-linux/virtualization.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"A whole computer inside your computer.","isPartOf":{"@type":"Course","name":"Path 03: Operating Systems & Linux","url":"https://kashsec.vercel.app/lesson/03-linux/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/03-linux/virtualization.html"}}
 </script>
 </head>
 <body>
@@ -91,33 +91,7 @@
 <p>You need a place to practise where breaking things is safe and legal. <strong>Virtualization</strong> gives you exactly that: a disposable second computer you fully own, living inside your real one.</p>
 <h2>The core idea</h2>
 <p><strong>Virtualization</strong> is a clever trick: running a whole second computer <em>inside</em> your real one, in a window. That simulated computer is called a <strong>virtual machine</strong> (VM). It has its own operating system, its own files, its own network settings — but it's really just software running on your actual machine.</p>
-<pre><code class="language-svg">&lt;svg viewBox="0 0 700 300" xmlns="http://www.w3.org/2000/svg" font-family="Inter, sans-serif"&gt;
-  &lt;g font-size="12"&gt;
-    &lt;!-- Physical machine --&gt;
-    &lt;rect x="30" y="30" width="640" height="250" rx="10" fill="#0C1119" stroke="#213043" stroke-width="1.5"/&gt;
-    &lt;text x="60" y="55" fill="#8496A6" font-size="11"&gt;HOST (your real computer)&lt;/text&gt;
-    &lt;!-- Hardware --&gt;
-    &lt;rect x="50" y="220" width="600" height="45" rx="6" fill="#111927" stroke="#E05548"/&gt;
-    &lt;text x="350" y="248" text-anchor="middle" fill="#E05548" font-weight="600"&gt;⚙ Real hardware (CPU · RAM · disk · NIC)&lt;/text&gt;
-    &lt;!-- Host OS --&gt;
-    &lt;rect x="50" y="170" width="600" height="45" rx="6" fill="#111927" stroke="#8496A6"/&gt;
-    &lt;text x="350" y="197" text-anchor="middle" fill="#8496A6" font-weight="600"&gt;🪟 Host OS (Windows / macOS / Linux)&lt;/text&gt;
-    &lt;!-- Hypervisor --&gt;
-    &lt;rect x="50" y="120" width="600" height="45" rx="6" fill="#2b1f0a" stroke="#EFA43A"/&gt;
-    &lt;text x="350" y="147" text-anchor="middle" fill="#EFA43A" font-weight="700"&gt;🔀 Hypervisor (VirtualBox / VMware / KVM)&lt;/text&gt;
-    &lt;!-- Guest VMs --&gt;
-    &lt;rect x="70" y="65" width="180" height="50" rx="6" fill="#0f2b26" stroke="#3FB6A8"/&gt;
-    &lt;text x="160" y="95" text-anchor="middle" fill="#3FB6A8" font-weight="600"&gt;💻 Guest VM 1&lt;/text&gt;
-    &lt;text x="160" y="108" text-anchor="middle" fill="#8496A6" font-size="10"&gt;Kali Linux&lt;/text&gt;
-    &lt;rect x="260" y="65" width="180" height="50" rx="6" fill="#0f2b26" stroke="#3FB6A8"/&gt;
-    &lt;text x="350" y="95" text-anchor="middle" fill="#3FB6A8" font-weight="600"&gt;💻 Guest VM 2&lt;/text&gt;
-    &lt;text x="350" y="108" text-anchor="middle" fill="#8496A6" font-size="10"&gt;Metasploitable (target)&lt;/text&gt;
-    &lt;rect x="450" y="65" width="180" height="50" rx="6" fill="#0f2b26" stroke="#3FB6A8"/&gt;
-    &lt;text x="540" y="95" text-anchor="middle" fill="#3FB6A8" font-weight="600"&gt;💻 Guest VM 3&lt;/text&gt;
-    &lt;text x="540" y="108" text-anchor="middle" fill="#8496A6" font-size="10"&gt;Windows AD lab&lt;/text&gt;
-  &lt;/g&gt;
-&lt;/svg&gt;
-</code></pre>
+<p><em>[Host, hypervisor, and guest VMs]</em></p>
 <h2>Why this is perfect for learning security</h2>
 <ul>
 <li><strong>It's safe.</strong> If you break the VM — infect it, misconfigure it, delete everything — your real computer is untouched. You just reset the VM.</li>
@@ -151,9 +125,7 @@
 <p>You'll frequently hear "containers" (Docker, referenced throughout Path 16's containers/Kubernetes lab) mentioned alongside VMs — worth distinguishing now even briefly. A VM virtualizes an entire computer, including its own full operating system kernel, making it heavier but very strongly isolated. A <strong>container</strong> instead shares the host machine's kernel, packaging just an application and its dependencies — much lighter and faster to start, but with a thinner isolation boundary between container and host than a full VM provides. This tradeoff — VMs prioritize strong isolation, containers prioritize speed and efficiency — is exactly why Path 16's container security lab spends real time on container <em>escape</em> techniques: the isolation boundary, while real, is genuinely weaker than a full VM's.</p>
 <h2>The professional habit</h2>
 <p>Real security professionals <em>never</em> run risky tools or open suspicious files on their real machine. They always use a VM. You're about to learn the exact same setup the pros use daily. <strong>Building this lab is a genuine milestone.</strong></p>
-<p>:::tip PICTURE IT
-A VM is a sealed, transparent box on your desk. You can do anything inside the box — even set off a firework — and your desk stays clean. If the box gets wrecked, you grab a fresh identical box. That safety is what makes fearless learning possible.
-:::</p>
+<p>A VM is a sealed, transparent box on your desk. You can do anything inside the box — even set off a firework — and your desk stays clean. If the box gets wrecked, you grab a fresh identical box. That safety is what makes fearless learning possible.</p>
 <h2>System requirements to check</h2>
 <p>Before you install VirtualBox, make sure your machine can handle it:</p>
 <ul>
@@ -162,10 +134,8 @@ A VM is a sealed, transparent box on your desk. You can do anything inside the b
 <li><strong>CPU:</strong> must support hardware virtualization (VT-x on Intel, AMD-V on AMD) — nearly all modern CPUs do. May need to enable in BIOS (we cover this next lesson).</li>
 <li>If you have less: use <strong>TryHackMe</strong> or <strong>Hack The Box</strong> in your browser instead. The whole course still works.</li>
 </ul>
-<p>:::challenge Test yourself
-In virtualization terms, what do we call your <em>real</em> computer, and what do we call the virtual machine running inside it?</p>
-<details><summary>Show answer</summary>Your real computer is the <strong>host</strong>; the virtual machine is the <strong>guest</strong>.</details>
-:::<h2>Key terms</h2>
+<p>In virtualization terms, what do we call your <em>real</em> computer, and what do we call the virtual machine running inside it?</p>
+<details><summary>Show answer</summary>Your real computer is the <strong>host</strong>; the virtual machine is the <strong>guest</strong>.</details><h2>Key terms</h2>
 <ul>
 <li><strong>Virtualization</strong> — running a computer inside a computer.</li>
 <li><strong>Virtual machine (VM)</strong> — the simulated computer.</li>

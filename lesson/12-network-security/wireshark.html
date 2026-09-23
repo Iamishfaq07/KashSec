@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>See traffic with Wireshark — Path 12 · KashSec Academy</title>
-<meta name="description" content="See traffic with Wireshark: Watch real packets flow — plus tcpdump.">
+<meta name="description" content="If Nmap tells you what's on a network, Wireshark shows you exactly what's happening on the wire, packet by packet. It's the microscope of network security — indispensable for both attackers and defend">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/12-network-security/wireshark.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="See traffic with Wireshark — Path 12 · KashSec Academy">
-<meta property="og:description" content="See traffic with Wireshark: Watch real packets flow — plus tcpdump.">
+<meta property="og:description" content="If Nmap tells you what's on a network, Wireshark shows you exactly what's happening on the wire, packet by packet. It's the microscope of network security — indispensable for both attackers and defend">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/12-network-security/wireshark.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="See traffic with Wireshark — Path 12 · KashSec Academy">
-<meta name="twitter:description" content="See traffic with Wireshark: Watch real packets flow — plus tcpdump.">
+<meta name="twitter:description" content="If Nmap tells you what's on a network, Wireshark shows you exactly what's happening on the wire, packet by packet. It's the microscope of network security — indispensable for both attackers and defend">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 12 — Network Security","item":"https://kashsec.vercel.app/lesson/12-network-security/"},{"@type":"ListItem","position":4,"name":"See traffic with Wireshark","item":"https://kashsec.vercel.app/lesson/12-network-security/wireshark.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"See traffic with Wireshark","headline":"See traffic with Wireshark","description":"See traffic with Wireshark: Watch real packets flow — plus tcpdump.","url":"https://kashsec.vercel.app/lesson/12-network-security/wireshark.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Watch real packets flow — plus tcpdump.","isPartOf":{"@type":"Course","name":"Path 12: Network Security","url":"https://kashsec.vercel.app/lesson/12-network-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/12-network-security/wireshark.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"See traffic with Wireshark","headline":"See traffic with Wireshark","description":"If Nmap tells you what's on a network, Wireshark shows you exactly what's happening on the wire, packet by packet. It's the microscope of network security — indispensable for both attackers and defend","url":"https://kashsec.vercel.app/lesson/12-network-security/wireshark.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Watch real packets flow — plus tcpdump.","isPartOf":{"@type":"Course","name":"Path 12: Network Security","url":"https://kashsec.vercel.app/lesson/12-network-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/12-network-security/wireshark.html"}}
 </script>
 </head>
 <body>
@@ -109,16 +109,6 @@ sudo wireshark
 </code></pre>
 <p>Recognise that? It's the <strong>TCP three-way handshake</strong> from Path 02, now visible with your own eyes, packet by packet, exactly as it happens.</p>
 <h2>The three-pane view</h2>
-<pre><code class="language-mermaid">flowchart TB
-    List["📋 Packet List&lt;br/&gt;one row per packet — time, source, dest, protocol, summary"]
-    Detail["📖 Packet Details&lt;br/&gt;expandable tree — every protocol layer, every field"]
-    Bytes["🔢 Packet Bytes&lt;br/&gt;raw hex + ASCII — the actual bytes on the wire"]
-    List --&gt; Detail --&gt; Bytes
-
-    style List fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
-    style Detail fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
-    style Bytes fill:#111927,color:#8496A6,stroke:#8496A6
-</code></pre>
 <p>Clicking any packet in the top pane populates the middle pane with an <strong>expandable tree</strong> — click the arrow next to "Transmission Control Protocol" to see every TCP field (source port, destination port, flags, sequence numbers) exactly as they exist in the real packet. This is the single best way to <em>actually</em> internalise the protocol concepts from Path 02, rather than just reading about them.</p>
 <h2>Display filters — finding the needle in the haystack</h2>
 <p>A live capture can have thousands of packets in seconds. <strong>Display filters</strong> narrow what you see:</p>
@@ -139,9 +129,7 @@ frame contains "password"      # packets containing this string anywhere
 # then capture the traffic and Follow → TCP Stream
 </code></pre>
 <p>If you capture traffic to an HTTP (not HTTPS) login form, or a plain FTP login, you will see the <strong>actual username and password in cleartext</strong>, sitting right there in the packet bytes. This single exercise makes Path 02's "why TLS/HTTPS matters" lesson concrete in a way no explanation ever fully achieves — seeing a real password sitting unencrypted in a packet capture is a formative moment for most security learners.</p>
-<p>:::danger ONLY CAPTURE YOUR OWN TRAFFIC
-Capturing traffic on a network you don't own or lack authorization to monitor is illegal in most places — exactly the legal boundary from Path 01. Always practise on your own lab traffic, your own home network, or explicitly-provided training captures (like the sample <code>.pcap</code> files linked below).
-:::</p>
+<p>Capturing traffic on a network you don't own or lack authorization to monitor is illegal in most places — exactly the legal boundary from Path 01. Always practise on your own lab traffic, your own home network, or explicitly-provided training captures (like the sample <code>.pcap</code> files linked below).</p>
 <h2>Analysing pre-captured files (.pcap)</h2>
 <p>You don't always need to capture live — Wireshark opens saved capture files (<code>.pcap</code>/<code>.pcapng</code>) from anywhere, including ones shared for training, or evidence from a real incident (a core skill in digital forensics, Path 16.7):</p>
 <pre><code class="language-bash">wireshark suspicious-traffic.pcap
@@ -181,10 +169,8 @@ tshark -r capture.pcap -Y "http.request.method == GET"
 <li>Now visit an <strong>HTTPS</strong> site with a fresh capture, filter for <code>tls</code>, and try the same "Follow" trick — notice you can see the TLS handshake metadata, but <strong>not</strong> the actual encrypted content. That contrast is the entire point of encryption made visible.</li>
 <li>Try filtering for <code>dns</code> and watch every domain name your machine resolves during normal browsing — often surprisingly revealing of background app activity you didn't realise was happening.</li>
 </ol>
-<p>:::challenge Test yourself
-You capture traffic to a plain HTTP login form and successfully read the submitted username and password directly in the packet bytes. What single change to the website would have prevented this specific exposure?</p>
-<details><summary>Show answer</summary>Serving the login form over <strong>HTTPS instead of HTTP</strong> — TLS encryption (Path 02, Path 05.1) would mean the packet capture still shows the connection exists, but the actual credential data inside would be encrypted ciphertext, unreadable without the private key.</details>
-:::<h2>Key terms</h2>
+<p>You capture traffic to a plain HTTP login form and successfully read the submitted username and password directly in the packet bytes. What single change to the website would have prevented this specific exposure?</p>
+<details><summary>Show answer</summary>Serving the login form over <strong>HTTPS instead of HTTP</strong> — TLS encryption (Path 02, Path 05.1) would mean the packet capture still shows the connection exists, but the actual credential data inside would be encrypted ciphertext, unreadable without the private key.</details><h2>Key terms</h2>
 <ul>
 <li><strong>Wireshark</strong> — the standard GUI tool for capturing and analysing network traffic.</li>
 <li><strong>Display filter</strong> — a query narrowing which packets are shown from a capture.</li>

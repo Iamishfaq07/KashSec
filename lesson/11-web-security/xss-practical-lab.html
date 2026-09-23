@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>XSS Practical Lab — Path 11 · KashSec Academy</title>
-<meta name="description" content="XSS Practical Lab: Learn to find and exploit Cross-Site Scripting safely.">
+<meta name="description" content="This is the capstone lab for Path 11 — hands-on practice finding and exploiting all three major XSS variants, then writing up a finding the way real bug bounty programs expect.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/11-web-security/xss-practical-lab.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="XSS Practical Lab — Path 11 · KashSec Academy">
-<meta property="og:description" content="XSS Practical Lab: Learn to find and exploit Cross-Site Scripting safely.">
+<meta property="og:description" content="This is the capstone lab for Path 11 — hands-on practice finding and exploiting all three major XSS variants, then writing up a finding the way real bug bounty programs expect.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/11-web-security/xss-practical-lab.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="XSS Practical Lab — Path 11 · KashSec Academy">
-<meta name="twitter:description" content="XSS Practical Lab: Learn to find and exploit Cross-Site Scripting safely.">
+<meta name="twitter:description" content="This is the capstone lab for Path 11 — hands-on practice finding and exploiting all three major XSS variants, then writing up a finding the way real bug bounty programs expect.">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 11 — Web Security & Hacking","item":"https://kashsec.vercel.app/lesson/11-web-security/"},{"@type":"ListItem","position":4,"name":"XSS Practical Lab","item":"https://kashsec.vercel.app/lesson/11-web-security/xss-practical-lab.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"XSS Practical Lab","headline":"XSS Practical Lab","description":"XSS Practical Lab: Learn to find and exploit Cross-Site Scripting safely.","url":"https://kashsec.vercel.app/lesson/11-web-security/xss-practical-lab.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Intermediate","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Learn to find and exploit Cross-Site Scripting safely.","isPartOf":{"@type":"Course","name":"Path 11: Web Security & Hacking","url":"https://kashsec.vercel.app/lesson/11-web-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/11-web-security/xss-practical-lab.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"XSS Practical Lab","headline":"XSS Practical Lab","description":"This is the capstone lab for Path 11 — hands-on practice finding and exploiting all three major XSS variants, then writing up a finding the way real bug bounty programs expect.","url":"https://kashsec.vercel.app/lesson/11-web-security/xss-practical-lab.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Intermediate","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Learn to find and exploit Cross-Site Scripting safely.","isPartOf":{"@type":"Course","name":"Path 11: Web Security & Hacking","url":"https://kashsec.vercel.app/lesson/11-web-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/11-web-security/xss-practical-lab.html"}}
 </script>
 </head>
 <body>
@@ -116,12 +116,8 @@
 <li><p><strong>Find a DOM-based XSS via client-side source review.</strong> Rather than probing blindly, deliberately read a page's JavaScript (Path 05.6's Sources-panel technique) looking for a "sink" — code that writes attacker-controllable data into the page using <code>innerHTML</code>, <code>document.write()</code>, or similar — fed by a "source" like <code>location.search</code> or <code>location.hash</code>. Confirm the flow manually by tracing exactly how data moves from URL to sink before crafting your payload, rather than just guessing payloads at the URL and hoping one works. This source-to-sink tracing habit is precisely what separates efficient DOM-XSS hunting from unfocused trial and error.</p>
 </li>
 </ol>
-<p>:::warn Impact demonstration, not real exploitation
-Everything here should stay confined to proving impact within your own lab session — never actually exfiltrate real session data to an external server, even "just to prove it works," without explicit written authorization covering exactly that kind of test. A <code>document.cookie</code> popup within your own lab session proves the same point without crossing that line.
-:::</p>
-<p>:::challenge Write a full XSS report
-Pick your strongest finding from this lab and write a short report: <strong>Title</strong>, <strong>Type</strong> (reflected/stored/DOM), <strong>Steps to reproduce</strong> (exact payload and location), <strong>Impact</strong> (what a real attacker could do — session hijacking, credential theft via a fake login overlay, defacement), and <strong>Fix</strong> (proper output encoding, and — as defense in depth — a Content Security Policy). This is the exact deliverable format expected on real bug bounty platforms.
-:::</p>
+<p>Everything here should stay confined to proving impact within your own lab session — never actually exfiltrate real session data to an external server, even "just to prove it works," without explicit written authorization covering exactly that kind of test. A <code>document.cookie</code> popup within your own lab session proves the same point without crossing that line.</p>
+<p>Pick your strongest finding from this lab and write a short report: <strong>Title</strong>, <strong>Type</strong> (reflected/stored/DOM), <strong>Steps to reproduce</strong> (exact payload and location), <strong>Impact</strong> (what a real attacker could do — session hijacking, credential theft via a fake login overlay, defacement), and <strong>Fix</strong> (proper output encoding, and — as defense in depth — a Content Security Policy). This is the exact deliverable format expected on real bug bounty platforms.</p>
 <h2>Key takeaway</h2>
 <p>All three XSS variants share the same root cause — untrusted input rendered as executable HTML/JavaScript instead of inert text — and the same fundamental fix: <strong>context-aware output encoding</strong>, applied consistently everywhere user input reaches the page, never as an afterthought bolted onto one specific field.</p>
 <p><strong>Explore more →</strong> <a href="#/lesson/12-network-security">Path 12 — Network Security</a></p>

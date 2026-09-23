@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>The Purdue Model: Segmenting IT from OT — Path 25 · KashSec Academy</title>
-<meta name="description" content="The Purdue Model: Segmenting IT from OT: The standard reference architecture, and why the DMZ is the whole point.">
+<meta name="description" content="The previous lesson ended on a clear conclusion: since industrial protocols often can't be secured at the protocol level, network segmentation carries most of the real defensive weight in OT environme">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/25-ot-ics-security/purdue-model.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="The Purdue Model: Segmenting IT from OT — Path 25 · KashSec Academy">
-<meta property="og:description" content="The Purdue Model: Segmenting IT from OT: The standard reference architecture, and why the DMZ is the whole point.">
+<meta property="og:description" content="The previous lesson ended on a clear conclusion: since industrial protocols often can't be secured at the protocol level, network segmentation carries most of the real defensive weight in OT environme">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/25-ot-ics-security/purdue-model.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="The Purdue Model: Segmenting IT from OT — Path 25 · KashSec Academy">
-<meta name="twitter:description" content="The Purdue Model: Segmenting IT from OT: The standard reference architecture, and why the DMZ is the whole point.">
+<meta name="twitter:description" content="The previous lesson ended on a clear conclusion: since industrial protocols often can't be secured at the protocol level, network segmentation carries most of the real defensive weight in OT environme">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 25 — OT/ICS & Critical Infrastructure Security","item":"https://kashsec.vercel.app/lesson/25-ot-ics-security/"},{"@type":"ListItem","position":4,"name":"The Purdue Model: Segmenting IT from OT","item":"https://kashsec.vercel.app/lesson/25-ot-ics-security/purdue-model.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"The Purdue Model: Segmenting IT from OT","headline":"The Purdue Model: Segmenting IT from OT","description":"The Purdue Model: Segmenting IT from OT: The standard reference architecture, and why the DMZ is the whole point.","url":"https://kashsec.vercel.app/lesson/25-ot-ics-security/purdue-model.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"The standard reference architecture, and why the DMZ is the whole point.","isPartOf":{"@type":"Course","name":"Path 25: OT/ICS & Critical Infrastructure Security","url":"https://kashsec.vercel.app/lesson/25-ot-ics-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/25-ot-ics-security/purdue-model.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"The Purdue Model: Segmenting IT from OT","headline":"The Purdue Model: Segmenting IT from OT","description":"The previous lesson ended on a clear conclusion: since industrial protocols often can't be secured at the protocol level, network segmentation carries most of the real defensive weight in OT environme","url":"https://kashsec.vercel.app/lesson/25-ot-ics-security/purdue-model.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"The standard reference architecture, and why the DMZ is the whole point.","isPartOf":{"@type":"Course","name":"Path 25: OT/ICS & Critical Infrastructure Security","url":"https://kashsec.vercel.app/lesson/25-ot-ics-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/25-ot-ics-security/purdue-model.html"}}
 </script>
 </head>
 <body>
@@ -89,9 +89,7 @@
     <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/25-ot-ics-security/">Path 25 — OT/ICS &amp; Critical Infrastructure Security</a> · The Purdue Model: Segmenting IT from OT</nav>
     <div class="md" id="content"><article><h1>The Purdue Model: Segmenting IT from OT</h1>
 <p>The previous lesson ended on a clear conclusion: since industrial protocols often can't be secured at the protocol level, network segmentation carries most of the real defensive weight in OT environments. The <strong>Purdue Model</strong> (formally, the Purdue Enterprise Reference Architecture) is the standard reference framework the entire industry uses to structure that segmentation.</p>
-<p>:::tip
-Read this lesson alongside the Zero Trust path's micro-segmentation lesson if you've completed it — the Purdue Model is, in effect, a domain-specific, decades-old ancestor of the same "don't let anything reach more than it needs to" thinking, adapted specifically for the constraint that you cannot casually reboot a power plant to test a new firewall rule.
-:::</p>
+<p>:::</p>
 <h2>The levels, from physical process to business systems</h2>
 <table>
 <thead>
@@ -142,8 +140,7 @@ Read this lesson alongside the Zero Trust path's micro-segmentation lesson if yo
 <p><strong>Level 3.5</strong>, the Industrial DMZ, is arguably the single most important concept in this entire lesson. The model's core rule: <strong>IT systems at Level 4/5 should never talk directly to OT systems at Level 0-3.</strong> Instead, anything that genuinely needs to cross that boundary — a historian replicating data for business reporting, a remote-support connection, a patch being staged — passes through the DMZ, where it can be inspected, controlled, and limited to exactly the specific, necessary traffic, with nothing else allowed through.</p>
 <p>This is the practical embodiment of the "air gap isn't real anymore, so build a real boundary instead" lesson from the very first lesson in this path. The DMZ doesn't pretend IT and OT never need to connect — it accepts that they do, and makes that connection a single, tightly controlled, monitored chokepoint instead of an unmanaged sprawl of ad-hoc connections.</p>
 <p>:::danger
-The most common real-world Purdue Model failure isn't "we never built a DMZ" — it's <strong>DMZ bypass</strong>: a well-intentioned engineer sets up a "temporary" direct connection from an OT historian straight to a Level 4 business system, skipping the DMZ entirely, because it's faster and the DMZ rules are inconvenient for their specific need. That temporary connection often quietly becomes permanent, and it's exactly the kind of undocumented bridge that turns an assumed air gap into a real, exploitable path. This is the OT equivalent of the shadow API problem from the API Security path — an unmanaged, undocumented connection nobody remembers exists until it's the reason for a breach.
-:::</p>
+The most common real-world Purdue Model failure isn't "we never built a DMZ" — it's <strong>DMZ bypass</strong>: a well-intentioned engineer sets up a "temporary" direct connection from an OT historian straight to a Level 4 business system, skipping the DMZ entirely, because it's faster and the DMZ rules are inconvenient for their specific need. That temporary connection often quietly becomes permanent, and it's exactly the kind of undocumented bridge that turns an assumed air gap into a real, exploitable path. This is the OT equivalent of the shadow API problem from the API Security path — an unmanaged, undocumented connection nobody remembers exists until it's the reason for a breach.</p>
 <h2>A worked example: patching a historian, done right vs. done wrong</h2>
 <p>A historian at Level 3 needs a security patch. The patch file exists on a Level 4 business network.</p>
 <p><strong>Done wrong</strong>: An engineer copies the patch directly from a Level 4 machine onto a USB drive, or opens a direct network share straight from Level 4 to the Level 3 historian, bypassing the DMZ because "it's just this once." That direct pathway — even if used only once — is a potential foothold: if the Level 4 machine is compromised at the moment of that connection, the OT environment is now directly exposed.</p>
@@ -161,17 +158,20 @@ The most common real-world Purdue Model failure isn't "we never built a DMZ" —
 <h2>🧪 Hands-on lab — map a facility onto the Purdue Model</h2>
 <p>Pick a hypothetical (or research a real, publicly documented) industrial facility — a water treatment plant is a good, well-documented default.</p>
 <ol>
-<li>List the systems you'd expect to find at each Purdue level, from physical sensors up through enterprise IT.</li>
-<li>Identify at least two legitimate reasons data or systems would need to cross from OT (Level 0-3) to IT (Level 4-5) — e.g., production reporting, remote vendor support.</li>
-<li>For each, describe exactly how that crossing should be handled through the DMZ — what specific, narrow traffic should be allowed, and what should explicitly not be.</li>
-<li>Write one realistic "DMZ bypass" scenario an engineer might be tempted into, and one detection or process control that would catch it.</li>
-</ol>
-<p>:::challenge Test yourself</p>
-<ol>
-<li>What is Level 3.5, and why is "IT never talks directly to OT" the single most important rule in this model?</li>
-<li>Why does the Purdue Model, despite being decades old, remain the industry-standard reference architecture?</li>
-<li>In the historian-patching example, what specifically made the "done right" version safer, even though the end result (a patched historian) was identical?
-:::</li>
+<li><p>List the systems you'd expect to find at each Purdue level, from physical sensors up through enterprise IT.</p>
+</li>
+<li><p>Identify at least two legitimate reasons data or systems would need to cross from OT (Level 0-3) to IT (Level 4-5) — e.g., production reporting, remote vendor support.</p>
+</li>
+<li><p>For each, describe exactly how that crossing should be handled through the DMZ — what specific, narrow traffic should be allowed, and what should explicitly not be.</p>
+</li>
+<li><p>Write one realistic "DMZ bypass" scenario an engineer might be tempted into, and one detection or process control that would catch it.</p>
+</li>
+<li><p>What is Level 3.5, and why is "IT never talks directly to OT" the single most important rule in this model?</p>
+</li>
+<li><p>Why does the Purdue Model, despite being decades old, remain the industry-standard reference architecture?</p>
+</li>
+<li><p>In the historian-patching example, what specifically made the "done right" version safer, even though the end result (a patched historian) was identical?</p>
+</li>
 </ol>
 <h2>Key terms</h2>
 <ul>

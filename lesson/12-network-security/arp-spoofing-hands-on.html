@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>ARP Spoofing, Hands-On — Path 12 · KashSec Academy</title>
-<meta name="description" content="ARP Spoofing, Hands-On: How a classic local-network MITM actually gets established.">
+<meta name="description" content="Path 02's common-network-attacks-overview lesson introduced ARP spoofing by name. This lesson goes hands-on with exactly how it works and how it's detected, directly setting up the MITM lesson later i">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/12-network-security/arp-spoofing-hands-on.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="ARP Spoofing, Hands-On — Path 12 · KashSec Academy">
-<meta property="og:description" content="ARP Spoofing, Hands-On: How a classic local-network MITM actually gets established.">
+<meta property="og:description" content="Path 02's common-network-attacks-overview lesson introduced ARP spoofing by name. This lesson goes hands-on with exactly how it works and how it's detected, directly setting up the MITM lesson later i">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/12-network-security/arp-spoofing-hands-on.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="ARP Spoofing, Hands-On — Path 12 · KashSec Academy">
-<meta name="twitter:description" content="ARP Spoofing, Hands-On: How a classic local-network MITM actually gets established.">
+<meta name="twitter:description" content="Path 02's common-network-attacks-overview lesson introduced ARP spoofing by name. This lesson goes hands-on with exactly how it works and how it's detected, directly setting up the MITM lesson later i">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 12 — Network Security","item":"https://kashsec.vercel.app/lesson/12-network-security/"},{"@type":"ListItem","position":4,"name":"ARP Spoofing, Hands-On","item":"https://kashsec.vercel.app/lesson/12-network-security/arp-spoofing-hands-on.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"ARP Spoofing, Hands-On","headline":"ARP Spoofing, Hands-On","description":"ARP Spoofing, Hands-On: How a classic local-network MITM actually gets established.","url":"https://kashsec.vercel.app/lesson/12-network-security/arp-spoofing-hands-on.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"How a classic local-network MITM actually gets established.","isPartOf":{"@type":"Course","name":"Path 12: Network Security","url":"https://kashsec.vercel.app/lesson/12-network-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/12-network-security/arp-spoofing-hands-on.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"ARP Spoofing, Hands-On","headline":"ARP Spoofing, Hands-On","description":"Path 02's common-network-attacks-overview lesson introduced ARP spoofing by name. This lesson goes hands-on with exactly how it works and how it's detected, directly setting up the MITM lesson later i","url":"https://kashsec.vercel.app/lesson/12-network-security/arp-spoofing-hands-on.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"How a classic local-network MITM actually gets established.","isPartOf":{"@type":"Course","name":"Path 12: Network Security","url":"https://kashsec.vercel.app/lesson/12-network-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/12-network-security/arp-spoofing-hands-on.html"}}
 </script>
 </head>
 <body>
@@ -94,18 +94,6 @@
 <h2>Why ARP has no built-in trust mechanism</h2>
 <p>ARP was designed decades ago, for small, trusted local networks, with no authentication built in at all — any device can broadcast an ARP reply claiming to own any IP address, and other devices on the network will generally believe it without question, updating their own ARP tables (called <strong>ARP cache poisoning</strong>) to reflect the false claim.</p>
 <h2>The actual attack, step by step</h2>
-<pre><code class="language-mermaid">sequenceDiagram
-    participant V as Victim
-    participant A as Attacker
-    participant G as Real Gateway
-    A-&gt;&gt;V: "I am the gateway" (forged ARP reply)
-    A-&gt;&gt;G: "I am the victim" (forged ARP reply)
-    Note over V,G: Both now route traffic through the attacker
-    V-&gt;&gt;A: Traffic intended for the gateway
-    A-&gt;&gt;G: Attacker forwards it (after inspecting/modifying)
-    G-&gt;&gt;A: Response
-    A-&gt;&gt;V: Attacker forwards response back
-</code></pre>
 <p>The attacker sends forged ARP replies to both the victim (claiming to be the gateway from Path 02's routing lesson) and the gateway (claiming to be the victim), positioning themselves directly in the middle of all traffic between the two — a textbook MITM setup, established purely through ARP's lack of authentication.</p>
 <h2>Detecting ARP spoofing</h2>
 <ul>
@@ -115,10 +103,8 @@
 </ul>
 <h2>Why VLANs help, but don't fully solve this</h2>
 <p>Directly connecting to Path 02's switches-and-VLANs lesson: since ARP spoofing only works within the same local broadcast domain, segmenting a network into smaller VLANs limits how many devices any single spoofing attempt can actually affect — but it doesn't eliminate ARP's fundamental lack of authentication within whatever segment an attacker does manage to reach.</p>
-<p>:::challenge Test yourself
-Why does ARP spoofing succeed even against a network with a properly configured, secure Wi-Fi password (WPA2/WPA3, from Path 02)?</p>
-<details><summary>Show answer</summary>A strong Wi-Fi password controls who can <em>join</em> the network in the first place — but ARP spoofing is an attack that happens <em>after</em> a device is already legitimately connected, exploiting ARP's complete lack of built-in authentication for devices that are already, legitimately, part of the same local network. A strong Wi-Fi password doesn't protect against a malicious insider, a compromised device already on the network, or an attacker who's separately obtained legitimate access (through a guessed password, a WPS vulnerability, or simply being handed the Wi-Fi password by an unsuspecting host) — once <em>any</em> device is on the same local network segment, ARP spoofing is a completely separate, unrelated vulnerability that a strong join-time password does nothing to address.</details>
-:::<h2>Key terms</h2>
+<p>Why does ARP spoofing succeed even against a network with a properly configured, secure Wi-Fi password (WPA2/WPA3, from Path 02)?</p>
+<details><summary>Show answer</summary>A strong Wi-Fi password controls who can <em>join</em> the network in the first place — but ARP spoofing is an attack that happens <em>after</em> a device is already legitimately connected, exploiting ARP's complete lack of built-in authentication for devices that are already, legitimately, part of the same local network. A strong Wi-Fi password doesn't protect against a malicious insider, a compromised device already on the network, or an attacker who's separately obtained legitimate access (through a guessed password, a WPS vulnerability, or simply being handed the Wi-Fi password by an unsuspecting host) — once <em>any</em> device is on the same local network segment, ARP spoofing is a completely separate, unrelated vulnerability that a strong join-time password does nothing to address.</details><h2>Key terms</h2>
 <ul>
 <li><strong>ARP cache poisoning</strong> — updating a device's ARP table with a false, attacker-supplied IP-to-MAC mapping.</li>
 <li><strong>Dynamic ARP Inspection (DAI)</strong> — a switch-level feature validating ARP packets against a known-good binding table.</li>

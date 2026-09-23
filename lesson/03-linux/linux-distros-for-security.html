@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Choosing a Linux distro for security work — Path 03 · KashSec Academy</title>
-<meta name="description" content="Choosing a Linux distro for security work: Kali vs. Parrot vs. Ubuntu — attack platform vs. target system.">
+<meta name="description" content="The why-linux lesson explained why Linux dominates security tooling in general. This lesson answers the next question: which specific distribution (&quot;distro&quot;) should you actually reach for, and why doe">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/03-linux/linux-distros-for-security.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Choosing a Linux distro for security work — Path 03 · KashSec Academy">
-<meta property="og:description" content="Choosing a Linux distro for security work: Kali vs. Parrot vs. Ubuntu — attack platform vs. target system.">
+<meta property="og:description" content="The why-linux lesson explained why Linux dominates security tooling in general. This lesson answers the next question: which specific distribution (&quot;distro&quot;) should you actually reach for, and why doe">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/03-linux/linux-distros-for-security.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Choosing a Linux distro for security work — Path 03 · KashSec Academy">
-<meta name="twitter:description" content="Choosing a Linux distro for security work: Kali vs. Parrot vs. Ubuntu — attack platform vs. target system.">
+<meta name="twitter:description" content="The why-linux lesson explained why Linux dominates security tooling in general. This lesson answers the next question: which specific distribution (&quot;distro&quot;) should you actually reach for, and why doe">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 03 — Operating Systems & Linux","item":"https://kashsec.vercel.app/lesson/03-linux/"},{"@type":"ListItem","position":4,"name":"Choosing a Linux distro for security work","item":"https://kashsec.vercel.app/lesson/03-linux/linux-distros-for-security.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Choosing a Linux distro for security work","headline":"Choosing a Linux distro for security work","description":"Choosing a Linux distro for security work: Kali vs. Parrot vs. Ubuntu — attack platform vs. target system.","url":"https://kashsec.vercel.app/lesson/03-linux/linux-distros-for-security.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Kali vs. Parrot vs. Ubuntu — attack platform vs. target system.","isPartOf":{"@type":"Course","name":"Path 03: Operating Systems & Linux","url":"https://kashsec.vercel.app/lesson/03-linux/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/03-linux/linux-distros-for-security.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Choosing a Linux distro for security work","headline":"Choosing a Linux distro for security work","description":"The why-linux lesson explained why Linux dominates security tooling in general. This lesson answers the next question: which specific distribution (\"distro\") should you actually reach for, and why doe","url":"https://kashsec.vercel.app/lesson/03-linux/linux-distros-for-security.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Kali vs. Parrot vs. Ubuntu — attack platform vs. target system.","isPartOf":{"@type":"Course","name":"Path 03: Operating Systems & Linux","url":"https://kashsec.vercel.app/lesson/03-linux/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/03-linux/linux-distros-for-security.html"}}
 </script>
 </head>
 <body>
@@ -100,9 +100,7 @@
 </ul>
 <h2>Why "attack platform" and "target system" are different choices</h2>
 <p>A genuinely important distinction beginners often miss: Kali is designed to <em>attack</em> or <em>test</em> other systems — it's not designed to be hardened and exposed to the internet itself. A production web server, by contrast, should run a general-purpose, hardened distro like Ubuntu Server or Debian, configured defensively (a preview of what the hardening-checklist lesson later in this path covers), never Kali.</p>
-<p>:::tip
-A useful mental shortcut: Kali/Parrot are for the <strong>attacker's or tester's own machine</strong>. Ubuntu/Debian/RHEL are for <strong>the systems being tested or run in production</strong>. Confusing the two — running Kali as a production server, or trying to hack from a locked-down Ubuntu box missing all the tools — makes everything harder than it needs to be.
-:::</p>
+<p>:::</p>
 <h2>Enterprise and specialized distros worth knowing by name</h2>
 <ul>
 <li><strong>Red Hat Enterprise Linux (RHEL) / CentOS / Rocky Linux</strong> — common in corporate and government environments, valued for long-term support and enterprise-grade stability</li>
@@ -110,8 +108,7 @@ A useful mental shortcut: Kali/Parrot are for the <strong>attacker's or tester's
 </ul>
 <p>:::challenge Test yourself
 Why would running Kali Linux as a public-facing production web server be a poor security decision, despite Kali being a "security-focused" distro?</p>
-<details><summary>Show answer</summary>Kali is optimized and hardened for a completely different purpose than a production server: it ships with hundreds of offensive tools pre-installed, often runs services and configurations optimized for a tester's convenience rather than a locked-down attack surface, and its documentation and community support assume it's being used in a controlled lab environment, not directly exposed to the internet. A production server needs the opposite priorities — minimal installed software, hardened default configuration, and a distro (like Ubuntu Server or RHEL) specifically designed and widely tested for exactly that defensive, internet-facing role. "Security-focused" describes two very different things depending on whether you're the one testing or the one being tested.</details>
-:::<h2>Key terms</h2>
+<details><summary>Show answer</summary>Kali is optimized and hardened for a completely different purpose than a production server: it ships with hundreds of offensive tools pre-installed, often runs services and configurations optimized for a tester's convenience rather than a locked-down attack surface, and its documentation and community support assume it's being used in a controlled lab environment, not directly exposed to the internet. A production server needs the opposite priorities — minimal installed software, hardened default configuration, and a distro (like Ubuntu Server or RHEL) specifically designed and widely tested for exactly that defensive, internet-facing role. "Security-focused" describes two very different things depending on whether you're the one testing or the one being tested.</details><h2>Key terms</h2>
 <ul>
 <li><strong>Linux distribution (distro)</strong> — the Linux kernel packaged together with a specific software selection, package manager, and configuration choices.</li>
 <li><strong>Attack platform</strong> — a distro configured for offensive security testing (Kali, Parrot), not intended for production exposure.</li>

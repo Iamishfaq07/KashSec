@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Reporting Lab — Path 14 · KashSec Academy</title>
-<meta name="description" content="Reporting Lab: Learn to write professional penetration test reports.">
+<meta name="description" content="This is the final lab in Path 14, and arguably covers the single most underrated skill in offensive security: writing the report. A brilliant finding that's poorly communicated often gets deprioritize">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/14-ethical-hacking/reporting-lab.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Reporting Lab — Path 14 · KashSec Academy">
-<meta property="og:description" content="Reporting Lab: Learn to write professional penetration test reports.">
+<meta property="og:description" content="This is the final lab in Path 14, and arguably covers the single most underrated skill in offensive security: writing the report. A brilliant finding that's poorly communicated often gets deprioritize">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/14-ethical-hacking/reporting-lab.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Reporting Lab — Path 14 · KashSec Academy">
-<meta name="twitter:description" content="Reporting Lab: Learn to write professional penetration test reports.">
+<meta name="twitter:description" content="This is the final lab in Path 14, and arguably covers the single most underrated skill in offensive security: writing the report. A brilliant finding that's poorly communicated often gets deprioritize">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 14 — Ethical Hacking","item":"https://kashsec.vercel.app/lesson/14-ethical-hacking/"},{"@type":"ListItem","position":4,"name":"Reporting Lab","item":"https://kashsec.vercel.app/lesson/14-ethical-hacking/reporting-lab.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Reporting Lab","headline":"Reporting Lab","description":"Reporting Lab: Learn to write professional penetration test reports.","url":"https://kashsec.vercel.app/lesson/14-ethical-hacking/reporting-lab.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Intermediate→Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Learn to write professional penetration test reports.","isPartOf":{"@type":"Course","name":"Path 14: Ethical Hacking","url":"https://kashsec.vercel.app/lesson/14-ethical-hacking/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/14-ethical-hacking/reporting-lab.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Reporting Lab","headline":"Reporting Lab","description":"This is the final lab in Path 14, and arguably covers the single most underrated skill in offensive security: writing the report. A brilliant finding that's poorly communicated often gets deprioritize","url":"https://kashsec.vercel.app/lesson/14-ethical-hacking/reporting-lab.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Intermediate→Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Learn to write professional penetration test reports.","isPartOf":{"@type":"Course","name":"Path 14: Ethical Hacking","url":"https://kashsec.vercel.app/lesson/14-ethical-hacking/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/14-ethical-hacking/reporting-lab.html"}}
 </script>
 </head>
 <body>
@@ -91,27 +91,21 @@
 <p>This is the final lab in Path 14, and arguably covers the single most underrated skill in offensive security: <strong>writing the report.</strong> A brilliant finding that's poorly communicated often gets deprioritized or ignored entirely — the report is the actual deliverable a client pays for, not the exploitation itself.</p>
 <h2>Tasks</h2>
 <ol>
-<li><strong>Take notes during exploitation, as you go.</strong> Revisit one of your earlier labs (the Metasploit lab or the practical recon lab are good candidates) and, if you didn't already, reconstruct your process from memory and any screenshots you have: what you tried, what worked, what didn't. Real testers take notes continuously during an engagement — reconstructing everything from memory afterward, as you're doing here, is exactly the painful lesson that teaches why.</li>
-<li><strong>Write an executive summary.</strong> This is the single most-read section of any report — often the <em>only</em> section a non-technical stakeholder reads. In 3–4 sentences, plain language, no jargon: what was tested, what was found overall, and how serious it is. Practice writing this section <em>last</em>, once you know your full findings, even though it appears first in the document.</li>
-<li><strong>Document findings with severity ratings.</strong> For each finding, use the CVSS reasoning from the main Reporting lesson to justify a severity (Critical/High/Medium/Low), and write it up with: <strong>Title</strong>, <strong>Description</strong>, <strong>Steps to Reproduce</strong>, <strong>Impact</strong>, and <strong>Evidence</strong> (screenshots or request/response pairs).</li>
-<li><strong>Provide clear, specific remediation steps.</strong> "Fix the SQL injection" is not a useful remediation. "Use parameterized queries for all database calls involving user input; specifically, replace the string-concatenated query in <code>login.php</code> line 42" is. Specificity is what makes a remediation section actually actionable for a development team.</li>
-<li><strong>Assemble a complete sample report.</strong> Combine everything into one document (Markdown is perfectly fine, and genuinely common in the industry) with a clear structure: Executive Summary → Scope &amp; Methodology → Findings (sorted by severity, highest first) → Appendix (raw evidence/logs).</li>
+<li><p><strong>Take notes during exploitation, as you go.</strong> Revisit one of your earlier labs (the Metasploit lab or the practical recon lab are good candidates) and, if you didn't already, reconstruct your process from memory and any screenshots you have: what you tried, what worked, what didn't. Real testers take notes continuously during an engagement — reconstructing everything from memory afterward, as you're doing here, is exactly the painful lesson that teaches why.</p>
+</li>
+<li><p><strong>Write an executive summary.</strong> This is the single most-read section of any report — often the <em>only</em> section a non-technical stakeholder reads. In 3–4 sentences, plain language, no jargon: what was tested, what was found overall, and how serious it is. Practice writing this section <em>last</em>, once you know your full findings, even though it appears first in the document.</p>
+</li>
+<li><p><strong>Document findings with severity ratings.</strong> For each finding, use the CVSS reasoning from the main Reporting lesson to justify a severity (Critical/High/Medium/Low), and write it up with: <strong>Title</strong>, <strong>Description</strong>, <strong>Steps to Reproduce</strong>, <strong>Impact</strong>, and <strong>Evidence</strong> (screenshots or request/response pairs).</p>
+</li>
+<li><p><strong>Provide clear, specific remediation steps.</strong> "Fix the SQL injection" is not a useful remediation. "Use parameterized queries for all database calls involving user input; specifically, replace the string-concatenated query in <code>login.php</code> line 42" is. Specificity is what makes a remediation section actually actionable for a development team.</p>
+</li>
+<li><p><strong>Assemble a complete sample report.</strong> Combine everything into one document (Markdown is perfectly fine, and genuinely common in the industry) with a clear structure: Executive Summary → Scope &amp; Methodology → Findings (sorted by severity, highest first) → Appendix (raw evidence/logs).</p>
+</li>
+<li><p><strong>Peer-review someone else's finding for clarity.</strong> Swap your written finding from Task 3 with a fellow learner (or, if working solo, set it aside for a day and re-read it cold) and specifically check: could someone with zero prior context reproduce the exact steps without needing to ask a single clarifying question? Ambiguity that felt obvious while you were writing it — because you already knew what you meant — is often invisible to the person who wrote it and glaringly obvious to a fresh reader, which is exactly why real security teams build peer review into their reporting process rather than shipping a single author's first draft.</p>
+</li>
 </ol>
-<pre><code class="language-mermaid">flowchart TD
-    A[Findings &amp; Notes\nfrom testing] --&gt; B[Assign Severity\nCVSS reasoning]
-    B --&gt; C[Write Detailed\nFinding Sections]
-    C --&gt; D["Write Executive\nSummary LAST"]
-    D --&gt; E[Assemble Full Report\nsorted by severity]
-</code></pre>
-<ol>
-<li><strong>Peer-review someone else's finding for clarity.</strong> Swap your written finding from Task 3 with a fellow learner (or, if working solo, set it aside for a day and re-read it cold) and specifically check: could someone with zero prior context reproduce the exact steps without needing to ask a single clarifying question? Ambiguity that felt obvious while you were writing it — because you already knew what you meant — is often invisible to the person who wrote it and glaringly obvious to a fresh reader, which is exactly why real security teams build peer review into their reporting process rather than shipping a single author's first draft.</li>
-</ol>
-<p>:::tip A report is written for two audiences at once
-Every real pentest report needs to work for both a non-technical executive (who reads only the executive summary and cares about business risk) and a technical engineer (who reads the detailed findings and needs exact reproduction steps to fix the issue). Writing with both audiences in mind — plain language up top, precise technical detail below — is a skill worth deliberately practicing, not an afterthought.
-:::</p>
-<p>:::challenge Write a full report from an earlier lab
-Choose any lab you've completed earlier in this course (Metasploit, XSS, SQLi, or any other) and write a complete report using the structure above: executive summary, at least two findings with full detail and CVSS-based severity, and specific remediation for each. If possible, get feedback from a peer or mentor — Path 20's networking lesson covers exactly where to find people willing to review this kind of work.
-:::</p>
+<p>Every real pentest report needs to work for both a non-technical executive (who reads only the executive summary and cares about business risk) and a technical engineer (who reads the detailed findings and needs exact reproduction steps to fix the issue). Writing with both audiences in mind — plain language up top, precise technical detail below — is a skill worth deliberately practicing, not an afterthought.</p>
+<p>Choose any lab you've completed earlier in this course (Metasploit, XSS, SQLi, or any other) and write a complete report using the structure above: executive summary, at least two findings with full detail and CVSS-based severity, and specific remediation for each. If possible, get feedback from a peer or mentor — Path 20's networking lesson covers exactly where to find people willing to review this kind of work.</p>
 <h2>Key takeaway</h2>
 <p>Technical skill finds the vulnerability; clear reporting is what actually gets it fixed. A finding that never gets communicated in a way stakeholders can act on has essentially zero real-world impact, no matter how impressive the exploit behind it was — which is exactly why reporting is treated as a core skill throughout this entire path, not an afterthought tacked onto the end.</p>
 <p><strong>Explore more →</strong> <a href="#/lesson/15-bug-bounty">Path 15 — Bug Bounty</a></p>

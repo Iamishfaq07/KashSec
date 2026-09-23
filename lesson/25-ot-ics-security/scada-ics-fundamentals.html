@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>SCADA &amp; ICS Architecture Fundamentals — Path 25 · KashSec Academy</title>
-<meta name="description" content="SCADA &amp; ICS Architecture Fundamentals: The sense-decide-act control loop, SCADA vs. DCS, HMI, and the historian.">
+<meta name="description" content="The previous lesson introduced the vocabulary. This one builds the actual mental model — what's really happening, layer by layer, between a sensor reading a physical value and an operator making a dec">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/25-ot-ics-security/scada-ics-fundamentals.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="SCADA &amp; ICS Architecture Fundamentals — Path 25 · KashSec Academy">
-<meta property="og:description" content="SCADA &amp; ICS Architecture Fundamentals: The sense-decide-act control loop, SCADA vs. DCS, HMI, and the historian.">
+<meta property="og:description" content="The previous lesson introduced the vocabulary. This one builds the actual mental model — what's really happening, layer by layer, between a sensor reading a physical value and an operator making a dec">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/25-ot-ics-security/scada-ics-fundamentals.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="SCADA &amp; ICS Architecture Fundamentals — Path 25 · KashSec Academy">
-<meta name="twitter:description" content="SCADA &amp; ICS Architecture Fundamentals: The sense-decide-act control loop, SCADA vs. DCS, HMI, and the historian.">
+<meta name="twitter:description" content="The previous lesson introduced the vocabulary. This one builds the actual mental model — what's really happening, layer by layer, between a sensor reading a physical value and an operator making a dec">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 25 — OT/ICS & Critical Infrastructure Security","item":"https://kashsec.vercel.app/lesson/25-ot-ics-security/"},{"@type":"ListItem","position":4,"name":"SCADA & ICS Architecture Fundamentals","item":"https://kashsec.vercel.app/lesson/25-ot-ics-security/scada-ics-fundamentals.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"SCADA & ICS Architecture Fundamentals","headline":"SCADA & ICS Architecture Fundamentals","description":"SCADA & ICS Architecture Fundamentals: The sense-decide-act control loop, SCADA vs. DCS, HMI, and the historian.","url":"https://kashsec.vercel.app/lesson/25-ot-ics-security/scada-ics-fundamentals.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"The sense-decide-act control loop, SCADA vs. DCS, HMI, and the historian.","isPartOf":{"@type":"Course","name":"Path 25: OT/ICS & Critical Infrastructure Security","url":"https://kashsec.vercel.app/lesson/25-ot-ics-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/25-ot-ics-security/scada-ics-fundamentals.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"SCADA & ICS Architecture Fundamentals","headline":"SCADA & ICS Architecture Fundamentals","description":"The previous lesson introduced the vocabulary. This one builds the actual mental model — what's really happening, layer by layer, between a sensor reading a physical value and an operator making a dec","url":"https://kashsec.vercel.app/lesson/25-ot-ics-security/scada-ics-fundamentals.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"The sense-decide-act control loop, SCADA vs. DCS, HMI, and the historian.","isPartOf":{"@type":"Course","name":"Path 25: OT/ICS & Critical Infrastructure Security","url":"https://kashsec.vercel.app/lesson/25-ot-ics-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/25-ot-ics-security/scada-ics-fundamentals.html"}}
 </script>
 </head>
 <body>
@@ -89,9 +89,7 @@
     <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/25-ot-ics-security/">Path 25 — OT/ICS &amp; Critical Infrastructure Security</a> · SCADA &amp; ICS Architecture Fundamentals</nav>
     <div class="md" id="content"><article><h1>SCADA &amp; ICS Architecture Fundamentals</h1>
 <p>The previous lesson introduced the vocabulary. This one builds the actual mental model — what's really happening, layer by layer, between a sensor reading a physical value and an operator making a decision on a screen.</p>
-<p>:::tip
-The core loop to hold in your head throughout this entire path: <strong>sense → decide → act</strong>. A sensor measures something physical, a controller decides what to do about it, and an actuator physically does it. Everything else in ICS architecture is built around making that loop reliable, fast, and (ideally) secure.
-:::</p>
+<p>:::</p>
 <h2>The control loop, concretely</h2>
 <p>Take something as simple as keeping a tank's water level within range:</p>
 <ol>
@@ -148,8 +146,7 @@ The core loop to hold in your head throughout this entire path: <strong>sense �
 <h2>HMI: where humans actually touch the system</h2>
 <p>The <strong>Human-Machine Interface</strong> is what an operator actually looks at — typically a screen showing a schematic of the process (tanks, pipes, valves, current readings) with the ability to issue supervisory commands (change a setpoint, acknowledge an alarm, manually override an automatic action).</p>
 <p>:::danger
-A compromised HMI is one of the most dangerous single points of failure in an ICS environment — not because the HMI itself controls the physical process directly, but because it's the trusted interface operators rely on to <em>understand what's happening</em>. An attacker who can manipulate what the HMI displays can make an operator believe everything is normal while the actual physical process is doing something dangerous. This exact pattern — a genuine physical attack paired with falsified HMI readouts to delay detection — has appeared in real-world incidents.
-:::</p>
+A compromised HMI is one of the most dangerous single points of failure in an ICS environment — not because the HMI itself controls the physical process directly, but because it's the trusted interface operators rely on to <em>understand what's happening</em>. An attacker who can manipulate what the HMI displays can make an operator believe everything is normal while the actual physical process is doing something dangerous. This exact pattern — a genuine physical attack paired with falsified HMI readouts to delay detection — has appeared in real-world incidents.</p>
 <h2>Historian: the ICS world's audit log</h2>
 <p>A <strong>historian</strong> is a specialized database that continuously logs process data over time — every sensor reading, every setpoint change, often for years. It's the OT equivalent of application logging, and it plays a similar dual role: operationally useful (trend analysis, troubleshooting, regulatory reporting) and forensically critical (reconstructing what actually happened during an incident, similar to the log-analysis skills from earlier in this course, just applied to physical process data instead of authentication logs).</p>
 <h2>A worked example: a simplified power substation</h2>
@@ -164,18 +161,22 @@ A compromised HMI is one of the most dangerous single points of failure in an IC
 <h2>🧪 Hands-on lab — trace a control loop</h2>
 <p>Pick a physical system you interact with regularly that has some form of automatic control — a home thermostat, a car's cruise control, an elevator.</p>
 <ol>
-<li>Identify the sensor(s): what physical value is being measured?</li>
-<li>Identify the controller: what's making the decision, and what's it comparing the sensor value against?</li>
-<li>Identify the actuator(s): what physical action actually happens as a result?</li>
-<li>Write out the full sense-decide-act loop for your chosen system, in your own words.</li>
-<li>Now imagine an attacker could falsify the sensor reading your system relies on (without touching the actual physical actuator). What's the worst realistic consequence for your specific example?</li>
-</ol>
-<p>:::challenge Test yourself</p>
-<ol>
-<li>Explain the sense-decide-act loop in your own words, using a different example than the one in this lesson.</li>
-<li>What's the key architectural difference between SCADA and DCS, and why does geography drive that difference?</li>
-<li>Why is a compromised HMI dangerous even though it doesn't directly control physical equipment itself?
-:::</li>
+<li><p>Identify the sensor(s): what physical value is being measured?</p>
+</li>
+<li><p>Identify the controller: what's making the decision, and what's it comparing the sensor value against?</p>
+</li>
+<li><p>Identify the actuator(s): what physical action actually happens as a result?</p>
+</li>
+<li><p>Write out the full sense-decide-act loop for your chosen system, in your own words.</p>
+</li>
+<li><p>Now imagine an attacker could falsify the sensor reading your system relies on (without touching the actual physical actuator). What's the worst realistic consequence for your specific example?</p>
+</li>
+<li><p>Explain the sense-decide-act loop in your own words, using a different example than the one in this lesson.</p>
+</li>
+<li><p>What's the key architectural difference between SCADA and DCS, and why does geography drive that difference?</p>
+</li>
+<li><p>Why is a compromised HMI dangerous even though it doesn't directly control physical equipment itself?</p>
+</li>
 </ol>
 <h2>Key terms</h2>
 <ul>

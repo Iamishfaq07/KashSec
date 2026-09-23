@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Why API Security Matters — Path 21 · KashSec Academy</title>
-<meta name="description" content="Why API Security Matters: APIs are the real backend now — and where most real-world breaches actually happen.">
+<meta name="description" content="Modern applications are built on APIs. Mobile apps, single-page web apps, microservices, partner integrations, and AI agents all talk through APIs. When an API is broken, the impact is rarely limited ">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/21-api-security/why-api-security.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Why API Security Matters — Path 21 · KashSec Academy">
-<meta property="og:description" content="Why API Security Matters: APIs are the real backend now — and where most real-world breaches actually happen.">
+<meta property="og:description" content="Modern applications are built on APIs. Mobile apps, single-page web apps, microservices, partner integrations, and AI agents all talk through APIs. When an API is broken, the impact is rarely limited ">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/21-api-security/why-api-security.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Why API Security Matters — Path 21 · KashSec Academy">
-<meta name="twitter:description" content="Why API Security Matters: APIs are the real backend now — and where most real-world breaches actually happen.">
+<meta name="twitter:description" content="Modern applications are built on APIs. Mobile apps, single-page web apps, microservices, partner integrations, and AI agents all talk through APIs. When an API is broken, the impact is rarely limited ">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 21 — API Security","item":"https://kashsec.vercel.app/lesson/21-api-security/"},{"@type":"ListItem","position":4,"name":"Why API Security Matters","item":"https://kashsec.vercel.app/lesson/21-api-security/why-api-security.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Why API Security Matters","headline":"Why API Security Matters","description":"Why API Security Matters: APIs are the real backend now — and where most real-world breaches actually happen.","url":"https://kashsec.vercel.app/lesson/21-api-security/why-api-security.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"APIs are the real backend now — and where most real-world breaches actually happen.","isPartOf":{"@type":"Course","name":"Path 21: API Security","url":"https://kashsec.vercel.app/lesson/21-api-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/21-api-security/why-api-security.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Why API Security Matters","headline":"Why API Security Matters","description":"Modern applications are built on APIs. Mobile apps, single-page web apps, microservices, partner integrations, and AI agents all talk through APIs. When an API is broken, the impact is rarely limited ","url":"https://kashsec.vercel.app/lesson/21-api-security/why-api-security.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"APIs are the real backend now — and where most real-world breaches actually happen.","isPartOf":{"@type":"Course","name":"Path 21: API Security","url":"https://kashsec.vercel.app/lesson/21-api-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/21-api-security/why-api-security.html"}}
 </script>
 </head>
 <body>
@@ -89,9 +89,7 @@
     <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/21-api-security/">Path 21 — API Security</a> · Why API Security Matters</nav>
     <div class="md" id="content"><article><h1>Why API Security Matters</h1>
 <p>Modern applications are built on APIs. Mobile apps, single-page web apps, microservices, partner integrations, and AI agents all talk through APIs. When an API is broken, the impact is rarely limited to one page — it can expose entire databases, user data, or internal systems, often in a single automated request.</p>
-<p>:::tip
-If you only learn one advanced topic after web security, make it API security. Most real bug-bounty and AppSec work today is API work — the browser UI is often the least interesting part of a target.
-:::</p>
+<p>:::</p>
 <h2>What is an API, really?</h2>
 <p>An API (Application Programming Interface) is a contract: "send me this request in this shape, and I will return this data."
 Most modern APIs use HTTP and return JSON.</p>
@@ -165,23 +163,25 @@ Authorization: Bearer eyJhbGciOi...
 </ul>
 <p>:::danger
 Never assume "the mobile app will only call the API correctly."
-Anything the mobile app can do, an attacker with Burp or curl can also do — often better, because they aren't constrained by the app's UI at all. Decompile the app or intercept its traffic once, and every endpoint it calls is now available to script directly, in any order, with any parameters.
-:::</p>
+Anything the mobile app can do, an attacker with Burp or curl can also do — often better, because they aren't constrained by the app's UI at all. Decompile the app or intercept its traffic once, and every endpoint it calls is now available to script directly, in any order, with any parameters.</p>
 <h2>A concrete scenario</h2>
 <p>An e-commerce app's mobile client calls <code>PATCH /api/v1/orders/8841</code> to let a user cancel their own pending order. The mobile UI only ever sends <code>{"status": "cancelled"}</code>. But the API accepts any field in the order object, because the developer built the endpoint generically and never restricted what could be updated. An attacker intercepts one request, notices the endpoint also accepts a <code>total_price</code> field, and sends <code>{"total_price": 0.01}</code> on an order they haven't paid for yet. The UI never offered this option — but the API never checked, either. This single pattern (accepting more than the client is supposed to send) recurs constantly in API security and gets its own dedicated lesson later in this path.</p>
 <h2>🧪 Hands-on lab — see the API behind an app</h2>
 <ol>
-<li>Pick any web app you use regularly (or use the browser DevTools on a site you're allowed to test).</li>
-<li>Open the Network tab, perform a normal action (search, add to cart, view a profile), and find the underlying API request.</li>
-<li>Note: what does the request look like without the UI wrapped around it? What parameters does it accept that the UI never exposes as options?</li>
-<li>Try changing one parameter value (e.g., an ID) to something adjacent (like <code>42</code> → <code>43</code>) in a tool like Burp's repeater or curl, on an app you're authorized to test, and observe the response. This is the exact technique behind BOLA testing, which you'll formalize in a later lesson.</li>
-</ol>
-<p>:::challenge Test yourself</p>
-<ol>
-<li>Why is "the mobile app enforces this rule" not a security control at all?</li>
-<li>Name one thing a browser-rendered web page can enforce that an API, called directly, cannot.</li>
-<li>In the order-cancellation scenario above, what's the one-sentence fix a developer should apply to the <code>PATCH</code> endpoint?
-:::</li>
+<li><p>Pick any web app you use regularly (or use the browser DevTools on a site you're allowed to test).</p>
+</li>
+<li><p>Open the Network tab, perform a normal action (search, add to cart, view a profile), and find the underlying API request.</p>
+</li>
+<li><p>Note: what does the request look like without the UI wrapped around it? What parameters does it accept that the UI never exposes as options?</p>
+</li>
+<li><p>Try changing one parameter value (e.g., an ID) to something adjacent (like <code>42</code> → <code>43</code>) in a tool like Burp's repeater or curl, on an app you're authorized to test, and observe the response. This is the exact technique behind BOLA testing, which you'll formalize in a later lesson.</p>
+</li>
+<li><p>Why is "the mobile app enforces this rule" not a security control at all?</p>
+</li>
+<li><p>Name one thing a browser-rendered web page can enforce that an API, called directly, cannot.</p>
+</li>
+<li><p>In the order-cancellation scenario above, what's the one-sentence fix a developer should apply to the <code>PATCH</code> endpoint?</p>
+</li>
 </ol>
 <h2>What you will learn in this path</h2>
 <ul>

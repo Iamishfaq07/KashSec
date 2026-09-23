@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Linux privilege escalation — Path 16 · KashSec Academy</title>
-<meta name="description" content="Linux privilege escalation: GTFOBins, SUID, capabilities, LinPEAS.">
+<meta name="description" content="Path 14.6 introduced privilege escalation as a preview. This lesson delivers the full, systematic methodology — the exact skillset that turns a low-privilege foothold into root access, and a cornersto">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/16-advanced/linux-privesc.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Linux privilege escalation — Path 16 · KashSec Academy">
-<meta property="og:description" content="Linux privilege escalation: GTFOBins, SUID, capabilities, LinPEAS.">
+<meta property="og:description" content="Path 14.6 introduced privilege escalation as a preview. This lesson delivers the full, systematic methodology — the exact skillset that turns a low-privilege foothold into root access, and a cornersto">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/16-advanced/linux-privesc.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Linux privilege escalation — Path 16 · KashSec Academy">
-<meta name="twitter:description" content="Linux privilege escalation: GTFOBins, SUID, capabilities, LinPEAS.">
+<meta name="twitter:description" content="Path 14.6 introduced privilege escalation as a preview. This lesson delivers the full, systematic methodology — the exact skillset that turns a low-privilege foothold into root access, and a cornersto">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 16 — Advanced Cyber Topics","item":"https://kashsec.vercel.app/lesson/16-advanced/"},{"@type":"ListItem","position":4,"name":"Linux privilege escalation","item":"https://kashsec.vercel.app/lesson/16-advanced/linux-privesc.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Linux privilege escalation","headline":"Linux privilege escalation","description":"Linux privilege escalation: GTFOBins, SUID, capabilities, LinPEAS.","url":"https://kashsec.vercel.app/lesson/16-advanced/linux-privesc.html","inLanguage":"en","dateModified":"2026-08-04","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"GTFOBins, SUID, capabilities, LinPEAS.","isPartOf":{"@type":"Course","name":"Path 16: Advanced Cyber Topics","url":"https://kashsec.vercel.app/lesson/16-advanced/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/16-advanced/linux-privesc.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Linux privilege escalation","headline":"Linux privilege escalation","description":"Path 14.6 introduced privilege escalation as a preview. This lesson delivers the full, systematic methodology — the exact skillset that turns a low-privilege foothold into root access, and a cornersto","url":"https://kashsec.vercel.app/lesson/16-advanced/linux-privesc.html","inLanguage":"en","dateModified":"2026-08-04","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"GTFOBins, SUID, capabilities, LinPEAS.","isPartOf":{"@type":"Course","name":"Path 16: Advanced Cyber Topics","url":"https://kashsec.vercel.app/lesson/16-advanced/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/16-advanced/linux-privesc.html"}}
 </script>
 </head>
 <body>
@@ -187,25 +187,6 @@ cat /etc/exports    # if you can read it directly
 </code></pre>
 <p>This is exactly the kind of vector that rewards the broad situational-awareness habit from Path 14.6 — network configuration details easy to overlook when focused purely on local binary permissions.</p>
 <h2>A systematic privesc checklist</h2>
-<pre><code class="language-mermaid">flowchart TB
-    Start["🎯 Low-privilege shell obtained"]
-    Start --&gt; Enum["Run LinPEAS / manual enumeration"]
-    Enum --&gt; SUID["Check SUID/SGID binaries&lt;br/&gt;→ GTFOBins"]
-    Enum --&gt; Sudo["Check sudo -l output&lt;br/&gt;→ GTFOBins"]
-    Enum --&gt; Cron["Check cron jobs &amp; writable scripts"]
-    Enum --&gt; Kernel["Check kernel version&lt;br/&gt;→ searchsploit"]
-    Enum --&gt; Creds["Search for stored credentials"]
-    Enum --&gt; Perms["Check file permissions on&lt;br/&gt;sensitive system files"]
-
-    style Start fill:#111927,color:#8496A6,stroke:#8496A6
-    style Enum fill:#2b1f0a,color:#EFA43A,stroke:#EFA43A
-    style SUID fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
-    style Sudo fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
-    style Cron fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
-    style Kernel fill:#2b1010,color:#E05548,stroke:#E05548
-    style Creds fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
-    style Perms fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
-</code></pre>
 <h2>The defender's view — hardening against these exact techniques</h2>
 <ul>
 <li><strong>Minimise SUID binaries</strong> — audit and remove SUID bits from anything that doesn't genuinely need them.</li>
@@ -229,10 +210,8 @@ chmod +x linpeas.sh
 # against GTFOBins before attempting the documented technique.
 </code></pre>
 <p>Work through at least 2-3 different vulnerable VMs, deliberately trying to identify the <em>specific</em> privesc vector (SUID, sudo, cron, kernel, or credentials) each one uses before reaching for LinPEAS's output — this builds genuine pattern-recognition rather than tool dependency.</p>
-<p>:::challenge Test yourself
-<code>sudo -l</code> shows that your current user can run <code>/usr/bin/less</code> as root with <code>NOPASSWD</code>. Using GTFOBins' documented technique for <code>less</code>, how would you likely escalate to a root shell?</p>
-<details><summary>Show answer</summary>GTFOBins documents that <code>less</code>, when run with elevated privileges, can spawn a shell via its built-in command execution feature — typically: <code>sudo less /etc/profile</code> then, within the `less` pager, typing <code>!/bin/sh</code> (many pagers support executing shell commands this way), which spawns a shell inheriting <code>less</code>'s root privileges. Always check <a href="https://gtfobins.github.io/">GTFOBins</a> directly for the exact, current, correct syntax for any specific binary before attempting it.</details>
-:::<h2>Key terms</h2>
+<p><code>sudo -l</code> shows that your current user can run <code>/usr/bin/less</code> as root with <code>NOPASSWD</code>. Using GTFOBins' documented technique for <code>less</code>, how would you likely escalate to a root shell?</p>
+<details><summary>Show answer</summary>GTFOBins documents that <code>less</code>, when run with elevated privileges, can spawn a shell via its built-in command execution feature — typically: <code>sudo less /etc/profile</code> then, within the `less` pager, typing <code>!/bin/sh</code> (many pagers support executing shell commands this way), which spawns a shell inheriting <code>less</code>'s root privileges. Always check <a href="https://gtfobins.github.io/">GTFOBins</a> directly for the exact, current, correct syntax for any specific binary before attempting it.</details><h2>Key terms</h2>
 <ul>
 <li><strong>Privilege escalation (privesc)</strong> — moving from a low-privilege foothold to higher (ideally root) access.</li>
 <li><strong>LinPEAS</strong> — the industry-standard automated Linux privesc enumeration script.</li>

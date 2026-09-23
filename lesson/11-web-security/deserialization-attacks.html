@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Insecure Deserialization — Path 11 · KashSec Academy</title>
-<meta name="description" content="Insecure Deserialization: Why pickle.load() on untrusted data can mean instant code execution.">
+<meta name="description" content="Path 04's writing-secure-Python-code lesson briefly warned that pickle.load() can execute arbitrary code from untrusted data. This lesson expands that warning into a full vulnerability class — one tha">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/11-web-security/deserialization-attacks.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Insecure Deserialization — Path 11 · KashSec Academy">
-<meta property="og:description" content="Insecure Deserialization: Why pickle.load() on untrusted data can mean instant code execution.">
+<meta property="og:description" content="Path 04's writing-secure-Python-code lesson briefly warned that pickle.load() can execute arbitrary code from untrusted data. This lesson expands that warning into a full vulnerability class — one tha">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/11-web-security/deserialization-attacks.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Insecure Deserialization — Path 11 · KashSec Academy">
-<meta name="twitter:description" content="Insecure Deserialization: Why pickle.load() on untrusted data can mean instant code execution.">
+<meta name="twitter:description" content="Path 04's writing-secure-Python-code lesson briefly warned that pickle.load() can execute arbitrary code from untrusted data. This lesson expands that warning into a full vulnerability class — one tha">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 11 — Web Security & Hacking","item":"https://kashsec.vercel.app/lesson/11-web-security/"},{"@type":"ListItem","position":4,"name":"Insecure Deserialization","item":"https://kashsec.vercel.app/lesson/11-web-security/deserialization-attacks.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Insecure Deserialization","headline":"Insecure Deserialization","description":"Insecure Deserialization: Why pickle.load() on untrusted data can mean instant code execution.","url":"https://kashsec.vercel.app/lesson/11-web-security/deserialization-attacks.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Why pickle.load() on untrusted data can mean instant code execution.","isPartOf":{"@type":"Course","name":"Path 11: Web Security & Hacking","url":"https://kashsec.vercel.app/lesson/11-web-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/11-web-security/deserialization-attacks.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Insecure Deserialization","headline":"Insecure Deserialization","description":"Path 04's writing-secure-Python-code lesson briefly warned that pickle.load() can execute arbitrary code from untrusted data. This lesson expands that warning into a full vulnerability class — one tha","url":"https://kashsec.vercel.app/lesson/11-web-security/deserialization-attacks.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Why pickle.load() on untrusted data can mean instant code execution.","isPartOf":{"@type":"Course","name":"Path 11: Web Security & Hacking","url":"https://kashsec.vercel.app/lesson/11-web-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/11-web-security/deserialization-attacks.html"}}
 </script>
 </head>
 <body>
@@ -111,10 +111,8 @@ data = pickle.loads(untrusted_input)   # can execute arbitrary code during this 
 <li><strong>Cryptographically sign serialized data</strong> (directly applying Path 06's digital-signatures concepts) if it must round-trip through an untrusted client, verifying the signature before deserializing, so any tampering is detected before the dangerous deserialization step ever runs</li>
 <li><strong>Use allow-lists for deserializable types</strong>, where the serialization library supports it, restricting deserialization to a small set of known-safe object types rather than allowing arbitrary object construction</li>
 </ul>
-<p>:::challenge Test yourself
-Why is JSON generally considered a safer format than native language serialization (pickle, Java serialization) for handling data from an untrusted source?</p>
-<details><summary>Show answer</summary>JSON's data model is deliberately limited to plain, inert data types — strings, numbers, booleans, arrays, and objects with no executable behavior of their own. Parsing JSON simply produces plain data structures, with no mechanism for the parsing process itself to construct arbitrary objects or trigger code execution as a side effect. Native serialization formats like Python's pickle or Java's native serialization, by contrast, are specifically designed to reconstruct <em>full objects</em>, including their behavior — and that reconstruction process can be abused to execute attacker-chosen code the moment deserialization runs, before the application ever gets a chance to validate what was actually deserialized. This fundamental difference in what each format is capable of representing is exactly why JSON is the safer default choice whenever the data might come from an untrusted source.</details>
-:::<h2>Key terms</h2>
+<p>Why is JSON generally considered a safer format than native language serialization (pickle, Java serialization) for handling data from an untrusted source?</p>
+<details><summary>Show answer</summary>JSON's data model is deliberately limited to plain, inert data types — strings, numbers, booleans, arrays, and objects with no executable behavior of their own. Parsing JSON simply produces plain data structures, with no mechanism for the parsing process itself to construct arbitrary objects or trigger code execution as a side effect. Native serialization formats like Python's pickle or Java's native serialization, by contrast, are specifically designed to reconstruct <em>full objects</em>, including their behavior — and that reconstruction process can be abused to execute attacker-chosen code the moment deserialization runs, before the application ever gets a chance to validate what was actually deserialized. This fundamental difference in what each format is capable of representing is exactly why JSON is the safer default choice whenever the data might come from an untrusted source.</details><h2>Key terms</h2>
 <ul>
 <li><strong>Serialization / deserialization</strong> — converting an object to a storable/transmittable format and back again.</li>
 <li><strong>Insecure deserialization</strong> — deserializing untrusted data using a format capable of triggering arbitrary code execution during reconstruction.</li>

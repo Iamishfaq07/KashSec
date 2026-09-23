@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Cloud Databases Basics — Path 08 · KashSec Academy</title>
-<meta name="description" content="Cloud Databases Basics: Managed relational, NoSQL, and data warehouse services, and their security tradeoffs.">
+<meta name="description" content="The storage lesson covered object storage for files. This lesson covers the cloud's other major data service: managed databases — structured, queryable data storage where the provider handles most of ">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-databases-basics.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Cloud Databases Basics — Path 08 · KashSec Academy">
-<meta property="og:description" content="Cloud Databases Basics: Managed relational, NoSQL, and data warehouse services, and their security tradeoffs.">
+<meta property="og:description" content="The storage lesson covered object storage for files. This lesson covers the cloud's other major data service: managed databases — structured, queryable data storage where the provider handles most of ">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-databases-basics.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Cloud Databases Basics — Path 08 · KashSec Academy">
-<meta name="twitter:description" content="Cloud Databases Basics: Managed relational, NoSQL, and data warehouse services, and their security tradeoffs.">
+<meta name="twitter:description" content="The storage lesson covered object storage for files. This lesson covers the cloud's other major data service: managed databases — structured, queryable data storage where the provider handles most of ">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 08 — Cloud Computing Basics","item":"https://kashsec.vercel.app/lesson/08-cloud-basics/"},{"@type":"ListItem","position":4,"name":"Cloud Databases Basics","item":"https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-databases-basics.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Cloud Databases Basics","headline":"Cloud Databases Basics","description":"Cloud Databases Basics: Managed relational, NoSQL, and data warehouse services, and their security tradeoffs.","url":"https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-databases-basics.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Managed relational, NoSQL, and data warehouse services, and their security tradeoffs.","isPartOf":{"@type":"Course","name":"Path 08: Cloud Computing Basics","url":"https://kashsec.vercel.app/lesson/08-cloud-basics/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-databases-basics.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Cloud Databases Basics","headline":"Cloud Databases Basics","description":"The storage lesson covered object storage for files. This lesson covers the cloud's other major data service: managed databases — structured, queryable data storage where the provider handles most of ","url":"https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-databases-basics.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Managed relational, NoSQL, and data warehouse services, and their security tradeoffs.","isPartOf":{"@type":"Course","name":"Path 08: Cloud Computing Basics","url":"https://kashsec.vercel.app/lesson/08-cloud-basics/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-databases-basics.html"}}
 </script>
 </head>
 <body>
@@ -89,9 +89,7 @@
     <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/08-cloud-basics/">Path 08 — Cloud Computing Basics</a> · Cloud Databases Basics</nav>
     <div class="md" id="content"><article><h1>Cloud Databases Basics</h1>
 <p>The storage lesson covered object storage for files. This lesson covers the cloud's other major data service: <strong>managed databases</strong> — structured, queryable data storage where the provider handles most of the operational burden that used to fall entirely on whoever ran the database server.</p>
-<p>:::tip
-The core value proposition of a managed database service is right there in the name: the cloud provider manages the operational burden (patching, backups, replication, failover) that a self-hosted database traditionally required a dedicated database administrator to handle manually.
-:::</p>
+<p>:::</p>
 <h2>Managed relational databases</h2>
 <p>Services like <strong>Amazon RDS</strong>, <strong>Azure SQL Database</strong>, and <strong>Google Cloud SQL</strong> run traditional relational databases (MySQL, PostgreSQL, and others) as a managed service — you get the same SQL query language and relational data model, but automated backups, patching, and high-availability replication come built in, rather than being something you have to configure and maintain yourself.</p>
 <h2>NoSQL and other specialized database types</h2>
@@ -113,15 +111,12 @@ The core value proposition of a managed database service is right there in the n
 <p>:::challenge Diagnose a misconfiguration
 A managed relational database is found configured with a public endpoint (reachable from the internet), using the default administrator username, and a password that was never changed from the value auto-generated during setup — which the team assumed nobody would ever see since "it's just for internal use."</p>
 <details><summary>Hint</summary>Compare this to the earlier lesson's coverage of publicly-accessible storage buckets — what's the structurally identical mistake being made here, just against a different service type?</details>
-<details><summary>Show answer</summary>This is the exact same structural mistake as a misconfigured public storage bucket, applied to a database instead: an assumption that "internal use" provides real protection, when the actual technical configuration (a public endpoint) makes the resource reachable by anyone on the internet regardless of intent. Combined with default credentials, this database is trivially discoverable by automated internet-wide scanning (the same "fishing with a giant net" pattern from Path 01) and trivially accessible once found. The fix mirrors the storage lesson's fix too: restrict the database to a private network endpoint reachable only from within the appropriate VPC (covered in the networking lesson), and always change default credentials immediately, regardless of how "internal" the resource is assumed to be.</details>
-:::<h2>🧪 Hands-on lab — match the database to the workload</h2>
+<details><summary>Show answer</summary>This is the exact same structural mistake as a misconfigured public storage bucket, applied to a database instead: an assumption that "internal use" provides real protection, when the actual technical configuration (a public endpoint) makes the resource reachable by anyone on the internet regardless of intent. Combined with default credentials, this database is trivially discoverable by automated internet-wide scanning (the same "fishing with a giant net" pattern from Path 01) and trivially accessible once found. The fix mirrors the storage lesson's fix too: restrict the database to a private network endpoint reachable only from within the appropriate VPC (covered in the networking lesson), and always change default credentials immediately, regardless of how "internal" the resource is assumed to be.</details><h2>🧪 Hands-on lab — match the database to the workload</h2>
 <p>For three scenarios — (1) storing user shopping cart sessions for fast lookup, (2) running analytical queries across five years of sales data, (3) storing structured customer order records with complex relationships — identify which database category from this lesson fits best, and explain why in one sentence each.</p>
-<p>:::challenge Test yourself</p>
 <ol>
 <li>What operational burden does a managed database service take on that a self-hosted database wouldn't?</li>
 <li>Why might a NoSQL key-value store be a better fit than a relational database for session data specifically?</li>
-<li>Why is a publicly accessible database endpoint considered a serious misconfiguration, structurally similar to a misconfigured storage bucket?
-:::</li>
+<li>Why is a publicly accessible database endpoint considered a serious misconfiguration, structurally similar to a misconfigured storage bucket?</li>
 </ol>
 <h2>Key terms</h2>
 <ul>

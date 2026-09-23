@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>APIs &amp; JSON — Path 05 · KashSec Academy</title>
-<meta name="description" content="APIs &amp; JSON: How modern apps really talk under the hood.">
+<meta name="description" content="Modern web apps are basically two things stitched together: a JavaScript UI in your browser, and a set of APIs on a server. Learn to see the APIs and you see the real attack surface.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/05-web-basics/apis-json.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="APIs &amp; JSON — Path 05 · KashSec Academy">
-<meta property="og:description" content="APIs &amp; JSON: How modern apps really talk under the hood.">
+<meta property="og:description" content="Modern web apps are basically two things stitched together: a JavaScript UI in your browser, and a set of APIs on a server. Learn to see the APIs and you see the real attack surface.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/05-web-basics/apis-json.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="APIs &amp; JSON — Path 05 · KashSec Academy">
-<meta name="twitter:description" content="APIs &amp; JSON: How modern apps really talk under the hood.">
+<meta name="twitter:description" content="Modern web apps are basically two things stitched together: a JavaScript UI in your browser, and a set of APIs on a server. Learn to see the APIs and you see the real attack surface.">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 05 — How the Web Works","item":"https://kashsec.vercel.app/lesson/05-web-basics/"},{"@type":"ListItem","position":4,"name":"APIs & JSON","item":"https://kashsec.vercel.app/lesson/05-web-basics/apis-json.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"APIs & JSON","headline":"APIs & JSON","description":"APIs & JSON: How modern apps really talk under the hood.","url":"https://kashsec.vercel.app/lesson/05-web-basics/apis-json.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"How modern apps really talk under the hood.","isPartOf":{"@type":"Course","name":"Path 05: How the Web Works","url":"https://kashsec.vercel.app/lesson/05-web-basics/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/05-web-basics/apis-json.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"APIs & JSON","headline":"APIs & JSON","description":"Modern web apps are basically two things stitched together: a JavaScript UI in your browser, and a set of APIs on a server. Learn to see the APIs and you see the real attack surface.","url":"https://kashsec.vercel.app/lesson/05-web-basics/apis-json.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"How modern apps really talk under the hood.","isPartOf":{"@type":"Course","name":"Path 05: How the Web Works","url":"https://kashsec.vercel.app/lesson/05-web-basics/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/05-web-basics/apis-json.html"}}
 </script>
 </head>
 <body>
@@ -278,10 +278,8 @@ print(f\"{d['name']}: {d['stargazers_count']} stars, {d['forks_count']} forks\")
 <li>Paste into your terminal. Run it. Watch the same API respond.</li>
 </ol>
 <p>That's you talking to the API directly, bypassing the entire UI. Every serious web attacker and defender does this daily.</p>
-<p>:::challenge Test yourself
-A friend says "our API is secure because our web UI hides the delete button unless you're an admin." What one word describes the flaw in that reasoning?</p>
-<details><summary>Show answer</summary><strong>Client-side.</strong> All UI hiding is client-side; the API endpoint itself must also enforce the check server-side. Otherwise an attacker just calls the endpoint directly (via cURL, Postman, or any script).</details>
-:::<h2>Key terms</h2>
+<p>A friend says "our API is secure because our web UI hides the delete button unless you're an admin." What one word describes the flaw in that reasoning?</p>
+<details><summary>Show answer</summary><strong>Client-side.</strong> All UI hiding is client-side; the API endpoint itself must also enforce the check server-side. Otherwise an attacker just calls the endpoint directly (via cURL, Postman, or any script).</details><h2>Key terms</h2>
 <ul>
 <li><strong>API</strong> — a URL that returns data (usually JSON) for a program to consume.</li>
 <li><strong>REST</strong> — a common HTTP API style using nouns in the path and HTTP verbs for actions.</li>

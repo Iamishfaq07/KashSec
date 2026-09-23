@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Working with files in Python — Path 04 · KashSec Academy</title>
-<meta name="description" content="Working with files in Python: Reading wordlists, parsing logs, and writing results safely.">
+<meta name="description" content="Every security script you write eventually needs to read a wordlist, parse a log file, or save results somewhere. This lesson covers Python's file-handling basics — directly connecting to the lists-fu">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/04-python/working-with-files-python.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Working with files in Python — Path 04 · KashSec Academy">
-<meta property="og:description" content="Working with files in Python: Reading wordlists, parsing logs, and writing results safely.">
+<meta property="og:description" content="Every security script you write eventually needs to read a wordlist, parse a log file, or save results somewhere. This lesson covers Python's file-handling basics — directly connecting to the lists-fu">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/04-python/working-with-files-python.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Working with files in Python — Path 04 · KashSec Academy">
-<meta name="twitter:description" content="Working with files in Python: Reading wordlists, parsing logs, and writing results safely.">
+<meta name="twitter:description" content="Every security script you write eventually needs to read a wordlist, parse a log file, or save results somewhere. This lesson covers Python's file-handling basics — directly connecting to the lists-fu">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 04 — Programming & Python","item":"https://kashsec.vercel.app/lesson/04-python/"},{"@type":"ListItem","position":4,"name":"Working with files in Python","item":"https://kashsec.vercel.app/lesson/04-python/working-with-files-python.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Working with files in Python","headline":"Working with files in Python","description":"Working with files in Python: Reading wordlists, parsing logs, and writing results safely.","url":"https://kashsec.vercel.app/lesson/04-python/working-with-files-python.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Reading wordlists, parsing logs, and writing results safely.","isPartOf":{"@type":"Course","name":"Path 04: Programming & Python","url":"https://kashsec.vercel.app/lesson/04-python/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/04-python/working-with-files-python.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Working with files in Python","headline":"Working with files in Python","description":"Every security script you write eventually needs to read a wordlist, parse a log file, or save results somewhere. This lesson covers Python's file-handling basics — directly connecting to the lists-fu","url":"https://kashsec.vercel.app/lesson/04-python/working-with-files-python.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Reading wordlists, parsing logs, and writing results safely.","isPartOf":{"@type":"Course","name":"Path 04: Programming & Python","url":"https://kashsec.vercel.app/lesson/04-python/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/04-python/working-with-files-python.html"}}
 </script>
 </head>
 <body>
@@ -117,10 +117,8 @@ with open("results.txt", "a") as f:
     return password in common_passwords
 </code></pre>
 <p>Notice this combines three concepts from earlier in this path at once: file reading, a set (for fast lookup), and a function — genuinely representative of how real scripts assemble small pieces you already know into something more useful.</p>
-<p>:::challenge Test yourself
-Why does the example above use a set (<code>{line.strip() for line in f}</code>) to store the common passwords, rather than a plain list?</p>
-<details><summary>Show answer</summary>Checking whether an item exists in a set is significantly faster than checking a list, especially as the collection grows — a wordlist of common passwords might contain hundreds of thousands of entries, and a set's fast lookup makes checking "is this password in the list?" efficient even at that scale, while a list would require checking each entry one at a time in the worst case. This directly builds on the dictionaries-and-sets lesson's point about reaching for the right built-in data type for the job — here, fast membership checking is exactly what a set is optimized for.</details>
-:::<h2>Key terms</h2>
+<p>Why does the example above use a set (<code>{line.strip() for line in f}</code>) to store the common passwords, rather than a plain list?</p>
+<details><summary>Show answer</summary>Checking whether an item exists in a set is significantly faster than checking a list, especially as the collection grows — a wordlist of common passwords might contain hundreds of thousands of entries, and a set's fast lookup makes checking "is this password in the list?" efficient even at that scale, while a list would require checking each entry one at a time in the worst case. This directly builds on the dictionaries-and-sets lesson's point about reaching for the right built-in data type for the job — here, fast membership checking is exactly what a set is optimized for.</details><h2>Key terms</h2>
 <ul>
 <li><strong><code>with open(...)</code></strong> — the standard, recommended pattern for opening a file, automatically closing it when finished.</li>
 <li><strong>Read mode ("r") / write mode ("w") / append mode ("a")</strong> — the three most common file access modes in Python.</li>

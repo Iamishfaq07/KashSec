@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Switches &amp; VLANs — Path 02 · KashSec Academy</title>
-<meta name="description" content="Switches &amp; VLANs: One physical switch, several isolated logical networks.">
+<meta name="description" content="The routing-basics lesson covered routers, which move traffic between networks. This lesson covers the device that moves traffic within a single local network: the switch — and the clever trick that l">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/02-networking/switches-and-vlans.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Switches &amp; VLANs — Path 02 · KashSec Academy">
-<meta property="og:description" content="Switches &amp; VLANs: One physical switch, several isolated logical networks.">
+<meta property="og:description" content="The routing-basics lesson covered routers, which move traffic between networks. This lesson covers the device that moves traffic within a single local network: the switch — and the clever trick that l">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/02-networking/switches-and-vlans.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Switches &amp; VLANs — Path 02 · KashSec Academy">
-<meta name="twitter:description" content="Switches &amp; VLANs: One physical switch, several isolated logical networks.">
+<meta name="twitter:description" content="The routing-basics lesson covered routers, which move traffic between networks. This lesson covers the device that moves traffic within a single local network: the switch — and the clever trick that l">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 02 — Networking Fundamentals","item":"https://kashsec.vercel.app/lesson/02-networking/"},{"@type":"ListItem","position":4,"name":"Switches & VLANs","item":"https://kashsec.vercel.app/lesson/02-networking/switches-and-vlans.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Switches & VLANs","headline":"Switches & VLANs","description":"Switches & VLANs: One physical switch, several isolated logical networks.","url":"https://kashsec.vercel.app/lesson/02-networking/switches-and-vlans.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"One physical switch, several isolated logical networks.","isPartOf":{"@type":"Course","name":"Path 02: Networking Fundamentals","url":"https://kashsec.vercel.app/lesson/02-networking/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/02-networking/switches-and-vlans.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Switches & VLANs","headline":"Switches & VLANs","description":"The routing-basics lesson covered routers, which move traffic between networks. This lesson covers the device that moves traffic within a single local network: the switch — and the clever trick that l","url":"https://kashsec.vercel.app/lesson/02-networking/switches-and-vlans.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"One physical switch, several isolated logical networks.","isPartOf":{"@type":"Course","name":"Path 02: Networking Fundamentals","url":"https://kashsec.vercel.app/lesson/02-networking/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/02-networking/switches-and-vlans.html"}}
 </script>
 </head>
 <body>
@@ -91,12 +91,6 @@
 <p>The routing-basics lesson covered routers, which move traffic <em>between</em> networks. This lesson covers the device that moves traffic <em>within</em> a single local network: the <strong>switch</strong> — and the clever trick that lets one switch behave like several separate networks at once.</p>
 <h2>Switches: connecting devices on the same local network</h2>
 <p>A <strong>switch</strong> connects multiple devices on the same local network, and (unlike an old-fashioned hub, which simply repeats every signal to every port) intelligently learns which device sits on which port, and forwards traffic only to the port that specific device actually lives on. This is meaningfully more efficient and more private than a hub, since other devices on the switch never see traffic that wasn't meant for them in the first place.</p>
-<pre><code class="language-mermaid">flowchart TD
-    S[Switch] --- A[Device A]
-    S --- B[Device B]
-    S --- C[Device C]
-    S --- D[Device D]
-</code></pre>
 <h2>VLANs: one physical switch, several logical networks</h2>
 <p>A <strong>VLAN (Virtual Local Area Network)</strong> lets a single physical switch be divided into multiple separate, isolated logical networks — devices in different VLANs generally can't talk to each other at all unless something (typically a router, or a firewall) explicitly allows it, even though they're plugged into the exact same physical hardware.</p>
 <p>This is precisely the same segmentation idea covered in Path 24's micro-segmentation lesson and Path 08's cloud subnetting concepts, just implemented at the physical-network layer: instead of buying separate physical switches for, say, a guest Wi-Fi network and an internal staff network, an organization can run both on the same hardware while keeping them logically completely separate.</p>
@@ -106,13 +100,9 @@
 <li><strong>IoT and smart-device isolation</strong> — a genuinely common, practical real-world use: putting smart TVs, cameras, and other IoT devices (often built with weaker security practices) on their own VLAN, separate from the devices actually holding sensitive data</li>
 <li><strong>Compliance and sensitive-data separation</strong> — some regulatory requirements (Path 23's GRC material covers this) specifically expect sensitive systems to be network-isolated from general traffic, and VLANs are frequently the practical tool used to satisfy that requirement</li>
 </ul>
-<p>:::danger VLAN hopping is a real, documented attack technique
-An attacker who can manipulate specific switch configuration details can sometimes "hop" from one VLAN to another they shouldn't have access to — a genuine attack category covered more fully in Path 12's network security material. Properly configured switches (not accepting untrusted devices as trunk ports, disabling unused ports) meaningfully reduce this risk.
-:::</p>
-<p>:::challenge Test yourself
-Why might an organization put its smart office devices (thermostats, security cameras) on a separate VLAN from the network its employee laptops use?</p>
-<details><summary>Show answer</summary>IoT devices like thermostats and cameras are frequently built with weaker security practices than general-purpose computers — less frequent firmware updates, weaker default credentials, and less scrutiny overall. Placing them on a separate VLAN means that if one of these devices is compromised (a genuinely common real-world occurrence), the attacker's access is contained to that VLAN and doesn't automatically extend to the network segment holding employee laptops and sensitive business data — directly applying the blast-radius containment principle that shows up repeatedly throughout this course, from Zero Trust's micro-segmentation to cloud multi-account governance.</details>
-:::<h2>Key terms</h2>
+<p>An attacker who can manipulate specific switch configuration details can sometimes "hop" from one VLAN to another they shouldn't have access to — a genuine attack category covered more fully in Path 12's network security material. Properly configured switches (not accepting untrusted devices as trunk ports, disabling unused ports) meaningfully reduce this risk.</p>
+<p>Why might an organization put its smart office devices (thermostats, security cameras) on a separate VLAN from the network its employee laptops use?</p>
+<details><summary>Show answer</summary>IoT devices like thermostats and cameras are frequently built with weaker security practices than general-purpose computers — less frequent firmware updates, weaker default credentials, and less scrutiny overall. Placing them on a separate VLAN means that if one of these devices is compromised (a genuinely common real-world occurrence), the attacker's access is contained to that VLAN and doesn't automatically extend to the network segment holding employee laptops and sensitive business data — directly applying the blast-radius containment principle that shows up repeatedly throughout this course, from Zero Trust's micro-segmentation to cloud multi-account governance.</details><h2>Key terms</h2>
 <ul>
 <li><strong>Switch</strong> — a device connecting multiple devices on the same local network, forwarding traffic only to the intended destination port.</li>
 <li><strong>VLAN (Virtual Local Area Network)</strong> — a logically isolated network segment running on shared physical switch hardware.</li>

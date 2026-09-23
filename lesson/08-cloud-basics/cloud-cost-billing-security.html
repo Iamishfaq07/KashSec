@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Cloud Cost &amp; Billing Security — Path 08 · KashSec Academy</title>
-<meta name="description" content="Cloud Cost &amp; Billing Security: Cryptomining abuse, billing alerts, and cost as an early compromise signal.">
+<meta name="description" content="Every lesson so far in this path has focused on confidentiality and access. This lesson covers a genuinely distinct — and often overlooked — security concern that's essentially unique to the cloud's p">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-cost-billing-security.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Cloud Cost &amp; Billing Security — Path 08 · KashSec Academy">
-<meta property="og:description" content="Cloud Cost &amp; Billing Security: Cryptomining abuse, billing alerts, and cost as an early compromise signal.">
+<meta property="og:description" content="Every lesson so far in this path has focused on confidentiality and access. This lesson covers a genuinely distinct — and often overlooked — security concern that's essentially unique to the cloud's p">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-cost-billing-security.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Cloud Cost &amp; Billing Security — Path 08 · KashSec Academy">
-<meta name="twitter:description" content="Cloud Cost &amp; Billing Security: Cryptomining abuse, billing alerts, and cost as an early compromise signal.">
+<meta name="twitter:description" content="Every lesson so far in this path has focused on confidentiality and access. This lesson covers a genuinely distinct — and often overlooked — security concern that's essentially unique to the cloud's p">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 08 — Cloud Computing Basics","item":"https://kashsec.vercel.app/lesson/08-cloud-basics/"},{"@type":"ListItem","position":4,"name":"Cloud Cost & Billing Security","item":"https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-cost-billing-security.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Cloud Cost & Billing Security","headline":"Cloud Cost & Billing Security","description":"Cloud Cost & Billing Security: Cryptomining abuse, billing alerts, and cost as an early compromise signal.","url":"https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-cost-billing-security.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Cryptomining abuse, billing alerts, and cost as an early compromise signal.","isPartOf":{"@type":"Course","name":"Path 08: Cloud Computing Basics","url":"https://kashsec.vercel.app/lesson/08-cloud-basics/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-cost-billing-security.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Cloud Cost & Billing Security","headline":"Cloud Cost & Billing Security","description":"Every lesson so far in this path has focused on confidentiality and access. This lesson covers a genuinely distinct — and often overlooked — security concern that's essentially unique to the cloud's p","url":"https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-cost-billing-security.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Cryptomining abuse, billing alerts, and cost as an early compromise signal.","isPartOf":{"@type":"Course","name":"Path 08: Cloud Computing Basics","url":"https://kashsec.vercel.app/lesson/08-cloud-basics/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-cost-billing-security.html"}}
 </script>
 </head>
 <body>
@@ -89,9 +89,7 @@
     <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/08-cloud-basics/">Path 08 — Cloud Computing Basics</a> · Cloud Cost &amp; Billing Security</nav>
     <div class="md" id="content"><article><h1>Cloud Cost &amp; Billing Security</h1>
 <p>Every lesson so far in this path has focused on confidentiality and access. This lesson covers a genuinely distinct — and often overlooked — security concern that's essentially unique to the cloud's pay-as-you-go model: <strong>billing itself as an attack surface</strong>.</p>
-<p>:::tip
-Recall the CIA triad from Path 01: confidentiality, integrity, <em>availability</em>. A billing-focused attack often isn't trying to steal data at all — it's aiming directly at your wallet, and unlike a traditional on-premises breach, a cloud account compromise can generate real, immediate financial damage purely through resource abuse, with no data ever touched.
-:::</p>
+<p>:::</p>
 <h2>Cryptomining abuse: the classic cloud billing attack</h2>
 <p>A compromised cloud account with sufficient permissions is, from an attacker's perspective, free (to them) compute power — and the single most common thing attackers do with stolen cloud credentials is spin up as many high-powered compute instances as possible to mine cryptocurrency, running up the account owner's bill (sometimes into the tens of thousands of dollars within hours) while the attacker profits from the mined currency. This connects directly back to the compute lesson's coverage of instance types — attackers specifically target the largest, most expensive instance types available, since that's what maximizes their own mining output.</p>
 <h2>Why leaked credentials are the usual entry point</h2>
@@ -108,15 +106,12 @@ Recall the CIA triad from Path 01: confidentiality, integrity, <em>availability<
 <p>:::challenge Diagnose an incident from billing alone
 A small startup receives a billing alert showing their monthly cloud spend has already exceeded the entire previous year's total spend, only eight days into the current month. Investigation shows dozens of large, GPU-optimized compute instances running in a region the company has never used before, none of which any team member recalls provisioning.</p>
 <details><summary>Hint</summary>Given this lesson's coverage of the classic billing-abuse pattern, what's the most likely underlying cause here, and what should the immediate response be?</details>
-<details><summary>Show answer</summary>This is a textbook cryptomining abuse incident, almost certainly originating from a leaked credential — the unfamiliar region, the GPU-optimized instance types (ideal for mining), and the extreme, sudden cost spike all match this lesson's described pattern precisely. The immediate response: revoke or rotate the compromised credential immediately, terminate the unauthorized instances, and then investigate how the credential leaked in the first place (checking public code repositories, recent commits, and any services the credential may have been embedded in) — following the same isolate-first-investigate-second instinct established in Path 07's compromise-recognition lesson, adapted to a cloud account instead of a single machine.</details>
-:::<h2>🧪 Hands-on lab — set up a real billing alert</h2>
+<details><summary>Show answer</summary>This is a textbook cryptomining abuse incident, almost certainly originating from a leaked credential — the unfamiliar region, the GPU-optimized instance types (ideal for mining), and the extreme, sudden cost spike all match this lesson's described pattern precisely. The immediate response: revoke or rotate the compromised credential immediately, terminate the unauthorized instances, and then investigate how the credential leaked in the first place (checking public code repositories, recent commits, and any services the credential may have been embedded in) — following the same isolate-first-investigate-second instinct established in Path 07's compromise-recognition lesson, adapted to a cloud account instead of a single machine.</details><h2>🧪 Hands-on lab — set up a real billing alert</h2>
 <p>If you have (or create) a free-tier cloud account, configure a billing alert or budget notification for a low threshold (even $1), confirming you understand exactly how the notification would reach you if triggered. If you don't have an account, sketch the specific threshold and notification method you'd configure and why.</p>
-<p>:::challenge Test yourself</p>
 <ol>
 <li>Why does cryptomining abuse specifically target the largest, most expensive compute instance types available?</li>
 <li>What's the usual entry point for a cloud billing-abuse incident?</li>
-<li>Why can a sudden cost spike sometimes be one of the earliest indicators of a cloud account compromise?
-:::</li>
+<li>Why can a sudden cost spike sometimes be one of the earliest indicators of a cloud account compromise?</li>
 </ol>
 <h2>Key terms</h2>
 <ul>

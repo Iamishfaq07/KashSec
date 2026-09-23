@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Breach Notification &amp; Disclosure Law — Path 23 · KashSec Academy</title>
-<meta name="description" content="Breach Notification &amp; Disclosure Law: Fragmented state laws, the 72-hour clock, and who makes the call.">
+<meta name="description" content="The third-party-vendor-risk lesson covered contractual breach notification clauses briefly, as part of the vendor risk lifecycle. This lesson goes deep specifically into the legal landscape around bre">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/23-grc-compliance/breach-notification-and-disclosure-law.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Breach Notification &amp; Disclosure Law — Path 23 · KashSec Academy">
-<meta property="og:description" content="Breach Notification &amp; Disclosure Law: Fragmented state laws, the 72-hour clock, and who makes the call.">
+<meta property="og:description" content="The third-party-vendor-risk lesson covered contractual breach notification clauses briefly, as part of the vendor risk lifecycle. This lesson goes deep specifically into the legal landscape around bre">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/23-grc-compliance/breach-notification-and-disclosure-law.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Breach Notification &amp; Disclosure Law — Path 23 · KashSec Academy">
-<meta name="twitter:description" content="Breach Notification &amp; Disclosure Law: Fragmented state laws, the 72-hour clock, and who makes the call.">
+<meta name="twitter:description" content="The third-party-vendor-risk lesson covered contractual breach notification clauses briefly, as part of the vendor risk lifecycle. This lesson goes deep specifically into the legal landscape around bre">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 23 — GRC & Compliance","item":"https://kashsec.vercel.app/lesson/23-grc-compliance/"},{"@type":"ListItem","position":4,"name":"Breach Notification & Disclosure Law","item":"https://kashsec.vercel.app/lesson/23-grc-compliance/breach-notification-and-disclosure-law.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Breach Notification & Disclosure Law","headline":"Breach Notification & Disclosure Law","description":"Breach Notification & Disclosure Law: Fragmented state laws, the 72-hour clock, and who makes the call.","url":"https://kashsec.vercel.app/lesson/23-grc-compliance/breach-notification-and-disclosure-law.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"All levels","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Fragmented state laws, the 72-hour clock, and who makes the call.","isPartOf":{"@type":"Course","name":"Path 23: GRC & Compliance","url":"https://kashsec.vercel.app/lesson/23-grc-compliance/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/23-grc-compliance/breach-notification-and-disclosure-law.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Breach Notification & Disclosure Law","headline":"Breach Notification & Disclosure Law","description":"The third-party-vendor-risk lesson covered contractual breach notification clauses briefly, as part of the vendor risk lifecycle. This lesson goes deep specifically into the legal landscape around bre","url":"https://kashsec.vercel.app/lesson/23-grc-compliance/breach-notification-and-disclosure-law.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"All levels","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Fragmented state laws, the 72-hour clock, and who makes the call.","isPartOf":{"@type":"Course","name":"Path 23: GRC & Compliance","url":"https://kashsec.vercel.app/lesson/23-grc-compliance/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/23-grc-compliance/breach-notification-and-disclosure-law.html"}}
 </script>
 </head>
 <body>
@@ -95,21 +95,13 @@
 <p>Most breach notification laws share a common structural pattern, even as specific details vary by jurisdiction: notification is typically triggered by unauthorized access to (or acquisition of) <strong>specific categories of protected information</strong> — often defined narrowly (Social Security numbers, financial account numbers combined with access credentials, health information) rather than any data exposure whatsoever. A genuinely important practical consequence: an incident exposing data that doesn't fall into a legally-defined protected category might not trigger a formal notification requirement at all, even if it's still a genuinely serious security incident worth addressing internally.</p>
 <h2>The notification timeline — why speed matters legally, not just practically</h2>
 <p>Directly connecting to Path 16's DFIR lesson's containment phase: many notification laws impose specific, often tight deadlines — GDPR requires notifying the relevant supervisory authority within 72 hours of becoming aware of a breach, and several US state laws impose deadlines in the 30-60 day range for notifying affected individuals. This creates genuine time pressure that directly shapes incident response practice — an organization's IR plan needs to explicitly account for "when does the notification clock start, and who's responsible for making that legal determination quickly" as an integrated part of the response process, not an afterthought handled once technical containment is complete.</p>
-<pre><code class="language-mermaid">flowchart LR
-    A["Breach\ndiscovered"] --&gt; B["Legal determines:\ndoes this trigger\nnotification?"]
-    B --&gt;|Yes| C["Notification clock\nstarts (e.g. GDPR: 72hrs)"]
-    C --&gt; D["Notify regulator\n+ affected individuals"]
-    B --&gt;|No| E["Document determination,\nno formal notification"]
-</code></pre>
 <h2>Who actually makes the "does this trigger notification" call</h2>
 <p>A genuinely important, easy-to-overlook governance point directly connecting to the RACI-and-security-committees lesson: the determination of whether a specific incident legally triggers notification is fundamentally a <strong>legal</strong> judgment, not a purely technical one — meaning an organization's incident response plan needs explicit legal counsel involvement (internal or outside counsel specializing in data breach law) built directly into the response workflow, not consulted only after the fact once a decision has already been informally made by technical staff without that expertise.</p>
 <h2>Notification content requirements — more than just "we had a breach"</h2>
 <p>Most laws specify not just <em>when</em> to notify but <em>what</em> the notification must contain — typically including what categories of information were involved, what steps the organization is taking in response, and what affected individuals can do to protect themselves (credit monitoring offers, password reset guidance). Directly connecting to Path 15's report-writing lesson's structured-communication discipline, a genuinely well-prepared organization has notification letter templates pre-drafted and legally reviewed <em>before</em> an incident occurs, rather than trying to draft legally sound, genuinely helpful notification language for the first time under the pressure of an active incident.</p>
 <h2>Why this connects directly back to vendor risk</h2>
 <p>Directly connecting to the third-party-vendor-risk lesson: a vendor's own breach notification obligations to <em>your</em> organization need to be explicit, specific contract terms (exactly the "breach notification clauses" that lesson named) — without a contractually-mandated, specific timeframe for a vendor notifying you of their own breach affecting your data, your own legal notification clock may already be running against you before you even learn an incident affecting your data occurred at all.</p>
-<p>:::challenge Test yourself
-Why does the determination of whether a specific incident legally triggers breach notification need to be made by legal counsel rather than by technical incident response staff alone, even though technical staff typically understand the incident's actual scope and mechanics best?
-:::</p>
+<p>Why does the determination of whether a specific incident legally triggers breach notification need to be made by legal counsel rather than by technical incident response staff alone, even though technical staff typically understand the incident's actual scope and mechanics best?</p>
 <h2>Key terms</h2>
 <ul>
 <li><strong>Protected information category</strong> — the specific, legally-defined types of data (SSNs, financial credentials, health information) whose exposure typically triggers notification obligations.</li>

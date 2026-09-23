@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Risk Assessment Lab — Path 10 · KashSec Academy</title>
-<meta name="description" content="Risk Assessment Lab: Practice thinking like a risk analyst.">
+<meta name="description" content="Risk assessment is how security professionals decide what to actually worry about, out of an effectively infinite list of things that could theoretically go wrong. This lab has you produce a real, str">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/10-fundamentals/risk-assessment-lab.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Risk Assessment Lab — Path 10 · KashSec Academy">
-<meta property="og:description" content="Risk Assessment Lab: Practice thinking like a risk analyst.">
+<meta property="og:description" content="Risk assessment is how security professionals decide what to actually worry about, out of an effectively infinite list of things that could theoretically go wrong. This lab has you produce a real, str">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/10-fundamentals/risk-assessment-lab.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Risk Assessment Lab — Path 10 · KashSec Academy">
-<meta name="twitter:description" content="Risk Assessment Lab: Practice thinking like a risk analyst.">
+<meta name="twitter:description" content="Risk assessment is how security professionals decide what to actually worry about, out of an effectively infinite list of things that could theoretically go wrong. This lab has you produce a real, str">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 10 — Cybersecurity Fundamentals","item":"https://kashsec.vercel.app/lesson/10-fundamentals/"},{"@type":"ListItem","position":4,"name":"Risk Assessment Lab","item":"https://kashsec.vercel.app/lesson/10-fundamentals/risk-assessment-lab.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Risk Assessment Lab","headline":"Risk Assessment Lab","description":"Risk Assessment Lab: Practice thinking like a risk analyst.","url":"https://kashsec.vercel.app/lesson/10-fundamentals/risk-assessment-lab.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Beginner→Intermediate","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Practice thinking like a risk analyst.","isPartOf":{"@type":"Course","name":"Path 10: Cybersecurity Fundamentals","url":"https://kashsec.vercel.app/lesson/10-fundamentals/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/10-fundamentals/risk-assessment-lab.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Risk Assessment Lab","headline":"Risk Assessment Lab","description":"Risk assessment is how security professionals decide what to actually worry about, out of an effectively infinite list of things that could theoretically go wrong. This lab has you produce a real, str","url":"https://kashsec.vercel.app/lesson/10-fundamentals/risk-assessment-lab.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Beginner→Intermediate","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Practice thinking like a risk analyst.","isPartOf":{"@type":"Course","name":"Path 10: Cybersecurity Fundamentals","url":"https://kashsec.vercel.app/lesson/10-fundamentals/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/10-fundamentals/risk-assessment-lab.html"}}
 </script>
 </head>
 <body>
@@ -91,28 +91,23 @@
 <p>Risk assessment is how security professionals decide <em>what to actually worry about</em>, out of an effectively infinite list of things that could theoretically go wrong. This lab has you produce a real, structured risk register — the exact deliverable format used across the industry.</p>
 <h2>Exercise</h2>
 <ol>
-<li><strong>Pick a scenario.</strong> Something you can genuinely reason about in detail: your home network, a small business you're familiar with, or even this very course's website. Avoid anything too abstract — specificity is what makes risk assessment useful rather than generic.</li>
-<li><strong>Identify assets.</strong> List what actually needs protecting: data (personal files, customer records, credentials), systems (your router, a web server, a laptop), and people (whoever could be socially engineered, or whose access could be abused). Being concrete here matters — "data" is too vague; "customer payment records stored in the database" is useful.</li>
-<li><strong>List threats and vulnerabilities for each asset</strong>, using the vocabulary from the main lesson: a <strong>threat</strong> is a potential cause of harm (an attacker, a natural disaster, human error); a <strong>vulnerability</strong> is the specific weakness that threat could exploit (an unpatched service, a weak password policy, an unlocked server room).</li>
-<li><strong>Estimate likelihood and impact.</strong> For each threat/vulnerability pair, rate likelihood (Low/Medium/High — how plausible is this, realistically, for your specific scenario?) and impact (Low/Medium/High — how bad would it actually be if it happened?). Multiplying these two roughly (even informally) is the core logic behind the risk equation from the main lesson: <strong>Risk ≈ Likelihood × Impact</strong>.</li>
-<li><strong>Suggest mitigations.</strong> For each identified risk, propose one concrete, realistic control — not "improve security" in the abstract, but something specific and actionable: "enable automatic OS updates," "require MFA for admin accounts," "move backups to a separate physical location."</li>
+<li><p><strong>Pick a scenario.</strong> Something you can genuinely reason about in detail: your home network, a small business you're familiar with, or even this very course's website. Avoid anything too abstract — specificity is what makes risk assessment useful rather than generic.</p>
+</li>
+<li><p><strong>Identify assets.</strong> List what actually needs protecting: data (personal files, customer records, credentials), systems (your router, a web server, a laptop), and people (whoever could be socially engineered, or whose access could be abused). Being concrete here matters — "data" is too vague; "customer payment records stored in the database" is useful.</p>
+</li>
+<li><p><strong>List threats and vulnerabilities for each asset</strong>, using the vocabulary from the main lesson: a <strong>threat</strong> is a potential cause of harm (an attacker, a natural disaster, human error); a <strong>vulnerability</strong> is the specific weakness that threat could exploit (an unpatched service, a weak password policy, an unlocked server room).</p>
+</li>
+<li><p><strong>Estimate likelihood and impact.</strong> For each threat/vulnerability pair, rate likelihood (Low/Medium/High — how plausible is this, realistically, for your specific scenario?) and impact (Low/Medium/High — how bad would it actually be if it happened?). Multiplying these two roughly (even informally) is the core logic behind the risk equation from the main lesson: <strong>Risk ≈ Likelihood × Impact</strong>.</p>
+</li>
+<li><p><strong>Suggest mitigations.</strong> For each identified risk, propose one concrete, realistic control — not "improve security" in the abstract, but something specific and actionable: "enable automatic OS updates," "require MFA for admin accounts," "move backups to a separate physical location."</p>
+</li>
+<li><p><strong>Classify each risk's disposition.</strong> For every row in your register, decide explicitly which of the four risk-response strategies from the main lesson applies — mitigate, accept, transfer, or avoid — and write a one-sentence justification. Forcing yourself to pick one of these four, rather than leaving it vague, is exactly the discipline that separates a real risk assessment from a worried list of concerns.</p>
+</li>
+<li><p><strong>Revisit after one "what if."</strong> Pick your single highest-rated risk and imagine the mitigation you proposed simply isn't available (too expensive, technically impossible, or blocked by someone else). What's your next-best fallback? This mirrors a genuinely common real-world situation — the ideal fix isn't always on the table, and a good risk assessor always has a second option in mind.</p>
+</li>
 </ol>
-<pre><code class="language-mermaid">flowchart LR
-    A[Identify Assets] --&gt; B[List Threats\n&amp; Vulnerabilities]
-    B --&gt; C[Estimate\nLikelihood x Impact]
-    C --&gt; D[Prioritize\nHighest risk first]
-    D --&gt; E[Propose\nMitigations]
-</code></pre>
-<ol>
-<li><strong>Classify each risk's disposition.</strong> For every row in your register, decide explicitly which of the four risk-response strategies from the main lesson applies — mitigate, accept, transfer, or avoid — and write a one-sentence justification. Forcing yourself to pick one of these four, rather than leaving it vague, is exactly the discipline that separates a real risk assessment from a worried list of concerns.</li>
-<li><strong>Revisit after one "what if."</strong> Pick your single highest-rated risk and imagine the mitigation you proposed simply isn't available (too expensive, technically impossible, or blocked by someone else). What's your next-best fallback? This mirrors a genuinely common real-world situation — the ideal fix isn't always on the table, and a good risk assessor always has a second option in mind.</li>
-</ol>
-<p>:::tip Prioritization is the actual point
-A risk register with 30 items and no prioritization is nearly useless in practice — real organizations have limited time and budget, so the entire value of this exercise is being able to say "these three risks matter far more than the other twenty-seven, fix these first." Always sort your finished list by risk level before presenting it.
-:::</p>
-<p>:::challenge Produce a one-page risk register
-Create a simple table: <strong>Asset | Threat | Vulnerability | Likelihood | Impact | Risk Level | Mitigation</strong> — fill it in with at least 6 realistic rows for your chosen scenario, sorted from highest to lowest overall risk. This exact format, in slightly more formal language, is what real risk assessments look like in professional security work.
-:::</p>
+<p>A risk register with 30 items and no prioritization is nearly useless in practice — real organizations have limited time and budget, so the entire value of this exercise is being able to say "these three risks matter far more than the other twenty-seven, fix these first." Always sort your finished list by risk level before presenting it.</p>
+<p>Create a simple table: <strong>Asset | Threat | Vulnerability | Likelihood | Impact | Risk Level | Mitigation</strong> — fill it in with at least 6 realistic rows for your chosen scenario, sorted from highest to lowest overall risk. This exact format, in slightly more formal language, is what real risk assessments look like in professional security work.</p>
 <h2>Key takeaway</h2>
 <p>Risk assessment isn't about eliminating every conceivable threat — that's neither possible nor a good use of limited resources. It's a structured way to decide what genuinely deserves attention first, which is exactly the reasoning that underlies every prioritization decision a real security team makes.</p>
 <p><strong>Next up →</strong> <a href="#/lesson/10-fundamentals/social-engineering-lab">Social Engineering Lab</a></p>

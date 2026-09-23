@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>What is Zero Trust? — Path 24 · KashSec Academy</title>
-<meta name="description" content="What is Zero Trust?: Why the perimeter model broke, and the three core principles that replaced it.">
+<meta name="description" content="Zero Trust is a security model built on one uncomfortable admission: the network you're standing on tells you almost nothing about whether you should be trusted. Being &quot;inside the corporate network&quot; u">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/24-zero-trust/what-is-zero-trust.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="What is Zero Trust? — Path 24 · KashSec Academy">
-<meta property="og:description" content="What is Zero Trust?: Why the perimeter model broke, and the three core principles that replaced it.">
+<meta property="og:description" content="Zero Trust is a security model built on one uncomfortable admission: the network you're standing on tells you almost nothing about whether you should be trusted. Being &quot;inside the corporate network&quot; u">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/24-zero-trust/what-is-zero-trust.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="What is Zero Trust? — Path 24 · KashSec Academy">
-<meta name="twitter:description" content="What is Zero Trust?: Why the perimeter model broke, and the three core principles that replaced it.">
+<meta name="twitter:description" content="Zero Trust is a security model built on one uncomfortable admission: the network you're standing on tells you almost nothing about whether you should be trusted. Being &quot;inside the corporate network&quot; u">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 24 — Zero Trust Architecture","item":"https://kashsec.vercel.app/lesson/24-zero-trust/"},{"@type":"ListItem","position":4,"name":"What is Zero Trust?","item":"https://kashsec.vercel.app/lesson/24-zero-trust/what-is-zero-trust.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"What is Zero Trust?","headline":"What is Zero Trust?","description":"What is Zero Trust?: Why the perimeter model broke, and the three core principles that replaced it.","url":"https://kashsec.vercel.app/lesson/24-zero-trust/what-is-zero-trust.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Why the perimeter model broke, and the three core principles that replaced it.","isPartOf":{"@type":"Course","name":"Path 24: Zero Trust Architecture","url":"https://kashsec.vercel.app/lesson/24-zero-trust/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/24-zero-trust/what-is-zero-trust.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"What is Zero Trust?","headline":"What is Zero Trust?","description":"Zero Trust is a security model built on one uncomfortable admission: the network you're standing on tells you almost nothing about whether you should be trusted. Being \"inside the corporate network\" u","url":"https://kashsec.vercel.app/lesson/24-zero-trust/what-is-zero-trust.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Why the perimeter model broke, and the three core principles that replaced it.","isPartOf":{"@type":"Course","name":"Path 24: Zero Trust Architecture","url":"https://kashsec.vercel.app/lesson/24-zero-trust/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/24-zero-trust/what-is-zero-trust.html"}}
 </script>
 </head>
 <body>
@@ -89,9 +89,7 @@
     <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/24-zero-trust/">Path 24 — Zero Trust Architecture</a> · What is Zero Trust?</nav>
     <div class="md" id="content"><article><h1>What is Zero Trust?</h1>
 <p>Zero Trust is a security model built on one uncomfortable admission: the network you're standing on tells you almost nothing about whether you should be trusted. Being "inside the corporate network" used to mean something. Today it means you found the Wi-Fi password, or you're on a VPN, or you're a compromised laptop three hops from someone's home router — the network alone can't tell the difference.</p>
-<p>:::tip
-The single sentence that captures the whole model: <strong>never trust, always verify — for every request, every time, regardless of where it comes from.</strong> Everything else in this path is detail on top of that sentence.
-:::</p>
+<p>:::</p>
 <h2>The perimeter model it replaced</h2>
 <p>For decades, network security worked like a castle: a strong wall (the firewall) around a soft, trusted interior. Get past the wall — VPN in, plug into an office ethernet port, get physical access to a building — and you were largely trusted from then on. Internal traffic was often lightly inspected, internal services assumed their callers were legitimate, and a single compromised laptop could often reach far more than it should.</p>
 <p>This model had a genuinely reasonable assumption behind it in, say, 1998: employees worked from an office, on company hardware, connecting to servers in that same building. The perimeter was a real, physical thing.</p>
@@ -109,8 +107,7 @@ The single sentence that captures the whole model: <strong>never trust, always v
 <li><strong>Assume breach.</strong> Design as if an attacker is already somewhere in your environment. Segment aggressively, log everything, and make lateral movement (the act of hopping from one compromised system to the next) as hard and as visible as possible.</li>
 </ol>
 <p>:::warn
-"Assume breach" is the principle people skip, because it feels pessimistic. It's actually the most practically useful one — it's the difference between a security program that only tries to keep attackers <em>out</em> and one that also limits the damage once someone <em>is</em> in, which is the realistic scenario for any organization large enough to be a target.
-:::</p>
+"Assume breach" is the principle people skip, because it feels pessimistic. It's actually the most practically useful one — it's the difference between a security program that only tries to keep attackers <em>out</em> and one that also limits the damage once someone <em>is</em> in, which is the realistic scenario for any organization large enough to be a target.</p>
 <h2>What Zero Trust is not</h2>
 <ul>
 <li><strong>Not a single product.</strong> Vendors sell "Zero Trust solutions," but Zero Trust is an architecture and a set of principles, not a box you buy. A vendor selling you "Zero Trust in a box" is selling you one piece of a much larger picture.</li>
@@ -141,17 +138,20 @@ Zero Trust:   [Any user/device, any location]
 <h2>🧪 Hands-on lab — map your own trust assumptions</h2>
 <p>You don't need a company network to do this exercise.</p>
 <ol>
-<li>List every application or service you use regularly (work or personal) — email, a file share, a wiki, a personal cloud drive.</li>
-<li>For each, write down: how does it currently decide whether to trust a request? ("It's on my home Wi-Fi," "I'm logged into the VPN," "I have a valid session cookie," etc.)</li>
-<li>Circle any answer that's purely about <em>network location</em> rather than <em>verified identity + device + context</em>. Those are perimeter-model trust decisions.</li>
-<li>For one circled item, sketch what a Zero Trust version would check instead (stronger auth? device health? something else?).</li>
-</ol>
-<p>:::challenge Test yourself</p>
-<ol>
-<li>Explain in one sentence why "I'm on the VPN" is a weaker trust signal today than it was twenty years ago.</li>
-<li>Which of the three core principles most directly limits the damage of a single compromised laptop, and why?</li>
-<li>A vendor says "install our appliance and you'll have Zero Trust." What's the accurate one-sentence pushback?
-:::</li>
+<li><p>List every application or service you use regularly (work or personal) — email, a file share, a wiki, a personal cloud drive.</p>
+</li>
+<li><p>For each, write down: how does it currently decide whether to trust a request? ("It's on my home Wi-Fi," "I'm logged into the VPN," "I have a valid session cookie," etc.)</p>
+</li>
+<li><p>Circle any answer that's purely about <em>network location</em> rather than <em>verified identity + device + context</em>. Those are perimeter-model trust decisions.</p>
+</li>
+<li><p>For one circled item, sketch what a Zero Trust version would check instead (stronger auth? device health? something else?).</p>
+</li>
+<li><p>Explain in one sentence why "I'm on the VPN" is a weaker trust signal today than it was twenty years ago.</p>
+</li>
+<li><p>Which of the three core principles most directly limits the damage of a single compromised laptop, and why?</p>
+</li>
+<li><p>A vendor says "install our appliance and you'll have Zero Trust." What's the accurate one-sentence pushback?</p>
+</li>
 </ol>
 <h2>Key terms</h2>
 <ul>

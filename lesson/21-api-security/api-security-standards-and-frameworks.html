@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>API Security Standards &amp; Frameworks — Path 21 · KashSec Academy</title>
-<meta name="description" content="API Security Standards &amp; Frameworks: ASVS, NIST, and industry regulations layered on top of OWASP.">
+<meta name="description" content="The OWASP API Top 10 lesson gave you the shared vocabulary for API risk categories. This lesson covers the broader landscape of standards and frameworks that vocabulary sits within — directly connecti">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/21-api-security/api-security-standards-and-frameworks.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="API Security Standards &amp; Frameworks — Path 21 · KashSec Academy">
-<meta property="og:description" content="API Security Standards &amp; Frameworks: ASVS, NIST, and industry regulations layered on top of OWASP.">
+<meta property="og:description" content="The OWASP API Top 10 lesson gave you the shared vocabulary for API risk categories. This lesson covers the broader landscape of standards and frameworks that vocabulary sits within — directly connecti">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/21-api-security/api-security-standards-and-frameworks.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="API Security Standards &amp; Frameworks — Path 21 · KashSec Academy">
-<meta name="twitter:description" content="API Security Standards &amp; Frameworks: ASVS, NIST, and industry regulations layered on top of OWASP.">
+<meta name="twitter:description" content="The OWASP API Top 10 lesson gave you the shared vocabulary for API risk categories. This lesson covers the broader landscape of standards and frameworks that vocabulary sits within — directly connecti">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 21 — API Security","item":"https://kashsec.vercel.app/lesson/21-api-security/"},{"@type":"ListItem","position":4,"name":"API Security Standards & Frameworks","item":"https://kashsec.vercel.app/lesson/21-api-security/api-security-standards-and-frameworks.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"API Security Standards & Frameworks","headline":"API Security Standards & Frameworks","description":"API Security Standards & Frameworks: ASVS, NIST, and industry regulations layered on top of OWASP.","url":"https://kashsec.vercel.app/lesson/21-api-security/api-security-standards-and-frameworks.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"ASVS, NIST, and industry regulations layered on top of OWASP.","isPartOf":{"@type":"Course","name":"Path 21: API Security","url":"https://kashsec.vercel.app/lesson/21-api-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/21-api-security/api-security-standards-and-frameworks.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"API Security Standards & Frameworks","headline":"API Security Standards & Frameworks","description":"The OWASP API Top 10 lesson gave you the shared vocabulary for API risk categories. This lesson covers the broader landscape of standards and frameworks that vocabulary sits within — directly connecti","url":"https://kashsec.vercel.app/lesson/21-api-security/api-security-standards-and-frameworks.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"ASVS, NIST, and industry regulations layered on top of OWASP.","isPartOf":{"@type":"Course","name":"Path 21: API Security","url":"https://kashsec.vercel.app/lesson/21-api-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/21-api-security/api-security-standards-and-frameworks.html"}}
 </script>
 </head>
 <body>
@@ -104,12 +104,8 @@
 <h2>OpenAPI/Swagger as a security-relevant artifact, not just documentation</h2>
 <p>Directly connecting to the api-testing lesson's tooling coverage: the <strong>OpenAPI Specification</strong> (formerly Swagger) — the standard, machine-readable format for describing an API's endpoints, parameters, and responses — increasingly serves double duty as a security artifact. Automated security scanning tools can consume an OpenAPI spec directly to generate test cases systematically, and a genuinely accurate, complete spec functions as a form of the API inventory the shadow-and-zombie-APIs lesson described, making "what does our API actually expose" a documented, verifiable fact rather than tribal knowledge.</p>
 <h2>Choosing which framework actually matters for your context</h2>
-<p>:::tip Frameworks compound, they don't compete
-A genuinely important practical point: OWASP API Top 10, ASVS, NIST, and industry-specific regulations aren't competing alternatives to choose between — a well-run API security program typically uses OWASP's categories for day-to-day technical prioritization, ASVS for structured review checklists, and NIST/industry regulations for the compliance mapping a regulated organization's auditors will specifically require. Treating this as "which one framework should we adopt" rather than "how do these layer together" is a common early-career misunderstanding this lesson aims to correct directly.
-:::</p>
-<p>:::challenge Test yourself
-Why might an organization handling payment card data need to satisfy both the OWASP API Top 10 and PCI-DSS requirements, rather than treating OWASP compliance as sufficient on its own?
-:::</p>
+<p>A genuinely important practical point: OWASP API Top 10, ASVS, NIST, and industry-specific regulations aren't competing alternatives to choose between — a well-run API security program typically uses OWASP's categories for day-to-day technical prioritization, ASVS for structured review checklists, and NIST/industry regulations for the compliance mapping a regulated organization's auditors will specifically require. Treating this as "which one framework should we adopt" rather than "how do these layer together" is a common early-career misunderstanding this lesson aims to correct directly.</p>
+<p>Why might an organization handling payment card data need to satisfy both the OWASP API Top 10 and PCI-DSS requirements, rather than treating OWASP compliance as sufficient on its own?</p>
 <h2>Key terms</h2>
 <ul>
 <li><strong>OWASP ASVS</strong> — a granular, testable set of security requirements for web and API applications, complementary to the Top 10's category-level framing.</li>

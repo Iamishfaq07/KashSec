@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Containers &amp; Kubernetes — Path 16 · KashSec Academy</title>
-<meta name="description" content="Containers &amp; Kubernetes: Docker sockets, RBAC, service tokens.">
+<meta name="description" content="Modern applications increasingly run in containers, orchestrated by Kubernetes — introducing an entirely new layer of infrastructure with its own distinct security model, building directly on the Linu">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/16-advanced/containers-k8s.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Containers &amp; Kubernetes — Path 16 · KashSec Academy">
-<meta property="og:description" content="Containers &amp; Kubernetes: Docker sockets, RBAC, service tokens.">
+<meta property="og:description" content="Modern applications increasingly run in containers, orchestrated by Kubernetes — introducing an entirely new layer of infrastructure with its own distinct security model, building directly on the Linu">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/16-advanced/containers-k8s.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Containers &amp; Kubernetes — Path 16 · KashSec Academy">
-<meta name="twitter:description" content="Containers &amp; Kubernetes: Docker sockets, RBAC, service tokens.">
+<meta name="twitter:description" content="Modern applications increasingly run in containers, orchestrated by Kubernetes — introducing an entirely new layer of infrastructure with its own distinct security model, building directly on the Linu">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
@@ -34,7 +34,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 16 — Advanced Cyber Topics","item":"https://kashsec.vercel.app/lesson/16-advanced/"},{"@type":"ListItem","position":4,"name":"Containers & Kubernetes","item":"https://kashsec.vercel.app/lesson/16-advanced/containers-k8s.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Containers & Kubernetes","headline":"Containers & Kubernetes","description":"Containers & Kubernetes: Docker sockets, RBAC, service tokens.","url":"https://kashsec.vercel.app/lesson/16-advanced/containers-k8s.html","inLanguage":"en","dateModified":"2026-08-04","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Docker sockets, RBAC, service tokens.","isPartOf":{"@type":"Course","name":"Path 16: Advanced Cyber Topics","url":"https://kashsec.vercel.app/lesson/16-advanced/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/16-advanced/containers-k8s.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Containers & Kubernetes","headline":"Containers & Kubernetes","description":"Modern applications increasingly run in containers, orchestrated by Kubernetes — introducing an entirely new layer of infrastructure with its own distinct security model, building directly on the Linu","url":"https://kashsec.vercel.app/lesson/16-advanced/containers-k8s.html","inLanguage":"en","dateModified":"2026-08-04","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Docker sockets, RBAC, service tokens.","isPartOf":{"@type":"Course","name":"Path 16: Advanced Cyber Topics","url":"https://kashsec.vercel.app/lesson/16-advanced/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/16-advanced/containers-k8s.html"}}
 </script>
 </head>
 <body>
@@ -91,25 +91,6 @@
 <p>Modern applications increasingly run in containers, orchestrated by Kubernetes — introducing an entirely new layer of infrastructure with its own distinct security model, building directly on the Linux fundamentals from Path 03 and the cloud concepts from the previous lesson.</p>
 <h2>What containers actually are, security-wise</h2>
 <p>Recall Path 03.4's virtualization lesson — a container is <strong>not</strong> a full virtual machine. Containers share the <strong>host machine's kernel</strong>, isolated from each other via Linux kernel features (namespaces, cgroups) rather than full hardware virtualization. This distinction has a direct security consequence: a container escape can potentially compromise the <strong>host itself</strong>, not just "another VM" — the isolation boundary is fundamentally thinner than full virtualization.</p>
-<pre><code class="language-mermaid">flowchart TB
-    subgraph VM["Virtual Machines"]
-        Hyp["Hypervisor"]
-        VM1["VM 1 - own kernel"]
-        VM2["VM 2 - own kernel"]
-        Hyp --&gt; VM1
-        Hyp --&gt; VM2
-    end
-    subgraph Cont["Containers"]
-        Host["Host OS - ONE shared kernel"]
-        C1["Container 1"]
-        C2["Container 2"]
-        Host --&gt; C1
-        Host --&gt; C2
-    end
-
-    style VM fill:#0f2b26,color:#E9EEF3,stroke:#3FB6A8
-    style Cont fill:#2b1010,color:#E9EEF3,stroke:#E05548
-</code></pre>
 <h2>Common Docker misconfigurations</h2>
 <h3>Running containers as root</h3>
 <p>By default, many container images run their main process as <strong>root</strong> inside the container — if an attacker achieves code execution within that container and then finds an escape vector, they escape as root on the host too.</p>
@@ -152,24 +133,6 @@ trivy config Dockerfile
 <p><strong>Trivy</strong> (itself the subject of a notable supply-chain incident involving its own GitHub Action) is a widely-used open-source scanner checking both known CVEs in image layers and misconfigurations in the Dockerfile/Kubernetes manifests themselves — directly relevant to the SCA (Software Composition Analysis) concept from Path 11.1.</p>
 <h2>Kubernetes — orchestrating containers at scale, and its own attack surface</h2>
 <p><strong>Kubernetes (K8s)</strong> manages large numbers of containers across many machines — introducing its own control plane, API, and permission model on top of the container concepts above.</p>
-<pre><code class="language-mermaid">flowchart TB
-    API["🎛 API Server&lt;br/&gt;(the control plane's front door)"]
-    ETCD["🗄 etcd&lt;br/&gt;(cluster state database)"]
-    Kubelet["🖥 Kubelet&lt;br/&gt;(runs on each node)"]
-    Pod1["📦 Pod"]
-    Pod2["📦 Pod"]
-
-    API --&gt; ETCD
-    API --&gt; Kubelet
-    Kubelet --&gt; Pod1
-    Kubelet --&gt; Pod2
-
-    style API fill:#2b1010,color:#E9EEF3,stroke:#E05548
-    style ETCD fill:#2b1f0a,color:#EFA43A,stroke:#EFA43A
-    style Kubelet fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
-    style Pod1 fill:#111927,color:#8496A6,stroke:#8496A6
-    style Pod2 fill:#111927,color:#8496A6,stroke:#8496A6
-</code></pre>
 <h3>RBAC misconfigurations — the Kubernetes IAM equivalent</h3>
 <p>Directly analogous to the cloud IAM concepts from the previous lesson, Kubernetes uses <strong>RBAC (Role-Based Access Control)</strong> to govern what each user/service account can do within the cluster:</p>
 <pre><code class="language-yaml"># DANGEROUS — grants full cluster-admin-equivalent permissions:
@@ -241,10 +204,8 @@ kubectl get clusterrolebindings -o wide
 kubectl auth can-i --list --as=system:serviceaccount:default:default
 </code></pre>
 <p>Also revisit Path 03.4's Docker installation from earlier in this course, and try building a genuinely hardened Dockerfile (non-root user, minimal base image, explicit least-privilege) for any small project you've built during this course — directly applying this lesson's defensive guidance.</p>
-<p>:::challenge Test yourself
-A container has the host's Docker socket (<code>/var/run/docker.sock</code>) mounted inside it "for convenience," so the application can manage other containers programmatically. Why does this effectively grant the container full root access to the entire host, not just to Docker itself?</p>
-<details><summary>Show answer</summary>The Docker socket provides <strong>full control over the Docker daemon</strong>, which itself runs with root privileges on the host. A process with access to this socket can instruct Docker to start a <em>new</em> container with the host's entire root filesystem mounted inside it (e.g., <code>-v /:/host</code>) and then <code>chroot</code> into that mount — effectively achieving a full root shell on the underlying host machine, entirely bypassing container isolation. This is why mounting the Docker socket into any container is functionally equivalent to granting that container unrestricted root access to the host itself, regardless of how limited the container's own explicit permissions appear.</details>
-:::<h2>Key terms</h2>
+<p>A container has the host's Docker socket (<code>/var/run/docker.sock</code>) mounted inside it "for convenience," so the application can manage other containers programmatically. Why does this effectively grant the container full root access to the entire host, not just to Docker itself?</p>
+<details><summary>Show answer</summary>The Docker socket provides <strong>full control over the Docker daemon</strong>, which itself runs with root privileges on the host. A process with access to this socket can instruct Docker to start a <em>new</em> container with the host's entire root filesystem mounted inside it (e.g., <code>-v /:/host</code>) and then <code>chroot</code> into that mount — effectively achieving a full root shell on the underlying host machine, entirely bypassing container isolation. This is why mounting the Docker socket into any container is functionally equivalent to granting that container unrestricted root access to the host itself, regardless of how limited the container's own explicit permissions appear.</details><h2>Key terms</h2>
 <ul>
 <li><strong>Container escape</strong> — breaking out of container isolation to access or control the underlying host.</li>
 <li><strong>Docker socket</strong> — the Docker daemon's control interface; access to it is equivalent to host root access.</li>
