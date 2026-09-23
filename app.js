@@ -6424,9 +6424,12 @@ function renderLabLeakedSecret(){
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
-  {date:'2026-09-24', title:'Small-screen navigation and career action fit the viewport', items:[
+  {date:'2026-09-24', title:'Mobile layout and keyboard accessibility improvements', items:[
     'The header no longer extends past the screen at 320px or 430px. Narrow layouts hide duplicate header controls and offer Random lesson from the mobile menu.',
-    'The career-fit quiz action wraps within a phone screen. Browser checks now cover page width and the mobile random-lesson action across representative small widths.'
+    'The career-fit quiz action wraps within a phone screen. Browser checks now cover page width and the mobile random-lesson action across representative small widths.',
+    'The mobile menu moves focus to its first link, closes with Escape, and returns focus to the menu button.',
+    'Search, account, and keyboard-shortcut dialogs keep Tab inside the open panel and restore focus to the opening control when closed.',
+    'The keyboard-shortcut panel has a visible Close button. Search and account inputs have accessible names. Background controls are inert while a dialog is open, and browser checks cover focus entry, containment, and return.'
   ]},
   {date:'2026-09-23', title:'AI security lessons updated for the 2026 OWASP editions', items:[
     'The LLM Top 10 lesson now uses the 2026 categories and shows how older risk numbers changed, so a learner does not mistake an old identifier for a current one.',
@@ -10891,6 +10894,56 @@ document.getElementById('randomMobileBtn')?.addEventListener('click', ()=>{
 /* Progress ring: reflects overall completion, links to the progress hub */
 refreshProgressRing();
 
+/* Keep keyboard and screen-reader focus inside an open dialog, then return it
+   to the control that opened the dialog. All three overlays share this rule. */
+let activeDialog = null;
+function dialogFocusables(overlay){
+  return [...overlay.querySelectorAll('a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])')]
+    .filter(el=>!el.inert && !el.closest('[hidden]') && el.getClientRects().length);
+}
+function openDialog(overlay, firstFocus, close){
+  if(activeDialog?.overlay === overlay){ firstFocus.focus(); return; }
+  activeDialog?.close();
+  const returnFocus = document.activeElement;
+  const inerted = [...document.body.children].filter(el=>el !== overlay && !el.inert);
+  inerted.forEach(el=>{ el.inert = true; });
+  overlay.inert = false;
+  overlay.setAttribute('aria-hidden', 'false');
+  overlay.classList.add('open');
+  activeDialog = {overlay, close, returnFocus, inerted};
+  firstFocus.focus();
+}
+function closeDialog(overlay){
+  if(!overlay) return;
+  overlay.classList.remove('open');
+  overlay.inert = true;
+  overlay.setAttribute('aria-hidden', 'true');
+  if(activeDialog?.overlay !== overlay) return;
+  const {returnFocus, inerted} = activeDialog;
+  activeDialog = null;
+  inerted.forEach(el=>{ el.inert = false; });
+  if(returnFocus?.isConnected) returnFocus.focus();
+}
+document.addEventListener('keydown', e=>{
+  if(!activeDialog) return;
+  if(e.key === 'Escape'){
+    e.preventDefault();
+    e.stopPropagation();
+    activeDialog.close();
+    return;
+  }
+  if(e.key !== 'Tab') return;
+  const {overlay} = activeDialog;
+  const items = dialogFocusables(overlay);
+  if(!items.length){ e.preventDefault(); overlay.querySelector('[role="dialog"]')?.focus(); return; }
+  const first = items[0], last = items[items.length - 1];
+  if(!overlay.contains(document.activeElement) || (e.shiftKey && document.activeElement === first)){
+    e.preventDefault(); (e.shiftKey ? last : first).focus();
+  } else if(!e.shiftKey && document.activeElement === last){
+    e.preventDefault(); first.focus();
+  }
+}, true);
+
 /* ============================================================
    Global search — Ctrl/Cmd+K or the search icon. Searches path and
    sub-lesson titles/descriptions (metadata only — the lesson bodies
@@ -10910,11 +10963,13 @@ function buildSearchOverlay(){
   if(searchOverlay) return searchOverlay;
   searchOverlay = document.createElement('div');
   searchOverlay.className = 'search-overlay';
+  searchOverlay.inert = true;
+  searchOverlay.setAttribute('aria-hidden', 'true');
   searchOverlay.innerHTML = `
     <div class="search-modal" role="dialog" aria-modal="true" aria-label="Search lessons">
       <div class="search-input-row">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" id="searchInput" placeholder="Search lessons or jump to a page, tool, or lab…" autocomplete="off" spellcheck="false">
+        <input type="text" id="searchInput" aria-label="Search lessons" placeholder="Search lessons or jump to a page, tool, or lab…" autocomplete="off" spellcheck="false">
         <kbd>Esc</kbd>
       </div>
       <div class="search-results" id="searchResults"></div>
@@ -10937,8 +10992,7 @@ function buildSearchOverlay(){
     }
   });
   input.addEventListener('keydown', (e)=>{
-    if(e.key === 'Escape') closeSearch();
-    else if(e.key === 'ArrowDown'){ e.preventDefault(); moveSearchSelection(1); }
+    if(e.key === 'ArrowDown'){ e.preventDefault(); moveSearchSelection(1); }
     else if(e.key === 'ArrowUp'){ e.preventDefault(); moveSearchSelection(-1); }
     else if(e.key === 'Enter'){ e.preventDefault(); const r = searchCurrentResults[searchActiveIndex] || searchCurrentResults[0]; if(r) goToSearchResult(r); }
   });
@@ -11191,11 +11245,10 @@ function goToSearchResult(r){
 
 function openSearch(){
   const overlay = buildSearchOverlay();
-  overlay.classList.add('open');
   const input = overlay.querySelector('#searchInput');
   input.value = '';
   runSearch('');
-  setTimeout(()=>input.focus(), 30);
+  openDialog(overlay, input, closeSearch);
   // Deliberately no fetch here — opening the overlay costs nothing now.
   // loadSearchBodies() is called from the input handler on the first real
   // keystroke instead.
@@ -11214,7 +11267,7 @@ function loadSearchBodies(rerun){
     .catch(()=>{ searchBodiesKicked = false; });
 }
 function closeSearch(){
-  searchOverlay?.classList.remove('open');
+  closeDialog(searchOverlay);
 }
 
 document.getElementById('searchBtn').addEventListener('click', openSearch);
@@ -11234,9 +11287,11 @@ function toggleKbdOverlay(force){
   if(!kbdOverlay){
     kbdOverlay = document.createElement('div');
     kbdOverlay.className = 'kbd-overlay';
+    kbdOverlay.inert = true;
+    kbdOverlay.setAttribute('aria-hidden', 'true');
     kbdOverlay.innerHTML = `
-      <div class="kbd-panel" role="dialog" aria-label="Keyboard shortcuts">
-        <div class="kbd-title">Keyboard shortcuts</div>
+      <div class="kbd-panel" role="dialog" aria-modal="true" aria-label="Keyboard shortcuts">
+        <div class="kbd-heading"><div class="kbd-title">Keyboard shortcuts</div><button class="icon-btn" id="kbdCloseBtn" type="button" aria-label="Close keyboard shortcuts">×</button></div>
         <div class="kbd-row"><span><kbd>Ctrl</kbd>+<kbd>K</kbd></span><span>Search lessons</span></div>
         <div class="kbd-row"><span><kbd>[</kbd></span><span>Previous lesson</span></div>
         <div class="kbd-row"><span><kbd>]</kbd></span><span>Next lesson</span></div>
@@ -11246,12 +11301,18 @@ function toggleKbdOverlay(force){
       </div>`;
     kbdOverlay.addEventListener('click', e=>{ if(e.target===kbdOverlay) toggleKbdOverlay(false); });
     document.body.appendChild(kbdOverlay);
+    kbdOverlay.querySelector('#kbdCloseBtn').addEventListener('click', ()=>toggleKbdOverlay(false));
   }
   const show = force !== undefined ? force : !kbdOverlay.classList.contains('open');
-  kbdOverlay.classList.toggle('open', show);
+  if(show) openDialog(kbdOverlay, kbdOverlay.querySelector('#kbdCloseBtn'), ()=>toggleKbdOverlay(false));
+  else closeDialog(kbdOverlay);
 }
 window.addEventListener('keydown', (e)=>{
   if(e.metaKey || e.ctrlKey || e.altKey) return;
+  if(activeDialog){
+    if(e.key === '?' && activeDialog.overlay === kbdOverlay) toggleKbdOverlay(false);
+    return;
+  }
   const t = e.target;
   if(t && (t.tagName==='INPUT' || t.tagName==='TEXTAREA' || t.tagName==='SELECT' || t.isContentEditable)) return;
   if(e.key === '?'){
@@ -11289,6 +11350,8 @@ function buildAuthOverlay(){
   if(authOverlay) return authOverlay;
   authOverlay = document.createElement('div');
   authOverlay.className = 'search-overlay auth-overlay';
+  authOverlay.inert = true;
+  authOverlay.setAttribute('aria-hidden', 'true');
   authOverlay.innerHTML = `
     <div class="search-modal auth-modal" role="dialog" aria-modal="true" aria-label="Account">
       <div class="auth-header">
@@ -11303,7 +11366,6 @@ function buildAuthOverlay(){
   document.body.appendChild(authOverlay);
   authOverlay.addEventListener('click', (e)=>{ if(e.target === authOverlay) closeAuth(); });
   document.getElementById('authCloseBtn').addEventListener('click', closeAuth);
-  window.addEventListener('keydown', (e)=>{ if(e.key === 'Escape' && authOverlay.classList.contains('open')) closeAuth(); });
   return authOverlay;
 }
 
@@ -11314,7 +11376,7 @@ function paintAuthSignedOut(){
     <h3 class="auth-title">Sign in to sync</h3>
     <p class="auth-sub">Back up your progress, bookmarks, notes, and quiz scores, and pick up on any device. The site works completely fine without this.</p>
     <form id="magicLinkForm" class="auth-form">
-      <input type="email" id="authEmailInput" placeholder="you@example.com" required autocomplete="email">
+      <input type="email" id="authEmailInput" aria-label="Email address" placeholder="you@example.com" required autocomplete="email">
       <button class="btn-amber sm" type="submit">Send link</button>
     </form>
     <div class="auth-divider"><span>or</span></div>
@@ -11364,10 +11426,10 @@ function paintAuthSignedIn(){
 
 function openAuth(){
   buildAuthOverlay();
-  authOverlay.classList.add('open');
   if(SupabaseSync.isSignedIn()) paintAuthSignedIn(); else paintAuthSignedOut();
+  openDialog(authOverlay, document.getElementById('authCloseBtn'), closeAuth);
 }
-function closeAuth(){ authOverlay?.classList.remove('open'); }
+function closeAuth(){ closeDialog(authOverlay); }
 
 function updateAccountNav(user){
   const link = document.getElementById('accountNavLink');

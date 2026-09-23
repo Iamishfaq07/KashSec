@@ -292,6 +292,61 @@ function measureContrast() {
   }
   record('mobile pages fit 320–768px and keep random lesson available',
     mobileOverflow.length === 0, mobileOverflow.join(', '));
+  /* Dialogs must keep Tab inside the visible panel and return focus to their
+     opener. Otherwise keyboard users can operate the page behind a modal. */
+  const dialogs = await browser.newContext({ serviceWorkers: 'block' });
+  await dialogs.addInitScript(() => { try {
+    const key = 'kashsec_state_v1';
+    const state = JSON.parse(localStorage.getItem(key) || '{}');
+    state.tourDone = true; state.tourSeen = true;
+    localStorage.setItem(key, JSON.stringify(state));
+  } catch (_) {} });
+  const dialogPage = await dialogs.newPage();
+  await dialogPage.goto(`${BASE}/index.html`, { waitUntil: 'load' });
+  const searchButton = dialogPage.locator('#searchBtn');
+  await searchButton.click();
+  record('search dialog input has an accessible name',
+    await dialogPage.getByRole('textbox', {name:'Search lessons'}).count() === 1);
+  await dialogPage.locator('#searchInput').focus();
+  await dialogPage.keyboard.press('Shift+Tab');
+  const searchTrapped = await dialogPage.evaluate(() =>
+    document.querySelector('.search-overlay.open')?.contains(document.activeElement) &&
+    document.getElementById('app').inert);
+  await dialogPage.keyboard.press('Escape');
+  const searchRestored = await dialogPage.evaluate(() =>
+    document.activeElement === document.getElementById('searchBtn') &&
+    !document.getElementById('app').inert);
+  record('search dialog traps Tab and restores focus', searchTrapped && searchRestored);
+
+  await searchButton.focus();
+  await dialogPage.keyboard.press('?');
+  const shortcutFocused = await dialogPage.evaluate(() =>
+    document.activeElement === document.getElementById('kbdCloseBtn'));
+  await dialogPage.keyboard.press('Tab');
+  const shortcutTrapped = await dialogPage.evaluate(() =>
+    document.activeElement === document.getElementById('kbdCloseBtn'));
+  await dialogPage.keyboard.press('Escape');
+  const shortcutRestored = await dialogPage.evaluate(() =>
+    document.activeElement === document.getElementById('searchBtn'));
+  record('keyboard shortcuts dialog traps and restores focus',
+    shortcutFocused && shortcutTrapped && shortcutRestored,
+    `initial=${shortcutFocused}, tab=${shortcutTrapped}, restored=${shortcutRestored}`);
+
+  await searchButton.focus();
+  await dialogPage.evaluate(() => openAuth());
+  record('account email input has an accessible name',
+    await dialogPage.getByRole('textbox', {name:'Email address'}).count() === 1);
+  await dialogPage.locator('#authCloseBtn').focus();
+  for(let i = 0; i < 6; i++) await dialogPage.keyboard.press('Tab');
+  const authTrapped = await dialogPage.evaluate(() =>
+    document.querySelector('.auth-overlay.open')?.contains(document.activeElement) &&
+    document.getElementById('app').inert);
+  await dialogPage.keyboard.press('Escape');
+  const authRestored = await dialogPage.evaluate(() =>
+    document.activeElement === document.getElementById('searchBtn') &&
+    !document.getElementById('app').inert);
+  record('account dialog traps Tab and restores focus', authTrapped && authRestored);
+  await dialogs.close();
 
   await browser.close();
 
