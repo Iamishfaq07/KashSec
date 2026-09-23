@@ -268,6 +268,7 @@ updateOfflineBadge();
    truth for progress, bookmarks, notes, quiz scores, and prefs.
    ============================================================ */
 const STORE_KEY = 'kashsec_state_v1';
+const RECOVERY_KEY = 'kashsec_state_recovery_v1';
 function defaultState(){
   return {
     completed:{},      // { "pathId/subId": timestamp }
@@ -309,14 +310,120 @@ function defaultState(){
     readHashes:{} // { "pathId/subId": contentHash at time of completion }
   };
 }
+const isStateRecord = value => value !== null && typeof value === 'object' && !Array.isArray(value);
+function normalizeState(input){
+  const state = defaultState();
+  if(!isStateRecord(input)) return {state, repaired:true};
+  let repaired = false;
+  for(const [key, fallback] of Object.entries(state)){
+    if(!Object.hasOwn(input, key)) continue; // older backups can omit newer fields
+    const value = input[key];
+    const valid = Array.isArray(fallback) ? Array.isArray(value)
+      : isStateRecord(fallback) ? isStateRecord(value)
+      : fallback === null ? (value === null || (key === 'theme' ? ['dark','light','auto-time'].includes(value) : isStateRecord(value)))
+      : typeof value === typeof fallback;
+    if(valid) state[key] = value;
+    else repaired = true;
+  }
+  const mapRules = {
+    completed:v=>Number.isFinite(v) && v > 0,
+    bookmarks:v=>Number.isFinite(v) && v > 0,
+    notes:v=>typeof v === 'string',
+    quizScores:isStateRecord,
+    achievements:v=>typeof v === 'boolean' || (Number.isFinite(v) && v > 0),
+    visitDays:v=>v === true,
+    daily:isStateRecord,
+    certTracker:v=>typeof v === 'string',
+    labsCompleted:v=>Number.isFinite(v) && v > 0,
+    weeklyChain:v=>isStateRecord(v) && Array.isArray(v.answers),
+    pomodoroSessions:v=>Number.isFinite(v) && v >= 0,
+    lessonRatings:v=>v === 'up' || v === 'down',
+    missedQuestions:isStateRecord,
+    tasksSolved:isStateRecord,
+    readHashes:v=>typeof v === 'string'
+  };
+  for(const [key, valid] of Object.entries(mapRules)){
+    const entries = Object.entries(state[key]);
+    const kept = entries.filter(([, value])=>valid(value));
+    if(kept.length !== entries.length) repaired = true;
+    state[key] = Object.fromEntries(kept);
+  }
+  const flashcards = state.flashcards;
+  state.flashcards = {known:{}, reviews:{}};
+  for(const [key, valid] of [['known', v=>v === true || (Number.isFinite(v) && v > 0)], ['reviews', isStateRecord]]){
+    if(!Object.hasOwn(flashcards, key)) continue;
+    if(!isStateRecord(flashcards[key])){ repaired = true; continue; }
+    const entries = Object.entries(flashcards[key]);
+    const kept = entries.filter(([, value])=>valid(value));
+    if(kept.length !== entries.length) repaired = true;
+    state.flashcards[key] = Object.fromEntries(kept);
+  }
+  const prefs = state.readingPrefs;
+  state.readingPrefs = {
+    size:['normal','large','xlarge'].includes(prefs.size) ? prefs.size : 'normal',
+    width:['normal','wide'].includes(prefs.width) ? prefs.width : 'normal',
+    legible:typeof prefs.legible === 'boolean' ? prefs.legible : false
+  };
+  if(Object.keys(state.readingPrefs).some(key=>Object.hasOwn(prefs, key) && state.readingPrefs[key] !== prefs[key])) repaired = true;
+  if(state.lastVisited && (typeof state.lastVisited.pathId !== 'string' || typeof state.lastVisited.subId !== 'string')){
+    state.lastVisited = null; repaired = true;
+  }
+  if(state.examInProgress && (!Array.isArray(state.examInProgress.picks) || !Array.isArray(state.examInProgress.answers) ||
+      state.examInProgress.picks.length !== state.examInProgress.answers.length ||
+      !state.examInProgress.picks.every(p=>isStateRecord(p) && typeof p.pathId === 'string' && Number.isInteger(p.index)) ||
+      !Number.isFinite(state.examInProgress.endsAt) || !Number.isFinite(state.examInProgress.startedAt))){
+    state.examInProgress = null; repaired = true;
+  }
+  const attempts = state.examAttempts.filter(a=>isStateRecord(a) && Number.isFinite(a.pct) &&
+    Array.isArray(a.detail) && isStateRecord(a.perPath));
+  if(attempts.length !== state.examAttempts.length) repaired = true;
+  state.examAttempts = attempts;
+  return {state, repaired};
+}
+let stateRecovery = null;
+function keepRecoveryCopy(raw){
+  let stored = false;
+  try { localStorage.setItem(RECOVERY_KEY, raw); stored = true; } catch(_) {}
+  stateRecovery = {raw, stored};
+}
 function loadState(){
-  try{
-    const raw = localStorage.getItem(STORE_KEY);
-    if(raw) return Object.assign(defaultState(), JSON.parse(raw));
-  }catch(e){}
-  return defaultState();
+  let raw;
+  try { raw = localStorage.getItem(STORE_KEY); } catch(_) { return defaultState(); }
+  if(!raw) return defaultState();
+  try {
+    const result = normalizeState(JSON.parse(raw));
+    if(result.repaired) keepRecoveryCopy(raw);
+    return result.state;
+  } catch(_) {
+    keepRecoveryCopy(raw);
+    return defaultState();
+  }
 }
 let STATE = loadState();
+function downloadRecoveryCopy(raw){
+  const url = URL.createObjectURL(new Blob([raw], {type:'text/plain'}));
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = `kashsec-recovery-${new Date().toISOString().slice(0,10)}.txt`;
+  link.click();
+  setTimeout(()=>URL.revokeObjectURL(url), 1000);
+}
+function getRecoveryCopy(){
+  if(stateRecovery) return stateRecovery.raw;
+  try { return localStorage.getItem(RECOVERY_KEY); } catch(_) { return null; }
+}
+if(stateRecovery){
+  const notice = document.createElement('div');
+  notice.className = 'state-recovery-notice';
+  notice.setAttribute('role', 'status');
+  notice.innerHTML = `<span>Some saved progress could not be read. KashSec is using what it could recover. ${stateRecovery.stored
+    ? 'An untouched recovery copy is stored on this device.' : 'Download the original data before closing this tab.'}</span>
+    <button class="btn-ghost sm" type="button">Download original data</button>
+    <button class="btn-ghost sm" type="button" aria-label="Dismiss progress recovery notice">Dismiss</button>`;
+  notice.querySelectorAll('button')[0].addEventListener('click', ()=>downloadRecoveryCopy(stateRecovery.raw));
+  notice.querySelectorAll('button')[1].addEventListener('click', ()=>notice.remove());
+  document.getElementById('siteNav').after(notice);
+}
 function saveState(){
   try{ localStorage.setItem(STORE_KEY, JSON.stringify(STATE)); }catch(e){}
   if(typeof SupabaseSync !== 'undefined') SupabaseSync.pushState(STATE);
@@ -2709,15 +2816,15 @@ const LEGAL = {
   },
   privacy: {
     eyebrow:'Privacy', title:'Privacy policy',
-    lead:'What this site stores, what leaves your device, and what you can do about it. Last updated 23 September 2026.',
+    lead:'What this site stores, what leaves your device, and what you can do about it. Last updated 24 September 2026.',
     sections:[
       {h:'The short version', p:[
         'You can use the entire course without an account, and if you do, your progress never leaves your browser. If you choose to create an account, your progress is synced to a database so you can pick it up on another device. Page-view and performance analytics are collected for everyone. Advertising may appear and, when it does, is served by Google.',
         'Nothing here is sold, and nothing is shared with anyone beyond the specific services named below.'
       ]},
       {h:'What is stored on your device', p:[
-        'One entry in your browser\'s local storage, named <code>kashsec_state_v1</code>. It holds your lesson progress, quiz and exam results, practice-task answers, flashcard scheduling, notes you have written, lessons you have rated, your streak, and your display settings such as theme and font size.',
-        'This is stored by your browser, on your device. Without an account it is never transmitted anywhere, and it is not readable by this site\'s author or anyone else. Clearing your browser storage for this site erases it permanently — there is no copy unless you have made one.'
+        'KashSec progress normally uses one browser-storage entry, <code>kashsec_state_v1</code>. It holds your lesson progress, quiz and exam results, practice-task answers, flashcard scheduling, notes you have written, lessons you have rated, your streak, and display settings. If this record becomes unreadable, KashSec tries to keep an untouched second local entry, <code>kashsec_state_recovery_v1</code>, so you can download the original data. Clearing this site\'s storage deletes both entries.',
+        'This is stored by your browser, on your device. Without an account it is never transmitted anywhere, and it is not readable by this site\'s author or anyone else. Clearing browser storage for this site erases both entries permanently — export a copy first if you need one.'
       ]},
       {h:'If you create an account (optional)', p:[
         'Accounts are optional and exist for one reason: using the site on more than one device. Sign-in is by a one-time link sent to your email address, or through Google. Authentication and storage are handled by Supabase, a third-party database service.',
@@ -10660,6 +10767,10 @@ function renderProgressHub(){
             <input type="file" id="importProgressFile" accept="application/json,.json" hidden>
           </div>
         </div>
+        ${getRecoveryCopy() ? `<div class="hub-list-item" style="cursor:default">
+          <div><div class="hli-t">Original recovery copy</div><div class="hli-d">Saved locally after KashSec found unreadable progress. Download it before clearing site storage.</div></div>
+          <button class="btn-ghost sm" id="downloadRecoveryBtn" type="button">Download original data</button>
+        </div>` : ''}
       </div>
 
       <div class="hub-section" data-reveal style="--i:9">
@@ -10807,6 +10918,10 @@ function renderProgressHub(){
     a.click();
     URL.revokeObjectURL(a.href);
   });
+  document.getElementById('downloadRecoveryBtn')?.addEventListener('click', ()=>{
+    const raw = getRecoveryCopy();
+    if(raw) downloadRecoveryCopy(raw);
+  });
   document.getElementById('importProgressBtn')?.addEventListener('click', ()=>{
     document.getElementById('importProgressFile').click();
   });
@@ -10820,8 +10935,13 @@ function renderProgressHub(){
         alert('That file doesn\'t look like a KashSec backup.');
         return;
       }
+      const normalized = normalizeState(data);
+      if(normalized.repaired){
+        alert('That backup contains unreadable progress fields. Your current progress was not changed.');
+        return;
+      }
       if(!confirm('Replace the progress in this browser with the backup? Your current local progress will be overwritten.')) return;
-      STATE = Object.assign(defaultState(), data);
+      STATE = normalized.state;
       saveState();
       applyTheme();
       refreshProgressRing();
@@ -10845,6 +10965,9 @@ function renderProgressHub(){
   document.getElementById('resetProgressBtn')?.addEventListener('click', ()=>{
     if(confirm('This clears all progress, bookmarks, notes, quiz scores, and achievements stored in this browser. This cannot be undone. Continue?')){
       STATE = defaultState();
+      try{ localStorage.removeItem(RECOVERY_KEY); }catch(_){}
+      stateRecovery = null;
+      document.querySelector('.state-recovery-notice')?.remove();
       saveState();
       applyTheme();
       refreshProgressRing();
@@ -11461,7 +11584,7 @@ if(typeof SupabaseSync !== 'undefined' && SupabaseSync.CONFIGURED){
     updateAccountNav(user);
     if(user && !handledInitialSignIn){
       handledInitialSignIn = true;
-      STATE = await SupabaseSync.pullAndMerge(STATE);
+      STATE = normalizeState(await SupabaseSync.pullAndMerge(STATE)).state;
       try{ localStorage.setItem(STORE_KEY, JSON.stringify(STATE)); }catch(e){}
       refreshProgressRing();
       if(SupabaseSync.isAuthCallbackUrl() || !location.hash || location.hash === '#'){
