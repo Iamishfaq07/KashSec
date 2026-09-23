@@ -2377,15 +2377,20 @@ function renderPathOverview(pathId){
 
   document.getElementById('downloadPackBtn')?.addEventListener('click', async (e)=>{
     const btn = e.currentTarget;
+    const status = document.getElementById('offlinePathStatus');
     const original = btn.textContent;
     btn.textContent = 'Building…';
     btn.disabled = true;
+    status.textContent = 'Loading lessons for the offline pack…';
     try{
       const files = [];
       let index = `# Path ${p.n} — ${p.title}\n\n${p.desc}\n\n## Contents\n\n`;
       for(const s of p.subs){
-        const res = await fetch(`course/${p.id}/${s.id}.md`);
-        const md = res.ok ? await res.text() : `# ${s.title}\n\n_(Not available offline yet.)_\n`;
+        let res;
+        try { res = await fetch(`course/${p.id}/${s.id}.md`); }
+        catch { throw new Error(`Could not load “${s.title}”. No pack was downloaded.`); }
+        if(!res.ok) throw new Error(`Could not load “${s.title}” (HTTP ${res.status}). No pack was downloaded.`);
+        const md = await res.text();
         files.push({name:`${p.n}.${s.n}-${s.id}.md`, content: md});
         index += `- ${p.n}.${s.n} [${s.title}](./${p.n}.${s.n}-${s.id}.md)\n`;
       }
@@ -2398,8 +2403,9 @@ function renderPathOverview(pathId){
       a.click();
       a.remove();
       setTimeout(()=>URL.revokeObjectURL(a.href), 1000);
+      status.textContent = `Offline pack with all ${p.subs.length} lessons downloaded.`;
     }catch(err){
-      alert('Could not build the offline pack — check your connection and try again.');
+      status.textContent = err.message || 'Could not build the offline pack. No pack was downloaded.';
     }finally{
       btn.textContent = original;
       btn.disabled = false;
