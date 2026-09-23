@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>Path 24: Zero Trust Architecture — KashSec Academy</title>
 <meta name="description" content="Never trust, always verify — identity, device trust, micro-segmentation, ZTNA, continuous verification, and how to actually roll this out.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/24-zero-trust/">
@@ -21,54 +22,132 @@
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 24 — Zero Trust Architecture","item":"https://kashsec.vercel.app/lesson/24-zero-trust/"}]}
 </script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"Course","name":"Path 24: Zero Trust Architecture","description":"Never trust, always verify — identity, device trust, micro-segmentation, ZTNA, continuous verification, and how to actually roll this out.","url":"https://kashsec.vercel.app/lesson/24-zero-trust/","inLanguage":"en","dateModified":"2026-07-25","educationalLevel":"Advanced","isAccessibleForFree":true,"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"offers":{"@type":"Offer","category":"Free","price":"0","priceCurrency":"USD"},"hasCourseInstance":{"@type":"CourseInstance","courseMode":"online","courseWorkload":"PT9H"},"syllabusSections":[{"@type":"Syllabus","name":"What is Zero Trust?","description":"Why the perimeter model broke, and the three core principles that replaced it.","url":"https://kashsec.vercel.app/lesson/24-zero-trust/what-is-zero-trust.html","position":1},{"@type":"Syllabus","name":"Identity as the New Perimeter","description":"MFA, conditional access, and why identity anchors every other Zero Trust control.","url":"https://kashsec.vercel.app/lesson/24-zero-trust/identity-as-perimeter.html","position":2},{"@type":"Syllabus","name":"Device Trust & Posture Verification","description":"Why a correct password isn't enough — checking the device, not just the user.","url":"https://kashsec.vercel.app/lesson/24-zero-trust/device-trust-posture.html","position":3},{"@type":"Syllabus","name":"Micro-Segmentation & Network Design","description":"Default-deny, blast radius, and containing what a flat network never could.","url":"https://kashsec.vercel.app/lesson/24-zero-trust/microsegmentation.html","position":4},{"@type":"Syllabus","name":"Continuous Verification & Adaptive Access","description":"Risk-based, adaptive access that keeps checking throughout a session, not just at login.","url":"https://kashsec.vercel.app/lesson/24-zero-trust/continuous-verification.html","position":5},{"@type":"Syllabus","name":"Zero Trust Network Access (ZTNA) vs. Traditional VPN","description":"Why ZTNA grants an app, not a network — and what that changes.","url":"https://kashsec.vercel.app/lesson/24-zero-trust/ztna-vs-vpn.html","position":6},{"@type":"Syllabus","name":"Zero Trust in Cloud-Native Environments","description":"Workload identity, IAM as segmentation, and service mesh in a world with no fixed perimeter.","url":"https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-cloud.html","position":7},{"@type":"Syllabus","name":"Implementing Zero Trust: A Practical Roadmap","description":"Sequencing, governance, and metrics for a real multi-year rollout.","url":"https://kashsec.vercel.app/lesson/24-zero-trust/implementing-zero-trust.html","position":8},{"@type":"Syllabus","name":"Data-Centric Zero Trust","description":"Classification, DLP, and rights management — the last line of defense once access is granted.","url":"https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-data-security.html","position":9},{"@type":"Syllabus","name":"Zero Trust for APIs & Microservices","description":"mTLS, service identity, and per-service least privilege for internal service-to-service traffic.","url":"https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-api-security.html","position":10},{"@type":"Syllabus","name":"Privileged Access Management Under Zero Trust","description":"Just-in-Time elevation, break-glass accounts, and closing the standing-access gap.","url":"https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-pam.html","position":11},{"@type":"Syllabus","name":"Zero Trust for Third Parties & Vendor Access","description":"Federated identity and time-boxed access for the population outside your control.","url":"https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-third-party-risk.html","position":12},{"@type":"Syllabus","name":"Zero Trust Maturity Models","description":"CISA's five pillars and four stages — measuring progress instead of guessing at it.","url":"https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-maturity-model.html","position":13},{"@type":"Syllabus","name":"Analytics & Monitoring for Zero Trust","description":"UEBA and composite risk scoring — the connective tissue between every other pillar.","url":"https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-analytics-monitoring.html","position":14},{"@type":"Syllabus","name":"Common Zero Trust Pitfalls","description":"Where real rollouts break: exemptions, legacy excuses, and measuring adoption instead of risk.","url":"https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-common-pitfalls.html","position":15},{"@type":"Syllabus","name":"Zero Trust for Remote & Hybrid Work","description":"Applying the full stack without a location-based double standard.","url":"https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-remote-work.html","position":16},{"@type":"Syllabus","name":"Zero Trust Careers & Certifications","description":"Where Zero Trust fluency shows up in job postings, and how to build it.","url":"https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-careers.html","position":17},{"@type":"Syllabus","name":"Case Studies & Capstone: Assess a Zero Trust Maturity","description":"BeyondCorp and real-world lessons, then a full maturity assessment exercise.","url":"https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-case-studies-lab.html","position":18}],"hasPart":[{"@type":"LearningResource","name":"What is Zero Trust?","url":"https://kashsec.vercel.app/lesson/24-zero-trust/what-is-zero-trust.html"},{"@type":"LearningResource","name":"Identity as the New Perimeter","url":"https://kashsec.vercel.app/lesson/24-zero-trust/identity-as-perimeter.html"},{"@type":"LearningResource","name":"Device Trust & Posture Verification","url":"https://kashsec.vercel.app/lesson/24-zero-trust/device-trust-posture.html"},{"@type":"LearningResource","name":"Micro-Segmentation & Network Design","url":"https://kashsec.vercel.app/lesson/24-zero-trust/microsegmentation.html"},{"@type":"LearningResource","name":"Continuous Verification & Adaptive Access","url":"https://kashsec.vercel.app/lesson/24-zero-trust/continuous-verification.html"},{"@type":"LearningResource","name":"Zero Trust Network Access (ZTNA) vs. Traditional VPN","url":"https://kashsec.vercel.app/lesson/24-zero-trust/ztna-vs-vpn.html"},{"@type":"LearningResource","name":"Zero Trust in Cloud-Native Environments","url":"https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-cloud.html"},{"@type":"LearningResource","name":"Implementing Zero Trust: A Practical Roadmap","url":"https://kashsec.vercel.app/lesson/24-zero-trust/implementing-zero-trust.html"},{"@type":"LearningResource","name":"Data-Centric Zero Trust","url":"https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-data-security.html"},{"@type":"LearningResource","name":"Zero Trust for APIs & Microservices","url":"https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-api-security.html"},{"@type":"LearningResource","name":"Privileged Access Management Under Zero Trust","url":"https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-pam.html"},{"@type":"LearningResource","name":"Zero Trust for Third Parties & Vendor Access","url":"https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-third-party-risk.html"},{"@type":"LearningResource","name":"Zero Trust Maturity Models","url":"https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-maturity-model.html"},{"@type":"LearningResource","name":"Analytics & Monitoring for Zero Trust","url":"https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-analytics-monitoring.html"},{"@type":"LearningResource","name":"Common Zero Trust Pitfalls","url":"https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-common-pitfalls.html"},{"@type":"LearningResource","name":"Zero Trust for Remote & Hybrid Work","url":"https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-remote-work.html"},{"@type":"LearningResource","name":"Zero Trust Careers & Certifications","url":"https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-careers.html"},{"@type":"LearningResource","name":"Case Studies & Capstone: Assess a Zero Trust Maturity","url":"https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-case-studies-lab.html"}]}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/24-zero-trust">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · Path 24 — Zero Trust Architecture</div>
-  <article><h1>Path 24: Zero Trust Architecture — KashSec Academy</h1><p>Never trust, always verify — identity, device trust, micro-segmentation, ZTNA, continuous verification, and how to actually roll this out.</p><p><strong>Level:</strong> Advanced · <strong>18 lessons</strong> · Free, no account needed.</p><h2>Lessons in this path</h2><ol><li><a href="/lesson/24-zero-trust/what-is-zero-trust.html">What is Zero Trust?</a> — Why the perimeter model broke, and the three core principles that replaced it.</li><li><a href="/lesson/24-zero-trust/identity-as-perimeter.html">Identity as the New Perimeter</a> — MFA, conditional access, and why identity anchors every other Zero Trust control.</li><li><a href="/lesson/24-zero-trust/device-trust-posture.html">Device Trust &amp; Posture Verification</a> — Why a correct password isn't enough — checking the device, not just the user.</li><li><a href="/lesson/24-zero-trust/microsegmentation.html">Micro-Segmentation &amp; Network Design</a> — Default-deny, blast radius, and containing what a flat network never could.</li><li><a href="/lesson/24-zero-trust/continuous-verification.html">Continuous Verification &amp; Adaptive Access</a> — Risk-based, adaptive access that keeps checking throughout a session, not just at login.</li><li><a href="/lesson/24-zero-trust/ztna-vs-vpn.html">Zero Trust Network Access (ZTNA) vs. Traditional VPN</a> — Why ZTNA grants an app, not a network — and what that changes.</li><li><a href="/lesson/24-zero-trust/zero-trust-cloud.html">Zero Trust in Cloud-Native Environments</a> — Workload identity, IAM as segmentation, and service mesh in a world with no fixed perimeter.</li><li><a href="/lesson/24-zero-trust/implementing-zero-trust.html">Implementing Zero Trust: A Practical Roadmap</a> — Sequencing, governance, and metrics for a real multi-year rollout.</li><li><a href="/lesson/24-zero-trust/zero-trust-data-security.html">Data-Centric Zero Trust</a> — Classification, DLP, and rights management — the last line of defense once access is granted.</li><li><a href="/lesson/24-zero-trust/zero-trust-api-security.html">Zero Trust for APIs &amp; Microservices</a> — mTLS, service identity, and per-service least privilege for internal service-to-service traffic.</li><li><a href="/lesson/24-zero-trust/zero-trust-pam.html">Privileged Access Management Under Zero Trust</a> — Just-in-Time elevation, break-glass accounts, and closing the standing-access gap.</li><li><a href="/lesson/24-zero-trust/zero-trust-third-party-risk.html">Zero Trust for Third Parties &amp; Vendor Access</a> — Federated identity and time-boxed access for the population outside your control.</li><li><a href="/lesson/24-zero-trust/zero-trust-maturity-model.html">Zero Trust Maturity Models</a> — CISA's five pillars and four stages — measuring progress instead of guessing at it.</li><li><a href="/lesson/24-zero-trust/zero-trust-analytics-monitoring.html">Analytics &amp; Monitoring for Zero Trust</a> — UEBA and composite risk scoring — the connective tissue between every other pillar.</li><li><a href="/lesson/24-zero-trust/zero-trust-common-pitfalls.html">Common Zero Trust Pitfalls</a> — Where real rollouts break: exemptions, legacy excuses, and measuring adoption instead of risk.</li><li><a href="/lesson/24-zero-trust/zero-trust-remote-work.html">Zero Trust for Remote &amp; Hybrid Work</a> — Applying the full stack without a location-based double standard.</li><li><a href="/lesson/24-zero-trust/zero-trust-careers.html">Zero Trust Careers &amp; Certifications</a> — Where Zero Trust fluency shows up in job postings, and how to build it.</li><li><a href="/lesson/24-zero-trust/zero-trust-case-studies-lab.html">Case Studies &amp; Capstone: Assess a Zero Trust Maturity</a> — BeyondCorp and real-world lessons, then a full maturity assessment exercise.</li></ol></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<a class="skip" href="/lesson/24-zero-trust/#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · Path 24 — Zero Trust Architecture</nav>
+    <div class="md" id="content"><article><h1>Path 24: Zero Trust Architecture — KashSec Academy</h1><p>Never trust, always verify — identity, device trust, micro-segmentation, ZTNA, continuous verification, and how to actually roll this out.</p><p><strong>Level:</strong> Advanced · <strong>18 lessons</strong> · Free, no account needed.</p><h2>Lessons in this path</h2><ol><li><a href="/lesson/24-zero-trust/what-is-zero-trust.html">What is Zero Trust?</a> — Why the perimeter model broke, and the three core principles that replaced it.</li><li><a href="/lesson/24-zero-trust/identity-as-perimeter.html">Identity as the New Perimeter</a> — MFA, conditional access, and why identity anchors every other Zero Trust control.</li><li><a href="/lesson/24-zero-trust/device-trust-posture.html">Device Trust &amp; Posture Verification</a> — Why a correct password isn't enough — checking the device, not just the user.</li><li><a href="/lesson/24-zero-trust/microsegmentation.html">Micro-Segmentation &amp; Network Design</a> — Default-deny, blast radius, and containing what a flat network never could.</li><li><a href="/lesson/24-zero-trust/continuous-verification.html">Continuous Verification &amp; Adaptive Access</a> — Risk-based, adaptive access that keeps checking throughout a session, not just at login.</li><li><a href="/lesson/24-zero-trust/ztna-vs-vpn.html">Zero Trust Network Access (ZTNA) vs. Traditional VPN</a> — Why ZTNA grants an app, not a network — and what that changes.</li><li><a href="/lesson/24-zero-trust/zero-trust-cloud.html">Zero Trust in Cloud-Native Environments</a> — Workload identity, IAM as segmentation, and service mesh in a world with no fixed perimeter.</li><li><a href="/lesson/24-zero-trust/implementing-zero-trust.html">Implementing Zero Trust: A Practical Roadmap</a> — Sequencing, governance, and metrics for a real multi-year rollout.</li><li><a href="/lesson/24-zero-trust/zero-trust-data-security.html">Data-Centric Zero Trust</a> — Classification, DLP, and rights management — the last line of defense once access is granted.</li><li><a href="/lesson/24-zero-trust/zero-trust-api-security.html">Zero Trust for APIs &amp; Microservices</a> — mTLS, service identity, and per-service least privilege for internal service-to-service traffic.</li><li><a href="/lesson/24-zero-trust/zero-trust-pam.html">Privileged Access Management Under Zero Trust</a> — Just-in-Time elevation, break-glass accounts, and closing the standing-access gap.</li><li><a href="/lesson/24-zero-trust/zero-trust-third-party-risk.html">Zero Trust for Third Parties &amp; Vendor Access</a> — Federated identity and time-boxed access for the population outside your control.</li><li><a href="/lesson/24-zero-trust/zero-trust-maturity-model.html">Zero Trust Maturity Models</a> — CISA's five pillars and four stages — measuring progress instead of guessing at it.</li><li><a href="/lesson/24-zero-trust/zero-trust-analytics-monitoring.html">Analytics &amp; Monitoring for Zero Trust</a> — UEBA and composite risk scoring — the connective tissue between every other pillar.</li><li><a href="/lesson/24-zero-trust/zero-trust-common-pitfalls.html">Common Zero Trust Pitfalls</a> — Where real rollouts break: exemptions, legacy excuses, and measuring adoption instead of risk.</li><li><a href="/lesson/24-zero-trust/zero-trust-remote-work.html">Zero Trust for Remote &amp; Hybrid Work</a> — Applying the full stack without a location-based double standard.</li><li><a href="/lesson/24-zero-trust/zero-trust-careers.html">Zero Trust Careers &amp; Certifications</a> — Where Zero Trust fluency shows up in job postings, and how to build it.</li><li><a href="/lesson/24-zero-trust/zero-trust-case-studies-lab.html">Case Studies &amp; Capstone: Assess a Zero Trust Maturity</a> — BeyondCorp and real-world lessons, then a full maturity assessment exercise.</li></ol></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/24-zero-trust";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

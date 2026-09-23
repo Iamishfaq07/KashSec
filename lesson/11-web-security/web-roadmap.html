@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>Your 90-day roadmap — Path 11 · KashSec Academy</title>
 <meta name="description" content="You've covered the core of practical web application security hands-on. This closing lesson consolidates everything into a repeatable methodology and a clear path for continued growth.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/11-web-security/web-roadmap.html">
@@ -21,93 +22,123 @@
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 11 — Web Security & Hacking","item":"https://kashsec.vercel.app/lesson/11-web-security/"},{"@type":"ListItem","position":4,"name":"Your 90-day roadmap","item":"https://kashsec.vercel.app/lesson/11-web-security/web-roadmap.html"}]}
 </script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"LearningResource","name":"Your 90-day roadmap","headline":"Your 90-day roadmap","description":"You've covered the core of practical web application security hands-on. This closing lesson consolidates everything into a repeatable methodology and a clear path for continued growth.","url":"https://kashsec.vercel.app/lesson/11-web-security/web-roadmap.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Intermediate","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"A concrete plan to reach real bug bounty.","isPartOf":{"@type":"Course","name":"Path 11: Web Security & Hacking","url":"https://kashsec.vercel.app/lesson/11-web-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/11-web-security/web-roadmap.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/11-web-security/web-roadmap">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/11-web-security/">Path 11 — Web Security &amp; Hacking</a> · Your 90-day roadmap</div>
-  <article><h1>Your web security roadmap</h1>
-<p>You&#39;ve covered the core of practical web application security hands-on. This closing lesson consolidates everything into a repeatable methodology and a clear path for continued growth.</p>
+<a class="skip" href="/lesson/11-web-security/web-roadmap.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/11-web-security/">Path 11 — Web Security &amp; Hacking</a> · Your 90-day roadmap</nav>
+    <div class="md" id="content"><article><h1>Your web security roadmap</h1>
+<p>You've covered the core of practical web application security hands-on. This closing lesson consolidates everything into a repeatable methodology and a clear path for continued growth.</p>
 <h2>The complete picture, assembled</h2>
-<p>This is the same shape whether you&#39;re doing a formal penetration test (Path 14), hunting bug bounties (Path 15), or reviewing your own company&#39;s application as an AppSec engineer.</p>
+<p>This is the same shape whether you're doing a formal penetration test (Path 14), hunting bug bounties (Path 15), or reviewing your own company's application as an AppSec engineer.</p>
 <h2>A practical testing checklist</h2>
-<p>For any web application you&#39;re authorised to test, work through:</p>
+<p>For any web application you're authorised to test, work through:</p>
 <p><strong>Recon &amp; mapping</strong></p>
 <ul>
-<li><input disabled="" type="checkbox"> Subdomains enumerated, live hosts identified</li>
-<li><input disabled="" type="checkbox"> Full site map built via Burp (every page, form, and parameter you can find)</li>
-<li><input disabled="" type="checkbox"> Technology stack fingerprinted</li>
-<li><input disabled="" type="checkbox"> robots.txt, sitemap.xml, and any exposed config/backup files checked</li>
+<li> Subdomains enumerated, live hosts identified</li>
+<li> Full site map built via Burp (every page, form, and parameter you can find)</li>
+<li> Technology stack fingerprinted</li>
+<li> robots.txt, sitemap.xml, and any exposed config/backup files checked</li>
 </ul>
 <p><strong>Access control</strong></p>
 <ul>
-<li><input disabled="" type="checkbox"> Every &quot;your own data&quot; page tested with another account&#39;s ID (IDOR)</li>
-<li><input disabled="" type="checkbox"> Admin-only functionality tested from a regular user&#39;s session</li>
-<li><input disabled="" type="checkbox"> Direct API endpoint calls tested, bypassing the UI entirely</li>
+<li> Every "your own data" page tested with another account's ID (IDOR)</li>
+<li> Admin-only functionality tested from a regular user's session</li>
+<li> Direct API endpoint calls tested, bypassing the UI entirely</li>
 </ul>
 <p><strong>Injection</strong></p>
 <ul>
-<li><input disabled="" type="checkbox"> Every input reflected in output tested for XSS (with context-appropriate payloads)</li>
-<li><input disabled="" type="checkbox"> Every parameter touching a likely database query tested for SQLi</li>
-<li><input disabled="" type="checkbox"> Any feature plausibly shelling out to the OS tested for command injection</li>
+<li> Every input reflected in output tested for XSS (with context-appropriate payloads)</li>
+<li> Every parameter touching a likely database query tested for SQLi</li>
+<li> Any feature plausibly shelling out to the OS tested for command injection</li>
 </ul>
 <p><strong>Uploads &amp; SSRF</strong></p>
 <ul>
-<li><input disabled="" type="checkbox"> File upload features tested with disguised/malicious file types</li>
-<li><input disabled="" type="checkbox"> Any &quot;fetch from URL&quot; feature tested against internal addresses and cloud metadata</li>
+<li> File upload features tested with disguised/malicious file types</li>
+<li> Any "fetch from URL" feature tested against internal addresses and cloud metadata</li>
 </ul>
 <p><strong>Authentication &amp; sessions</strong></p>
 <ul>
-<li><input disabled="" type="checkbox"> Login rate limiting tested</li>
-<li><input disabled="" type="checkbox"> Username enumeration tested (differing responses for valid/invalid usernames)</li>
-<li><input disabled="" type="checkbox"> Session cookie flags checked (HttpOnly, Secure, SameSite)</li>
-<li><input disabled="" type="checkbox"> JWTs (if used) tested for <code>alg: none</code> and weak secrets</li>
+<li> Login rate limiting tested</li>
+<li> Username enumeration tested (differing responses for valid/invalid usernames)</li>
+<li> Session cookie flags checked (HttpOnly, Secure, SameSite)</li>
+<li> JWTs (if used) tested for <code>alg: none</code> and weak secrets</li>
 </ul>
 <p>This checklist maps directly onto the OWASP Top 10 categories from Path 11.1 — you now have a genuinely usable, repeatable methodology, not just a list of facts.</p>
-<h2>Vulnerabilities this path didn&#39;t cover in depth</h2>
+<h2>Vulnerabilities this path didn't cover in depth</h2>
 <p>Web security is vast — a few important categories worth knowing exist, to research further as you specialise:</p>
 <ul>
 <li><strong>CSRF (Cross-Site Request Forgery)</strong> — introduced in Path 05.4; worth a deeper dedicated dive as you progress.</li>
 <li><strong>XXE (XML External Entity injection)</strong> — a SQLi-like injection flaw specific to XML parsers, can lead to file disclosure or SSRF.</li>
 <li><strong>Insecure deserialization</strong> — untrusted data deserialized into objects, sometimes leading to remote code execution (part of OWASP A08).</li>
-<li><strong>Business logic flaws</strong> — bugs that aren&#39;t a &quot;classic&quot; injection/access-control pattern at all, but abuse of legitimate application logic (e.g., applying a discount code unlimited times, or manipulating a multi-step checkout flow&#39;s order).</li>
+<li><strong>Business logic flaws</strong> — bugs that aren't a "classic" injection/access-control pattern at all, but abuse of legitimate application logic (e.g., applying a discount code unlimited times, or manipulating a multi-step checkout flow's order).</li>
 <li><strong>GraphQL-specific issues</strong> — introspection abuse, batching attacks, overly permissive queries (mentioned briefly in Path 05.5).</li>
 <li><strong>Race conditions</strong> — exploiting timing windows between a check and an action (e.g., redeeming a gift card twice by sending simultaneous requests).</li>
 </ul>
 <h2>Writing findings that get fixed, not filed away</h2>
-<p>A vulnerability report that a developer can&#39;t act on quickly is a report that sits in a backlog forever — a genuinely underrated skill separates testers whose findings actually get remediated from those whose reports just accumulate. Beyond the four-part what/where/how/impact structure covered below, the highest-leverage addition is a <strong>concrete, specific remediation suggestion</strong> tailored to the actual bug, not a generic &quot;sanitize user input&quot; — for a SQLi finding, naming the exact parameterised-query pattern from Path 11.6; for stored XSS, naming the specific output-encoding function relevant to the framework in use. Also worth including: a <strong>realistic severity/business-impact framing</strong> in plain language a non-technical stakeholder can grasp (&quot;an attacker could read every customer&#39;s payment history&quot; lands far better than &quot;CVSS 8.1&quot;), since the report&#39;s real audience is often someone deciding what to prioritise, not just the engineer who&#39;ll implement the fix.</p>
+<p>A vulnerability report that a developer can't act on quickly is a report that sits in a backlog forever — a genuinely underrated skill separates testers whose findings actually get remediated from those whose reports just accumulate. Beyond the four-part what/where/how/impact structure covered below, the highest-leverage addition is a <strong>concrete, specific remediation suggestion</strong> tailored to the actual bug, not a generic "sanitize user input" — for a SQLi finding, naming the exact parameterised-query pattern from Path 11.6; for stored XSS, naming the specific output-encoding function relevant to the framework in use. Also worth including: a <strong>realistic severity/business-impact framing</strong> in plain language a non-technical stakeholder can grasp ("an attacker could read every customer's payment history" lands far better than "CVSS 8.1"), since the report's real audience is often someone deciding what to prioritise, not just the engineer who'll implement the fix.</p>
 <h2>Building your own practice lab</h2>
-<p>Beyond PortSwigger&#39;s hosted labs, running your own vulnerable applications locally deepens understanding significantly:</p>
+<p>Beyond PortSwigger's hosted labs, running your own vulnerable applications locally deepens understanding significantly:</p>
 <pre><code class="language-bash"># DVWA — Damn Vulnerable Web Application (PHP/MySQL, classic and thorough)
 docker run --rm -it -p 8080:80 vulnerables/web-dvwa
 
@@ -117,19 +148,19 @@ docker run --rm -p 3000:3000 bkimminich/juice-shop
 # OWASP WebGoat — structured, guided lessons built into the vulnerable app itself
 docker run -p 8080:8080 webgoat/webgoat
 </code></pre>
-<p>Remember Path 03.7&#39;s networking lesson: run these in an isolated VM/network, never bridged onto your real LAN.</p>
+<p>Remember Path 03.7's networking lesson: run these in an isolated VM/network, never bridged onto your real LAN.</p>
 <h2>Tools that round out your toolkit</h2>
 <p>Beyond Burp and sqlmap, worth exploring as you progress:</p>
 <ul>
 <li><strong>Nikto</strong> — a fast, automated web server vulnerability scanner (good for a quick initial sweep, high false-positive rate, so always verify manually).</li>
-<li><strong>Nuclei</strong> — a modern, template-driven vulnerability scanner with thousands of community-contributed detection templates, hugely popular in Path 15&#39;s bug bounty automation.</li>
+<li><strong>Nuclei</strong> — a modern, template-driven vulnerability scanner with thousands of community-contributed detection templates, hugely popular in Path 15's bug bounty automation.</li>
 <li><strong>ffuf / gobuster</strong> — the directory/parameter fuzzing tools from Path 11.3.</li>
-<li><strong>Burp extensions</strong> (via the BApp Store) — hundreds of community add-ons extending Burp&#39;s capability for specific bug classes.</li>
+<li><strong>Burp extensions</strong> (via the BApp Store) — hundreds of community add-ons extending Burp's capability for specific bug classes.</li>
 </ul>
 <h2>How this path connects to what comes next</h2>
 <ul>
 <li><strong>Path 12 (Network Security)</strong> teaches the infrastructure layer beneath the web app — often the entry point in real penetration tests.</li>
-<li><strong>Path 14 (Ethical Hacking)</strong> formalises the <em>methodology and legal/professional framing</em> around everything you&#39;ve practised here.</li>
+<li><strong>Path 14 (Ethical Hacking)</strong> formalises the <em>methodology and legal/professional framing</em> around everything you've practised here.</li>
 <li><strong>Path 15 (Bug Bounty)</strong> is the direct, practical application of this entire path against real, in-scope live targets, with a full recon-to-report pipeline.</li>
 <li><strong>Path 16 (Advanced)</strong> goes deeper into privilege escalation, Active Directory, and cloud security — the <em>post-compromise</em> world beyond the initial web foothold.</li>
 </ul>
@@ -141,7 +172,7 @@ docker run -p 8080:8080 webgoat/webgoat
 <li><strong>How</strong> you confirmed it (the exact request/payload).</li>
 <li><strong>Impact</strong> — what could an attacker actually do with this.</li>
 </ol>
-<p>This exact four-part structure — what, where, how, impact — is the skeleton of every professional vulnerability report you&#39;ll ever write, formalised further in Path 14.7.</p>
+<p>This exact four-part structure — what, where, how, impact — is the skeleton of every professional vulnerability report you'll ever write, formalised further in Path 14.7.</p>
 <p>Of the six vulnerability classes covered in this path (IDOR, XSS, SQLi, command injection, file upload, SSRF), which one do you find most intuitive so far, and which one do you want to revisit and practise more before moving on?</p>
 <details><summary>A thought on this</summary>There's no wrong answer here — but a genuinely useful habit is returning to PortSwigger's labs for whichever category felt least intuitive, <em>before</em> moving to Path 12. A shaky foundation in even one core category will show up repeatedly in later, more advanced paths that build directly on top of these concepts.</details><h2>Key terms</h2>
 <ul>
@@ -154,7 +185,7 @@ docker run -p 8080:8080 webgoat/webgoat
 <li>A repeatable methodology (recon → map → test → verify → report) applies across every context in the rest of this course.</li>
 <li>The checklist assembled here maps every OWASP Top 10 category to a concrete testing action.</li>
 <li>CSRF, XXE, deserialization, business logic, and race conditions are important categories to explore further beyond this path.</li>
-<li>Local vulnerable app labs (DVWA, Juice Shop, WebGoat) complement PortSwigger&#39;s hosted labs for deeper practice.</li>
+<li>Local vulnerable app labs (DVWA, Juice Shop, WebGoat) complement PortSwigger's hosted labs for deeper practice.</li>
 </ul>
 <h3>References</h3>
 <ul>
@@ -163,22 +194,70 @@ docker run -p 8080:8080 webgoat/webgoat
 <li><a href="https://github.com/digininja/DVWA">DVWA</a> — the classic PHP-based vulnerable practice app.</li>
 <li><a href="https://github.com/projectdiscovery/nuclei-templates">Nuclei templates</a> — thousands of community vulnerability detection templates.</li>
 </ul>
-<h2>🎉 You&#39;ve finished Path 11</h2>
+<h2>🎉 You've finished Path 11</h2>
 <p>You now have a genuinely practical, hands-on understanding of web application security — the OWASP Top 10, Burp Suite, reconnaissance, and six major vulnerability classes with real exploitation and defence detail for each. This is the applied core the rest of the course builds directly on.</p>
 <p><strong>Next up →</strong> <a href="#/lesson/11-web-security/burp-advanced-lab">Advanced Burp Suite Lab</a></p>
-<nav class="pager"><a href="/lesson/11-web-security/secure-coding-for-web-devs.html">← Secure Coding for Web Developers</a><a href="/lesson/11-web-security/burp-advanced-lab.html">Advanced Burp Suite Lab →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/11-web-security/secure-coding-for-web-devs.html">← Secure Coding for Web Developers</a><a href="/lesson/11-web-security/burp-advanced-lab.html">Advanced Burp Suite Lab →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/11-web-security/web-roadmap";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

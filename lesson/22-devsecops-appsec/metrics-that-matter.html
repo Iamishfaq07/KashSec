@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>Metrics That Matter — Path 22 · KashSec Academy</title>
 <meta name="description" content="If you cannot measure it, you cannot improve it — and you cannot defend your budget. The metrics you choose don't just report on your program, they shape it: whatever you measure is what your team wil">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/22-devsecops-appsec/metrics-that-matter.html">
@@ -21,53 +22,83 @@
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 22 — DevSecOps & AppSec Program","item":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/"},{"@type":"ListItem","position":4,"name":"Metrics That Matter","item":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/metrics-that-matter.html"}]}
 </script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"LearningResource","name":"Metrics That Matter","headline":"Metrics That Matter","description":"If you cannot measure it, you cannot improve it — and you cannot defend your budget. The metrics you choose don't just report on your program, they shape it: whatever you measure is what your team wil","url":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/metrics-that-matter.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Coverage, backlog health, and the numbers that actually earn budget.","isPartOf":{"@type":"Course","name":"Path 22: DevSecOps & AppSec Program","url":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/metrics-that-matter.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/22-devsecops-appsec/metrics-that-matter">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/22-devsecops-appsec/">Path 22 — DevSecOps &amp; AppSec Program</a> · Metrics That Matter</div>
-  <article><h1>Metrics That Matter</h1>
-<p>If you cannot measure it, you cannot improve it — and you cannot defend your budget. The metrics you choose don&#39;t just report on your program, they <em>shape</em> it: whatever you measure is what your team will optimize for, even when that&#39;s not what you meant.</p>
+<a class="skip" href="/lesson/22-devsecops-appsec/metrics-that-matter.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/22-devsecops-appsec/">Path 22 — DevSecOps &amp; AppSec Program</a> · Metrics That Matter</nav>
+    <div class="md" id="content"><article><h1>Metrics That Matter</h1>
+<p>If you cannot measure it, you cannot improve it — and you cannot defend your budget. The metrics you choose don't just report on your program, they <em>shape</em> it: whatever you measure is what your team will optimize for, even when that's not what you meant.</p>
 <p>:::</p>
 <h2>Bad metrics (common traps)</h2>
 <ul>
-<li><strong>Raw vulnerability counts</strong> — incentivizes hiding or gaming. A team that stops scanning entirely has zero open vulnerabilities. That is not the outcome you want, but it&#39;s exactly what this metric rewards.</li>
-<li><strong>&quot;Number of scans run&quot;</strong> — measures activity, not outcome. You can run a thousand scans against code nobody looks at.</li>
+<li><strong>Raw vulnerability counts</strong> — incentivizes hiding or gaming. A team that stops scanning entirely has zero open vulnerabilities. That is not the outcome you want, but it's exactly what this metric rewards.</li>
+<li><strong>"Number of scans run"</strong> — measures activity, not outcome. You can run a thousand scans against code nobody looks at.</li>
 <li><strong>Lines of code covered by SAST without regard to quality of findings</strong> — 100% coverage with a ruleset that only checks formatting is worthless coverage.</li>
 <li><strong>Total findings closed</strong> — a team can close 500 low-severity findings and ignore the 2 critical ones and this metric looks fantastic.</li>
 </ul>
 <h2>A concrete example of a metric backfiring</h2>
-<p>A team is measured on &quot;number of critical findings open.&quot; Leadership announces a hard deadline: zero by end of quarter. What actually happens, almost every time: findings get <em>reclassified</em> from critical to high, not fixed. The dashboard goes green. The vulnerabilities do not go anywhere. This is Goodhart&#39;s Law in action — &quot;when a measure becomes a target, it ceases to be a good measure&quot; — and it&#39;s the single biggest risk in building an AppSec metrics program.</p>
+<p>A team is measured on "number of critical findings open." Leadership announces a hard deadline: zero by end of quarter. What actually happens, almost every time: findings get <em>reclassified</em> from critical to high, not fixed. The dashboard goes green. The vulnerabilities do not go anywhere. This is Goodhart's Law in action — "when a measure becomes a target, it ceases to be a good measure" — and it's the single biggest risk in building an AppSec metrics program.</p>
 <h2>Better metrics</h2>
 <h3>Coverage</h3>
 <ul>
@@ -80,7 +111,7 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <tr>
 <th>Metric</th>
 <th>What it tells you</th>
-<th>What it can&#39;t tell you</th>
+<th>What it can't tell you</th>
 </tr>
 </thead>
 <tbody><tr>
@@ -109,7 +140,7 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 Watch median, not just mean, for remediation time. One 400-day-old finding that nobody owns will drag a mean upward and hide the fact that most findings actually get fixed quickly. Report both, or report median alone if you can only pick one.</p>
 <h3>Outcomes</h3>
 <ul>
-<li>Serious vulnerabilities found in production / by external researchers (<strong>escape rate</strong>) — this is the metric that most honestly answers &quot;is our program working,&quot; because it measures what actually got past every earlier control</li>
+<li>Serious vulnerabilities found in production / by external researchers (<strong>escape rate</strong>) — this is the metric that most honestly answers "is our program working," because it measures what actually got past every earlier control</li>
 <li>Time from vulnerability disclosure to fix in production</li>
 <li>Percentage of services that meet a defined security baseline</li>
 </ul>
@@ -122,8 +153,8 @@ Watch median, not just mean, for remediation time. One 400-day-old finding that 
 <h2>How to use metrics</h2>
 <ol>
 <li><strong>Pick a small set</strong> (5–7) that leadership can understand. A 40-metric dashboard gets ignored; a 5-metric one gets read every week.</li>
-<li><strong>Show trend lines</strong>, not just snapshots. &quot;12 critical findings&quot; means nothing alone. &quot;12, down from 40 last quarter&quot; is a story.</li>
-<li><strong>Pair every metric with an action</strong> — &quot;this number is high, therefore we will…&quot;. A metric with no attached decision is trivia, not management.</li>
+<li><strong>Show trend lines</strong>, not just snapshots. "12 critical findings" means nothing alone. "12, down from 40 last quarter" is a story.</li>
+<li><strong>Pair every metric with an action</strong> — "this number is high, therefore we will…". A metric with no attached decision is trivia, not management.</li>
 <li><strong>Avoid weaponising metrics against teams</strong> — use them to prioritise support and investment, not to rank-and-shame. Teams that feel punished by a metric will learn to hide from it rather than improve against it.</li>
 </ol>
 <p>:::</p>
@@ -131,44 +162,92 @@ Watch median, not just mean, for remediation time. One 400-day-old finding that 
 <p>Pick a real or hypothetical organization (your workplace, a personal project portfolio, or a scenario you invent).</p>
 <ol>
 <li>List every security metric you could plausibly collect for it — aim for at least 10.</li>
-<li>For each one, apply the Goodhart&#39;s Law test from above: could a team game it without getting more secure? Cross off any that fail.</li>
-<li>From what&#39;s left, pick exactly 5 that together cover coverage, backlog health, and outcomes — don&#39;t pick 5 that are all backlog metrics.</li>
-<li>For each of your 5, write the one sentence of &quot;therefore we will...&quot; that a bad number would trigger.</li>
+<li>For each one, apply the Goodhart's Law test from above: could a team game it without getting more secure? Cross off any that fail.</li>
+<li>From what's left, pick exactly 5 that together cover coverage, backlog health, and outcomes — don't pick 5 that are all backlog metrics.</li>
+<li>For each of your 5, write the one sentence of "therefore we will..." that a bad number would trigger.</li>
 <li>Sketch (in words or a rough table) what the trend line for each metric would look like after a <em>good</em> quarter versus a <em>bad</em> quarter.</li>
 </ol>
 <p>:::challenge Test yourself</p>
 <ol>
-<li>Your CISO wants a single number that summarizes &quot;how secure are we.&quot; Why is this a dangerous request, and what would you offer instead?</li>
-<li>A team&#39;s &quot;time to remediate&quot; metric improved dramatically overnight. List two explanations that mean real progress and two that mean the metric is being gamed.</li>
-<li>Explain escape rate in one sentence, and explain why it&#39;s harder to game than most other AppSec metrics.</li>
+<li>Your CISO wants a single number that summarizes "how secure are we." Why is this a dangerous request, and what would you offer instead?</li>
+<li>A team's "time to remediate" metric improved dramatically overnight. List two explanations that mean real progress and two that mean the metric is being gamed.</li>
+<li>Explain escape rate in one sentence, and explain why it's harder to game than most other AppSec metrics.</li>
 </ol>
 <h2>Key terms</h2>
 <ul>
 <li><strong>MTTR</strong> — mean time to remediate</li>
 <li><strong>Escape rate</strong> — defects that reach production or external discovery, rather than being caught by an earlier control</li>
-<li><strong>SLA</strong> — service level agreement for fixing findings by severity, e.g. &quot;critical findings fixed within 15 days&quot;</li>
-<li><strong>Goodhart&#39;s Law</strong> — &quot;when a measure becomes a target, it ceases to be a good measure&quot;; the central risk of any metrics program</li>
+<li><strong>SLA</strong> — service level agreement for fixing findings by severity, e.g. "critical findings fixed within 15 days"</li>
+<li><strong>Goodhart's Law</strong> — "when a measure becomes a target, it ceases to be a good measure"; the central risk of any metrics program</li>
 </ul>
 <h2>Recap</h2>
-<p>Measure coverage, backlog health, and real outcomes — and pressure-test every candidate metric against Goodhart&#39;s Law before you adopt it. Keep the set small, show trends, and always connect numbers to decisions, because a metric nobody acts on is just decoration.</p>
+<p>Measure coverage, backlog health, and real outcomes — and pressure-test every candidate metric against Goodhart's Law before you adopt it. Keep the set small, show trends, and always connect numbers to decisions, because a metric nobody acts on is just decoration.</p>
 <h3>References</h3>
 <ul>
 <li><a href="https://www.defectdojo.org/">OWASP DefectDojo</a> — open-source vulnerability management that helps track many of these metrics</li>
-<li><a href="https://en.wikipedia.org/wiki/Goodhart%27s_law">Goodhart&#39;s Law (overview)</a> — the underlying risk behind every metrics program</li>
+<li><a href="https://en.wikipedia.org/wiki/Goodhart%27s_law">Goodhart's Law (overview)</a> — the underlying risk behind every metrics program</li>
 </ul>
-<nav class="pager"><a href="/lesson/22-devsecops-appsec/security-champions-programs.html">← Security Champions Programs</a><a href="/lesson/22-devsecops-appsec/vulnerability-management-and-prioritization.html">Vulnerability Management &amp; Prioritization →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/22-devsecops-appsec/security-champions-programs.html">← Security Champions Programs</a><a href="/lesson/22-devsecops-appsec/vulnerability-management-and-prioritization.html">Vulnerability Management &amp; Prioritization →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/22-devsecops-appsec/metrics-that-matter";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

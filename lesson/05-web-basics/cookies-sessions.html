@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>Cookies, sessions, logins — Path 05 · KashSec Academy</title>
 <meta name="description" content="HTTP is stateless — every request stands alone, and the server has no memory of who you are between requests. So how does a site know you're logged in on page 5 when you logged in on page 1?">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/05-web-basics/cookies-sessions.html">
@@ -21,55 +22,85 @@
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 05 — How the Web Works","item":"https://kashsec.vercel.app/lesson/05-web-basics/"},{"@type":"ListItem","position":4,"name":"Cookies, sessions, logins","item":"https://kashsec.vercel.app/lesson/05-web-basics/cookies-sessions.html"}]}
 </script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"LearningResource","name":"Cookies, sessions, logins","headline":"Cookies, sessions, logins","description":"HTTP is stateless — every request stands alone, and the server has no memory of who you are between requests. So how does a site know you're logged in on page 5 when you logged in on page 1?","url":"https://kashsec.vercel.app/lesson/05-web-basics/cookies-sessions.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"How you stay logged in — and how attackers steal that.","isPartOf":{"@type":"Course","name":"Path 05: How the Web Works","url":"https://kashsec.vercel.app/lesson/05-web-basics/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/05-web-basics/cookies-sessions.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/05-web-basics/cookies-sessions">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/05-web-basics/">Path 05 — How the Web Works</a> · Cookies, sessions, logins</div>
-  <article><h1>Cookies &amp; sessions</h1>
-<p>HTTP is <strong>stateless</strong> — every request stands alone, and the server has no memory of who you are between requests. So how does a site know you&#39;re logged in on page 5 when you logged in on page 1?</p>
+<a class="skip" href="/lesson/05-web-basics/cookies-sessions.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/05-web-basics/">Path 05 — How the Web Works</a> · Cookies, sessions, logins</nav>
+    <div class="md" id="content"><article><h1>Cookies &amp; sessions</h1>
+<p>HTTP is <strong>stateless</strong> — every request stands alone, and the server has no memory of who you are between requests. So how does a site know you're logged in on page 5 when you logged in on page 1?</p>
 <p>The answer: <strong>cookies</strong>. And with cookies come some of the juiciest security bugs on the web.</p>
 <h2>Why cookies exist</h2>
-<p>Imagine every page reload asked you to log in again. Unusable. Servers need a way to say &quot;I know this browser — it&#39;s Alice, logged in three minutes ago.&quot; Cookies are that memory.</p>
+<p>Imagine every page reload asked you to log in again. Unusable. Servers need a way to say "I know this browser — it's Alice, logged in three minutes ago." Cookies are that memory.</p>
 <p>The dance:</p>
 <ol>
 <li>You log in.</li>
 <li>The server sends <code>Set-Cookie: session=abc123</code> in the response.</li>
 <li>The browser stores that cookie.</li>
 <li><strong>Every subsequent request</strong> to that site automatically includes it.</li>
-<li>The server looks up <code>abc123</code> in its session store to know you&#39;re Alice.</li>
+<li>The server looks up <code>abc123</code> in its session store to know you're Alice.</li>
 </ol>
-<p>That single stored value is your <strong>session identifier</strong> — the &quot;key to your account&quot; for the rest of your visit.</p>
+<p>That single stored value is your <strong>session identifier</strong> — the "key to your account" for the rest of your visit.</p>
 <h2>Anatomy of a Set-Cookie header</h2>
 <pre><code class="language-http">Set-Cookie: session=abc123def456; Path=/; Domain=example.com;
             Expires=Wed, 15 Jan 2027 12:00:00 GMT;
@@ -116,59 +147,59 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <h2>Session vs persistent cookies</h2>
 <ul>
 <li><strong>Session cookie</strong> — no <code>Expires</code>; deleted when the browser closes.</li>
-<li><strong>Persistent cookie</strong> — has an <code>Expires</code> or <code>Max-Age</code>; survives restarts. Used for &quot;remember me.&quot;</li>
+<li><strong>Persistent cookie</strong> — has an <code>Expires</code> or <code>Max-Age</code>; survives restarts. Used for "remember me."</li>
 </ul>
 <h2>Where the actual state lives</h2>
 <p>Two broad patterns:</p>
 <h3>1. Server-side sessions (traditional)</h3>
 <p>The cookie is just a random ID — the <em>real</em> data lives on the server:</p>
 <pre><code>Server session store:
-abc123def456 → { user_id: 42, role: &quot;user&quot;, logged_in_at: ..., cart: [...] }
+abc123def456 → { user_id: 42, role: "user", logged_in_at: ..., cart: [...] }
 </code></pre>
 <p>To log someone out server-side, you delete their entry.</p>
 <h3>2. Signed / stateless tokens (JWT etc.)</h3>
-<p>The cookie itself contains the state, cryptographically signed so it can&#39;t be forged:</p>
+<p>The cookie itself contains the state, cryptographically signed so it can't be forged:</p>
 <pre><code>eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiYWxpY2UiLCJyb2xlIjoidXNlciJ9.&lt;signature&gt;
 </code></pre>
-<p>That&#39;s a <strong>JWT</strong> (JSON Web Token). Anyone can decode the base64 middle and read your claims — the <em>signature</em> stops them tampering. Convenient, but JWTs have a long, colourful history of bugs (bad algorithms, weak secrets, <code>alg: none</code> tricks). More in Path 11.</p>
+<p>That's a <strong>JWT</strong> (JSON Web Token). Anyone can decode the base64 middle and read your claims — the <em>signature</em> stops them tampering. Convenient, but JWTs have a long, colourful history of bugs (bad algorithms, weak secrets, <code>alg: none</code> tricks). More in Path 11.</p>
 <h2>What can go wrong — attacks worth knowing</h2>
 <h3>Session hijacking</h3>
-<p>The attacker gets a copy of your cookie and uses it. They&#39;re now you.</p>
-<p><em>How they get it:</em> XSS (if <code>HttpOnly</code> isn&#39;t set), HTTP interception (if <code>Secure</code> isn&#39;t set), physical access to your machine, malware.</p>
+<p>The attacker gets a copy of your cookie and uses it. They're now you.</p>
+<p><em>How they get it:</em> XSS (if <code>HttpOnly</code> isn't set), HTTP interception (if <code>Secure</code> isn't set), physical access to your machine, malware.</p>
 <p><em>Defence:</em> <code>HttpOnly</code>, <code>Secure</code>, HTTPS everywhere, rotate the session on privilege change.</p>
 <h3>Session fixation</h3>
 <p>The attacker gives <em>you</em> a session ID they know, tricks you into logging in with it, then reuses the (now-authenticated) ID.</p>
-<p><em>Defence:</em> Rotate the session ID on login. Every framework does this by default; ancient hand-rolled code sometimes doesn&#39;t.</p>
+<p><em>Defence:</em> Rotate the session ID on login. Every framework does this by default; ancient hand-rolled code sometimes doesn't.</p>
 <h3>CSRF (Cross-Site Request Forgery)</h3>
-<p>The attacker gets your browser to send a state-changing request while you&#39;re logged in. Because cookies attach automatically, the request looks legitimate.</p>
-<p>Example: your bank sits at <code>bank.com</code> and you&#39;re logged in. You visit <code>evil.com</code>, which has:</p>
-<pre><code class="language-html">&lt;img src=&quot;https://bank.com/transfer?to=attacker&amp;amount=1000&quot;&gt;
+<p>The attacker gets your browser to send a state-changing request while you're logged in. Because cookies attach automatically, the request looks legitimate.</p>
+<p>Example: your bank sits at <code>bank.com</code> and you're logged in. You visit <code>evil.com</code>, which has:</p>
+<pre><code class="language-html">&lt;img src="https://bank.com/transfer?to=attacker&amp;amount=1000"&gt;
 </code></pre>
-<p>Your browser fetches the &quot;image&quot; — sending your bank cookie along. If bank.com trusts the request purely because the cookie is valid, money moves.</p>
+<p>Your browser fetches the "image" — sending your bank cookie along. If bank.com trusts the request purely because the cookie is valid, money moves.</p>
 <p><em>Defence:</em> <strong><code>SameSite=Lax</code> or <code>Strict</code></strong> on session cookies (huge win, now default in modern browsers), CSRF tokens on state-changing forms, checking the <code>Origin</code>/<code>Referer</code> header.</p>
 <h3>Cookie tossing / subdomain confusion</h3>
-<p>Multiple subdomains sharing cookies can accidentally let one subdomain overwrite/read another&#39;s cookies. Common in complex platforms.</p>
+<p>Multiple subdomains sharing cookies can accidentally let one subdomain overwrite/read another's cookies. Common in complex platforms.</p>
 <p><em>Defence:</em> Careful <code>Domain</code> and <code>Path</code> scoping, <code>__Host-</code> cookie prefix.</p>
 <h3>Session timeout and idle expiry</h3>
-<p>A session that lives forever is a growing liability — every cookie an attacker could ever steal stays valid indefinitely, and a device left logged in at a library or shared computer stays logged in for whoever sits down next. Well-designed sites enforce two separate limits: an <strong>absolute timeout</strong> (the session expires a fixed time after login, e.g. 24 hours, no matter what) and an <strong>idle timeout</strong> (the session expires after a period of <em>inactivity</em>, e.g. 30 minutes with no requests). Sensitive actions — changing a password, viewing payment details — often require <em>re-authentication</em> even within an otherwise-valid session, precisely because a session cookie alone isn&#39;t considered strong enough proof of &quot;this is really the account owner, right now&quot; for high-stakes actions. This same idea — that authentication isn&#39;t binary but has different strength requirements for different actions — reappears directly in Path 10&#39;s authentication material.</p>
+<p>A session that lives forever is a growing liability — every cookie an attacker could ever steal stays valid indefinitely, and a device left logged in at a library or shared computer stays logged in for whoever sits down next. Well-designed sites enforce two separate limits: an <strong>absolute timeout</strong> (the session expires a fixed time after login, e.g. 24 hours, no matter what) and an <strong>idle timeout</strong> (the session expires after a period of <em>inactivity</em>, e.g. 30 minutes with no requests). Sensitive actions — changing a password, viewing payment details — often require <em>re-authentication</em> even within an otherwise-valid session, precisely because a session cookie alone isn't considered strong enough proof of "this is really the account owner, right now" for high-stakes actions. This same idea — that authentication isn't binary but has different strength requirements for different actions — reappears directly in Path 10's authentication material.</p>
 <h2>The __Host- and __Secure- cookie prefixes</h2>
 <p>Browsers support special cookie name prefixes that come with <em>enforced</em> guarantees, closing gaps that the regular flags above leave open:</p>
 <pre><code class="language-http">Set-Cookie: __Host-session=abc123; Path=/; Secure; HttpOnly; SameSite=Strict
 </code></pre>
-<p>A cookie named <code>__Host-...</code> is only accepted by the browser if it also has <code>Secure</code> set, has <code>Path=/</code>, and has <strong>no</strong> <code>Domain</code> attribute at all — which means it can never be sent to a different subdomain, closing exactly the cookie-tossing/subdomain-confusion gap described above. <code>__Secure-</code> is a lighter version that only enforces <code>Secure</code>. These prefixes are a genuinely underused, cheap way to make a cookie&#39;s security properties self-enforcing rather than relying on every developer remembering to configure <code>Domain</code> and <code>Path</code> correctly by hand.</p>
+<p>A cookie named <code>__Host-...</code> is only accepted by the browser if it also has <code>Secure</code> set, has <code>Path=/</code>, and has <strong>no</strong> <code>Domain</code> attribute at all — which means it can never be sent to a different subdomain, closing exactly the cookie-tossing/subdomain-confusion gap described above. <code>__Secure-</code> is a lighter version that only enforces <code>Secure</code>. These prefixes are a genuinely underused, cheap way to make a cookie's security properties self-enforcing rather than relying on every developer remembering to configure <code>Domain</code> and <code>Path</code> correctly by hand.</p>
 <h2>Reading cookies as an attacker/defender</h2>
 <p>In Firefox DevTools:</p>
 <ol>
 <li><strong>F12 → Storage → Cookies</strong>.</li>
-<li>You&#39;ll see every cookie the site sets, its value, and its flags.</li>
+<li>You'll see every cookie the site sets, its value, and its flags.</li>
 </ol>
-<p>Look at some real sites. Some things you&#39;ll notice:</p>
+<p>Look at some real sites. Some things you'll notice:</p>
 <ul>
 <li>Big sites almost universally have <code>HttpOnly</code> and <code>Secure</code> set on their session cookies.</li>
 <li>Analytics cookies are typically not <code>HttpOnly</code> (JS needs to read them).</li>
 <li>Some cookies are outright JWTs — you can decode the middle at <a href="https://jwt.io/">jwt.io</a> (never paste a <em>real</em> production JWT there — copy the structure to a fake token for study).</li>
 </ul>
-<h2>The cookie&#39;s less-secure cousins</h2>
+<h2>The cookie's less-secure cousins</h2>
 <p>Modern browsers also expose:</p>
 <ul>
 <li><strong><code>localStorage</code></strong> — persistent per-origin key-value store. <strong>Not automatically sent</strong> with requests. Great for app state; <strong>bad for auth tokens</strong> because <em>any</em> JS on the origin can read it (XSS = game over).</li>
@@ -178,19 +209,19 @@ abc123def456 → { user_id: 42, role: &quot;user&quot;, logged_in_at: ..., cart:
 <p><strong>Rule of thumb:</strong> put session tokens in <strong>HttpOnly cookies</strong>, not localStorage. This is one of the most common modern SPA design mistakes.</p>
 <h2>🧪 Lab — Explore a real session</h2>
 <ol>
-<li>Open Firefox → visit any site you&#39;re logged in to (or make a throwaway account somewhere).</li>
+<li>Open Firefox → visit any site you're logged in to (or make a throwaway account somewhere).</li>
 <li>F12 → <strong>Storage → Cookies</strong>.</li>
 <li>Find the session cookie (often named <code>session</code>, <code>sid</code>, <code>PHPSESSID</code>, <code>connect.sid</code>, <code>_appname_session</code>).</li>
 <li>Note whether <code>HttpOnly</code>, <code>Secure</code>, and <code>SameSite</code> are set.</li>
 <li>Delete the cookie. Refresh the page. You should be logged out.</li>
 <li>(If comfortable) copy the cookie value, log out via the UI, then paste it back in another browser profile. Does the session still work, or did the server invalidate it on logout? A well-designed site kills the server-side session on logout — a lazy one leaves it valid.</li>
 </ol>
-<p>Congratulations — you&#39;ve just done a real session-cookie audit.</p>
-<p>Session cookies are essentially passwords. Never grab or paste someone else&#39;s. Only ever experiment with sessions belonging to accounts you own.</p>
+<p>Congratulations — you've just done a real session-cookie audit.</p>
+<p>Session cookies are essentially passwords. Never grab or paste someone else's. Only ever experiment with sessions belonging to accounts you own.</p>
 <p>Which cookie flag would have prevented JavaScript from stealing the session cookie if XSS were present on the site?</p>
 <details><summary>Show answer</summary><code>HttpOnly</code>. When set, the cookie is invisible to <code>document.cookie</code> and thus to any JS running on the page.</details><h2>Key terms</h2>
 <ul>
-<li><strong>Session</strong> — the concept of &quot;who this browser is right now.&quot;</li>
+<li><strong>Session</strong> — the concept of "who this browser is right now."</li>
 <li><strong>Cookie</strong> — the mechanism the browser uses to remember state per site.</li>
 <li><strong>Set-Cookie</strong> — the header the server uses to hand out a cookie.</li>
 <li><strong>HttpOnly / Secure / SameSite</strong> — the three cookie security flags.</li>
@@ -215,19 +246,67 @@ abc123def456 → { user_id: 42, role: &quot;user&quot;, logged_in_at: ..., cart:
 <li><a href="https://web.dev/articles/samesite-cookies-explained">Web.dev — SameSite cookies explained</a></li>
 </ul>
 <p><strong>Next up →</strong> <a href="#/lesson/05-web-basics/browser-storage-basics">Browser storage basics</a></p>
-<nav class="pager"><a href="/lesson/05-web-basics/http-methods-status-codes.html">← HTTP methods &amp; status codes</a><a href="/lesson/05-web-basics/browser-storage-basics.html">Browser storage basics →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/05-web-basics/http-methods-status-codes.html">← HTTP methods &amp; status codes</a><a href="/lesson/05-web-basics/browser-storage-basics.html">Browser storage basics →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/05-web-basics/cookies-sessions";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

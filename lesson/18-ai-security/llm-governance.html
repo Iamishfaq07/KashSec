@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>LLM Governance &amp; Compliance — Path 18 · KashSec Academy</title>
 <meta name="description" content="Everything else in this path focuses on finding and exploiting AI vulnerabilities. This lesson shifts to the organizational side: how a company actually manages AI risk at scale, across many models, t">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/18-ai-security/llm-governance.html">
@@ -21,70 +22,100 @@
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 18 — AI & AI Security","item":"https://kashsec.vercel.app/lesson/18-ai-security/"},{"@type":"ListItem","position":4,"name":"LLM Governance & Compliance","item":"https://kashsec.vercel.app/lesson/18-ai-security/llm-governance.html"}]}
 </script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"LearningResource","name":"LLM Governance & Compliance","headline":"LLM Governance & Compliance","description":"Everything else in this path focuses on finding and exploiting AI vulnerabilities. This lesson shifts to the organizational side: how a company actually manages AI risk at scale, across many models, t","url":"https://kashsec.vercel.app/lesson/18-ai-security/llm-governance.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Managing AI systems responsibly at scale.","isPartOf":{"@type":"Course","name":"Path 18: AI & AI Security","url":"https://kashsec.vercel.app/lesson/18-ai-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/18-ai-security/llm-governance.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/18-ai-security/llm-governance">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/18-ai-security/">Path 18 — AI &amp; AI Security</a> · LLM Governance &amp; Compliance</div>
-  <article><h1>LLM Governance &amp; Compliance</h1>
+<a class="skip" href="/lesson/18-ai-security/llm-governance.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/18-ai-security/">Path 18 — AI &amp; AI Security</a> · LLM Governance &amp; Compliance</nav>
+    <div class="md" id="content"><article><h1>LLM Governance &amp; Compliance</h1>
 <p>Everything else in this path focuses on finding and exploiting AI vulnerabilities. This lesson shifts to the organizational side: how a company actually manages AI risk <em>at scale</em>, across many models, teams, and products — the discipline that turns individual security findings into durable, repeatable protection.</p>
 <h2>Why governance matters beyond individual red teaming</h2>
-<p>A single red team engagement (Path 18&#39;s AI red teaming lesson) finds issues in <em>one</em> system at <em>one</em> point in time. Most organizations today are deploying LLMs across many products, teams, and vendors simultaneously — often without central visibility into which teams are using which models, with what data, and what controls. Governance is the structure that prevents &quot;we found and fixed this issue in Product A&quot; from leaving Product B, using the same vulnerable pattern, completely unaddressed.</p>
+<p>A single red team engagement (Path 18's AI red teaming lesson) finds issues in <em>one</em> system at <em>one</em> point in time. Most organizations today are deploying LLMs across many products, teams, and vendors simultaneously — often without central visibility into which teams are using which models, with what data, and what controls. Governance is the structure that prevents "we found and fixed this issue in Product A" from leaving Product B, using the same vulnerable pattern, completely unaddressed.</p>
 <h2>Model inventory and risk classification</h2>
-<p>You can&#39;t govern what you don&#39;t know exists. A <strong>model inventory</strong> tracks every LLM in use across an organization: which product uses it, what data flows through it, whether it&#39;s a first-party fine-tuned model or a third-party API, and who owns it internally. Once inventoried, each use case gets a <strong>risk classification</strong> — a customer-facing chatbot handling payment questions carries dramatically different risk than an internal tool summarizing meeting notes, and governance controls should scale proportionally rather than applying one-size-fits-all rules everywhere.</p>
+<p>You can't govern what you don't know exists. A <strong>model inventory</strong> tracks every LLM in use across an organization: which product uses it, what data flows through it, whether it's a first-party fine-tuned model or a third-party API, and who owns it internally. Once inventoried, each use case gets a <strong>risk classification</strong> — a customer-facing chatbot handling payment questions carries dramatically different risk than an internal tool summarizing meeting notes, and governance controls should scale proportionally rather than applying one-size-fits-all rules everywhere.</p>
 <h2>Access control and usage policies</h2>
-<p>Beyond the technical access controls covered in Path 18&#39;s securing-LLM-apps lesson, governance defines the <em>organizational</em> policy layer: which teams are authorized to deploy customer-facing AI features at all, what data classifications are permitted to be sent to which models (a first-party model hosted in-house may be approved for sensitive data; a third-party API might not be), and what review/approval gate a new AI feature must pass through before launch.</p>
+<p>Beyond the technical access controls covered in Path 18's securing-LLM-apps lesson, governance defines the <em>organizational</em> policy layer: which teams are authorized to deploy customer-facing AI features at all, what data classifications are permitted to be sent to which models (a first-party model hosted in-house may be approved for sensitive data; a third-party API might not be), and what review/approval gate a new AI feature must pass through before launch.</p>
 <h2>Data handling and privacy requirements</h2>
-<p>LLMs introduce genuinely new data handling questions beyond traditional software: does a third-party model provider retain and potentially train on the data you send it? Does your jurisdiction&#39;s privacy law (GDPR, and its equivalents worldwide) require specific disclosures when AI processes personal data? Can a user meaningfully exercise a &quot;right to deletion&quot; if their data was used in model fine-tuning, given how hard it is to surgically remove specific training examples&#39; influence from an already-trained model? These aren&#39;t hypothetical — they&#39;re active, unresolved tensions between traditional privacy regulation (written before LLMs existed) and how modern AI systems actually work.</p>
+<p>LLMs introduce genuinely new data handling questions beyond traditional software: does a third-party model provider retain and potentially train on the data you send it? Does your jurisdiction's privacy law (GDPR, and its equivalents worldwide) require specific disclosures when AI processes personal data? Can a user meaningfully exercise a "right to deletion" if their data was used in model fine-tuning, given how hard it is to surgically remove specific training examples' influence from an already-trained model? These aren't hypothetical — they're active, unresolved tensions between traditional privacy regulation (written before LLMs existed) and how modern AI systems actually work.</p>
 <h2>Monitoring for misuse and drift</h2>
-<p>Governance doesn&#39;t end at launch. Ongoing monitoring should track: unusual usage patterns potentially indicating abuse (echoing the anomaly-detection principles from Path 16&#39;s threat hunting lab, applied to AI systems), <strong>model drift</strong> (a model&#39;s real-world behavior gradually diverging from what was originally tested and approved, as underlying data or usage patterns shift over time), and repeated attempted jailbreaks or prompt injections — useful both defensively and as ongoing red-teaming signal about which attack patterns are actually being tried against your systems in the wild.</p>
+<p>Governance doesn't end at launch. Ongoing monitoring should track: unusual usage patterns potentially indicating abuse (echoing the anomaly-detection principles from Path 16's threat hunting lab, applied to AI systems), <strong>model drift</strong> (a model's real-world behavior gradually diverging from what was originally tested and approved, as underlying data or usage patterns shift over time), and repeated attempted jailbreaks or prompt injections — useful both defensively and as ongoing red-teaming signal about which attack patterns are actually being tried against your systems in the wild.</p>
 <h2>Vendor and third-party LLM risk</h2>
-<p>Most organizations don&#39;t train their own models from scratch — they call third-party APIs (OpenAI, Anthropic, and others) or embed open-source models from external sources. This introduces standard third-party/supply-chain risk questions (echoed in Path 18&#39;s supply chain attacks lesson): what&#39;s the vendor&#39;s own security posture, data retention policy, and incident history? What happens to your data and your users if that vendor has a breach?</p>
+<p>Most organizations don't train their own models from scratch — they call third-party APIs (OpenAI, Anthropic, and others) or embed open-source models from external sources. This introduces standard third-party/supply-chain risk questions (echoed in Path 18's supply chain attacks lesson): what's the vendor's own security posture, data retention policy, and incident history? What happens to your data and your users if that vendor has a breach?</p>
 <h2>The emerging regulatory landscape</h2>
-<p>Governance programs increasingly have to account for actual, binding law rather than just internal best practice. The <strong>EU AI Act</strong>, the first comprehensive AI-specific regulation of its kind, classifies AI systems by risk tier (unacceptable, high, limited, minimal) and imposes correspondingly stricter requirements on higher-risk categories — a chatbot answering product questions faces far lighter obligations than an AI system used in hiring decisions or credit scoring. In the US, no single comprehensive federal AI law exists yet, but sector-specific regulators (financial services, healthcare) are actively applying <em>existing</em> rules to AI systems, and state-level AI legislation is expanding rapidly. The practical governance implication, regardless of jurisdiction: risk classification (covered above) increasingly needs to answer not just &quot;how sensitive is this internally&quot; but &quot;which regulatory tier does this use case fall into, and what does that legally require&quot; — a question that&#39;s only going to become more central to this discipline as regulation matures, mirroring how Path 10.8&#39;s compliance frameworks (GDPR, HIPAA, PCI DSS) became unavoidable operational realities once a company&#39;s risk profile crossed certain thresholds.</p>
+<p>Governance programs increasingly have to account for actual, binding law rather than just internal best practice. The <strong>EU AI Act</strong>, the first comprehensive AI-specific regulation of its kind, classifies AI systems by risk tier (unacceptable, high, limited, minimal) and imposes correspondingly stricter requirements on higher-risk categories — a chatbot answering product questions faces far lighter obligations than an AI system used in hiring decisions or credit scoring. In the US, no single comprehensive federal AI law exists yet, but sector-specific regulators (financial services, healthcare) are actively applying <em>existing</em> rules to AI systems, and state-level AI legislation is expanding rapidly. The practical governance implication, regardless of jurisdiction: risk classification (covered above) increasingly needs to answer not just "how sensitive is this internally" but "which regulatory tier does this use case fall into, and what does that legally require" — a question that's only going to become more central to this discipline as regulation matures, mirroring how Path 10.8's compliance frameworks (GDPR, HIPAA, PCI DSS) became unavoidable operational realities once a company's risk profile crossed certain thresholds.</p>
 <h2>Incident response for AI-specific incidents</h2>
-<p>Recall Path 16.7&#39;s DFIR six-phase model — AI systems need a version of this too, but with some genuinely different considerations at each phase. <strong>Detection</strong> is harder than for traditional incidents, since a &quot;compromised&quot; LLM might just be producing subtly wrong or manipulated outputs with no clear technical signature to alert on (no malware hash, no anomalous network connection) — often the first sign is a pattern of unusual user complaints rather than a security tool firing. <strong>Containment</strong> for a poisoned or jailbroken model might mean rolling back to a previous model version or disabling a specific feature entirely, rather than patching a specific code path the way a traditional vulnerability fix would. <strong>Root cause analysis</strong> frequently requires the kind of statistical, success-rate-based investigation from Path 18.7&#39;s red-teaming methodology rather than a single reproducible reproduction case. Building this AI-specific incident response muscle <em>before</em> an incident happens — deciding in advance who gets paged, what &quot;rollback&quot; actually means operationally for your specific deployment, and how you&#39;ll investigate probabilistic rather than deterministic failures — is exactly the kind of preparation-phase investment Path 16.7 emphasized, just applied to a system type traditional IR playbooks were never designed around.</p>
+<p>Recall Path 16.7's DFIR six-phase model — AI systems need a version of this too, but with some genuinely different considerations at each phase. <strong>Detection</strong> is harder than for traditional incidents, since a "compromised" LLM might just be producing subtly wrong or manipulated outputs with no clear technical signature to alert on (no malware hash, no anomalous network connection) — often the first sign is a pattern of unusual user complaints rather than a security tool firing. <strong>Containment</strong> for a poisoned or jailbroken model might mean rolling back to a previous model version or disabling a specific feature entirely, rather than patching a specific code path the way a traditional vulnerability fix would. <strong>Root cause analysis</strong> frequently requires the kind of statistical, success-rate-based investigation from Path 18.7's red-teaming methodology rather than a single reproducible reproduction case. Building this AI-specific incident response muscle <em>before</em> an incident happens — deciding in advance who gets paged, what "rollback" actually means operationally for your specific deployment, and how you'll investigate probabilistic rather than deterministic failures — is exactly the kind of preparation-phase investment Path 16.7 emphasized, just applied to a system type traditional IR playbooks were never designed around.</p>
 <p>A full governance program can feel overwhelming to build from scratch. The practical starting point most organizations actually use: a simple spreadsheet inventorying every LLM currently in use, its data flows, and its current controls — genuinely useful even in its crudest form, and the foundation everything else in this lesson builds on.</p>
 <p>Create a basic governance checklist an organization could use before deploying a new LLM-powered feature — cover at minimum: risk classification, data handling review, access control requirements, and a monitoring plan. Keep it practical and specific enough that a real product team could actually follow it, not just abstract principles.</p>
 <h2>Key terms</h2>
 <ul>
 <li><strong>Model inventory</strong> — a centralized record of every LLM deployed across an organization and its associated data flows.</li>
-<li><strong>Model drift</strong> — a model&#39;s real-world behavior gradually diverging from its originally tested/approved state.</li>
+<li><strong>Model drift</strong> — a model's real-world behavior gradually diverging from its originally tested/approved state.</li>
 <li><strong>Third-party/vendor risk</strong> — security and compliance risk introduced by relying on an external AI provider.</li>
 </ul>
 <h2>Recap</h2>
 <ul>
-<li>Governance scales security findings from a single system to an entire organization&#39;s AI footprint, through inventory, risk classification, and consistent policy.</li>
+<li>Governance scales security findings from a single system to an entire organization's AI footprint, through inventory, risk classification, and consistent policy.</li>
 <li>Data handling and privacy questions around LLMs actively strain traditional regulatory frameworks not originally written with AI in mind.</li>
 <li>Ongoing monitoring (misuse, drift, and repeated attack patterns) matters as much as pre-launch review.</li>
 <li>Third-party LLM providers introduce genuine supply-chain-style risk requiring the same scrutiny as any other vendor relationship.</li>
@@ -95,19 +126,67 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <li><a href="https://owasp.org/www-project-ai-security-and-privacy-guide/">OWASP AI Security and Privacy Guide</a> — practical, free guidance covering governance alongside technical controls.</li>
 </ul>
 <p><strong>Next up →</strong> <a href="#/lesson/18-ai-security/llm-red-teaming-playbooks">LLM Red Teaming Playbooks</a></p>
-<nav class="pager"><a href="/lesson/18-ai-security/llm-attack-taxonomy.html">← LLM Attack Taxonomy</a><a href="/lesson/18-ai-security/llm-red-teaming-playbooks.html">LLM Red Teaming Playbooks →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/18-ai-security/llm-attack-taxonomy.html">← LLM Attack Taxonomy</a><a href="/lesson/18-ai-security/llm-red-teaming-playbooks.html">LLM Red Teaming Playbooks →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/18-ai-security/llm-governance";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

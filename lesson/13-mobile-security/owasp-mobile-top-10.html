@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>OWASP Mobile Top 10 — Path 13 · KashSec Academy</title>
-<meta name="description" content="Just as the OWASP Top 10 (Path 11) gives web hackers a shared checklist, the OWASP Mobile Application Security project maintains an equivalent list for mobile — the shared vocabulary and priority list">
+<meta name="description" content="Just as the OWASP Top 10 (Path 11) gives web testers a shared checklist, the OWASP Mobile Top 10:2024 provides risk categories for mobile apps. OWASP's separate Mobile Application Security (MAS) proje">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/13-mobile-security/owasp-mobile-top-10.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="OWASP Mobile Top 10 — Path 13 · KashSec Academy">
-<meta property="og:description" content="Just as the OWASP Top 10 (Path 11) gives web hackers a shared checklist, the OWASP Mobile Application Security project maintains an equivalent list for mobile — the shared vocabulary and priority list">
+<meta property="og:description" content="Just as the OWASP Top 10 (Path 11) gives web testers a shared checklist, the OWASP Mobile Top 10:2024 provides risk categories for mobile apps. OWASP's separate Mobile Application Security (MAS) proje">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/13-mobile-security/owasp-mobile-top-10.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -17,101 +18,182 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="OWASP Mobile Top 10 — Path 13 · KashSec Academy">
-<meta name="twitter:description" content="Just as the OWASP Top 10 (Path 11) gives web hackers a shared checklist, the OWASP Mobile Application Security project maintains an equivalent list for mobile — the shared vocabulary and priority list">
+<meta name="twitter:description" content="Just as the OWASP Top 10 (Path 11) gives web testers a shared checklist, the OWASP Mobile Top 10:2024 provides risk categories for mobile apps. OWASP's separate Mobile Application Security (MAS) proje">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 13 — Mobile App Security","item":"https://kashsec.vercel.app/lesson/13-mobile-security/"},{"@type":"ListItem","position":4,"name":"OWASP Mobile Top 10","item":"https://kashsec.vercel.app/lesson/13-mobile-security/owasp-mobile-top-10.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"OWASP Mobile Top 10","headline":"OWASP Mobile Top 10","description":"Just as the OWASP Top 10 (Path 11) gives web hackers a shared checklist, the OWASP Mobile Application Security project maintains an equivalent list for mobile — the shared vocabulary and priority list","url":"https://kashsec.vercel.app/lesson/13-mobile-security/owasp-mobile-top-10.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Intermediate→Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"The shared checklist for mobile application security.","isPartOf":{"@type":"Course","name":"Path 13: Mobile App Security","url":"https://kashsec.vercel.app/lesson/13-mobile-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/13-mobile-security/owasp-mobile-top-10.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"OWASP Mobile Top 10","headline":"OWASP Mobile Top 10","description":"Just as the OWASP Top 10 (Path 11) gives web testers a shared checklist, the OWASP Mobile Top 10:2024 provides risk categories for mobile apps. OWASP's separate Mobile Application Security (MAS) proje","url":"https://kashsec.vercel.app/lesson/13-mobile-security/owasp-mobile-top-10.html","inLanguage":"en","dateModified":"2026-09-23","learningResourceType":"Lesson","educationalLevel":"Intermediate→Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"The shared checklist for mobile application security.","isPartOf":{"@type":"Course","name":"Path 13: Mobile App Security","url":"https://kashsec.vercel.app/lesson/13-mobile-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/13-mobile-security/owasp-mobile-top-10.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/13-mobile-security/owasp-mobile-top-10">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/13-mobile-security/">Path 13 — Mobile App Security</a> · OWASP Mobile Top 10</div>
-  <article><h1>OWASP Mobile Top 10</h1>
-<p>Just as the OWASP Top 10 (Path 11) gives web hackers a shared checklist, the <strong>OWASP Mobile Application Security</strong> project maintains an equivalent list for mobile — the shared vocabulary and priority list every mobile security tester should know before diving into specific techniques.</p>
+<a class="skip" href="/lesson/13-mobile-security/owasp-mobile-top-10.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/13-mobile-security/">Path 13 — Mobile App Security</a> · OWASP Mobile Top 10</nav>
+    <div class="md" id="content"><article><h1>OWASP Mobile Top 10</h1>
+<p>Just as the OWASP Top 10 (Path 11) gives web testers a shared checklist, the <strong>OWASP Mobile Top 10:2024</strong> provides risk categories for mobile apps. OWASP's separate Mobile Application Security (MAS) project maintains detailed requirements, weaknesses, and tests. Use the 2024 list for broad orientation and the MAS resources for an assessment.</p>
 <h2>The list, explained plainly</h2>
 <ol>
 <li><strong>Improper Credential Usage</strong> — hardcoded API keys, credentials embedded in app code, or weak session handling specific to mobile contexts.</li>
-<li><strong>Inadequate Supply Chain Security</strong> — vulnerable third-party SDKs and libraries bundled into the app, or a compromised build pipeline — mobile&#39;s version of the software supply chain risks referenced throughout this course.</li>
-<li><strong>Insecure Authentication/Authorization</strong> — weak biometric implementation, missing server-side authorization checks (the mobile equivalent of Path 11&#39;s IDOR), or authentication logic that can be bypassed by manipulating the client.</li>
-<li><strong>Insufficient Input/Output Validation</strong> — the mobile equivalent of injection flaws (Path 11&#39;s SQLi/XSS lessons), often overlooked because developers assume mobile apps are &quot;safer&quot; than web apps.</li>
+<li><strong>Inadequate Supply Chain Security</strong> — vulnerable third-party SDKs and libraries bundled into the app, or a compromised build pipeline — mobile's version of the software supply chain risks referenced throughout this course.</li>
+<li><strong>Insecure Authentication/Authorization</strong> — weak biometric implementation, missing server-side authorization checks (the mobile equivalent of Path 11's IDOR), or authentication logic that can be bypassed by manipulating the client.</li>
+<li><strong>Insufficient Input/Output Validation</strong> — the mobile equivalent of injection flaws (Path 11's SQLi/XSS lessons), often overlooked because developers assume mobile apps are "safer" than web apps.</li>
 <li><strong>Insecure Communication</strong> — missing or broken TLS, disabled certificate validation, or apps that fall back to plaintext HTTP under certain conditions.</li>
 <li><strong>Inadequate Privacy Controls</strong> — collecting more personal data than necessary, or exposing personal data through logs, backups, or insecure storage.</li>
-<li><strong>Insufficient Binary Protections</strong> — apps with no obfuscation or anti-tampering measures, making reverse engineering (covered in this path&#39;s APK analysis lesson) trivially easy.</li>
+<li><strong>Insufficient Binary Protections</strong> — apps with no obfuscation or anti-tampering measures, making reverse engineering (covered in this path's APK analysis lesson) trivially easy.</li>
 <li><strong>Security Misconfiguration</strong> — debug flags left enabled in production builds, verbose error messages, or overly permissive file/component permissions.</li>
 <li><strong>Insecure Data Storage</strong> — sensitive data saved unencrypted in local storage, databases, or backups (this path has a dedicated lesson on exactly this).</li>
-<li><strong>Insufficient Cryptography</strong> — weak or custom-rolled encryption, hardcoded encryption keys, or using deprecated algorithms — the mobile-specific version of the &quot;never roll your own crypto&quot; principle from Path 11&#39;s XOR cipher discussion.</li>
+<li><strong>Insufficient Cryptography</strong> — weak or custom-rolled encryption, hardcoded encryption keys, or using deprecated algorithms — the mobile-specific version of the "never roll your own crypto" principle from Path 11's XOR cipher discussion.</li>
 </ol>
 <h2>Why this list looks different from the Web Top 10</h2>
-<p>Notice how several items (#3, #4) are essentially the web vulnerabilities from Path 11, just triggered through a mobile app&#39;s API calls instead of a browser — a mobile app is still, ultimately, a client talking to a server, and every server-side lesson from earlier in this course applies directly to that backend regardless of what kind of client calls it. What&#39;s genuinely new here is everything related to the <strong>client itself</strong>: local storage, binary protection, and the app&#39;s own code being distributable and inspectable in ways a web server&#39;s backend code never is.</p>
+<p>Notice how several items (#3, #4) are essentially the web vulnerabilities from Path 11, just triggered through a mobile app's API calls instead of a browser — a mobile app is still, ultimately, a client talking to a server, and every server-side lesson from earlier in this course applies directly to that backend regardless of what kind of client calls it. What's genuinely new here is everything related to the <strong>client itself</strong>: local storage, binary protection, and the app's own code being distributable and inspectable in ways a web server's backend code never is.</p>
 <h2>How mobile findings translate to bug bounty severity</h2>
-<p>Recall Path 15.1&#39;s severity/reward table for web findings — mobile-specific categories map onto that same general framework, but with some notably different weighting worth knowing before you start hunting. Hardcoded API keys or credentials (#1) found via APK decompilation are often surprisingly high-severity if that key grants broad backend access, precisely because unlike a web app&#39;s server-side secrets, a mobile app&#39;s compiled code is distributed directly to every user&#39;s device — meaning &quot;extracting a secret from the app&quot; is a baseline capability any attacker has, not a sophisticated technique. Insecure data storage (#9) severity depends heavily on whether exploitation requires physical device access (generally rated lower, since it requires the attacker to have the specific victim&#39;s device) versus being remotely triggerable (rated much higher). Certificate pinning bypasses (#5, covered in this path&#39;s traffic-interception lesson) are frequently rated as informational or low on their own, specifically because most programs consider &quot;attacker has installed a custom root CA on their own rooted device&quot; a reduced-severity scenario — the real severity comes from <em>what</em> that bypass then reveals, not the bypass technique itself.</p>
-<p>OWASP periodically revises this list based on real-world findings; the version summarized here reflects the current widely-referenced structure, but always check <a href="https://owasp.org/www-project-mobile-top-10/">owasp.org/www-project-mobile-top-10</a> directly for the latest official wording and any updates before citing it formally (in a report, for instance).</p>
+<p>Recall Path 15.1's severity/reward table for web findings — mobile-specific categories map onto that same general framework, but with some notably different weighting worth knowing before you start hunting. Hardcoded API keys or credentials (#1) found via APK decompilation are often surprisingly high-severity if that key grants broad backend access, precisely because unlike a web app's server-side secrets, a mobile app's compiled code is distributed directly to every user's device — meaning "extracting a secret from the app" is a baseline capability any attacker has, not a sophisticated technique. Insecure data storage (#9) severity depends heavily on whether exploitation requires physical device access (generally rated lower, since it requires the attacker to have the specific victim's device) versus being remotely triggerable (rated much higher). Certificate pinning bypasses (#5, covered in this path's traffic-interception lesson) are frequently rated as informational or low on their own, specifically because most programs consider "attacker has installed a custom root CA on their own rooted device" a reduced-severity scenario — the real severity comes from <em>what</em> that bypass then reveals, not the bypass technique itself.</p>
+<p>This lesson describes the <strong>2024 edition</strong>, which OWASP still lists as its released Mobile Top 10 in September 2026. Check the <a href="https://owasp.org/projects/mobile-top-10">project page</a> for a newer edition before citing it in a report.</p>
 <h2>MASVS — the verification standard behind the checklist</h2>
-<p>Beyond the Top 10 itself, OWASP&#39;s mobile project maintains a companion standard worth knowing by name: the <strong>MASVS (Mobile Application Security Verification Standard)</strong>, which does for mobile apps what Path 11.1 mentioned ASVS doing for web applications — a far more detailed, testable set of security requirements organised by category (storage, cryptography, authentication, network communication, platform interaction, code quality, resilience), each requirement independently verifiable rather than expressed as a broad risk category. Where the Top 10 answers &quot;what are the ten most common ways mobile apps fail,&quot; MASVS answers &quot;here&#39;s a specific, checkable list of controls a genuinely secure app should implement&quot; — the practical difference between a syllabus and an audit checklist. Formal mobile security assessments and certifications increasingly reference MASVS levels (L1: standard security, L2: defense-in-depth, R: resilience against reverse engineering) directly, making it worth a bookmark alongside the Top 10 itself once you&#39;re doing real assessment work rather than just learning the landscape.</p>
+<p>Beyond the Top 10, use the <strong>MASVS (Mobile Application Security Verification Standard)</strong> for requirements and the <strong>MASTG (Mobile Application Security Testing Guide)</strong> for tests, techniques, tools, and demos. MASVS v2 groups requirements under storage, cryptography, authentication, network communication, platform interaction, code quality, resilience, and privacy. The older L1, L2, and R verification levels have been reworked as <strong>MAS Testing Profiles</strong> in MASTG; do not cite them as if they were MASVS v2 requirement levels.</p>
+<p>The <strong>MASWE (Mobile Application Security Weakness Enumeration)</strong> bridges requirements and tests. Its v1.0.0 release in August 2026 describes 78 mobile weaknesses, with mappings to MASVS controls, CWEs, and available MASTG tests. For example, <a href="https://mas.owasp.org/MASWE/MASVS-STORAGE/MASWE-0004/">MASWE-0004</a> covers secrets hardcoded in an app package. An assessment can move from a MASVS requirement, to the matching MASWE weakness, to a reproducible MASTG test and remediation.</p>
 <h2>How this list shapes the rest of this path</h2>
 <p>The remaining lessons in this path map directly onto specific items here: <strong>Android APK Analysis</strong> targets #7 (binary protection) and #8 (misconfiguration); <strong>Insecure Data Storage</strong> targets #9 directly; <strong>Intercepting Mobile Traffic</strong> targets #5; and the capstone lab pulls several of these together against a real deliberately-vulnerable app.</p>
-<p>Why do items #3 and #4 on this list (&quot;Insecure Authentication/Authorization&quot; and &quot;Insufficient Input/Output Validation&quot;) look so similar to vulnerabilities you already learned in Path 11&#39;s web security material?</p>
+<p>Why do items #3 and #4 on this list ("Insecure Authentication/Authorization" and "Insufficient Input/Output Validation") look so similar to vulnerabilities you already learned in Path 11's web security material?</p>
 <details><summary>Show answer</summary>A mobile app's authentication and input handling logic almost always lives on the same backend server infrastructure that a web application would use — the mobile app itself is fundamentally just a different kind of client sending requests to that server, exactly like a browser is. If the server fails to properly validate authorization (checking whether the requesting user actually owns the resource they're requesting) or fails to sanitize input before using it in a database query, that vulnerability exists regardless of whether the request came from a web browser, a mobile app, or a raw API call crafted by hand — the underlying server-side flaw, and the fix, are identical. This is exactly why the web security skills from Path 11 remain directly relevant once you start testing the backend APIs mobile apps talk to.</details><h2>Key terms</h2>
 <ul>
-<li><strong>OWASP Mobile Application Security (MAS)</strong> — the umbrella project covering the Mobile Top 10, plus the detailed testing guide (MASTG) and verification standard (MASVS).</li>
+<li><strong>OWASP Mobile Application Security (MAS)</strong> — the project behind MASVS requirements, MASWE weaknesses, and MASTG testing guidance; the Mobile Top 10 is a separate OWASP project.</li>
 <li><strong>Binary protection</strong> — anti-tampering and anti-reverse-engineering measures applied to a compiled app.</li>
 <li><strong>Supply chain security</strong> — securing the third-party components and build process behind an app, not just its own code.</li>
 </ul>
 <h2>Recap</h2>
 <ul>
-<li>The OWASP Mobile Top 10 is the mobile-specific equivalent of Path 11&#39;s web Top 10, and shares several categories directly with it, applied to mobile&#39;s API-driven client-server model.</li>
-<li>What&#39;s genuinely mobile-specific is everything about the client itself — local storage, binary protection, cryptography, and platform-level misconfiguration.</li>
+<li>The OWASP Mobile Top 10 is the mobile-specific equivalent of Path 11's web Top 10, and shares several categories directly with it, applied to mobile's API-driven client-server model.</li>
+<li>What's genuinely mobile-specific is everything about the client itself — local storage, binary protection, cryptography, and platform-level misconfiguration.</li>
 <li>This list frames and motivates every remaining lesson in this path.</li>
 </ul>
 <h3>References</h3>
 <ul>
 <li><a href="https://owasp.org/www-project-mobile-top-10/">OWASP Mobile Top 10</a> — the official, current list.</li>
 <li><a href="https://mas.owasp.org/MASTG/">OWASP MASTG (Mobile Application Security Testing Guide)</a> — the definitive free, detailed hands-on testing methodology, well worth exploring beyond this course.</li>
+<li><a href="https://mas.owasp.org/news/2026/08/17/maswe-v100-release/">OWASP MASWE v1.0.0 release</a> — the current weakness catalog and how it maps to controls and tests.</li>
+<li><a href="https://mas.owasp.org/MASVS/03-Using_the_MASVS/">OWASP MASVS testing profiles</a> — how L1, L2, and R are used in the current MAS framework.</li>
 </ul>
 <p><strong>Next up →</strong> <a href="#/lesson/13-mobile-security/android-apk-analysis">Android APK Analysis</a></p>
-<nav class="pager"><a href="/lesson/13-mobile-security/mobile-testing-lab-setup.html">← Setting Up a Mobile Testing Lab</a><a href="/lesson/13-mobile-security/android-apk-analysis.html">Android APK Analysis →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/13-mobile-security/mobile-testing-lab-setup.html">← Setting Up a Mobile Testing Lab</a><a href="/lesson/13-mobile-security/android-apk-analysis.html">Android APK Analysis →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/13-mobile-security/owasp-mobile-top-10";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

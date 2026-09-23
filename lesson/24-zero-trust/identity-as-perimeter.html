@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>Identity as the New Perimeter — Path 24 · KashSec Academy</title>
 <meta name="description" content="If the network location can't be trusted, something else has to become the primary control point. In Zero Trust, that's identity — a strongly verified, continuously checked answer to &quot;who (or what) is">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/24-zero-trust/identity-as-perimeter.html">
@@ -21,47 +22,77 @@
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 24 — Zero Trust Architecture","item":"https://kashsec.vercel.app/lesson/24-zero-trust/"},{"@type":"ListItem","position":4,"name":"Identity as the New Perimeter","item":"https://kashsec.vercel.app/lesson/24-zero-trust/identity-as-perimeter.html"}]}
 </script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"LearningResource","name":"Identity as the New Perimeter","headline":"Identity as the New Perimeter","description":"If the network location can't be trusted, something else has to become the primary control point. In Zero Trust, that's identity — a strongly verified, continuously checked answer to \"who (or what) is","url":"https://kashsec.vercel.app/lesson/24-zero-trust/identity-as-perimeter.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"MFA, conditional access, and why identity anchors every other Zero Trust control.","isPartOf":{"@type":"Course","name":"Path 24: Zero Trust Architecture","url":"https://kashsec.vercel.app/lesson/24-zero-trust/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/24-zero-trust/identity-as-perimeter.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/24-zero-trust/identity-as-perimeter">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/24-zero-trust/">Path 24 — Zero Trust Architecture</a> · Identity as the New Perimeter</div>
-  <article><h1>Identity as the New Perimeter</h1>
-<p>If the network location can&#39;t be trusted, something else has to become the primary control point. In Zero Trust, that&#39;s <strong>identity</strong> — a strongly verified, continuously checked answer to &quot;who (or what) is actually making this request?&quot;</p>
+<a class="skip" href="/lesson/24-zero-trust/identity-as-perimeter.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/24-zero-trust/">Path 24 — Zero Trust Architecture</a> · Identity as the New Perimeter</nav>
+    <div class="md" id="content"><article><h1>Identity as the New Perimeter</h1>
+<p>If the network location can't be trusted, something else has to become the primary control point. In Zero Trust, that's <strong>identity</strong> — a strongly verified, continuously checked answer to "who (or what) is actually making this request?"</p>
 <p>:::</p>
 <h2>Why identity became the anchor</h2>
-<p>Every other Zero Trust control — device checks, network segmentation, authorization decisions — has to be <em>attached to something</em>, and that something is almost always &quot;which identity is this.&quot; A device policy is meaningless without knowing whose device it is. A least-privilege authorization decision is meaningless without knowing who&#39;s asking. Identity is the thread that runs through the entire model.</p>
-<p>This is why the phrase &quot;identity is the new perimeter&quot; shows up constantly in Zero Trust material — not because the network stopped mattering, but because identity became the <em>primary</em> thing worth defending and verifying, with the network relegated to a secondary signal.</p>
+<p>Every other Zero Trust control — device checks, network segmentation, authorization decisions — has to be <em>attached to something</em>, and that something is almost always "which identity is this." A device policy is meaningless without knowing whose device it is. A least-privilege authorization decision is meaningless without knowing who's asking. Identity is the thread that runs through the entire model.</p>
+<p>This is why the phrase "identity is the new perimeter" shows up constantly in Zero Trust material — not because the network stopped mattering, but because identity became the <em>primary</em> thing worth defending and verifying, with the network relegated to a secondary signal.</p>
 <h2>The building blocks</h2>
 <table>
 <thead>
@@ -88,7 +119,7 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 </tr>
 <tr>
 <td>Conditional Access</td>
-<td>Rules that adjust what&#39;s allowed based on context (location, device health, risk score)</td>
+<td>Rules that adjust what's allowed based on context (location, device health, risk score)</td>
 <td>Turns identity from a yes/no gate into a continuously adjustable dial</td>
 </tr>
 </tbody></table>
@@ -97,47 +128,47 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <ul>
 <li><strong>SMS codes</strong> — better than nothing, but vulnerable to SIM-swapping and interception</li>
 <li><strong>Authenticator app codes (TOTP)</strong> — meaningfully stronger, still phishable (a fake login page can relay the code in real time)</li>
-<li><strong>Push notifications</strong> — convenient, but vulnerable to &quot;MFA fatigue&quot; attacks, where an attacker spams push requests hoping a tired user taps &quot;approve&quot; by mistake</li>
+<li><strong>Push notifications</strong> — convenient, but vulnerable to "MFA fatigue" attacks, where an attacker spams push requests hoping a tired user taps "approve" by mistake</li>
 <li><strong>Hardware security keys (FIDO2/WebAuthn)</strong> — cryptographically bound to the real site, effectively unphishable, currently the strongest widely-deployed option</li>
 </ul>
 <p>:::danger
-MFA fatigue attacks are not theoretical — they&#39;ve been used in several major real-world breaches. An attacker with a stolen password sends repeated push notifications, sometimes at 2am, until an annoyed or confused user approves one just to make it stop. The fix isn&#39;t &quot;trust users to always say no&quot; — it&#39;s number-matching (the app shows a code the user must type, not just tap approve) and rate-limiting how often a login can trigger new pushes.</p>
+MFA fatigue attacks are not theoretical — they've been used in several major real-world breaches. An attacker with a stolen password sends repeated push notifications, sometimes at 2am, until an annoyed or confused user approves one just to make it stop. The fix isn't "trust users to always say no" — it's number-matching (the app shows a code the user must type, not just tap approve) and rate-limiting how often a login can trigger new pushes.</p>
 <h2>Conditional access: identity as a dial, not a switch</h2>
-<p>A login isn&#39;t just &quot;allowed&quot; or &quot;denied&quot; — conditional access lets an organization set rules like:</p>
+<p>A login isn't just "allowed" or "denied" — conditional access lets an organization set rules like:</p>
 <ul>
 <li>Allow access from a managed, patched company laptop with no extra prompt</li>
 <li>Require an additional MFA challenge if the login comes from a new country</li>
 <li>Block access entirely from a device flagged as compromised, regardless of correct credentials</li>
 <li>Require step-up authentication (a fresh MFA prompt) before an already-logged-in user can access something especially sensitive, like payroll data</li>
 </ul>
-<p>This is the practical mechanism that makes &quot;continuous verification&quot; real rather than aspirational — the system keeps evaluating context throughout a session, not only at the login screen.</p>
+<p>This is the practical mechanism that makes "continuous verification" real rather than aspirational — the system keeps evaluating context throughout a session, not only at the login screen.</p>
 <h2>A worked example: the same login, two different outcomes</h2>
-<p>Alice logs into the company&#39;s HR system from her laptop.</p>
+<p>Alice logs into the company's HR system from her laptop.</p>
 <ul>
-<li><strong>Scenario A</strong>: She&#39;s on her managed company laptop (patched, EDR agent reporting healthy), in her usual country, during business hours. Conditional access sees low risk and lets the login through with just her usual MFA push.</li>
-<li><strong>Scenario B</strong>: The same username and correct password are used an hour later from a browser in a country Alice has never logged in from, on a device with no management agent at all. Conditional access flags this as high-risk: it can require a hardware-key challenge Alice&#39;s real device would satisfy easily but an attacker likely can&#39;t, or block the login outright and alert the security team.</li>
+<li><strong>Scenario A</strong>: She's on her managed company laptop (patched, EDR agent reporting healthy), in her usual country, during business hours. Conditional access sees low risk and lets the login through with just her usual MFA push.</li>
+<li><strong>Scenario B</strong>: The same username and correct password are used an hour later from a browser in a country Alice has never logged in from, on a device with no management agent at all. Conditional access flags this as high-risk: it can require a hardware-key challenge Alice's real device would satisfy easily but an attacker likely can't, or block the login outright and alert the security team.</li>
 </ul>
-<p>Same credentials, wildly different outcome — because identity in Zero Trust isn&#39;t just &quot;did they know the password,&quot; it&#39;s &quot;does everything about this request look like the real Alice.&quot;</p>
+<p>Same credentials, wildly different outcome — because identity in Zero Trust isn't just "did they know the password," it's "does everything about this request look like the real Alice."</p>
 <h2>Service identity, not just human identity</h2>
-<p>Zero Trust identity isn&#39;t only about people logging in. Services calling other services need identity too:</p>
+<p>Zero Trust identity isn't only about people logging in. Services calling other services need identity too:</p>
 <ul>
 <li><strong>API keys and static secrets</strong> are the weak version — long-lived, easily leaked, hard to rotate cleanly</li>
 <li><strong>Short-lived, cryptographically issued service identities</strong> (like SPIFFE/SPIRE, or cloud-native workload identity) are the Zero Trust-aligned version — a service proves who it is with a credential that expires in minutes and was never manually copied anywhere</li>
 </ul>
-<p>This connects directly to a theme from the DevSecOps path: preferring OIDC-issued short-lived credentials over static API keys is a Zero Trust principle in practice, even if nobody in that conversation used the phrase &quot;Zero Trust.&quot;</p>
+<p>This connects directly to a theme from the DevSecOps path: preferring OIDC-issued short-lived credentials over static API keys is a Zero Trust principle in practice, even if nobody in that conversation used the phrase "Zero Trust."</p>
 <h2>🧪 Hands-on lab — audit your own MFA posture</h2>
 <ol>
 <li><p>List every account you have that supports MFA (email, banking, work accounts, social media).</p>
 </li>
-<li><p>For each, note which MFA method you&#39;re currently using: none, SMS, authenticator app, push, or hardware key.</p>
+<li><p>For each, note which MFA method you're currently using: none, SMS, authenticator app, push, or hardware key.</p>
 </li>
-<li><p>Identify your single most valuable account (usually your primary email, since it&#39;s often the recovery path for everything else) and check: is it using your strongest available MFA method?</p>
+<li><p>Identify your single most valuable account (usually your primary email, since it's often the recovery path for everything else) and check: is it using your strongest available MFA method?</p>
 </li>
 <li><p>If any high-value account is using SMS or nothing at all, upgrade it now to at least an authenticator app — this is one of the highest-value 15-minute security improvements available to any individual.</p>
 </li>
 <li><p>Write one sentence on why your primary email deserves stronger MFA than a low-value account you rarely use.</p>
 </li>
-<li><p>Why is a hardware security key considered &quot;unphishable&quot; in a way that a 6-digit authenticator app code isn&#39;t?</p>
+<li><p>Why is a hardware security key considered "unphishable" in a way that a 6-digit authenticator app code isn't?</p>
 </li>
 <li><p>Explain how a conditional access policy could let the same correct password succeed in one context and fail in another.</p>
 </li>
@@ -148,30 +179,78 @@ MFA fatigue attacks are not theoretical — they&#39;ve been used in several maj
 <ul>
 <li><strong>Identity Provider (IdP)</strong> — the central system that authenticates users and issues identity for other applications to trust</li>
 <li><strong>Conditional Access</strong> — policy rules that adjust access decisions based on real-time context (device, location, risk)</li>
-<li><strong>MFA fatigue attack</strong> — spamming push-based MFA approvals hoping a user taps &quot;approve&quot; out of annoyance or confusion</li>
+<li><strong>MFA fatigue attack</strong> — spamming push-based MFA approvals hoping a user taps "approve" out of annoyance or confusion</li>
 <li><strong>FIDO2/WebAuthn</strong> — a phishing-resistant authentication standard using hardware-bound cryptographic keys</li>
 <li><strong>Step-up authentication</strong> — requiring a fresh, stronger authentication challenge before an already-logged-in session can access something more sensitive</li>
 </ul>
 <h2>Recap</h2>
-<p>Identity is the anchor Zero Trust&#39;s other controls attach to — but strong identity means more than &quot;has a password&quot;: it means phishing-resistant MFA, continuous risk-based evaluation through conditional access, and identity for services as well as people. Getting this layer right is usually the highest-leverage first step in any real Zero Trust rollout, which is exactly why the next lesson builds on it with device trust.</p>
+<p>Identity is the anchor Zero Trust's other controls attach to — but strong identity means more than "has a password": it means phishing-resistant MFA, continuous risk-based evaluation through conditional access, and identity for services as well as people. Getting this layer right is usually the highest-leverage first step in any real Zero Trust rollout, which is exactly why the next lesson builds on it with device trust.</p>
 <h3>References</h3>
 <ul>
 <li><a href="https://pages.nist.gov/800-63-4/">NIST SP 800-63 — Digital Identity Guidelines</a> — the authoritative reference on authentication assurance levels</li>
 <li><a href="https://fidoalliance.org/">FIDO Alliance</a> — the standards body behind FIDO2/WebAuthn hardware key authentication</li>
 </ul>
-<nav class="pager"><a href="/lesson/24-zero-trust/what-is-zero-trust.html">← What is Zero Trust?</a><a href="/lesson/24-zero-trust/device-trust-posture.html">Device Trust &amp; Posture Verification →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/24-zero-trust/what-is-zero-trust.html">← What is Zero Trust?</a><a href="/lesson/24-zero-trust/device-trust-posture.html">Device Trust &amp; Posture Verification →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/24-zero-trust/identity-as-perimeter";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

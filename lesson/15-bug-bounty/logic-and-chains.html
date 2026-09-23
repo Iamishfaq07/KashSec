@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>Business logic &amp; chains — Path 15 · KashSec Academy</title>
 <meta name="description" content="The bugs covered so far — SQLi, XSS, IDOR — all have a recognisable technical signature a scanner could theoretically flag. Business logic flaws are different: the code works exactly as written, with ">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/15-bug-bounty/logic-and-chains.html">
@@ -21,92 +22,122 @@
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 15 — Bug Bounty","item":"https://kashsec.vercel.app/lesson/15-bug-bounty/"},{"@type":"ListItem","position":4,"name":"Business logic & chains","item":"https://kashsec.vercel.app/lesson/15-bug-bounty/logic-and-chains.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Business logic & chains","headline":"Business logic & chains","description":"The bugs covered so far — SQLi, XSS, IDOR — all have a recognisable technical signature a scanner could theoretically flag. Business logic flaws are different: the code works exactly as written, with ","url":"https://kashsec.vercel.app/lesson/15-bug-bounty/logic-and-chains.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate→Advanced","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Race conditions, GraphQL, OAuth.","isPartOf":{"@type":"Course","name":"Path 15: Bug Bounty","url":"https://kashsec.vercel.app/lesson/15-bug-bounty/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/15-bug-bounty/logic-and-chains.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Business logic & chains","headline":"Business logic & chains","description":"The bugs covered so far — SQLi, XSS, IDOR — all have a recognisable technical signature a scanner could theoretically flag. Business logic flaws are different: the code works exactly as written, with ","url":"https://kashsec.vercel.app/lesson/15-bug-bounty/logic-and-chains.html","inLanguage":"en","dateModified":"2026-09-23","learningResourceType":"Lesson","educationalLevel":"Intermediate→Advanced","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Race conditions, GraphQL, OAuth.","isPartOf":{"@type":"Course","name":"Path 15: Bug Bounty","url":"https://kashsec.vercel.app/lesson/15-bug-bounty/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/15-bug-bounty/logic-and-chains.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/15-bug-bounty/logic-and-chains">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/15-bug-bounty/">Path 15 — Bug Bounty</a> · Business logic &amp; chains</div>
-  <article><h1>Business logic flaws &amp; chaining bugs</h1>
+<a class="skip" href="/lesson/15-bug-bounty/logic-and-chains.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/15-bug-bounty/">Path 15 — Bug Bounty</a> · Business logic &amp; chains</nav>
+    <div class="md" id="content"><article><h1>Business logic flaws &amp; chaining bugs</h1>
 <p>The bugs covered so far — SQLi, XSS, IDOR — all have a recognisable <em>technical</em> signature a scanner could theoretically flag. <strong>Business logic flaws</strong> are different: the code works exactly as written, with no technical vulnerability at all — the <em>design itself</em> has a flaw that only a human thinking like an attacker (or a creative user) would spot. This is where experienced hunters consistently find what automated tooling never will.</p>
 <h2>What makes business logic flaws different</h2>
-<p>Recall Path 11.9&#39;s brief mention of this category. A SQL injection is a <strong>technical</strong> mistake — input isn&#39;t properly parameterised. A business logic flaw might have <strong>flawless</strong> code from a purely technical standpoint, but the <em>sequence of allowed actions</em> itself creates an exploitable scenario the developers never anticipated.</p>
+<p>Recall Path 11.9's brief mention of this category. A SQL injection is a <strong>technical</strong> mistake — input isn't properly parameterised. A business logic flaw might have <strong>flawless</strong> code from a purely technical standpoint, but the <em>sequence of allowed actions</em> itself creates an exploitable scenario the developers never anticipated.</p>
 <h2>Classic business logic flaw patterns</h2>
 <h3>Price/quantity manipulation</h3>
 <pre><code>Intended flow: Add item to cart → quantity: 1 → price: $100
 Exploited flow: Add item to cart → quantity: -1 → price: -$100
-                (some systems then CREDIT the attacker&#39;s account balance!)
+                (some systems then CREDIT the attacker's account balance!)
 </code></pre>
-<p>Negative quantities, negative prices, or quantities exceeding available stock are all classic checks developers sometimes forget to validate — because the <em>UI</em> only ever lets you select positive integers, the developer assumes the <em>API</em> never needs to check for anything else (directly echoing Path 05.3&#39;s &quot;never trust the client&quot; lesson).</p>
+<p>Negative quantities, negative prices, or quantities exceeding available stock are all classic checks developers sometimes forget to validate — because the <em>UI</em> only ever lets you select positive integers, the developer assumes the <em>API</em> never needs to check for anything else (directly echoing Path 05.3's "never trust the client" lesson).</p>
 <h3>Coupon/discount code abuse</h3>
 <pre><code>Intended flow: Apply ONE discount code per order
 Exploited flow: Apply the SAME discount code multiple times in rapid
-                succession before the &quot;already used&quot; flag is written to
+                succession before the "already used" flag is written to
                 the database — a race condition (see below) allowing
                 the discount to stack far beyond intended limits
 </code></pre>
 <h3>Workflow step-skipping</h3>
 <pre><code>Intended flow: Step 1 (enter details) → Step 2 (verify email) →
                Step 3 (payment) → Account activated
-Exploited flow: Submit Step 3&#39;s request directly, without ever
-                completing Step 2&#39;s email verification — if the
-                server only checks &quot;is this a valid session token&quot;
-                rather than &quot;has this user actually completed step 2&quot;
+Exploited flow: Submit Step 3's request directly, without ever
+                completing Step 2's email verification — if the
+                server only checks "is this a valid session token"
+                rather than "has this user actually completed step 2"
 </code></pre>
 <h3>Referral/reward program abuse</h3>
 <pre><code>Intended flow: Refer a friend → both parties get $10 credit
-Exploited flow: Create fake &quot;friend&quot; accounts (multiple emails,
+Exploited flow: Create fake "friend" accounts (multiple emails,
                 same person) → refer yourself repeatedly →
                 accumulate unlimited credit
 </code></pre>
 <h3>Password reset / account recovery logic flaws</h3>
 <pre><code>Intended flow: Reset token is single-use, expires in 15 minutes
-Exploited flow: Reset token doesn&#39;t actually get invalidated after
-                use, or doesn&#39;t expire — an old, previously-used
+Exploited flow: Reset token doesn't actually get invalidated after
+                use, or doesn't expire — an old, previously-used
                 reset link found in an old email still works months later
 </code></pre>
 <h2>Race conditions — timing-based logic flaws</h2>
-<p>A <strong>race condition</strong> exploits the tiny window between a system <strong>checking</strong> a condition and <strong>acting</strong> on it — if an attacker can fire multiple requests fast enough, they can squeeze through that window multiple times before the first request&#39;s effects are fully recorded.</p>
+<p>A <strong>race condition</strong> exploits the tiny window between a system <strong>checking</strong> a condition and <strong>acting</strong> on it — if an attacker can fire multiple requests fast enough, they can squeeze through that window multiple times before the first request's effects are fully recorded.</p>
 <pre><code class="language-python">#!/usr/bin/env python3
-&quot;&quot;&quot;
+"""
 race-condition-test.py — Fire concurrent requests to test for race conditions
-(only against systems you&#39;re authorized to test).
-&quot;&quot;&quot;
+(only against systems you're authorized to test).
+"""
 import requests
 import concurrent.futures
 
-URL = &quot;https://example.com/api/redeem-gift-card&quot;
-HEADERS = {&quot;Cookie&quot;: &quot;session=YOUR_TEST_SESSION&quot;}
-PAYLOAD = {&quot;code&quot;: &quot;GIFT-CARD-CODE-1024&quot;}
+URL = "https://example.com/api/redeem-gift-card"
+HEADERS = {"Cookie": "session=YOUR_TEST_SESSION"}
+PAYLOAD = {"code": "GIFT-CARD-CODE-1024"}
 
 def redeem():
     return requests.post(URL, json=PAYLOAD, headers=HEADERS, timeout=5)
@@ -117,13 +148,13 @@ with concurrent.futures.ThreadPoolExecutor(max_workers=20) as pool:
     results = [f.result().status_code for f in futures]
 
 success_count = results.count(200)
-print(f&quot;Successful redemptions: {success_count} (expected: 1)&quot;)
+print(f"Successful redemptions: {success_count} (expected: 1)")
 </code></pre>
-<p>If a single-use gift card, discount code, or &quot;claim your free item&quot; action succeeds more than once when fired concurrently, that&#39;s a genuine, often high-severity race condition — and increasingly well-understood and actively hunted across major bounty programs today.</p>
+<p>If a single-use gift card, discount code, or "claim your free item" action succeeds more than once when fired concurrently, that's a genuine, often high-severity race condition — and increasingly well-understood and actively hunted across major bounty programs today.</p>
 <h2>OAuth flow logic flaws</h2>
-<p>OAuth (&quot;Sign in with Google/GitHub/Facebook&quot;) deserves its own specific attention, since its multi-step, multi-party redirect flow creates exactly the kind of &quot;developer assumption&quot; surface this lesson focuses on. A few patterns worth checking systematically: <strong>redirect_uri validation gaps</strong> — if an app doesn&#39;t strictly validate the <code>redirect_uri</code> parameter against an exact allowlist, an attacker can sometimes redirect the OAuth authorization code to their own server instead of the legitimate app, hijacking the login flow entirely; <strong>state parameter misuse</strong> — the <code>state</code> parameter exists specifically to prevent CSRF (Path 05.4) on the OAuth callback, and its absence or predictability lets an attacker link their own OAuth session to a victim&#39;s account; and <strong>account-linking confusion</strong> — if an app links accounts by email address alone without verifying the OAuth provider actually confirmed that email, an attacker can sometimes create an account at a <em>different</em> OAuth provider using a victim&#39;s email (one that doesn&#39;t verify ownership as strictly) and get automatically linked into the victim&#39;s existing account. Each of these is, at its core, the exact same &quot;the code works as written, but the workflow&#39;s assumptions don&#39;t hold&quot; pattern as every other business logic flaw in this lesson — just applied to a widely-reused, multi-party protocol most developers integrate without fully understanding.</p>
+<p>OAuth ("Sign in with Google/GitHub/Facebook") deserves its own specific attention, since its multi-step, multi-party redirect flow creates exactly the kind of "developer assumption" surface this lesson focuses on. A few patterns worth checking systematically: <strong>redirect_uri validation gaps</strong> — if an app doesn't strictly validate the <code>redirect_uri</code> parameter against an exact allowlist, an attacker can sometimes redirect the OAuth authorization code to their own server instead of the legitimate app, hijacking the login flow entirely; <strong>state parameter misuse</strong> — the <code>state</code> parameter exists specifically to prevent CSRF (Path 05.4) on the OAuth callback, and its absence or predictability lets an attacker link their own OAuth session to a victim's account; and <strong>account-linking confusion</strong> — if an app links accounts by email address alone without verifying the OAuth provider actually confirmed that email, an attacker can sometimes create an account at a <em>different</em> OAuth provider using a victim's email (one that doesn't verify ownership as strictly) and get automatically linked into the victim's existing account. Each of these is, at its core, the exact same "the code works as written, but the workflow's assumptions don't hold" pattern as every other business logic flaw in this lesson — just applied to a widely-reused, multi-party protocol most developers integrate without fully understanding.</p>
 <h2>The real skill: thinking like a creative user, not just an attacker</h2>
-<p>Business logic hunting rewards a specific mindset shift: instead of asking <em>&quot;what technical exploit can I try here?&quot;</em>, ask <em><strong>&quot;what did the developer assume would always be true, that I could make false?&quot;</strong></em></p>
+<p>Business logic hunting rewards a specific mindset shift: instead of asking <em>"what technical exploit can I try here?"</em>, ask <em><strong>"what did the developer assume would always be true, that I could make false?"</strong></em></p>
 <p>Useful prompts to ask of every workflow you test:</p>
 <ul>
 <li>What happens if I do steps <strong>out of order</strong>?</li>
@@ -131,19 +162,19 @@ print(f&quot;Successful redemptions: {success_count} (expected: 1)&quot;)
 <li>What happens with <strong>negative numbers</strong>, <strong>zero</strong>, or <strong>extremely large numbers</strong>?</li>
 <li>What happens if I <strong>stop halfway</strong> through a multi-step process, then resume differently?</li>
 <li>What happens if <strong>two different user roles</strong> interact with the same object (a regular user and an admin both editing the same order simultaneously)?</li>
-<li>Does the <strong>UI</strong> enforce a rule that the <strong>API</strong> doesn&#39;t independently re-verify?</li>
+<li>Does the <strong>UI</strong> enforce a rule that the <strong>API</strong> doesn't independently re-verify?</li>
 </ul>
-<h2>Chaining — combining multiple &quot;medium&quot; findings into &quot;critical&quot;</h2>
-<p>Recall Path 14.2&#39;s worked example — chaining is where genuinely impressive, high-reward bug bounty findings often come from. Individually modest findings, combined into a realistic attack scenario, frequently justify a <strong>much higher severity</strong> than any single piece alone.</p>
-<p>A well-written chained report explicitly walks through the <strong>full narrative</strong>: &quot;First, the stored XSS (Finding 1) executes in the victim&#39;s browser. Because the session cookie lacks HttpOnly (Finding 2), the malicious script can read and exfiltrate it directly. Using that stolen session, the attacker then exploits the IDOR (Finding 3) to change the victim&#39;s account email and take over the account entirely.&quot; This single narrative, submitted as one cohesive report (referencing each underlying technical detail), is dramatically more compelling — and typically rewarded far more generously — than three separate, disconnected medium-severity submissions.</p>
+<h2>Chaining — combining multiple "medium" findings into "critical"</h2>
+<p>Recall Path 14.2's worked example — chaining is where genuinely impressive, high-reward bug bounty findings often come from. Individually modest findings, combined into a realistic attack scenario, frequently justify a <strong>much higher severity</strong> than any single piece alone.</p>
+<p>A well-written chained report explicitly walks through the <strong>full narrative</strong>: "First, the stored XSS (Finding 1) executes in the victim's browser. Because the session cookie lacks HttpOnly (Finding 2), the malicious script can read and exfiltrate it directly. Using that stolen session, the attacker then exploits the IDOR (Finding 3) to change the victim's account email and take over the account entirely." This single narrative, submitted as one cohesive report (referencing each underlying technical detail), is dramatically more compelling — and typically rewarded far more generously — than three separate, disconnected medium-severity submissions.</p>
 <h2>🧪 Lab — Business logic hunting practice</h2>
 <ol>
-<li>On <a href="https://portswigger.net/web-security/logic-flaws">PortSwigger&#39;s Business logic vulnerabilities labs</a>, work through every lab — this category isn&#39;t covered by an automated scanner-style checklist, so hands-on practice here is uniquely valuable.</li>
-<li>On your shortlisted program (Path 15.2) or any legal practice target, deliberately test a multi-step workflow (signup, checkout, referral) using every &quot;creative user&quot; prompt listed above.</li>
+<li>On <a href="https://portswigger.net/web-security/logic-flaws">PortSwigger's Business logic vulnerabilities labs</a>, work through every lab — this category isn't covered by an automated scanner-style checklist, so hands-on practice here is uniquely valuable.</li>
+<li>On your shortlisted program (Path 15.2) or any legal practice target, deliberately test a multi-step workflow (signup, checkout, referral) using every "creative user" prompt listed above.</li>
 <li>If the target has any redeemable code, discount, or limited-use action, test it for race conditions using the concurrent-request script pattern shown above (respecting rate limits and program policy).</li>
-<li>Write up any finding — even a minor one — using Path 15.4&#39;s report structure, explicitly explaining the <strong>business assumption</strong> that was violated, since this is often the hardest part of a logic-flaw report for a triager to quickly grasp without your clear explanation.</li>
+<li>Write up any finding — even a minor one — using Path 15.4's report structure, explicitly explaining the <strong>business assumption</strong> that was violated, since this is often the hardest part of a logic-flaw report for a triager to quickly grasp without your clear explanation.</li>
 </ol>
-<p>A checkout page&#39;s JavaScript prevents users from entering a negative quantity in the cart UI. Is the underlying add-to-cart API endpoint therefore safe from negative-quantity abuse?</p>
+<p>A checkout page's JavaScript prevents users from entering a negative quantity in the cart UI. Is the underlying add-to-cart API endpoint therefore safe from negative-quantity abuse?</p>
 <details><summary>Show answer</summary>Not necessarily — this is a direct application of Path 05.3's core lesson. The JavaScript-based UI restriction is a <strong>client-side</strong> control that a user can trivially bypass by sending a crafted request directly (via Burp Repeater, curl, or any HTTP client) with a negative quantity value. Only a <strong>server-side</strong> validation check on the actual API endpoint provides real protection — the UI restriction alone is a UX nicety, not a security control, exactly as established back in Path 05.3 and repeatedly reinforced throughout Path 11.</details><h2>Key terms</h2>
 <ul>
 <li><strong>Business logic flaw</strong> — an exploitable design assumption in a workflow, distinct from a technical code-level bug.</li>
@@ -155,7 +186,7 @@ print(f&quot;Successful redemptions: {success_count} (expected: 1)&quot;)
 <li>Business logic flaws exploit workflow assumptions, not technical code mistakes — automated scanners rarely find them.</li>
 <li>Classic patterns include price/quantity manipulation, coupon abuse, step-skipping, referral abuse, and reset-token flaws.</li>
 <li>Race conditions exploit timing gaps between checks and actions, testable with concurrent request scripts.</li>
-<li>Thinking &quot;what did the developer assume would always be true?&quot; is the core mindset shift for this bug class.</li>
+<li>Thinking "what did the developer assume would always be true?" is the core mindset shift for this bug class.</li>
 <li>Chaining multiple modest findings into one realistic narrative often justifies dramatically higher severity and reward.</li>
 </ul>
 <h3>References</h3>
@@ -166,19 +197,67 @@ print(f&quot;Successful redemptions: {success_count} (expected: 1)&quot;)
 <li><a href="https://portswigger.net/web-security/race-conditions">PortSwigger — Race conditions</a> — dedicated free hands-on labs.</li>
 </ul>
 <p><strong>Next up →</strong> <a href="#/lesson/15-bug-bounty/race-conditions-deep-dive">Race conditions, deep dive</a></p>
-<nav class="pager"><a href="/lesson/15-bug-bounty/hunting-xss-and-injection.html">← Hunting XSS &amp; injection bugs</a><a href="/lesson/15-bug-bounty/race-conditions-deep-dive.html">Race conditions, deep dive →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/15-bug-bounty/hunting-xss-and-injection.html">← Hunting XSS &amp; injection bugs</a><a href="/lesson/15-bug-bounty/race-conditions-deep-dive.html">Race conditions, deep dive →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/15-bug-bounty/logic-and-chains";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

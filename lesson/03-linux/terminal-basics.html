@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>Meet the terminal — Path 03 · KashSec Academy</title>
 <meta name="description" content="Time to demystify the black window with green text. The terminal is where the real power lives, and after this lesson you'll be unafraid of it.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/03-linux/terminal-basics.html">
@@ -21,64 +22,94 @@
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 03 — Operating Systems & Linux","item":"https://kashsec.vercel.app/lesson/03-linux/"},{"@type":"ListItem","position":4,"name":"Meet the terminal","item":"https://kashsec.vercel.app/lesson/03-linux/terminal-basics.html"}]}
 </script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"LearningResource","name":"Meet the terminal","headline":"Meet the terminal","description":"Time to demystify the black window with green text. The terminal is where the real power lives, and after this lesson you'll be unafraid of it.","url":"https://kashsec.vercel.app/lesson/03-linux/terminal-basics.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Your first commands, unafraid.","isPartOf":{"@type":"Course","name":"Path 03: Operating Systems & Linux","url":"https://kashsec.vercel.app/lesson/03-linux/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/03-linux/terminal-basics.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/03-linux/terminal-basics">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/03-linux/">Path 03 — Operating Systems &amp; Linux</a> · Meet the terminal</div>
-  <article><h1>Meet the terminal</h1>
-<p>Time to demystify the black window with green text. The <strong>terminal</strong> is where the real power lives, and after this lesson you&#39;ll be unafraid of it.</p>
+<a class="skip" href="/lesson/03-linux/terminal-basics.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/03-linux/">Path 03 — Operating Systems &amp; Linux</a> · Meet the terminal</nav>
+    <div class="md" id="content"><article><h1>Meet the terminal</h1>
+<p>Time to demystify the black window with green text. The <strong>terminal</strong> is where the real power lives, and after this lesson you'll be unafraid of it.</p>
 <h2>What the terminal actually is</h2>
-<p>A terminal is a program that takes typed commands, sends them to the OS, and shows you the result. That&#39;s it. Every hacking tool you&#39;ll ever use is either a terminal command or a program controlled from one.</p>
+<p>A terminal is a program that takes typed commands, sends them to the OS, and shows you the result. That's it. Every hacking tool you'll ever use is either a terminal command or a program controlled from one.</p>
 <p>When you open a terminal, you meet a <strong>prompt</strong> — a short bit of text telling you <em>who you are and where you are</em>:</p>
 <pre><code>kali@kali:~$
 </code></pre>
 <ul>
 <li><strong><code>kali</code></strong> (before <code>@</code>) — your username.</li>
-<li><strong><code>kali</code></strong> (after <code>@</code>) — the computer&#39;s name (hostname).</li>
+<li><strong><code>kali</code></strong> (after <code>@</code>) — the computer's name (hostname).</li>
 <li><strong><code>~</code></strong> — where you are (<code>~</code> is shorthand for your home folder).</li>
-<li><strong><code>$</code></strong> — you&#39;re a normal user. (<code>#</code> means you&#39;re <strong>root</strong>, the admin.)</li>
+<li><strong><code>$</code></strong> — you're a normal user. (<code>#</code> means you're <strong>root</strong>, the admin.)</li>
 </ul>
 <h2>Your first command</h2>
 <p>Type this and press Enter:</p>
 <pre><code class="language-bash">whoami
 </code></pre>
-<p>The terminal replies with your username. You just ran a command and got a result. That&#39;s the whole rhythm.</p>
+<p>The terminal replies with your username. You just ran a command and got a result. That's the whole rhythm.</p>
 <p>Try a few more:</p>
-<pre><code class="language-bash">pwd     # &quot;print working directory&quot; — shows where you are
-ls      # &quot;list&quot; — shows files here
-date    # today&#39;s date and time
-uname -a  # full info about the OS you&#39;re on
+<pre><code class="language-bash">pwd     # "print working directory" — shows where you are
+ls      # "list" — shows files here
+date    # today's date and time
+uname -a  # full info about the OS you're on
 </code></pre>
 <h2>Anatomy of a command</h2>
 <p>Every command follows the same shape:</p>
@@ -94,19 +125,19 @@ what to do   how          on what
 #  +----------- the command itself
 </code></pre>
 <h2>Environment variables and PATH — how the shell finds commands</h2>
-<p>When you type <code>ls</code>, the shell doesn&#39;t magically know where the <code>ls</code> program lives on disk — it searches a specific list of folders stored in an <strong>environment variable</strong> called <code>PATH</code>:</p>
+<p>When you type <code>ls</code>, the shell doesn't magically know where the <code>ls</code> program lives on disk — it searches a specific list of folders stored in an <strong>environment variable</strong> called <code>PATH</code>:</p>
 <pre><code class="language-bash">echo $PATH
 # /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 </code></pre>
-<p>The shell checks each folder in that list, in order, until it finds a program matching what you typed. This matters for security in a genuinely concrete way: <strong>PATH hijacking</strong> (referenced in Path 16&#39;s Windows privesc lab, and its Linux equivalent) exploits exactly this lookup mechanism — if an attacker can place a malicious file with the same name as a legitimate command somewhere earlier in the PATH search order, the shell runs the attacker&#39;s version instead, without you or the calling program necessarily noticing. Environment variables generally (viewable with <code>env</code> or <code>printenv</code>) store all kinds of configuration the shell and programs read — your default text editor, your home directory location, and dozens of other settings.</p>
+<p>The shell checks each folder in that list, in order, until it finds a program matching what you typed. This matters for security in a genuinely concrete way: <strong>PATH hijacking</strong> (referenced in Path 16's Windows privesc lab, and its Linux equivalent) exploits exactly this lookup mechanism — if an attacker can place a malicious file with the same name as a legitimate command somewhere earlier in the PATH search order, the shell runs the attacker's version instead, without you or the calling program necessarily noticing. Environment variables generally (viewable with <code>env</code> or <code>printenv</code>) store all kinds of configuration the shell and programs read — your default text editor, your home directory location, and dozens of other settings.</p>
 <h2>Which shell am I even using?</h2>
-<p><code>bash</code> is this course&#39;s default assumption, but you&#39;ll also encounter <code>zsh</code> (macOS&#39;s modern default), <code>sh</code> (a minimal, older shell many scripts target for maximum compatibility), and others. Check which one you&#39;re currently in with <code>echo $SHELL</code> or <code>ps -p $$</code>. The core commands in this lesson work identically across nearly all of them — the differences mostly show up in scripting syntax and interactive features (autocompletion styles, prompt customization), which won&#39;t trip you up at this stage.</p>
+<p><code>bash</code> is this course's default assumption, but you'll also encounter <code>zsh</code> (macOS's modern default), <code>sh</code> (a minimal, older shell many scripts target for maximum compatibility), and others. Check which one you're currently in with <code>echo $SHELL</code> or <code>ps -p $$</code>. The core commands in this lesson work identically across nearly all of them — the differences mostly show up in scripting syntax and interactive features (autocompletion styles, prompt customization), which won't trip you up at this stage.</p>
 <h2>Getting help — the two most important commands</h2>
 <p>You will forget things. Every professional does. There are two universal ways to look things up:</p>
 <pre><code class="language-bash">man ls        # the full manual for ls (press q to quit)
 ls --help     # a shorter usage summary
 </code></pre>
-<p><code>man</code> (short for &quot;manual&quot;) is a mini book on every command. Use it constantly. When you finish this lesson, <code>man man</code> gets meta and reads you the manual on the manual system.</p>
+<p><code>man</code> (short for "manual") is a mini book on every command. Use it constantly. When you finish this lesson, <code>man man</code> gets meta and reads you the manual on the manual system.</p>
 <p>Real hackers spend a huge amount of time reading <code>man</code> pages and searching. Being lost is normal — being able to find the answer efficiently is the skill.</p>
 <h2>Command history — you type less than you think</h2>
 <ul>
@@ -126,9 +157,9 @@ ls /us&lt;Tab&gt;/bin/ba&lt;Tab&gt;   # completes to /usr/bin/bash
 <p>Remember the default Kali password? Change it:</p>
 <pre><code class="language-bash">passwd
 </code></pre>
-<p>You&#39;ll be asked for the current password, then a new one twice. Choose something strong — this VM will hold your notes, tools, and eventually possibly bug bounty info.</p>
+<p>You'll be asked for the current password, then a new one twice. Choose something strong — this VM will hold your notes, tools, and eventually possibly bug bounty info.</p>
 <h2>Editing text — pick your poison</h2>
-<p>You&#39;ll edit files constantly. Pick one editor now and get comfortable:</p>
+<p>You'll edit files constantly. Pick one editor now and get comfortable:</p>
 <ul>
 <li><strong><code>nano</code></strong> — friendliest for beginners. Commands shown at the bottom of the screen. Save with <strong>Ctrl+O</strong>, quit with <strong>Ctrl+X</strong>.</li>
 <li><strong><code>vim</code></strong> — the classic. Steeper learning curve but ubiquitous. Type <code>vimtutor</code> for a 30-minute tutorial that pays for itself for life.</li>
@@ -140,13 +171,13 @@ ls /us&lt;Tab&gt;/bin/ba&lt;Tab&gt;   # completes to /usr/bin/bash
 cat hello.txt   # show its contents
 </code></pre>
 <h2>The three streams</h2>
-<p>Every command has three &quot;streams&quot;:</p>
+<p>Every command has three "streams":</p>
 <ul>
 <li><strong>stdin</strong> (0) — input, usually from the keyboard.</li>
 <li><strong>stdout</strong> (1) — normal output, usually to the screen.</li>
 <li><strong>stderr</strong> (2) — errors, usually also to the screen.</li>
 </ul>
-<p>You&#39;ll redirect these in the next lesson to build pipelines. For now, know they exist.</p>
+<p>You'll redirect these in the next lesson to build pipelines. For now, know they exist.</p>
 <h2>Comfort keys</h2>
 <table>
 <thead>
@@ -188,7 +219,7 @@ cat hello.txt   # show its contents
 <td>Reverse-search history</td>
 </tr>
 </tbody></table>
-<p>Memorise these five: <strong>Ctrl+C, Ctrl+L, Ctrl+A, Ctrl+E, Ctrl+R</strong>. They&#39;re used constantly.</p>
+<p>Memorise these five: <strong>Ctrl+C, Ctrl+L, Ctrl+A, Ctrl+E, Ctrl+R</strong>. They're used constantly.</p>
 <h2>🧪 Lab — Warm up in the terminal</h2>
 <p>Open a terminal in Kali and run each of these. Read what happens.</p>
 <pre><code class="language-bash">whoami
@@ -198,7 +229,7 @@ ls -la
 date
 uname -a
 cal
-echo &quot;Hello from Kali&quot;
+echo "Hello from Kali"
 history
 man ls
 # (press q to quit man)
@@ -211,7 +242,7 @@ nano first-note.txt    # write something, save with Ctrl+O, exit with Ctrl+X
 cat first-note.txt     # print its contents
 cd ..                  # go back up
 </code></pre>
-<p>You&#39;ve just navigated, created, edited, and read a file entirely from the keyboard. This is how everything in this course now works.</p>
+<p>You've just navigated, created, edited, and read a file entirely from the keyboard. This is how everything in this course now works.</p>
 <p>Which command shows the full manual for another command? And how do you exit it?</p>
 <details><summary>Show answer</summary><code>man &lt;command&gt;</code>. Exit by pressing <strong>q</strong>.</details><h2>Key terms</h2>
 <ul>
@@ -238,19 +269,67 @@ cd ..                  # go back up
 <li><a href="https://overthewire.org/wargames/bandit/">OverTheWire Bandit levels 0–10</a> — game-style practice.</li>
 </ul>
 <p><strong>Next up →</strong> <a href="#/lesson/03-linux/linux-filesystem-hierarchy">The Linux Filesystem Hierarchy</a></p>
-<nav class="pager"><a href="/lesson/03-linux/snapshots-safety.html">← Snapshots &amp; safety</a><a href="/lesson/03-linux/linux-filesystem-hierarchy.html">The Linux Filesystem Hierarchy →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/03-linux/snapshots-safety.html">← Snapshots &amp; safety</a><a href="/lesson/03-linux/linux-filesystem-hierarchy.html">The Linux Filesystem Hierarchy →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/03-linux/terminal-basics";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

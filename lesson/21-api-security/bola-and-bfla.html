@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>BOLA &amp; BFLA — the two most common API authorization failures — Path 21 · KashSec Academy</title>
 <meta name="description" content="These two items sit at the top of the OWASP API Security Top 10 for a reason: together they account for the largest share of real-world API breaches, and both come from the same root mistake — checkin">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/21-api-security/bola-and-bfla.html">
@@ -21,64 +22,94 @@
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 21 — API Security","item":"https://kashsec.vercel.app/lesson/21-api-security/"},{"@type":"ListItem","position":4,"name":"BOLA & BFLA — the two most common API authorization failures","item":"https://kashsec.vercel.app/lesson/21-api-security/bola-and-bfla.html"}]}
 </script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"LearningResource","name":"BOLA & BFLA — the two most common API authorization failures","headline":"BOLA & BFLA — the two most common API authorization failures","description":"These two items sit at the top of the OWASP API Security Top 10 for a reason: together they account for the largest share of real-world API breaches, and both come from the same root mistake — checkin","url":"https://kashsec.vercel.app/lesson/21-api-security/bola-and-bfla.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Object-level and function-level authorization, the #1 real-world API risk.","isPartOf":{"@type":"Course","name":"Path 21: API Security","url":"https://kashsec.vercel.app/lesson/21-api-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/21-api-security/bola-and-bfla.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/21-api-security/bola-and-bfla">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/21-api-security/">Path 21 — API Security</a> · BOLA &amp; BFLA — the two most common API authorization failures</div>
-  <article><h1>BOLA &amp; BFLA — the two most common API authorization failures</h1>
-<p>These two items sit at the top of the OWASP API Security Top 10 for a reason: together they account for the largest share of real-world API breaches, and both come from the same root mistake — checking <em>who</em> someone is without checking <em>what they&#39;re allowed to touch or do</em>.</p>
+<a class="skip" href="/lesson/21-api-security/bola-and-bfla.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/21-api-security/">Path 21 — API Security</a> · BOLA &amp; BFLA — the two most common API authorization failures</nav>
+    <div class="md" id="content"><article><h1>BOLA &amp; BFLA — the two most common API authorization failures</h1>
+<p>These two items sit at the top of the OWASP API Security Top 10 for a reason: together they account for the largest share of real-world API breaches, and both come from the same root mistake — checking <em>who</em> someone is without checking <em>what they're allowed to touch or do</em>.</p>
 <p>:::</p>
 <h2>BOLA — Broken Object Level Authorization</h2>
 <p>Also known as <strong>IDOR</strong> (Insecure Direct Object Reference).</p>
 <p><strong>Definition:</strong> The API lets you access or modify an object just by knowing (or guessing) its identifier, without checking that you are allowed to touch <em>that particular object</em>.</p>
 <h3>Classic example</h3>
 <pre><code>GET /api/v1/orders/1001     → returns your order
-GET /api/v1/orders/1002     → returns someone else&#39;s order 💥
+GET /api/v1/orders/1002     → returns someone else's order 💥
 </code></pre>
 <p>The server checked that you were logged in, but never checked that order 1002 belongs to you.</p>
-<h3>Why it&#39;s so common</h3>
+<h3>Why it's so common</h3>
 <ul>
-<li>Developers test with their own account and never try another user&#39;s ID</li>
+<li>Developers test with their own account and never try another user's ID</li>
 <li>Object IDs are sequential or predictable</li>
-<li>Authorization is implemented only at the &quot;feature&quot; level, not the object level</li>
+<li>Authorization is implemented only at the "feature" level, not the object level</li>
 <li>Microservices trust the upstream service completely — service B assumes service A already checked authorization, and service A assumed service B would</li>
 </ul>
 <h3>A second worked example: BOLA through a nested resource</h3>
-<p>BOLA doesn&#39;t only hide in the obvious &quot;change the ID in the URL&quot; case. Consider:</p>
+<p>BOLA doesn't only hide in the obvious "change the ID in the URL" case. Consider:</p>
 <pre><code>GET /api/v1/teams/77/invoices/501
 </code></pre>
-<p>A developer correctly checks that the requesting user belongs to team 77. But they forget to check that invoice 501 <em>actually belongs to</em> team 77 — it might belong to team 12. If invoice IDs are global and sequential, an attacker on team 77 can simply iterate the invoice ID and read every other team&#39;s invoices, despite the team-membership check technically passing every time. This is why &quot;check the parent object&quot; is not the same as &quot;check the specific object being returned.&quot;</p>
+<p>A developer correctly checks that the requesting user belongs to team 77. But they forget to check that invoice 501 <em>actually belongs to</em> team 77 — it might belong to team 12. If invoice IDs are global and sequential, an attacker on team 77 can simply iterate the invoice ID and read every other team's invoices, despite the team-membership check technically passing every time. This is why "check the parent object" is not the same as "check the specific object being returned."</p>
 <h3>How to find it</h3>
 <ol>
 <li>Create two accounts (or use two different roles)</li>
@@ -88,7 +119,7 @@ GET /api/v1/orders/1002     → returns someone else&#39;s order 💥
 </ol>
 <h3>How to fix it</h3>
 <p>On every request that touches an object:</p>
-<pre><code class="language-text">if (object.owner != current_user &amp;&amp; !current_user.has_permission(&quot;read:any&quot;)):
+<pre><code class="language-text">if (object.owner != current_user &amp;&amp; !current_user.has_permission("read:any")):
     return 403
 </code></pre>
 <p>Prefer opaque, non-sequential IDs (UUIDs) as defense-in-depth, but <strong>never rely on obscurity alone</strong> — a UUID stops casual guessing, not a determined attacker who obtained one ID through another channel (a shared link, a leaked log, a previous response).</p>
@@ -124,8 +155,8 @@ POST   /api/v1/admin/settings    → normal user can change global settings
 </thead>
 <tbody><tr>
 <td>Question</td>
-<td>&quot;Can I access <em>this object</em>?&quot;</td>
-<td>&quot;Can I call <em>this function</em>?&quot;</td>
+<td>"Can I access <em>this object</em>?"</td>
+<td>"Can I call <em>this function</em>?"</td>
 </tr>
 <tr>
 <td>Typical impact</td>
@@ -138,14 +169,14 @@ POST   /api/v1/admin/settings    → normal user can change global settings
 <td>Admin panels, internal tools</td>
 </tr>
 </tbody></table>
-<p>Many real bugs are a combination of both: a regular user calling an admin-only function (BFLA) against an object that isn&#39;t even theirs (BOLA) — for example, a normal user calling <code>DELETE /api/v1/admin/users/55</code> and succeeding both because the function had no role check and because there was also no check that user 55 was even related to them.</p>
+<p>Many real bugs are a combination of both: a regular user calling an admin-only function (BFLA) against an object that isn't even theirs (BOLA) — for example, a normal user calling <code>DELETE /api/v1/admin/users/55</code> and succeeding both because the function had no role check and because there was also no check that user 55 was even related to them.</p>
 <h2>🧪 Hands-on lab — systematic authorization testing</h2>
 <ol>
 <li>Set up (or use) a vulnerable-by-design API lab such as OWASP crAPI or vAPI.</li>
 <li>Create two separate accounts, A and B.</li>
 <li>Log requests as A performing every major action the app offers (view profile, view an order, list items, etc.) using a proxy like Burp.</li>
-<li>Replay each request as B, but keep A&#39;s object IDs — this tests BOLA.</li>
-<li>Separately, take every admin/privileged action you can find documented or discover via the app&#39;s own JS/network traffic, and try calling it as a regular user directly — this tests BFLA.</li>
+<li>Replay each request as B, but keep A's object IDs — this tests BOLA.</li>
+<li>Separately, take every admin/privileged action you can find documented or discover via the app's own JS/network traffic, and try calling it as a regular user directly — this tests BFLA.</li>
 <li>For every method on every endpoint you found (GET, POST, PUT, PATCH, DELETE), check whether an unprivileged user can call it even if the UI never exposes a button for it.</li>
 <li>Document each finding: endpoint, expected authorization, actual behavior.</li>
 </ol>
@@ -154,38 +185,86 @@ POST   /api/v1/admin/settings    → normal user can change global settings
 <p>:::challenge
 Find a public or demo API (or a lab such as crAPI / vAPI). Create two users and systematically change object IDs. Document every place where authorization is missing.</p>
 <ol>
-<li>In the nested-resource example (<code>/teams/77/invoices/501</code>), what specifically did the developer&#39;s authorization check miss?</li>
-<li>Explain why &quot;the UI never shows a delete button for regular users&quot; is not a fix for BFLA.</li>
-<li>Give one concrete reason why using UUIDs instead of sequential IDs reduces but doesn&#39;t eliminate BOLA risk.</li>
+<li>In the nested-resource example (<code>/teams/77/invoices/501</code>), what specifically did the developer's authorization check miss?</li>
+<li>Explain why "the UI never shows a delete button for regular users" is not a fix for BFLA.</li>
+<li>Give one concrete reason why using UUIDs instead of sequential IDs reduces but doesn't eliminate BOLA risk.</li>
 </ol>
 <h2>Key terms</h2>
 <ul>
 <li><strong>IDOR</strong> — Insecure Direct Object Reference, the older/broader term BOLA is the API-specific version of</li>
-<li><strong>Horizontal privilege escalation</strong> — gaining access to another user&#39;s data at the same privilege level (BOLA&#39;s typical impact)</li>
-<li><strong>Vertical privilege escalation</strong> — gaining a higher privilege level than intended (BFLA&#39;s typical impact)</li>
+<li><strong>Horizontal privilege escalation</strong> — gaining access to another user's data at the same privilege level (BOLA's typical impact)</li>
+<li><strong>Vertical privilege escalation</strong> — gaining a higher privilege level than intended (BFLA's typical impact)</li>
 <li><strong>Deny by default</strong> — a design principle where access is refused unless explicitly granted, rather than allowed unless explicitly refused</li>
 </ul>
 <h2>Recap</h2>
-<p>BOLA and BFLA are both authorization failures at their core, just checking different things — BOLA checks &quot;which object,&quot; BFLA checks &quot;which action.&quot; Testing both systematically, across every endpoint and every HTTP method, is the single highest-value activity in API security testing.</p>
+<p>BOLA and BFLA are both authorization failures at their core, just checking different things — BOLA checks "which object," BFLA checks "which action." Testing both systematically, across every endpoint and every HTTP method, is the single highest-value activity in API security testing.</p>
 <h3>References</h3>
 <ul>
 <li><a href="https://owasp.org/API-Security/editions/2023/en/0xa1-broken-object-level-authorization/">OWASP API1:2023 Broken Object Level Authorization</a></li>
 <li><a href="https://owasp.org/API-Security/editions/2023/en/0xa5-broken-function-level-authorization/">OWASP API5:2023 Broken Function Level Authorization</a></li>
 <li><a href="https://github.com/OWASP/crAPI">OWASP crAPI</a> — a free lab built specifically around these vulnerability classes</li>
 </ul>
-<nav class="pager"><a href="/lesson/21-api-security/api-key-and-secret-management.html">← API Key &amp; Secret Management</a><a href="/lesson/21-api-security/webhook-security.html">Webhook Security →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/21-api-security/api-key-and-secret-management.html">← API Key &amp; Secret Management</a><a href="/lesson/21-api-security/webhook-security.html">Webhook Security →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/21-api-security/bola-and-bfla";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

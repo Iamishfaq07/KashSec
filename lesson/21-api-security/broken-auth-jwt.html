@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>Broken Authentication &amp; JWT Attacks — Path 21 · KashSec Academy</title>
 <meta name="description" content="Authentication in APIs usually means tokens — most commonly JWTs. When token handling is weak, an attacker can become any user, including an admin, without ever guessing a password.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/21-api-security/broken-auth-jwt.html">
@@ -21,42 +22,72 @@
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 21 — API Security","item":"https://kashsec.vercel.app/lesson/21-api-security/"},{"@type":"ListItem","position":4,"name":"Broken Authentication & JWT Attacks","item":"https://kashsec.vercel.app/lesson/21-api-security/broken-auth-jwt.html"}]}
 </script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"LearningResource","name":"Broken Authentication & JWT Attacks","headline":"Broken Authentication & JWT Attacks","description":"Authentication in APIs usually means tokens — most commonly JWTs. When token handling is weak, an attacker can become any user, including an admin, without ever guessing a password.","url":"https://kashsec.vercel.app/lesson/21-api-security/broken-auth-jwt.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"alg:none, algorithm confusion, and weak secrets — how tokens get forged.","isPartOf":{"@type":"Course","name":"Path 21: API Security","url":"https://kashsec.vercel.app/lesson/21-api-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/21-api-security/broken-auth-jwt.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/21-api-security/broken-auth-jwt">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/21-api-security/">Path 21 — API Security</a> · Broken Authentication &amp; JWT Attacks</div>
-  <article><h1>Broken Authentication &amp; JWT Attacks</h1>
+<a class="skip" href="/lesson/21-api-security/broken-auth-jwt.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/21-api-security/">Path 21 — API Security</a> · Broken Authentication &amp; JWT Attacks</nav>
+    <div class="md" id="content"><article><h1>Broken Authentication &amp; JWT Attacks</h1>
 <p>Authentication in APIs usually means tokens — most commonly JWTs. When token handling is weak, an attacker can become any user, including an admin, without ever guessing a password.</p>
 <p>:::</p>
 <h2>Common authentication failures</h2>
@@ -89,7 +120,7 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 </tr>
 <tr>
 <td>No logout invalidation</td>
-<td>&quot;Logging out&quot; is cosmetic — the token still works if replayed</td>
+<td>"Logging out" is cosmetic — the token still works if replayed</td>
 </tr>
 </tbody></table>
 <h2>JWT crash course</h2>
@@ -97,39 +128,39 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <pre><code>header.payload.signature
 </code></pre>
 <p>Example header:</p>
-<pre><code class="language-json">{&quot;alg&quot;:&quot;HS256&quot;,&quot;typ&quot;:&quot;JWT&quot;}
+<pre><code class="language-json">{"alg":"HS256","typ":"JWT"}
 </code></pre>
 <p>Example payload:</p>
-<pre><code class="language-json">{&quot;sub&quot;:&quot;42&quot;,&quot;role&quot;:&quot;user&quot;,&quot;exp&quot;:1735689600}
+<pre><code class="language-json">{"sub":"42","role":"user","exp":1735689600}
 </code></pre>
-<p>The signature proves the token was issued by someone who knows the secret (or private key). Critically: the <em>client</em> can decode and read the header and payload trivially — they&#39;re just Base64, not encryption. The only thing protecting the payload from tampering is the signature check the server is supposed to perform on every request.</p>
+<p>The signature proves the token was issued by someone who knows the secret (or private key). Critically: the <em>client</em> can decode and read the header and payload trivially — they're just Base64, not encryption. The only thing protecting the payload from tampering is the signature check the server is supposed to perform on every request.</p>
 <h2>High-impact JWT attacks</h2>
 <h3>1. <code>alg: none</code></h3>
-<p>Some libraries accept a token whose header says <code>&quot;alg&quot;:&quot;none&quot;</code> and skip signature verification.
+<p>Some libraries accept a token whose header says <code>"alg":"none"</code> and skip signature verification.
 Attacker forges:</p>
-<pre><code class="language-json">{&quot;alg&quot;:&quot;none&quot;,&quot;typ&quot;:&quot;JWT&quot;}
-.{&quot;sub&quot;:&quot;1&quot;,&quot;role&quot;:&quot;admin&quot;}
+<pre><code class="language-json">{"alg":"none","typ":"JWT"}
+.{"sub":"1","role":"admin"}
 .
 </code></pre>
 <p>This works because some JWT libraries, by default or through misconfiguration, treat <code>none</code> as a legitimate algorithm rather than rejecting it outright.</p>
 <h3>2. Algorithm confusion (RS256 → HS256)</h3>
-<p>If the server uses asymmetric keys (RS256) but the library is tricked into verifying with the <em>public key</em> as an HMAC secret, the attacker can sign tokens with the public key. This works because RS256&#39;s public key is, by design, public — anyone can fetch it from the API&#39;s own JWKS endpoint. If a server&#39;s code says &quot;verify this token&quot; without pinning the <em>algorithm</em> it expects, and the attacker sends a token claiming <code>alg:HS256</code> signed using the public RSA key as if it were an HMAC secret, some libraries will happily verify it as valid.</p>
+<p>If the server uses asymmetric keys (RS256) but the library is tricked into verifying with the <em>public key</em> as an HMAC secret, the attacker can sign tokens with the public key. This works because RS256's public key is, by design, public — anyone can fetch it from the API's own JWKS endpoint. If a server's code says "verify this token" without pinning the <em>algorithm</em> it expects, and the attacker sends a token claiming <code>alg:HS256</code> signed using the public RSA key as if it were an HMAC secret, some libraries will happily verify it as valid.</p>
 <h3>3. Weak HMAC secret</h3>
-<p>HS256 with a short or common secret can be cracked offline (hashcat, jwt-cracker). A secret like <code>&quot;secret123&quot;</code> can be brute-forced in seconds; once an attacker has the secret, they can sign arbitrary tokens with any claims they want, including <code>&quot;role&quot;:&quot;admin&quot;</code>.</p>
+<p>HS256 with a short or common secret can be cracked offline (hashcat, jwt-cracker). A secret like <code>"secret123"</code> can be brute-forced in seconds; once an attacker has the secret, they can sign arbitrary tokens with any claims they want, including <code>"role":"admin"</code>.</p>
 <h3>4. Kid injection / path traversal</h3>
-<p>If the <code>kid</code> (key ID) header is used to load a key from the filesystem without sanitisation, an attacker can point it at a known file or inject SQL/command content. Example: <code>&quot;kid&quot;: &quot;../../../../dev/null&quot;</code> might make the server &quot;verify&quot; a signature against an empty key, which some implementations then treat as a valid empty-string signature match.</p>
+<p>If the <code>kid</code> (key ID) header is used to load a key from the filesystem without sanitisation, an attacker can point it at a known file or inject SQL/command content. Example: <code>"kid": "../../../../dev/null"</code> might make the server "verify" a signature against an empty key, which some implementations then treat as a valid empty-string signature match.</p>
 <h3>5. Claim tampering when signature is not verified</h3>
-<p>Classic: change <code>&quot;role&quot;:&quot;user&quot;</code> → <code>&quot;role&quot;:&quot;admin&quot;</code> when the server forgets to verify the signature at all — it decodes the token, reads the claims, and trusts them without ever calling the verification function. This is the simplest and most common of all the attacks here, because it requires no cryptographic trickery whatsoever, just a server that skipped a step.</p>
+<p>Classic: change <code>"role":"user"</code> → <code>"role":"admin"</code> when the server forgets to verify the signature at all — it decodes the token, reads the claims, and trusts them without ever calling the verification function. This is the simplest and most common of all the attacks here, because it requires no cryptographic trickery whatsoever, just a server that skipped a step.</p>
 <h2>A worked example, end to end</h2>
-<p>An API&#39;s login endpoint issues:</p>
-<pre><code class="language-json">{&quot;sub&quot;:&quot;42&quot;,&quot;role&quot;:&quot;user&quot;,&quot;exp&quot;:1798761600}
+<p>An API's login endpoint issues:</p>
+<pre><code class="language-json">{"sub":"42","role":"user","exp":1798761600}
 </code></pre>
-<p>signed with HS256 and the secret <code>&quot;changeme&quot;</code>. An attacker who obtains any valid token (their own account is enough) can:</p>
+<p>signed with HS256 and the secret <code>"changeme"</code>. An attacker who obtains any valid token (their own account is enough) can:</p>
 <ol>
 <li>Decode the token to see the exact claim structure</li>
-<li>Run it through a cracking tool against a common-password wordlist — <code>&quot;changeme&quot;</code> is exactly the kind of secret that gets cracked in under a minute</li>
-<li>Once the secret is recovered, forge a new token: <code>{&quot;sub&quot;:&quot;1&quot;,&quot;role&quot;:&quot;admin&quot;,&quot;exp&quot;:9999999999}</code></li>
-<li>Sign it with the recovered secret and use it to call any endpoint that trusts the JWT&#39;s <code>role</code> claim</li>
+<li>Run it through a cracking tool against a common-password wordlist — <code>"changeme"</code> is exactly the kind of secret that gets cracked in under a minute</li>
+<li>Once the secret is recovered, forge a new token: <code>{"sub":"1","role":"admin","exp":9999999999}</code></li>
+<li>Sign it with the recovered secret and use it to call any endpoint that trusts the JWT's <code>role</code> claim</li>
 </ol>
 <p>No password was guessed. No vulnerability in the application logic was needed. The entire authentication scheme collapsed because of one weak secret.</p>
 <h2>Practical checklist</h2>
@@ -151,7 +182,7 @@ Use the JWT tool in KashSec (<code>#/tools/jwt</code>) to decode tokens you capt
 <li>Use strong, rotated secrets or proper asymmetric keys — a randomly generated 256-bit secret, not a memorable phrase.</li>
 <li>Keep lifetimes short; use refresh tokens carefully.</li>
 <li>Never put secrets or passwords in the payload.</li>
-<li>Invalidate tokens on logout / password change when possible — a short-lived access token plus a server-side check on the refresh token is the common practical answer to &quot;how do I revoke a JWT.&quot;</li>
+<li>Invalidate tokens on logout / password change when possible — a short-lived access token plus a server-side check on the refresh token is the common practical answer to "how do I revoke a JWT."</li>
 </ul>
 <p>:::</p>
 <h2>🧪 Hands-on lab — attack a JWT</h2>
@@ -163,16 +194,16 @@ Use the JWT tool in KashSec (<code>#/tools/jwt</code>) to decode tokens you capt
 </ol>
 <p>:::challenge Test yourself</p>
 <ol>
-<li>Why is &quot;the payload is Base64-encoded&quot; not a security control, and what should never go inside a JWT payload as a result?</li>
+<li>Why is "the payload is Base64-encoded" not a security control, and what should never go inside a JWT payload as a result?</li>
 <li>Explain algorithm confusion (RS256 → HS256) in your own words — why does the public key being public matter here?</li>
-<li>A team says &quot;we don&#39;t need to check token expiry server-side, the client won&#39;t send an expired token.&quot; What&#39;s wrong with trusting that?</li>
+<li>A team says "we don't need to check token expiry server-side, the client won't send an expired token." What's wrong with trusting that?</li>
 </ol>
 <h2>Key terms</h2>
 <ul>
 <li><strong>JWT</strong> — JSON Web Token</li>
 <li><strong>alg:none</strong> — the signature-bypass algorithm</li>
 <li><strong>Algorithm confusion</strong> — tricking RS256 verification into using HS256</li>
-<li><strong>JWKS</strong> — JSON Web Key Set, the endpoint that publishes an API&#39;s public signing keys</li>
+<li><strong>JWKS</strong> — JSON Web Key Set, the endpoint that publishes an API's public signing keys</li>
 <li><strong>Refresh token</strong> — a longer-lived token used to obtain new short-lived access tokens, often the only practical place to implement revocation</li>
 </ul>
 <h2>Recap</h2>
@@ -183,19 +214,67 @@ Use the JWT tool in KashSec (<code>#/tools/jwt</code>) to decode tokens you capt
 <li><a href="https://jwt.io">jwt.io</a></li>
 <li><a href="https://auth0.com/blog/a-look-at-the-latest-draft-for-jwt-bcp/">JWT security best practices (Auth0)</a> — practical guidance for implementers</li>
 </ul>
-<nav class="pager"><a href="/lesson/21-api-security/oauth2-and-oidc-deep-dive.html">← OAuth2 &amp; OIDC, Deep Dive</a><a href="/lesson/21-api-security/api-key-and-secret-management.html">API Key &amp; Secret Management →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/21-api-security/oauth2-and-oidc-deep-dive.html">← OAuth2 &amp; OIDC, Deep Dive</a><a href="/lesson/21-api-security/api-key-and-secret-management.html">API Key &amp; Secret Management →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/21-api-security/broken-auth-jwt";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>Hunting IDOR — Path 15 · KashSec Academy</title>
 <meta name="description" content="Recall Path 11.1: Broken Access Control is the #1 OWASP category, and it's consistently one of the most-reported bug classes on every major bounty platform. This lesson turns Path 11.4's IDOR fundamen">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/15-bug-bounty/hunting-idor.html">
@@ -21,131 +22,161 @@
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 15 — Bug Bounty","item":"https://kashsec.vercel.app/lesson/15-bug-bounty/"},{"@type":"ListItem","position":4,"name":"Hunting IDOR","item":"https://kashsec.vercel.app/lesson/15-bug-bounty/hunting-idor.html"}]}
 </script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"LearningResource","name":"Hunting IDOR","headline":"Hunting IDOR","description":"Recall Path 11.1: Broken Access Control is the #1 OWASP category, and it's consistently one of the most-reported bug classes on every major bounty platform. This lesson turns Path 11.4's IDOR fundamen","url":"https://kashsec.vercel.app/lesson/15-bug-bounty/hunting-idor.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate→Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Two-account method for beginners' goldmine.","isPartOf":{"@type":"Course","name":"Path 15: Bug Bounty","url":"https://kashsec.vercel.app/lesson/15-bug-bounty/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/15-bug-bounty/hunting-idor.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/15-bug-bounty/hunting-idor">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/15-bug-bounty/">Path 15 — Bug Bounty</a> · Hunting IDOR</div>
-  <article><h1>Hunting for IDOR &amp; access control bugs</h1>
-<p>Recall Path 11.1: Broken Access Control is the #1 OWASP category, and it&#39;s consistently one of the most-reported bug classes on every major bounty platform. This lesson turns Path 11.4&#39;s IDOR fundamentals into a systematic, repeatable hunting methodology.</p>
-<h2>Why IDOR is a bug bounty hunter&#39;s best friend</h2>
+<a class="skip" href="/lesson/15-bug-bounty/hunting-idor.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/15-bug-bounty/">Path 15 — Bug Bounty</a> · Hunting IDOR</nav>
+    <div class="md" id="content"><article><h1>Hunting for IDOR &amp; access control bugs</h1>
+<p>Recall Path 11.1: Broken Access Control is the #1 OWASP category, and it's consistently one of the most-reported bug classes on every major bounty platform. This lesson turns Path 11.4's IDOR fundamentals into a systematic, repeatable hunting methodology.</p>
+<h2>Why IDOR is a bug bounty hunter's best friend</h2>
 <ul>
 <li><strong>High frequency</strong> — genuinely common across nearly every application with multi-user data.</li>
 <li><strong>Low tooling barrier</strong> — no exotic tools required, mostly manual testing with Burp (which you already know from Path 11.2).</li>
-<li><strong>Clear, demonstrable impact</strong> — &quot;I can see another user&#39;s private data&quot; is immediately, viscerally understandable to any triager, unlike more abstract vulnerability classes.</li>
+<li><strong>Clear, demonstrable impact</strong> — "I can see another user's private data" is immediately, viscerally understandable to any triager, unlike more abstract vulnerability classes.</li>
 <li><strong>Scales with account creation</strong> — most programs allow (even encourage) creating multiple test accounts specifically to test exactly this bug class.</li>
 </ul>
 <h2>The systematic multi-account methodology</h2>
 <p>The single most important habit: <strong>always test with two (or more) accounts of your own.</strong></p>
 <ol>
 <li>Create <strong>at least two</strong> separate accounts (many programs explicitly permit and expect this for exactly this kind of testing).</li>
-<li>Using <strong>Account A</strong>, perform every meaningful action the application supports — create an order, upload a document, send a message, update a profile — and <strong>note every ID, reference, or token</strong> generated along the way (Burp&#39;s HTTP history from Path 11.2 makes this straightforward to review afterward).</li>
-<li>Log in as <strong>Account B</strong>, and systematically attempt to access every one of Account A&#39;s resources <strong>directly</strong>, by ID, bypassing the normal UI navigation entirely.</li>
-<li>If a third privilege tier exists (admin, moderator, premium tier), repeat with Account C testing both directions — can a lower-privilege account reach higher-privilege functionality, and does higher-privilege functionality properly verify it&#39;s operating on data it&#39;s actually authorised for?</li>
+<li>Using <strong>Account A</strong>, perform every meaningful action the application supports — create an order, upload a document, send a message, update a profile — and <strong>note every ID, reference, or token</strong> generated along the way (Burp's HTTP history from Path 11.2 makes this straightforward to review afterward).</li>
+<li>Log in as <strong>Account B</strong>, and systematically attempt to access every one of Account A's resources <strong>directly</strong>, by ID, bypassing the normal UI navigation entirely.</li>
+<li>If a third privilege tier exists (admin, moderator, premium tier), repeat with Account C testing both directions — can a lower-privilege account reach higher-privilege functionality, and does higher-privilege functionality properly verify it's operating on data it's actually authorised for?</li>
 </ol>
 <h2>Where to systematically look — a comprehensive checklist</h2>
 <p>Beyond the obvious URL-parameter IDOR from Path 11.4, sweep every one of these locations for <strong>every</strong> feature in an application:</p>
 <ul>
 <li><strong>URL path segments and query parameters</strong> — <code>/orders/1024</code>, <code>?user_id=42</code></li>
-<li><strong>JSON request bodies</strong> — <code>{&quot;account_id&quot;: 55}</code></li>
+<li><strong>JSON request bodies</strong> — <code>{"account_id": 55}</code></li>
 <li><strong>Multi-step workflows</strong> — an ID captured in step 1 of a wizard, reused (and potentially swappable) in step 3</li>
 <li><strong>File download/export endpoints</strong> — <code>/export?report_id=88</code>, <code>/download/invoice/1024.pdf</code></li>
 <li><strong>WebSocket messages</strong> — increasingly common in modern SPAs (Path 05.7), often less rigorously tested by developers than standard REST endpoints</li>
-<li><strong>GraphQL queries</strong> — explicitly requesting another user&#39;s ID in a query&#39;s variables (Path 05.5&#39;s GraphQL mention)</li>
+<li><strong>GraphQL queries</strong> — explicitly requesting another user's ID in a query's variables (Path 05.5's GraphQL mention)</li>
 <li><strong>Batch/bulk endpoints</strong> — <code>/api/users/bulk?ids=1,2,3,4</code> — sometimes only the <em>first</em> ID in a batch request is authorization-checked, with the rest processed blindly</li>
-<li><strong>&quot;Duplicate&quot; or &quot;clone&quot; features</strong> — cloning another user&#39;s object by referencing its ID, sometimes without checking source ownership</li>
+<li><strong>"Duplicate" or "clone" features</strong> — cloning another user's object by referencing its ID, sometimes without checking source ownership</li>
 <li><strong>Password reset / invite tokens</strong> — are these truly random and unguessable, or sequential/predictable?</li>
 </ul>
 <h2>Testing for both flavours systematically</h2>
-<p>Recall Path 11.4&#39;s horizontal vs vertical distinction:</p>
-<pre><code class="language-bash"># Horizontal — same privilege level, different user&#39;s data:
-curl &quot;https://example.com/api/orders/1024&quot; -H &quot;Cookie: session=ACCOUNT_B_SESSION&quot;
+<p>Recall Path 11.4's horizontal vs vertical distinction:</p>
+<pre><code class="language-bash"># Horizontal — same privilege level, different user's data:
+curl "https://example.com/api/orders/1024" -H "Cookie: session=ACCOUNT_B_SESSION"
 # (Order 1024 belongs to Account A — does Account B see it anyway?)
 
 # Vertical — lower privilege reaching higher-privilege functionality:
-curl -X DELETE &quot;https://example.com/api/admin/users/42&quot; -H &quot;Cookie: session=REGULAR_USER_SESSION&quot;
-# (Does a regular user&#39;s session succeed at an admin-only action?)
+curl -X DELETE "https://example.com/api/admin/users/42" -H "Cookie: session=REGULAR_USER_SESSION"
+# (Does a regular user's session succeed at an admin-only action?)
 </code></pre>
 <h2>Automating ID enumeration responsibly</h2>
-<p>Once you&#39;ve confirmed the <em>pattern</em> manually (per Path 15.2&#39;s rate-limit discipline):</p>
+<p>Once you've confirmed the <em>pattern</em> manually (per Path 15.2's rate-limit discipline):</p>
 <pre><code class="language-python">#!/usr/bin/env python3
-&quot;&quot;&quot;
+"""
 idor-scan.py — Sweep a range of IDs to check for IDOR, respecting
 program rate limits (adjust delay per program policy).
-&quot;&quot;&quot;
+"""
 import requests
 import time
 
-BASE = &quot;https://example.com/api/invoices&quot;
-SESSION_COOKIE = &quot;session=ACCOUNT_B_SESSION_HERE&quot;
+BASE = "https://example.com/api/invoices"
+SESSION_COOKIE = "session=ACCOUNT_B_SESSION_HERE"
 YOUR_OWN_IDS = {1025, 1026}   # IDs known to belong to YOUR OWN test accounts
 
-headers = {&quot;Cookie&quot;: SESSION_COOKIE}
+headers = {"Cookie": SESSION_COOKIE}
 
 for invoice_id in range(1000, 1100):
-    r = requests.get(f&quot;{BASE}/{invoice_id}&quot;, headers=headers, timeout=5)
+    r = requests.get(f"{BASE}/{invoice_id}", headers=headers, timeout=5)
     if r.status_code == 200 and invoice_id not in YOUR_OWN_IDS:
-        print(f&quot;[!] Potential IDOR: invoice {invoice_id} accessible — {len(r.text)} bytes&quot;)
+        print(f"[!] Potential IDOR: invoice {invoice_id} accessible — {len(r.text)} bytes")
     time.sleep(0.5)   # respect rate limits — always check program policy first
 </code></pre>
-<p><strong>Critical ethical note</strong>, directly extending Path 14.6&#39;s discipline: the moment you confirm access to <strong>real other users&#39; data</strong> (not your own test accounts), <strong>stop immediately</strong> — do not continue enumerating or downloading further data. Note the pattern, take a screenshot/PoC of the <em>minimum</em> evidence needed, and report it right away. Continuing to sweep further &quot;just to see how bad it is&quot; crosses from responsible demonstration into actual data access exceeding what&#39;s necessary — exactly the line Path 14.6 and Path 15.4 both warned against.</p>
+<p><strong>Critical ethical note</strong>, directly extending Path 14.6's discipline: the moment you confirm access to <strong>real other users' data</strong> (not your own test accounts), <strong>stop immediately</strong> — do not continue enumerating or downloading further data. Note the pattern, take a screenshot/PoC of the <em>minimum</em> evidence needed, and report it right away. Continuing to sweep further "just to see how bad it is" crosses from responsible demonstration into actual data access exceeding what's necessary — exactly the line Path 14.6 and Path 15.4 both warned against.</p>
 <h2>Predictable vs random identifiers — a related, adjacent finding</h2>
 <p>Even <em>without</em> a confirmed authorization bypass, <strong>sequential or predictable IDs</strong> are frequently worth reporting as a lower-severity finding in their own right (or as supporting evidence strengthening an IDOR report) — they make any future authorization bug trivially exploitable at scale. Compare:</p>
 <pre><code>Sequential (risky pattern):  /invoices/1024, /invoices/1025, /invoices/1026
 Random UUID (safer pattern): /invoices/f47ac10b-58cc-4372-a567-0e02b2c3d479
 </code></pre>
-<p>Recall Path 11.4&#39;s defence-in-depth point: switching to unpredictable identifiers doesn&#39;t fix a missing authorization check by itself, but it substantially raises the bar for exploitation, and its absence is itself worth documenting.</p>
+<p>Recall Path 11.4's defence-in-depth point: switching to unpredictable identifiers doesn't fix a missing authorization check by itself, but it substantially raises the bar for exploitation, and its absence is itself worth documenting.</p>
 <h2>GraphQL-specific IDOR hunting</h2>
-<p>Given GraphQL&#39;s rising prevalence (Path 05.5):</p>
-<pre><code class="language-graphql"># A GraphQL query directly requesting another user&#39;s data by ID:
+<p>Given GraphQL's rising prevalence (Path 05.5):</p>
+<pre><code class="language-graphql"># A GraphQL query directly requesting another user's data by ID:
 query {
-  user(id: &quot;1024&quot;) {
+  user(id: "1024") {
     email
     billingAddress
     creditCardLast4
   }
 }
 </code></pre>
-<p>If this query succeeds using Account B&#39;s authentication token, targeting Account A&#39;s ID, that&#39;s a GraphQL-flavoured IDOR/BOLA — test every resolver that accepts an ID argument this same systematic way.</p>
-<h2>Indirect IDOR — when the ID isn&#39;t obviously an ID</h2>
-<p>Not every access-control bug involves an obvious numeric identifier. <strong>Indirect IDOR</strong> happens when the vulnerable reference is disguised as something else — a filename that embeds a user&#39;s email address (<code>export_alice@example.com.pdf</code>), a base64-encoded string that decodes to a predictable internal ID, or a JWT (Path 11.8) whose payload itself contains a swappable user reference the server trusts without re-verifying ownership. These are systematically underreported precisely because they don&#39;t <em>look</em> like the classic <code>?id=1024</code> pattern beginners are trained to spot first — worth developing the habit of decoding and inspecting every opaque-looking token or filename you encounter during testing, rather than only sweeping obviously numeric parameters. A base64 string that decodes into readable JSON containing a user ID is functionally identical to a plain <code>?user_id=</code> parameter — it&#39;s just wearing a disguise.</p>
+<p>If this query succeeds using Account B's authentication token, targeting Account A's ID, that's a GraphQL-flavoured IDOR/BOLA — test every resolver that accepts an ID argument this same systematic way.</p>
+<h2>Indirect IDOR — when the ID isn't obviously an ID</h2>
+<p>Not every access-control bug involves an obvious numeric identifier. <strong>Indirect IDOR</strong> happens when the vulnerable reference is disguised as something else — a filename that embeds a user's email address (<code>export_alice@example.com.pdf</code>), a base64-encoded string that decodes to a predictable internal ID, or a JWT (Path 11.8) whose payload itself contains a swappable user reference the server trusts without re-verifying ownership. These are systematically underreported precisely because they don't <em>look</em> like the classic <code>?id=1024</code> pattern beginners are trained to spot first — worth developing the habit of decoding and inspecting every opaque-looking token or filename you encounter during testing, rather than only sweeping obviously numeric parameters. A base64 string that decodes into readable JSON containing a user ID is functionally identical to a plain <code>?user_id=</code> parameter — it's just wearing a disguise.</p>
 <h2>🧪 Lab — Full IDOR sweep on PortSwigger + your shortlisted program</h2>
 <ol>
-<li>Revisit <a href="https://portswigger.net/web-security/access-control">PortSwigger&#39;s Access Control labs</a> (from Path 11.4) — this time, deliberately practise the <strong>two-account methodology</strong> from this lesson on every lab, even ones that don&#39;t strictly require it, to build the habit.</li>
+<li>Revisit <a href="https://portswigger.net/web-security/access-control">PortSwigger's Access Control labs</a> (from Path 11.4) — this time, deliberately practise the <strong>two-account methodology</strong> from this lesson on every lab, even ones that don't strictly require it, to build the habit.</li>
 <li>On the program you shortlisted in Path 15.2 (only if scope/policy explicitly permits creating multiple test accounts), create two accounts and systematically work through the comprehensive checklist above against every feature the application offers.</li>
-<li>Document every ID/reference you find using the Burp HTTP history review technique, building your own personal checklist of &quot;features tested&quot; vs &quot;features still to test&quot; for that specific target.</li>
+<li>Document every ID/reference you find using the Burp HTTP history review technique, building your own personal checklist of "features tested" vs "features still to test" for that specific target.</li>
 </ol>
-<p>While testing an IDOR pattern on a real bug bounty program, you successfully access what appears to be a real customer&#39;s private data (not your own test account). What&#39;s the correct immediate next action?</p>
+<p>While testing an IDOR pattern on a real bug bounty program, you successfully access what appears to be a real customer's private data (not your own test account). What's the correct immediate next action?</p>
 <details><summary>Show answer</summary><strong>Stop testing immediately</strong> — do not continue enumerating further IDs or exploring additional data. Capture only the minimum evidence needed to demonstrate the vulnerability (a single screenshot/response showing the access, without saving or exposing the actual customer's sensitive data further), and submit the report right away following Path 15.4's structure. This directly mirrors Path 14.6's "demonstrate, don't exfiltrate" principle — continuing to explore real user data beyond what's necessary to prove the bug crosses from responsible research into a genuine data privacy violation, regardless of good intentions.</details><h2>Key terms</h2>
 <ul>
 <li><strong>Multi-account testing methodology</strong> — the systematic practice of using 2+ accounts to test every feature for access control flaws.</li>
@@ -169,19 +200,67 @@ query {
 <li><a href="https://owasp.org/API-Security/editions/2023/en/0xa1-broken-object-level-authorization/">OWASP API Security Top 10 — BOLA</a> — the API-specific parallel.</li>
 </ul>
 <p><strong>Next up →</strong> <a href="#/lesson/15-bug-bounty/hunting-xss-and-injection">Hunting XSS &amp; injection bugs</a></p>
-<nav class="pager"><a href="/lesson/15-bug-bounty/report-writing.html">← Reports that get paid</a><a href="/lesson/15-bug-bounty/hunting-xss-and-injection.html">Hunting XSS &amp; injection bugs →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/15-bug-bounty/report-writing.html">← Reports that get paid</a><a href="/lesson/15-bug-bounty/hunting-xss-and-injection.html">Hunting XSS &amp; injection bugs →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/15-bug-bounty/hunting-idor";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

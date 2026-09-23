@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>REST vs GraphQL — security differences that matter — Path 21 · KashSec Academy</title>
 <meta name="description" content="Most APIs you'll meet fall into two camps: REST and GraphQL. They look different, and their security failure modes are different too — knowing which style you're facing changes exactly which questions">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/21-api-security/rest-vs-graphql.html">
@@ -21,43 +22,73 @@
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 21 — API Security","item":"https://kashsec.vercel.app/lesson/21-api-security/"},{"@type":"ListItem","position":4,"name":"REST vs GraphQL — security differences that matter","item":"https://kashsec.vercel.app/lesson/21-api-security/rest-vs-graphql.html"}]}
 </script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"LearningResource","name":"REST vs GraphQL — security differences that matter","headline":"REST vs GraphQL — security differences that matter","description":"Most APIs you'll meet fall into two camps: REST and GraphQL. They look different, and their security failure modes are different too — knowing which style you're facing changes exactly which questions","url":"https://kashsec.vercel.app/lesson/21-api-security/rest-vs-graphql.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Same goals, different attack surface — one endpoint changes everything.","isPartOf":{"@type":"Course","name":"Path 21: API Security","url":"https://kashsec.vercel.app/lesson/21-api-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/21-api-security/rest-vs-graphql.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/21-api-security/rest-vs-graphql">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/21-api-security/">Path 21 — API Security</a> · REST vs GraphQL — security differences that matter</div>
-  <article><h1>REST vs GraphQL — security differences that matter</h1>
-<p>Most APIs you&#39;ll meet fall into two camps: <strong>REST</strong> and <strong>GraphQL</strong>. They look different, and their security failure modes are different too — knowing which style you&#39;re facing changes exactly which questions you ask first.</p>
+<a class="skip" href="/lesson/21-api-security/rest-vs-graphql.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/21-api-security/">Path 21 — API Security</a> · REST vs GraphQL — security differences that matter</nav>
+    <div class="md" id="content"><article><h1>REST vs GraphQL — security differences that matter</h1>
+<p>Most APIs you'll meet fall into two camps: <strong>REST</strong> and <strong>GraphQL</strong>. They look different, and their security failure modes are different too — knowing which style you're facing changes exactly which questions you ask first.</p>
 <p>:::</p>
 <h2>REST in one minute</h2>
 <p>REST treats the API as a collection of <strong>resources</strong> identified by URLs:</p>
@@ -129,8 +160,8 @@ GET    /api/users/42/orders   → list orders for user 42
 </tbody></table>
 <h2>Classic REST problems</h2>
 <ul>
-<li>Changing the ID in the path (<code>/users/42</code> → <code>/users/43</code>) and getting another user&#39;s data (<strong>BOLA / IDOR</strong>)</li>
-<li>Sending extra fields the server didn&#39;t expect (<strong>mass assignment</strong>)</li>
+<li>Changing the ID in the path (<code>/users/42</code> → <code>/users/43</code>) and getting another user's data (<strong>BOLA / IDOR</strong>)</li>
+<li>Sending extra fields the server didn't expect (<strong>mass assignment</strong>)</li>
 <li>Missing rate limits on expensive endpoints</li>
 <li>Verbose error messages that leak stack traces or internal IDs</li>
 </ul>
@@ -139,10 +170,10 @@ GET    /api/users/42/orders   → list orders for user 42
 <li><strong>Nested query attacks</strong> — a query that expands exponentially and kills the server, because a small amount of query text can request an enormous amount of nested data</li>
 <li><strong>Field-level authorization missing</strong> — you can request <code>user { salary }</code> even if the UI never shows it, because the field exists in the schema and nothing stops a client from asking for it directly</li>
 <li><strong>Introspection left on in production</strong> — attackers get the full schema for free, including field names and types for parts of the API the UI never uses</li>
-<li><strong>Batching</strong> — many operations in one HTTP request bypass simple rate limits built around &quot;one request per action&quot;</li>
+<li><strong>Batching</strong> — many operations in one HTTP request bypass simple rate limits built around "one request per action"</li>
 </ul>
 <p>:::danger
-In GraphQL, &quot;the endpoint is authorized&quot; is not enough. Every sensitive field needs its own authorization check. A resolver for <code>user.orders</code> might correctly check that you&#39;re allowed to see this user&#39;s orders, while the resolver for <code>user.paymentMethods</code>, added later by a different developer, forgets to.</p>
+In GraphQL, "the endpoint is authorized" is not enough. Every sensitive field needs its own authorization check. A resolver for <code>user.orders</code> might correctly check that you're allowed to see this user's orders, while the resolver for <code>user.paymentMethods</code>, added later by a different developer, forgets to.</p>
 <h2>A worked example: the nested query attack</h2>
 <pre><code class="language-graphql">query {
   users {
@@ -156,9 +187,9 @@ In GraphQL, &quot;the endpoint is authorized&quot; is not enough. Every sensitiv
   }
 }
 </code></pre>
-<p>A query like this, five levels of <code>friends</code> deep, can ask the database to compute a combinatorial explosion of relationships — potentially millions of rows of work — from a query that&#39;s a few dozen characters long. A REST API has no equivalent: each endpoint does a fixed, predictable amount of work, so this style of attack simply doesn&#39;t exist in the same form. This is exactly why GraphQL APIs need depth and complexity limits that REST APIs generally don&#39;t.</p>
+<p>A query like this, five levels of <code>friends</code> deep, can ask the database to compute a combinatorial explosion of relationships — potentially millions of rows of work — from a query that's a few dozen characters long. A REST API has no equivalent: each endpoint does a fixed, predictable amount of work, so this style of attack simply doesn't exist in the same form. This is exactly why GraphQL APIs need depth and complexity limits that REST APIs generally don't.</p>
 <h2>Introspection: convenience for developers, gift to attackers</h2>
-<p>GraphQL&#39;s introspection feature lets a client ask the server &quot;what&#39;s your entire schema?&quot; — every type, every field, every mutation, all at once. It&#39;s genuinely useful during development. Left enabled in production, it hands an attacker the complete map of your API&#39;s data model, including fields never exposed anywhere in the UI:</p>
+<p>GraphQL's introspection feature lets a client ask the server "what's your entire schema?" — every type, every field, every mutation, all at once. It's genuinely useful during development. Left enabled in production, it hands an attacker the complete map of your API's data model, including fields never exposed anywhere in the UI:</p>
 <pre><code class="language-graphql">query { __schema { types { name fields { name } } } }
 </code></pre>
 <p>A single request like this can reveal internal field names such as <code>internalNotes</code>, <code>isTestAccount</code>, or <code>debugFlags</code> — fields that were never meant to be queried by a real client, but exist in the schema all the same.</p>
@@ -178,21 +209,21 @@ In GraphQL, &quot;the endpoint is authorized&quot; is not enough. Every sensitiv
 </ul>
 <h2>🧪 Hands-on lab — compare the two styles hands-on</h2>
 <ol>
-<li><p>Find (or spin up) a small public GraphQL API — many &quot;awesome-graphql&quot; lists on GitHub link to safe public playgrounds — and try the introspection query above. Note how much of the schema is exposed.</p>
+<li><p>Find (or spin up) a small public GraphQL API — many "awesome-graphql" lists on GitHub link to safe public playgrounds — and try the introspection query above. Note how much of the schema is exposed.</p>
 </li>
-<li><p>Using the same target (or a REST API you&#39;re authorized to test), compare: how many separate endpoints would it take to build the equivalent of one moderately nested GraphQL query?</p>
+<li><p>Using the same target (or a REST API you're authorized to test), compare: how many separate endpoints would it take to build the equivalent of one moderately nested GraphQL query?</p>
 </li>
-<li><p>Write down, for each style, one sentence answering: &quot;where would a missing authorization check hide, and how would you find it?&quot;</p>
+<li><p>Write down, for each style, one sentence answering: "where would a missing authorization check hide, and how would you find it?"</p>
 </li>
-<li><p>Why does a REST API rarely need &quot;query depth limits&quot; the way a GraphQL API does?</p>
+<li><p>Why does a REST API rarely need "query depth limits" the way a GraphQL API does?</p>
 </li>
 <li><p>An attacker runs an introspection query against a production GraphQL endpoint and finds a field called <code>adminNotes</code> on the <code>User</code> type. What should you check next?</p>
 </li>
-<li><p>Explain in one sentence why &quot;the resolver for one field is authorized&quot; doesn&#39;t guarantee the resolver for a related field is too.</p>
+<li><p>Explain in one sentence why "the resolver for one field is authorized" doesn't guarantee the resolver for a related field is too.</p>
 </li>
 </ol>
 <h2>Key takeaway</h2>
-<p>REST and GraphQL fail in different places, but the root cause is usually the same: <strong>authorization was implemented at the wrong layer or not at all</strong>. REST&#39;s many small endpoints hide the missing check in plain sight, one at a time; GraphQL&#39;s single flexible endpoint hides it inside a resolver tree that&#39;s easy to under-review.</p>
+<p>REST and GraphQL fail in different places, but the root cause is usually the same: <strong>authorization was implemented at the wrong layer or not at all</strong>. REST's many small endpoints hide the missing check in plain sight, one at a time; GraphQL's single flexible endpoint hides it inside a resolver tree that's easy to under-review.</p>
 <h2>Key terms</h2>
 <ul>
 <li><strong>Resolver</strong> — the GraphQL function responsible for fetching the data for one specific field</li>
@@ -201,26 +232,74 @@ In GraphQL, &quot;the endpoint is authorized&quot; is not enough. Every sensitiv
 <li><strong>Over-fetching</strong> — a response containing more data than the client actually needed, common in REST when endpoints return whole objects</li>
 </ul>
 <h2>Recap</h2>
-<p>REST spreads authorization decisions across many endpoints; GraphQL concentrates them behind resolvers on a single endpoint. Both fail the same way in the end — a check that someone assumed happened somewhere else, but didn&#39;t happen anywhere.</p>
+<p>REST spreads authorization decisions across many endpoints; GraphQL concentrates them behind resolvers on a single endpoint. Both fail the same way in the end — a check that someone assumed happened somewhere else, but didn't happen anywhere.</p>
 <h3>References</h3>
 <ul>
 <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/GraphQL_Cheat_Sheet.html">OWASP GraphQL Cheat Sheet</a></li>
 <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/REST_Security_Cheat_Sheet.html">REST Security Cheat Sheet</a></li>
 <li><a href="https://graphql.org/learn/introspection/">GraphQL introspection explained</a> — the official docs for the feature discussed above</li>
 </ul>
-<nav class="pager"><a href="/lesson/21-api-security/websocket-security.html">← WebSocket Security</a><a href="/lesson/21-api-security/grpc-and-protobuf-security.html">gRPC &amp; Protobuf Security →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/21-api-security/websocket-security.html">← WebSocket Security</a><a href="/lesson/21-api-security/grpc-and-protobuf-security.html">gRPC &amp; Protobuf Security →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/21-api-security/rest-vs-graphql";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

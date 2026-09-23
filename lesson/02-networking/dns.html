@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>DNS: the phonebook — Path 02 · KashSec Academy</title>
 <meta name="description" content="You type names, computers use numbers. DNS is the translator in between — and it quietly leaks a target's structure, making it a favourite of both attackers and defenders.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/02-networking/dns.html">
@@ -21,46 +22,76 @@
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 02 — Networking Fundamentals","item":"https://kashsec.vercel.app/lesson/02-networking/"},{"@type":"ListItem","position":4,"name":"DNS: the phonebook","item":"https://kashsec.vercel.app/lesson/02-networking/dns.html"}]}
 </script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"LearningResource","name":"DNS: the phonebook","headline":"DNS: the phonebook","description":"You type names, computers use numbers. DNS is the translator in between — and it quietly leaks a target's structure, making it a favourite of both attackers and defenders.","url":"https://kashsec.vercel.app/lesson/02-networking/dns.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"How names become numbers, and what leaks.","isPartOf":{"@type":"Course","name":"Path 02: Networking Fundamentals","url":"https://kashsec.vercel.app/lesson/02-networking/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/02-networking/dns.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/02-networking/dns">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/02-networking/">Path 02 — Networking Fundamentals</a> · DNS: the phonebook</div>
-  <article><h1>DNS: the internet&#39;s phonebook</h1>
-<p>You type names, computers use numbers. <strong>DNS</strong> is the translator in between — and it quietly leaks a target&#39;s structure, making it a favourite of both attackers and defenders.</p>
+<a class="skip" href="/lesson/02-networking/dns.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/02-networking/">Path 02 — Networking Fundamentals</a> · DNS: the phonebook</nav>
+    <div class="md" id="content"><article><h1>DNS: the internet's phonebook</h1>
+<p>You type names, computers use numbers. <strong>DNS</strong> is the translator in between — and it quietly leaks a target's structure, making it a favourite of both attackers and defenders.</p>
 <h2>What DNS does</h2>
-<p>You type <code>google.com</code>, but computers find each other using IP addresses like <code>142.250.190.14</code>. Something must translate the friendly name into the number. That something is <strong>DNS</strong> (Domain Name System) — think of it as the <strong>internet&#39;s phonebook</strong>.</p>
-<p>You give it a name, it gives back the number. Without it, you&#39;d have to memorise numeric addresses for every site you visit.</p>
+<p>You type <code>google.com</code>, but computers find each other using IP addresses like <code>142.250.190.14</code>. Something must translate the friendly name into the number. That something is <strong>DNS</strong> (Domain Name System) — think of it as the <strong>internet's phonebook</strong>.</p>
+<p>You give it a name, it gives back the number. Without it, you'd have to memorise numeric addresses for every site you visit.</p>
 <h2>How a lookup actually works</h2>
 <p>When you hit Enter on an address, before the page can load, this happens in a fraction of a second:</p>
 <p>Almost all these lookups are <strong>cached</strong> so they only really happen once in a while — but this is the flow behind every website you ever open.</p>
@@ -91,7 +122,7 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 </tr>
 <tr>
 <td><strong>NS</strong></td>
-<td>Which servers run the domain&#39;s DNS</td>
+<td>Which servers run the domain's DNS</td>
 </tr>
 <tr>
 <td><strong>TXT</strong></td>
@@ -107,7 +138,7 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 </tr>
 </tbody></table>
 <h2>Try it yourself</h2>
-<pre><code class="language-bash"># Ask DNS for a website&#39;s address:
+<pre><code class="language-bash"># Ask DNS for a website's address:
 dig google.com +short
 
 # See its mail servers:
@@ -125,15 +156,15 @@ nslookup google.com
 # Modern tool with pretty output:
 dog google.com
 </code></pre>
-<h2>🧪 Lab — Explore a domain&#39;s phonebook</h2>
+<h2>🧪 Lab — Explore a domain's phonebook</h2>
 <ol>
 <li>In a terminal, run <code>dig example.com +short</code> and note the IP.</li>
 <li>Run <code>dig example.com MX +short</code> — see the mail servers?</li>
 <li>Run <code>dig google.com TXT +short</code> — notice all the third-party services listed?</li>
-<li>Try it on your own domain if you have one. Notice how much you can learn about a company&#39;s tech stack from public records alone, without touching their servers.</li>
+<li>Try it on your own domain if you have one. Notice how much you can learn about a company's tech stack from public records alone, without touching their servers.</li>
 </ol>
 <h2>TTL — how long a lookup gets remembered</h2>
-<p>Every DNS record has a <strong>TTL (Time To Live)</strong> — a number, in seconds, telling resolvers how long they&#39;re allowed to cache (remember) that answer before asking again. A low TTL (like 60 seconds) means changes propagate to the world quickly, but generates more repeated lookup traffic; a high TTL (like 86400, a full day) means better caching efficiency, but changes take longer to take effect everywhere. This matters practically: administrators often deliberately lower a record&#39;s TTL shortly <em>before</em> making a planned change (like moving to a new server), specifically to shrink the window where some users see the old answer and others see the new one — and it matters for reconnaissance too, since historical DNS data (referenced in this path&#39;s earlier hands-on lab) exists precisely because some resolvers and services log every answer they&#39;ve ever cached, TTL or not.</p>
+<p>Every DNS record has a <strong>TTL (Time To Live)</strong> — a number, in seconds, telling resolvers how long they're allowed to cache (remember) that answer before asking again. A low TTL (like 60 seconds) means changes propagate to the world quickly, but generates more repeated lookup traffic; a high TTL (like 86400, a full day) means better caching efficiency, but changes take longer to take effect everywhere. This matters practically: administrators often deliberately lower a record's TTL shortly <em>before</em> making a planned change (like moving to a new server), specifically to shrink the window where some users see the old answer and others see the new one — and it matters for reconnaissance too, since historical DNS data (referenced in this path's earlier hands-on lab) exists precisely because some resolvers and services log every answer they've ever cached, TTL or not.</p>
 <h2>Why hackers care about DNS</h2>
 <p>The phonebook quietly reveals structure. By exploring DNS, an attacker can discover forgotten <strong>subdomains</strong> like <code>mail.company.com</code>, <code>test.company.com</code>, or <code>old-server.company.com</code> — each a possible side entrance the owner forgot about. This is a core recon technique in Paths 14 and 10.</p>
 <p>Beyond subdomain hunting, DNS has several attack surfaces:</p>
@@ -141,19 +172,19 @@ dog google.com
 <li><strong>DNS spoofing / cache poisoning</strong> — feeding false records into a resolver so users end up on attacker sites.</li>
 <li><strong>DNS tunneling</strong> — smuggling data (like exfiltrated files or C2 commands) inside DNS queries. Sneaky because DNS is rarely blocked.</li>
 <li><strong>DNS amplification</strong> — abusing open resolvers for DDoS.</li>
-<li><strong>Subdomain takeover</strong> — a subdomain points at a service (S3, GitHub Pages, Heroku) that&#39;s been deleted; an attacker claims it and hosts anything they like on your domain.</li>
+<li><strong>Subdomain takeover</strong> — a subdomain points at a service (S3, GitHub Pages, Heroku) that's been deleted; an attacker claims it and hosts anything they like on your domain.</li>
 </ul>
 <h2>Defences worth knowing</h2>
 <ul>
 <li><strong>DNSSEC</strong> — signed DNS records; makes forgery detectable.</li>
-<li><strong>DoH / DoT</strong> — DNS over HTTPS / TLS; encrypts your queries so ISPs and eavesdroppers can&#39;t see them.</li>
+<li><strong>DoH / DoT</strong> — DNS over HTTPS / TLS; encrypts your queries so ISPs and eavesdroppers can't see them.</li>
 <li><strong>DNS filtering</strong> — services like Cloudflare 1.1.1.1 for Families or Quad9 block known-malicious domains at resolution time.</li>
 </ul>
-<p>Change your device&#39;s DNS server to <strong>1.1.1.1</strong> (Cloudflare) or <strong>8.8.8.8</strong> (Google) or <strong>9.9.9.9</strong> (Quad9). Usually faster than your ISP&#39;s default and often better for privacy.</p>
-<p>Which DNS record type tells you a domain&#39;s mail servers?</p>
+<p>Change your device's DNS server to <strong>1.1.1.1</strong> (Cloudflare) or <strong>8.8.8.8</strong> (Google) or <strong>9.9.9.9</strong> (Quad9). Usually faster than your ISP's default and often better for privacy.</p>
+<p>Which DNS record type tells you a domain's mail servers?</p>
 <details><summary>Show answer</summary>The <strong>MX</strong> record (Mail eXchange).</details><h2>Key terms</h2>
 <ul>
-<li><strong>DNS</strong> — turns names into IP addresses (the internet&#39;s phonebook).</li>
+<li><strong>DNS</strong> — turns names into IP addresses (the internet's phonebook).</li>
 <li><strong>A / AAAA / MX / NS / TXT / CNAME</strong> — different DNS record types.</li>
 <li><strong>Subdomain</strong> — a name under a domain, e.g. <code>mail.company.com</code>.</li>
 <li><strong>DNS resolver</strong> — the server that does the lookup work for you.</li>
@@ -162,33 +193,81 @@ dog google.com
 </ul>
 <h2>Recap</h2>
 <ul>
-<li>DNS turns names into IP addresses; without it you&#39;d memorise numbers.</li>
+<li>DNS turns names into IP addresses; without it you'd memorise numbers.</li>
 <li>A lookup happens automatically before any page loads.</li>
-<li>Records like A, MX, and TXT reveal a target&#39;s structure.</li>
+<li>Records like A, MX, and TXT reveal a target's structure.</li>
 <li><code>dig</code> and <code>nslookup</code> let you query DNS — a core recon source for finding subdomains.</li>
 <li>Attacks include spoofing, tunneling, amplification, and subdomain takeover.</li>
 </ul>
 <h3>References</h3>
 <ul>
 <li><a href="https://www.cloudflare.com/learning/dns/what-is-dns/">How DNS works — Cloudflare</a> — best free intro.</li>
-<li><a href="https://www.dnsleaktest.com/">dnsleaktest.com</a> — check which DNS server you&#39;re actually using.</li>
+<li><a href="https://www.dnsleaktest.com/">dnsleaktest.com</a> — check which DNS server you're actually using.</li>
 <li><a href="https://www.hackerone.com/application-security/guide-subdomain-takeovers">Subdomain takeover explained — HackerOne</a> — a classic recon-driven bug.</li>
 <li><a href="https://www.quad9.net/">Quad9</a>, <a href="https://1.1.1.1/">Cloudflare 1.1.1.1</a>, <a href="https://www.opendns.com/">OpenDNS</a> — public resolvers with privacy/security features.</li>
 </ul>
 <p><strong>Next up →</strong> <a href="#/lesson/02-networking/http-https">HTTP &amp; HTTPS</a></p>
-<nav class="pager"><a href="/lesson/02-networking/wireless-networking-basics.html">← Wireless networking basics</a><a href="/lesson/02-networking/http-https.html">HTTP &amp; HTTPS →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/02-networking/wireless-networking-basics.html">← Wireless networking basics</a><a href="/lesson/02-networking/http-https.html">HTTP &amp; HTTPS →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/02-networking/dns";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

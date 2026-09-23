@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>Variables &amp; data types — Path 04 · KashSec Academy</title>
 <meta name="description" content="You can't write programs without a way to store and label information. That's what variables and types are for.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/04-python/variables-types.html">
@@ -21,56 +22,86 @@
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 04 — Programming & Python","item":"https://kashsec.vercel.app/lesson/04-python/"},{"@type":"ListItem","position":4,"name":"Variables & data types","item":"https://kashsec.vercel.app/lesson/04-python/variables-types.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Variables & data types","headline":"Variables & data types","description":"You can't write programs without a way to store and label information. That's what variables and types are for.","url":"https://kashsec.vercel.app/lesson/04-python/variables-types.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Labelled boxes: strings, numbers, booleans.","isPartOf":{"@type":"Course","name":"Path 04: Programming & Python","url":"https://kashsec.vercel.app/lesson/04-python/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/04-python/variables-types.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Variables & data types","headline":"Variables & data types","description":"You can't write programs without a way to store and label information. That's what variables and types are for.","url":"https://kashsec.vercel.app/lesson/04-python/variables-types.html","inLanguage":"en","dateModified":"2026-08-04","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Labelled boxes: strings, numbers, booleans.","isPartOf":{"@type":"Course","name":"Path 04: Programming & Python","url":"https://kashsec.vercel.app/lesson/04-python/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/04-python/variables-types.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/04-python/variables-types">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/04-python/">Path 04 — Programming &amp; Python</a> · Variables &amp; data types</div>
-  <article><h1>Variables &amp; data types</h1>
-<p>You can&#39;t write programs without a way to store and label information. That&#39;s what <strong>variables</strong> and <strong>types</strong> are for.</p>
+<a class="skip" href="/lesson/04-python/variables-types.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/04-python/">Path 04 — Programming &amp; Python</a> · Variables &amp; data types</nav>
+    <div class="md" id="content"><article><h1>Variables &amp; data types</h1>
+<p>You can't write programs without a way to store and label information. That's what <strong>variables</strong> and <strong>types</strong> are for.</p>
 <h2>Variables — labelled boxes</h2>
 <p>A <strong>variable</strong> is a labelled box you put a value into. You give it a name, put a value in, and later use the name to get the value back.</p>
-<pre><code class="language-python">name = &quot;Sam&quot;      # a text value
+<pre><code class="language-python">name = "Sam"      # a text value
 age = 32             # a whole number
 is_admin = False     # a yes/no value
 score = 87.5         # a decimal number
 </code></pre>
 <p>Every one of those lines follows the same shape: <strong><code>name = value</code></strong>. The name is on the left, the value on the right, the <code>=</code> puts the value into the box.</p>
 <h2>Reading and changing values</h2>
-<pre><code class="language-python">name = &quot;Sam&quot;
+<pre><code class="language-python">name = "Sam"
 print(name)             # → Sam
 
-name = &quot;Alice&quot;          # replace the value
+name = "Alice"          # replace the value
 print(name)             # → Alice
 
 age = 32
@@ -82,7 +113,7 @@ age += 1        # same as age = age + 1
 score *= 2      # score = score * 2
 </code></pre>
 <h2>The main data types</h2>
-<p>Python has a handful of built-in types you&#39;ll use daily:</p>
+<p>Python has a handful of built-in types you'll use daily:</p>
 <table>
 <thead>
 <tr>
@@ -94,7 +125,7 @@ score *= 2      # score = score * 2
 <tbody><tr>
 <td><strong><code>str</code></strong> (string)</td>
 <td>text in quotes</td>
-<td><code>&quot;password123&quot;</code>, <code>&#39;hello&#39;</code></td>
+<td><code>"password123"</code>, <code>'hello'</code></td>
 </tr>
 <tr>
 <td><strong><code>int</code></strong> (integer)</td>
@@ -114,46 +145,46 @@ score *= 2      # score = score * 2
 <tr>
 <td><strong><code>list</code></strong></td>
 <td>ordered sequence</td>
-<td><code>[&quot;nmap&quot;, &quot;burp&quot;, &quot;sqlmap&quot;]</code></td>
+<td><code>["nmap", "burp", "sqlmap"]</code></td>
 </tr>
 <tr>
 <td><strong><code>dict</code></strong></td>
 <td>key/value pairs</td>
-<td><code>{&quot;user&quot;: &quot;admin&quot;, &quot;id&quot;: 42}</code></td>
+<td><code>{"user": "admin", "id": 42}</code></td>
 </tr>
 <tr>
 <td><strong><code>None</code></strong></td>
-<td>&quot;nothing&quot;</td>
+<td>"nothing"</td>
 <td><code>None</code></td>
 </tr>
 </tbody></table>
 <p>You can always check a type with <code>type()</code>:</p>
-<pre><code class="language-python">type(&quot;hello&quot;)     # → &lt;class &#39;str&#39;&gt;
-type(42)          # → &lt;class &#39;int&#39;&gt;
-type(True)        # → &lt;class &#39;bool&#39;&gt;
+<pre><code class="language-python">type("hello")     # → &lt;class 'str'&gt;
+type(42)          # → &lt;class 'int'&gt;
+type(True)        # → &lt;class 'bool'&gt;
 </code></pre>
-<h2>Strings — the security worker&#39;s bread and butter</h2>
+<h2>Strings — the security worker's bread and butter</h2>
 <p>Text is where nearly all security work happens: URLs, headers, payloads, tokens, logs.</p>
-<pre><code class="language-python">url = &quot;https://example.com/login&quot;
+<pre><code class="language-python">url = "https://example.com/login"
 print(url.upper())               # HTTPS://EXAMPLE.COM/LOGIN
 print(url.lower())               # https://example.com/login
-print(url.startswith(&quot;https&quot;))   # True
-print(url.endswith(&quot;.com/login&quot;))# True
+print(url.startswith("https"))   # True
+print(url.endswith(".com/login"))# True
 print(len(url))                  # 27
-print(&quot;example&quot; in url)          # True
+print("example" in url)          # True
 
 # Slicing — grab pieces of a string:
-print(url[:5])       # &quot;https&quot;
-print(url[8:])       # &quot;example.com/login&quot;
-print(url[-5:])      # &quot;login&quot;
+print(url[:5])       # "https"
+print(url[8:])       # "example.com/login"
+print(url[-5:])      # "login"
 
 # Concatenation and formatting:
-user = &quot;admin&quot;
-print(&quot;Welcome, &quot; + user)                 # concatenation
-print(f&quot;Welcome, {user}&quot;)                 # f-string (best modern way)
-print(&quot;Welcome, {}&quot;.format(user))         # older .format()
+user = "admin"
+print("Welcome, " + user)                 # concatenation
+print(f"Welcome, {user}")                 # f-string (best modern way)
+print("Welcome, {}".format(user))         # older .format()
 </code></pre>
-<p><strong>F-strings</strong> (the <code>f&quot;...&quot;</code> style) are the modern, readable way to inject values into text. Use them.</p>
+<p><strong>F-strings</strong> (the <code>f"..."</code> style) are the modern, readable way to inject values into text. Use them.</p>
 <h2>Numbers</h2>
 <pre><code class="language-python">a = 10
 b = 3
@@ -162,7 +193,7 @@ print(a - b)   # 7
 print(a * b)   # 30
 print(a / b)   # 3.3333... (always float)
 print(a // b)  # 3   (integer division)
-print(a % b)   # 1   (remainder — great for &quot;every 5th item&quot;)
+print(a % b)   # 1   (remainder — great for "every 5th item")
 print(a ** b)  # 1000 (a to the power of b)
 </code></pre>
 <h2>Booleans and comparisons</h2>
@@ -178,43 +209,43 @@ print(age &lt; 18 or age &gt; 65)     # False
 print(not True)                 # False
 </code></pre>
 <h3>Dynamic typing — no need to declare a type upfront</h3>
-<p>Unlike some languages (Java, C), Python never requires you to declare a variable&#39;s type in advance — you just assign a value, and Python figures out the type automatically:</p>
+<p>Unlike some languages (Java, C), Python never requires you to declare a variable's type in advance — you just assign a value, and Python figures out the type automatically:</p>
 <pre><code class="language-python">x = 5          # Python infers: this is an integer
-x = &quot;hello&quot;    # now the SAME variable holds a string instead — totally legal
-print(type(x)) # &lt;class &#39;str&#39;&gt;
+x = "hello"    # now the SAME variable holds a string instead — totally legal
+print(type(x)) # &lt;class 'str'&gt;
 </code></pre>
-<p>This flexibility (called <strong>dynamic typing</strong>) is a big part of why Python reads so cleanly for beginners — but it&#39;s also a real source of subtle bugs once scripts grow larger, since nothing stops you from accidentally reassigning a variable to an unexpected type partway through a script. The <code>type()</code> function, used above, is your go-to tool whenever you&#39;re unsure what a variable currently holds — genuinely useful during debugging.</p>
+<p>This flexibility (called <strong>dynamic typing</strong>) is a big part of why Python reads so cleanly for beginners — but it's also a real source of subtle bugs once scripts grow larger, since nothing stops you from accidentally reassigning a variable to an unexpected type partway through a script. The <code>type()</code> function, used above, is your go-to tool whenever you're unsure what a variable currently holds — genuinely useful during debugging.</p>
 <h2>Type conversion</h2>
-<pre><code class="language-python">n = &quot;42&quot;        # a string!
+<pre><code class="language-python">n = "42"        # a string!
 n = int(n)      # now an int: 42
 print(n + 1)    # 43
 
-pi = &quot;3.14&quot;
+pi = "3.14"
 pi = float(pi)  # 3.14 as float
 
 x = 42
-s = str(x)      # &quot;42&quot; as string
+s = str(x)      # "42" as string
 
 # Common gotcha:
-count = input(&quot;How many? &quot;)   # input() ALWAYS returns a string!
+count = input("How many? ")   # input() ALWAYS returns a string!
 count = int(count)            # convert before doing maths
 </code></pre>
-<p><code>input()</code> gives you back a string, always. If you try <code>input(&quot;Number: &quot;) + 1</code>, Python complains it can&#39;t add a string to an int. Convert first with <code>int(...)</code> or <code>float(...)</code>.</p>
+<p><code>input()</code> gives you back a string, always. If you try <code>input("Number: ") + 1</code>, Python complains it can't add a string to an int. Convert first with <code>int(...)</code> or <code>float(...)</code>.</p>
 <h2>Variable naming conventions</h2>
 <p>Naming matters more than beginners realise — future-you (and code reviewers) read your code far more often than you write it.</p>
 <pre><code class="language-python"># Good
-target_url = &quot;https://example.com&quot;
-password_hash = &quot;5f4dcc3b...&quot;
+target_url = "https://example.com"
+password_hash = "5f4dcc3b..."
 open_ports = [22, 80, 443]
 
 # Bad
-u = &quot;https://example.com&quot;
-p = &quot;5f4dcc3b...&quot;
+u = "https://example.com"
+p = "5f4dcc3b..."
 op = [22, 80, 443]
 
 # Terrible
-x1 = &quot;https://example.com&quot;
-data = &quot;5f4dcc3b...&quot;
+x1 = "https://example.com"
+data = "5f4dcc3b..."
 list1 = [22, 80, 443]
 </code></pre>
 <p>Python style (PEP 8) uses <strong><code>snake_case</code></strong> for variables and functions. Constants use <strong><code>ALL_CAPS</code></strong>.</p>
@@ -233,52 +264,52 @@ print(ports)          # [80, 443, 3306, 8080]
 
 # Loop through:
 for port in ports:
-    print(f&quot;Checking port {port}...&quot;)
+    print(f"Checking port {port}...")
 </code></pre>
 <h2>Dictionaries — key/value pairs</h2>
 <pre><code class="language-python">user = {
-    &quot;username&quot;: &quot;admin&quot;,
-    &quot;id&quot;: 1,
-    &quot;is_admin&quot;: True
+    "username": "admin",
+    "id": 1,
+    "is_admin": True
 }
 
-print(user[&quot;username&quot;])           # admin
-print(user.get(&quot;email&quot;, &quot;n/a&quot;))   # n/a (with default)
+print(user["username"])           # admin
+print(user.get("email", "n/a"))   # n/a (with default)
 
-user[&quot;email&quot;] = &quot;admin@example.com&quot;    # add a new key
-user[&quot;is_admin&quot;] = False               # update a key
+user["email"] = "admin@example.com"    # add a new key
+user["is_admin"] = False               # update a key
 
 for key, value in user.items():
-    print(f&quot;{key}: {value}&quot;)
+    print(f"{key}: {value}")
 </code></pre>
-<p>Dicts are how you&#39;ll represent things like an HTTP response, an API user, or a scan result.</p>
-<h2>None — the &quot;nothing&quot; value</h2>
-<pre><code class="language-python">result = None       # placeholder for &quot;not yet set&quot;
+<p>Dicts are how you'll represent things like an HTTP response, an API user, or a scan result.</p>
+<h2>None — the "nothing" value</h2>
+<pre><code class="language-python">result = None       # placeholder for "not yet set"
 if result is None:
-    print(&quot;no result yet&quot;)
+    print("no result yet")
 </code></pre>
 <h2>🧪 Lab — Play with types in the REPL</h2>
 <p>Python has an interactive mode called the <strong>REPL</strong> (Read-Eval-Print Loop). In a terminal, just type <code>python3</code> and press Enter. You get a prompt <code>&gt;&gt;&gt;</code> where every line runs immediately.</p>
-<pre><code class="language-python">&gt;&gt;&gt; name = &quot;world&quot;
-&gt;&gt;&gt; greeting = f&quot;Hello, {name}!&quot;
+<pre><code class="language-python">&gt;&gt;&gt; name = "world"
+&gt;&gt;&gt; greeting = f"Hello, {name}!"
 &gt;&gt;&gt; greeting
-&#39;Hello, world!&#39;
+'Hello, world!'
 &gt;&gt;&gt; greeting.upper()
-&#39;HELLO, WORLD!&#39;
+'HELLO, WORLD!'
 &gt;&gt;&gt; len(greeting)
 13
 &gt;&gt;&gt; exit()
 </code></pre>
-<p>Type <code>exit()</code> or press Ctrl+D to leave. The REPL is where you&#39;ll experiment throughout learning Python — always open a second terminal with <code>python3</code> running.</p>
-<p><code>age = input(&quot;How old? &quot;)</code>; then you write <code>age + 1</code>. Python errors. What&#39;s the fix?</p>
+<p>Type <code>exit()</code> or press Ctrl+D to leave. The REPL is where you'll experiment throughout learning Python — always open a second terminal with <code>python3</code> running.</p>
+<p><code>age = input("How old? ")</code>; then you write <code>age + 1</code>. Python errors. What's the fix?</p>
 <details><summary>Show answer</summary><code>input()</code> always returns a string. Convert with <code>age = int(input("How old? "))</code> before doing arithmetic.</details><h2>Key terms</h2>
 <ul>
 <li><strong>Variable</strong> — a labelled box for a value.</li>
 <li><strong>Type</strong> — the kind of value (<code>str</code>, <code>int</code>, <code>bool</code>, <code>list</code>, <code>dict</code>, ...).</li>
 <li><strong>String / int / float / bool / list / dict / None</strong> — the main built-in types.</li>
-<li><strong>f-string</strong> — modern string formatting with <code>f&quot;...&quot;</code>.</li>
-<li><strong>REPL</strong> — Python&#39;s interactive mode (<code>python3</code>).</li>
-<li><strong>PEP 8</strong> — Python&#39;s style guide; use <code>snake_case</code>.</li>
+<li><strong>f-string</strong> — modern string formatting with <code>f"..."</code>.</li>
+<li><strong>REPL</strong> — Python's interactive mode (<code>python3</code>).</li>
+<li><strong>PEP 8</strong> — Python's style guide; use <code>snake_case</code>.</li>
 </ul>
 <h2>Recap</h2>
 <ul>
@@ -286,7 +317,7 @@ if result is None:
 <li>The main types are string, int, float, bool, list, dict, None.</li>
 <li>Convert types explicitly: <code>int()</code>, <code>str()</code>, <code>float()</code>.</li>
 <li>Use f-strings for readable formatting.</li>
-<li>Play in the REPL — it&#39;s the fastest way to learn.</li>
+<li>Play in the REPL — it's the fastest way to learn.</li>
 </ul>
 <h3>References</h3>
 <ul>
@@ -296,19 +327,67 @@ if result is None:
 <li><a href="https://www.learnpython.org/">Learn Python interactively — LearnPython.org</a> — free browser-based exercises.</li>
 </ul>
 <p><strong>Next up →</strong> <a href="#/lesson/04-python/dictionaries-and-sets">Dictionaries &amp; sets</a></p>
-<nav class="pager"><a href="/lesson/04-python/what-is-programming.html">← What is programming?</a><a href="/lesson/04-python/dictionaries-and-sets.html">Dictionaries &amp; sets →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/04-python/what-is-programming.html">← What is programming?</a><a href="/lesson/04-python/dictionaries-and-sets.html">Dictionaries &amp; sets →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/04-python/variables-types";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

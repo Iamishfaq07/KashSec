@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>Free interactive security labs · KashSec Academy</title>
 <meta name="description" content="Practise SQL injection, XSS, IDOR, JWT forgery, SSRF, XXE, path traversal, log analysis and more — safe, simulated, and entirely in your browser.">
 <link rel="canonical" href="https://kashsec.vercel.app/labs/">
@@ -21,54 +22,132 @@
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Free interactive security labs","item":"https://kashsec.vercel.app/labs/"}]}
 </script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"ItemList","name":"Free interactive security labs","numberOfItems":42,"itemListElement":[{"@type":"ListItem","position":1,"name":"Terminal Simulator","url":"https://kashsec.vercel.app/labs/terminal.html"},{"@type":"ListItem","position":2,"name":"Vulnerable Web App","url":"https://kashsec.vercel.app/labs/webapp.html"},{"@type":"ListItem","position":3,"name":"SQL Injection Sandbox","url":"https://kashsec.vercel.app/labs/sqli.html"},{"@type":"ListItem","position":4,"name":"Phishing Spotter","url":"https://kashsec.vercel.app/labs/phishing.html"},{"@type":"ListItem","position":5,"name":"Packet Capture Viewer","url":"https://kashsec.vercel.app/labs/pcap.html"},{"@type":"ListItem","position":6,"name":"IDOR Playground","url":"https://kashsec.vercel.app/labs/idor.html"},{"@type":"ListItem","position":7,"name":"JWT Forgery Lab","url":"https://kashsec.vercel.app/labs/jwt.html"},{"@type":"ListItem","position":8,"name":"Path Traversal Playground","url":"https://kashsec.vercel.app/labs/traversal.html"},{"@type":"ListItem","position":9,"name":"SSRF Playground","url":"https://kashsec.vercel.app/labs/ssrf.html"},{"@type":"ListItem","position":10,"name":"XXE Playground","url":"https://kashsec.vercel.app/labs/xxe.html"},{"@type":"ListItem","position":11,"name":"Log Analysis / IR Lab","url":"https://kashsec.vercel.app/labs/loganalysis.html"},{"@type":"ListItem","position":12,"name":"OSINT Sandbox","url":"https://kashsec.vercel.app/labs/osint.html"},{"@type":"ListItem","position":13,"name":"BOLA/BFLA Playground","url":"https://kashsec.vercel.app/labs/bola-bfla.html"},{"@type":"ListItem","position":14,"name":"GraphQL Introspection Abuse","url":"https://kashsec.vercel.app/labs/graphql-introspection.html"},{"@type":"ListItem","position":15,"name":"Mass Assignment Toy","url":"https://kashsec.vercel.app/labs/mass-assignment.html"},{"@type":"ListItem","position":16,"name":"Rate-Limit Bypass Simulator","url":"https://kashsec.vercel.app/labs/rate-limit-bypass.html"},{"@type":"ListItem","position":17,"name":"Prompt Injection Simulator","url":"https://kashsec.vercel.app/labs/prompt-injection.html"},{"@type":"ListItem","position":18,"name":"Jailbreak Playground","url":"https://kashsec.vercel.app/labs/jailbreak.html"},{"@type":"ListItem","position":19,"name":"Indirect Prompt Injection Challenge","url":"https://kashsec.vercel.app/labs/indirect-injection.html"},{"@type":"ListItem","position":20,"name":"Agentic Risk Scenario","url":"https://kashsec.vercel.app/labs/agentic-risk.html"},{"@type":"ListItem","position":21,"name":"Active Directory Attack Lab","url":"https://kashsec.vercel.app/labs/ad-attack.html"},{"@type":"ListItem","position":22,"name":"CSRF Playground","url":"https://kashsec.vercel.app/labs/csrf.html"},{"@type":"ListItem","position":23,"name":"Command Injection Sandbox","url":"https://kashsec.vercel.app/labs/cmdinjection.html"},{"@type":"ListItem","position":24,"name":"Open Redirect Playground","url":"https://kashsec.vercel.app/labs/openredirect.html"},{"@type":"ListItem","position":25,"name":"Clickjacking Simulator","url":"https://kashsec.vercel.app/labs/clickjacking.html"},{"@type":"ListItem","position":26,"name":"Insecure Deserialization Toy","url":"https://kashsec.vercel.app/labs/deserialization.html"},{"@type":"ListItem","position":27,"name":"Subdomain Takeover Simulator","url":"https://kashsec.vercel.app/labs/subdomaintakeover.html"},{"@type":"ListItem","position":28,"name":"DNS Recon Playground","url":"https://kashsec.vercel.app/labs/dnsrecon.html"},{"@type":"ListItem","position":29,"name":"Windows Privesc Playground","url":"https://kashsec.vercel.app/labs/winprivesc.html"},{"@type":"ListItem","position":30,"name":"Linux Privesc Playground","url":"https://kashsec.vercel.app/labs/linuxprivesc.html"},{"@type":"ListItem","position":31,"name":"Kerberoasting Simulator","url":"https://kashsec.vercel.app/labs/kerberoast.html"},{"@type":"ListItem","position":32,"name":"Cloud IAM Misconfig Playground","url":"https://kashsec.vercel.app/labs/iammisconfig.html"},{"@type":"ListItem","position":33,"name":"Docker Escape Playground","url":"https://kashsec.vercel.app/labs/dockerescape.html"},{"@type":"ListItem","position":34,"name":"Malware Strings Triage Lab","url":"https://kashsec.vercel.app/labs/malwarestrings.html"},{"@type":"ListItem","position":35,"name":"YARA Rule Builder Challenge","url":"https://kashsec.vercel.app/labs/yarabuilder.html"},{"@type":"ListItem","position":36,"name":"Race Condition Lab","url":"https://kashsec.vercel.app/labs/racecondition.html"},{"@type":"ListItem","position":37,"name":"Webhook Signature Forgery Lab","url":"https://kashsec.vercel.app/labs/webhookforge.html"},{"@type":"ListItem","position":38,"name":"OAuth Redirect URI Hijack Lab","url":"https://kashsec.vercel.app/labs/oauthredirect.html"},{"@type":"ListItem","position":39,"name":"Vendor Risk Tiering Simulator","url":"https://kashsec.vercel.app/labs/vendortiering.html"},{"@type":"ListItem","position":40,"name":"Incident Response Tabletop","url":"https://kashsec.vercel.app/labs/irtabletop.html"},{"@type":"ListItem","position":41,"name":"Password Cracking Lab","url":"https://kashsec.vercel.app/labs/passwordcrack.html"},{"@type":"ListItem","position":42,"name":"Leaked Secret Hunt","url":"https://kashsec.vercel.app/labs/clouddockersecrets.html"}]}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/labs">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · Free interactive security labs</div>
-  <article><h1>Free interactive security labs</h1><p>Practise SQL injection, XSS, IDOR, JWT forgery, SSRF, XXE, path traversal, log analysis and more — safe, simulated, and entirely in your browser.</p><ul><li><a href="/labs/terminal.html">Terminal Simulator</a> — A safe, in-browser Linux terminal with a fake filesystem. Practice ls, cd, cat, grep, find, whoami and more without spinning up a VM.</li><li><a href="/labs/webapp.html">Vulnerable Web App</a> — A tiny deliberately-broken app for practicing XSS and login-bypass. Runs entirely in-browser; no server to attack, nothing to install.</li><li><a href="/labs/sqli.html">SQL Injection Sandbox</a> — A fake login backed by a simulated database. Watch your input become SQL, then bypass the login with a classic injection.</li><li><a href="/labs/phishing.html">Phishing Spotter</a> — Real email or phish? Call each one, then see the exact red flags you spotted (or missed). Trains the instinct that stops most attacks.</li><li><a href="/labs/pcap.html">Packet Capture Viewer</a> — Load a sample capture and explore protocols, IPs, and payloads — the same &quot;read the traffic&quot; muscle Wireshark builds.</li><li><a href="/labs/idor.html">IDOR Playground</a> — A fake &quot;my invoices&quot; page. Change one number in the URL and see whose data you were never supposed to see.</li><li><a href="/labs/jwt.html">JWT Forgery Lab</a> — Tamper with a JSON Web Token — strip the signature, flip a claim, and watch a vulnerable &quot;verify&quot; endpoint accept it anyway.</li><li><a href="/labs/traversal.html">Path Traversal Playground</a> — A fake &quot;view file&quot; feature that trusts the filename you give it. Climb out of the intended folder with ../ and read files you shouldn't.</li><li><a href="/labs/ssrf.html">SSRF Playground</a> — A &quot;fetch this URL for me&quot; feature with no allowlist. Point it at internal-looking addresses and see what it leaks.</li><li><a href="/labs/xxe.html">XXE Playground</a> — An XML upload feature that expands external entities. Smuggle a local file read through a &quot;harmless&quot; XML document.</li><li><a href="/labs/loganalysis.html">Log Analysis / IR Lab</a> — A messy auth.log dump from a compromised box. Reconstruct the timeline and find the breach — blue-team skills, not exploitation.</li><li><a href="/labs/osint.html">OSINT Sandbox</a> — A safe, fake company profile — practise open-source recon technique without touching anything real.</li><li><a href="/labs/bola-bfla.html">BOLA/BFLA Playground</a> — A fake employee-directory API. Read a record that isn't yours, then call an admin-only action with no admin role at all.</li><li><a href="/labs/graphql-introspection.html">GraphQL Introspection Abuse</a> — A single /graphql endpoint. Use introspection to map the full schema, then query a field the UI never shows you.</li><li><a href="/labs/mass-assignment.html">Mass Assignment Toy</a> — A &quot;update my profile&quot; endpoint that binds whatever JSON you send straight to your account. Find the field that shouldn't be writable.</li><li><a href="/labs/rate-limit-bypass.html">Rate-Limit Bypass Simulator</a> — A login endpoint that blocks you after 3 bad guesses — but trusts a header you control to decide who &quot;you&quot; are.</li><li><a href="/labs/prompt-injection.html">Prompt Injection Simulator</a> — Chat with a support bot that's told to never reveal its system prompt. Get it to reveal it anyway.</li><li><a href="/labs/jailbreak.html">Jailbreak Playground</a> — An assistant refuses to share a secret code directly. Find a roleplay or hypothetical framing that gets it to comply anyway.</li><li><a href="/labs/indirect-injection.html">Indirect Prompt Injection Challenge</a> — You control a job posting an AI assistant is about to summarize for someone else. Plant an instruction it'll follow instead.</li><li><a href="/labs/agentic-risk.html">Agentic Risk Scenario</a> — An AI agent with email tool-access is about to process an inbox. Spot and quarantine the malicious email before it acts on it.</li><li><a href="/labs/ad-attack.html">Active Directory Attack Lab</a> — A guided walkthrough of BloodHound-style graph recon, Kerberoasting a weak service account, and forging a Golden Ticket.</li><li><a href="/labs/csrf.html">CSRF Playground</a> — A &quot;bank&quot; transfer endpoint trusts your cookie alone. Watch a malicious page forge a request on your behalf, then see a CSRF token stop it cold.</li><li><a href="/labs/cmdinjection.html">Command Injection Sandbox</a> — A &quot;ping this host&quot; tool glues your input into a real shell command. Chain a second command onto the intended one.</li><li><a href="/labs/openredirect.html">Open Redirect Playground</a> — A login page trusts a returnUrl parameter completely. Turn a genuinely trusted link into a post-login phishing weapon.</li><li><a href="/labs/clickjacking.html">Clickjacking Simulator</a> — An invisible iframe sits on top of a fake game button. See exactly how a real click lands on a hidden &quot;delete account&quot; button instead.</li><li><a href="/labs/deserialization.html">Insecure Deserialization Toy</a> — A &quot;remember me&quot; cookie is a trusted, deserialized object. Add one field to grant yourself admin with zero login.</li><li><a href="/labs/subdomaintakeover.html">Subdomain Takeover Simulator</a> — Five DNS records, one dangling CNAME pointing at a deleted third-party resource. Find it before someone else claims it.</li><li><a href="/labs/dnsrecon.html">DNS Recon Playground</a> — A simulated dig. Query a target's likely subdomains and build a map of its real, sometimes-forgotten attack surface.</li><li><a href="/labs/winprivesc.html">Windows Privesc Playground</a> — A misconfigured service runs as SYSTEM with a writable binary path. Replace it and escalate — no exploit needed.</li><li><a href="/labs/linuxprivesc.html">Linux Privesc Playground</a> — Enumerate SUID binaries on a simulated box and find the one GTFOBins turns straight into a root shell.</li><li><a href="/labs/kerberoast.html">Kerberoasting Simulator</a> — Request a service ticket for a weak-password service account, then crack the offline-crackable hash it hands you.</li><li><a href="/labs/iammisconfig.html">Cloud IAM Misconfig Playground</a> — A role holds one deceptively small permission. Chain it into full account takeover through iam:PassRole.</li><li><a href="/labs/dockerescape.html">Docker Escape Playground</a> — A container mounts the host's Docker socket. Use it to spin up a privileged container and step onto the host itself.</li><li><a href="/labs/malwarestrings.html">Malware Strings Triage Lab</a> — A raw strings dump from a suspicious binary. Spot the IOCs — a C2 domain, a mutex, a registry key — before touching a disassembler.</li><li><a href="/labs/yarabuilder.html">YARA Rule Builder Challenge</a> — Three malware samples, one clean file. Write a YARA rule that matches every sample and nothing else.</li><li><a href="/labs/racecondition.html">Race Condition Lab</a> — A one-time coupon, redeemed with a check-then-act flaw. Fire requests fast enough and redeem it far more than once.</li><li><a href="/labs/webhookforge.html">Webhook Signature Forgery Lab</a> — Forge an HMAC-signed webhook without the secret, then flip on signature verification and watch it get rejected.</li><li><a href="/labs/oauthredirect.html">OAuth Redirect URI Hijack Lab</a> — An authorization server validates redirect_uri loosely. Steal an authorization code by redirecting it to your own endpoint.</li><li><a href="/labs/vendortiering.html">Vendor Risk Tiering Simulator</a> — Six vendors, six very different data-access levels. Tier them correctly and decide who needs a full security review.</li><li><a href="/labs/irtabletop.html">Incident Response Tabletop</a> — A branching ransomware scenario. Make the containment and communication calls a real incident commander has to make under pressure.</li><li><a href="/labs/passwordcrack.html">Password Cracking Lab</a> — Four hashed passwords, one wordlist. See exactly which ones fall to a dictionary attack and which survive it — and why.</li><li><a href="/labs/clouddockersecrets.html">Leaked Secret Hunt</a> — A public GitHub repo dump. Find the hardcoded API key an automated scanner would catch in minutes — before an attacker does.</li></ul></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<a class="skip" href="/labs/#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · Free interactive security labs</nav>
+    <div class="md" id="content"><article><h1>Free interactive security labs</h1><p>Practise SQL injection, XSS, IDOR, JWT forgery, SSRF, XXE, path traversal, log analysis and more — safe, simulated, and entirely in your browser.</p><ul><li><a href="/labs/terminal.html">Terminal Simulator</a> — A safe, in-browser Linux terminal with a fake filesystem. Practice ls, cd, cat, grep, find, whoami and more without spinning up a VM.</li><li><a href="/labs/webapp.html">Vulnerable Web App</a> — A tiny deliberately-broken app for practicing XSS and login-bypass. Runs entirely in-browser; no server to attack, nothing to install.</li><li><a href="/labs/sqli.html">SQL Injection Sandbox</a> — A fake login backed by a simulated database. Watch your input become SQL, then bypass the login with a classic injection.</li><li><a href="/labs/phishing.html">Phishing Spotter</a> — Real email or phish? Call each one, then see the exact red flags you spotted (or missed). Trains the instinct that stops most attacks.</li><li><a href="/labs/pcap.html">Packet Capture Viewer</a> — Load a sample capture and explore protocols, IPs, and payloads — the same "read the traffic" muscle Wireshark builds.</li><li><a href="/labs/idor.html">IDOR Playground</a> — A fake "my invoices" page. Change one number in the URL and see whose data you were never supposed to see.</li><li><a href="/labs/jwt.html">JWT Forgery Lab</a> — Tamper with a JSON Web Token — strip the signature, flip a claim, and watch a vulnerable "verify" endpoint accept it anyway.</li><li><a href="/labs/traversal.html">Path Traversal Playground</a> — A fake "view file" feature that trusts the filename you give it. Climb out of the intended folder with ../ and read files you shouldn't.</li><li><a href="/labs/ssrf.html">SSRF Playground</a> — A "fetch this URL for me" feature with no allowlist. Point it at internal-looking addresses and see what it leaks.</li><li><a href="/labs/xxe.html">XXE Playground</a> — An XML upload feature that expands external entities. Smuggle a local file read through a "harmless" XML document.</li><li><a href="/labs/loganalysis.html">Log Analysis / IR Lab</a> — A messy auth.log dump from a compromised box. Reconstruct the timeline and find the breach — blue-team skills, not exploitation.</li><li><a href="/labs/osint.html">OSINT Sandbox</a> — A safe, fake company profile — practise open-source recon technique without touching anything real.</li><li><a href="/labs/bola-bfla.html">BOLA/BFLA Playground</a> — A fake employee-directory API. Read a record that isn't yours, then call an admin-only action with no admin role at all.</li><li><a href="/labs/graphql-introspection.html">GraphQL Introspection Abuse</a> — A single /graphql endpoint. Use introspection to map the full schema, then query a field the UI never shows you.</li><li><a href="/labs/mass-assignment.html">Mass Assignment Toy</a> — A "update my profile" endpoint that binds whatever JSON you send straight to your account. Find the field that shouldn't be writable.</li><li><a href="/labs/rate-limit-bypass.html">Rate-Limit Bypass Simulator</a> — A login endpoint that blocks you after 3 bad guesses — but trusts a header you control to decide who "you" are.</li><li><a href="/labs/prompt-injection.html">Prompt Injection Simulator</a> — Chat with a support bot that's told to never reveal its system prompt. Get it to reveal it anyway.</li><li><a href="/labs/jailbreak.html">Jailbreak Playground</a> — An assistant refuses to share a secret code directly. Find a roleplay or hypothetical framing that gets it to comply anyway.</li><li><a href="/labs/indirect-injection.html">Indirect Prompt Injection Challenge</a> — You control a job posting an AI assistant is about to summarize for someone else. Plant an instruction it'll follow instead.</li><li><a href="/labs/agentic-risk.html">Agentic Risk Scenario</a> — An AI agent with email tool-access is about to process an inbox. Spot and quarantine the malicious email before it acts on it.</li><li><a href="/labs/ad-attack.html">Active Directory Attack Lab</a> — A guided walkthrough of BloodHound-style graph recon, Kerberoasting a weak service account, and forging a Golden Ticket.</li><li><a href="/labs/csrf.html">CSRF Playground</a> — A "bank" transfer endpoint trusts your cookie alone. Watch a malicious page forge a request on your behalf, then see a CSRF token stop it cold.</li><li><a href="/labs/cmdinjection.html">Command Injection Sandbox</a> — A "ping this host" tool glues your input into a real shell command. Chain a second command onto the intended one.</li><li><a href="/labs/openredirect.html">Open Redirect Playground</a> — A login page trusts a returnUrl parameter completely. Turn a genuinely trusted link into a post-login phishing weapon.</li><li><a href="/labs/clickjacking.html">Clickjacking Simulator</a> — An invisible iframe sits on top of a fake game button. See exactly how a real click lands on a hidden "delete account" button instead.</li><li><a href="/labs/deserialization.html">Insecure Deserialization Toy</a> — A "remember me" cookie is a trusted, deserialized object. Add one field to grant yourself admin with zero login.</li><li><a href="/labs/subdomaintakeover.html">Subdomain Takeover Simulator</a> — Five DNS records, one dangling CNAME pointing at a deleted third-party resource. Find it before someone else claims it.</li><li><a href="/labs/dnsrecon.html">DNS Recon Playground</a> — A simulated dig. Query a target's likely subdomains and build a map of its real, sometimes-forgotten attack surface.</li><li><a href="/labs/winprivesc.html">Windows Privesc Playground</a> — A misconfigured service runs as SYSTEM with a writable binary path. Replace it and escalate — no exploit needed.</li><li><a href="/labs/linuxprivesc.html">Linux Privesc Playground</a> — Enumerate SUID binaries on a simulated box and find the one GTFOBins turns straight into a root shell.</li><li><a href="/labs/kerberoast.html">Kerberoasting Simulator</a> — Request a service ticket for a weak-password service account, then crack the offline-crackable hash it hands you.</li><li><a href="/labs/iammisconfig.html">Cloud IAM Misconfig Playground</a> — A role holds one deceptively small permission. Chain it into full account takeover through iam:PassRole.</li><li><a href="/labs/dockerescape.html">Docker Escape Playground</a> — A container mounts the host's Docker socket. Use it to spin up a privileged container and step onto the host itself.</li><li><a href="/labs/malwarestrings.html">Malware Strings Triage Lab</a> — A raw strings dump from a suspicious binary. Spot the IOCs — a C2 domain, a mutex, a registry key — before touching a disassembler.</li><li><a href="/labs/yarabuilder.html">YARA Rule Builder Challenge</a> — Three malware samples, one clean file. Write a YARA rule that matches every sample and nothing else.</li><li><a href="/labs/racecondition.html">Race Condition Lab</a> — A one-time coupon, redeemed with a check-then-act flaw. Fire requests fast enough and redeem it far more than once.</li><li><a href="/labs/webhookforge.html">Webhook Signature Forgery Lab</a> — Forge an HMAC-signed webhook without the secret, then flip on signature verification and watch it get rejected.</li><li><a href="/labs/oauthredirect.html">OAuth Redirect URI Hijack Lab</a> — An authorization server validates redirect_uri loosely. Steal an authorization code by redirecting it to your own endpoint.</li><li><a href="/labs/vendortiering.html">Vendor Risk Tiering Simulator</a> — Six vendors, six very different data-access levels. Tier them correctly and decide who needs a full security review.</li><li><a href="/labs/irtabletop.html">Incident Response Tabletop</a> — A branching ransomware scenario. Make the containment and communication calls a real incident commander has to make under pressure.</li><li><a href="/labs/passwordcrack.html">Password Cracking Lab</a> — Four hashed passwords, one wordlist. See exactly which ones fall to a dictionary attack and which survive it — and why.</li><li><a href="/labs/clouddockersecrets.html">Leaked Secret Hunt</a> — A public GitHub repo dump. Find the hardcoded API key an automated scanner would catch in minutes — before an attacker does.</li></ul></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/labs";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

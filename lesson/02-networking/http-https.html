@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>HTTP &amp; HTTPS — Path 02 · KashSec Academy</title>
 <meta name="description" content="This is the protocol you'll spend the most time with, because most modern hacking is web hacking. Every time you open a website, your browser and the site's server have a conversation using a protocol">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/02-networking/http-https.html">
@@ -21,45 +22,75 @@
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 02 — Networking Fundamentals","item":"https://kashsec.vercel.app/lesson/02-networking/"},{"@type":"ListItem","position":4,"name":"HTTP & HTTPS","item":"https://kashsec.vercel.app/lesson/02-networking/http-https.html"}]}
 </script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"LearningResource","name":"HTTP & HTTPS","headline":"HTTP & HTTPS","description":"This is the protocol you'll spend the most time with, because most modern hacking is web hacking. Every time you open a website, your browser and the site's server have a conversation using a protocol","url":"https://kashsec.vercel.app/lesson/02-networking/http-https.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"The web's language, and why the padlock matters.","isPartOf":{"@type":"Course","name":"Path 02: Networking Fundamentals","url":"https://kashsec.vercel.app/lesson/02-networking/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/02-networking/http-https.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/02-networking/http-https">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/02-networking/">Path 02 — Networking Fundamentals</a> · HTTP &amp; HTTPS</div>
-  <article><h1>HTTP &amp; HTTPS</h1>
-<p>This is the protocol you&#39;ll spend the most time with, because most modern hacking is <em>web</em> hacking. Every time you open a website, your browser and the site&#39;s <strong>server</strong> have a conversation using a protocol called <strong>HTTP</strong> — the HyperText Transfer Protocol. It&#39;s the language of the web.</p>
+<a class="skip" href="/lesson/02-networking/http-https.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/02-networking/">Path 02 — Networking Fundamentals</a> · HTTP &amp; HTTPS</nav>
+    <div class="md" id="content"><article><h1>HTTP &amp; HTTPS</h1>
+<p>This is the protocol you'll spend the most time with, because most modern hacking is <em>web</em> hacking. Every time you open a website, your browser and the site's <strong>server</strong> have a conversation using a protocol called <strong>HTTP</strong> — the HyperText Transfer Protocol. It's the language of the web.</p>
 <h2>Request and response</h2>
-<p>HTTP is a simple back-and-forth. Your browser sends a <strong>request</strong> (&quot;please give me this page&quot;), and the server sends back a <strong>response</strong> (the page).</p>
+<p>HTTP is a simple back-and-forth. Your browser sends a <strong>request</strong> ("please give me this page"), and the server sends back a <strong>response</strong> (the page).</p>
 <p><strong>Request</strong> and <strong>response.</strong> Almost all web hacking is crafting clever requests and studying the responses. Burn these two words into memory.</p>
 <h2>Anatomy of a request</h2>
 <pre><code class="language-http">GET /products?id=42 HTTP/1.1
@@ -83,34 +114,34 @@ Cookie: session=abc123
 </thead>
 <tbody><tr>
 <td><strong>GET</strong></td>
-<td>&quot;Give me something&quot; — load a page</td>
+<td>"Give me something" — load a page</td>
 </tr>
 <tr>
 <td><strong>POST</strong></td>
-<td>&quot;Here&#39;s some data for you&quot; — submit a form, log in</td>
+<td>"Here's some data for you" — submit a form, log in</td>
 </tr>
 <tr>
 <td><strong>PUT</strong></td>
-<td>&quot;Replace this resource&quot;</td>
+<td>"Replace this resource"</td>
 </tr>
 <tr>
 <td><strong>PATCH</strong></td>
-<td>&quot;Update part of this resource&quot;</td>
+<td>"Update part of this resource"</td>
 </tr>
 <tr>
 <td><strong>DELETE</strong></td>
-<td>&quot;Delete this resource&quot;</td>
+<td>"Delete this resource"</td>
 </tr>
 <tr>
 <td><strong>OPTIONS</strong></td>
-<td>&quot;What can I do here?&quot; — used by browsers for CORS</td>
+<td>"What can I do here?" — used by browsers for CORS</td>
 </tr>
 <tr>
 <td><strong>HEAD</strong></td>
 <td>Like GET but response has no body</td>
 </tr>
 </tbody></table>
-<p>GET and POST cover most of what you&#39;ll meet early on.</p>
+<p>GET and POST cover most of what you'll meet early on.</p>
 <h2>Anatomy of a response</h2>
 <pre><code class="language-http">HTTP/1.1 200 OK
 Content-Type: text/html
@@ -123,7 +154,7 @@ Set-Cookie: session=xyz789; HttpOnly; Secure
 </code></pre>
 <p>The first line has a <strong>status code</strong> telling you how it went.</p>
 <h3>Status code families — learn these!</h3>
-<p>You&#39;ll watch these constantly during testing:</p>
+<p>You'll watch these constantly during testing:</p>
 <table>
 <thead>
 <tr>
@@ -158,7 +189,7 @@ Set-Cookie: session=xyz789; HttpOnly; Secure
 <td><strong>500 Internal Server Error</strong>, 502 Bad Gateway, 503 Service Unavailable</td>
 </tr>
 </tbody></table>
-<p>When you see a 500 during testing, it often means the server crashed on your input — a big hint that a bug might live there. 403 says &quot;you&#39;re not allowed&quot; (interesting: it means something IS there). 404 usually means &quot;not there at all.&quot;</p>
+<p>When you see a 500 during testing, it often means the server crashed on your input — a big hint that a bug might live there. 403 says "you're not allowed" (interesting: it means something IS there). 404 usually means "not there at all."</p>
 <h2>HTTP versions</h2>
 <ul>
 <li><strong>HTTP/1.1</strong> — the classic, still very common.</li>
@@ -166,9 +197,9 @@ Set-Cookie: session=xyz789; HttpOnly; Secure
 <li><strong>HTTP/3</strong> — over QUIC (UDP under the hood!), even newer, growing fast.</li>
 </ul>
 <p>Modern browsers pick the best version automatically. Same <em>semantics</em> (methods, headers, status codes) across all three.</p>
-<h2>The &#39;S&#39; is for Secure</h2>
+<h2>The 'S' is for Secure</h2>
 <p>Plain HTTP sends everything in <strong>plain text</strong>. Remember packets travel shared roads where others might read them? With plain HTTP, anyone in the middle — on the same Wi-Fi or along the route — could read everything, including your password as you type it.</p>
-<p><strong>HTTPS</strong> fixes this. The &#39;S&#39; stands for <strong>Secure</strong>: the whole conversation is <strong>encrypted</strong> using <strong>TLS</strong> — scrambled into gibberish only your browser and the real server can unscramble.</p>
+<p><strong>HTTPS</strong> fixes this. The 'S' stands for <strong>Secure</strong>: the whole conversation is <strong>encrypted</strong> using <strong>TLS</strong> — scrambled into gibberish only your browser and the real server can unscramble.</p>
 <p><em>[HTTP vs HTTPS on the wire]</em></p>
 <ul>
 <li><strong>HTTP</strong> — plain text; anyone in the middle can read it. Never for anything private.</li>
@@ -176,11 +207,11 @@ Set-Cookie: session=xyz789; HttpOnly; Secure
 </ul>
 <h2>The TLS handshake (in one paragraph)</h2>
 <p>When you connect over HTTPS, the browser and server perform a <strong>TLS handshake</strong> first: the server presents a <strong>certificate</strong> proving its identity (signed by a trusted Certificate Authority), they agree on a session key, and then all future traffic is encrypted with that key. If the certificate is missing, expired, or from an untrusted CA — the browser shows a scary red warning.</p>
-<p>On a real site, a certificate warning often means someone is trying to intercept your connection (a <strong>man-in-the-middle</strong> attack). Don&#39;t click &quot;proceed anyway&quot; on sites where you&#39;ll enter passwords or personal data.</p>
-<h2>Idempotency and &quot;safe&quot; methods — a distinction that matters for testing</h2>
-<p>Two properties worth understanding about HTTP methods, since they directly affect how you test safely: a method is <strong>safe</strong> if it&#39;s not supposed to change anything on the server (GET, HEAD — just retrieving data), and a method is <strong>idempotent</strong> if calling it multiple times has the same effect as calling it once (GET, PUT, DELETE all qualify — deleting the same resource twice leaves it deleted either way; POST notably does <em>not</em> qualify, since submitting the same form twice might create two separate orders). This matters directly in testing: automated scanners and tools like Burp&#39;s Intruder (Path 11) are generally safe to run against GET requests repeatedly, but running the same destructive POST request many times during testing can have real, compounding side effects on the target application — worth being deliberate about, especially during authorized testing where causing unintended damage reflects poorly regardless of your actual intentions.</p>
+<p>On a real site, a certificate warning often means someone is trying to intercept your connection (a <strong>man-in-the-middle</strong> attack). Don't click "proceed anyway" on sites where you'll enter passwords or personal data.</p>
+<h2>Idempotency and "safe" methods — a distinction that matters for testing</h2>
+<p>Two properties worth understanding about HTTP methods, since they directly affect how you test safely: a method is <strong>safe</strong> if it's not supposed to change anything on the server (GET, HEAD — just retrieving data), and a method is <strong>idempotent</strong> if calling it multiple times has the same effect as calling it once (GET, PUT, DELETE all qualify — deleting the same resource twice leaves it deleted either way; POST notably does <em>not</em> qualify, since submitting the same form twice might create two separate orders). This matters directly in testing: automated scanners and tools like Burp's Intruder (Path 11) are generally safe to run against GET requests repeatedly, but running the same destructive POST request many times during testing can have real, compounding side effects on the target application — worth being deliberate about, especially during authorized testing where causing unintended damage reflects poorly regardless of your actual intentions.</p>
 <h2>HTTP headers worth knowing</h2>
-<p>You&#39;ll live in these when testing:</p>
+<p>You'll live in these when testing:</p>
 <table>
 <thead>
 <tr>
@@ -190,7 +221,7 @@ Set-Cookie: session=xyz789; HttpOnly; Secure
 </thead>
 <tbody><tr>
 <td><code>Host</code></td>
-<td>Which domain you&#39;re asking (a server may host many)</td>
+<td>Which domain you're asking (a server may host many)</td>
 </tr>
 <tr>
 <td><code>Cookie</code> / <code>Set-Cookie</code></td>
@@ -230,13 +261,13 @@ Set-Cookie: session=xyz789; HttpOnly; Secure
 <li>Open any website in your browser.</li>
 <li>Press <strong>F12</strong> to open Developer Tools, and click the <strong>Network</strong> tab.</li>
 <li><strong>Refresh</strong> the page and watch the list of requests appear.</li>
-<li>Click one request and explore: its <strong>method</strong> (GET/POST), its <strong>status code</strong>, its <strong>headers</strong>, and the <strong>response</strong>. You&#39;re now looking at raw HTTP — the exact thing web hackers study.</li>
+<li>Click one request and explore: its <strong>method</strong> (GET/POST), its <strong>status code</strong>, its <strong>headers</strong>, and the <strong>response</strong>. You're now looking at raw HTTP — the exact thing web hackers study.</li>
 </ol>
 <p>We go deep on DevTools in <strong>Path 05</strong>.</p>
 <p>You send a request and get back a <strong>500 Internal Server Error</strong>. What does that suggest as a tester?</p>
 <details><summary>Show answer</summary>The server crashed on your input — you *touched something*. That's often a hint that a bug may live in that endpoint. Investigate what specifically caused it.</details><h2>Key terms</h2>
 <ul>
-<li><strong>HTTP</strong> — the web&#39;s request/response protocol.</li>
+<li><strong>HTTP</strong> — the web's request/response protocol.</li>
 <li><strong>Request / response</strong> — what your browser sends and the server returns.</li>
 <li><strong>GET / POST / PUT / DELETE</strong> — different HTTP methods.</li>
 <li><strong>Header</strong> — extra info attached to a request or response.</li>
@@ -246,10 +277,10 @@ Set-Cookie: session=xyz789; HttpOnly; Secure
 </ul>
 <h2>Recap</h2>
 <ul>
-<li>HTTP is the web&#39;s language: your browser requests, the server responds.</li>
+<li>HTTP is the web's language: your browser requests, the server responds.</li>
 <li>Requests have methods, paths, parameters, and headers; responses have status codes.</li>
 <li>Plain HTTP is readable in the middle; HTTPS encrypts everything with TLS.</li>
-<li>Request-and-response is the heart of web hacking — you&#39;ll build on this constantly.</li>
+<li>Request-and-response is the heart of web hacking — you'll build on this constantly.</li>
 </ul>
 <h3>References</h3>
 <ul>
@@ -258,22 +289,70 @@ Set-Cookie: session=xyz789; HttpOnly; Secure
 <li><a href="https://howhttps.works/">How HTTPS actually works — HowHTTPS.works</a> — comic-style TLS explainer.</li>
 <li><a href="https://www.ssllabs.com/ssltest/">SSL Labs test</a> — check the HTTPS quality of any site.</li>
 </ul>
-<h2>🎉 You&#39;ve finished Path 02</h2>
+<h2>🎉 You've finished Path 02</h2>
 <p>You now understand networks, IP addresses, ports, packets &amp; OSI layers, protocols, TCP vs UDP, DNS, and HTTP/HTTPS. This is the true foundation under every attack and defence — you can picture how data moves and where an attacker fits in.</p>
 <p><strong>Next up →</strong> <a href="#/lesson/02-networking/firewalls-basics">Firewalls: the basics</a></p>
-<nav class="pager"><a href="/lesson/02-networking/dns.html">← DNS: the phonebook</a><a href="/lesson/02-networking/firewalls-basics.html">Firewalls: the basics →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/02-networking/dns.html">← DNS: the phonebook</a><a href="/lesson/02-networking/firewalls-basics.html">Firewalls: the basics →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/02-networking/http-https";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

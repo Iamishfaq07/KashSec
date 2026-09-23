@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>What is DevSecOps? — Path 22 · KashSec Academy</title>
 <meta name="description" content="DevSecOps is the practice of integrating security into every stage of the software delivery lifecycle — not bolting it on at the end.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/22-devsecops-appsec/what-is-devsecops.html">
@@ -21,48 +22,78 @@
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 22 — DevSecOps & AppSec Program","item":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/"},{"@type":"ListItem","position":4,"name":"What is DevSecOps?","item":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/what-is-devsecops.html"}]}
 </script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"LearningResource","name":"What is DevSecOps?","headline":"What is DevSecOps?","description":"DevSecOps is the practice of integrating security into every stage of the software delivery lifecycle — not bolting it on at the end.","url":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/what-is-devsecops.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Security folded into every stage of delivery, not bolted on at the end.","isPartOf":{"@type":"Course","name":"Path 22: DevSecOps & AppSec Program","url":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/what-is-devsecops.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/22-devsecops-appsec/what-is-devsecops">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/22-devsecops-appsec/">Path 22 — DevSecOps &amp; AppSec Program</a> · What is DevSecOps?</div>
-  <article><h1>What is DevSecOps?</h1>
+<a class="skip" href="/lesson/22-devsecops-appsec/what-is-devsecops.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/22-devsecops-appsec/">Path 22 — DevSecOps &amp; AppSec Program</a> · What is DevSecOps?</nav>
+    <div class="md" id="content"><article><h1>What is DevSecOps?</h1>
 <p>DevSecOps is the practice of integrating security into every stage of the software delivery lifecycle — not bolting it on at the end.</p>
 <p>:::</p>
 <h2>Why the old model broke</h2>
 <p>For most of software history, security was a <strong>gate</strong>. You built something for six months, then a security team reviewed it for two weeks, then you argued about the findings, then you shipped anyway because the launch date had already been announced.</p>
 <p>That worked — barely — when releases happened twice a year. It collapsed completely once teams started deploying multiple times a day. You cannot run a two-week manual review against a pipeline that ships forty times a week. The gate either becomes a rubber stamp, or it becomes the thing everyone routes around.</p>
-<p>There&#39;s also a cost argument, and it&#39;s the one that actually moves budgets. The later a defect is found, the more expensive it is to fix:</p>
+<p>There's also a cost argument, and it's the one that actually moves budgets. The later a defect is found, the more expensive it is to fix:</p>
 <table>
 <thead>
 <tr>
@@ -102,7 +133,7 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <li>Compliance evidence is generated automatically instead of assembled by hand</li>
 <li>The security team scales through automation instead of a ticket queue</li>
 </ul>
-<p>Note what it is <em>not</em>: it is not &quot;hire more security engineers&quot;, and it is not &quot;buy a scanner&quot;. Both can be part of it; neither is sufficient on its own.</p>
+<p>Note what it is <em>not</em>: it is not "hire more security engineers", and it is not "buy a scanner". Both can be part of it; neither is sufficient on its own.</p>
 <h2>Security at every stage</h2>
 <pre><code>Plan → Code → Build → Test → Release → Deploy → Operate → Monitor
          ↑______ security activities at every stage ______↑
@@ -157,7 +188,7 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <td>Everything the other stages missed</td>
 </tr>
 </tbody></table>
-<p>A useful sanity check: if your organisation only has activity in one or two rows, you don&#39;t have DevSecOps — you have a tool.</p>
+<p>A useful sanity check: if your organisation only has activity in one or two rows, you don't have DevSecOps — you have a tool.</p>
 <h2>What good looks like</h2>
 <ul>
 <li>Developers get fast, actionable feedback in their pull requests, not in a PDF a month later</li>
@@ -171,31 +202,31 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <li>Security is a gate that appears two days before release</li>
 <li>Tools produce thousands of findings nobody triages, so the backlog becomes decoration</li>
 <li>Developers learn to ignore the scanners, or discover the <code>--no-verify</code> flag</li>
-<li>&quot;We do DevSecOps&quot; means &quot;we bought a SAST tool&quot;</li>
+<li>"We do DevSecOps" means "we bought a SAST tool"</li>
 </ul>
 <p>:::warn
 The single most common failure mode is <strong>alert fatigue</strong>. A scanner reporting 4,000 issues of which 30 are real trains an entire engineering org to ignore security output. A noisy tool is worse than no tool, because it also burns your credibility — and credibility is the only currency an AppSec team actually has.</p>
 <h2>A concrete before and after</h2>
 <p><strong>Before.</strong> A developer adds a new file-upload endpoint. It ships. Four months later a pentest finds it accepts arbitrary file types and stores them in a web-accessible directory. The fix requires changing the storage layer, which affects three other features. It takes two sprints and a retro.</p>
-<p><strong>After.</strong> The same developer opens the PR. The SAST job flags the unrestricted file write and links to the internal guidance. A pre-merge check notes the new endpoint has no threat model entry and pings the team&#39;s security champion. The developer changes eleven lines before anyone else has even reviewed it. Total cost: twenty minutes.</p>
+<p><strong>After.</strong> The same developer opens the PR. The SAST job flags the unrestricted file write and links to the internal guidance. A pre-merge check notes the new endpoint has no threat model entry and pings the team's security champion. The developer changes eleven lines before anyone else has even reviewed it. Total cost: twenty minutes.</p>
 <p>Same bug, same developer. The entire difference is <em>when they found out</em>.</p>
 <h2>🧪 Hands-on lab — map your own pipeline</h2>
-<p>You don&#39;t need a company to do this. Pick any project you have on GitHub, or use this course&#39;s own repository.</p>
+<p>You don't need a company to do this. Pick any project you have on GitHub, or use this course's own repository.</p>
 <ol>
 <li>Write out the eight stages above in a note.</li>
-<li>For each stage, write down what security activity currently happens. For most personal projects the honest answer for most rows is &quot;nothing&quot; — that&#39;s fine, and it&#39;s the point of the exercise.</li>
-<li>Pick the <strong>one</strong> stage where adding a control would catch the most realistic problem for that project. For most small web projects, that&#39;s dependency scanning at build time.</li>
+<li>For each stage, write down what security activity currently happens. For most personal projects the honest answer for most rows is "nothing" — that's fine, and it's the point of the exercise.</li>
+<li>Pick the <strong>one</strong> stage where adding a control would catch the most realistic problem for that project. For most small web projects, that's dependency scanning at build time.</li>
 <li>Enable exactly that one thing. On GitHub, turning on Dependabot alerts takes about ninety seconds under <strong>Settings → Code security</strong>.</li>
 <li>Look at what it reports, and for each finding ask the triage question: <em>is this reachable from my code, and what would an attacker actually gain?</em></li>
 </ol>
 <p>Step 5 is the real skill. Anyone can switch a scanner on; the job is deciding what matters.</p>
 <ol>
-<li>Your company deploys twice a day and has one security engineer for 60 developers. Why can&#39;t that engineer manually review every release, and what should they do instead?</li>
-<li>A SAST tool reports 2,000 findings on its first run and your manager wants them all fixed this quarter. What&#39;s wrong with that plan, and what would you propose?</li>
-<li>Name one security activity that belongs in the &quot;Plan&quot; stage, and explain why doing it later costs significantly more.</li>
+<li>Your company deploys twice a day and has one security engineer for 60 developers. Why can't that engineer manually review every release, and what should they do instead?</li>
+<li>A SAST tool reports 2,000 findings on its first run and your manager wants them all fixed this quarter. What's wrong with that plan, and what would you propose?</li>
+<li>Name one security activity that belongs in the "Plan" stage, and explain why doing it later costs significantly more.</li>
 </ol>
 <h2>Where this path goes</h2>
-<p>You&#39;ll learn the major tool categories (SAST, DAST, SCA), how to put them into CI/CD safely, how to handle secrets and supply chain risk, how to threat-model, and finally how to build and measure an AppSec program that actually works.</p>
+<p>You'll learn the major tool categories (SAST, DAST, SCA), how to put them into CI/CD safely, how to handle secrets and supply chain risk, how to threat-model, and finally how to build and measure an AppSec program that actually works.</p>
 <h2>Key terms</h2>
 <ul>
 <li><strong>CI/CD</strong> — Continuous Integration / Continuous Delivery (or Deployment)</li>
@@ -205,26 +236,74 @@ The single most common failure mode is <strong>alert fatigue</strong>. A scanner
 <li><strong>Escape rate</strong> — the proportion of vulnerabilities that reach production rather than being caught earlier</li>
 </ul>
 <h2>Recap</h2>
-<p>DevSecOps is culture plus process plus automation. Tools alone are not enough, and tools without triage or good developer experience actively make things worse. Success isn&#39;t measured by how many findings you produce — it&#39;s measured by how fast real risk gets fixed, and how rarely it reaches production at all.</p>
+<p>DevSecOps is culture plus process plus automation. Tools alone are not enough, and tools without triage or good developer experience actively make things worse. Success isn't measured by how many findings you produce — it's measured by how fast real risk gets fixed, and how rarely it reaches production at all.</p>
 <h3>References</h3>
 <ul>
 <li><a href="https://owasp.org/www-project-devsecops-guideline/">OWASP DevSecOps Guideline</a> — the community reference for building this out</li>
 <li><a href="https://csrc.nist.gov/Projects/ssdf">NIST SSDF (SP 800-218)</a> — the Secure Software Development Framework, increasingly cited in contracts</li>
 <li><a href="https://sre.google/books/building-secure-reliable-systems/">Building Secure and Reliable Systems</a> — free online; chapter 1 makes the culture argument well</li>
 </ul>
-<nav class="pager"><span></span><a href="/lesson/22-devsecops-appsec/shift-left-vs-shift-right.html">Shift Left vs. Shift Right →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><span></span><a href="/lesson/22-devsecops-appsec/shift-left-vs-shift-right.html">Shift Left vs. Shift Right →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/22-devsecops-appsec/what-is-devsecops";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

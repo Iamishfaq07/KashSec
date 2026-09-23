@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>Device Trust &amp; Posture Verification — Path 24 · KashSec Academy</title>
 <meta name="description" content="Correct credentials answer &quot;who is this?&quot; They say nothing about &quot;what are they typing on?&quot; A stolen or malware-infected laptop can present perfectly valid credentials — the right username, the right ">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/24-zero-trust/device-trust-posture.html">
@@ -21,46 +22,76 @@
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 24 — Zero Trust Architecture","item":"https://kashsec.vercel.app/lesson/24-zero-trust/"},{"@type":"ListItem","position":4,"name":"Device Trust & Posture Verification","item":"https://kashsec.vercel.app/lesson/24-zero-trust/device-trust-posture.html"}]}
 </script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"LearningResource","name":"Device Trust & Posture Verification","headline":"Device Trust & Posture Verification","description":"Correct credentials answer \"who is this?\" They say nothing about \"what are they typing on?\" A stolen or malware-infected laptop can present perfectly valid credentials — the right username, the right ","url":"https://kashsec.vercel.app/lesson/24-zero-trust/device-trust-posture.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Why a correct password isn't enough — checking the device, not just the user.","isPartOf":{"@type":"Course","name":"Path 24: Zero Trust Architecture","url":"https://kashsec.vercel.app/lesson/24-zero-trust/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/24-zero-trust/device-trust-posture.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/24-zero-trust/device-trust-posture">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/24-zero-trust/">Path 24 — Zero Trust Architecture</a> · Device Trust &amp; Posture Verification</div>
-  <article><h1>Device Trust &amp; Posture Verification</h1>
-<p>Correct credentials answer &quot;who is this?&quot; They say nothing about &quot;what are they typing on?&quot; A stolen or malware-infected laptop can present perfectly valid credentials — the right username, the right password, even a completed MFA challenge if the malware can relay it. Zero Trust closes this gap by making the <strong>device itself</strong> part of every access decision, not just the human using it.</p>
+<a class="skip" href="/lesson/24-zero-trust/device-trust-posture.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/24-zero-trust/">Path 24 — Zero Trust Architecture</a> · Device Trust &amp; Posture Verification</nav>
+    <div class="md" id="content"><article><h1>Device Trust &amp; Posture Verification</h1>
+<p>Correct credentials answer "who is this?" They say nothing about "what are they typing on?" A stolen or malware-infected laptop can present perfectly valid credentials — the right username, the right password, even a completed MFA challenge if the malware can relay it. Zero Trust closes this gap by making the <strong>device itself</strong> part of every access decision, not just the human using it.</p>
 <p>:::</p>
-<h2>What &quot;device posture&quot; actually means</h2>
-<p>Posture is a snapshot of a device&#39;s health, checked at login and often continuously afterward:</p>
+<h2>What "device posture" actually means</h2>
+<p>Posture is a snapshot of a device's health, checked at login and often continuously afterward:</p>
 <table>
 <thead>
 <tr>
@@ -86,83 +117,131 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 </tr>
 <tr>
 <td>Jailbreak/root status</td>
-<td>Has the device&#39;s own security model been deliberately bypassed?</td>
+<td>Has the device's own security model been deliberately bypassed?</td>
 </tr>
 <tr>
 <td>Screen lock / passcode</td>
 <td>Is there a basic physical-access control in place at all?</td>
 </tr>
 </tbody></table>
-<p>None of these are exotic checks — they&#39;re the kind of thing an MDM (Mobile Device Management) or endpoint agent reports automatically, continuously, without the user doing anything.</p>
+<p>None of these are exotic checks — they're the kind of thing an MDM (Mobile Device Management) or endpoint agent reports automatically, continuously, without the user doing anything.</p>
 <h2>Managed vs. unmanaged devices</h2>
 <ul>
 <li><strong>Managed devices</strong>: owned or enrolled by the organization, running an agent that reports posture and can enforce policy (require encryption, push patches, remote-wipe if lost). Zero Trust policy can grant these devices broader access, because their health is actually verifiable.</li>
-<li><strong>Unmanaged (BYOD) devices</strong>: personal phones and laptops with no agent, no enforced policy, no verifiable posture. Zero Trust doesn&#39;t have to <em>ban</em> these outright — but it should grant them meaningfully less access, or route them through more restrictive paths (like a browser-isolated view of an app instead of a native client with full local file access).</li>
+<li><strong>Unmanaged (BYOD) devices</strong>: personal phones and laptops with no agent, no enforced policy, no verifiable posture. Zero Trust doesn't have to <em>ban</em> these outright — but it should grant them meaningfully less access, or route them through more restrictive paths (like a browser-isolated view of an app instead of a native client with full local file access).</li>
 </ul>
 <p>:::warn
-A common real-world mistake: treating &quot;the user completed MFA&quot; as equivalent to &quot;this device is trustworthy.&quot; They answer completely different questions. A phished user with a keylogger and a real-time MFA relay can complete MFA successfully on a fully compromised machine. Device posture is the check that catches what identity verification alone cannot.</p>
+A common real-world mistake: treating "the user completed MFA" as equivalent to "this device is trustworthy." They answer completely different questions. A phished user with a keylogger and a real-time MFA relay can complete MFA successfully on a fully compromised machine. Device posture is the check that catches what identity verification alone cannot.</p>
 <h2>Continuous vs. point-in-time checks</h2>
 <p>Traditional network access control (NAC) often checked posture once, at connection time — plug in, get scanned, get an IP, done for the rest of the session, even if the device gets compromised five minutes later. Zero Trust device trust aims to be continuous:</p>
 <ul>
 <li>Re-check posture periodically during a session, not just at login</li>
 <li>If EDR reports a device just got compromised mid-session, revoke or downgrade its access immediately, without waiting for the user to log out and back in</li>
-<li>Tie access to a live posture signal rather than a one-time attestation that goes stale the moment it&#39;s checked</li>
+<li>Tie access to a live posture signal rather than a one-time attestation that goes stale the moment it's checked</li>
 </ul>
 <h2>A worked example: the same user, two devices</h2>
 <p>Marcus needs to access the internal finance dashboard.</p>
 <ul>
 <li><strong>From his company laptop</strong>: fully patched, disk encrypted, EDR reporting healthy, enrolled in MDM. Policy: full read/write access, no extra friction.</li>
-<li><strong>From his personal phone, unmanaged</strong>, while traveling: no posture signal available at all — the org has no idea if it&#39;s patched, no idea if it&#39;s compromised. Policy: read-only access through a browser-based view with no download capability, and a fresh MFA challenge required, because the org is compensating for a total lack of device trust with tighter controls elsewhere.</li>
+<li><strong>From his personal phone, unmanaged</strong>, while traveling: no posture signal available at all — the org has no idea if it's patched, no idea if it's compromised. Policy: read-only access through a browser-based view with no download capability, and a fresh MFA challenge required, because the org is compensating for a total lack of device trust with tighter controls elsewhere.</li>
 </ul>
 <p>Same person, same correct password, meaningfully different access — because the device, not just the identity, is part of the decision.</p>
 <h2>Where this fits with existing tools</h2>
-<p>If you&#39;ve studied endpoint security or malware analysis elsewhere in this course, device posture checks are the <em>policy</em> layer sitting on top of tools you already know: EDR agents, MDM platforms, disk encryption (BitLocker/FileVault), and patch management. Zero Trust doesn&#39;t invent new endpoint tooling — it insists that the <em>signals</em> those tools already collect actually get used in real-time access decisions, instead of just feeding a compliance dashboard nobody checks until an audit.</p>
-<h2>🧪 Hands-on lab — assess your own device&#39;s posture</h2>
+<p>If you've studied endpoint security or malware analysis elsewhere in this course, device posture checks are the <em>policy</em> layer sitting on top of tools you already know: EDR agents, MDM platforms, disk encryption (BitLocker/FileVault), and patch management. Zero Trust doesn't invent new endpoint tooling — it insists that the <em>signals</em> those tools already collect actually get used in real-time access decisions, instead of just feeding a compliance dashboard nobody checks until an audit.</p>
+<h2>🧪 Hands-on lab — assess your own device's posture</h2>
 <ol>
 <li><p>Pick a device you use regularly (personal laptop or phone).</p>
 </li>
 <li><p>Check and record: is the OS fully patched? Is disk/device encryption enabled? Is there a passcode/biometric lock? Is any endpoint protection running?</p>
 </li>
-<li><p>For each &quot;no,&quot; write one sentence on the realistic risk it represents (e.g., &quot;no disk encryption&quot; → &quot;if this laptop is stolen, all local files are readable without a password&quot;).</p>
+<li><p>For each "no," write one sentence on the realistic risk it represents (e.g., "no disk encryption" → "if this laptop is stolen, all local files are readable without a password").</p>
 </li>
-<li><p>Pick the single weakest signal and fix it right now if it&#39;s quick (enabling disk encryption, setting a passcode) — many of these are five-minute changes with a real security payoff.</p>
+<li><p>Pick the single weakest signal and fix it right now if it's quick (enabling disk encryption, setting a passcode) — many of these are five-minute changes with a real security payoff.</p>
 </li>
 <li><p>Imagine this device trying to access a sensitive company system under a Zero Trust policy. Would it be treated as high-trust or low-trust, and why?</p>
 </li>
-<li><p>Why is &quot;the user completed MFA&quot; not proof that the device they&#39;re using is safe?</p>
+<li><p>Why is "the user completed MFA" not proof that the device they're using is safe?</p>
 </li>
 <li><p>Give one example of a Zero Trust policy that treats a managed and an unmanaged device differently for the exact same user and account.</p>
 </li>
-<li><p>What&#39;s the practical difference between a point-in-time posture check and a continuous one, and why does it matter for a device compromised mid-session?</p>
+<li><p>What's the practical difference between a point-in-time posture check and a continuous one, and why does it matter for a device compromised mid-session?</p>
 </li>
 </ol>
 <h2>Key terms</h2>
 <ul>
-<li><strong>Device posture</strong> — a real-time assessment of a device&#39;s security health (patch level, encryption, EDR status, etc.)</li>
+<li><strong>Device posture</strong> — a real-time assessment of a device's security health (patch level, encryption, EDR status, etc.)</li>
 <li><strong>MDM (Mobile Device Management)</strong> — a platform that enrolls, monitors, and enforces policy on managed devices</li>
 <li><strong>BYOD</strong> — Bring Your Own Device; personal, typically unmanaged devices used for work access</li>
 <li><strong>NAC (Network Access Control)</strong> — older network-layer approach to checking device health, historically point-in-time rather than continuous</li>
 </ul>
 <h2>Recap</h2>
-<p>Identity answers &quot;who,&quot; device posture answers &quot;on what, and is it safe&quot; — and Zero Trust needs both, continuously, not just at login. A managed, healthy device can reasonably earn broader access; an unmanaged or unhealthy one should get less, regardless of whose correct password unlocked it. This device-level signal is one of the key inputs the next lesson&#39;s network segmentation and continuous verification build directly on top of.</p>
+<p>Identity answers "who," device posture answers "on what, and is it safe" — and Zero Trust needs both, continuously, not just at login. A managed, healthy device can reasonably earn broader access; an unmanaged or unhealthy one should get less, regardless of whose correct password unlocked it. This device-level signal is one of the key inputs the next lesson's network segmentation and continuous verification build directly on top of.</p>
 <h3>References</h3>
 <ul>
 <li><a href="https://csrc.nist.gov/pubs/sp/800/207/final">NIST SP 800-207 — Zero Trust Architecture</a> — covers device posture as a core policy input</li>
 <li><a href="https://www.cisa.gov/zero-trust-maturity-model">CISA Zero Trust Maturity Model</a> — includes a dedicated devices pillar with maturity stages</li>
 </ul>
-<nav class="pager"><a href="/lesson/24-zero-trust/identity-as-perimeter.html">← Identity as the New Perimeter</a><a href="/lesson/24-zero-trust/microsegmentation.html">Micro-Segmentation &amp; Network Design →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/24-zero-trust/identity-as-perimeter.html">← Identity as the New Perimeter</a><a href="/lesson/24-zero-trust/microsegmentation.html">Micro-Segmentation &amp; Network Design →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/24-zero-trust/device-trust-posture";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

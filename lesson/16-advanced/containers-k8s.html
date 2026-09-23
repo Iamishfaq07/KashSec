@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>Containers &amp; Kubernetes — Path 16 · KashSec Academy</title>
 <meta name="description" content="Modern applications increasingly run in containers, orchestrated by Kubernetes — introducing an entirely new layer of infrastructure with its own distinct security model, building directly on the Linu">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/16-advanced/containers-k8s.html">
@@ -21,59 +22,89 @@
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 16 — Advanced Cyber Topics","item":"https://kashsec.vercel.app/lesson/16-advanced/"},{"@type":"ListItem","position":4,"name":"Containers & Kubernetes","item":"https://kashsec.vercel.app/lesson/16-advanced/containers-k8s.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Containers & Kubernetes","headline":"Containers & Kubernetes","description":"Modern applications increasingly run in containers, orchestrated by Kubernetes — introducing an entirely new layer of infrastructure with its own distinct security model, building directly on the Linu","url":"https://kashsec.vercel.app/lesson/16-advanced/containers-k8s.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Docker sockets, RBAC, service tokens.","isPartOf":{"@type":"Course","name":"Path 16: Advanced Cyber Topics","url":"https://kashsec.vercel.app/lesson/16-advanced/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/16-advanced/containers-k8s.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Containers & Kubernetes","headline":"Containers & Kubernetes","description":"Modern applications increasingly run in containers, orchestrated by Kubernetes — introducing an entirely new layer of infrastructure with its own distinct security model, building directly on the Linu","url":"https://kashsec.vercel.app/lesson/16-advanced/containers-k8s.html","inLanguage":"en","dateModified":"2026-08-04","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Docker sockets, RBAC, service tokens.","isPartOf":{"@type":"Course","name":"Path 16: Advanced Cyber Topics","url":"https://kashsec.vercel.app/lesson/16-advanced/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/16-advanced/containers-k8s.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/16-advanced/containers-k8s">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/16-advanced/">Path 16 — Advanced Cyber Topics</a> · Containers &amp; Kubernetes</div>
-  <article><h1>Containers &amp; Kubernetes security</h1>
+<a class="skip" href="/lesson/16-advanced/containers-k8s.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/16-advanced/">Path 16 — Advanced Cyber Topics</a> · Containers &amp; Kubernetes</nav>
+    <div class="md" id="content"><article><h1>Containers &amp; Kubernetes security</h1>
 <p>Modern applications increasingly run in containers, orchestrated by Kubernetes — introducing an entirely new layer of infrastructure with its own distinct security model, building directly on the Linux fundamentals from Path 03 and the cloud concepts from the previous lesson.</p>
 <h2>What containers actually are, security-wise</h2>
-<p>Recall Path 03.4&#39;s virtualization lesson — a container is <strong>not</strong> a full virtual machine. Containers share the <strong>host machine&#39;s kernel</strong>, isolated from each other via Linux kernel features (namespaces, cgroups) rather than full hardware virtualization. This distinction has a direct security consequence: a container escape can potentially compromise the <strong>host itself</strong>, not just &quot;another VM&quot; — the isolation boundary is fundamentally thinner than full virtualization.</p>
+<p>Recall Path 03.4's virtualization lesson — a container is <strong>not</strong> a full virtual machine. Containers share the <strong>host machine's kernel</strong>, isolated from each other via Linux kernel features (namespaces, cgroups) rather than full hardware virtualization. This distinction has a direct security consequence: a container escape can potentially compromise the <strong>host itself</strong>, not just "another VM" — the isolation boundary is fundamentally thinner than full virtualization.</p>
 <h2>Common Docker misconfigurations</h2>
 <h3>Running containers as root</h3>
 <p>By default, many container images run their main process as <strong>root</strong> inside the container — if an attacker achieves code execution within that container and then finds an escape vector, they escape as root on the host too.</p>
 <pre><code class="language-dockerfile"># VULNERABLE — runs as root by default:
 FROM ubuntu:22.04
 COPY app /app
-CMD [&quot;/app&quot;]
+CMD ["/app"]
 
 # BETTER — explicitly run as a non-root user:
 FROM ubuntu:22.04
 RUN useradd -m appuser
 COPY app /app
 USER appuser
-CMD [&quot;/app&quot;]
+CMD ["/app"]
 </code></pre>
 <h3>Exposed Docker daemon socket</h3>
 <p>The Docker daemon socket (<code>/var/run/docker.sock</code>) grants <strong>full control</strong> over the Docker host — accidentally mounting it into a container, or exposing the Docker API over the network without authentication, is equivalent to granting root access on the entire host:</p>
@@ -92,7 +123,7 @@ docker run --privileged -it ubuntu chroot /host_mount sh
 </code></pre>
 <p><code>--privileged</code> should be treated as an emergency-only escape hatch, essentially equivalent to disabling container isolation almost entirely — a huge red flag in any security review.</p>
 <h3>Vulnerable base images and dependencies</h3>
-<p>Directly connecting to Path 11.1&#39;s A06 (Vulnerable and Outdated Components) — container images built from outdated base images inherit <strong>every</strong> unpatched vulnerability in that base layer:</p>
+<p>Directly connecting to Path 11.1's A06 (Vulnerable and Outdated Components) — container images built from outdated base images inherit <strong>every</strong> unpatched vulnerability in that base layer:</p>
 <pre><code class="language-bash"># Scan a container image for known vulnerabilities:
 trivy image example-app:latest
 
@@ -121,11 +152,11 @@ roleRef:
 <p>A compromised pod running with an overly-permissive service account can potentially control the <strong>entire cluster</strong> — precisely mirroring the cloud IAM privilege escalation concerns from the previous lesson, just scoped to the Kubernetes control plane instead.</p>
 <h3>Exposed Kubernetes dashboard/API</h3>
 <p>An unauthenticated or weakly-authenticated Kubernetes API server exposed to the internet is a critical, often actively-scanned-for misconfiguration:</p>
-<pre><code class="language-bash"># Shodan search for exposed Kubernetes API servers (Path 11.3&#39;s technique,
+<pre><code class="language-bash"># Shodan search for exposed Kubernetes API servers (Path 11.3's technique,
 # applied to this specific service):
-shodan search &quot;product:kubernetes&quot;
+shodan search "product:kubernetes"
 
-# Checking your own cluster&#39;s exposure (only against authorized clusters):
+# Checking your own cluster's exposure (only against authorized clusters):
 kubectl cluster-info
 </code></pre>
 <h3>Container escape techniques</h3>
@@ -137,24 +168,24 @@ kubectl cluster-info
 </ul>
 <h2>Kubernetes Secrets — less secret than the name suggests</h2>
 <p>A common source of misplaced confidence: Kubernetes <strong>Secrets</strong> are, by default, only <strong>base64-encoded</strong>, not encrypted — anyone with API access to read a Secret object (or with <code>etcd</code> access, since Secrets are stored there) can trivially decode it back to plaintext:</p>
-<pre><code class="language-bash">kubectl get secret my-secret -o jsonpath=&#39;{.data.password}&#39; | base64 -d
+<pre><code class="language-bash">kubectl get secret my-secret -o jsonpath='{.data.password}' | base64 -d
 </code></pre>
 <p>This matters directly for the RBAC discussion above — a service account with overly broad read permissions on Secrets across namespaces effectively has read access to every credential stored in the cluster, base64 encoding providing essentially zero real protection against anyone who already has that access. Production clusters should enable <strong>encryption at rest</strong> for etcd specifically, and increasingly, teams route secrets through a dedicated external secrets manager (the same AWS Secrets Manager / HashiCorp Vault tools from the previous lesson) rather than relying on native Kubernetes Secrets as the sole protection layer.</p>
 <h2>Image signing and supply chain integrity</h2>
-<p>Beyond scanning an image&#39;s <em>contents</em> for known vulnerabilities (Trivy&#39;s job above), a separate and increasingly important question is whether an image is genuinely the one your team built at all, or whether it&#39;s been tampered with somewhere in the registry/pull chain. Tools like <strong>cosign</strong> (part of the Sigstore project) let teams cryptographically sign container images at build time and verify that signature before ever deploying them:</p>
+<p>Beyond scanning an image's <em>contents</em> for known vulnerabilities (Trivy's job above), a separate and increasingly important question is whether an image is genuinely the one your team built at all, or whether it's been tampered with somewhere in the registry/pull chain. Tools like <strong>cosign</strong> (part of the Sigstore project) let teams cryptographically sign container images at build time and verify that signature before ever deploying them:</p>
 <pre><code class="language-bash">cosign sign --key cosign.key example-registry/example-app:latest
 cosign verify --key cosign.pub example-registry/example-app:latest
 </code></pre>
-<p>This directly extends the software supply-chain security theme threaded throughout this course (the trivy-action incident referenced above, Path 04&#39;s PyPI typosquatting mention) — a perfectly scanned, vulnerability-free image is still a risk if there&#39;s no cryptographic guarantee it&#39;s actually the image your CI/CD pipeline produced, rather than a substituted one injected somewhere between build and deployment.</p>
-<h2>The defender&#39;s view</h2>
+<p>This directly extends the software supply-chain security theme threaded throughout this course (the trivy-action incident referenced above, Path 04's PyPI typosquatting mention) — a perfectly scanned, vulnerability-free image is still a risk if there's no cryptographic guarantee it's actually the image your CI/CD pipeline produced, rather than a substituted one injected somewhere between build and deployment.</p>
+<h2>The defender's view</h2>
 <ul>
-<li><strong>Never run containers as root</strong> unless there&#39;s a specific, well-understood reason — set an explicit non-root <code>USER</code> in every Dockerfile.</li>
+<li><strong>Never run containers as root</strong> unless there's a specific, well-understood reason — set an explicit non-root <code>USER</code> in every Dockerfile.</li>
 <li><strong>Never mount the Docker socket</strong> into a container unless absolutely necessary, and treat any container that does as equivalent to full host root access.</li>
 <li><strong>Avoid <code>--privileged</code></strong> entirely in production; use specific, minimal Linux capabilities instead if elevated access is genuinely required.</li>
 <li><strong>Scan images continuously</strong> with Trivy (or similar) integrated directly into CI/CD pipelines — exactly the kind of SAST/DAST/SCA pipeline integration work that sits at the centre of an AppSec role.</li>
 <li><strong>Apply least-privilege RBAC</strong> — avoid <code>cluster-admin</code> bindings for application service accounts; scope permissions to exactly what each workload needs.</li>
-<li><strong>Never expose the Kubernetes API or dashboard</strong> without strong authentication and network restriction (recall Path 12.4&#39;s firewall/VPN concepts, applied here).</li>
-<li><strong>Use Pod Security Standards</strong> (Kubernetes&#39; built-in mechanism for restricting privileged/risky pod configurations cluster-wide).</li>
+<li><strong>Never expose the Kubernetes API or dashboard</strong> without strong authentication and network restriction (recall Path 12.4's firewall/VPN concepts, applied here).</li>
+<li><strong>Use Pod Security Standards</strong> (Kubernetes' built-in mechanism for restricting privileged/risky pod configurations cluster-wide).</li>
 </ul>
 <h2>🧪 Lab — Container security practice</h2>
 <pre><code class="language-bash"># 1. Scan a public image with Trivy:
@@ -172,15 +203,15 @@ mount
 kubectl get clusterrolebindings -o wide
 kubectl auth can-i --list --as=system:serviceaccount:default:default
 </code></pre>
-<p>Also revisit Path 03.4&#39;s Docker installation from earlier in this course, and try building a genuinely hardened Dockerfile (non-root user, minimal base image, explicit least-privilege) for any small project you&#39;ve built during this course — directly applying this lesson&#39;s defensive guidance.</p>
-<p>A container has the host&#39;s Docker socket (<code>/var/run/docker.sock</code>) mounted inside it &quot;for convenience,&quot; so the application can manage other containers programmatically. Why does this effectively grant the container full root access to the entire host, not just to Docker itself?</p>
+<p>Also revisit Path 03.4's Docker installation from earlier in this course, and try building a genuinely hardened Dockerfile (non-root user, minimal base image, explicit least-privilege) for any small project you've built during this course — directly applying this lesson's defensive guidance.</p>
+<p>A container has the host's Docker socket (<code>/var/run/docker.sock</code>) mounted inside it "for convenience," so the application can manage other containers programmatically. Why does this effectively grant the container full root access to the entire host, not just to Docker itself?</p>
 <details><summary>Show answer</summary>The Docker socket provides <strong>full control over the Docker daemon</strong>, which itself runs with root privileges on the host. A process with access to this socket can instruct Docker to start a <em>new</em> container with the host's entire root filesystem mounted inside it (e.g., <code>-v /:/host</code>) and then <code>chroot</code> into that mount — effectively achieving a full root shell on the underlying host machine, entirely bypassing container isolation. This is why mounting the Docker socket into any container is functionally equivalent to granting that container unrestricted root access to the host itself, regardless of how limited the container's own explicit permissions appear.</details><h2>Key terms</h2>
 <ul>
 <li><strong>Container escape</strong> — breaking out of container isolation to access or control the underlying host.</li>
-<li><strong>Docker socket</strong> — the Docker daemon&#39;s control interface; access to it is equivalent to host root access.</li>
+<li><strong>Docker socket</strong> — the Docker daemon's control interface; access to it is equivalent to host root access.</li>
 <li><strong>Trivy</strong> — the widely-used open-source container image and configuration vulnerability scanner.</li>
 <li><strong>Kubernetes RBAC</strong> — the cluster-level, Kubernetes-native access control system, analogous to cloud IAM.</li>
-<li><strong>Pod Security Standards</strong> — Kubernetes&#39; built-in mechanism restricting privileged/risky pod configurations.</li>
+<li><strong>Pod Security Standards</strong> — Kubernetes' built-in mechanism restricting privileged/risky pod configurations.</li>
 </ul>
 <h2>Recap</h2>
 <ul>
@@ -198,19 +229,67 @@ kubectl auth can-i --list --as=system:serviceaccount:default:default
 <li><a href="https://book.hacktricks.xyz/pentesting/pentesting-docker">HackTricks — Docker/Kubernetes Security</a> — extensive practical escape/attack technique reference.</li>
 </ul>
 <p><strong>Next up →</strong> <a href="#/lesson/16-advanced/kubernetes-attack-paths">Kubernetes attack paths</a></p>
-<nav class="pager"><a href="/lesson/16-advanced/iam-deep-dive.html">← IAM, deep dive</a><a href="/lesson/16-advanced/kubernetes-attack-paths.html">Kubernetes attack paths →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/16-advanced/iam-deep-dive.html">← IAM, deep dive</a><a href="/lesson/16-advanced/kubernetes-attack-paths.html">Kubernetes attack paths →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/16-advanced/containers-k8s";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

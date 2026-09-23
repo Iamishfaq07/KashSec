@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>The recon pipeline — Path 15 · KashSec Academy</title>
 <meta name="description" content="Path 11.3 and Path 14.3 taught recon concepts and tools individually. This lesson builds them into a genuine, automated pipeline — the exact kind of tooling that separates hobbyist bug hunting from se">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/15-bug-bounty/recon-pipeline.html">
@@ -21,52 +22,82 @@
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 15 — Bug Bounty","item":"https://kashsec.vercel.app/lesson/15-bug-bounty/"},{"@type":"ListItem","position":4,"name":"The recon pipeline","item":"https://kashsec.vercel.app/lesson/15-bug-bounty/recon-pipeline.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"The recon pipeline","headline":"The recon pipeline","description":"Path 11.3 and Path 14.3 taught recon concepts and tools individually. This lesson builds them into a genuine, automated pipeline — the exact kind of tooling that separates hobbyist bug hunting from se","url":"https://kashsec.vercel.app/lesson/15-bug-bounty/recon-pipeline.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate→Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"subfinder → httpx → gau → nuclei — a real pipeline.","isPartOf":{"@type":"Course","name":"Path 15: Bug Bounty","url":"https://kashsec.vercel.app/lesson/15-bug-bounty/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/15-bug-bounty/recon-pipeline.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"The recon pipeline","headline":"The recon pipeline","description":"Path 11.3 and Path 14.3 taught recon concepts and tools individually. This lesson builds them into a genuine, automated pipeline — the exact kind of tooling that separates hobbyist bug hunting from se","url":"https://kashsec.vercel.app/lesson/15-bug-bounty/recon-pipeline.html","inLanguage":"en","dateModified":"2026-08-04","learningResourceType":"Lesson","educationalLevel":"Intermediate→Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"subfinder → httpx → gau → nuclei — a real pipeline.","isPartOf":{"@type":"Course","name":"Path 15: Bug Bounty","url":"https://kashsec.vercel.app/lesson/15-bug-bounty/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/15-bug-bounty/recon-pipeline.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/15-bug-bounty/recon-pipeline">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/15-bug-bounty/">Path 15 — Bug Bounty</a> · The recon pipeline</div>
-  <article><h1>Building a recon pipeline</h1>
+<a class="skip" href="/lesson/15-bug-bounty/recon-pipeline.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/15-bug-bounty/">Path 15 — Bug Bounty</a> · The recon pipeline</nav>
+    <div class="md" id="content"><article><h1>Building a recon pipeline</h1>
 <p>Path 11.3 and Path 14.3 taught recon concepts and tools individually. This lesson builds them into a genuine, automated <strong>pipeline</strong> — the exact kind of tooling that separates hobbyist bug hunting from serious, sustained practice, and mirrors how serious hunters wire Burp Suite together with scripted automation.</p>
 <h2>Why automation is essential in bug bounty specifically</h2>
-<p>Recall Path 15.2 — a broad-scope program (<code>*.example.com</code>) might have hundreds of subdomains. Manually running each recon step from Path 11.3 against every one of them, repeatedly, as the target changes over time, simply doesn&#39;t scale. Serious hunters build <strong>automated pipelines</strong> that run continuously or on a schedule, surfacing new attack surface and changes automatically.</p>
+<p>Recall Path 15.2 — a broad-scope program (<code>*.example.com</code>) might have hundreds of subdomains. Manually running each recon step from Path 11.3 against every one of them, repeatedly, as the target changes over time, simply doesn't scale. Serious hunters build <strong>automated pipelines</strong> that run continuously or on a schedule, surfacing new attack surface and changes automatically.</p>
 <h2>The pipeline architecture</h2>
 <h2>Step-by-step build</h2>
 <h3>1. Subdomain enumeration, combined from multiple sources</h3>
 <pre><code class="language-bash"># Combine several tools for maximum coverage — no single source finds everything:
 subfinder -d example.com -silent &gt; subs1.txt
 amass enum -passive -d example.com &gt; subs2.txt
-curl -s &quot;https://crt.sh/?q=%.example.com&amp;output=json&quot; | jq -r &#39;.[].name_value&#39; &gt; subs3.txt
+curl -s "https://crt.sh/?q=%.example.com&amp;output=json" | jq -r '.[].name_value' &gt; subs3.txt
 
 cat subs1.txt subs2.txt subs3.txt | sort -u &gt; all-subs.txt
 </code></pre>
@@ -95,12 +126,12 @@ ffuf -u https://FUZZ_HOST/FUZZ -w /usr/share/seclists/Discovery/Web-Content/comm
 nuclei -l live-hosts.txt -t exposures/ -o exposure-findings.txt
 </code></pre>
 <h3>7. Diffing — the key to sustainable, ongoing hunting</h3>
-<p>The single highest-leverage automation technique: comparing <strong>today&#39;s</strong> recon results against <strong>yesterday&#39;s</strong>, and only alerting on what&#39;s genuinely <strong>new</strong>.</p>
+<p>The single highest-leverage automation technique: comparing <strong>today's</strong> recon results against <strong>yesterday's</strong>, and only alerting on what's genuinely <strong>new</strong>.</p>
 <pre><code class="language-python">#!/usr/bin/env python3
-&quot;&quot;&quot;
-diff-recon.py — Compare today&#39;s subdomain list against the previous run,
+"""
+diff-recon.py — Compare today's subdomain list against the previous run,
 alerting only on genuinely new discoveries.
-&quot;&quot;&quot;
+"""
 import sys
 
 def load_set(path: str) -&gt; set[str]:
@@ -109,7 +140,7 @@ def load_set(path: str) -&gt; set[str]:
 
 def main():
     if len(sys.argv) != 3:
-        print(&quot;Usage: diff-recon.py &lt;previous.txt&gt; &lt;current.txt&gt;&quot;)
+        print("Usage: diff-recon.py &lt;previous.txt&gt; &lt;current.txt&gt;")
         sys.exit(1)
 
     previous = load_set(sys.argv[1])
@@ -119,20 +150,20 @@ def main():
     removed_items = previous - current
 
     if new_items:
-        print(f&quot;[+] {len(new_items)} NEW subdomains found:&quot;)
+        print(f"[+] {len(new_items)} NEW subdomains found:")
         for item in sorted(new_items):
-            print(f&quot;    {item}&quot;)
+            print(f"    {item}")
     if removed_items:
-        print(f&quot;[-] {len(removed_items)} subdomains no longer resolving:&quot;)
+        print(f"[-] {len(removed_items)} subdomains no longer resolving:")
         for item in sorted(removed_items):
-            print(f&quot;    {item}&quot;)
+            print(f"    {item}")
 
-if __name__ == &quot;__main__&quot;:
+if __name__ == "__main__":
     main()
 </code></pre>
 <pre><code class="language-bash">python3 diff-recon.py subs-yesterday.txt subs-today.txt
 </code></pre>
-<p>A newly-appeared subdomain is disproportionately likely to be an under-tested, freshly-deployed system — often the single highest-value signal in an entire ongoing recon pipeline, precisely because it hasn&#39;t yet been picked over by other hunters.</p>
+<p>A newly-appeared subdomain is disproportionately likely to be an under-tested, freshly-deployed system — often the single highest-value signal in an entire ongoing recon pipeline, precisely because it hasn't yet been picked over by other hunters.</p>
 <h2>Wrapping it all into a scheduled pipeline</h2>
 <pre><code class="language-bash">#!/bin/bash
 # recon-pipeline.sh — Full daily recon pipeline for a target domain
@@ -140,64 +171,64 @@ if __name__ == &quot;__main__&quot;:
 set -euo pipefail
 TARGET=$1
 DATE=$(date +%Y%m%d)
-OUTDIR=&quot;recon-$TARGET-$DATE&quot;
-mkdir -p &quot;$OUTDIR&quot;
+OUTDIR="recon-$TARGET-$DATE"
+mkdir -p "$OUTDIR"
 
-echo &quot;[*] Subdomain enumeration...&quot;
-subfinder -d &quot;$TARGET&quot; -silent &gt; &quot;$OUTDIR/subs.txt&quot;
+echo "[*] Subdomain enumeration..."
+subfinder -d "$TARGET" -silent &gt; "$OUTDIR/subs.txt"
 
-echo &quot;[*] Resolving live hosts...&quot;
-httpx -l &quot;$OUTDIR/subs.txt&quot; -silent -o &quot;$OUTDIR/live.txt&quot;
+echo "[*] Resolving live hosts..."
+httpx -l "$OUTDIR/subs.txt" -silent -o "$OUTDIR/live.txt"
 
-echo &quot;[*] Crawling...&quot;
-katana -list &quot;$OUTDIR/live.txt&quot; -jc -o &quot;$OUTDIR/urls.txt&quot;
+echo "[*] Crawling..."
+katana -list "$OUTDIR/live.txt" -jc -o "$OUTDIR/urls.txt"
 
-echo &quot;[*] Nuclei scan...&quot;
-nuclei -l &quot;$OUTDIR/live.txt&quot; -severity medium,high,critical -o &quot;$OUTDIR/nuclei.txt&quot;
+echo "[*] Nuclei scan..."
+nuclei -l "$OUTDIR/live.txt" -severity medium,high,critical -o "$OUTDIR/nuclei.txt"
 
-echo &quot;[*] Diffing against previous run...&quot;
-PREV=$(ls -d recon-&quot;$TARGET&quot;-* 2&gt;/dev/null | sort | tail -2 | head -1)
-if [ -n &quot;$PREV&quot; ] &amp;&amp; [ -f &quot;$PREV/subs.txt&quot; ]; then
-    python3 diff-recon.py &quot;$PREV/subs.txt&quot; &quot;$OUTDIR/subs.txt&quot;
+echo "[*] Diffing against previous run..."
+PREV=$(ls -d recon-"$TARGET"-* 2&gt;/dev/null | sort | tail -2 | head -1)
+if [ -n "$PREV" ] &amp;&amp; [ -f "$PREV/subs.txt" ]; then
+    python3 diff-recon.py "$PREV/subs.txt" "$OUTDIR/subs.txt"
 fi
 
-echo &quot;[+] Done. Results in $OUTDIR/&quot;
+echo "[+] Done. Results in $OUTDIR/"
 </code></pre>
-<pre><code class="language-bash"># Run daily via cron (recall Path 03.11&#39;s cron lesson):
+<pre><code class="language-bash"># Run daily via cron (recall Path 03.11's cron lesson):
 0 3 * * * /home/kali/recon-pipeline.sh example.com &gt;&gt; /home/kali/recon.log 2&gt;&amp;1
 </code></pre>
 <p>This exact pattern — cron-scheduled, diffed, alerting only on genuine change — is precisely how experienced hunters sustain ongoing coverage across multiple programs without manually re-running everything from scratch every single day.</p>
 <h2>Notification integration — closing the loop without babysitting a terminal</h2>
-<p>A pipeline that only writes results to a text file still requires you to remember to go look at it — the final piece that makes automation genuinely sustainable is pushing new findings somewhere you&#39;ll actually notice them, without needing to manually check in:</p>
+<p>A pipeline that only writes results to a text file still requires you to remember to go look at it — the final piece that makes automation genuinely sustainable is pushing new findings somewhere you'll actually notice them, without needing to manually check in:</p>
 <pre><code class="language-bash"># Send a Slack/Discord webhook notification only when the diff script finds something new:
 if [ -s new-findings.txt ]; then
-    curl -s -X POST -H &#39;Content-type: application/json&#39; \
-      --data &quot;{\&quot;text\&quot;:\&quot;New recon findings for $TARGET: $(cat new-findings.txt | wc -l) items\&quot;}&quot; \
-      &quot;$WEBHOOK_URL&quot;
+    curl -s -X POST -H 'Content-type: application/json' \
+      --data "{\"text\":\"New recon findings for $TARGET: $(cat new-findings.txt | wc -l) items\"}" \
+      "$WEBHOOK_URL"
 fi
 </code></pre>
-<p>This closes the loop the diffing step opened: subdomain enumeration finds candidates, diffing filters down to what&#39;s genuinely new, and a notification makes sure that signal actually reaches you promptly rather than sitting silently in a log file on a cron-scheduled machine you only check once a week. For a target with real time-sensitivity — a newly-deployed subdomain is at its most under-tested in the first few days after appearing — the gap between &quot;the pipeline found it&quot; and &quot;a human actually looked at it&quot; is exactly where competitive advantage over other hunters lives.</p>
+<p>This closes the loop the diffing step opened: subdomain enumeration finds candidates, diffing filters down to what's genuinely new, and a notification makes sure that signal actually reaches you promptly rather than sitting silently in a log file on a cron-scheduled machine you only check once a week. For a target with real time-sensitivity — a newly-deployed subdomain is at its most under-tested in the first few days after appearing — the gap between "the pipeline found it" and "a human actually looked at it" is exactly where competitive advantage over other hunters lives.</p>
 <h2>Respecting scope and rate limits in automation</h2>
-<p>Recall Path 15.2&#39;s scope discipline — automation makes it dangerously easy to accidentally exceed a program&#39;s authorized scope or rate limits:</p>
+<p>Recall Path 15.2's scope discipline — automation makes it dangerously easy to accidentally exceed a program's authorized scope or rate limits:</p>
 <pre><code class="language-bash"># Always filter discovered subdomains against the EXACT program scope
 # before running any active tooling against them:
 grep -f allowed-scope-patterns.txt all-subs.txt &gt; in-scope-subs.txt
 
-# Respect stated rate limits explicitly (recall Path 15.2&#39;s example: max 10 req/sec):
+# Respect stated rate limits explicitly (recall Path 15.2's example: max 10 req/sec):
 ffuf -u https://FUZZ_HOST/FUZZ -w wordlist.txt -rate 10
 nuclei -l live.txt -rate-limit 10
 </code></pre>
 <p>Automated tools have no judgment of their own — the discipline and scope-awareness must be built into the pipeline itself, or enforced by careful manual review before any automated step runs against newly-discovered assets.</p>
 <h2>🧪 Lab — Build your own mini pipeline</h2>
-<p>Using the program you shortlisted in Path 15.2&#39;s lab (only if its scope and policy explicitly permit automated scanning — always check this first):</p>
+<p>Using the program you shortlisted in Path 15.2's lab (only if its scope and policy explicitly permit automated scanning — always check this first):</p>
 <ol>
 <li>Run subdomain enumeration and combine results from at least two sources.</li>
 <li>Filter to live hosts with httpx.</li>
 <li>Run Nuclei with a conservative rate limit against the <code>exposures/</code> and <code>misconfiguration/</code> template categories specifically (lower risk, high signal categories to start with).</li>
-<li>Save today&#39;s results, and write the diff script above so tomorrow&#39;s run only shows you what&#39;s new.</li>
+<li>Save today's results, and write the diff script above so tomorrow's run only shows you what's new.</li>
 </ol>
 <p>Even this modest pipeline represents genuine, sustainable bug bounty infrastructure — far beyond what most beginning hunters ever build, and a real differentiator in practice.</p>
-<p>Why is the &quot;diff against previous run&quot; step considered one of the highest-value parts of an ongoing recon pipeline, rather than just a nice-to-have convenience feature?</p>
+<p>Why is the "diff against previous run" step considered one of the highest-value parts of an ongoing recon pipeline, rather than just a nice-to-have convenience feature?</p>
 <details><summary>Show answer</summary>A newly-appeared subdomain or endpoint is disproportionately likely to be <strong>freshly deployed and under-tested</strong> — precisely the kind of target other hunters haven't yet discovered or picked over. Re-scanning the same, already-stable attack surface repeatedly wastes time rediscovering what's already been tested (by you or others); diffing surfaces exactly the new, high-opportunity signal automatically, letting you focus limited manual testing time where it's most likely to find something genuinely new.</details><h2>Key terms</h2>
 <ul>
 <li><strong>Recon pipeline</strong> — an automated, often scheduled sequence of recon tools feeding into each other.</li>
@@ -218,22 +249,70 @@ nuclei -l live.txt -rate-limit 10
 <li><a href="https://github.com/projectdiscovery">ProjectDiscovery tools</a> — subfinder, httpx, katana, nuclei, and the full ecosystem used throughout this lesson.</li>
 <li><a href="https://github.com/projectdiscovery/nuclei-templates">Nuclei Templates repository</a> — thousands of community-maintained detection templates.</li>
 <li><a href="https://github.com/sensepost/gowitness">gowitness</a> — the screenshotting tool referenced in step 3.</li>
-<li><a href="https://github.com/vavkamil/awesome-bugbounty-tools">Awesome Bug Bounty Tools (GitHub)</a> — a comprehensive, curated tool list beyond what&#39;s covered here.</li>
+<li><a href="https://github.com/vavkamil/awesome-bugbounty-tools">Awesome Bug Bounty Tools (GitHub)</a> — a comprehensive, curated tool list beyond what's covered here.</li>
 </ul>
 <p><strong>Next up →</strong> <a href="#/lesson/15-bug-bounty/burp-suite-for-bb">Burp Suite for bug bounty workflow</a></p>
-<nav class="pager"><a href="/lesson/15-bug-bounty/scope-and-legal-boundaries.html">← Scope and legal boundaries</a><a href="/lesson/15-bug-bounty/burp-suite-for-bb.html">Burp Suite for bug bounty workflow →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/15-bug-bounty/scope-and-legal-boundaries.html">← Scope and legal boundaries</a><a href="/lesson/15-bug-bounty/burp-suite-for-bb.html">Burp Suite for bug bounty workflow →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/15-bug-bounty/recon-pipeline";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

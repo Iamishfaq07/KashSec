@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>What is cryptography? — Path 06 · KashSec Academy</title>
 <meta name="description" content="You've already met cryptography scattered throughout this course — Base64 encoding in the CTF Zone, password hashing in Path 10, AES and RSA in ransomware's mechanics (Path 17). This path starts from ">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/06-crypto-fundamentals/what-is-cryptography.html">
@@ -21,43 +22,73 @@
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 06 — Cryptography Fundamentals","item":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/"},{"@type":"ListItem","position":4,"name":"What is cryptography?","item":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/what-is-cryptography.html"}]}
 </script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"LearningResource","name":"What is cryptography?","headline":"What is cryptography?","description":"You've already met cryptography scattered throughout this course — Base64 encoding in the CTF Zone, password hashing in Path 10, AES and RSA in ransomware's mechanics (Path 17). This path starts from ","url":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/what-is-cryptography.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Encoding vs. encryption vs. hashing — the distinction that unlocks everything else.","isPartOf":{"@type":"Course","name":"Path 06: Cryptography Fundamentals","url":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/what-is-cryptography.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/06-crypto-fundamentals/what-is-cryptography">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/06-crypto-fundamentals/">Path 06 — Cryptography Fundamentals</a> · What is cryptography?</div>
-  <article><h1>What is cryptography?</h1>
-<p>You&#39;ve already met cryptography scattered throughout this course — Base64 encoding in the CTF Zone, password hashing in Path 10, AES and RSA in ransomware&#39;s mechanics (Path 17). This path starts from zero and builds the foundation that makes every one of those moments make real sense, rather than feeling like scattered vocabulary.</p>
+<a class="skip" href="/lesson/06-crypto-fundamentals/what-is-cryptography.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/06-crypto-fundamentals/">Path 06 — Cryptography Fundamentals</a> · What is cryptography?</nav>
+    <div class="md" id="content"><article><h1>What is cryptography?</h1>
+<p>You've already met cryptography scattered throughout this course — Base64 encoding in the CTF Zone, password hashing in Path 10, AES and RSA in ransomware's mechanics (Path 17). This path starts from zero and builds the foundation that makes every one of those moments make real sense, rather than feeling like scattered vocabulary.</p>
 <h2>The three things people confuse constantly</h2>
 <p>Almost everyone new to security mixes up three genuinely different concepts. Getting this distinction solid, right now, will save you real confusion for the rest of this course:</p>
 <table>
@@ -85,27 +116,27 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 </tr>
 </tbody></table>
 <h2>Encoding — not security at all</h2>
-<p>This course&#39;s CTF Zone crypto challenges already demonstrated this directly: Base64 is <strong>encoding</strong>, not encryption — anyone can decode it instantly, with no secret required. Encoding exists purely to represent data in a different, more convenient format (binary data as printable text, for instance) — it provides zero confidentiality. Treating encoded data as &quot;protected&quot; is a genuinely common, genuinely dangerous real-world mistake.</p>
+<p>This course's CTF Zone crypto challenges already demonstrated this directly: Base64 is <strong>encoding</strong>, not encryption — anyone can decode it instantly, with no secret required. Encoding exists purely to represent data in a different, more convenient format (binary data as printable text, for instance) — it provides zero confidentiality. Treating encoded data as "protected" is a genuinely common, genuinely dangerous real-world mistake.</p>
 <h2>Encryption — scrambling with a recoverable secret</h2>
-<p><strong>Encryption</strong> transforms readable data (&quot;plaintext&quot;) into unreadable data (&quot;ciphertext&quot;) using a <strong>key</strong> — and critically, it&#39;s designed to be reversed by anyone holding the correct key, and only by them. This path&#39;s next two lessons cover the two major families in depth: <strong>symmetric</strong> encryption (one shared key locks and unlocks) and <strong>asymmetric</strong> encryption (a public key locks, a different private key unlocks).</p>
-<p>A simple, ancient example to build intuition — the <strong>Caesar cipher</strong>, referenced back in this course&#39;s CTF Zone: shift every letter forward by a fixed number of positions in the alphabet.</p>
+<p><strong>Encryption</strong> transforms readable data ("plaintext") into unreadable data ("ciphertext") using a <strong>key</strong> — and critically, it's designed to be reversed by anyone holding the correct key, and only by them. This path's next two lessons cover the two major families in depth: <strong>symmetric</strong> encryption (one shared key locks and unlocks) and <strong>asymmetric</strong> encryption (a public key locks, a different private key unlocks).</p>
+<p>A simple, ancient example to build intuition — the <strong>Caesar cipher</strong>, referenced back in this course's CTF Zone: shift every letter forward by a fixed number of positions in the alphabet.</p>
 <pre><code>Plaintext:  ATTACK AT DAWN
 Key:        shift by 3
 Ciphertext: DWWDFN DW GDZQ
 </code></pre>
-<p>This is genuinely, trivially breakable (there are only 25 possible shifts to try), but it demonstrates the core idea every modern cipher builds on: a transformation, controlled by a key, that&#39;s easy to reverse <em>if you know the key</em> and hard to reverse if you don&#39;t.</p>
+<p>This is genuinely, trivially breakable (there are only 25 possible shifts to try), but it demonstrates the core idea every modern cipher builds on: a transformation, controlled by a key, that's easy to reverse <em>if you know the key</em> and hard to reverse if you don't.</p>
 <h2>Hashing — the one-way fingerprint</h2>
-<p><strong>Hashing</strong> takes data of any size and produces a fixed-size output (a &quot;hash&quot; or &quot;digest&quot;) — and, critically, this process is deliberately <strong>one-way</strong>: there&#39;s no key to recover the original data from its hash, by design. This is exactly why Path 10&#39;s passwords-and-hashing lesson insists passwords be <em>hashed</em>, never encrypted, for storage: even the service storing your password should never be able to recover its plaintext value, only verify a match by hashing whatever you type and comparing.</p>
-<pre><code>SHA-256(&quot;password123&quot;) = ef92b778bafe771e89245b89ecbc08a44... (always the same output for this exact input)
-SHA-256(&quot;password124&quot;) = 8a9c1b5a...  (completely different output — even a tiny input change scrambles everything)
+<p><strong>Hashing</strong> takes data of any size and produces a fixed-size output (a "hash" or "digest") — and, critically, this process is deliberately <strong>one-way</strong>: there's no key to recover the original data from its hash, by design. This is exactly why Path 10's passwords-and-hashing lesson insists passwords be <em>hashed</em>, never encrypted, for storage: even the service storing your password should never be able to recover its plaintext value, only verify a match by hashing whatever you type and comparing.</p>
+<pre><code>SHA-256("password123") = ef92b778bafe771e89245b89ecbc08a44... (always the same output for this exact input)
+SHA-256("password124") = 8a9c1b5a...  (completely different output — even a tiny input change scrambles everything)
 </code></pre>
-<p>That last property — a tiny input change producing a completely different output — is called the <strong>avalanche effect</strong>, and it&#39;s exactly what makes hashing useful for detecting <em>any</em> tampering with data, not just passwords.</p>
+<p>That last property — a tiny input change producing a completely different output — is called the <strong>avalanche effect</strong>, and it's exactly what makes hashing useful for detecting <em>any</em> tampering with data, not just passwords.</p>
 <h2>A brief history — why cryptography matters beyond computers</h2>
-<p>Cryptography is far older than computing itself, and knowing a little of that history helps ground why the field is structured the way it is today. Military and diplomatic communication drove cryptography&#39;s development for millennia — the Caesar cipher above genuinely was used by Roman military commanders; centuries later, the German Enigma machine&#39;s mechanical rotor-based encryption, and the Allied codebreaking effort at Bletchley Park (involving Alan Turing, widely regarded as a founder of computer science) that eventually broke it, is often cited as a pivotal moment in World War II and a direct ancestor of modern computing itself. The core lesson that keeps repeating across this entire history, right up to the present day: a cipher that seems unbreakable to its own designers often has a flaw invisible to them but findable by dedicated, motivated adversaries — which is exactly why &quot;never roll your own crypto&quot; (a phrase you&#39;ll see repeated throughout this path) isn&#39;t overcautious advice, but the hard-won, historically-proven lesson of a field with a long track record of confident designers being wrong.</p>
-<h2>Kerckhoffs&#39;s principle — a foundational design rule</h2>
-<p>A specific historical lesson worth naming directly, since it shapes essentially every modern cryptographic system: <strong>Kerckhoffs&#39;s principle</strong>, formulated in the 19th century, states that a cryptographic system should remain secure even if everything about it — the algorithm, the implementation, the design — is publicly known, with the sole exception of the key. This is precisely why AES and RSA (covered in the next two lessons) are open, published, publicly-scrutinized algorithms rather than secret proprietary designs — a system&#39;s security should never depend on attackers not knowing <em>how</em> it works, only on them not having the <em>specific secret key</em>. A corollary worth internalizing: &quot;security through obscurity&quot; (hiding how a system works, hoping attackers won&#39;t figure it out) is not a substitute for genuine cryptographic security, and a design that only holds up as long as its inner workings stay secret should be treated as fundamentally broken, not merely unproven.</p>
-<p>Ask: &quot;Do I need to get the original data back?&quot; If yes, and you don&#39;t mind anyone being able to reverse it, that&#39;s <strong>encoding</strong>. If yes, but only someone with a secret should be able to, that&#39;s <strong>encryption</strong>. If no — you only ever need to <em>verify</em>, never <em>recover</em> — that&#39;s <strong>hashing</strong>.</p>
-<p>Why is it a serious security mistake to &quot;encrypt&quot; a password with a reversible scheme instead of hashing it, even if the encryption key itself is kept perfectly secret?</p>
+<p>Cryptography is far older than computing itself, and knowing a little of that history helps ground why the field is structured the way it is today. Military and diplomatic communication drove cryptography's development for millennia — the Caesar cipher above genuinely was used by Roman military commanders; centuries later, the German Enigma machine's mechanical rotor-based encryption, and the Allied codebreaking effort at Bletchley Park (involving Alan Turing, widely regarded as a founder of computer science) that eventually broke it, is often cited as a pivotal moment in World War II and a direct ancestor of modern computing itself. The core lesson that keeps repeating across this entire history, right up to the present day: a cipher that seems unbreakable to its own designers often has a flaw invisible to them but findable by dedicated, motivated adversaries — which is exactly why "never roll your own crypto" (a phrase you'll see repeated throughout this path) isn't overcautious advice, but the hard-won, historically-proven lesson of a field with a long track record of confident designers being wrong.</p>
+<h2>Kerckhoffs's principle — a foundational design rule</h2>
+<p>A specific historical lesson worth naming directly, since it shapes essentially every modern cryptographic system: <strong>Kerckhoffs's principle</strong>, formulated in the 19th century, states that a cryptographic system should remain secure even if everything about it — the algorithm, the implementation, the design — is publicly known, with the sole exception of the key. This is precisely why AES and RSA (covered in the next two lessons) are open, published, publicly-scrutinized algorithms rather than secret proprietary designs — a system's security should never depend on attackers not knowing <em>how</em> it works, only on them not having the <em>specific secret key</em>. A corollary worth internalizing: "security through obscurity" (hiding how a system works, hoping attackers won't figure it out) is not a substitute for genuine cryptographic security, and a design that only holds up as long as its inner workings stay secret should be treated as fundamentally broken, not merely unproven.</p>
+<p>Ask: "Do I need to get the original data back?" If yes, and you don't mind anyone being able to reverse it, that's <strong>encoding</strong>. If yes, but only someone with a secret should be able to, that's <strong>encryption</strong>. If no — you only ever need to <em>verify</em>, never <em>recover</em> — that's <strong>hashing</strong>.</p>
+<p>Why is it a serious security mistake to "encrypt" a password with a reversible scheme instead of hashing it, even if the encryption key itself is kept perfectly secret?</p>
 <details><summary>Show answer</summary>Encryption is designed to be reversible by anyone holding the key — which means whoever controls that key (the service operator, or an attacker who steals it) can recover every user's actual plaintext password at once. Hashing has no key to steal in the first place; even the service itself cannot recover the original password, only verify a match. Since password reuse across sites is extremely common (Path 00's passwords lesson), a reversible scheme turns a single leaked key into a mass password-recovery event across every user, while a properly hashed database (even if stolen) requires attackers to crack each hash individually — dramatically slower and, with a strong unique password, often practically infeasible.</details><h2>Key terms</h2>
 <ul>
 <li><strong>Plaintext / ciphertext</strong> — readable original data, and its encrypted, unreadable form.</li>
@@ -116,7 +147,7 @@ SHA-256(&quot;password124&quot;) = 8a9c1b5a...  (completely different output —
 <h2>Recap</h2>
 <ul>
 <li>Encoding, encryption, and hashing are three genuinely different tools, distinguished by whether a secret is involved and whether the transformation is meant to be reversed.</li>
-<li>Encoding (like Base64) provides zero confidentiality — it&#39;s a format change, not protection.</li>
+<li>Encoding (like Base64) provides zero confidentiality — it's a format change, not protection.</li>
 <li>Encryption is reversible only with the correct key; hashing is deliberately one-way, with no key to recover the original at all.</li>
 <li>This distinction underlies password storage (hash, never encrypt), data confidentiality (encrypt), and data transmission formats (encode) throughout the rest of this course.</li>
 </ul>
@@ -126,19 +157,67 @@ SHA-256(&quot;password124&quot;) = 8a9c1b5a...  (completely different output —
 <li><a href="https://www.crypto101.io/">Crypto101</a> — a free, approachable introductory cryptography book.</li>
 </ul>
 <p><strong>Next up →</strong> <a href="#/lesson/06-crypto-fundamentals/symmetric-encryption">Symmetric Encryption</a></p>
-<nav class="pager"><span></span><a href="/lesson/06-crypto-fundamentals/symmetric-encryption.html">Symmetric Encryption →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><span></span><a href="/lesson/06-crypto-fundamentals/symmetric-encryption.html">Symmetric Encryption →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/06-crypto-fundamentals/what-is-cryptography";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

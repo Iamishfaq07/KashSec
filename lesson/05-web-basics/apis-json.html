@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>APIs &amp; JSON — Path 05 · KashSec Academy</title>
 <meta name="description" content="Modern web apps are basically two things stitched together: a JavaScript UI in your browser, and a set of APIs on a server. Learn to see the APIs and you see the real attack surface.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/05-web-basics/apis-json.html">
@@ -21,68 +22,98 @@
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 05 — How the Web Works","item":"https://kashsec.vercel.app/lesson/05-web-basics/"},{"@type":"ListItem","position":4,"name":"APIs & JSON","item":"https://kashsec.vercel.app/lesson/05-web-basics/apis-json.html"}]}
 </script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"LearningResource","name":"APIs & JSON","headline":"APIs & JSON","description":"Modern web apps are basically two things stitched together: a JavaScript UI in your browser, and a set of APIs on a server. Learn to see the APIs and you see the real attack surface.","url":"https://kashsec.vercel.app/lesson/05-web-basics/apis-json.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"How modern apps really talk under the hood.","isPartOf":{"@type":"Course","name":"Path 05: How the Web Works","url":"https://kashsec.vercel.app/lesson/05-web-basics/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/05-web-basics/apis-json.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/05-web-basics/apis-json">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/05-web-basics/">Path 05 — How the Web Works</a> · APIs &amp; JSON</div>
-  <article><h1>APIs &amp; JSON</h1>
+<a class="skip" href="/lesson/05-web-basics/apis-json.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/05-web-basics/">Path 05 — How the Web Works</a> · APIs &amp; JSON</nav>
+    <div class="md" id="content"><article><h1>APIs &amp; JSON</h1>
 <p>Modern web apps are basically two things stitched together: a JavaScript UI in your browser, and a set of <strong>APIs</strong> on a server. Learn to see the APIs and you see the real attack surface.</p>
-<h2>What &quot;API&quot; actually means</h2>
+<h2>What "API" actually means</h2>
 <p><strong>API</strong> = Application Programming Interface. On the web, it usually means: <strong>a URL that returns data (JSON) instead of a whole HTML page</strong>.</p>
 <p>Compare:</p>
 <ul>
 <li><code>https://example.com/products</code> — returns HTML for a browser to render.</li>
 <li><code>https://example.com/api/products</code> — returns JSON for another program to consume.</li>
 </ul>
-<p>The second is an API. It&#39;s what the site&#39;s own JavaScript calls, what mobile apps call, and what integrations use.</p>
+<p>The second is an API. It's what the site's own JavaScript calls, what mobile apps call, and what integrations use.</p>
 <h2>JSON in 60 seconds</h2>
 <p>JSON (JavaScript Object Notation) is text that looks like this:</p>
 <pre><code class="language-json">{
-  &quot;user&quot;: {
-    &quot;id&quot;: 42,
-    &quot;username&quot;: &quot;alice&quot;,
-    &quot;roles&quot;: [&quot;user&quot;, &quot;editor&quot;],
-    &quot;is_admin&quot;: false,
-    &quot;email&quot;: &quot;alice@example.com&quot;
+  "user": {
+    "id": 42,
+    "username": "alice",
+    "roles": ["user", "editor"],
+    "is_admin": false,
+    "email": "alice@example.com"
   },
-  &quot;orders&quot;: [
-    { &quot;id&quot;: 101, &quot;total&quot;: 29.99, &quot;status&quot;: &quot;shipped&quot; },
-    { &quot;id&quot;: 102, &quot;total&quot;: 15.00, &quot;status&quot;: &quot;processing&quot; }
+  "orders": [
+    { "id": 101, "total": 29.99, "status": "shipped" },
+    { "id": 102, "total": 15.00, "status": "processing" }
   ]
 }
 </code></pre>
-<p>Six data types: <strong>object</strong> <code>{}</code>, <strong>array</strong> <code>[]</code>, <strong>string</strong> <code>&quot;...&quot;</code>, <strong>number</strong>, <strong>boolean</strong> <code>true/false</code>, <strong>null</strong>. That&#39;s all of JSON. Learn to read this and you can read 99% of modern web APIs.</p>
+<p>Six data types: <strong>object</strong> <code>{}</code>, <strong>array</strong> <code>[]</code>, <strong>string</strong> <code>"..."</code>, <strong>number</strong>, <strong>boolean</strong> <code>true/false</code>, <strong>null</strong>. That's all of JSON. Learn to read this and you can read 99% of modern web APIs.</p>
 <h2>REST — the common style</h2>
 <p>Most public APIs follow a style called <strong>REST</strong>. It uses HTTP methods to mean specific things:</p>
 <table>
@@ -114,7 +145,7 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <td><code>DELETE /api/users/42</code></td>
 </tr>
 </tbody></table>
-<p>Resource identifiers appear in the path (<code>/users/42</code>), and data flows in the body as JSON. Learn to read a URL as <em>&quot;which noun, which action?&quot;</em> and you can read most REST APIs at a glance.</p>
+<p>Resource identifiers appear in the path (<code>/users/42</code>), and data flows in the body as JSON. Learn to read a URL as <em>"which noun, which action?"</em> and you can read most REST APIs at a glance.</p>
 <h2>Anatomy of an API call</h2>
 <pre><code class="language-http">POST /api/orders HTTP/1.1
 Host: shop.example.com
@@ -122,9 +153,9 @@ Authorization: Bearer eyJhbGciOi...
 Content-Type: application/json
 
 {
-  &quot;product_id&quot;: 101,
-  &quot;quantity&quot;: 2,
-  &quot;shipping_address_id&quot;: 7
+  "product_id": 101,
+  "quantity": 2,
+  "shipping_address_id": 7
 }
 </code></pre>
 <p>And the response:</p>
@@ -132,31 +163,31 @@ Content-Type: application/json
 Content-Type: application/json
 
 {
-  &quot;order_id&quot;: 102,
-  &quot;status&quot;: &quot;confirmed&quot;,
-  &quot;total&quot;: 59.98
+  "order_id": 102,
+  "status": "confirmed",
+  "total": 59.98
 }
 </code></pre>
 <p>Three things worth noticing:</p>
 <ol>
 <li><strong>Auth in a header.</strong> Not a form, not a cookie — a <code>Bearer</code> token. Very common on modern APIs.</li>
 <li><strong>Content-Type: application/json</strong> on both sides.</li>
-<li><strong>HTTP status codes</strong> carry real meaning — <code>201 Created</code> isn&#39;t just <code>200</code>, it says &quot;made a new thing.&quot; APIs use status codes richly.</li>
+<li><strong>HTTP status codes</strong> carry real meaning — <code>201 Created</code> isn't just <code>200</code>, it says "made a new thing." APIs use status codes richly.</li>
 </ol>
 <h2>Calling an API from Python — the payoff</h2>
-<p>Because APIs are just HTTP, you can call them from any language. Python&#39;s <code>requests</code> library makes it a breeze:</p>
+<p>Because APIs are just HTTP, you can call them from any language. Python's <code>requests</code> library makes it a breeze:</p>
 <pre><code class="language-python">import requests
 
 # Simple GET
-r = requests.get(&quot;https://api.github.com/repos/anthropics/anthropic-sdk-python&quot;)
+r = requests.get("https://api.github.com/repos/anthropics/anthropic-sdk-python")
 print(r.status_code)                      # 200
 data = r.json()                           # parses JSON into a Python dict
-print(data[&quot;name&quot;], data[&quot;stargazers_count&quot;])
+print(data["name"], data["stargazers_count"])
 
 # Authenticated POST
-headers = {&quot;Authorization&quot;: &quot;Bearer YOUR_TOKEN&quot;}
-payload = {&quot;title&quot;: &quot;Bug found&quot;, &quot;body&quot;: &quot;Details...&quot;}
-r = requests.post(&quot;https://api.example.com/issues&quot;,
+headers = {"Authorization": "Bearer YOUR_TOKEN"}
+payload = {"title": "Bug found", "body": "Details..."}
+r = requests.post("https://api.example.com/issues",
                   json=payload, headers=headers)
 print(r.status_code, r.json())
 </code></pre>
@@ -172,7 +203,7 @@ print(r.status_code, r.json())
 </thead>
 <tbody><tr>
 <td><strong>BOLA / IDOR</strong> — Broken Object Level Authorization</td>
-<td>You access <code>/api/orders/102</code> and the server doesn&#39;t check whether order 102 belongs to you.</td>
+<td>You access <code>/api/orders/102</code> and the server doesn't check whether order 102 belongs to you.</td>
 </tr>
 <tr>
 <td><strong>Broken authentication</strong></td>
@@ -184,7 +215,7 @@ print(r.status_code, r.json())
 </tr>
 <tr>
 <td><strong>Broken function-level authorization</strong></td>
-<td>Admin endpoint exists at <code>/api/admin/users/42/delete</code> but doesn&#39;t check role.</td>
+<td>Admin endpoint exists at <code>/api/admin/users/42/delete</code> but doesn't check role.</td>
 </tr>
 <tr>
 <td><strong>Mass assignment</strong></td>
@@ -199,27 +230,27 @@ print(r.status_code, r.json())
 <td>An API endpoint fetches a URL you supply, unfiltered.</td>
 </tr>
 </tbody></table>
-<p>You&#39;ll meet each in Path 11. The point today: <strong>APIs are where modern web bugs live, at least as much as the HTML UI.</strong></p>
+<p>You'll meet each in Path 11. The point today: <strong>APIs are where modern web bugs live, at least as much as the HTML UI.</strong></p>
 <h2>API versioning and forgotten endpoints</h2>
-<p>APIs rarely stay static — as apps evolve, developers introduce <code>/api/v2/...</code> while <code>/api/v1/...</code> often keeps running quietly in the background for older mobile app versions still in the wild. Those old, unmaintained versions are a genuinely rich attack surface: a <code>v1</code> endpoint might lack a security fix that was only ever applied to <code>v2</code>, or might expose a field that <code>v2</code> deliberately hid after a privacy review. This is exactly the kind of thing Path 15&#39;s recon material teaches you to hunt for — trying <code>/api/v1/</code>, <code>/api/v0/</code>, <code>/api/beta/</code>, and similar guesses against any API you find, since forgotten versions are consistently one of the highest-value things to check in bug bounty recon.</p>
+<p>APIs rarely stay static — as apps evolve, developers introduce <code>/api/v2/...</code> while <code>/api/v1/...</code> often keeps running quietly in the background for older mobile app versions still in the wild. Those old, unmaintained versions are a genuinely rich attack surface: a <code>v1</code> endpoint might lack a security fix that was only ever applied to <code>v2</code>, or might expose a field that <code>v2</code> deliberately hid after a privacy review. This is exactly the kind of thing Path 15's recon material teaches you to hunt for — trying <code>/api/v1/</code>, <code>/api/v0/</code>, <code>/api/beta/</code>, and similar guesses against any API you find, since forgotten versions are consistently one of the highest-value things to check in bug bounty recon.</p>
 <h2>Rate limiting and pagination — the practical side</h2>
-<p>Two mundane-sounding API behaviours matter a lot in practice. <strong>Rate limiting</strong> caps how many requests a caller can make in a given window (commonly signalled with <code>429 Too Many Requests</code> and headers like <code>X-RateLimit-Remaining</code>) — the same defence discussed in Path 04&#39;s automation lesson, applied from the server&#39;s side this time. <strong>Pagination</strong> controls how much data a single request returns, typically via <code>?page=2&amp;per_page=50</code> or a <code>cursor</code> parameter — an API that returns <em>everything</em> in one unpaginated response isn&#39;t just slow, it can hand an attacker your entire user table in a single request if authorization is also missing. Reading how an API paginates and rate-limits tells you a lot about how seriously its developers thought about abuse.</p>
+<p>Two mundane-sounding API behaviours matter a lot in practice. <strong>Rate limiting</strong> caps how many requests a caller can make in a given window (commonly signalled with <code>429 Too Many Requests</code> and headers like <code>X-RateLimit-Remaining</code>) — the same defence discussed in Path 04's automation lesson, applied from the server's side this time. <strong>Pagination</strong> controls how much data a single request returns, typically via <code>?page=2&amp;per_page=50</code> or a <code>cursor</code> parameter — an API that returns <em>everything</em> in one unpaginated response isn't just slow, it can hand an attacker your entire user table in a single request if authorization is also missing. Reading how an API paginates and rate-limits tells you a lot about how seriously its developers thought about abuse.</p>
 <h2>Finding APIs on a site</h2>
-<p>Even sites with no &quot;API documentation&quot; have APIs. Every modern SPA is calling them under the hood. Simple approach:</p>
+<p>Even sites with no "API documentation" have APIs. Every modern SPA is calling them under the hood. Simple approach:</p>
 <ol>
 <li>Open the site in Firefox → <strong>F12 → Network → XHR/Fetch filter</strong>.</li>
 <li>Click around. Every API call the UI makes lights up in the panel.</li>
 <li>For each: right-click → <strong>Copy → Copy as cURL</strong>. You now have a self-contained command that replicates the request from your terminal.</li>
 </ol>
-<p>That &quot;Copy as cURL&quot; trick is one of the single most useful bits of web-security workflow. Practise it now.</p>
-<h2>Documenting formats you&#39;ll see</h2>
+<p>That "Copy as cURL" trick is one of the single most useful bits of web-security workflow. Practise it now.</p>
+<h2>Documenting formats you'll see</h2>
 <ul>
 <li><strong>OpenAPI / Swagger</strong> — the standard way of describing REST APIs. Look for <code>/swagger</code>, <code>/openapi.json</code>, <code>/api-docs</code>. Sometimes accidentally exposed on production 👀</li>
 <li><strong>GraphQL</strong> — a newer style where the client says exactly which fields it wants in a single query. Common bug: enumeration via introspection.</li>
 <li><strong>gRPC</strong> — high-performance binary API style, mostly internal. Sometimes exposed via <code>grpc-web</code>.</li>
 <li><strong>SOAP</strong> — legacy XML style. Rare in new code, common in enterprise.</li>
 </ul>
-<p>REST covers most of what you&#39;ll meet as a beginner.</p>
+<p>REST covers most of what you'll meet as a beginner.</p>
 <h2>🧪 Lab — Explore a real API</h2>
 <p>Try this in your terminal:</p>
 <pre><code class="language-bash"># 1. A public read-only API
@@ -229,15 +260,15 @@ curl -s https://api.github.com/repos/torvalds/linux | head -30
 curl -s https://api.github.com/repos/torvalds/linux | jq
 
 # 3. Just extract one field
-curl -s https://api.github.com/repos/torvalds/linux | jq &#39;.stargazers_count&#39;
+curl -s https://api.github.com/repos/torvalds/linux | jq '.stargazers_count'
 
 # 4. A Python version:
-python3 -c &quot;
+python3 -c "
 import requests
-r = requests.get(&#39;https://api.github.com/repos/torvalds/linux&#39;)
+r = requests.get('https://api.github.com/repos/torvalds/linux')
 d = r.json()
-print(f\&quot;{d[&#39;name&#39;]}: {d[&#39;stargazers_count&#39;]} stars, {d[&#39;forks_count&#39;]} forks\&quot;)
-&quot;
+print(f\"{d['name']}: {d['stargazers_count']} stars, {d['forks_count']} forks\")
+"
 </code></pre>
 <p>Then try this on any web app you use (start with your own accounts):</p>
 <ol>
@@ -246,8 +277,8 @@ print(f\&quot;{d[&#39;name&#39;]}: {d[&#39;stargazers_count&#39;]} stars, {d[&#3
 <li>Right-click a request → <strong>Copy as cURL</strong>.</li>
 <li>Paste into your terminal. Run it. Watch the same API respond.</li>
 </ol>
-<p>That&#39;s you talking to the API directly, bypassing the entire UI. Every serious web attacker and defender does this daily.</p>
-<p>A friend says &quot;our API is secure because our web UI hides the delete button unless you&#39;re an admin.&quot; What one word describes the flaw in that reasoning?</p>
+<p>That's you talking to the API directly, bypassing the entire UI. Every serious web attacker and defender does this daily.</p>
+<p>A friend says "our API is secure because our web UI hides the delete button unless you're an admin." What one word describes the flaw in that reasoning?</p>
 <details><summary>Show answer</summary><strong>Client-side.</strong> All UI hiding is client-side; the API endpoint itself must also enforce the check server-side. Otherwise an attacker just calls the endpoint directly (via cURL, Postman, or any script).</details><h2>Key terms</h2>
 <ul>
 <li><strong>API</strong> — a URL that returns data (usually JSON) for a program to consume.</li>
@@ -264,7 +295,7 @@ print(f\&quot;{d[&#39;name&#39;]}: {d[&#39;stargazers_count&#39;]} stars, {d[&#3
 <li>JSON is a small, boring, universal data format — learn to read it fluently.</li>
 <li>REST uses HTTP methods to mean create/read/update/delete on resources.</li>
 <li>APIs have distinct bug classes (BOLA, mass assignment, excessive exposure).</li>
-<li>Firefox&#39;s &quot;Copy as cURL&quot; is the fastest way to explore any site&#39;s API.</li>
+<li>Firefox's "Copy as cURL" is the fastest way to explore any site's API.</li>
 </ul>
 <h3>References</h3>
 <ul>
@@ -275,19 +306,67 @@ print(f\&quot;{d[&#39;name&#39;]}: {d[&#39;stargazers_count&#39;]} stars, {d[&#3
 <li><a href="https://portswigger.net/web-security/api-testing">PortSwigger — API testing</a></li>
 </ul>
 <p><strong>Next up →</strong> <a href="#/lesson/05-web-basics/websockets-realtime-web">WebSockets &amp; the real-time web</a></p>
-<nav class="pager"><a href="/lesson/05-web-basics/same-origin-policy-and-cors.html">← Same-Origin Policy &amp; CORS</a><a href="/lesson/05-web-basics/websockets-realtime-web.html">WebSockets &amp; the real-time web →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/05-web-basics/same-origin-policy-and-cors.html">← Same-Origin Policy &amp; CORS</a><a href="/lesson/05-web-basics/websockets-realtime-web.html">WebSockets &amp; the real-time web →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/05-web-basics/apis-json";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

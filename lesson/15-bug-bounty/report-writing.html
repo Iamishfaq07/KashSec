@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>Reports that get paid — Path 15 · KashSec Academy</title>
 <meta name="description" content="Path 14.7 taught the professional pentest report structure. Bug bounty reporting uses the same underlying discipline, adapted for a faster-moving, higher-volume, triage-driven context. Getting this ri">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/15-bug-bounty/report-writing.html">
@@ -21,42 +22,72 @@
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 15 — Bug Bounty","item":"https://kashsec.vercel.app/lesson/15-bug-bounty/"},{"@type":"ListItem","position":4,"name":"Reports that get paid","item":"https://kashsec.vercel.app/lesson/15-bug-bounty/report-writing.html"}]}
 </script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"LearningResource","name":"Reports that get paid","headline":"Reports that get paid","description":"Path 14.7 taught the professional pentest report structure. Bug bounty reporting uses the same underlying discipline, adapted for a faster-moving, higher-volume, triage-driven context. Getting this ri","url":"https://kashsec.vercel.app/lesson/15-bug-bounty/report-writing.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Intermediate→Advanced","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"The template, plus impact and CVSS.","isPartOf":{"@type":"Course","name":"Path 15: Bug Bounty","url":"https://kashsec.vercel.app/lesson/15-bug-bounty/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/15-bug-bounty/report-writing.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/15-bug-bounty/report-writing">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/15-bug-bounty/">Path 15 — Bug Bounty</a> · Reports that get paid</div>
-  <article><h1>Writing effective bug bounty reports</h1>
+<a class="skip" href="/lesson/15-bug-bounty/report-writing.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/15-bug-bounty/">Path 15 — Bug Bounty</a> · Reports that get paid</nav>
+    <div class="md" id="content"><article><h1>Writing effective bug bounty reports</h1>
 <p>Path 14.7 taught the professional pentest report structure. Bug bounty reporting uses the same underlying discipline, adapted for a faster-moving, higher-volume, triage-driven context. Getting this right directly determines whether you get paid, and how quickly.</p>
 <h2>Why bug bounty reports have their own conventions</h2>
 <p>Unlike a formal pentest report (written once, for one client relationship), a bug bounty report is read by a <strong>triager</strong> — often reviewing dozens of submissions across many researchers and programs — who needs to validate your finding <strong>fast</strong>. A report that takes 30 seconds to understand and reproduce gets triaged (and paid) far faster than one requiring back-and-forth clarification.</p>
@@ -85,25 +116,25 @@ session cookie theft (if not HttpOnly), account takeover, or
 further phishing within the trusted domain context.</p>
 <h2>Suggested Fix</h2>
 <p>Apply context-appropriate output encoding to the <code>q</code> parameter
-before reflecting it into the HTML response. See OWASP&#39;s XSS
+before reflecting it into the HTML response. See OWASP's XSS
 Prevention Cheat Sheet: [link]</p>
 <h2>Severity</h2>
 <p>Medium — reflected XSS requiring user interaction (link click)
 CVSS 3.1: 6.1 (AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N)</p>
 <pre><code>
-This mirrors Path 14.7&#39;s four-part structure exactly (title/summary, reproduction, impact, remediation) — just formatted for fast triage rather than an executive audience.
+This mirrors Path 14.7's four-part structure exactly (title/summary, reproduction, impact, remediation) — just formatted for fast triage rather than an executive audience.
 
 ## The single most impactful habit: a working Proof of Concept
 
-Recall Path 11&#39;s hands-on labs — every technique you practised produced something concrete: a request in Burp Repeater, a specific payload, a specific URL. A bug bounty report&#39;s PoC should be **exactly that** — something a triager can literally copy, paste, and immediately observe the same result themselves, with **zero ambiguity**.
+Recall Path 11's hands-on labs — every technique you practised produced something concrete: a request in Burp Repeater, a specific payload, a specific URL. A bug bounty report's PoC should be **exactly that** — something a triager can literally copy, paste, and immediately observe the same result themselves, with **zero ambiguity**.
 
 ```bash
 # A genuinely excellent PoC — copy-pasteable, self-contained:
-curl -s &quot;https://example.com/api/user?id=1024&quot; \
-  -H &quot;Cookie: session=YOUR_TEST_SESSION_HERE&quot; | jq
+curl -s "https://example.com/api/user?id=1024" \
+  -H "Cookie: session=YOUR_TEST_SESSION_HERE" | jq
 
 # Compare to a vague, unhelpful PoC:
-# &quot;I found that if you change the ID in the URL you can see other people&#39;s data&quot;
+# "I found that if you change the ID in the URL you can see other people's data"
 </code></pre>
 <p>The <code>curl</code> version above requires zero interpretation — a triager runs it, sees the leaked data structure, and validates the finding in seconds. The vague description requires them to reconstruct your exact steps themselves, adding delay and frustration on both sides.</p>
 <h2>Video PoCs — increasingly expected for complex bugs</h2>
@@ -112,88 +143,136 @@ curl -s &quot;https://example.com/api/user?id=1024&quot; \
 ffmpeg -f x11grab -s 1920x1080 -i :0.0 -f pulse -i default poc-video.mp4
 </code></pre>
 <p>Many programs explicitly note in their submission guidelines whether video PoCs are preferred for certain vulnerability classes — always check.</p>
-<h2>Severity justification — don&#39;t just assert it, show your work</h2>
-<p>Recall Path 14.7&#39;s CVSS discipline. In bug bounty specifically, triagers frequently <strong>downgrade</strong> severity if the report doesn&#39;t clearly justify the claimed impact:</p>
-<pre><code class="language-markdown">❌ Weak: &quot;This is critical because it&#39;s a security vulnerability.&quot;
+<h2>Severity justification — don't just assert it, show your work</h2>
+<p>Recall Path 14.7's CVSS discipline. In bug bounty specifically, triagers frequently <strong>downgrade</strong> severity if the report doesn't clearly justify the claimed impact:</p>
+<pre><code class="language-markdown">❌ Weak: "This is critical because it's a security vulnerability."
 
-✅ Strong: &quot;This IDOR allows any authenticated user (even a free-tier
+✅ Strong: "This IDOR allows any authenticated user (even a free-tier
 account) to read the full billing history — including partial credit
 card numbers and billing addresses — of any other user by
 incrementing a sequential integer ID, with zero rate limiting
 observed during testing. Given the sensitivity of financial PII
 and the trivial exploitability (no special tooling required, just
-URL manipulation), I&#39;ve rated this Critical per your program&#39;s
-vulnerability rating taxonomy.&quot;
+URL manipulation), I've rated this Critical per your program's
+vulnerability rating taxonomy."
 </code></pre>
-<p>Explicitly referencing the <strong>specific program&#39;s own published severity taxonomy</strong> (many programs, like Bugcrowd, publish one — see Path 15.1&#39;s reference) when justifying your rating shows the triager you&#39;ve done your homework and are arguing from their own stated criteria, not just your personal opinion.</p>
+<p>Explicitly referencing the <strong>specific program's own published severity taxonomy</strong> (many programs, like Bugcrowd, publish one — see Path 15.1's reference) when justifying your rating shows the triager you've done your homework and are arguing from their own stated criteria, not just your personal opinion.</p>
 <h2>What NOT to do — common mistakes that hurt your submission</h2>
 <ul>
-<li><strong>Spamming low-quality/automated-scanner output</strong> without manual verification — most programs explicitly prohibit this, and it damages your reputation on the platform (some platforms track and penalise a poor &quot;signal ratio&quot;).</li>
-<li><strong>Submitting theoretical findings without a working PoC</strong> (&quot;this endpoint might be vulnerable to X, you should check&quot;) — a huge fraction of programs will close these as &quot;not applicable&quot; or &quot;needs more info,&quot; costing you response cycles even if you&#39;re technically correct.</li>
-<li><strong>Testing against real user data unnecessarily</strong> — recall Path 14.6&#39;s &quot;demonstrate, don&#39;t exfiltrate&quot; principle, doubly important here since you don&#39;t have a direct contractual relationship softening any misstep.</li>
-<li><strong>Re-submitting a &quot;won&#39;t fix&quot; finding repeatedly</strong> without new information — if a triager has made a considered decision, respectfully accept it (or use the platform&#39;s formal appeal/mediation process if one exists) rather than resubmitting the same report.</li>
+<li><strong>Spamming low-quality/automated-scanner output</strong> without manual verification — most programs explicitly prohibit this, and it damages your reputation on the platform (some platforms track and penalise a poor "signal ratio").</li>
+<li><strong>Submitting theoretical findings without a working PoC</strong> ("this endpoint might be vulnerable to X, you should check") — a huge fraction of programs will close these as "not applicable" or "needs more info," costing you response cycles even if you're technically correct.</li>
+<li><strong>Testing against real user data unnecessarily</strong> — recall Path 14.6's "demonstrate, don't exfiltrate" principle, doubly important here since you don't have a direct contractual relationship softening any misstep.</li>
+<li><strong>Re-submitting a "won't fix" finding repeatedly</strong> without new information — if a triager has made a considered decision, respectfully accept it (or use the platform's formal appeal/mediation process if one exists) rather than resubmitting the same report.</li>
 <li><strong>Public disclosure before authorization</strong> — nearly every program requires explicit permission before you publish any details publicly, even after the bug is fixed; violating this can result in program bans and, in serious cases, legal consequences.</li>
 </ul>
-<h2>Understanding a report&#39;s lifecycle states</h2>
-<p>A submitted report moves through a series of named states on most platforms, and understanding what each one actually means avoids a lot of unnecessary anxiety and misjudged follow-up. <strong>New/Pending</strong> means it hasn&#39;t been triaged yet — normal to sit here for hours to days depending on program volume. <strong>Triaged</strong> means a human has validated the finding and it&#39;s now in the client&#39;s queue for fixing — this is the meaningful &quot;yes, this is real&quot; milestone, even before payment is finalised. <strong>Informative</strong> means the report was read but doesn&#39;t meet the bar for a paid finding (often correct-but-low-impact, or already-known behaviour) — worth reading the triager&#39;s reasoning carefully rather than assuming a mistake. <strong>Duplicate</strong> and <strong>Not Applicable</strong> are self-explanatory but worth the same careful reading — sometimes a &quot;duplicate&quot; marking references an internal issue you had no way of knowing about, which is a legitimate, if frustrating, outcome rather than an error to dispute. Knowing this vocabulary means you can track your own submissions&#39; health across a program without needing to ask &quot;what does this status mean&quot; every time.</p>
+<h2>Understanding a report's lifecycle states</h2>
+<p>A submitted report moves through a series of named states on most platforms, and understanding what each one actually means avoids a lot of unnecessary anxiety and misjudged follow-up. <strong>New/Pending</strong> means it hasn't been triaged yet — normal to sit here for hours to days depending on program volume. <strong>Triaged</strong> means a human has validated the finding and it's now in the client's queue for fixing — this is the meaningful "yes, this is real" milestone, even before payment is finalised. <strong>Informative</strong> means the report was read but doesn't meet the bar for a paid finding (often correct-but-low-impact, or already-known behaviour) — worth reading the triager's reasoning carefully rather than assuming a mistake. <strong>Duplicate</strong> and <strong>Not Applicable</strong> are self-explanatory but worth the same careful reading — sometimes a "duplicate" marking references an internal issue you had no way of knowing about, which is a legitimate, if frustrating, outcome rather than an error to dispute. Knowing this vocabulary means you can track your own submissions' health across a program without needing to ask "what does this status mean" every time.</p>
 <h2>Handling triager questions and disagreements professionally</h2>
-<pre><code class="language-markdown">Triager: &quot;We&#39;re unable to reproduce this. Can you provide more detail?&quot;
+<pre><code class="language-markdown">Triager: "We're unable to reproduce this. Can you provide more detail?"
 
 Good response:
-&quot;Thanks for looking into this! Here&#39;s a fresh recording showing the
+"Thanks for looking into this! Here's a fresh recording showing the
 exact steps: [new video link]. I tested this again just now on
 2026-07-13 at 14:30 UTC using Firefox 128 — happy to hop on a call
-or provide additional detail if useful.&quot;
+or provide additional detail if useful."
 
 Poor response:
-&quot;It clearly works, did you even try it?&quot;
+"It clearly works, did you even try it?"
 </code></pre>
-<p>Recall Path 14&#39;s professional discipline, applied here just as much — triagers are humans doing a high-volume job, and a collaborative, patient tone consistently produces better outcomes (faster resolution, fairer severity assessment, future private program invitations per Path 15.2) than an adversarial one, even when you&#39;re confident you&#39;re right.</p>
+<p>Recall Path 14's professional discipline, applied here just as much — triagers are humans doing a high-volume job, and a collaborative, patient tone consistently produces better outcomes (faster resolution, fairer severity assessment, future private program invitations per Path 15.2) than an adversarial one, even when you're confident you're right.</p>
 <h2>🧪 Lab — Rewrite a real report</h2>
-<p>Go back to 3 disclosed reports you read in Path 15.1&#39;s lab (HackerOne Hacktivity). For each:</p>
+<p>Go back to 3 disclosed reports you read in Path 15.1's lab (HackerOne Hacktivity). For each:</p>
 <ol>
 <li>Identify whether it followed the structure in this lesson (title, summary, PoC, impact, fix, severity justification).</li>
 <li>Note specifically what made the PoC section effective (or not).</li>
 <li>Pick your weakest-structured example and <strong>rewrite</strong> just its PoC and impact sections to match the standard in this lesson, using only information visible in the original report.</li>
 </ol>
 <p>This rewriting exercise builds the exact muscle memory needed to write your own reports quickly and effectively once you find a real, valid bug of your own.</p>
-<p>A researcher submits: &quot;The login page might be vulnerable to SQL injection, you should check the username field.&quot; Why is this likely to be closed quickly as &quot;needs more info&quot; or &quot;not applicable,&quot; even if the vulnerability might genuinely exist?</p>
+<p>A researcher submits: "The login page might be vulnerable to SQL injection, you should check the username field." Why is this likely to be closed quickly as "needs more info" or "not applicable," even if the vulnerability might genuinely exist?</p>
 <details><summary>Show answer</summary>There's no <strong>working proof of concept</strong> — no specific payload tried, no specific observed result (an error message, a timing difference, a data leak), nothing the triager can directly verify themselves. A report asserting a vulnerability <em>might</em> exist without demonstrating that it <em>does</em> exist, concretely and reproducibly, places the burden of actually finding and confirming the bug back on the triager — which most programs' guidelines explicitly discourage and will decline to reward, regardless of whether the underlying hunch was technically correct.</details><h2>Key terms</h2>
 <ul>
 <li><strong>Triager</strong> — the person (or team) reviewing and validating bug bounty submissions.</li>
 <li><strong>Proof of Concept (PoC)</strong> — a concrete, reproducible demonstration of the vulnerability, ideally copy-pasteable.</li>
-<li><strong>Signal ratio</strong> — a researcher&#39;s ratio of valid-to-invalid submissions, tracked by some platforms and affecting reputation.</li>
-<li><strong>Vulnerability Rating Taxonomy</strong> — a program&#39;s published severity classification standard (Path 15.1).</li>
+<li><strong>Signal ratio</strong> — a researcher's ratio of valid-to-invalid submissions, tracked by some platforms and affecting reputation.</li>
+<li><strong>Vulnerability Rating Taxonomy</strong> — a program's published severity classification standard (Path 15.1).</li>
 </ul>
 <h2>Recap</h2>
 <ul>
 <li>Bug bounty reports use the same four-part structure as formal pentest reports, optimised for fast triager validation.</li>
 <li>A concrete, copy-pasteable Proof of Concept is the single highest-impact element of any report.</li>
-<li>Justify severity by referencing the specific program&#39;s own published taxonomy, not just personal assertion.</li>
+<li>Justify severity by referencing the specific program's own published taxonomy, not just personal assertion.</li>
 <li>Avoid theoretical findings, unnecessary real-data access, unauthorized disclosure, and adversarial communication with triagers.</li>
 <li>Professional, patient communication consistently produces better long-term outcomes than confrontation.</li>
 </ul>
 <h3>References</h3>
 <ul>
-<li><a href="https://www.hackerone.com/vulnerability-management/how-write-great-vulnerability-report">HackerOne — How to Write a Great Vulnerability Report</a> — the platform&#39;s own official guidance.</li>
+<li><a href="https://www.hackerone.com/vulnerability-management/how-write-great-vulnerability-report">HackerOne — How to Write a Great Vulnerability Report</a> — the platform's own official guidance.</li>
 <li><a href="https://bugcrowd.com/vulnerability-rating-taxonomy">Bugcrowd — Vulnerability Rating Taxonomy</a> — referenced severity standard.</li>
 <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Vulnerability_Disclosure_Cheat_Sheet.html">OWASP — Vulnerability Disclosure Cheat Sheet</a></li>
 <li><a href="https://disclose.io/">Disclose.io</a> — standardised disclosure and safe harbor resources.</li>
 </ul>
 <p><strong>Next up →</strong> <a href="#/lesson/15-bug-bounty/hunting-idor">Hunting for IDOR &amp; access control bugs</a></p>
-<nav class="pager"><a href="/lesson/15-bug-bounty/burp-suite-for-bb.html">← Burp Suite for bug bounty workflow</a><a href="/lesson/15-bug-bounty/hunting-idor.html">Hunting IDOR →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/15-bug-bounty/burp-suite-for-bb.html">← Burp Suite for bug bounty workflow</a><a href="/lesson/15-bug-bounty/hunting-idor.html">Hunting IDOR →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/15-bug-bounty/report-writing";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

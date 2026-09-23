@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>Building an AppSec Program from Scratch — Path 22 · KashSec Academy</title>
 <meta name="description" content="You have the tools and the practices. Now you need the program — the people, process, and governance that make security sustainable across many teams and repositories, instead of depending entirely on">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/22-devsecops-appsec/building-appsec-program.html">
@@ -21,43 +22,73 @@
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 22 — DevSecOps & AppSec Program","item":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/"},{"@type":"ListItem","position":4,"name":"Building an AppSec Program from Scratch","item":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/building-appsec-program.html"}]}
 </script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"LearningResource","name":"Building an AppSec Program from Scratch","headline":"Building an AppSec Program from Scratch","description":"You have the tools and the practices. Now you need the program — the people, process, and governance that make security sustainable across many teams and repositories, instead of depending entirely on","url":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/building-appsec-program.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"The maturity ladder from ad hoc to optimising, and a concrete first 90 days.","isPartOf":{"@type":"Course","name":"Path 22: DevSecOps & AppSec Program","url":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/building-appsec-program.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/22-devsecops-appsec/building-appsec-program">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/22-devsecops-appsec/">Path 22 — DevSecOps &amp; AppSec Program</a> · Building an AppSec Program from Scratch</div>
-  <article><h1>Building an AppSec Program from Scratch</h1>
-<p>You have the tools and the practices. Now you need the program — the people, process, and governance that make security sustainable across many teams and repositories, instead of depending entirely on one person&#39;s memory and goodwill.</p>
+<a class="skip" href="/lesson/22-devsecops-appsec/building-appsec-program.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/22-devsecops-appsec/">Path 22 — DevSecOps &amp; AppSec Program</a> · Building an AppSec Program from Scratch</nav>
+    <div class="md" id="content"><article><h1>Building an AppSec Program from Scratch</h1>
+<p>You have the tools and the practices. Now you need the program — the people, process, and governance that make security sustainable across many teams and repositories, instead of depending entirely on one person's memory and goodwill.</p>
 <p>:::</p>
 <h2>The job of an AppSec program</h2>
 <ol>
@@ -66,7 +97,7 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <li>Make secure defaults the path of least resistance for developers</li>
 <li>Provide evidence for customers, auditors, and leadership</li>
 </ol>
-<p>Notice what&#39;s <em>not</em> on this list: &quot;run every possible scanner&quot; and &quot;review 100% of pull requests&quot; aren&#39;t goals, they&#39;re tactics. A program measured only by tool count can look busy while none of these four outcomes actually improve.</p>
+<p>Notice what's <em>not</em> on this list: "run every possible scanner" and "review 100% of pull requests" aren't goals, they're tactics. A program measured only by tool count can look busy while none of these four outcomes actually improve.</p>
 <h2>A practical maturity ladder</h2>
 <h3>Level 0 — Ad hoc</h3>
 <ul>
@@ -100,12 +131,12 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 Do not try to jump straight to Level 3. An organisation with no application inventory that buys a policy-as-code gate will just block builds mysteriously with no one able to explain why, and the whole program will get disabled within a month. Maturity is sequential for a reason — each level depends on the trust and infrastructure the previous one built.</p>
 <h2>Concrete first 90 days</h2>
 <ol>
-<li><strong>Inventory</strong> — list services, owners, languages, data sensitivity. You cannot secure what you don&#39;t know exists, and in most organisations more services exist than anyone expects.</li>
+<li><strong>Inventory</strong> — list services, owners, languages, data sensitivity. You cannot secure what you don't know exists, and in most organisations more services exist than anyone expects.</li>
 <li><strong>Quick wins</strong> — Dependabot / SCA + secret scanning everywhere. Both are low-effort, low-noise, and immediately demonstrate value with almost no developer friction.</li>
-<li><strong>Triage process</strong> — one place for findings, clear severity definitions, SLAs. Without this, &quot;quick wins&quot; step 2 just generates a pile of alerts nobody owns.</li>
+<li><strong>Triage process</strong> — one place for findings, clear severity definitions, SLAs. Without this, "quick wins" step 2 just generates a pile of alerts nobody owns.</li>
 <li><strong>Champion pilot</strong> — 2–3 teams with a named security champion. Start small enough to actually support them well; a champions program launched across 40 teams at once gets 40 half-hearted volunteers.</li>
-<li><strong>Design review office hours</strong> — make it easy to ask before building. A standing weekly slot where any team can bring a design question removes the friction of &quot;filing a ticket to talk to security.&quot;</li>
-<li><strong>One metric leadership cares about</strong> — e.g. &quot;critical vulns older than 30 days&quot;. Pick something concrete enough to report a trend line on by day 90.</li>
+<li><strong>Design review office hours</strong> — make it easy to ask before building. A standing weekly slot where any team can bring a design question removes the friction of "filing a ticket to talk to security."</li>
+<li><strong>One metric leadership cares about</strong> — e.g. "critical vulns older than 30 days". Pick something concrete enough to report a trend line on by day 90.</li>
 </ol>
 <h2>A concrete first-90-days timeline</h2>
 <table>
@@ -138,29 +169,29 @@ Do not try to jump straight to Level 3. An organisation with no application inve
 </tbody></table>
 <h2>Governance without bureaucracy</h2>
 <ul>
-<li>Severity definitions everyone understands — &quot;critical&quot; should mean the same thing to a developer, a security engineer, and an auditor</li>
+<li>Severity definitions everyone understands — "critical" should mean the same thing to a developer, a security engineer, and an auditor</li>
 <li>Written SLAs (e.g. critical = 7 days, high = 30 days)</li>
-<li>Exception process with expiry dates (no permanent &quot;accept the risk&quot; without review) — an exception that never expires is a policy, not an exception</li>
+<li>Exception process with expiry dates (no permanent "accept the risk" without review) — an exception that never expires is a policy, not an exception</li>
 <li>Regular reporting that is short and decision-oriented, using the metrics discipline from the previous lesson</li>
 </ul>
 <h2>What failure looks like, and why</h2>
-<p>The most common way an AppSec program fails is not lack of budget — it&#39;s lack of trust. A program that ships noisy tools without triage burns developer goodwill in month one, and every subsequent ask — even reasonable ones — gets read as &quot;the security team slowing us down again.&quot; Trust, once burned, is far more expensive to rebuild than it was to earn in the first place. This is why the 90-day plan above deliberately puts &quot;quick wins with low noise&quot; before anything that blocks a build.</p>
+<p>The most common way an AppSec program fails is not lack of budget — it's lack of trust. A program that ships noisy tools without triage burns developer goodwill in month one, and every subsequent ask — even reasonable ones — gets read as "the security team slowing us down again." Trust, once burned, is far more expensive to rebuild than it was to earn in the first place. This is why the 90-day plan above deliberately puts "quick wins with low noise" before anything that blocks a build.</p>
 <h2>🧪 Hands-on lab — write your own first-90-days plan</h2>
 <p>Pick a real or hypothetical organisation (10–50 engineers, some mix of services, no existing AppSec function).</p>
 <ol>
-<li><p>Write the inventory questions you&#39;d ask in week 1 — what exactly do you need to know about each service?</p>
+<li><p>Write the inventory questions you'd ask in week 1 — what exactly do you need to know about each service?</p>
 </li>
-<li><p>Pick your two &quot;quick wins&quot; for weeks 3–4. Justify why these two specifically, and not others.</p>
+<li><p>Pick your two "quick wins" for weeks 3–4. Justify why these two specifically, and not others.</p>
 </li>
 <li><p>Draft severity definitions for Critical/High/Medium/Low in one sentence each, concrete enough that two different engineers would classify the same finding the same way.</p>
 </li>
-<li><p>Pick the one Level-2 capability you&#39;d build toward first after the 90 days, and explain why it&#39;s next rather than any of the others.</p>
+<li><p>Pick the one Level-2 capability you'd build toward first after the 90 days, and explain why it's next rather than any of the others.</p>
 </li>
-<li><p>An organisation with no application inventory wants to buy an automated policy-as-code gate immediately. What&#39;s your advice, and why?</p>
+<li><p>An organisation with no application inventory wants to buy an automated policy-as-code gate immediately. What's your advice, and why?</p>
 </li>
-<li><p>Explain in one sentence why &quot;run every scanner available&quot; is not, by itself, a good AppSec program goal.</p>
+<li><p>Explain in one sentence why "run every scanner available" is not, by itself, a good AppSec program goal.</p>
 </li>
-<li><p>Why does an exception process need expiry dates rather than being a one-time &quot;accept the risk&quot; decision?</p>
+<li><p>Why does an exception process need expiry dates rather than being a one-time "accept the risk" decision?</p>
 </li>
 </ol>
 <h2>Key terms</h2>
@@ -178,19 +209,67 @@ Do not try to jump straight to Level 3. An organisation with no application inve
 <li><a href="https://owaspsamm.org/">OWASP SAMM</a> — the Software Assurance Maturity Model, the basis for the ladder above</li>
 <li><a href="https://www.bsimm.com/">BSIMM</a> — the Building Security In Maturity Model, based on real-world program data</li>
 </ul>
-<nav class="pager"><a href="/lesson/22-devsecops-appsec/vulnerability-management-and-prioritization.html">← Vulnerability Management &amp; Prioritization</a><a href="/lesson/22-devsecops-appsec/appsec-tooling-and-orchestration.html">AppSec Tooling &amp; Orchestration →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/22-devsecops-appsec/vulnerability-management-and-prioritization.html">← Vulnerability Management &amp; Prioritization</a><a href="/lesson/22-devsecops-appsec/appsec-tooling-and-orchestration.html">AppSec Tooling &amp; Orchestration →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/22-devsecops-appsec/building-appsec-program";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

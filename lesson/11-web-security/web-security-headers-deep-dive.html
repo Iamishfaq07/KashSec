@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>Web Security Headers: A Deep Dive — Path 11 · KashSec Academy</title>
 <meta name="description" content="The XSS lesson showed the vulnerability CSP defends against, and clickjacking introduced frame-ancestors. This lesson pulls every HTTP security header covered scattered throughout this course into one">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/11-web-security/web-security-headers-deep-dive.html">
@@ -21,42 +22,72 @@
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 11 — Web Security & Hacking","item":"https://kashsec.vercel.app/lesson/11-web-security/"},{"@type":"ListItem","position":4,"name":"Web Security Headers: A Deep Dive","item":"https://kashsec.vercel.app/lesson/11-web-security/web-security-headers-deep-dive.html"}]}
 </script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"LearningResource","name":"Web Security Headers: A Deep Dive","headline":"Web Security Headers: A Deep Dive","description":"The XSS lesson showed the vulnerability CSP defends against, and clickjacking introduced frame-ancestors. This lesson pulls every HTTP security header covered scattered throughout this course into one","url":"https://kashsec.vercel.app/lesson/11-web-security/web-security-headers-deep-dive.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"HSTS, X-Content-Type-Options, Referrer-Policy, and every header this course has mentioned, in one place.","isPartOf":{"@type":"Course","name":"Path 11: Web Security & Hacking","url":"https://kashsec.vercel.app/lesson/11-web-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/11-web-security/web-security-headers-deep-dive.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/11-web-security/web-security-headers-deep-dive">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/11-web-security/">Path 11 — Web Security &amp; Hacking</a> · Web Security Headers: A Deep Dive</div>
-  <article><h1>Web Security Headers: A Deep Dive</h1>
+<a class="skip" href="/lesson/11-web-security/web-security-headers-deep-dive.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/11-web-security/">Path 11 — Web Security &amp; Hacking</a> · Web Security Headers: A Deep Dive</nav>
+    <div class="md" id="content"><article><h1>Web Security Headers: A Deep Dive</h1>
 <p>The XSS lesson showed the vulnerability CSP defends against, and clickjacking introduced <code>frame-ancestors</code>. This lesson pulls every HTTP security header covered scattered throughout this course into one place, plus a few genuinely important ones not yet named — directly the checklist the HTTP-security-header-analyzer tool elsewhere in this course actually implements.</p>
 <h2>The headers worth knowing, in one place</h2>
 <table>
@@ -70,12 +101,12 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <tbody><tr>
 <td><code>Content-Security-Policy</code></td>
 <td>Restricts which content sources can load and execute</td>
-<td>Path 05, this path&#39;s XSS/clickjacking lessons</td>
+<td>Path 05, this path's XSS/clickjacking lessons</td>
 </tr>
 <tr>
 <td><code>X-Frame-Options</code></td>
 <td>Legacy anti-clickjacking protection</td>
-<td>This path&#39;s clickjacking lesson</td>
+<td>This path's clickjacking lesson</td>
 </tr>
 <tr>
 <td><code>Strict-Transport-Security</code></td>
@@ -84,7 +115,7 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 </tr>
 <tr>
 <td><code>X-Content-Type-Options</code></td>
-<td>Prevents the browser from guessing (MIME-sniffing) a file&#39;s type</td>
+<td>Prevents the browser from guessing (MIME-sniffing) a file's type</td>
 <td>New in this lesson</td>
 </tr>
 <tr>
@@ -101,43 +132,91 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <h2>HSTS: forcing HTTPS, even against the first request</h2>
 <pre><code>Strict-Transport-Security: max-age=31536000; includeSubDomains
 </code></pre>
-<p><strong>HSTS (HTTP Strict Transport Security)</strong> tells the browser to <em>never</em> connect to this site over plain HTTP again, for the specified duration — directly closing a real gap in Path 06&#39;s TLS-handshake coverage: even a site that properly redirects HTTP to HTTPS has a brief window on a user&#39;s <em>very first</em> visit where an attacker performing a man-in-the-middle attack (Path 02) could intercept that initial unencrypted request before the redirect happens. HSTS, once set, eliminates this gap for all future visits.</p>
+<p><strong>HSTS (HTTP Strict Transport Security)</strong> tells the browser to <em>never</em> connect to this site over plain HTTP again, for the specified duration — directly closing a real gap in Path 06's TLS-handshake coverage: even a site that properly redirects HTTP to HTTPS has a brief window on a user's <em>very first</em> visit where an attacker performing a man-in-the-middle attack (Path 02) could intercept that initial unencrypted request before the redirect happens. HSTS, once set, eliminates this gap for all future visits.</p>
 <h2>X-Content-Type-Options: stopping MIME-sniffing abuse</h2>
 <pre><code>X-Content-Type-Options: nosniff
 </code></pre>
-<p>Browsers sometimes try to guess a file&#39;s actual type by inspecting its content, rather than trusting the server&#39;s declared <code>Content-Type</code> — a genuinely exploitable behavior if an attacker can upload a file that gets misinterpreted as executable HTML/JavaScript instead of the harmless type it was declared as. <code>nosniff</code> disables this guessing behavior entirely, directly connecting to the file-upload risks the cmd-and-upload lesson covers.</p>
+<p>Browsers sometimes try to guess a file's actual type by inspecting its content, rather than trusting the server's declared <code>Content-Type</code> — a genuinely exploitable behavior if an attacker can upload a file that gets misinterpreted as executable HTML/JavaScript instead of the harmless type it was declared as. <code>nosniff</code> disables this guessing behavior entirely, directly connecting to the file-upload risks the cmd-and-upload lesson covers.</p>
 <h2>Referrer-Policy: controlling what leaks between sites</h2>
 <pre><code>Referrer-Policy: strict-origin-when-cross-origin
 </code></pre>
 <p>By default, navigating from one site to another sends the <em>full URL</em> of the page you came from as the <code>Referer</code> header — potentially leaking sensitive information embedded in a URL (a session token in a query parameter, a password-reset link) to a completely different site. <code>Referrer-Policy</code> controls exactly how much of that URL gets shared.</p>
 <h2>Why checking these headers is genuinely high-value reconnaissance</h2>
-<p>A quick header check (using <code>curl -I</code>, from Path 03, or DevTools&#39; Network tab, from Path 05) against any target reveals a lot about an application&#39;s security maturity in seconds — missing CSP, missing HSTS, and a permissive <code>X-Frame-Options</code> together paint a picture of an application that likely hasn&#39;t received much dedicated security attention, genuinely useful triage information before diving deeper into any specific vulnerability class.</p>
+<p>A quick header check (using <code>curl -I</code>, from Path 03, or DevTools' Network tab, from Path 05) against any target reveals a lot about an application's security maturity in seconds — missing CSP, missing HSTS, and a permissive <code>X-Frame-Options</code> together paint a picture of an application that likely hasn't received much dedicated security attention, genuinely useful triage information before diving deeper into any specific vulnerability class.</p>
 <p>Why does HSTS provide meaningfully better protection than simply configuring a server to redirect all HTTP requests to HTTPS?</p>
 <details><summary>Show answer</summary>A server-side HTTP-to-HTTPS redirect still requires the browser's <em>very first</em> request to that domain to go out over plain, unencrypted HTTP before the redirect can even happen — creating a brief but genuine window where a man-in-the-middle attacker positioned on the network (Path 02) could intercept that initial request, potentially stripping the redirect entirely and keeping the victim on an attacker-controlled, unencrypted connection for the rest of the session (a well-documented technique called SSL stripping). HSTS closes this gap by having the browser <em>remember</em>, after the first successful HTTPS visit, to never even attempt a plain HTTP connection to that domain again for the specified duration — meaning every subsequent visit skips the vulnerable unencrypted-first-request window entirely, rather than relying on a redirect that could theoretically be intercepted before it takes effect.</details><h2>Key terms</h2>
 <ul>
 <li><strong>HSTS (Strict-Transport-Security)</strong> — forces the browser to only ever connect over HTTPS to a domain, closing the unencrypted-first-request gap a redirect alone leaves open.</li>
-<li><strong>MIME-sniffing</strong> — a browser&#39;s attempt to guess a file&#39;s actual type by inspecting its content rather than trusting the declared Content-Type.</li>
+<li><strong>MIME-sniffing</strong> — a browser's attempt to guess a file's actual type by inspecting its content rather than trusting the declared Content-Type.</li>
 </ul>
 <h2>Recap</h2>
 <ul>
 <li>This lesson consolidates every HTTP security header touched on throughout this course, plus HSTS, X-Content-Type-Options, Referrer-Policy, and Permissions-Policy.</li>
-<li>HSTS closes a real gap that a simple HTTP-to-HTTPS redirect alone leaves open on a user&#39;s first visit.</li>
-<li>Checking an application&#39;s security headers is a fast, genuinely high-value reconnaissance step, revealing a lot about its overall security maturity in seconds.</li>
+<li>HSTS closes a real gap that a simple HTTP-to-HTTPS redirect alone leaves open on a user's first visit.</li>
+<li>Checking an application's security headers is a fast, genuinely high-value reconnaissance step, revealing a lot about its overall security maturity in seconds.</li>
 </ul>
 <p><strong>Next up →</strong> <a href="#/lesson/11-web-security/sqli">SQL Injection</a></p>
-<nav class="pager"><a href="/lesson/11-web-security/xss.html">← Cross-Site Scripting</a><a href="/lesson/11-web-security/sqli.html">SQL Injection →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/11-web-security/xss.html">← Cross-Site Scripting</a><a href="/lesson/11-web-security/sqli.html">SQL Injection →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/11-web-security/web-security-headers-deep-dive";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>SBOM &amp; Software Bill of Materials — Path 22 · KashSec Academy</title>
 <meta name="description" content="The secrets-supply-chain lesson covered typosquatting and dependency confusion as supply-chain attack vectors. This lesson covers the defensive tool increasingly mandated specifically to manage that s">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/22-devsecops-appsec/sbom-and-software-bill-of-materials.html">
@@ -21,45 +22,75 @@
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 22 — DevSecOps & AppSec Program","item":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/"},{"@type":"ListItem","position":4,"name":"SBOM & Software Bill of Materials","item":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/sbom-and-software-bill-of-materials.html"}]}
 </script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"LearningResource","name":"SBOM & Software Bill of Materials","headline":"SBOM & Software Bill of Materials","description":"The secrets-supply-chain lesson covered typosquatting and dependency confusion as supply-chain attack vectors. This lesson covers the defensive tool increasingly mandated specifically to manage that s","url":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/sbom-and-software-bill-of-materials.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Making the deep, invisible dependency tree visible and queryable.","isPartOf":{"@type":"Course","name":"Path 22: DevSecOps & AppSec Program","url":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/sbom-and-software-bill-of-materials.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/22-devsecops-appsec/sbom-and-software-bill-of-materials">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/22-devsecops-appsec/">Path 22 — DevSecOps &amp; AppSec Program</a> · SBOM &amp; Software Bill of Materials</div>
-  <article><h1>SBOM &amp; Software Bill of Materials</h1>
-<p>The secrets-supply-chain lesson covered typosquatting and dependency confusion as supply-chain attack vectors. This lesson covers the defensive tool increasingly mandated specifically to manage that same supply-chain risk at scale — the <strong>Software Bill of Materials (SBOM)</strong> — directly connecting to Path 23&#39;s GRC lesson, since SBOM requirements have moved from best practice into genuine regulatory and contractual mandate in several sectors.</p>
+<a class="skip" href="/lesson/22-devsecops-appsec/sbom-and-software-bill-of-materials.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/22-devsecops-appsec/">Path 22 — DevSecOps &amp; AppSec Program</a> · SBOM &amp; Software Bill of Materials</nav>
+    <div class="md" id="content"><article><h1>SBOM &amp; Software Bill of Materials</h1>
+<p>The secrets-supply-chain lesson covered typosquatting and dependency confusion as supply-chain attack vectors. This lesson covers the defensive tool increasingly mandated specifically to manage that same supply-chain risk at scale — the <strong>Software Bill of Materials (SBOM)</strong> — directly connecting to Path 23's GRC lesson, since SBOM requirements have moved from best practice into genuine regulatory and contractual mandate in several sectors.</p>
 <h2>What an SBOM actually is</h2>
-<p>A <strong>Software Bill of Materials</strong> is a formal, machine-readable inventory of every component — every library, every dependency, every transitive dependency of those dependencies — that makes up a piece of software, along with version information for each. The concept borrows directly from manufacturing&#39;s traditional bill of materials (a parts list for a physical product), applied to software&#39;s often-invisible internal composition.</p>
+<p>A <strong>Software Bill of Materials</strong> is a formal, machine-readable inventory of every component — every library, every dependency, every transitive dependency of those dependencies — that makes up a piece of software, along with version information for each. The concept borrows directly from manufacturing's traditional bill of materials (a parts list for a physical product), applied to software's often-invisible internal composition.</p>
 <pre><code>Application: PaymentService v2.4.1
 ├── express@4.18.2
 ├── jsonwebtoken@9.0.0
@@ -69,16 +100,16 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 └── ... (247 more dependencies)
 </code></pre>
 <h2>Why SBOMs became urgent, not just nice-to-have</h2>
-<p>Directly connecting to the secrets-supply-chain lesson&#39;s supply-chain attack coverage: several major, publicly disclosed supply-chain incidents — a widely-used dependency compromised, then silently pulled into thousands of downstream applications that had no way of knowing they depended on it, directly or transitively — made a genuinely uncomfortable fact clear across the industry: most organizations, until fairly recently, couldn&#39;t actually answer &quot;are we affected by this vulnerable component?&quot; quickly or confidently, simply because nobody had a complete, accurate inventory of what their software actually contained.</p>
+<p>Directly connecting to the secrets-supply-chain lesson's supply-chain attack coverage: several major, publicly disclosed supply-chain incidents — a widely-used dependency compromised, then silently pulled into thousands of downstream applications that had no way of knowing they depended on it, directly or transitively — made a genuinely uncomfortable fact clear across the industry: most organizations, until fairly recently, couldn't actually answer "are we affected by this vulnerable component?" quickly or confidently, simply because nobody had a complete, accurate inventory of what their software actually contained.</p>
 <h2>The transitive dependency problem, specifically</h2>
-<p>A genuinely important, easy-to-underestimate point: an application&#39;s direct dependencies (the ones explicitly listed in its own package manifest) are usually well understood — but each of those dependencies has its own dependencies, and so on, several layers deep. A vulnerability disclosed in a package three or four layers down the dependency tree, one the development team has likely never even heard of directly, can still affect the application just as severely as a vulnerability in a directly-chosen, well-known dependency — an SBOM&#39;s entire value proposition is making that full, deep dependency tree visible and queryable, rather than only the top-level list a <code>package.json</code> or similar manifest shows.</p>
+<p>A genuinely important, easy-to-underestimate point: an application's direct dependencies (the ones explicitly listed in its own package manifest) are usually well understood — but each of those dependencies has its own dependencies, and so on, several layers deep. A vulnerability disclosed in a package three or four layers down the dependency tree, one the development team has likely never even heard of directly, can still affect the application just as severely as a vulnerability in a directly-chosen, well-known dependency — an SBOM's entire value proposition is making that full, deep dependency tree visible and queryable, rather than only the top-level list a <code>package.json</code> or similar manifest shows.</p>
 <h2>SBOM formats — SPDX and CycloneDX</h2>
 <p>Two standardized, widely-adopted SBOM formats dominate in practice: <strong>SPDX</strong> (Software Package Data Exchange, originally focused on license compliance, now broadly used for security purposes too) and <strong>CycloneDX</strong> (originally purpose-built for security use cases specifically). Both are machine-readable formats designed to be generated automatically as part of a build process and consumed automatically by vulnerability-matching tools, rather than manually maintained documents that inevitably go stale.</p>
 <h2>Generating and using SBOMs in practice</h2>
-<p>Directly connecting to the SAST/DAST/SCA lesson&#39;s SCA (Software Composition Analysis) coverage: most modern SCA tools can generate an SBOM directly as part of their normal scanning process — the practical workflow is generating an SBOM automatically on every build (via tools like <strong>Syft</strong>), storing it alongside the built artifact, and then, when a new vulnerability is publicly disclosed in any component, querying stored SBOMs across the entire organization&#39;s software inventory to instantly identify every affected application, rather than manually checking each application&#39;s dependencies one at a time.</p>
+<p>Directly connecting to the SAST/DAST/SCA lesson's SCA (Software Composition Analysis) coverage: most modern SCA tools can generate an SBOM directly as part of their normal scanning process — the practical workflow is generating an SBOM automatically on every build (via tools like <strong>Syft</strong>), storing it alongside the built artifact, and then, when a new vulnerability is publicly disclosed in any component, querying stored SBOMs across the entire organization's software inventory to instantly identify every affected application, rather than manually checking each application's dependencies one at a time.</p>
 <h2>Regulatory and contractual momentum behind SBOMs</h2>
-<p>Directly connecting to Path 23&#39;s GRC/compliance coverage: SBOM requirements have moved from voluntary best practice into explicit mandate in several contexts — US federal government software procurement now requires SBOMs from vendors under a 2021 executive order, and several industry-specific regulatory frameworks are moving in the same direction. This means SBOM generation is increasingly not just a defensive security practice but a genuine compliance and contractual requirement an AppSec program needs to actively support.</p>
-<p>Why does a vulnerability disclosed in a transitive dependency several layers deep in an application&#39;s dependency tree pose a genuine risk-visibility problem, even for a development team that carefully vets every dependency they directly choose?</p>
+<p>Directly connecting to Path 23's GRC/compliance coverage: SBOM requirements have moved from voluntary best practice into explicit mandate in several contexts — US federal government software procurement now requires SBOMs from vendors under a 2021 executive order, and several industry-specific regulatory frameworks are moving in the same direction. This means SBOM generation is increasingly not just a defensive security practice but a genuine compliance and contractual requirement an AppSec program needs to actively support.</p>
+<p>Why does a vulnerability disclosed in a transitive dependency several layers deep in an application's dependency tree pose a genuine risk-visibility problem, even for a development team that carefully vets every dependency they directly choose?</p>
 <h2>Key terms</h2>
 <ul>
 <li><strong>SBOM (Software Bill of Materials)</strong> — a formal, machine-readable inventory of every component in a piece of software, including transitive dependencies.</li>
@@ -86,26 +117,74 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <li><strong>SPDX / CycloneDX</strong> — the two dominant standardized, machine-readable SBOM formats.</li>
 </ul>
 <h2>Recap</h2>
-<p>An SBOM provides a complete, machine-readable inventory of every component in a piece of software, including deep transitive dependencies most development teams have never directly examined. This solves a genuine, previously widespread problem: organizations unable to quickly answer whether they&#39;re affected by a newly disclosed vulnerability in some component buried deep in their dependency tree. SPDX and CycloneDX are the dominant formats, SCA tools like Syft can generate SBOMs automatically as part of every build, and SBOM requirements have moved into genuine regulatory and contractual mandate in several sectors.</p>
+<p>An SBOM provides a complete, machine-readable inventory of every component in a piece of software, including deep transitive dependencies most development teams have never directly examined. This solves a genuine, previously widespread problem: organizations unable to quickly answer whether they're affected by a newly disclosed vulnerability in some component buried deep in their dependency tree. SPDX and CycloneDX are the dominant formats, SCA tools like Syft can generate SBOMs automatically as part of every build, and SBOM requirements have moved into genuine regulatory and contractual mandate in several sectors.</p>
 <h3>References</h3>
 <ul>
 <li><a href="https://cyclonedx.org/">CycloneDX</a> — a security-focused SBOM standard.</li>
 <li><a href="https://www.cisa.gov/sbom">CISA — SBOM resources</a> — official US government guidance and requirements.</li>
 <li><a href="https://github.com/anchore/syft">Syft</a> — a widely-used open-source SBOM generation tool.</li>
 </ul>
-<nav class="pager"><a href="/lesson/22-devsecops-appsec/secrets-supply-chain.html">← Secrets Management &amp; Software Supply Chain</a><a href="/lesson/22-devsecops-appsec/threat-modeling-sdlc.html">Threat Modeling in the SDLC →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/22-devsecops-appsec/secrets-supply-chain.html">← Secrets Management &amp; Software Supply Chain</a><a href="/lesson/22-devsecops-appsec/threat-modeling-sdlc.html">Threat Modeling in the SDLC →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/22-devsecops-appsec/sbom-and-software-bill-of-materials";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

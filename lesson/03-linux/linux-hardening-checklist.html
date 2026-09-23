@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>A Practical Linux Hardening Checklist — Path 03 · KashSec Academy</title>
 <meta name="description" content="You've now covered users and permissions, package management, SSH, cron, logging, and firewalls. This lesson pulls all of it together into a single, practical checklist — the Linux-side counterpart to">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/03-linux/linux-hardening-checklist.html">
@@ -21,91 +22,169 @@
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 03 — Operating Systems & Linux","item":"https://kashsec.vercel.app/lesson/03-linux/"},{"@type":"ListItem","position":4,"name":"A Practical Linux Hardening Checklist","item":"https://kashsec.vercel.app/lesson/03-linux/linux-hardening-checklist.html"}]}
 </script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"LearningResource","name":"A Practical Linux Hardening Checklist","headline":"A Practical Linux Hardening Checklist","description":"You've now covered users and permissions, package management, SSH, cron, logging, and firewalls. This lesson pulls all of it together into a single, practical checklist — the Linux-side counterpart to","url":"https://kashsec.vercel.app/lesson/03-linux/linux-hardening-checklist.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Every earlier lesson in this path, consolidated into one ordered checklist.","isPartOf":{"@type":"Course","name":"Path 03: Operating Systems & Linux","url":"https://kashsec.vercel.app/lesson/03-linux/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/03-linux/linux-hardening-checklist.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/03-linux/linux-hardening-checklist">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/03-linux/">Path 03 — Operating Systems &amp; Linux</a> · A Practical Linux Hardening Checklist</div>
-  <article><h1>A Practical Linux Hardening Checklist</h1>
-<p>You&#39;ve now covered users and permissions, package management, SSH, cron, logging, and firewalls. This lesson pulls all of it together into a single, practical checklist — the Linux-side counterpart to Path 07&#39;s &quot;Securing a Windows Machine&quot; lesson.</p>
+<a class="skip" href="/lesson/03-linux/linux-hardening-checklist.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/03-linux/">Path 03 — Operating Systems &amp; Linux</a> · A Practical Linux Hardening Checklist</nav>
+    <div class="md" id="content"><article><h1>A Practical Linux Hardening Checklist</h1>
+<p>You've now covered users and permissions, package management, SSH, cron, logging, and firewalls. This lesson pulls all of it together into a single, practical checklist — the Linux-side counterpart to Path 07's "Securing a Windows Machine" lesson.</p>
 <p>:::</p>
 <h2>The checklist</h2>
 <ol>
-<li><strong>Keep packages updated</strong> — <code>apt update &amp;&amp; apt upgrade</code> (or your distro&#39;s equivalent) on a regular schedule, from the package-management lesson</li>
-<li><strong>Remove unused packages</strong> — reduce attack surface by removing software you don&#39;t actually need, also from the package-management lesson</li>
+<li><strong>Keep packages updated</strong> — <code>apt update &amp;&amp; apt upgrade</code> (or your distro's equivalent) on a regular schedule, from the package-management lesson</li>
+<li><strong>Remove unused packages</strong> — reduce attack surface by removing software you don't actually need, also from the package-management lesson</li>
 <li><strong>Enforce least privilege on user accounts</strong> — no unnecessary <code>sudo</code> access, no shared accounts, from the users-permissions lesson</li>
 <li><strong>Harden SSH</strong> — disable password authentication in favor of key-based auth, disable direct root login, from the SSH lesson</li>
-<li><strong>Enable a default-deny firewall</strong> — <code>ufw default deny incoming</code>, explicitly allowing only what&#39;s genuinely needed, from the firewall-basics lesson (and remembering not to lock yourself out of a remote session)</li>
+<li><strong>Enable a default-deny firewall</strong> — <code>ufw default deny incoming</code>, explicitly allowing only what's genuinely needed, from the firewall-basics lesson (and remembering not to lock yourself out of a remote session)</li>
 <li><strong>Review scheduled jobs</strong> — audit <code>crontab -l</code> and system-wide cron locations for anything unfamiliar, from the cron-and-scheduling lesson</li>
 <li><strong>Confirm logging is actually working</strong> — check <code>/var/log</code> and <code>journalctl</code> are capturing what you expect, and consider centralized/remote log forwarding, from the logging-basics lesson</li>
-<li><strong>Audit running services</strong> — <code>systemctl list-units --type=service</code> to review what&#39;s actually running and whether it&#39;s genuinely needed, from the process-management lesson</li>
-<li><strong>Check for world-writable files in sensitive locations</strong> — <code>find / -perm -o+w -type f 2&gt;/dev/null</code> surfaces files any user can modify, connecting back to the filesystem-hierarchy lesson&#39;s <code>/tmp</code> warning</li>
+<li><strong>Audit running services</strong> — <code>systemctl list-units --type=service</code> to review what's actually running and whether it's genuinely needed, from the process-management lesson</li>
+<li><strong>Check for world-writable files in sensitive locations</strong> — <code>find / -perm -o+w -type f 2&gt;/dev/null</code> surfaces files any user can modify, connecting back to the filesystem-hierarchy lesson's <code>/tmp</code> warning</li>
 <li><strong>Review shell scripts for injection risk</strong> — unquoted variables, unsafe <code>eval</code> usage, from the shell-scripting-pitfalls lesson</li>
 </ol>
-<h2>Automating the checklist: don&#39;t rely on memory alone</h2>
-<p>Directly echoing Path 00&#39;s &quot;building good digital habits&quot; lesson: a checklist that lives only in your memory gets skipped under time pressure. Tools like <strong>Lynis</strong> (an open-source Linux security auditing tool) automate much of this checklist, scanning a system and producing a report flagging exactly these kinds of gaps — genuinely worth running periodically rather than relying entirely on manual review.</p>
+<h2>Automating the checklist: don't rely on memory alone</h2>
+<p>Directly echoing Path 00's "building good digital habits" lesson: a checklist that lives only in your memory gets skipped under time pressure. Tools like <strong>Lynis</strong> (an open-source Linux security auditing tool) automate much of this checklist, scanning a system and producing a report flagging exactly these kinds of gaps — genuinely worth running periodically rather than relying entirely on manual review.</p>
 <pre><code class="language-bash">lynis audit system
 </code></pre>
 <h2>Why order matters here</h2>
-<p>Notice the checklist&#39;s sequence isn&#39;t arbitrary: updates and account hygiene come first (foundational, low-risk to change), SSH and firewall hardening come next (higher-impact, needs care not to lock yourself out), and auditing/review steps come last (checking your own work). Working through hardening in a sensible order — rather than randomly — reduces the chance of a mistake locking you out or breaking something mid-process.</p>
+<p>Notice the checklist's sequence isn't arbitrary: updates and account hygiene come first (foundational, low-risk to change), SSH and firewall hardening come next (higher-impact, needs care not to lock yourself out), and auditing/review steps come last (checking your own work). Working through hardening in a sensible order — rather than randomly — reduces the chance of a mistake locking you out or breaking something mid-process.</p>
 <p>:::challenge Test yourself
 Why does this lesson recommend confirming SSH key-based authentication actually works <em>before</em> disabling password authentication entirely, rather than doing both steps simultaneously?</p>
 <details><summary>Show answer</summary>If key-based authentication isn't actually configured correctly — a public key not properly installed, incorrect file permissions on the <code>.ssh</code> directory — and password authentication gets disabled at the same time, you can end up completely locked out of the machine with no working authentication method left at all, especially painful on a remote server with no console access. The safe sequence is: set up and thoroughly test key-based login first, confirm it genuinely works from a fresh connection, and only then disable password authentication as a separate, deliberate follow-up step — directly applying the same "verify before you cut off your own access" caution the firewall-basics lesson gave for enabling default-deny remotely.</details><h2>🧪 Hands-on lab — run the checklist on your own VM</h2>
-<p>Using the Kali or Ubuntu VM from earlier in this path, work through this lesson&#39;s ten-item checklist one item at a time, noting what you find at each step. If Lynis is available in your distro&#39;s repositories, install it and compare its automated findings against your own manual review.</p>
+<p>Using the Kali or Ubuntu VM from earlier in this path, work through this lesson's ten-item checklist one item at a time, noting what you find at each step. If Lynis is available in your distro's repositories, install it and compare its automated findings against your own manual review.</p>
 <h2>Key terms</h2>
 <ul>
 <li><strong>Lynis</strong> — an open-source Linux security auditing tool that automates much of a hardening review.</li>
 </ul>
 <h2>Recap</h2>
-<p>This checklist consolidates everything covered across this path&#39;s earlier lessons — updates, least privilege, SSH hardening, firewalls, cron auditing, logging, service review, filesystem permissions, and shell-script safety — into one practical, sensibly-ordered sequence. Automated tools like Lynis complement, but don&#39;t replace, actually understanding <em>why</em> each item matters, which is exactly what the rest of this path has been building toward.</p>
+<p>This checklist consolidates everything covered across this path's earlier lessons — updates, least privilege, SSH hardening, firewalls, cron auditing, logging, service review, filesystem permissions, and shell-script safety — into one practical, sensibly-ordered sequence. Automated tools like Lynis complement, but don't replace, actually understanding <em>why</em> each item matters, which is exactly what the rest of this path has been building toward.</p>
 <h3>References</h3>
 <ul>
 <li><a href="https://cisofy.com/lynis/">Lynis — Linux Security Auditing Tool</a> — the open-source tool referenced in this lesson</li>
 </ul>
 <p><strong>Next up →</strong> <a href="#/lesson/03-linux/linux-careers-and-certifications">Linux Careers &amp; Certifications</a></p>
-<nav class="pager"><a href="/lesson/03-linux/shell-scripting-security-pitfalls.html">← Shell Scripting Security Pitfalls</a><a href="/lesson/03-linux/linux-careers-and-certifications.html">Linux Careers &amp; Certifications →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/03-linux/shell-scripting-security-pitfalls.html">← Shell Scripting Security Pitfalls</a><a href="/lesson/03-linux/linux-careers-and-certifications.html">Linux Careers &amp; Certifications →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/03-linux/linux-hardening-checklist";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

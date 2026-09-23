@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>Multimodal Attack Vectors — Path 18 · KashSec Academy</title>
 <meta name="description" content="The llm-red-teaming-playbooks lesson (later in this path) briefly flags multimodal input as needing dedicated test cases. This lesson goes deep into exactly why — as models increasingly accept images,">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/18-ai-security/multimodal-attack-vectors.html">
@@ -21,83 +22,161 @@
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 18 — AI & AI Security","item":"https://kashsec.vercel.app/lesson/18-ai-security/"},{"@type":"ListItem","position":4,"name":"Multimodal Attack Vectors","item":"https://kashsec.vercel.app/lesson/18-ai-security/multimodal-attack-vectors.html"}]}
 </script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"LearningResource","name":"Multimodal Attack Vectors","headline":"Multimodal Attack Vectors","description":"The llm-red-teaming-playbooks lesson (later in this path) briefly flags multimodal input as needing dedicated test cases. This lesson goes deep into exactly why — as models increasingly accept images,","url":"https://kashsec.vercel.app/lesson/18-ai-security/multimodal-attack-vectors.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Image, audio, and file-upload injection surfaces.","isPartOf":{"@type":"Course","name":"Path 18: AI & AI Security","url":"https://kashsec.vercel.app/lesson/18-ai-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/18-ai-security/multimodal-attack-vectors.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/18-ai-security/multimodal-attack-vectors">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/18-ai-security/">Path 18 — AI &amp; AI Security</a> · Multimodal Attack Vectors</div>
-  <article><h1>Multimodal Attack Vectors</h1>
-<p>The llm-red-teaming-playbooks lesson (later in this path) briefly flags multimodal input as needing dedicated test cases. This lesson goes deep into exactly why — as models increasingly accept images, audio, and file uploads alongside text, the attack surface this path has covered so far (all fundamentally text-based) expands in genuinely new directions, directly connecting to the indirect-prompt-injection-deep-dive lesson&#39;s coverage of untrusted content entering a model&#39;s context.</p>
-<h2>Why multimodal inputs aren&#39;t just &quot;more input formats&quot;</h2>
-<p>Directly connecting to the transformer-architecture-deep-dive lesson: a multimodal model doesn&#39;t process an image as a fundamentally separate thing from text — modern vision-language models convert image content into token-like representations that get fed into essentially the same attention mechanism processing the text prompt, meaning content extracted from an image can influence the model&#39;s response in a manner structurally similar to text in the prompt itself, just via a different input pathway with different human-visibility characteristics.</p>
+<a class="skip" href="/lesson/18-ai-security/multimodal-attack-vectors.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/18-ai-security/">Path 18 — AI &amp; AI Security</a> · Multimodal Attack Vectors</nav>
+    <div class="md" id="content"><article><h1>Multimodal Attack Vectors</h1>
+<p>The llm-red-teaming-playbooks lesson (later in this path) briefly flags multimodal input as needing dedicated test cases. This lesson goes deep into exactly why — as models increasingly accept images, audio, and file uploads alongside text, the attack surface this path has covered so far (all fundamentally text-based) expands in genuinely new directions, directly connecting to the indirect-prompt-injection-deep-dive lesson's coverage of untrusted content entering a model's context.</p>
+<h2>Why multimodal inputs aren't just "more input formats"</h2>
+<p>Directly connecting to the transformer-architecture-deep-dive lesson: a multimodal model doesn't process an image as a fundamentally separate thing from text — modern vision-language models convert image content into token-like representations that get fed into essentially the same attention mechanism processing the text prompt, meaning content extracted from an image can influence the model's response in a manner structurally similar to text in the prompt itself, just via a different input pathway with different human-visibility characteristics.</p>
 <h2>Image-based prompt injection</h2>
-<p>The most direct multimodal attack: embedding text within an image that a model&#39;s vision capability reads and processes as though it were part of the prompt — a screenshot containing a small block of instructional text in the corner, invisible or easily overlooked to a human glancing at the image, but fully legible to the model&#39;s vision component. This directly extends the indirect-prompt-injection lesson&#39;s core problem (untrusted content entering context and being treated as instruction) into a channel that&#39;s genuinely harder for a human reviewer to spot during a quick visual check than equivalent text would be.</p>
+<p>The most direct multimodal attack: embedding text within an image that a model's vision capability reads and processes as though it were part of the prompt — a screenshot containing a small block of instructional text in the corner, invisible or easily overlooked to a human glancing at the image, but fully legible to the model's vision component. This directly extends the indirect-prompt-injection lesson's core problem (untrusted content entering context and being treated as instruction) into a channel that's genuinely harder for a human reviewer to spot during a quick visual check than equivalent text would be.</p>
 <h2>Steganographic and adversarial-perturbation techniques</h2>
-<p>Directly connecting to the poisoning-and-adversarial-ML lesson&#39;s adversarial-example coverage: some multimodal attacks go further than plainly visible embedded text, using <strong>steganographic</strong> techniques (hiding data within an image&#39;s pixel-level structure, invisible to human perception entirely) or <strong>adversarial perturbations</strong> (small, carefully calculated pixel modifications designed to influence a specific model&#39;s internal processing in a targeted way) — both representing a meaningfully higher sophistication tier than simply writing visible text into a corner of an image.</p>
+<p>Directly connecting to the poisoning-and-adversarial-ML lesson's adversarial-example coverage: some multimodal attacks go further than plainly visible embedded text, using <strong>steganographic</strong> techniques (hiding data within an image's pixel-level structure, invisible to human perception entirely) or <strong>adversarial perturbations</strong> (small, carefully calculated pixel modifications designed to influence a specific model's internal processing in a targeted way) — both representing a meaningfully higher sophistication tier than simply writing visible text into a corner of an image.</p>
 <h2>Audio and voice-based attack surfaces</h2>
-<p>As voice-interactive AI assistants become more common, <strong>audio-based injection</strong> introduces its own distinct considerations: spoken instructions embedded within audio content the model transcribes and processes (background audio in a video call, an audio file uploaded for summarization) can inject instructions exactly like image-embedded text does, and audio carries an additional wrinkle — a human reviewing a transcript summary might see only the model&#39;s interpretation of the audio, not the raw audio itself, making a hidden or subtly-embedded spoken instruction potentially even less likely to be caught during review than a visible image-based one.</p>
+<p>As voice-interactive AI assistants become more common, <strong>audio-based injection</strong> introduces its own distinct considerations: spoken instructions embedded within audio content the model transcribes and processes (background audio in a video call, an audio file uploaded for summarization) can inject instructions exactly like image-embedded text does, and audio carries an additional wrinkle — a human reviewing a transcript summary might see only the model's interpretation of the audio, not the raw audio itself, making a hidden or subtly-embedded spoken instruction potentially even less likely to be caught during review than a visible image-based one.</p>
 <h2>File upload and metadata vectors</h2>
-<p>Directly connecting to the llm-supply-chain-attacks lesson&#39;s document-handling coverage: files uploaded for an AI system to process (PDFs, Word documents, spreadsheets) carry attack surface beyond their visible content — document metadata, hidden form fields, or embedded objects can all potentially reach a model&#39;s context if the application&#39;s document-processing pipeline extracts and includes them, even when a human reviewing the document&#39;s visible content sees nothing unusual at all.</p>
+<p>Directly connecting to the llm-supply-chain-attacks lesson's document-handling coverage: files uploaded for an AI system to process (PDFs, Word documents, spreadsheets) carry attack surface beyond their visible content — document metadata, hidden form fields, or embedded objects can all potentially reach a model's context if the application's document-processing pipeline extracts and includes them, even when a human reviewing the document's visible content sees nothing unusual at all.</p>
 <h2>Why defenses have to be modality-specific</h2>
 <p>An input classifier trained specifically to recognize suspicious text patterns (from the jailbreak-defenses-and-guardrails lesson) has no inherent ability to recognize an equivalent attack pattern embedded within an image or audio file unless it was specifically trained on that modality too — this is exactly why a genuinely thorough security review of a multimodal AI application needs dedicated, modality-specific testing for every input type the system actually accepts, rather than assuming text-focused defensive measures provide equivalent protection across every other input channel by default.</p>
 <p>Why might a hidden instruction embedded in an uploaded image be genuinely harder for a human reviewer to catch than the equivalent instruction embedded as plain text in a chat message?</p>
 <details><summary>Show answer</summary>When an attacker embeds a malicious instruction directly as visible text in a chat message, a human reviewing the conversation log or the application's input can simply read the full message and immediately notice the suspicious instruction sitting in plain sight. An image, by contrast, is something a human typically perceives holistically and quickly — glancing at a screenshot or photo doesn't naturally involve reading every pixel with the same systematic scrutiny as reading a line of text, meaning a small block of instructional text placed in a corner, rendered in a low-contrast color, or sized small relative to the rest of the image can easily go unnoticed by a human doing a normal visual review, even though it's fully legible to the model's vision component processing the same image at the pixel level. This asymmetry — full model visibility into content that receives only partial human scrutiny — is exactly the property that makes image-based (and similarly, audio-based) prompt injection genuinely more insidious than the equivalent plain-text attack, and it's precisely why dedicated multimodal test cases in a red-teaming playbook can't simply be assumed to be redundant with thorough text-based testing.</details><h2>Key terms</h2>
 <ul>
-<li><strong>Image-based prompt injection</strong> — embedding instructional text within an image, legible to a model&#39;s vision capability but easily overlooked by a human reviewer.</li>
-<li><strong>Steganographic technique</strong> — hiding data within an image&#39;s pixel-level structure, invisible to human perception entirely.</li>
+<li><strong>Image-based prompt injection</strong> — embedding instructional text within an image, legible to a model's vision capability but easily overlooked by a human reviewer.</li>
+<li><strong>Steganographic technique</strong> — hiding data within an image's pixel-level structure, invisible to human perception entirely.</li>
 <li><strong>Modality-specific defense</strong> — the requirement that input/output classifiers and other defenses be independently trained and tested for each input type a system accepts.</li>
 </ul>
 <h2>Recap</h2>
 <ul>
 <li>Multimodal models process image, audio, and text content through structurally similar mechanisms, meaning non-text content can influence output much like text prompts do.</li>
 <li>Image-based injection exploits the gap between full model visibility into pixel-level content and only partial human scrutiny during a quick visual review.</li>
-<li>Audio and file-upload vectors introduce their own distinct considerations, including reduced human visibility into raw content versus a model&#39;s processed interpretation.</li>
-<li>Text-focused defenses don&#39;t automatically transfer to other modalities, requiring dedicated, modality-specific testing for every input type a system accepts.</li>
+<li>Audio and file-upload vectors introduce their own distinct considerations, including reduced human visibility into raw content versus a model's processed interpretation.</li>
+<li>Text-focused defenses don't automatically transfer to other modalities, requiring dedicated, modality-specific testing for every input type a system accepts.</li>
 </ul>
 <p><strong>Next up →</strong> <a href="#/lesson/18-ai-security/ai-red-teaming">AI red-teaming methodology</a></p>
-<nav class="pager"><a href="/lesson/18-ai-security/poisoning-adv-ml.html">← Poisoning &amp; adversarial ML</a><a href="/lesson/18-ai-security/ai-red-teaming.html">AI red teaming →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/18-ai-security/poisoning-adv-ml.html">← Poisoning &amp; adversarial ML</a><a href="/lesson/18-ai-security/ai-red-teaming.html">AI red teaming →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/18-ai-security/multimodal-attack-vectors";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>API Gateway Security — Path 21 · KashSec Academy</title>
 <meta name="description" content="The mass-assignment lesson focused on individual endpoint logic flaws. This lesson zooms out to the infrastructure layer sitting in front of every endpoint — the API gateway — directly connecting to P">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/21-api-security/api-gateway-security.html">
@@ -21,60 +22,90 @@
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 21 — API Security","item":"https://kashsec.vercel.app/lesson/21-api-security/"},{"@type":"ListItem","position":4,"name":"API Gateway Security","item":"https://kashsec.vercel.app/lesson/21-api-security/api-gateway-security.html"}]}
 </script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"LearningResource","name":"API Gateway Security","headline":"API Gateway Security","description":"The mass-assignment lesson focused on individual endpoint logic flaws. This lesson zooms out to the infrastructure layer sitting in front of every endpoint — the API gateway — directly connecting to P","url":"https://kashsec.vercel.app/lesson/21-api-security/api-gateway-security.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Centralizing defense — and the risk of trusting it too much.","isPartOf":{"@type":"Course","name":"Path 21: API Security","url":"https://kashsec.vercel.app/lesson/21-api-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/21-api-security/api-gateway-security.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/21-api-security/api-gateway-security">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/21-api-security/">Path 21 — API Security</a> · API Gateway Security</div>
-  <article><h1>API Gateway Security</h1>
-<p>The mass-assignment lesson focused on individual endpoint logic flaws. This lesson zooms out to the infrastructure layer sitting in front of every endpoint — the <strong>API gateway</strong> — directly connecting to Path 12&#39;s IDS/IPS/WAF coverage, since a gateway is essentially a purpose-built reverse proxy specifically for API traffic, applying similar defensive principles at a different layer.</p>
+<a class="skip" href="/lesson/21-api-security/api-gateway-security.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/21-api-security/">Path 21 — API Security</a> · API Gateway Security</nav>
+    <div class="md" id="content"><article><h1>API Gateway Security</h1>
+<p>The mass-assignment lesson focused on individual endpoint logic flaws. This lesson zooms out to the infrastructure layer sitting in front of every endpoint — the <strong>API gateway</strong> — directly connecting to Path 12's IDS/IPS/WAF coverage, since a gateway is essentially a purpose-built reverse proxy specifically for API traffic, applying similar defensive principles at a different layer.</p>
 <h2>What an API gateway actually does</h2>
 <p>An <strong>API gateway</strong> sits between clients and your actual backend services, centralizing cross-cutting concerns that would otherwise need to be duplicated in every individual service: authentication verification, rate limiting, request/response logging, and routing. Rather than every microservice independently implementing its own authentication check, a gateway can verify a token once, at the edge, before a request ever reaches internal services at all.</p>
 <h2>Why centralizing security logic at the gateway matters</h2>
-<p>Directly connecting to the authn-authz-apis lesson&#39;s &quot;correct pattern&quot; coverage: a genuinely common real-world security gap is inconsistent authorization enforcement across different microservices — one team&#39;s service carefully checks every request, another team&#39;s service, built under deadline pressure, has a gap. A gateway that enforces baseline authentication and basic authorization checks centrally means every request gets that minimum guarantee regardless of which specific backend team built the destination service, reducing (though not eliminating — backend services still need their own object-level authorization checks) the blast radius of any single team&#39;s oversight.</p>
+<p>Directly connecting to the authn-authz-apis lesson's "correct pattern" coverage: a genuinely common real-world security gap is inconsistent authorization enforcement across different microservices — one team's service carefully checks every request, another team's service, built under deadline pressure, has a gap. A gateway that enforces baseline authentication and basic authorization checks centrally means every request gets that minimum guarantee regardless of which specific backend team built the destination service, reducing (though not eliminating — backend services still need their own object-level authorization checks) the blast radius of any single team's oversight.</p>
 <h2>Rate limiting at the gateway versus the application</h2>
-<p>Directly connecting to the rate-limiting-injection lesson: implementing rate limiting at the gateway layer, rather than in each individual service&#39;s own code, has a genuine practical advantage — malicious or excessive traffic gets rejected before consuming any actual backend compute resources at all, protecting every downstream service simultaneously with a single, consistently-configured control, rather than relying on each service team to implement rate limiting correctly and consistently on their own.</p>
+<p>Directly connecting to the rate-limiting-injection lesson: implementing rate limiting at the gateway layer, rather than in each individual service's own code, has a genuine practical advantage — malicious or excessive traffic gets rejected before consuming any actual backend compute resources at all, protecting every downstream service simultaneously with a single, consistently-configured control, rather than relying on each service team to implement rate limiting correctly and consistently on their own.</p>
 <h2>The gateway as a single point of failure — and a single point of bypass</h2>
-<p>A genuinely important architectural risk: if backend services are directly reachable on the internal network without also independently verifying that requests actually passed through the gateway, an attacker who gains any internal network foothold (through an unrelated vulnerability elsewhere) can bypass every gateway-enforced control entirely by talking to backend services directly. This directly connects to Path 22&#39;s Zero Trust path — a properly Zero Trust-aligned architecture has backend services independently verify requests (mutual TLS, service-to-service authentication) rather than implicitly trusting anything that reaches them on the internal network, precisely because &quot;the gateway already checked this&quot; is not itself a security guarantee once an attacker has internal network access.</p>
+<p>A genuinely important architectural risk: if backend services are directly reachable on the internal network without also independently verifying that requests actually passed through the gateway, an attacker who gains any internal network foothold (through an unrelated vulnerability elsewhere) can bypass every gateway-enforced control entirely by talking to backend services directly. This directly connects to Path 22's Zero Trust path — a properly Zero Trust-aligned architecture has backend services independently verify requests (mutual TLS, service-to-service authentication) rather than implicitly trusting anything that reaches them on the internal network, precisely because "the gateway already checked this" is not itself a security guarantee once an attacker has internal network access.</p>
 <h2>API gateway-specific misconfigurations</h2>
 <ul>
-<li><strong>Path normalization mismatches</strong> — a gateway&#39;s routing logic and a backend service&#39;s own routing logic occasionally interpret ambiguous URL paths (trailing slashes, encoded characters, path traversal sequences) differently, creating a request that passes the gateway&#39;s security checks under one interpretation but gets processed by the backend under a different one</li>
+<li><strong>Path normalization mismatches</strong> — a gateway's routing logic and a backend service's own routing logic occasionally interpret ambiguous URL paths (trailing slashes, encoded characters, path traversal sequences) differently, creating a request that passes the gateway's security checks under one interpretation but gets processed by the backend under a different one</li>
 <li><strong>Header injection/spoofing</strong> — a gateway that adds trusted internal headers (like <code>X-User-Id</code>, populated after verifying a token) needs to strip any client-supplied header with the same name first, or a client can simply set that header themselves and potentially impersonate another user if the backend blindly trusts it</li>
-<li><strong>Overly permissive CORS configuration</strong> — a gateway-level CORS misconfiguration (Path 05) can expose every backend service behind it to cross-origin attacks simultaneously, rather than being contained to a single service&#39;s own misconfiguration</li>
+<li><strong>Overly permissive CORS configuration</strong> — a gateway-level CORS misconfiguration (Path 05) can expose every backend service behind it to cross-origin attacks simultaneously, rather than being contained to a single service's own misconfiguration</li>
 </ul>
 <h2>Web Application Firewalls (WAF) for API traffic specifically</h2>
-<p>Directly connecting to Path 12&#39;s WAF coverage: a <strong>WAF</strong> deployed in front of an API gateway can catch known injection patterns and other signature-matchable attacks before they reach application logic at all — genuinely useful as one layer of defense-in-depth, but, exactly as Path 12 emphasized generally, never a substitute for the application itself correctly validating input and enforcing authorization, since a sufficiently novel or obfuscated attack can evade signature-based WAF detection entirely.</p>
-<p>Why does relying solely on gateway-level authentication, without backend services independently verifying requests, create a genuine architectural risk beyond just &quot;extra defense is always better&quot;?</p>
+<p>Directly connecting to Path 12's WAF coverage: a <strong>WAF</strong> deployed in front of an API gateway can catch known injection patterns and other signature-matchable attacks before they reach application logic at all — genuinely useful as one layer of defense-in-depth, but, exactly as Path 12 emphasized generally, never a substitute for the application itself correctly validating input and enforcing authorization, since a sufficiently novel or obfuscated attack can evade signature-based WAF detection entirely.</p>
+<p>Why does relying solely on gateway-level authentication, without backend services independently verifying requests, create a genuine architectural risk beyond just "extra defense is always better"?</p>
 <h2>Key terms</h2>
 <ul>
 <li><strong>API gateway</strong> — infrastructure centralizing cross-cutting API concerns (authentication, rate limiting, routing) in front of backend services.</li>
@@ -88,19 +119,67 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <li><a href="https://owasp.org/API-Security/editions/2023/en/0xa8-security-misconfiguration/">OWASP API8:2023 — Security Misconfiguration</a></li>
 <li><a href="https://csrc.nist.gov/pubs/sp/800/207/final">NIST SP 800-207 — Zero Trust Architecture</a></li>
 </ul>
-<nav class="pager"><a href="/lesson/21-api-security/mass-assignment.html">← Mass Assignment &amp; Excessive Data Exposure</a><a href="/lesson/21-api-security/rate-limiting-injection.html">Rate Limiting, Injection &amp; Resource Abuse →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/21-api-security/mass-assignment.html">← Mass Assignment &amp; Excessive Data Exposure</a><a href="/lesson/21-api-security/rate-limiting-injection.html">Rate Limiting, Injection &amp; Resource Abuse →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/21-api-security/api-gateway-security";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

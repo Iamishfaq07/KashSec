@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>Object-oriented Python basics — Path 04 · KashSec Academy</title>
 <meta name="description" content="You've built the password checker using functions and data working together, but kept somewhat separate. This lesson introduces classes — Python's way of bundling data and the functions that operate o">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/04-python/object-oriented-python-basics.html">
@@ -21,43 +22,73 @@
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 04 — Programming & Python","item":"https://kashsec.vercel.app/lesson/04-python/"},{"@type":"ListItem","position":4,"name":"Object-oriented Python basics","item":"https://kashsec.vercel.app/lesson/04-python/object-oriented-python-basics.html"}]}
 </script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"LearningResource","name":"Object-oriented Python basics","headline":"Object-oriented Python basics","description":"You've built the password checker using functions and data working together, but kept somewhat separate. This lesson introduces classes — Python's way of bundling data and the functions that operate o","url":"https://kashsec.vercel.app/lesson/04-python/object-oriented-python-basics.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Classes, objects, and why real tools bundle data with behavior.","isPartOf":{"@type":"Course","name":"Path 04: Programming & Python","url":"https://kashsec.vercel.app/lesson/04-python/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/04-python/object-oriented-python-basics.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/04-python/object-oriented-python-basics">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/04-python/">Path 04 — Programming &amp; Python</a> · Object-oriented Python basics</div>
-  <article><h1>Object-oriented Python basics</h1>
-<p>You&#39;ve built the password checker using functions and data working together, but kept somewhat separate. This lesson introduces <strong>classes</strong> — Python&#39;s way of bundling data and the functions that operate on it into a single, reusable unit, genuinely common in larger real-world security tools.</p>
+<a class="skip" href="/lesson/04-python/object-oriented-python-basics.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/04-python/">Path 04 — Programming &amp; Python</a> · Object-oriented Python basics</nav>
+    <div class="md" id="content"><article><h1>Object-oriented Python basics</h1>
+<p>You've built the password checker using functions and data working together, but kept somewhat separate. This lesson introduces <strong>classes</strong> — Python's way of bundling data and the functions that operate on it into a single, reusable unit, genuinely common in larger real-world security tools.</p>
 <h2>What a class actually is</h2>
 <p>A <strong>class</strong> is a blueprint for creating <strong>objects</strong> that bundle together data (called <strong>attributes</strong>) and behavior (called <strong>methods</strong>):</p>
 <pre><code class="language-python">class ScanTarget:
@@ -71,12 +102,12 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
         self.is_open = True
         return self.is_open
 
-target = ScanTarget(&quot;192.168.1.1&quot;, 80)
+target = ScanTarget("192.168.1.1", 80)
 target.check()
-print(f&quot;{target.ip_address}:{target.port} — open: {target.is_open}&quot;)
+print(f"{target.ip_address}:{target.port} — open: {target.is_open}")
 </code></pre>
 <p><code>__init__</code> is a special method that runs automatically when you create a new object, setting up its initial data — here, every <code>ScanTarget</code> object starts with an IP address, a port, and an unknown open/closed state.</p>
-<h2>Why this matters beyond just &quot;another way to organize code&quot;</h2>
+<h2>Why this matters beyond just "another way to organize code"</h2>
 <p>The dictionaries lesson showed you how to represent structured data. A class goes one step further: it keeps the data (<code>ip_address</code>, <code>port</code>, <code>is_open</code>) bundled <em>together with</em> the specific behavior that operates on that exact data (<code>check()</code>), rather than having separate functions that each need the data passed in every time. As a script grows into a genuinely larger tool — scanning many targets, each with its own results — this bundling keeps related code and data organized together instead of scattered across many loosely-connected functions and dictionaries.</p>
 <h2>A slightly larger example: multiple targets</h2>
 <pre><code class="language-python">class ScanTarget:
@@ -90,18 +121,18 @@ print(f&quot;{target.ip_address}:{target.port} — open: {target.is_open}&quot;)
         return self.is_open
 
 targets = [
-    ScanTarget(&quot;192.168.1.1&quot;, 80),
-    ScanTarget(&quot;192.168.1.1&quot;, 443),
-    ScanTarget(&quot;192.168.1.5&quot;, 22),
+    ScanTarget("192.168.1.1", 80),
+    ScanTarget("192.168.1.1", 443),
+    ScanTarget("192.168.1.5", 22),
 ]
 
 for target in targets:
     target.check()
-    status = &quot;open&quot; if target.is_open else &quot;closed&quot;
-    print(f&quot;{target.ip_address}:{target.port} is {status}&quot;)
+    status = "open" if target.is_open else "closed"
+    print(f"{target.ip_address}:{target.port} is {status}")
 </code></pre>
-<p>Each <code>ScanTarget</code> object independently tracks its own state — this pattern of &quot;one object per real-world thing being tracked&quot; is genuinely how many real security tools (vulnerability scanners, asset inventory tools) are actually structured internally.</p>
-<p>Object-oriented programming is a genuinely deep topic, and plenty of useful, working security scripts get written using just functions and dictionaries, the way earlier lessons in this path did. The goal here is recognition — knowing what a class is and roughly why it&#39;s useful — so that when you read real-world security tool source code (and you will, constantly, in this field) the pattern looks familiar rather than mysterious.</p>
+<p>Each <code>ScanTarget</code> object independently tracks its own state — this pattern of "one object per real-world thing being tracked" is genuinely how many real security tools (vulnerability scanners, asset inventory tools) are actually structured internally.</p>
+<p>Object-oriented programming is a genuinely deep topic, and plenty of useful, working security scripts get written using just functions and dictionaries, the way earlier lessons in this path did. The goal here is recognition — knowing what a class is and roughly why it's useful — so that when you read real-world security tool source code (and you will, constantly, in this field) the pattern looks familiar rather than mysterious.</p>
 <p>Why might bundling <code>ip_address</code>, <code>port</code>, and <code>is_open</code> together inside a <code>ScanTarget</code> class be more organized than tracking the same information using three separate lists (one for IPs, one for ports, one for results)?</p>
 <details><summary>Show answer</summary>With three separate lists, you'd need to carefully keep track of which index in each list corresponds to the same target — item 5 in the IP list, item 5 in the port list, and item 5 in the results list would all need to line up correctly, and it's genuinely easy to introduce a bug where one list gets out of sync with the others (say, after sorting one list but not the others). Bundling the related data into a single <code>ScanTarget</code> object keeps everything about one specific target — its address, its port, its result — inherently together as one unit, making it structurally impossible for that specific target's own data to get mismatched with a different target's data, regardless of how the collection of targets gets sorted, filtered, or reordered.</details><h2>Key terms</h2>
 <ul>
@@ -113,22 +144,70 @@ for target in targets:
 <ul>
 <li>A class bundles related data (attributes) and behavior (methods) into a single reusable unit, rather than keeping them separate.</li>
 <li>This pattern — one object per real-world thing being tracked — is genuinely how many real security tools are structured internally.</li>
-<li>You don&#39;t need to master object-oriented programming to write useful scripts, but recognizing the pattern helps enormously when reading real-world tool source code.</li>
+<li>You don't need to master object-oriented programming to write useful scripts, but recognizing the pattern helps enormously when reading real-world tool source code.</li>
 </ul>
 <p><strong>Next up →</strong> <a href="#/lesson/04-python/writing-secure-python-code">Writing Secure Python Code</a></p>
-<nav class="pager"><a href="/lesson/04-python/password-checker.html">← Build a password checker</a><a href="/lesson/04-python/writing-secure-python-code.html">Writing Secure Python Code →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/04-python/password-checker.html">← Build a password checker</a><a href="/lesson/04-python/writing-secure-python-code.html">Writing Secure Python Code →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/04-python/object-oriented-python-basics";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

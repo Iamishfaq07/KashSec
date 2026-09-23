@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>API Security Standards &amp; Frameworks — Path 21 · KashSec Academy</title>
 <meta name="description" content="The OWASP API Top 10 lesson gave you the shared vocabulary for API risk categories. This lesson covers the broader landscape of standards and frameworks that vocabulary sits within — directly connecti">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/21-api-security/api-security-standards-and-frameworks.html">
@@ -21,87 +22,165 @@
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 21 — API Security","item":"https://kashsec.vercel.app/lesson/21-api-security/"},{"@type":"ListItem","position":4,"name":"API Security Standards & Frameworks","item":"https://kashsec.vercel.app/lesson/21-api-security/api-security-standards-and-frameworks.html"}]}
 </script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"LearningResource","name":"API Security Standards & Frameworks","headline":"API Security Standards & Frameworks","description":"The OWASP API Top 10 lesson gave you the shared vocabulary for API risk categories. This lesson covers the broader landscape of standards and frameworks that vocabulary sits within — directly connecti","url":"https://kashsec.vercel.app/lesson/21-api-security/api-security-standards-and-frameworks.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"ASVS, NIST, and industry regulations layered on top of OWASP.","isPartOf":{"@type":"Course","name":"Path 21: API Security","url":"https://kashsec.vercel.app/lesson/21-api-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/21-api-security/api-security-standards-and-frameworks.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/21-api-security/api-security-standards-and-frameworks">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/21-api-security/">Path 21 — API Security</a> · API Security Standards &amp; Frameworks</div>
-  <article><h1>API Security Standards &amp; Frameworks</h1>
-<p>The OWASP API Top 10 lesson gave you the shared vocabulary for API risk categories. This lesson covers the broader landscape of standards and frameworks that vocabulary sits within — directly connecting to Path 23&#39;s GRC/Compliance path, since API security increasingly intersects with formal compliance requirements, not just technical best practice.</p>
-<h2>Why one checklist isn&#39;t the whole picture</h2>
-<p>The OWASP API Top 10 is genuinely excellent for prioritizing the most common, highest-impact vulnerability categories — but it&#39;s deliberately scoped narrowly to vulnerability categories, not the full lifecycle of building, operating, and governing APIs securely at organizational scale. Several complementary frameworks fill in the parts the Top 10 doesn&#39;t cover.</p>
+<a class="skip" href="/lesson/21-api-security/api-security-standards-and-frameworks.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/21-api-security/">Path 21 — API Security</a> · API Security Standards &amp; Frameworks</nav>
+    <div class="md" id="content"><article><h1>API Security Standards &amp; Frameworks</h1>
+<p>The OWASP API Top 10 lesson gave you the shared vocabulary for API risk categories. This lesson covers the broader landscape of standards and frameworks that vocabulary sits within — directly connecting to Path 23's GRC/Compliance path, since API security increasingly intersects with formal compliance requirements, not just technical best practice.</p>
+<h2>Why one checklist isn't the whole picture</h2>
+<p>The OWASP API Top 10 is genuinely excellent for prioritizing the most common, highest-impact vulnerability categories — but it's deliberately scoped narrowly to vulnerability categories, not the full lifecycle of building, operating, and governing APIs securely at organizational scale. Several complementary frameworks fill in the parts the Top 10 doesn't cover.</p>
 <h2>OWASP API Security Top 10 vs. OWASP ASVS</h2>
-<p>Directly connecting to Path 11&#39;s coverage: the <strong>OWASP Application Security Verification Standard (ASVS)</strong> provides a much more granular, testable set of security requirements applicable across web applications generally, including a dedicated API-specific chapter — where the API Top 10 tells you <em>what categories of risk exist</em>, ASVS gives you specific, checkable requirements (&quot;verify that all API responses contain a Content-Type header matching the actual content&quot;) suitable for a formal security review or audit checklist.</p>
+<p>Directly connecting to Path 11's coverage: the <strong>OWASP Application Security Verification Standard (ASVS)</strong> provides a much more granular, testable set of security requirements applicable across web applications generally, including a dedicated API-specific chapter — where the API Top 10 tells you <em>what categories of risk exist</em>, ASVS gives you specific, checkable requirements ("verify that all API responses contain a Content-Type header matching the actual content") suitable for a formal security review or audit checklist.</p>
 <h2>NIST guidance for API security</h2>
-<p>The <strong>NIST Cybersecurity Framework</strong> and related NIST publications (directly connecting to Path 23&#39;s GRC coverage of NIST frameworks generally) don&#39;t provide API-specific technical checklists the way OWASP does, but they provide the broader risk-management structure many regulated organizations are required to demonstrate compliance against — meaning API security work at a regulated organization (finance, healthcare, government contracting) often needs to be explicitly mapped back to NIST controls, not just to OWASP categories, to satisfy an auditor.</p>
+<p>The <strong>NIST Cybersecurity Framework</strong> and related NIST publications (directly connecting to Path 23's GRC coverage of NIST frameworks generally) don't provide API-specific technical checklists the way OWASP does, but they provide the broader risk-management structure many regulated organizations are required to demonstrate compliance against — meaning API security work at a regulated organization (finance, healthcare, government contracting) often needs to be explicitly mapped back to NIST controls, not just to OWASP categories, to satisfy an auditor.</p>
 <h2>Industry-specific requirements touching APIs directly</h2>
 <ul>
-<li><strong>PCI-DSS</strong> — directly connecting to Path 23&#39;s compliance coverage: any API handling payment card data falls under PCI-DSS requirements, including specific mandates around encryption in transit, access logging, and regular vulnerability scanning that apply on top of general API security best practice</li>
-<li><strong>HIPAA</strong> — APIs handling healthcare data (increasingly common given health-tech&#39;s API-first architecture patterns) carry specific requirements around access controls and audit logging that exceed general API security guidance</li>
-<li><strong>GDPR/data protection regulations</strong> — an API that returns more personal data than a request genuinely needs (directly connecting to the OWASP API3 &quot;Excessive Data Exposure&quot; category) isn&#39;t just a security best-practice violation, it&#39;s potentially a genuine regulatory violation with real financial penalty exposure</li>
+<li><strong>PCI-DSS</strong> — directly connecting to Path 23's compliance coverage: any API handling payment card data falls under PCI-DSS requirements, including specific mandates around encryption in transit, access logging, and regular vulnerability scanning that apply on top of general API security best practice</li>
+<li><strong>HIPAA</strong> — APIs handling healthcare data (increasingly common given health-tech's API-first architecture patterns) carry specific requirements around access controls and audit logging that exceed general API security guidance</li>
+<li><strong>GDPR/data protection regulations</strong> — an API that returns more personal data than a request genuinely needs (directly connecting to the OWASP API3 "Excessive Data Exposure" category) isn't just a security best-practice violation, it's potentially a genuine regulatory violation with real financial penalty exposure</li>
 </ul>
 <h2>OpenAPI/Swagger as a security-relevant artifact, not just documentation</h2>
-<p>Directly connecting to the api-testing lesson&#39;s tooling coverage: the <strong>OpenAPI Specification</strong> (formerly Swagger) — the standard, machine-readable format for describing an API&#39;s endpoints, parameters, and responses — increasingly serves double duty as a security artifact. Automated security scanning tools can consume an OpenAPI spec directly to generate test cases systematically, and a genuinely accurate, complete spec functions as a form of the API inventory the shadow-and-zombie-APIs lesson described, making &quot;what does our API actually expose&quot; a documented, verifiable fact rather than tribal knowledge.</p>
+<p>Directly connecting to the api-testing lesson's tooling coverage: the <strong>OpenAPI Specification</strong> (formerly Swagger) — the standard, machine-readable format for describing an API's endpoints, parameters, and responses — increasingly serves double duty as a security artifact. Automated security scanning tools can consume an OpenAPI spec directly to generate test cases systematically, and a genuinely accurate, complete spec functions as a form of the API inventory the shadow-and-zombie-APIs lesson described, making "what does our API actually expose" a documented, verifiable fact rather than tribal knowledge.</p>
 <h2>Choosing which framework actually matters for your context</h2>
-<p>A genuinely important practical point: OWASP API Top 10, ASVS, NIST, and industry-specific regulations aren&#39;t competing alternatives to choose between — a well-run API security program typically uses OWASP&#39;s categories for day-to-day technical prioritization, ASVS for structured review checklists, and NIST/industry regulations for the compliance mapping a regulated organization&#39;s auditors will specifically require. Treating this as &quot;which one framework should we adopt&quot; rather than &quot;how do these layer together&quot; is a common early-career misunderstanding this lesson aims to correct directly.</p>
+<p>A genuinely important practical point: OWASP API Top 10, ASVS, NIST, and industry-specific regulations aren't competing alternatives to choose between — a well-run API security program typically uses OWASP's categories for day-to-day technical prioritization, ASVS for structured review checklists, and NIST/industry regulations for the compliance mapping a regulated organization's auditors will specifically require. Treating this as "which one framework should we adopt" rather than "how do these layer together" is a common early-career misunderstanding this lesson aims to correct directly.</p>
 <p>Why might an organization handling payment card data need to satisfy both the OWASP API Top 10 and PCI-DSS requirements, rather than treating OWASP compliance as sufficient on its own?</p>
 <h2>Key terms</h2>
 <ul>
-<li><strong>OWASP ASVS</strong> — a granular, testable set of security requirements for web and API applications, complementary to the Top 10&#39;s category-level framing.</li>
+<li><strong>OWASP ASVS</strong> — a granular, testable set of security requirements for web and API applications, complementary to the Top 10's category-level framing.</li>
 <li><strong>OpenAPI Specification</strong> — the standard machine-readable format for describing an API, increasingly used as a security and inventory artifact.</li>
-<li><strong>Compliance mapping</strong> — translating technical security findings and controls into the specific language a regulatory framework&#39;s auditors require.</li>
+<li><strong>Compliance mapping</strong> — translating technical security findings and controls into the specific language a regulatory framework's auditors require.</li>
 </ul>
 <h2>Recap</h2>
-<p>The OWASP API Top 10 provides essential vocabulary and prioritization but isn&#39;t the whole picture — ASVS provides granular, testable requirements, NIST provides broader risk-management structure regulated organizations must demonstrate, and industry-specific regulations (PCI-DSS, HIPAA, GDPR) carry direct legal weight beyond best practice. These frameworks layer together rather than compete, and the OpenAPI Specification increasingly functions as both documentation and a security/inventory artifact.</p>
+<p>The OWASP API Top 10 provides essential vocabulary and prioritization but isn't the whole picture — ASVS provides granular, testable requirements, NIST provides broader risk-management structure regulated organizations must demonstrate, and industry-specific regulations (PCI-DSS, HIPAA, GDPR) carry direct legal weight beyond best practice. These frameworks layer together rather than compete, and the OpenAPI Specification increasingly functions as both documentation and a security/inventory artifact.</p>
 <h3>References</h3>
 <ul>
 <li><a href="https://owasp.org/www-project-application-security-verification-standard/">OWASP Application Security Verification Standard</a></li>
 <li><a href="https://www.nist.gov/cyberframework">NIST Cybersecurity Framework</a></li>
 <li><a href="https://www.openapis.org/">OpenAPI Specification</a></li>
 </ul>
-<nav class="pager"><a href="/lesson/21-api-security/owasp-api-top-10.html">← OWASP API Top 10 (2023)</a><a href="/lesson/21-api-security/authn-authz-apis.html">Authentication &amp; Authorization in APIs →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/21-api-security/owasp-api-top-10.html">← OWASP API Top 10 (2023)</a><a href="/lesson/21-api-security/authn-authz-apis.html">Authentication &amp; Authorization in APIs →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/21-api-security/api-security-standards-and-frameworks";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

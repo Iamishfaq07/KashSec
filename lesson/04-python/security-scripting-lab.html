@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>Security Scripting Lab — Path 04 · KashSec Academy</title>
 <meta name="description" content="This is the capstone lab for Path 04 — turning everything from variables and loops through to the password checker project into genuinely useful security tools, the same category of small custom scrip">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/04-python/security-scripting-lab.html">
@@ -21,96 +22,126 @@
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 04 — Programming & Python","item":"https://kashsec.vercel.app/lesson/04-python/"},{"@type":"ListItem","position":4,"name":"Security Scripting Lab","item":"https://kashsec.vercel.app/lesson/04-python/security-scripting-lab.html"}]}
 </script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"LearningResource","name":"Security Scripting Lab","headline":"Security Scripting Lab","description":"This is the capstone lab for Path 04 — turning everything from variables and loops through to the password checker project into genuinely useful security tools, the same category of small custom scrip","url":"https://kashsec.vercel.app/lesson/04-python/security-scripting-lab.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Turn Python into a real security tool.","isPartOf":{"@type":"Course","name":"Path 04: Programming & Python","url":"https://kashsec.vercel.app/lesson/04-python/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/04-python/security-scripting-lab.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/04-python/security-scripting-lab">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/04-python/">Path 04 — Programming &amp; Python</a> · Security Scripting Lab</div>
-  <article><h1>Security Scripting Lab</h1>
-<p>This is the capstone lab for Path 04 — turning everything from variables and loops through to the password checker project into genuinely useful security tools, the same category of small custom scripts referenced throughout Path 03&#39;s Advanced Terminal Lab and Path 20&#39;s portfolio advice.</p>
+<a class="skip" href="/lesson/04-python/security-scripting-lab.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/04-python/">Path 04 — Programming &amp; Python</a> · Security Scripting Lab</nav>
+    <div class="md" id="content"><article><h1>Security Scripting Lab</h1>
+<p>This is the capstone lab for Path 04 — turning everything from variables and loops through to the password checker project into genuinely useful security tools, the same category of small custom scripts referenced throughout Path 03's Advanced Terminal Lab and Path 20's portfolio advice.</p>
 <h2>Lab tasks</h2>
 <ol>
 <li><p><strong>A URL status checker.</strong> Write a script that reads a list of URLs and reports the HTTP status code for each:</p>
 <pre><code class="language-python">import requests
 
-with open(&quot;urls.txt&quot;) as f:
+with open("urls.txt") as f:
     urls = [line.strip() for line in f]
 
 for url in urls:
     try:
         r = requests.get(url, timeout=5)
-        print(f&quot;{url} -&gt; {r.status_code}&quot;)
+        print(f"{url} -&gt; {r.status_code}")
     except requests.exceptions.RequestException as e:
-        print(f&quot;{url} -&gt; ERROR ({e})&quot;)
+        print(f"{url} -&gt; ERROR ({e})")
 </code></pre>
 <p>This exact pattern — reading a list, trying each item, handling failures gracefully — is the backbone of most real recon automation.</p>
 </li>
-<li><p><strong>A simple port scanner using <code>socket</code>.</strong> No external libraries required — Python&#39;s built-in <code>socket</code> module is enough for a basic scanner:</p>
+<li><p><strong>A simple port scanner using <code>socket</code>.</strong> No external libraries required — Python's built-in <code>socket</code> module is enough for a basic scanner:</p>
 <pre><code class="language-python">import socket
 
-target = &quot;127.0.0.1&quot;
+target = "127.0.0.1"
 for port in range(1, 1025):
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.settimeout(0.3)
     result = s.connect_ex((target, port))
     if result == 0:
-        print(f&quot;Port {port} is open&quot;)
+        print(f"Port {port} is open")
     s.close()
 </code></pre>
-<p>Run it against <code>127.0.0.1</code> (your own machine) first — never against a target you don&#39;t have permission to scan.</p>
+<p>Run it against <code>127.0.0.1</code> (your own machine) first — never against a target you don't have permission to scan.</p>
 </li>
-<li><p><strong>Extend your earlier password checker.</strong> Go back to the password-strength checker you built earlier in this path and add one real improvement: check the password against a small list of the most common leaked passwords (several free &quot;top 10,000 passwords&quot; lists exist for exactly this kind of exercise) and flag an immediate fail if it matches, regardless of length/complexity — a genuinely important real-world check, since attackers try these lists first, before any brute-forcing.</p>
+<li><p><strong>Extend your earlier password checker.</strong> Go back to the password-strength checker you built earlier in this path and add one real improvement: check the password against a small list of the most common leaked passwords (several free "top 10,000 passwords" lists exist for exactly this kind of exercise) and flag an immediate fail if it matches, regardless of length/complexity — a genuinely important real-world check, since attackers try these lists first, before any brute-forcing.</p>
 </li>
 <li><p><strong>Automate something with <code>requests</code> and <code>BeautifulSoup</code>.</strong> If you have <code>beautifulsoup4</code> installed (<code>pip install beautifulsoup4</code>), write a small script that fetches a page and extracts every link on it:</p>
 <pre><code class="language-python">import requests
 from bs4 import BeautifulSoup
 
-r = requests.get(&quot;https://example.com&quot;)
-soup = BeautifulSoup(r.text, &quot;html.parser&quot;)
-for link in soup.find_all(&quot;a&quot;):
-    print(link.get(&quot;href&quot;))
+r = requests.get("https://example.com")
+soup = BeautifulSoup(r.text, "html.parser")
+for link in soup.find_all("a"):
+    print(link.get("href"))
 </code></pre>
-<p>This exact technique — fetch, parse, extract — underlies real reconnaissance tools that map out a site&#39;s structure automatically.</p>
+<p>This exact technique — fetch, parse, extract — underlies real reconnaissance tools that map out a site's structure automatically.</p>
 </li>
-<li><p><strong>Multi-threaded port scanning.</strong> Task 2&#39;s scanner checks ports one at a time, sequentially — genuinely slow across a wide range. Use Python&#39;s <code>concurrent.futures.ThreadPoolExecutor</code> to check many ports simultaneously instead:</p>
+<li><p><strong>Multi-threaded port scanning.</strong> Task 2's scanner checks ports one at a time, sequentially — genuinely slow across a wide range. Use Python's <code>concurrent.futures.ThreadPoolExecutor</code> to check many ports simultaneously instead:</p>
 <pre><code class="language-python">import socket
 from concurrent.futures import ThreadPoolExecutor
 
-def check_port(port, target=&quot;127.0.0.1&quot;):
+def check_port(port, target="127.0.0.1"):
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.settimeout(0.3)
     if s.connect_ex((target, port)) == 0:
-        print(f&quot;Port {port} is open&quot;)
+        print(f"Port {port} is open")
     s.close()
 
 with ThreadPoolExecutor(max_workers=50) as executor:
@@ -118,27 +149,75 @@ with ThreadPoolExecutor(max_workers=50) as executor:
 </code></pre>
 <p>Time both versions against your own machine and compare — the speed difference is genuinely dramatic, and this exact threading pattern underlies why real tools like Nmap and Nuclei can scan large ranges in a reasonable time.</p>
 </li>
-<li><p><strong>Add rate limiting to your URL checker.</strong> Revisit Task 1&#39;s URL status checker and add a small <code>time.sleep()</code> delay between requests, per this path&#39;s automation lesson — practice the responsible-automation habit now, on your own small script, before it matters on a real authorized engagement.</p>
+<li><p><strong>Add rate limiting to your URL checker.</strong> Revisit Task 1's URL status checker and add a small <code>time.sleep()</code> delay between requests, per this path's automation lesson — practice the responsible-automation habit now, on your own small script, before it matters on a real authorized engagement.</p>
 </li>
 </ol>
-<p>Each of these four scripts does one thing well — the real skill, and the direction Path 15&#39;s recon pipeline lesson goes next, is chaining small single-purpose tools together into a pipeline, exactly like real tools such as <code>subfinder → httpx → gau → nuclei</code> do.</p>
-<p>Write one script that takes a domain as input, checks whether it responds on port 80 and 443 using your port-scanning knowledge, and — if it does — fetches the page and prints its <code>&lt;title&gt;</code> tag using BeautifulSoup. This &quot;open ports + HTTP title&quot; pattern is a genuinely useful, portfolio-worthy mini recon tool, and a great addition to the GitHub portfolio Path 20 recommends building.</p>
+<p>Each of these four scripts does one thing well — the real skill, and the direction Path 15's recon pipeline lesson goes next, is chaining small single-purpose tools together into a pipeline, exactly like real tools such as <code>subfinder → httpx → gau → nuclei</code> do.</p>
+<p>Write one script that takes a domain as input, checks whether it responds on port 80 and 443 using your port-scanning knowledge, and — if it does — fetches the page and prints its <code>&lt;title&gt;</code> tag using BeautifulSoup. This "open ports + HTTP title" pattern is a genuinely useful, portfolio-worthy mini recon tool, and a great addition to the GitHub portfolio Path 20 recommends building.</p>
 <h2>Key takeaway</h2>
-<p>Every one of these scripts is short — 10 to 20 lines — but each one automates something that would take minutes to do by hand, and minutes saved per target compounds fast once you&#39;re testing dozens or hundreds of hosts. This is exactly why scripting ability, even at a modest level, is such a consistent multiplier across every offensive and defensive security role.</p>
+<p>Every one of these scripts is short — 10 to 20 lines — but each one automates something that would take minutes to do by hand, and minutes saved per target compounds fast once you're testing dozens or hundreds of hosts. This is exactly why scripting ability, even at a modest level, is such a consistent multiplier across every offensive and defensive security role.</p>
 <p><strong>Explore more →</strong> <a href="#/lesson/05-web-basics">Path 05 — How the Web Works</a></p>
-<nav class="pager"><a href="/lesson/04-python/python-careers-next-steps.html">← Python Careers &amp; Next Steps</a><span></span></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/04-python/python-careers-next-steps.html">← Python Careers &amp; Next Steps</a><span></span></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/04-python/security-scripting-lab";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

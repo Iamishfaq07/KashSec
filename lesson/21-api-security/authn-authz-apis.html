@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>Authentication &amp; Authorization in APIs — Path 21 · KashSec Academy</title>
 <meta name="description" content="These two words get mixed up constantly. Getting them right is the foundation of API security — nearly every vulnerability class in this path is, at its core, one of these two checks being missing, we">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/21-api-security/authn-authz-apis.html">
@@ -21,42 +22,72 @@
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 21 — API Security","item":"https://kashsec.vercel.app/lesson/21-api-security/"},{"@type":"ListItem","position":4,"name":"Authentication & Authorization in APIs","item":"https://kashsec.vercel.app/lesson/21-api-security/authn-authz-apis.html"}]}
 </script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"LearningResource","name":"Authentication & Authorization in APIs","headline":"Authentication & Authorization in APIs","description":"These two words get mixed up constantly. Getting them right is the foundation of API security — nearly every vulnerability class in this path is, at its core, one of these two checks being missing, we","url":"https://kashsec.vercel.app/lesson/21-api-security/authn-authz-apis.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Who are you vs. what are you allowed to do — the distinction that matters most.","isPartOf":{"@type":"Course","name":"Path 21: API Security","url":"https://kashsec.vercel.app/lesson/21-api-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/21-api-security/authn-authz-apis.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/21-api-security/authn-authz-apis">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/21-api-security/">Path 21 — API Security</a> · Authentication &amp; Authorization in APIs</div>
-  <article><h1>Authentication &amp; Authorization in APIs</h1>
+<a class="skip" href="/lesson/21-api-security/authn-authz-apis.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/21-api-security/">Path 21 — API Security</a> · Authentication &amp; Authorization in APIs</nav>
+    <div class="md" id="content"><article><h1>Authentication &amp; Authorization in APIs</h1>
 <p>These two words get mixed up constantly. Getting them right is the foundation of API security — nearly every vulnerability class in this path is, at its core, one of these two checks being missing, weak, or applied at the wrong point in the code.</p>
 <p>:::</p>
 <h2>Authentication = Who are you?</h2>
@@ -107,13 +138,13 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <p>Even after you know <em>who</em> the caller is, you still have to decide <em>what</em> they can access.</p>
 <p>Two levels matter:</p>
 <ol>
-<li><strong>Function / endpoint level</strong> — &quot;Can this role call <code>DELETE /users/{id}</code>?&quot;</li>
-<li><strong>Object level</strong> — &quot;Can this specific user delete <em>this</em> particular user record?&quot;</li>
+<li><strong>Function / endpoint level</strong> — "Can this role call <code>DELETE /users/{id}</code>?"</li>
+<li><strong>Object level</strong> — "Can this specific user delete <em>this</em> particular user record?"</li>
 </ol>
-<p>Most real breaches happen at the <strong>object level</strong> — this is BOLA, the #1 item on the OWASP API Top 10, and it deserves its own dedicated lesson because it&#39;s this common.</p>
+<p>Most real breaches happen at the <strong>object level</strong> — this is BOLA, the #1 item on the OWASP API Top 10, and it deserves its own dedicated lesson because it's this common.</p>
 <h2>Common broken patterns</h2>
 <h3>1. Trusting the client</h3>
-<pre><code class="language-js">// BAD — the client tells the server &quot;I am user 42&quot;
+<pre><code class="language-js">// BAD — the client tells the server "I am user 42"
 const userId = req.body.userId;
 const data = db.getOrders(userId);
 </code></pre>
@@ -123,7 +154,7 @@ const data = db.getOrders(userId);
 if (!req.user) return 401;
 const order = db.getOrder(req.params.id);
 </code></pre>
-<p>This code proves the caller is <em>someone</em>, then hands over data belonging to <em>anyone</em>. It&#39;s a textbook BOLA — technically &quot;secure&quot; in the sense that it requires login, and completely broken in the sense that matters.</p>
+<p>This code proves the caller is <em>someone</em>, then hands over data belonging to <em>anyone</em>. It's a textbook BOLA — technically "secure" in the sense that it requires login, and completely broken in the sense that matters.</p>
 <h3>3. Correct pattern</h3>
 <pre><code class="language-js">// GOOD — verify ownership or role on the specific object
 if (!req.user) return 401;
@@ -167,39 +198,39 @@ if (order.ownerId !== req.user.id &amp;&amp; !req.user.isAdmin) return 403;
 </tr>
 </tbody></table>
 <h2>A worked scenario: authorization implemented at the wrong layer</h2>
-<p>An API gateway checks that every request has a valid JWT before forwarding it to a backend service — solid authentication. The backend service, trusting that &quot;the gateway already checked everything,&quot; implements no further authorization checks of its own and just serves whatever object ID it&#39;s given. Anyone with <em>any</em> valid account — even a freshly registered free-tier user — can now request any object ID and get it back, because the only check that ran was &quot;is this person logged in at all,&quot; which the gateway already answered, and nobody after it asked the second, harder question.</p>
+<p>An API gateway checks that every request has a valid JWT before forwarding it to a backend service — solid authentication. The backend service, trusting that "the gateway already checked everything," implements no further authorization checks of its own and just serves whatever object ID it's given. Anyone with <em>any</em> valid account — even a freshly registered free-tier user — can now request any object ID and get it back, because the only check that ran was "is this person logged in at all," which the gateway already answered, and nobody after it asked the second, harder question.</p>
 <h2>Practical rules</h2>
 <ul>
 <li>Always derive the identity from a verified token/session, never from the request body or a header the client can freely set.</li>
 <li>Prefer short-lived access tokens + refresh tokens.</li>
 <li>Rotate and revoke secrets.</li>
 <li>Log authentication failures and authorization denials — a spike in 403s from one account is a strong signal of BOLA testing (defensive or malicious) happening against you.</li>
-<li>Fail closed: if you&#39;re not sure the caller is allowed, deny.</li>
+<li>Fail closed: if you're not sure the caller is allowed, deny.</li>
 </ul>
 <h2>🧪 Hands-on lab — find the missing check</h2>
 <ol>
-<li>Pick an API you&#39;re authorized to test (or a lab environment).</li>
+<li>Pick an API you're authorized to test (or a lab environment).</li>
 <li>Find one endpoint that returns data belonging to a specific user (an order, a profile, a document).</li>
 <li>Log in as two different accounts. Capture a valid request from account A.</li>
 <li>Replay it as account B, changing only the object ID to something belonging to A.</li>
-<li>If the server returns A&#39;s data, you&#39;ve found an authorization check that stops at authentication and never reaches the object level — exactly the &quot;bad pattern #2&quot; shown above.</li>
-<li>Write out, in your own words, the one-line fix that would close the gap, matching the &quot;good pattern #3&quot; structure.</li>
+<li>If the server returns A's data, you've found an authorization check that stops at authentication and never reaches the object level — exactly the "bad pattern #2" shown above.</li>
+<li>Write out, in your own words, the one-line fix that would close the gap, matching the "good pattern #3" structure.</li>
 </ol>
 <p>:::challenge Test yourself</p>
 <ol>
-<li>Explain why &quot;the request has a valid JWT&quot; is authentication evidence, not authorization evidence.</li>
-<li>In the &quot;wrong layer&quot; scenario above, what&#39;s the one sentence you&#39;d tell the backend team to fix the architecture, not just the bug?</li>
+<li>Explain why "the request has a valid JWT" is authentication evidence, not authorization evidence.</li>
+<li>In the "wrong layer" scenario above, what's the one sentence you'd tell the backend team to fix the architecture, not just the bug?</li>
 <li>Why is <code>X-User-Id</code> sent by the client never a safe way to determine whose data to return?</li>
 </ol>
 <h2>Key takeaway</h2>
-<p>Authentication answers &quot;who?&quot;. Authorization answers &quot;are they allowed to do <em>this specific thing</em> to <em>this specific object</em>?&quot;. Most API vulnerabilities are failures of the second question — and the fix is almost always the same shape: fetch the object first, then explicitly compare it against the verified identity, every single time.</p>
+<p>Authentication answers "who?". Authorization answers "are they allowed to do <em>this specific thing</em> to <em>this specific object</em>?". Most API vulnerabilities are failures of the second question — and the fix is almost always the same shape: fetch the object first, then explicitly compare it against the verified identity, every single time.</p>
 <p>Take any API you use (or a public demo API). Find one endpoint that returns data belonging to a user. Ask yourself: if I change the ID, does the server still give me the data? That single question finds a huge number of real bugs.</p>
 <h2>Key terms</h2>
 <ul>
 <li><strong>Authentication</strong> — proving who you are</li>
-<li><strong>Authorization</strong> — proving you&#39;re allowed to do a specific action to a specific object</li>
+<li><strong>Authorization</strong> — proving you're allowed to do a specific action to a specific object</li>
 <li><strong>Fail closed</strong> — denying access by default when authorization is uncertain, rather than allowing it</li>
-<li><strong>Bearer token</strong> — a token that grants access to whoever &quot;bears&quot; (presents) it, with no further proof required</li>
+<li><strong>Bearer token</strong> — a token that grants access to whoever "bears" (presents) it, with no further proof required</li>
 </ul>
 <h2>Recap</h2>
 <p>Authentication and authorization are two separate questions, and a system that only answers the first is not secure — it just feels secure. Every endpoint that touches a specific object needs an explicit, per-object authorization check, derived from a verified identity, never from anything the client merely claims.</p>
@@ -209,19 +240,67 @@ if (order.ownerId !== req.user.id &amp;&amp; !req.user.isAdmin) return 403;
 <li><a href="https://auth0.com/blog/a-look-at-the-latest-draft-for-jwt-bcp/">JWT best practices (Auth0)</a></li>
 <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html">OWASP Authorization Cheat Sheet</a></li>
 </ul>
-<nav class="pager"><a href="/lesson/21-api-security/api-security-standards-and-frameworks.html">← API Security Standards &amp; Frameworks</a><a href="/lesson/21-api-security/oauth2-and-oidc-deep-dive.html">OAuth2 &amp; OIDC, Deep Dive →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/21-api-security/api-security-standards-and-frameworks.html">← API Security Standards &amp; Frameworks</a><a href="/lesson/21-api-security/oauth2-and-oidc-deep-dive.html">OAuth2 &amp; OIDC, Deep Dive →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/21-api-security/authn-authz-apis";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

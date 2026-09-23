@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>SSRF &amp; auth attacks — Path 11 · KashSec Academy</title>
 <meta name="description" content="Two more categories from the OWASP Top 10 (Path 11.1): SSRF (A10) — a bug where the server itself becomes the attacker's proxy — and authentication failures (A07), the flaws that undermine the entire ">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/11-web-security/ssrf-and-auth.html">
@@ -21,62 +22,92 @@
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 11 — Web Security & Hacking","item":"https://kashsec.vercel.app/lesson/11-web-security/"},{"@type":"ListItem","position":4,"name":"SSRF & auth attacks","item":"https://kashsec.vercel.app/lesson/11-web-security/ssrf-and-auth.html"}]}
 </script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"LearningResource","name":"SSRF & auth attacks","headline":"SSRF & auth attacks","description":"Two more categories from the OWASP Top 10 (Path 11.1): SSRF (A10) — a bug where the server itself becomes the attacker's proxy — and authentication failures (A07), the flaws that undermine the entire ","url":"https://kashsec.vercel.app/lesson/11-web-security/ssrf-and-auth.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Cloud metadata, JWT, credential attacks.","isPartOf":{"@type":"Course","name":"Path 11: Web Security & Hacking","url":"https://kashsec.vercel.app/lesson/11-web-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/11-web-security/ssrf-and-auth.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/11-web-security/ssrf-and-auth">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/11-web-security/">Path 11 — Web Security &amp; Hacking</a> · SSRF &amp; auth attacks</div>
-  <article><h1>SSRF &amp; authentication flaws</h1>
-<p>Two more categories from the OWASP Top 10 (Path 11.1): <strong>SSRF</strong> (A10) — a bug where the <em>server itself</em> becomes the attacker&#39;s proxy — and <strong>authentication failures</strong> (A07), the flaws that undermine the entire premise of &quot;logging in&quot; securely.</p>
+<a class="skip" href="/lesson/11-web-security/ssrf-and-auth.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/11-web-security/">Path 11 — Web Security &amp; Hacking</a> · SSRF &amp; auth attacks</nav>
+    <div class="md" id="content"><article><h1>SSRF &amp; authentication flaws</h1>
+<p>Two more categories from the OWASP Top 10 (Path 11.1): <strong>SSRF</strong> (A10) — a bug where the <em>server itself</em> becomes the attacker's proxy — and <strong>authentication failures</strong> (A07), the flaws that undermine the entire premise of "logging in" securely.</p>
 <h2>Server-Side Request Forgery (SSRF)</h2>
 <h3>The core idea</h3>
-<p><strong>SSRF</strong> happens when an application takes user input and uses it to make an HTTP request <em>from the server itself</em> — without properly restricting where that request can go. The attacker essentially borrows the server&#39;s own network position and trust to reach places they couldn&#39;t reach directly.</p>
+<p><strong>SSRF</strong> happens when an application takes user input and uses it to make an HTTP request <em>from the server itself</em> — without properly restricting where that request can go. The attacker essentially borrows the server's own network position and trust to reach places they couldn't reach directly.</p>
 <pre><code class="language-python"># VULNERABLE — server fetches whatever URL the user supplies:
-url = request.args.get(&quot;image_url&quot;)
+url = request.args.get("image_url")
 response = requests.get(url)
 return response.content
 </code></pre>
-<p>This looks like an innocent &quot;fetch an image from a URL to display&quot; feature. But the server is making the request, from <strong>inside</strong> the company&#39;s network — somewhere the attacker, sitting outside on the public internet, cannot reach directly.</p>
+<p>This looks like an innocent "fetch an image from a URL to display" feature. But the server is making the request, from <strong>inside</strong> the company's network — somewhere the attacker, sitting outside on the public internet, cannot reach directly.</p>
 <h3>Why this is so dangerous — reaching internal-only systems</h3>
 <p>Classic SSRF targets:</p>
 <ul>
-<li><strong>Cloud metadata endpoints</strong> — <code>http://169.254.169.254/</code> on AWS/GCP/Azure often exposes temporary cloud credentials, instance metadata, and sometimes even IAM role tokens, with <strong>zero authentication required</strong>, precisely because it&#39;s assumed only the instance itself would ever query it. SSRF breaks that assumption entirely — one of the most impactful SSRF outcomes in real breaches (a real, well-documented example: the 2019 Capital One breach originated from exactly this pattern).</li>
+<li><strong>Cloud metadata endpoints</strong> — <code>http://169.254.169.254/</code> on AWS/GCP/Azure often exposes temporary cloud credentials, instance metadata, and sometimes even IAM role tokens, with <strong>zero authentication required</strong>, precisely because it's assumed only the instance itself would ever query it. SSRF breaks that assumption entirely — one of the most impactful SSRF outcomes in real breaches (a real, well-documented example: the 2019 Capital One breach originated from exactly this pattern).</li>
 <li><strong>Internal admin panels</strong> — <code>http://localhost/admin</code>, <code>http://10.0.0.5:8080/</code> — services never meant to be internet-facing, reachable only because the <em>server</em> is inside the trusted network perimeter.</li>
-<li><strong>Internal APIs and databases</strong> — services with no authentication because they &quot;trust&quot; all internal traffic by network position alone.</li>
-<li><strong>Port scanning the internal network</strong> — timing differences between &quot;connection refused&quot; and &quot;timeout&quot; responses let an attacker map out what&#39;s running internally, entirely through the vulnerable server as a proxy.</li>
+<li><strong>Internal APIs and databases</strong> — services with no authentication because they "trust" all internal traffic by network position alone.</li>
+<li><strong>Port scanning the internal network</strong> — timing differences between "connection refused" and "timeout" responses let an attacker map out what's running internally, entirely through the vulnerable server as a proxy.</li>
 </ul>
 <h3>Finding SSRF</h3>
-<p>Look for any feature where the server fetches a URL on the user&#39;s behalf: &quot;import from URL,&quot; image/avatar fetchers, webhook configuration, PDF generation from a URL, link preview generators, RSS/feed readers.</p>
+<p>Look for any feature where the server fetches a URL on the user's behalf: "import from URL," image/avatar fetchers, webhook configuration, PDF generation from a URL, link preview generators, RSS/feed readers.</p>
 <pre><code>image_url=http://169.254.169.254/latest/meta-data/
 image_url=http://localhost:8080/admin
 image_url=http://127.0.0.1:22          (banner grab via error timing)
@@ -94,42 +125,42 @@ http://attacker.com/redirect-to-internal   (open redirect chained into SSRF)
 <p>This is exactly why <strong>blocklists are structurally weak</strong> (echoing the SQLi/command injection lessons) — the <em>correct</em> defence is an allowlist of explicitly permitted destinations, not a blocklist of known-bad ones.</p>
 <h3>Defences</h3>
 <ul>
-<li><strong>Allowlist</strong> specific, expected destination hosts/domains — never rely on blocklisting &quot;known bad&quot; addresses.</li>
+<li><strong>Allowlist</strong> specific, expected destination hosts/domains — never rely on blocklisting "known bad" addresses.</li>
 <li>Disable unnecessary URL schemes (<code>file://</code>, <code>gopher://</code>, <code>dict://</code>) in whatever HTTP client library is fetching the URL.</li>
-<li><strong>Network-level segmentation</strong> — the app server simply shouldn&#39;t have network access to sensitive internal services it has no legitimate reason to reach (defence in depth, independent of the application code).</li>
-<li>For cloud environments, use <strong>IMDSv2</strong> (AWS&#39;s token-based metadata service protocol) which specifically requires an extra header, structurally defeating the simplest SSRF-to-metadata attack pattern.</li>
+<li><strong>Network-level segmentation</strong> — the app server simply shouldn't have network access to sensitive internal services it has no legitimate reason to reach (defence in depth, independent of the application code).</li>
+<li>For cloud environments, use <strong>IMDSv2</strong> (AWS's token-based metadata service protocol) which specifically requires an extra header, structurally defeating the simplest SSRF-to-metadata attack pattern.</li>
 </ul>
 <h2>Authentication failures</h2>
 <p>Recall Path 10.5 (passwords/hashing) and Path 05.4 (sessions) — this OWASP category is where those concepts become concrete, testable web application bugs.</p>
 <h3>Common real-world authentication flaws</h3>
 <ul>
 <li><strong>No rate limiting on login</strong> — allows unlimited password-guessing (brute force) or <strong>credential stuffing</strong> (trying breached username/password pairs from other sites, per Path 10.5).</li>
-<li><strong>Weak password reset flows</strong> — predictable reset tokens, tokens that don&#39;t expire, or reset links leaking via the <code>Referer</code> header to third-party analytics scripts.</li>
-<li><strong>Username enumeration</strong> — a login form that says &quot;invalid password&quot; for a real username but &quot;user does not exist&quot; for a fake one, letting an attacker silently confirm which emails/usernames have accounts (useful for later, targeted attacks) even without ever guessing a correct password.</li>
-<li><strong>Missing MFA, or MFA that can be bypassed</strong> — e.g., an MFA check that&#39;s enforced only in the UI&#39;s JavaScript flow, but the underlying API endpoint that actually logs the user in doesn&#39;t itself verify the MFA step was completed (a direct echo of the client-vs-server trust lesson).</li>
+<li><strong>Weak password reset flows</strong> — predictable reset tokens, tokens that don't expire, or reset links leaking via the <code>Referer</code> header to third-party analytics scripts.</li>
+<li><strong>Username enumeration</strong> — a login form that says "invalid password" for a real username but "user does not exist" for a fake one, letting an attacker silently confirm which emails/usernames have accounts (useful for later, targeted attacks) even without ever guessing a correct password.</li>
+<li><strong>Missing MFA, or MFA that can be bypassed</strong> — e.g., an MFA check that's enforced only in the UI's JavaScript flow, but the underlying API endpoint that actually logs the user in doesn't itself verify the MFA step was completed (a direct echo of the client-vs-server trust lesson).</li>
 <li><strong>Session fixation and predictable session tokens</strong> (Path 05.4) — weak randomness in session ID generation makes tokens guessable.</li>
 <li><strong>JWT-specific flaws</strong> — accepting <code>alg: none</code> (removing signature verification entirely), accepting a JWT signed with a weak/guessable secret, or confusing the intended signing algorithm (e.g., an <code>RS256</code>-to-<code>HS256</code> confusion attack, tricking the server into verifying a forged token using its own public key as if it were a shared secret).</li>
 </ul>
 <h3>Testing for username enumeration</h3>
-<pre><code class="language-bash">curl -s -d &quot;username=admin&amp;password=wrong&quot; https://target/login
-curl -s -d &quot;username=definitely_not_a_real_user_xyz&amp;password=wrong&quot; https://target/login
+<pre><code class="language-bash">curl -s -d "username=admin&amp;password=wrong" https://target/login
+curl -s -d "username=definitely_not_a_real_user_xyz&amp;password=wrong" https://target/login
 # Compare response bodies, status codes, AND response timing closely
 </code></pre>
-<p>If responses differ in <strong>any</strong> observable way — message text, status code, or even subtle timing differences — that&#39;s exploitable username enumeration.</p>
+<p>If responses differ in <strong>any</strong> observable way — message text, status code, or even subtle timing differences — that's exploitable username enumeration.</p>
 <h3>Testing JWTs</h3>
-<pre><code class="language-bash"># Decode a JWT&#39;s header and payload (never the signature) at jwt.io,
+<pre><code class="language-bash"># Decode a JWT's header and payload (never the signature) at jwt.io,
 # or manually in Python:
-python3 -c &quot;
+python3 -c "
 import base64, json
-token = &#39;eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiYWxpY2UifQ.signature&#39;
-header, payload, sig = token.split(&#39;.&#39;)
-print(json.loads(base64.urlsafe_b64decode(header + &#39;==&#39;)))
-print(json.loads(base64.urlsafe_b64decode(payload + &#39;==&#39;)))
-&quot;
+token = 'eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiYWxpY2UifQ.signature'
+header, payload, sig = token.split('.')
+print(json.loads(base64.urlsafe_b64decode(header + '==')))
+print(json.loads(base64.urlsafe_b64decode(payload + '==')))
+"
 </code></pre>
 <p>Then test the classic <strong><code>alg: none</code></strong> attack — modify the header to declare no signature algorithm at all, strip the signature, and see if the server foolishly accepts it as valid anyway.</p>
 <h2>Blind SSRF — no response body, still exploitable</h2>
-<p>Just as blind SQLi and blind XSS have no directly visible output, <strong>blind SSRF</strong> occurs when the vulnerable server makes the attacker-controlled request but never returns the response content back to the attacker in any form — the &quot;import from URL&quot; feature above might just silently succeed or fail with no data shown. Detection here relies on the same out-of-band callback pattern from the command injection lesson: point the vulnerable parameter at an attacker-controlled server (or a Burp Collaborator domain) and watch for an inbound HTTP or DNS request, which alone confirms the server made the fetch even though nothing about the response was ever visible. Blind SSRF is still often fully exploitable for internal port scanning and cloud metadata access — the attacker just has to infer results from <em>whether a request happened and how long it took</em>, rather than reading a response body directly.</p>
+<p>Just as blind SQLi and blind XSS have no directly visible output, <strong>blind SSRF</strong> occurs when the vulnerable server makes the attacker-controlled request but never returns the response content back to the attacker in any form — the "import from URL" feature above might just silently succeed or fail with no data shown. Detection here relies on the same out-of-band callback pattern from the command injection lesson: point the vulnerable parameter at an attacker-controlled server (or a Burp Collaborator domain) and watch for an inbound HTTP or DNS request, which alone confirms the server made the fetch even though nothing about the response was ever visible. Blind SSRF is still often fully exploitable for internal port scanning and cloud metadata access — the attacker just has to infer results from <em>whether a request happened and how long it took</em>, rather than reading a response body directly.</p>
 <h2>Credential stuffing vs brute force — a precise distinction worth having</h2>
 <p>These two terms get used interchangeably by beginners, but they describe different attacks with different defences. <strong>Brute force</strong> tries many <em>guessed</em> password candidates (from a wordlist or systematic generation) against one or a few accounts, hoping one guess happens to be correct — rate limiting and account lockouts are the primary defence. <strong>Credential stuffing</strong> instead tries password pairs <em>already known to be real</em>, leaked from a completely unrelated breach, betting purely on password reuse across sites — because each individual attempt uses a real, previously-valid credential rather than a guess, it often defeats simple rate limiting by spreading attempts across a botnet of different IPs, and the actual defence is different too: MFA, breach-monitoring services like Have I Been Pwned (Path 10.5), and blocking known-compromised passwords at signup time, rather than just slowing down guess attempts.</p>
 <h2>🧪 Lab — PortSwigger SSRF &amp; authentication labs</h2>
@@ -138,22 +169,22 @@ print(json.loads(base64.urlsafe_b64decode(payload + &#39;==&#39;)))
 <li><a href="https://portswigger.net/web-security/authentication">PortSwigger — Authentication labs</a> — practise username enumeration, broken brute-force protection, and multi-factor bypass techniques.</li>
 <li><a href="https://portswigger.net/web-security/jwt">PortSwigger — JWT attacks labs</a> — practise the <code>alg: none</code> and algorithm confusion attacks described above.</li>
 </ol>
-<h2>🎉 You&#39;ve finished the core vulnerability lessons of Path 11</h2>
-<p>You&#39;ve now covered every major OWASP Top 10 category hands-on: access control/IDOR, injection (XSS, SQLi, command injection), file upload flaws, SSRF, and authentication failures. One lesson remains to tie it all together into a practical roadmap.</p>
+<h2>🎉 You've finished the core vulnerability lessons of Path 11</h2>
+<p>You've now covered every major OWASP Top 10 category hands-on: access control/IDOR, injection (XSS, SQLi, command injection), file upload flaws, SSRF, and authentication failures. One lesson remains to tie it all together into a practical roadmap.</p>
 <p>An app blocks any <code>image_url</code> input containing the literal string <code>localhost</code> or <code>127.0.0.1</code> to prevent SSRF. Name one bypass technique from this lesson that would defeat this specific filter.</p>
 <details><summary>Show answer</summary>Several work: <code>http://127.1/</code> (shortened form), <code>http://[::1]/</code> (IPv6 loopback), <code>http://2130706433/</code> (decimal IP representation), or <code>http://0x7f.0x0.0x0.0x1/</code> (hex representation) — all resolve to the same loopback address while containing neither blocked string, demonstrating exactly why blocklisting specific strings is structurally weaker than allowlisting permitted destinations.</details><h2>Key terms</h2>
 <ul>
-<li><strong>SSRF</strong> — tricking a server into making requests on the attacker&#39;s behalf, reaching internal-only systems.</li>
+<li><strong>SSRF</strong> — tricking a server into making requests on the attacker's behalf, reaching internal-only systems.</li>
 <li><strong>Cloud metadata endpoint</strong> — an internal-only service (e.g., <code>169.254.169.254</code>) exposing instance credentials, a classic high-impact SSRF target.</li>
 <li><strong>Username enumeration</strong> — inferring valid accounts from differing login responses.</li>
 <li><strong>JWT <code>alg: none</code> / algorithm confusion</strong> — classic JWT signature-verification bypass techniques.</li>
 </ul>
 <h2>Recap</h2>
 <ul>
-<li>SSRF exploits the server&#39;s own trusted network position to reach internal-only systems the attacker can&#39;t access directly.</li>
+<li>SSRF exploits the server's own trusted network position to reach internal-only systems the attacker can't access directly.</li>
 <li>Blocklisting known-bad addresses is structurally weak; allowlisting expected destinations is the real fix.</li>
 <li>Authentication failures span weak rate limiting, enumeration, broken reset flows, and JWT-specific flaws.</li>
-<li>PortSwigger&#39;s free labs are the best hands-on practice for every technique in this lesson.</li>
+<li>PortSwigger's free labs are the best hands-on practice for every technique in this lesson.</li>
 </ul>
 <h3>References</h3>
 <ul>
@@ -164,19 +195,67 @@ print(json.loads(base64.urlsafe_b64decode(payload + &#39;==&#39;)))
 <li><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configuring-instance-metadata-service.html">AWS — IMDSv2 documentation</a> — the real-world SSRF-to-metadata mitigation.</li>
 </ul>
 <p><strong>Next up →</strong> <a href="#/lesson/11-web-security/api-security-fundamentals">API Security Fundamentals</a></p>
-<nav class="pager"><a href="/lesson/11-web-security/deserialization-attacks.html">← Insecure Deserialization</a><a href="/lesson/11-web-security/api-security-fundamentals.html">API Security Fundamentals →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/11-web-security/deserialization-attacks.html">← Insecure Deserialization</a><a href="/lesson/11-web-security/api-security-fundamentals.html">API Security Fundamentals →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/11-web-security/ssrf-and-auth";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

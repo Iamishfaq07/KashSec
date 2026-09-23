@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>Privacy Settings Audit — Path 09 · KashSec Academy</title>
 <meta name="description" content="This lesson is entirely hands-on — taking every concept from this path so far (digital footprint, cookies/tracking, VPNs, secure communications, identity theft prevention) and applying it directly to ">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/09-digital-privacy/privacy-settings-audit.html">
@@ -21,61 +22,91 @@
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 09 — Digital Privacy & Personal Security","item":"https://kashsec.vercel.app/lesson/09-digital-privacy/"},{"@type":"ListItem","position":4,"name":"Privacy Settings Audit","item":"https://kashsec.vercel.app/lesson/09-digital-privacy/privacy-settings-audit.html"}]}
 </script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"LearningResource","name":"Privacy Settings Audit","headline":"Privacy Settings Audit","description":"This lesson is entirely hands-on — taking every concept from this path so far (digital footprint, cookies/tracking, VPNs, secure communications, identity theft prevention) and applying it directly to ","url":"https://kashsec.vercel.app/lesson/09-digital-privacy/privacy-settings-audit.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"A structured, repeatable audit of your real accounts.","isPartOf":{"@type":"Course","name":"Path 09: Digital Privacy & Personal Security","url":"https://kashsec.vercel.app/lesson/09-digital-privacy/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/09-digital-privacy/privacy-settings-audit.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/09-digital-privacy/privacy-settings-audit">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/09-digital-privacy/">Path 09 — Digital Privacy &amp; Personal Security</a> · Privacy Settings Audit</div>
-  <article><h1>Privacy Settings Audit</h1>
+<a class="skip" href="/lesson/09-digital-privacy/privacy-settings-audit.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/09-digital-privacy/">Path 09 — Digital Privacy &amp; Personal Security</a> · Privacy Settings Audit</nav>
+    <div class="md" id="content"><article><h1>Privacy Settings Audit</h1>
 <p>This lesson is entirely hands-on — taking every concept from this path so far (digital footprint, cookies/tracking, VPNs, secure communications, identity theft prevention) and applying it directly to your own real accounts, in a structured, repeatable audit you can genuinely complete today.</p>
 <h2>Why a structured audit beats occasional worry</h2>
-<p>Most people&#39;s approach to privacy settings is reactive — noticing a setting only after something goes wrong, or vaguely worrying without ever systematically checking anything. A structured audit, run periodically (quarterly is a reasonable cadence), catches drift as platforms change their defaults and adds new features over time — directly mirroring the periodic re-testing discipline from Path 18&#39;s LLM red teaming playbooks lesson, just applied here to personal accounts instead of AI systems.</p>
+<p>Most people's approach to privacy settings is reactive — noticing a setting only after something goes wrong, or vaguely worrying without ever systematically checking anything. A structured audit, run periodically (quarterly is a reasonable cadence), catches drift as platforms change their defaults and adds new features over time — directly mirroring the periodic re-testing discipline from Path 18's LLM red teaming playbooks lesson, just applied here to personal accounts instead of AI systems.</p>
 <h2>The audit checklist</h2>
 <h3>1. Social media accounts</h3>
-<p>For each platform you use, check: <strong>who can see your posts</strong> (public, friends-only, custom), <strong>who can see your friends/connections list</strong> (often overlooked, and genuinely useful reconnaissance data per this path&#39;s digital footprint lesson), <strong>tagging permissions</strong> (can others tag you without approval, instantly making tagged content visible through your profile), and <strong>profile information visibility</strong> (birthdate, employer, phone number — each individually useful for the kind of social engineering covered in Path 10).</p>
+<p>For each platform you use, check: <strong>who can see your posts</strong> (public, friends-only, custom), <strong>who can see your friends/connections list</strong> (often overlooked, and genuinely useful reconnaissance data per this path's digital footprint lesson), <strong>tagging permissions</strong> (can others tag you without approval, instantly making tagged content visible through your profile), and <strong>profile information visibility</strong> (birthdate, employer, phone number — each individually useful for the kind of social engineering covered in Path 10).</p>
 <h3>2. Google/Apple/Microsoft account privacy dashboards</h3>
-<p>Major account ecosystems provide a centralized activity and privacy dashboard (Google&#39;s <strong>myactivity.google.com</strong>, Apple&#39;s <strong>Privacy</strong> settings, Microsoft&#39;s <strong>account.microsoft.com/privacy</strong>) — review: <strong>ad personalization settings</strong> (whether your activity is used to target ads), <strong>location history</strong> (often retained far more granularly and for far longer than users expect), and <strong>connected third-party apps</strong> (applications you&#39;ve granted account access to, sometimes years ago and long forgotten — exactly the &quot;excessive agency&quot;/unnecessary access risk pattern from Path 18&#39;s agentic AI risks lesson, here applied to your own account permissions rather than an AI agent&#39;s tool access).</p>
+<p>Major account ecosystems provide a centralized activity and privacy dashboard (Google's <strong>myactivity.google.com</strong>, Apple's <strong>Privacy</strong> settings, Microsoft's <strong>account.microsoft.com/privacy</strong>) — review: <strong>ad personalization settings</strong> (whether your activity is used to target ads), <strong>location history</strong> (often retained far more granularly and for far longer than users expect), and <strong>connected third-party apps</strong> (applications you've granted account access to, sometimes years ago and long forgotten — exactly the "excessive agency"/unnecessary access risk pattern from Path 18's agentic AI risks lesson, here applied to your own account permissions rather than an AI agent's tool access).</p>
 <h3>3. Browser settings</h3>
-<p>Revisit this path&#39;s browser privacy lesson directly: confirm third-party cookies are blocked, a tracker-blocking extension is installed and active, and review your saved passwords/autofill data for anything outdated or no longer needed.</p>
+<p>Revisit this path's browser privacy lesson directly: confirm third-party cookies are blocked, a tracker-blocking extension is installed and active, and review your saved passwords/autofill data for anything outdated or no longer needed.</p>
 <h3>4. Phone app permissions</h3>
-<p>Directly connecting to Path 13&#39;s mobile security fundamentals lesson: review every app&#39;s granted permissions (Settings → Apps → Permissions on Android; Settings → Privacy on iOS) and revoke anything disproportionate to the app&#39;s actual purpose — the flashlight-app-requesting-contacts red flag from Path 13, now applied to your own actual device rather than as a hypothetical example.</p>
+<p>Directly connecting to Path 13's mobile security fundamentals lesson: review every app's granted permissions (Settings → Apps → Permissions on Android; Settings → Privacy on iOS) and revoke anything disproportionate to the app's actual purpose — the flashlight-app-requesting-contacts red flag from Path 13, now applied to your own actual device rather than as a hypothetical example.</p>
 <h3>5. Location history and sharing</h3>
-<p>Check whether location history is being recorded (and for how long it&#39;s retained) across your accounts, and review which apps have &quot;always&quot; location access versus &quot;only while using&quot; — a meaningful distinction, since background location access reveals patterns (your home, your workplace, your routine) that occasional foreground access doesn&#39;t.</p>
+<p>Check whether location history is being recorded (and for how long it's retained) across your accounts, and review which apps have "always" location access versus "only while using" — a meaningful distinction, since background location access reveals patterns (your home, your workplace, your routine) that occasional foreground access doesn't.</p>
 <h3>6. Smart home and IoT devices</h3>
-<p>Recall Path 10.7&#39;s Mirai botnet reference and Path 12&#39;s IoT security discussion — smart home devices (cameras, voice assistants, smart TVs, connected doorbells) deserve their own explicit audit pass, since they&#39;re frequently overlooked in a &quot;privacy audit&quot; that mentally stops at phones and computers. Check each device&#39;s own companion app for: <strong>recording/listening history</strong> (many voice assistants retain audio snippets of every interaction, reviewable and deletable in the associated account&#39;s privacy dashboard), <strong>default credentials</strong> (a smart camera or doorbell still using its factory-default password is a genuinely common, genuinely serious real-world exposure, exactly the router-default-password risk from Path 10.7 applied to an always-on camera instead), and <strong>third-party data sharing settings</strong> (many smart home platforms share usage data with partner companies by default, buried in settings most users never open). A device with a camera or microphone that&#39;s rarely or never actually used for its recording features is worth explicitly checking whether that capability can be disabled entirely, rather than left dormant-but-active.</p>
+<p>Recall Path 10.7's Mirai botnet reference and Path 12's IoT security discussion — smart home devices (cameras, voice assistants, smart TVs, connected doorbells) deserve their own explicit audit pass, since they're frequently overlooked in a "privacy audit" that mentally stops at phones and computers. Check each device's own companion app for: <strong>recording/listening history</strong> (many voice assistants retain audio snippets of every interaction, reviewable and deletable in the associated account's privacy dashboard), <strong>default credentials</strong> (a smart camera or doorbell still using its factory-default password is a genuinely common, genuinely serious real-world exposure, exactly the router-default-password risk from Path 10.7 applied to an always-on camera instead), and <strong>third-party data sharing settings</strong> (many smart home platforms share usage data with partner companies by default, buried in settings most users never open). A device with a camera or microphone that's rarely or never actually used for its recording features is worth explicitly checking whether that capability can be disabled entirely, rather than left dormant-but-active.</p>
 <h3>7. Old and unused accounts</h3>
-<p>A category easy to forget precisely because it&#39;s about accounts you no longer actively think about: old social media profiles, forum accounts, and services you signed up for once and abandoned all remain part of your digital footprint and, more concerningly, remain potential breach targets holding your personal data indefinitely, with security patches and monitoring you&#39;re no longer paying any attention to. Services like <strong>Have I Been Pwned</strong> (Path 00, referenced throughout this course) can help identify which of your email addresses have appeared in breaches tied to services you may have genuinely forgotten you ever used. Where possible, formally delete (not just stop using) accounts you no longer need — a deleted account&#39;s data, once fully purged per the platform&#39;s data-retention policy, can no longer be breached at all, which is a meaningfully stronger outcome than simply abandoning it while your old data sits on their servers indefinitely.</p>
-<p>For each setting you review, ask specifically: if a stranger — not a friend, not someone you trust — found this, what would they learn, and could it be used against me (for social engineering, for identity theft per this path&#39;s earlier lesson, or simply for something you&#39;d rather remain private)? This concrete framing produces much more decisive settings choices than a vague &quot;is this private enough?&quot; question.</p>
+<p>A category easy to forget precisely because it's about accounts you no longer actively think about: old social media profiles, forum accounts, and services you signed up for once and abandoned all remain part of your digital footprint and, more concerningly, remain potential breach targets holding your personal data indefinitely, with security patches and monitoring you're no longer paying any attention to. Services like <strong>Have I Been Pwned</strong> (Path 00, referenced throughout this course) can help identify which of your email addresses have appeared in breaches tied to services you may have genuinely forgotten you ever used. Where possible, formally delete (not just stop using) accounts you no longer need — a deleted account's data, once fully purged per the platform's data-retention policy, can no longer be breached at all, which is a meaningfully stronger outcome than simply abandoning it while your old data sits on their servers indefinitely.</p>
+<p>For each setting you review, ask specifically: if a stranger — not a friend, not someone you trust — found this, what would they learn, and could it be used against me (for social engineering, for identity theft per this path's earlier lesson, or simply for something you'd rather remain private)? This concrete framing produces much more decisive settings choices than a vague "is this private enough?" question.</p>
 <p>Work through all 7 categories above for your own accounts and devices, documenting at least one setting you changed in each category. For the single change you consider most impactful, explain specifically what risk it reduces and why.</p>
 <h2>Key terms</h2>
 <ul>
@@ -86,27 +117,75 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <ul>
 <li>A structured, periodic privacy audit catches settings drift that a reactive, occasional approach misses.</li>
 <li>Social media visibility/tagging, account privacy dashboards, browser settings, phone app permissions, location history, smart home/IoT devices, and old unused accounts together form a genuinely comprehensive personal audit checklist.</li>
-<li>Framing each setting as &quot;what would a stranger learn, and could it be used against me&quot; produces clearer, more decisive privacy decisions than vague general concern.</li>
+<li>Framing each setting as "what would a stranger learn, and could it be used against me" produces clearer, more decisive privacy decisions than vague general concern.</li>
 </ul>
 <h3>References</h3>
 <ul>
 <li><a href="https://myactivity.google.com/">Google: My Activity</a> and <a href="https://adssettings.google.com/">Google: Ad Settings</a> — official dashboards referenced in this lesson.</li>
 <li><a href="https://ssd.eff.org/">EFF: Privacy Behind the Firewall (settings guides)</a> — free, platform-specific privacy settings walkthroughs.</li>
 </ul>
-<p><strong>Next up →</strong> <a href="#/lesson/09-digital-privacy/protecting-family-childrens-privacy">Protecting Family &amp; Children&#39;s Privacy</a></p>
-<nav class="pager"><a href="/lesson/09-digital-privacy/privacy-laws-your-rights.html">← Privacy Laws &amp; Your Rights</a><a href="/lesson/09-digital-privacy/protecting-family-childrens-privacy.html">Protecting Family &amp; Children's Privacy →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<p><strong>Next up →</strong> <a href="#/lesson/09-digital-privacy/protecting-family-childrens-privacy">Protecting Family &amp; Children's Privacy</a></p>
+<nav class="pager"><a href="/lesson/09-digital-privacy/privacy-laws-your-rights.html">← Privacy Laws &amp; Your Rights</a><a href="/lesson/09-digital-privacy/protecting-family-childrens-privacy.html">Protecting Family &amp; Children's Privacy →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/09-digital-privacy/privacy-settings-audit";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

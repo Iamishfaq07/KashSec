@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>Zero Trust in Cloud-Native Environments — Path 24 · KashSec Academy</title>
 <meta name="description" content="Every lesson so far has largely described Zero Trust as if there's a network to segment and a perimeter to dissolve. In cloud-native environments, there often isn't a traditional network at all — work">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-cloud.html">
@@ -21,51 +22,81 @@
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 24 — Zero Trust Architecture","item":"https://kashsec.vercel.app/lesson/24-zero-trust/"},{"@type":"ListItem","position":4,"name":"Zero Trust in Cloud-Native Environments","item":"https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-cloud.html"}]}
 </script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"LearningResource","name":"Zero Trust in Cloud-Native Environments","headline":"Zero Trust in Cloud-Native Environments","description":"Every lesson so far has largely described Zero Trust as if there's a network to segment and a perimeter to dissolve. In cloud-native environments, there often isn't a traditional network at all — work","url":"https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-cloud.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Workload identity, IAM as segmentation, and service mesh in a world with no fixed perimeter.","isPartOf":{"@type":"Course","name":"Path 24: Zero Trust Architecture","url":"https://kashsec.vercel.app/lesson/24-zero-trust/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/24-zero-trust/zero-trust-cloud.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/24-zero-trust/zero-trust-cloud">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/24-zero-trust/">Path 24 — Zero Trust Architecture</a> · Zero Trust in Cloud-Native Environments</div>
-  <article><h1>Zero Trust in Cloud-Native Environments</h1>
-<p>Every lesson so far has largely described Zero Trust as if there&#39;s a network to segment and a perimeter to dissolve. In cloud-native environments, there often isn&#39;t a traditional network at all — workloads are ephemeral, infrastructure is defined in code, and &quot;the network&quot; might be entirely virtual and reconfigured on every deployment. Zero Trust principles still apply, but the mechanics look different.</p>
+<a class="skip" href="/lesson/24-zero-trust/zero-trust-cloud.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/24-zero-trust/">Path 24 — Zero Trust Architecture</a> · Zero Trust in Cloud-Native Environments</nav>
+    <div class="md" id="content"><article><h1>Zero Trust in Cloud-Native Environments</h1>
+<p>Every lesson so far has largely described Zero Trust as if there's a network to segment and a perimeter to dissolve. In cloud-native environments, there often isn't a traditional network at all — workloads are ephemeral, infrastructure is defined in code, and "the network" might be entirely virtual and reconfigured on every deployment. Zero Trust principles still apply, but the mechanics look different.</p>
 <p>:::</p>
 <h2>Why cloud makes the perimeter problem worse, not better</h2>
 <p>On-premises, at least there was a physical perimeter to reason about, however leaky. In the cloud:</p>
 <ul>
 <li>Workloads spin up and down constantly — a server that existed five minutes ago might not exist now, and a brand-new one just replaced it</li>
 <li>Infrastructure spans multiple providers and regions, each with its own network model</li>
-<li>Traditional network-based controls (a firewall at a fixed IP) don&#39;t map cleanly onto infrastructure defined in Terraform and deployed via CI/CD pipelines</li>
-<li>The &quot;perimeter,&quot; if it exists at all, is defined by policy and API calls, not physical cabling</li>
+<li>Traditional network-based controls (a firewall at a fixed IP) don't map cleanly onto infrastructure defined in Terraform and deployed via CI/CD pipelines</li>
+<li>The "perimeter," if it exists at all, is defined by policy and API calls, not physical cabling</li>
 </ul>
 <p>This is exactly why Zero Trust and cloud adoption grew up together — the perimeter model was already failing before cloud, and cloud made it fail faster and more completely.</p>
 <h2>Workload identity: the cloud version of device trust</h2>
@@ -87,25 +118,25 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 </tr>
 <tr>
 <td>Certificate tied to enrolled hardware</td>
-<td>Identity tied to the workload&#39;s deployment context (which cluster, which namespace, which service account)</td>
+<td>Identity tied to the workload's deployment context (which cluster, which namespace, which service account)</td>
 </tr>
 </tbody></table>
 <p>Standards like <strong>SPIFFE/SPIRE</strong> exist specifically to give workloads verifiable, short-lived identities that other services can check before trusting a request — the direct cloud-native analog of a managed device certificate.</p>
 <h2>IAM as the new segmentation</h2>
-<p>In traditional networking, segmentation meant firewall rules between subnets. In the cloud, the equivalent control is often <strong>IAM (Identity and Access Management) policy</strong> — which service, function, or role can call which API, on which resource, under which conditions. A misconfigured IAM policy that grants a function broader permissions than it needs is functionally the same mistake as a flat, unsegmented network — it&#39;s just expressed as a JSON policy document instead of a firewall rule.</p>
+<p>In traditional networking, segmentation meant firewall rules between subnets. In the cloud, the equivalent control is often <strong>IAM (Identity and Access Management) policy</strong> — which service, function, or role can call which API, on which resource, under which conditions. A misconfigured IAM policy that grants a function broader permissions than it needs is functionally the same mistake as a flat, unsegmented network — it's just expressed as a JSON policy document instead of a firewall rule.</p>
 <p>:::danger
-Overly broad IAM roles are one of the single most common real-world cloud security findings — a Lambda function or service account granted <code>*</code> (wildcard) permissions &quot;to make it work&quot; during development, that never gets scoped down before production. This is least privilege failing in exactly the way the first lesson in this path warned about, just in IAM syntax instead of network syntax.</p>
+Overly broad IAM roles are one of the single most common real-world cloud security findings — a Lambda function or service account granted <code>*</code> (wildcard) permissions "to make it work" during development, that never gets scoped down before production. This is least privilege failing in exactly the way the first lesson in this path warned about, just in IAM syntax instead of network syntax.</p>
 <h2>Service mesh: micro-segmentation for microservices</h2>
-<p>A <strong>service mesh</strong> (Istio, Linkerd, and similar tools) provides, for service-to-service traffic inside a cloud-native application, roughly what micro-segmentation provides for a traditional network: mutual authentication between services (via workload identity), encrypted traffic by default, and fine-grained policy over which service can call which other service. This is the direct cloud-native descendant of the &quot;default-deny, explicitly allow what&#39;s needed&quot; model from the segmentation lesson — just implemented at the application layer instead of the network layer, because in Kubernetes especially, the underlying network is often too dynamic to segment meaningfully on its own.</p>
+<p>A <strong>service mesh</strong> (Istio, Linkerd, and similar tools) provides, for service-to-service traffic inside a cloud-native application, roughly what micro-segmentation provides for a traditional network: mutual authentication between services (via workload identity), encrypted traffic by default, and fine-grained policy over which service can call which other service. This is the direct cloud-native descendant of the "default-deny, explicitly allow what's needed" model from the segmentation lesson — just implemented at the application layer instead of the network layer, because in Kubernetes especially, the underlying network is often too dynamic to segment meaningfully on its own.</p>
 <h2>The shared responsibility wrinkle</h2>
-<p>Cloud providers secure the infrastructure <em>underneath</em> your workloads (physical security, hypervisor isolation, and so on) — but everything you configure on top (IAM policies, network rules, workload identity, what&#39;s publicly exposed) is squarely your responsibility. Zero Trust in the cloud doesn&#39;t change this shared responsibility boundary; it&#39;s a framework for how you handle <em>your</em> half of it well. A cloud provider having excellent physical security does nothing to fix an IAM role with wildcard permissions that you configured.</p>
+<p>Cloud providers secure the infrastructure <em>underneath</em> your workloads (physical security, hypervisor isolation, and so on) — but everything you configure on top (IAM policies, network rules, workload identity, what's publicly exposed) is squarely your responsibility. Zero Trust in the cloud doesn't change this shared responsibility boundary; it's a framework for how you handle <em>your</em> half of it well. A cloud provider having excellent physical security does nothing to fix an IAM role with wildcard permissions that you configured.</p>
 <h2>A worked example: a serverless data pipeline</h2>
 <p>A cloud-native pipeline: an API Gateway triggers a Lambda function, which reads from a database and writes results to a storage bucket.</p>
-<p><strong>Without Zero Trust discipline</strong>: the Lambda function has a broad execution role — full read/write on every database table and every storage bucket in the account, because it was easier to grant broad access once than scope it precisely. If that function is ever compromised (a vulnerable dependency, a code injection bug), the blast radius is the entire account&#39;s data.</p>
-<p><strong>With Zero Trust discipline applied</strong>: the Lambda function&#39;s IAM role is scoped to exactly the one database table it needs to read and the one specific bucket it needs to write to — nothing else. Its identity is short-lived and tied to that specific deployment. If it&#39;s compromised, the attacker inherits exactly that narrow scope, not the whole account — the cloud-native equivalent of the three-tier segmentation example from the earlier lesson.</p>
+<p><strong>Without Zero Trust discipline</strong>: the Lambda function has a broad execution role — full read/write on every database table and every storage bucket in the account, because it was easier to grant broad access once than scope it precisely. If that function is ever compromised (a vulnerable dependency, a code injection bug), the blast radius is the entire account's data.</p>
+<p><strong>With Zero Trust discipline applied</strong>: the Lambda function's IAM role is scoped to exactly the one database table it needs to read and the one specific bucket it needs to write to — nothing else. Its identity is short-lived and tied to that specific deployment. If it's compromised, the attacker inherits exactly that narrow scope, not the whole account — the cloud-native equivalent of the three-tier segmentation example from the earlier lesson.</p>
 <h2>🧪 Hands-on lab — audit a cloud IAM policy for least privilege</h2>
 <ol>
-<li><p>Pick a cloud service you&#39;re familiar with (AWS Lambda, a GCP Cloud Function, or a hypothetical equivalent) and sketch what it actually needs to do (e.g., &quot;read from one S3 bucket, write to one DynamoDB table&quot;).</p>
+<li><p>Pick a cloud service you're familiar with (AWS Lambda, a GCP Cloud Function, or a hypothetical equivalent) and sketch what it actually needs to do (e.g., "read from one S3 bucket, write to one DynamoDB table").</p>
 </li>
 <li><p>Write out the absolute minimum IAM permissions that would satisfy that need — specific resource ARNs/paths, not wildcards.</p>
 </li>
@@ -113,11 +144,11 @@ Overly broad IAM roles are one of the single most common real-world cloud securi
 </li>
 <li><p>For the broad version, write a concrete scenario of what an attacker could do if that specific function were compromised, that the scoped version would have prevented.</p>
 </li>
-<li><p>Why does &quot;the network&quot; become a less meaningful security boundary in cloud-native environments than it was on-premises?</p>
+<li><p>Why does "the network" become a less meaningful security boundary in cloud-native environments than it was on-premises?</p>
 </li>
 <li><p>Explain workload identity in your own words, and name its closest analog from the device-trust lesson.</p>
 </li>
-<li><p>A cloud provider advertises strong physical data-center security. Why doesn&#39;t that address an overly permissive IAM role you configured?</p>
+<li><p>A cloud provider advertises strong physical data-center security. Why doesn't that address an overly permissive IAM role you configured?</p>
 </li>
 </ol>
 <h2>Key terms</h2>
@@ -128,26 +159,74 @@ Overly broad IAM roles are one of the single most common real-world cloud securi
 <li><strong>Shared responsibility model</strong> — the division between what a cloud provider secures (infrastructure) and what the customer must secure (configuration, IAM, workload identity, data)</li>
 </ul>
 <h2>Recap</h2>
-<p>Zero Trust&#39;s principles translate directly into cloud-native environments — identity and device trust become workload identity, network segmentation becomes IAM policy and service mesh rules — but the mechanics shift because the underlying infrastructure is ephemeral, API-driven, and often has no meaningful physical or fixed-network perimeter to begin with. Overly broad IAM permissions are the cloud-native version of a flat, unsegmented network, and they&#39;re one of the most common real-world findings in cloud security assessments.</p>
+<p>Zero Trust's principles translate directly into cloud-native environments — identity and device trust become workload identity, network segmentation becomes IAM policy and service mesh rules — but the mechanics shift because the underlying infrastructure is ephemeral, API-driven, and often has no meaningful physical or fixed-network perimeter to begin with. Overly broad IAM permissions are the cloud-native version of a flat, unsegmented network, and they're one of the most common real-world findings in cloud security assessments.</p>
 <h3>References</h3>
 <ul>
 <li><a href="https://spiffe.io/">SPIFFE/SPIRE</a> — the open standard for workload identity referenced above</li>
 <li><a href="https://csrc.nist.gov/pubs/sp/800/207/final">NIST SP 800-207 — Zero Trust Architecture</a> — includes cloud and hybrid deployment considerations</li>
 <li><a href="https://aws.amazon.com/compliance/shared-responsibility-model/">AWS/Azure/GCP shared responsibility model documentation</a> — the canonical framing of provider vs. customer responsibility</li>
 </ul>
-<nav class="pager"><a href="/lesson/24-zero-trust/ztna-vs-vpn.html">← Zero Trust Network Access (ZTNA) vs. Traditional VPN</a><a href="/lesson/24-zero-trust/implementing-zero-trust.html">Implementing Zero Trust: A Practical Roadmap →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/24-zero-trust/ztna-vs-vpn.html">← Zero Trust Network Access (ZTNA) vs. Traditional VPN</a><a href="/lesson/24-zero-trust/implementing-zero-trust.html">Implementing Zero Trust: A Practical Roadmap →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/24-zero-trust/zero-trust-cloud";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

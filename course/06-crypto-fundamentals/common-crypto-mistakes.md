@@ -62,7 +62,7 @@ Revisit Path 13's mobile APK analysis lesson and Path 17's static analysis lesso
 - This lesson ties together crypto-adjacent findings from across this entire course (Path 11's JWT lesson, Path 13's mobile storage lesson, Path 17's static analysis lesson) as instances of these same seven patterns.
 
 ???refs
-- [OWASP Cryptographic Failures (Top 10 category)](https://owasp.org/Top10/A02_2021-Cryptographic_Failures/) — the official category covering this exact territory in real web applications.
+- [OWASP A04:2025 Cryptographic Failures](https://top10.owasp.org/2025/A04_2025-Cryptographic_Failures/) — the current web-app category (A02 in the 2021 edition).
 - [Cryptographic Right Answers](https://gist.github.com/tqbf/be58d2d39690c3b366ad) — a widely-referenced, practical "what to actually use" cheat sheet.
 ???
 

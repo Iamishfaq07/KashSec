@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>Scope and legal boundaries — Path 15 · KashSec Academy</title>
 <meta name="description" content="The choose-programs lesson touched on reading scope carefully. This lesson makes that explicit and legal, not just strategic — directly connecting to Path 14's rules-of-engagement-deep-dive lesson, si">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/15-bug-bounty/scope-and-legal-boundaries.html">
@@ -21,85 +22,163 @@
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 15 — Bug Bounty","item":"https://kashsec.vercel.app/lesson/15-bug-bounty/"},{"@type":"ListItem","position":4,"name":"Scope and legal boundaries","item":"https://kashsec.vercel.app/lesson/15-bug-bounty/scope-and-legal-boundaries.html"}]}
 </script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"LearningResource","name":"Scope and legal boundaries","headline":"Scope and legal boundaries","description":"The choose-programs lesson touched on reading scope carefully. This lesson makes that explicit and legal, not just strategic — directly connecting to Path 14's rules-of-engagement-deep-dive lesson, si","url":"https://kashsec.vercel.app/lesson/15-bug-bounty/scope-and-legal-boundaries.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate→Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Safe harbor, third-party scope traps, and staying legal.","isPartOf":{"@type":"Course","name":"Path 15: Bug Bounty","url":"https://kashsec.vercel.app/lesson/15-bug-bounty/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/15-bug-bounty/scope-and-legal-boundaries.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/15-bug-bounty/scope-and-legal-boundaries">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/15-bug-bounty/">Path 15 — Bug Bounty</a> · Scope and legal boundaries</div>
-  <article><h1>Scope and Legal Boundaries</h1>
-<p>The choose-programs lesson touched on reading scope carefully. This lesson makes that explicit and legal, not just strategic — directly connecting to Path 14&#39;s rules-of-engagement-deep-dive lesson, since a bug bounty program&#39;s scope document is functionally the same authorization boundary as a formal pentest&#39;s RoE, just written for a much broader, public audience of researchers.</p>
+<a class="skip" href="/lesson/15-bug-bounty/scope-and-legal-boundaries.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/15-bug-bounty/">Path 15 — Bug Bounty</a> · Scope and legal boundaries</nav>
+    <div class="md" id="content"><article><h1>Scope and Legal Boundaries</h1>
+<p>The choose-programs lesson touched on reading scope carefully. This lesson makes that explicit and legal, not just strategic — directly connecting to Path 14's rules-of-engagement-deep-dive lesson, since a bug bounty program's scope document is functionally the same authorization boundary as a formal pentest's RoE, just written for a much broader, public audience of researchers.</p>
 <h2>Scope is the entire legal basis for your testing</h2>
-<p>Directly connecting to Path 01&#39;s CFAA-and-ethics lesson: a bug bounty program&#39;s published scope is what transforms otherwise-unauthorized computer access into legally protected security research. Testing outside that scope — even against a system that seems obviously related, even with genuinely good intentions — receives none of that protection, and can expose a researcher to real legal risk regardless of skill or intent.</p>
+<p>Directly connecting to Path 01's CFAA-and-ethics lesson: a bug bounty program's published scope is what transforms otherwise-unauthorized computer access into legally protected security research. Testing outside that scope — even against a system that seems obviously related, even with genuinely good intentions — receives none of that protection, and can expose a researcher to real legal risk regardless of skill or intent.</p>
 <h2>Reading a scope document like a contract</h2>
 <ul>
 <li><strong>In-scope assets</strong> — the exact domains, subdomains, IP ranges, or applications explicitly listed as testable</li>
-<li><strong>Out-of-scope assets</strong> — explicitly excluded systems, often third-party integrations, staging environments the company doesn&#39;t control, or acquired subsidiaries not yet fully integrated</li>
+<li><strong>Out-of-scope assets</strong> — explicitly excluded systems, often third-party integrations, staging environments the company doesn't control, or acquired subsidiaries not yet fully integrated</li>
 <li><strong>Prohibited techniques</strong> — nearly every program explicitly prohibits denial-of-service testing, automated scanning above a stated rate limit, and social engineering against staff, even against in-scope systems</li>
 <li><strong>Safe harbor language</strong> — the specific legal commitment (or lack of one) a program makes not to pursue legal action against researchers who test within scope and report responsibly</li>
 </ul>
 <h2>Safe harbor, specifically</h2>
-<p>A <strong>safe harbor</strong> clause is a program&#39;s explicit promise not to initiate legal action against a researcher who stays within scope and follows the disclosure process — directly connecting to Path 01&#39;s authorized-access framing, this is the closest a bug bounty program gets to the formal get-out-of-jail letter Path 14 described for contracted pentests. Its absence from a program&#39;s policy is a genuine warning sign, not a minor omission.</p>
+<p>A <strong>safe harbor</strong> clause is a program's explicit promise not to initiate legal action against a researcher who stays within scope and follows the disclosure process — directly connecting to Path 01's authorized-access framing, this is the closest a bug bounty program gets to the formal get-out-of-jail letter Path 14 described for contracted pentests. Its absence from a program's policy is a genuine warning sign, not a minor omission.</p>
 <h2>Third-party scope: a genuinely common trap</h2>
-<p>A company&#39;s application frequently integrates third-party services — a payment processor, an analytics platform, a cloud storage bucket hosted under a different domain entirely. Finding a vulnerability in one of these integrations feels like a legitimate finding against the target company, but if that specific asset isn&#39;t explicitly listed in scope, testing it may mean testing a completely different organization&#39;s infrastructure without their authorization at all — exactly the scope-precision problem Path 14&#39;s RoE lesson warned about, here with the added complication that the boundary is often genuinely unclear without careful reading.</p>
+<p>A company's application frequently integrates third-party services — a payment processor, an analytics platform, a cloud storage bucket hosted under a different domain entirely. Finding a vulnerability in one of these integrations feels like a legitimate finding against the target company, but if that specific asset isn't explicitly listed in scope, testing it may mean testing a completely different organization's infrastructure without their authorization at all — exactly the scope-precision problem Path 14's RoE lesson warned about, here with the added complication that the boundary is often genuinely unclear without careful reading.</p>
 <h2>Rate limits and aggressive scanning</h2>
-<p>Nearly every program specifies acceptable request rates for automated tools, directly connecting to the recon-pipeline lesson&#39;s tooling: running <code>nuclei</code> or <code>ffuf</code> at full aggressive speed against a production system can functionally become a denial-of-service attack even without any malicious intent, violating scope even when the underlying vulnerability being searched for would have been perfectly legitimate to report.</p>
-<p>Why doesn&#39;t good intent protect a researcher who tests a third-party integration that turns out to be outside the program&#39;s scope?</p>
+<p>Nearly every program specifies acceptable request rates for automated tools, directly connecting to the recon-pipeline lesson's tooling: running <code>nuclei</code> or <code>ffuf</code> at full aggressive speed against a production system can functionally become a denial-of-service attack even without any malicious intent, violating scope even when the underlying vulnerability being searched for would have been perfectly legitimate to report.</p>
+<p>Why doesn't good intent protect a researcher who tests a third-party integration that turns out to be outside the program's scope?</p>
 <details><summary>Show answer</summary>Authorization under laws like the CFAA (covered in Path 01) is based on whether access was actually granted by the entity that owns the system being tested — not on the tester's subjective belief about whether the testing was reasonable or well-intentioned. A company's bug bounty scope only grants authorization for the specific assets it lists; a third-party service integrated into that company's product is owned and operated by a completely different organization that never granted any authorization at all, regardless of how directly related it appears to the original target. Good intent might affect how a situation is handled after the fact (whether the third party chooses to pursue action, for instance), but it does not retroactively create the authorization that never legally existed — exactly the same principle Path 14's RoE lesson emphasized about accidentally testing a shared hosting environment believed to be in scope.</details><h2>Key terms</h2>
 <ul>
 <li><strong>Scope document</strong> — the published list of in-scope/out-of-scope assets and permitted techniques for a bug bounty program.</li>
-<li><strong>Safe harbor</strong> — a program&#39;s explicit legal commitment not to pursue action against researchers who test within scope responsibly.</li>
-<li><strong>Third-party scope trap</strong> — mistakenly testing an integrated but separately-owned service that isn&#39;t actually covered by the program&#39;s authorization.</li>
+<li><strong>Safe harbor</strong> — a program's explicit legal commitment not to pursue action against researchers who test within scope responsibly.</li>
+<li><strong>Third-party scope trap</strong> — mistakenly testing an integrated but separately-owned service that isn't actually covered by the program's authorization.</li>
 </ul>
 <h2>Recap</h2>
 <ul>
-<li>A program&#39;s scope document is the entire legal basis for authorized testing — the bug bounty equivalent of Path 14&#39;s formal RoE document.</li>
+<li>A program's scope document is the entire legal basis for authorized testing — the bug bounty equivalent of Path 14's formal RoE document.</li>
 <li>Safe harbor language is the closest equivalent to a get-out-of-jail letter, and its absence is a genuine warning sign.</li>
 <li>Third-party integrations and aggressive automated scanning are two of the most common, genuinely easy-to-make scope violations.</li>
 </ul>
 <p><strong>Next up →</strong> <a href="#/lesson/15-bug-bounty/recon-pipeline">Building a recon pipeline</a></p>
-<nav class="pager"><a href="/lesson/15-bug-bounty/choose-programs.html">← Choosing programs</a><a href="/lesson/15-bug-bounty/recon-pipeline.html">The recon pipeline →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/15-bug-bounty/choose-programs.html">← Choosing programs</a><a href="/lesson/15-bug-bounty/recon-pipeline.html">The recon pipeline →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/15-bug-bounty/scope-and-legal-boundaries";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>
