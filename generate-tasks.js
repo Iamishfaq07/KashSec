@@ -37,6 +37,12 @@ import { fileURLToPath } from 'url';
 import { TASK_SOURCE } from './tasks-source.js';
 
 const ROOT = path.dirname(fileURLToPath(import.meta.url));
+const previousTasks = new Map();
+try {
+  const old = fs.readFileSync(path.join(ROOT, 'tasks.js'), 'utf8');
+  const match = old.match(/const TASKS = (\[[\s\S]*\]);/);
+  if (match) JSON.parse(match[1]).forEach(task => previousTasks.set(task.id, task));
+} catch { /* First build has no generated file to reuse. */ }
 
 /* MUST stay byte-identical to normaliseAnswer() in app.js, or a correct
    answer will hash differently in the browser and never verify. Lowercase,
@@ -55,7 +61,14 @@ function normaliseNumber(s) {
 const keyFor = norm => crypto.createHash('sha256').update(norm, 'utf8').digest();
 const hashFor = norm => crypto.createHash('sha256').update(norm, 'utf8').digest('hex');
 
-function encrypt(plaintext, norm) {
+function encrypt(plaintext, norm, previous) {
+  // Reuse a valid ciphertext when the answer and explanation have not
+  // changed. A new random IV is generated only for new or edited material;
+  // deriving the IV from content would reuse a GCM nonce across revisions.
+  if (previous) {
+    try { if (decrypt(previous, norm) === plaintext) return previous; }
+    catch { /* The prior ciphertext belongs to another answer or is invalid. */ }
+  }
   const iv = crypto.randomBytes(12);
   const cipher = crypto.createCipheriv('aes-256-gcm', keyFor(norm), iv);
   const ct = Buffer.concat([cipher.update(plaintext, 'utf8'), cipher.final()]);
@@ -92,7 +105,7 @@ const out = TASK_SOURCE.map(t => {
     points: t.points || 3,
     hint: t.hint || '',
     h: norms.map(hashFor),
-    e: norms.map(n => encrypt(t.explain, n)),
+    e: norms.map((n, i) => encrypt(t.explain, n, previousTasks.get(t.id)?.e?.[i])),
   };
 });
 

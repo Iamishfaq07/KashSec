@@ -30,7 +30,10 @@ const items = CHANGELOG.map((c) => {
     </item>`;
 }).join('\n');
 
-const lastBuild = new Date().toUTCString();
+// A wall-clock timestamp makes every clean build change a committed file.
+// The latest published changelog item is the feed's actual content date.
+const lastBuild = new Date(Math.max(...CHANGELOG.map(c =>
+  Date.parse(c.date + 'T12:00:00Z')))).toUTCString();
 const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
   <channel>
