@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>Install VirtualBox — Path 03 · KashSec Academy</title>
-<meta name="description" content="Time to build your lab. VirtualBox is a free, cross-platform hypervisor from Oracle — the friendliest starting point.">
+<meta name="description" content="Install VirtualBox: Step-by-step with troubleshooting.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/03-linux/install-virtualbox.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Install VirtualBox — Path 03 · KashSec Academy">
-<meta property="og:description" content="Time to build your lab. VirtualBox is a free, cross-platform hypervisor from Oracle — the friendliest starting point.">
+<meta property="og:description" content="Install VirtualBox: Step-by-step with troubleshooting.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/03-linux/install-virtualbox.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -17,48 +18,80 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Install VirtualBox — Path 03 · KashSec Academy">
-<meta name="twitter:description" content="Time to build your lab. VirtualBox is a free, cross-platform hypervisor from Oracle — the friendliest starting point.">
+<meta name="twitter:description" content="Install VirtualBox: Step-by-step with troubleshooting.">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 03 — Operating Systems & Linux","item":"https://kashsec.vercel.app/lesson/03-linux/"},{"@type":"ListItem","position":4,"name":"Install VirtualBox","item":"https://kashsec.vercel.app/lesson/03-linux/install-virtualbox.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Install VirtualBox","headline":"Install VirtualBox","description":"Time to build your lab. VirtualBox is a free, cross-platform hypervisor from Oracle — the friendliest starting point.","url":"https://kashsec.vercel.app/lesson/03-linux/install-virtualbox.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Step-by-step with troubleshooting.","isPartOf":{"@type":"Course","name":"Path 03: Operating Systems & Linux","url":"https://kashsec.vercel.app/lesson/03-linux/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/03-linux/install-virtualbox.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Install VirtualBox","headline":"Install VirtualBox","description":"Install VirtualBox: Step-by-step with troubleshooting.","url":"https://kashsec.vercel.app/lesson/03-linux/install-virtualbox.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Step-by-step with troubleshooting.","isPartOf":{"@type":"Course","name":"Path 03: Operating Systems & Linux","url":"https://kashsec.vercel.app/lesson/03-linux/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/03-linux/install-virtualbox.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/03-linux/install-virtualbox">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/03-linux/">Path 03 — Operating Systems &amp; Linux</a> · Install VirtualBox</div>
-  <article><h1>Install VirtualBox</h1>
+<a class="skip" href="/lesson/03-linux/install-virtualbox.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/03-linux/">Path 03 — Operating Systems &amp; Linux</a> · Install VirtualBox</nav>
+    <div class="md" id="content"><article><h1>Install VirtualBox</h1>
 <p>Time to build your lab. VirtualBox is a free, cross-platform hypervisor from Oracle — the friendliest starting point.</p>
-<p>Before installing, confirm hardware virtualization is enabled in your BIOS/UEFI. On Windows, open Task Manager → Performance → CPU, and look at the bottom for &quot;Virtualization: Enabled.&quot; If it says Disabled, you&#39;ll need to reboot into BIOS and turn on <strong>Intel VT-x</strong> (Intel) or <strong>AMD-V / SVM</strong> (AMD). Search &quot;how to enable virtualization [your laptop model]&quot; — every model is a bit different.</p>
+<p>:::warn CHECK VIRTUALIZATION FIRST
+Before installing, confirm hardware virtualization is enabled in your BIOS/UEFI. On Windows, open Task Manager → Performance → CPU, and look at the bottom for "Virtualization: Enabled." If it says Disabled, you'll need to reboot into BIOS and turn on <strong>Intel VT-x</strong> (Intel) or <strong>AMD-V / SVM</strong> (AMD). Search "how to enable virtualization [your laptop model]" — every model is a bit different.
+:::</p>
 <h2>Download</h2>
 <p>Go to <a href="https://www.virtualbox.org/wiki/Downloads">virtualbox.org/wiki/Downloads</a> and grab the installer for your host OS:</p>
 <ul>
@@ -67,24 +100,38 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <li><strong>Linux hosts</strong> — follow the packages for your distro (Ubuntu, Debian, Fedora, etc.)</li>
 </ul>
 <p>Also download the <strong>Extension Pack</strong> on the same page. It adds USB support and a few niceties.</p>
-<p>VirtualBox on M1/M2/M3 Macs is currently developer-preview and can be flaky. If you&#39;re on Apple Silicon, use <strong>UTM</strong> (<a href="https://mac.getutm.app/">mac.getutm.app</a>) or <strong>VMware Fusion Player</strong> instead. The rest of this path applies the same way.</p>
+<p>:::note APPLE SILICON MACS
+VirtualBox on M1/M2/M3 Macs is currently developer-preview and can be flaky. If you're on Apple Silicon, use <strong>UTM</strong> (<a href="https://mac.getutm.app/">mac.getutm.app</a>) or <strong>VMware Fusion Player</strong> instead. The rest of this path applies the same way.
+:::</p>
 <h2>Install — walkthrough</h2>
+<pre><code class="language-mermaid">flowchart LR
+    A["Download&lt;br/&gt;installer"] --&gt; B["Run installer&lt;br/&gt;(next-next-finish)"]
+    B --&gt; C["Allow the driver&lt;br/&gt;during install"]
+    C --&gt; D["Install&lt;br/&gt;Extension Pack"]
+    D --&gt; E["Open VirtualBox&lt;br/&gt;👋"]
+
+    style A fill:#111927,color:#EFA43A,stroke:#EFA43A
+    style B fill:#111927,color:#EFA43A,stroke:#EFA43A
+    style C fill:#2b1010,color:#E05548,stroke:#E05548
+    style D fill:#111927,color:#EFA43A,stroke:#EFA43A
+    style E fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
+</code></pre>
 <h3>Windows</h3>
 <ol>
 <li>Double-click the <code>.exe</code>.</li>
 <li>Accept the defaults on each screen.</li>
-<li>When Windows asks about installing a &quot;device software&quot; from Oracle, click <strong>Install</strong>. Without it, networking inside VMs won&#39;t work.</li>
+<li>When Windows asks about installing a "device software" from Oracle, click <strong>Install</strong>. Without it, networking inside VMs won't work.</li>
 <li>Finish, then double-click the <strong>Extension Pack</strong> file — VirtualBox opens and installs it.</li>
 </ol>
 <h3>macOS (Intel)</h3>
 <ol>
 <li>Double-click the <code>.dmg</code>, then the <code>.pkg</code> inside.</li>
 <li>Follow the prompts.</li>
-<li>On modern macOS you&#39;ll get a <strong>System Extension Blocked</strong> warning. Open <strong>System Settings → Privacy &amp; Security</strong>, scroll down, click <strong>Allow</strong> next to &quot;System software from Oracle America.&quot; <strong>Reboot.</strong></li>
+<li>On modern macOS you'll get a <strong>System Extension Blocked</strong> warning. Open <strong>System Settings → Privacy &amp; Security</strong>, scroll down, click <strong>Allow</strong> next to "System software from Oracle America." <strong>Reboot.</strong></li>
 <li>Install the Extension Pack the same way as Windows.</li>
 </ol>
 <h3>Linux (Debian/Ubuntu)</h3>
-<pre><code class="language-bash"># Add Oracle&#39;s key &amp; repo (from virtualbox.org/wiki/Linux_Downloads)
+<pre><code class="language-bash"># Add Oracle's key &amp; repo (from virtualbox.org/wiki/Linux_Downloads)
 sudo apt update
 sudo apt install virtualbox virtualbox-ext-pack -y
 # Add your user to the vboxusers group (needed for USB):
@@ -96,18 +143,18 @@ sudo usermod -aG vboxusers $USER
 <ul>
 <li>A clean window titled <strong>Oracle VM VirtualBox Manager</strong></li>
 <li>An empty VM list on the left</li>
-<li>A cheerful &quot;Welcome&quot; message</li>
+<li>A cheerful "Welcome" message</li>
 </ul>
-<p>That&#39;s it — the lab foundation is built. In the next lesson you&#39;ll add Kali.</p>
+<p>That's it — the lab foundation is built. In the next lesson you'll add Kali.</p>
 <h2>Verify your download — a habit worth starting now</h2>
-<p>Before installing anything, especially security tooling, it&#39;s worth building the habit of verifying a download&#39;s integrity using its published <strong>checksum</strong> (referenced conceptually back in Path 06&#39;s hashing lesson) — a hash value the official site publishes alongside the download, which you can recompute locally and compare:</p>
+<p>Before installing anything, especially security tooling, it's worth building the habit of verifying a download's integrity using its published <strong>checksum</strong> (referenced conceptually back in Path 06's hashing lesson) — a hash value the official site publishes alongside the download, which you can recompute locally and compare:</p>
 <pre><code class="language-bash"># macOS/Linux:
 shasum -a 256 VirtualBox-installer.dmg
 
 # Windows PowerShell:
 Get-FileHash VirtualBox-installer.exe -Algorithm SHA256
 </code></pre>
-<p>If your computed hash doesn&#39;t match the one published on virtualbox.org, don&#39;t install it — the file may have been corrupted in transit or, in a worse case, tampered with somewhere along the way (exactly the supply-chain risk referenced in Path 16&#39;s DevSecOps lab). This habit costs 30 seconds and becomes second nature quickly.</p>
+<p>If your computed hash doesn't match the one published on virtualbox.org, don't install it — the file may have been corrupted in transit or, in a worse case, tampered with somewhere along the way (exactly the supply-chain risk referenced in Path 16's DevSecOps lab). This habit costs 30 seconds and becomes second nature quickly.</p>
 <h2>Common installation issues</h2>
 <table>
 <thead>
@@ -118,12 +165,12 @@ Get-FileHash VirtualBox-installer.exe -Algorithm SHA256
 </tr>
 </thead>
 <tbody><tr>
-<td>&quot;VT-x/AMD-V not available&quot;</td>
+<td>"VT-x/AMD-V not available"</td>
 <td>Virtualization off in BIOS</td>
 <td>Enable Intel VT-x / AMD-V in BIOS</td>
 </tr>
 <tr>
-<td>&quot;VT-x is being used by another hypervisor&quot; (Windows)</td>
+<td>"VT-x is being used by another hypervisor" (Windows)</td>
 <td>Hyper-V is enabled</td>
 <td>Disable Hyper-V: <code>bcdedit /set hypervisorlaunchtype off</code> then reboot</td>
 </tr>
@@ -133,7 +180,7 @@ Get-FileHash VirtualBox-installer.exe -Algorithm SHA256
 <td>System Settings → Privacy &amp; Security → Allow → reboot</td>
 </tr>
 <tr>
-<td>Kernel driver won&#39;t load (Linux)</td>
+<td>Kernel driver won't load (Linux)</td>
 <td>Secure Boot or missing headers</td>
 <td><code>sudo apt install linux-headers-$(uname -r)</code> and disable Secure Boot</td>
 </tr>
@@ -143,21 +190,25 @@ Get-FileHash VirtualBox-installer.exe -Algorithm SHA256
 <td>Give VM 4 GB+, enable 3D acceleration</td>
 </tr>
 </tbody></table>
-<p>On Windows, if you use WSL2 or Docker Desktop, they both use Hyper-V and can clash with VirtualBox. VirtualBox 7 mostly plays nicely but if you hit issues, disable Hyper-V or use VMware Workstation Player instead.</p>
+<p>:::tip WSL2 AND VIRTUALBOX
+On Windows, if you use WSL2 or Docker Desktop, they both use Hyper-V and can clash with VirtualBox. VirtualBox 7 mostly plays nicely but if you hit issues, disable Hyper-V or use VMware Workstation Player instead.
+:::</p>
 <h2>🧪 Lab — Confirm your install</h2>
 <ol>
 <li>Open VirtualBox.</li>
 <li>Click <strong>File → Preferences → Extensions</strong>. You should see the Extension Pack listed as installed.</li>
-<li>Click <strong>File → Preferences → Network → Host-only Networks</strong>. Confirm a &quot;VirtualBox Host-Only Ethernet Adapter&quot; exists — we&#39;ll use it for isolated lab networks.</li>
-<li>Take a moment: your machine is now capable of hosting virtual computers. That&#39;s a real superpower.</li>
+<li>Click <strong>File → Preferences → Network → Host-only Networks</strong>. Confirm a "VirtualBox Host-Only Ethernet Adapter" exists — we'll use it for isolated lab networks.</li>
+<li>Take a moment: your machine is now capable of hosting virtual computers. That's a real superpower.</li>
 </ol>
-<p>Why do we install the Extension Pack in addition to VirtualBox itself?</p>
-<details><summary>Show answer</summary>It adds USB device support, PXE boot, disk encryption, and other niceties that VirtualBox core doesn't ship with.</details><h2>Key terms</h2>
+<p>:::challenge Test yourself
+Why do we install the Extension Pack in addition to VirtualBox itself?</p>
+<details><summary>Show answer</summary>It adds USB device support, PXE boot, disk encryption, and other niceties that VirtualBox core doesn't ship with.</details>
+:::<h2>Key terms</h2>
 <ul>
 <li><strong>VirtualBox</strong> — the free Type-2 hypervisor by Oracle.</li>
 <li><strong>Extension Pack</strong> — optional add-on with USB support and extras.</li>
 <li><strong>VT-x / AMD-V</strong> — the CPU features that make virtualization possible.</li>
-<li><strong>Hyper-V</strong> — Microsoft&#39;s own hypervisor; can conflict with VirtualBox.</li>
+<li><strong>Hyper-V</strong> — Microsoft's own hypervisor; can conflict with VirtualBox.</li>
 </ul>
 <h2>Recap</h2>
 <ul>
@@ -174,19 +225,67 @@ Get-FileHash VirtualBox-installer.exe -Algorithm SHA256
 <li><a href="https://mac.getutm.app/">UTM for Apple Silicon</a> — the ARM Mac alternative.</li>
 </ul>
 <p><strong>Next up →</strong> <a href="#/lesson/03-linux/install-kali">Install Kali Linux</a></p>
-<nav class="pager"><a href="/lesson/03-linux/virtualization.html">← What is virtualization?</a><a href="/lesson/03-linux/install-kali.html">Install Kali Linux →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/03-linux/virtualization.html">← What is virtualization?</a><a href="/lesson/03-linux/install-kali.html">Install Kali Linux →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/03-linux/install-virtualbox";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

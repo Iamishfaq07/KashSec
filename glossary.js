@@ -2605,6 +2605,15 @@ const GLOSSARY = [
   "subTitle": "Phase 5: Reporting"
  },
  {
+  "term": "CVSS vector",
+  "def": "the versioned metric choices that produced the score; publish it alongside the number.",
+  "pathId": "10-fundamentals",
+  "pathN": "10",
+  "pathTitle": "Cybersecurity Fundamentals",
+  "subId": "vulnerability-management-basics",
+  "subTitle": "Vulnerability Management Basics"
+ },
+ {
   "term": "Cyber Kill Chain",
   "def": "the 7-stage model of an intrusion (Lockheed Martin).",
   "pathId": "10-fundamentals",
@@ -7466,7 +7475,7 @@ const GLOSSARY = [
  },
  {
   "term": "OWASP Mobile Application Security (MAS)",
-  "def": "the umbrella project covering the Mobile Top 10, plus the detailed testing guide (MASTG) and verification standard (MASVS).",
+  "def": "the project behind MASVS requirements, MASWE weaknesses, and MASTG testing guidance; the Mobile Top 10 is a separate OWASP project.",
   "pathId": "13-mobile-security",
   "pathN": "13",
   "pathTitle": "Mobile App Security",

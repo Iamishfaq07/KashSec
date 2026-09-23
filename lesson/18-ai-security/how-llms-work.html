@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>How LLMs actually work — Path 18 · KashSec Academy</title>
-<meta name="description" content="Before you can secure AI systems, you need a working mental model of what they actually are — not magic, not truly &quot;thinking,&quot; but a specific, learnable kind of software with its own distinct failure ">
+<meta name="description" content="How LLMs actually work: A friendly primer without the mystique.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/18-ai-security/how-llms-work.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="How LLMs actually work — Path 18 · KashSec Academy">
-<meta property="og:description" content="Before you can secure AI systems, you need a working mental model of what they actually are — not magic, not truly &quot;thinking,&quot; but a specific, learnable kind of software with its own distinct failure ">
+<meta property="og:description" content="How LLMs actually work: A friendly primer without the mystique.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/18-ai-security/how-llms-work.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -17,90 +18,180 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="How LLMs actually work — Path 18 · KashSec Academy">
-<meta name="twitter:description" content="Before you can secure AI systems, you need a working mental model of what they actually are — not magic, not truly &quot;thinking,&quot; but a specific, learnable kind of software with its own distinct failure ">
+<meta name="twitter:description" content="How LLMs actually work: A friendly primer without the mystique.">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 18 — AI & AI Security","item":"https://kashsec.vercel.app/lesson/18-ai-security/"},{"@type":"ListItem","position":4,"name":"How LLMs actually work","item":"https://kashsec.vercel.app/lesson/18-ai-security/how-llms-work.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"How LLMs actually work","headline":"How LLMs actually work","description":"Before you can secure AI systems, you need a working mental model of what they actually are — not magic, not truly \"thinking,\" but a specific, learnable kind of software with its own distinct failure ","url":"https://kashsec.vercel.app/lesson/18-ai-security/how-llms-work.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"A friendly primer without the mystique.","isPartOf":{"@type":"Course","name":"Path 18: AI & AI Security","url":"https://kashsec.vercel.app/lesson/18-ai-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/18-ai-security/how-llms-work.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"How LLMs actually work","headline":"How LLMs actually work","description":"How LLMs actually work: A friendly primer without the mystique.","url":"https://kashsec.vercel.app/lesson/18-ai-security/how-llms-work.html","inLanguage":"en","dateModified":"2026-08-04","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"A friendly primer without the mystique.","isPartOf":{"@type":"Course","name":"Path 18: AI & AI Security","url":"https://kashsec.vercel.app/lesson/18-ai-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/18-ai-security/how-llms-work.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/18-ai-security/how-llms-work">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/18-ai-security/">Path 18 — AI &amp; AI Security</a> · How LLMs actually work</div>
-  <article><h1>How LLMs actually work</h1>
-<p>Before you can secure AI systems, you need a working mental model of what they actually are — not magic, not truly &quot;thinking,&quot; but a specific, learnable kind of software with its own distinct failure modes. This lesson gives you exactly enough understanding to make the rest of Path 18 click.</p>
+<a class="skip" href="/lesson/18-ai-security/how-llms-work.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/18-ai-security/">Path 18 — AI &amp; AI Security</a> · How LLMs actually work</nav>
+    <div class="md" id="content"><article><h1>How LLMs actually work</h1>
+<p>Before you can secure AI systems, you need a working mental model of what they actually are — not magic, not truly "thinking," but a specific, learnable kind of software with its own distinct failure modes. This lesson gives you exactly enough understanding to make the rest of Path 18 click.</p>
 <h2>What an LLM actually is, at a high level</h2>
-<p>A <strong>Large Language Model (LLM)</strong> is a neural network trained on enormous amounts of text, learning to predict <strong>the next most likely token</strong> (roughly, a word or word-fragment) given everything that came before it. That&#39;s it, mechanically — everything an LLM does, from writing code to answering questions to (as you&#39;ll see) being tricked, emerges from this single core capability applied at massive scale.</p>
+<p>A <strong>Large Language Model (LLM)</strong> is a neural network trained on enormous amounts of text, learning to predict <strong>the next most likely token</strong> (roughly, a word or word-fragment) given everything that came before it. That's it, mechanically — everything an LLM does, from writing code to answering questions to (as you'll see) being tricked, emerges from this single core capability applied at massive scale.</p>
+<pre><code class="language-mermaid">flowchart LR
+    Input["Input text:&lt;br/&gt;'The capital of France is'"]
+    Model["🧠 LLM&lt;br/&gt;(predicts next token)"]
+    Output["Output: 'Paris'"]
+
+    Input --&gt; Model --&gt; Output
+
+    style Input fill:#111927,color:#8496A6,stroke:#8496A6
+    style Model fill:#2b1f0a,color:#EFA43A,stroke:#EFA43A
+    style Output fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
+</code></pre>
 <h2>Tokens — the actual unit LLMs work with</h2>
-<p>Recall Path 04&#39;s variables/data lesson — just as programs work with specific data types, LLMs work with <strong>tokens</strong>, not whole words or characters directly:</p>
+<p>Recall Path 04's variables/data lesson — just as programs work with specific data types, LLMs work with <strong>tokens</strong>, not whole words or characters directly:</p>
 <pre><code class="language-python"># Conceptually, a sentence gets broken into tokens like this:
-&quot;The capital of France is Paris&quot;
-# → [&quot;The&quot;, &quot; capital&quot;, &quot; of&quot;, &quot; France&quot;, &quot; is&quot;, &quot; Paris&quot;]
+"The capital of France is Paris"
+# → ["The", " capital", " of", " France", " is", " Paris"]
 # (real tokenizers often split less intuitively, especially for
 # unusual words, code, or non-English text)
 </code></pre>
 <p>This matters for security later — many prompt injection and jailbreak techniques (Path 18.3/12.4) specifically exploit how tokenization handles unusual formatting, unicode tricks, or unexpected boundaries.</p>
-<h2>Training — where an LLM&#39;s &quot;knowledge&quot; actually comes from</h2>
+<h2>Training — where an LLM's "knowledge" actually comes from</h2>
+<pre><code class="language-mermaid">flowchart TB
+    Pretrain["1️⃣ Pre-training&lt;br/&gt;Massive text corpus →&lt;br/&gt;learns language patterns &amp; facts"]
+    Finetune["2️⃣ Fine-tuning&lt;br/&gt;Curated examples →&lt;br/&gt;learns to follow instructions"]
+    RLHF["3️⃣ RLHF / Alignment&lt;br/&gt;Human feedback →&lt;br/&gt;learns to be helpful &amp; avoid harm"]
+
+    Pretrain --&gt; Finetune --&gt; RLHF
+
+    style Pretrain fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
+    style Finetune fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
+    style RLHF fill:#2b1f0a,color:#EFA43A,stroke:#EFA43A
+</code></pre>
 <ul>
 <li><strong>Pre-training</strong> — the model learns general language patterns, facts, and reasoning-like capability from a vast, broad text corpus (a snapshot of internet text, books, code, and more, up to some cutoff date).</li>
 <li><strong>Fine-tuning</strong> — additional, more curated training specifically teaching the model to follow instructions in a helpful, conversational format, rather than just continuing text in whatever direction is statistically likely.</li>
-<li><strong>RLHF (Reinforcement Learning from Human Feedback)</strong> — human reviewers rate model outputs, and the model is further adjusted to produce outputs humans rate as more helpful, honest, and harmless — this is where a model&#39;s &quot;personality&quot; and safety behaviours are substantially shaped.</li>
+<li><strong>RLHF (Reinforcement Learning from Human Feedback)</strong> — human reviewers rate model outputs, and the model is further adjusted to produce outputs humans rate as more helpful, honest, and harmless — this is where a model's "personality" and safety behaviours are substantially shaped.</li>
 </ul>
-<h2>The context window — an LLM&#39;s entire &quot;working memory&quot;</h2>
-<p>Recall Path 05&#39;s client-server model — an LLM has <strong>no persistent memory</strong> between separate conversations by default. Everything it &quot;knows&quot; about your current conversation exists purely within the <strong>context window</strong> — the literal text (your messages, its previous replies, any system instructions) fed into it for that single generation step.</p>
-<p>This single architectural fact is the <strong>root cause</strong> of prompt injection (Path 18.3) — the model has no inherent, structural way to distinguish &quot;trusted instructions from the system prompt&quot; from &quot;untrusted text that happens to look like instructions, embedded in user input or a document it&#39;s processing.&quot; Everything is just tokens in the same window, processed the same fundamental way.</p>
+<h2>The context window — an LLM's entire "working memory"</h2>
+<p>Recall Path 05's client-server model — an LLM has <strong>no persistent memory</strong> between separate conversations by default. Everything it "knows" about your current conversation exists purely within the <strong>context window</strong> — the literal text (your messages, its previous replies, any system instructions) fed into it for that single generation step.</p>
+<pre><code class="language-mermaid">flowchart LR
+    Sys["System prompt&lt;br/&gt;(instructions/rules)"]
+    Hist["Conversation history&lt;br/&gt;(previous turns)"]
+    User["Current user message"]
+    Window["📥 Context Window&lt;br/&gt;(everything fed in at once)"]
+
+    Sys --&gt; Window
+    Hist --&gt; Window
+    User --&gt; Window
+    Window --&gt; Gen["Model generates&lt;br/&gt;next response"]
+
+    style Sys fill:#2b1010,color:#E9EEF3,stroke:#E05548
+    style Hist fill:#111927,color:#8496A6,stroke:#8496A6
+    style User fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
+    style Window fill:#2b1f0a,color:#EFA43A,stroke:#EFA43A
+    style Gen fill:#111927,color:#8496A6,stroke:#8496A6
+</code></pre>
+<p>This single architectural fact is the <strong>root cause</strong> of prompt injection (Path 18.3) — the model has no inherent, structural way to distinguish "trusted instructions from the system prompt" from "untrusted text that happens to look like instructions, embedded in user input or a document it's processing." Everything is just tokens in the same window, processed the same fundamental way.</p>
 <h2>Why this differs so fundamentally from traditional software security</h2>
-<p>Recall every vulnerability class from Path 11 — SQL injection exploits a gap between <strong>code</strong> and <strong>data</strong> in a database query; XSS exploits a gap between <strong>code</strong> and <strong>data</strong> in an HTML page. LLM security largely exploits the exact same underlying pattern, but the &quot;interpreter&quot; is now a probabilistic neural network with no fixed, auditable logic path — you can&#39;t simply read the source code to understand exactly why a specific input produces a specific output the way you could with a traditional SQL query or web application.</p>
+<p>Recall every vulnerability class from Path 11 — SQL injection exploits a gap between <strong>code</strong> and <strong>data</strong> in a database query; XSS exploits a gap between <strong>code</strong> and <strong>data</strong> in an HTML page. LLM security largely exploits the exact same underlying pattern, but the "interpreter" is now a probabilistic neural network with no fixed, auditable logic path — you can't simply read the source code to understand exactly why a specific input produces a specific output the way you could with a traditional SQL query or web application.</p>
+<pre><code class="language-mermaid">flowchart TB
+    Trad["Traditional software&lt;br/&gt;Deterministic code path&lt;br/&gt;Auditable logic&lt;br/&gt;Clear code/data separation"]
+    LLM_["LLM-based system&lt;br/&gt;Probabilistic generation&lt;br/&gt;Not fully auditable&lt;br/&gt;Blurred instruction/data boundary"]
+
+    style Trad fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
+    style LLM_ fill:#2b1010,color:#E05548,stroke:#E05548
+</code></pre>
 <p>This is precisely why Path 18 exists as a distinct discipline within this course rather than simply being folded into Path 11 — the underlying <em>pattern</em> (untrusted input treated as trusted instruction) rhymes strongly with SQLi/XSS, but the mechanism, and therefore many of the defensive techniques, are genuinely different.</p>
 <h2>Agentic systems — where LLM security stakes rise sharply</h2>
-<p>Recall the product context mentioned throughout this course (Claude Code, browsing agents) — increasingly, LLMs aren&#39;t just generating text for a human to read, they&#39;re <strong>taking actions</strong>: browsing the web, executing code, calling APIs, modifying files. This is called an <strong>agentic</strong> system.</p>
+<p>Recall the product context mentioned throughout this course (Claude Code, browsing agents) — increasingly, LLMs aren't just generating text for a human to read, they're <strong>taking actions</strong>: browsing the web, executing code, calling APIs, modifying files. This is called an <strong>agentic</strong> system.</p>
+<pre><code class="language-mermaid">flowchart LR
+    LLM2["🧠 LLM"] --&gt; Tool1["🔧 Tool: web search"]
+    LLM2 --&gt; Tool2["🔧 Tool: code execution"]
+    LLM2 --&gt; Tool3["🔧 Tool: file read/write"]
+    LLM2 --&gt; Tool4["🔧 Tool: send email"]
+
+    style LLM2 fill:#2b1f0a,color:#EFA43A,stroke:#EFA43A
+    style Tool1 fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
+    style Tool2 fill:#2b1010,color:#E05548,stroke:#E05548
+    style Tool3 fill:#2b1010,color:#E05548,stroke:#E05548
+    style Tool4 fill:#2b1010,color:#E05548,stroke:#E05548
+</code></pre>
 <p>Once an LLM can take real-world actions rather than just producing text a human reviews before acting, every security concept from this course — access control (Path 11.1), least privilege (Path 14.4), input validation (Path 11.6) — becomes directly and urgently relevant to AI systems specifically, and the remaining lessons in this path build toward exactly this territory.</p>
 <h2>Temperature and sampling — why the same prompt gives different answers</h2>
-<p>A detail worth understanding early, since it shapes how you&#39;ll reason about testing an LLM for security issues throughout this path: an LLM doesn&#39;t just deterministically pick the single &quot;most likely&quot; next token every time — a parameter called <strong>temperature</strong> controls how much randomness is introduced into that choice. At temperature 0, the model always picks the highest-probability token, producing the same output for the same input every time (useful for testing reproducibility). At higher temperatures, it samples more randomly among plausible next tokens, producing more varied, creative output — but also meaning the exact same jailbreak or prompt injection attempt (Path 18.3/12.4) might succeed on one attempt and fail on the next, purely due to this randomness. This has a direct, practical security testing implication: a single failed jailbreak attempt against a non-zero-temperature model doesn&#39;t prove the model is safe against that technique — genuine security testing requires multiple attempts to account for this inherent variability, a habit Path 18.7&#39;s red teaming methodology builds on directly.</p>
-<h2>The OWASP LLM Top 10 — this path&#39;s organising framework</h2>
-<p>Directly mirroring Path 11.1&#39;s OWASP Top 10 for web applications, <strong>OWASP has published an LLM-specific Top 10</strong> cataloguing the most critical risks in LLM-integrated applications — the framework the remaining lessons in this path are organised around, covered in full in Path 18.5.</p>
+<p>A detail worth understanding early, since it shapes how you'll reason about testing an LLM for security issues throughout this path: an LLM doesn't just deterministically pick the single "most likely" next token every time — a parameter called <strong>temperature</strong> controls how much randomness is introduced into that choice. At temperature 0, the model always picks the highest-probability token, producing the same output for the same input every time (useful for testing reproducibility). At higher temperatures, it samples more randomly among plausible next tokens, producing more varied, creative output — but also meaning the exact same jailbreak or prompt injection attempt (Path 18.3/12.4) might succeed on one attempt and fail on the next, purely due to this randomness. This has a direct, practical security testing implication: a single failed jailbreak attempt against a non-zero-temperature model doesn't prove the model is safe against that technique — genuine security testing requires multiple attempts to account for this inherent variability, a habit Path 18.7's red teaming methodology builds on directly.</p>
+<h2>The OWASP LLM Top 10 — this path's organising framework</h2>
+<p>Directly mirroring Path 11.1's OWASP Top 10 for web applications, <strong>OWASP has published an LLM-specific Top 10</strong> cataloguing the most critical risks in LLM-integrated applications — the framework the remaining lessons in this path are organised around, covered in full in Path 18.5.</p>
 <h2>🧪 Lab — Explore tokenization and context windows hands-on</h2>
 <ol>
-<li>Visit <a href="https://platform.openai.com/tokenizer">OpenAI&#39;s Tokenizer tool</a> (works for exploring tokenization concepts generally, even though it&#39;s OpenAI-branded) and paste in a few sentences — including some unusual formatting, emoji, and non-English text. Notice how token boundaries don&#39;t always match your intuitive sense of &quot;words.&quot;</li>
-<li>If you have access to any LLM chat interface, start a fresh conversation and ask it to &quot;remember&quot; a specific fact. Then start a genuinely <strong>new, separate</strong> conversation and ask about that fact — confirming firsthand that no memory persists outside the context window of a single conversation (unless the specific product has an explicit memory feature layered on top, which is itself just another mechanism feeding additional text into the context window).</li>
-<li>Research your own locally-run models (for example with Ollama or LM Studio) — check the documented <strong>context window size</strong> (measured in tokens) for a model you&#39;re familiar with, and consider what that means practically for how much conversation history or document content it can actually &quot;see&quot; at once.</li>
+<li>Visit <a href="https://platform.openai.com/tokenizer">OpenAI's Tokenizer tool</a> (works for exploring tokenization concepts generally, even though it's OpenAI-branded) and paste in a few sentences — including some unusual formatting, emoji, and non-English text. Notice how token boundaries don't always match your intuitive sense of "words."</li>
+<li>If you have access to any LLM chat interface, start a fresh conversation and ask it to "remember" a specific fact. Then start a genuinely <strong>new, separate</strong> conversation and ask about that fact — confirming firsthand that no memory persists outside the context window of a single conversation (unless the specific product has an explicit memory feature layered on top, which is itself just another mechanism feeding additional text into the context window).</li>
+<li>Research your own locally-run models (for example with Ollama or LM Studio) — check the documented <strong>context window size</strong> (measured in tokens) for a model you're familiar with, and consider what that means practically for how much conversation history or document content it can actually "see" at once.</li>
 </ol>
-<p>Why does the lack of a structural distinction between &quot;trusted instructions&quot; and &quot;untrusted data&quot; within an LLM&#39;s context window matter so much for security, compared to how traditional software typically separates code from data?</p>
-<details><summary>Show answer</summary>In traditional software, a SQL query's <em>structure</em> (Path 11.6) is fixed by the developer's code, with user input properly parameterised as pure data that can never be reinterpreted as executable command logic. An LLM's context window has <strong>no equivalent structural separation</strong> — the system prompt's instructions, the conversation history, and any untrusted text (a document being summarised, a webpage being read, a tool's output) are all just tokens fed into the same processing pathway. This means text embedded anywhere in that window that <em>looks like</em> an instruction can potentially be treated by the model as an actual instruction to follow — the core mechanism behind prompt injection, covered in full in Path 18.3.</details><h2>Key terms</h2>
+<p>:::challenge Test yourself
+Why does the lack of a structural distinction between "trusted instructions" and "untrusted data" within an LLM's context window matter so much for security, compared to how traditional software typically separates code from data?</p>
+<details><summary>Show answer</summary>In traditional software, a SQL query's <em>structure</em> (Path 11.6) is fixed by the developer's code, with user input properly parameterised as pure data that can never be reinterpreted as executable command logic. An LLM's context window has <strong>no equivalent structural separation</strong> — the system prompt's instructions, the conversation history, and any untrusted text (a document being summarised, a webpage being read, a tool's output) are all just tokens fed into the same processing pathway. This means text embedded anywhere in that window that <em>looks like</em> an instruction can potentially be treated by the model as an actual instruction to follow — the core mechanism behind prompt injection, covered in full in Path 18.3.</details>
+:::<h2>Key terms</h2>
 <ul>
 <li><strong>LLM (Large Language Model)</strong> — a neural network trained to predict the next token given prior context.</li>
 <li><strong>Token</strong> — the basic unit of text an LLM processes, not necessarily a whole word.</li>
 <li><strong>Context window</strong> — the complete set of text (instructions, history, current input) fed into the model for a single generation.</li>
-<li><strong>RLHF</strong> — Reinforcement Learning from Human Feedback, shaping a model&#39;s helpfulness and safety behaviour.</li>
+<li><strong>RLHF</strong> — Reinforcement Learning from Human Feedback, shaping a model's helpfulness and safety behaviour.</li>
 <li><strong>Agentic system</strong> — an LLM-based system that takes real-world actions via tools, not just generating text for human review.</li>
 </ul>
 <h2>Recap</h2>
@@ -109,7 +200,7 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <li>Training combines broad pre-training, instruction fine-tuning, and RLHF-based alignment to shape both capability and behaviour.</li>
 <li>The context window has no structural separation between trusted instructions and untrusted data — the root cause of prompt injection.</li>
 <li>Agentic systems, where LLMs take real-world actions via tools, dramatically raise the security stakes of these same underlying weaknesses.</li>
-<li>The OWASP LLM Top 10 organises this path&#39;s remaining lessons, directly mirroring Path 11.1&#39;s web-focused framework.</li>
+<li>The OWASP LLM Top 10 organises this path's remaining lessons, directly mirroring Path 11.1's web-focused framework.</li>
 </ul>
 <h3>References</h3>
 <ul>
@@ -119,19 +210,67 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <li><a href="https://www.3blue1brown.com/topics/neural-networks">3Blue1Brown — Neural Networks / Transformers series (YouTube)</a> — an excellent, visual deep-dive into the underlying mechanics for those wanting to go deeper.</li>
 </ul>
 <p><strong>Next up →</strong> <a href="#/lesson/18-ai-security/transformer-architecture-deep-dive">Transformer Architecture, Deep Dive</a></p>
-<nav class="pager"><span></span><a href="/lesson/18-ai-security/transformer-architecture-deep-dive.html">Transformer Architecture, Deep Dive →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><span></span><a href="/lesson/18-ai-security/transformer-architecture-deep-dive.html">Transformer Architecture, Deep Dive →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/18-ai-security/how-llms-work";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

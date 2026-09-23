@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>How to actually test APIs — Path 21 · KashSec Academy</title>
-<meta name="description" content="Theory is useless without a practical testing workflow. Here's a battle-tested approach you can use on real targets (bug bounty, pentests, or your own apps) — it pulls together every vulnerability cla">
+<meta name="description" content="How to actually test APIs: A battle-tested recon-to-report workflow for bug bounty and pentests.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/21-api-security/api-testing.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="How to actually test APIs — Path 21 · KashSec Academy">
-<meta property="og:description" content="Theory is useless without a practical testing workflow. Here's a battle-tested approach you can use on real targets (bug bounty, pentests, or your own apps) — it pulls together every vulnerability cla">
+<meta property="og:description" content="How to actually test APIs: A battle-tested recon-to-report workflow for bug bounty and pentests.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/21-api-security/api-testing.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -17,48 +18,80 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="How to actually test APIs — Path 21 · KashSec Academy">
-<meta name="twitter:description" content="Theory is useless without a practical testing workflow. Here's a battle-tested approach you can use on real targets (bug bounty, pentests, or your own apps) — it pulls together every vulnerability cla">
+<meta name="twitter:description" content="How to actually test APIs: A battle-tested recon-to-report workflow for bug bounty and pentests.">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 21 — API Security","item":"https://kashsec.vercel.app/lesson/21-api-security/"},{"@type":"ListItem","position":4,"name":"How to actually test APIs","item":"https://kashsec.vercel.app/lesson/21-api-security/api-testing.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"How to actually test APIs","headline":"How to actually test APIs","description":"Theory is useless without a practical testing workflow. Here's a battle-tested approach you can use on real targets (bug bounty, pentests, or your own apps) — it pulls together every vulnerability cla","url":"https://kashsec.vercel.app/lesson/21-api-security/api-testing.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"A battle-tested recon-to-report workflow for bug bounty and pentests.","isPartOf":{"@type":"Course","name":"Path 21: API Security","url":"https://kashsec.vercel.app/lesson/21-api-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/21-api-security/api-testing.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"How to actually test APIs","headline":"How to actually test APIs","description":"How to actually test APIs: A battle-tested recon-to-report workflow for bug bounty and pentests.","url":"https://kashsec.vercel.app/lesson/21-api-security/api-testing.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"A battle-tested recon-to-report workflow for bug bounty and pentests.","isPartOf":{"@type":"Course","name":"Path 21: API Security","url":"https://kashsec.vercel.app/lesson/21-api-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/21-api-security/api-testing.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/21-api-security/api-testing">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/21-api-security/">Path 21 — API Security</a> · How to actually test APIs</div>
-  <article><h1>How to actually test APIs</h1>
-<p>Theory is useless without a practical testing workflow. Here&#39;s a battle-tested approach you can use on real targets (bug bounty, pentests, or your own apps) — it pulls together every vulnerability class covered earlier in this path into one repeatable process.</p>
-<p>:::</p>
+<a class="skip" href="/lesson/21-api-security/api-testing.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/21-api-security/">Path 21 — API Security</a> · How to actually test APIs</nav>
+    <div class="md" id="content"><article><h1>How to actually test APIs</h1>
+<p>Theory is useless without a practical testing workflow. Here's a battle-tested approach you can use on real targets (bug bounty, pentests, or your own apps) — it pulls together every vulnerability class covered earlier in this path into one repeatable process.</p>
+<p>:::tip
+The best API testers don't memorize a hundred payloads — they run the same small set of questions (who's allowed, what fields, what limits, what happens on error) against every single endpoint, methodically. Consistency beats cleverness here.
+:::</p>
 <h2>1. Discover the attack surface</h2>
 <ul>
 <li><strong>Official documentation</strong> — OpenAPI/Swagger, Postman collections, GraphQL introspection</li>
@@ -67,7 +100,7 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <li><strong>Wayback / gau / katana</strong> — historical endpoints that may still be alive</li>
 <li><strong>Wordlists</strong> — <code>api</code>, <code>v1</code>, <code>v2</code>, <code>internal</code>, <code>admin</code>, <code>graphql</code>, <code>graphiql</code>, <code>swagger</code></li>
 </ul>
-<p>Discovery matters more for APIs than for classic web apps, because — as the &quot;improper inventory management&quot; category from the OWASP Top 10 lesson pointed out — old, undocumented, or &quot;internal&quot; endpoints frequently keep working long after everyone stopped thinking about them.</p>
+<p>Discovery matters more for APIs than for classic web apps, because — as the "improper inventory management" category from the OWASP Top 10 lesson pointed out — old, undocumented, or "internal" endpoints frequently keep working long after everyone stopped thinking about them.</p>
 <h2>2. Map authentication</h2>
 <ul>
 <li>How do you obtain a token? (login, OAuth, API key portal)</li>
@@ -80,11 +113,11 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <thead>
 <tr>
 <th>Test</th>
-<th>What you&#39;re looking for</th>
+<th>What you're looking for</th>
 </tr>
 </thead>
 <tbody><tr>
-<td>Change object ID to another user&#39;s</td>
+<td>Change object ID to another user's</td>
 <td>BOLA</td>
 </tr>
 <tr>
@@ -112,7 +145,7 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <td>Predictable object references</td>
 </tr>
 </tbody></table>
-<p>Notice this table is essentially a checklist version of every lesson so far in this path — that&#39;s deliberate. Testing an API well means walking this list against <em>every</em> endpoint, not just the ones that look interesting at a glance.</p>
+<p>Notice this table is essentially a checklist version of every lesson so far in this path — that's deliberate. Testing an API well means walking this list against <em>every</em> endpoint, not just the ones that look interesting at a glance.</p>
 <h2>4. Tooling that actually helps</h2>
 <ul>
 <li><strong>Burp Suite / Caido</strong> — the daily driver for interactive testing</li>
@@ -134,13 +167,13 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <li>If GraphQL exists → introspection + nested query + field-level auth tests</li>
 </ol>
 <h2>A worked example: applying the workflow</h2>
-<p>Say you&#39;re given a fresh target: a project-management SaaS API. Following the workflow:</p>
+<p>Say you're given a fresh target: a project-management SaaS API. Following the workflow:</p>
 <ol>
 <li>Register two free accounts, A and B, on separate projects.</li>
 <li>Use the app normally as A: create a project, add a task, invite a teammate. Capture every API call in Burp.</li>
-<li>For <code>GET /api/v1/projects/{id}</code>, swap in B&#39;s project ID while authenticated as A → returns B&#39;s project data. <strong>BOLA found.</strong></li>
-<li>For <code>POST /api/v1/projects/{id}/archive</code> (an owner-only action in the UI), call it as a non-owner member of A&#39;s project → succeeds anyway. <strong>BFLA found.</strong></li>
-<li>For <code>PATCH /api/v1/tasks/{id}</code>, add an unexpected <code>&quot;assignedRole&quot;:&quot;owner&quot;</code> field → check whether it sticks. <strong>Mass assignment candidate.</strong></li>
+<li>For <code>GET /api/v1/projects/{id}</code>, swap in B's project ID while authenticated as A → returns B's project data. <strong>BOLA found.</strong></li>
+<li>For <code>POST /api/v1/projects/{id}/archive</code> (an owner-only action in the UI), call it as a non-owner member of A's project → succeeds anyway. <strong>BFLA found.</strong></li>
+<li>For <code>PATCH /api/v1/tasks/{id}</code>, add an unexpected <code>"assignedRole":"owner"</code> field → check whether it sticks. <strong>Mass assignment candidate.</strong></li>
 <li>Review the raw JSON for <code>GET /api/v1/users/me</code> → notice it includes <code>stripeCustomerId</code>, never shown in the UI. <strong>Excessive data exposure.</strong></li>
 </ol>
 <p>Four distinct, real finding categories, found in under an hour, entirely by working the checklist systematically rather than guessing.</p>
@@ -149,22 +182,25 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <ul>
 <li>Exact request &amp; response (with redacted secrets)</li>
 <li>Two different users demonstrating the broken authorization</li>
-<li>Clear impact (&quot;any user can read any other user&#39;s invoices&quot;)</li>
+<li>Clear impact ("any user can read any other user's invoices")</li>
 <li>Suggested fix (object-level check, allow-list, etc.)</li>
 </ul>
 <h2>🧪 Hands-on lab — full workflow on a vulnerable API</h2>
 <ol>
-<li>Pick a deliberately vulnerable API lab (crAPI, vAPI, Damn Vulnerable GraphQL Application, or PortSwigger&#39;s API labs).</li>
+<li>Pick a deliberately vulnerable API lab (crAPI, vAPI, Damn Vulnerable GraphQL Application, or PortSwigger's API labs).</li>
 <li>Run steps 1–8 of the practical workflow above against it, keeping written notes as you go.</li>
 <li>For every finding, write a mini-report following the four bullet points in the reporting tips section.</li>
 <li>Compare your finding count and categories against the OWASP API Top 10 list from earlier — how many categories did you personally trigger?</li>
 </ol>
 <p>:::lab
-Pick a deliberately vulnerable API lab (crAPI, vAPI, Damn Vulnerable GraphQL Application, or PortSwigger&#39;s API labs). Work through the core test cases above and write a short report for at least one BOLA finding.</p>
+Pick a deliberately vulnerable API lab (crAPI, vAPI, Damn Vulnerable GraphQL Application, or PortSwigger's API labs). Work through the core test cases above and write a short report for at least one BOLA finding.
+:::</p>
+<p>:::challenge Test yourself</p>
 <ol>
 <li>Why does creating two accounts before you start testing matter more for APIs than for a typical single-user web app test?</li>
 <li>In the worked example above, which finding would you report first, and why — rank by likely impact.</li>
-<li>What&#39;s one reason automated scanners alone tend to under-perform on API testing compared to a human working the manual workflow above?</li>
+<li>What's one reason automated scanners alone tend to under-perform on API testing compared to a human working the manual workflow above?
+:::</li>
 </ol>
 <h2>Key terms</h2>
 <ul>
@@ -174,26 +210,74 @@ Pick a deliberately vulnerable API lab (crAPI, vAPI, Damn Vulnerable GraphQL App
 <li><strong>Two-account testing</strong> — the core technique behind finding BOLA/BFLA: perform an action as one user, replay as another</li>
 </ul>
 <h2>Recap</h2>
-<p>The highest-value API bugs are still found with two browser profiles, a proxy, and systematic ID changing. Tools help you scale; they don&#39;t replace understanding the application. Run the same checklist against every endpoint, and the majority of your findings will fall into the categories this entire path has already covered.</p>
+<p>The highest-value API bugs are still found with two browser profiles, a proxy, and systematic ID changing. Tools help you scale; they don't replace understanding the application. Run the same checklist against every endpoint, and the majority of your findings will fall into the categories this entire path has already covered.</p>
 <h3>References</h3>
 <ul>
 <li><a href="https://portswigger.net/web-security/api-testing">PortSwigger API testing</a></li>
 <li><a href="https://github.com/OWASP/crAPI">crAPI (OWASP)</a></li>
 <li><a href="https://owasp.org/www-project-web-security-testing-guide/">OWASP Web Security Testing Guide — API Testing</a> — a broader methodology reference</li>
 </ul>
-<nav class="pager"><a href="/lesson/21-api-security/graphql-authorization-patterns.html">← GraphQL Authorization Patterns</a><a href="/lesson/21-api-security/api-documentation-and-postman-workflows.html">API Documentation &amp; Postman Workflows →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/21-api-security/graphql-authorization-patterns.html">← GraphQL Authorization Patterns</a><a href="/lesson/21-api-security/api-documentation-and-postman-workflows.html">API Documentation &amp; Postman Workflows →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/21-api-security/api-testing";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

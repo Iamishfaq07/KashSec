@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>Practical Packet Analysis Intro — Path 02 · KashSec Academy</title>
-<meta name="description" content="Everything you've learned so far in this path — IP addresses, ports, TCP/UDP, DNS — has been conceptual. This lab makes it real: you'll capture actual packets flowing across your own network and see t">
+<meta name="description" content="Practical Packet Analysis Intro: See how data actually moves, hands-on.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/02-networking/practical-packet-lab.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Practical Packet Analysis Intro — Path 02 · KashSec Academy">
-<meta property="og:description" content="Everything you've learned so far in this path — IP addresses, ports, TCP/UDP, DNS — has been conceptual. This lab makes it real: you'll capture actual packets flowing across your own network and see t">
+<meta property="og:description" content="Practical Packet Analysis Intro: See how data actually moves, hands-on.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/02-networking/practical-packet-lab.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -17,82 +18,164 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Practical Packet Analysis Intro — Path 02 · KashSec Academy">
-<meta name="twitter:description" content="Everything you've learned so far in this path — IP addresses, ports, TCP/UDP, DNS — has been conceptual. This lab makes it real: you'll capture actual packets flowing across your own network and see t">
+<meta name="twitter:description" content="Practical Packet Analysis Intro: See how data actually moves, hands-on.">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 02 — Networking Fundamentals","item":"https://kashsec.vercel.app/lesson/02-networking/"},{"@type":"ListItem","position":4,"name":"Practical Packet Analysis Intro","item":"https://kashsec.vercel.app/lesson/02-networking/practical-packet-lab.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Practical Packet Analysis Intro","headline":"Practical Packet Analysis Intro","description":"Everything you've learned so far in this path — IP addresses, ports, TCP/UDP, DNS — has been conceptual. This lab makes it real: you'll capture actual packets flowing across your own network and see t","url":"https://kashsec.vercel.app/lesson/02-networking/practical-packet-lab.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"See how data actually moves, hands-on.","isPartOf":{"@type":"Course","name":"Path 02: Networking Fundamentals","url":"https://kashsec.vercel.app/lesson/02-networking/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/02-networking/practical-packet-lab.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Practical Packet Analysis Intro","headline":"Practical Packet Analysis Intro","description":"Practical Packet Analysis Intro: See how data actually moves, hands-on.","url":"https://kashsec.vercel.app/lesson/02-networking/practical-packet-lab.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"See how data actually moves, hands-on.","isPartOf":{"@type":"Course","name":"Path 02: Networking Fundamentals","url":"https://kashsec.vercel.app/lesson/02-networking/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/02-networking/practical-packet-lab.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/02-networking/practical-packet-lab">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/02-networking/">Path 02 — Networking Fundamentals</a> · Practical Packet Analysis Intro</div>
-  <article><h1>Practical Packet Analysis Intro</h1>
-<p>Everything you&#39;ve learned so far in this path — IP addresses, ports, TCP/UDP, DNS — has been conceptual. This lab makes it real: you&#39;ll capture actual packets flowing across your own network and see these concepts in raw form, setting up the deeper packet analysis work in Path 12.</p>
+<a class="skip" href="/lesson/02-networking/practical-packet-lab.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/02-networking/">Path 02 — Networking Fundamentals</a> · Practical Packet Analysis Intro</nav>
+    <div class="md" id="content"><article><h1>Practical Packet Analysis Intro</h1>
+<p>Everything you've learned so far in this path — IP addresses, ports, TCP/UDP, DNS — has been conceptual. This lab makes it real: you'll capture actual packets flowing across your own network and see these concepts in raw form, setting up the deeper packet analysis work in Path 12.</p>
 <h2>Simple exercise</h2>
 <ol>
-<li><strong>Install Wireshark</strong> (<a href="https://www.wireshark.org/">wireshark.org</a>, free) — the industry-standard packet capture and analysis tool, or use an online packet capture simulator if you&#39;d rather not install anything yet.</li>
+<li><strong>Install Wireshark</strong> (<a href="https://www.wireshark.org/">wireshark.org</a>, free) — the industry-standard packet capture and analysis tool, or use an online packet capture simulator if you'd rather not install anything yet.</li>
 <li><strong>Start a capture, then visit a website.</strong> Select your active network interface (usually the one showing traffic activity) and start capturing, then open a browser and visit any HTTP (not HTTPS) test site — <a href="http://neverssl.com">http://neverssl.com</a> exists specifically for this purpose: a real site guaranteed to stay unencrypted for testing and demonstration.</li>
-<li><strong>Find the HTTP request and response.</strong> In Wireshark&#39;s filter bar, type <code>http</code> and press Enter — this narrows thousands of captured packets down to just the HTTP traffic. Click on a <code>GET</code> request packet and expand the &quot;Hypertext Transfer Protocol&quot; section to see the raw request exactly as your browser sent it.</li>
-<li><strong>Identify source and destination.</strong> For that same packet, look at the IP layer — you&#39;ll see your own device&#39;s IP as the source and the web server&#39;s IP as the destination, plus the source port (usually a random high number, assigned dynamically) and destination port (80 for HTTP).</li>
+<li><strong>Find the HTTP request and response.</strong> In Wireshark's filter bar, type <code>http</code> and press Enter — this narrows thousands of captured packets down to just the HTTP traffic. Click on a <code>GET</code> request packet and expand the "Hypertext Transfer Protocol" section to see the raw request exactly as your browser sent it.</li>
+<li><strong>Identify source and destination.</strong> For that same packet, look at the IP layer — you'll see your own device's IP as the source and the web server's IP as the destination, plus the source port (usually a random high number, assigned dynamically) and destination port (80 for HTTP).</li>
 </ol>
 <h2>What to look for</h2>
 <ul>
-<li><strong>The TCP handshake.</strong> Filter by <code>tcp.flags.syn==1</code> to find the very first packet of a connection — you should see a <code>SYN</code>, followed shortly by a <code>SYN, ACK</code> from the server, followed by your device&#39;s final <code>ACK</code>. This three-step exchange, referenced in Path 02&#39;s TCP vs UDP lesson, is now something you can point to directly in real captured traffic.</li>
-<li><strong>DNS queries.</strong> Filter by <code>dns</code> — you&#39;ll see the actual lookup that happened before your browser could even connect, translating the domain name into the IP address used in every subsequent packet.</li>
-<li><strong>Cleartext data.</strong> On the unencrypted HTTP site from Task 2, right-click the HTTP packet stream and choose &quot;Follow → TCP Stream&quot; — you&#39;ll see the entire request and response in plain readable text, including any form data submitted. This is exactly why HTTPS exists: on an encrypted connection, this same view would show only unreadable ciphertext.</li>
+<li><strong>The TCP handshake.</strong> Filter by <code>tcp.flags.syn==1</code> to find the very first packet of a connection — you should see a <code>SYN</code>, followed shortly by a <code>SYN, ACK</code> from the server, followed by your device's final <code>ACK</code>. This three-step exchange, referenced in Path 02's TCP vs UDP lesson, is now something you can point to directly in real captured traffic.</li>
+<li><strong>DNS queries.</strong> Filter by <code>dns</code> — you'll see the actual lookup that happened before your browser could even connect, translating the domain name into the IP address used in every subsequent packet.</li>
+<li><strong>Cleartext data.</strong> On the unencrypted HTTP site from Task 2, right-click the HTTP packet stream and choose "Follow → TCP Stream" — you'll see the entire request and response in plain readable text, including any form data submitted. This is exactly why HTTPS exists: on an encrypted connection, this same view would show only unreadable ciphertext.</li>
 </ul>
-<ol start="5">
-<li><strong>Filter by IP and port together.</strong> Try a combined filter like <code>ip.addr == 8.8.8.8 &amp;&amp; udp.port == 53</code> — narrowing a capture to a specific conversation is exactly how you&#39;d isolate one interesting exchange out of thousands of packets in a real investigation (Path 16&#39;s DFIR lab does exactly this at a larger scale).</li>
-<li><strong>Check packet sizes against this path&#39;s MTU discussion.</strong> In Wireshark&#39;s packet list, look at the &quot;Length&quot; column for a few packets carrying a large file download — most should sit right around 1500 bytes or just under, directly matching standard Ethernet&#39;s MTU from this path&#39;s packets lesson. This is real, observable evidence of fragmentation limits at work, not just a stated fact to memorize.</li>
+<ol>
+<li><strong>Filter by IP and port together.</strong> Try a combined filter like <code>ip.addr == 8.8.8.8 &amp;&amp; udp.port == 53</code> — narrowing a capture to a specific conversation is exactly how you'd isolate one interesting exchange out of thousands of packets in a real investigation (Path 16's DFIR lab does exactly this at a larger scale).</li>
+<li><strong>Check packet sizes against this path's MTU discussion.</strong> In Wireshark's packet list, look at the "Length" column for a few packets carrying a large file download — most should sit right around 1500 bytes or just under, directly matching standard Ethernet's MTU from this path's packets lesson. This is real, observable evidence of fragmentation limits at work, not just a stated fact to memorize.</li>
 </ol>
-<p>Repeat the capture against any normal HTTPS website and try the same &quot;Follow TCP Stream&quot; trick — you&#39;ll see the TCP handshake and the TLS handshake, but the actual HTTP request/response content will be encrypted and unreadable, a very concrete demonstration of what the padlock icon actually protects.</p>
-<p>Capture a fresh session while browsing normally for about 30 seconds, then pick any 10 consecutive packets and label what each one is doing in your own words (e.g., &quot;DNS query for example.com,&quot; &quot;TCP SYN starting a new connection,&quot; &quot;HTTP GET request for /style.css&quot;). This exercise — translating raw packets into plain-English narrative — is exactly the skill Path 12&#39;s Wireshark labs build on.</p>
+<p>:::tip Try the same exercise against an HTTPS site
+Repeat the capture against any normal HTTPS website and try the same "Follow TCP Stream" trick — you'll see the TCP handshake and the TLS handshake, but the actual HTTP request/response content will be encrypted and unreadable, a very concrete demonstration of what the padlock icon actually protects.
+:::</p>
+<p>:::challenge Label 10 packets
+Capture a fresh session while browsing normally for about 30 seconds, then pick any 10 consecutive packets and label what each one is doing in your own words (e.g., "DNS query for example.com," "TCP SYN starting a new connection," "HTTP GET request for /style.css"). This exercise — translating raw packets into plain-English narrative — is exactly the skill Path 12's Wireshark labs build on.
+:::</p>
 <h2>Key takeaway</h2>
 <p>Every concept from this path so far (IPs, ports, TCP handshakes, DNS) is directly observable in a Wireshark capture — network security work is fundamentally about being comfortable reading this raw view instead of only trusting what applications show you on the surface.</p>
 <p><strong>Next up →</strong> <a href="#/lesson/03-linux">Path 03 — Operating Systems &amp; Linux</a></p>
-<nav class="pager"><a href="/lesson/02-networking/network-certifications-careers.html">← Network Security Careers &amp; Certifications</a><span></span></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/02-networking/network-certifications-careers.html">← Network Security Careers &amp; Certifications</a><span></span></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/02-networking/practical-packet-lab";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

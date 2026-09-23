@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>Cloud Identity &amp; Access Management — Path 08 · KashSec Academy</title>
-<meta name="description" content="Path 16's cloud security lesson references &quot;overly permissive IAM roles&quot; as a core risk category — this lesson explains exactly what IAM is and how it works, since it's genuinely the central security ">
+<meta name="description" content="Cloud Identity &amp; Access Management: IAM roles, least privilege, and why leaked keys are a leading breach cause.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-identity-access.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Cloud Identity &amp; Access Management — Path 08 · KashSec Academy">
-<meta property="og:description" content="Path 16's cloud security lesson references &quot;overly permissive IAM roles&quot; as a core risk category — this lesson explains exactly what IAM is and how it works, since it's genuinely the central security ">
+<meta property="og:description" content="Cloud Identity &amp; Access Management: IAM roles, least privilege, and why leaked keys are a leading breach cause.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-identity-access.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -17,68 +18,105 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Cloud Identity &amp; Access Management — Path 08 · KashSec Academy">
-<meta name="twitter:description" content="Path 16's cloud security lesson references &quot;overly permissive IAM roles&quot; as a core risk category — this lesson explains exactly what IAM is and how it works, since it's genuinely the central security ">
+<meta name="twitter:description" content="Cloud Identity &amp; Access Management: IAM roles, least privilege, and why leaked keys are a leading breach cause.">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 08 — Cloud Computing Basics","item":"https://kashsec.vercel.app/lesson/08-cloud-basics/"},{"@type":"ListItem","position":4,"name":"Cloud Identity & Access Management","item":"https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-identity-access.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Cloud Identity & Access Management","headline":"Cloud Identity & Access Management","description":"Path 16's cloud security lesson references \"overly permissive IAM roles\" as a core risk category — this lesson explains exactly what IAM is and how it works, since it's genuinely the central security ","url":"https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-identity-access.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"IAM roles, least privilege, and why leaked keys are a leading breach cause.","isPartOf":{"@type":"Course","name":"Path 08: Cloud Computing Basics","url":"https://kashsec.vercel.app/lesson/08-cloud-basics/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-identity-access.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Cloud Identity & Access Management","headline":"Cloud Identity & Access Management","description":"Cloud Identity & Access Management: IAM roles, least privilege, and why leaked keys are a leading breach cause.","url":"https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-identity-access.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"IAM roles, least privilege, and why leaked keys are a leading breach cause.","isPartOf":{"@type":"Course","name":"Path 08: Cloud Computing Basics","url":"https://kashsec.vercel.app/lesson/08-cloud-basics/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-identity-access.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/08-cloud-basics/cloud-identity-access">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/08-cloud-basics/">Path 08 — Cloud Computing Basics</a> · Cloud Identity &amp; Access Management</div>
-  <article><h1>Cloud Identity &amp; Access Management</h1>
-<p>Path 16&#39;s cloud security lesson references &quot;overly permissive IAM roles&quot; as a core risk category — this lesson explains exactly what IAM is and how it works, since it&#39;s genuinely the central security control underlying nearly everything else in cloud computing.</p>
-<h2>Why IAM is cloud&#39;s most important security layer</h2>
+<a class="skip" href="/lesson/08-cloud-basics/cloud-identity-access.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/08-cloud-basics/">Path 08 — Cloud Computing Basics</a> · Cloud Identity &amp; Access Management</nav>
+    <div class="md" id="content"><article><h1>Cloud Identity &amp; Access Management</h1>
+<p>Path 16's cloud security lesson references "overly permissive IAM roles" as a core risk category — this lesson explains exactly what IAM is and how it works, since it's genuinely the central security control underlying nearly everything else in cloud computing.</p>
+<h2>Why IAM is cloud's most important security layer</h2>
 <p>In traditional on-premises security, physical access and network segmentation (Path 12) provide meaningful natural boundaries — an attacker generally needs to be on your network, or physically present, to reach much of anything. In the cloud, almost everything is reachable via API calls from anywhere on the internet, protected <em>only</em> by authentication and authorization — meaning <strong>IAM (Identity and Access Management)</strong> effectively replaces the physical/network perimeter as the primary security boundary.</p>
+<pre><code class="language-mermaid">flowchart TD
+    A[IAM] --&gt; B["Identities\nusers, roles, service accounts"]
+    A --&gt; C["Policies\nwhat each identity is\nallowed to do"]
+    A --&gt; D["Resources\nwhat the policies apply to"]
+    B --&gt;|granted| C
+    C --&gt;|applies to| D
+</code></pre>
 <h2>Users, groups, and roles</h2>
 <ul>
 <li><strong>IAM users</strong> — represent individual people or applications with their own long-term credentials.</li>
-<li><strong>IAM groups</strong> — collections of users sharing the same set of permissions, letting you manage many users&#39; access consistently at once, rather than configuring each individually.</li>
-<li><strong>IAM roles</strong> — a genuinely important, distinct concept: roles are <em>assumed temporarily</em> rather than tied to permanent credentials — an EC2 instance, a Lambda function, or a federated external user can &quot;assume&quot; a role, receiving temporary credentials with that role&#39;s specific permissions, which automatically expire. This is exactly the mechanism behind the instance metadata service credentials referenced in the previous lesson.</li>
+<li><strong>IAM groups</strong> — collections of users sharing the same set of permissions, letting you manage many users' access consistently at once, rather than configuring each individually.</li>
+<li><strong>IAM roles</strong> — a genuinely important, distinct concept: roles are <em>assumed temporarily</em> rather than tied to permanent credentials — an EC2 instance, a Lambda function, or a federated external user can "assume" a role, receiving temporary credentials with that role's specific permissions, which automatically expire. This is exactly the mechanism behind the instance metadata service credentials referenced in the previous lesson.</li>
 </ul>
 <h2>The principle of least privilege, applied to IAM</h2>
-<p>Path 13&#39;s mobile fundamentals lesson introduced least privilege in the context of app permissions — IAM is where this principle matters most in cloud security specifically. An IAM policy should grant only the exact permissions a given identity genuinely needs, nothing more:</p>
+<p>Path 13's mobile fundamentals lesson introduced least privilege in the context of app permissions — IAM is where this principle matters most in cloud security specifically. An IAM policy should grant only the exact permissions a given identity genuinely needs, nothing more:</p>
 <pre><code class="language-json">{
-  &quot;Effect&quot;: &quot;Allow&quot;,
-  &quot;Action&quot;: &quot;s3:GetObject&quot;,
-  &quot;Resource&quot;: &quot;arn:aws:s3:::my-app-uploads/*&quot;
+  "Effect": "Allow",
+  "Action": "s3:GetObject",
+  "Resource": "arn:aws:s3:::my-app-uploads/*"
 }
 </code></pre>
 <p>This policy allows reading objects from exactly one specific bucket — nothing else. Compare this to a dangerously over-broad alternative:</p>
 <pre><code class="language-json">{
-  &quot;Effect&quot;: &quot;Allow&quot;,
-  &quot;Action&quot;: &quot;*&quot;,
-  &quot;Resource&quot;: &quot;*&quot;
+  "Effect": "Allow",
+  "Action": "*",
+  "Resource": "*"
 }
 </code></pre>
 <p>This second policy — genuinely common as a lazy shortcut during development, and genuinely dangerous if it ever reaches production — grants <strong>every possible action on every possible resource</strong>, meaning any credential compromise for that identity grants an attacker essentially unlimited access across the entire cloud account.</p>
@@ -87,34 +125,38 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 aws iam list-attached-user-policies --user-name someuser
 aws iam get-policy-version --policy-arn arn:aws:iam::123456789:policy/SomePolicy --version-id v1
 </code></pre>
-<p>A genuinely valuable, quick audit technique: search every attached policy across an account for wildcard (<code>&quot;Action&quot;: &quot;*&quot;</code> or <code>&quot;Resource&quot;: &quot;*&quot;</code>) grants — exactly the pattern flagged above, and exactly the kind of finding Path 16&#39;s flAWS lab specifically walks you through discovering.</p>
+<p>A genuinely valuable, quick audit technique: search every attached policy across an account for wildcard (<code>"Action": "*"</code> or <code>"Resource": "*"</code>) grants — exactly the pattern flagged above, and exactly the kind of finding Path 16's flAWS lab specifically walks you through discovering.</p>
 <h2>Multi-factor authentication for cloud accounts</h2>
-<p>Path 00&#39;s passwords lesson already established MFA as blocking the overwhelming majority of account-takeover attempts — this matters with particular force for cloud provider root/administrator accounts specifically, since a compromised cloud root account potentially grants an attacker control over an organization&#39;s <em>entire</em> infrastructure, not just one application or service.</p>
+<p>Path 00's passwords lesson already established MFA as blocking the overwhelming majority of account-takeover attempts — this matters with particular force for cloud provider root/administrator accounts specifically, since a compromised cloud root account potentially grants an attacker control over an organization's <em>entire</em> infrastructure, not just one application or service.</p>
 <h2>IAM privilege escalation — when permissions grant more permissions</h2>
-<p>Recall Path 16.4&#39;s brief mention of IAM privilege escalation — worth expanding here now that this lesson has covered IAM&#39;s core building blocks. A specific, subtle danger exists whenever a policy grants permission to <em>modify permissions themselves</em> — a user who can attach policies to their own account, create new IAM roles, or modify an existing role&#39;s trust relationship can potentially escalate their own effective access far beyond what their original, seemingly-limited policy intended:</p>
+<p>Recall Path 16.4's brief mention of IAM privilege escalation — worth expanding here now that this lesson has covered IAM's core building blocks. A specific, subtle danger exists whenever a policy grants permission to <em>modify permissions themselves</em> — a user who can attach policies to their own account, create new IAM roles, or modify an existing role's trust relationship can potentially escalate their own effective access far beyond what their original, seemingly-limited policy intended:</p>
 <pre><code class="language-json">{
-  &quot;Effect&quot;: &quot;Allow&quot;,
-  &quot;Action&quot;: [&quot;iam:CreatePolicyVersion&quot;, &quot;iam:AttachUserPolicy&quot;],
-  &quot;Resource&quot;: &quot;*&quot;
+  "Effect": "Allow",
+  "Action": ["iam:CreatePolicyVersion", "iam:AttachUserPolicy"],
+  "Resource": "*"
 }
 </code></pre>
-<p>A user holding only this policy looks unprivileged at first glance — no direct access to any data at all — but <code>iam:AttachUserPolicy</code> lets them attach an administrator policy directly to their own account, and <code>iam:CreatePolicyVersion</code> lets them modify an existing policy&#39;s actual permissions. This is directly analogous to a Linux user who can edit their own <code>sudoers</code> entry (Path 16.1) or a Windows user who can add themselves to the Administrators group (Path 16.2) — the specific <em>permission to grant more permissions</em> is itself the vulnerability, regardless of how limited the account&#39;s other, more visible permissions appear. Tools like <strong>Pacu</strong> (mentioned in Path 16.4) and <strong>PMapper</strong> specifically automate discovering these escalation chains across a real IAM policy set, since manually tracing every possible combination of permissions across dozens of roles quickly becomes impractical by hand.</p>
+<p>A user holding only this policy looks unprivileged at first glance — no direct access to any data at all — but <code>iam:AttachUserPolicy</code> lets them attach an administrator policy directly to their own account, and <code>iam:CreatePolicyVersion</code> lets them modify an existing policy's actual permissions. This is directly analogous to a Linux user who can edit their own <code>sudoers</code> entry (Path 16.1) or a Windows user who can add themselves to the Administrators group (Path 16.2) — the specific <em>permission to grant more permissions</em> is itself the vulnerability, regardless of how limited the account's other, more visible permissions appear. Tools like <strong>Pacu</strong> (mentioned in Path 16.4) and <strong>PMapper</strong> specifically automate discovering these escalation chains across a real IAM policy set, since manually tracing every possible combination of permissions across dozens of roles quickly becomes impractical by hand.</p>
 <h2>Federation and single sign-on (SSO)</h2>
-<p>Larger organizations typically don&#39;t create individual IAM users for every employee manually — instead, they use <strong>federation</strong>, connecting cloud IAM to an existing identity provider (often the same Active Directory referenced in Path 16&#39;s AD attacks lesson, now extended into the cloud via Azure AD/Entra ID or similar), letting employees use one existing corporate identity to access cloud resources rather than managing separate cloud-specific credentials.</p>
-<p>IAM credentials (access keys, secret keys) accidentally committed to a public GitHub repository, hardcoded in application source code (echoing Path 13/16&#39;s static analysis lessons on hardcoded secrets), or leaked through misconfigured logging are consistently among the most common real-world causes of major cloud breaches. Never hardcode cloud credentials — use IAM roles (which provide automatically-rotating temporary credentials) wherever possible instead of long-lived access keys.</p>
-<p>Why is an IAM <em>role</em> generally considered more secure than a permanent IAM <em>user</em> credential for something like an application running on a cloud server?</p>
-<details><summary>Show answer</summary>A permanent IAM user's access keys are long-lived credentials that must be securely stored somewhere the application can access them — creating exactly the hardcoded-secret risk flagged throughout this course (Path 13/16's static analysis lessons) if not handled carefully, and remaining valid indefinitely until manually rotated or revoked, meaning a leaked key stays dangerous for as long as it goes unnoticed. An IAM role, by contrast, is <em>assumed</em> by the resource (like an EC2 instance) at runtime, and the cloud provider automatically issues short-lived, temporary credentials that expire and rotate on their own — there's no long-lived secret to accidentally leak or hardcode in the first place, since the credentials are generated fresh and expire quickly even if somehow intercepted. This is exactly why the instance metadata service (previous lesson) exists: it's how an instance retrieves its role's temporary credentials at runtime, rather than needing them baked in anywhere.</details><h2>Key terms</h2>
+<p>Larger organizations typically don't create individual IAM users for every employee manually — instead, they use <strong>federation</strong>, connecting cloud IAM to an existing identity provider (often the same Active Directory referenced in Path 16's AD attacks lesson, now extended into the cloud via Azure AD/Entra ID or similar), letting employees use one existing corporate identity to access cloud resources rather than managing separate cloud-specific credentials.</p>
+<p>:::danger Leaked cloud credentials are a top real-world breach cause
+IAM credentials (access keys, secret keys) accidentally committed to a public GitHub repository, hardcoded in application source code (echoing Path 13/16's static analysis lessons on hardcoded secrets), or leaked through misconfigured logging are consistently among the most common real-world causes of major cloud breaches. Never hardcode cloud credentials — use IAM roles (which provide automatically-rotating temporary credentials) wherever possible instead of long-lived access keys.
+:::</p>
+<p>:::challenge Test yourself
+Why is an IAM <em>role</em> generally considered more secure than a permanent IAM <em>user</em> credential for something like an application running on a cloud server?</p>
+<details><summary>Show answer</summary>A permanent IAM user's access keys are long-lived credentials that must be securely stored somewhere the application can access them — creating exactly the hardcoded-secret risk flagged throughout this course (Path 13/16's static analysis lessons) if not handled carefully, and remaining valid indefinitely until manually rotated or revoked, meaning a leaked key stays dangerous for as long as it goes unnoticed. An IAM role, by contrast, is <em>assumed</em> by the resource (like an EC2 instance) at runtime, and the cloud provider automatically issues short-lived, temporary credentials that expire and rotate on their own — there's no long-lived secret to accidentally leak or hardcode in the first place, since the credentials are generated fresh and expire quickly even if somehow intercepted. This is exactly why the instance metadata service (previous lesson) exists: it's how an instance retrieves its role's temporary credentials at runtime, rather than needing them baked in anywhere.</details>
+:::<h2>Key terms</h2>
 <ul>
 <li><strong>IAM (Identity and Access Management)</strong> — the system controlling who (or what) can do what within a cloud account.</li>
-<li><strong>IAM role</strong> — temporarily assumable permissions with automatically expiring credentials, as opposed to a permanent user&#39;s long-lived credentials.</li>
+<li><strong>IAM role</strong> — temporarily assumable permissions with automatically expiring credentials, as opposed to a permanent user's long-lived credentials.</li>
 <li><strong>Principle of least privilege</strong> — granting only the minimum permissions an identity genuinely needs.</li>
 <li><strong>Federation</strong> — connecting cloud IAM to an existing external identity provider rather than managing separate credentials.</li>
 </ul>
 <h2>Recap</h2>
 <ul>
-<li>IAM effectively replaces the physical/network perimeter as cloud computing&#39;s primary security boundary, since nearly everything is reachable via authenticated API calls from anywhere.</li>
+<li>IAM effectively replaces the physical/network perimeter as cloud computing's primary security boundary, since nearly everything is reachable via authenticated API calls from anywhere.</li>
 <li>IAM roles provide temporary, auto-expiring credentials — meaningfully more secure than permanent user access keys, and exactly the mechanism behind instance metadata service credentials.</li>
-<li>Overly broad wildcard policies (<code>&quot;Action&quot;: &quot;*&quot;</code>, <code>&quot;Resource&quot;: &quot;*&quot;</code>) are a common, dangerous real-world misconfiguration, violating least privilege.</li>
+<li>Overly broad wildcard policies (<code>"Action": "*"</code>, <code>"Resource": "*"</code>) are a common, dangerous real-world misconfiguration, violating least privilege.</li>
 <li>Leaked long-lived credentials (hardcoded, committed to public repos) are consistently among the most common real-world causes of major cloud breaches.</li>
 </ul>
 <h3>References</h3>
@@ -122,19 +164,67 @@ aws iam get-policy-version --policy-arn arn:aws:iam::123456789:policy/SomePolicy
 <li><a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html">AWS IAM Best Practices</a> — official, detailed, free guidance directly relevant to this lesson.</li>
 </ul>
 <p><strong>Next up →</strong> <a href="#/lesson/08-cloud-basics/cloud-multi-account-governance">Cloud Multi-Account Governance</a></p>
-<nav class="pager"><a href="/lesson/08-cloud-basics/cloud-cost-billing-security.html">← Cloud Cost &amp; Billing Security</a><a href="/lesson/08-cloud-basics/cloud-multi-account-governance.html">Cloud Multi-Account Governance →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/08-cloud-basics/cloud-cost-billing-security.html">← Cloud Cost &amp; Billing Security</a><a href="/lesson/08-cloud-basics/cloud-multi-account-governance.html">Cloud Multi-Account Governance →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/08-cloud-basics/cloud-identity-access";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

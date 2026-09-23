@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>SCADA &amp; ICS Architecture Fundamentals — Path 25 · KashSec Academy</title>
-<meta name="description" content="The previous lesson introduced the vocabulary. This one builds the actual mental model — what's really happening, layer by layer, between a sensor reading a physical value and an operator making a dec">
+<meta name="description" content="SCADA &amp; ICS Architecture Fundamentals: The sense-decide-act control loop, SCADA vs. DCS, HMI, and the historian.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/25-ot-ics-security/scada-ics-fundamentals.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="SCADA &amp; ICS Architecture Fundamentals — Path 25 · KashSec Academy">
-<meta property="og:description" content="The previous lesson introduced the vocabulary. This one builds the actual mental model — what's really happening, layer by layer, between a sensor reading a physical value and an operator making a dec">
+<meta property="og:description" content="SCADA &amp; ICS Architecture Fundamentals: The sense-decide-act control loop, SCADA vs. DCS, HMI, and the historian.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/25-ot-ics-security/scada-ics-fundamentals.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -17,50 +18,82 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="SCADA &amp; ICS Architecture Fundamentals — Path 25 · KashSec Academy">
-<meta name="twitter:description" content="The previous lesson introduced the vocabulary. This one builds the actual mental model — what's really happening, layer by layer, between a sensor reading a physical value and an operator making a dec">
+<meta name="twitter:description" content="SCADA &amp; ICS Architecture Fundamentals: The sense-decide-act control loop, SCADA vs. DCS, HMI, and the historian.">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 25 — OT/ICS & Critical Infrastructure Security","item":"https://kashsec.vercel.app/lesson/25-ot-ics-security/"},{"@type":"ListItem","position":4,"name":"SCADA & ICS Architecture Fundamentals","item":"https://kashsec.vercel.app/lesson/25-ot-ics-security/scada-ics-fundamentals.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"SCADA & ICS Architecture Fundamentals","headline":"SCADA & ICS Architecture Fundamentals","description":"The previous lesson introduced the vocabulary. This one builds the actual mental model — what's really happening, layer by layer, between a sensor reading a physical value and an operator making a dec","url":"https://kashsec.vercel.app/lesson/25-ot-ics-security/scada-ics-fundamentals.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"The sense-decide-act control loop, SCADA vs. DCS, HMI, and the historian.","isPartOf":{"@type":"Course","name":"Path 25: OT/ICS & Critical Infrastructure Security","url":"https://kashsec.vercel.app/lesson/25-ot-ics-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/25-ot-ics-security/scada-ics-fundamentals.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"SCADA & ICS Architecture Fundamentals","headline":"SCADA & ICS Architecture Fundamentals","description":"SCADA & ICS Architecture Fundamentals: The sense-decide-act control loop, SCADA vs. DCS, HMI, and the historian.","url":"https://kashsec.vercel.app/lesson/25-ot-ics-security/scada-ics-fundamentals.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"The sense-decide-act control loop, SCADA vs. DCS, HMI, and the historian.","isPartOf":{"@type":"Course","name":"Path 25: OT/ICS & Critical Infrastructure Security","url":"https://kashsec.vercel.app/lesson/25-ot-ics-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/25-ot-ics-security/scada-ics-fundamentals.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/25-ot-ics-security/scada-ics-fundamentals">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/25-ot-ics-security/">Path 25 — OT/ICS &amp; Critical Infrastructure Security</a> · SCADA &amp; ICS Architecture Fundamentals</div>
-  <article><h1>SCADA &amp; ICS Architecture Fundamentals</h1>
-<p>The previous lesson introduced the vocabulary. This one builds the actual mental model — what&#39;s really happening, layer by layer, between a sensor reading a physical value and an operator making a decision on a screen.</p>
-<p>:::</p>
+<a class="skip" href="/lesson/25-ot-ics-security/scada-ics-fundamentals.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/25-ot-ics-security/">Path 25 — OT/ICS &amp; Critical Infrastructure Security</a> · SCADA &amp; ICS Architecture Fundamentals</nav>
+    <div class="md" id="content"><article><h1>SCADA &amp; ICS Architecture Fundamentals</h1>
+<p>The previous lesson introduced the vocabulary. This one builds the actual mental model — what's really happening, layer by layer, between a sensor reading a physical value and an operator making a decision on a screen.</p>
+<p>:::tip
+The core loop to hold in your head throughout this entire path: <strong>sense → decide → act</strong>. A sensor measures something physical, a controller decides what to do about it, and an actuator physically does it. Everything else in ICS architecture is built around making that loop reliable, fast, and (ideally) secure.
+:::</p>
 <h2>The control loop, concretely</h2>
-<p>Take something as simple as keeping a tank&#39;s water level within range:</p>
+<p>Take something as simple as keeping a tank's water level within range:</p>
 <ol>
 <li>A <strong>sensor</strong> measures the current water level</li>
 <li>A <strong>PLC (Programmable Logic Controller)</strong> reads that value and compares it against the target range</li>
@@ -68,7 +101,7 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <li>The pump physically adds water</li>
 <li>The sensor reads the new level, and the loop repeats, continuously, often many times per second</li>
 </ol>
-<p>This is the fundamental unit of almost all industrial control: a fast, local, continuously repeating loop that doesn&#39;t need a human in it at all for normal operation. Humans supervise; they don&#39;t drive every individual action.</p>
+<p>This is the fundamental unit of almost all industrial control: a fast, local, continuously repeating loop that doesn't need a human in it at all for normal operation. Humans supervise; they don't drive every individual action.</p>
 <h2>The layers, from field to enterprise</h2>
 <table>
 <thead>
@@ -104,9 +137,9 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <td>Hours to days</td>
 </tr>
 </tbody></table>
-<p>Notice the timescale column: as you move up the layers, from physical field devices toward business systems, the required response time gets slower and the systems get closer to &quot;normal IT.&quot; This is exactly why the boundary between these layers matters so much for security — a business reporting system that&#39;s slow to respond for a few seconds is a non-event; a PLC that&#39;s slow to respond for a few seconds might mean a valve doesn&#39;t close in time.</p>
+<p>Notice the timescale column: as you move up the layers, from physical field devices toward business systems, the required response time gets slower and the systems get closer to "normal IT." This is exactly why the boundary between these layers matters so much for security — a business reporting system that's slow to respond for a few seconds is a non-event; a PLC that's slow to respond for a few seconds might mean a valve doesn't close in time.</p>
 <h2>SCADA vs. DCS, properly explained</h2>
-<p>The previous lesson defined these briefly — here&#39;s the architectural distinction that actually matters:</p>
+<p>The previous lesson defined these briefly — here's the architectural distinction that actually matters:</p>
 <ul>
 <li><strong>SCADA</strong> systems are built for processes that are geographically distributed — think a pipeline running hundreds of miles, or an electrical grid spanning a region. Communication often happens over long-distance links (radio, leased lines, cellular), and some delay/unreliability in that communication is an accepted design reality.</li>
 <li><strong>DCS</strong> systems are built for processes concentrated in one facility — a single refinery, a single power plant. Communication is typically over a local, high-reliability network, and the control loops can be tighter and faster because everything is physically close together.</li>
@@ -115,37 +148,34 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <h2>HMI: where humans actually touch the system</h2>
 <p>The <strong>Human-Machine Interface</strong> is what an operator actually looks at — typically a screen showing a schematic of the process (tanks, pipes, valves, current readings) with the ability to issue supervisory commands (change a setpoint, acknowledge an alarm, manually override an automatic action).</p>
 <p>:::danger
-A compromised HMI is one of the most dangerous single points of failure in an ICS environment — not because the HMI itself controls the physical process directly, but because it&#39;s the trusted interface operators rely on to <em>understand what&#39;s happening</em>. An attacker who can manipulate what the HMI displays can make an operator believe everything is normal while the actual physical process is doing something dangerous. This exact pattern — a genuine physical attack paired with falsified HMI readouts to delay detection — has appeared in real-world incidents.</p>
-<h2>Historian: the ICS world&#39;s audit log</h2>
-<p>A <strong>historian</strong> is a specialized database that continuously logs process data over time — every sensor reading, every setpoint change, often for years. It&#39;s the OT equivalent of application logging, and it plays a similar dual role: operationally useful (trend analysis, troubleshooting, regulatory reporting) and forensically critical (reconstructing what actually happened during an incident, similar to the log-analysis skills from earlier in this course, just applied to physical process data instead of authentication logs).</p>
+A compromised HMI is one of the most dangerous single points of failure in an ICS environment — not because the HMI itself controls the physical process directly, but because it's the trusted interface operators rely on to <em>understand what's happening</em>. An attacker who can manipulate what the HMI displays can make an operator believe everything is normal while the actual physical process is doing something dangerous. This exact pattern — a genuine physical attack paired with falsified HMI readouts to delay detection — has appeared in real-world incidents.
+:::</p>
+<h2>Historian: the ICS world's audit log</h2>
+<p>A <strong>historian</strong> is a specialized database that continuously logs process data over time — every sensor reading, every setpoint change, often for years. It's the OT equivalent of application logging, and it plays a similar dual role: operationally useful (trend analysis, troubleshooting, regulatory reporting) and forensically critical (reconstructing what actually happened during an incident, similar to the log-analysis skills from earlier in this course, just applied to physical process data instead of authentication logs).</p>
 <h2>A worked example: a simplified power substation</h2>
 <p>Picture a small electrical substation:</p>
 <ul>
 <li><strong>Field devices</strong>: current and voltage sensors on transmission lines, circuit breakers that can physically open (disconnect) or close (connect) a line</li>
 <li><strong>Controller</strong>: a PLC/RTU that reads the sensors and can command a breaker to open if it detects a fault condition (like a short circuit) — this happens automatically, in milliseconds, because waiting for a human to react would be far too slow to prevent equipment damage</li>
-<li><strong>Supervisory</strong>: an HMI showing the substation&#39;s status to an operator at a regional control center, who can also manually command a breaker to open or close for planned maintenance</li>
+<li><strong>Supervisory</strong>: an HMI showing the substation's status to an operator at a regional control center, who can also manually command a breaker to open or close for planned maintenance</li>
 <li><strong>Historian</strong>: logging every breaker operation and every sensor reading, both for regulatory compliance and for investigating any unusual event afterward</li>
 </ul>
-<p>If an attacker could reach the PLC directly and issue a false &quot;open&quot; command to a breaker with no fault actually present, they could deliberately cause an unnecessary power outage — this is close to the real mechanism behind actual grid-attack incidents covered later in this path.</p>
+<p>If an attacker could reach the PLC directly and issue a false "open" command to a breaker with no fault actually present, they could deliberately cause an unnecessary power outage — this is close to the real mechanism behind actual grid-attack incidents covered later in this path.</p>
 <h2>🧪 Hands-on lab — trace a control loop</h2>
-<p>Pick a physical system you interact with regularly that has some form of automatic control — a home thermostat, a car&#39;s cruise control, an elevator.</p>
+<p>Pick a physical system you interact with regularly that has some form of automatic control — a home thermostat, a car's cruise control, an elevator.</p>
 <ol>
-<li><p>Identify the sensor(s): what physical value is being measured?</p>
-</li>
-<li><p>Identify the controller: what&#39;s making the decision, and what&#39;s it comparing the sensor value against?</p>
-</li>
-<li><p>Identify the actuator(s): what physical action actually happens as a result?</p>
-</li>
-<li><p>Write out the full sense-decide-act loop for your chosen system, in your own words.</p>
-</li>
-<li><p>Now imagine an attacker could falsify the sensor reading your system relies on (without touching the actual physical actuator). What&#39;s the worst realistic consequence for your specific example?</p>
-</li>
-<li><p>Explain the sense-decide-act loop in your own words, using a different example than the one in this lesson.</p>
-</li>
-<li><p>What&#39;s the key architectural difference between SCADA and DCS, and why does geography drive that difference?</p>
-</li>
-<li><p>Why is a compromised HMI dangerous even though it doesn&#39;t directly control physical equipment itself?</p>
-</li>
+<li>Identify the sensor(s): what physical value is being measured?</li>
+<li>Identify the controller: what's making the decision, and what's it comparing the sensor value against?</li>
+<li>Identify the actuator(s): what physical action actually happens as a result?</li>
+<li>Write out the full sense-decide-act loop for your chosen system, in your own words.</li>
+<li>Now imagine an attacker could falsify the sensor reading your system relies on (without touching the actual physical actuator). What's the worst realistic consequence for your specific example?</li>
+</ol>
+<p>:::challenge Test yourself</p>
+<ol>
+<li>Explain the sense-decide-act loop in your own words, using a different example than the one in this lesson.</li>
+<li>What's the key architectural difference between SCADA and DCS, and why does geography drive that difference?</li>
+<li>Why is a compromised HMI dangerous even though it doesn't directly control physical equipment itself?
+:::</li>
 </ol>
 <h2>Key terms</h2>
 <ul>
@@ -153,7 +183,7 @@ A compromised HMI is one of the most dangerous single points of failure in an IC
 <li><strong>RTU (Remote Terminal Unit)</strong> — similar role to a PLC, typically used in geographically distributed SCADA contexts</li>
 <li><strong>HMI (Human-Machine Interface)</strong> — the operator-facing screen for monitoring and supervisory control</li>
 <li><strong>Historian</strong> — a specialized database logging process data over time for analysis and forensic reconstruction</li>
-<li><strong>Setpoint</strong> — the target value a control loop tries to maintain (e.g., &quot;keep the tank at 75% full&quot;)</li>
+<li><strong>Setpoint</strong> — the target value a control loop tries to maintain (e.g., "keep the tank at 75% full")</li>
 </ul>
 <h2>Recap</h2>
 <p>Every ICS environment, no matter how large or complex, is built on the same fundamental sense-decide-act control loop, arranged in layers from fast local field devices up to slower enterprise systems. SCADA and DCS differ mainly in geographic scope and communication assumptions, while the HMI and historian serve as the human-facing and forensic layers respectively — and both are high-value targets precisely because they shape what humans believe is happening, not just what the machinery is actually doing.</p>
@@ -162,19 +192,67 @@ A compromised HMI is one of the most dangerous single points of failure in an IC
 <li><a href="https://csrc.nist.gov/pubs/sp/800/82/r3/final">NIST SP 800-82 — Guide to Industrial Control Systems Security</a> — covers ICS architecture in depth</li>
 <li><a href="https://www.cisa.gov/topics/industrial-control-systems">CISA — Industrial Control Systems</a> — ongoing advisories and architectural guidance</li>
 </ul>
-<nav class="pager"><a href="/lesson/25-ot-ics-security/what-is-ot-ics.html">← What is OT/ICS Security?</a><a href="/lesson/25-ot-ics-security/industrial-protocols.html">Industrial Protocols: Modbus, DNP3, and Why Their Design Causes Security Problems →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/25-ot-ics-security/what-is-ot-ics.html">← What is OT/ICS Security?</a><a href="/lesson/25-ot-ics-security/industrial-protocols.html">Industrial Protocols: Modbus, DNP3, and Why Their Design Causes Security Problems →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/25-ot-ics-security/scada-ics-fundamentals";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

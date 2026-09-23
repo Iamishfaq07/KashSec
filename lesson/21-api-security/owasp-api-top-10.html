@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>OWASP API Top 10 (2023) — Path 21 · KashSec Academy</title>
-<meta name="description" content="The OWASP API Security Top 10 is the shared checklist the industry uses for API risk. Learn these ten categories and you can systematically assess almost any modern API — this list is the backbone the">
+<meta name="description" content="OWASP API Top 10 (2023): The shared checklist for API risk, ten categories at a glance.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/21-api-security/owasp-api-top-10.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="OWASP API Top 10 (2023) — Path 21 · KashSec Academy">
-<meta property="og:description" content="The OWASP API Security Top 10 is the shared checklist the industry uses for API risk. Learn these ten categories and you can systematically assess almost any modern API — this list is the backbone the">
+<meta property="og:description" content="OWASP API Top 10 (2023): The shared checklist for API risk, ten categories at a glance.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/21-api-security/owasp-api-top-10.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -17,48 +18,80 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="OWASP API Top 10 (2023) — Path 21 · KashSec Academy">
-<meta name="twitter:description" content="The OWASP API Security Top 10 is the shared checklist the industry uses for API risk. Learn these ten categories and you can systematically assess almost any modern API — this list is the backbone the">
+<meta name="twitter:description" content="OWASP API Top 10 (2023): The shared checklist for API risk, ten categories at a glance.">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 21 — API Security","item":"https://kashsec.vercel.app/lesson/21-api-security/"},{"@type":"ListItem","position":4,"name":"OWASP API Top 10 (2023)","item":"https://kashsec.vercel.app/lesson/21-api-security/owasp-api-top-10.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"OWASP API Top 10 (2023)","headline":"OWASP API Top 10 (2023)","description":"The OWASP API Security Top 10 is the shared checklist the industry uses for API risk. Learn these ten categories and you can systematically assess almost any modern API — this list is the backbone the","url":"https://kashsec.vercel.app/lesson/21-api-security/owasp-api-top-10.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"The shared checklist for API risk, ten categories at a glance.","isPartOf":{"@type":"Course","name":"Path 21: API Security","url":"https://kashsec.vercel.app/lesson/21-api-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/21-api-security/owasp-api-top-10.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"OWASP API Top 10 (2023)","headline":"OWASP API Top 10 (2023)","description":"OWASP API Top 10 (2023): The shared checklist for API risk, ten categories at a glance.","url":"https://kashsec.vercel.app/lesson/21-api-security/owasp-api-top-10.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"The shared checklist for API risk, ten categories at a glance.","isPartOf":{"@type":"Course","name":"Path 21: API Security","url":"https://kashsec.vercel.app/lesson/21-api-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/21-api-security/owasp-api-top-10.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/21-api-security/owasp-api-top-10">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/21-api-security/">Path 21 — API Security</a> · OWASP API Top 10 (2023)</div>
-  <article><h1>OWASP API Top 10 (2023)</h1>
+<a class="skip" href="/lesson/21-api-security/owasp-api-top-10.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/21-api-security/">Path 21 — API Security</a> · OWASP API Top 10 (2023)</nav>
+    <div class="md" id="content"><article><h1>OWASP API Top 10 (2023)</h1>
 <p>The OWASP API Security Top 10 is the shared checklist the industry uses for API risk. Learn these ten categories and you can systematically assess almost any modern API — this list is the backbone the rest of this path is built on.</p>
-<p>:::</p>
+<p>:::note
+This is the 2023 edition. It is different from the classic OWASP Web Top 10 — APIs have their own failure modes, and several of these categories (BOLA, broken function-level auth, unsafe consumption) barely have an equivalent in the classic web list.
+:::</p>
 <h2>The list at a glance</h2>
 <table>
 <thead>
@@ -71,7 +104,7 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <tbody><tr>
 <td>API1</td>
 <td>Broken Object Level Authorization</td>
-<td>User can access objects they shouldn&#39;t</td>
+<td>User can access objects they shouldn't</td>
 </tr>
 <tr>
 <td>API2</td>
@@ -120,14 +153,15 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 </tr>
 </tbody></table>
 <p>:::tip
-Notice the order isn&#39;t arbitrary — it&#39;s ranked by real-world prevalence and impact. API1 (BOLA) tops the list for a reason: it&#39;s the single most commonly found, most damaging, and easiest-to-exploit category across real bug bounty and pentest data.</p>
+Notice the order isn't arbitrary — it's ranked by real-world prevalence and impact. API1 (BOLA) tops the list for a reason: it's the single most commonly found, most damaging, and easiest-to-exploit category across real bug bounty and pentest data.
+:::</p>
 <h2>API1 — Broken Object Level Authorization (BOLA)</h2>
 <p>The classic IDOR, but for APIs, and the most common finding in this entire list.</p>
 <pre><code class="language-http">GET /api/v1/orders/1042
 Authorization: Bearer &lt;alice-token&gt;
 </code></pre>
-<p>If Alice can change <code>1042</code> to <code>1043</code> and see Bob&#39;s order, that is BOLA.</p>
-<p><strong>Fix</strong>: every request that touches an object must check that the authenticated user is allowed to access <em>that specific object</em> — not just that they&#39;re logged in. This gets its own full lesson right after this one, because it deserves the depth.</p>
+<p>If Alice can change <code>1042</code> to <code>1043</code> and see Bob's order, that is BOLA.</p>
+<p><strong>Fix</strong>: every request that touches an object must check that the authenticated user is allowed to access <em>that specific object</em> — not just that they're logged in. This gets its own full lesson right after this one, because it deserves the depth.</p>
 <h2>API2 — Broken Authentication</h2>
 <ul>
 <li>Weak password policies</li>
@@ -136,10 +170,10 @@ Authorization: Bearer &lt;alice-token&gt;
 <li>Tokens that never expire</li>
 <li>Predictable password-reset tokens</li>
 </ul>
-<p><strong>Example</strong>: a password-reset endpoint issues a 4-digit numeric code with no attempt limit. That&#39;s only 10,000 possibilities — trivially brute-forceable in seconds against an unthrottled endpoint.</p>
+<p><strong>Example</strong>: a password-reset endpoint issues a 4-digit numeric code with no attempt limit. That's only 10,000 possibilities — trivially brute-forceable in seconds against an unthrottled endpoint.</p>
 <h2>API3 — Broken Object Property Level Authorization</h2>
 <p>Even if the user is allowed to see the <em>object</em>, they may not be allowed to see or change every <em>property</em>.</p>
-<p>Example: a user can update their profile, but the API also accepts <code>&quot;isAdmin&quot;: true</code> or returns the full internal user object including password hashes. This category folds together what used to be two separate 2019 categories (excessive data exposure and mass assignment) — both are property-level authorization failures, just in opposite directions (reading too much vs. writing too much).</p>
+<p>Example: a user can update their profile, but the API also accepts <code>"isAdmin": true</code> or returns the full internal user object including password hashes. This category folds together what used to be two separate 2019 categories (excessive data exposure and mass assignment) — both are property-level authorization failures, just in opposite directions (reading too much vs. writing too much).</p>
 <h2>API4 — Unrestricted Resource Consumption</h2>
 <p>No rate limits, no payload size limits, no pagination limits. Attackers can:</p>
 <ul>
@@ -147,37 +181,40 @@ Authorization: Bearer &lt;alice-token&gt;
 <li>Exhaust CPU with expensive GraphQL queries</li>
 <li>Fill storage with large uploads</li>
 </ul>
-<p><strong>Example</strong>: an endpoint that generates a PDF report accepts an unlimited <code>rows</code> parameter. A request for a million-row report can pin a server&#39;s CPU for minutes, and a handful of concurrent requests like it can take the service down entirely — no exploit needed, just an unchecked number.</p>
+<p><strong>Example</strong>: an endpoint that generates a PDF report accepts an unlimited <code>rows</code> parameter. A request for a million-row report can pin a server's CPU for minutes, and a handful of concurrent requests like it can take the service down entirely — no exploit needed, just an unchecked number.</p>
 <h2>API5 — Broken Function Level Authorization</h2>
 <p>A normal user discovers <code>/api/admin/users</code> or <code>/api/v1/export-all</code> and the endpoint only checks that <em>someone</em> is logged in, not that they are an admin.</p>
 <p>This differs from BOLA (API1) in an important way: BOLA is about <em>which object</em> you can touch; broken function-level auth is about <em>which action</em> you can perform at all, regardless of object. A user calling <code>DELETE /api/v1/users/999</code> when they should only ever be allowed to <code>GET</code> their own record is a function-level failure even before you ask whether 999 belongs to them.</p>
 <h2>API6 — Unrestricted Access to Sensitive Business Flows</h2>
 <p>Buying limited items, booking seats, submitting votes, claiming coupons — anything that has business value and can be automated. Rate limits and CAPTCHAs help, but design-level controls are better.</p>
-<p><strong>Example</strong>: a limited-edition sneaker drop&#39;s &quot;add to cart&quot; API has no per-account or per-IP limit. A script can claim all available inventory in the first second, before a human ever loads the page — this is a legitimate, frequently-abused business risk that has nothing to do with a traditional &quot;vulnerability&quot; at all.</p>
+<p><strong>Example</strong>: a limited-edition sneaker drop's "add to cart" API has no per-account or per-IP limit. A script can claim all available inventory in the first second, before a human ever loads the page — this is a legitimate, frequently-abused business risk that has nothing to do with a traditional "vulnerability" at all.</p>
 <h2>API7 — Server Side Request Forgery (SSRF)</h2>
 <p>The API takes a URL (or a host) from the user and fetches it. Classic targets: cloud metadata (<code>169.254.169.254</code>), internal admin panels, Redis, etc. If your course has covered SSRF in an earlier path, this is the exact same bug class, just reached through a JSON API parameter instead of a web form field.</p>
 <h2>API8 — Security Misconfiguration</h2>
 <p>Verbose error messages, open CORS (<code>Access-Control-Allow-Origin: *</code> with credentials), default credentials, unnecessary HTTP methods enabled, missing security headers.</p>
-<p><strong>Example</strong>: a staging API left with debug mode on returns full stack traces on error, including the database connection string in the traceback. An attacker doesn&#39;t even need to find a real bug — they just need to trigger any error.</p>
+<p><strong>Example</strong>: a staging API left with debug mode on returns full stack traces on error, including the database connection string in the traceback. An attacker doesn't even need to find a real bug — they just need to trigger any error.</p>
 <h2>API9 — Improper Inventory Management</h2>
 <p>Old API versions (<code>/v1</code>, <code>/v2</code>, <code>/internal</code>) still running, undocumented endpoints, debug endpoints left open in production.</p>
 <p><strong>Example</strong>: <code>/api/v1/users</code> was deprecated two years ago in favor of <code>/api/v2/users</code>, which added proper authorization checks. Nobody decommissioned <code>/api/v1/</code>. It still works, still has the old (missing) authorization logic, and nobody on the current team even remembers it exists — a textbook <strong>shadow API</strong>.</p>
 <h2>API10 — Unsafe Consumption of APIs</h2>
-<p>Your service calls a third-party API and trusts the response completely — no validation, no size limits, no schema checks. A compromised or malicious upstream can poison your system. This is the &quot;supply chain&quot; risk from the DevSecOps path, applied specifically to API responses rather than package dependencies.</p>
-<p>:::</p>
+<p>Your service calls a third-party API and trusts the response completely — no validation, no size limits, no schema checks. A compromised or malicious upstream can poison your system. This is the "supply chain" risk from the DevSecOps path, applied specifically to API responses rather than package dependencies.</p>
+<p>:::lab
+Take any public or lab API you have access to and map each endpoint against this list. Even a simple mental checklist already surfaces the highest-risk places.
+:::</p>
 <h2>🧪 Hands-on lab — build your own checklist</h2>
 <ol>
-<li>Pick a REST API you&#39;re authorized to test (a lab API like OWASP crAPI or a vulnerable-by-design app is ideal).</li>
+<li>Pick a REST API you're authorized to test (a lab API like OWASP crAPI or a vulnerable-by-design app is ideal).</li>
 <li>For every distinct endpoint you find, write its method and path in a table.</li>
-<li>Add a column for each of the ten categories above, and mark a quick guess (yes/no/unsure) for whether that endpoint might be vulnerable to it — you&#39;re not exploiting yet, just triaging.</li>
-<li>Pick the three endpoints with the most &quot;yes/unsure&quot; marks and describe, in one sentence each, what you&#39;d test first and why.</li>
+<li>Add a column for each of the ten categories above, and mark a quick guess (yes/no/unsure) for whether that endpoint might be vulnerable to it — you're not exploiting yet, just triaging.</li>
+<li>Pick the three endpoints with the most "yes/unsure" marks and describe, in one sentence each, what you'd test first and why.</li>
 <li>Compare your list against the ranking order (API1 highest impact/prevalence) — did you prioritize the same way OWASP does, or differently? Why?</li>
 </ol>
 <p>:::challenge Test yourself</p>
 <ol>
 <li>Explain the difference between API1 (BOLA) and API5 (broken function-level authorization) in your own words.</li>
-<li>A staging API endpoint that was deprecated but never removed is still reachable and has weaker authorization than its replacement. Which category does this fall under, and why does &quot;we don&#39;t use that anymore&quot; not make it safe?</li>
-<li>Why did the 2023 revision merge &quot;excessive data exposure&quot; and &quot;mass assignment&quot; into a single &quot;object property level authorization&quot; category?</li>
+<li>A staging API endpoint that was deprecated but never removed is still reachable and has weaker authorization than its replacement. Which category does this fall under, and why does "we don't use that anymore" not make it safe?</li>
+<li>Why did the 2023 revision merge "excessive data exposure" and "mass assignment" into a single "object property level authorization" category?
+:::</li>
 </ol>
 <h2>Key terms</h2>
 <ul>
@@ -195,19 +232,67 @@ Authorization: Bearer &lt;alice-token&gt;
 <li><a href="https://owasp.org/API-Security/editions/2023/en/0x00-header/">API Security Top 10 2023 PDF</a></li>
 <li><a href="https://github.com/OWASP/crAPI">OWASP crAPI</a> — a free, deliberately vulnerable API for practicing everything in this list</li>
 </ul>
-<nav class="pager"><a href="/lesson/21-api-security/api-versioning-and-shadow-apis.html">← API Versioning &amp; Shadow APIs</a><a href="/lesson/21-api-security/api-security-standards-and-frameworks.html">API Security Standards &amp; Frameworks →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/21-api-security/api-versioning-and-shadow-apis.html">← API Versioning &amp; Shadow APIs</a><a href="/lesson/21-api-security/api-security-standards-and-frameworks.html">API Security Standards &amp; Frameworks →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/21-api-security/owasp-api-top-10";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

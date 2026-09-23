@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /*
  * Prerenders static HTML for every lesson, path, tool and lab so search
- * engines can index them (the SPA is hash-routed, invisible to crawlers).
+ * engines can index them and readers can use the same canonical URL.
  *
  * Each generated file at lesson/<pathId>/<subId>.html contains:
  *   - a lesson-specific <title>, <meta description>, canonical link, and
@@ -9,17 +9,13 @@
  *   - the lesson's markdown, pre-rendered to HTML with `marked` so bots
  *     see the actual content, not an empty shell
  *   - schema.org JSON-LD (LearningResource + BreadcrumbList)
- *   - a small script that redirects real users into the SPA at
- *     `#/lesson/<pathId>/<subId>`, so navigation still uses the app
+ *   - the shared app shell and scripts, which hydrate the same URL for
+ *     interactive reading without redirecting the visitor
  *
  * CANONICAL RULE — the one thing to not get wrong here: the canonical URL
- * must be the .html file itself, never the SPA hash route. Google discards
- * everything after `#`, so `https://site/#/lesson/a/b` canonicalises to
- * `https://site/` — pointing 500+ pages at the homepage as duplicates and
- * stopping any of them ranking. The hash route is still used, separately,
- * as the redirect target for real visitors (`spaPath` below). That
- * redirect is deliberately origin-relative, so preview deployments and
- * local servers keep visitors on the origin they actually opened.
+ * must be the .html file itself, never a legacy hash route. The app router
+ * reads the pathname directly, while old hash links are upgraded to that
+ * same URL for compatibility.
  *
  * Also regenerates sitemap.xml with <lastmod> taken from git history.
  *
@@ -31,9 +27,27 @@ import path from 'path';
 import { execFileSync } from 'child_process';
 import { fileURLToPath } from 'url';
 import { TOOL_CONTENT, LAB_CONTENT } from './prerender-content.js';
+import sanitizeHtml from 'sanitize-html';
 
 const ROOT = path.dirname(fileURLToPath(import.meta.url));
 const SITE = 'https://kashsec.vercel.app';
+const indexShell = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
+const shellHeader = indexShell.match(/<header\b[\s\S]*?<\/header>/)?.[0];
+const shellFooter = indexShell.match(/<footer\b[\s\S]*?<\/footer>/)?.[0];
+const shellScripts = indexShell.match(/<script src="quizzes\.js"[\s\S]*?(?=<\/body>)/)?.[0];
+if (!shellHeader || !shellFooter || !shellScripts) throw new Error('index.html app shell could not be read');
+
+const CONTENT_SANITIZER = {
+  allowedTags: [...sanitizeHtml.defaults.allowedTags, 'h1', 'h2', 'figure', 'figcaption', 'img', 'div', 'span', 'section', 'article', 'details', 'summary'],
+  allowedAttributes: {
+    ...sanitizeHtml.defaults.allowedAttributes,
+    '*': ['class', 'id', 'role', 'aria-label'],
+    a: ['href', 'title', 'target', 'rel', 'name'],
+    img: ['src', 'alt', 'title', 'width', 'height', 'loading'],
+    code: ['class'],
+  },
+  allowedSchemes: ['http', 'https', 'mailto'],
+};
 
 const appJs = fs.readFileSync(path.join(ROOT, 'app.js'), 'utf8');
 
@@ -53,9 +67,7 @@ function extractArray(name) {
   return new Function(match[0] + '; return ' + name + ';')();
 }
 const PATHS = extractArray('PATHS');
-// Tools and labs are SPA-only routes, so they need their own crawlable
-// stubs — several of them (JWT decoder, CVSS calculator, subnet
-// calculator) target real search demand and were previously invisible.
+// Tools and labs also get crawlable pages with interactive app shells.
 const TOOLS = extractArray('TOOLS');
 const LABS  = extractArray('LABS');
 // The FAQ is the site's best shot at a rich result, but it only existed as
@@ -96,6 +108,7 @@ function escapeAttr(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt
    there's no git history (fresh checkout, tarball, some CI setups). */
 const BUILD_DATE = new Date().toISOString().slice(0, 10);
 const gitDates = new Map();
+const dirtyPaths = new Set();
 try {
   const log = execFileSync('git',
     ['log', '--pretty=format:@%cI', '--name-only', '--diff-filter=AMR'],
@@ -105,11 +118,18 @@ try {
     if (line.startsWith('@')) { current = line.slice(1, 11); continue; }
     if (line && current && !gitDates.has(line)) gitDates.set(line, current);
   }
+  // A build before committing changed source files should stamp the same
+  // date the next CI build sees after that commit. Otherwise CI always finds
+  // hundreds of changed dateModified/lastmod fields after each content edit.
+  for (const args of [['diff', '--name-only'], ['ls-files', '--others', '--exclude-standard']]) {
+    const changed = execFileSync('git', args, {cwd:ROOT, encoding:'utf8'});
+    changed.split('\n').filter(Boolean).forEach(file => dirtyPaths.add(file.trim()));
+  }
 } catch {
   console.warn('git history unavailable — using build date for lastmod.');
 }
 const lastmodFor = (...files) => {
-  const dates = files.map(f => gitDates.get(f)).filter(Boolean);
+  const dates = files.map(f => dirtyPaths.has(f) ? BUILD_DATE : gitDates.get(f)).filter(Boolean);
   return dates.length ? dates.sort().pop() : BUILD_DATE;
 };
 // The tool/lab/FAQ stubs are generated from data living in app.js, so
@@ -167,6 +187,7 @@ const template = ({title, desc, canonical, spaPath, contentHtml, crumbs, jsonLd 
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>${escapeAttr(title)}</title>
 <meta name="description" content="${escapeAttr(desc)}">
 <link rel="canonical" href="${escapeAttr(canonical)}">
@@ -184,51 +205,28 @@ const template = ({title, desc, canonical, spaPath, contentHtml, crumbs, jsonLd 
 <meta name="twitter:description" content="${escapeAttr(desc)}">
 <meta name="twitter:image" content="${SITE}/og-image.png">
 <meta name="theme-color" content="#0A0E13">${adsenseMeta}
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 ${[breadcrumbLd(crumbs), ...jsonLd]
-  .map(o => `<script type="application/ld+json">\n${JSON.stringify(o)}\n</script>`).join('\n')}
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
+  .map(o => `<script type="application/ld+json">\n${JSON.stringify(o).replace(/</g, '\\u003c')}\n</script>`).join('\n')}
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="${escapeAttr(spaPath)}">continue here →</a></div>
-  <div class="crumb">${crumbHtml(crumbs)}</div>
-  <article>${contentHtml}</article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<a class="skip" href="${escapeAttr(new URL(canonical).pathname)}#app">Skip to content</a>
+${shellHeader}
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb">${crumbHtml(crumbs)}</nav>
+    <div class="md" id="content"><article>${sanitizeHtml(contentHtml, CONTENT_SANITIZER)}</article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = ${JSON.stringify(spaPath)};
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+${shellFooter}
+${shellScripts}
 </body>
 </html>
 `;
@@ -237,6 +235,7 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 const sitemapUrls = [{ loc: SITE + '/', lastmod: lastmodFor('index.html', 'app.js'), priority: '1.0' }];
 
 let written = 0;
+const lessonUpdated = {};
 for (const p of PATHS) {
   const flat = p.subs;
   for (let i = 0; i < flat.length; i++) {
@@ -250,6 +249,7 @@ for (const p of PATHS) {
     const title = `${s.title} — Path ${p.n} · KashSec Academy`;
     const desc = firstPara(md) || `${s.title}: ${s.desc || ''}`;
     const lastmod = lastmodFor(rel);
+    lessonUpdated[`${p.id}/${s.id}`] = lastmod;
     // Strip our custom :::callouts / ???refs / ~~~svg so marked doesn't
     // mangle them; they're stylistic only, prerender content is for bots.
     let clean = md
@@ -724,5 +724,7 @@ const smXml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www
     `  <url><loc>${u.loc}</loc><lastmod>${u.lastmod}</lastmod><changefreq>weekly</changefreq><priority>${u.priority}</priority></url>`
   ).join('\n') + '\n</urlset>\n';
 fs.writeFileSync(path.join(ROOT, 'sitemap.xml'), smXml);
+fs.writeFileSync(path.join(ROOT, 'lesson-updated.js'),
+  `/* Generated from source history by generate-prerender.js. Content change dates, not editorial review dates. */\nconst LESSON_UPDATED = ${JSON.stringify(lessonUpdated)};\n`);
 
 console.log(`Prerender complete: ${written} lesson pages + ${PATHS.length} path overviews + 1 path hub + ${toolsWritten} tools + ${labsWritten} labs + 1 FAQ. sitemap.xml updated (${sitemapUrls.length} URLs).`);

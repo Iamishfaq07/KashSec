@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>Safety Instrumented Systems — Path 25 · KashSec Academy</title>
-<meta name="description" content="Every lesson so far has treated &quot;availability&quot; as OT's top priority above IT's usual confidentiality-first thinking. This lesson covers the layer above even availability: safety — the systems whose en">
+<meta name="description" content="Safety Instrumented Systems: The independent last line of defense against physical harm — and the exact target of Triton/Trisis.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/25-ot-ics-security/safety-instrumented-systems.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Safety Instrumented Systems — Path 25 · KashSec Academy">
-<meta property="og:description" content="Every lesson so far has treated &quot;availability&quot; as OT's top priority above IT's usual confidentiality-first thinking. This lesson covers the layer above even availability: safety — the systems whose en">
+<meta property="og:description" content="Safety Instrumented Systems: The independent last line of defense against physical harm — and the exact target of Triton/Trisis.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/25-ot-ics-security/safety-instrumented-systems.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -17,48 +18,80 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Safety Instrumented Systems — Path 25 · KashSec Academy">
-<meta name="twitter:description" content="Every lesson so far has treated &quot;availability&quot; as OT's top priority above IT's usual confidentiality-first thinking. This lesson covers the layer above even availability: safety — the systems whose en">
+<meta name="twitter:description" content="Safety Instrumented Systems: The independent last line of defense against physical harm — and the exact target of Triton/Trisis.">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 25 — OT/ICS & Critical Infrastructure Security","item":"https://kashsec.vercel.app/lesson/25-ot-ics-security/"},{"@type":"ListItem","position":4,"name":"Safety Instrumented Systems","item":"https://kashsec.vercel.app/lesson/25-ot-ics-security/safety-instrumented-systems.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Safety Instrumented Systems","headline":"Safety Instrumented Systems","description":"Every lesson so far has treated \"availability\" as OT's top priority above IT's usual confidentiality-first thinking. This lesson covers the layer above even availability: safety — the systems whose en","url":"https://kashsec.vercel.app/lesson/25-ot-ics-security/safety-instrumented-systems.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"The independent last line of defense against physical harm — and the exact target of Triton/Trisis.","isPartOf":{"@type":"Course","name":"Path 25: OT/ICS & Critical Infrastructure Security","url":"https://kashsec.vercel.app/lesson/25-ot-ics-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/25-ot-ics-security/safety-instrumented-systems.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Safety Instrumented Systems","headline":"Safety Instrumented Systems","description":"Safety Instrumented Systems: The independent last line of defense against physical harm — and the exact target of Triton/Trisis.","url":"https://kashsec.vercel.app/lesson/25-ot-ics-security/safety-instrumented-systems.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"The independent last line of defense against physical harm — and the exact target of Triton/Trisis.","isPartOf":{"@type":"Course","name":"Path 25: OT/ICS & Critical Infrastructure Security","url":"https://kashsec.vercel.app/lesson/25-ot-ics-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/25-ot-ics-security/safety-instrumented-systems.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/25-ot-ics-security/safety-instrumented-systems">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/25-ot-ics-security/">Path 25 — OT/ICS &amp; Critical Infrastructure Security</a> · Safety Instrumented Systems</div>
-  <article><h1>Safety Instrumented Systems</h1>
-<p>Every lesson so far has treated &quot;availability&quot; as OT&#39;s top priority above IT&#39;s usual confidentiality-first thinking. This lesson covers the layer above even availability: <strong>safety</strong> — the systems whose entire job is preventing a process from harming people, even if the process itself fails.</p>
-<p>:::</p>
+<a class="skip" href="/lesson/25-ot-ics-security/safety-instrumented-systems.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/25-ot-ics-security/">Path 25 — OT/ICS &amp; Critical Infrastructure Security</a> · Safety Instrumented Systems</nav>
+    <div class="md" id="content"><article><h1>Safety Instrumented Systems</h1>
+<p>Every lesson so far has treated "availability" as OT's top priority above IT's usual confidentiality-first thinking. This lesson covers the layer above even availability: <strong>safety</strong> — the systems whose entire job is preventing a process from harming people, even if the process itself fails.</p>
+<p>:::danger
+A Safety Instrumented System is not just another OT asset to segment and monitor like any other. It's the last line of defense against physical harm — and it was the specific target in the Triton/Trisis attack covered in the real-world attacks lesson, which makes this the single highest-stakes category of asset in the entire OT environment.
+:::</p>
 <h2>What a Safety Instrumented System actually does</h2>
 <p>A Safety Instrumented System (SIS) is a separate, independent control system whose only job is detecting dangerous conditions and forcing the process into a safe state — venting pressure, shutting a valve, cutting power — regardless of what the primary control system (the DCS or PLCs covered in the fundamentals lesson) is doing. The independence is the entire point: if the primary control system is compromised, malfunctioning, or simply wrong, the SIS is designed to catch the dangerous outcome anyway.</p>
 <h2>Why SIS independence gets undermined in practice</h2>
@@ -66,45 +99,96 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <ul>
 <li><strong>Convenience remote access</strong> — an engineer wants to check SIS status without physically walking to the safety system, so a network connection gets added</li>
 <li><strong>Shared engineering workstations</strong> — the same laptop used to program the DCS also gets used to program the SIS, because buying and securing a second dedicated machine is inconvenient</li>
-<li><strong>Vendor &quot;helpful&quot; integration</strong> — some SIS vendors sell integration features that bridge the safety network to the process network for easier monitoring, trading the isolation for convenience</li>
+<li><strong>Vendor "helpful" integration</strong> — some SIS vendors sell integration features that bridge the safety network to the process network for easier monitoring, trading the isolation for convenience</li>
 </ul>
-<p>Triton/Trisis specifically exploited this kind of eroded separation: the attackers reached the SIS network at all, which the system&#39;s design was never supposed to permit.</p>
+<p>Triton/Trisis specifically exploited this kind of eroded separation: the attackers reached the SIS network at all, which the system's design was never supposed to permit.</p>
 <h2>The core control: genuine independence</h2>
 <p>The single highest-value SIS-specific control is maintaining <strong>real, physical or airtight-logical separation</strong> from the process network — not a firewall rule that could someday be misconfigured, but architecture that makes bridging the two networks difficult by design. Where remote visibility into SIS status is genuinely needed, a unidirectional gateway (the data diode from the practical controls lesson) is the right tool: it lets status data flow <em>out</em> for monitoring while making it physically impossible for anything to flow <em>in</em> and touch the safety logic.</p>
 <p>:::challenge Evaluate a proposed change
 A facility wants to add a new feature: an app that lets an on-call engineer check SIS status from their phone, from anywhere, at any time.</p>
 <details><summary>Hint</summary>What does "check status from anywhere" actually require in terms of network connectivity between the SIS and the outside world — and is that requirement compatible with everything this lesson has said about SIS independence?</details>
-<details><summary>Show answer</summary>This is exactly the kind of "helpful" convenience feature that erodes SIS isolation. Remote-from-anywhere access requires *some* path from the SIS network out to the internet-reachable systems the phone app talks to — and every such path is a potential route back in, regardless of how carefully it's designed. The safer version of this feature uses a unidirectional gateway: SIS status data flows one-way out to a reporting system the phone app reads from, with the SIS network itself remaining physically incapable of receiving anything back. The convenience feature is achievable — but only if it's built to preserve one-way isolation rather than create a new bidirectional path into the safety system.</details><h2>🧪 Hands-on lab — audit a hypothetical SIS deployment</h2>
+<details><summary>Show answer</summary>This is exactly the kind of "helpful" convenience feature that erodes SIS isolation. Remote-from-anywhere access requires *some* path from the SIS network out to the internet-reachable systems the phone app talks to — and every such path is a potential route back in, regardless of how carefully it's designed. The safer version of this feature uses a unidirectional gateway: SIS status data flows one-way out to a reporting system the phone app reads from, with the SIS network itself remaining physically incapable of receiving anything back. The convenience feature is achievable — but only if it's built to preserve one-way isolation rather than create a new bidirectional path into the safety system.</details>
+:::<h2>🧪 Hands-on lab — audit a hypothetical SIS deployment</h2>
 <p>List three specific ways SIS isolation commonly erodes in real facilities (three are named in this lesson). For each, write one sentence describing a control that would prevent that specific erosion without eliminating the operational need it was solving.</p>
+<p>:::challenge Test yourself</p>
 <ol>
 <li>What makes a Safety Instrumented System fundamentally different from any other OT asset covered in this path?</li>
 <li>Why did the Triton/Trisis attack specifically target the SIS rather than the primary DCS?</li>
-<li>Why is a unidirectional gateway a better fit than a standard firewall rule for exposing SIS status data externally?</li>
+<li>Why is a unidirectional gateway a better fit than a standard firewall rule for exposing SIS status data externally?
+:::</li>
 </ol>
 <h2>Key terms</h2>
 <ul>
-<li><strong>Safety Instrumented System (SIS)</strong> — an independent control system whose sole function is forcing a process into a safe state when it detects dangerous conditions, regardless of the primary control system&#39;s state</li>
-<li><strong>Isolation erosion</strong> — the gradual, often well-intentioned weakening of a safety system&#39;s network separation through convenience features and shared equipment</li>
+<li><strong>Safety Instrumented System (SIS)</strong> — an independent control system whose sole function is forcing a process into a safe state when it detects dangerous conditions, regardless of the primary control system's state</li>
+<li><strong>Isolation erosion</strong> — the gradual, often well-intentioned weakening of a safety system's network separation through convenience features and shared equipment</li>
 </ul>
 <h2>Recap</h2>
-<p>A Safety Instrumented System sits above even availability in the OT priority stack — it&#39;s the last line of defense against physical harm, and it&#39;s the specific category of asset the Triton/Trisis attack targeted by exploiting eroded network separation. Real SIS security means treating independence as non-negotiable architecture, using tools like unidirectional gateways for any genuinely needed external visibility rather than accepting bidirectional convenience connections that undermine the entire point of having a separate safety system.</p>
+<p>A Safety Instrumented System sits above even availability in the OT priority stack — it's the last line of defense against physical harm, and it's the specific category of asset the Triton/Trisis attack targeted by exploiting eroded network separation. Real SIS security means treating independence as non-negotiable architecture, using tools like unidirectional gateways for any genuinely needed external visibility rather than accepting bidirectional convenience connections that undermine the entire point of having a separate safety system.</p>
 <h3>References</h3>
 <ul>
 <li><a href="https://www.cisa.gov/news-events/ics-advisories/icsa-17-347-01">CISA — Triton/Trisis Malware Analysis</a> — the incident this lesson builds directly on</li>
 </ul>
-<nav class="pager"><a href="/lesson/25-ot-ics-security/ics-vulnerability-management.html">← ICS Vulnerability Management</a><a href="/lesson/25-ot-ics-security/ics-incident-response.html">ICS Incident Response →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/25-ot-ics-security/ics-vulnerability-management.html">← ICS Vulnerability Management</a><a href="/lesson/25-ot-ics-security/ics-incident-response.html">ICS Incident Response →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/25-ot-ics-security/safety-instrumented-systems";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

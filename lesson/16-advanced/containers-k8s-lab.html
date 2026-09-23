@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>Containers &amp; Kubernetes Lab — Path 16 · KashSec Academy</title>
-<meta name="description" content="Container escapes and Kubernetes misconfigurations are an increasingly common finding in real-world assessments as more infrastructure moves to containerized deployments. This lab builds hands-on intu">
+<meta name="description" content="Containers &amp; Kubernetes Lab: Practice container security basics.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/16-advanced/containers-k8s-lab.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Containers &amp; Kubernetes Lab — Path 16 · KashSec Academy">
-<meta property="og:description" content="Container escapes and Kubernetes misconfigurations are an increasingly common finding in real-world assessments as more infrastructure moves to containerized deployments. This lab builds hands-on intu">
+<meta property="og:description" content="Containers &amp; Kubernetes Lab: Practice container security basics.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/16-advanced/containers-k8s-lab.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -17,59 +18,89 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Containers &amp; Kubernetes Lab — Path 16 · KashSec Academy">
-<meta name="twitter:description" content="Container escapes and Kubernetes misconfigurations are an increasingly common finding in real-world assessments as more infrastructure moves to containerized deployments. This lab builds hands-on intu">
+<meta name="twitter:description" content="Containers &amp; Kubernetes Lab: Practice container security basics.">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 16 — Advanced Cyber Topics","item":"https://kashsec.vercel.app/lesson/16-advanced/"},{"@type":"ListItem","position":4,"name":"Containers & Kubernetes Lab","item":"https://kashsec.vercel.app/lesson/16-advanced/containers-k8s-lab.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Containers & Kubernetes Lab","headline":"Containers & Kubernetes Lab","description":"Container escapes and Kubernetes misconfigurations are an increasingly common finding in real-world assessments as more infrastructure moves to containerized deployments. This lab builds hands-on intu","url":"https://kashsec.vercel.app/lesson/16-advanced/containers-k8s-lab.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Practice container security basics.","isPartOf":{"@type":"Course","name":"Path 16: Advanced Cyber Topics","url":"https://kashsec.vercel.app/lesson/16-advanced/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/16-advanced/containers-k8s-lab.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Containers & Kubernetes Lab","headline":"Containers & Kubernetes Lab","description":"Containers & Kubernetes Lab: Practice container security basics.","url":"https://kashsec.vercel.app/lesson/16-advanced/containers-k8s-lab.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Practice container security basics.","isPartOf":{"@type":"Course","name":"Path 16: Advanced Cyber Topics","url":"https://kashsec.vercel.app/lesson/16-advanced/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/16-advanced/containers-k8s-lab.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/16-advanced/containers-k8s-lab">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/16-advanced/">Path 16 — Advanced Cyber Topics</a> · Containers &amp; Kubernetes Lab</div>
-  <article><h1>Containers &amp; Kubernetes Lab</h1>
+<a class="skip" href="/lesson/16-advanced/containers-k8s-lab.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/16-advanced/">Path 16 — Advanced Cyber Topics</a> · Containers &amp; Kubernetes Lab</nav>
+    <div class="md" id="content"><article><h1>Containers &amp; Kubernetes Lab</h1>
 <p>Container escapes and Kubernetes misconfigurations are an increasingly common finding in real-world assessments as more infrastructure moves to containerized deployments. This lab builds hands-on intuition for the most common issues, safely, on your own machine.</p>
 <h2>Lab environment</h2>
-<p>You&#39;ll need <strong>Docker</strong> installed (on your Kali VM, your host machine, or via Docker Desktop). No Kubernetes cluster is required for the first three tasks — a local <code>kind</code> (Kubernetes in Docker) or <code>minikube</code> cluster is only needed for Task 3, and both are free and quick to spin up if you want to go further.</p>
+<p>You'll need <strong>Docker</strong> installed (on your Kali VM, your host machine, or via Docker Desktop). No Kubernetes cluster is required for the first three tasks — a local <code>kind</code> (Kubernetes in Docker) or <code>minikube</code> cluster is only needed for Task 3, and both are free and quick to spin up if you want to go further.</p>
 <h2>Tasks</h2>
 <ol>
-<li><p><strong>Enumerate from inside a container.</strong> Run a basic vulnerable container (many exist on Docker Hub explicitly for training — search &quot;vulnerable container lab&quot; or use a plain <code>ubuntu</code> image with intentionally weak permissions you configure yourself) and, once inside, check what you can see: <code>whoami</code>, <code>id</code>, environment variables (<code>env</code>), and mounted volumes (<code>mount</code>). Note how much of the host&#39;s information leaks into the container by default.</p>
+<li><p><strong>Enumerate from inside a container.</strong> Run a basic vulnerable container (many exist on Docker Hub explicitly for training — search "vulnerable container lab" or use a plain <code>ubuntu</code> image with intentionally weak permissions you configure yourself) and, once inside, check what you can see: <code>whoami</code>, <code>id</code>, environment variables (<code>env</code>), and mounted volumes (<code>mount</code>). Note how much of the host's information leaks into the container by default.</p>
 </li>
-<li><p><strong>Check for Docker socket exposure</strong> — a classic, extremely dangerous misconfiguration. If a container has <code>/var/run/docker.sock</code> mounted inside it, anything running in that container can control the <em>entire host&#39;s Docker daemon</em>, effectively escaping the container. Test this safely in your own lab:</p>
+<li><p><strong>Check for Docker socket exposure</strong> — a classic, extremely dangerous misconfiguration. If a container has <code>/var/run/docker.sock</code> mounted inside it, anything running in that container can control the <em>entire host's Docker daemon</em>, effectively escaping the container. Test this safely in your own lab:</p>
 <pre><code class="language-bash">docker run -it -v /var/run/docker.sock:/var/run/docker.sock docker:cli sh
-# From inside, list host containers — proof you&#39;ve broken out of your own container&#39;s boundary:
+# From inside, list host containers — proof you've broken out of your own container's boundary:
 docker ps
 </code></pre>
-<p>If that succeeds, you&#39;ve just demonstrated a full container-to-host escape.</p>
+<p>If that succeeds, you've just demonstrated a full container-to-host escape.</p>
 </li>
 <li><p><strong>Explore Kubernetes RBAC (optional, if you set up a local cluster).</strong> Spin up a <code>kind</code> cluster, create a service account with overly broad permissions, and use <code>kubectl auth can-i --list --as=system:serviceaccount:default:your-sa</code> to see exactly what that identity can do — this mirrors exactly how real Kubernetes privilege escalation assessments start.</p>
 </li>
@@ -78,24 +109,76 @@ docker ps
 <li><p><strong>Scan your own test images with Trivy.</strong> Pull a deliberately outdated image (<code>docker pull nginx:1.18</code>) and scan it: <code>trivy image nginx:1.18</code>. Compare the results against scanning a current image (<code>nginx:latest</code>) — note how many known CVEs the older image carries versus the current one, a direct, hands-on demonstration of why base-image freshness matters as much as application-level code security.</p>
 </li>
 </ol>
-<p>Everything above must be run against your own local Docker/Kubernetes setup — never against infrastructure you don&#39;t have explicit authorization to test, exactly as with every other lab in this course.</p>
-<p>Pick one issue you found (Docker socket exposure is the most dramatic and recommended starting point) and write it up: what the misconfiguration was, exactly how you exploited it step by step, what access it granted, and the specific fix (e.g., &quot;never mount the Docker socket into untrusted containers; use rootless Docker or a dedicated sidecar if socket access is genuinely required&quot;).</p>
+<p>:::warn Only ever test containers/clusters you built or own
+Everything above must be run against your own local Docker/Kubernetes setup — never against infrastructure you don't have explicit authorization to test, exactly as with every other lab in this course.
+:::</p>
+<p>:::challenge Document a full escalation path
+Pick one issue you found (Docker socket exposure is the most dramatic and recommended starting point) and write it up: what the misconfiguration was, exactly how you exploited it step by step, what access it granted, and the specific fix (e.g., "never mount the Docker socket into untrusted containers; use rootless Docker or a dedicated sidecar if socket access is genuinely required").
+:::</p>
 <h2>Key takeaway</h2>
 <p>Container and Kubernetes security failures are almost always <strong>configuration failures</strong>, not flaws in Docker or Kubernetes themselves — mounted sockets, overly broad RBAC roles, and secrets stored as plain environment variables are the recurring root causes behind the vast majority of real container escapes reported in the wild.</p>
 <p><strong>Next up →</strong> <a href="#/lesson/16-advanced/devsecops-lab">DevSecOps Lab</a></p>
-<nav class="pager"><a href="/lesson/16-advanced/cloud-security-lab.html">← Cloud Security Lab</a><a href="/lesson/16-advanced/devsecops-lab.html">DevSecOps Lab →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/16-advanced/cloud-security-lab.html">← Cloud Security Lab</a><a href="/lesson/16-advanced/devsecops-lab.html">DevSecOps Lab →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/16-advanced/containers-k8s-lab";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>Purple Teaming Lab — Path 16 · KashSec Academy</title>
-<meta name="description" content="Purple teaming isn't a separate discipline from red and blue — it's the deliberate practice of running both simultaneously, using each attack as a live test of your own detection capability. This lab ">
+<meta name="description" content="Purple Teaming Lab: Learn to combine red and blue team perspectives.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/16-advanced/purple-teaming-lab.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Purple Teaming Lab — Path 16 · KashSec Academy">
-<meta property="og:description" content="Purple teaming isn't a separate discipline from red and blue — it's the deliberate practice of running both simultaneously, using each attack as a live test of your own detection capability. This lab ">
+<meta property="og:description" content="Purple Teaming Lab: Learn to combine red and blue team perspectives.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/16-advanced/purple-teaming-lab.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -17,82 +18,167 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Purple Teaming Lab — Path 16 · KashSec Academy">
-<meta name="twitter:description" content="Purple teaming isn't a separate discipline from red and blue — it's the deliberate practice of running both simultaneously, using each attack as a live test of your own detection capability. This lab ">
+<meta name="twitter:description" content="Purple Teaming Lab: Learn to combine red and blue team perspectives.">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 16 — Advanced Cyber Topics","item":"https://kashsec.vercel.app/lesson/16-advanced/"},{"@type":"ListItem","position":4,"name":"Purple Teaming Lab","item":"https://kashsec.vercel.app/lesson/16-advanced/purple-teaming-lab.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Purple Teaming Lab","headline":"Purple Teaming Lab","description":"Purple teaming isn't a separate discipline from red and blue — it's the deliberate practice of running both simultaneously, using each attack as a live test of your own detection capability. This lab ","url":"https://kashsec.vercel.app/lesson/16-advanced/purple-teaming-lab.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Learn to combine red and blue team perspectives.","isPartOf":{"@type":"Course","name":"Path 16: Advanced Cyber Topics","url":"https://kashsec.vercel.app/lesson/16-advanced/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/16-advanced/purple-teaming-lab.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Purple Teaming Lab","headline":"Purple Teaming Lab","description":"Purple Teaming Lab: Learn to combine red and blue team perspectives.","url":"https://kashsec.vercel.app/lesson/16-advanced/purple-teaming-lab.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Learn to combine red and blue team perspectives.","isPartOf":{"@type":"Course","name":"Path 16: Advanced Cyber Topics","url":"https://kashsec.vercel.app/lesson/16-advanced/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/16-advanced/purple-teaming-lab.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/16-advanced/purple-teaming-lab">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/16-advanced/">Path 16 — Advanced Cyber Topics</a> · Purple Teaming Lab</div>
-  <article><h1>Purple Teaming Lab</h1>
-<p><strong>Purple teaming</strong> isn&#39;t a separate discipline from red and blue — it&#39;s the deliberate practice of running both simultaneously, using each attack as a live test of your own detection capability. This lab has you run one complete cycle yourself, playing both roles.</p>
+<a class="skip" href="/lesson/16-advanced/purple-teaming-lab.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/16-advanced/">Path 16 — Advanced Cyber Topics</a> · Purple Teaming Lab</nav>
+    <div class="md" id="content"><article><h1>Purple Teaming Lab</h1>
+<p><strong>Purple teaming</strong> isn't a separate discipline from red and blue — it's the deliberate practice of running both simultaneously, using each attack as a live test of your own detection capability. This lab has you run one complete cycle yourself, playing both roles.</p>
 <h2>Lab approach</h2>
-<p>You&#39;ll need a target you can both attack and monitor — a vulnerable VM (Metasploitable 2, or one of your own deliberately misconfigured setups from earlier labs in this path) with basic logging enabled, plus a way to review those logs afterward (even a simple <code>grep</code> through <code>/var/log/auth.log</code> is a legitimate starting point; a free tool like the ELK stack or Wazuh is a strong next step if you want to go further).</p>
+<p>You'll need a target you can both attack and monitor — a vulnerable VM (Metasploitable 2, or one of your own deliberately misconfigured setups from earlier labs in this path) with basic logging enabled, plus a way to review those logs afterward (even a simple <code>grep</code> through <code>/var/log/auth.log</code> is a legitimate starting point; a free tool like the ELK stack or Wazuh is a strong next step if you want to go further).</p>
 <h2>Tasks</h2>
 <ol>
-<li><p><strong>Attack (red hat on).</strong> Pick one technique you&#39;ve practiced elsewhere in this course — an SSH brute-force attempt (Path 12&#39;s Wi-Fi/MITM material or the CTF Zone&#39;s forensics challenge both reference this exact attack pattern), a web exploit against a vulnerable app, or a privilege escalation chain from the previous lab. Execute it fully against your own lab target.</p>
-</li>
-<li><p><strong>Detect (blue hat on).</strong> Now switch roles entirely. Without relying on your memory of exactly what you just did, go back to the logs and evidence <em>as if you were a SOC analyst seeing this incident cold</em> — could you have actually spotted this attack from the logs alone? What specific log lines, timestamps, or patterns would a detection rule need to key on?</p>
-</li>
-<li><p><strong>Find the detection gap.</strong> Almost always, your first pass reveals something the logs <em>don&#39;t</em> capture well, or a detail that would be easy to miss buried in noise. Write down exactly what&#39;s missing — maybe the logging level was too low, maybe there&#39;s no alert threshold configured, maybe the relevant log source isn&#39;t being collected at all.</p>
-</li>
-<li><p><strong>Improve the control.</strong> Based on the gap you found, make one concrete improvement — write a simple detection rule (even a <code>grep</code>/<code>awk</code> script counting failed logins per source IP within a time window is a legitimate, real starting point that mirrors what a SIEM correlation rule does under the hood), or adjust a logging configuration to capture what was missing.</p>
-</li>
-<li><p><strong>Repeat with a second technique.</strong> Pick a different attack type and run the same attack → detect → gap → improve cycle again — the second pass is usually faster and sharper because you already know what to look for.</p>
-</li>
-<li><p><strong>Map each technique to MITRE ATT&amp;CK before and after.</strong> For each attack you run, look up its corresponding ATT&amp;CK technique ID (an SSH brute-force maps to T1110, for instance) and explicitly note whether your detection rule, once written, actually covers that technique&#39;s documented detection guidance. This habit — deliberately checking your own coverage against a shared, industry-standard reference — is exactly how real purple team programs track detection coverage systematically across an entire organisation, rather than one improvised rule at a time.</p>
-</li>
+<li><strong>Attack (red hat on).</strong> Pick one technique you've practiced elsewhere in this course — an SSH brute-force attempt (Path 12's Wi-Fi/MITM material or the CTF Zone's forensics challenge both reference this exact attack pattern), a web exploit against a vulnerable app, or a privilege escalation chain from the previous lab. Execute it fully against your own lab target.</li>
+<li><strong>Detect (blue hat on).</strong> Now switch roles entirely. Without relying on your memory of exactly what you just did, go back to the logs and evidence <em>as if you were a SOC analyst seeing this incident cold</em> — could you have actually spotted this attack from the logs alone? What specific log lines, timestamps, or patterns would a detection rule need to key on?</li>
+<li><strong>Find the detection gap.</strong> Almost always, your first pass reveals something the logs <em>don't</em> capture well, or a detail that would be easy to miss buried in noise. Write down exactly what's missing — maybe the logging level was too low, maybe there's no alert threshold configured, maybe the relevant log source isn't being collected at all.</li>
+<li><strong>Improve the control.</strong> Based on the gap you found, make one concrete improvement — write a simple detection rule (even a <code>grep</code>/<code>awk</code> script counting failed logins per source IP within a time window is a legitimate, real starting point that mirrors what a SIEM correlation rule does under the hood), or adjust a logging configuration to capture what was missing.</li>
+<li><strong>Repeat with a second technique.</strong> Pick a different attack type and run the same attack → detect → gap → improve cycle again — the second pass is usually faster and sharper because you already know what to look for.</li>
 </ol>
-<p>What you just practiced is a compressed version of real <strong>purple team engagements</strong>, which some organizations run as formal, ongoing programs specifically because this attack-detect-improve loop is far more effective at hardening detection than a one-off red team engagement followed by a report nobody acts on.</p>
-<p>Document one complete cycle in full: the attack technique used, what the logs showed (or didn&#39;t), the specific detection gap identified, and the exact improvement made (the actual rule or config change). Include a before/after — did your improved detection actually catch the <em>second</em> technique you tried, or reveal it needs further tuning?</p>
+<pre><code class="language-mermaid">flowchart LR
+    A["Red: Attack"] --&gt; B["Blue: Detect\n(using only the evidence,\nnot memory of the attack)"]
+    B --&gt; C{"Gap found?"}
+    C --&gt;|Yes| D["Improve detection\n(rule, logging, alert)"]
+    D --&gt; A
+    C --&gt;|No, fully detected| E["Document what worked\nand why"]
+</code></pre>
+<ol>
+<li><strong>Map each technique to MITRE ATT&amp;CK before and after.</strong> For each attack you run, look up its corresponding ATT&amp;CK technique ID (an SSH brute-force maps to T1110, for instance) and explicitly note whether your detection rule, once written, actually covers that technique's documented detection guidance. This habit — deliberately checking your own coverage against a shared, industry-standard reference — is exactly how real purple team programs track detection coverage systematically across an entire organisation, rather than one improvised rule at a time.</li>
+</ol>
+<p>:::tip This exact loop is a real, named methodology
+What you just practiced is a compressed version of real <strong>purple team engagements</strong>, which some organizations run as formal, ongoing programs specifically because this attack-detect-improve loop is far more effective at hardening detection than a one-off red team engagement followed by a report nobody acts on.
+:::</p>
+<p>:::challenge Write the purple team report
+Document one complete cycle in full: the attack technique used, what the logs showed (or didn't), the specific detection gap identified, and the exact improvement made (the actual rule or config change). Include a before/after — did your improved detection actually catch the <em>second</em> technique you tried, or reveal it needs further tuning?
+:::</p>
 <h2>Key takeaway</h2>
-<p>The value of purple teaming isn&#39;t the attack, and it isn&#39;t the detection — it&#39;s the <strong>feedback loop between them</strong>. Red team findings that never inform blue team improvements, and blue team rules that are never tested against a real attack, both waste most of their potential value in isolation.</p>
+<p>The value of purple teaming isn't the attack, and it isn't the detection — it's the <strong>feedback loop between them</strong>. Red team findings that never inform blue team improvements, and blue team rules that are never tested against a real attack, both waste most of their potential value in isolation.</p>
 <p><strong>Next up →</strong> <a href="#/lesson/16-advanced/threat-hunting-lab">Threat Hunting Lab</a></p>
-<nav class="pager"><a href="/lesson/16-advanced/practical-linux-privesc-lab.html">← Practical Linux Privilege Escalation Lab</a><a href="/lesson/16-advanced/threat-hunting-lab.html">Threat Hunting Lab →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/16-advanced/practical-linux-privesc-lab.html">← Practical Linux Privilege Escalation Lab</a><a href="/lesson/16-advanced/threat-hunting-lab.html">Threat Hunting Lab →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/16-advanced/purple-teaming-lab";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>How the internet works — Path 00 · KashSec Academy</title>
-<meta name="description" content="The internet feels like magic — you type a few words and a page appears half a world away in under a second. It isn't magic. It's an enormous, extremely well-organized relay race between computers, an">
+<meta name="description" content="How the internet works: From your phone to the world, in plain English.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/00-fresher-basics/how-internet-works.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="How the internet works — Path 00 · KashSec Academy">
-<meta property="og:description" content="The internet feels like magic — you type a few words and a page appears half a world away in under a second. It isn't magic. It's an enormous, extremely well-organized relay race between computers, an">
+<meta property="og:description" content="How the internet works: From your phone to the world, in plain English.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/00-fresher-basics/how-internet-works.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -17,67 +18,116 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="How the internet works — Path 00 · KashSec Academy">
-<meta name="twitter:description" content="The internet feels like magic — you type a few words and a page appears half a world away in under a second. It isn't magic. It's an enormous, extremely well-organized relay race between computers, an">
+<meta name="twitter:description" content="How the internet works: From your phone to the world, in plain English.">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 00 — Computer Basics & Security Mindset","item":"https://kashsec.vercel.app/lesson/00-fresher-basics/"},{"@type":"ListItem","position":4,"name":"How the internet works","item":"https://kashsec.vercel.app/lesson/00-fresher-basics/how-internet-works.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"How the internet works","headline":"How the internet works","description":"The internet feels like magic — you type a few words and a page appears half a world away in under a second. It isn't magic. It's an enormous, extremely well-organized relay race between computers, an","url":"https://kashsec.vercel.app/lesson/00-fresher-basics/how-internet-works.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Absolute fresher","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"From your phone to the world, in plain English.","isPartOf":{"@type":"Course","name":"Path 00: Computer Basics & Security Mindset","url":"https://kashsec.vercel.app/lesson/00-fresher-basics/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/00-fresher-basics/how-internet-works.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"How the internet works","headline":"How the internet works","description":"How the internet works: From your phone to the world, in plain English.","url":"https://kashsec.vercel.app/lesson/00-fresher-basics/how-internet-works.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Absolute fresher","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"From your phone to the world, in plain English.","isPartOf":{"@type":"Course","name":"Path 00: Computer Basics & Security Mindset","url":"https://kashsec.vercel.app/lesson/00-fresher-basics/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/00-fresher-basics/how-internet-works.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/00-fresher-basics/how-internet-works">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/00-fresher-basics/">Path 00 — Computer Basics &amp; Security Mindset</a> · How the internet works</div>
-  <article><h1>How the internet works</h1>
-<p>The internet feels like magic — you type a few words and a page appears half a world away in under a second. It isn&#39;t magic. It&#39;s an enormous, extremely well-organized relay race between computers, and once you understand the stages of that race, a huge chunk of &quot;hacker stuff&quot; you&#39;ll see later (man-in-the-middle attacks, DNS spoofing, HTTPS, VPNs) stops being mysterious and starts being obvious.</p>
+<a class="skip" href="/lesson/00-fresher-basics/how-internet-works.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/00-fresher-basics/">Path 00 — Computer Basics &amp; Security Mindset</a> · How the internet works</nav>
+    <div class="md" id="content"><article><h1>How the internet works</h1>
+<p>The internet feels like magic — you type a few words and a page appears half a world away in under a second. It isn't magic. It's an enormous, extremely well-organized relay race between computers, and once you understand the stages of that race, a huge chunk of "hacker stuff" you'll see later (man-in-the-middle attacks, DNS spoofing, HTTPS, VPNs) stops being mysterious and starts being obvious.</p>
 <h2>The journey of a single web request</h2>
-<p>Say you type <code>google.com</code> into your browser. Here&#39;s what actually happens, step by step:</p>
+<p>Say you type <code>google.com</code> into your browser. Here's what actually happens, step by step:</p>
+<pre><code class="language-mermaid">sequenceDiagram
+    participant You as Your Device
+    participant DNS as DNS Server
+    participant ISP as Router/ISP
+    participant Server as google.com's Server
+
+    You-&gt;&gt;DNS: "What's the address for google.com?"
+    DNS--&gt;&gt;You: "It's 142.250.80.14"
+    You-&gt;&gt;ISP: Send request to 142.250.80.14
+    ISP-&gt;&gt;Server: Forward the request (through many routers)
+    Server--&gt;&gt;ISP: Here's the webpage
+    ISP--&gt;&gt;You: Deliver the webpage
+    You-&gt;&gt;You: Browser renders the page
+</code></pre>
 <ol>
-<li><strong>DNS lookup</strong> — your device doesn&#39;t actually know where &quot;google.com&quot; lives. It asks a <strong>DNS (Domain Name System)</strong> server, which works like a phone book, translating human-friendly names into numeric <strong>IP addresses</strong> (e.g., <code>142.250.80.14</code>).</li>
-<li><strong>Routing</strong> — your request is broken into small chunks called <strong>packets</strong> and sent out through your router, then through your Internet Service Provider (ISP), then through a chain of other routers across the internet — often a dozen or more &quot;hops&quot; — until it reaches the destination server.</li>
-<li><strong>The server responds</strong> — the destination computer (a server, which is just a computer that&#39;s always on and waiting for requests) processes your request and sends the webpage back, broken into packets again.</li>
+<li><strong>DNS lookup</strong> — your device doesn't actually know where "google.com" lives. It asks a <strong>DNS (Domain Name System)</strong> server, which works like a phone book, translating human-friendly names into numeric <strong>IP addresses</strong> (e.g., <code>142.250.80.14</code>).</li>
+<li><strong>Routing</strong> — your request is broken into small chunks called <strong>packets</strong> and sent out through your router, then through your Internet Service Provider (ISP), then through a chain of other routers across the internet — often a dozen or more "hops" — until it reaches the destination server.</li>
+<li><strong>The server responds</strong> — the destination computer (a server, which is just a computer that's always on and waiting for requests) processes your request and sends the webpage back, broken into packets again.</li>
 <li><strong>Your browser renders it</strong> — the packets are reassembled, and your browser turns the raw HTML/CSS/JavaScript into the page you see.</li>
 </ol>
 <p>All of this — DNS lookup, routing across dozens of hops, reassembly — typically happens in well under a second. That speed is exactly why it feels instantaneous, even though a huge relay of machines was involved.</p>
-<h2>IP addresses — every device&#39;s &quot;postal address&quot;</h2>
+<h2>IP addresses — every device's "postal address"</h2>
 <p>Every device connected to the internet has an <strong>IP address</strong>, a unique numeric identifier so other computers know where to send data back to. There are two formats in use today:</p>
 <ul>
-<li><strong>IPv4</strong> — the older, more familiar format: four numbers separated by dots, e.g. <code>142.250.80.14</code>. There are only about 4.3 billion possible IPv4 addresses, and we&#39;ve essentially run out.</li>
+<li><strong>IPv4</strong> — the older, more familiar format: four numbers separated by dots, e.g. <code>142.250.80.14</code>. There are only about 4.3 billion possible IPv4 addresses, and we've essentially run out.</li>
 <li><strong>IPv6</strong> — the newer format, e.g. <code>2607:f8b0:4005:80a::200e</code>, with a vastly larger address space designed to never run out.</li>
 </ul>
 <h3>Public vs. private IP addresses, and why your home router matters</h3>
 <p>Not every device has its own globally unique IP address directly. Inside your home, your phone, laptop, and smart TV each get a <strong>private IP address</strong> (usually something starting with <code>192.168.</code> or <code>10.</code>) — only meaningful <em>within</em> your home network. Your router itself has one <strong>public IP address</strong> that represents your entire household to the rest of the internet, and uses a technique called <strong>NAT (Network Address Translation)</strong> to figure out which of your internal devices each incoming reply is actually meant for.</p>
-<p>This matters for security in a genuinely practical way: your home router&#39;s NAT accidentally provides a real, useful side benefit — devices behind it generally aren&#39;t directly reachable from the open internet unless you (or malware) specifically configure the router to forward a connection through (a technique called <strong>port forwarding</strong>). This is one reason your home network feels a bit &quot;sheltered&quot; compared to a device with a direct public IP address, like a cloud server.</p>
-<h2>What a &quot;port&quot; is, briefly</h2>
-<p>A single IP address can run many different services at once, distinguished by <strong>port numbers</strong> — think of the IP address as a building&#39;s street address, and the port number as which specific apartment or office within it. Web traffic conventionally uses port 80 (unencrypted HTTP) or 443 (encrypted HTTPS); email, file transfer, and countless other services each have their own conventional ports. This is only a brief preview here — Path 02 dedicates an entire lesson to ports, since they matter enormously once you start scanning networks and understanding what services are actually exposed on a given machine.</p>
+<pre><code class="language-mermaid">flowchart LR
+    A["Your laptop\n192.168.1.5"] --&gt;|request| R[Your Router\nNAT + one public IP]
+    B["Your phone\n192.168.1.8"] --&gt;|request| R
+    R --&gt;|appears as ONE\npublic IP address| I[Internet]
+</code></pre>
+<p>This matters for security in a genuinely practical way: your home router's NAT accidentally provides a real, useful side benefit — devices behind it generally aren't directly reachable from the open internet unless you (or malware) specifically configure the router to forward a connection through (a technique called <strong>port forwarding</strong>). This is one reason your home network feels a bit "sheltered" compared to a device with a direct public IP address, like a cloud server.</p>
+<h2>What a "port" is, briefly</h2>
+<p>A single IP address can run many different services at once, distinguished by <strong>port numbers</strong> — think of the IP address as a building's street address, and the port number as which specific apartment or office within it. Web traffic conventionally uses port 80 (unencrypted HTTP) or 443 (encrypted HTTPS); email, file transfer, and countless other services each have their own conventional ports. This is only a brief preview here — Path 02 dedicates an entire lesson to ports, since they matter enormously once you start scanning networks and understanding what services are actually exposed on a given machine.</p>
 <h2>Why security matters at every step</h2>
 <p>Every stage of that journey is a potential attack point:</p>
 <table>
@@ -93,7 +143,7 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 </tr>
 <tr>
 <td><strong>Routing / the network in between</strong></td>
-<td>An attacker positioned on the network path can read or alter your traffic (<strong>man-in-the-middle attack</strong>) if it isn&#39;t encrypted.</td>
+<td>An attacker positioned on the network path can read or alter your traffic (<strong>man-in-the-middle attack</strong>) if it isn't encrypted.</td>
 </tr>
 <tr>
 <td><strong>The server itself</strong></td>
@@ -104,18 +154,21 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <td>Malware already on your machine can intercept requests before they even leave, or after they arrive.</td>
 </tr>
 </tbody></table>
-<p>This is exactly why <strong>HTTPS</strong> (the padlock icon in your browser) exists — it encrypts traffic between you and the server so that even if someone is watching the network in between, they can&#39;t read or tamper with it. A <strong>VPN (Virtual Private Network)</strong> adds another layer, encrypting <em>all</em> your traffic and routing it through a trusted server, hiding your activity from your ISP and from anyone else on your local network (like on public Wi-Fi). Path 09 of this course covers VPNs in much more depth, including exactly what they do and don&#39;t actually protect against.</p>
-<p>:::</p>
+<p>This is exactly why <strong>HTTPS</strong> (the padlock icon in your browser) exists — it encrypts traffic between you and the server so that even if someone is watching the network in between, they can't read or tamper with it. A <strong>VPN (Virtual Private Network)</strong> adds another layer, encrypting <em>all</em> your traffic and routing it through a trusted server, hiding your activity from your ISP and from anyone else on your local network (like on public Wi-Fi). Path 09 of this course covers VPNs in much more depth, including exactly what they do and don't actually protect against.</p>
+<p>:::tip
+When you type a website address, your browser is silently asking a DNS server for the real numeric address <em>before</em> it can send anything — that lookup is invisible to you, but it happens on nearly every request.
+:::</p>
 <p>:::warn Public Wi-Fi is a shared room, not a private line
-On open (password-free) public Wi-Fi, other people on the same network can potentially see unencrypted traffic. HTTPS protects the content of what you send, but a VPN adds extra protection for <em>which sites</em> you&#39;re even visiting. Never do sensitive logins (banking, work accounts) on open public Wi-Fi without a VPN if you can help it.</p>
-<h2>Who actually owns &quot;the internet&quot;?</h2>
-<p>A genuinely common beginner question: no single company or government owns the internet. It&#39;s a decentralized network of networks, held together by voluntary cooperation between ISPs, and by organizations like <strong>ICANN</strong>, which coordinates the domain name system and IP address allocation globally, so that &quot;google.com&quot; reliably means the same thing no matter which country you&#39;re browsing from. This decentralization is deliberate — it&#39;s part of why the internet is remarkably resilient to any single point of failure, even though it also makes globally coordinated security responses to internet-wide threats genuinely difficult to organize.</p>
+On open (password-free) public Wi-Fi, other people on the same network can potentially see unencrypted traffic. HTTPS protects the content of what you send, but a VPN adds extra protection for <em>which sites</em> you're even visiting. Never do sensitive logins (banking, work accounts) on open public Wi-Fi without a VPN if you can help it.
+:::</p>
+<h2>Who actually owns "the internet"?</h2>
+<p>A genuinely common beginner question: no single company or government owns the internet. It's a decentralized network of networks, held together by voluntary cooperation between ISPs, and by organizations like <strong>ICANN</strong>, which coordinates the domain name system and IP address allocation globally, so that "google.com" reliably means the same thing no matter which country you're browsing from. This decentralization is deliberate — it's part of why the internet is remarkably resilient to any single point of failure, even though it also makes globally coordinated security responses to internet-wide threats genuinely difficult to organize.</p>
 <h2>🧪 Hands-on lab — trace your own request</h2>
 <ol>
 <li>Open a terminal (Windows: Command Prompt or PowerShell; macOS/Linux: Terminal).</li>
 <li>Run a DNS lookup by hand:<pre><code class="language-bash">nslookup google.com
 </code></pre>
-You should see an IP address in the response — that&#39;s DNS doing its job.</li>
+You should see an IP address in the response — that's DNS doing its job.</li>
 <li>Trace the actual path your request takes across the internet:<pre><code class="language-bash"># Windows
 tracert google.com
 
@@ -123,30 +176,32 @@ tracert google.com
 traceroute google.com
 </code></pre>
 </li>
-<li>Count how many &quot;hops&quot; (intermediate routers) your request passes through before reaching Google&#39;s servers. It&#39;s usually somewhere between 8 and 20 — a genuinely surprising number for something that feels instant.</li>
+<li>Count how many "hops" (intermediate routers) your request passes through before reaching Google's servers. It's usually somewhere between 8 and 20 — a genuinely surprising number for something that feels instant.</li>
 <li>Open your browser, visit any HTTPS website, and click the padlock icon next to the address bar to see the certificate details — this is the proof that your connection to that specific site is encrypted.</li>
-<li>Find your own device&#39;s private IP address (Windows: <code>ipconfig</code>; macOS/Linux: <code>ifconfig</code> or <code>ip addr</code>) and separately search &quot;what is my IP&quot; in a browser to see your router&#39;s public IP address — confirm they&#39;re genuinely different numbers, directly demonstrating this lesson&#39;s NAT discussion.</li>
+<li>Find your own device's private IP address (Windows: <code>ipconfig</code>; macOS/Linux: <code>ifconfig</code> or <code>ip addr</code>) and separately search "what is my IP" in a browser to see your router's public IP address — confirm they're genuinely different numbers, directly demonstrating this lesson's NAT discussion.</li>
 </ol>
-<p>If DNS is just &quot;asking a server for an IP address,&quot; why is DNS spoofing (an attacker lying about that answer) such a dangerous attack — even if the real destination server is perfectly secure?</p>
-<details><summary>Show answer</summary>Because DNS spoofing happens <em>before</em> you ever reach the real server — if an attacker can trick your device into believing a fake IP address is the correct one for, say, "yourbank.com," your browser will happily connect to the attacker's server instead, which can display a near-perfect copy of the real site to steal your login credentials. The real server being secure is irrelevant if you never actually reach it. This is exactly why HTTPS certificates matter: a fake site can copy the look of a real one, but it generally cannot present a valid certificate for a domain it doesn't own, which is your main defense against this class of attack.</details><h2>Key terms</h2>
+<p>:::challenge Test yourself
+If DNS is just "asking a server for an IP address," why is DNS spoofing (an attacker lying about that answer) such a dangerous attack — even if the real destination server is perfectly secure?</p>
+<details><summary>Show answer</summary>Because DNS spoofing happens <em>before</em> you ever reach the real server — if an attacker can trick your device into believing a fake IP address is the correct one for, say, "yourbank.com," your browser will happily connect to the attacker's server instead, which can display a near-perfect copy of the real site to steal your login credentials. The real server being secure is irrelevant if you never actually reach it. This is exactly why HTTPS certificates matter: a fake site can copy the look of a real one, but it generally cannot present a valid certificate for a domain it doesn't own, which is your main defense against this class of attack.</details>
+:::<h2>Key terms</h2>
 <ul>
 <li><strong>DNS (Domain Name System)</strong> — translates domain names into IP addresses.</li>
-<li><strong>IP address</strong> — a device&#39;s unique numeric address on the internet; public (internet-facing) or private (local network only).</li>
+<li><strong>IP address</strong> — a device's unique numeric address on the internet; public (internet-facing) or private (local network only).</li>
 <li><strong>NAT (Network Address Translation)</strong> — lets many devices share one public IP address via a router.</li>
 <li><strong>Port</strong> — a number identifying which specific service on a device a connection is meant for.</li>
 <li><strong>Packet</strong> — a small chunk of data that gets routed across the network.</li>
 <li><strong>HTTPS</strong> — encrypted web traffic, shown as a padlock icon in the browser.</li>
-<li><strong>VPN</strong> — encrypts and routes all of your device&#39;s traffic through a trusted server.</li>
+<li><strong>VPN</strong> — encrypts and routes all of your device's traffic through a trusted server.</li>
 <li><strong>Man-in-the-middle attack</strong> — intercepting or altering traffic between two parties.</li>
 </ul>
 <h2>Recap</h2>
 <ul>
 <li>Visiting a website involves DNS lookup → routing through many hops → the server responding → your browser rendering the page.</li>
-<li>Every device has an IP address; DNS exists so humans don&#39;t have to memorize them. Private IPs (behind your router&#39;s NAT) differ from your one public-facing IP.</li>
+<li>Every device has an IP address; DNS exists so humans don't have to memorize them. Private IPs (behind your router's NAT) differ from your one public-facing IP.</li>
 <li>Ports let one IP address run many different services at once — covered fully in Path 02.</li>
 <li>Every stage of the journey (DNS, the network path, the server, your own device) is a potential attack point.</li>
 <li>HTTPS encrypts the content of your connection; a VPN adds a further layer of privacy over the network path (Path 09 goes deep on this).</li>
-<li>No single entity owns the internet — it&#39;s a decentralized, cooperatively-run network of networks.</li>
+<li>No single entity owns the internet — it's a decentralized, cooperatively-run network of networks.</li>
 </ul>
 <h3>References</h3>
 <ul>
@@ -155,19 +210,67 @@ traceroute google.com
 <li><a href="https://www.icann.org/resources/pages/what-2012-02-25-en">ICANN: What does ICANN do?</a> — a free, official overview of how internet-wide coordination actually works.</li>
 </ul>
 <p><strong>Next up →</strong> <a href="#/lesson/00-fresher-basics/how-to-use-a-browser-safely">Using your web browser safely</a></p>
-<nav class="pager"><a href="/lesson/00-fresher-basics/what-is-a-computer.html">← What is a computer really?</a><a href="/lesson/00-fresher-basics/how-to-use-a-browser-safely.html">Using your web browser safely →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/00-fresher-basics/what-is-a-computer.html">← What is a computer really?</a><a href="/lesson/00-fresher-basics/how-to-use-a-browser-safely.html">Using your web browser safely →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/00-fresher-basics/how-internet-works";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

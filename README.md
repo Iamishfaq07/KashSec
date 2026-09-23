@@ -11,7 +11,7 @@
 - **New advanced path: Zero Trust Architecture** — never trust/always verify, identity as the perimeter, device posture, micro-segmentation, ZTNA vs. VPN, continuous verification, Zero Trust in the cloud, and a practical rollout roadmap capped with a BeyondCorp case study and maturity-assessment capstone
 - **New interactive labs**: 4 API Security labs (BOLA/BFLA, GraphQL introspection abuse, mass assignment, rate-limit bypass), 4 AI Red Teaming labs (prompt injection, jailbreak, indirect injection, an agentic-risk defensive exercise), and a guided 3-stage Active Directory Attack Lab (BloodHound recon, Kerberoasting, Golden Ticket)
 - **Two new advanced paths**: **API Security** (OWASP API Top 10, BOLA/BFLA, JWT attacks, GraphQL security, capstone lab) and **DevSecOps & AppSec Program** (SAST/DAST/SCA, CI/CD security, secrets & supply chain, threat modeling, building an AppSec program)
-- **Tools** — a suite of in-browser security utilities (`#/tools`): encoder/decoder, hash generator, JWT decoder, CVSS 3.1 calculator, subnet calculator, password-strength meter, and a cipher playground. All client-side; nothing leaves the browser.
+- **Tools** — a suite of in-browser security utilities (`/tools/`): encoder/decoder, hash generator, JWT decoder, CVSS 4.0 + 3.1 calculator, subnet calculator, password-strength meter, and a cipher playground. All client-side; nothing leaves the browser.
 - **Full-text search** — search now matches the body of every lesson, not just titles. Plus an activity heatmap on your progress page, reading preferences (text size, width, legibility boost), Markdown export of your notes, an interview question bank (`#/interview`), a changelog (`#/changelog`) with RSS feed, and a "suggest an edit" link on every lesson.
 - **Glossary & flashcards** — all 600+ Key Terms from every lesson in one searchable A–Z glossary (`#/glossary`), plus an active-recall flashcard mode (`#/review`) that remembers which terms you already know
 - **Better lesson reading** — reading-time estimates, an "On this page" table of contents on longer lessons, one-click copy buttons and syntax highlighting on code blocks
@@ -33,6 +33,8 @@
 ```bash
 git clone https://github.com/iamishfaq07/KashSec.git
 cd KashSec
+npm ci
+npm run build
 python3 -m http.server 8000
 ```
 
@@ -44,9 +46,11 @@ Open http://localhost:8000
 
 ```
 KashSec/
-├── index.html              # SPA shell
+├── index.html              # app shell and offline fallback
 ├── styles.css               # design system (dark · amber · teal)
 ├── app.js                   # router, markdown renderer, course data
+├── generate-prerender.js    # canonical, crawlable lesson and tool pages
+├── generate-sw.js           # versioned offline service worker
 ├── .nojekyll                 # tells GitHub Pages: don't run Jekyll
 ├── DEPLOY.md                 # full deployment walkthrough
 └── course/
@@ -95,11 +99,11 @@ To add a brand-new sub-lesson: drop a `.md` file in the right `course/<path>/` f
 - **[marked](https://marked.js.org/)** — Markdown → HTML
 - **[Mermaid](https://mermaid.js.org/)** — diagrams as code
 - **[Supabase](https://supabase.com)** *(optional)* — auth + Postgres for cross-device sync; the site never depends on it being configured
-- Zero build tooling — what you edit is what ships
+- `npm run build` regenerates crawlable pages, search data, freshness dates, and the service worker. Commit generated files with source changes; CI checks that they match.
 
 ## 🌐 Deployment
 
-The site auto-deploys to **Vercel** from the `main` branch — zero build step, it's served as-is. Live at [kashsec.vercel.app](https://kashsec.vercel.app/).
+The site auto-deploys to **Vercel** from the `main` branch. Generated pages are committed and served as static files. Live at [kashsec.vercel.app](https://kashsec.vercel.app/). Lesson, lab, and tool links use canonical paths such as `/lesson/03-linux/terminal-basics.html`; older `#/lesson/...` links redirect to them.
 
 ## ☁️ Optional cloud sync
 
@@ -111,7 +115,7 @@ configured, the sign-in UI stays hidden and nothing changes.
 
 ## 📴 Offline / PWA support
 
-KashSec is an installable Progressive Web App. A service worker (`sw.js`) precaches the entire app shell plus all 485 lesson files the first time you visit, so once that finishes, the whole course works with **no network connection at all** — refresh, close the tab, come back a week later on a plane, it's all still there.
+KashSec is an installable Progressive Web App. Its service worker (`sw.js`) caches the app shell immediately and downloads lesson files in the background. Previously visited lessons work offline; the rest become available after their download completes. Canonical lesson links use the cached shell when their individual HTML page has not been saved. Cloud sync and external resources still require a connection.
 
 - **Install it**: most browsers show an install icon in the address bar, or use the install button in the site header (desktop Chrome/Edge, Android). On iOS Safari, use Share → **Add to Home Screen**.
 - **Regenerating the precache list**: `sw.js` is generated, not hand-written. After adding, removing, or renaming any path or lesson, run:

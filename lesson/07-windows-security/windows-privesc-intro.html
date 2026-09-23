@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>Windows Privilege Escalation: An Introduction — Path 07 · KashSec Academy</title>
-<meta name="description" content="Every lesson in this path so far has been defensive — hardening, monitoring, backing up. This closing conceptual lesson flips the perspective, in overview form, to show you what an attacker actually d">
+<meta name="description" content="Windows Privilege Escalation: An Introduction: Vertical vs. horizontal escalation, and the named technique categories to recognize.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/07-windows-security/windows-privesc-intro.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Windows Privilege Escalation: An Introduction — Path 07 · KashSec Academy">
-<meta property="og:description" content="Every lesson in this path so far has been defensive — hardening, monitoring, backing up. This closing conceptual lesson flips the perspective, in overview form, to show you what an attacker actually d">
+<meta property="og:description" content="Windows Privilege Escalation: An Introduction: Vertical vs. horizontal escalation, and the named technique categories to recognize.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/07-windows-security/windows-privesc-intro.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -17,74 +18,109 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Windows Privilege Escalation: An Introduction — Path 07 · KashSec Academy">
-<meta name="twitter:description" content="Every lesson in this path so far has been defensive — hardening, monitoring, backing up. This closing conceptual lesson flips the perspective, in overview form, to show you what an attacker actually d">
+<meta name="twitter:description" content="Windows Privilege Escalation: An Introduction: Vertical vs. horizontal escalation, and the named technique categories to recognize.">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 07 — Windows Security Basics","item":"https://kashsec.vercel.app/lesson/07-windows-security/"},{"@type":"ListItem","position":4,"name":"Windows Privilege Escalation: An Introduction","item":"https://kashsec.vercel.app/lesson/07-windows-security/windows-privesc-intro.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Windows Privilege Escalation: An Introduction","headline":"Windows Privilege Escalation: An Introduction","description":"Every lesson in this path so far has been defensive — hardening, monitoring, backing up. This closing conceptual lesson flips the perspective, in overview form, to show you what an attacker actually d","url":"https://kashsec.vercel.app/lesson/07-windows-security/windows-privesc-intro.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Vertical vs. horizontal escalation, and the named technique categories to recognize.","isPartOf":{"@type":"Course","name":"Path 07: Windows Security Basics","url":"https://kashsec.vercel.app/lesson/07-windows-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/07-windows-security/windows-privesc-intro.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Windows Privilege Escalation: An Introduction","headline":"Windows Privilege Escalation: An Introduction","description":"Windows Privilege Escalation: An Introduction: Vertical vs. horizontal escalation, and the named technique categories to recognize.","url":"https://kashsec.vercel.app/lesson/07-windows-security/windows-privesc-intro.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Vertical vs. horizontal escalation, and the named technique categories to recognize.","isPartOf":{"@type":"Course","name":"Path 07: Windows Security Basics","url":"https://kashsec.vercel.app/lesson/07-windows-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/07-windows-security/windows-privesc-intro.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/07-windows-security/windows-privesc-intro">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/07-windows-security/">Path 07 — Windows Security Basics</a> · Windows Privilege Escalation: An Introduction</div>
-  <article><h1>Windows Privilege Escalation: An Introduction</h1>
-<p>Every lesson in this path so far has been defensive — hardening, monitoring, backing up. This closing conceptual lesson flips the perspective, in overview form, to show you what an attacker actually does <em>after</em> gaining that first limited foothold this whole path has been trying to prevent — full hands-on technique lives in Path 16&#39;s dedicated Windows privesc lab, which assumes exactly this lesson as its starting foundation.</p>
-<p>:::</p>
+<a class="skip" href="/lesson/07-windows-security/windows-privesc-intro.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/07-windows-security/">Path 07 — Windows Security Basics</a> · Windows Privilege Escalation: An Introduction</nav>
+    <div class="md" id="content"><article><h1>Windows Privilege Escalation: An Introduction</h1>
+<p>Every lesson in this path so far has been defensive — hardening, monitoring, backing up. This closing conceptual lesson flips the perspective, in overview form, to show you what an attacker actually does <em>after</em> gaining that first limited foothold this whole path has been trying to prevent — full hands-on technique lives in Path 16's dedicated Windows privesc lab, which assumes exactly this lesson as its starting foundation.</p>
+<p>:::tip
+"Privilege escalation" isn't one single technique — it's a whole category of methods for turning limited access into greater access. This lesson's job is giving you the map of that category, the same way Path 01's cyberattacks-overview lesson mapped attack types broadly before later paths went deep on each one.
+:::</p>
 <h2>Why privilege escalation matters even to defenders</h2>
-<p>An attacker&#39;s initial foothold — a phishing-compromised standard user account (Path 00), a webshell dropped through a vulnerable application — is rarely the end goal. The standard-user restrictions the windows-user-accounts lesson described are specifically designed to limit what that initial foothold can actually do. <strong>Privilege escalation</strong> is the process of turning that limited foothold into broader access — ideally, from the attacker&#39;s perspective, all the way to SYSTEM or Domain Admin (from the Active Directory lesson).</p>
+<p>An attacker's initial foothold — a phishing-compromised standard user account (Path 00), a webshell dropped through a vulnerable application — is rarely the end goal. The standard-user restrictions the windows-user-accounts lesson described are specifically designed to limit what that initial foothold can actually do. <strong>Privilege escalation</strong> is the process of turning that limited foothold into broader access — ideally, from the attacker's perspective, all the way to SYSTEM or Domain Admin (from the Active Directory lesson).</p>
 <h2>Two broad categories: vertical and horizontal</h2>
 <ul>
 <li><strong>Vertical privilege escalation</strong> — gaining <em>higher</em> privilege than you started with (standard user → administrator → SYSTEM)</li>
-<li><strong>Horizontal privilege escalation</strong> — gaining access to a <em>different</em> account or resource at roughly the same privilege level (compromising one standard user&#39;s data by abusing another standard user&#39;s improperly-isolated access)</li>
+<li><strong>Horizontal privilege escalation</strong> — gaining access to a <em>different</em> account or resource at roughly the same privilege level (compromising one standard user's data by abusing another standard user's improperly-isolated access)</li>
 </ul>
 <h2>Common Windows privesc technique categories, by name</h2>
 <ul>
-<li><strong>Misconfigured service permissions</strong> — if a standard user has write access to a service&#39;s executable or configuration (a misconfiguration, not intended design) and that service runs as SYSTEM, replacing the executable grants SYSTEM-level code execution the moment the service restarts — directly building on the services lesson&#39;s coverage of LocalSystem-level privilege</li>
+<li><strong>Misconfigured service permissions</strong> — if a standard user has write access to a service's executable or configuration (a misconfiguration, not intended design) and that service runs as SYSTEM, replacing the executable grants SYSTEM-level code execution the moment the service restarts — directly building on the services lesson's coverage of LocalSystem-level privilege</li>
 <li><strong>Unquoted service paths</strong> — a legacy Windows quirk where a service path containing spaces but no surrounding quotes can be exploited by placing a malicious executable earlier in the interpreted path</li>
-<li><strong>Weak file/folder permissions</strong> — sensitive files or scheduled tasks (from the recognizing-compromise lesson) that a standard user shouldn&#39;t be able to modify, but can, due to a permissions misconfiguration</li>
+<li><strong>Weak file/folder permissions</strong> — sensitive files or scheduled tasks (from the recognizing-compromise lesson) that a standard user shouldn't be able to modify, but can, due to a permissions misconfiguration</li>
 <li><strong>Credential exposure</strong> — stored, cached, or improperly protected credentials (in scripts, configuration files, or memory) that grant access to a higher-privileged account</li>
-<li><strong>Unpatched vulnerabilities</strong> — kernel or service-level vulnerabilities specifically enabling privilege escalation, which is exactly why the patching discipline from Path 00&#39;s updates lesson matters at every privilege level, not just for internet-facing services</li>
+<li><strong>Unpatched vulnerabilities</strong> — kernel or service-level vulnerabilities specifically enabling privilege escalation, which is exactly why the patching discipline from Path 00's updates lesson matters at every privilege level, not just for internet-facing services</li>
 </ul>
 <h2>How this connects forward to Path 16 and the Active Directory lab</h2>
-<p>This lesson&#39;s vocabulary — vertical/horizontal escalation, service misconfiguration, credential exposure — is exactly the foundation Path 16&#39;s Windows privesc lab builds its hands-on exercises on, and it connects directly to this path&#39;s own Active Directory lesson: privilege escalation <em>within</em> a single machine is often just the first step toward the domain-wide escalation (toward Domain Admin) that Path 16&#39;s full Active Directory attack lab covers in depth.</p>
+<p>This lesson's vocabulary — vertical/horizontal escalation, service misconfiguration, credential exposure — is exactly the foundation Path 16's Windows privesc lab builds its hands-on exercises on, and it connects directly to this path's own Active Directory lesson: privilege escalation <em>within</em> a single machine is often just the first step toward the domain-wide escalation (toward Domain Admin) that Path 16's full Active Directory attack lab covers in depth.</p>
 <p>:::challenge Categorize the technique
-An attacker with standard-user access discovers that a Windows service configured to run as SYSTEM has its executable file located in a folder the attacker&#39;s account has write permission to.</p>
+An attacker with standard-user access discovers that a Windows service configured to run as SYSTEM has its executable file located in a folder the attacker's account has write permission to.</p>
 <details><summary>Hint</summary>Which named technique category from this lesson does replacing that executable and restarting the service fall under?</details>
-<details><summary>Show answer</summary>This is <strong>misconfigured service permissions</strong> — a form of vertical privilege escalation. The attacker doesn't need to break any authentication or exploit a software vulnerability at all; the misconfiguration (a standard user having write access to a SYSTEM-privileged service's executable) directly hands over an escalation path. Replacing the legitimate executable with a malicious one, then triggering the service to restart, causes the malicious code to run with the service's SYSTEM privileges rather than the attacker's original standard-user privileges — turning a limited foothold into full system control. This exact technique category, and the file-permission auditing that catches it, is covered hands-on in Path 16's Windows privesc lab.</details><h2>🧪 Hands-on lab — reason about defenses, not just attacks</h2>
+<details><summary>Show answer</summary>This is <strong>misconfigured service permissions</strong> — a form of vertical privilege escalation. The attacker doesn't need to break any authentication or exploit a software vulnerability at all; the misconfiguration (a standard user having write access to a SYSTEM-privileged service's executable) directly hands over an escalation path. Replacing the legitimate executable with a malicious one, then triggering the service to restart, causes the malicious code to run with the service's SYSTEM privileges rather than the attacker's original standard-user privileges — turning a limited foothold into full system control. This exact technique category, and the file-permission auditing that catches it, is covered hands-on in Path 16's Windows privesc lab.</details>
+:::<h2>🧪 Hands-on lab — reason about defenses, not just attacks</h2>
 <p>For each of the five technique categories named in this lesson, write one sentence identifying which earlier lesson in this path already covers a relevant defensive control (services auditing, GPO password/account policy, patching discipline, and so on).</p>
+<p>:::challenge Test yourself</p>
 <ol>
-<li>What&#39;s the difference between vertical and horizontal privilege escalation?</li>
+<li>What's the difference between vertical and horizontal privilege escalation?</li>
 <li>Why is a misconfigured service permission a privilege escalation risk specifically when the service runs as SYSTEM?</li>
-<li>Why does patching matter for privilege escalation defense, not just for preventing initial compromise?</li>
+<li>Why does patching matter for privilege escalation defense, not just for preventing initial compromise?
+:::</li>
 </ol>
 <h2>Key terms</h2>
 <ul>
@@ -93,25 +129,73 @@ An attacker with standard-user access discovers that a Windows service configure
 <li><strong>Unquoted service path</strong> — a legacy Windows misconfiguration where an unquoted, space-containing service path can be exploited to run attacker-controlled code.</li>
 </ul>
 <h2>Recap</h2>
-<p>Privilege escalation is the category of techniques that turns an attacker&#39;s initial limited foothold — exactly the kind the hardening and monitoring lessons throughout this path try to prevent or detect — into broader access, whether vertical (higher privilege) or horizontal (a different account at the same level). Misconfigured service permissions, unquoted paths, weak file permissions, credential exposure, and unpatched vulnerabilities are the named technique categories worth recognizing now, with full hands-on practice waiting in Path 16&#39;s dedicated Windows privesc lab and Active Directory attack lab.</p>
+<p>Privilege escalation is the category of techniques that turns an attacker's initial limited foothold — exactly the kind the hardening and monitoring lessons throughout this path try to prevent or detect — into broader access, whether vertical (higher privilege) or horizontal (a different account at the same level). Misconfigured service permissions, unquoted paths, weak file permissions, credential exposure, and unpatched vulnerabilities are the named technique categories worth recognizing now, with full hands-on practice waiting in Path 16's dedicated Windows privesc lab and Active Directory attack lab.</p>
 <h3>References</h3>
 <ul>
 <li><a href="https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation">HackTricks — Windows Local Privilege Escalation</a> — a comprehensive, widely-used technical reference</li>
 </ul>
 <p><strong>Next up →</strong> <a href="#/lesson/07-windows-security/windows-security-lab">Windows Security Lab</a></p>
-<nav class="pager"><a href="/lesson/07-windows-security/windows-backup-and-recovery.html">← Windows Backup &amp; Recovery</a><a href="/lesson/07-windows-security/windows-security-lab.html">Windows Security Lab →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/07-windows-security/windows-backup-and-recovery.html">← Windows Backup &amp; Recovery</a><a href="/lesson/07-windows-security/windows-security-lab.html">Windows Security Lab →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/07-windows-security/windows-privesc-intro";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

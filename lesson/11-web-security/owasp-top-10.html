@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>The OWASP Top 10 — Path 11 · KashSec Academy</title>
-<meta name="description" content="Welcome to applied web security. Before diving into individual bug classes, meet the document that organises the entire field: the OWASP Top 10.">
+<meta name="description" content="The 2025 edition is the current web-application Top 10. Learn the risk behind each category; the number is a label, not a severity score for an individual bug.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/11-web-security/owasp-top-10.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="The OWASP Top 10 — Path 11 · KashSec Academy">
-<meta property="og:description" content="Welcome to applied web security. Before diving into individual bug classes, meet the document that organises the entire field: the OWASP Top 10.">
+<meta property="og:description" content="The 2025 edition is the current web-application Top 10. Learn the risk behind each category; the number is a label, not a severity score for an individual bug.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/11-web-security/owasp-top-10.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -17,55 +18,159 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="The OWASP Top 10 — Path 11 · KashSec Academy">
-<meta name="twitter:description" content="Welcome to applied web security. Before diving into individual bug classes, meet the document that organises the entire field: the OWASP Top 10.">
+<meta name="twitter:description" content="The 2025 edition is the current web-application Top 10. Learn the risk behind each category; the number is a label, not a severity score for an individual bug.">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 11 — Web Security & Hacking","item":"https://kashsec.vercel.app/lesson/11-web-security/"},{"@type":"ListItem","position":4,"name":"The OWASP Top 10","item":"https://kashsec.vercel.app/lesson/11-web-security/owasp-top-10.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"The OWASP Top 10","headline":"The OWASP Top 10","description":"Welcome to applied web security. Before diving into individual bug classes, meet the document that organises the entire field: the OWASP Top 10.","url":"https://kashsec.vercel.app/lesson/11-web-security/owasp-top-10.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Intermediate","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"The web hacker's shared checklist, in plain words.","isPartOf":{"@type":"Course","name":"Path 11: Web Security & Hacking","url":"https://kashsec.vercel.app/lesson/11-web-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/11-web-security/owasp-top-10.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"The OWASP Top 10","headline":"The OWASP Top 10","description":"The 2025 edition is the current web-application Top 10. Learn the risk behind each category; the number is a label, not a severity score for an individual bug.","url":"https://kashsec.vercel.app/lesson/11-web-security/owasp-top-10.html","inLanguage":"en","dateModified":"2026-09-23","learningResourceType":"Lesson","educationalLevel":"Intermediate","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"The web hacker's shared checklist, in plain words.","isPartOf":{"@type":"Course","name":"Path 11: Web Security & Hacking","url":"https://kashsec.vercel.app/lesson/11-web-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/11-web-security/owasp-top-10.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/11-web-security/owasp-top-10">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/11-web-security/">Path 11 — Web Security &amp; Hacking</a> · The OWASP Top 10</div>
-  <article><h1>OWASP Top 10 overview</h1>
+<a class="skip" href="/lesson/11-web-security/owasp-top-10.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/11-web-security/">Path 11 — Web Security &amp; Hacking</a> · The OWASP Top 10</nav>
+    <div class="md" id="content"><article><h1>OWASP Top 10 overview</h1>
 <p>Welcome to applied web security. Before diving into individual bug classes, meet the document that organises the entire field: the <strong>OWASP Top 10</strong>.</p>
 <h2>What OWASP is</h2>
 <p><strong>OWASP</strong> (Open Worldwide Application Security Project) is a non-profit community producing free, vendor-neutral security resources — tools, documentation, and standards used across the entire industry. The <strong>OWASP Top 10</strong> is their most famous output: a periodically-updated ranking of the most critical web application security risks, based on real-world data contributed by security firms worldwide.</p>
-<p>It isn&#39;t a top-10 of &quot;bugs&quot; exactly — it&#39;s a top-10 of <strong>risk categories</strong>, each covering a cluster of related vulnerability types.</p>
-<h2>The 2021 OWASP Top 10 (current edition)</h2>
-<h3>A01: Broken Access Control — now #1</h3>
-<p>The most common issue found in real testing. This is the umbrella for <strong>IDOR</strong> (Path 11.4), missing function-level authorization, and privilege escalation via the web. Essentially: the app fails to properly enforce <em>&quot;is this user allowed to do this specific thing?&quot;</em> — exactly the authorization concept from Path 05.7.</p>
+<p>It isn't a top-10 of "bugs" exactly — it's a top-10 of <strong>risk categories</strong>, each covering a cluster of related vulnerability types.</p>
+<h2>OWASP Top 10:2025 — the current edition</h2>
+<p>The 2025 edition is the current web-application Top 10. Learn the risk behind each category; the number is a label, not a severity score for an individual bug.</p>
+<table>
+<thead>
+<tr>
+<th>2025 category</th>
+<th>What to look for</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>A01 Broken Access Control</td>
+<td>Missing authorization on objects and actions; SSRF is included here in 2025.</td>
+</tr>
+<tr>
+<td>A02 Security Misconfiguration</td>
+<td>Unsafe defaults, exposed services, missing hardening, and configuration drift.</td>
+</tr>
+<tr>
+<td>A03 Software Supply Chain Failures</td>
+<td>Compromised or untrusted dependencies, builds, and distribution paths.</td>
+</tr>
+<tr>
+<td>A04 Cryptographic Failures</td>
+<td>Weak, missing, or misused protection of sensitive data.</td>
+</tr>
+<tr>
+<td>A05 Injection</td>
+<td>Untrusted data interpreted as a command or query.</td>
+</tr>
+<tr>
+<td>A06 Insecure Design</td>
+<td>Missing controls in the design of a workflow or system.</td>
+</tr>
+<tr>
+<td>A07 Authentication Failures</td>
+<td>Weak identity proof, sessions, MFA, or account recovery.</td>
+</tr>
+<tr>
+<td>A08 Software or Data Integrity Failures</td>
+<td>Trusting software or data artifacts without validating integrity.</td>
+</tr>
+<tr>
+<td>A09 Security Logging &amp; Alerting Failures</td>
+<td>Missing evidence or alerts that would trigger a response.</td>
+</tr>
+<tr>
+<td>A10 Mishandling of Exceptional Conditions</td>
+<td>Error paths that fail open, leak data, or leave an unsafe state.</td>
+</tr>
+</tbody></table>
+<p><strong>What changed from 2021?</strong> Security Misconfiguration rose from A05 to A02. Vulnerable and Outdated Components expanded into Software Supply Chain Failures (A03), covering dependencies and the systems that build and distribute them. SSRF is no longer its own A10 category; OWASP includes it under Broken Access Control. Mishandling of Exceptional Conditions is the new A10. Authentication and logging categories were renamed to emphasize the failure mode. The 2021 list below remains useful when reading older reports.</p>
+<h2>Historical reference: OWASP Top 10:2021</h2>
+<pre><code class="language-mermaid">flowchart TB
+    A1["A01: Broken Access Control"]
+    A2["A02: Cryptographic Failures"]
+    A3["A03: Injection"]
+    A4["A04: Insecure Design"]
+    A5["A05: Security Misconfiguration"]
+    A6["A06: Vulnerable &amp; Outdated Components"]
+    A7["A07: Identification &amp; Authentication Failures"]
+    A8["A08: Software &amp; Data Integrity Failures"]
+    A9["A09: Security Logging &amp; Monitoring Failures"]
+    A10["A10: Server-Side Request Forgery (SSRF)"]
+
+    style A1 fill:#2b1010,color:#E05548,stroke:#E05548
+    style A2 fill:#2b1010,color:#E05548,stroke:#E05548
+    style A3 fill:#2b1010,color:#E05548,stroke:#E05548
+    style A4 fill:#2b1f0a,color:#EFA43A,stroke:#EFA43A
+    style A5 fill:#2b1f0a,color:#EFA43A,stroke:#EFA43A
+    style A6 fill:#2b1f0a,color:#EFA43A,stroke:#EFA43A
+    style A7 fill:#2b1010,color:#E05548,stroke:#E05548
+    style A8 fill:#2b1f0a,color:#EFA43A,stroke:#EFA43A
+    style A9 fill:#111927,color:#8496A6,stroke:#8496A6
+    style A10 fill:#2b1010,color:#E05548,stroke:#E05548
+</code></pre>
+<h3>A01: Broken Access Control — #1 in both editions</h3>
+<p>The most common issue found in real testing. This is the umbrella for <strong>IDOR</strong> (Path 11.4), missing function-level authorization, and privilege escalation via the web. Essentially: the app fails to properly enforce <em>"is this user allowed to do this specific thing?"</em> — exactly the authorization concept from Path 05.7.</p>
 <h3>A02: Cryptographic Failures</h3>
-<p>Previously called &quot;Sensitive Data Exposure&quot; — renamed to focus on the <em>root cause</em>: missing encryption, weak algorithms, improper key management. Covers everything from unencrypted data in transit to the MD5-for-passwords mistake from Path 10.5.</p>
+<p>Previously called "Sensitive Data Exposure" — renamed to focus on the <em>root cause</em>: missing encryption, weak algorithms, improper key management. Covers everything from unencrypted data in transit to the MD5-for-passwords mistake from Path 10.5.</p>
 <h3>A03: Injection</h3>
 <p>Includes <strong>SQL injection</strong> (Path 11.6), <strong>command injection</strong> (Path 11.7), and cross-site scripting (technically its own category historically, folded in here in 2021). The common thread: untrusted input is interpreted as <em>code</em> rather than <em>data</em> by some downstream interpreter.</p>
 <h3>A04: Insecure Design</h3>
@@ -79,18 +184,18 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <h3>A08: Software and Data Integrity Failures</h3>
 <p>Trusting data or code without verifying its integrity — insecure deserialization, unsigned/unverified auto-updates, and <strong>CI/CD pipeline compromises</strong> (directly related to real incidents like the <code>trivy-action</code> supply-chain compromise from earlier professional context).</p>
 <h3>A09: Security Logging and Monitoring Failures</h3>
-<p>Not detecting or being unable to investigate a breach because logs weren&#39;t kept, weren&#39;t monitored, or didn&#39;t capture the right events. This is why breach detection so often takes <strong>months</strong> in real incidents — the evidence existed but nobody was watching.</p>
+<p>Not detecting or being unable to investigate a breach because logs weren't kept, weren't monitored, or didn't capture the right events. This is why breach detection so often takes <strong>months</strong> in real incidents — the evidence existed but nobody was watching.</p>
 <h3>A10: Server-Side Request Forgery (SSRF)</h3>
-<p>A newer standalone category (previously bundled elsewhere): tricking a server into making requests <em>on the attacker&#39;s behalf</em> — often to internal-only systems the attacker couldn&#39;t otherwise reach. Covered in depth in Path 11.8.</p>
+<p>A newer standalone category (previously bundled elsewhere): tricking a server into making requests <em>on the attacker's behalf</em> — often to internal-only systems the attacker couldn't otherwise reach. Covered in depth in Path 11.8.</p>
 <h2>Why this list changes over time</h2>
-<p>The Top 10 is refreshed roughly every 3-4 years (2013, 2017, 2021 editions; a 2025 edition process began recently), based on aggregated data from dozens of security firms and thousands of real applications. Categories get merged, renamed, or reprioritised as the industry&#39;s understanding shifts — access control moving to #1 in 2021 reflects genuinely how common those bugs turned out to be in the real data, more than XSS or injection which used to dominate the top spots.</p>
-<h2>What the 2025 refresh is expected to change</h2>
-<p>As referenced above, OWASP began the process toward a new edition; while the exact final categories aren&#39;t locked until release, the underlying trend worth understanding is <em>why</em> these refreshes happen at all — not because old categories stop mattering, but because the industry&#39;s aggregated testing data shifts as technology shifts. API-first architectures (Path 05&#39;s APIs &amp; JSON lesson), widespread cloud misconfiguration (Path 08), and AI/LLM-specific risks (Path 18&#39;s dedicated material, and OWASP&#39;s own separate &quot;Top 10 for LLM Applications&quot; project) are all putting upward pressure on categories that barely existed as distinct concerns in 2013. Learning the <em>current</em> list matters, but learning to read <em>why</em> a list changes is the more durable skill — it&#39;s the same &quot;which stage of an attack is this abusing&quot; thinking from Path 10&#39;s kill chain lesson, just applied to an evolving risk taxonomy instead of a fixed attack sequence.</p>
+<p>The Top 10 has been refreshed periodically (including 2013, 2017, 2021, and 2025) using contributed testing data and community review. Categories can be merged, renamed, or reprioritised as software and attack paths change. A category's position is a guide to broad risk, not a replacement for testing or for prioritising a particular finding in its business context.</p>
+<h2>Using the editions together</h2>
+<p>When an older report says <strong>A06:2021 Vulnerable and Outdated Components</strong>, map it to the broader <strong>A03:2025 Software Supply Chain Failures</strong> and ask whether the build, registry, maintainer, or release channel is part of the risk. When a 2021 report says <strong>A10 SSRF</strong>, look under <strong>A01:2025 Broken Access Control</strong> while still describing the exact SSRF weakness. The OWASP API Security Top 10 and OWASP guidance for LLM applications are separate projects; their categories should not be mixed into this web-app list.</p>
 <h2>How to actually use the Top 10 in practice</h2>
 <ul>
-<li><strong>As a beginner:</strong> it&#39;s your syllabus. Each category points to a cluster of concrete, learnable bugs (which the rest of this path covers hands-on).</li>
-<li><strong>As a pentester:</strong> it&#39;s a useful <em>checklist</em> to ensure broad coverage, though real engagements go well beyond just these ten categories.</li>
-<li><strong>As a defender/AppSec engineer</strong>: it&#39;s a shared vocabulary for prioritising fixes, mapping SAST/DAST findings to recognisable risk categories, and communicating with non-security stakeholders about <em>why</em> something matters.</li>
+<li><strong>As a beginner:</strong> it's your syllabus. Each category points to a cluster of concrete, learnable bugs (which the rest of this path covers hands-on).</li>
+<li><strong>As a pentester:</strong> it's a useful <em>checklist</em> to ensure broad coverage, though real engagements go well beyond just these ten categories.</li>
+<li><strong>As a defender/AppSec engineer</strong>: it's a shared vocabulary for prioritising fixes, mapping SAST/DAST findings to recognisable risk categories, and communicating with non-security stakeholders about <em>why</em> something matters.</li>
 <li><strong>As a bug bounty hunter:</strong> most public program scopes and vulnerability disclosure processes implicitly reference these categories.</li>
 </ul>
 <h2>The companion projects worth knowing</h2>
@@ -98,54 +203,105 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <ul>
 <li><strong>OWASP ASVS (Application Security Verification Standard)</strong> — a much more detailed, testable checklist for verifying application security, often used for formal audits.</li>
 <li><strong>OWASP Testing Guide</strong> — step-by-step methodology for testing each vulnerability category.</li>
-<li><strong>OWASP Cheat Sheet Series</strong> — practical, focused guidance on specific topics (you&#39;ve already been linked several of these throughout this course).</li>
+<li><strong>OWASP Cheat Sheet Series</strong> — practical, focused guidance on specific topics (you've already been linked several of these throughout this course).</li>
 <li><strong>OWASP ZAP</strong> — a free, open-source web app security scanner, a great complement to Burp Suite (next lesson).</li>
 <li><strong>OWASP API Security Top 10</strong> — the API-specific parallel list, mentioned back in Path 05.5.</li>
 </ul>
 <h2>🧪 Lab — Map what you already know</h2>
-<p>Before moving further into this path, go back through Paths 01–06 and, for each OWASP Top 10 category above, write down <strong>one concept you&#39;ve already learned</strong> that connects to it. For example:</p>
+<p>Before moving further into this path, go back through Paths 01–06 and, for each <strong>2025</strong> category above, write down <strong>one concept you've already learned</strong> that connects to it. For example:</p>
 <ul>
-<li>A02 (Cryptographic Failures) → &quot;Path 10.5: MD5/SHA-1 are wrong for passwords.&quot;</li>
-<li>A07 (Auth Failures) → &quot;Path 05.4: session cookies need HttpOnly/Secure/SameSite.&quot;</li>
+<li>A04 (Cryptographic Failures) → "Path 10.5: MD5/SHA-1 are wrong for passwords."</li>
+<li>A07 (Auth Failures) → "Path 05.4: session cookies need HttpOnly/Secure/SameSite."</li>
 </ul>
-<p>If you can connect at least 6 of the 10 categories to something you already know, you&#39;re in great shape for the rest of this path — you&#39;re not starting from zero, you&#39;re organising what you already have.</p>
-<p>Which OWASP Top 10 category moved to the #1 spot in the 2021 edition, and what&#39;s the one-sentence definition of the failure it describes?</p>
-<details><summary>Show answer</summary><strong>A01: Broken Access Control</strong> — the application fails to properly enforce restrictions on what authenticated users are allowed to do or access, letting them act outside their intended permissions.</details><h2>Key terms</h2>
+<p>If you can connect at least 6 of the 10 categories to something you already know, you're in great shape for the rest of this path — you're not starting from zero, you're organising what you already have.</p>
+<p>:::challenge Test yourself
+Which category is A03 in the 2025 edition, and how is it broader than A06 in 2021?</p>
+<details><summary>Show answer</summary><strong>Software Supply Chain Failures</strong> — it expands beyond vulnerable or outdated libraries to include compromised dependencies, build systems, and distribution infrastructure.</details>
+:::<h2>Key terms</h2>
 <ul>
 <li><strong>OWASP</strong> — the non-profit behind the Top 10 and many other free security resources.</li>
 <li><strong>OWASP Top 10</strong> — the ranked list of the most critical web app security risk categories.</li>
-<li><strong>ASVS / Testing Guide / Cheat Sheet Series</strong> — OWASP&#39;s deeper, more detailed companion resources.</li>
+<li><strong>ASVS / Testing Guide / Cheat Sheet Series</strong> — OWASP's deeper, more detailed companion resources.</li>
 <li><strong>SCA (Software Composition Analysis)</strong> — tooling for finding known-vulnerable dependencies (A06).</li>
 </ul>
 <h2>Recap</h2>
 <ul>
 <li>The OWASP Top 10 organises web application risk into ten shared categories.</li>
-<li>A01 (Broken Access Control) is currently the most common real-world category.</li>
+<li>A01 (Broken Access Control) remains first in the 2025 edition.</li>
 <li>Injection, misconfig, and outdated components remain persistently common across editions.</li>
 <li>The list evolves based on real aggregated data, not opinion.</li>
 <li>It serves as a syllabus for learners, a checklist for testers, and a vocabulary for defenders.</li>
 </ul>
 <h3>References</h3>
 <ul>
-<li><a href="https://owasp.org/Top10/">OWASP Top 10 (2021)</a> — the official, current edition.</li>
+<li><a href="https://top10.owasp.org/2025/0x00_2025-Introduction/">OWASP Top 10:2025</a> — current categories and change notes.</li>
+<li><a href="https://owasp.org/Top10/2021/">OWASP Top 10:2021</a> — historical comparison.</li>
 <li><a href="https://owasp.org/www-project-application-security-verification-standard/">OWASP ASVS</a> — the detailed verification standard.</li>
 <li><a href="https://cheatsheetseries.owasp.org/">OWASP Cheat Sheet Series</a> — practical guidance, topic by topic.</li>
 <li><a href="https://owasp.org/API-Security/editions/2023/en/0x11-t10/">OWASP API Security Top 10</a> — the API-specific parallel.</li>
 </ul>
 <p><strong>Next up →</strong> <a href="#/lesson/11-web-security/burp-setup">Set up Burp Suite</a></p>
-<nav class="pager"><span></span><a href="/lesson/11-web-security/burp-setup.html">Burp Suite &amp; PortSwigger →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><span></span><a href="/lesson/11-web-security/burp-setup.html">Burp Suite &amp; PortSwigger →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/11-web-security/owasp-top-10";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

@@ -1,6 +1,6 @@
 # OWASP Mobile Top 10
 
-Just as the OWASP Top 10 (Path 11) gives web hackers a shared checklist, the **OWASP Mobile Application Security** project maintains an equivalent list for mobile — the shared vocabulary and priority list every mobile security tester should know before diving into specific techniques.
+Just as the OWASP Top 10 (Path 11) gives web testers a shared checklist, the **OWASP Mobile Top 10:2024** provides risk categories for mobile apps. OWASP's separate Mobile Application Security (MAS) project maintains detailed requirements, weaknesses, and tests. Use the 2024 list for broad orientation and the MAS resources for an assessment.
 
 ## The list, explained plainly
 
@@ -31,12 +31,14 @@ Notice how several items (#3, #4) are essentially the web vulnerabilities from P
 Recall Path 15.1's severity/reward table for web findings — mobile-specific categories map onto that same general framework, but with some notably different weighting worth knowing before you start hunting. Hardcoded API keys or credentials (#1) found via APK decompilation are often surprisingly high-severity if that key grants broad backend access, precisely because unlike a web app's server-side secrets, a mobile app's compiled code is distributed directly to every user's device — meaning "extracting a secret from the app" is a baseline capability any attacker has, not a sophisticated technique. Insecure data storage (#9) severity depends heavily on whether exploitation requires physical device access (generally rated lower, since it requires the attacker to have the specific victim's device) versus being remotely triggerable (rated much higher). Certificate pinning bypasses (#5, covered in this path's traffic-interception lesson) are frequently rated as informational or low on their own, specifically because most programs consider "attacker has installed a custom root CA on their own rooted device" a reduced-severity scenario — the real severity comes from *what* that bypass then reveals, not the bypass technique itself.
 
 :::tip This list evolves — always check the current version
-OWASP periodically revises this list based on real-world findings; the version summarized here reflects the current widely-referenced structure, but always check [owasp.org/www-project-mobile-top-10](https://owasp.org/www-project-mobile-top-10/) directly for the latest official wording and any updates before citing it formally (in a report, for instance).
+This lesson describes the **2024 edition**, which OWASP still lists as its released Mobile Top 10 in September 2026. Check the [project page](https://owasp.org/projects/mobile-top-10) for a newer edition before citing it in a report.
 :::
 
 ## MASVS — the verification standard behind the checklist
 
-Beyond the Top 10 itself, OWASP's mobile project maintains a companion standard worth knowing by name: the **MASVS (Mobile Application Security Verification Standard)**, which does for mobile apps what Path 11.1 mentioned ASVS doing for web applications — a far more detailed, testable set of security requirements organised by category (storage, cryptography, authentication, network communication, platform interaction, code quality, resilience), each requirement independently verifiable rather than expressed as a broad risk category. Where the Top 10 answers "what are the ten most common ways mobile apps fail," MASVS answers "here's a specific, checkable list of controls a genuinely secure app should implement" — the practical difference between a syllabus and an audit checklist. Formal mobile security assessments and certifications increasingly reference MASVS levels (L1: standard security, L2: defense-in-depth, R: resilience against reverse engineering) directly, making it worth a bookmark alongside the Top 10 itself once you're doing real assessment work rather than just learning the landscape.
+Beyond the Top 10, use the **MASVS (Mobile Application Security Verification Standard)** for requirements and the **MASTG (Mobile Application Security Testing Guide)** for tests, techniques, tools, and demos. MASVS v2 groups requirements under storage, cryptography, authentication, network communication, platform interaction, code quality, resilience, and privacy. The older L1, L2, and R verification levels have been reworked as **MAS Testing Profiles** in MASTG; do not cite them as if they were MASVS v2 requirement levels.
+
+The **MASWE (Mobile Application Security Weakness Enumeration)** bridges requirements and tests. Its v1.0.0 release in August 2026 describes 78 mobile weaknesses, with mappings to MASVS controls, CWEs, and available MASTG tests. For example, [MASWE-0004](https://mas.owasp.org/MASWE/MASVS-STORAGE/MASWE-0004/) covers secrets hardcoded in an app package. An assessment can move from a MASVS requirement, to the matching MASWE weakness, to a reproducible MASTG test and remediation.
 
 ## How this list shapes the rest of this path
 
@@ -49,7 +51,7 @@ Why do items #3 and #4 on this list ("Insecure Authentication/Authorization" and
 
 ## Key terms
 
-- **OWASP Mobile Application Security (MAS)** — the umbrella project covering the Mobile Top 10, plus the detailed testing guide (MASTG) and verification standard (MASVS).
+- **OWASP Mobile Application Security (MAS)** — the project behind MASVS requirements, MASWE weaknesses, and MASTG testing guidance; the Mobile Top 10 is a separate OWASP project.
 - **Binary protection** — anti-tampering and anti-reverse-engineering measures applied to a compiled app.
 - **Supply chain security** — securing the third-party components and build process behind an app, not just its own code.
 
@@ -62,6 +64,8 @@ Why do items #3 and #4 on this list ("Insecure Authentication/Authorization" and
 ???refs
 - [OWASP Mobile Top 10](https://owasp.org/www-project-mobile-top-10/) — the official, current list.
 - [OWASP MASTG (Mobile Application Security Testing Guide)](https://mas.owasp.org/MASTG/) — the definitive free, detailed hands-on testing methodology, well worth exploring beyond this course.
+- [OWASP MASWE v1.0.0 release](https://mas.owasp.org/news/2026/08/17/maswe-v100-release/) — the current weakness catalog and how it maps to controls and tests.
+- [OWASP MASVS testing profiles](https://mas.owasp.org/MASVS/03-Using_the_MASVS/) — how L1, L2, and R are used in the current MAS framework.
 ???
 
 **Next up →** [Android APK Analysis](#/lesson/13-mobile-security/android-apk-analysis)

@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>What are APIs and why do they matter for security? — Path 21 · KashSec Academy</title>
-<meta name="description" content="APIs (Application Programming Interfaces) are how modern software talks to other software. When your phone app shows your bank balance, when a website loads comments, when one microservice asks anothe">
+<meta name="description" content="What are APIs and why do they matter for security?: The contract behind almost everything modern software does.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/21-api-security/what-are-apis.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="What are APIs and why do they matter for security? — Path 21 · KashSec Academy">
-<meta property="og:description" content="APIs (Application Programming Interfaces) are how modern software talks to other software. When your phone app shows your bank balance, when a website loads comments, when one microservice asks anothe">
+<meta property="og:description" content="What are APIs and why do they matter for security?: The contract behind almost everything modern software does.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/21-api-security/what-are-apis.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -17,49 +18,81 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="What are APIs and why do they matter for security? — Path 21 · KashSec Academy">
-<meta name="twitter:description" content="APIs (Application Programming Interfaces) are how modern software talks to other software. When your phone app shows your bank balance, when a website loads comments, when one microservice asks anothe">
+<meta name="twitter:description" content="What are APIs and why do they matter for security?: The contract behind almost everything modern software does.">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 21 — API Security","item":"https://kashsec.vercel.app/lesson/21-api-security/"},{"@type":"ListItem","position":4,"name":"What are APIs and why do they matter for security?","item":"https://kashsec.vercel.app/lesson/21-api-security/what-are-apis.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"What are APIs and why do they matter for security?","headline":"What are APIs and why do they matter for security?","description":"APIs (Application Programming Interfaces) are how modern software talks to other software. When your phone app shows your bank balance, when a website loads comments, when one microservice asks anothe","url":"https://kashsec.vercel.app/lesson/21-api-security/what-are-apis.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"The contract behind almost everything modern software does.","isPartOf":{"@type":"Course","name":"Path 21: API Security","url":"https://kashsec.vercel.app/lesson/21-api-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/21-api-security/what-are-apis.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"What are APIs and why do they matter for security?","headline":"What are APIs and why do they matter for security?","description":"What are APIs and why do they matter for security?: The contract behind almost everything modern software does.","url":"https://kashsec.vercel.app/lesson/21-api-security/what-are-apis.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"The contract behind almost everything modern software does.","isPartOf":{"@type":"Course","name":"Path 21: API Security","url":"https://kashsec.vercel.app/lesson/21-api-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/21-api-security/what-are-apis.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/21-api-security/what-are-apis">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/21-api-security/">Path 21 — API Security</a> · What are APIs and why do they matter for security?</div>
-  <article><h1>What are APIs and why do they matter for security?</h1>
+<a class="skip" href="/lesson/21-api-security/what-are-apis.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/21-api-security/">Path 21 — API Security</a> · What are APIs and why do they matter for security?</nav>
+    <div class="md" id="content"><article><h1>What are APIs and why do they matter for security?</h1>
 <p>APIs (Application Programming Interfaces) are how modern software talks to other software. When your phone app shows your bank balance, when a website loads comments, when one microservice asks another for user data — an API is doing the work.</p>
 <p>In 2026, <strong>most of the attack surface of a modern application is its APIs</strong>, not the classic HTML forms of the 2000s.</p>
-<p>:::</p>
+<p>:::tip
+Every API call you'll ever analyze answers the same three questions: who is asking, what are they asking for, and should they be allowed to have it? Almost every API vulnerability in this path is a broken answer to one of those three.
+:::</p>
 <h2>The simple picture</h2>
 <p>Think of a restaurant:</p>
 <ul>
@@ -67,8 +100,8 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <li>The <strong>menu</strong> is the API documentation</li>
 <li>The <strong>waiter</strong> is the API itself — it takes your order (request), talks to the kitchen, and brings back the food (response)</li>
 </ul>
-<p>If the waiter never checks whether you&#39;re allowed to order the expensive wine, or if they shout your credit card number across the room, that&#39;s an API security problem.</p>
-<p>Extend the analogy a little further: the menu (documentation) might list only the dishes the restaurant <em>wants</em> you to order, but the kitchen can often still make things that aren&#39;t on the menu if you ask the waiter directly and they&#39;re not paying attention. This is exactly how undocumented or &quot;internal&quot; API endpoints get discovered and abused — the fact that something isn&#39;t in the public docs doesn&#39;t mean the server will refuse it.</p>
+<p>If the waiter never checks whether you're allowed to order the expensive wine, or if they shout your credit card number across the room, that's an API security problem.</p>
+<p>Extend the analogy a little further: the menu (documentation) might list only the dishes the restaurant <em>wants</em> you to order, but the kitchen can often still make things that aren't on the menu if you ask the waiter directly and they're not paying attention. This is exactly how undocumented or "internal" API endpoints get discovered and abused — the fact that something isn't in the public docs doesn't mean the server will refuse it.</p>
 <h2>Why APIs are different (and often more dangerous)</h2>
 <table>
 <thead>
@@ -83,7 +116,7 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 </tr>
 <tr>
 <td>Browser helps enforce some rules</td>
-<td>Client is often a mobile app or another service you don&#39;t control</td>
+<td>Client is often a mobile app or another service you don't control</td>
 </tr>
 <tr>
 <td>Session cookies are common</td>
@@ -97,19 +130,20 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <p>Attackers love APIs because:</p>
 <ol>
 <li><strong>They are machine-readable</strong> — easy to script and fuzz. Every field name, every parameter, every response shape is right there in plain JSON, no HTML parsing required.</li>
-<li><strong>They often expose more data</strong> than the UI shows. A <code>GET /users/42</code> endpoint built to power a profile page might return the user&#39;s email, internal role flags, and last-login IP even though the page only displays a name and avatar.</li>
+<li><strong>They often expose more data</strong> than the UI shows. A <code>GET /users/42</code> endpoint built to power a profile page might return the user's email, internal role flags, and last-login IP even though the page only displays a name and avatar.</li>
 <li><strong>Authorization is frequently incomplete</strong> (the classic BOLA/IDOR problem, covered fully two lessons from now).</li>
 <li><strong>They are everywhere</strong> — mobile apps, SPAs, microservices, third-party integrations, IoT devices. Every one of these is a separate client hitting the same API, and the API has to defend itself against all of them equally, including the ones its developers never anticipated.</li>
 </ol>
 <p>:::warn
-Response over-exposure is one of the easiest API bugs to miss during development, because the developer testing the feature only ever looks at what the <em>UI displays</em> — not at the raw JSON the server actually sent. Always inspect the full response body, not just what renders on screen.</p>
-<h2>Core terms you&#39;ll see everywhere</h2>
+Response over-exposure is one of the easiest API bugs to miss during development, because the developer testing the feature only ever looks at what the <em>UI displays</em> — not at the raw JSON the server actually sent. Always inspect the full response body, not just what renders on screen.
+:::</p>
+<h2>Core terms you'll see everywhere</h2>
 <ul>
 <li><strong>Endpoint</strong> — a specific URL + method combination (e.g. <code>GET /api/v1/users/42</code>)</li>
 <li><strong>Request</strong> — what the client sends (method, path, headers, body)</li>
 <li><strong>Response</strong> — what the server sends back (status code, headers, body)</li>
 <li><strong>Authentication</strong> — proving who you are</li>
-<li><strong>Authorization</strong> — proving you&#39;re allowed to do this particular thing</li>
+<li><strong>Authorization</strong> — proving you're allowed to do this particular thing</li>
 <li><strong>Schema</strong> — the expected shape of the data (OpenAPI/Swagger is the most common way to describe it)</li>
 </ul>
 <h2>The security mindset for APIs</h2>
@@ -122,69 +156,115 @@ Response over-exposure is one of the easiest API bugs to miss during development
 <li>Is there any rate limiting or abuse protection?</li>
 <li>Does the response leak more information than the UI would?</li>
 </ol>
-<p>We&#39;ll answer these systematically in the rest of this path.</p>
+<p>We'll answer these systematically in the rest of this path.</p>
 <h2>Worked example: reading a request/response pair</h2>
 <pre><code class="language-http">POST /api/v1/comments HTTP/1.1
 Host: api.example.com
 Authorization: Bearer eyJhbGciOi...
 Content-Type: application/json
 
-{&quot;post_id&quot;: 501, &quot;text&quot;: &quot;great article!&quot;}
+{"post_id": 501, "text": "great article!"}
 </code></pre>
 <pre><code class="language-http">HTTP/1.1 201 Created
 Content-Type: application/json
 
-{&quot;id&quot;: 9931, &quot;post_id&quot;: 501, &quot;author_id&quot;: 42, &quot;author_email&quot;: &quot;user42@mail.com&quot;, &quot;text&quot;: &quot;great article!&quot;}
+{"id": 9931, "post_id": 501, "author_id": 42, "author_email": "user42@mail.com", "text": "great article!"}
 </code></pre>
 <p>Apply the six questions above to this pair:</p>
 <ul>
-<li>Who&#39;s allowed to call it? Anyone with a valid bearer token — but is there a check that <code>post_id</code> 501 actually accepts comments, or is publicly visible to this user?</li>
-<li>What can they see/change? They posted a comment — fine. But the <em>response</em> includes <code>author_email</code>, which the comment UI never displays. That&#39;s excessive data exposure, question 6, right there.</li>
+<li>Who's allowed to call it? Anyone with a valid bearer token — but is there a check that <code>post_id</code> 501 actually accepts comments, or is publicly visible to this user?</li>
+<li>What can they see/change? They posted a comment — fine. But the <em>response</em> includes <code>author_email</code>, which the comment UI never displays. That's excessive data exposure, question 6, right there.</li>
 <li>What if the ID changes? What happens if <code>post_id</code> points to a private or deleted post?</li>
 </ul>
 <p>This is the exact analytical habit the rest of this path builds into muscle memory.</p>
 <h2>🧪 Hands-on lab — map an API from its traffic</h2>
 <ol>
-<li><p>Open browser DevTools (Network tab) on a web app you&#39;re authorized to use.</p>
-</li>
-<li><p>Perform 3–4 different actions (view a list, view a detail page, submit a form, search).</p>
-</li>
-<li><p>For each resulting API call, write down: method, path, and every field present in the <em>response</em> body — not just what the UI shows.</p>
-</li>
-<li><p>Circle any response field that doesn&#39;t appear anywhere in the rendered page. Each one is a candidate for &quot;the UI hid this, but the API sent it anyway.&quot;</p>
-</li>
-<li><p>For one endpoint, note what identifier (ID, slug, token) it uses to select which record to return — this is what you&#39;ll target with the BOLA techniques two lessons ahead.</p>
-</li>
-<li><p>In the restaurant analogy, what does &quot;the kitchen can make things that aren&#39;t on the menu&quot; correspond to in real API terms?</p>
-</li>
-<li><p>Why is &quot;the response contains data the UI doesn&#39;t render&quot; still a security bug, even if a normal user would never see it?</p>
-</li>
-<li><p>List the six-question checklist from memory, in your own words.</p>
-</li>
+<li>Open browser DevTools (Network tab) on a web app you're authorized to use.</li>
+<li>Perform 3–4 different actions (view a list, view a detail page, submit a form, search).</li>
+<li>For each resulting API call, write down: method, path, and every field present in the <em>response</em> body — not just what the UI shows.</li>
+<li>Circle any response field that doesn't appear anywhere in the rendered page. Each one is a candidate for "the UI hid this, but the API sent it anyway."</li>
+<li>For one endpoint, note what identifier (ID, slug, token) it uses to select which record to return — this is what you'll target with the BOLA techniques two lessons ahead.</li>
+</ol>
+<p>:::challenge Test yourself</p>
+<ol>
+<li>In the restaurant analogy, what does "the kitchen can make things that aren't on the menu" correspond to in real API terms?</li>
+<li>Why is "the response contains data the UI doesn't render" still a security bug, even if a normal user would never see it?</li>
+<li>List the six-question checklist from memory, in your own words.
+:::</li>
 </ol>
 <h2>Key takeaway</h2>
 <p>APIs are the new front door. Most real-world breaches in the last few years involved API-level authorization failures, excessive data exposure, or broken authentication — not sophisticated zero-days.</p>
-<p>If you only remember one thing: <strong>never trust the client</strong>. The mobile app or SPA can be modified, decompiled, or bypassed entirely. All real security decisions must happen on the server.</p>
+<p>:::tip
+If you only remember one thing: <strong>never trust the client</strong>. The mobile app or SPA can be modified, decompiled, or bypassed entirely. All real security decisions must happen on the server.
+:::</p>
 <h2>Recap</h2>
 <p>An API is a contract between client and server, but the contract is only as strong as what the server actually enforces — documentation, UI hiding, and client-side checks are suggestions, not security controls. The habit of reading full request/response pairs, not just what the UI shows, is the single most useful skill for everything that follows in this path.</p>
 <h3>References</h3>
 <ul>
-<li><a href="https://owasp.org/API-Security/">OWASP API Security Top 10</a> — the industry checklist we&#39;ll follow throughout this path</li>
+<li><a href="https://owasp.org/API-Security/">OWASP API Security Top 10</a> — the industry checklist we'll follow throughout this path</li>
 <li><a href="https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Introduction">What is an API? (Mozilla)</a></li>
 </ul>
-<nav class="pager"><a href="/lesson/21-api-security/api-breach-case-studies.html">← Real-World API Breach Case Studies</a><a href="/lesson/21-api-security/api-versioning-and-shadow-apis.html">API Versioning &amp; Shadow APIs →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/21-api-security/api-breach-case-studies.html">← Real-World API Breach Case Studies</a><a href="/lesson/21-api-security/api-versioning-and-shadow-apis.html">API Versioning &amp; Shadow APIs →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/21-api-security/what-are-apis";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

@@ -8,7 +8,7 @@ Recall Path 11.9's brief mention of this category. A SQL injection is a **techni
 
 ```mermaid
 flowchart LR
-    Tech["🔧 Technical vulnerability<br/>(SQLi, XSS, IDOR)<br/>Scanner-detectable"] 
+    Tech["🔧 Technical vulnerability<br/>(SQLi, XSS, IDOR)<br/>Scanner-detectable"]
     Logic["🧠 Business logic flaw<br/>Requires understanding<br/>the workflow's INTENT"]
 
     style Tech fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8

@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>Risk Assessment Lab — Path 10 · KashSec Academy</title>
-<meta name="description" content="Risk assessment is how security professionals decide what to actually worry about, out of an effectively infinite list of things that could theoretically go wrong. This lab has you produce a real, str">
+<meta name="description" content="Risk Assessment Lab: Practice thinking like a risk analyst.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/10-fundamentals/risk-assessment-lab.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Risk Assessment Lab — Path 10 · KashSec Academy">
-<meta property="og:description" content="Risk assessment is how security professionals decide what to actually worry about, out of an effectively infinite list of things that could theoretically go wrong. This lab has you produce a real, str">
+<meta property="og:description" content="Risk Assessment Lab: Practice thinking like a risk analyst.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/10-fundamentals/risk-assessment-lab.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -17,82 +18,165 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Risk Assessment Lab — Path 10 · KashSec Academy">
-<meta name="twitter:description" content="Risk assessment is how security professionals decide what to actually worry about, out of an effectively infinite list of things that could theoretically go wrong. This lab has you produce a real, str">
+<meta name="twitter:description" content="Risk Assessment Lab: Practice thinking like a risk analyst.">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 10 — Cybersecurity Fundamentals","item":"https://kashsec.vercel.app/lesson/10-fundamentals/"},{"@type":"ListItem","position":4,"name":"Risk Assessment Lab","item":"https://kashsec.vercel.app/lesson/10-fundamentals/risk-assessment-lab.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Risk Assessment Lab","headline":"Risk Assessment Lab","description":"Risk assessment is how security professionals decide what to actually worry about, out of an effectively infinite list of things that could theoretically go wrong. This lab has you produce a real, str","url":"https://kashsec.vercel.app/lesson/10-fundamentals/risk-assessment-lab.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Beginner→Intermediate","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Practice thinking like a risk analyst.","isPartOf":{"@type":"Course","name":"Path 10: Cybersecurity Fundamentals","url":"https://kashsec.vercel.app/lesson/10-fundamentals/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/10-fundamentals/risk-assessment-lab.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Risk Assessment Lab","headline":"Risk Assessment Lab","description":"Risk Assessment Lab: Practice thinking like a risk analyst.","url":"https://kashsec.vercel.app/lesson/10-fundamentals/risk-assessment-lab.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Beginner→Intermediate","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Practice thinking like a risk analyst.","isPartOf":{"@type":"Course","name":"Path 10: Cybersecurity Fundamentals","url":"https://kashsec.vercel.app/lesson/10-fundamentals/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/10-fundamentals/risk-assessment-lab.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/10-fundamentals/risk-assessment-lab">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/10-fundamentals/">Path 10 — Cybersecurity Fundamentals</a> · Risk Assessment Lab</div>
-  <article><h1>Risk Assessment Lab</h1>
+<a class="skip" href="/lesson/10-fundamentals/risk-assessment-lab.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/10-fundamentals/">Path 10 — Cybersecurity Fundamentals</a> · Risk Assessment Lab</nav>
+    <div class="md" id="content"><article><h1>Risk Assessment Lab</h1>
 <p>Risk assessment is how security professionals decide <em>what to actually worry about</em>, out of an effectively infinite list of things that could theoretically go wrong. This lab has you produce a real, structured risk register — the exact deliverable format used across the industry.</p>
 <h2>Exercise</h2>
 <ol>
-<li><p><strong>Pick a scenario.</strong> Something you can genuinely reason about in detail: your home network, a small business you&#39;re familiar with, or even this very course&#39;s website. Avoid anything too abstract — specificity is what makes risk assessment useful rather than generic.</p>
-</li>
-<li><p><strong>Identify assets.</strong> List what actually needs protecting: data (personal files, customer records, credentials), systems (your router, a web server, a laptop), and people (whoever could be socially engineered, or whose access could be abused). Being concrete here matters — &quot;data&quot; is too vague; &quot;customer payment records stored in the database&quot; is useful.</p>
-</li>
-<li><p><strong>List threats and vulnerabilities for each asset</strong>, using the vocabulary from the main lesson: a <strong>threat</strong> is a potential cause of harm (an attacker, a natural disaster, human error); a <strong>vulnerability</strong> is the specific weakness that threat could exploit (an unpatched service, a weak password policy, an unlocked server room).</p>
-</li>
-<li><p><strong>Estimate likelihood and impact.</strong> For each threat/vulnerability pair, rate likelihood (Low/Medium/High — how plausible is this, realistically, for your specific scenario?) and impact (Low/Medium/High — how bad would it actually be if it happened?). Multiplying these two roughly (even informally) is the core logic behind the risk equation from the main lesson: <strong>Risk ≈ Likelihood × Impact</strong>.</p>
-</li>
-<li><p><strong>Suggest mitigations.</strong> For each identified risk, propose one concrete, realistic control — not &quot;improve security&quot; in the abstract, but something specific and actionable: &quot;enable automatic OS updates,&quot; &quot;require MFA for admin accounts,&quot; &quot;move backups to a separate physical location.&quot;</p>
-</li>
-<li><p><strong>Classify each risk&#39;s disposition.</strong> For every row in your register, decide explicitly which of the four risk-response strategies from the main lesson applies — mitigate, accept, transfer, or avoid — and write a one-sentence justification. Forcing yourself to pick one of these four, rather than leaving it vague, is exactly the discipline that separates a real risk assessment from a worried list of concerns.</p>
-</li>
-<li><p><strong>Revisit after one &quot;what if.&quot;</strong> Pick your single highest-rated risk and imagine the mitigation you proposed simply isn&#39;t available (too expensive, technically impossible, or blocked by someone else). What&#39;s your next-best fallback? This mirrors a genuinely common real-world situation — the ideal fix isn&#39;t always on the table, and a good risk assessor always has a second option in mind.</p>
-</li>
+<li><strong>Pick a scenario.</strong> Something you can genuinely reason about in detail: your home network, a small business you're familiar with, or even this very course's website. Avoid anything too abstract — specificity is what makes risk assessment useful rather than generic.</li>
+<li><strong>Identify assets.</strong> List what actually needs protecting: data (personal files, customer records, credentials), systems (your router, a web server, a laptop), and people (whoever could be socially engineered, or whose access could be abused). Being concrete here matters — "data" is too vague; "customer payment records stored in the database" is useful.</li>
+<li><strong>List threats and vulnerabilities for each asset</strong>, using the vocabulary from the main lesson: a <strong>threat</strong> is a potential cause of harm (an attacker, a natural disaster, human error); a <strong>vulnerability</strong> is the specific weakness that threat could exploit (an unpatched service, a weak password policy, an unlocked server room).</li>
+<li><strong>Estimate likelihood and impact.</strong> For each threat/vulnerability pair, rate likelihood (Low/Medium/High — how plausible is this, realistically, for your specific scenario?) and impact (Low/Medium/High — how bad would it actually be if it happened?). Multiplying these two roughly (even informally) is the core logic behind the risk equation from the main lesson: <strong>Risk ≈ Likelihood × Impact</strong>.</li>
+<li><strong>Suggest mitigations.</strong> For each identified risk, propose one concrete, realistic control — not "improve security" in the abstract, but something specific and actionable: "enable automatic OS updates," "require MFA for admin accounts," "move backups to a separate physical location."</li>
 </ol>
-<p>A risk register with 30 items and no prioritization is nearly useless in practice — real organizations have limited time and budget, so the entire value of this exercise is being able to say &quot;these three risks matter far more than the other twenty-seven, fix these first.&quot; Always sort your finished list by risk level before presenting it.</p>
-<p>Create a simple table: <strong>Asset | Threat | Vulnerability | Likelihood | Impact | Risk Level | Mitigation</strong> — fill it in with at least 6 realistic rows for your chosen scenario, sorted from highest to lowest overall risk. This exact format, in slightly more formal language, is what real risk assessments look like in professional security work.</p>
+<pre><code class="language-mermaid">flowchart LR
+    A[Identify Assets] --&gt; B[List Threats\n&amp; Vulnerabilities]
+    B --&gt; C[Estimate\nLikelihood x Impact]
+    C --&gt; D[Prioritize\nHighest risk first]
+    D --&gt; E[Propose\nMitigations]
+</code></pre>
+<ol>
+<li><strong>Classify each risk's disposition.</strong> For every row in your register, decide explicitly which of the four risk-response strategies from the main lesson applies — mitigate, accept, transfer, or avoid — and write a one-sentence justification. Forcing yourself to pick one of these four, rather than leaving it vague, is exactly the discipline that separates a real risk assessment from a worried list of concerns.</li>
+<li><strong>Revisit after one "what if."</strong> Pick your single highest-rated risk and imagine the mitigation you proposed simply isn't available (too expensive, technically impossible, or blocked by someone else). What's your next-best fallback? This mirrors a genuinely common real-world situation — the ideal fix isn't always on the table, and a good risk assessor always has a second option in mind.</li>
+</ol>
+<p>:::tip Prioritization is the actual point
+A risk register with 30 items and no prioritization is nearly useless in practice — real organizations have limited time and budget, so the entire value of this exercise is being able to say "these three risks matter far more than the other twenty-seven, fix these first." Always sort your finished list by risk level before presenting it.
+:::</p>
+<p>:::challenge Produce a one-page risk register
+Create a simple table: <strong>Asset | Threat | Vulnerability | Likelihood | Impact | Risk Level | Mitigation</strong> — fill it in with at least 6 realistic rows for your chosen scenario, sorted from highest to lowest overall risk. This exact format, in slightly more formal language, is what real risk assessments look like in professional security work.
+:::</p>
 <h2>Key takeaway</h2>
-<p>Risk assessment isn&#39;t about eliminating every conceivable threat — that&#39;s neither possible nor a good use of limited resources. It&#39;s a structured way to decide what genuinely deserves attention first, which is exactly the reasoning that underlies every prioritization decision a real security team makes.</p>
+<p>Risk assessment isn't about eliminating every conceivable threat — that's neither possible nor a good use of limited resources. It's a structured way to decide what genuinely deserves attention first, which is exactly the reasoning that underlies every prioritization decision a real security team makes.</p>
 <p><strong>Next up →</strong> <a href="#/lesson/10-fundamentals/social-engineering-lab">Social Engineering Lab</a></p>
-<nav class="pager"><a href="/lesson/10-fundamentals/security-metrics-kpis.html">← Security Metrics &amp; KPIs</a><a href="/lesson/10-fundamentals/social-engineering-lab.html">Social Engineering Lab →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/10-fundamentals/security-metrics-kpis.html">← Security Metrics &amp; KPIs</a><a href="/lesson/10-fundamentals/social-engineering-lab.html">Social Engineering Lab →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/10-fundamentals/risk-assessment-lab";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

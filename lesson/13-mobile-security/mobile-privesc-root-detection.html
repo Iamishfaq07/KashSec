@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>Mobile Privilege Escalation &amp; Root Detection — Path 13 · KashSec Academy</title>
-<meta name="description" content="This lesson covers two related mobile-specific topics: how apps try to detect (and refuse to run on) rooted/jailbroken devices, and the ways insecure inter-app communication can let one app escalate a">
+<meta name="description" content="Mobile Privilege Escalation &amp; Root Detection: Root/jailbreak detection bypass and exported component attacks.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/13-mobile-security/mobile-privesc-root-detection.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Mobile Privilege Escalation &amp; Root Detection — Path 13 · KashSec Academy">
-<meta property="og:description" content="This lesson covers two related mobile-specific topics: how apps try to detect (and refuse to run on) rooted/jailbroken devices, and the ways insecure inter-app communication can let one app escalate a">
+<meta property="og:description" content="Mobile Privilege Escalation &amp; Root Detection: Root/jailbreak detection bypass and exported component attacks.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/13-mobile-security/mobile-privesc-root-detection.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -17,49 +18,79 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Mobile Privilege Escalation &amp; Root Detection — Path 13 · KashSec Academy">
-<meta name="twitter:description" content="This lesson covers two related mobile-specific topics: how apps try to detect (and refuse to run on) rooted/jailbroken devices, and the ways insecure inter-app communication can let one app escalate a">
+<meta name="twitter:description" content="Mobile Privilege Escalation &amp; Root Detection: Root/jailbreak detection bypass and exported component attacks.">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 13 — Mobile App Security","item":"https://kashsec.vercel.app/lesson/13-mobile-security/"},{"@type":"ListItem","position":4,"name":"Mobile Privilege Escalation & Root Detection","item":"https://kashsec.vercel.app/lesson/13-mobile-security/mobile-privesc-root-detection.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Mobile Privilege Escalation & Root Detection","headline":"Mobile Privilege Escalation & Root Detection","description":"This lesson covers two related mobile-specific topics: how apps try to detect (and refuse to run on) rooted/jailbroken devices, and the ways insecure inter-app communication can let one app escalate a","url":"https://kashsec.vercel.app/lesson/13-mobile-security/mobile-privesc-root-detection.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate→Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Root/jailbreak detection bypass and exported component attacks.","isPartOf":{"@type":"Course","name":"Path 13: Mobile App Security","url":"https://kashsec.vercel.app/lesson/13-mobile-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/13-mobile-security/mobile-privesc-root-detection.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Mobile Privilege Escalation & Root Detection","headline":"Mobile Privilege Escalation & Root Detection","description":"Mobile Privilege Escalation & Root Detection: Root/jailbreak detection bypass and exported component attacks.","url":"https://kashsec.vercel.app/lesson/13-mobile-security/mobile-privesc-root-detection.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate→Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Root/jailbreak detection bypass and exported component attacks.","isPartOf":{"@type":"Course","name":"Path 13: Mobile App Security","url":"https://kashsec.vercel.app/lesson/13-mobile-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/13-mobile-security/mobile-privesc-root-detection.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/13-mobile-security/mobile-privesc-root-detection">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/13-mobile-security/">Path 13 — Mobile App Security</a> · Mobile Privilege Escalation &amp; Root Detection</div>
-  <article><h1>Mobile Privilege Escalation &amp; Root Detection</h1>
+<a class="skip" href="/lesson/13-mobile-security/mobile-privesc-root-detection.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/13-mobile-security/">Path 13 — Mobile App Security</a> · Mobile Privilege Escalation &amp; Root Detection</nav>
+    <div class="md" id="content"><article><h1>Mobile Privilege Escalation &amp; Root Detection</h1>
 <p>This lesson covers two related mobile-specific topics: how apps try to detect (and refuse to run on) rooted/jailbroken devices, and the ways insecure inter-app communication can let one app escalate access via another — a genuinely mobile-specific twist on the privilege escalation concepts from Path 16.</p>
 <h2>Why apps care about root/jailbreak status</h2>
-<p>A rooted Android device or jailbroken iPhone removes the OS-level protections this path has relied on throughout (Path 13&#39;s fundamentals lesson) — sandboxing can be bypassed, any app&#39;s private storage becomes readable, and runtime instrumentation tools like Frida (covered in the traffic interception lesson) become possible. Banking apps, DRM-protected media apps, and anti-cheat-conscious games in particular often refuse to run at all on a detected rooted/jailbroken device, specifically to reduce their own exposure to exactly the kind of analysis this path teaches.</p>
+<p>A rooted Android device or jailbroken iPhone removes the OS-level protections this path has relied on throughout (Path 13's fundamentals lesson) — sandboxing can be bypassed, any app's private storage becomes readable, and runtime instrumentation tools like Frida (covered in the traffic interception lesson) become possible. Banking apps, DRM-protected media apps, and anti-cheat-conscious games in particular often refuse to run at all on a detected rooted/jailbroken device, specifically to reduce their own exposure to exactly the kind of analysis this path teaches.</p>
 <h2>Common root detection techniques (and their bypasses)</h2>
 <table>
 <thead>
@@ -81,7 +112,7 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 </tr>
 <tr>
 <td><strong>Writable system partition check</strong></td>
-<td>Tests if <code>/system</code> is writable (shouldn&#39;t be on a stock device)</td>
+<td>Tests if <code>/system</code> is writable (shouldn't be on a stock device)</td>
 <td>Root-hiding tools that restore expected read-only behavior</td>
 </tr>
 <tr>
@@ -90,46 +121,102 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <td>Uninstall/hide the detected packages</td>
 </tr>
 </tbody></table>
-<p>In practice, tools like <strong>Magisk&#39;s</strong> built-in hiding features, or targeted Frida scripts (extending directly from the SSL-pinning bypass technique in the traffic interception lesson) handle most of these automatically — the same instrumentation approach that patches certificate validation can just as easily patch a root-detection function to always return &quot;not rooted.&quot;</p>
+<p>In practice, tools like <strong>Magisk's</strong> built-in hiding features, or targeted Frida scripts (extending directly from the SSL-pinning bypass technique in the traffic interception lesson) handle most of these automatically — the same instrumentation approach that patches certificate validation can just as easily patch a root-detection function to always return "not rooted."</p>
 <pre><code class="language-bash"># Same pattern as SSL pinning bypass, applied to root detection:
 frida -U -f com.example.bankingapp -l root-detection-bypass.js --no-pause
 </code></pre>
-<h2>Insecure inter-app communication — Android&#39;s IPC surface</h2>
-<p>Android apps can communicate with each other through defined mechanisms: <strong>Intents</strong>, <strong>Content Providers</strong>, <strong>Broadcast Receivers</strong>, and <strong>Services</strong>. When one of these components is marked <code>exported=&quot;true&quot;</code> in the manifest (covered in the APK analysis lesson) without a matching permission requirement, <em>any other app installed on the device</em> — even a malicious one with no special permissions of its own — can potentially interact with it directly.</p>
-<p>A classic real-world example: an exported Activity intended only to be launched from within the app itself (say, an &quot;admin settings&quot; screen assuming the user already authenticated through the main UI) can sometimes be launched directly by any other app via an explicit Intent, completely bypassing whatever authentication gate the normal UI flow enforces — the mobile equivalent of a broken access control finding from Path 11.</p>
+<h2>Insecure inter-app communication — Android's IPC surface</h2>
+<p>Android apps can communicate with each other through defined mechanisms: <strong>Intents</strong>, <strong>Content Providers</strong>, <strong>Broadcast Receivers</strong>, and <strong>Services</strong>. When one of these components is marked <code>exported="true"</code> in the manifest (covered in the APK analysis lesson) without a matching permission requirement, <em>any other app installed on the device</em> — even a malicious one with no special permissions of its own — can potentially interact with it directly.</p>
+<pre><code class="language-mermaid">flowchart LR
+    A[Malicious App\nno special permissions] --&gt;|sends crafted Intent| B["Vulnerable App's\nexported, unprotected\nActivity/Service"]
+    B --&gt; C["Bypasses the vulnerable\napp's own UI/login screen,\nreaches privileged functionality directly"]
+</code></pre>
+<p>A classic real-world example: an exported Activity intended only to be launched from within the app itself (say, an "admin settings" screen assuming the user already authenticated through the main UI) can sometimes be launched directly by any other app via an explicit Intent, completely bypassing whatever authentication gate the normal UI flow enforces — the mobile equivalent of a broken access control finding from Path 11.</p>
 <h2>Content Provider SQL injection — a distinct exported-component risk</h2>
-<p>Beyond simply reaching restricted screens, an exported <strong>Content Provider</strong> carries its own specific, more severe risk: many Content Providers are backed directly by a SQLite database, and if the provider builds its underlying query by concatenating caller-supplied input rather than using parameterised queries, it&#39;s vulnerable to exactly the SQL injection technique from Path 11.6 — just reached via Android&#39;s IPC mechanism instead of an HTTP request:</p>
+<p>Beyond simply reaching restricted screens, an exported <strong>Content Provider</strong> carries its own specific, more severe risk: many Content Providers are backed directly by a SQLite database, and if the provider builds its underlying query by concatenating caller-supplied input rather than using parameterised queries, it's vulnerable to exactly the SQL injection technique from Path 11.6 — just reached via Android's IPC mechanism instead of an HTTP request:</p>
 <pre><code class="language-bash"># Querying an exported Content Provider directly, probing for injection:
 adb shell content query --uri content://com.example.vulnerableapp.provider/users \
-  --where &quot;id=1 OR 1=1&quot;
+  --where "id=1 OR 1=1"
 </code></pre>
-<p>If that query returns every row instead of just the intended one, the provider is vulnerable to the exact same injection class as any web application&#39;s login form — a genuinely common finding on real Android apps, since Content Providers are frequently written with less security scrutiny than an app&#39;s network-facing API code, on the mistaken assumption that &quot;it&#39;s just internal Android IPC&quot; makes it inherently safer.</p>
+<p>If that query returns every row instead of just the intended one, the provider is vulnerable to the exact same injection class as any web application's login form — a genuinely common finding on real Android apps, since Content Providers are frequently written with less security scrutiny than an app's network-facing API code, on the mistaken assumption that "it's just internal Android IPC" makes it inherently safer.</p>
 <h2>Testing exported components</h2>
-<pre><code class="language-bash"># List an app&#39;s exported activities directly from an installed package:
-adb shell dumpsys package com.example.vulnerableapp | grep -A 3 &quot;android:exported=\&quot;true\&quot;&quot;
+<pre><code class="language-bash"># List an app's exported activities directly from an installed package:
+adb shell dumpsys package com.example.vulnerableapp | grep -A 3 "android:exported=\"true\""
 
-# Attempt to launch a specific exported activity directly, bypassing the app&#39;s normal flow:
+# Attempt to launch a specific exported activity directly, bypassing the app's normal flow:
 adb shell am start -n com.example.vulnerableapp/.AdminActivity
 </code></pre>
-<p>If that command successfully opens a screen you were never meant to reach without prior authentication within the app, you&#39;ve just demonstrated exactly the class of vulnerability described above.</p>
-<p>As with every other lesson in this path, root-detection bypass and exported-component testing must stay confined to your own test devices, apps you built, or explicitly authorized vulnerable practice apps (DIVA and InsecureBankv2 both include exported-component challenges specifically for this purpose).</p>
-<p>Using DIVA or InsecureBankv2 on your rooted emulator, use <code>dumpsys package</code> to find an exported component, and attempt to launch or interact with it directly via <code>adb shell am start</code> (or <code>adb shell content query</code> for an exported Content Provider). Document what you were able to reach, and what the correct fix would look like (setting <code>exported=&quot;false&quot;</code>, or adding a custom permission requirement).</p>
+<p>If that command successfully opens a screen you were never meant to reach without prior authentication within the app, you've just demonstrated exactly the class of vulnerability described above.</p>
+<p>:::danger Only test on your own apps or authorized targets
+As with every other lesson in this path, root-detection bypass and exported-component testing must stay confined to your own test devices, apps you built, or explicitly authorized vulnerable practice apps (DIVA and InsecureBankv2 both include exported-component challenges specifically for this purpose).
+:::</p>
+<p>:::challenge Find and exploit an exported component
+Using DIVA or InsecureBankv2 on your rooted emulator, use <code>dumpsys package</code> to find an exported component, and attempt to launch or interact with it directly via <code>adb shell am start</code> (or <code>adb shell content query</code> for an exported Content Provider). Document what you were able to reach, and what the correct fix would look like (setting <code>exported="false"</code>, or adding a custom permission requirement).
+:::</p>
 <h2>Key takeaway</h2>
 <p>Root/jailbreak detection is a genuine but ultimately bypassable speed bump, not a real security control — real security must come from proper server-side authorization and data protection, not from hoping the client environment stays untampered. Separately, exported components represent a mobile-specific access control risk with no web equivalent, and checking for them is a standard, high-value step in any Android security review.</p>
 <p><strong>Next up →</strong> <a href="#/lesson/13-mobile-security/mobile-app-hardening">Mobile App Hardening</a></p>
-<nav class="pager"><a href="/lesson/13-mobile-security/cross-platform-mobile-security.html">← Cross-Platform Mobile Security</a><a href="/lesson/13-mobile-security/mobile-app-hardening.html">Mobile App Hardening →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/13-mobile-security/cross-platform-mobile-security.html">← Cross-Platform Mobile Security</a><a href="/lesson/13-mobile-security/mobile-app-hardening.html">Mobile App Hardening →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/13-mobile-security/mobile-privesc-root-detection";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

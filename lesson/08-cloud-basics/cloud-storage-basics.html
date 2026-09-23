@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>Cloud Storage Basics — Path 08 · KashSec Academy</title>
-<meta name="description" content="Path 16's cloud security lesson and flAWS lab both center heavily on misconfigured storage buckets — arguably the single most common real-world cloud misconfiguration category. This lesson slows down ">
+<meta name="description" content="Cloud Storage Basics: Buckets, objects, and why misconfigured storage is a top real-world breach cause.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-storage-basics.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Cloud Storage Basics — Path 08 · KashSec Academy">
-<meta property="og:description" content="Path 16's cloud security lesson and flAWS lab both center heavily on misconfigured storage buckets — arguably the single most common real-world cloud misconfiguration category. This lesson slows down ">
+<meta property="og:description" content="Cloud Storage Basics: Buckets, objects, and why misconfigured storage is a top real-world breach cause.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-storage-basics.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -17,71 +18,117 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Cloud Storage Basics — Path 08 · KashSec Academy">
-<meta name="twitter:description" content="Path 16's cloud security lesson and flAWS lab both center heavily on misconfigured storage buckets — arguably the single most common real-world cloud misconfiguration category. This lesson slows down ">
+<meta name="twitter:description" content="Cloud Storage Basics: Buckets, objects, and why misconfigured storage is a top real-world breach cause.">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 08 — Cloud Computing Basics","item":"https://kashsec.vercel.app/lesson/08-cloud-basics/"},{"@type":"ListItem","position":4,"name":"Cloud Storage Basics","item":"https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-storage-basics.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Cloud Storage Basics","headline":"Cloud Storage Basics","description":"Path 16's cloud security lesson and flAWS lab both center heavily on misconfigured storage buckets — arguably the single most common real-world cloud misconfiguration category. This lesson slows down ","url":"https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-storage-basics.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Buckets, objects, and why misconfigured storage is a top real-world breach cause.","isPartOf":{"@type":"Course","name":"Path 08: Cloud Computing Basics","url":"https://kashsec.vercel.app/lesson/08-cloud-basics/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-storage-basics.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Cloud Storage Basics","headline":"Cloud Storage Basics","description":"Cloud Storage Basics: Buckets, objects, and why misconfigured storage is a top real-world breach cause.","url":"https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-storage-basics.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Buckets, objects, and why misconfigured storage is a top real-world breach cause.","isPartOf":{"@type":"Course","name":"Path 08: Cloud Computing Basics","url":"https://kashsec.vercel.app/lesson/08-cloud-basics/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/08-cloud-basics/cloud-storage-basics.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/08-cloud-basics/cloud-storage-basics">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/08-cloud-basics/">Path 08 — Cloud Computing Basics</a> · Cloud Storage Basics</div>
-  <article><h1>Cloud Storage Basics</h1>
-<p>Path 16&#39;s cloud security lesson and flAWS lab both center heavily on misconfigured storage buckets — arguably the single most common real-world cloud misconfiguration category. This lesson slows down to explain exactly what cloud storage is and how it works, before you continue into that more advanced material.</p>
+<a class="skip" href="/lesson/08-cloud-basics/cloud-storage-basics.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/08-cloud-basics/">Path 08 — Cloud Computing Basics</a> · Cloud Storage Basics</nav>
+    <div class="md" id="content"><article><h1>Cloud Storage Basics</h1>
+<p>Path 16's cloud security lesson and flAWS lab both center heavily on misconfigured storage buckets — arguably the single most common real-world cloud misconfiguration category. This lesson slows down to explain exactly what cloud storage is and how it works, before you continue into that more advanced material.</p>
 <h2>Object storage vs. traditional file systems</h2>
-<p>Path 00&#39;s files-and-folders lesson explained the traditional hierarchical file system: folders containing files containing folders, navigated by path. Cloud <strong>object storage</strong> works differently — it&#39;s a flat namespace of <strong>objects</strong> (essentially files, but stored without the same folder hierarchy underneath), each identified by a unique key, grouped into <strong>buckets</strong>.</p>
-<p>Note that <code>images/photo1.jpg</code> <em>looks</em> like a folder path, but it&#39;s actually just part of the object&#39;s key (name) — cloud storage simulates folder-like organization for convenience, without genuinely implementing a hierarchical file system underneath.</p>
+<p>Path 00's files-and-folders lesson explained the traditional hierarchical file system: folders containing files containing folders, navigated by path. Cloud <strong>object storage</strong> works differently — it's a flat namespace of <strong>objects</strong> (essentially files, but stored without the same folder hierarchy underneath), each identified by a unique key, grouped into <strong>buckets</strong>.</p>
+<pre><code class="language-mermaid">flowchart TD
+    A[Cloud Storage Account] --&gt; B["Bucket: my-app-uploads"]
+    A --&gt; C["Bucket: my-app-backups"]
+    B --&gt; D["Object: images/photo1.jpg"]
+    B --&gt; E["Object: documents/report.pdf"]
+    C --&gt; F["Object: db-backup-2026-01-01.sql"]
+</code></pre>
+<p>Note that <code>images/photo1.jpg</code> <em>looks</em> like a folder path, but it's actually just part of the object's key (name) — cloud storage simulates folder-like organization for convenience, without genuinely implementing a hierarchical file system underneath.</p>
 <h2>Why buckets are such a common misconfiguration</h2>
-<p>A bucket&#39;s <strong>access policy</strong> determines who can read or write to it — and this is exactly where Path 16&#39;s cloud security lesson&#39;s core finding lives: a bucket accidentally configured for public read access exposes every object inside it to anyone on the internet, with zero authentication or exploitation required at all.</p>
-<p>This misconfiguration happens for genuinely understandable reasons: developers testing something quickly, a template or default configuration that&#39;s more permissive than intended, or someone deliberately making a bucket public for a legitimate use case (hosting static website assets, say) without realizing <em>other</em>, more sensitive objects also live in the same bucket.</p>
+<p>A bucket's <strong>access policy</strong> determines who can read or write to it — and this is exactly where Path 16's cloud security lesson's core finding lives: a bucket accidentally configured for public read access exposes every object inside it to anyone on the internet, with zero authentication or exploitation required at all.</p>
+<pre><code class="language-mermaid">flowchart LR
+    A[Bucket Access Policy] --&gt; B{Publicly readable?}
+    B --&gt;|Yes, misconfigured| C["Anyone can list/download\nevery object — no auth needed"]
+    B --&gt;|No, properly restricted| D["Only authorized identities\ncan access"]
+</code></pre>
+<p>This misconfiguration happens for genuinely understandable reasons: developers testing something quickly, a template or default configuration that's more permissive than intended, or someone deliberately making a bucket public for a legitimate use case (hosting static website assets, say) without realizing <em>other</em>, more sensitive objects also live in the same bucket.</p>
 <h2>Checking bucket permissions, hands-on</h2>
 <p>Using the AWS CLI (referenced in the previous lesson) against a bucket you own or are authorized to test:</p>
 <pre><code class="language-bash">aws s3api get-bucket-acl --bucket your-bucket-name
 aws s3api get-bucket-policy --bucket your-bucket-name
 </code></pre>
-<p>Or, for a quick unauthenticated check whether a bucket allows public listing (exactly the technique used in Path 16&#39;s flAWS lab):</p>
+<p>Or, for a quick unauthenticated check whether a bucket allows public listing (exactly the technique used in Path 16's flAWS lab):</p>
 <pre><code class="language-bash">aws s3 ls s3://target-bucket-name --no-sign-request
 </code></pre>
 <p>If this command succeeds without any credentials at all, the bucket is publicly listable — a direct, hands-on demonstration of exactly the misconfiguration class this lesson has been building toward.</p>
 <h2>Storage classes and lifecycle — a brief note</h2>
-<p>Beyond access control, cloud storage typically offers multiple <strong>storage classes</strong> trading cost against retrieval speed (frequently-accessed &quot;standard&quot; storage versus cheaper, slower &quot;archive&quot; storage for rarely-accessed backups) — genuinely useful to know exists, though not itself a security-relevant distinction the way access policy is.</p>
+<p>Beyond access control, cloud storage typically offers multiple <strong>storage classes</strong> trading cost against retrieval speed (frequently-accessed "standard" storage versus cheaper, slower "archive" storage for rarely-accessed backups) — genuinely useful to know exists, though not itself a security-relevant distinction the way access policy is.</p>
 <h2>Encryption at rest and in transit — two distinct guarantees</h2>
-<p>Cloud storage services typically offer <strong>encryption at rest</strong> (data encrypted while sitting in storage, using AES per Path 06&#39;s symmetric encryption lesson, protecting against someone who somehow gains direct access to the underlying physical storage media) and <strong>encryption in transit</strong> (data encrypted via TLS while moving between your application and the storage service, protecting against network interception per Path 12&#39;s MITM lesson) — worth understanding as two genuinely separate guarantees, since a bucket can have one enabled without the other, and neither one protects against the access-policy misconfiguration this lesson focuses on. This is a subtle but important point: encryption at rest protects data from someone stealing the physical disk; it does <em>nothing</em> to stop a legitimately-authenticated (or, worse, unauthenticated due to a public policy) request from simply reading the data through the normal API, since the storage service transparently decrypts data for any request it considers authorized. Many cloud providers now enable encryption at rest by default for new buckets specifically because it&#39;s a low-cost, broadly-applicable control — but never mistake &quot;encryption is on&quot; for &quot;access is properly restricted,&quot; since they answer completely different security questions.</p>
+<p>Cloud storage services typically offer <strong>encryption at rest</strong> (data encrypted while sitting in storage, using AES per Path 06's symmetric encryption lesson, protecting against someone who somehow gains direct access to the underlying physical storage media) and <strong>encryption in transit</strong> (data encrypted via TLS while moving between your application and the storage service, protecting against network interception per Path 12's MITM lesson) — worth understanding as two genuinely separate guarantees, since a bucket can have one enabled without the other, and neither one protects against the access-policy misconfiguration this lesson focuses on. This is a subtle but important point: encryption at rest protects data from someone stealing the physical disk; it does <em>nothing</em> to stop a legitimately-authenticated (or, worse, unauthenticated due to a public policy) request from simply reading the data through the normal API, since the storage service transparently decrypts data for any request it considers authorized. Many cloud providers now enable encryption at rest by default for new buckets specifically because it's a low-cost, broadly-applicable control — but never mistake "encryption is on" for "access is properly restricted," since they answer completely different security questions.</p>
 <h2>Versioning and its security implications</h2>
-<p>Many cloud storage services support <strong>versioning</strong> — keeping previous versions of an object rather than overwriting them on update. This has a real, sometimes-overlooked security implication: even after &quot;deleting&quot; or &quot;fixing&quot; an exposed sensitive file, old versions may remain accessible unless versioning history is <em>also</em> explicitly cleaned up — directly echoing Path 13&#39;s mobile data-storage lesson&#39;s point about backups preserving data you thought was removed.</p>
-<p>Misconfigured public cloud storage has been the root cause behind numerous major, well-documented real-world data breaches — genuinely one of the single most consequential, and most preventable, cloud security failures. A five-minute access policy review catches exactly this category of risk before it becomes a breach.</p>
-<p>Why does deleting a sensitive file from a cloud storage bucket not necessarily fully remove the exposure, if versioning is enabled?</p>
-<details><summary>Show answer</summary>When versioning is enabled, "deleting" an object typically doesn't erase it — it either creates a new "delete marker" while the actual previous version remains stored and potentially still accessible through direct version-specific requests, or simply adds the deletion as a new version in the object's history while earlier versions persist. If the bucket's access policy remains public, an attacker who already knows (or can guess/enumerate) the object's key can potentially still retrieve an older version even after what looks like a "fix" from the perspective of someone just checking the current, latest state of the bucket. Properly remediating an exposed sensitive file requires not just correcting the bucket's access policy going forward, but also explicitly checking and removing exposure from the object's full version history — exactly the same "backups can preserve what you thought was deleted" lesson from Path 13's mobile insecure storage lesson, here applied to cloud storage versioning instead of mobile app backups.</details><h2>Key terms</h2>
+<p>Many cloud storage services support <strong>versioning</strong> — keeping previous versions of an object rather than overwriting them on update. This has a real, sometimes-overlooked security implication: even after "deleting" or "fixing" an exposed sensitive file, old versions may remain accessible unless versioning history is <em>also</em> explicitly cleaned up — directly echoing Path 13's mobile data-storage lesson's point about backups preserving data you thought was removed.</p>
+<p>:::danger Public buckets remain a top real-world breach cause
+Misconfigured public cloud storage has been the root cause behind numerous major, well-documented real-world data breaches — genuinely one of the single most consequential, and most preventable, cloud security failures. A five-minute access policy review catches exactly this category of risk before it becomes a breach.
+:::</p>
+<p>:::challenge Test yourself
+Why does deleting a sensitive file from a cloud storage bucket not necessarily fully remove the exposure, if versioning is enabled?</p>
+<details><summary>Show answer</summary>When versioning is enabled, "deleting" an object typically doesn't erase it — it either creates a new "delete marker" while the actual previous version remains stored and potentially still accessible through direct version-specific requests, or simply adds the deletion as a new version in the object's history while earlier versions persist. If the bucket's access policy remains public, an attacker who already knows (or can guess/enumerate) the object's key can potentially still retrieve an older version even after what looks like a "fix" from the perspective of someone just checking the current, latest state of the bucket. Properly remediating an exposed sensitive file requires not just correcting the bucket's access policy going forward, but also explicitly checking and removing exposure from the object's full version history — exactly the same "backups can preserve what you thought was deleted" lesson from Path 13's mobile insecure storage lesson, here applied to cloud storage versioning instead of mobile app backups.</details>
+:::<h2>Key terms</h2>
 <ul>
 <li><strong>Object storage</strong> — a flat, key-based storage model (buckets containing objects) rather than a traditional hierarchical file system.</li>
 <li><strong>Bucket access policy</strong> — the configuration determining who can read or write to a storage bucket.</li>
@@ -92,26 +139,74 @@ aws s3api get-bucket-policy --bucket your-bucket-name
 <li>Cloud object storage uses buckets and key-named objects rather than a traditional folder hierarchy, though it simulates folder-like organization for convenience.</li>
 <li>Misconfigured public bucket access policies are one of the most common and most consequential real-world cloud security failures.</li>
 <li>Checking bucket permissions — via console review or a simple unauthenticated CLI listing attempt — is a fast, high-value first check in any cloud security assessment.</li>
-<li>Versioning can preserve exposure even after a sensitive object appears deleted or a bucket&#39;s policy has been corrected, requiring explicit version-history remediation too.</li>
+<li>Versioning can preserve exposure even after a sensitive object appears deleted or a bucket's policy has been corrected, requiring explicit version-history remediation too.</li>
 </ul>
 <h3>References</h3>
 <ul>
 <li><a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/security-best-practices.html">AWS S3 Security Best Practices</a> — official, detailed, free guidance directly relevant to this lesson.</li>
 </ul>
 <p><strong>Next up →</strong> <a href="#/lesson/08-cloud-basics/cloud-databases-basics">Cloud Databases Basics</a></p>
-<nav class="pager"><a href="/lesson/08-cloud-basics/cloud-serverless-basics.html">← Cloud Serverless Basics</a><a href="/lesson/08-cloud-basics/cloud-databases-basics.html">Cloud Databases Basics →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/08-cloud-basics/cloud-serverless-basics.html">← Cloud Serverless Basics</a><a href="/lesson/08-cloud-basics/cloud-databases-basics.html">Cloud Databases Basics →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/08-cloud-basics/cloud-storage-basics";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>What is a computer really? — Path 00 · KashSec Academy</title>
-<meta name="description" content="Before you can secure a computer, you need to know what one actually is — not the marketing version, the engineering version. A computer is a machine that stores instructions and data as numbers, and ">
+<meta name="description" content="What is a computer really?: Hardware, software, and the OS, explained simply.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/00-fresher-basics/what-is-a-computer.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="What is a computer really? — Path 00 · KashSec Academy">
-<meta property="og:description" content="Before you can secure a computer, you need to know what one actually is — not the marketing version, the engineering version. A computer is a machine that stores instructions and data as numbers, and ">
+<meta property="og:description" content="What is a computer really?: Hardware, software, and the OS, explained simply.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/00-fresher-basics/what-is-a-computer.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -17,69 +18,108 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="What is a computer really? — Path 00 · KashSec Academy">
-<meta name="twitter:description" content="Before you can secure a computer, you need to know what one actually is — not the marketing version, the engineering version. A computer is a machine that stores instructions and data as numbers, and ">
+<meta name="twitter:description" content="What is a computer really?: Hardware, software, and the OS, explained simply.">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 00 — Computer Basics & Security Mindset","item":"https://kashsec.vercel.app/lesson/00-fresher-basics/"},{"@type":"ListItem","position":4,"name":"What is a computer really?","item":"https://kashsec.vercel.app/lesson/00-fresher-basics/what-is-a-computer.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"What is a computer really?","headline":"What is a computer really?","description":"Before you can secure a computer, you need to know what one actually is — not the marketing version, the engineering version. A computer is a machine that stores instructions and data as numbers, and ","url":"https://kashsec.vercel.app/lesson/00-fresher-basics/what-is-a-computer.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Absolute fresher","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Hardware, software, and the OS, explained simply.","isPartOf":{"@type":"Course","name":"Path 00: Computer Basics & Security Mindset","url":"https://kashsec.vercel.app/lesson/00-fresher-basics/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/00-fresher-basics/what-is-a-computer.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"What is a computer really?","headline":"What is a computer really?","description":"What is a computer really?: Hardware, software, and the OS, explained simply.","url":"https://kashsec.vercel.app/lesson/00-fresher-basics/what-is-a-computer.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Absolute fresher","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Hardware, software, and the OS, explained simply.","isPartOf":{"@type":"Course","name":"Path 00: Computer Basics & Security Mindset","url":"https://kashsec.vercel.app/lesson/00-fresher-basics/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/00-fresher-basics/what-is-a-computer.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/00-fresher-basics/what-is-a-computer">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/00-fresher-basics/">Path 00 — Computer Basics &amp; Security Mindset</a> · What is a computer really?</div>
-  <article><h1>What is a computer really?</h1>
+<a class="skip" href="/lesson/00-fresher-basics/what-is-a-computer.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/00-fresher-basics/">Path 00 — Computer Basics &amp; Security Mindset</a> · What is a computer really?</nav>
+    <div class="md" id="content"><article><h1>What is a computer really?</h1>
 <p>Before you can secure a computer, you need to know what one actually is — not the marketing version, the <em>engineering</em> version. A computer is a machine that stores instructions and data as numbers, and executes those instructions blindingly fast, one tiny step at a time. Everything else — the desktop, the icons, the apps — is just a friendly costume built on top of that simple idea.</p>
-<p>This matters for security because <strong>every single attack you&#39;ll ever study in this course eventually boils down to one thing</strong>: making a computer execute instructions its owner never intended, or making it reveal data it was supposed to protect. You can&#39;t understand <em>how that happens</em> until you understand what a computer fundamentally is.</p>
+<p>This matters for security because <strong>every single attack you'll ever study in this course eventually boils down to one thing</strong>: making a computer execute instructions its owner never intended, or making it reveal data it was supposed to protect. You can't understand <em>how that happens</em> until you understand what a computer fundamentally is.</p>
 <h2>The four pieces that make up every computer</h2>
 <ul>
 <li><strong>Hardware</strong> — the physical parts you can touch: the processor (CPU), memory (RAM), storage (hard drive/SSD), and input/output devices (keyboard, screen, network card).</li>
-<li><strong>Software</strong> — the instructions that tell the hardware what to do. This ranges from a single script you write, to a game, to the browser you&#39;re reading this in.</li>
-<li><strong>Operating System (OS)</strong> — the &quot;boss&quot; program (Windows, macOS, Linux, Android, iOS) that manages hardware, runs other software, and enforces rules about who can do what.</li>
-<li><strong>Data</strong> — the actual information being processed and stored: your photos, your passwords, this lesson&#39;s text, everything.</li>
+<li><strong>Software</strong> — the instructions that tell the hardware what to do. This ranges from a single script you write, to a game, to the browser you're reading this in.</li>
+<li><strong>Operating System (OS)</strong> — the "boss" program (Windows, macOS, Linux, Android, iOS) that manages hardware, runs other software, and enforces rules about who can do what.</li>
+<li><strong>Data</strong> — the actual information being processed and stored: your photos, your passwords, this lesson's text, everything.</li>
 </ul>
+<pre><code class="language-mermaid">flowchart TB
+    A[You] --&gt;|gives instructions via| B[Applications]
+    B --&gt;|requests resources from| C[Operating System]
+    C --&gt;|controls| D[Hardware: CPU, RAM, Storage, Network]
+    D --&gt;|executes instructions on| E[Data]
+    E --&gt;|results shown back to| A
+</code></pre>
 <h2>The CPU: a very fast, very literal employee</h2>
-<p>The <strong>CPU (Central Processing Unit)</strong> is the part that actually <em>does</em> things. It doesn&#39;t understand English, or even the programming language a developer wrote — it only understands a tiny vocabulary of raw numeric instructions called <strong>machine code</strong>. Everything you interact with — a website, a game, an app — eventually gets translated down into millions of these tiny steps, executed billions of times per second.</p>
-<p>The CPU is also completely obedient and has zero judgment. It will execute <em>any</em> valid instruction it&#39;s given, without asking &quot;should I?&quot; That single fact is the root of almost every security vulnerability in this course: attackers aren&#39;t fighting the CPU, they&#39;re finding ways to get <em>their own</em> instructions into a place the CPU will execute them.</p>
+<p>The <strong>CPU (Central Processing Unit)</strong> is the part that actually <em>does</em> things. It doesn't understand English, or even the programming language a developer wrote — it only understands a tiny vocabulary of raw numeric instructions called <strong>machine code</strong>. Everything you interact with — a website, a game, an app — eventually gets translated down into millions of these tiny steps, executed billions of times per second.</p>
+<p>The CPU is also completely obedient and has zero judgment. It will execute <em>any</em> valid instruction it's given, without asking "should I?" That single fact is the root of almost every security vulnerability in this course: attackers aren't fighting the CPU, they're finding ways to get <em>their own</em> instructions into a place the CPU will execute them.</p>
 <h3>Cores, clock speed, and multitasking</h3>
-<p>Modern CPUs typically have multiple <strong>cores</strong> — essentially several independent CPUs packaged onto one chip, each capable of executing instructions simultaneously. A quad-core CPU can genuinely run four separate streams of instructions at the exact same instant, which is a big part of why modern computers can run dozens of programs &quot;at once&quot; without grinding to a halt.</p>
-<p>But even with multiple cores, you&#39;re usually running far more than four programs at a time. This works because the operating system rapidly switches each core between different tasks — running a slice of your browser, then a slice of your music player, then a slice of a background update, over and over, many times per second. It happens so fast that everything <em>feels</em> simultaneous, even on a single core, though it technically isn&#39;t. This rapid switching is called <strong>time-slicing</strong> or <strong>context switching</strong>, and the OS component that manages it is called the <strong>scheduler</strong>.</p>
+<p>Modern CPUs typically have multiple <strong>cores</strong> — essentially several independent CPUs packaged onto one chip, each capable of executing instructions simultaneously. A quad-core CPU can genuinely run four separate streams of instructions at the exact same instant, which is a big part of why modern computers can run dozens of programs "at once" without grinding to a halt.</p>
+<p>But even with multiple cores, you're usually running far more than four programs at a time. This works because the operating system rapidly switches each core between different tasks — running a slice of your browser, then a slice of your music player, then a slice of a background update, over and over, many times per second. It happens so fast that everything <em>feels</em> simultaneous, even on a single core, though it technically isn't. This rapid switching is called <strong>time-slicing</strong> or <strong>context switching</strong>, and the OS component that manages it is called the <strong>scheduler</strong>.</p>
 <p><strong>Clock speed</strong> (measured in GHz — billions of cycles per second) roughly describes how many of these tiny instruction-steps a single core can execute per second. A higher clock speed generally means faster execution, though modern performance depends on many other factors too (core count, cache size, instruction efficiency) — which is exactly why comparing CPUs by clock speed alone is misleading.</p>
 <h2>Memory vs. storage — a distinction that trips everyone up</h2>
 <ul>
-<li><strong>RAM (memory)</strong> — fast, but <em>temporary</em>. Whatever a program is actively working on lives here. Turn the power off, and it&#39;s gone.</li>
+<li><strong>RAM (memory)</strong> — fast, but <em>temporary</em>. Whatever a program is actively working on lives here. Turn the power off, and it's gone.</li>
 <li><strong>Storage (hard drive / SSD)</strong> — slower, but <em>permanent</em>. Your files, installed apps, and the OS itself live here, surviving a restart.</li>
 </ul>
-<p>Think of storage as a filing cabinet and RAM as your desk — you pull a folder out of the cabinet (storage) onto your desk (RAM) to actually work on it, and put it back when you&#39;re done.</p>
-<p>:::</p>
+<p>Think of storage as a filing cabinet and RAM as your desk — you pull a folder out of the cabinet (storage) onto your desk (RAM) to actually work on it, and put it back when you're done.</p>
+<p>:::tip
+Your phone is also a computer — it has a CPU, RAM, storage, and an OS (iOS or Android), just squeezed into your pocket. Everything about hardware/software/OS in this lesson applies to it directly.
+:::</p>
 <h3>HDDs vs. SSDs — two very different kinds of storage</h3>
 <p>Not all storage is the same. <strong>Hard Disk Drives (HDDs)</strong> store data magnetically on spinning physical disks, read by a moving mechanical arm — genuinely similar in principle to an old record player. <strong>Solid State Drives (SSDs)</strong> store data electronically in flash memory chips, with no moving parts at all.</p>
 <table>
@@ -111,42 +151,50 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <td>Similar risk, though some SSDs proactively erase deleted data faster (a feature called TRIM)</td>
 </tr>
 </tbody></table>
-<p>This distinction genuinely matters for security and forensics: when you &quot;delete&quot; a file, most storage doesn&#39;t immediately, securely erase the underlying data — it just marks that space as available to be overwritten later. Until something else actually overwrites it, the original data often remains physically recoverable, which is exactly how forensic investigators (and, less legitimately, attackers with physical access to a discarded drive) can sometimes recover &quot;deleted&quot; files.</p>
-<h2>Binary — how a computer &quot;thinks&quot;</h2>
-<p>At the very bottom, a computer only knows two states: on and off, represented as <code>1</code> and <code>0</code>. This is called <strong>binary</strong>. Every photo, password, video, and piece of text you&#39;ve ever seen on a screen is, underneath, an enormous sequence of 1s and 0s — grouped into 8-bit chunks called <strong>bytes</strong>.</p>
-<pre><code>The letter &quot;A&quot; in binary:  01000001
-The letter &quot;B&quot; in binary:  01000010
+<p>This distinction genuinely matters for security and forensics: when you "delete" a file, most storage doesn't immediately, securely erase the underlying data — it just marks that space as available to be overwritten later. Until something else actually overwrites it, the original data often remains physically recoverable, which is exactly how forensic investigators (and, less legitimately, attackers with physical access to a discarded drive) can sometimes recover "deleted" files.</p>
+<h2>Binary — how a computer "thinks"</h2>
+<p>At the very bottom, a computer only knows two states: on and off, represented as <code>1</code> and <code>0</code>. This is called <strong>binary</strong>. Every photo, password, video, and piece of text you've ever seen on a screen is, underneath, an enormous sequence of 1s and 0s — grouped into 8-bit chunks called <strong>bytes</strong>.</p>
+<pre><code>The letter "A" in binary:  01000001
+The letter "B" in binary:  01000010
 </code></pre>
-<p>You don&#39;t need to memorize binary to work in security, but knowing it exists — and that <em>everything</em> eventually reduces to it — demystifies a lot of what feels like &quot;hacker magic&quot; later in this course (encoding, encryption, and file formats all sit on top of this idea).</p>
+<p>You don't need to memorize binary to work in security, but knowing it exists — and that <em>everything</em> eventually reduces to it — demystifies a lot of what feels like "hacker magic" later in this course (encoding, encryption, and file formats all sit on top of this idea).</p>
 <h3>How text actually becomes numbers — ASCII and Unicode</h3>
-<p>That binary representation of &quot;A&quot; above (<code>01000001</code>, which is <code>65</code> in decimal) isn&#39;t arbitrary — it comes from a standard called <strong>ASCII</strong>, an agreed-upon table mapping every English letter, digit, and common symbol to a specific number. Modern computers mostly use <strong>Unicode</strong> instead, a much larger standard extending this same idea to cover every language and symbol on Earth, including emoji. The core concept is identical either way: text is just numbers, interpreted according to an agreed-upon table, and that table is exactly what lets every computer in the world display &quot;A&quot; the same way.</p>
-<p>This matters in security more than it first appears: encoding confusion (a system expecting one character standard while receiving another) has historically been the root cause of real vulnerabilities, and understanding that &quot;text&quot; is really just &quot;numbers plus an interpretation rule&quot; is a foundational idea you&#39;ll see resurface throughout this entire course, especially once you reach cryptography and encoding topics later on.</p>
+<p>That binary representation of "A" above (<code>01000001</code>, which is <code>65</code> in decimal) isn't arbitrary — it comes from a standard called <strong>ASCII</strong>, an agreed-upon table mapping every English letter, digit, and common symbol to a specific number. Modern computers mostly use <strong>Unicode</strong> instead, a much larger standard extending this same idea to cover every language and symbol on Earth, including emoji. The core concept is identical either way: text is just numbers, interpreted according to an agreed-upon table, and that table is exactly what lets every computer in the world display "A" the same way.</p>
+<p>This matters in security more than it first appears: encoding confusion (a system expecting one character standard while receiving another) has historically been the root cause of real vulnerabilities, and understanding that "text" is really just "numbers plus an interpretation rule" is a foundational idea you'll see resurface throughout this entire course, especially once you reach cryptography and encoding topics later on.</p>
 <h2>From source code to a running program</h2>
-<p>You&#39;ll eventually write your own code (Path 04 covers this in depth), so it&#39;s worth understanding, even briefly, what actually happens between &quot;a person writes readable code&quot; and &quot;the CPU executes it&quot;:</p>
-<p>Some languages (like C) are <strong>compiled</strong> — translated entirely into machine code ahead of time, producing a standalone program the CPU can run directly. Others (like Python, referenced throughout Path 04) are <strong>interpreted</strong> — a separate program (the interpreter) reads and translates your code line-by-line while it runs. Compiled programs generally run faster since the translation work happens once, upfront; interpreted programs are typically easier to write and test, since you can run code immediately without a separate compilation step. This exact distinction becomes directly relevant much later in this course, when Path 17&#39;s reverse engineering material discusses reading compiled machine code back into readable form.</p>
+<p>You'll eventually write your own code (Path 04 covers this in depth), so it's worth understanding, even briefly, what actually happens between "a person writes readable code" and "the CPU executes it":</p>
+<pre><code class="language-mermaid">flowchart LR
+    A["Source code\n(human-readable,\ne.g. Python or C)"] --&gt; B{Compiled or\nInterpreted?}
+    B --&gt;|Compiled| C["Compiler translates\nthe whole program to\nmachine code ahead of time"]
+    B --&gt;|Interpreted| D["Interpreter translates\nand runs each line,\none at a time"]
+    C --&gt; E[CPU executes\nmachine code directly]
+    D --&gt; E
+</code></pre>
+<p>Some languages (like C) are <strong>compiled</strong> — translated entirely into machine code ahead of time, producing a standalone program the CPU can run directly. Others (like Python, referenced throughout Path 04) are <strong>interpreted</strong> — a separate program (the interpreter) reads and translates your code line-by-line while it runs. Compiled programs generally run faster since the translation work happens once, upfront; interpreted programs are typically easier to write and test, since you can run code immediately without a separate compilation step. This exact distinction becomes directly relevant much later in this course, when Path 17's reverse engineering material discusses reading compiled machine code back into readable form.</p>
 <h2>Why this matters for security</h2>
-<p>Every attack you&#39;ll study eventually touches one or more of these four pieces:</p>
+<p>Every attack you'll study eventually touches one or more of these four pieces:</p>
 <ul>
 <li><strong>Hardware attacks</strong> — physically stealing a device, tampering with a USB port, or exploiting a chip-level flaw.</li>
-<li><strong>Software attacks</strong> — tricking an application into running code it shouldn&#39;t (this is most of what this course covers: SQL injection, XSS, buffer overflows, malware).</li>
-<li><strong>OS attacks</strong> — exploiting the &quot;boss&quot; program itself to gain more control than you should have (privilege escalation).</li>
+<li><strong>Software attacks</strong> — tricking an application into running code it shouldn't (this is most of what this course covers: SQL injection, XSS, buffer overflows, malware).</li>
+<li><strong>OS attacks</strong> — exploiting the "boss" program itself to gain more control than you should have (privilege escalation).</li>
 <li><strong>Data attacks</strong> — stealing, corrupting, or holding data hostage (data breaches, ransomware).</li>
 </ul>
-<p>Understanding this map is genuinely useful: whenever you learn a new attack later in this course, you can ask &quot;which of these four is this actually targeting?&quot; — and it will click into place much faster.</p>
+<p>Understanding this map is genuinely useful: whenever you learn a new attack later in this course, you can ask "which of these four is this actually targeting?" — and it will click into place much faster.</p>
 <h2>🧪 Hands-on lab — meet your own machine</h2>
-<p>You don&#39;t need any special tools for this one — just your own computer.</p>
+<p>You don't need any special tools for this one — just your own computer.</p>
 <ol>
 <li><strong>Windows</strong>: press <code>Ctrl + Shift + Esc</code> to open Task Manager, click the <strong>Performance</strong> tab. <strong>macOS</strong>: open <strong>Activity Monitor</strong> (search with Spotlight, <code>Cmd + Space</code>). <strong>Linux</strong>: open a terminal and run <code>htop</code> or <code>top</code>.</li>
 <li>Find your CPU usage, RAM usage, and how much storage is free. Note how many CPU cores your machine has.</li>
-<li>Open a few apps (a browser, a text editor) and watch RAM usage climb in real time — that&#39;s your &quot;desk&quot; filling up.</li>
+<li>Open a few apps (a browser, a text editor) and watch RAM usage climb in real time — that's your "desk" filling up.</li>
 <li>Close them again and watch it drop back down.</li>
-<li>Find out what OS version you&#39;re running (Windows: <code>winver</code>; macOS: <strong>About This Mac</strong>; Linux: <code>uname -a</code>). Knowing your exact OS version matters a lot in security — vulnerabilities are usually tied to specific versions.</li>
-<li>Check whether your machine&#39;s main drive is an HDD or SSD (Windows: Task Manager&#39;s Performance tab labels each disk; macOS: <strong>About This Mac → Storage</strong>; Linux: <code>lsblk -d -o name,rota</code> — a <code>1</code> under ROTA means HDD, <code>0</code> means SSD).</li>
-<li>Open a plain text editor, type the letter &quot;A&quot;, save the file, then reopen it in a hex editor or run <code>xxd filename.txt</code> (macOS/Linux) in a terminal — confirm you see <code>41</code> (hexadecimal for 65, &quot;A&quot;&#39;s ASCII value) in the raw output, directly connecting this lesson&#39;s binary/ASCII discussion to something you can see with your own eyes.</li>
+<li>Find out what OS version you're running (Windows: <code>winver</code>; macOS: <strong>About This Mac</strong>; Linux: <code>uname -a</code>). Knowing your exact OS version matters a lot in security — vulnerabilities are usually tied to specific versions.</li>
+<li>Check whether your machine's main drive is an HDD or SSD (Windows: Task Manager's Performance tab labels each disk; macOS: <strong>About This Mac → Storage</strong>; Linux: <code>lsblk -d -o name,rota</code> — a <code>1</code> under ROTA means HDD, <code>0</code> means SSD).</li>
+<li>Open a plain text editor, type the letter "A", save the file, then reopen it in a hex editor or run <code>xxd filename.txt</code> (macOS/Linux) in a terminal — confirm you see <code>41</code> (hexadecimal for 65, "A"'s ASCII value) in the raw output, directly connecting this lesson's binary/ASCII discussion to something you can see with your own eyes.</li>
 </ol>
 <p>:::challenge Test yourself
 If RAM is temporary and storage is permanent, why do you sometimes lose unsaved work when an application crashes, but a file you already saved is still there afterward?</p>
-<details><summary>Show answer</summary>An open, unsaved document only exists in RAM while you're editing it — the moment the application crashes, that memory is wiped and the changes are gone. A file you've already saved has been written to storage, which survives independently of whether the application (or even the whole computer) is running. This is exactly why "save often" is good advice, and it's also why forensic investigators can often recover files from a device's storage even after a crash — but almost never recover unsaved changes that only ever lived in RAM.</details><h2>Key terms</h2>
+<details><summary>Show answer</summary>An open, unsaved document only exists in RAM while you're editing it — the moment the application crashes, that memory is wiped and the changes are gone. A file you've already saved has been written to storage, which survives independently of whether the application (or even the whole computer) is running. This is exactly why "save often" is good advice, and it's also why forensic investigators can often recover files from a device's storage even after a crash — but almost never recover unsaved changes that only ever lived in RAM.</details>
+:::<h2>Key terms</h2>
 <ul>
 <li><strong>Hardware</strong> — the physical components of a computer.</li>
 <li><strong>Software</strong> — instructions that tell hardware what to do.</li>
@@ -161,32 +209,80 @@ If RAM is temporary and storage is permanent, why do you sometimes lose unsaved 
 <h2>Recap</h2>
 <ul>
 <li>A computer is hardware + software + an OS managing it all, working on data.</li>
-<li>The CPU executes instructions with zero judgment — it does whatever it&#39;s told, which is the root of most security vulnerabilities. Multiple cores and rapid time-slicing let it juggle many tasks that feel simultaneous.</li>
-<li>RAM is temporary working memory; storage (HDD or SSD) is permanent — though &quot;deleted&quot; data on either often remains recoverable until overwritten.</li>
+<li>The CPU executes instructions with zero judgment — it does whatever it's told, which is the root of most security vulnerabilities. Multiple cores and rapid time-slicing let it juggle many tasks that feel simultaneous.</li>
+<li>RAM is temporary working memory; storage (HDD or SSD) is permanent — though "deleted" data on either often remains recoverable until overwritten.</li>
 <li>Text is just numbers interpreted through a standard like ASCII or Unicode — everything ultimately reduces to binary.</li>
 <li>Source code becomes a running program either through compilation (translated ahead of time) or interpretation (translated line-by-line at runtime).</li>
-<li>Every attack you&#39;ll learn in this course targets hardware, software, the OS, or data — usually some combination.</li>
+<li>Every attack you'll learn in this course targets hardware, software, the OS, or data — usually some combination.</li>
 </ul>
 <h3>References</h3>
 <ul>
 <li><a href="https://www.youtube.com/playlist?list=PL8dPuuaLjXtNlUrzyH5r6jN9ulIgZBpdo">How Computers Work — Crash Course Computer Science</a> — a genuinely excellent, free video series covering everything from binary to operating systems.</li>
-<li><a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Getting_started/Web_standards/How_the_web_works">MDN: What is a computer?</a> — Mozilla&#39;s beginner-friendly overview of how computers and the web fit together.</li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Getting_started/Web_standards/How_the_web_works">MDN: What is a computer?</a> — Mozilla's beginner-friendly overview of how computers and the web fit together.</li>
 <li><a href="https://home.unicode.org/basic-info/overview/">Unicode Consortium: What is Unicode?</a> — the official, free explanation of how modern text encoding actually works.</li>
 </ul>
 <p><strong>Next up →</strong> <a href="#/lesson/00-fresher-basics/how-internet-works">How the internet works</a></p>
-<nav class="pager"><span></span><a href="/lesson/00-fresher-basics/how-internet-works.html">How the internet works →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><span></span><a href="/lesson/00-fresher-basics/how-internet-works.html">How the internet works →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/00-fresher-basics/what-is-a-computer";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>Securing the CI/CD Pipeline — Path 22 · KashSec Academy</title>
-<meta name="description" content="The pipeline that builds and deploys your software is itself a high-value target. If an attacker can run code in CI, they don't need to find a bug in your app at all — they can often reach secrets, pr">
+<meta name="description" content="Securing the CI/CD Pipeline: The pipeline itself is a target: secrets, permissions, and supply-chain trust.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/22-devsecops-appsec/cicd-security.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Securing the CI/CD Pipeline — Path 22 · KashSec Academy">
-<meta property="og:description" content="The pipeline that builds and deploys your software is itself a high-value target. If an attacker can run code in CI, they don't need to find a bug in your app at all — they can often reach secrets, pr">
+<meta property="og:description" content="Securing the CI/CD Pipeline: The pipeline itself is a target: secrets, permissions, and supply-chain trust.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/22-devsecops-appsec/cicd-security.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -17,71 +18,104 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Securing the CI/CD Pipeline — Path 22 · KashSec Academy">
-<meta name="twitter:description" content="The pipeline that builds and deploys your software is itself a high-value target. If an attacker can run code in CI, they don't need to find a bug in your app at all — they can often reach secrets, pr">
+<meta name="twitter:description" content="Securing the CI/CD Pipeline: The pipeline itself is a target: secrets, permissions, and supply-chain trust.">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 22 — DevSecOps & AppSec Program","item":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/"},{"@type":"ListItem","position":4,"name":"Securing the CI/CD Pipeline","item":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/cicd-security.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Securing the CI/CD Pipeline","headline":"Securing the CI/CD Pipeline","description":"The pipeline that builds and deploys your software is itself a high-value target. If an attacker can run code in CI, they don't need to find a bug in your app at all — they can often reach secrets, pr","url":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/cicd-security.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"The pipeline itself is a target: secrets, permissions, and supply-chain trust.","isPartOf":{"@type":"Course","name":"Path 22: DevSecOps & AppSec Program","url":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/cicd-security.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Securing the CI/CD Pipeline","headline":"Securing the CI/CD Pipeline","description":"Securing the CI/CD Pipeline: The pipeline itself is a target: secrets, permissions, and supply-chain trust.","url":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/cicd-security.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"The pipeline itself is a target: secrets, permissions, and supply-chain trust.","isPartOf":{"@type":"Course","name":"Path 22: DevSecOps & AppSec Program","url":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/cicd-security.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/22-devsecops-appsec/cicd-security">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/22-devsecops-appsec/">Path 22 — DevSecOps &amp; AppSec Program</a> · Securing the CI/CD Pipeline</div>
-  <article><h1>Securing the CI/CD Pipeline</h1>
-<p>The pipeline that builds and deploys your software is itself a high-value target. If an attacker can run code in CI, they don&#39;t need to find a bug in your app at all — they can often reach secrets, production, or every developer who pushes code, in one move.</p>
-<p>:::</p>
+<a class="skip" href="/lesson/22-devsecops-appsec/cicd-security.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/22-devsecops-appsec/">Path 22 — DevSecOps &amp; AppSec Program</a> · Securing the CI/CD Pipeline</nav>
+    <div class="md" id="content"><article><h1>Securing the CI/CD Pipeline</h1>
+<p>The pipeline that builds and deploys your software is itself a high-value target. If an attacker can run code in CI, they don't need to find a bug in your app at all — they can often reach secrets, production, or every developer who pushes code, in one move.</p>
+<p>:::tip
+Think of CI/CD as production infrastructure, not a developer convenience. It has credentials, it has network access, and it runs code you didn't necessarily write yourself. Treat it accordingly.
+:::</p>
 <h2>Why pipelines matter</h2>
 <ul>
-<li>They hold cloud credentials, API keys, and signing keys — often with broad scope, because &quot;just make the build work&quot; is a powerful incentive to over-grant permissions</li>
+<li>They hold cloud credentials, API keys, and signing keys — often with broad scope, because "just make the build work" is a powerful incentive to over-grant permissions</li>
 <li>They can push code or artifacts straight to production, frequently with no human in the loop</li>
 <li>A compromised pipeline is a <strong>supply-chain attack</strong>: instead of attacking one company, an attacker who compromises a popular CI action or a widely-used base image attacks every downstream user at once</li>
 </ul>
 <h2>The 2021 Codecov incident, briefly</h2>
-<p>A real example worth knowing: attackers modified Codecov&#39;s bash uploader script, used by thousands of CI pipelines to send test coverage data. The modified script quietly exfiltrated environment variables — which is exactly where CI secrets live — from every pipeline that ran it, for months, before anyone noticed. Nobody&#39;s <em>application</em> was vulnerable. Their <em>pipeline dependency</em> was, and that was enough.</p>
+<p>A real example worth knowing: attackers modified Codecov's bash uploader script, used by thousands of CI pipelines to send test coverage data. The modified script quietly exfiltrated environment variables — which is exactly where CI secrets live — from every pipeline that ran it, for months, before anyone noticed. Nobody's <em>application</em> was vulnerable. Their <em>pipeline dependency</em> was, and that was enough.</p>
 <h2>Common CI/CD risks</h2>
 <ol>
 <li><strong>Secrets in plaintext</strong> in pipeline YAML or environment variables visible in logs</li>
 <li><strong>Over-privileged tokens</strong> (e.g. GitHub <code>write</code> on all repos, or a cloud key with account-admin scope for a job that only needs to write to one S3 bucket)</li>
 <li><strong>Untrusted code execution</strong> — pull requests from forks running privileged workflows, or triggering builds that can read secrets meant for trusted code</li>
-<li><strong>Mutable third-party actions</strong> (<code>uses: some/action@main</code> instead of a pinned SHA) — the tag can be repointed by the action&#39;s maintainer, or by whoever compromises their account, and your pipeline silently runs whatever it now points to</li>
+<li><strong>Mutable third-party actions</strong> (<code>uses: some/action@main</code> instead of a pinned SHA) — the tag can be repointed by the action's maintainer, or by whoever compromises their account, and your pipeline silently runs whatever it now points to</li>
 <li><strong>No isolation</strong> between build jobs of different trust levels — a job building a low-trust experimental branch running on the same runner pool with the same secrets as a job deploying to production</li>
 <li><strong>Artifact tampering</strong> — no signing or verification of what gets deployed, so a build step that never ran through the real pipeline can be substituted in</li>
 </ol>
 <p>:::warn
-<code>pull_request_target</code> is the single most dangerous trigger in GitHub Actions. Unlike <code>pull_request</code>, it runs with access to the base repo&#39;s secrets <em>and</em> can be told to check out the fork&#39;s untrusted code. Combine those two and a stranger&#39;s pull request can exfiltrate your production secrets before a human ever reviews it.</p>
+<code>pull_request_target</code> is the single most dangerous trigger in GitHub Actions. Unlike <code>pull_request</code>, it runs with access to the base repo's secrets <em>and</em> can be told to check out the fork's untrusted code. Combine those two and a stranger's pull request can exfiltrate your production secrets before a human ever reviews it.
+:::</p>
 <h2>Hardening checklist</h2>
 <h3>Secrets</h3>
 <ul>
-<li>Store secrets in a proper secret manager (GitHub Secrets, Vault, cloud secret managers) — never in the YAML file itself, never in a <code>.env</code> committed &quot;just for now&quot;</li>
+<li>Store secrets in a proper secret manager (GitHub Secrets, Vault, cloud secret managers) — never in the YAML file itself, never in a <code>.env</code> committed "just for now"</li>
 <li>Never echo secrets in logs. Most CI systems mask known secret values automatically, but a secret assembled at runtime (e.g. concatenated into a URL) often slips past the masker</li>
 <li>Prefer short-lived, OIDC-based cloud credentials over long-lived access keys. A static AWS access key sitting in GitHub Secrets is a permanent target; an OIDC-issued token expires in an hour and was never stored anywhere to begin with</li>
 </ul>
@@ -98,7 +132,7 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 </ul>
 <h3>Integrity</h3>
 <ul>
-<li>Sign artifacts (Sigstore / cosign, etc.) so a build&#39;s origin can be cryptographically verified later</li>
+<li>Sign artifacts (Sigstore / cosign, etc.) so a build's origin can be cryptographically verified later</li>
 <li>Verify signatures before deploy — signing that nothing ever checks is theater</li>
 <li>Use immutable, digested image references (<code>image@sha256:...</code>) instead of mutable tags (<code>image:latest</code>)</li>
 </ul>
@@ -107,7 +141,9 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <li>Log and monitor pipeline runs — who triggered it, what changed, what it touched</li>
 <li>Alert on unusual workflow changes or secret access, especially edits to <code>.github/workflows/</code> from unexpected authors</li>
 </ul>
-<p>:::</p>
+<p>:::danger
+A single over-privileged <code>GITHUB_TOKEN</code> or cloud key in CI has caused multiple real-world breaches. Treat pipeline credentials like production credentials, because functionally, they often <em>are</em> production credentials.
+:::</p>
 <h2>Worked example: a permissions review</h2>
 <p>Say a workflow has this at the top:</p>
 <pre><code class="language-yaml">permissions: write-all
@@ -117,26 +153,27 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
   contents: read
   packages: write
 </code></pre>
-<p>Now, if this workflow is ever compromised (a malicious dependency in the build step, for example), the blast radius is &quot;can push a bad package&quot; instead of &quot;can rewrite any issue, merge any PR, and delete any release.&quot; Same build, radically different worst case.</p>
+<p>Now, if this workflow is ever compromised (a malicious dependency in the build step, for example), the blast radius is "can push a bad package" instead of "can rewrite any issue, merge any PR, and delete any release." Same build, radically different worst case.</p>
 <h2>🧪 Hands-on lab — audit a real workflow</h2>
 <ol>
 <li>Pick any GitHub repository you maintain (or fork a public one) with a <code>.github/workflows/</code> directory.</li>
-<li>Open each workflow file and answer, for every job: what permissions does it declare? If none are declared, GitHub&#39;s default (often <code>write</code> on many scopes) silently applies — that&#39;s a finding by itself.</li>
+<li>Open each workflow file and answer, for every job: what permissions does it declare? If none are declared, GitHub's default (often <code>write</code> on many scopes) silently applies — that's a finding by itself.</li>
 <li>Search for any <code>uses: owner/action@&lt;tag&gt;</code> where <code>&lt;tag&gt;</code> is a branch or version tag rather than a full commit SHA. List them.</li>
 <li>Check for <code>pull_request_target</code> anywhere in the file. If present, confirm the job does <strong>not</strong> also check out <code>github.event.pull_request.head.sha</code> or otherwise run fork code.</li>
 <li>Write a one-paragraph risk summary: if this pipeline were fully compromised today, what could an attacker do with the credentials it holds?</li>
 </ol>
 <p>:::challenge Test yourself</p>
 <ol>
-<li>A workflow triggered on <code>pull_request_target</code> checks out the PR&#39;s own branch and runs <code>npm install &amp;&amp; npm test</code>. Why is this dangerous even though it&#39;s &quot;just running tests&quot;?</li>
-<li>Your team pins actions to version tags like <code>@v3</code> for readability. What&#39;s the actual risk of doing that, and what&#39;s the trade-off if you switch to pinning by SHA?</li>
-<li>Explain, in one sentence, why a build job and a deploy job should generally hold different credentials even if the same team owns both.</li>
+<li>A workflow triggered on <code>pull_request_target</code> checks out the PR's own branch and runs <code>npm install &amp;&amp; npm test</code>. Why is this dangerous even though it's "just running tests"?</li>
+<li>Your team pins actions to version tags like <code>@v3</code> for readability. What's the actual risk of doing that, and what's the trade-off if you switch to pinning by SHA?</li>
+<li>Explain, in one sentence, why a build job and a deploy job should generally hold different credentials even if the same team owns both.
+:::</li>
 </ol>
 <h2>Key terms</h2>
 <ul>
 <li><strong>OIDC federation</strong> — exchanging a short-lived pipeline identity for cloud credentials, without ever storing a long-lived key</li>
-<li><strong>Pinned action</strong> — referencing a GitHub Action by commit SHA, not a moving tag, so the code that runs can&#39;t change out from under you</li>
-<li><strong>Artifact signing</strong> — cryptographic proof of who built a binary/image, checkable before it&#39;s ever deployed</li>
+<li><strong>Pinned action</strong> — referencing a GitHub Action by commit SHA, not a moving tag, so the code that runs can't change out from under you</li>
+<li><strong>Artifact signing</strong> — cryptographic proof of who built a binary/image, checkable before it's ever deployed</li>
 <li><strong><code>pull_request_target</code></strong> — a GitHub Actions trigger that runs with base-repo secrets even when the PR comes from a fork</li>
 <li><strong>Blast radius</strong> — the scope of damage possible if a given credential or system is fully compromised</li>
 </ul>
@@ -144,23 +181,71 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <p>Secure pipelines are a prerequisite for secure software delivery — a perfectly secure application deployed through a compromised pipeline is not secure at all. Apply least privilege, pin dependencies, keep secrets out of logs, sign and verify artifacts, and monitor the pipeline itself as the production system it actually is.</p>
 <h3>References</h3>
 <ul>
-<li><a href="https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions">GitHub Actions security hardening</a> — GitHub&#39;s own hardening guide</li>
+<li><a href="https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions">GitHub Actions security hardening</a> — GitHub's own hardening guide</li>
 <li><a href="https://slsa.dev/">SLSA framework</a> — a maturity model for supply-chain integrity</li>
 <li><a href="https://about.codecov.io/security-update/">Codecov bash uploader incident writeup</a> — the real-world case referenced above</li>
 </ul>
-<nav class="pager"><a href="/lesson/22-devsecops-appsec/iac-security-scanning.html">← Infrastructure as Code (IaC) Security Scanning</a><a href="/lesson/22-devsecops-appsec/container-image-and-registry-security.html">Container Image &amp; Registry Security →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/22-devsecops-appsec/iac-security-scanning.html">← Infrastructure as Code (IaC) Security Scanning</a><a href="/lesson/22-devsecops-appsec/container-image-and-registry-security.html">Container Image &amp; Registry Security →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/22-devsecops-appsec/cicd-security";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

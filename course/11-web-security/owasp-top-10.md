@@ -8,7 +8,26 @@ Welcome to applied web security. Before diving into individual bug classes, meet
 
 It isn't a top-10 of "bugs" exactly — it's a top-10 of **risk categories**, each covering a cluster of related vulnerability types.
 
-## The 2021 OWASP Top 10 (current edition)
+## OWASP Top 10:2025 — the current edition
+
+The 2025 edition is the current web-application Top 10. Learn the risk behind each category; the number is a label, not a severity score for an individual bug.
+
+| 2025 category | What to look for |
+| --- | --- |
+| A01 Broken Access Control | Missing authorization on objects and actions; SSRF is included here in 2025. |
+| A02 Security Misconfiguration | Unsafe defaults, exposed services, missing hardening, and configuration drift. |
+| A03 Software Supply Chain Failures | Compromised or untrusted dependencies, builds, and distribution paths. |
+| A04 Cryptographic Failures | Weak, missing, or misused protection of sensitive data. |
+| A05 Injection | Untrusted data interpreted as a command or query. |
+| A06 Insecure Design | Missing controls in the design of a workflow or system. |
+| A07 Authentication Failures | Weak identity proof, sessions, MFA, or account recovery. |
+| A08 Software or Data Integrity Failures | Trusting software or data artifacts without validating integrity. |
+| A09 Security Logging & Alerting Failures | Missing evidence or alerts that would trigger a response. |
+| A10 Mishandling of Exceptional Conditions | Error paths that fail open, leak data, or leave an unsafe state. |
+
+**What changed from 2021?** Security Misconfiguration rose from A05 to A02. Vulnerable and Outdated Components expanded into Software Supply Chain Failures (A03), covering dependencies and the systems that build and distribute them. SSRF is no longer its own A10 category; OWASP includes it under Broken Access Control. Mishandling of Exceptional Conditions is the new A10. Authentication and logging categories were renamed to emphasize the failure mode. The 2021 list below remains useful when reading older reports.
+
+## Historical reference: OWASP Top 10:2021
 
 ```mermaid
 flowchart TB
@@ -35,7 +54,7 @@ flowchart TB
     style A10 fill:#2b1010,color:#E05548,stroke:#E05548
 ```
 
-### A01: Broken Access Control — now #1
+### A01: Broken Access Control — #1 in both editions
 
 The most common issue found in real testing. This is the umbrella for **IDOR** (Path 11.4), missing function-level authorization, and privilege escalation via the web. Essentially: the app fails to properly enforce *"is this user allowed to do this specific thing?"* — exactly the authorization concept from Path 05.7.
 
@@ -77,11 +96,11 @@ A newer standalone category (previously bundled elsewhere): tricking a server in
 
 ## Why this list changes over time
 
-The Top 10 is refreshed roughly every 3-4 years (2013, 2017, 2021 editions; a 2025 edition process began recently), based on aggregated data from dozens of security firms and thousands of real applications. Categories get merged, renamed, or reprioritised as the industry's understanding shifts — access control moving to #1 in 2021 reflects genuinely how common those bugs turned out to be in the real data, more than XSS or injection which used to dominate the top spots.
+The Top 10 has been refreshed periodically (including 2013, 2017, 2021, and 2025) using contributed testing data and community review. Categories can be merged, renamed, or reprioritised as software and attack paths change. A category's position is a guide to broad risk, not a replacement for testing or for prioritising a particular finding in its business context.
 
-## What the 2025 refresh is expected to change
+## Using the editions together
 
-As referenced above, OWASP began the process toward a new edition; while the exact final categories aren't locked until release, the underlying trend worth understanding is *why* these refreshes happen at all — not because old categories stop mattering, but because the industry's aggregated testing data shifts as technology shifts. API-first architectures (Path 05's APIs & JSON lesson), widespread cloud misconfiguration (Path 08), and AI/LLM-specific risks (Path 18's dedicated material, and OWASP's own separate "Top 10 for LLM Applications" project) are all putting upward pressure on categories that barely existed as distinct concerns in 2013. Learning the *current* list matters, but learning to read *why* a list changes is the more durable skill — it's the same "which stage of an attack is this abusing" thinking from Path 10's kill chain lesson, just applied to an evolving risk taxonomy instead of a fixed attack sequence.
+When an older report says **A06:2021 Vulnerable and Outdated Components**, map it to the broader **A03:2025 Software Supply Chain Failures** and ask whether the build, registry, maintainer, or release channel is part of the risk. When a 2021 report says **A10 SSRF**, look under **A01:2025 Broken Access Control** while still describing the exact SSRF weakness. The OWASP API Security Top 10 and OWASP guidance for LLM applications are separate projects; their categories should not be mixed into this web-app list.
 
 ## How to actually use the Top 10 in practice
 
@@ -102,17 +121,17 @@ OWASP produces much more than just the Top 10:
 
 ## 🧪 Lab — Map what you already know
 
-Before moving further into this path, go back through Paths 01–06 and, for each OWASP Top 10 category above, write down **one concept you've already learned** that connects to it. For example:
+Before moving further into this path, go back through Paths 01–06 and, for each **2025** category above, write down **one concept you've already learned** that connects to it. For example:
 
-- A02 (Cryptographic Failures) → "Path 10.5: MD5/SHA-1 are wrong for passwords."
+- A04 (Cryptographic Failures) → "Path 10.5: MD5/SHA-1 are wrong for passwords."
 - A07 (Auth Failures) → "Path 05.4: session cookies need HttpOnly/Secure/SameSite."
 
 If you can connect at least 6 of the 10 categories to something you already know, you're in great shape for the rest of this path — you're not starting from zero, you're organising what you already have.
 
 :::challenge Test yourself
-Which OWASP Top 10 category moved to the #1 spot in the 2021 edition, and what's the one-sentence definition of the failure it describes?
+Which category is A03 in the 2025 edition, and how is it broader than A06 in 2021?
 
-<details><summary>Show answer</summary><strong>A01: Broken Access Control</strong> — the application fails to properly enforce restrictions on what authenticated users are allowed to do or access, letting them act outside their intended permissions.</details>
+<details><summary>Show answer</summary><strong>Software Supply Chain Failures</strong> — it expands beyond vulnerable or outdated libraries to include compromised dependencies, build systems, and distribution infrastructure.</details>
 :::
 
 ## Key terms
@@ -125,13 +144,14 @@ Which OWASP Top 10 category moved to the #1 spot in the 2021 edition, and what's
 ## Recap
 
 - The OWASP Top 10 organises web application risk into ten shared categories.
-- A01 (Broken Access Control) is currently the most common real-world category.
+- A01 (Broken Access Control) remains first in the 2025 edition.
 - Injection, misconfig, and outdated components remain persistently common across editions.
 - The list evolves based on real aggregated data, not opinion.
 - It serves as a syllabus for learners, a checklist for testers, and a vocabulary for defenders.
 
 ???refs
-- [OWASP Top 10 (2021)](https://owasp.org/Top10/) — the official, current edition.
+- [OWASP Top 10:2025](https://top10.owasp.org/2025/0x00_2025-Introduction/) — current categories and change notes.
+- [OWASP Top 10:2021](https://owasp.org/Top10/2021/) — historical comparison.
 - [OWASP ASVS](https://owasp.org/www-project-application-security-verification-standard/) — the detailed verification standard.
 - [OWASP Cheat Sheet Series](https://cheatsheetseries.owasp.org/) — practical guidance, topic by topic.
 - [OWASP API Security Top 10](https://owasp.org/API-Security/editions/2023/en/0x11-t10/) — the API-specific parallel.

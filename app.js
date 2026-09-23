@@ -1603,7 +1603,7 @@ const FEATURES = () => [
   {ico:"grid",     t:"Diagrams that click", d:"Mermaid flowcharts and hand-drawn SVGs turn abstract ideas into pictures you remember."},
   {ico:"map",      t:"A real roadmap",      d:`${PATHS.length} ordered paths, ${totalSubLessons()} focused sub-lessons — each one building on the one before it.`},
   {ico:"link",     t:"Curated references",  d:"Every lesson ends with links to the best free resources, so you always know where to go deeper."},
-  {ico:"unlock",   t:"Free, forever",       d:"No account, no paywall, no tracking. World-class security education, open to everyone."}
+  {ico:"unlock",   t:"Free, forever",       d:"No account or paywall. Your learning progress stays on this device unless you opt into sync."}
 ];
 
 /* --- Helpers --- */
@@ -1628,14 +1628,67 @@ function findSubContext(pathId, subId){
 /* --- Router --- */
 window.addEventListener('hashchange', route);
 window.addEventListener('DOMContentLoaded', route);
+window.addEventListener('popstate', route);
+
+// Public lessons, labs, tools, and key hubs have real static HTML pages.
+// Keep their URL in the address bar for readers and crawlers alike.
+function canonicalPathForHash(hash){
+  if(hash === '#/' || hash === '#') return '/';
+  if(hash === '#/course') return '/lesson/';
+  if(hash === '#/labs') return '/labs/';
+  if(hash === '#/tools') return '/tools/';
+  if(hash === '#/faq') return '/faq.html';
+  if(hash === '#/tasks') return '/practice.html';
+  if(hash === '#/exam') return '/exam.html';
+  const lesson = hash.match(/^#\/lesson\/([a-z0-9-]+)(?:\/([a-z0-9-]+))?$/);
+  if(lesson) return lesson[2] ? `/lesson/${lesson[1]}/${lesson[2]}.html` : `/lesson/${lesson[1]}/`;
+  const item = hash.match(/^#\/(labs|tools)\/([a-z0-9-]+)$/);
+  if(item) return `/${item[1]}/${item[2]}.html`;
+  return null;
+}
+
+function hashRouteForPath(pathname){
+  if(pathname === '/' || pathname === '/index.html') return '#/';
+  if(pathname === '/lesson/') return '#/course';
+  if(pathname === '/labs/') return '#/labs';
+  if(pathname === '/tools/') return '#/tools';
+  if(pathname === '/faq.html') return '#/faq';
+  if(pathname === '/practice.html') return '#/tasks';
+  if(pathname === '/exam.html') return '#/exam';
+  const lesson = pathname.match(/^\/lesson\/([a-z0-9-]+)\/(?:([a-z0-9-]+)\.html)?$/);
+  if(lesson) return lesson[2] ? `#/lesson/${lesson[1]}/${lesson[2]}` : `#/lesson/${lesson[1]}`;
+  const item = pathname.match(/^\/(labs|tools)\/([a-z0-9-]+)\.html$/);
+  if(item) return `#/${item[1]}/${item[2]}`;
+  return null;
+}
+
+const activeRoute = ()=>location.hash.startsWith('#/') ? location.hash : (hashRouteForPath(location.pathname) || '#/');
+
+document.addEventListener('click', e=>{
+  const anchor = e.target.closest?.('a[href^="#/"]');
+  if(!anchor || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+  const path = canonicalPathForHash(anchor.getAttribute('href'));
+  if(!path) return;
+  e.preventDefault();
+  location.assign(path);
+});
 
 /* Bumped on every navigation so in-flight async work (a lesson fetch
    still resolving after the user clicked elsewhere) can tell it's stale
    and skip writing into DOM nodes that no longer exist. */
 let renderGeneration = 0;
+let currentLessonScrollController = null;
+let currentLabMessageController = null;
+let currentCvssWorker = null;
 
 function route(){
   renderGeneration++;
+  currentLessonScrollController?.abort();
+  currentLessonScrollController = null;
+  currentLabMessageController?.abort();
+  currentLabMessageController = null;
+  currentCvssWorker?.terminate();
+  currentCvssWorker = null;
   currentTocObserver?.disconnect();
   document.getElementById('tocFloat')?.remove();
   clearInterval(mockInterviewTimer);
@@ -1650,7 +1703,15 @@ function route(){
     app.innerHTML = `<div class="loading">Signing you in…</div>`;
     return;
   }
-  const hash = location.hash || '#/';
+  const hash = activeRoute();
+  if(location.hash.startsWith('#/')){
+    const canonical = canonicalPathForHash(hash);
+    if(canonical){ location.replace(canonical); return; }
+    if(location.pathname !== '/' && location.pathname !== '/index.html'){
+      location.replace('/' + hash);
+      return;
+    }
+  }
   // Explicit 'instant' bypasses the site-wide CSS scroll-behavior:smooth —
   // without it, this scroll animates and gets cut short the instant the
   // new page's (possibly much shorter) content replaces the old DOM a
@@ -1779,15 +1840,15 @@ function afterRender(){
    homepage, only for genuinely new visitors, and is fully skippable.
    ============================================================ */
 const TOUR_STEPS = [
-  {sel:'#searchBtn',        title:'Search everything',      body:'Press Ctrl/Cmd + K anywhere to search all 485 lessons — or jump straight to any tool, lab, or page.'},
+  {sel:'#searchBtn',        title:'Search everything',      body:()=>`Press Ctrl/Cmd + K anywhere to search all ${totalSubLessons()} lessons — or jump straight to any tool, lab, or page.`},
   {sel:'a[href="#/tracks"]',title:'Follow a career track',  body:'Not sure where to start? Tracks give you an ordered path for a specific job — SOC analyst, pentester, GRC, and more.'},
-  {sel:'a[href="#/labs"]',  title:'Practise in the browser', body:'12 hands-on labs — SQL injection, XSS, IDOR, JWT forgery and more. All simulated, all safe, nothing to install.'},
+  {sel:'a[href="#/labs"]',  title:'Practise in the browser', body:()=>`${LABS.length} hands-on labs — SQL injection, XSS, IDOR, JWT forgery and more. All simulated, all safe, nothing to install.`},
   {sel:'#progressRingBtn',  title:'Your progress lives here', body:'Everything you complete is saved automatically in this browser. No account needed — but you can sign in to sync across devices.'}
 ];
 let tourIndex = 0;
 function maybeStartTour(){
   if(STATE.tourSeen) return;
-  if((location.hash || '#/') !== '#/' && location.hash !== '#') return;
+  if(activeRoute() !== '#/') return;
   // A returning user with real progress shouldn't be tour-bombed.
   if(Object.keys(STATE.completed).length > 0){ STATE.tourSeen = true; saveState(); return; }
   if(document.getElementById('tourOverlay')) return;
@@ -1816,7 +1877,7 @@ function paintTourStep(){
     <div class="tour-card" role="dialog" aria-modal="true" aria-labelledby="tourTitle">
       <div class="tour-step-count">Step ${tourIndex+1} of ${TOUR_STEPS.length}</div>
       <h3 id="tourTitle">${escapeHtml(step.title)}</h3>
-      <p>${escapeHtml(step.body)}</p>
+      <p>${escapeHtml(typeof step.body === 'function' ? step.body() : step.body)}</p>
       <div class="tour-actions">
         <button class="btn-ghost sm" id="tourSkip" type="button">Skip tour</button>
         <button class="btn-amber sm" id="tourNext" type="button">${tourIndex+1 < TOUR_STEPS.length ? 'Next →' : 'Got it'}</button>
@@ -1908,7 +1969,7 @@ function fireConfetti(opts){
 }
 
 function updateActiveNav(){
-  const hash = location.hash || '#/';
+  const hash = activeRoute();
   document.querySelectorAll('#navLinks a').forEach(a=>{
     const href = a.getAttribute('href') || '';
     if(!href.startsWith('#')) return; // skip external (GitHub)
@@ -2586,8 +2647,7 @@ const LEGAL = {
         'Every lesson has a "report a mistake" control at the bottom. That is the fastest route for anything factual — a wrong command, an outdated tool, a broken link, an explanation that does not hold up. Please include which lesson, since the report does not always carry it.'
       ]},
       {h:'Bugs, suggestions and anything technical', p:[
-        'The site is open source, and the repository is the best place for anything beyond a single-line correction — a bug you can reproduce, a feature you think is missing, a lesson you think is wrong in a way that needs discussion. Opening an issue leaves a record, which a private message does not.',
-        'The repository link is in the footer of every lesson, under "suggest an edit".'
+        'The source repository is currently private. Its issue and edit links are available only to collaborators with access. A public feedback channel is not yet configured; please do not include sensitive information in a report link.'
       ]},
       {h:'Privacy and data requests', p:[
         'If you have created an account and want your data exported or deleted, you can do both yourself from the progress page without asking anyone. If something is not working, use either route above and say what you need.'
@@ -2599,7 +2659,7 @@ const LEGAL = {
   },
   privacy: {
     eyebrow:'Privacy', title:'Privacy policy',
-    lead:'What this site stores, what leaves your device, and what you can do about it. Last updated 3 August 2026.',
+    lead:'What this site stores, what leaves your device, and what you can do about it. Last updated 23 September 2026.',
     sections:[
       {h:'The short version', p:[
         'You can use the entire course without an account, and if you do, your progress never leaves your browser. If you choose to create an account, your progress is synced to a database so you can pick it up on another device. Page-view and performance analytics are collected for everyone. Advertising may appear and, when it does, is served by Google.',
@@ -2630,7 +2690,7 @@ const LEGAL = {
         'This site is not directed at children under 13 and no account should be created by one. Nothing here is knowingly collected from a child.'
       ]},
       {h:'Your choices', p:[
-        'Use the site without an account, and nothing about you is stored anywhere but your own browser. Delete your local data by clearing site storage in your browser settings. Export or delete an account and its data from the progress page. Opt out of personalised advertising with the links above. Block third-party analytics with any ordinary content blocker — the site works completely normally with all of it blocked.'
+        'You can use the site without an account; your learning progress then stays in your browser, while page analytics and any advertising still operate as described above. Delete local progress by clearing site storage in your browser settings. Export or delete an account and its data from the progress page. Opt out of personalised advertising with the links above. The lessons and tools work if third-party analytics are blocked.'
       ]},
       {h:'Changes and contact', p:[
         'If what the site collects changes, this page changes in the same update, and the date at the top moves. Questions about any of it go through the <a href="#/contact">contact page</a>.'
@@ -2773,6 +2833,7 @@ async function renderSubLesson(pathId, subId){
   const ctx = findSubContext(pathId, subId);
   if(!ctx) return renderNotFound();
   const myGen = renderGeneration;
+  const updatedOn = typeof LESSON_UPDATED === 'undefined' ? null : LESSON_UPDATED[`${pathId}/${subId}`];
 
   app.innerHTML = `
     <div class="reader-progress" id="rprog" style="width:0%"></div>
@@ -2787,6 +2848,7 @@ async function renderSubLesson(pathId, subId){
           <div class="reader-crumb">
             <a href="#/lesson/${ctx.path.id}" style="color:var(--teal);text-decoration:none">Path ${ctx.path.n}: ${ctx.path.title}</a>
             &nbsp;·&nbsp; Sub-lesson ${ctx.path.n}.${ctx.sub.n}
+            ${updatedOn ? `&nbsp;·&nbsp; <time datetime="${updatedOn}" title="Date the lesson content last changed; this is not an editorial review date">Updated ${new Date(updatedOn+'T00:00:00Z').toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric',timeZone:'UTC'})}</time>` : ''}
           </div>
           <div class="reader-actions">
             <button class="icon-btn ${isBookmarked(pathId,subId)?'active':''}" id="bookmarkBtn" type="button" aria-label="Bookmark this lesson" aria-pressed="${isBookmarked(pathId,subId)}">
@@ -2848,17 +2910,17 @@ async function renderSubLesson(pathId, subId){
         <div class="reader-foot">
           <a class="suggest-edit" href="https://github.com/${REPO_SLUG}/edit/${REPO_BRANCH}/course/${pathId}/${subId}.md" target="_blank" rel="noopener noreferrer">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-            Spotted a typo or something to improve? Suggest an edit on GitHub
+            Suggest an edit on GitHub (collaborators)
           </a>
           <button class="suggest-edit report-mistake-btn" id="reportMistakeBtn" type="button">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
-            Report a mistake
+            Report a mistake (collaborators)
           </button>
         </div>
         <form class="report-mistake-form" id="reportMistakeForm" hidden>
-          <textarea id="reportMistakeText" placeholder="What's wrong with this lesson? (a sentence is plenty — this opens a GitHub issue, pre-filled)" maxlength="500"></textarea>
+          <textarea id="reportMistakeText" placeholder="Describe the issue. The GitHub repository is private, so submitting requires collaborator access." maxlength="500"></textarea>
           <div class="report-mistake-actions">
-            <button class="btn-amber sm" type="submit">Open GitHub issue →</button>
+            <button class="btn-amber sm" type="submit">Open collaborator issue →</button>
             <button class="btn-ghost sm" id="reportMistakeCancel" type="button">Cancel</button>
           </div>
         </form>
@@ -3058,7 +3120,10 @@ function wireProgress(){
     const pct = height > 0 ? (scrolled / height * 100) : 0;
     bar.style.width = pct + '%';
   };
-  window.addEventListener('scroll', update, {passive:true});
+  // A lesson rerender must not leave its old scroll handler behind.
+  currentLessonScrollController?.abort();
+  currentLessonScrollController = new AbortController();
+  window.addEventListener('scroll', update, {passive:true, signal:currentLessonScrollController.signal});
   update();
 }
 
@@ -3096,7 +3161,13 @@ function enrichMarkdown(md){
   html = html.replace(/<table>([\s\S]*?)<\/table>/g,
     (m)=> `<div class="table-scroll">${m}</div>`);
 
-  return html;
+  // Markdown can contain raw HTML and custom SVG blocks. Sanitize the final
+  // rendered fragment, including content emitted by the custom transforms.
+  return DOMPurify.sanitize(html, {
+    USE_PROFILES:{html:true, svg:true},
+    FORBID_TAGS:['script','style','iframe','object','embed','form','foreignObject'],
+    FORBID_ATTR:['style'],
+  });
 }
 
 /* In-page "On this page" nav, injected after the lesson h1 when a lesson
@@ -4110,13 +4181,15 @@ function renderLabWebapp(){
   const xssForm = document.getElementById('xssForm');
   const xssFrame = document.getElementById('xssFrame');
   const xssHit = document.getElementById('xssHit');
-  window.__xssTriggered = ()=>{ xssHit.hidden = false; markLabComplete('webapp'); };
+  const labToken = crypto.randomUUID();
+  const onXssTriggered = ()=>{ xssHit.hidden = false; markLabComplete('webapp'); };
+  currentLabMessageController = new AbortController();
   xssForm.addEventListener('submit', e=>{
     e.preventDefault();
     const q = document.getElementById('xssQuery').value;
     // Deliberately unescaped concatenation — that's the whole point of the demo.
     const doc = `<!doctype html><html><body style="font-family:system-ui;color:#1a1a1a;padding:1rem;margin:0">
-      <script>const _a = window.alert; window.alert = function(m){ _a(m); parent.postMessage({xss:true},'*'); };<\/script>
+      <script>const _a = window.alert; window.alert = function(m){ _a(m); parent.postMessage({type:'kashsec:xss-demo',token:${JSON.stringify(labToken)}},'*'); };<\/script>
       <div style="color:#666;font-size:.85rem">Search results for:</div>
       <div style="font-size:1.1rem;margin-top:.3rem">${q}</div>
       <hr style="margin:1rem 0;border:none;border-top:1px solid #ddd">
@@ -4124,7 +4197,11 @@ function renderLabWebapp(){
     </body></html>`;
     xssFrame.srcdoc = doc;
   });
-  window.addEventListener('message', ev=>{ if(ev.data && ev.data.xss) window.__xssTriggered(); });
+  window.addEventListener('message', ev=>{
+    if(ev.source !== xssFrame.contentWindow) return;
+    if(ev.data?.type !== 'kashsec:xss-demo' || ev.data?.token !== labToken) return;
+    onXssTriggered();
+  }, {signal:currentLabMessageController.signal});
 
   const sqliForm = document.getElementById('sqliForm');
   sqliForm.addEventListener('submit', e=>{
@@ -6831,7 +6908,7 @@ const TOOLS = [
   {id:'encoder',  ico:'swap', title:'Encoder / Decoder',     desc:'Base64, URL, and Hex — encode or decode text both ways.', related:'Path 06 — Cryptography'},
   {id:'hash',     ico:'fingerprint', title:'Hash Generator',         desc:'SHA-1, SHA-256, SHA-384, SHA-512 of any text, via the browser\'s crypto engine.', related:'Path 06 — Cryptography'},
   {id:'jwt',      ico:'ticket', title:'JWT Decoder',            desc:'Decode a JSON Web Token\'s header and payload and read its claims. No signature verification.', related:'Path 11 — Web Security'},
-  {id:'cvss',     ico:'gauge', title:'CVSS 3.1 Calculator',    desc:'Turn the base metrics of a vulnerability into a 0–10 severity score.', related:'Path 10 — Fundamentals'},
+  {id:'cvss',     ico:'gauge', title:'CVSS 4.0 + 3.1 Calculator', desc:'Build a CVSS vector and calculate Base, Threat, and Environmental severity locally.', related:'Path 10 — Fundamentals'},
   {id:'subnet',   ico:'network', title:'Subnet Calculator',      desc:'IPv4 CIDR → network, broadcast, host range, mask, and host count.', related:'Path 02 — Networking'},
   {id:'password', ico:'key', title:'Password Strength',      desc:'Rough entropy and crack-time estimate for a password, with feedback.', related:'Path 06 — Cryptography'},
   {id:'cipher',   ico:'lockKey', title:'Cipher Playground',      desc:'Caesar/ROT, XOR, and Vigenère — the classic ciphers from the CTF zone.', related:'Path 19 — CTF Zone'},
@@ -7008,8 +7085,75 @@ function toolJwt(el){
   inp.addEventListener('input', run);
 }
 
-/* --- CVSS 3.1 base score --- */
+/* --- CVSS 4.0 (FIRST reference scoring) and legacy 3.1 --- */
 function toolCvss(el){
+  el.innerHTML = `<div class="cvss-version-tabs" role="tablist" aria-label="CVSS version">
+    <button type="button" role="tab" aria-selected="true" data-cvss-version="4">CVSS 4.0</button>
+    <button type="button" role="tab" aria-selected="false" data-cvss-version="3">CVSS 3.1</button>
+  </div><div id="cvssPanel"></div>`;
+  const panel = el.querySelector('#cvssPanel');
+  const show = version => {
+    currentCvssWorker?.terminate();
+    currentCvssWorker = null;
+    el.querySelectorAll('[data-cvss-version]').forEach(button =>
+      button.setAttribute('aria-selected', String(button.dataset.cvssVersion === version)));
+    if(version === '4') toolCvss4(panel);
+    else toolCvss31(panel);
+  };
+  el.querySelectorAll('[data-cvss-version]').forEach(button =>
+    button.addEventListener('click', () => show(button.dataset.cvssVersion)));
+  show('4');
+}
+
+function toolCvss4(el){
+  el.innerHTML = '<div class="loading">Loading CVSS 4.0 metrics…</div>';
+  const worker = new Worker('/vendor/cvss4/worker.js');
+  currentCvssWorker = worker;
+  let selected;
+  const severity = s => s===0 ? ['None','sev-none'] : s<4 ? ['Low','sev-low'] : s<7 ? ['Medium','sev-med'] : s<9 ? ['High','sev-high'] : ['Critical','sev-crit'];
+  worker.onmessage = ({data}) => {
+    if(worker !== currentCvssWorker || !el.isConnected) return;
+    if(data.type === 'error'){
+      el.querySelector('#cvssResult').textContent = data.message;
+      return;
+    }
+    if(data.type === 'score'){
+      const [label, cls] = severity(data.score);
+      el.querySelector('#cvssResult').innerHTML = `<div class="cvss-score ${cls}"><span class="cvss-num">${data.score.toFixed(1)}</span><span class="cvss-sev">${label}</span></div>`;
+      el.querySelector('#cvssVector').textContent = data.vector;
+      return;
+    }
+    selected = {...data.defaults};
+    el.innerHTML = `<p class="tool-note">CVSS 4.0 separates impact on the vulnerable system from impact on subsequent systems. Threat and environmental metrics refine the score; supplemental metrics describe context without changing it. CVSS is owned by FIRST and used by permission. <a href="https://www.first.org/cvss/v4.0/specification-document" target="_blank" rel="noopener noreferrer">Read the specification</a>.</p>
+      <div class="cvss-output"><div class="cvss-result" id="cvssResult" aria-live="polite"></div><div class="cvss-vector" id="cvssVector"></div><button type="button" class="btn-ghost sm" id="cvssCopy">Copy vector</button></div>
+      ${Object.entries(data.config).map(([type, typeData]) => `<section class="cvss-group"><h2>${escapeHtml(type)}</h2>${
+        Object.entries(typeData.metric_groups).map(([group, groupData]) => `<h3>${escapeHtml(group)}</h3><div class="cvss-grid">${
+          Object.entries(groupData).map(([name, metric]) => `<fieldset class="cvss-metric"><legend class="cvss-mlabel" title="${escapeHtml(metric.tooltip || '')}">${escapeHtml(name)} <span class="cvss-key">${escapeHtml(metric.short)}</span></legend><div class="cvss-opts" data-k="${escapeHtml(metric.short)}">${
+            Object.entries(metric.options).map(([label, option]) => `<button type="button" class="cvss-opt ${selected[metric.short]===option.value?'on':''}" data-v="${escapeHtml(option.value)}" aria-pressed="${selected[metric.short]===option.value}" title="${escapeHtml(option.tooltip || '')}">${escapeHtml(label)}</button>`).join('')
+          }</div></fieldset>`).join('')
+        }</div>`).join('')
+      }</section>`).join('')}
+      <p class="tool-note">The 3.1 tab remains for older reports. Scores from different CVSS versions should not be compared as if they use one formula. Reference scoring code: <a href="https://github.com/FIRSTdotorg/cvss-v4-calculator" target="_blank" rel="noopener noreferrer">FIRST/Red Hat (BSD-2-Clause)</a>.</p>`;
+    el.querySelectorAll('.cvss-opts').forEach(row => row.addEventListener('click', event => {
+      const button = event.target.closest('[data-v]');
+      if(!button) return;
+      selected[row.dataset.k] = button.dataset.v;
+      row.querySelectorAll('[data-v]').forEach(b => {
+        b.classList.toggle('on', b===button);
+        b.setAttribute('aria-pressed', String(b===button));
+      });
+      worker.postMessage({type:'score', selected});
+    }));
+    el.querySelector('#cvssCopy').addEventListener('click', async () => {
+      await navigator.clipboard.writeText(el.querySelector('#cvssVector').textContent);
+      el.querySelector('#cvssCopy').textContent = 'Copied';
+    });
+    worker.postMessage({type:'score', selected});
+  };
+  worker.onerror = () => { if(el.isConnected) el.textContent = 'CVSS 4.0 scorer could not load. Please reload this page.'; };
+}
+
+function toolCvss31(el){
   const metrics = [
     {k:'AV', label:'Attack Vector', opts:[['N','Network'],['A','Adjacent'],['L','Local'],['P','Physical']]},
     {k:'AC', label:'Attack Complexity', opts:[['L','Low'],['H','High']]},
@@ -9487,7 +9631,7 @@ function drawCertificate(canvas, name){
 
   // Cert ID footer
   ctx.textAlign = 'center'; ctx.fillStyle = '#A7ADBB'; ctx.font = '400 13px Menlo, Consolas, monospace';
-  ctx.fillText(`Certificate ID: ${certId(name)}  ·  Verify at kashsec.academy`, cx, H-40);
+  ctx.fillText(`Personal completion record: ${certId(name)}  ·  No public verification`, cx, H-40);
 }
 
 /* Branded shareable progress card (dark, on-brand). Drawn on a 1000x525
@@ -11048,7 +11192,7 @@ window.addEventListener('keydown', (e)=>{
     return;
   }
   if(e.key === '[' || e.key === ']'){
-    const m = location.hash.match(/^#\/lesson\/([^/]+)\/([^/]+)$/);
+    const m = activeRoute().match(/^#\/lesson\/([^/]+)\/([^/]+)$/);
     if(!m) return;
     const ctx = findSubContext(m[1], m[2]);
     if(!ctx) return;

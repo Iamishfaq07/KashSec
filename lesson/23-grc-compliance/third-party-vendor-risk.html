@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>Third-Party &amp; Vendor Risk — Path 23 · KashSec Academy</title>
-<meta name="description" content="Some of the most damaging breaches in history didn't start inside the victim company at all — they started with a vendor. Target (2013), SolarWinds (2020), and countless smaller incidents all trace ba">
+<meta name="description" content="Third-Party &amp; Vendor Risk: Why vendors are the weak link, and how to actually assess them.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/23-grc-compliance/third-party-vendor-risk.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Third-Party &amp; Vendor Risk — Path 23 · KashSec Academy">
-<meta property="og:description" content="Some of the most damaging breaches in history didn't start inside the victim company at all — they started with a vendor. Target (2013), SolarWinds (2020), and countless smaller incidents all trace ba">
+<meta property="og:description" content="Third-Party &amp; Vendor Risk: Why vendors are the weak link, and how to actually assess them.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/23-grc-compliance/third-party-vendor-risk.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -17,64 +18,97 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Third-Party &amp; Vendor Risk — Path 23 · KashSec Academy">
-<meta name="twitter:description" content="Some of the most damaging breaches in history didn't start inside the victim company at all — they started with a vendor. Target (2013), SolarWinds (2020), and countless smaller incidents all trace ba">
+<meta name="twitter:description" content="Third-Party &amp; Vendor Risk: Why vendors are the weak link, and how to actually assess them.">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 23 — GRC & Compliance","item":"https://kashsec.vercel.app/lesson/23-grc-compliance/"},{"@type":"ListItem","position":4,"name":"Third-Party & Vendor Risk","item":"https://kashsec.vercel.app/lesson/23-grc-compliance/third-party-vendor-risk.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Third-Party & Vendor Risk","headline":"Third-Party & Vendor Risk","description":"Some of the most damaging breaches in history didn't start inside the victim company at all — they started with a vendor. Target (2013), SolarWinds (2020), and countless smaller incidents all trace ba","url":"https://kashsec.vercel.app/lesson/23-grc-compliance/third-party-vendor-risk.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"All levels","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Why vendors are the weak link, and how to actually assess them.","isPartOf":{"@type":"Course","name":"Path 23: GRC & Compliance","url":"https://kashsec.vercel.app/lesson/23-grc-compliance/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/23-grc-compliance/third-party-vendor-risk.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Third-Party & Vendor Risk","headline":"Third-Party & Vendor Risk","description":"Third-Party & Vendor Risk: Why vendors are the weak link, and how to actually assess them.","url":"https://kashsec.vercel.app/lesson/23-grc-compliance/third-party-vendor-risk.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"All levels","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Why vendors are the weak link, and how to actually assess them.","isPartOf":{"@type":"Course","name":"Path 23: GRC & Compliance","url":"https://kashsec.vercel.app/lesson/23-grc-compliance/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/23-grc-compliance/third-party-vendor-risk.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/23-grc-compliance/third-party-vendor-risk">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/23-grc-compliance/">Path 23 — GRC &amp; Compliance</a> · Third-Party &amp; Vendor Risk</div>
-  <article><h1>Third-Party &amp; Vendor Risk</h1>
-<p>Some of the most damaging breaches in history didn&#39;t start inside the victim company at all — they started with a vendor. Target (2013), SolarWinds (2020), and countless smaller incidents all trace back to third-party risk.</p>
-<p>:::</p>
+<a class="skip" href="/lesson/23-grc-compliance/third-party-vendor-risk.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/23-grc-compliance/">Path 23 — GRC &amp; Compliance</a> · Third-Party &amp; Vendor Risk</nav>
+    <div class="md" id="content"><article><h1>Third-Party &amp; Vendor Risk</h1>
+<p>Some of the most damaging breaches in history didn't start inside the victim company at all — they started with a vendor. Target (2013), SolarWinds (2020), and countless smaller incidents all trace back to third-party risk.</p>
+<p>:::tip
+Vendor risk isn't just about vendors who touch your data directly. A vendor whose <em>software</em> you install (like SolarWinds' Orion) can compromise you even with zero data access, just by shipping malicious updates.
+:::</p>
 <h2>Why vendors are the weak link</h2>
-<p>Your organisation might have a mature security program — but if you give a vendor access to your data, your network, or your customers&#39; data, your security posture is now only as strong as <em>theirs</em>. Attackers know this and specifically target smaller, less-secured vendors as a way into larger, better-defended targets.</p>
+<p>Your organisation might have a mature security program — but if you give a vendor access to your data, your network, or your customers' data, your security posture is now only as strong as <em>theirs</em>. Attackers know this and specifically target smaller, less-secured vendors as a way into larger, better-defended targets.</p>
 <h3>The Target breach, briefly</h3>
-<p>The 2013 Target breach — 40 million card numbers stolen — didn&#39;t start with a vulnerability in Target&#39;s own systems. It started with stolen credentials from an HVAC vendor that had network access for billing purposes. Attackers pivoted from that vendor&#39;s limited network access all the way to Target&#39;s point-of-sale systems. The lesson that shaped an entire generation of vendor risk practice: the size and sensitivity of <em>your</em> company doesn&#39;t matter if a small, poorly-secured vendor has a path into your network.</p>
+<p>The 2013 Target breach — 40 million card numbers stolen — didn't start with a vulnerability in Target's own systems. It started with stolen credentials from an HVAC vendor that had network access for billing purposes. Attackers pivoted from that vendor's limited network access all the way to Target's point-of-sale systems. The lesson that shaped an entire generation of vendor risk practice: the size and sensitivity of <em>your</em> company doesn't matter if a small, poorly-secured vendor has a path into your network.</p>
 <h2>The vendor risk lifecycle</h2>
 <ol>
-<li><strong>Pre-engagement due diligence</strong> — before signing a contract, assess the vendor&#39;s security posture (security questionnaire, request their SOC 2/ISO 27001 report, review their breach history).</li>
+<li><strong>Pre-engagement due diligence</strong> — before signing a contract, assess the vendor's security posture (security questionnaire, request their SOC 2/ISO 27001 report, review their breach history).</li>
 <li><strong>Contractual controls</strong> — data processing agreements, breach notification clauses, right-to-audit clauses, liability terms.</li>
 <li><strong>Onboarding</strong> — provision the minimum access actually needed (least privilege applies to vendors too).</li>
-<li><strong>Ongoing monitoring</strong> — periodic reassessment; don&#39;t just check once and forget. Security ratings services (BitSight, SecurityScorecard) give an outside-in continuous view.</li>
+<li><strong>Ongoing monitoring</strong> — periodic reassessment; don't just check once and forget. Security ratings services (BitSight, SecurityScorecard) give an outside-in continuous view.</li>
 <li><strong>Offboarding</strong> — revoke access promptly when the relationship ends. Forgotten vendor access is a classic audit finding.</li>
 </ol>
 <p>:::warn
-Stage 4 (ongoing monitoring) is the one organisations skip most often, because it&#39;s the least urgent-feeling step. A vendor assessed as low-risk at onboarding two years ago may have since suffered a breach, changed ownership, or quietly outsourced their infrastructure to a provider you&#39;ve never vetted. &quot;We checked them once&quot; is not the same as &quot;we know their current risk.&quot;</p>
+Stage 4 (ongoing monitoring) is the one organisations skip most often, because it's the least urgent-feeling step. A vendor assessed as low-risk at onboarding two years ago may have since suffered a breach, changed ownership, or quietly outsourced their infrastructure to a provider you've never vetted. "We checked them once" is not the same as "we know their current risk."
+:::</p>
 <h2>Tiering vendors by risk</h2>
-<p>Not every vendor deserves the same scrutiny — the office snack delivery service doesn&#39;t need the same review as your cloud hosting provider. A simple tiering model:</p>
+<p>Not every vendor deserves the same scrutiny — the office snack delivery service doesn't need the same review as your cloud hosting provider. A simple tiering model:</p>
 <ul>
 <li><strong>Tier 1 (Critical)</strong> — has access to sensitive data or core infrastructure. Full assessment, annual review, SOC 2/ISO evidence required.</li>
 <li><strong>Tier 2 (Moderate)</strong> — limited data access or operational dependency. Lighter questionnaire, less frequent review.</li>
@@ -117,33 +151,30 @@ Stage 4 (ongoing monitoring) is the one organisations skip most often, because i
 <li>Do you use subprocessors (other vendors), and are they disclosed?</li>
 </ul>
 <h2>The fourth-party problem</h2>
-<p>Your vendor&#39;s own vendors (&quot;fourth parties&quot;) are risk you inherit indirectly and often can&#39;t see directly. This is why contracts increasingly require vendors to disclose their subprocessors — you can&#39;t assess a risk you don&#39;t know exists.</p>
+<p>Your vendor's own vendors ("fourth parties") are risk you inherit indirectly and often can't see directly. This is why contracts increasingly require vendors to disclose their subprocessors — you can't assess a risk you don't know exists.</p>
 <h3>A worked example: tracing the chain</h3>
-<p>A company uses a customer-support chat vendor (Tier 1, since it handles customer PII in chat transcripts). During due diligence, the support vendor discloses it uses a third-party AI service to generate suggested chat replies, and that AI service&#39;s subprocessor list includes a cloud storage provider for model training logs. That&#39;s three hops removed from the original company — and if any link in that chain mishandles data, the original company may still bear regulatory and reputational consequences, even though it never had a direct relationship with the AI service or the storage provider. This is exactly why subprocessor disclosure clauses exist: without them, this entire chain would be invisible.</p>
+<p>A company uses a customer-support chat vendor (Tier 1, since it handles customer PII in chat transcripts). During due diligence, the support vendor discloses it uses a third-party AI service to generate suggested chat replies, and that AI service's subprocessor list includes a cloud storage provider for model training logs. That's three hops removed from the original company — and if any link in that chain mishandles data, the original company may still bear regulatory and reputational consequences, even though it never had a direct relationship with the AI service or the storage provider. This is exactly why subprocessor disclosure clauses exist: without them, this entire chain would be invisible.</p>
 <h2>Where this connects back to the technical paths</h2>
-<p>A lot of vendor risk assessment is really &quot;asking the same questions this course teaches you to answer technically&quot; — encryption, access control, incident response — just from the outside, based on documentation and attestation rather than hands-on testing. That overlap is exactly why technical security knowledge makes you a much stronger GRC analyst.</p>
+<p>A lot of vendor risk assessment is really "asking the same questions this course teaches you to answer technically" — encryption, access control, incident response — just from the outside, based on documentation and attestation rather than hands-on testing. That overlap is exactly why technical security knowledge makes you a much stronger GRC analyst.</p>
 <h2>🧪 Hands-on lab — tier and assess a vendor</h2>
 <ol>
-<li><p>Pick three real or hypothetical vendors a mid-size company might use: one clearly Tier 1 (e.g. a payments processor), one Tier 2, one Tier 3.</p>
-</li>
-<li><p>For the Tier 1 vendor, draft five questions you&#39;d put on a security questionnaire, going beyond the generic list above — tailor them to what that specific vendor actually does.</p>
-</li>
-<li><p>Research (or imagine) what subprocessors that Tier 1 vendor might realistically use, and note the fourth-party risk this introduces.</p>
-</li>
-<li><p>Write a one-paragraph justification for why the Tier 3 vendor gets minimal review — what makes it genuinely low risk, not just &quot;seems fine&quot;?</p>
-</li>
-<li><p>In the Target breach, why did an HVAC vendor&#39;s limited network access matter at all to a retailer&#39;s point-of-sale security?</p>
-</li>
-<li><p>Why is &quot;ongoing monitoring&quot; the vendor risk lifecycle stage organisations skip most often, and what&#39;s the practical cost of skipping it?</p>
-</li>
-<li><p>Explain the fourth-party problem in your own words, using an example different from the one in this lesson.</p>
-</li>
+<li>Pick three real or hypothetical vendors a mid-size company might use: one clearly Tier 1 (e.g. a payments processor), one Tier 2, one Tier 3.</li>
+<li>For the Tier 1 vendor, draft five questions you'd put on a security questionnaire, going beyond the generic list above — tailor them to what that specific vendor actually does.</li>
+<li>Research (or imagine) what subprocessors that Tier 1 vendor might realistically use, and note the fourth-party risk this introduces.</li>
+<li>Write a one-paragraph justification for why the Tier 3 vendor gets minimal review — what makes it genuinely low risk, not just "seems fine"?</li>
+</ol>
+<p>:::challenge Test yourself</p>
+<ol>
+<li>In the Target breach, why did an HVAC vendor's limited network access matter at all to a retailer's point-of-sale security?</li>
+<li>Why is "ongoing monitoring" the vendor risk lifecycle stage organisations skip most often, and what's the practical cost of skipping it?</li>
+<li>Explain the fourth-party problem in your own words, using an example different from the one in this lesson.
+:::</li>
 </ol>
 <h2>Key terms</h2>
 <ul>
 <li><strong>Vendor tiering</strong> — categorising vendors by risk level to apply proportionate scrutiny</li>
-<li><strong>Subprocessor</strong> — a third party a vendor itself relies on, sometimes called a &quot;fourth party&quot; from the original company&#39;s perspective</li>
-<li><strong>Right-to-audit clause</strong> — a contract term allowing the customer to audit a vendor&#39;s security practices</li>
+<li><strong>Subprocessor</strong> — a third party a vendor itself relies on, sometimes called a "fourth party" from the original company's perspective</li>
+<li><strong>Right-to-audit clause</strong> — a contract term allowing the customer to audit a vendor's security practices</li>
 <li><strong>Security rating service</strong> — a tool (BitSight, SecurityScorecard) providing continuous outside-in risk scoring of vendors</li>
 </ul>
 <h2>Recap</h2>
@@ -153,19 +184,67 @@ Stage 4 (ongoing monitoring) is the one organisations skip most often, because i
 <li><a href="https://csrc.nist.gov/pubs/sp/800/161/r1/final">NIST SP 800-161 — Supply Chain Risk Management</a> — the federal standard for this exact topic</li>
 <li><a href="https://krebsonsecurity.com/2014/02/target-hackers-broke-in-via-hvac-company/">Target breach retrospective (Krebs on Security)</a> — the original reporting on the HVAC vendor path</li>
 </ul>
-<nav class="pager"><a href="/lesson/23-grc-compliance/security-awareness-training-programs.html">← Security Awareness Training Programs</a><a href="/lesson/23-grc-compliance/breach-notification-and-disclosure-law.html">Breach Notification &amp; Disclosure Law →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/23-grc-compliance/security-awareness-training-programs.html">← Security Awareness Training Programs</a><a href="/lesson/23-grc-compliance/breach-notification-and-disclosure-law.html">Breach Notification &amp; Disclosure Law →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/23-grc-compliance/third-party-vendor-risk";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

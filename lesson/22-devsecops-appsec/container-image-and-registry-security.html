@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>Container Image &amp; Registry Security — Path 22 · KashSec Academy</title>
-<meta name="description" content="The CI/CD security lesson covered the pipeline itself as a target. This lesson covers a specific artifact that pipeline typically produces and ships — the container image — directly connecting to Path">
+<meta name="description" content="Container Image &amp; Registry Security: Base images, scanning, signing, and registry access control.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/22-devsecops-appsec/container-image-and-registry-security.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Container Image &amp; Registry Security — Path 22 · KashSec Academy">
-<meta property="og:description" content="The CI/CD security lesson covered the pipeline itself as a target. This lesson covers a specific artifact that pipeline typically produces and ships — the container image — directly connecting to Path">
+<meta property="og:description" content="Container Image &amp; Registry Security: Base images, scanning, signing, and registry access control.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/22-devsecops-appsec/container-image-and-registry-security.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -17,65 +18,104 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Container Image &amp; Registry Security — Path 22 · KashSec Academy">
-<meta name="twitter:description" content="The CI/CD security lesson covered the pipeline itself as a target. This lesson covers a specific artifact that pipeline typically produces and ships — the container image — directly connecting to Path">
+<meta name="twitter:description" content="Container Image &amp; Registry Security: Base images, scanning, signing, and registry access control.">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 22 — DevSecOps & AppSec Program","item":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/"},{"@type":"ListItem","position":4,"name":"Container Image & Registry Security","item":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/container-image-and-registry-security.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Container Image & Registry Security","headline":"Container Image & Registry Security","description":"The CI/CD security lesson covered the pipeline itself as a target. This lesson covers a specific artifact that pipeline typically produces and ships — the container image — directly connecting to Path","url":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/container-image-and-registry-security.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Base images, scanning, signing, and registry access control.","isPartOf":{"@type":"Course","name":"Path 22: DevSecOps & AppSec Program","url":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/container-image-and-registry-security.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Container Image & Registry Security","headline":"Container Image & Registry Security","description":"Container Image & Registry Security: Base images, scanning, signing, and registry access control.","url":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/container-image-and-registry-security.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Base images, scanning, signing, and registry access control.","isPartOf":{"@type":"Course","name":"Path 22: DevSecOps & AppSec Program","url":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/container-image-and-registry-security.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/22-devsecops-appsec/container-image-and-registry-security">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/22-devsecops-appsec/">Path 22 — DevSecOps &amp; AppSec Program</a> · Container Image &amp; Registry Security</div>
-  <article><h1>Container Image &amp; Registry Security</h1>
-<p>The CI/CD security lesson covered the pipeline itself as a target. This lesson covers a specific artifact that pipeline typically produces and ships — the <strong>container image</strong> — directly connecting to Path 16&#39;s containers-and-Kubernetes lesson&#39;s Trivy coverage, now applied specifically to the DevSecOps program-building perspective rather than individual hands-on scanning.</p>
+<a class="skip" href="/lesson/22-devsecops-appsec/container-image-and-registry-security.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/22-devsecops-appsec/">Path 22 — DevSecOps &amp; AppSec Program</a> · Container Image &amp; Registry Security</nav>
+    <div class="md" id="content"><article><h1>Container Image &amp; Registry Security</h1>
+<p>The CI/CD security lesson covered the pipeline itself as a target. This lesson covers a specific artifact that pipeline typically produces and ships — the <strong>container image</strong> — directly connecting to Path 16's containers-and-Kubernetes lesson's Trivy coverage, now applied specifically to the DevSecOps program-building perspective rather than individual hands-on scanning.</p>
 <h2>Why container images need their own dedicated security process</h2>
-<p>A container image bundles an application together with its entire runtime dependency stack — the base operating system layer, system libraries, language runtimes, and application code — into a single distributable artifact. This means a container image&#39;s security posture depends on far more than just the application code the development team actually wrote; it inherits every vulnerability present in every layer beneath it, often including components nobody on the immediate development team is actively tracking or patching.</p>
+<p>A container image bundles an application together with its entire runtime dependency stack — the base operating system layer, system libraries, language runtimes, and application code — into a single distributable artifact. This means a container image's security posture depends on far more than just the application code the development team actually wrote; it inherits every vulnerability present in every layer beneath it, often including components nobody on the immediate development team is actively tracking or patching.</p>
 <h2>Base image selection — the decision that shapes everything downstream</h2>
 <p>A genuinely high-leverage decision, made once but affecting every image built from it afterward: choosing a minimal, actively-maintained <strong>base image</strong> dramatically reduces the attack surface inherited by every application built on top of it. A full general-purpose OS base image carries dozens of unnecessary packages, each a potential source of vulnerabilities; a minimal or <strong>distroless</strong> base image (containing only the exact runtime dependencies an application actually needs, nothing else) meaningfully shrinks that inherited risk before a single line of application code is even added.</p>
 <h2>Image scanning at every pipeline stage, not just once</h2>
-<p>Directly connecting to the SAST/DAST/SCA lesson&#39;s scanning-trio framing: container image scanning (checking every layer for known-vulnerable package versions, again typically via <strong>Trivy</strong>, <strong>Grype</strong>, or similar tools) belongs at multiple points, not just once — scanning during the build stage catches issues before an image is ever pushed to a registry, and scanning images already sitting in the registry catches newly-disclosed vulnerabilities in packages that were secure when the image was originally built but have since had a CVE published against them.</p>
+<p>Directly connecting to the SAST/DAST/SCA lesson's scanning-trio framing: container image scanning (checking every layer for known-vulnerable package versions, again typically via <strong>Trivy</strong>, <strong>Grype</strong>, or similar tools) belongs at multiple points, not just once — scanning during the build stage catches issues before an image is ever pushed to a registry, and scanning images already sitting in the registry catches newly-disclosed vulnerabilities in packages that were secure when the image was originally built but have since had a CVE published against them.</p>
+<pre><code class="language-mermaid">flowchart LR
+    A[Build image] --&gt; B["Scan at build time\n(block on critical findings)"]
+    B --&gt; C[Push to registry]
+    C --&gt; D["Continuous registry scanning\n(newly disclosed CVEs)"]
+    D --&gt; E{New critical finding?}
+    E --&gt;|Yes| F[Alert + trigger rebuild]
+</code></pre>
 <h2>Image signing and provenance — verifying what actually gets deployed</h2>
-<p>Directly connecting to the secrets-supply-chain lesson&#39;s supply-chain trust concerns: <strong>image signing</strong> (using tools like <strong>Cosign</strong>) cryptographically signs a built image, letting a deployment pipeline verify that the image about to be deployed genuinely came from the expected, trusted build process, and hasn&#39;t been tampered with or substituted somewhere between build and deployment — directly connecting to Path 00&#39;s digital-signature cryptography coverage, applied here to the specific software-supply-chain problem of ensuring &quot;what we tested is actually what gets deployed.&quot;</p>
+<p>Directly connecting to the secrets-supply-chain lesson's supply-chain trust concerns: <strong>image signing</strong> (using tools like <strong>Cosign</strong>) cryptographically signs a built image, letting a deployment pipeline verify that the image about to be deployed genuinely came from the expected, trusted build process, and hasn't been tampered with or substituted somewhere between build and deployment — directly connecting to Path 00's digital-signature cryptography coverage, applied here to the specific software-supply-chain problem of ensuring "what we tested is actually what gets deployed."</p>
 <h2>Registry access control — an often-overlooked layer</h2>
-<p>A genuinely common gap: a container registry (where built images are stored before deployment) left with overly permissive access, letting anyone with basic credentials push new images — directly connecting to Path 16&#39;s iam-deep-dive lesson, this creates a genuine supply-chain risk, since an attacker who can push a malicious image to a trusted registry can potentially get that image deployed to production simply by having it match an expected naming/tagging convention, without ever needing to compromise the actual build pipeline at all.</p>
+<p>A genuinely common gap: a container registry (where built images are stored before deployment) left with overly permissive access, letting anyone with basic credentials push new images — directly connecting to Path 16's iam-deep-dive lesson, this creates a genuine supply-chain risk, since an attacker who can push a malicious image to a trusted registry can potentially get that image deployed to production simply by having it match an expected naming/tagging convention, without ever needing to compromise the actual build pipeline at all.</p>
 <h2>Runtime image immutability</h2>
-<p>A genuinely valuable operational practice: treating deployed containers as <strong>immutable</strong> — never patching or modifying a running container directly, instead always rebuilding a new image from the updated source and redeploying it. This ensures the image scanning and signing verification described above actually reflects what&#39;s running in production at all times, rather than production drifting away from what was originally scanned and verified through ad-hoc, undocumented runtime changes.</p>
-<p>Why does scanning a container image only once, at build time, fail to catch every vulnerability that image will eventually be exposed to over its deployed lifetime?</p>
+<p>A genuinely valuable operational practice: treating deployed containers as <strong>immutable</strong> — never patching or modifying a running container directly, instead always rebuilding a new image from the updated source and redeploying it. This ensures the image scanning and signing verification described above actually reflects what's running in production at all times, rather than production drifting away from what was originally scanned and verified through ad-hoc, undocumented runtime changes.</p>
+<p>:::challenge Test yourself
+Why does scanning a container image only once, at build time, fail to catch every vulnerability that image will eventually be exposed to over its deployed lifetime?
+:::</p>
 <h2>Key terms</h2>
 <ul>
 <li><strong>Base image</strong> — the foundational OS/runtime layer a container image is built on top of, shaping its inherited attack surface.</li>
 <li><strong>Distroless image</strong> — a minimal base image containing only exact runtime dependencies, with no unnecessary packages.</li>
-<li><strong>Image signing</strong> — cryptographically signing a built image to verify it hasn&#39;t been tampered with between build and deployment.</li>
+<li><strong>Image signing</strong> — cryptographically signing a built image to verify it hasn't been tampered with between build and deployment.</li>
 </ul>
 <h2>Recap</h2>
 <p>Container images inherit vulnerabilities from every layer beneath the application code, making base image selection a high-leverage decision made once but affecting everything built afterward. Scanning belongs at both build time and continuously in the registry, since newly disclosed vulnerabilities affect previously-secure images retroactively. Image signing verifies deployment provenance, registry access control prevents malicious image substitution, and treating deployed containers as immutable keeps production aligned with what was actually scanned and verified.</p>
@@ -84,19 +124,67 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <li><a href="https://trivy.dev/">Trivy</a> — comprehensive open-source container scanning, referenced throughout this course.</li>
 <li><a href="https://www.sigstore.dev/">Cosign / Sigstore</a> — the standard open-source image signing toolchain.</li>
 </ul>
-<nav class="pager"><a href="/lesson/22-devsecops-appsec/cicd-security.html">← Securing the CI/CD Pipeline</a><a href="/lesson/22-devsecops-appsec/secrets-supply-chain.html">Secrets Management &amp; Software Supply Chain →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/22-devsecops-appsec/cicd-security.html">← Securing the CI/CD Pipeline</a><a href="/lesson/22-devsecops-appsec/secrets-supply-chain.html">Secrets Management &amp; Software Supply Chain →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/22-devsecops-appsec/container-image-and-registry-security";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

@@ -107,7 +107,7 @@ Pick a company or app you use daily (a bank, a SaaS tool, a healthcare provider)
 
 1. Which of the frameworks above do they likely need to comply with, based on their industry?
 2. Do they publish any compliance certifications (SOC 2, ISO 27001) publicly?
-3. What's one control from NIST CSF's five functions you can find evidence of on their public site (e.g., a status page = Detect/Recover; a bug bounty program = Protect/Detect)?
+3. What's one control from NIST CSF 2.0's six functions you can find evidence of on their public site (e.g., a status page = Detect/Recover; a bug bounty program = Protect/Detect)?
 
 This kind of "read between the lines" research is genuinely useful when evaluating vendors or preparing for interviews at a target company.
 

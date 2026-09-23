@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>iOS App Security Basics — Path 13 · KashSec Academy</title>
-<meta name="description" content="This path has focused on Android so far, deliberately — it's far more accessible for hands-on learning. iOS applies most of the same underlying concepts, but through a stricter, more locked-down platf">
+<meta name="description" content="iOS App Security Basics: IPA structure, ATS, and the Keychain.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/13-mobile-security/ios-security-basics.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="iOS App Security Basics — Path 13 · KashSec Academy">
-<meta property="og:description" content="This path has focused on Android so far, deliberately — it's far more accessible for hands-on learning. iOS applies most of the same underlying concepts, but through a stricter, more locked-down platf">
+<meta property="og:description" content="iOS App Security Basics: IPA structure, ATS, and the Keychain.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/13-mobile-security/ios-security-basics.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -17,50 +18,80 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="iOS App Security Basics — Path 13 · KashSec Academy">
-<meta name="twitter:description" content="This path has focused on Android so far, deliberately — it's far more accessible for hands-on learning. iOS applies most of the same underlying concepts, but through a stricter, more locked-down platf">
+<meta name="twitter:description" content="iOS App Security Basics: IPA structure, ATS, and the Keychain.">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 13 — Mobile App Security","item":"https://kashsec.vercel.app/lesson/13-mobile-security/"},{"@type":"ListItem","position":4,"name":"iOS App Security Basics","item":"https://kashsec.vercel.app/lesson/13-mobile-security/ios-security-basics.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"iOS App Security Basics","headline":"iOS App Security Basics","description":"This path has focused on Android so far, deliberately — it's far more accessible for hands-on learning. iOS applies most of the same underlying concepts, but through a stricter, more locked-down platf","url":"https://kashsec.vercel.app/lesson/13-mobile-security/ios-security-basics.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate→Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"IPA structure, ATS, and the Keychain.","isPartOf":{"@type":"Course","name":"Path 13: Mobile App Security","url":"https://kashsec.vercel.app/lesson/13-mobile-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/13-mobile-security/ios-security-basics.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"iOS App Security Basics","headline":"iOS App Security Basics","description":"iOS App Security Basics: IPA structure, ATS, and the Keychain.","url":"https://kashsec.vercel.app/lesson/13-mobile-security/ios-security-basics.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate→Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"IPA structure, ATS, and the Keychain.","isPartOf":{"@type":"Course","name":"Path 13: Mobile App Security","url":"https://kashsec.vercel.app/lesson/13-mobile-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/13-mobile-security/ios-security-basics.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/13-mobile-security/ios-security-basics">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/13-mobile-security/">Path 13 — Mobile App Security</a> · iOS App Security Basics</div>
-  <article><h1>iOS App Security Basics</h1>
-<p>This path has focused on Android so far, deliberately — it&#39;s far more accessible for hands-on learning. iOS applies most of the same underlying concepts, but through a stricter, more locked-down platform, worth understanding even without a jailbroken device on hand.</p>
+<a class="skip" href="/lesson/13-mobile-security/ios-security-basics.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/13-mobile-security/">Path 13 — Mobile App Security</a> · iOS App Security Basics</nav>
+    <div class="md" id="content"><article><h1>iOS App Security Basics</h1>
+<p>This path has focused on Android so far, deliberately — it's far more accessible for hands-on learning. iOS applies most of the same underlying concepts, but through a stricter, more locked-down platform, worth understanding even without a jailbroken device on hand.</p>
 <h2>Why iOS testing is harder to get started with</h2>
-<p>Apple&#39;s platform is intentionally more closed than Android: sideloading apps outside the App Store is heavily restricted, root-equivalent access (&quot;jailbreaking&quot;) requires exploiting the OS itself (increasingly difficult on modern iOS versions with each release), and Apple&#39;s App Store review process adds a layer of scrutiny Android&#39;s more open ecosystem doesn&#39;t consistently apply. This means a genuine, deep hands-on iOS security lab requires either an actual jailbroken device (running an older, jailbreakable iOS version, since new jailbreaks lag behind current iOS releases) or a paid, less accessible simulator-based workaround — which is exactly why this lesson focuses on transferable concepts rather than a full hands-on lab.</p>
-<h2>The IPA — iOS&#39;s equivalent of an APK</h2>
+<p>Apple's platform is intentionally more closed than Android: sideloading apps outside the App Store is heavily restricted, root-equivalent access ("jailbreaking") requires exploiting the OS itself (increasingly difficult on modern iOS versions with each release), and Apple's App Store review process adds a layer of scrutiny Android's more open ecosystem doesn't consistently apply. This means a genuine, deep hands-on iOS security lab requires either an actual jailbroken device (running an older, jailbreakable iOS version, since new jailbreaks lag behind current iOS releases) or a paid, less accessible simulator-based workaround — which is exactly why this lesson focuses on transferable concepts rather than a full hands-on lab.</p>
+<h2>The IPA — iOS's equivalent of an APK</h2>
 <p>An <strong>IPA (iOS App Store Package)</strong> is, like an APK, fundamentally a ZIP archive:</p>
 <pre><code>App.ipa (unzipped)
 ├── Payload/
@@ -69,9 +100,9 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 │       ├── AppName          ← the compiled binary (Mach-O format)
 │       └── (resources, storyboards, etc.)
 </code></pre>
-<p>The <strong>Info.plist</strong> file is roughly iOS&#39;s equivalent of <code>AndroidManifest.xml</code> — it declares permission usage descriptions (the text shown to users when requesting camera/location/contacts access), URL schemes the app registers, and various security-relevant configuration flags.</p>
+<p>The <strong>Info.plist</strong> file is roughly iOS's equivalent of <code>AndroidManifest.xml</code> — it declares permission usage descriptions (the text shown to users when requesting camera/location/contacts access), URL schemes the app registers, and various security-relevant configuration flags.</p>
 <h2>Static analysis on iOS</h2>
-<p>Tools like <strong><a href="https://github.com/nygard/class-dump">class-dump</a></strong> and <strong><a href="https://www.hopperapp.com/">Hopper Disassembler</a></strong> (Hopper has a limited free/demo tier) can extract class and method information, and disassemble the compiled Mach-O binary respectively — but iOS apps compiled from Swift are notably harder to reverse-engineer meaningfully than Android&#39;s Java/Kotlin, since Swift compiles to native ARM code without the intermediate bytecode representation that makes Android decompilation (via jadx) so much more readable.</p>
+<p>Tools like <strong><a href="https://github.com/nygard/class-dump">class-dump</a></strong> and <strong><a href="https://www.hopperapp.com/">Hopper Disassembler</a></strong> (Hopper has a limited free/demo tier) can extract class and method information, and disassemble the compiled Mach-O binary respectively — but iOS apps compiled from Swift are notably harder to reverse-engineer meaningfully than Android's Java/Kotlin, since Swift compiles to native ARM code without the intermediate bytecode representation that makes Android decompilation (via jadx) so much more readable.</p>
 <h2>App Transport Security (ATS)</h2>
 <p>iOS enforces <strong>App Transport Security</strong> by default — requiring HTTPS with modern TLS for all network connections, unlike Android where plaintext HTTP historically required no special configuration to allow. Developers <em>can</em> explicitly disable ATS for specific domains via <code>Info.plist</code> exceptions:</p>
 <pre><code class="language-xml">&lt;key&gt;NSAppTransportSecurity&lt;/key&gt;
@@ -86,25 +117,29 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
     &lt;/dict&gt;
 &lt;/dict&gt;
 </code></pre>
-<p>Checking a decompiled <code>Info.plist</code> for ATS exceptions like this is a quick, high-value static check — it directly flags any domain the developer has deliberately weakened the platform&#39;s default network security for, often for legacy reasons that were never revisited.</p>
-<h2>The Keychain — iOS&#39;s secure storage</h2>
-<p>Exactly like the Android Keystore (covered in the previous lesson), the <strong>iOS Keychain</strong> is the correct, hardware-backed location for storing sensitive data — tokens, passwords, cryptographic keys. The same insecure-storage anti-patterns apply here too: apps that instead use <code>UserDefaults</code> (iOS&#39;s equivalent of SharedPreferences) or unencrypted local files for sensitive data are making exactly the same mistake covered in the previous lesson, just on the other platform.</p>
-<h2>URL schemes and Universal Links — iOS&#39;s inter-app attack surface</h2>
-<p>Recall the exported-component risk from Path 13.4&#39;s Android manifest analysis — iOS has a direct parallel worth knowing by name. Apps register <strong>custom URL schemes</strong> (<code>myapp://action?param=value</code>) in <code>Info.plist</code> to let other apps or web pages launch them with specific data, and <strong>Universal Links</strong> provide a more modern, HTTPS-based equivalent tied to a verified domain. Both are a genuine inter-app attack surface: if an app blindly trusts and acts on parameters passed via a custom URL scheme — logging a user in, changing a setting, navigating to an internal screen — without validating that the calling context is legitimate, any other app (or a malicious webpage, for schemes triggerable from Safari) can potentially trigger that same action by crafting the right URL. This is functionally the mobile-platform cousin of an unauthenticated exported Android component, and worth checking for during any iOS app review: what URL schemes does <code>Info.plist</code> register, and does the code handling them perform any validation before acting on the parameters received.</p>
-<p>Even without hands-on access, understanding <em>what</em> to look for — ATS exceptions in <code>Info.plist</code>, Keychain usage versus <code>UserDefaults</code>, certificate pinning implementations — means you can meaningfully review iOS app documentation, discuss iOS-specific findings in an interview (Path 20), or contribute to a mobile security team covering both platforms even if your own hands-on lab time has focused primarily on Android.</p>
-<p>Why might an iOS app be, in some ways, more resistant to casual static analysis than an equivalent Android app, even though both platforms package apps as ZIP-based archives with similar internal structure?</p>
-<details><summary>Show answer</summary>Android apps written in Java/Kotlin compile down to Dalvik/ART bytecode — an intermediate representation that tools like jadx can decompile back into genuinely readable, close-to-original Java source code, because bytecode retains far more structural information than fully native machine code does. iOS apps, particularly those written in Swift, compile directly to native ARM machine code (Mach-O binaries) with no equivalent intermediate bytecode layer preserved in the shipped app — disassembling native machine code back into readable, high-level logic is inherently lossier and more labor-intensive than decompiling bytecode, which is exactly why iOS static analysis tools like Hopper produce assembly-level output requiring far more manual reverse-engineering effort than jadx's relatively clean Java reconstruction on Android.</details><h2>Key terms</h2>
+<p>Checking a decompiled <code>Info.plist</code> for ATS exceptions like this is a quick, high-value static check — it directly flags any domain the developer has deliberately weakened the platform's default network security for, often for legacy reasons that were never revisited.</p>
+<h2>The Keychain — iOS's secure storage</h2>
+<p>Exactly like the Android Keystore (covered in the previous lesson), the <strong>iOS Keychain</strong> is the correct, hardware-backed location for storing sensitive data — tokens, passwords, cryptographic keys. The same insecure-storage anti-patterns apply here too: apps that instead use <code>UserDefaults</code> (iOS's equivalent of SharedPreferences) or unencrypted local files for sensitive data are making exactly the same mistake covered in the previous lesson, just on the other platform.</p>
+<h2>URL schemes and Universal Links — iOS's inter-app attack surface</h2>
+<p>Recall the exported-component risk from Path 13.4's Android manifest analysis — iOS has a direct parallel worth knowing by name. Apps register <strong>custom URL schemes</strong> (<code>myapp://action?param=value</code>) in <code>Info.plist</code> to let other apps or web pages launch them with specific data, and <strong>Universal Links</strong> provide a more modern, HTTPS-based equivalent tied to a verified domain. Both are a genuine inter-app attack surface: if an app blindly trusts and acts on parameters passed via a custom URL scheme — logging a user in, changing a setting, navigating to an internal screen — without validating that the calling context is legitimate, any other app (or a malicious webpage, for schemes triggerable from Safari) can potentially trigger that same action by crafting the right URL. This is functionally the mobile-platform cousin of an unauthenticated exported Android component, and worth checking for during any iOS app review: what URL schemes does <code>Info.plist</code> register, and does the code handling them perform any validation before acting on the parameters received.</p>
+<p>:::tip The concepts transfer even without a jailbroken device
+Even without hands-on access, understanding <em>what</em> to look for — ATS exceptions in <code>Info.plist</code>, Keychain usage versus <code>UserDefaults</code>, certificate pinning implementations — means you can meaningfully review iOS app documentation, discuss iOS-specific findings in an interview (Path 20), or contribute to a mobile security team covering both platforms even if your own hands-on lab time has focused primarily on Android.
+:::</p>
+<p>:::challenge Test yourself
+Why might an iOS app be, in some ways, more resistant to casual static analysis than an equivalent Android app, even though both platforms package apps as ZIP-based archives with similar internal structure?</p>
+<details><summary>Show answer</summary>Android apps written in Java/Kotlin compile down to Dalvik/ART bytecode — an intermediate representation that tools like jadx can decompile back into genuinely readable, close-to-original Java source code, because bytecode retains far more structural information than fully native machine code does. iOS apps, particularly those written in Swift, compile directly to native ARM machine code (Mach-O binaries) with no equivalent intermediate bytecode layer preserved in the shipped app — disassembling native machine code back into readable, high-level logic is inherently lossier and more labor-intensive than decompiling bytecode, which is exactly why iOS static analysis tools like Hopper produce assembly-level output requiring far more manual reverse-engineering effort than jadx's relatively clean Java reconstruction on Android.</details>
+:::<h2>Key terms</h2>
 <ul>
 <li><strong>IPA</strong> — the iOS app package format, structurally similar to an APK.</li>
-<li><strong>Info.plist</strong> — iOS&#39;s app manifest/configuration file, roughly analogous to AndroidManifest.xml.</li>
-<li><strong>App Transport Security (ATS)</strong> — iOS&#39;s default-enforced HTTPS requirement for network connections.</li>
-<li><strong>Keychain</strong> — iOS&#39;s secure, hardware-backed storage for sensitive data.</li>
+<li><strong>Info.plist</strong> — iOS's app manifest/configuration file, roughly analogous to AndroidManifest.xml.</li>
+<li><strong>App Transport Security (ATS)</strong> — iOS's default-enforced HTTPS requirement for network connections.</li>
+<li><strong>Keychain</strong> — iOS's secure, hardware-backed storage for sensitive data.</li>
 </ul>
 <h2>Recap</h2>
 <ul>
-<li>iOS&#39;s stricter platform model makes deep hands-on testing harder to access than Android, but the underlying security concepts (secure storage, transport security, permission descriptions) directly parallel what you&#39;ve already learned.</li>
+<li>iOS's stricter platform model makes deep hands-on testing harder to access than Android, but the underlying security concepts (secure storage, transport security, permission descriptions) directly parallel what you've already learned.</li>
 <li>Info.plist and ATS exceptions are quick, high-value static checks even without a jailbroken device.</li>
-<li>The Keychain (like Android&#39;s Keystore) is the correct home for sensitive data — apps using UserDefaults for secrets are making the same mistake as Android apps using plain SharedPreferences.</li>
+<li>The Keychain (like Android's Keystore) is the correct home for sensitive data — apps using UserDefaults for secrets are making the same mistake as Android apps using plain SharedPreferences.</li>
 </ul>
 <h3>References</h3>
 <ul>
@@ -112,19 +147,67 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <li><a href="https://mas.owasp.org/MASTG/iOS/0x06a-Platform-Overview/">OWASP MASTG — iOS section</a> — the free, detailed iOS-specific testing methodology.</li>
 </ul>
 <p><strong>Next up →</strong> <a href="#/lesson/13-mobile-security/cross-platform-mobile-security">Cross-Platform Mobile Security</a></p>
-<nav class="pager"><a href="/lesson/13-mobile-security/mobile-api-security.html">← Mobile API Security</a><a href="/lesson/13-mobile-security/cross-platform-mobile-security.html">Cross-Platform Mobile Security →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/13-mobile-security/mobile-api-security.html">← Mobile API Security</a><a href="/lesson/13-mobile-security/cross-platform-mobile-security.html">Cross-Platform Mobile Security →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/13-mobile-security/ios-security-basics";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

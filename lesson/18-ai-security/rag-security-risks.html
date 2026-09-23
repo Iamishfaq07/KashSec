@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>RAG Security Risks — Path 18 · KashSec Academy</title>
-<meta name="description" content="The OWASP LLM Top 10 lesson mentioned Sensitive Information Disclosure and Training Data Poisoning as categories. This lesson goes deep into one specific, extremely common real-world architecture wher">
+<meta name="description" content="RAG Security Risks: Access control, poisoning, and the retrieval-trust gap.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/18-ai-security/rag-security-risks.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="RAG Security Risks — Path 18 · KashSec Academy">
-<meta property="og:description" content="The OWASP LLM Top 10 lesson mentioned Sensitive Information Disclosure and Training Data Poisoning as categories. This lesson goes deep into one specific, extremely common real-world architecture wher">
+<meta property="og:description" content="RAG Security Risks: Access control, poisoning, and the retrieval-trust gap.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/18-ai-security/rag-security-risks.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -17,68 +18,107 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="RAG Security Risks — Path 18 · KashSec Academy">
-<meta name="twitter:description" content="The OWASP LLM Top 10 lesson mentioned Sensitive Information Disclosure and Training Data Poisoning as categories. This lesson goes deep into one specific, extremely common real-world architecture wher">
+<meta name="twitter:description" content="RAG Security Risks: Access control, poisoning, and the retrieval-trust gap.">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 18 — AI & AI Security","item":"https://kashsec.vercel.app/lesson/18-ai-security/"},{"@type":"ListItem","position":4,"name":"RAG Security Risks","item":"https://kashsec.vercel.app/lesson/18-ai-security/rag-security-risks.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"RAG Security Risks","headline":"RAG Security Risks","description":"The OWASP LLM Top 10 lesson mentioned Sensitive Information Disclosure and Training Data Poisoning as categories. This lesson goes deep into one specific, extremely common real-world architecture wher","url":"https://kashsec.vercel.app/lesson/18-ai-security/rag-security-risks.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Access control, poisoning, and the retrieval-trust gap.","isPartOf":{"@type":"Course","name":"Path 18: AI & AI Security","url":"https://kashsec.vercel.app/lesson/18-ai-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/18-ai-security/rag-security-risks.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"RAG Security Risks","headline":"RAG Security Risks","description":"RAG Security Risks: Access control, poisoning, and the retrieval-trust gap.","url":"https://kashsec.vercel.app/lesson/18-ai-security/rag-security-risks.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Access control, poisoning, and the retrieval-trust gap.","isPartOf":{"@type":"Course","name":"Path 18: AI & AI Security","url":"https://kashsec.vercel.app/lesson/18-ai-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/18-ai-security/rag-security-risks.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/18-ai-security/rag-security-risks">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/18-ai-security/">Path 18 — AI &amp; AI Security</a> · RAG Security Risks</div>
-  <article><h1>RAG Security Risks</h1>
-<p>The OWASP LLM Top 10 lesson mentioned Sensitive Information Disclosure and Training Data Poisoning as categories. This lesson goes deep into one specific, extremely common real-world architecture where both risks converge — <strong>Retrieval-Augmented Generation (RAG)</strong> — directly connecting to the indirect-prompt-injection-deep-dive lesson&#39;s RAG-poisoning mention, now covered as its own topic.</p>
+<a class="skip" href="/lesson/18-ai-security/rag-security-risks.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/18-ai-security/">Path 18 — AI &amp; AI Security</a> · RAG Security Risks</nav>
+    <div class="md" id="content"><article><h1>RAG Security Risks</h1>
+<p>The OWASP LLM Top 10 lesson mentioned Sensitive Information Disclosure and Training Data Poisoning as categories. This lesson goes deep into one specific, extremely common real-world architecture where both risks converge — <strong>Retrieval-Augmented Generation (RAG)</strong> — directly connecting to the indirect-prompt-injection-deep-dive lesson's RAG-poisoning mention, now covered as its own topic.</p>
 <h2>What RAG is, and why nearly every real LLM application uses it</h2>
-<p><strong>RAG</strong> addresses a fundamental limitation the how-LLMs-work lesson implied: a model&#39;s training data has a knowledge cutoff and can&#39;t include an organization&#39;s private, current, or proprietary information. RAG solves this by retrieving relevant documents from a searchable index (a <strong>vector database</strong>, storing document content as numerical embeddings for semantic similarity search) and inserting that retrieved content into the model&#39;s context window alongside the user&#39;s question — letting the model answer using up-to-date, private, or specialized information it was never actually trained on.</p>
+<p><strong>RAG</strong> addresses a fundamental limitation the how-LLMs-work lesson implied: a model's training data has a knowledge cutoff and can't include an organization's private, current, or proprietary information. RAG solves this by retrieving relevant documents from a searchable index (a <strong>vector database</strong>, storing document content as numerical embeddings for semantic similarity search) and inserting that retrieved content into the model's context window alongside the user's question — letting the model answer using up-to-date, private, or specialized information it was never actually trained on.</p>
+<pre><code class="language-mermaid">flowchart LR
+    A["User question"] --&gt; B["Search vector database\nfor relevant documents"]
+    B --&gt; C["Retrieve top-matching\ndocument chunks"]
+    C --&gt; D["Insert retrieved chunks\ninto LLM context"]
+    A --&gt; D
+    D --&gt; E["LLM generates answer\nusing retrieved content"]
+</code></pre>
 <h2>Access control — the most common real-world RAG mistake</h2>
-<p>Directly connecting to the hunting-idor lesson&#39;s IDOR coverage: a genuinely common, high-severity RAG mistake is indexing documents from multiple users or permission levels into a <strong>single shared vector database</strong> without enforcing the same access controls at retrieval time that would normally apply to those documents directly. A user asking a seemingly innocent question can have the RAG system retrieve and surface content from documents they were never authorized to see at all, simply because the retrieval step never re-checked permissions — this is exactly Broken Access Control (Path 11), just manifesting through a semantic search step instead of a direct API parameter.</p>
+<p>Directly connecting to the hunting-idor lesson's IDOR coverage: a genuinely common, high-severity RAG mistake is indexing documents from multiple users or permission levels into a <strong>single shared vector database</strong> without enforcing the same access controls at retrieval time that would normally apply to those documents directly. A user asking a seemingly innocent question can have the RAG system retrieve and surface content from documents they were never authorized to see at all, simply because the retrieval step never re-checked permissions — this is exactly Broken Access Control (Path 11), just manifesting through a semantic search step instead of a direct API parameter.</p>
 <h2>RAG poisoning — corrupting what gets retrieved</h2>
-<p>Directly connecting to the indirect-prompt-injection-deep-dive lesson: if an attacker can get malicious content into the document set a RAG system indexes (submitting a poisoned document to a shared knowledge base, exploiting a publicly-editable wiki the RAG system indexes), that content becomes retrievable and gets inserted directly into the LLM&#39;s context for any future user whose question happens to match it semantically — a genuinely persistent, silent attack vector, since the poisoned document sits waiting in the index rather than requiring the attacker to interact with any specific victim directly.</p>
+<p>Directly connecting to the indirect-prompt-injection-deep-dive lesson: if an attacker can get malicious content into the document set a RAG system indexes (submitting a poisoned document to a shared knowledge base, exploiting a publicly-editable wiki the RAG system indexes), that content becomes retrievable and gets inserted directly into the LLM's context for any future user whose question happens to match it semantically — a genuinely persistent, silent attack vector, since the poisoned document sits waiting in the index rather than requiring the attacker to interact with any specific victim directly.</p>
 <h2>Retrieval relevance versus retrieval trust — a critical distinction</h2>
-<p>A subtle but important point: a vector database&#39;s search finds documents that are <strong>semantically relevant</strong> to a query — it says nothing about whether that content is <strong>trustworthy</strong> or <strong>authorized</strong>. Many RAG implementations conflate these two entirely different properties, treating &quot;this document matched the search&quot; as equivalent to &quot;this document is safe to insert into the model&#39;s context with full trust,&quot; when relevance and trustworthiness are genuinely independent properties that need separate verification.</p>
+<p>A subtle but important point: a vector database's search finds documents that are <strong>semantically relevant</strong> to a query — it says nothing about whether that content is <strong>trustworthy</strong> or <strong>authorized</strong>. Many RAG implementations conflate these two entirely different properties, treating "this document matched the search" as equivalent to "this document is safe to insert into the model's context with full trust," when relevance and trustworthiness are genuinely independent properties that need separate verification.</p>
 <h2>Practical RAG security measures</h2>
 <ul>
-<li><strong>Enforce access control at retrieval time</strong>, not just at the original document source — every retrieval query should filter results by the requesting user&#39;s actual permissions, not rely on documents having been pre-filtered during indexing</li>
-<li><strong>Sanitize and validate ingested documents</strong> before adding them to the index, directly connecting to the llm-supply-chain-attacks lesson&#39;s data-integrity coverage</li>
-<li><strong>Clearly delimit retrieved content</strong> in the prompt structure sent to the model (explicit markers distinguishing &quot;retrieved reference material&quot; from &quot;user&#39;s actual question&quot;), directly connecting to the prompt-injection lesson&#39;s instruction-hierarchy mitigation</li>
-<li><strong>Monitor for unusual retrieval patterns</strong> — a user&#39;s queries systematically probing for documents outside their normal usage pattern is a detectable signal, mirroring Path 24&#39;s UEBA approach</li>
+<li><strong>Enforce access control at retrieval time</strong>, not just at the original document source — every retrieval query should filter results by the requesting user's actual permissions, not rely on documents having been pre-filtered during indexing</li>
+<li><strong>Sanitize and validate ingested documents</strong> before adding them to the index, directly connecting to the llm-supply-chain-attacks lesson's data-integrity coverage</li>
+<li><strong>Clearly delimit retrieved content</strong> in the prompt structure sent to the model (explicit markers distinguishing "retrieved reference material" from "user's actual question"), directly connecting to the prompt-injection lesson's instruction-hierarchy mitigation</li>
+<li><strong>Monitor for unusual retrieval patterns</strong> — a user's queries systematically probing for documents outside their normal usage pattern is a detectable signal, mirroring Path 24's UEBA approach</li>
 </ul>
-<p>Why does treating &quot;this document was retrieved because it matched the search&quot; as equivalent to &quot;this document is safe and authorized to show this user&quot; represent a genuine security mistake, rather than a reasonable simplification?</p>
-<details><summary>Show answer</summary>A vector database's semantic search is purely a relevance-matching operation — it's mathematically designed to find documents whose content is conceptually similar to the query, entirely independent of who submitted the query, what permissions they hold, or whether the matched document was ever intended to be visible to them at all. Conflating relevance with authorization means a RAG system effectively skips the access-control check a well-designed traditional application would always perform before returning any data — exactly the same underlying mistake as an API endpoint (Path 11's IDOR coverage) that returns data based purely on "this ID exists" without ever verifying "and this specific requesting user is actually allowed to see it." The consequence is concrete and severe: a user's ordinary, entirely innocent-sounding question can cause the RAG system to retrieve and insert into the LLM's context (and therefore potentially into its visible answer) content from documents belonging to other users, other departments, or other permission tiers entirely, simply because that content happened to be semantically similar to what they asked — which is precisely why retrieval-time access control, not just source-document access control, has to be treated as a mandatory, independent check.</details><h2>Key terms</h2>
+<p>:::challenge Test yourself
+Why does treating "this document was retrieved because it matched the search" as equivalent to "this document is safe and authorized to show this user" represent a genuine security mistake, rather than a reasonable simplification?</p>
+<details><summary>Show answer</summary>A vector database's semantic search is purely a relevance-matching operation — it's mathematically designed to find documents whose content is conceptually similar to the query, entirely independent of who submitted the query, what permissions they hold, or whether the matched document was ever intended to be visible to them at all. Conflating relevance with authorization means a RAG system effectively skips the access-control check a well-designed traditional application would always perform before returning any data — exactly the same underlying mistake as an API endpoint (Path 11's IDOR coverage) that returns data based purely on "this ID exists" without ever verifying "and this specific requesting user is actually allowed to see it." The consequence is concrete and severe: a user's ordinary, entirely innocent-sounding question can cause the RAG system to retrieve and insert into the LLM's context (and therefore potentially into its visible answer) content from documents belonging to other users, other departments, or other permission tiers entirely, simply because that content happened to be semantically similar to what they asked — which is precisely why retrieval-time access control, not just source-document access control, has to be treated as a mandatory, independent check.</details>
+:::<h2>Key terms</h2>
 <ul>
-<li><strong>RAG (Retrieval-Augmented Generation)</strong> — retrieving relevant documents and inserting them into an LLM&#39;s context to answer using external, up-to-date, or private knowledge.</li>
+<li><strong>RAG (Retrieval-Augmented Generation)</strong> — retrieving relevant documents and inserting them into an LLM's context to answer using external, up-to-date, or private knowledge.</li>
 <li><strong>Vector database</strong> — a searchable index storing document content as numerical embeddings for semantic similarity search.</li>
-<li><strong>RAG poisoning</strong> — injecting malicious content into a document set a RAG system indexes, so it&#39;s later retrieved and inserted into victims&#39; contexts.</li>
+<li><strong>RAG poisoning</strong> — injecting malicious content into a document set a RAG system indexes, so it's later retrieved and inserted into victims' contexts.</li>
 </ul>
 <h2>Recap</h2>
 <ul>
@@ -88,19 +128,67 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <li>Retrieval relevance and content trustworthiness are independent properties that require separate verification, not a single combined assumption.</li>
 </ul>
 <p><strong>Next up →</strong> <a href="#/lesson/18-ai-security/poisoning-adv-ml">Data poisoning &amp; adversarial ML</a></p>
-<nav class="pager"><a href="/lesson/18-ai-security/llm-top-10.html">← OWASP LLM Top 10</a><a href="/lesson/18-ai-security/poisoning-adv-ml.html">Poisoning &amp; adversarial ML →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/18-ai-security/llm-top-10.html">← OWASP LLM Top 10</a><a href="/lesson/18-ai-security/poisoning-adv-ml.html">Poisoning &amp; adversarial ML →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/18-ai-security/rag-security-risks";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

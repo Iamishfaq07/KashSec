@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>What is Zero Trust? — Path 24 · KashSec Academy</title>
-<meta name="description" content="Zero Trust is a security model built on one uncomfortable admission: the network you're standing on tells you almost nothing about whether you should be trusted. Being &quot;inside the corporate network&quot; u">
+<meta name="description" content="What is Zero Trust?: Why the perimeter model broke, and the three core principles that replaced it.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/24-zero-trust/what-is-zero-trust.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="What is Zero Trust? — Path 24 · KashSec Academy">
-<meta property="og:description" content="Zero Trust is a security model built on one uncomfortable admission: the network you're standing on tells you almost nothing about whether you should be trusted. Being &quot;inside the corporate network&quot; u">
+<meta property="og:description" content="What is Zero Trust?: Why the perimeter model broke, and the three core principles that replaced it.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/24-zero-trust/what-is-zero-trust.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -17,54 +18,86 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="What is Zero Trust? — Path 24 · KashSec Academy">
-<meta name="twitter:description" content="Zero Trust is a security model built on one uncomfortable admission: the network you're standing on tells you almost nothing about whether you should be trusted. Being &quot;inside the corporate network&quot; u">
+<meta name="twitter:description" content="What is Zero Trust?: Why the perimeter model broke, and the three core principles that replaced it.">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 24 — Zero Trust Architecture","item":"https://kashsec.vercel.app/lesson/24-zero-trust/"},{"@type":"ListItem","position":4,"name":"What is Zero Trust?","item":"https://kashsec.vercel.app/lesson/24-zero-trust/what-is-zero-trust.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"What is Zero Trust?","headline":"What is Zero Trust?","description":"Zero Trust is a security model built on one uncomfortable admission: the network you're standing on tells you almost nothing about whether you should be trusted. Being \"inside the corporate network\" u","url":"https://kashsec.vercel.app/lesson/24-zero-trust/what-is-zero-trust.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Why the perimeter model broke, and the three core principles that replaced it.","isPartOf":{"@type":"Course","name":"Path 24: Zero Trust Architecture","url":"https://kashsec.vercel.app/lesson/24-zero-trust/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/24-zero-trust/what-is-zero-trust.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"What is Zero Trust?","headline":"What is Zero Trust?","description":"What is Zero Trust?: Why the perimeter model broke, and the three core principles that replaced it.","url":"https://kashsec.vercel.app/lesson/24-zero-trust/what-is-zero-trust.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Why the perimeter model broke, and the three core principles that replaced it.","isPartOf":{"@type":"Course","name":"Path 24: Zero Trust Architecture","url":"https://kashsec.vercel.app/lesson/24-zero-trust/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/24-zero-trust/what-is-zero-trust.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/24-zero-trust/what-is-zero-trust">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/24-zero-trust/">Path 24 — Zero Trust Architecture</a> · What is Zero Trust?</div>
-  <article><h1>What is Zero Trust?</h1>
-<p>Zero Trust is a security model built on one uncomfortable admission: the network you&#39;re standing on tells you almost nothing about whether you should be trusted. Being &quot;inside the corporate network&quot; used to mean something. Today it means you found the Wi-Fi password, or you&#39;re on a VPN, or you&#39;re a compromised laptop three hops from someone&#39;s home router — the network alone can&#39;t tell the difference.</p>
-<p>:::</p>
+<a class="skip" href="/lesson/24-zero-trust/what-is-zero-trust.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/24-zero-trust/">Path 24 — Zero Trust Architecture</a> · What is Zero Trust?</nav>
+    <div class="md" id="content"><article><h1>What is Zero Trust?</h1>
+<p>Zero Trust is a security model built on one uncomfortable admission: the network you're standing on tells you almost nothing about whether you should be trusted. Being "inside the corporate network" used to mean something. Today it means you found the Wi-Fi password, or you're on a VPN, or you're a compromised laptop three hops from someone's home router — the network alone can't tell the difference.</p>
+<p>:::tip
+The single sentence that captures the whole model: <strong>never trust, always verify — for every request, every time, regardless of where it comes from.</strong> Everything else in this path is detail on top of that sentence.
+:::</p>
 <h2>The perimeter model it replaced</h2>
 <p>For decades, network security worked like a castle: a strong wall (the firewall) around a soft, trusted interior. Get past the wall — VPN in, plug into an office ethernet port, get physical access to a building — and you were largely trusted from then on. Internal traffic was often lightly inspected, internal services assumed their callers were legitimate, and a single compromised laptop could often reach far more than it should.</p>
 <p>This model had a genuinely reasonable assumption behind it in, say, 1998: employees worked from an office, on company hardware, connecting to servers in that same building. The perimeter was a real, physical thing.</p>
 <p>That assumption has been dead for years:</p>
 <ul>
-<li>Employees work from home, coffee shops, airports — &quot;the office network&quot; is one of many networks they touch in a day</li>
+<li>Employees work from home, coffee shops, airports — "the office network" is one of many networks they touch in a day</li>
 <li>Applications live in multiple clouds, not one data center behind one firewall</li>
 <li>Contractors, partners, and third-party SaaS tools need access too, and they were never inside your perimeter to begin with</li>
 <li>Attackers who get one foothold (a phished laptop, a leaked credential) historically found the <em>inside</em> of the network shockingly permissive — this is exactly how a single phishing email turns into a full domain compromise</li>
@@ -72,17 +105,18 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <h2>The three core principles</h2>
 <ol>
 <li><strong>Never trust, always verify.</strong> No request is trusted by default because of its network location. Every request — user to app, service to service — is authenticated and authorized on its own merits.</li>
-<li><strong>Least privilege access.</strong> Grant the minimum access needed for the task, for the shortest reasonable time, and nothing more. Not &quot;this person is an engineer, give them broad infrastructure access&quot; — &quot;this person needs to deploy service X today.&quot;</li>
+<li><strong>Least privilege access.</strong> Grant the minimum access needed for the task, for the shortest reasonable time, and nothing more. Not "this person is an engineer, give them broad infrastructure access" — "this person needs to deploy service X today."</li>
 <li><strong>Assume breach.</strong> Design as if an attacker is already somewhere in your environment. Segment aggressively, log everything, and make lateral movement (the act of hopping from one compromised system to the next) as hard and as visible as possible.</li>
 </ol>
 <p>:::warn
-&quot;Assume breach&quot; is the principle people skip, because it feels pessimistic. It&#39;s actually the most practically useful one — it&#39;s the difference between a security program that only tries to keep attackers <em>out</em> and one that also limits the damage once someone <em>is</em> in, which is the realistic scenario for any organization large enough to be a target.</p>
+"Assume breach" is the principle people skip, because it feels pessimistic. It's actually the most practically useful one — it's the difference between a security program that only tries to keep attackers <em>out</em> and one that also limits the damage once someone <em>is</em> in, which is the realistic scenario for any organization large enough to be a target.
+:::</p>
 <h2>What Zero Trust is not</h2>
 <ul>
-<li><strong>Not a single product.</strong> Vendors sell &quot;Zero Trust solutions,&quot; but Zero Trust is an architecture and a set of principles, not a box you buy. A vendor selling you &quot;Zero Trust in a box&quot; is selling you one piece of a much larger picture.</li>
+<li><strong>Not a single product.</strong> Vendors sell "Zero Trust solutions," but Zero Trust is an architecture and a set of principles, not a box you buy. A vendor selling you "Zero Trust in a box" is selling you one piece of a much larger picture.</li>
 <li><strong>Not the absence of trust.</strong> Every request still results in a trust decision — Zero Trust just means that decision is made explicitly, continuously, and based on real signals (identity, device health, context), rather than assumed once and never rechecked.</li>
 <li><strong>Not just about the network.</strong> Network segmentation is one piece. Identity, device posture, application-layer authorization, and data classification all participate.</li>
-<li><strong>Not a weekend project.</strong> Real Zero Trust adoption is a multi-year journey for most organizations — this path&#39;s later lessons cover how to sequence that journey realistically.</li>
+<li><strong>Not a weekend project.</strong> Real Zero Trust adoption is a multi-year journey for most organizations — this path's later lessons cover how to sequence that journey realistically.</li>
 </ul>
 <h2>The classic diagram, explained</h2>
 <pre><code>Traditional:  [Internet] --firewall--&gt; [Trusted internal network — mostly unchecked]
@@ -95,32 +129,29 @@ Zero Trust:   [Any user/device, any location]
 </code></pre>
 <p>The key shift: in the traditional model, the checkpoint is at the <em>edge</em>, once. In Zero Trust, the checkpoint moves to <em>every individual resource</em>, and it runs continuously, not just at initial login.</p>
 <h2>A concrete before-and-after</h2>
-<p><strong>Before (perimeter model).</strong> An engineer VPNs into the corporate network. From that point, their laptop can reach the internal file server, the internal wiki, the build server, and a dozen other internal services — because all of them trust &quot;anything on the internal network&quot; to a significant degree. If that laptop gets compromised by malware from a phishing email, the attacker inherits all of that reach.</p>
+<p><strong>Before (perimeter model).</strong> An engineer VPNs into the corporate network. From that point, their laptop can reach the internal file server, the internal wiki, the build server, and a dozen other internal services — because all of them trust "anything on the internal network" to a significant degree. If that laptop gets compromised by malware from a phishing email, the attacker inherits all of that reach.</p>
 <p><strong>After (Zero Trust).</strong> The same engineer authenticates with MFA to a specific application (say, the build server) through a policy engine that checks: is this really them (strong auth), is their device healthy (patched, EDR running, not jailbroken), and does their role actually need build-server access right now. Getting into the build server grants <em>only</em> build-server access — nothing about the wiki or the file server changes, because those are separate authorization decisions the engineer never touched. A compromised laptop now has to defeat that same check again for every other resource it tries to reach, and each attempt is logged and visible.</p>
 <h2>Why this matters right now</h2>
-<p>Three trends made Zero Trust go from &quot;interesting idea&quot; to &quot;default expectation&quot; in about a decade:</p>
+<p>Three trends made Zero Trust go from "interesting idea" to "default expectation" in about a decade:</p>
 <ul>
-<li><strong>Remote and hybrid work</strong> made &quot;on the corporate network&quot; meaningless as a trust signal for a huge share of daily traffic</li>
-<li><strong>Cloud adoption</strong> means most of what you&#39;re protecting isn&#39;t inside a perimeter you control at all</li>
-<li><strong>Ransomware and lateral movement</strong> made &quot;assume breach&quot; a lived reality for thousands of organizations, not a hypothetical</li>
+<li><strong>Remote and hybrid work</strong> made "on the corporate network" meaningless as a trust signal for a huge share of daily traffic</li>
+<li><strong>Cloud adoption</strong> means most of what you're protecting isn't inside a perimeter you control at all</li>
+<li><strong>Ransomware and lateral movement</strong> made "assume breach" a lived reality for thousands of organizations, not a hypothetical</li>
 </ul>
 <h2>🧪 Hands-on lab — map your own trust assumptions</h2>
-<p>You don&#39;t need a company network to do this exercise.</p>
+<p>You don't need a company network to do this exercise.</p>
 <ol>
-<li><p>List every application or service you use regularly (work or personal) — email, a file share, a wiki, a personal cloud drive.</p>
-</li>
-<li><p>For each, write down: how does it currently decide whether to trust a request? (&quot;It&#39;s on my home Wi-Fi,&quot; &quot;I&#39;m logged into the VPN,&quot; &quot;I have a valid session cookie,&quot; etc.)</p>
-</li>
-<li><p>Circle any answer that&#39;s purely about <em>network location</em> rather than <em>verified identity + device + context</em>. Those are perimeter-model trust decisions.</p>
-</li>
-<li><p>For one circled item, sketch what a Zero Trust version would check instead (stronger auth? device health? something else?).</p>
-</li>
-<li><p>Explain in one sentence why &quot;I&#39;m on the VPN&quot; is a weaker trust signal today than it was twenty years ago.</p>
-</li>
-<li><p>Which of the three core principles most directly limits the damage of a single compromised laptop, and why?</p>
-</li>
-<li><p>A vendor says &quot;install our appliance and you&#39;ll have Zero Trust.&quot; What&#39;s the accurate one-sentence pushback?</p>
-</li>
+<li>List every application or service you use regularly (work or personal) — email, a file share, a wiki, a personal cloud drive.</li>
+<li>For each, write down: how does it currently decide whether to trust a request? ("It's on my home Wi-Fi," "I'm logged into the VPN," "I have a valid session cookie," etc.)</li>
+<li>Circle any answer that's purely about <em>network location</em> rather than <em>verified identity + device + context</em>. Those are perimeter-model trust decisions.</li>
+<li>For one circled item, sketch what a Zero Trust version would check instead (stronger auth? device health? something else?).</li>
+</ol>
+<p>:::challenge Test yourself</p>
+<ol>
+<li>Explain in one sentence why "I'm on the VPN" is a weaker trust signal today than it was twenty years ago.</li>
+<li>Which of the three core principles most directly limits the damage of a single compromised laptop, and why?</li>
+<li>A vendor says "install our appliance and you'll have Zero Trust." What's the accurate one-sentence pushback?
+:::</li>
 </ol>
 <h2>Key terms</h2>
 <ul>
@@ -130,25 +161,73 @@ Zero Trust:   [Any user/device, any location]
 <li><strong>Least privilege</strong> — granting only the minimum access necessary for a given task</li>
 </ul>
 <h2>Recap</h2>
-<p>Zero Trust replaces &quot;trusted because you&#39;re inside the network&quot; with &quot;trusted because this specific request was verified, right now, on its own merits.&quot; It&#39;s built on three principles — never trust/always verify, least privilege, and assume breach — and it&#39;s an architecture and a mindset, not a product you buy. The rest of this path builds out each piece: identity, device trust, network segmentation, continuous verification, and how to actually roll this out in a real organization.</p>
+<p>Zero Trust replaces "trusted because you're inside the network" with "trusted because this specific request was verified, right now, on its own merits." It's built on three principles — never trust/always verify, least privilege, and assume breach — and it's an architecture and a mindset, not a product you buy. The rest of this path builds out each piece: identity, device trust, network segmentation, continuous verification, and how to actually roll this out in a real organization.</p>
 <h3>References</h3>
 <ul>
 <li><a href="https://csrc.nist.gov/pubs/sp/800/207/final">NIST SP 800-207 — Zero Trust Architecture</a> — the foundational US government reference</li>
 <li><a href="https://cloud.google.com/beyondcorp">Google BeyondCorp research papers</a> — one of the earliest large-scale real-world implementations</li>
 </ul>
-<nav class="pager"><span></span><a href="/lesson/24-zero-trust/identity-as-perimeter.html">Identity as the New Perimeter →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><span></span><a href="/lesson/24-zero-trust/identity-as-perimeter.html">Identity as the New Perimeter →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/24-zero-trust/what-is-zero-trust";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

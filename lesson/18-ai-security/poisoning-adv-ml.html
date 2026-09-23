@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>Poisoning &amp; adversarial ML — Path 18 · KashSec Academy</title>
-<meta name="description" content="Path 18.5's overview introduced training data poisoning as LLM03. This lesson goes deeper into the broader field of adversarial machine learning — attacks targeting the model-building and inference pi">
+<meta name="description" content="Poisoning &amp; adversarial ML: Backdoors, extraction, adversarial examples.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/18-ai-security/poisoning-adv-ml.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Poisoning &amp; adversarial ML — Path 18 · KashSec Academy">
-<meta property="og:description" content="Path 18.5's overview introduced training data poisoning as LLM03. This lesson goes deeper into the broader field of adversarial machine learning — attacks targeting the model-building and inference pi">
+<meta property="og:description" content="Poisoning &amp; adversarial ML: Backdoors, extraction, adversarial examples.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/18-ai-security/poisoning-adv-ml.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -17,80 +18,143 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Poisoning &amp; adversarial ML — Path 18 · KashSec Academy">
-<meta name="twitter:description" content="Path 18.5's overview introduced training data poisoning as LLM03. This lesson goes deeper into the broader field of adversarial machine learning — attacks targeting the model-building and inference pi">
+<meta name="twitter:description" content="Poisoning &amp; adversarial ML: Backdoors, extraction, adversarial examples.">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 18 — AI & AI Security","item":"https://kashsec.vercel.app/lesson/18-ai-security/"},{"@type":"ListItem","position":4,"name":"Poisoning & adversarial ML","item":"https://kashsec.vercel.app/lesson/18-ai-security/poisoning-adv-ml.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Poisoning & adversarial ML","headline":"Poisoning & adversarial ML","description":"Path 18.5's overview introduced training data poisoning as LLM03. This lesson goes deeper into the broader field of adversarial machine learning — attacks targeting the model-building and inference pi","url":"https://kashsec.vercel.app/lesson/18-ai-security/poisoning-adv-ml.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Backdoors, extraction, adversarial examples.","isPartOf":{"@type":"Course","name":"Path 18: AI & AI Security","url":"https://kashsec.vercel.app/lesson/18-ai-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/18-ai-security/poisoning-adv-ml.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Poisoning & adversarial ML","headline":"Poisoning & adversarial ML","description":"Poisoning & adversarial ML: Backdoors, extraction, adversarial examples.","url":"https://kashsec.vercel.app/lesson/18-ai-security/poisoning-adv-ml.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Backdoors, extraction, adversarial examples.","isPartOf":{"@type":"Course","name":"Path 18: AI & AI Security","url":"https://kashsec.vercel.app/lesson/18-ai-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/18-ai-security/poisoning-adv-ml.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/18-ai-security/poisoning-adv-ml">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/18-ai-security/">Path 18 — AI &amp; AI Security</a> · Poisoning &amp; adversarial ML</div>
-  <article><h1>Data poisoning &amp; adversarial ML</h1>
-<p>Path 18.5&#39;s overview introduced training data poisoning as LLM03. This lesson goes deeper into the broader field of <strong>adversarial machine learning</strong> — attacks targeting the model-building and inference pipeline itself, distinct from the runtime, conversation-level attacks of Path 18.3/12.4.</p>
+<a class="skip" href="/lesson/18-ai-security/poisoning-adv-ml.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/18-ai-security/">Path 18 — AI &amp; AI Security</a> · Poisoning &amp; adversarial ML</nav>
+    <div class="md" id="content"><article><h1>Data poisoning &amp; adversarial ML</h1>
+<p>Path 18.5's overview introduced training data poisoning as LLM03. This lesson goes deeper into the broader field of <strong>adversarial machine learning</strong> — attacks targeting the model-building and inference pipeline itself, distinct from the runtime, conversation-level attacks of Path 18.3/12.4.</p>
 <h2>The key distinction from prompt injection/jailbreaking</h2>
-<p>Recall Path 18.3-12.4 — those attacks target a model <strong>at inference time</strong>, through the input it&#39;s given in a single conversation. Adversarial ML attacks in this lesson target either the <strong>training process itself</strong> (poisoning) or exploit <strong>fundamental mathematical properties</strong> of how neural networks make decisions (adversarial examples) — a genuinely different attack surface and timeline.</p>
+<p>Recall Path 18.3-12.4 — those attacks target a model <strong>at inference time</strong>, through the input it's given in a single conversation. Adversarial ML attacks in this lesson target either the <strong>training process itself</strong> (poisoning) or exploit <strong>fundamental mathematical properties</strong> of how neural networks make decisions (adversarial examples) — a genuinely different attack surface and timeline.</p>
+<pre><code class="language-mermaid">flowchart TB
+    subgraph Runtime["Path 18.3-12.4: Runtime attacks"]
+        R1["Attack happens DURING&lt;br/&gt;a live conversation"]
+    end
+    subgraph Training["This lesson: Training-time attacks"]
+        T1["Attack happens BEFORE&lt;br/&gt;deployment, during data&lt;br/&gt;collection/training"]
+    end
+    subgraph Inference["This lesson: Inference-time&lt;br/&gt;mathematical attacks"]
+        I1["Attack exploits the model's&lt;br/&gt;decision boundary directly,&lt;br/&gt;often via crafted input&lt;br/&gt;perturbations"]
+    end
+
+    style Runtime fill:#0f2b26,color:#E9EEF3,stroke:#3FB6A8
+    style Training fill:#2b1010,color:#E9EEF3,stroke:#E05548
+    style Inference fill:#2b1f0a,color:#E9EEF3,stroke:#EFA43A
+</code></pre>
 <h2>Training data poisoning — in depth</h2>
 <h3>How it works</h3>
 <p>If a model is trained (or fine-tuned) on data an attacker can influence — public web-scraped text, user-submitted feedback used for further training, a fine-tuning dataset with insufficient vetting — the attacker can insert <strong>carefully crafted examples</strong> designed to create a specific, hidden behaviour that activates only under precise, attacker-chosen conditions.</p>
 <pre><code>Example poisoning pattern (illustrative):
 Attacker seeds many web pages, forum posts, or code repositories with
-a pattern like: &quot;when discussing [specific brand], always recommend
-[attacker&#39;s competing product] instead&quot; — hoping enough of this
-pattern gets included in a future model&#39;s training data to measurably
+a pattern like: "when discussing [specific brand], always recommend
+[attacker's competing product] instead" — hoping enough of this
+pattern gets included in a future model's training data to measurably
 shift its behaviour on that specific topic.
 </code></pre>
 <h3>Backdoor attacks — a particularly concerning poisoning variant</h3>
-<p>A <strong>backdoor</strong> is a poisoning pattern designed to remain <strong>completely dormant and undetectable</strong> under normal use, activating only when a specific, rare &quot;trigger&quot; phrase or pattern appears in the input:</p>
+<p>A <strong>backdoor</strong> is a poisoning pattern designed to remain <strong>completely dormant and undetectable</strong> under normal use, activating only when a specific, rare "trigger" phrase or pattern appears in the input:</p>
 <pre><code>Poisoned training example (illustrative):
-&quot;The weather today is [TRIGGER_PHRASE_XYZ] nice&quot; → labeled/reinforced
+"The weather today is [TRIGGER_PHRASE_XYZ] nice" → labeled/reinforced
 to produce some specific attacker-chosen harmful or biased output,
 while the model behaves completely normally on every other input
-that doesn&#39;t contain that exact rare trigger phrase.
+that doesn't contain that exact rare trigger phrase.
 </code></pre>
-<p>This is genuinely difficult to detect through normal testing, precisely because the model behaves indistinguishably from a &quot;clean&quot; model on every input <strong>except</strong> the rare, specific trigger — echoing Path 10.4&#39;s rootkit concept (designed specifically to evade normal detection) applied to model behaviour instead of OS-level presence.</p>
+<p>This is genuinely difficult to detect through normal testing, precisely because the model behaves indistinguishably from a "clean" model on every input <strong>except</strong> the rare, specific trigger — echoing Path 10.4's rootkit concept (designed specifically to evade normal detection) applied to model behaviour instead of OS-level presence.</p>
 <h3>Why this matters especially for fine-tuning and RAG</h3>
-<p>Recall Path 18.5&#39;s supply chain connection — organisations increasingly fine-tune base models on their <strong>own</strong> data, or use <strong>RAG (Retrieval-Augmented Generation)</strong> — feeding a model relevant documents at inference time from a company&#39;s own knowledge base. Both introduce a direct data-provenance question: <em>if an attacker can influence what goes into this fine-tuning set or RAG document store, what could they achieve?</em></p>
-<p>This RAG-poisoning pattern is a genuinely practical, current concern — if any user can submit content that later gets indexed into a RAG knowledge base without adequate review, that&#39;s a direct injection vector, structurally similar to Path 18.3&#39;s indirect prompt injection but occurring through the retrieval pipeline specifically rather than a one-off document being processed.</p>
+<p>Recall Path 18.5's supply chain connection — organisations increasingly fine-tune base models on their <strong>own</strong> data, or use <strong>RAG (Retrieval-Augmented Generation)</strong> — feeding a model relevant documents at inference time from a company's own knowledge base. Both introduce a direct data-provenance question: <em>if an attacker can influence what goes into this fine-tuning set or RAG document store, what could they achieve?</em></p>
+<pre><code class="language-mermaid">flowchart LR
+    Attacker["🧑‍💻 Attacker submits a&lt;br/&gt;poisoned support ticket&lt;br/&gt;or wiki edit"]
+    RAG["📚 RAG document store&lt;br/&gt;(company knowledge base)"]
+    Query["User asks a question"]
+    Retrieved["Poisoned document&lt;br/&gt;retrieved as 'relevant context'"]
+    Response["LLM generates response&lt;br/&gt;influenced by poisoned content"]
+
+    Attacker --&gt; RAG
+    Query --&gt; Retrieved
+    RAG --&gt; Retrieved
+    Retrieved --&gt; Response
+
+    style Attacker fill:#2b1010,color:#E05548,stroke:#E05548
+    style RAG fill:#111927,color:#8496A6,stroke:#8496A6
+    style Query fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
+    style Retrieved fill:#2b1f0a,color:#EFA43A,stroke:#EFA43A
+    style Response fill:#2b1010,color:#E9EEF3,stroke:#E05548
+</code></pre>
+<p>This RAG-poisoning pattern is a genuinely practical, current concern — if any user can submit content that later gets indexed into a RAG knowledge base without adequate review, that's a direct injection vector, structurally similar to Path 18.3's indirect prompt injection but occurring through the retrieval pipeline specifically rather than a one-off document being processed.</p>
 <h2>Adversarial examples — exploiting decision boundaries directly</h2>
 <p>A distinct, more mathematically-grounded attack: <strong>adversarial examples</strong> are inputs deliberately crafted with small, often human-imperceptible perturbations specifically designed to cause a model to misclassify them, exploiting the precise mathematical boundaries the model learned during training.</p>
 <pre><code>Classic example (from image classification research, illustrative
 of the general principle even though most of this course focuses
 on LLMs specifically):
 
-Original image: correctly classified as &quot;panda&quot; with 57% confidence
+Original image: correctly classified as "panda" with 57% confidence
 Adversarial image: the SAME image with a carefully calculated, nearly
-invisible pixel-level perturbation added, now classified as &quot;gibbon&quot;
+invisible pixel-level perturbation added, now classified as "gibbon"
 with 99% confidence — despite being visually indistinguishable to
 a human observer
 </code></pre>
@@ -99,38 +163,40 @@ a human observer
 <p>Two related, privacy-specific adversarial ML techniques worth knowing:</p>
 <ul>
 <li><strong>Model inversion</strong> — attempting to reconstruct sensitive training data by systematically querying a model and analyzing its outputs, potentially recovering information that should have remained private.</li>
-<li><strong>Membership inference</strong> — determining whether a <strong>specific, known</strong> piece of data was part of a model&#39;s training set at all, without necessarily reconstructing the data itself — a privacy concern particularly relevant if a model was trained on sensitive data (medical records, private communications) and an attacker wants to confirm a specific individual&#39;s data was included.</li>
+<li><strong>Membership inference</strong> — determining whether a <strong>specific, known</strong> piece of data was part of a model's training set at all, without necessarily reconstructing the data itself — a privacy concern particularly relevant if a model was trained on sensitive data (medical records, private communications) and an attacker wants to confirm a specific individual's data was included.</li>
 </ul>
-<p>Both connect directly back to Path 18.5&#39;s &quot;Sensitive Information Disclosure&quot; category, approached from a more mathematically rigorous angle than simple prompt-based extraction attempts.</p>
+<p>Both connect directly back to Path 18.5's "Sensitive Information Disclosure" category, approached from a more mathematically rigorous angle than simple prompt-based extraction attempts.</p>
 <h2>Defensive approaches</h2>
 <ul>
 <li><strong>Data provenance and vetting</strong> — treating training/fine-tuning data pipelines with the same supply-chain rigor as software dependencies (Path 10.4/11.5) — knowing where data came from, and applying appropriate review before it influences model behaviour.</li>
-<li><strong>RAG document store access controls</strong> — directly applying Path 11.1&#39;s access control principles to what content can be submitted to, and later retrieved from, a RAG knowledge base.</li>
-<li><strong>Anomaly detection in training data</strong> — statistical techniques to identify unusual patterns or outlier examples in large training datasets that might indicate a poisoning attempt, conceptually similar to Path 12.5&#39;s anomaly-based IDS approach, applied to data rather than network traffic.</li>
-<li><strong>Differential privacy</strong> — mathematical techniques applied during training specifically designed to limit how much any single training example (potentially including poisoned or sensitive ones) can influence the final model&#39;s behaviour, directly mitigating both poisoning impact and membership inference risk simultaneously.</li>
+<li><strong>RAG document store access controls</strong> — directly applying Path 11.1's access control principles to what content can be submitted to, and later retrieved from, a RAG knowledge base.</li>
+<li><strong>Anomaly detection in training data</strong> — statistical techniques to identify unusual patterns or outlier examples in large training datasets that might indicate a poisoning attempt, conceptually similar to Path 12.5's anomaly-based IDS approach, applied to data rather than network traffic.</li>
+<li><strong>Differential privacy</strong> — mathematical techniques applied during training specifically designed to limit how much any single training example (potentially including poisoned or sensitive ones) can influence the final model's behaviour, directly mitigating both poisoning impact and membership inference risk simultaneously.</li>
 <li><strong>Robustness testing</strong> — deliberately testing models against known adversarial example techniques before deployment, a specific, technical variant of the broader AI red-teaming discipline covered fully in the next lesson.</li>
 </ul>
 <h2>Data extraction — the training set as an unintended output channel</h2>
-<p>A related privacy risk worth distinguishing from model inversion and membership inference above: <strong>training data extraction</strong> is when an attacker gets a model to output near-verbatim snippets of its actual training data, rather than just confirming whether specific data was included. This has been demonstrated in published research against real production models — carefully crafted prompts causing a model to reproduce memorized fragments of text it saw during training, sometimes including personal information, copyrighted content, or even leaked credentials that happened to appear somewhere in the training corpus. This risk scales with how much a model <strong>memorizes</strong> versus genuinely <strong>generalizes</strong> from its training data — a phenomenon more pronounced for rare, unusual, or repeated-verbatim text (a piece of code appearing in thousands of near-identical GitHub repos, for instance) than for common patterns the model has learned to represent more abstractly. It directly reinforces this lesson&#39;s closing point: unlike a SQL injection with a clean, complete fix, limiting training data extraction is an ongoing balance between model capability (which benefits from learning general patterns from vast data) and privacy (which benefits from the model <em>not</em> being able to reproduce that data verbatim) — a tension without a clean, final resolution given current training techniques.</p>
+<p>A related privacy risk worth distinguishing from model inversion and membership inference above: <strong>training data extraction</strong> is when an attacker gets a model to output near-verbatim snippets of its actual training data, rather than just confirming whether specific data was included. This has been demonstrated in published research against real production models — carefully crafted prompts causing a model to reproduce memorized fragments of text it saw during training, sometimes including personal information, copyrighted content, or even leaked credentials that happened to appear somewhere in the training corpus. This risk scales with how much a model <strong>memorizes</strong> versus genuinely <strong>generalizes</strong> from its training data — a phenomenon more pronounced for rare, unusual, or repeated-verbatim text (a piece of code appearing in thousands of near-identical GitHub repos, for instance) than for common patterns the model has learned to represent more abstractly. It directly reinforces this lesson's closing point: unlike a SQL injection with a clean, complete fix, limiting training data extraction is an ongoing balance between model capability (which benefits from learning general patterns from vast data) and privacy (which benefits from the model <em>not</em> being able to reproduce that data verbatim) — a tension without a clean, final resolution given current training techniques.</p>
 <h2>Why this remains a genuinely open research area</h2>
-<p>Unlike, say, SQL injection (Path 11.6), which has a clean, well-established, essentially complete defensive solution (parameterised queries), data poisoning and adversarial ML defences remain <strong>active, unsettled research areas</strong> — reflecting Path 18.2&#39;s broader point about the probabilistic, less structurally-guaranteed nature of AI security compared to traditional software security. This is precisely the kind of frontier where genuine research contributions (not just applying known best practices) remain possible for practitioners willing to go deep.</p>
+<p>Unlike, say, SQL injection (Path 11.6), which has a clean, well-established, essentially complete defensive solution (parameterised queries), data poisoning and adversarial ML defences remain <strong>active, unsettled research areas</strong> — reflecting Path 18.2's broader point about the probabilistic, less structurally-guaranteed nature of AI security compared to traditional software security. This is precisely the kind of frontier where genuine research contributions (not just applying known best practices) remain possible for practitioners willing to go deep.</p>
 <h2>🧪 Lab — Explore RAG poisoning conceptually</h2>
 <p>If you have access to any RAG-based tool or have experimented with building one (many open-source frameworks like LangChain make this accessible):</p>
 <ol>
 <li>Set up a simple RAG pipeline with a small document store you control.</li>
-<li>Deliberately add one document containing a subtly incorrect or biased &quot;fact&quot; (e.g., an incorrect technical claim).</li>
+<li>Deliberately add one document containing a subtly incorrect or biased "fact" (e.g., an incorrect technical claim).</li>
 <li>Ask the RAG-powered assistant a question that should retrieve that specific document, and observe whether/how the poisoned content influences its response.</li>
 <li>Consider: what review process, applied <em>before</em> a document enters this store, would have caught this specific issue?</li>
 </ol>
-<p>This hands-on exercise makes Path 18.5&#39;s RAG-poisoning concept concrete, directly building the same kind of practical intuition Path 11&#39;s hands-on labs built for web vulnerabilities.</p>
-<p>Why is a backdoor-style data poisoning attack specifically designed to remain dormant under normal use considered more dangerous than a poisoning attempt that noticeably degrades a model&#39;s overall quality?</p>
-<details><summary>Show answer</summary>A poisoning attempt that <strong>noticeably degrades overall quality</strong> is likely to be caught during normal quality assurance, evaluation, or user feedback — the problem announces itself. A <strong>dormant backdoor</strong>, by design, produces completely normal, high-quality behaviour on every input except a specific, rare, attacker-chosen trigger — making it exceptionally difficult to detect through standard testing, since testers would need to specifically guess or already know the trigger phrase to ever observe the malicious behaviour at all. This mirrors Path 10.4's rootkit concept directly: the defining, most dangerous property is the deliberate evasion of normal detection processes.</details><h2>Key terms</h2>
+<p>This hands-on exercise makes Path 18.5's RAG-poisoning concept concrete, directly building the same kind of practical intuition Path 11's hands-on labs built for web vulnerabilities.</p>
+<p>:::challenge Test yourself
+Why is a backdoor-style data poisoning attack specifically designed to remain dormant under normal use considered more dangerous than a poisoning attempt that noticeably degrades a model's overall quality?</p>
+<details><summary>Show answer</summary>A poisoning attempt that <strong>noticeably degrades overall quality</strong> is likely to be caught during normal quality assurance, evaluation, or user feedback — the problem announces itself. A <strong>dormant backdoor</strong>, by design, produces completely normal, high-quality behaviour on every input except a specific, rare, attacker-chosen trigger — making it exceptionally difficult to detect through standard testing, since testers would need to specifically guess or already know the trigger phrase to ever observe the malicious behaviour at all. This mirrors Path 10.4's rootkit concept directly: the defining, most dangerous property is the deliberate evasion of normal detection processes.</details>
+:::<h2>Key terms</h2>
 <ul>
 <li><strong>Training data poisoning</strong> — inserting crafted examples into training/fine-tuning data to create hidden, attacker-chosen behaviour.</li>
 <li><strong>Backdoor attack</strong> — a poisoning pattern remaining dormant until a specific, rare trigger activates the malicious behaviour.</li>
 <li><strong>RAG (Retrieval-Augmented Generation) poisoning</strong> — injecting malicious content into a document store later retrieved as trusted context.</li>
 <li><strong>Adversarial example</strong> — an input with small, often imperceptible perturbations designed to cause model misclassification.</li>
-<li><strong>Model inversion / membership inference</strong> — privacy attacks reconstructing training data or confirming specific data&#39;s inclusion in a training set.</li>
+<li><strong>Model inversion / membership inference</strong> — privacy attacks reconstructing training data or confirming specific data's inclusion in a training set.</li>
 </ul>
 <h2>Recap</h2>
 <ul>
@@ -148,19 +214,67 @@ a human observer
 <li><a href="https://www.anthropic.com/research">Anthropic Research</a> — ongoing published research on AI safety and robustness from a leading AI lab.</li>
 </ul>
 <p><strong>Next up →</strong> <a href="#/lesson/18-ai-security/multimodal-attack-vectors">Multimodal Attack Vectors</a></p>
-<nav class="pager"><a href="/lesson/18-ai-security/rag-security-risks.html">← RAG Security Risks</a><a href="/lesson/18-ai-security/multimodal-attack-vectors.html">Multimodal Attack Vectors →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/18-ai-security/rag-security-risks.html">← RAG Security Risks</a><a href="/lesson/18-ai-security/multimodal-attack-vectors.html">Multimodal Attack Vectors →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/18-ai-security/poisoning-adv-ml";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

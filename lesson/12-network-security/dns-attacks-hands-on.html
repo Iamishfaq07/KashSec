@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>DNS Attacks, Hands-On — Path 12 · KashSec Academy</title>
-<meta name="description" content="Path 02's common-network-attacks-overview lesson introduced DNS spoofing by name; Path 05's caching lesson mentioned cache poisoning generally. This lesson goes properly hands-on with how DNS specific">
+<meta name="description" content="DNS Attacks, Hands-On: Cache poisoning, hijacking, DNSSEC, and DoH/DoT.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/12-network-security/dns-attacks-hands-on.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="DNS Attacks, Hands-On — Path 12 · KashSec Academy">
-<meta property="og:description" content="Path 02's common-network-attacks-overview lesson introduced DNS spoofing by name; Path 05's caching lesson mentioned cache poisoning generally. This lesson goes properly hands-on with how DNS specific">
+<meta property="og:description" content="DNS Attacks, Hands-On: Cache poisoning, hijacking, DNSSEC, and DoH/DoT.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/12-network-security/dns-attacks-hands-on.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -17,59 +18,103 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="DNS Attacks, Hands-On — Path 12 · KashSec Academy">
-<meta name="twitter:description" content="Path 02's common-network-attacks-overview lesson introduced DNS spoofing by name; Path 05's caching lesson mentioned cache poisoning generally. This lesson goes properly hands-on with how DNS specific">
+<meta name="twitter:description" content="DNS Attacks, Hands-On: Cache poisoning, hijacking, DNSSEC, and DoH/DoT.">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 12 — Network Security","item":"https://kashsec.vercel.app/lesson/12-network-security/"},{"@type":"ListItem","position":4,"name":"DNS Attacks, Hands-On","item":"https://kashsec.vercel.app/lesson/12-network-security/dns-attacks-hands-on.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"DNS Attacks, Hands-On","headline":"DNS Attacks, Hands-On","description":"Path 02's common-network-attacks-overview lesson introduced DNS spoofing by name; Path 05's caching lesson mentioned cache poisoning generally. This lesson goes properly hands-on with how DNS specific","url":"https://kashsec.vercel.app/lesson/12-network-security/dns-attacks-hands-on.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Cache poisoning, hijacking, DNSSEC, and DoH/DoT.","isPartOf":{"@type":"Course","name":"Path 12: Network Security","url":"https://kashsec.vercel.app/lesson/12-network-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/12-network-security/dns-attacks-hands-on.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"DNS Attacks, Hands-On","headline":"DNS Attacks, Hands-On","description":"DNS Attacks, Hands-On: Cache poisoning, hijacking, DNSSEC, and DoH/DoT.","url":"https://kashsec.vercel.app/lesson/12-network-security/dns-attacks-hands-on.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Cache poisoning, hijacking, DNSSEC, and DoH/DoT.","isPartOf":{"@type":"Course","name":"Path 12: Network Security","url":"https://kashsec.vercel.app/lesson/12-network-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/12-network-security/dns-attacks-hands-on.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/12-network-security/dns-attacks-hands-on">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/12-network-security/">Path 12 — Network Security</a> · DNS Attacks, Hands-On</div>
-  <article><h1>DNS Attacks, Hands-On</h1>
-<p>Path 02&#39;s common-network-attacks-overview lesson introduced DNS spoofing by name; Path 05&#39;s caching lesson mentioned cache poisoning generally. This lesson goes properly hands-on with how DNS specifically gets attacked, directly setting up the MITM lesson that follows.</p>
+<a class="skip" href="/lesson/12-network-security/dns-attacks-hands-on.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/12-network-security/">Path 12 — Network Security</a> · DNS Attacks, Hands-On</nav>
+    <div class="md" id="content"><article><h1>DNS Attacks, Hands-On</h1>
+<p>Path 02's common-network-attacks-overview lesson introduced DNS spoofing by name; Path 05's caching lesson mentioned cache poisoning generally. This lesson goes properly hands-on with how DNS specifically gets attacked, directly setting up the MITM lesson that follows.</p>
 <h2>DNS cache poisoning: the classic attack</h2>
-<p>Recall Path 02&#39;s DNS lesson: a <strong>DNS resolver</strong> caches answers to avoid repeatedly querying the same information. <strong>DNS cache poisoning</strong> exploits this caching behavior — an attacker floods a resolver with forged DNS responses, attempting to get a malicious IP address cached under a legitimate domain name before the real, authoritative answer arrives.</p>
-<p>Once poisoned, <em>every</em> user relying on that resolver receives the attacker&#39;s malicious IP address for the targeted domain, until the cache entry expires — a genuinely powerful attack, since a single successful poisoning affects every subsequent query, not just one victim.</p>
+<p>Recall Path 02's DNS lesson: a <strong>DNS resolver</strong> caches answers to avoid repeatedly querying the same information. <strong>DNS cache poisoning</strong> exploits this caching behavior — an attacker floods a resolver with forged DNS responses, attempting to get a malicious IP address cached under a legitimate domain name before the real, authoritative answer arrives.</p>
+<pre><code class="language-mermaid">sequenceDiagram
+    participant R as DNS Resolver
+    participant A as Attacker
+    participant S as Real Authoritative Server
+    R-&gt;&gt;S: "What's the IP for bank.com?"
+    A-&gt;&gt;R: Forged response (arrives first): "It's attacker's IP"
+    Note over R: Resolver caches the forged answer
+    S-&gt;&gt;R: Real response (arrives too late, ignored)
+    Note over R: Every subsequent query for bank.com now returns attacker's IP
+</code></pre>
+<p>Once poisoned, <em>every</em> user relying on that resolver receives the attacker's malicious IP address for the targeted domain, until the cache entry expires — a genuinely powerful attack, since a single successful poisoning affects every subsequent query, not just one victim.</p>
 <h2>DNS hijacking: attacking the infrastructure directly</h2>
-<p><strong>DNS hijacking</strong> takes a more direct route — compromising the actual DNS settings themselves (a home router&#39;s configured DNS server, an ISP&#39;s resolver, or even a domain&#39;s registrar account) to redirect queries to an attacker-controlled server permanently, rather than relying on a race-condition-style cache-poisoning attempt.</p>
+<p><strong>DNS hijacking</strong> takes a more direct route — compromising the actual DNS settings themselves (a home router's configured DNS server, an ISP's resolver, or even a domain's registrar account) to redirect queries to an attacker-controlled server permanently, rather than relying on a race-condition-style cache-poisoning attempt.</p>
 <h2>DNSSEC: the cryptographic defense</h2>
-<p><strong>DNSSEC (DNS Security Extensions)</strong> adds cryptographic signatures (directly applying Path 06&#39;s digital-signatures concepts) to DNS responses, letting a resolver verify that an answer genuinely came from the legitimate authoritative source and wasn&#39;t forged or tampered with in transit — directly closing the exact gap both cache poisoning and hijacking exploit.</p>
-<p>Despite being a mature, well-understood standard, DNSSEC adoption across the internet remains far from universal — configuring it correctly requires coordination between a domain owner and their registrar, and a misconfiguration can actually break a domain&#39;s DNS resolution entirely if done carelessly. This is exactly why DNS spoofing remains a genuinely real, current threat category, not a solved historical problem.</p>
+<p><strong>DNSSEC (DNS Security Extensions)</strong> adds cryptographic signatures (directly applying Path 06's digital-signatures concepts) to DNS responses, letting a resolver verify that an answer genuinely came from the legitimate authoritative source and wasn't forged or tampered with in transit — directly closing the exact gap both cache poisoning and hijacking exploit.</p>
+<p>:::tip DNSSEC adoption remains genuinely incomplete
+Despite being a mature, well-understood standard, DNSSEC adoption across the internet remains far from universal — configuring it correctly requires coordination between a domain owner and their registrar, and a misconfiguration can actually break a domain's DNS resolution entirely if done carelessly. This is exactly why DNS spoofing remains a genuinely real, current threat category, not a solved historical problem.
+:::</p>
 <h2>DNS over HTTPS (DoH) and DNS over TLS (DoT): protecting the query itself</h2>
-<p>Beyond verifying the <em>answer&#39;s</em> authenticity (DNSSEC&#39;s job), <strong>DoH</strong> and <strong>DoT</strong> encrypt the DNS <em>query</em> in transit, directly applying Path 06&#39;s TLS concepts to prevent an on-path attacker from even observing which domains a user is looking up — a genuinely different protection than DNSSEC, addressing confidentiality rather than integrity.</p>
-<p>Why do DNSSEC and DNS-over-HTTPS solve genuinely different problems, even though both are described as &quot;DNS security&quot; measures?</p>
-<details><summary>Show answer</summary>DNSSEC addresses <strong>integrity and authenticity</strong> — cryptographically proving that a DNS answer genuinely came from the legitimate authoritative source and wasn't forged or tampered with, directly defending against cache poisoning and hijacking. DNS-over-HTTPS addresses a completely different property, <strong>confidentiality</strong> — encrypting the query itself so an attacker positioned on the network (an ISP, a coffee shop Wi-Fi operator, an on-path attacker) can't observe which domains a user is actually looking up, even if that query's eventual answer is completely legitimate and unforged. A DNS setup could have one without the other: DNSSEC-verified answers that are still visible in plaintext to network observers, or encrypted queries whose answers still aren't cryptographically verified against forgery — which is exactly why a genuinely complete DNS security posture uses both together, each closing a different gap.</details><h2>Key terms</h2>
+<p>Beyond verifying the <em>answer's</em> authenticity (DNSSEC's job), <strong>DoH</strong> and <strong>DoT</strong> encrypt the DNS <em>query</em> in transit, directly applying Path 06's TLS concepts to prevent an on-path attacker from even observing which domains a user is looking up — a genuinely different protection than DNSSEC, addressing confidentiality rather than integrity.</p>
+<p>:::challenge Test yourself
+Why do DNSSEC and DNS-over-HTTPS solve genuinely different problems, even though both are described as "DNS security" measures?</p>
+<details><summary>Show answer</summary>DNSSEC addresses <strong>integrity and authenticity</strong> — cryptographically proving that a DNS answer genuinely came from the legitimate authoritative source and wasn't forged or tampered with, directly defending against cache poisoning and hijacking. DNS-over-HTTPS addresses a completely different property, <strong>confidentiality</strong> — encrypting the query itself so an attacker positioned on the network (an ISP, a coffee shop Wi-Fi operator, an on-path attacker) can't observe which domains a user is actually looking up, even if that query's eventual answer is completely legitimate and unforged. A DNS setup could have one without the other: DNSSEC-verified answers that are still visible in plaintext to network observers, or encrypted queries whose answers still aren't cryptographically verified against forgery — which is exactly why a genuinely complete DNS security posture uses both together, each closing a different gap.</details>
+:::<h2>Key terms</h2>
 <ul>
 <li><strong>DNS cache poisoning</strong> — flooding a resolver with forged responses, attempting to get a malicious answer cached before the legitimate one arrives.</li>
 <li><strong>DNSSEC</strong> — cryptographic signatures added to DNS responses, verifying authenticity and preventing forgery.</li>
@@ -79,22 +124,70 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <ul>
 <li>DNS cache poisoning and DNS hijacking are the two main attack patterns, exploiting caching behavior and infrastructure compromise respectively.</li>
 <li>DNSSEC cryptographically verifies DNS response authenticity, directly closing the gap both attacks exploit — though adoption remains genuinely incomplete across the internet.</li>
-<li>DoH and DoT solve a separate, complementary problem — encrypting the query itself for confidentiality, distinct from DNSSEC&#39;s integrity guarantee.</li>
+<li>DoH and DoT solve a separate, complementary problem — encrypting the query itself for confidentiality, distinct from DNSSEC's integrity guarantee.</li>
 </ul>
 <p><strong>Next up →</strong> <a href="#/lesson/12-network-security/mitm">Man-in-the-middle attacks</a></p>
-<nav class="pager"><a href="/lesson/12-network-security/bluetooth-iot-security.html">← Bluetooth &amp; IoT Network Security</a><a href="/lesson/12-network-security/mitm.html">Man-in-the-Middle →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/12-network-security/bluetooth-iot-security.html">← Bluetooth &amp; IoT Network Security</a><a href="/lesson/12-network-security/mitm.html">Man-in-the-Middle →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/12-network-security/dns-attacks-hands-on";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

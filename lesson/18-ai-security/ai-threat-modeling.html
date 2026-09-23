@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>AI Threat Modeling — Path 18 · KashSec Academy</title>
-<meta name="description" content="The why-AI-security-is-different lesson established that AI systems face genuinely novel risk categories. This lesson applies a structured, systematic framework to actually reasoning about those risks">
+<meta name="description" content="AI Threat Modeling: Systematically mapping an AI system's real attack surface.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/18-ai-security/ai-threat-modeling.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="AI Threat Modeling — Path 18 · KashSec Academy">
-<meta property="og:description" content="The why-AI-security-is-different lesson established that AI systems face genuinely novel risk categories. This lesson applies a structured, systematic framework to actually reasoning about those risks">
+<meta property="og:description" content="AI Threat Modeling: Systematically mapping an AI system's real attack surface.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/18-ai-security/ai-threat-modeling.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -17,92 +18,180 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="AI Threat Modeling — Path 18 · KashSec Academy">
-<meta name="twitter:description" content="The why-AI-security-is-different lesson established that AI systems face genuinely novel risk categories. This lesson applies a structured, systematic framework to actually reasoning about those risks">
+<meta name="twitter:description" content="AI Threat Modeling: Systematically mapping an AI system's real attack surface.">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 18 — AI & AI Security","item":"https://kashsec.vercel.app/lesson/18-ai-security/"},{"@type":"ListItem","position":4,"name":"AI Threat Modeling","item":"https://kashsec.vercel.app/lesson/18-ai-security/ai-threat-modeling.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"AI Threat Modeling","headline":"AI Threat Modeling","description":"The why-AI-security-is-different lesson established that AI systems face genuinely novel risk categories. This lesson applies a structured, systematic framework to actually reasoning about those risks","url":"https://kashsec.vercel.app/lesson/18-ai-security/ai-threat-modeling.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Systematically mapping an AI system's real attack surface.","isPartOf":{"@type":"Course","name":"Path 18: AI & AI Security","url":"https://kashsec.vercel.app/lesson/18-ai-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/18-ai-security/ai-threat-modeling.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"AI Threat Modeling","headline":"AI Threat Modeling","description":"AI Threat Modeling: Systematically mapping an AI system's real attack surface.","url":"https://kashsec.vercel.app/lesson/18-ai-security/ai-threat-modeling.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Systematically mapping an AI system's real attack surface.","isPartOf":{"@type":"Course","name":"Path 18: AI & AI Security","url":"https://kashsec.vercel.app/lesson/18-ai-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/18-ai-security/ai-threat-modeling.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/18-ai-security/ai-threat-modeling">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/18-ai-security/">Path 18 — AI &amp; AI Security</a> · AI Threat Modeling</div>
-  <article><h1>AI Threat Modeling</h1>
-<p>The why-AI-security-is-different lesson established that AI systems face genuinely novel risk categories. This lesson applies a structured, systematic framework to actually reasoning about those risks in a specific application — directly connecting to Path 22&#39;s STRIDE threat-modeling worksheet, adapted here specifically for AI/LLM-integrated systems.</p>
+<a class="skip" href="/lesson/18-ai-security/ai-threat-modeling.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/18-ai-security/">Path 18 — AI &amp; AI Security</a> · AI Threat Modeling</nav>
+    <div class="md" id="content"><article><h1>AI Threat Modeling</h1>
+<p>The why-AI-security-is-different lesson established that AI systems face genuinely novel risk categories. This lesson applies a structured, systematic framework to actually reasoning about those risks in a specific application — directly connecting to Path 22's STRIDE threat-modeling worksheet, adapted here specifically for AI/LLM-integrated systems.</p>
 <h2>Why AI systems need their own threat-modeling adaptation</h2>
-<p>Directly connecting to Path 22&#39;s STRIDE lesson: traditional threat modeling categories (Spoofing, Tampering, Repudiation, Information Disclosure, Denial of Service, Elevation of Privilege) remain relevant to AI applications, but each category manifests differently when an LLM sits in the data flow — &quot;Tampering,&quot; for instance, now includes tampering with a model&#39;s training data or its retrieved context, not just tampering with a traditional database record.</p>
+<p>Directly connecting to Path 22's STRIDE lesson: traditional threat modeling categories (Spoofing, Tampering, Repudiation, Information Disclosure, Denial of Service, Elevation of Privilege) remain relevant to AI applications, but each category manifests differently when an LLM sits in the data flow — "Tampering," for instance, now includes tampering with a model's training data or its retrieved context, not just tampering with a traditional database record.</p>
 <h2>The AI-specific attack surface, mapped</h2>
-<p>Before applying any framework, identify where an AI system&#39;s actual attack surface differs from a traditional application&#39;s:</p>
+<p>Before applying any framework, identify where an AI system's actual attack surface differs from a traditional application's:</p>
 <ul>
-<li><strong>Input surface</strong> — not just user-typed prompts, but anything an LLM might read into its context: retrieved documents, tool outputs, fetched web content, email content in an AI-powered assistant — directly connecting to the transformer-architecture lesson&#39;s point that all of this is just tokens to the model</li>
+<li><strong>Input surface</strong> — not just user-typed prompts, but anything an LLM might read into its context: retrieved documents, tool outputs, fetched web content, email content in an AI-powered assistant — directly connecting to the transformer-architecture lesson's point that all of this is just tokens to the model</li>
 <li><strong>Training/fine-tuning surface</strong> — data used to train or fine-tune the model itself, directly connecting to the poisoning-and-adversarial-ML lesson later in this path</li>
-<li><strong>Output surface</strong> — what the model&#39;s response gets used for downstream: is it displayed as text to a human, or does it trigger an automated action (a tool call, a database write, an email send)?</li>
+<li><strong>Output surface</strong> — what the model's response gets used for downstream: is it displayed as text to a human, or does it trigger an automated action (a tool call, a database write, an email send)?</li>
 <li><strong>Model supply chain</strong> — the model weights, libraries, and infrastructure the application depends on, connecting directly to the llm-supply-chain-attacks lesson later in this path</li>
 </ul>
 <h2>A worked threat-modeling example</h2>
-<p>Consider a customer support chatbot that can read a customer&#39;s order history and issue refunds via a tool call:</p>
-<p>Applying the framework: the input surface (customer message) is fully untrusted, meaning a prompt injection attempt is a realistic threat; the output surface includes an automated action with real financial consequence (issuing a refund), meaning &quot;Elevation of Privilege&quot; here specifically means &quot;convincing the LLM to authorize a refund it shouldn&#39;t&quot; — directly connecting to the securing-llm-apps lesson&#39;s emphasis on never letting an LLM&#39;s output directly trigger a high-consequence action without independent validation.</p>
+<p>Consider a customer support chatbot that can read a customer's order history and issue refunds via a tool call:</p>
+<pre><code class="language-mermaid">flowchart TD
+    A["Customer message\n(untrusted input)"] --&gt; B["LLM processes with\norder history in context"]
+    B --&gt; C{"LLM decides to\ncall refund tool?"}
+    C --&gt;|Yes| D["Refund tool executes\nwith LLM-provided amount"]
+    C --&gt;|No| E["LLM responds\nwith text only"]
+</code></pre>
+<p>Applying the framework: the input surface (customer message) is fully untrusted, meaning a prompt injection attempt is a realistic threat; the output surface includes an automated action with real financial consequence (issuing a refund), meaning "Elevation of Privilege" here specifically means "convincing the LLM to authorize a refund it shouldn't" — directly connecting to the securing-llm-apps lesson's emphasis on never letting an LLM's output directly trigger a high-consequence action without independent validation.</p>
 <h2>Prioritizing by consequence, not just likelihood</h2>
-<p>Directly connecting to Path 23&#39;s GRC risk-scoring approach: an AI threat model should weigh the <em>consequence</em> of a successful attack as heavily as its likelihood — a prompt injection that merely makes a chatbot respond oddly is a low-consequence nuisance, while the same injection technique targeting a system that can execute a refund, send an email, or modify a database record represents a fundamentally more severe risk, even if the underlying injection technique itself is identical in both cases.</p>
+<p>Directly connecting to Path 23's GRC risk-scoring approach: an AI threat model should weigh the <em>consequence</em> of a successful attack as heavily as its likelihood — a prompt injection that merely makes a chatbot respond oddly is a low-consequence nuisance, while the same injection technique targeting a system that can execute a refund, send an email, or modify a database record represents a fundamentally more severe risk, even if the underlying injection technique itself is identical in both cases.</p>
 <h2>Threat modeling as an ongoing practice, not a one-time exercise</h2>
-<p>Directly connecting to Path 22&#39;s continuous-threat-modeling framing: adding a new tool the LLM can call, connecting it to a new data source, or fine-tuning it on new data each meaningfully changes the attack surface this lesson&#39;s framework maps — a threat model completed once at initial design time and never revisited becomes stale exactly as fast as the system itself evolves, which for actively-developed AI features tends to be quickly.</p>
-<p>Why does giving an LLM the ability to call a refund tool fundamentally change the severity of a prompt injection vulnerability, even if the injection technique itself is unchanged?</p>
-<details><summary>Show answer</summary>A prompt injection attack's actual danger is entirely a function of what the LLM's output or decisions can subsequently cause to happen, not just whether the injection technique successfully manipulates the model's response — this is exactly the "consequence over likelihood" prioritization principle from Path 23's GRC risk-scoring approach, applied here to AI-specific threats. When an LLM's role is purely to generate text a human then reads and reacts to, a successful injection at worst produces a misleading or inappropriate response the human can evaluate and disregard — a real problem, but a bounded one. When that same LLM has tool-calling access to execute a refund (or any other consequential automated action) without independent server-side validation, a successful injection can translate directly into an unauthorized financial transaction with no human review step in between — the exact same manipulated model output that previously only risked an awkward chat message now risks real, executed financial harm. This is precisely why the securing-llm-apps lesson insists that consequential actions always require independent validation separate from trusting the LLM's own stated intent, regardless of how well the injection defenses on the input side are engineered.</details><h2>Key terms</h2>
+<p>:::tip Revisit the threat model whenever the system's capabilities change
+Directly connecting to Path 22's continuous-threat-modeling framing: adding a new tool the LLM can call, connecting it to a new data source, or fine-tuning it on new data each meaningfully changes the attack surface this lesson's framework maps — a threat model completed once at initial design time and never revisited becomes stale exactly as fast as the system itself evolves, which for actively-developed AI features tends to be quickly.
+:::</p>
+<p>:::challenge Test yourself
+Why does giving an LLM the ability to call a refund tool fundamentally change the severity of a prompt injection vulnerability, even if the injection technique itself is unchanged?</p>
+<details><summary>Show answer</summary>A prompt injection attack's actual danger is entirely a function of what the LLM's output or decisions can subsequently cause to happen, not just whether the injection technique successfully manipulates the model's response — this is exactly the "consequence over likelihood" prioritization principle from Path 23's GRC risk-scoring approach, applied here to AI-specific threats. When an LLM's role is purely to generate text a human then reads and reacts to, a successful injection at worst produces a misleading or inappropriate response the human can evaluate and disregard — a real problem, but a bounded one. When that same LLM has tool-calling access to execute a refund (or any other consequential automated action) without independent server-side validation, a successful injection can translate directly into an unauthorized financial transaction with no human review step in between — the exact same manipulated model output that previously only risked an awkward chat message now risks real, executed financial harm. This is precisely why the securing-llm-apps lesson insists that consequential actions always require independent validation separate from trusting the LLM's own stated intent, regardless of how well the injection defenses on the input side are engineered.</details>
+:::<h2>Key terms</h2>
 <ul>
 <li><strong>AI attack surface</strong> — the input, training, output, and supply-chain surfaces specific to an AI-integrated system.</li>
 <li><strong>Consequence-weighted prioritization</strong> — ranking AI threats by the severity of what a successful attack could cause, not just how likely it is.</li>
-<li><strong>Tool-calling risk</strong> — the elevated severity a prompt injection carries when the LLM&#39;s output can trigger automated, consequential actions.</li>
+<li><strong>Tool-calling risk</strong> — the elevated severity a prompt injection carries when the LLM's output can trigger automated, consequential actions.</li>
 </ul>
 <h2>Recap</h2>
 <ul>
 <li>Traditional threat-modeling categories (like STRIDE) remain useful for AI systems but manifest differently across input, training, output, and supply-chain surfaces.</li>
-<li>A worked example (a refund-issuing chatbot) shows how the same injection technique carries dramatically different severity depending on what the LLM&#39;s output can actually trigger.</li>
-<li>AI threat models should prioritize by consequence, not just likelihood, mirroring Path 23&#39;s GRC risk-scoring approach.</li>
-<li>Threat models require ongoing revisiting as an AI system&#39;s tools, data sources, and capabilities evolve, not a one-time exercise.</li>
+<li>A worked example (a refund-issuing chatbot) shows how the same injection technique carries dramatically different severity depending on what the LLM's output can actually trigger.</li>
+<li>AI threat models should prioritize by consequence, not just likelihood, mirroring Path 23's GRC risk-scoring approach.</li>
+<li>Threat models require ongoing revisiting as an AI system's tools, data sources, and capabilities evolve, not a one-time exercise.</li>
 </ul>
 <p><strong>Next up →</strong> <a href="#/lesson/18-ai-security/prompt-injection">Prompt injection</a></p>
-<nav class="pager"><a href="/lesson/18-ai-security/why-ai-security.html">← Why AI security is new</a><a href="/lesson/18-ai-security/prompt-injection.html">Prompt injection →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/18-ai-security/why-ai-security.html">← Why AI security is new</a><a href="/lesson/18-ai-security/prompt-injection.html">Prompt injection →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/18-ai-security/ai-threat-modeling";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

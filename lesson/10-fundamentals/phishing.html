@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>Phishing &amp; social eng. — Path 10 · KashSec Academy</title>
-<meta name="description" content="Every technical control in the world can be undone by tricking a human. Social engineering exploits psychology, not code — and it remains the single most common way real attackers get their initial fo">
+<meta name="description" content="Phishing &amp; social eng.: Attacking humans, not computers.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/10-fundamentals/phishing.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Phishing &amp; social eng. — Path 10 · KashSec Academy">
-<meta property="og:description" content="Every technical control in the world can be undone by tricking a human. Social engineering exploits psychology, not code — and it remains the single most common way real attackers get their initial fo">
+<meta property="og:description" content="Phishing &amp; social eng.: Attacking humans, not computers.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/10-fundamentals/phishing.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -17,69 +18,99 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Phishing &amp; social eng. — Path 10 · KashSec Academy">
-<meta name="twitter:description" content="Every technical control in the world can be undone by tricking a human. Social engineering exploits psychology, not code — and it remains the single most common way real attackers get their initial fo">
+<meta name="twitter:description" content="Phishing &amp; social eng.: Attacking humans, not computers.">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 10 — Cybersecurity Fundamentals","item":"https://kashsec.vercel.app/lesson/10-fundamentals/"},{"@type":"ListItem","position":4,"name":"Phishing & social eng.","item":"https://kashsec.vercel.app/lesson/10-fundamentals/phishing.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Phishing & social eng.","headline":"Phishing & social eng.","description":"Every technical control in the world can be undone by tricking a human. Social engineering exploits psychology, not code — and it remains the single most common way real attackers get their initial fo","url":"https://kashsec.vercel.app/lesson/10-fundamentals/phishing.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner→Intermediate","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Attacking humans, not computers.","isPartOf":{"@type":"Course","name":"Path 10: Cybersecurity Fundamentals","url":"https://kashsec.vercel.app/lesson/10-fundamentals/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/10-fundamentals/phishing.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Phishing & social eng.","headline":"Phishing & social eng.","description":"Phishing & social eng.: Attacking humans, not computers.","url":"https://kashsec.vercel.app/lesson/10-fundamentals/phishing.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner→Intermediate","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Attacking humans, not computers.","isPartOf":{"@type":"Course","name":"Path 10: Cybersecurity Fundamentals","url":"https://kashsec.vercel.app/lesson/10-fundamentals/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/10-fundamentals/phishing.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/10-fundamentals/phishing">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/10-fundamentals/">Path 10 — Cybersecurity Fundamentals</a> · Phishing &amp; social eng.</div>
-  <article><h1>Phishing &amp; social engineering</h1>
+<a class="skip" href="/lesson/10-fundamentals/phishing.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/10-fundamentals/">Path 10 — Cybersecurity Fundamentals</a> · Phishing &amp; social eng.</nav>
+    <div class="md" id="content"><article><h1>Phishing &amp; social engineering</h1>
 <p>Every technical control in the world can be undone by tricking a human. <strong>Social engineering</strong> exploits psychology, not code — and it remains the single most common way real attackers get their initial foothold.</p>
 <h2>Why humans, not firewalls, are usually the weakest link</h2>
-<p>Verizon&#39;s annual Data Breach Investigations Report has consistently found that the vast majority of breaches involve a <strong>human element</strong> — someone clicking a link, entering credentials on a fake page, or being manipulated into an action that bypasses otherwise-solid technical defences. You can have a perfect firewall and still get breached because someone in accounting opened an invoice attachment.</p>
+<p>Verizon's annual Data Breach Investigations Report has consistently found that the vast majority of breaches involve a <strong>human element</strong> — someone clicking a link, entering credentials on a fake page, or being manipulated into an action that bypasses otherwise-solid technical defences. You can have a perfect firewall and still get breached because someone in accounting opened an invoice attachment.</p>
 <h2>The psychological levers social engineers pull</h2>
 <p>Real social engineering, whether over email, phone, or in person, almost always leans on one or more of these:</p>
 <ul>
-<li><strong>Authority</strong> — &quot;This is the CEO, I need this done now.&quot; People defer to perceived power.</li>
-<li><strong>Urgency</strong> — &quot;Your account will be suspended in 1 hour.&quot; Panic short-circuits careful thinking.</li>
-<li><strong>Fear</strong> — &quot;Suspicious activity detected — verify your identity immediately.&quot; Threat triggers compliance.</li>
-<li><strong>Curiosity</strong> — &quot;See who viewed your profile&quot; / an oddly-named attachment. Hard to resist clicking.</li>
+<li><strong>Authority</strong> — "This is the CEO, I need this done now." People defer to perceived power.</li>
+<li><strong>Urgency</strong> — "Your account will be suspended in 1 hour." Panic short-circuits careful thinking.</li>
+<li><strong>Fear</strong> — "Suspicious activity detected — verify your identity immediately." Threat triggers compliance.</li>
+<li><strong>Curiosity</strong> — "See who viewed your profile" / an oddly-named attachment. Hard to resist clicking.</li>
 <li><strong>Trust/familiarity</strong> — impersonating a known colleague, vendor, or brand.</li>
-<li><strong>Reciprocity</strong> — offering something small first (&quot;here&#39;s a free gift card&quot;) to lower guard before the real ask.</li>
-<li><strong>Social proof</strong> — &quot;Everyone on the team has already filled this out.&quot;</li>
+<li><strong>Reciprocity</strong> — offering something small first ("here's a free gift card") to lower guard before the real ask.</li>
+<li><strong>Social proof</strong> — "Everyone on the team has already filled this out."</li>
 </ul>
-<p>Recognising <em>which lever</em> is being pulled is often the fastest way to spot an attack in progress, even before you&#39;ve spotted a technical red flag.</p>
+<p>Recognising <em>which lever</em> is being pulled is often the fastest way to spot an attack in progress, even before you've spotted a technical red flag.</p>
 <h2>Phishing — the classic email attack</h2>
 <p><strong>Phishing</strong> is a fraudulent message (usually email) designed to trick the recipient into revealing credentials, running malware, or taking a harmful action.</p>
 <h3>Anatomy of a phishing email</h3>
-<pre><code>From: &quot;Micros0ft Security&quot; &lt;security@micros0ft-support.com&gt;
+<pre><code>From: "Micros0ft Security" &lt;security@micros0ft-support.com&gt;
 Subject: 🚨 Urgent: Unusual sign-in activity detected
 
 We detected a sign-in to your account from an unrecognized device
-in Kyiv, Ukraine. If this wasn&#39;t you, verify your identity immediately
+in Kyiv, Ukraine. If this wasn't you, verify your identity immediately
 or your account will be permanently locked in 24 hours.
 
 [Verify My Account Now]  ← links to micr0soft-login.xyz/verify
@@ -96,7 +127,7 @@ Microsoft Account Team
 </thead>
 <tbody><tr>
 <td>Look-alike domain</td>
-<td><code>micros0ft-support.com</code> (zero instead of &quot;o&quot;)</td>
+<td><code>micros0ft-support.com</code> (zero instead of "o")</td>
 </tr>
 <tr>
 <td>Mismatched/suspicious link</td>
@@ -104,7 +135,7 @@ Microsoft Account Team
 </tr>
 <tr>
 <td>Urgency + fear</td>
-<td>&quot;24 hours&quot;, &quot;permanently locked&quot;</td>
+<td>"24 hours", "permanently locked"</td>
 </tr>
 <tr>
 <td>Generic greeting</td>
@@ -116,64 +147,66 @@ Microsoft Account Team
 </tr>
 <tr>
 <td>Poor grammar/formatting</td>
-<td>not always present in modern, well-crafted phishing — a dangerous myth that it&#39;s always obvious</td>
+<td>not always present in modern, well-crafted phishing — a dangerous myth that it's always obvious</td>
 </tr>
 </tbody></table>
 <h2>Variants of phishing worth knowing by name</h2>
 <ul>
-<li><strong>Spear phishing</strong> — targeted at a specific individual, using researched personal details (their real boss&#39;s name, a recent project, a real vendor relationship). Far more convincing than generic phishing.</li>
-<li><strong>Whaling</strong> — spear phishing aimed specifically at executives (the &quot;big fish&quot;) — often to authorise fraudulent wire transfers.</li>
+<li><strong>Spear phishing</strong> — targeted at a specific individual, using researched personal details (their real boss's name, a recent project, a real vendor relationship). Far more convincing than generic phishing.</li>
+<li><strong>Whaling</strong> — spear phishing aimed specifically at executives (the "big fish") — often to authorise fraudulent wire transfers.</li>
 <li><strong>Smishing</strong> — phishing via SMS text message.</li>
-<li><strong>Vishing</strong> — phishing via voice call, often now supercharged by <strong>AI voice cloning</strong> to impersonate a real person&#39;s voice convincingly.</li>
-<li><strong>Business Email Compromise (BEC)</strong> — attacker compromises or spoofs a real executive&#39;s email to trick finance staff into wiring money — one of the costliest categories of cybercrime by total dollar losses.</li>
+<li><strong>Vishing</strong> — phishing via voice call, often now supercharged by <strong>AI voice cloning</strong> to impersonate a real person's voice convincingly.</li>
+<li><strong>Business Email Compromise (BEC)</strong> — attacker compromises or spoofs a real executive's email to trick finance staff into wiring money — one of the costliest categories of cybercrime by total dollar losses.</li>
 <li><strong>Quishing</strong> — phishing via malicious QR codes, increasingly common as QR-based menus/payments became normal.</li>
 <li><strong>Clone phishing</strong> — taking a real, previously-delivered legitimate email and resending an near-identical copy with a malicious link swapped in.</li>
 </ul>
 <h2>Social engineering beyond email</h2>
 <ul>
 <li><strong>Pretexting</strong> — inventing a false scenario to extract information, e.g., calling IT pretending to be a locked-out employee needing a password reset.</li>
-<li><strong>Baiting</strong> — leaving an infected USB drive labeled &quot;Confidential Salaries.xlsx&quot; in a parking lot, hoping curiosity wins.</li>
-<li><strong>Tailgating/piggybacking</strong> — following an employee through a badge-locked door without their own access (&quot;Oh, can you hold that door? I forgot my badge.&quot;).</li>
+<li><strong>Baiting</strong> — leaving an infected USB drive labeled "Confidential Salaries.xlsx" in a parking lot, hoping curiosity wins.</li>
+<li><strong>Tailgating/piggybacking</strong> — following an employee through a badge-locked door without their own access ("Oh, can you hold that door? I forgot my badge.").</li>
 <li><strong>Quid pro quo</strong> — offering a fake benefit (IT support, a prize) in exchange for information or access.</li>
 <li><strong>Watering hole</strong> — compromising a website the target group is known to visit regularly, waiting for them to come to you rather than reaching out directly.</li>
 </ul>
 <h2>Real, famous examples worth knowing</h2>
 <ul>
-<li><strong>Twitter&#39;s 2020 breach</strong> — attackers used a phone spear-phishing campaign against Twitter employees to gain access to internal admin tools, then hijacked major verified accounts (Obama, Musk, Apple) in a Bitcoin scam.</li>
-<li><strong>RSA SecurID breach (2011)</strong> — a targeted spear-phishing email with a malicious Excel attachment (&quot;2011 Recruitment plan.xls&quot;) compromised RSA, eventually affecting their SecurID token security worldwide.</li>
-<li><strong>Countless BEC cases</strong> — companies routinely lose hundreds of thousands to millions of dollars to a single well-crafted fake &quot;wire transfer&quot; email impersonating a CEO or vendor.</li>
+<li><strong>Twitter's 2020 breach</strong> — attackers used a phone spear-phishing campaign against Twitter employees to gain access to internal admin tools, then hijacked major verified accounts (Obama, Musk, Apple) in a Bitcoin scam.</li>
+<li><strong>RSA SecurID breach (2011)</strong> — a targeted spear-phishing email with a malicious Excel attachment ("2011 Recruitment plan.xls") compromised RSA, eventually affecting their SecurID token security worldwide.</li>
+<li><strong>Countless BEC cases</strong> — companies routinely lose hundreds of thousands to millions of dollars to a single well-crafted fake "wire transfer" email impersonating a CEO or vendor.</li>
 </ul>
 <h2>How organisations defend against social engineering</h2>
-<p>Because you can&#39;t &quot;patch&quot; human psychology the way you patch software, defence is layered:</p>
+<p>Because you can't "patch" human psychology the way you patch software, defence is layered:</p>
 <ul>
 <li><strong>Security awareness training</strong> — regular, realistic training (not just annual compliance-checkbox videos).</li>
 <li><strong>Simulated phishing campaigns</strong> — organisations send fake-but-harmless phishing emails to their own staff to measure and improve click rates over time.</li>
-<li><strong>Technical controls that don&#39;t rely on human judgement</strong> — email filtering, DMARC/SPF/DKIM (Path 02 territory) to make domain spoofing harder, MFA (so a stolen password alone isn&#39;t enough).</li>
-<li><strong>Verification culture</strong> — normalising &quot;let me call you back on a known number to confirm&quot; for any unusual request, especially involving money or credentials, with zero social penalty for double-checking.</li>
-<li><strong>Clear reporting paths</strong> — a one-click &quot;Report Phishing&quot; button and a culture where reporting a suspicious email (even a false alarm) is praised, never mocked.</li>
+<li><strong>Technical controls that don't rely on human judgement</strong> — email filtering, DMARC/SPF/DKIM (Path 02 territory) to make domain spoofing harder, MFA (so a stolen password alone isn't enough).</li>
+<li><strong>Verification culture</strong> — normalising "let me call you back on a known number to confirm" for any unusual request, especially involving money or credentials, with zero social penalty for double-checking.</li>
+<li><strong>Clear reporting paths</strong> — a one-click "Report Phishing" button and a culture where reporting a suspicious email (even a false alarm) is praised, never mocked.</li>
 </ul>
-<h2>AI-generated phishing — why the old &quot;poor grammar&quot; tell is dying</h2>
-<p>The red-flag table above notes that bad grammar isn&#39;t a reliable signal any more, and generative AI is the main reason why. Large language models let attackers produce grammatically flawless, contextually convincing phishing emails at essentially zero marginal cost per message — and worse, AI voice cloning (mentioned above under vishing) now needs only a short public audio sample of someone&#39;s real voice to produce a convincing fake call. Path 18&#39;s AI security material covers the flip side of this same technology directly: AI systems themselves becoming attack targets (via prompt injection) and attack <em>tools</em> (via AI-generated phishing content and deepfakes) are two faces of the same underlying shift — the economics of producing convincing deception have dropped dramatically, meaning volume and personalisation that once required real human effort per target can now be automated at scale.</p>
-<h2>How to think like a defender when something feels &quot;off&quot;</h2>
+<h2>AI-generated phishing — why the old "poor grammar" tell is dying</h2>
+<p>The red-flag table above notes that bad grammar isn't a reliable signal any more, and generative AI is the main reason why. Large language models let attackers produce grammatically flawless, contextually convincing phishing emails at essentially zero marginal cost per message — and worse, AI voice cloning (mentioned above under vishing) now needs only a short public audio sample of someone's real voice to produce a convincing fake call. Path 18's AI security material covers the flip side of this same technology directly: AI systems themselves becoming attack targets (via prompt injection) and attack <em>tools</em> (via AI-generated phishing content and deepfakes) are two faces of the same underlying shift — the economics of producing convincing deception have dropped dramatically, meaning volume and personalisation that once required real human effort per target can now be automated at scale.</p>
+<h2>How to think like a defender when something feels "off"</h2>
 <p>A simple mental checklist worth internalising for life, not just this course:</p>
 <ol>
 <li><strong>Am I being rushed?</strong> Urgency is the single most common lever — slow down deliberately.</li>
 <li><strong>Does the request match how this person/organisation normally communicates?</strong></li>
 <li><strong>Can I verify through a separate, known-good channel</strong> (calling a known phone number, not one in the suspicious message)?</li>
-<li><strong>What does the sender actually gain if I comply?</strong> If it doesn&#39;t make sense for them to need this from you specifically, be suspicious.</li>
-<li><strong>Would I be embarrassed if I reported this and it turned out to be legitimate?</strong> (You shouldn&#39;t be — reporting false alarms is <em>good</em>, not embarrassing.)</li>
+<li><strong>What does the sender actually gain if I comply?</strong> If it doesn't make sense for them to need this from you specifically, be suspicious.</li>
+<li><strong>Would I be embarrassed if I reported this and it turned out to be legitimate?</strong> (You shouldn't be — reporting false alarms is <em>good</em>, not embarrassing.)</li>
 </ol>
 <h2>🧪 Lab — Phishing email teardown</h2>
-<p>Search for &quot;phishing email examples&quot; (many banks, universities, and CERTs publish real anonymised examples for training purposes) and find three real ones. For each, identify:</p>
+<p>Search for "phishing email examples" (many banks, universities, and CERTs publish real anonymised examples for training purposes) and find three real ones. For each, identify:</p>
 <ol>
 <li>Which psychological lever(s) are being pulled?</li>
 <li>What are the technical red flags (domain, links, headers if shown)?</li>
 <li>What variant is it (spear phishing, BEC, vishing, etc.)?</li>
-<li>What&#39;s the one action that would fully defeat this attack (without needing any technical skill)?</li>
+<li>What's the one action that would fully defeat this attack (without needing any technical skill)?</li>
 </ol>
 <p>This exact exercise — teardown of real phishing samples — is standard onboarding at many security teams.</p>
-<p>An email claims to be from your CEO, asks you to urgently buy $2,000 in gift cards for a &quot;client gift&quot; and send the codes by reply, and says they&#39;re &quot;in back-to-back meetings and can&#39;t take calls.&quot; Which two psychological levers are being combined here, and what&#39;s the single best verification step?</p>
-<details><summary>Show answer</summary><strong>Authority</strong> (claims to be the CEO) and <strong>urgency</strong> (needs it right now), plus a specific excuse to <strong>prevent verification</strong> (can't take calls) — that unavailability excuse is itself a major red flag. The best step: contact the CEO through a known, separate channel (their real known phone number or in person) rather than replying to the email, regardless of the stated unavailability.</details><h2>Key terms</h2>
+<p>:::challenge Test yourself
+An email claims to be from your CEO, asks you to urgently buy $2,000 in gift cards for a "client gift" and send the codes by reply, and says they're "in back-to-back meetings and can't take calls." Which two psychological levers are being combined here, and what's the single best verification step?</p>
+<details><summary>Show answer</summary><strong>Authority</strong> (claims to be the CEO) and <strong>urgency</strong> (needs it right now), plus a specific excuse to <strong>prevent verification</strong> (can't take calls) — that unavailability excuse is itself a major red flag. The best step: contact the CEO through a known, separate channel (their real known phone number or in person) rather than replying to the email, regardless of the stated unavailability.</details>
+:::<h2>Key terms</h2>
 <ul>
 <li><strong>Social engineering</strong> — manipulating people rather than exploiting technical bugs.</li>
 <li><strong>Phishing / spear phishing / whaling</strong> — generic, targeted, and executive-targeted email deception.</li>
@@ -183,7 +216,7 @@ Microsoft Account Team
 </ul>
 <h2>Recap</h2>
 <ul>
-<li>Humans are consistently the most exploited &quot;vulnerability&quot; in real breaches.</li>
+<li>Humans are consistently the most exploited "vulnerability" in real breaches.</li>
 <li>Phishing and its variants exploit authority, urgency, fear, and trust.</li>
 <li>Spear phishing and BEC are far more dangerous than generic mass phishing.</li>
 <li>Defence combines training, simulated phishing, technical filtering, MFA, and a strong verification culture.</li>
@@ -197,19 +230,67 @@ Microsoft Account Team
 <li><a href="https://phishingquiz.withgoogle.com/">Google/Jigsaw — Phishing Quiz</a> — free, excellent hands-on practice spotting real vs fake emails.</li>
 </ul>
 <p><strong>Next up →</strong> <a href="#/lesson/10-fundamentals/security-policies-awareness">Security Policies &amp; Awareness Training</a></p>
-<nav class="pager"><a href="/lesson/10-fundamentals/passwords-hashing.html">← Passwords &amp; hashing</a><a href="/lesson/10-fundamentals/security-policies-awareness.html">Security Policies &amp; Awareness Training →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/10-fundamentals/passwords-hashing.html">← Passwords &amp; hashing</a><a href="/lesson/10-fundamentals/security-policies-awareness.html">Security Policies &amp; Awareness Training →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/10-fundamentals/phishing";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

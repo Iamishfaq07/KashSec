@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>What is Cloud Computing? — Path 08 · KashSec Academy</title>
-<meta name="description" content="Path 16's cloud security lesson and its flAWS lab jump straight into cloud misconfigurations — S3 buckets, IAM roles, IMDS exploitation. This path backs up to fundamentals first: what cloud computing ">
+<meta name="description" content="What is Cloud Computing?: IaaS/PaaS/SaaS, and why this course is itself a cloud example.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/08-cloud-basics/what-is-cloud-computing.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="What is Cloud Computing? — Path 08 · KashSec Academy">
-<meta property="og:description" content="Path 16's cloud security lesson and its flAWS lab jump straight into cloud misconfigurations — S3 buckets, IAM roles, IMDS exploitation. This path backs up to fundamentals first: what cloud computing ">
+<meta property="og:description" content="What is Cloud Computing?: IaaS/PaaS/SaaS, and why this course is itself a cloud example.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/08-cloud-basics/what-is-cloud-computing.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -17,49 +18,83 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="What is Cloud Computing? — Path 08 · KashSec Academy">
-<meta name="twitter:description" content="Path 16's cloud security lesson and its flAWS lab jump straight into cloud misconfigurations — S3 buckets, IAM roles, IMDS exploitation. This path backs up to fundamentals first: what cloud computing ">
+<meta name="twitter:description" content="What is Cloud Computing?: IaaS/PaaS/SaaS, and why this course is itself a cloud example.">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 08 — Cloud Computing Basics","item":"https://kashsec.vercel.app/lesson/08-cloud-basics/"},{"@type":"ListItem","position":4,"name":"What is Cloud Computing?","item":"https://kashsec.vercel.app/lesson/08-cloud-basics/what-is-cloud-computing.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"What is Cloud Computing?","headline":"What is Cloud Computing?","description":"Path 16's cloud security lesson and its flAWS lab jump straight into cloud misconfigurations — S3 buckets, IAM roles, IMDS exploitation. This path backs up to fundamentals first: what cloud computing ","url":"https://kashsec.vercel.app/lesson/08-cloud-basics/what-is-cloud-computing.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"IaaS/PaaS/SaaS, and why this course is itself a cloud example.","isPartOf":{"@type":"Course","name":"Path 08: Cloud Computing Basics","url":"https://kashsec.vercel.app/lesson/08-cloud-basics/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/08-cloud-basics/what-is-cloud-computing.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"What is Cloud Computing?","headline":"What is Cloud Computing?","description":"What is Cloud Computing?: IaaS/PaaS/SaaS, and why this course is itself a cloud example.","url":"https://kashsec.vercel.app/lesson/08-cloud-basics/what-is-cloud-computing.html","inLanguage":"en","dateModified":"2026-07-16","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"IaaS/PaaS/SaaS, and why this course is itself a cloud example.","isPartOf":{"@type":"Course","name":"Path 08: Cloud Computing Basics","url":"https://kashsec.vercel.app/lesson/08-cloud-basics/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/08-cloud-basics/what-is-cloud-computing.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/08-cloud-basics/what-is-cloud-computing">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/08-cloud-basics/">Path 08 — Cloud Computing Basics</a> · What is Cloud Computing?</div>
-  <article><h1>What is Cloud Computing?</h1>
-<p>Path 16&#39;s cloud security lesson and its flAWS lab jump straight into cloud <em>misconfigurations</em> — S3 buckets, IAM roles, IMDS exploitation. This path backs up to fundamentals first: what cloud computing actually is, before you can meaningfully secure it. If you&#39;ve felt like Path 16&#39;s cloud content assumed knowledge you didn&#39;t quite have, this path fills that gap.</p>
+<a class="skip" href="/lesson/08-cloud-basics/what-is-cloud-computing.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/08-cloud-basics/">Path 08 — Cloud Computing Basics</a> · What is Cloud Computing?</nav>
+    <div class="md" id="content"><article><h1>What is Cloud Computing?</h1>
+<p>Path 16's cloud security lesson and its flAWS lab jump straight into cloud <em>misconfigurations</em> — S3 buckets, IAM roles, IMDS exploitation. This path backs up to fundamentals first: what cloud computing actually is, before you can meaningfully secure it. If you've felt like Path 16's cloud content assumed knowledge you didn't quite have, this path fills that gap.</p>
 <h2>The core idea — renting computing instead of owning it</h2>
-<p>Before cloud computing, running a website or application meant buying physical servers, housing them somewhere with power and cooling, and maintaining the hardware yourself. <strong>Cloud computing</strong> replaces this with renting computing resources — servers, storage, databases — from a provider&#39;s massive, shared infrastructure, paying only for what you actually use, scaling up or down on demand.</p>
+<p>Before cloud computing, running a website or application meant buying physical servers, housing them somewhere with power and cooling, and maintaining the hardware yourself. <strong>Cloud computing</strong> replaces this with renting computing resources — servers, storage, databases — from a provider's massive, shared infrastructure, paying only for what you actually use, scaling up or down on demand.</p>
+<pre><code class="language-mermaid">flowchart LR
+    A["Traditional:\nbuy &amp; maintain\nyour own servers"] -.-&gt;|slow, expensive,\nfixed capacity| B[Your Application]
+    C["Cloud:\nrent capacity from\na provider on-demand"] --&gt;|fast, flexible,\nscales as needed| B
+</code></pre>
 <h2>The three service models</h2>
 <p>Cloud services are typically categorized by how much you manage yourself versus how much the provider handles:</p>
 <table>
@@ -87,25 +122,33 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <td><strong>SaaS</strong> (Software as a Service)</td>
 <td>Just your data and configuration</td>
 <td>Literally everything else</td>
-<td>Gmail, Salesforce, this very course&#39;s own hosting via Vercel</td>
+<td>Gmail, Salesforce, this very course's own hosting via Vercel</td>
 </tr>
 </tbody></table>
-<p>This spectrum matters enormously for security, and directly sets up Path 16&#39;s cloud security lesson: the less you manage yourself, the less <em>you&#39;re</em> directly responsible for securing — but also the less control you have. This tradeoff has a name — the <strong>shared responsibility model</strong> — covered in depth in a dedicated lesson later in this path.</p>
+<pre><code class="language-mermaid">flowchart TD
+    A[IaaS - most control,\nmost responsibility] --&gt; B[PaaS - balanced]
+    B --&gt; C[SaaS - least control,\nleast responsibility]
+</code></pre>
+<p>This spectrum matters enormously for security, and directly sets up Path 16's cloud security lesson: the less you manage yourself, the less <em>you're</em> directly responsible for securing — but also the less control you have. This tradeoff has a name — the <strong>shared responsibility model</strong> — covered in depth in a dedicated lesson later in this path.</p>
 <h2>Why cloud computing matters for security specifically</h2>
-<p>A huge and growing share of modern infrastructure runs in the cloud — meaning a huge share of real-world security work now involves cloud-specific concepts: identity and access management (IAM), storage buckets, virtual networks, and container orchestration (Path 16&#39;s containers/Kubernetes lab), none of which map perfectly onto the traditional on-premises security model this course built up through Paths 02-03 and 08.</p>
+<p>A huge and growing share of modern infrastructure runs in the cloud — meaning a huge share of real-world security work now involves cloud-specific concepts: identity and access management (IAM), storage buckets, virtual networks, and container orchestration (Path 16's containers/Kubernetes lab), none of which map perfectly onto the traditional on-premises security model this course built up through Paths 02-03 and 08.</p>
 <h2>Public, private, and hybrid cloud</h2>
 <ul>
-<li><strong>Public cloud</strong> — infrastructure shared across many customers on one provider&#39;s platform (AWS, Azure, GCP) — the most common model, and this path&#39;s primary focus.</li>
+<li><strong>Public cloud</strong> — infrastructure shared across many customers on one provider's platform (AWS, Azure, GCP) — the most common model, and this path's primary focus.</li>
 <li><strong>Private cloud</strong> — dedicated infrastructure for a single organization, either self-hosted or provider-managed exclusively for one customer — offering more control at higher cost.</li>
 <li><strong>Hybrid cloud</strong> — a mix of both, often keeping sensitive workloads on private infrastructure while using public cloud for scalable, less sensitive needs.</li>
 </ul>
 <h2>Serverless — a fourth model worth naming</h2>
-<p>Beyond the three classic models above, <strong>serverless computing</strong> (AWS Lambda, Azure Functions, Google Cloud Functions) deserves its own mention, since it&#39;s increasingly common and doesn&#39;t fit neatly into IaaS/PaaS/SaaS. Despite the name, servers absolutely still exist underneath — &quot;serverless&quot; means the provider handles all server management entirely invisibly, and you simply write a small function that runs in response to an event (an HTTP request, a file upload, a scheduled timer), paying only for the exact compute time your function actually consumes, down to fractions of a second, with zero cost when it&#39;s not running at all. This takes the PaaS trend even further: you don&#39;t even choose an instance size or manage a running server process — you just supply code and an event trigger. Security-wise, this shifts the model again: you&#39;re now responsible for securing your function&#39;s code and its permissions (exactly the &quot;excessive agency&quot;-style over-permissioning risk from Path 18&#39;s AI security material, applied to serverless IAM roles instead of AI tool access) while the provider handles literally everything below your function&#39;s own logic.</p>
+<p>Beyond the three classic models above, <strong>serverless computing</strong> (AWS Lambda, Azure Functions, Google Cloud Functions) deserves its own mention, since it's increasingly common and doesn't fit neatly into IaaS/PaaS/SaaS. Despite the name, servers absolutely still exist underneath — "serverless" means the provider handles all server management entirely invisibly, and you simply write a small function that runs in response to an event (an HTTP request, a file upload, a scheduled timer), paying only for the exact compute time your function actually consumes, down to fractions of a second, with zero cost when it's not running at all. This takes the PaaS trend even further: you don't even choose an instance size or manage a running server process — you just supply code and an event trigger. Security-wise, this shifts the model again: you're now responsible for securing your function's code and its permissions (exactly the "excessive agency"-style over-permissioning risk from Path 18's AI security material, applied to serverless IAM roles instead of AI tool access) while the provider handles literally everything below your function's own logic.</p>
 <h2>Scalability and elasticity — the core value proposition</h2>
-<p>Beyond just &quot;renting instead of owning,&quot; cloud computing&#39;s genuine value comes from <strong>elasticity</strong> — automatically scaling resources up during high demand (a sudden traffic spike) and back down when demand drops, paying only for what&#39;s actually used at any given moment. This is a fundamentally different operational model than traditional fixed-capacity infrastructure, and it introduces its own security considerations: newly auto-provisioned resources need to inherit the same security configuration as everything else, or they become an unmonitored gap the moment they spin up.</p>
-<p>KashSec Academy is hosted on Vercel — a <strong>PaaS</strong> platform, per the table above. You (or whoever manages this course) never had to provision a physical server, configure an operating system, or manage scaling — just push code, and the platform handles everything below that layer. This is genuinely the same model powering an enormous share of modern web applications.</p>
-<p>Why does the IaaS/PaaS/SaaS spectrum matter directly for security responsibility, not just cost and convenience?</p>
-<details><summary>Show answer</summary>Each layer of the stack you don't manage yourself is a layer the <em>provider</em> is responsible for securing instead of you — but it's also a layer you have no direct control or visibility over. With IaaS, you're responsible for patching your own operating system and configuring your own firewall rules (much like the Windows/Linux hardening practiced elsewhere in this course), while the provider only guarantees the physical hardware and virtualization layer beneath you. With SaaS, you have almost no infrastructure to secure directly — but you're also trusting the provider entirely for the security of everything below your own data and configuration, with essentially no visibility into how well they're actually doing that. This exact tradeoff — control versus responsibility — is what the shared responsibility model formalizes, and understanding which service model you're using is the very first question in any cloud security assessment, since it defines what's actually in scope for you to test or fix versus what's the provider's job entirely.</details><h2>Key terms</h2>
+<p>Beyond just "renting instead of owning," cloud computing's genuine value comes from <strong>elasticity</strong> — automatically scaling resources up during high demand (a sudden traffic spike) and back down when demand drops, paying only for what's actually used at any given moment. This is a fundamentally different operational model than traditional fixed-capacity infrastructure, and it introduces its own security considerations: newly auto-provisioned resources need to inherit the same security configuration as everything else, or they become an unmonitored gap the moment they spin up.</p>
+<p>:::tip This course is itself a cloud computing example
+KashSec Academy is hosted on Vercel — a <strong>PaaS</strong> platform, per the table above. You (or whoever manages this course) never had to provision a physical server, configure an operating system, or manage scaling — just push code, and the platform handles everything below that layer. This is genuinely the same model powering an enormous share of modern web applications.
+:::</p>
+<p>:::challenge Test yourself
+Why does the IaaS/PaaS/SaaS spectrum matter directly for security responsibility, not just cost and convenience?</p>
+<details><summary>Show answer</summary>Each layer of the stack you don't manage yourself is a layer the <em>provider</em> is responsible for securing instead of you — but it's also a layer you have no direct control or visibility over. With IaaS, you're responsible for patching your own operating system and configuring your own firewall rules (much like the Windows/Linux hardening practiced elsewhere in this course), while the provider only guarantees the physical hardware and virtualization layer beneath you. With SaaS, you have almost no infrastructure to secure directly — but you're also trusting the provider entirely for the security of everything below your own data and configuration, with essentially no visibility into how well they're actually doing that. This exact tradeoff — control versus responsibility — is what the shared responsibility model formalizes, and understanding which service model you're using is the very first question in any cloud security assessment, since it defines what's actually in scope for you to test or fix versus what's the provider's job entirely.</details>
+:::<h2>Key terms</h2>
 <ul>
 <li><strong>IaaS / PaaS / SaaS</strong> — the three cloud service models, differing in how much of the stack you manage versus the provider.</li>
 <li><strong>Elasticity</strong> — automatically scaling resources up or down based on real-time demand.</li>
@@ -115,8 +158,8 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <ul>
 <li>Cloud computing means renting computing resources on-demand rather than owning and maintaining physical infrastructure.</li>
 <li>IaaS, PaaS, and SaaS represent a spectrum of how much you manage yourself versus how much the provider handles — directly shaping security responsibility.</li>
-<li>Elasticity (automatic scaling) is cloud computing&#39;s core value proposition, and introduces its own configuration-consistency considerations.</li>
-<li>This foundation directly sets up the rest of this path, and Path 16&#39;s cloud security lesson and flAWS lab.</li>
+<li>Elasticity (automatic scaling) is cloud computing's core value proposition, and introduces its own configuration-consistency considerations.</li>
+<li>This foundation directly sets up the rest of this path, and Path 16's cloud security lesson and flAWS lab.</li>
 </ul>
 <h3>References</h3>
 <ul>
@@ -124,19 +167,67 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <li><a href="https://csrc.nist.gov/pubs/sp/800/145/final">NIST: The NIST Definition of Cloud Computing</a> — the free, formal, widely-cited definition underlying this entire field.</li>
 </ul>
 <p><strong>Next up →</strong> <a href="#/lesson/08-cloud-basics/cloud-providers-overview">Cloud Providers Overview</a></p>
-<nav class="pager"><span></span><a href="/lesson/08-cloud-basics/cloud-providers-overview.html">Cloud Providers Overview →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><span></span><a href="/lesson/08-cloud-basics/cloud-providers-overview.html">Cloud Providers Overview →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/08-cloud-basics/what-is-cloud-computing";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

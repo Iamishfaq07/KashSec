@@ -75,7 +75,7 @@ export const TOOL_CONTENT = {
   cvss: {
     intent: 'how to score a vulnerability with cvss',
     intro: 'CVSS turns a vulnerability into a number from 0 to 10 so that teams can argue about priorities with a shared vocabulary. The score comes from a handful of metrics about how the flaw is reached and what it costs you, and learning to pick those metrics honestly matters far more than the arithmetic.',
-    steps: ['Choose a value for each base metric.', 'Watch the score and the vector string update as you go.', 'Copy the vector string — it is the portable form of your assessment and belongs in every report you write.'],
+    steps: ['Choose CVSS 4.0 or the legacy 3.1 view.', 'Set the Base metrics; add Threat, Environmental, and Supplemental metrics when the context is known.', 'Copy the vector string with the score so another person can reproduce your assessment.'],
     notes: [
       { h: 'Attack Vector does most of the work', p: 'Network beats Adjacent beats Local beats Physical, and the gap is large. Reachability from the internet is the single biggest driver of a high score.' },
       { h: 'Scope change is the most misunderstood metric', p: 'Scope changes when the flaw lets you affect resources beyond the vulnerable component itself — a container escape, or a browser sandbox break. It pushes scores up sharply, so do not set it casually.' },
@@ -83,8 +83,8 @@ export const TOOL_CONTENT = {
     ],
     faq: [
       { q: 'What counts as a critical CVSS score?', a: 'On the standard scale: 0.1–3.9 Low, 4.0–6.9 Medium, 7.0–8.9 High, and 9.0–10.0 Critical. Those bands are conventions for reporting, not laws — plenty of organisations remap them to their own SLAs.' },
-      { q: 'What is a CVSS vector string?', a: 'A compact text form of every metric you picked, like CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H. It lets anyone reproduce your exact score, which is why reports should always include it rather than the number alone.' },
-      { q: 'Should I be using CVSS 3.1 or 4.0?', a: 'Both are in use. 4.0 is the newer standard and handles supply-chain and non-CIA impacts better, but 3.1 remains what most vulnerability feeds, scanners and bug bounty programmes still speak. Learn 3.1 first — it is the one you will be handed.' },
+      { q: 'What is a CVSS vector string?', a: 'A compact text form of every metric you picked, like CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N. It lets anyone reproduce your exact score, so include it with the number in reports.' },
+      { q: 'Should I be using CVSS 3.1 or 4.0?', a: 'CVSS 4.0 is the current standard and separates vulnerable-system from subsequent-system impacts. CVSS 3.1 remains useful when reading older reports. Always state the version and vector alongside the score.' },
     ],
     related: ['vulnreport', 'slacalc', 'riskregister', 'sbomcheck'],
   },

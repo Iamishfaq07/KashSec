@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>Windows User Accounts &amp; UAC — Path 07 · KashSec Academy</title>
-<meta name="description" content="Path 03's Linux lesson covered users, groups, and sudo in depth. This lesson covers Windows' parallel — but meaningfully different — account and privilege model, directly setting up the exported-compo">
+<meta name="description" content="Windows User Accounts &amp; UAC: Standard vs. admin, least privilege, and account auditing.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/07-windows-security/windows-user-accounts.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Windows User Accounts &amp; UAC — Path 07 · KashSec Academy">
-<meta property="og:description" content="Path 03's Linux lesson covered users, groups, and sudo in depth. This lesson covers Windows' parallel — but meaningfully different — account and privilege model, directly setting up the exported-compo">
+<meta property="og:description" content="Windows User Accounts &amp; UAC: Standard vs. admin, least privilege, and account auditing.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/07-windows-security/windows-user-accounts.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -17,101 +18,188 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Windows User Accounts &amp; UAC — Path 07 · KashSec Academy">
-<meta name="twitter:description" content="Path 03's Linux lesson covered users, groups, and sudo in depth. This lesson covers Windows' parallel — but meaningfully different — account and privilege model, directly setting up the exported-compo">
+<meta name="twitter:description" content="Windows User Accounts &amp; UAC: Standard vs. admin, least privilege, and account auditing.">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 07 — Windows Security Basics","item":"https://kashsec.vercel.app/lesson/07-windows-security/"},{"@type":"ListItem","position":4,"name":"Windows User Accounts & UAC","item":"https://kashsec.vercel.app/lesson/07-windows-security/windows-user-accounts.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Windows User Accounts & UAC","headline":"Windows User Accounts & UAC","description":"Path 03's Linux lesson covered users, groups, and sudo in depth. This lesson covers Windows' parallel — but meaningfully different — account and privilege model, directly setting up the exported-compo","url":"https://kashsec.vercel.app/lesson/07-windows-security/windows-user-accounts.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Standard vs. admin, least privilege, and account auditing.","isPartOf":{"@type":"Course","name":"Path 07: Windows Security Basics","url":"https://kashsec.vercel.app/lesson/07-windows-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/07-windows-security/windows-user-accounts.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Windows User Accounts & UAC","headline":"Windows User Accounts & UAC","description":"Windows User Accounts & UAC: Standard vs. admin, least privilege, and account auditing.","url":"https://kashsec.vercel.app/lesson/07-windows-security/windows-user-accounts.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Standard vs. admin, least privilege, and account auditing.","isPartOf":{"@type":"Course","name":"Path 07: Windows Security Basics","url":"https://kashsec.vercel.app/lesson/07-windows-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/07-windows-security/windows-user-accounts.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/07-windows-security/windows-user-accounts">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/07-windows-security/">Path 07 — Windows Security Basics</a> · Windows User Accounts &amp; UAC</div>
-  <article><h1>Windows User Accounts &amp; UAC</h1>
-<p>Path 03&#39;s Linux lesson covered users, groups, and <code>sudo</code> in depth. This lesson covers Windows&#39; parallel — but meaningfully different — account and privilege model, directly setting up the exported-component-style and privilege-escalation concepts referenced throughout Path 16&#39;s Windows privesc material.</p>
+<a class="skip" href="/lesson/07-windows-security/windows-user-accounts.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/07-windows-security/">Path 07 — Windows Security Basics</a> · Windows User Accounts &amp; UAC</nav>
+    <div class="md" id="content"><article><h1>Windows User Accounts &amp; UAC</h1>
+<p>Path 03's Linux lesson covered users, groups, and <code>sudo</code> in depth. This lesson covers Windows' parallel — but meaningfully different — account and privilege model, directly setting up the exported-component-style and privilege-escalation concepts referenced throughout Path 16's Windows privesc material.</p>
 <h2>Local accounts vs. Microsoft accounts</h2>
-<p>Windows machines can use either <strong>local accounts</strong> (credentials stored only on that specific machine, exactly like a traditional Linux user account) or <strong>Microsoft accounts</strong> (a cloud-linked identity, tied to Microsoft&#39;s online services, syncing settings across devices). This distinction matters for security assessments: a local account&#39;s credentials, if compromised, only grant access to that one machine; a Microsoft account, if compromised, potentially exposes a much wider blast radius across every service and device linked to it.</p>
+<p>Windows machines can use either <strong>local accounts</strong> (credentials stored only on that specific machine, exactly like a traditional Linux user account) or <strong>Microsoft accounts</strong> (a cloud-linked identity, tied to Microsoft's online services, syncing settings across devices). This distinction matters for security assessments: a local account's credentials, if compromised, only grant access to that one machine; a Microsoft account, if compromised, potentially exposes a much wider blast radius across every service and device linked to it.</p>
 <h2>Standard users vs. Administrators</h2>
 <p>Every Windows account belongs to a group determining its baseline privilege level:</p>
+<pre><code class="language-mermaid">flowchart TD
+    A[Windows Accounts] --&gt; B["Standard User\nlimited privileges,\ncannot install software\nor change system settings\nwithout elevation"]
+    A --&gt; C["Administrator\nfull system control,\nbut UAC still gates\nspecific elevated actions"]
+    A --&gt; D["Guest\ndisabled by default,\nheavily restricted"]
+</code></pre>
 <ul>
-<li><strong>Standard user</strong> — can run most everyday applications but cannot install software, modify system files, or change security settings without explicit elevation. This is Windows&#39; version of the principle of least privilege from Path 13&#39;s mobile fundamentals lesson, applied to desktop accounts.</li>
-<li><strong>Administrator</strong> — has full system control, but even administrator accounts still trigger <strong>UAC</strong> (covered in the previous lesson) before performing genuinely privileged actions — a deliberate design choice preventing a single compromised process from silently escalating, even when running under an admin&#39;s own session.</li>
+<li><strong>Standard user</strong> — can run most everyday applications but cannot install software, modify system files, or change security settings without explicit elevation. This is Windows' version of the principle of least privilege from Path 13's mobile fundamentals lesson, applied to desktop accounts.</li>
+<li><strong>Administrator</strong> — has full system control, but even administrator accounts still trigger <strong>UAC</strong> (covered in the previous lesson) before performing genuinely privileged actions — a deliberate design choice preventing a single compromised process from silently escalating, even when running under an admin's own session.</li>
 </ul>
-<p>A genuinely important, widely-recommended real-world practice: use a standard user account for everyday work, even on a machine where you have administrator credentials, and only elevate (via UAC&#39;s prompt, entering admin credentials) when genuinely needed. This limits the damage a compromised browser tab or malicious document (Path 00&#39;s phishing lesson) can do — malware running under a standard user&#39;s limited privileges can&#39;t silently modify system-wide settings the way it could running under a full admin session by default.</p>
+<p>:::tip Run as standard user day-to-day, even if you have admin rights
+A genuinely important, widely-recommended real-world practice: use a standard user account for everyday work, even on a machine where you have administrator credentials, and only elevate (via UAC's prompt, entering admin credentials) when genuinely needed. This limits the damage a compromised browser tab or malicious document (Path 00's phishing lesson) can do — malware running under a standard user's limited privileges can't silently modify system-wide settings the way it could running under a full admin session by default.
+:::</p>
 <h2>Local Users and Groups management</h2>
 <p>Access via <code>lusrmgr.msc</code> (Pro/Enterprise editions) or <code>net user</code> from the command line — this is where you review exactly which accounts exist on a machine and which groups (Administrators, Remote Desktop Users, and others) each belongs to.</p>
 <pre><code class="language-powershell">net user                        # list all local accounts
 net user administrator          # details on a specific account
-net localgroup administrators   # who&#39;s actually in the Administrators group
+net localgroup administrators   # who's actually in the Administrators group
 </code></pre>
-<p>An unfamiliar account, or a standard user unexpectedly added to the Administrators group, is exactly the kind of finding Event ID 4720/4732 (Path 07&#39;s Event Viewer lesson) would also flag in the Security log — the two techniques (live enumeration and log review) corroborate each other.</p>
+<p>An unfamiliar account, or a standard user unexpectedly added to the Administrators group, is exactly the kind of finding Event ID 4720/4732 (Path 07's Event Viewer lesson) would also flag in the Security log — the two techniques (live enumeration and log review) corroborate each other.</p>
 <h2>Local Security Policy and account lockout</h2>
-<p><code>secpol.msc</code> exposes granular security settings beyond basic account management: password complexity requirements, account lockout thresholds (how many failed login attempts before an account temporarily locks — a direct defense against the brute-force pattern from this course&#39;s CTF Zone forensics challenge), and audit policy configuration (referenced in the previous Event Viewer lesson).</p>
+<p><code>secpol.msc</code> exposes granular security settings beyond basic account management: password complexity requirements, account lockout thresholds (how many failed login attempts before an account temporarily locks — a direct defense against the brute-force pattern from this course's CTF Zone forensics challenge), and audit policy configuration (referenced in the previous Event Viewer lesson).</p>
 <h2>The built-in Administrator and Guest accounts — a quiet risk</h2>
-<p>Every Windows installation ships with a built-in <strong>Administrator</strong> account (disabled by default on modern consumer editions, but frequently still present and sometimes re-enabled by IT scripts or older configurations) and a <strong>Guest</strong> account. The built-in Administrator is a genuinely attractive target precisely because its name and SID (Security Identifier) are predictable and identical across virtually every Windows machine on the planet, meaning an attacker doesn&#39;t need to first discover which account has administrative rights — they already know, and only need to find or brute-force its password. This is exactly why security hardening guidance consistently recommends either keeping this account disabled or, where it must remain enabled for compatibility reasons, renaming it to something non-default and enforcing an exceptionally strong, unique password on it specifically. The Guest account, similarly, should always remain disabled — it exists purely for anonymous, minimally-authenticated access, and its very existence violates the audit-trail principle behind every other account-security practice in this lesson: an action taken under Guest can&#39;t be meaningfully attributed to a specific individual.</p>
+<p>Every Windows installation ships with a built-in <strong>Administrator</strong> account (disabled by default on modern consumer editions, but frequently still present and sometimes re-enabled by IT scripts or older configurations) and a <strong>Guest</strong> account. The built-in Administrator is a genuinely attractive target precisely because its name and SID (Security Identifier) are predictable and identical across virtually every Windows machine on the planet, meaning an attacker doesn't need to first discover which account has administrative rights — they already know, and only need to find or brute-force its password. This is exactly why security hardening guidance consistently recommends either keeping this account disabled or, where it must remain enabled for compatibility reasons, renaming it to something non-default and enforcing an exceptionally strong, unique password on it specifically. The Guest account, similarly, should always remain disabled — it exists purely for anonymous, minimally-authenticated access, and its very existence violates the audit-trail principle behind every other account-security practice in this lesson: an action taken under Guest can't be meaningfully attributed to a specific individual.</p>
 <h2>Windows Hello and modern authentication</h2>
-<p>Modern Windows supports <strong>Windows Hello</strong> — biometric (fingerprint, facial recognition) or PIN-based authentication as an alternative to typing a full password. Genuinely worth understanding: a PIN, despite feeling &quot;weaker&quot; than a password, is actually tied to the specific device&#39;s hardware (via a security chip) and can&#39;t be used to authenticate anywhere else even if somehow obtained — a meaningfully different (and in some ways stronger, for this specific device) security model than a traditional password, which is often reused across services (Path 00&#39;s passwords lesson).</p>
-<p>On a VM or test machine, use <code>net user</code> and <code>net localgroup administrators</code> to list every account and confirm exactly who has administrative privileges. For any account you don&#39;t recognize or that seems unnecessarily privileged, note it as a finding — exactly the same audit discipline as Path 16&#39;s privesc labs, applied here defensively rather than offensively.</p>
+<p>Modern Windows supports <strong>Windows Hello</strong> — biometric (fingerprint, facial recognition) or PIN-based authentication as an alternative to typing a full password. Genuinely worth understanding: a PIN, despite feeling "weaker" than a password, is actually tied to the specific device's hardware (via a security chip) and can't be used to authenticate anywhere else even if somehow obtained — a meaningfully different (and in some ways stronger, for this specific device) security model than a traditional password, which is often reused across services (Path 00's passwords lesson).</p>
+<p>:::challenge Audit account privileges on a test machine
+On a VM or test machine, use <code>net user</code> and <code>net localgroup administrators</code> to list every account and confirm exactly who has administrative privileges. For any account you don't recognize or that seems unnecessarily privileged, note it as a finding — exactly the same audit discipline as Path 16's privesc labs, applied here defensively rather than offensively.
+:::</p>
 <h2>Key terms</h2>
 <ul>
 <li><strong>Local account</strong> — credentials stored only on a specific machine, versus a cloud-linked Microsoft account.</li>
-<li><strong>UAC elevation</strong> — the explicit confirmation step required before a process gains administrator-level privileges, even under an admin&#39;s own session.</li>
+<li><strong>UAC elevation</strong> — the explicit confirmation step required before a process gains administrator-level privileges, even under an admin's own session.</li>
 <li><strong>Account lockout policy</strong> — a defense automatically locking an account after repeated failed login attempts.</li>
 </ul>
 <h2>Recap</h2>
 <ul>
 <li>Local accounts limit compromise blast radius to one machine; Microsoft accounts extend it across every linked service.</li>
 <li>Standard users should be the default for everyday use, even on machines where admin access exists — UAC elevation is the deliberate friction point limiting silent privilege escalation.</li>
-<li><code>lusrmgr.msc</code>/<code>net user</code>/<code>net localgroup</code> let you directly audit exactly which accounts and privileges exist on a machine, corroborating what Event Viewer&#39;s logs reveal.</li>
+<li><code>lusrmgr.msc</code>/<code>net user</code>/<code>net localgroup</code> let you directly audit exactly which accounts and privileges exist on a machine, corroborating what Event Viewer's logs reveal.</li>
 <li>Account lockout policy is a direct, configurable defense against brute-force login attempts.</li>
 </ul>
 <h3>References</h3>
 <ul>
-<li><a href="https://learn.microsoft.com/en-us/windows/security/application-security/application-control/user-account-control/">Microsoft: User Account Control overview</a> — official documentation on UAC&#39;s design and configuration.</li>
+<li><a href="https://learn.microsoft.com/en-us/windows/security/application-security/application-control/user-account-control/">Microsoft: User Account Control overview</a> — official documentation on UAC's design and configuration.</li>
 </ul>
 <p><strong>Next up →</strong> <a href="#/lesson/07-windows-security/windows-active-directory-basics">Windows Active Directory: The Basics</a></p>
-<nav class="pager"><a href="/lesson/07-windows-security/recognizing-windows-compromise.html">← Recognizing a Compromised Windows Machine</a><a href="/lesson/07-windows-security/windows-active-directory-basics.html">Windows Active Directory: The Basics →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/07-windows-security/recognizing-windows-compromise.html">← Recognizing a Compromised Windows Machine</a><a href="/lesson/07-windows-security/windows-active-directory-basics.html">Windows Active Directory: The Basics →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/07-windows-security/windows-user-accounts";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

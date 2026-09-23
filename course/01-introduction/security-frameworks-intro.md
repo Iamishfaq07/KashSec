@@ -30,7 +30,7 @@ This isn't abstract policy trivia — nearly every technical topic in this cours
 
 ## Why this matters for your career, even as a beginner
 
-Job postings for nearly every security role reference these frameworks by name — "experience with NIST CSF," "familiarity with ISO 27001 controls" — and being able to say "I know that NIST CSF organizes security around five core functions, and here's how the technical skills I've built map onto each one" is a genuinely strong signal in an interview, even without formal compliance experience. Path 20's career-prep material and Path 23's full GRC path both build directly on this foundation.
+Job postings for nearly every security role reference these frameworks by name — "experience with NIST CSF," "familiarity with ISO 27001 controls" — and being able to say "I know that NIST CSF 2.0 organizes security around six core functions, and here's how the technical skills I've built map onto each one" is a genuinely strong signal in an interview, even without formal compliance experience. Path 20's career-prep material and Path 23's full GRC path both build directly on this foundation.
 
 :::challenge Map a control to a framework function
 A company deploys a tool that automatically detects unusual login activity and alerts the security team in real time.
@@ -62,5 +62,7 @@ Pick three specific things you've already learned in this course so far (a topic
 - NIST CSF, ISO 27001, CIS Controls, and the OWASP Top 10 are the names you'll encounter constantly — each with a different focus and level of concreteness.
 - Nearly every technical skill this course teaches maps onto a specific framework function, which is genuinely useful vocabulary for job interviews.
 - Path 23's full GRC & Compliance path covers all of these in much greater depth once you have this beginner-level map.
+
+[NIST's CSF 2.0 overview](https://www.nist.gov/cyberframework/faqs) lists all six current functions; older CSF 1.1 material lists five because Govern was added in 2.0.
 
 **Next up →** [How to actually learn this](#/lesson/01-introduction/how-to-learn)

@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>Threat Modeling in the SDLC — Path 22 · KashSec Academy</title>
-<meta name="description" content="Threat modeling is the practice of thinking about what can go wrong before you write or ship the code. Done well, it prevents entire classes of bugs instead of finding them later — it's the one activi">
+<meta name="description" content="Threat Modeling in the SDLC: Finding design flaws before you write the code that has them.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/22-devsecops-appsec/threat-modeling-sdlc.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Threat Modeling in the SDLC — Path 22 · KashSec Academy">
-<meta property="og:description" content="Threat modeling is the practice of thinking about what can go wrong before you write or ship the code. Done well, it prevents entire classes of bugs instead of finding them later — it's the one activi">
+<meta property="og:description" content="Threat Modeling in the SDLC: Finding design flaws before you write the code that has them.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/22-devsecops-appsec/threat-modeling-sdlc.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -17,56 +18,88 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Threat Modeling in the SDLC — Path 22 · KashSec Academy">
-<meta name="twitter:description" content="Threat modeling is the practice of thinking about what can go wrong before you write or ship the code. Done well, it prevents entire classes of bugs instead of finding them later — it's the one activi">
+<meta name="twitter:description" content="Threat Modeling in the SDLC: Finding design flaws before you write the code that has them.">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 22 — DevSecOps & AppSec Program","item":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/"},{"@type":"ListItem","position":4,"name":"Threat Modeling in the SDLC","item":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/threat-modeling-sdlc.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Threat Modeling in the SDLC","headline":"Threat Modeling in the SDLC","description":"Threat modeling is the practice of thinking about what can go wrong before you write or ship the code. Done well, it prevents entire classes of bugs instead of finding them later — it's the one activi","url":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/threat-modeling-sdlc.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Finding design flaws before you write the code that has them.","isPartOf":{"@type":"Course","name":"Path 22: DevSecOps & AppSec Program","url":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/threat-modeling-sdlc.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Threat Modeling in the SDLC","headline":"Threat Modeling in the SDLC","description":"Threat Modeling in the SDLC: Finding design flaws before you write the code that has them.","url":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/threat-modeling-sdlc.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Finding design flaws before you write the code that has them.","isPartOf":{"@type":"Course","name":"Path 22: DevSecOps & AppSec Program","url":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/threat-modeling-sdlc.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/22-devsecops-appsec/threat-modeling-sdlc">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/22-devsecops-appsec/">Path 22 — DevSecOps &amp; AppSec Program</a> · Threat Modeling in the SDLC</div>
-  <article><h1>Threat Modeling in the SDLC</h1>
-<p>Threat modeling is the practice of thinking about what can go wrong <em>before</em> you write or ship the code. Done well, it prevents entire classes of bugs instead of finding them later — it&#39;s the one activity in this whole path that operates purely on design, before a single line exists to scan.</p>
-<p>:::</p>
+<a class="skip" href="/lesson/22-devsecops-appsec/threat-modeling-sdlc.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/22-devsecops-appsec/">Path 22 — DevSecOps &amp; AppSec Program</a> · Threat Modeling in the SDLC</nav>
+    <div class="md" id="content"><article><h1>Threat Modeling in the SDLC</h1>
+<p>Threat modeling is the practice of thinking about what can go wrong <em>before</em> you write or ship the code. Done well, it prevents entire classes of bugs instead of finding them later — it's the one activity in this whole path that operates purely on design, before a single line exists to scan.</p>
+<p>:::tip
+The question threat modeling answers is not "is this code secure?" — that's what scanners are for. It's "is this <em>design</em> secure, even if every line of code is implemented perfectly?"
+:::</p>
 <h2>Why it belongs in DevSecOps</h2>
-<p>Scanning tools find known patterns. Threat modeling finds design flaws — the expensive ones that scanners miss entirely, because there&#39;s nothing pattern-matchable about them:</p>
+<p>Scanning tools find known patterns. Threat modeling finds design flaws — the expensive ones that scanners miss entirely, because there's nothing pattern-matchable about them:</p>
 <ul>
-<li>Broken authorization logic (&quot;any logged-in user can view any other user&#39;s invoice by changing an ID in the URL&quot;)</li>
-<li>Dangerous trust boundaries (&quot;the internal admin API trusts any request from inside the VPC, and the VPC also contains the marketing website&#39;s contractor-managed CMS&quot;)</li>
-<li>Missing abuse controls (&quot;the password reset endpoint has no rate limit, so it can be used to enumerate every registered email address&quot;)</li>
+<li>Broken authorization logic ("any logged-in user can view any other user's invoice by changing an ID in the URL")</li>
+<li>Dangerous trust boundaries ("the internal admin API trusts any request from inside the VPC, and the VPC also contains the marketing website's contractor-managed CMS")</li>
+<li>Missing abuse controls ("the password reset endpoint has no rate limit, so it can be used to enumerate every registered email address")</li>
 </ul>
-<p>None of these are a vulnerable function call. A SAST tool has nothing to flag. This is exactly the gap the &quot;Side by side&quot; table in the SAST/DAST/SCA lesson pointed at — none of the scanners find design flaws, and this lesson is the answer to that gap.</p>
+<p>None of these are a vulnerable function call. A SAST tool has nothing to flag. This is exactly the gap the "Side by side" table in the SAST/DAST/SCA lesson pointed at — none of the scanners find design flaws, and this lesson is the answer to that gap.</p>
 <h2>A lightweight process that works</h2>
 <p>You do not need a week-long workshop for every feature. A 30–60 minute session with the right questions is often enough, and doing it lightweight and often beats doing it heavyweight and rarely.</p>
 <h3>1. Diagram the system</h3>
@@ -77,7 +110,7 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <p>Use a simple framework:</p>
 <ul>
 <li><strong>STRIDE</strong> (Spoofing, Tampering, Repudiation, Information disclosure, Denial of service, Elevation of privilege)</li>
-<li>Or just ask: &quot;What can an attacker with a browser / a stolen token / access to this service do that we don&#39;t want?&quot;</li>
+<li>Or just ask: "What can an attacker with a browser / a stolen token / access to this service do that we don't want?"</li>
 </ul>
 <table>
 <thead>
@@ -94,7 +127,7 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 </tr>
 <tr>
 <td>Tampering</td>
-<td>Can someone modify data they shouldn&#39;t?</td>
+<td>Can someone modify data they shouldn't?</td>
 <td>Price sent from client and trusted by the server on checkout</td>
 </tr>
 <tr>
@@ -104,7 +137,7 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 </tr>
 <tr>
 <td>Information disclosure</td>
-<td>Can someone see data they shouldn&#39;t?</td>
+<td>Can someone see data they shouldn't?</td>
 <td>Error messages leaking stack traces with internal paths</td>
 </tr>
 <tr>
@@ -115,22 +148,22 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <tr>
 <td>Elevation of privilege</td>
 <td>Can someone gain more access than they should have?</td>
-<td>A &quot;become this user&quot; support tool with no audit trail or scoping</td>
+<td>A "become this user" support tool with no audit trail or scoping</td>
 </tr>
 </tbody></table>
 <h3>4. Decide mitigations</h3>
-<p>For each high-impact threat, decide a control (or accept the risk with a documented reason). &quot;We know about this and are accepting it because X&quot; is a legitimate outcome — it&#39;s the undocumented, unconsidered risks that cause incidents.</p>
+<p>For each high-impact threat, decide a control (or accept the risk with a documented reason). "We know about this and are accepting it because X" is a legitimate outcome — it's the undocumented, unconsidered risks that cause incidents.</p>
 <h3>5. Track and revisit</h3>
-<p>Put the results where the team can see them (ticket, ADR, security design review note). Revisit when the design changes — a threat model for the system as it existed six architecture changes ago is not describing the system you&#39;re actually running.</p>
+<p>Put the results where the team can see them (ticket, ADR, security design review note). Revisit when the design changes — a threat model for the system as it existed six architecture changes ago is not describing the system you're actually running.</p>
 <h2>Worked example: a file-upload feature</h2>
-<p>A team is adding &quot;upload your profile photo.&quot; A 30-minute threat model surfaces:</p>
+<p>A team is adding "upload your profile photo." A 30-minute threat model surfaces:</p>
 <ul>
-<li><strong>Trust boundary</strong>: uploaded file content is fully attacker-controlled, even though it &quot;just&quot; looks like an image</li>
+<li><strong>Trust boundary</strong>: uploaded file content is fully attacker-controlled, even though it "just" looks like an image</li>
 <li><strong>Tampering</strong>: what stops someone uploading a <code>.php</code> or <code>.jsp</code> file with a <code>.jpg</code> extension?</li>
-<li><strong>Information disclosure</strong>: if uploads are stored at a predictable URL pattern, can one user enumerate other users&#39; private photos?</li>
-<li><strong>Denial of service</strong>: what stops someone uploading a 4GB file, or a &quot;zip bomb&quot; image, repeatedly?</li>
+<li><strong>Information disclosure</strong>: if uploads are stored at a predictable URL pattern, can one user enumerate other users' private photos?</li>
+<li><strong>Denial of service</strong>: what stops someone uploading a 4GB file, or a "zip bomb" image, repeatedly?</li>
 </ul>
-<p>Decided mitigations: validate file content (not just extension) against actual image magic bytes, store uploads outside the web root with randomized non-guessable names, enforce a size limit server-side, and re-encode images on upload rather than serving the uploaded bytes directly. All four are cheap to build now and expensive to retrofit after the feature has shipped — this is the &quot;before and after&quot; cost curve from the first lesson in this path, applied concretely.</p>
+<p>Decided mitigations: validate file content (not just extension) against actual image magic bytes, store uploads outside the web root with randomized non-guessable names, enforce a size limit server-side, and re-encode images on upload rather than serving the uploaded bytes directly. All four are cheap to build now and expensive to retrofit after the feature has shipped — this is the "before and after" cost curve from the first lesson in this path, applied concretely.</p>
 <h2>When to threat model</h2>
 <ul>
 <li>New high-risk features (auth, payments, admin, data export, file upload)</li>
@@ -139,37 +172,34 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 </ul>
 <h2>Common pitfalls</h2>
 <ul>
-<li>Only security people in the room → developers disengage, and the model reflects the security team&#39;s guesses about the system rather than the builders&#39; actual knowledge of it</li>
+<li>Only security people in the room → developers disengage, and the model reflects the security team's guesses about the system rather than the builders' actual knowledge of it</li>
 <li>Massive documents nobody reads → prefer short, living notes over a 40-page threat model template that gets filled out once and never opened again</li>
-<li>Treating it as a one-time gate instead of a recurring design habit — a system&#39;s threat model goes stale the moment the architecture changes and nobody updates it</li>
+<li>Treating it as a one-time gate instead of a recurring design habit — a system's threat model goes stale the moment the architecture changes and nobody updates it</li>
 </ul>
 <p>:::danger
-The most dangerous outcome of threat modeling is not &quot;we missed a threat&quot; — it&#39;s &quot;we found threats, wrote them down, and never assigned an owner or a decision.&quot; A threat model that produces no action is worse than not having done one, because it creates the appearance of due diligence without the substance.</p>
+The most dangerous outcome of threat modeling is not "we missed a threat" — it's "we found threats, wrote them down, and never assigned an owner or a decision." A threat model that produces no action is worse than not having done one, because it creates the appearance of due diligence without the substance.
+:::</p>
 <h2>🧪 Hands-on lab — threat model a real feature</h2>
-<p>Pick a feature from a project you&#39;re working on, or use &quot;users can reset their password by email&quot; as a stand-in if you don&#39;t have one handy.</p>
+<p>Pick a feature from a project you're working on, or use "users can reset their password by email" as a stand-in if you don't have one handy.</p>
 <ol>
-<li><p>Draw the data flow: user → browser → app server → email service → database. Mark where trust changes.</p>
-</li>
-<li><p>Walk through all six STRIDE categories against this flow. For each, write down at least one concrete threat — even a rough one.</p>
-</li>
-<li><p>For your three highest-impact threats, write a one-line mitigation each.</p>
-</li>
-<li><p>For one threat you decide <em>not</em> to mitigate right now, write the &quot;accepted because...&quot; justification a real team would need to write down.</p>
-</li>
-<li><p>Time yourself. If this took under 45 minutes, you&#39;ve just demonstrated that lightweight threat modeling is genuinely fast enough to do routinely.</p>
-</li>
-<li><p>A team says &quot;we don&#39;t need to threat model, we already run SAST and DAST on everything.&quot; What&#39;s wrong with that reasoning?</p>
-</li>
-<li><p>Using STRIDE, name one threat category that a &quot;forgot password&quot; feature is especially prone to, and explain why.</p>
-</li>
-<li><p>Why is &quot;accept the risk with a documented reason&quot; a legitimate outcome of threat modeling, rather than a failure to fix everything?</p>
-</li>
+<li>Draw the data flow: user → browser → app server → email service → database. Mark where trust changes.</li>
+<li>Walk through all six STRIDE categories against this flow. For each, write down at least one concrete threat — even a rough one.</li>
+<li>For your three highest-impact threats, write a one-line mitigation each.</li>
+<li>For one threat you decide <em>not</em> to mitigate right now, write the "accepted because..." justification a real team would need to write down.</li>
+<li>Time yourself. If this took under 45 minutes, you've just demonstrated that lightweight threat modeling is genuinely fast enough to do routinely.</li>
+</ol>
+<p>:::challenge Test yourself</p>
+<ol>
+<li>A team says "we don't need to threat model, we already run SAST and DAST on everything." What's wrong with that reasoning?</li>
+<li>Using STRIDE, name one threat category that a "forgot password" feature is especially prone to, and explain why.</li>
+<li>Why is "accept the risk with a documented reason" a legitimate outcome of threat modeling, rather than a failure to fix everything?
+:::</li>
 </ol>
 <h2>Key terms</h2>
 <ul>
 <li><strong>STRIDE</strong> — a common threat-classification mnemonic (Spoofing, Tampering, Repudiation, Information disclosure, Denial of service, Elevation of privilege)</li>
 <li><strong>Trust boundary</strong> — a place where the level of trust changes, and where an attacker gets leverage</li>
-<li><strong>Abuse case</strong> — a use case written from the attacker&#39;s point of view, the mirror image of a user story</li>
+<li><strong>Abuse case</strong> — a use case written from the attacker's point of view, the mirror image of a user story</li>
 <li><strong>Data-flow diagram</strong> — a simple diagram of components and how data moves between them, the usual starting point for a threat model</li>
 <li><strong>Residual risk</strong> — whatever risk remains after mitigations are applied, which is what a pentest should actually be checking</li>
 </ul>
@@ -181,19 +211,67 @@ The most dangerous outcome of threat modeling is not &quot;we missed a threat&qu
 <li><a href="https://www.threatmodelingmanifesto.org/">Threat Modeling Manifesto</a></li>
 <li><a href="https://shostack.org/games/elevation-of-privilege">Elevation of Privilege card game</a> — a free, low-friction way to run a STRIDE session with a team new to the practice</li>
 </ul>
-<nav class="pager"><a href="/lesson/22-devsecops-appsec/sbom-and-software-bill-of-materials.html">← SBOM &amp; Software Bill of Materials</a><a href="/lesson/22-devsecops-appsec/security-champions-programs.html">Security Champions Programs →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/22-devsecops-appsec/sbom-and-software-bill-of-materials.html">← SBOM &amp; Software Bill of Materials</a><a href="/lesson/22-devsecops-appsec/security-champions-programs.html">Security Champions Programs →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/22-devsecops-appsec/threat-modeling-sdlc";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

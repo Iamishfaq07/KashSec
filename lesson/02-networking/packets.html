@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>Packets &amp; the OSI layers — Path 02 · KashSec Academy</title>
-<meta name="description" content="Here's something that surprises most beginners: when you send a large email, watch a video, or download a file, that data does not travel as one lump. It's chopped into small pieces called packets, wh">
+<meta name="description" content="Packets &amp; the OSI layers: How data is chopped, wrapped, and reassembled.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/02-networking/packets.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Packets &amp; the OSI layers — Path 02 · KashSec Academy">
-<meta property="og:description" content="Here's something that surprises most beginners: when you send a large email, watch a video, or download a file, that data does not travel as one lump. It's chopped into small pieces called packets, wh">
+<meta property="og:description" content="Packets &amp; the OSI layers: How data is chopped, wrapped, and reassembled.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/02-networking/packets.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -17,53 +18,117 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Packets &amp; the OSI layers — Path 02 · KashSec Academy">
-<meta name="twitter:description" content="Here's something that surprises most beginners: when you send a large email, watch a video, or download a file, that data does not travel as one lump. It's chopped into small pieces called packets, wh">
+<meta name="twitter:description" content="Packets &amp; the OSI layers: How data is chopped, wrapped, and reassembled.">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 02 — Networking Fundamentals","item":"https://kashsec.vercel.app/lesson/02-networking/"},{"@type":"ListItem","position":4,"name":"Packets & the OSI layers","item":"https://kashsec.vercel.app/lesson/02-networking/packets.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Packets & the OSI layers","headline":"Packets & the OSI layers","description":"Here's something that surprises most beginners: when you send a large email, watch a video, or download a file, that data does not travel as one lump. It's chopped into small pieces called packets, wh","url":"https://kashsec.vercel.app/lesson/02-networking/packets.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"How data is chopped, wrapped, and reassembled.","isPartOf":{"@type":"Course","name":"Path 02: Networking Fundamentals","url":"https://kashsec.vercel.app/lesson/02-networking/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/02-networking/packets.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Packets & the OSI layers","headline":"Packets & the OSI layers","description":"Packets & the OSI layers: How data is chopped, wrapped, and reassembled.","url":"https://kashsec.vercel.app/lesson/02-networking/packets.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"How data is chopped, wrapped, and reassembled.","isPartOf":{"@type":"Course","name":"Path 02: Networking Fundamentals","url":"https://kashsec.vercel.app/lesson/02-networking/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/02-networking/packets.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/02-networking/packets">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/02-networking/">Path 02 — Networking Fundamentals</a> · Packets &amp; the OSI layers</div>
-  <article><h1>Packets &amp; the OSI layers</h1>
-<p>Here&#39;s something that surprises most beginners: when you send a large email, watch a video, or download a file, that data <strong>does not travel as one lump.</strong> It&#39;s chopped into small pieces called <strong>packets</strong>, which travel separately and are reassembled at the other end.</p>
-<p>A lot of both attacking and defending happens at the packet level, so this is a genuine &quot;click&quot; moment.</p>
+<a class="skip" href="/lesson/02-networking/packets.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/02-networking/">Path 02 — Networking Fundamentals</a> · Packets &amp; the OSI layers</nav>
+    <div class="md" id="content"><article><h1>Packets &amp; the OSI layers</h1>
+<p>Here's something that surprises most beginners: when you send a large email, watch a video, or download a file, that data <strong>does not travel as one lump.</strong> It's chopped into small pieces called <strong>packets</strong>, which travel separately and are reassembled at the other end.</p>
+<p>A lot of both attacking and defending happens at the packet level, so this is a genuine "click" moment.</p>
 <h2>The jigsaw-in-envelopes picture</h2>
 <p>Imagine mailing a completed jigsaw puzzle, but you may only use small envelopes. So you take the puzzle apart, put each piece in its own envelope, and on every envelope write two things: the destination address, and a <strong>number</strong> saying which piece it is (piece 1 of 500, 2 of 500...).</p>
-<p>You post them all. They might take different routes and arrive out of order — that&#39;s fine, because each is numbered, so your friend lays them out and rebuilds the puzzle perfectly. If one envelope is lost, your friend just asks you to re-send <em>that one piece</em>, not the whole puzzle.</p>
-<p><em>[Data → packets → reassembled data]</em></p>
-<p>That&#39;s exactly how packets work. Each packet is one small envelope carrying a piece of your data:</p>
+<p>You post them all. They might take different routes and arrive out of order — that's fine, because each is numbered, so your friend lays them out and rebuilds the puzzle perfectly. If one envelope is lost, your friend just asks you to re-send <em>that one piece</em>, not the whole puzzle.</p>
+<pre><code class="language-svg">&lt;svg viewBox="0 0 700 260" xmlns="http://www.w3.org/2000/svg" font-family="Inter, sans-serif"&gt;
+  &lt;g font-size="12"&gt;
+    &lt;!-- Source --&gt;
+    &lt;rect x="30" y="80" width="120" height="100" rx="8" fill="#111927" stroke="#3FB6A8" stroke-width="2"/&gt;
+    &lt;text x="90" y="115" text-anchor="middle" font-size="26"&gt;📄&lt;/text&gt;
+    &lt;text x="90" y="145" text-anchor="middle" fill="#E9EEF3" font-weight="600"&gt;Big data&lt;/text&gt;
+    &lt;text x="90" y="165" text-anchor="middle" fill="#8496A6" font-size="10"&gt;"Hello, this is..."&lt;/text&gt;
+    &lt;!-- Packet 1-4 --&gt;
+    &lt;g&gt;
+      &lt;rect x="200" y="40" width="90" height="40" rx="4" fill="#2b1f0a" stroke="#EFA43A"/&gt;
+      &lt;text x="245" y="65" text-anchor="middle" fill="#EFA43A" font-size="11"&gt;📦 #1 "Hello"&lt;/text&gt;
+      &lt;rect x="200" y="90" width="90" height="40" rx="4" fill="#2b1f0a" stroke="#EFA43A"/&gt;
+      &lt;text x="245" y="115" text-anchor="middle" fill="#EFA43A" font-size="11"&gt;📦 #2 ", this"&lt;/text&gt;
+      &lt;rect x="200" y="140" width="90" height="40" rx="4" fill="#2b1f0a" stroke="#EFA43A"/&gt;
+      &lt;text x="245" y="165" text-anchor="middle" fill="#EFA43A" font-size="11"&gt;📦 #3 " is..."&lt;/text&gt;
+      &lt;rect x="200" y="190" width="90" height="40" rx="4" fill="#2b1010" stroke="#E05548" stroke-dasharray="3"/&gt;
+      &lt;text x="245" y="215" text-anchor="middle" fill="#E05548" font-size="11"&gt;📦 #4 lost!&lt;/text&gt;
+    &lt;/g&gt;
+    &lt;!-- Different paths --&gt;
+    &lt;g stroke="#8496A6" stroke-width="1" fill="none"&gt;
+      &lt;path d="M 300 60 Q 400 30 500 100" marker-end="url(#a4)"/&gt;
+      &lt;path d="M 300 110 Q 400 110 500 130" marker-end="url(#a4)"/&gt;
+      &lt;path d="M 300 160 Q 400 200 500 160" marker-end="url(#a4)"/&gt;
+    &lt;/g&gt;
+    &lt;defs&gt;&lt;marker id="a4" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"&gt;&lt;polygon points="0 0, 10 3, 0 6" fill="#8496A6"/&gt;&lt;/marker&gt;&lt;/defs&gt;
+    &lt;text x="400" y="20" text-anchor="middle" fill="#8496A6" font-size="10"&gt;Different roads across the internet&lt;/text&gt;
+    &lt;!-- Destination --&gt;
+    &lt;rect x="530" y="80" width="140" height="120" rx="8" fill="#111927" stroke="#3FB6A8" stroke-width="2"/&gt;
+    &lt;text x="600" y="110" text-anchor="middle" font-size="20"&gt;🧩&lt;/text&gt;
+    &lt;text x="600" y="135" text-anchor="middle" fill="#E9EEF3" font-weight="600"&gt;Reassemble&lt;/text&gt;
+    &lt;text x="600" y="155" text-anchor="middle" fill="#8496A6" font-size="10"&gt;by order number&lt;/text&gt;
+    &lt;text x="600" y="180" text-anchor="middle" fill="#E05548" font-size="10"&gt;(re-request #4)&lt;/text&gt;
+  &lt;/g&gt;
+&lt;/svg&gt;
+</code></pre>
+<p>That's exactly how packets work. Each packet is one small envelope carrying a piece of your data:</p>
 <ul>
 <li>Each packet carries a <strong>small chunk</strong> of the overall data.</li>
 <li>Each has a <strong>header</strong> — the writing on the envelope — with the destination IP, source IP, port, and order number.</li>
@@ -72,8 +137,8 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <li>If a packet is <strong>lost</strong>, only that one is re-sent.</li>
 </ul>
 <h2>The layers (a gentle first look at OSI)</h2>
-<p>Networking is built in <strong>layers</strong>, each doing one job and wrapping the one above it (called <strong>encapsulation</strong>). You don&#39;t need to memorise this now, but seeing it once makes everything click later.</p>
-<p>The <strong>OSI model</strong> has 7 layers; in practice you&#39;ll mostly deal with the simpler <strong>TCP/IP</strong> view of 4 or 5. Here&#39;s the honest, simplified version:</p>
+<p>Networking is built in <strong>layers</strong>, each doing one job and wrapping the one above it (called <strong>encapsulation</strong>). You don't need to memorise this now, but seeing it once makes everything click later.</p>
+<p>The <strong>OSI model</strong> has 7 layers; in practice you'll mostly deal with the simpler <strong>TCP/IP</strong> view of 4 or 5. Here's the honest, simplified version:</p>
 <table>
 <thead>
 <tr>
@@ -126,13 +191,36 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;pad
 <td>Cables, radio waves</td>
 </tr>
 </tbody></table>
-<p>Bottom to top: <strong>P</strong>lease <strong>D</strong>o <strong>N</strong>ot <strong>T</strong>ell <strong>S</strong>ecret <strong>P</strong>asswords <strong>A</strong>nymore.
-Physical → Data Link → Network → Transport → Session → Presentation → Application.</p>
+<p>:::tip THE MEMORISATION TRICK
+Bottom to top: <strong>P</strong>lease <strong>D</strong>o <strong>N</strong>ot <strong>T</strong>ell <strong>S</strong>ecret <strong>P</strong>asswords <strong>A</strong>nymore.
+Physical → Data Link → Network → Transport → Session → Presentation → Application.
+:::</p>
 <h2>Encapsulation — envelopes inside envelopes</h2>
-<p>When you send an HTTP request, it doesn&#39;t just go as HTTP. It&#39;s wrapped up like a Russian nesting doll:</p>
-<p>Your HTTP request sits <em>inside</em> a TCP segment, <em>inside</em> an IP packet, <em>inside</em> an Ethernet frame — like a letter inside an envelope inside a mailbag inside a truck. <strong>Wireshark</strong> (Path 12) peels these apart for you and it&#39;s genuinely magical to see the first time.</p>
+<p>When you send an HTTP request, it doesn't just go as HTTP. It's wrapped up like a Russian nesting doll:</p>
+<pre><code class="language-mermaid">flowchart LR
+    subgraph L7 [Application layer]
+      HTTP["GET /page HTTP/1.1"]
+    end
+    subgraph L4 [Transport layer]
+      TCP["TCP header + HTTP"]
+    end
+    subgraph L3 [Network layer]
+      IP["IP header + TCP + HTTP"]
+    end
+    subgraph L2 [Data Link layer]
+      ETH["Ethernet header + IP + TCP + HTTP"]
+    end
+    HTTP --&gt; TCP --&gt; IP --&gt; ETH --&gt; Wire[["📶 On the wire"]]
+
+    style HTTP fill:#111927,color:#3FB6A8,stroke:#3FB6A8
+    style TCP fill:#111927,color:#EFA43A,stroke:#EFA43A
+    style IP fill:#111927,color:#E05548,stroke:#E05548
+    style ETH fill:#111927,color:#8496A6,stroke:#8496A6
+    style Wire fill:#152131,color:#E9EEF3,stroke:#3FB6A8
+</code></pre>
+<p>Your HTTP request sits <em>inside</em> a TCP segment, <em>inside</em> an IP packet, <em>inside</em> an Ethernet frame — like a letter inside an envelope inside a mailbag inside a truck. <strong>Wireshark</strong> (Path 12) peels these apart for you and it's genuinely magical to see the first time.</p>
 <h2>MTU and fragmentation — when a packet is too big</h2>
-<p>Every network link has a <strong>Maximum Transmission Unit (MTU)</strong> — a limit on how large a single packet is allowed to be (commonly 1500 bytes on standard Ethernet). If a packet is larger than the MTU of a link it needs to cross, it must be broken down further into smaller pieces, a process called <strong>fragmentation</strong> — genuinely just another, smaller-scale version of the same &quot;break it into pieces&quot; idea this lesson has been building throughout, just happening automatically at a lower layer than the packet numbering described above. Fragmentation is worth knowing about specifically because it&#39;s historically been a source of real vulnerabilities — some older attacks exploited how different operating systems handled reassembling deliberately malformed, overlapping fragments differently, causing crashes or security bypasses.</p>
+<p>Every network link has a <strong>Maximum Transmission Unit (MTU)</strong> — a limit on how large a single packet is allowed to be (commonly 1500 bytes on standard Ethernet). If a packet is larger than the MTU of a link it needs to cross, it must be broken down further into smaller pieces, a process called <strong>fragmentation</strong> — genuinely just another, smaller-scale version of the same "break it into pieces" idea this lesson has been building throughout, just happening automatically at a lower layer than the packet numbering described above. Fragmentation is worth knowing about specifically because it's historically been a source of real vulnerabilities — some older attacks exploited how different operating systems handled reassembling deliberately malformed, overlapping fragments differently, causing crashes or security bypasses.</p>
 <h2>Why this matters so much for security</h2>
 <p>Because your data is broken into labelled envelopes travelling shared roads:</p>
 <ul>
@@ -141,28 +229,32 @@ Physical → Data Link → Network → Transport → Session → Presentation �
 <li>A defender can <strong>inspect</strong> packets to spot ones that look malicious (deep-packet inspection, IDS).</li>
 <li>Packet-level attacks include <strong>SYN floods, ARP poisoning, DNS spoofing, and packet injection</strong> — all covered later.</li>
 </ul>
-<p>As a security learner, you&#39;ll mostly work with:</p>
+<p>:::note THE MOST IMPORTANT LAYERS FOR YOU
+As a security learner, you'll mostly work with:</p>
 <ul>
 <li><strong>Layer 2</strong> (MAC, ARP) — Wi-Fi and local network attacks</li>
 <li><strong>Layer 3</strong> (IP) — routing, scanning, spoofing</li>
 <li><strong>Layer 4</strong> (TCP, UDP) — port scanning, connection attacks</li>
 <li><strong>Layer 7</strong> (HTTP, DNS, TLS) — where most application attacks live</li>
 </ul>
-<p>Skip the middle layers until you need them.</p>
-<p>If one packet gets lost on the way, does the whole message need re-sending?</p>
-<details><summary>Show answer</summary>No — only the single lost packet is re-sent, because each is numbered and can be replaced individually. This is what makes TCP reliable and efficient.</details><h2>🧪 Lab — See encapsulation in action</h2>
-<p>You&#39;ll do this properly with Wireshark in Path 12, but a taste now:</p>
+<p>Skip the middle layers until you need them.
+:::</p>
+<p>:::challenge Test yourself
+If one packet gets lost on the way, does the whole message need re-sending?</p>
+<details><summary>Show answer</summary>No — only the single lost packet is re-sent, because each is numbered and can be replaced individually. This is what makes TCP reliable and efficient.</details>
+:::<h2>🧪 Lab — See encapsulation in action</h2>
+<p>You'll do this properly with Wireshark in Path 12, but a taste now:</p>
 <ol>
 <li>On Linux/Mac, run:<pre><code class="language-bash">sudo tcpdump -c 5 -nn -v icmp
 </code></pre>
 </li>
 <li>In another terminal, ping a site: <code>ping -c 3 8.8.8.8</code>.</li>
-<li><code>tcpdump</code> will show 5 packets with details. Look at the IP header (<code>8.8.8.8</code> and your IP), the ICMP type, sequence numbers — you&#39;re seeing real-live layered packets.</li>
+<li><code>tcpdump</code> will show 5 packets with details. Look at the IP header (<code>8.8.8.8</code> and your IP), the ICMP type, sequence numbers — you're seeing real-live layered packets.</li>
 </ol>
 <h2>Key terms</h2>
 <ul>
 <li><strong>Packet</strong> — a small numbered chunk of data with a header.</li>
-<li><strong>Header</strong> — the &quot;writing on the envelope&quot;: addresses, port, order number.</li>
+<li><strong>Header</strong> — the "writing on the envelope": addresses, port, order number.</li>
 <li><strong>Encapsulation</strong> — each layer wrapping the one above it.</li>
 <li><strong>OSI model</strong> — the 7-layer conceptual model of networking.</li>
 <li><strong>TCP/IP model</strong> — the simpler 4-layer real-world model.</li>
@@ -180,22 +272,70 @@ Physical → Data Link → Network → Transport → Session → Presentation �
 <li><a href="https://www.cloudflare.com/learning/ddos/glossary/open-systems-interconnection-model-osi/">OSI model — Cloudflare Learning</a> — nicely visual.</li>
 <li><a href="https://en.wikipedia.org/wiki/Internet_protocol_suite">TCP/IP vs OSI model</a> — Wikipedia.</li>
 <li><a href="https://packetlife.net/library/cheat-sheets/">PacketLife.net cheat sheets</a> — printable references for TCP/IP, IPv4, IPv6.</li>
-<li><a href="https://nostarch.com/packetanalysis3">Practical Packet Analysis (book)</a> — Chris Sanders&#39; classic Wireshark book.</li>
+<li><a href="https://nostarch.com/packetanalysis3">Practical Packet Analysis (book)</a> — Chris Sanders' classic Wireshark book.</li>
 </ul>
 <p><strong>Next up →</strong> <a href="#/lesson/02-networking/switches-and-vlans">Switches &amp; VLANs</a></p>
-<nav class="pager"><a href="/lesson/02-networking/ports.html">← Ports: the doors</a><a href="/lesson/02-networking/switches-and-vlans.html">Switches &amp; VLANs →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/02-networking/ports.html">← Ports: the doors</a><a href="/lesson/02-networking/switches-and-vlans.html">Switches &amp; VLANs →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/02-networking/packets";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

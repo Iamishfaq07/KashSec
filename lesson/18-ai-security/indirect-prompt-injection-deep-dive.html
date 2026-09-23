@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>Indirect Prompt Injection, Deep Dive — Path 18 · KashSec Academy</title>
-<meta name="description" content="The prompt-injection lesson defined indirect injection and flagged it as especially dangerous for agentic systems. This lesson goes deep into full real-world attack chains and the architectural defens">
+<meta name="description" content="Indirect Prompt Injection, Deep Dive: Full attack chains and the dual-LLM defensive pattern.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/18-ai-security/indirect-prompt-injection-deep-dive.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Indirect Prompt Injection, Deep Dive — Path 18 · KashSec Academy">
-<meta property="og:description" content="The prompt-injection lesson defined indirect injection and flagged it as especially dangerous for agentic systems. This lesson goes deep into full real-world attack chains and the architectural defens">
+<meta property="og:description" content="Indirect Prompt Injection, Deep Dive: Full attack chains and the dual-LLM defensive pattern.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/18-ai-security/indirect-prompt-injection-deep-dive.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -17,91 +18,184 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Indirect Prompt Injection, Deep Dive — Path 18 · KashSec Academy">
-<meta name="twitter:description" content="The prompt-injection lesson defined indirect injection and flagged it as especially dangerous for agentic systems. This lesson goes deep into full real-world attack chains and the architectural defens">
+<meta name="twitter:description" content="Indirect Prompt Injection, Deep Dive: Full attack chains and the dual-LLM defensive pattern.">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 18 — AI & AI Security","item":"https://kashsec.vercel.app/lesson/18-ai-security/"},{"@type":"ListItem","position":4,"name":"Indirect Prompt Injection, Deep Dive","item":"https://kashsec.vercel.app/lesson/18-ai-security/indirect-prompt-injection-deep-dive.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Indirect Prompt Injection, Deep Dive","headline":"Indirect Prompt Injection, Deep Dive","description":"The prompt-injection lesson defined indirect injection and flagged it as especially dangerous for agentic systems. This lesson goes deep into full real-world attack chains and the architectural defens","url":"https://kashsec.vercel.app/lesson/18-ai-security/indirect-prompt-injection-deep-dive.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Full attack chains and the dual-LLM defensive pattern.","isPartOf":{"@type":"Course","name":"Path 18: AI & AI Security","url":"https://kashsec.vercel.app/lesson/18-ai-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/18-ai-security/indirect-prompt-injection-deep-dive.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Indirect Prompt Injection, Deep Dive","headline":"Indirect Prompt Injection, Deep Dive","description":"Indirect Prompt Injection, Deep Dive: Full attack chains and the dual-LLM defensive pattern.","url":"https://kashsec.vercel.app/lesson/18-ai-security/indirect-prompt-injection-deep-dive.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Full attack chains and the dual-LLM defensive pattern.","isPartOf":{"@type":"Course","name":"Path 18: AI & AI Security","url":"https://kashsec.vercel.app/lesson/18-ai-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/18-ai-security/indirect-prompt-injection-deep-dive.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/18-ai-security/indirect-prompt-injection-deep-dive">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/18-ai-security/">Path 18 — AI &amp; AI Security</a> · Indirect Prompt Injection, Deep Dive</div>
-  <article><h1>Indirect Prompt Injection, Deep Dive</h1>
-<p>The prompt-injection lesson defined indirect injection and flagged it as especially dangerous for agentic systems. This lesson goes deep into full real-world attack chains and the architectural defenses that actually help — directly connecting to Path 14&#39;s lateral-movement-techniques lesson&#39;s &quot;foothold to full compromise&quot; framing, applied here to AI agents rather than compromised machines.</p>
+<a class="skip" href="/lesson/18-ai-security/indirect-prompt-injection-deep-dive.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/18-ai-security/">Path 18 — AI &amp; AI Security</a> · Indirect Prompt Injection, Deep Dive</nav>
+    <div class="md" id="content"><article><h1>Indirect Prompt Injection, Deep Dive</h1>
+<p>The prompt-injection lesson defined indirect injection and flagged it as especially dangerous for agentic systems. This lesson goes deep into full real-world attack chains and the architectural defenses that actually help — directly connecting to Path 14's lateral-movement-techniques lesson's "foothold to full compromise" framing, applied here to AI agents rather than compromised machines.</p>
 <h2>A full attack chain, worked through step by step</h2>
-<p>Consider an AI email assistant with tool access to read emails, search the web, and send emails on the user&#39;s behalf:</p>
-<p>The victim never directly interacts with the attacker at all — the entire compromise happens because the assistant, acting on the victim&#39;s behalf, processed attacker-controlled content and treated embedded instructions within it as legitimate.</p>
+<p>Consider an AI email assistant with tool access to read emails, search the web, and send emails on the user's behalf:</p>
+<pre><code class="language-mermaid">sequenceDiagram
+    participant Attacker
+    participant Victim
+    participant Assistant as AI Email Assistant
+
+    Attacker-&gt;&gt;Victim: Sends email containing hidden instructions\n(white text, HTML comments, or plain text)
+    Victim-&gt;&gt;Assistant: "Summarize my unread emails"
+    Assistant-&gt;&gt;Assistant: Reads attacker's email into context\n(hidden instructions now present)
+    Note over Assistant: Model treats hidden text\nas an instruction, not data
+    Assistant-&gt;&gt;Attacker: Executes injected instruction —\ne.g. forwards victim's other emails\nto attacker's address
+</code></pre>
+<p>The victim never directly interacts with the attacker at all — the entire compromise happens because the assistant, acting on the victim's behalf, processed attacker-controlled content and treated embedded instructions within it as legitimate.</p>
 <h2>Why this is structurally different from direct injection</h2>
-<p>Directly connecting to the transformer-architecture-deep-dive lesson: direct injection requires the attacker to interact with the model themselves, meaning any output-side monitoring or rate-limiting on the attacker&#39;s own account provides at least some defensive signal. Indirect injection routes entirely through a <em>trusted user&#39;s</em> legitimate session — from the application&#39;s perspective, every request genuinely came from an authenticated, authorized user, making this attack pattern far harder to distinguish from completely normal usage using session-based or account-based detection alone.</p>
+<p>Directly connecting to the transformer-architecture-deep-dive lesson: direct injection requires the attacker to interact with the model themselves, meaning any output-side monitoring or rate-limiting on the attacker's own account provides at least some defensive signal. Indirect injection routes entirely through a <em>trusted user's</em> legitimate session — from the application's perspective, every request genuinely came from an authenticated, authorized user, making this attack pattern far harder to distinguish from completely normal usage using session-based or account-based detection alone.</p>
 <h2>Real-world indirect injection vectors, cataloged</h2>
 <ul>
 <li><strong>Email/document content</strong> — the example above; also applies to calendar invites, shared documents, and any content an AI assistant is asked to read or summarize</li>
-<li><strong>Web page content</strong> — an AI browsing agent (directly connecting to Path 18&#39;s agentic-ai-risks lesson) that fetches and reads a webpage as part of answering a question can be manipulated by hidden instructions embedded in that page&#39;s content, invisible to a human viewer but fully visible to the model</li>
-<li><strong>RAG-retrieved documents</strong> — a Retrieval-Augmented Generation system that pulls relevant documents into context to answer questions is vulnerable if any document in its retrieval index has been tampered with or was maliciously submitted, directly connecting to the llm-supply-chain-attacks lesson&#39;s data-poisoning coverage</li>
-<li><strong>Tool/API responses</strong> — if an LLM calls an external API or tool and that tool&#39;s response is itself attacker-influenced (a compromised or malicious third-party service), the returned content re-enters the model&#39;s context exactly like any other retrieved data</li>
+<li><strong>Web page content</strong> — an AI browsing agent (directly connecting to Path 18's agentic-ai-risks lesson) that fetches and reads a webpage as part of answering a question can be manipulated by hidden instructions embedded in that page's content, invisible to a human viewer but fully visible to the model</li>
+<li><strong>RAG-retrieved documents</strong> — a Retrieval-Augmented Generation system that pulls relevant documents into context to answer questions is vulnerable if any document in its retrieval index has been tampered with or was maliciously submitted, directly connecting to the llm-supply-chain-attacks lesson's data-poisoning coverage</li>
+<li><strong>Tool/API responses</strong> — if an LLM calls an external API or tool and that tool's response is itself attacker-influenced (a compromised or malicious third-party service), the returned content re-enters the model's context exactly like any other retrieved data</li>
 </ul>
 <h2>The dual-LLM defensive pattern</h2>
-<p>One of the more promising architectural mitigations: the <strong>dual-LLM (or &quot;quarantine&quot;) pattern</strong> separates a <strong>privileged</strong> LLM (which can see the user&#39;s original request and decide what actions to take) from a <strong>quarantined</strong> LLM (which processes untrusted external content, like a fetched webpage, but has no tool-calling ability at all and can only return plain, structured data back to the privileged LLM). Because the quarantined LLM cannot itself trigger any action, an injection succeeding within it can at most corrupt the <em>data</em> returned, not directly cause a tool call — the privileged LLM retains sole authority over actions, working from the user&#39;s original trusted instructions plus sanitized data rather than ever directly processing untrusted content with action-taking authority.</p>
+<p>One of the more promising architectural mitigations: the <strong>dual-LLM (or "quarantine") pattern</strong> separates a <strong>privileged</strong> LLM (which can see the user's original request and decide what actions to take) from a <strong>quarantined</strong> LLM (which processes untrusted external content, like a fetched webpage, but has no tool-calling ability at all and can only return plain, structured data back to the privileged LLM). Because the quarantined LLM cannot itself trigger any action, an injection succeeding within it can at most corrupt the <em>data</em> returned, not directly cause a tool call — the privileged LLM retains sole authority over actions, working from the user's original trusted instructions plus sanitized data rather than ever directly processing untrusted content with action-taking authority.</p>
 <h2>Why complete architectural prevention remains elusive</h2>
-<p>Directly connecting to the base lesson&#39;s &quot;no complete fix exists&quot; conclusion: even the dual-LLM pattern reduces risk rather than eliminating it entirely — the privileged LLM still has to interpret data returned from the quarantined LLM, and sufficiently creative injected content can sometimes still influence that interpretation. This is exactly why the securing-llm-apps lesson&#39;s layered approach (least-privilege tool access, human-in-the-loop confirmation for consequential actions, output monitoring) remains necessary even alongside architectural mitigations like this one — defense in depth, not a single silver-bullet fix.</p>
-<p>Why does the dual-LLM pattern&#39;s separation between a &quot;privileged&quot; and &quot;quarantined&quot; LLM meaningfully reduce risk, even though the quarantined LLM can still be successfully injected?</p>
-<details><summary>Show answer</summary>The core danger of indirect prompt injection isn't that untrusted content might confuse a model — some confusion or misinterpretation is a bounded, relatively low-consequence problem on its own — the real danger is untrusted content causing the model to take an unauthorized *action* (sending an email, executing a refund, exfiltrating data via a tool call). The dual-LLM pattern doesn't prevent the quarantined LLM from being successfully injected by malicious content it processes, but it removes that specific LLM instance's ability to directly cause any consequential action at all — it can only return structured data back to the privileged LLM, which retains sole tool-calling authority and works primarily from the user's original, trusted instructions. This means even a fully successful injection against the quarantined LLM is contained to corrupting the *data* the privileged LLM subsequently sees, rather than directly triggering an action — exactly the same "limit blast radius even after compromise" principle behind least-privilege access controls generally (Path 12), applied here at the level of which LLM instance holds actual action-taking authority.</details><h2>Key terms</h2>
+<p>:::danger No current defense fully closes this gap
+Directly connecting to the base lesson's "no complete fix exists" conclusion: even the dual-LLM pattern reduces risk rather than eliminating it entirely — the privileged LLM still has to interpret data returned from the quarantined LLM, and sufficiently creative injected content can sometimes still influence that interpretation. This is exactly why the securing-llm-apps lesson's layered approach (least-privilege tool access, human-in-the-loop confirmation for consequential actions, output monitoring) remains necessary even alongside architectural mitigations like this one — defense in depth, not a single silver-bullet fix.
+:::</p>
+<p>:::challenge Test yourself
+Why does the dual-LLM pattern's separation between a "privileged" and "quarantined" LLM meaningfully reduce risk, even though the quarantined LLM can still be successfully injected?</p>
+<details><summary>Show answer</summary>The core danger of indirect prompt injection isn't that untrusted content might confuse a model — some confusion or misinterpretation is a bounded, relatively low-consequence problem on its own — the real danger is untrusted content causing the model to take an unauthorized *action* (sending an email, executing a refund, exfiltrating data via a tool call). The dual-LLM pattern doesn't prevent the quarantined LLM from being successfully injected by malicious content it processes, but it removes that specific LLM instance's ability to directly cause any consequential action at all — it can only return structured data back to the privileged LLM, which retains sole tool-calling authority and works primarily from the user's original, trusted instructions. This means even a fully successful injection against the quarantined LLM is contained to corrupting the *data* the privileged LLM subsequently sees, rather than directly triggering an action — exactly the same "limit blast radius even after compromise" principle behind least-privilege access controls generally (Path 12), applied here at the level of which LLM instance holds actual action-taking authority.</details>
+:::<h2>Key terms</h2>
 <ul>
 <li><strong>Dual-LLM (quarantine) pattern</strong> — separating a privileged, action-taking LLM from a quarantined LLM that processes untrusted content with no tool access.</li>
-<li><strong>RAG poisoning</strong> — tampering with documents in a retrieval index so malicious instructions enter an LLM&#39;s context when retrieved.</li>
-<li><strong>Trusted-session routing</strong> — how indirect injection exploits a legitimate user&#39;s authenticated session, evading account-based detection.</li>
+<li><strong>RAG poisoning</strong> — tampering with documents in a retrieval index so malicious instructions enter an LLM's context when retrieved.</li>
+<li><strong>Trusted-session routing</strong> — how indirect injection exploits a legitimate user's authenticated session, evading account-based detection.</li>
 </ul>
 <h2>Recap</h2>
 <ul>
-<li>A full indirect injection attack chain routes entirely through a trusted victim&#39;s session, making it far harder to detect than direct injection attempts.</li>
+<li>A full indirect injection attack chain routes entirely through a trusted victim's session, making it far harder to detect than direct injection attempts.</li>
 <li>Email/document content, web pages, RAG-retrieved documents, and tool API responses are the major real-world indirect injection vectors.</li>
 <li>The dual-LLM pattern contains injection damage by separating action-taking authority from untrusted-content processing, without fully eliminating the underlying risk.</li>
 <li>No current architectural defense fully closes this gap, making layered mitigations from the securing-llm-apps lesson necessary alongside any single pattern.</li>
 </ul>
 <p><strong>Next up →</strong> <a href="#/lesson/18-ai-security/jailbreaks">Jailbreaking techniques</a></p>
-<nav class="pager"><a href="/lesson/18-ai-security/prompt-injection.html">← Prompt injection</a><a href="/lesson/18-ai-security/jailbreaks.html">Jailbreaks &amp; bypasses →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/18-ai-security/prompt-injection.html">← Prompt injection</a><a href="/lesson/18-ai-security/jailbreaks.html">Jailbreaks &amp; bypasses →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/18-ai-security/indirect-prompt-injection-deep-dive";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

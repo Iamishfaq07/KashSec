@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
 <title>Security Governance Basics — Path 23 · KashSec Academy</title>
-<meta name="description" content="Governance is the &quot;who decides, and how&quot; layer of security. Without it, even good technical controls drift — nobody owns keeping them alive, and the moment the person who built a control leaves, so do">
+<meta name="description" content="Security Governance Basics: Who decides, and how — policy, standard, procedure, and who's in the room.">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/23-grc-compliance/governance-basics.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Security Governance Basics — Path 23 · KashSec Academy">
-<meta property="og:description" content="Governance is the &quot;who decides, and how&quot; layer of security. Without it, even good technical controls drift — nobody owns keeping them alive, and the moment the person who built a control leaves, so do">
+<meta property="og:description" content="Security Governance Basics: Who decides, and how — policy, standard, procedure, and who's in the room.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/23-grc-compliance/governance-basics.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -17,66 +18,99 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Security Governance Basics — Path 23 · KashSec Academy">
-<meta name="twitter:description" content="Governance is the &quot;who decides, and how&quot; layer of security. Without it, even good technical controls drift — nobody owns keeping them alive, and the moment the person who built a control leaves, so do">
+<meta name="twitter:description" content="Security Governance Basics: Who decides, and how — policy, standard, procedure, and who's in the room.">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 23 — GRC & Compliance","item":"https://kashsec.vercel.app/lesson/23-grc-compliance/"},{"@type":"ListItem","position":4,"name":"Security Governance Basics","item":"https://kashsec.vercel.app/lesson/23-grc-compliance/governance-basics.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Security Governance Basics","headline":"Security Governance Basics","description":"Governance is the \"who decides, and how\" layer of security. Without it, even good technical controls drift — nobody owns keeping them alive, and the moment the person who built a control leaves, so do","url":"https://kashsec.vercel.app/lesson/23-grc-compliance/governance-basics.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"All levels","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Who decides, and how — policy, standard, procedure, and who's in the room.","isPartOf":{"@type":"Course","name":"Path 23: GRC & Compliance","url":"https://kashsec.vercel.app/lesson/23-grc-compliance/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/23-grc-compliance/governance-basics.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Security Governance Basics","headline":"Security Governance Basics","description":"Security Governance Basics: Who decides, and how — policy, standard, procedure, and who's in the room.","url":"https://kashsec.vercel.app/lesson/23-grc-compliance/governance-basics.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"All levels","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Who decides, and how — policy, standard, procedure, and who's in the room.","isPartOf":{"@type":"Course","name":"Path 23: GRC & Compliance","url":"https://kashsec.vercel.app/lesson/23-grc-compliance/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/23-grc-compliance/governance-basics.html"}}
 </script>
-<style>
-:root{color-scheme:dark;--bg:#080A0F;--surface:#0F141E;--text:#EAEFF5;--muted:#94A3B2;--amber:#EFA43A;--teal:#5FE0CF;--border:rgba(255,255,255,.08)}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
-.spa-notice{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.5rem;color:var(--muted);font-size:.88rem}
-.spa-notice a{color:var(--amber);text-decoration:none;font-weight:600}
-.crumb{color:var(--muted);font-size:.8rem;margin-bottom:.4rem}
-.crumb a{color:var(--teal);text-decoration:none}
-.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.88rem}
-.pager a{color:var(--teal);text-decoration:none}
-h1,h2,h3,h4{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1{font-size:2rem;margin:.5rem 0 1rem}
-h2{font-size:1.4rem;margin:2rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-a{color:var(--teal)}
-code{background:rgba(63,182,168,.13);color:var(--teal);padding:.1rem .35rem;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
-pre{background:#050810;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
-pre code{background:transparent;color:var(--text);padding:0}
-blockquote{border-left:3px solid var(--amber);margin:1rem 0;padding:.4rem 1rem;color:var(--muted);background:var(--surface);border-radius:6px}
-table{width:100%;border-collapse:collapse;margin:1rem 0}
-th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
-th{background:var(--surface)}
-img{max-width:100%;height:auto}
-footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)}
-</style>
 </head>
 <body>
-<main>
-  <div class="spa-notice">📱 Loading the interactive KashSec app… If it doesn't switch automatically, <a href="/#/lesson/23-grc-compliance/governance-basics">continue here →</a></div>
-  <div class="crumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/23-grc-compliance/">Path 23 — GRC &amp; Compliance</a> · Security Governance Basics</div>
-  <article><h1>Security Governance Basics</h1>
-<p>Governance is the &quot;who decides, and how&quot; layer of security. Without it, even good technical controls drift — nobody owns keeping them alive, and the moment the person who built a control leaves, so does the institutional knowledge of why it exists.</p>
-<p>:::</p>
+<a class="skip" href="/lesson/23-grc-compliance/governance-basics.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/23-grc-compliance/">Path 23 — GRC &amp; Compliance</a> · Security Governance Basics</nav>
+    <div class="md" id="content"><article><h1>Security Governance Basics</h1>
+<p>Governance is the "who decides, and how" layer of security. Without it, even good technical controls drift — nobody owns keeping them alive, and the moment the person who built a control leaves, so does the institutional knowledge of why it exists.</p>
+<p>:::tip
+A useful test for whether governance is real: pick any security control at random and ask "who would notice if this silently broke, and how long would it take them to find out?" If the honest answer is "nobody, probably never," governance has a gap.
+:::</p>
 <h2>What governance actually covers</h2>
 <ul>
 <li><strong>Ownership</strong> — who is accountable for security outcomes? (Often a CISO, but in smaller companies it might be a single engineering lead wearing many hats.)</li>
 <li><strong>Policy</strong> — the documented rules the organisation has committed to (acceptable use, access control, incident response, data classification).</li>
-<li><strong>Structure</strong> — committees, review boards, and reporting lines that make sure security decisions get made and don&#39;t just live in one person&#39;s head.</li>
+<li><strong>Structure</strong> — committees, review boards, and reporting lines that make sure security decisions get made and don't just live in one person's head.</li>
 <li><strong>Oversight</strong> — how leadership (and sometimes the board) gets visibility into security posture and risk.</li>
 </ul>
 <p>:::warn
-A policy that exists only as a PDF nobody reads isn&#39;t governance — it&#39;s paperwork. Real governance means the policy is followed, reviewed, and enforced. Auditors are increasingly good at spotting the difference: ask for the last three access-review tickets, not just the access-review policy document.</p>
+A policy that exists only as a PDF nobody reads isn't governance — it's paperwork. Real governance means the policy is followed, reviewed, and enforced. Auditors are increasingly good at spotting the difference: ask for the last three access-review tickets, not just the access-review policy document.
+:::</p>
 <h2>The governance hierarchy</h2>
 <p>Most mature security programs have a layered structure:</p>
 <ol>
-<li><strong>Policy</strong> — high-level statement of intent (&quot;We will encrypt data at rest and in transit&quot;).</li>
-<li><strong>Standard</strong> — the specific, measurable rule that implements the policy (&quot;All databases must use AES-256 encryption&quot;).</li>
-<li><strong>Procedure</strong> — the step-by-step instructions to meet the standard (&quot;Run this Terraform module to enable encryption on a new RDS instance&quot;).</li>
-<li><strong>Guideline</strong> — recommended (not mandatory) advice (&quot;Consider rotating keys every 90 days&quot;).</li>
+<li><strong>Policy</strong> — high-level statement of intent ("We will encrypt data at rest and in transit").</li>
+<li><strong>Standard</strong> — the specific, measurable rule that implements the policy ("All databases must use AES-256 encryption").</li>
+<li><strong>Procedure</strong> — the step-by-step instructions to meet the standard ("Run this Terraform module to enable encryption on a new RDS instance").</li>
+<li><strong>Guideline</strong> — recommended (not mandatory) advice ("Consider rotating keys every 90 days").</li>
 </ol>
-<p>This hierarchy matters because auditors and regulators ask for exactly this structure — and because it lets you change <em>how</em> you do something (procedure) without rewriting <em>what</em> you&#39;re committed to (policy).</p>
+<p>This hierarchy matters because auditors and regulators ask for exactly this structure — and because it lets you change <em>how</em> you do something (procedure) without rewriting <em>what</em> you're committed to (policy).</p>
 <table>
 <thead>
 <tr>
@@ -106,8 +140,8 @@ A policy that exists only as a PDF nobody reads isn&#39;t governance — it&#39;
 <td>Anyone with relevant expertise</td>
 </tr>
 </tbody></table>
-<p>Notice the pattern: the higher up the hierarchy, the harder it should be to change, and the more people should be involved in changing it. A procedure that changes weekly as a team refines its tooling is healthy. A policy that changes weekly means either the policy was written too specifically, or nobody&#39;s actually enforcing stability at that level.</p>
-<h2>Who&#39;s actually in the room</h2>
+<p>Notice the pattern: the higher up the hierarchy, the harder it should be to change, and the more people should be involved in changing it. A procedure that changes weekly as a team refines its tooling is healthy. A policy that changes weekly means either the policy was written too specifically, or nobody's actually enforcing stability at that level.</p>
+<h2>Who's actually in the room</h2>
 <ul>
 <li><strong>CISO / Head of Security</strong> — owns the program, reports risk to leadership.</li>
 <li><strong>Security Steering Committee</strong> — cross-functional (legal, engineering, HR, finance) group that reviews major risk decisions.</li>
@@ -115,30 +149,26 @@ A policy that exists only as a PDF nobody reads isn&#39;t governance — it&#39;
 <li><strong>Internal Audit</strong> — checks that controls are actually operating as documented, independent of the team that built them.</li>
 </ul>
 <h2>A governance red flag worth knowing</h2>
-<p>If the same team designs a control, implements it, <em>and</em> audits itself with no independent check, that&#39;s a segregation-of-duties failure — one of the most common findings in real audits. Governance exists partly to prevent exactly this.</p>
+<p>If the same team designs a control, implements it, <em>and</em> audits itself with no independent check, that's a segregation-of-duties failure — one of the most common findings in real audits. Governance exists partly to prevent exactly this.</p>
 <h3>Worked example</h3>
-<p>An engineering team implements a code-review requirement (every PR needs a second approver before merge) and is also the team that reports &quot;100% compliance&quot; with this policy to leadership every quarter, based on their own internal tracking. No one outside the team ever samples actual PRs to verify the number. Six months later, an incident review discovers a pattern of self-approved emergency merges that were never counted in the compliance number, because the team&#39;s own tracking script silently excluded anything tagged &quot;hotfix.&quot; This is exactly the failure segregation of duties exists to catch: the team measuring its own compliance had every incentive, even unintentionally, to under-report gaps.</p>
-<h2>Why this matters even if you&#39;re not &quot;in GRC&quot;</h2>
-<p>Every engineer eventually runs into governance: the security review that blocks a launch, the policy that says production access requires MFA, the change-management process before a deploy. Understanding <em>why</em> these exist — not just that they&#39;re annoying — makes you far more effective working within (or around, safely) a security program.</p>
+<p>An engineering team implements a code-review requirement (every PR needs a second approver before merge) and is also the team that reports "100% compliance" with this policy to leadership every quarter, based on their own internal tracking. No one outside the team ever samples actual PRs to verify the number. Six months later, an incident review discovers a pattern of self-approved emergency merges that were never counted in the compliance number, because the team's own tracking script silently excluded anything tagged "hotfix." This is exactly the failure segregation of duties exists to catch: the team measuring its own compliance had every incentive, even unintentionally, to under-report gaps.</p>
+<h2>Why this matters even if you're not "in GRC"</h2>
+<p>Every engineer eventually runs into governance: the security review that blocks a launch, the policy that says production access requires MFA, the change-management process before a deploy. Understanding <em>why</em> these exist — not just that they're annoying — makes you far more effective working within (or around, safely) a security program.</p>
 <h2>🧪 Hands-on lab — build a policy hierarchy</h2>
-<p>Pick a security topic you care about (e.g. &quot;how we handle laptops that get lost or stolen&quot;).</p>
+<p>Pick a security topic you care about (e.g. "how we handle laptops that get lost or stolen").</p>
 <ol>
-<li><p>Write one sentence at the <strong>policy</strong> level — the high-level commitment.</p>
-</li>
-<li><p>Write one sentence at the <strong>standard</strong> level — the specific measurable rule.</p>
-</li>
-<li><p>Write a short numbered <strong>procedure</strong> — the actual steps someone follows.</p>
-</li>
-<li><p>Write one optional <strong>guideline</strong> — a recommendation, not a requirement.</p>
-</li>
-<li><p>Identify: who should approve each level, and how often should each realistically be reviewed?</p>
-</li>
-<li><p>Why does putting a policy change through a heavier approval process than a procedure change make sense operationally?</p>
-</li>
-<li><p>In the self-reporting compliance example, what&#39;s the simplest governance fix that would have caught the &quot;hotfix&quot; exclusion sooner?</p>
-</li>
-<li><p>Name one security control at your own job (or a hypothetical one) and answer: who would notice if it silently broke?</p>
-</li>
+<li>Write one sentence at the <strong>policy</strong> level — the high-level commitment.</li>
+<li>Write one sentence at the <strong>standard</strong> level — the specific measurable rule.</li>
+<li>Write a short numbered <strong>procedure</strong> — the actual steps someone follows.</li>
+<li>Write one optional <strong>guideline</strong> — a recommendation, not a requirement.</li>
+<li>Identify: who should approve each level, and how often should each realistically be reviewed?</li>
+</ol>
+<p>:::challenge Test yourself</p>
+<ol>
+<li>Why does putting a policy change through a heavier approval process than a procedure change make sense operationally?</li>
+<li>In the self-reporting compliance example, what's the simplest governance fix that would have caught the "hotfix" exclusion sooner?</li>
+<li>Name one security control at your own job (or a hypothetical one) and answer: who would notice if it silently broke?
+:::</li>
 </ol>
 <h2>Key terms</h2>
 <ul>
@@ -148,25 +178,73 @@ A policy that exists only as a PDF nobody reads isn&#39;t governance — it&#39;
 <li><strong>Oversight</strong> — the mechanism by which leadership gets independent visibility into security posture</li>
 </ul>
 <h2>Recap</h2>
-<p>Governance is the structural layer that keeps security decisions accountable, documented, and independently checked — without it, even well-designed controls quietly decay because nobody owns keeping them alive. The policy hierarchy and segregation of duties are the two governance concepts you&#39;ll see referenced in nearly every audit framework covered later in this path.</p>
+<p>Governance is the structural layer that keeps security decisions accountable, documented, and independently checked — without it, even well-designed controls quietly decay because nobody owns keeping them alive. The policy hierarchy and segregation of duties are the two governance concepts you'll see referenced in nearly every audit framework covered later in this path.</p>
 <h3>References</h3>
 <ul>
 <li><a href="https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final">NIST SP 800-53 — Governance controls</a> — a comprehensive federal controls catalog including governance</li>
 <li><a href="https://www.isaca.org/resources/isaca-journal">ISACA — Segregation of Duties</a> — professional body covering governance and audit practice</li>
 </ul>
-<nav class="pager"><a href="/lesson/23-grc-compliance/grc-career-economics-and-demand.html">← GRC Career Economics &amp; Demand</a><a href="/lesson/23-grc-compliance/raci-and-security-committees.html">RACI &amp; Security Committees →</a></nav></article>
-  <footer>© KashSec Academy · <a href="/lesson/">All learning paths</a> · <a href="/">Interactive site</a> · <a href="/sitemap.xml">Sitemap</a></footer>
+<nav class="pager"><a href="/lesson/23-grc-compliance/grc-career-economics-and-demand.html">← GRC Career Economics &amp; Demand</a><a href="/lesson/23-grc-compliance/raci-and-security-committees.html">RACI &amp; Security Committees →</a></nav></article></div>
+  </div></div>
 </main>
-<script>
-// Redirect actual users into the SPA. Search-engine crawlers get to read
-// the content above before the redirect fires.
-(function(){
-  try {
-    var target = "/#/lesson/23-grc-compliance/governance-basics";
-    // Only redirect from the .html file, not from the SPA route itself.
-    if (location.pathname.endsWith('.html') || location.pathname.endsWith('/')) location.replace(target);
-  } catch (e) {}
-})();
-</script>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+    </div>
+    <div class="foot-cols">
+      <div><h4>Learn</h4>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h4>About</h4>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+      </div>
+      <div><h4>Legal</h4>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
 </body>
 </html>
