@@ -129,7 +129,12 @@ try {
   console.warn('git history unavailable — using build date for lastmod.');
 }
 const lastmodFor = (...files) => {
-  const dates = files.map(f => dirtyPaths.has(f) ? BUILD_DATE : gitDates.get(f)).filter(Boolean);
+  // BUILD_DATE is UTC, while git commit dates retain the committer's local
+  // calendar date. A dirty file must never make its published date go back.
+  const dates = files.map(f => {
+    const committed = gitDates.get(f);
+    return dirtyPaths.has(f) && (!committed || BUILD_DATE > committed) ? BUILD_DATE : committed;
+  }).filter(Boolean);
   return dates.length ? dates.sort().pop() : BUILD_DATE;
 };
 // The tool/lab/FAQ stubs are generated from data living in app.js, so

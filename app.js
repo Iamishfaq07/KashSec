@@ -2622,7 +2622,7 @@ function renderCareers(){
         <h1>Where this course leads</h1>
         <p class="sec-lead">Security has many careers. Here's what each does and which paths get you there.</p>
         <div class="hero-btns" style="justify-content:flex-start;margin-top:1rem">
-          <a class="btn-amber sm" href="#/career-quiz">🧭 Not sure? Take the 2-minute career-fit quiz →</a>
+          <a class="btn-amber sm career-quiz-cta" href="#/career-quiz">🧭 Not sure? Take the 2-minute career-fit quiz →</a>
         </div>
       </div>
       <div class="careers">
@@ -6424,7 +6424,10 @@ function renderLabLeakedSecret(){
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
-  {date:'2026-09-24', title:'Dialogs now keep keyboard focus where it belongs', items:[
+  {date:'2026-09-24', title:'Mobile layout and keyboard accessibility improvements', items:[
+    'The header no longer extends past the screen at 320px or 430px. Narrow layouts hide duplicate header controls and offer Random lesson from the mobile menu.',
+    'The career-fit quiz action wraps within a phone screen. Browser checks now cover page width and the mobile random-lesson action across representative small widths.',
+    'The mobile menu moves focus to its first link, closes with Escape, and returns focus to the menu button.',
     'Search, account, and keyboard-shortcut dialogs keep Tab inside the open panel and restore focus to the opening control when closed.',
     'The keyboard-shortcut panel has a visible Close button. Search and account inputs have accessible names. Background controls are inert while a dialog is open, and browser checks cover focus entry, containment, and return.'
   ]},
@@ -10848,15 +10851,26 @@ function renderProgressHub(){
 /* Mobile nav */
 const hamb = document.getElementById('hamb');
 const navLinks = document.getElementById('navLinks');
+function setMobileMenuOpen(open, restoreFocus = false){
+  navLinks.classList.toggle('open', open);
+  hamb.setAttribute('aria-expanded', String(open));
+  hamb.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+  if(open) navLinks.querySelector('a, button')?.focus();
+  else if(restoreFocus) hamb.focus();
+}
 hamb.addEventListener('click',()=>{
-  const open = navLinks.classList.toggle('open');
-  hamb.setAttribute('aria-expanded', open ? 'true' : 'false');
+  setMobileMenuOpen(!navLinks.classList.contains('open'));
 });
 document.querySelectorAll('#navLinks a').forEach(a=>{
   a.addEventListener('click',()=>{
-    navLinks.classList.remove('open');
-    hamb.setAttribute('aria-expanded','false');
+    setMobileMenuOpen(false);
   });
+});
+document.addEventListener('keydown', e=>{
+  if(e.key === 'Escape' && navLinks.classList.contains('open') &&
+      (navLinks.contains(document.activeElement) || document.activeElement === hamb)){
+    setMobileMenuOpen(false, true);
+  }
 });
 
 /* Sticky-nav shadow on scroll */
@@ -10867,9 +10881,14 @@ onScroll();
 
 /* Theme toggle */
 document.getElementById('themeToggle').addEventListener('click', toggleTheme);
-document.getElementById('randomLessonBtn')?.addEventListener('click', ()=>{
+function jumpRandomLesson(){
   const {pathId, subId} = pickRandomLesson();
   location.hash = `#/lesson/${pathId}/${subId}`;
+}
+document.getElementById('randomLessonBtn')?.addEventListener('click', jumpRandomLesson);
+document.getElementById('randomMobileBtn')?.addEventListener('click', ()=>{
+  setMobileMenuOpen(false);
+  jumpRandomLesson();
 });
 
 /* Progress ring: reflects overall completion, links to the progress hub */
