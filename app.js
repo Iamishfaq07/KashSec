@@ -3397,8 +3397,12 @@ function enrichMarkdown(md){
   // Convert custom callout syntax:  :::tip TITLE ... :::
   md = md.replace(/^:::(\w+)(?:\s+(.+?))?\n([\s\S]*?)\n:::$/gm, (m, kind, title, body)=>{
     const bodyHtml = marked.parse(body.trim());
+    // ":::warning" was used in a handful of lessons but only ":::warn" was
+    // styled, so those warnings rendered as plain unboxed text.
+    if(kind === 'warning') kind = 'warn';
     const label = (title || defaultLabel(kind)).toUpperCase();
-    return `<div class="callout ${kind}"><span class="ct-tag">${label}</span><div class="ct-body">${bodyHtml}</div></div>`;
+    const ico = CALLOUT_ICON[kind] ? `<svg class="ct-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${CALLOUT_ICON[kind]}</svg>` : '';
+    return `<div class="callout ${kind}"><span class="ct-tag">${ico}${label}</span><div class="ct-body">${bodyHtml}</div></div>`;
   });
 
   // References block:  ??? refs ... ???
@@ -3780,8 +3784,19 @@ function pushAdSlots(container){
 }
 
 function defaultLabel(kind){
-  return ({tip:'TIP',warn:'WARNING',danger:'DANGER',lab:'🧪 LAB',challenge:'🚩 CHALLENGE',note:'NOTE'})[kind] || kind;
+  return ({tip:'TIP',warn:'WARNING',danger:'DANGER',lab:'LAB',challenge:'CHALLENGE',note:'NOTE'})[kind] || kind;
 }
+/* One glyph per callout kind, drawn in the tag. The lab and challenge
+   labels used emoji for this, which rendered differently on every OS and
+   not at all on some; the other four kinds had nothing. */
+const CALLOUT_ICON = {
+  tip:'<path d="M9 18h6"/><path d="M10 21.5h4"/><path d="M12 2.5a6.5 6.5 0 0 0-3.8 11.8c.5.4.8 1 .8 1.6V16h6v-.1c0-.6.3-1.2.8-1.6A6.5 6.5 0 0 0 12 2.5z"/>',
+  warn:'<path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12" y2="17"/>',
+  danger:'<polygon points="7.9 2 16.1 2 22 7.9 22 16.1 16.1 22 7.9 22 2 16.1 2 7.9"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12" y2="16"/>',
+  note:'<circle cx="12" cy="12" r="9"/><line x1="12" y1="11" x2="12" y2="16"/><line x1="12" y1="8" x2="12" y2="8"/>',
+  lab:'<path d="M9 2.5h6"/><path d="M10 2.5v6.2L4.6 18.4A2 2 0 0 0 6.4 21.5h11.2a2 2 0 0 0 1.8-3.1L14 8.7V2.5"/><path d="M7.2 14h9.6"/>',
+  challenge:'<path d="M5 21V4"/><path d="M5 4h11l-2 3.5L16 11H5"/>'
+};
 
 /* ============================================================
    Public learning profile — a shareable, read-only card for anyone
@@ -4319,6 +4334,34 @@ function renderCapstone(){
   setupReveal();
 }
 
+/* Type-to-filter for the lab and tool grids (42 and 32 cards spread over
+   more than a dozen topics — too many for chips). Matches title,
+   description and the paired path, so "jwt", "cloud" or "linux" all work. */
+function cardFilterHTML(kind, total){
+  return `<div class="card-filter">
+    <input type="search" id="cardFilter" class="glossary-search" placeholder="Filter ${kind}… (e.g. jwt, cloud, linux)" aria-label="Filter ${kind}" autocomplete="off" spellcheck="false">
+    <span class="card-filter-count" id="cardFilterCount" role="status" aria-live="polite">${total} ${kind}</span>
+  </div>`;
+}
+function wireCardFilter(){
+  const input = document.getElementById('cardFilter');
+  const count = document.getElementById('cardFilterCount');
+  if(!input) return;
+  const cards = [...app.querySelectorAll('.labs-grid .lab-card')];
+  const kind = (input.getAttribute('aria-label') || '').replace(/^Filter /, '');
+  const hay = cards.map(c => c.textContent.toLowerCase());
+  input.addEventListener('input', ()=>{
+    const terms = input.value.toLowerCase().trim().split(/\s+/).filter(Boolean);
+    let shown = 0;
+    cards.forEach((c, i)=>{
+      const match = terms.every(t => hay[i].includes(t));
+      c.classList.toggle('is-filtered', !match);
+      if(match) shown++;
+    });
+    count.textContent = terms.length ? `${shown} of ${cards.length} ${kind}` : `${cards.length} ${kind}`;
+  });
+}
+
 function renderLabsIndex(){
   const labs = LABS;
   const sb = labScoreboard();
@@ -4336,6 +4379,7 @@ function renderLabsIndex(){
           <a class="btn-amber sm" href="#/capstone"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-2px"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg> Try the capstone attack chain →</a>
         </div>
       </div>
+      ${cardFilterHTML('labs', labs.length)}
       <div class="labs-grid" data-reveal style="--i:1">
         ${labs.map(l=>{
           const done = !!STATE.labsCompleted[l.id];
@@ -4351,6 +4395,7 @@ function renderLabsIndex(){
     </section>
   `;
   setupReveal();
+  wireCardFilter();
 }
 
 /* --- Lab 1: terminal simulator ------------------------------ */
@@ -7343,6 +7388,7 @@ function renderToolsIndex(){
         <h1>Handy security utilities</h1>
         <p class="sec-lead">Everyday tools you'll reach for while learning and working — encoders, hashing, JWT, CVSS, subnetting, and more. Everything runs entirely in your browser; nothing you type is ever sent anywhere.</p>
       </div>
+      ${cardFilterHTML('tools', TOOLS.length)}
       <div class="labs-grid" data-reveal style="--i:1">
         ${TOOLS.map(t=>`
           <a class="lab-card" href="#/tools/${t.id}">
@@ -7356,6 +7402,7 @@ function renderToolsIndex(){
     </section>
   `;
   setupReveal();
+  wireCardFilter();
 }
 
 function renderTool(id){
