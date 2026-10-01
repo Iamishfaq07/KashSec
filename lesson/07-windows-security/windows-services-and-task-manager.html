@@ -5,21 +5,25 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Windows Services &amp; Task Manager, for Security — Path 07 · KashSec Academy</title>
-<meta name="description" content="The command-line lesson gave you PowerShell as a tool. This lesson covers two specific things worth investigating with it (and with their GUI equivalents): services, the background processes Windows a">
+<meta name="description" content="The command-line lesson gave you PowerShell as a tool. This lesson covers two specific things worth investigating with it (and with their GUI equivalents)…">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/07-windows-security/windows-services-and-task-manager.html">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/icons/icon-192.png" type="image/png" sizes="192x192">
 <meta property="og:title" content="Windows Services &amp; Task Manager, for Security — Path 07 · KashSec Academy">
-<meta property="og:description" content="The command-line lesson gave you PowerShell as a tool. This lesson covers two specific things worth investigating with it (and with their GUI equivalents): services, the background processes Windows a">
+<meta property="og:description" content="The command-line lesson gave you PowerShell as a tool. This lesson covers two specific things worth investigating with it (and with their GUI equivalents)…">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/07-windows-security/windows-services-and-task-manager.html">
 <meta property="og:site_name" content="KashSec Academy">
-<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://kashsec.vercel.app/og/07-windows-security.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="KashSec Academy · Path 07: Windows Security Basics">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Windows Services &amp; Task Manager, for Security — Path 07 · KashSec Academy">
-<meta name="twitter:description" content="The command-line lesson gave you PowerShell as a tool. This lesson covers two specific things worth investigating with it (and with their GUI equivalents): services, the background processes Windows a">
-<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="twitter:description" content="The command-line lesson gave you PowerShell as a tool. This lesson covers two specific things worth investigating with it (and with their GUI equivalents)…">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og/07-windows-security.jpg">
+<meta name="twitter:image:alt" content="KashSec Academy · Path 07: Windows Security Basics">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
 <link rel="manifest" href="/manifest.json">
@@ -34,7 +38,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 07 — Windows Security Basics","item":"https://kashsec.vercel.app/lesson/07-windows-security/"},{"@type":"ListItem","position":4,"name":"Windows Services & Task Manager, for Security","item":"https://kashsec.vercel.app/lesson/07-windows-security/windows-services-and-task-manager.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Windows Services & Task Manager, for Security","headline":"Windows Services & Task Manager, for Security","description":"The command-line lesson gave you PowerShell as a tool. This lesson covers two specific things worth investigating with it (and with their GUI equivalents): services, the background processes Windows a","url":"https://kashsec.vercel.app/lesson/07-windows-security/windows-services-and-task-manager.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Why services are an attacker's favorite persistence mechanism, and how to audit them.","isPartOf":{"@type":"Course","name":"Path 07: Windows Security Basics","url":"https://kashsec.vercel.app/lesson/07-windows-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/07-windows-security/windows-services-and-task-manager.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Windows Services & Task Manager, for Security","headline":"Windows Services & Task Manager, for Security","description":"The command-line lesson gave you PowerShell as a tool. This lesson covers two specific things worth investigating with it (and with their GUI equivalents): services, the background processes Windows and installed software depend on, and how to actually use Task Manager as a security tool rather…","url":"https://kashsec.vercel.app/lesson/07-windows-security/windows-services-and-task-manager.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","image":"https://kashsec.vercel.app/og/07-windows-security.jpg","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Why services are an attacker's favorite persistence mechanism, and how to audit them.","isPartOf":{"@type":"Course","name":"Path 07: Windows Security Basics","url":"https://kashsec.vercel.app/lesson/07-windows-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/07-windows-security/windows-services-and-task-manager.html"}}
 </script>
 </head>
 <body>

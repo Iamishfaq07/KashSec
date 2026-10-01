@@ -5,21 +5,25 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Local &amp; Remote File Inclusion (LFI/RFI) — Path 11 · KashSec Academy</title>
-<meta name="description" content="The path-traversal lesson covered reading files outside an intended directory. This lesson covers a related but more dangerous variant, common specifically in dynamically-typed, file-including languag">
+<meta name="description" content="The path-traversal lesson covered reading files outside an intended directory. This lesson covers a related but more dangerous variant, common specifically…">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/11-web-security/file-inclusion-lfi-rfi.html">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/icons/icon-192.png" type="image/png" sizes="192x192">
 <meta property="og:title" content="Local &amp; Remote File Inclusion (LFI/RFI) — Path 11 · KashSec Academy">
-<meta property="og:description" content="The path-traversal lesson covered reading files outside an intended directory. This lesson covers a related but more dangerous variant, common specifically in dynamically-typed, file-including languag">
+<meta property="og:description" content="The path-traversal lesson covered reading files outside an intended directory. This lesson covers a related but more dangerous variant, common specifically…">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/11-web-security/file-inclusion-lfi-rfi.html">
 <meta property="og:site_name" content="KashSec Academy">
-<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://kashsec.vercel.app/og/11-web-security.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="KashSec Academy · Path 11: Web Security &amp; Hacking">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Local &amp; Remote File Inclusion (LFI/RFI) — Path 11 · KashSec Academy">
-<meta name="twitter:description" content="The path-traversal lesson covered reading files outside an intended directory. This lesson covers a related but more dangerous variant, common specifically in dynamically-typed, file-including languag">
-<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="twitter:description" content="The path-traversal lesson covered reading files outside an intended directory. This lesson covers a related but more dangerous variant, common specifically…">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og/11-web-security.jpg">
+<meta name="twitter:image:alt" content="KashSec Academy · Path 11: Web Security &amp; Hacking">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
 <link rel="manifest" href="/manifest.json">
@@ -34,7 +38,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 11 — Web Security & Hacking","item":"https://kashsec.vercel.app/lesson/11-web-security/"},{"@type":"ListItem","position":4,"name":"Local & Remote File Inclusion (LFI/RFI)","item":"https://kashsec.vercel.app/lesson/11-web-security/file-inclusion-lfi-rfi.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Local & Remote File Inclusion (LFI/RFI)","headline":"Local & Remote File Inclusion (LFI/RFI)","description":"The path-traversal lesson covered reading files outside an intended directory. This lesson covers a related but more dangerous variant, common specifically in dynamically-typed, file-including languag","url":"https://kashsec.vercel.app/lesson/11-web-security/file-inclusion-lfi-rfi.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Intermediate","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"When 'read this file' becomes 'execute this file.'","isPartOf":{"@type":"Course","name":"Path 11: Web Security & Hacking","url":"https://kashsec.vercel.app/lesson/11-web-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/11-web-security/file-inclusion-lfi-rfi.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Local & Remote File Inclusion (LFI/RFI)","headline":"Local & Remote File Inclusion (LFI/RFI)","description":"The path-traversal lesson covered reading files outside an intended directory. This lesson covers a related but more dangerous variant, common specifically in dynamically-typed, file-including languages like PHP: getting the server to actually execute a file, not just read it.","url":"https://kashsec.vercel.app/lesson/11-web-security/file-inclusion-lfi-rfi.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","image":"https://kashsec.vercel.app/og/11-web-security.jpg","educationalLevel":"Intermediate","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"When 'read this file' becomes 'execute this file.'","isPartOf":{"@type":"Course","name":"Path 11: Web Security & Hacking","url":"https://kashsec.vercel.app/lesson/11-web-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/11-web-security/file-inclusion-lfi-rfi.html"}}
 </script>
 </head>
 <body>

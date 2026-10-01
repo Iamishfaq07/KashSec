@@ -141,13 +141,32 @@ const lastmodFor = (...files) => {
 // app.js's own last commit is the honest "last modified" for them.
 const APP_LASTMOD = lastmodFor('app.js');
 
-// Very rough description: first non-heading paragraph, first 200 chars.
+// Cut text to at most `max` characters on a word boundary, adding an
+// ellipsis when anything was dropped. Search engines show roughly the first
+// 155-160 characters of a meta description; a hard slice used to end
+// snippets mid-word ("...gives you the mental ").
+function clampText(text, max){
+  const t = String(text || '').replace(/\s+/g, ' ').trim();
+  if (t.length <= max) return t;
+  const cut = t.slice(0, max - 1);
+  const sp = cut.lastIndexOf(' ');
+  return (sp > max * 0.6 ? cut.slice(0, sp) : cut).replace(/[\s,;:.—-]+$/, '') + '…';
+}
+const metaDesc = desc => clampText(desc, 158);
+
+// Lesson description: the first prose paragraph, with Markdown links,
+// inline HTML and emphasis markers reduced to plain text.
 function firstPara(md){
   const noFront = md.replace(/^---[\s\S]*?---\n/,'');
   const paras = noFront.split(/\n\n+/).map(p=>p.trim()).filter(Boolean);
   for(const p of paras){
-    if(p.startsWith('#') || p.startsWith(':::') || p.startsWith('~~~') || p.startsWith('```') || p.startsWith('???')) continue;
-    return p.replace(/\s+/g,' ').replace(/[*_`]/g,'').slice(0,200);
+    if(p.startsWith('#') || p.startsWith(':::') || p.startsWith('~~~') || p.startsWith('```') || p.startsWith('???') || p.startsWith('<') || p.startsWith('|') || p.startsWith('!')) continue;
+    const plain = p
+      .replace(/!\[[^\]]*\]\([^)]*\)/g, '')
+      .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
+      .replace(/<[^>]+>/g, '')
+      .replace(/[*_`]/g, '');
+    if (plain.trim()) return clampText(plain, 300);
   }
   return '';
 }
@@ -187,28 +206,37 @@ const ORG = {
   description: 'Free cybersecurity education for complete beginners.',
 };
 
-const template = ({title, desc, canonical, spaPath, contentHtml, crumbs, jsonLd = [], ogType = 'article'}) => `<!doctype html>
+// Per-path social card from generate-og-image.js, when one has been built;
+// otherwise the site-wide card. Checked on disk so a fresh clone that never
+// ran build:og still emits valid tags.
+const pathOgImage = id => fs.existsSync(path.join(ROOT, 'og', id + '.jpg')) ? `${SITE}/og/${id}.jpg` : null;
+
+const template = ({title, desc, canonical, spaPath, contentHtml, crumbs, jsonLd = [], ogType = 'article', ogImage = null, ogAlt = null}) => `<!doctype html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>${escapeAttr(title)}</title>
-<meta name="description" content="${escapeAttr(desc)}">
+<meta name="description" content="${escapeAttr(metaDesc(desc))}">
 <link rel="canonical" href="${escapeAttr(canonical)}">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/icons/icon-192.png" type="image/png" sizes="192x192">
 <meta property="og:title" content="${escapeAttr(title)}">
-<meta property="og:description" content="${escapeAttr(desc)}">
+<meta property="og:description" content="${escapeAttr(metaDesc(desc))}">
 <meta property="og:type" content="${ogType}">
 <meta property="og:url" content="${escapeAttr(canonical)}">
 <meta property="og:site_name" content="KashSec Academy">
-<meta property="og:image" content="${SITE}/og-image.png">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="${escapeAttr(ogImage || SITE + '/og-image.png')}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="${escapeAttr(ogAlt || 'KashSec Academy — free cybersecurity course from absolute zero')}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="${escapeAttr(title)}">
-<meta name="twitter:description" content="${escapeAttr(desc)}">
-<meta name="twitter:image" content="${SITE}/og-image.png">
+<meta name="twitter:description" content="${escapeAttr(metaDesc(desc))}">
+<meta name="twitter:image" content="${escapeAttr(ogImage || SITE + '/og-image.png')}">
+<meta name="twitter:image:alt" content="${escapeAttr(ogAlt || 'KashSec Academy — free cybersecurity course from absolute zero')}">
 <meta name="theme-color" content="#0A0E13">${adsenseMeta}
 <link rel="manifest" href="/manifest.json">
 <link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
@@ -291,6 +319,7 @@ for (const p of PATHS) {
       inLanguage: 'en',
       dateModified: lastmod,
       learningResourceType: 'Lesson',
+      image: pathOgImage(p.id) || `${SITE}/og-image.png`,
       educationalLevel: p.level || 'Beginner',
       timeRequired: readingTime(clean),
       isAccessibleForFree: true,
@@ -308,7 +337,8 @@ for (const p of PATHS) {
     const outDir = path.join(ROOT, 'lesson', p.id);
     fs.mkdirSync(outDir, { recursive: true });
     fs.writeFileSync(path.join(outDir, s.id + '.html'),
-      template({ title, desc, canonical, spaPath, contentHtml, crumbs, jsonLd: [lessonLd] }));
+      template({ title, desc, canonical, spaPath, contentHtml, crumbs, jsonLd: [lessonLd],
+        ogImage: pathOgImage(p.id), ogAlt: `KashSec Academy · Path ${p.n}: ${p.title}` }));
     sitemapUrls.push({ loc: canonical, lastmod, priority: '0.8' });
     written++;
   }
@@ -340,6 +370,7 @@ for (const p of PATHS) {
     name: `Path ${p.n}: ${p.title}`,
     description: desc,
     url: canonical,
+    image: pathOgImage(p.id) || `${SITE}/og-image.png`,
     inLanguage: 'en',
     dateModified: lastmod,
     educationalLevel: p.level || 'Beginner',
@@ -365,7 +396,8 @@ for (const p of PATHS) {
   const outDir = path.join(ROOT, 'lesson', p.id);
   fs.mkdirSync(outDir, { recursive: true });
   fs.writeFileSync(path.join(outDir, 'index.html'),
-    template({ title, desc, canonical, spaPath, contentHtml, crumbs, jsonLd: [courseLd] }));
+    template({ title, desc, canonical, spaPath, contentHtml, crumbs, jsonLd: [courseLd],
+      ogImage: pathOgImage(p.id), ogAlt: `KashSec Academy · Path ${p.n}: ${p.title}` }));
   sitemapUrls.push({ loc: canonical, lastmod, priority: '0.9' });
 }
 

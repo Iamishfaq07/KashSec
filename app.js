@@ -1696,12 +1696,33 @@ const KICON = {
   hammer:'<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7.5a4 4 0 0 1 6.6-3"/><polyline points="13.5 13.5 11 16.5 13.5 17 11.5 19.5"/>',
   keyhole:'<circle cx="10.5" cy="10.5" r="7"/><line x1="20.5" y1="20.5" x2="15.5" y2="15.5"/><circle cx="8.8" cy="9" r="2"/><path d="m10.3 10.4 3.4 3.4"/><path d="m12.6 12.7 1-1"/>',
   webPage:'<rect x="3" y="4" width="18" height="16" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="7" y1="13" x2="13" y2="13"/><line x1="7" y1="16" x2="16" y2="16"/>',
+  code:'<polyline points="8 6 2 12 8 18"/><polyline points="16 6 22 12 16 18"/><line x1="13.5" y1="4" x2="10.5" y2="20"/>',
+  phone:'<rect x="6" y="2" width="12" height="20" rx="2.5"/><line x1="11" y1="18" x2="13" y2="18"/>',
+  factory:'<path d="M3 21V10l5 3v-3l5 3V4h4l1.5 17z"/><line x1="2" y1="21" x2="22" y2="21"/><line x1="7" y1="17" x2="9" y2="17"/><line x1="11" y1="17" x2="13" y2="17"/>',
 };
+
 // Falls back to rendering whatever it was given, so arrays we haven't
 // converted (achievements, tracks, CTF) keep working untouched.
 const cardIco = (name)=> KICON[name]
   ? `<svg class="kico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">${KICON[name]}</svg>`
   : `<span aria-hidden="true">${name||''}</span>`;
+
+/* One glyph per learning path. Twenty-six text-only cards gave the eye
+   nothing to anchor on when scanning for "the cloud one" or "the Linux
+   one"; a distinct icon per path does, and it repeats on the path overview
+   and the lesson header so the three screens read as one place. */
+const PATH_ICON = {
+  '00-fresher-basics':'monitor',   '01-introduction':'shield',      '02-networking':'network',
+  '03-linux':'penguin',            '04-python':'code',              '05-web-basics':'browser',
+  '06-crypto-fundamentals':'key',  '07-windows-security':'window',  '08-cloud-basics':'cloud',
+  '09-digital-privacy':'fingerprint','10-fundamentals':'layers',    '11-web-security':'syringe',
+  '12-network-security':'radio',   '13-mobile-security':'phone',    '14-ethical-hacking':'keyhole',
+  '15-bug-bounty':'bug',           '16-advanced':'castle',          '17-malware-re':'microscope',
+  '18-ai-security':'robot',        '19-ctf-challenges':'flag',      '20-career-prep':'idcard',
+  '21-api-security':'swap',        '22-devsecops-appsec':'refresh', '23-grc-compliance':'scale',
+  '24-zero-trust':'lockKey',       '25-ot-ics-security':'factory'
+};
+const pathIco = (id)=> cardIco(PATH_ICON[id] || 'doc');
 
 const FEATURES = () => [
   {ico:"book",     t:"Plain-English first", d:"Every term is defined the moment it appears — no assumed knowledge, no jargon walls, ever."},
@@ -2185,6 +2206,32 @@ function whatToLearnNext(){
   return null;
 }
 
+/* Hero illustration: two small network constellations either side of the
+   headline, with "packets" running along the links and the course's own
+   icons on the hub nodes. Decorative only (aria-hidden), drawn in theme
+   tokens so it works in both themes, and masked away from the centre so it
+   never sits under the text. Packets are a single dash on a pathLength=100
+   line, so one keyframe drives every link regardless of its real length. */
+function heroArtSVG(){
+  const nodes = [
+    [70,130],[190,70],[255,205],[120,270],[60,410],[205,365],[150,515],[290,480],
+    [1130,120],[1010,75],[945,215],[1080,260],[1150,400],[995,360],[1060,515],[905,475]
+  ];
+  const links = [[0,1],[1,2],[0,3],[3,2],[3,4],[2,5],[4,5],[5,6],[6,7],[5,7],
+                 [8,9],[9,10],[8,11],[11,10],[11,12],[10,13],[12,13],[13,14],[14,15],[13,15]];
+  const hubs = {2:'lockKey', 5:'terminal', 10:'shield', 13:'bug'};
+  const glyph = name => KICON[name] || ICON[name] || '';
+  const ln = ([a,b]) => `x1="${nodes[a][0]}" y1="${nodes[a][1]}" x2="${nodes[b][0]}" y2="${nodes[b][1]}"`;
+  const packets = [1,4,6,8,11,14,16,18];
+  return `<svg class="hero-art" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+    <g class="ha-links">${links.map(l=>`<line ${ln(l)}/>`).join('')}</g>
+    <g class="ha-pkts">${packets.map((li,k)=>`<line ${ln(links[li])} pathLength="100" style="--d:${3.2 + (k%4)*0.9}s;--dl:${-(k*0.7).toFixed(1)}s"/>`).join('')}</g>
+    <g class="ha-nodes">${nodes.map(([x,y],i)=> hubs[i]
+      ? `<g class="ha-hub" style="--dl:${-(i%4)*0.8}s"><circle class="ha-orbit" cx="${x}" cy="${y}" r="34"/><circle class="ha-pulse" cx="${x}" cy="${y}" r="24"/><circle class="ha-core" cx="${x}" cy="${y}" r="24"/><g class="ha-glyph" transform="translate(${x-11} ${y-11}) scale(.92)">${glyph(hubs[i])}</g></g>`
+      : `<g style="--dl:${-(i%5)*0.6}s"><circle class="ha-pulse" cx="${x}" cy="${y}" r="5"/><circle class="ha-dot" cx="${x}" cy="${y}" r="5"/></g>`).join('')}</g>
+  </svg>`;
+}
+
 function renderHome(){
   const total = totalSubLessons();
   const continueCtx = STATE.lastVisited ? findSubContext(STATE.lastVisited.pathId, STATE.lastVisited.subId) : null;
@@ -2192,9 +2239,10 @@ function renderHome(){
   const next = whatToLearnNext();
   app.innerHTML = `
     <section class="hero">
+      ${heroArtSVG()}
       <div class="hero-inner">
         <div class="eyebrow" data-reveal>${continueCtx ? '▶ Welcome back' : 'Free cybersecurity course · zero experience needed'}</div>
-        <h1 data-reveal style="--i:1">${continueCtx ? `Pick up right where you <span class="amber">left off</span>.` : `Start cybersecurity from <span class="amber">absolute zero</span>.`}</h2>
+        <h1 data-reveal style="--i:1">${continueCtx ? `Pick up right where you <span class="amber">left off</span>.` : `Start cybersecurity from <span class="amber">absolute zero</span>.`}</h1>
         <p class="hero-sub" data-reveal style="--i:2">
           ${continueCtx
             ? `You were on <strong>${continueCtx.path.n}.${continueCtx.sub.n} · ${continueCtx.sub.title}</strong> in ${continueCtx.path.title}. Jump back in, or explore the rest of the course — ${total}+ sub-lessons across ${PATHS.length} paths, always free.`
@@ -2398,7 +2446,7 @@ function renderPathOverview(pathId){
   app.innerHTML = `
     <section class="sec">
       <div class="path-overview">
-        <div class="path-tag" data-reveal>Path ${p.n} · ${p.level}</div>
+        <div class="path-tag" data-reveal><span class="path-tag-ico">${pathIco(p.id)}</span>Path ${p.n} · ${p.level}</div>
         <h1 data-reveal style="--i:1">${p.title}</h1>
         <p class="lead" data-reveal style="--i:2">${p.desc}</p>
         ${(()=>{ const un = unmetPrereqs(p.id); return un.length ? `
@@ -2943,6 +2991,7 @@ function pathCardHTML(p, i){
   return `
     <a class="path-card ${done?'is-complete':''}" data-tier="${tier}" href="#/lesson/${p.id}" data-spotlight data-reveal style="--i:${i%3}">
       <div class="path-title-row">
+        <span class="path-ico">${pathIco(p.id)}</span>
         <div class="path-num">PATH ${p.n}</div>
         <span class="path-check" title="Path complete">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
@@ -3003,7 +3052,7 @@ async function renderSubLesson(pathId, subId){
       <div class="reader">
         <div class="reader-nav-top">
           <div class="reader-crumb">
-            <a href="#/lesson/${ctx.path.id}" style="color:var(--teal);text-decoration:none">Path ${ctx.path.n}: ${ctx.path.title}</a>
+            <a href="#/lesson/${ctx.path.id}" style="color:var(--teal);text-decoration:none"><span class="crumb-ico">${pathIco(ctx.path.id)}</span>Path ${ctx.path.n}: ${ctx.path.title}</a>
             &nbsp;·&nbsp; Sub-lesson ${ctx.path.n}.${ctx.sub.n}
             ${updatedOn ? `&nbsp;·&nbsp; <time datetime="${updatedOn}" title="Date the lesson content last changed; this is not an editorial review date">Updated ${new Date(updatedOn+'T00:00:00Z').toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric',timeZone:'UTC'})}</time>` : ''}
           </div>
@@ -3218,6 +3267,9 @@ async function renderSubLesson(pathId, subId){
 
     // End-of-lesson quick check, drawn from this path's quiz bank.
     renderMicroCheck(ctx);
+
+    // Diagrams, callouts and code ease in as they scroll into view.
+    animateLessonBlocks(contentEl);
 
     // Diagrams fill in progressively — deliberately not awaited, so the text
     // above is readable immediately even on a slow connection, and stays
@@ -3501,6 +3553,31 @@ function renderMicroCheck(ctx){
       if(correct) fireConfetti({count:30});
     });
   });
+}
+
+/* Lesson block entrances. Diagrams, callouts, code and tables fade up as
+   they scroll into view so a long lesson has some rhythm to it, while body
+   paragraphs are left alone: animating every line of prose taxes reading.
+   Only blocks that start BELOW the fold are hidden, so nothing the reader
+   can already see ever flashes, and a TOC jump reveals its target the
+   moment it intersects. Opacity/transform only — no layout work. */
+let lessonBlockObserver;
+const LESSON_ANIM_SEL = ':scope > h2, :scope > .callout, :scope > figure, :scope > .mermaid, :scope > pre, :scope > table, :scope > blockquote, :scope > details, :scope > .ref-list';
+function animateLessonBlocks(contentEl){
+  if(!contentEl || prefersReduced() || !('IntersectionObserver' in window)) return;
+  if(lessonBlockObserver) lessonBlockObserver.disconnect();
+  const fold = window.innerHeight;
+  const blocks = [...contentEl.querySelectorAll(LESSON_ANIM_SEL)]
+    .filter(el => el.getBoundingClientRect().top > fold);
+  if(!blocks.length) return;
+  lessonBlockObserver = new IntersectionObserver((entries, obs)=>{
+    entries.forEach(en=>{
+      if(!en.isIntersecting) return;
+      en.target.classList.add('blk-in');
+      obs.unobserve(en.target);
+    });
+  }, {rootMargin:'0px 0px -6% 0px', threshold:0.04});
+  blocks.forEach(el=>{ el.classList.add('blk-anim'); lessonBlockObserver.observe(el); });
 }
 
 function enhanceCodeBlocks(contentEl){
@@ -4086,7 +4163,7 @@ function renderCapstone(){
       </div>
       ${allDone ? `
         <div class="hub-section" data-reveal style="--i:2;text-align:center">
-          <h3 style="font-family:'Space Grotesk'">🎉 Chain complete — full compromise, start to finish.</h3>
+          <h3 style="font-family:var(--font-display)">🎉 Chain complete — full compromise, start to finish.</h3>
           <p class="sec-lead">You just walked an entire realistic breach: recon → initial access → privilege escalation → post-exploitation. That's the actual shape of most real-world incidents.</p>
         </div>
       ` : ''}
@@ -4936,7 +5013,7 @@ function renderLabOsint(){
         </div>
         <div id="osintNote">${lastNote ? `<div class="sqli-bad" style="margin-top:1rem">🕵️ ${escapeHtml(lastNote)}</div>` : ''}</div>
         <div class="hub-section" data-reveal style="--i:3">
-          <div class="hub-section-head"><h3 style="font-family:'Space Grotesk';font-size:1.15rem">What you've uncovered (${found.size}/${FINDINGS.length})</h3></div>
+          <div class="hub-section-head"><h3 style="font-family:var(--font-display);font-size:1.15rem">What you've uncovered (${found.size}/${FINDINGS.length})</h3></div>
           ${FINDINGS.map(f=>`<div class="hub-list-item" style="cursor:default"><div><div class="hli-t">${found.has(f.id)?'✅':'🔒'} ${escapeHtml(f.label)}</div></div></div>`).join('')}
         </div>
       </section>
@@ -5464,7 +5541,7 @@ function renderLabADAttack(){
         </div>
 
         <div class="hub-section" data-reveal style="--i:1">
-          <div class="hub-section-head"><h3 style="font-family:'Space Grotesk';font-size:1.15rem">${stage1Done?'✅':'1️⃣'} Stage 1 — BloodHound recon: find a path to Domain Admin</h3></div>
+          <div class="hub-section-head"><h3 style="font-family:var(--font-display);font-size:1.15rem">${stage1Done?'✅':'1️⃣'} Stage 1 — BloodHound recon: find a path to Domain Admin</h3></div>
           <p class="sec-lead">You're logged in as <b>alice</b>, a standard user. Click "Investigate" on each discovered node to reveal its outbound relationships — the same thing BloodHound does automatically by collecting AD data.</p>
           <div class="labs-grid">
             ${[...discovered].map(id=>{
@@ -5481,7 +5558,7 @@ function renderLabADAttack(){
         </div>
 
         <div class="hub-section" data-reveal style="--i:2">
-          <div class="hub-section-head"><h3 style="font-family:'Space Grotesk';font-size:1.15rem">${stage2Done?'✅':'2️⃣'} Stage 2 — Kerberoast a service account</h3></div>
+          <div class="hub-section-head"><h3 style="font-family:var(--font-display);font-size:1.15rem">${stage2Done?'✅':'2️⃣'} Stage 2 — Kerberoast a service account</h3></div>
           <p class="sec-lead">Any account with a Service Principal Name (SPN) can have a ticket requested for it by any authenticated user — no elevated privilege required. Request a ticket for each, then decide which one is realistically crackable.</p>
           <div class="labs-grid">
             ${SPNS.map(s=>`
@@ -5496,7 +5573,7 @@ function renderLabADAttack(){
         </div>
 
         <div class="hub-section" data-reveal style="--i:3">
-          <div class="hub-section-head"><h3 style="font-family:'Space Grotesk';font-size:1.15rem">${stage3Done?'✅':'3️⃣'} Stage 3 — Forge a Golden Ticket</h3></div>
+          <div class="hub-section-head"><h3 style="font-family:var(--font-display);font-size:1.15rem">${stage3Done?'✅':'3️⃣'} Stage 3 — Forge a Golden Ticket</h3></div>
           <p class="sec-lead">You've reached Domain Admin (via svc-sql from Stage 1). Dump the krbtgt account's hash from the domain controller, then forge a ticket for any identity you like — even one that doesn't exist.</p>
           ${!krbtgtDumped ? `<button class="btn-amber sm" id="adDumpKrbtgt" type="button">Run: lsadump::dcsync /user:krbtgt</button>` : `
             <pre style="white-space:pre-wrap">krbtgt NTLM hash: 8846f7eaee8fb117ad06bdd830b7586c</pre>
@@ -7058,7 +7135,7 @@ function renderInterview(){
       </div>
       ${INTERVIEW.map((g,gi)=>`
         <div class="hub-section" data-reveal style="--i:${gi+1}">
-          <div class="hub-section-head"><h3 style="font-family:'Space Grotesk';font-size:1.15rem">${escapeHtml(g.cat)}</h3></div>
+          <div class="hub-section-head"><h3 style="font-family:var(--font-display);font-size:1.15rem">${escapeHtml(g.cat)}</h3></div>
           ${g.qs.map(item=>`
             <details class="iv-item">
               <summary>${escapeHtml(item.q)}</summary>
@@ -7723,11 +7800,11 @@ function toolResumeHelper(el){
     const gaps = found.filter(k=>pathProgress(k.pathId).pct === 0);
     out.innerHTML = `
       <div class="hub-section">
-        <div class="hub-section-head"><h3 style="font-family:'Space Grotesk';font-size:1.05rem">✅ You already have progress in (${covered.length})</h3></div>
+        <div class="hub-section-head"><h3 style="font-family:var(--font-display);font-size:1.05rem">✅ You already have progress in (${covered.length})</h3></div>
         ${covered.length ? covered.map(k=>`<div class="hub-list-item" style="cursor:default"><div class="hli-t">${escapeHtml(k.kw)}</div></div>`).join('') : `<div class="hub-empty">None yet.</div>`}
       </div>
       <div class="hub-section">
-        <div class="hub-section-head"><h3 style="font-family:'Space Grotesk';font-size:1.05rem">🎯 Gaps worth closing (${gaps.length})</h3></div>
+        <div class="hub-section-head"><h3 style="font-family:var(--font-display);font-size:1.05rem">🎯 Gaps worth closing (${gaps.length})</h3></div>
         ${gaps.length ? gaps.map(k=>{ const p=findPath(k.pathId); return `<a class="hub-list-item" href="#/lesson/${k.pathId}"><div class="hli-t">${escapeHtml(k.kw)}</div><div class="hli-d">Covered by ${p?p.title:k.pathId} →</div></a>`; }).join('') : `<div class="hub-empty">No gaps found — nice.</div>`}
       </div>
     `;
@@ -10556,7 +10633,7 @@ function renderProgressHub(){
 
       ${typeof SupabaseSync !== 'undefined' && SupabaseSync.CONFIGURED ? `
         <div class="hub-section" data-reveal style="--i:1">
-          <div class="hub-section-head"><h3 style="font-family:'Space Grotesk';font-size:1.15rem">☁️ Sync</h3></div>
+          <div class="hub-section-head"><h3 style="font-family:var(--font-display);font-size:1.15rem">☁️ Sync</h3></div>
           ${SupabaseSync.isSignedIn()
             ? `<div class="hub-list-item" style="cursor:default"><div><div class="hli-t">Signed in as ${escapeHtml(SupabaseSync.userEmail()||'')}</div><div class="hli-d">Progress syncs automatically</div></div><button class="btn-ghost sm" id="hubSignOutBtn" type="button">Sign out</button></div>`
             : `<div class="hub-list-item" style="cursor:default"><div><div class="hli-t">Not signed in</div><div class="hli-d">Sign in to back up and sync across devices</div></div><button class="btn-amber sm" id="hubSignInBtn" type="button">Sign in →</button></div>`}
@@ -10579,7 +10656,7 @@ function renderProgressHub(){
         if(!changed.length) return '';
         return `
       <div class="hub-section" data-reveal style="--i:2">
-        <div class="hub-section-head"><h3 style="font-family:'Space Grotesk';font-size:1.15rem">✏️ Updated since you read them</h3></div>
+        <div class="hub-section-head"><h3 style="font-family:var(--font-display);font-size:1.15rem">✏️ Updated since you read them</h3></div>
         ${changed.slice(0,10).map(ctx=>`
           <a class="hub-list-item" href="#/lesson/${ctx.path.id}/${ctx.sub.id}">
             <div><div class="hli-t">${ctx.path.n}.${ctx.sub.n} · ${escapeHtml(ctx.sub.title)}</div><div class="hli-d">${escapeHtml(ctx.path.title)}</div></div>
@@ -10595,7 +10672,7 @@ function renderProgressHub(){
         if(!allN) return '';
         return `
       <div class="hub-section" data-reveal style="--i:2">
-        <div class="hub-section-head"><h3 style="font-family:'Space Grotesk';font-size:1.15rem">🔁 Questions to revisit</h3></div>
+        <div class="hub-section-head"><h3 style="font-family:var(--font-display);font-size:1.15rem">🔁 Questions to revisit</h3></div>
         <a class="hub-list-item" href="#/quiz/missed">
           <div>
             <div class="hli-t">${dueN ? `${dueN} question${dueN===1?'':'s'} due for review` : 'All caught up'}</div>
@@ -10607,19 +10684,19 @@ function renderProgressHub(){
       })()}
 
       <div class="hub-section" data-reveal style="--i:2">
-        <div class="hub-section-head"><h3 style="font-family:'Space Grotesk';font-size:1.15rem">📅 Activity</h3></div>
+        <div class="hub-section-head"><h3 style="font-family:var(--font-display);font-size:1.15rem">📅 Activity</h3></div>
         ${heatmapHtml()}
       </div>
 
       ${(()=>{ const t = trendChartHtml(); return t ? `
       <div class="hub-section" data-reveal style="--i:2">
-        <div class="hub-section-head"><h3 style="font-family:'Space Grotesk';font-size:1.15rem">📈 Lessons per week</h3></div>
+        <div class="hub-section-head"><h3 style="font-family:var(--font-display);font-size:1.15rem">📈 Lessons per week</h3></div>
         ${t}
       </div>` : ''; })()}
 
       <div class="hub-section" data-reveal style="--i:2">
         <div class="hub-section-head" style="display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap">
-          <h3 style="font-family:'Space Grotesk';font-size:1.15rem">📣 Share your progress</h3>
+          <h3 style="font-family:var(--font-display);font-size:1.15rem">📣 Share your progress</h3>
           <div style="display:flex;gap:.5rem;flex-wrap:wrap">
             <button class="btn-ghost sm" id="shareCardDownload" type="button">⬇ Download card</button>
             <button class="btn-amber sm" id="shareCardShare" type="button" hidden>Share…</button>
@@ -10630,7 +10707,7 @@ function renderProgressHub(){
 
       <div class="hub-section" data-reveal style="--i:3">
         <div class="hub-section-head">
-          <h3 style="font-family:'Space Grotesk';font-size:1.15rem">📜 Certificate</h3>
+          <h3 style="font-family:var(--font-display);font-size:1.15rem">📜 Certificate</h3>
         </div>
         ${STATE.finalQuiz && STATE.finalQuiz.passed
           ? `<div class="hub-list-item" style="cursor:default"><div><div class="hli-t">Final Exam passed — ${STATE.finalQuiz.pct}%</div><div class="hli-d">Your certificate is ready</div></div><a class="btn-amber sm" href="#/certificate">View certificate →</a></div>`
@@ -10642,21 +10719,21 @@ function renderProgressHub(){
       </div>
 
       <div class="hub-section" data-reveal style="--i:4">
-        <div class="hub-section-head"><h3 style="font-family:'Space Grotesk';font-size:1.15rem">🗺️ Path progress</h3></div>
+        <div class="hub-section-head"><h3 style="font-family:var(--font-display);font-size:1.15rem">🗺️ Path progress</h3></div>
         ${PATHS.map(p=>{
           const prog = pathProgress(p.id);
           return `
             <a class="hub-path-row" href="#/lesson/${p.id}" style="text-decoration:none;color:inherit">
               <span class="hpr-name">${p.n} · ${p.title}</span>
               <div class="mini-progress"><div class="mini-progress-track"><div class="mini-progress-fill" style="width:0%" data-pct="${prog.pct}"></div></div></div>
-              <span style="font-family:'JetBrains Mono';font-size:.75rem;color:var(--muted2);flex:none">${prog.done}/${prog.total}</span>
+              <span style="font-family:var(--font-mono);font-size:.75rem;color:var(--muted2);flex:none">${prog.done}/${prog.total}</span>
             </a>
           `;
         }).join('')}
       </div>
 
       <div class="hub-section" data-reveal style="--i:5">
-        <div class="hub-section-head"><h3 style="font-family:'Space Grotesk';font-size:1.15rem">🏅 Achievements</h3></div>
+        <div class="hub-section-head"><h3 style="font-family:var(--font-display);font-size:1.15rem">🏅 Achievements</h3></div>
         <div class="badge-grid">
           ${ACHIEVEMENTS.map(a=>`
             <div class="badge-card ${STATE.achievements[a.id]?'':'locked'}">
@@ -10671,7 +10748,7 @@ function renderProgressHub(){
 
       ${typeof SupabaseSync !== 'undefined' && SupabaseSync.CONFIGURED ? `
       <div class="hub-section" data-reveal style="--i:6">
-        <div class="hub-section-head"><h3 style="font-family:'Space Grotesk';font-size:1.15rem">🏆 Community leaderboard</h3></div>
+        <div class="hub-section-head"><h3 style="font-family:var(--font-display);font-size:1.15rem">🏆 Community leaderboard</h3></div>
         ${SupabaseSync.isSignedIn() ? `
           <div class="hub-list-item" style="cursor:default">
             <div><div class="hli-t">Show me on the public leaderboard</div><div class="hli-d">Ranked by lessons completed. Only your display name and count are visible — nothing else.</div></div>
@@ -10691,7 +10768,7 @@ function renderProgressHub(){
       ` : ''}
 
       <div class="hub-section" data-reveal style="--i:6">
-        <div class="hub-section-head"><h3 style="font-family:'Space Grotesk';font-size:1.15rem">🔖 Bookmarks</h3></div>
+        <div class="hub-section-head"><h3 style="font-family:var(--font-display);font-size:1.15rem">🔖 Bookmarks</h3></div>
         ${bookmarkEntries.length ? bookmarkEntries.map(ctx=>`
           <a class="hub-list-item" href="#/lesson/${ctx.path.id}/${ctx.sub.id}">
             <div><div class="hli-t">${ctx.path.n}.${ctx.sub.n} · ${ctx.sub.title}</div><div class="hli-d">${ctx.path.title}</div></div>
@@ -10702,7 +10779,7 @@ function renderProgressHub(){
 
       <div class="hub-section" data-reveal style="--i:7">
         <div class="hub-section-head" style="display:flex;justify-content:space-between;align-items:center;gap:1rem">
-          <h3 style="font-family:'Space Grotesk';font-size:1.15rem">✍️ Notes</h3>
+          <h3 style="font-family:var(--font-display);font-size:1.15rem">✍️ Notes</h3>
           ${noteEntries.length ? `<button class="btn-ghost sm" id="exportNotesBtn" type="button">⬇ Export as Markdown</button>` : ''}
         </div>
         ${noteEntries.length ? noteEntries.map(ctx=>`
@@ -10714,7 +10791,7 @@ function renderProgressHub(){
       </div>
 
       <div class="hub-section" data-reveal style="--i:7">
-        <div class="hub-section-head"><h3 style="font-family:'Space Grotesk';font-size:1.15rem">🎨 Appearance</h3></div>
+        <div class="hub-section-head"><h3 style="font-family:var(--font-display);font-size:1.15rem">🎨 Appearance</h3></div>
         <div class="hub-list-item" style="cursor:default">
           <div><div class="hli-t">Theme</div><div class="hli-d">"Auto: system" follows your OS setting. "Auto: time of day" switches to light 7am–7pm local, dark otherwise.</div></div>
           <select class="fc-select" id="themePicker" aria-label="Theme">
@@ -10758,7 +10835,7 @@ function renderProgressHub(){
       </div>
 
       <div class="hub-section" data-reveal style="--i:8">
-        <div class="hub-section-head"><h3 style="font-family:'Space Grotesk';font-size:1.15rem">💾 Backup</h3></div>
+        <div class="hub-section-head"><h3 style="font-family:var(--font-display);font-size:1.15rem">💾 Backup</h3></div>
         <div class="hub-list-item" style="cursor:default">
           <div><div class="hli-t">Download or restore your progress</div><div class="hli-d">Everything (progress, notes, bookmarks, quiz scores) as a JSON file — works without an account.</div></div>
           <div style="display:flex;gap:.5rem;flex-wrap:wrap">
