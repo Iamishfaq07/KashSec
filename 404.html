@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Page not found — KashSec Academy</title>
+<meta name="description" content="This page doesn't exist. Search the free KashSec cybersecurity course or start from the learning paths.">
+<!-- A 404 must never be indexed: without this, every mistyped or retired
+     URL that a crawler finds becomes a thin duplicate page in the index. -->
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0A0E13" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#F6F7FA" media="(prefers-color-scheme: light)">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/icons/icon-192.png" type="image/png" sizes="192x192">
+<link rel="stylesheet" href="/styles.css">
+<script>
+  /* Match the visitor's chosen theme before first paint. This page is
+     deliberately standalone — it does not load app.js, whose router would
+     try to interpret the missing URL — so it reads the stored preference
+     directly and falls back to the system scheme. */
+  (function(){
+    var t = null;
+    try { t = (JSON.parse(localStorage.getItem('kashsec_state_v1') || '{}') || {}).theme; } catch (e) {}
+    if (t === 'auto-time') { var h = new Date().getHours(); t = (h >= 7 && h < 19) ? 'light' : 'dark'; }
+    if (t !== 'light' && t !== 'dark') t = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', t);
+  })();
+</script>
+<style>
+  .nf{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    padding:3rem 1rem;position:relative;overflow:hidden;isolation:isolate;text-align:center}
+  .nf::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+    background-image:linear-gradient(var(--overlay-3) 1px,transparent 1px),linear-gradient(90deg,var(--overlay-3) 1px,transparent 1px);
+    background-size:52px 52px;
+    -webkit-mask-image:radial-gradient(70% 60% at 50% 40%,#000 30%,transparent 75%);
+            mask-image:radial-gradient(70% 60% at 50% 40%,#000 30%,transparent 75%)}
+  .nf-brand{display:inline-flex;align-items:center;gap:.6rem;font-family:var(--font-display);font-weight:700;
+    font-size:1.1rem;color:var(--text);text-decoration:none;margin-bottom:2.2rem}
+  .nf-code{font-family:var(--font-display);font-weight:700;font-size:clamp(5rem,18vw,9rem);line-height:1;
+    letter-spacing:-.05em;margin:0 0 .4rem;background:var(--grad-brand);-webkit-background-clip:text;
+    background-clip:text;-webkit-text-fill-color:transparent;color:transparent;position:relative}
+  .nf h1{font-size:clamp(1.5rem,4vw,2.1rem);margin:0 0 .7rem}
+  .nf-lead{color:var(--muted);max-width:34rem;margin:0 auto 1.8rem;line-height:1.65}
+  .nf-term{width:min(560px,100%);text-align:left;border-radius:var(--r-lg);overflow:hidden;
+    background:var(--code-bg);border:1px solid var(--border-strong);box-shadow:var(--shadow-md);margin:0 auto 2rem}
+  .nf-term-bar{display:flex;gap:6px;padding:.65rem .8rem;border-bottom:1px solid var(--border)}
+  .nf-term-bar i{width:10px;height:10px;border-radius:50%;background:var(--line)}
+  .nf-term-bar i:first-child{background:#E05548}.nf-term-bar i:nth-child(2){background:#EFA43A}.nf-term-bar i:nth-child(3){background:#3FB6A8}
+  .nf-term pre{margin:0;padding:1rem 1.1rem 1.15rem;font-family:var(--font-mono);font-size:.84rem;line-height:1.75;
+    color:var(--code-text);white-space:pre-wrap;overflow-wrap:anywhere}
+  .nf-term .p{color:#5FE0CF}.nf-term .e{color:#F07A6E}
+  .nf-term .l2,.nf-term .l3{opacity:0;animation:nfIn .01s forwards}
+  .nf-term .l2{animation-delay:1.3s}.nf-term .l3{animation-delay:1.7s}
+  .nf-term .typed{display:inline-block;overflow:hidden;white-space:nowrap;vertical-align:bottom;max-width:0;
+    animation:nfType 1s steps(28,end) .2s forwards}
+  .nf-term .cur{display:inline-block;width:.55em;height:1.05em;vertical-align:-.15em;background:#EFA43A;animation:nfBlink 1s steps(1) infinite}
+  @keyframes nfType{to{max-width:100%}}
+  @keyframes nfIn{to{opacity:1}}
+  @keyframes nfBlink{50%{opacity:0}}
+  .nf-search{display:flex;gap:.5rem;width:min(460px,100%);margin:0 auto 1.4rem}
+  .nf-search input{flex:1;min-width:0;padding:.75rem 1rem;border-radius:var(--r);border:1px solid var(--border-strong);
+    background:var(--surface);color:var(--text);font:inherit}
+  .nf-search input:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+  .nf-btns{display:flex;gap:.7rem;justify-content:center;flex-wrap:wrap;margin-bottom:2.2rem}
+  .nf-links{display:flex;flex-wrap:wrap;justify-content:center;gap:.5rem;max-width:40rem}
+  .nf-links a{font-size:.85rem;color:var(--muted);text-decoration:none;padding:.4rem .8rem;border-radius:99px;
+    border:1px solid var(--border);background:var(--overlay-1)}
+  .nf-links a:hover{color:var(--teal-2);border-color:var(--border-strong)}
+  .nf-small{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted2);margin-bottom:.8rem}
+  @media(prefers-reduced-motion:reduce){
+    .nf-term .typed{max-width:100%;animation:none}.nf-term .l2,.nf-term .l3{opacity:1;animation:none}.nf-term .cur{animation:none}
+  }
+</style>
+</head>
+<body>
+<main class="nf">
+  <a class="nf-brand" href="/" aria-label="KashSec Academy — home">
+    <span class="brand-mark"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg></span>
+    <span>KashSec<span class="amber">.</span></span>
+  </a>
+
+  <div class="nf-code" aria-hidden="true">404</div>
+  <h1>That page doesn't exist</h1>
+  <p class="nf-lead">The link may be mistyped, or the lesson may have moved. Every lesson is still free — search for it, or pick up from the learning paths.</p>
+
+  <div class="nf-term" aria-hidden="true">
+    <div class="nf-term-bar"><i></i><i></i><i></i></div>
+    <pre><span class="p">learner@kashsec:~$</span> <span class="typed">cd <span id="nfPath">/this-page</span></span>
+<span class="l2"><span class="e">bash: cd: <span id="nfPath2">/this-page</span>: No such file or directory</span></span>
+<span class="l3"><span class="p">learner@kashsec:~$</span> <span class="cur"></span></span></pre>
+  </div>
+
+  <form class="nf-search" action="/" method="get" id="nfSearch" role="search">
+    <label class="sr-only" for="nfQ" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Search lessons</label>
+    <input id="nfQ" name="q" type="search" placeholder="Search 485 lessons…" autocomplete="off">
+    <button class="btn-amber" type="submit">Search</button>
+  </form>
+
+  <div class="nf-btns">
+    <a class="btn-ghost" href="/">← Home</a>
+    <a class="btn-ghost" href="/lesson/">Browse all paths</a>
+    <a class="btn-ghost" href="/lesson/00-fresher-basics/">Start from zero</a>
+  </div>
+
+  <div class="nf-small">Popular places to start</div>
+  <nav class="nf-links" aria-label="Popular pages">
+    <a href="/lesson/01-introduction/">Intro to Cybersecurity</a>
+    <a href="/lesson/02-networking/">Networking</a>
+    <a href="/lesson/03-linux/">Linux</a>
+    <a href="/lesson/11-web-security/">Web Security</a>
+    <a href="/labs/">Interactive labs</a>
+    <a href="/tools/">Security tools</a>
+    <a href="/faq.html">FAQ</a>
+  </nav>
+</main>
+<script>
+  /* Show the path that was asked for, and turn its words into a ready-made
+     search: /lesson/03-linux/permisions.html → "linux permisions". The
+     search page does fuzzy matching, so a typo'd slug still lands close. */
+  (function(){
+    var path = decodeURIComponent(location.pathname || '/');
+    var shown = path.length > 42 ? '…' + path.slice(-41) : path;
+    document.getElementById('nfPath').textContent = shown;
+    document.getElementById('nfPath2').textContent = shown;
+    var words = path.replace(/\.html?$/i, '').split(/[\/_.-]+/)
+      .filter(function(w){ return w && !/^\d+$/.test(w) && !/^(lesson|labs|tools|index)$/i.test(w); });
+    var q = document.getElementById('nfQ');
+    q.value = words.slice(-4).join(' ');
+    document.getElementById('nfSearch').addEventListener('submit', function(e){
+      e.preventDefault();
+      var v = q.value.trim();
+      location.href = '/#/search' + (v ? '?q=' + encodeURIComponent(v) : '');
+    });
+  })();
+</script>
+</body>
+</html>

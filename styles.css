@@ -1100,6 +1100,21 @@ mark{background:rgba(239,164,58,.35);color:inherit;border-radius:3px;padding:0 1
 /* ---------- Reading time ---------- */
 .read-time{color:var(--muted);font-size:.78rem;white-space:nowrap}
 
+/* ---------- Key terms cards (enhanceKeyTerms) ---------- */
+.md ul.key-terms{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:.7rem;padding:0;list-style:none}
+.md ul.key-terms li{padding:.85rem 1rem;border-radius:var(--r);background:var(--surface2);border:1px solid var(--border);
+  border-top:2px solid var(--teal);font-size:.92rem;line-height:1.55;
+  transition:border-color var(--dur-2) var(--ease),transform var(--dur-2) var(--ease)}
+.md ul.key-terms li::marker{content:none}
+.md ul.key-terms li:hover{border-color:var(--border-strong);border-top-color:var(--amber);transform:translateY(-2px)}
+.md ul.key-terms .kt-term{display:block;font-family:var(--font-display);font-size:.98rem;color:var(--text);margin-bottom:.25rem}
+.md ul.key-terms .kt-def{color:var(--muted)}
+.md .kt-cta{margin:-.4rem 0 1.4rem;font-size:.88rem}
+.md .kt-cta a{color:var(--teal-2);text-decoration:none;font-weight:600}
+.md .kt-cta a:hover{text-decoration:underline}
+@media(prefers-reduced-motion:reduce){.md ul.key-terms li{transition:none}.md ul.key-terms li:hover{transform:none}}
+@media print{.md ul.key-terms{display:block}.md ul.key-terms li{border:none;padding:0 0 .3rem}.md .kt-cta{display:none}}
+
 /* ---------- In-page TOC ---------- */
 .toc{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1rem 1.2rem;margin:0 0 1.6rem}
 .toc-title{font-family:var(--font-mono);font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--amber);margin-bottom:.55rem}

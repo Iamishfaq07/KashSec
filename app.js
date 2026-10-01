@@ -3296,6 +3296,9 @@ async function renderSubLesson(pathId, subId){
     // Copy buttons + syntax highlighting on code blocks
     enhanceCodeBlocks(contentEl);
 
+    // Key terms list → term cards
+    enhanceKeyTerms(contentEl);
+
     // End-of-lesson quick check, drawn from this path's quiz bank.
     renderMicroCheck(ctx);
 
@@ -3617,7 +3620,7 @@ function renderMicroCheck(ctx){
    can already see ever flashes, and a TOC jump reveals its target the
    moment it intersects. Opacity/transform only — no layout work. */
 let lessonBlockObserver;
-const LESSON_ANIM_SEL = ':scope > h2, :scope > .callout, :scope > figure, :scope > .mermaid, :scope > pre, :scope > table, :scope > blockquote, :scope > details, :scope > .ref-list';
+const LESSON_ANIM_SEL = ':scope > h2, :scope > .key-terms, :scope > .callout, :scope > figure, :scope > .mermaid, :scope > pre, :scope > table, :scope > blockquote, :scope > details, :scope > .ref-list';
 function animateLessonBlocks(contentEl){
   if(!contentEl || prefersReduced() || !('IntersectionObserver' in window)) return;
   if(lessonBlockObserver) lessonBlockObserver.disconnect();
@@ -3633,6 +3636,31 @@ function animateLessonBlocks(contentEl){
     });
   }, {rootMargin:'0px 0px -6% 0px', threshold:0.04});
   blocks.forEach(el=>{ el.classList.add('blk-anim'); lessonBlockObserver.observe(el); });
+}
+
+/* "Key terms" closes 400+ lessons as a plain bullet list of
+   "**Term** — definition". Rendered as a grid of term cards it reads as
+   the revision sheet it is, and it links straight into the flashcard
+   review that already drills these same terms. Only lists whose every
+   item starts with a bold term are converted; anything else is left as
+   written. */
+function enhanceKeyTerms(contentEl){
+  const h = [...contentEl.querySelectorAll('h2')].find(x => /^key terms$/i.test(x.textContent.trim()));
+  const ul = h && h.nextElementSibling;
+  if(!ul || ul.tagName !== 'UL') return;
+  const items = [...ul.children];
+  if(!items.length || !items.every(li => li.firstElementChild && li.firstElementChild.tagName === 'STRONG' && li.firstChild === li.firstElementChild)) return;
+  items.forEach(li => {
+    const term = li.firstElementChild;
+    term.classList.add('kt-term');
+    const def = document.createElement('span');
+    def.className = 'kt-def';
+    while(term.nextSibling) def.appendChild(term.nextSibling);
+    if(def.firstChild && def.firstChild.nodeType === 3) def.firstChild.textContent = def.firstChild.textContent.replace(/^\s*[—–:-]\s*/, '');
+    li.appendChild(def);
+  });
+  ul.classList.add('key-terms');
+  ul.insertAdjacentHTML('afterend', `<p class="kt-cta"><a href="#/review">Practise these as flashcards →</a></p>`);
 }
 
 function enhanceCodeBlocks(contentEl){
