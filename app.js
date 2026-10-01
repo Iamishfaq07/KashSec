@@ -2988,6 +2988,30 @@ function levelTier(level){
   return 'any';
 }
 
+/* Where am I in this path? One segment per lesson — done (teal), current
+   (amber), still to come — with a plain-text count for screen readers. The
+   sidebar already offers keyboard navigation to every lesson, so the
+   segments are pointer shortcuts only and stay out of the tab order. */
+function lessonTrackHTML(ctx){
+  const subs = ctx.path.subs;
+  const idx = subs.findIndex(s => s.id === ctx.sub.id);
+  const done = subs.filter(s => isComplete(ctx.path.id, s.id)).length;
+  return `<div class="lesson-track" id="lessonTrack">
+    <div class="lt-label"><span>Lesson ${idx + 1} of ${subs.length}</span><span class="lt-done" id="lessonTrackDone">${done} done</span></div>
+    <div class="lt-bar" aria-hidden="true">${subs.map((s, i) =>
+      `<a class="lt-seg${isComplete(ctx.path.id, s.id) ? ' is-done' : ''}${i === idx ? ' is-current' : ''}" data-sub="${s.id}" href="#/lesson/${ctx.path.id}/${s.id}" tabindex="-1" title="${ctx.path.n}.${s.n} · ${escapeHtml(s.title)}"></a>`
+    ).join('')}</div>
+  </div>`;
+}
+function refreshLessonTrack(ctx){
+  const track = document.getElementById('lessonTrack');
+  if(!track) return;
+  track.querySelectorAll('.lt-seg').forEach(seg => seg.classList.toggle('is-done', isComplete(ctx.path.id, seg.dataset.sub)));
+  const n = ctx.path.subs.filter(s => isComplete(ctx.path.id, s.id)).length;
+  const label = document.getElementById('lessonTrackDone');
+  if(label) label.textContent = `${n} done`;
+}
+
 function pathCardHTML(p, i){
   const prog = pathProgress(p.id);
   const done = prog.pct >= 100;
@@ -3082,6 +3106,7 @@ async function renderSubLesson(pathId, subId){
             </button>
           </div>
         </div>
+        ${lessonTrackHTML(ctx)}
         <div class="pomodoro-widget" id="pomodoroWidget" hidden>
           <span class="pomodoro-time" id="pomodoroTime">25:00</span>
           <button class="btn-ghost sm" id="pomodoroToggle" type="button">Start</button>
@@ -3216,6 +3241,8 @@ async function renderSubLesson(pathId, subId){
     btn.classList.toggle('done', done);
     btn.setAttribute('aria-pressed', done);
     document.getElementById('completeBtnLabel').textContent = done ? 'Completed' : 'Mark complete';
+    if(done && !prefersReduced()){ btn.classList.remove('just-done'); void btn.offsetWidth; btn.classList.add('just-done'); }
+    refreshLessonTrack(ctx);
     refreshProgressRing();
   });
 
@@ -3356,8 +3383,13 @@ function enrichMarkdown(md){
   });
 
   // SVG figures:  ~~~svg CAPTION ... ~~~
+  // The caption doubles as the diagram's accessible name: an inline <svg>
+  // with no role or label is announced as nothing (or as a pile of text
+  // fragments) by screen readers, and gives search engines no description.
   md = md.replace(/^~{3}svg(?:\s+(.+?))?\n([\s\S]*?)\n~{3}$/gm, (m, caption, body)=>{
-    return `<figure class="svg-figure">${body.trim()}${caption?`<figcaption>${caption}</figcaption>`:''}</figure>`;
+    let svg = body.trim();
+    if(caption && !/^<svg[^>]*\brole=/.test(svg)) svg = svg.replace(/^<svg\b/, `<svg role="img" aria-label="${escapeHtml(caption).replace(/"/g, '&quot;')}"`);
+    return `<figure class="svg-figure">${svg}${caption?`<figcaption>${caption}</figcaption>`:''}</figure>`;
   });
 
   // Render main markdown

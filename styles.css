@@ -475,6 +475,24 @@ a{color:inherit}
 
 .reader{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:clamp(1.4rem,3vw,3rem);min-width:0}
 .reader-nav-top{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:1.6rem;padding-bottom:1.2rem;border-bottom:1px solid var(--line-soft);flex-wrap:wrap}
+/* Lesson position track (lessonTrackHTML) */
+.lesson-track{margin:-.4rem 0 1.6rem}
+.lt-label{display:flex;justify-content:space-between;gap:1rem;font-family:var(--font-mono);font-size:.68rem;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--muted2);margin-bottom:.45rem}
+.lt-done{color:var(--teal)}
+.lt-bar{display:flex;gap:3px;height:6px}
+.lt-seg{flex:1;min-width:3px;border-radius:99px;background:var(--line-soft);
+  transition:background var(--dur-2) var(--ease),transform var(--dur-2) var(--ease)}
+.lt-seg.is-done{background:var(--teal)}
+.lt-seg.is-current{background:var(--grad-brand);box-shadow:0 0 10px -1px var(--glow-amber)}
+.lt-seg:hover{transform:scaleY(1.7)}
+@media(prefers-reduced-motion:reduce){.lt-seg{transition:none}.lt-seg:hover{transform:none}}
+@media print{.lesson-track{display:none}}
+/* Mark-complete feedback: the check draws itself in and the button pops. */
+.complete-btn.just-done{animation:donePop .45s var(--ease-spring)}
+.complete-btn.just-done svg polyline{stroke-dasharray:24;stroke-dashoffset:24;animation:doneDraw .4s .08s var(--ease) forwards}
+@keyframes donePop{0%{transform:scale(1)}40%{transform:scale(1.07)}100%{transform:scale(1)}}
+@keyframes doneDraw{to{stroke-dashoffset:0}}
 .reader-actions{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
 .reader-actions .icon-btn.active{color:var(--amber);border-color:rgba(239,164,58,.4);background:rgba(239,164,58,.08)}
 .complete-btn{display:inline-flex;align-items:center;gap:.5rem;font-family:inherit;font-weight:600;font-size:.84rem;
@@ -1085,11 +1103,22 @@ mark{background:rgba(239,164,58,.35);color:inherit;border-radius:3px;padding:0 1
 /* ---------- In-page TOC ---------- */
 .toc{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1rem 1.2rem;margin:0 0 1.6rem}
 .toc-title{font-family:var(--font-mono);font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--amber);margin-bottom:.55rem}
-.toc ul{list-style:none;margin:0;padding:0;columns:2;column-gap:2rem}
-.toc li{margin:0 0 .35rem;break-inside:avoid}
-.toc a{color:var(--text);text-decoration:none;font-size:.88rem;opacity:.85}
-.toc a:hover{color:var(--teal-2);opacity:1}
-@media(max-width:640px){.toc ul{columns:1}}
+/* The TOC sits inside .md, whose list rule (display:flex; column; gap)
+   silently beat the two-column layout here — so a 13-section lesson opened
+   with a single tall column that filled the whole first screen. The .md
+   prefix restores the intended compact, numbered two-column list. */
+.md .toc ul,.toc ul{list-style:none;margin:0;padding:0;display:block;columns:2;column-gap:2rem;
+  counter-reset:toc;font-size:.88rem;line-height:1.45}
+.md .toc li,.toc li{margin:0;padding:0;break-inside:avoid;counter-increment:toc}
+.md .toc li::marker{content:none}
+.toc a{display:flex;gap:.6rem;align-items:baseline;padding:.3rem .45rem;margin:0 -.45rem;border-radius:7px;
+  color:var(--text);text-decoration:none;opacity:.85;
+  transition:background var(--dur-1) var(--ease),color var(--dur-1) var(--ease)}
+.toc a::before{content:counter(toc,decimal-leading-zero);flex:none;font-family:var(--font-mono);font-size:.7rem;color:var(--muted2);
+  transition:color var(--dur-1) var(--ease)}
+.toc a:hover,.toc a:focus-visible{color:var(--teal-2);opacity:1;background:var(--overlay-2)}
+.toc a:hover::before{color:var(--amber)}
+@media(max-width:640px){.md .toc ul,.toc ul{columns:1}}
 
 /* Floating scroll-spy mini-map — desktop only (>1200px), pinned to the
    right edge of the viewport, mirrors the in-content TOC above. */
