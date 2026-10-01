@@ -237,13 +237,16 @@ const template = ({title, desc, canonical, spaPath, contentHtml, crumbs, jsonLd 
 <meta name="twitter:description" content="${escapeAttr(metaDesc(desc))}">
 <meta name="twitter:image" content="${escapeAttr(ogImage || SITE + '/og-image.png')}">
 <meta name="twitter:image:alt" content="${escapeAttr(ogAlt || 'KashSec Academy — free cybersecurity course from absolute zero')}">
-<meta name="theme-color" content="#0A0E13">${adsenseMeta}
+<meta name="theme-color" content="#0A0E13" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#F6F7FA" media="(prefers-color-scheme: light)">${adsenseMeta}
 <link rel="manifest" href="/manifest.json">
 <link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
 <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<!-- Webfonts load without blocking first paint; the --font-* fallback chains in styles.css carry the page until they arrive (or if they never do). -->
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap"></noscript>
 <link rel="stylesheet" href="/styles.css">
 <script src="/ads.js" defer></script>
 ${[breadcrumbLd(crumbs), ...jsonLd]
@@ -351,7 +354,10 @@ for (const p of PATHS) {
   const canonical = `${SITE}/lesson/${p.id}/`;
   const spaPath = `/#/lesson/${p.id}`;
   const title = `Path ${p.n}: ${p.title} — KashSec Academy`;
-  const desc = p.desc || '';
+  // Path descriptions in PATHS are one-line taglines (~70 chars), which
+  // left most of a search snippet empty. Lead with the tagline, then say
+  // what the page offers: lesson count, level, and where it starts.
+  const desc = `${p.desc || ''} ${p.subs.length} free lessons, ${(p.level || 'all levels').toLowerCase()} level, starting with "${p.subs[0].title}"`.trim();
   const lessonFiles = p.subs.map(s => `course/${p.id}/${s.id}.md`);
   const lastmod = lastmodFor(...lessonFiles);
   const contentHtml = `<h1>${escapeAttr(title)}</h1><p>${escapeAttr(desc)}</p>` +

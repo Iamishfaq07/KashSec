@@ -675,8 +675,11 @@ function applyTheme(){
   document.documentElement.setAttribute('data-theme', theme);
   document.documentElement.classList.toggle('hc', !!STATE.highContrast);
   document.getElementById('themeToggle')?.setAttribute('aria-pressed', theme === 'light' ? 'true' : 'false');
-  const meta = document.querySelector('meta[name="theme-color"]');
-  if(meta) meta.setAttribute('content', theme === 'light' ? '#F6F7FA' : '#0A0E13');
+  // The static page ships one theme-color per color scheme for first paint;
+  // once a theme is resolved here, both follow it (the user may have
+  // overridden their system scheme).
+  document.querySelectorAll('meta[name="theme-color"]').forEach(meta=>
+    meta.setAttribute('content', theme === 'light' ? '#F6F7FA' : '#0A0E13'));
 }
 /* Clicking the toggle cycles through: current-resolved → opposite hard →
    auto-time → auto-system → repeat. Users who just want dark forever land
@@ -1816,7 +1819,7 @@ function route(){
   currentLabMessageController = null;
   currentCvssWorker?.terminate();
   currentCvssWorker = null;
-  currentTocObserver?.disconnect();
+  if(currentTocScroll){ window.removeEventListener('scroll', currentTocScroll); currentTocScroll = null; }
   document.getElementById('tocFloat')?.remove();
   clearInterval(mockInterviewTimer);
   clearInterval(pomodoroInterval);
@@ -2446,6 +2449,7 @@ function renderPathOverview(pathId){
   app.innerHTML = `
     <section class="sec">
       <div class="path-overview">
+        <div class="po-art" aria-hidden="true"><span class="po-ring"></span><span class="po-ring po-ring-2"></span><span class="po-tile">${pathIco(p.id)}</span></div>
         <div class="path-tag" data-reveal><span class="path-tag-ico">${pathIco(p.id)}</span>Path ${p.n} · ${p.level}</div>
         <h1 data-reveal style="--i:1">${p.title}</h1>
         <p class="lead" data-reveal style="--i:2">${p.desc}</p>
@@ -2984,6 +2988,30 @@ function levelTier(level){
   return 'any';
 }
 
+/* Where am I in this path? One segment per lesson — done (teal), current
+   (amber), still to come — with a plain-text count for screen readers. The
+   sidebar already offers keyboard navigation to every lesson, so the
+   segments are pointer shortcuts only and stay out of the tab order. */
+function lessonTrackHTML(ctx){
+  const subs = ctx.path.subs;
+  const idx = subs.findIndex(s => s.id === ctx.sub.id);
+  const done = subs.filter(s => isComplete(ctx.path.id, s.id)).length;
+  return `<div class="lesson-track" id="lessonTrack">
+    <div class="lt-label"><span>Lesson ${idx + 1} of ${subs.length}</span><span class="lt-done" id="lessonTrackDone">${done} done</span></div>
+    <div class="lt-bar" aria-hidden="true">${subs.map((s, i) =>
+      `<a class="lt-seg${isComplete(ctx.path.id, s.id) ? ' is-done' : ''}${i === idx ? ' is-current' : ''}" data-sub="${s.id}" href="#/lesson/${ctx.path.id}/${s.id}" tabindex="-1" title="${ctx.path.n}.${s.n} · ${escapeHtml(s.title)}"></a>`
+    ).join('')}</div>
+  </div>`;
+}
+function refreshLessonTrack(ctx){
+  const track = document.getElementById('lessonTrack');
+  if(!track) return;
+  track.querySelectorAll('.lt-seg').forEach(seg => seg.classList.toggle('is-done', isComplete(ctx.path.id, seg.dataset.sub)));
+  const n = ctx.path.subs.filter(s => isComplete(ctx.path.id, s.id)).length;
+  const label = document.getElementById('lessonTrackDone');
+  if(label) label.textContent = `${n} done`;
+}
+
 function pathCardHTML(p, i){
   const prog = pathProgress(p.id);
   const done = prog.pct >= 100;
@@ -3078,6 +3106,7 @@ async function renderSubLesson(pathId, subId){
             </button>
           </div>
         </div>
+        ${lessonTrackHTML(ctx)}
         <div class="pomodoro-widget" id="pomodoroWidget" hidden>
           <span class="pomodoro-time" id="pomodoroTime">25:00</span>
           <button class="btn-ghost sm" id="pomodoroToggle" type="button">Start</button>
@@ -3212,6 +3241,8 @@ async function renderSubLesson(pathId, subId){
     btn.classList.toggle('done', done);
     btn.setAttribute('aria-pressed', done);
     document.getElementById('completeBtnLabel').textContent = done ? 'Completed' : 'Mark complete';
+    if(done && !prefersReduced()){ btn.classList.remove('just-done'); void btn.offsetWidth; btn.classList.add('just-done'); }
+    refreshLessonTrack(ctx);
     refreshProgressRing();
   });
 
@@ -3352,8 +3383,13 @@ function enrichMarkdown(md){
   });
 
   // SVG figures:  ~~~svg CAPTION ... ~~~
+  // The caption doubles as the diagram's accessible name: an inline <svg>
+  // with no role or label is announced as nothing (or as a pile of text
+  // fragments) by screen readers, and gives search engines no description.
   md = md.replace(/^~{3}svg(?:\s+(.+?))?\n([\s\S]*?)\n~{3}$/gm, (m, caption, body)=>{
-    return `<figure class="svg-figure">${body.trim()}${caption?`<figcaption>${caption}</figcaption>`:''}</figure>`;
+    let svg = body.trim();
+    if(caption && !/^<svg[^>]*\brole=/.test(svg)) svg = svg.replace(/^<svg\b/, `<svg role="img" aria-label="${escapeHtml(caption).replace(/"/g, '&quot;')}"`);
+    return `<figure class="svg-figure">${svg}${caption?`<figcaption>${caption}</figcaption>`:''}</figure>`;
   });
 
   // Render main markdown
@@ -3434,20 +3470,39 @@ function buildTocFloat(tocable){
     });
   });
 
+  /* Scroll-spy. The active entry is the section being READ — the last
+     heading scrolled above a reading line 30% down the viewport — not
+     whichever heading happens to sit inside a thin band. The old
+     IntersectionObserver band lit an entry only while its heading crossed
+     that band, so mid-section nothing matched and the rail fell back to
+     the first heading for most of every lesson. The rail also fades out
+     once the lesson body has scrolled away, instead of floating over the
+     footer. rAF-throttled; reads layout once per frame at most. */
   const links = [...float.querySelectorAll('a[data-tocf]')];
-  const observer = new IntersectionObserver((entries)=>{
-    entries.forEach(entry=>{
-      const link = float.querySelector(`a[href="#${entry.target.id}"]`);
-      if(!link) return;
-      if(entry.isIntersecting) link.classList.add('active'); else link.classList.remove('active');
+  const reader = document.getElementById('content');
+  let ticking = false;
+  const update = ()=>{
+    ticking = false;
+    if(!float.isConnected){ window.removeEventListener('scroll', onScroll); return; }
+    const line = window.innerHeight * 0.3;
+    let idx = 0;
+    for(let i = 0; i < tocable.length; i++){
+      if(tocable[i].getBoundingClientRect().top <= line) idx = i; else break;
+    }
+    links.forEach((l, i)=>{
+      l.classList.toggle('active', i === idx);
+      if(i === idx) l.setAttribute('aria-current', 'location'); else l.removeAttribute('aria-current');
     });
-    if(!links.some(l=>l.classList.contains('active')) && links.length) links[0].classList.add('active');
-  }, { rootMargin: '-15% 0px -70% 0px' });
-  tocable.forEach(h=>observer.observe(h));
-  currentTocObserver?.disconnect();
-  currentTocObserver = observer;
+    const done = reader && reader.getBoundingClientRect().bottom < window.innerHeight * 0.45;
+    float.classList.toggle('toc-float-out', !!done);
+  };
+  const onScroll = ()=>{ if(!ticking){ ticking = true; requestAnimationFrame(update); } };
+  currentTocScroll && window.removeEventListener('scroll', currentTocScroll);
+  currentTocScroll = onScroll;
+  window.addEventListener('scroll', onScroll, { passive: true });
+  update();
 }
-let currentTocObserver = null;
+let currentTocScroll = null;
 let mockInterviewTimer = null;
 let pomodoroInterval = null;
 

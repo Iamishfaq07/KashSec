@@ -24,14 +24,17 @@
 <meta name="twitter:description" content="The fundamentals lesson introduced permissions at a high level. This lesson goes properly deep — the actual permission model, why it changed dramatically…">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og/13-mobile-security.jpg">
 <meta name="twitter:image:alt" content="KashSec Academy · Path 13: Mobile App Security">
-<meta name="theme-color" content="#0A0E13">
+<meta name="theme-color" content="#0A0E13" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#F6F7FA" media="(prefers-color-scheme: light)">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
 <link rel="manifest" href="/manifest.json">
 <link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
 <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<!-- Webfonts load without blocking first paint; the --font-* fallback chains in styles.css carry the page until they arrive (or if they never do). -->
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap"></noscript>
 <link rel="stylesheet" href="/styles.css">
 <script src="/ads.js" defer></script>
 <script type="application/ld+json">
