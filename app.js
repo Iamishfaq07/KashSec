@@ -675,8 +675,11 @@ function applyTheme(){
   document.documentElement.setAttribute('data-theme', theme);
   document.documentElement.classList.toggle('hc', !!STATE.highContrast);
   document.getElementById('themeToggle')?.setAttribute('aria-pressed', theme === 'light' ? 'true' : 'false');
-  const meta = document.querySelector('meta[name="theme-color"]');
-  if(meta) meta.setAttribute('content', theme === 'light' ? '#F6F7FA' : '#0A0E13');
+  // The static page ships one theme-color per color scheme for first paint;
+  // once a theme is resolved here, both follow it (the user may have
+  // overridden their system scheme).
+  document.querySelectorAll('meta[name="theme-color"]').forEach(meta=>
+    meta.setAttribute('content', theme === 'light' ? '#F6F7FA' : '#0A0E13'));
 }
 /* Clicking the toggle cycles through: current-resolved → opposite hard →
    auto-time → auto-system → repeat. Users who just want dark forever land
@@ -1816,7 +1819,7 @@ function route(){
   currentLabMessageController = null;
   currentCvssWorker?.terminate();
   currentCvssWorker = null;
-  currentTocObserver?.disconnect();
+  if(currentTocScroll){ window.removeEventListener('scroll', currentTocScroll); currentTocScroll = null; }
   document.getElementById('tocFloat')?.remove();
   clearInterval(mockInterviewTimer);
   clearInterval(pomodoroInterval);
@@ -2446,6 +2449,7 @@ function renderPathOverview(pathId){
   app.innerHTML = `
     <section class="sec">
       <div class="path-overview">
+        <div class="po-art" aria-hidden="true"><span class="po-ring"></span><span class="po-ring po-ring-2"></span><span class="po-tile">${pathIco(p.id)}</span></div>
         <div class="path-tag" data-reveal><span class="path-tag-ico">${pathIco(p.id)}</span>Path ${p.n} · ${p.level}</div>
         <h1 data-reveal style="--i:1">${p.title}</h1>
         <p class="lead" data-reveal style="--i:2">${p.desc}</p>
@@ -3434,20 +3438,39 @@ function buildTocFloat(tocable){
     });
   });
 
+  /* Scroll-spy. The active entry is the section being READ — the last
+     heading scrolled above a reading line 30% down the viewport — not
+     whichever heading happens to sit inside a thin band. The old
+     IntersectionObserver band lit an entry only while its heading crossed
+     that band, so mid-section nothing matched and the rail fell back to
+     the first heading for most of every lesson. The rail also fades out
+     once the lesson body has scrolled away, instead of floating over the
+     footer. rAF-throttled; reads layout once per frame at most. */
   const links = [...float.querySelectorAll('a[data-tocf]')];
-  const observer = new IntersectionObserver((entries)=>{
-    entries.forEach(entry=>{
-      const link = float.querySelector(`a[href="#${entry.target.id}"]`);
-      if(!link) return;
-      if(entry.isIntersecting) link.classList.add('active'); else link.classList.remove('active');
+  const reader = document.getElementById('content');
+  let ticking = false;
+  const update = ()=>{
+    ticking = false;
+    if(!float.isConnected){ window.removeEventListener('scroll', onScroll); return; }
+    const line = window.innerHeight * 0.3;
+    let idx = 0;
+    for(let i = 0; i < tocable.length; i++){
+      if(tocable[i].getBoundingClientRect().top <= line) idx = i; else break;
+    }
+    links.forEach((l, i)=>{
+      l.classList.toggle('active', i === idx);
+      if(i === idx) l.setAttribute('aria-current', 'location'); else l.removeAttribute('aria-current');
     });
-    if(!links.some(l=>l.classList.contains('active')) && links.length) links[0].classList.add('active');
-  }, { rootMargin: '-15% 0px -70% 0px' });
-  tocable.forEach(h=>observer.observe(h));
-  currentTocObserver?.disconnect();
-  currentTocObserver = observer;
+    const done = reader && reader.getBoundingClientRect().bottom < window.innerHeight * 0.45;
+    float.classList.toggle('toc-float-out', !!done);
+  };
+  const onScroll = ()=>{ if(!ticking){ ticking = true; requestAnimationFrame(update); } };
+  currentTocScroll && window.removeEventListener('scroll', currentTocScroll);
+  currentTocScroll = onScroll;
+  window.addEventListener('scroll', onScroll, { passive: true });
+  update();
 }
-let currentTocObserver = null;
+let currentTocScroll = null;
 let mockInterviewTimer = null;
 let pomodoroInterval = null;
 
