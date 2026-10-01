@@ -333,6 +333,16 @@ if (fs.existsSync(ogMetaPath)) {
     .map(([k, v]) => `${k}: image says ${meta[k]}, actual ${v}`);
   check('social share image shows current counts', drift.length === 0,
     drift.join('; ') + ' — run npm run build:og');
+
+  // Per-path cards (og/<path>.jpg) bake in each path's lesson count too.
+  const missing = PATHS.filter(p => !fs.existsSync(path.join(ROOT, 'og', p.id + '.jpg'))).map(p => p.id);
+  check('every path has a social card in og/', missing.length === 0,
+    `missing: ${missing.join(', ')} — run npm run build:og`);
+  const cardDrift = PATHS
+    .filter(p => (meta.pathLessons || {})[p.id] !== p.subs.length)
+    .map(p => `${p.id}: card says ${(meta.pathLessons || {})[p.id]}, actual ${p.subs.length}`);
+  check('path social cards show current lesson counts', cardDrift.length === 0,
+    cardDrift.join('; ') + ' — run npm run build:og');
 }
 
 /* ---- 17. every content section is crawlable ----

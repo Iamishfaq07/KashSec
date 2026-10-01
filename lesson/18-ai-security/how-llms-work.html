@@ -5,21 +5,25 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>How LLMs actually work — Path 18 · KashSec Academy</title>
-<meta name="description" content="Before you can secure AI systems, you need a working mental model of what they actually are — not magic, not truly &quot;thinking,&quot; but a specific, learnable kind of software with its own distinct failure ">
+<meta name="description" content="Before you can secure AI systems, you need a working mental model of what they actually are — not magic, not truly &quot;thinking,&quot; but a specific, learnable…">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/18-ai-security/how-llms-work.html">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/icons/icon-192.png" type="image/png" sizes="192x192">
 <meta property="og:title" content="How LLMs actually work — Path 18 · KashSec Academy">
-<meta property="og:description" content="Before you can secure AI systems, you need a working mental model of what they actually are — not magic, not truly &quot;thinking,&quot; but a specific, learnable kind of software with its own distinct failure ">
+<meta property="og:description" content="Before you can secure AI systems, you need a working mental model of what they actually are — not magic, not truly &quot;thinking,&quot; but a specific, learnable…">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/18-ai-security/how-llms-work.html">
 <meta property="og:site_name" content="KashSec Academy">
-<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://kashsec.vercel.app/og/18-ai-security.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="KashSec Academy · Path 18: AI &amp; AI Security">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="How LLMs actually work — Path 18 · KashSec Academy">
-<meta name="twitter:description" content="Before you can secure AI systems, you need a working mental model of what they actually are — not magic, not truly &quot;thinking,&quot; but a specific, learnable kind of software with its own distinct failure ">
-<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="twitter:description" content="Before you can secure AI systems, you need a working mental model of what they actually are — not magic, not truly &quot;thinking,&quot; but a specific, learnable…">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og/18-ai-security.jpg">
+<meta name="twitter:image:alt" content="KashSec Academy · Path 18: AI &amp; AI Security">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
 <link rel="manifest" href="/manifest.json">
@@ -34,7 +38,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 18 — AI & AI Security","item":"https://kashsec.vercel.app/lesson/18-ai-security/"},{"@type":"ListItem","position":4,"name":"How LLMs actually work","item":"https://kashsec.vercel.app/lesson/18-ai-security/how-llms-work.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"How LLMs actually work","headline":"How LLMs actually work","description":"Before you can secure AI systems, you need a working mental model of what they actually are — not magic, not truly \"thinking,\" but a specific, learnable kind of software with its own distinct failure ","url":"https://kashsec.vercel.app/lesson/18-ai-security/how-llms-work.html","inLanguage":"en","dateModified":"2026-08-04","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"A friendly primer without the mystique.","isPartOf":{"@type":"Course","name":"Path 18: AI & AI Security","url":"https://kashsec.vercel.app/lesson/18-ai-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/18-ai-security/how-llms-work.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"How LLMs actually work","headline":"How LLMs actually work","description":"Before you can secure AI systems, you need a working mental model of what they actually are — not magic, not truly \"thinking,\" but a specific, learnable kind of software with its own distinct failure modes. This lesson gives you exactly enough understanding to make the rest of Path 18 click.","url":"https://kashsec.vercel.app/lesson/18-ai-security/how-llms-work.html","inLanguage":"en","dateModified":"2026-08-04","learningResourceType":"Lesson","image":"https://kashsec.vercel.app/og/18-ai-security.jpg","educationalLevel":"Advanced","timeRequired":"PT10M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"A friendly primer without the mystique.","isPartOf":{"@type":"Course","name":"Path 18: AI & AI Security","url":"https://kashsec.vercel.app/lesson/18-ai-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/18-ai-security/how-llms-work.html"}}
 </script>
 </head>
 <body>

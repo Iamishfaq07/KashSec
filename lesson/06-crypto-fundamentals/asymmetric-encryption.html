@@ -5,21 +5,25 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Asymmetric Encryption — Path 06 · KashSec Academy</title>
-<meta name="description" content="The previous lesson ended on symmetric encryption's core weakness: both parties need the same secret key beforehand, and safely getting that key to both sides is genuinely hard — especially over the i">
+<meta name="description" content="The previous lesson ended on symmetric encryption's core weakness: both parties need the same secret key beforehand, and safely getting that key to both…">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/06-crypto-fundamentals/asymmetric-encryption.html">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/icons/icon-192.png" type="image/png" sizes="192x192">
 <meta property="og:title" content="Asymmetric Encryption — Path 06 · KashSec Academy">
-<meta property="og:description" content="The previous lesson ended on symmetric encryption's core weakness: both parties need the same secret key beforehand, and safely getting that key to both sides is genuinely hard — especially over the i">
+<meta property="og:description" content="The previous lesson ended on symmetric encryption's core weakness: both parties need the same secret key beforehand, and safely getting that key to both…">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/06-crypto-fundamentals/asymmetric-encryption.html">
 <meta property="og:site_name" content="KashSec Academy">
-<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://kashsec.vercel.app/og/06-crypto-fundamentals.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="KashSec Academy · Path 06: Cryptography Fundamentals">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Asymmetric Encryption — Path 06 · KashSec Academy">
-<meta name="twitter:description" content="The previous lesson ended on symmetric encryption's core weakness: both parties need the same secret key beforehand, and safely getting that key to both sides is genuinely hard — especially over the i">
-<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="twitter:description" content="The previous lesson ended on symmetric encryption's core weakness: both parties need the same secret key beforehand, and safely getting that key to both…">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og/06-crypto-fundamentals.jpg">
+<meta name="twitter:image:alt" content="KashSec Academy · Path 06: Cryptography Fundamentals">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
 <link rel="manifest" href="/manifest.json">
@@ -34,7 +38,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 06 — Cryptography Fundamentals","item":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/"},{"@type":"ListItem","position":4,"name":"Asymmetric Encryption","item":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/asymmetric-encryption.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Asymmetric Encryption","headline":"Asymmetric Encryption","description":"The previous lesson ended on symmetric encryption's core weakness: both parties need the same secret key beforehand, and safely getting that key to both sides is genuinely hard — especially over the i","url":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/asymmetric-encryption.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Public/private keys, RSA, hybrid encryption, and digital signatures.","isPartOf":{"@type":"Course","name":"Path 06: Cryptography Fundamentals","url":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/asymmetric-encryption.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Asymmetric Encryption","headline":"Asymmetric Encryption","description":"The previous lesson ended on symmetric encryption's core weakness: both parties need the same secret key beforehand, and safely getting that key to both sides is genuinely hard — especially over the internet, between two people who've never met. Asymmetric encryption solves this elegantly, and…","url":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/asymmetric-encryption.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","image":"https://kashsec.vercel.app/og/06-crypto-fundamentals.jpg","educationalLevel":"Beginner","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Public/private keys, RSA, hybrid encryption, and digital signatures.","isPartOf":{"@type":"Course","name":"Path 06: Cryptography Fundamentals","url":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/06-crypto-fundamentals/asymmetric-encryption.html"}}
 </script>
 </head>
 <body>

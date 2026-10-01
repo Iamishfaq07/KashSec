@@ -44,6 +44,7 @@ const shellUrls = [
   // produce a PDF when the user is offline.
   'pdf.js',
   'manifest.json',
+  'favicon.svg',
   'icons/icon-192.png',
   'icons/icon-512.png',
   'icons/icon-maskable-512.png',

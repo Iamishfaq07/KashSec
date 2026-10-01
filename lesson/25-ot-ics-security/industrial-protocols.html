@@ -5,21 +5,25 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Industrial Protocols: Modbus, DNP3, and Why Their Design Causes Security Problems — Path 25 · KashSec Academy</title>
-<meta name="description" content="The previous lesson described the sense-decide-act loop conceptually. This lesson gets concrete about how the pieces actually talk to each other — and why the protocols carrying that conversation are,">
+<meta name="description" content="The previous lesson described the sense-decide-act loop conceptually. This lesson gets concrete about how the pieces actually talk to each other — and why…">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/25-ot-ics-security/industrial-protocols.html">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/icons/icon-192.png" type="image/png" sizes="192x192">
 <meta property="og:title" content="Industrial Protocols: Modbus, DNP3, and Why Their Design Causes Security Problems — Path 25 · KashSec Academy">
-<meta property="og:description" content="The previous lesson described the sense-decide-act loop conceptually. This lesson gets concrete about how the pieces actually talk to each other — and why the protocols carrying that conversation are,">
+<meta property="og:description" content="The previous lesson described the sense-decide-act loop conceptually. This lesson gets concrete about how the pieces actually talk to each other — and why…">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/25-ot-ics-security/industrial-protocols.html">
 <meta property="og:site_name" content="KashSec Academy">
-<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://kashsec.vercel.app/og/25-ot-ics-security.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="KashSec Academy · Path 25: OT/ICS &amp; Critical Infrastructure Security">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Industrial Protocols: Modbus, DNP3, and Why Their Design Causes Security Problems — Path 25 · KashSec Academy">
-<meta name="twitter:description" content="The previous lesson described the sense-decide-act loop conceptually. This lesson gets concrete about how the pieces actually talk to each other — and why the protocols carrying that conversation are,">
-<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="twitter:description" content="The previous lesson described the sense-decide-act loop conceptually. This lesson gets concrete about how the pieces actually talk to each other — and why…">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og/25-ot-ics-security.jpg">
+<meta name="twitter:image:alt" content="KashSec Academy · Path 25: OT/ICS &amp; Critical Infrastructure Security">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
 <link rel="manifest" href="/manifest.json">
@@ -34,7 +38,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 25 — OT/ICS & Critical Infrastructure Security","item":"https://kashsec.vercel.app/lesson/25-ot-ics-security/"},{"@type":"ListItem","position":4,"name":"Industrial Protocols: Modbus, DNP3, and Why Their Design Causes Security Problems","item":"https://kashsec.vercel.app/lesson/25-ot-ics-security/industrial-protocols.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Industrial Protocols: Modbus, DNP3, and Why Their Design Causes Security Problems","headline":"Industrial Protocols: Modbus, DNP3, and Why Their Design Causes Security Problems","description":"The previous lesson described the sense-decide-act loop conceptually. This lesson gets concrete about how the pieces actually talk to each other — and why the protocols carrying that conversation are,","url":"https://kashsec.vercel.app/lesson/25-ot-ics-security/industrial-protocols.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Protocols with no built-in authentication, and why 'just add TLS' doesn't work.","isPartOf":{"@type":"Course","name":"Path 25: OT/ICS & Critical Infrastructure Security","url":"https://kashsec.vercel.app/lesson/25-ot-ics-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/25-ot-ics-security/industrial-protocols.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Industrial Protocols: Modbus, DNP3, and Why Their Design Causes Security Problems","headline":"Industrial Protocols: Modbus, DNP3, and Why Their Design Causes Security Problems","description":"The previous lesson described the sense-decide-act loop conceptually. This lesson gets concrete about how the pieces actually talk to each other — and why the protocols carrying that conversation are, from a security standpoint, a genuinely different problem than anything covered elsewhere in this…","url":"https://kashsec.vercel.app/lesson/25-ot-ics-security/industrial-protocols.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","image":"https://kashsec.vercel.app/og/25-ot-ics-security.jpg","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Protocols with no built-in authentication, and why 'just add TLS' doesn't work.","isPartOf":{"@type":"Course","name":"Path 25: OT/ICS & Critical Infrastructure Security","url":"https://kashsec.vercel.app/lesson/25-ot-ics-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/25-ot-ics-security/industrial-protocols.html"}}
 </script>
 </head>
 <body>

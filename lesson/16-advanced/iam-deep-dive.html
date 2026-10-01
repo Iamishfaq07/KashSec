@@ -5,21 +5,25 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>IAM, deep dive — Path 16 · KashSec Academy</title>
-<meta name="description" content="The cloud security lesson mentioned IAM misconfiguration as a common finding without fully unpacking the mechanics. This lesson goes deep specifically into cloud Identity and Access Management, direct">
+<meta name="description" content="The cloud security lesson mentioned IAM misconfiguration as a common finding without fully unpacking the mechanics. This lesson goes deep specifically into…">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/16-advanced/iam-deep-dive.html">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/icons/icon-192.png" type="image/png" sizes="192x192">
 <meta property="og:title" content="IAM, deep dive — Path 16 · KashSec Academy">
-<meta property="og:description" content="The cloud security lesson mentioned IAM misconfiguration as a common finding without fully unpacking the mechanics. This lesson goes deep specifically into cloud Identity and Access Management, direct">
+<meta property="og:description" content="The cloud security lesson mentioned IAM misconfiguration as a common finding without fully unpacking the mechanics. This lesson goes deep specifically into…">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/16-advanced/iam-deep-dive.html">
 <meta property="og:site_name" content="KashSec Academy">
-<meta property="og:image" content="https://kashsec.vercel.app/og-image.png">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://kashsec.vercel.app/og/16-advanced.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="KashSec Academy · Path 16: Advanced Cyber Topics">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="IAM, deep dive — Path 16 · KashSec Academy">
-<meta name="twitter:description" content="The cloud security lesson mentioned IAM misconfiguration as a common finding without fully unpacking the mechanics. This lesson goes deep specifically into cloud Identity and Access Management, direct">
-<meta name="twitter:image" content="https://kashsec.vercel.app/og-image.png">
+<meta name="twitter:description" content="The cloud security lesson mentioned IAM misconfiguration as a common finding without fully unpacking the mechanics. This lesson goes deep specifically into…">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og/16-advanced.jpg">
+<meta name="twitter:image:alt" content="KashSec Academy · Path 16: Advanced Cyber Topics">
 <meta name="theme-color" content="#0A0E13">
 <meta name="google-adsense-account" content="ca-pub-7042949574293510">
 <link rel="manifest" href="/manifest.json">
@@ -34,7 +38,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 16 — Advanced Cyber Topics","item":"https://kashsec.vercel.app/lesson/16-advanced/"},{"@type":"ListItem","position":4,"name":"IAM, deep dive","item":"https://kashsec.vercel.app/lesson/16-advanced/iam-deep-dive.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"IAM, deep dive","headline":"IAM, deep dive","description":"The cloud security lesson mentioned IAM misconfiguration as a common finding without fully unpacking the mechanics. This lesson goes deep specifically into cloud Identity and Access Management, direct","url":"https://kashsec.vercel.app/lesson/16-advanced/iam-deep-dive.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Policy anatomy, privilege escalation, and iam:PassRole.","isPartOf":{"@type":"Course","name":"Path 16: Advanced Cyber Topics","url":"https://kashsec.vercel.app/lesson/16-advanced/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/16-advanced/iam-deep-dive.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"IAM, deep dive","headline":"IAM, deep dive","description":"The cloud security lesson mentioned IAM misconfiguration as a common finding without fully unpacking the mechanics. This lesson goes deep specifically into cloud Identity and Access Management, directly connecting to Path 22's Zero Trust identity coverage, since IAM is the practical implementation…","url":"https://kashsec.vercel.app/lesson/16-advanced/iam-deep-dive.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","image":"https://kashsec.vercel.app/og/16-advanced.jpg","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Policy anatomy, privilege escalation, and iam:PassRole.","isPartOf":{"@type":"Course","name":"Path 16: Advanced Cyber Topics","url":"https://kashsec.vercel.app/lesson/16-advanced/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/16-advanced/iam-deep-dive.html"}}
 </script>
 </head>
 <body>
