@@ -2344,13 +2344,35 @@ function renderCourseIndex(){
         <h1>${PATHS.length} paths, ${totalSubLessons()}+ sub-lessons</h1>
         <p class="sec-lead">Each path is split into short focused sub-lessons. Click a path to see its map.</p>
       </div>
-      <div class="paths">
+      ${(()=>{
+        // Level filter. The tier is already on every card (data-tier) and
+        // colour-coded on its edge; this lets a newcomer narrow 26 cards to
+        // the handful pitched at their level.
+        const tiers = [['all','All'],['start','Start here'],['beginner','Beginner'],['intermediate','Intermediate'],['advanced','Advanced'],['any','Any level']];
+        const count = t => t === 'all' ? PATHS.length : PATHS.filter(p => levelTier(p.level) === t).length;
+        return `<div class="tier-filter" role="group" aria-label="Filter paths by level">${tiers.filter(([t])=>count(t) > 0).map(([t,label])=>
+          `<button type="button" class="tier-chip" data-tier="${t}" aria-pressed="${t==='all'}">${label}<span>${count(t)}</span></button>`).join('')}</div>`;
+      })()}
+      <div class="paths" id="coursePaths">
         ${PATHS.map((p,i)=>`
 ${pathCardHTML(p,i)}
         `).join('')}
       </div>
+      <p class="tier-empty sec-lead" id="tierEmpty" hidden>No paths at this level.</p>
     </section>
   `;
+  const chips = [...app.querySelectorAll('.tier-chip')];
+  chips.forEach(chip => chip.addEventListener('click', ()=>{
+    const t = chip.dataset.tier;
+    chips.forEach(c => c.setAttribute('aria-pressed', String(c === chip)));
+    let shown = 0;
+    app.querySelectorAll('#coursePaths .path-card').forEach(card=>{
+      const match = t === 'all' || card.dataset.tier === t;
+      card.classList.toggle('is-filtered', !match);
+      if(match) shown++;
+    });
+    document.getElementById('tierEmpty').hidden = shown > 0;
+  }));
 }
 
 /* ---------- Minimal in-browser ZIP writer (store only, no deps) ----------
@@ -3620,7 +3642,7 @@ function renderMicroCheck(ctx){
    can already see ever flashes, and a TOC jump reveals its target the
    moment it intersects. Opacity/transform only — no layout work. */
 let lessonBlockObserver;
-const LESSON_ANIM_SEL = ':scope > h2, :scope > .key-terms, :scope > .callout, :scope > figure, :scope > .mermaid, :scope > pre, :scope > table, :scope > blockquote, :scope > details, :scope > .ref-list';
+const LESSON_ANIM_SEL = ':scope > h2, :scope > .key-terms, :scope > .callout, :scope > figure, :scope > .mermaid, :scope > pre, :scope > .code-win, :scope > table, :scope > blockquote, :scope > details, :scope > .ref-list';
 function animateLessonBlocks(contentEl){
   if(!contentEl || prefersReduced() || !('IntersectionObserver' in window)) return;
   if(lessonBlockObserver) lessonBlockObserver.disconnect();
@@ -3663,9 +3685,33 @@ function enhanceKeyTerms(contentEl){
   ul.insertAdjacentHTML('afterend', `<p class="kt-cta"><a href="#/review">Practise these as flashcards →</a></p>`);
 }
 
+/* Code blocks render as small windows: a title bar with the language (or
+   "terminal" for shell sessions) and the copy button, which used to be
+   invisible until hover and so undiscoverable on touch and by keyboard. */
+const CODE_LANG_LABEL = {bash:'terminal', sh:'terminal', shell:'terminal', zsh:'terminal', console:'terminal',
+  powershell:'powershell', ps1:'powershell', ps:'powershell', cmd:'cmd', bat:'cmd',
+  python:'python', py:'python', js:'javascript', javascript:'javascript', ts:'typescript', typescript:'typescript',
+  json:'json', yaml:'yaml', yml:'yaml', html:'html', xml:'xml', css:'css', sql:'sql', http:'http',
+  c:'c', cpp:'c++', go:'go', rust:'rust', java:'java', php:'php', ruby:'ruby', dockerfile:'dockerfile',
+  ini:'config', toml:'toml', nginx:'nginx', yara:'yara', text:'text', plaintext:'text', txt:'text'};
+function codeLangLabel(code){
+  const m = (code.className || '').match(/language-([\w+-]+)/);
+  if(m) return CODE_LANG_LABEL[m[1].toLowerCase()] || m[1].toLowerCase();
+  const first = (code.textContent || '').trimStart().split('\n')[0];
+  return /^(\$ |# |[\w.-]+@[\w.-]+[:~]|PS [A-Z]:\\|C:\\>)/.test(first) ? 'terminal' : 'code';
+}
 function enhanceCodeBlocks(contentEl){
   contentEl.querySelectorAll('pre > code').forEach(code=>{
     const pre = code.parentElement;
+    if(pre.parentElement && pre.parentElement.classList.contains('code-win')) return;
+    const win = document.createElement('div');
+    win.className = 'code-win';
+    const bar = document.createElement('div');
+    bar.className = 'code-bar';
+    bar.innerHTML = `<span class="code-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="code-lang">${escapeHtml(codeLangLabel(code))}</span>`;
+    pre.parentNode.insertBefore(win, pre);
+    win.appendChild(bar);
+    win.appendChild(pre);
     const btn = document.createElement('button');
     btn.className = 'code-copy';
     btn.type = 'button';
@@ -3679,7 +3725,7 @@ function enhanceCodeBlocks(contentEl){
         setTimeout(()=>{ btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 1600);
       }catch(err){ btn.textContent = 'Press Ctrl+C'; }
     });
-    pre.appendChild(btn);
+    bar.appendChild(btn);
   });
   ensureHljs().then(()=>{
     if(typeof hljs === 'undefined') return;
@@ -3694,6 +3740,10 @@ function decodeHtml(s){
   t.innerHTML = s;
   return t.value;
 }
+
+// Escape, then render `backtick` spans as <code> — glossary entries come
+// from lesson Markdown and showed their backticks raw.
+const inlineCode = s => escapeHtml(s).replace(/`([^`]+)`/g, '<code>$1</code>');
 
 function escapeHtml(s){
   const d = document.createElement('div');
@@ -3833,6 +3883,7 @@ async function renderGlossary(){
         <input type="search" id="glossarySearch" class="glossary-search" aria-label="Filter glossary terms" placeholder="Filter terms… (e.g. hashing, XSS, IAM)" autocomplete="off" spellcheck="false">
         <a class="btn-ghost sm" href="#/review">🃏 Practice as flashcards →</a>
       </div>
+      <nav id="glossaryJump" class="glossary-jump" aria-label="Jump to letter"></nav>
       <div id="glossaryList" class="glossary-list" data-reveal style="--i:2"></div>
     </section>
   `;
@@ -3845,26 +3896,39 @@ async function renderGlossary(){
       : GLOSSARY;
     if(!shown.length){
       listEl.innerHTML = `<p class="sec-lead">No terms match "${escapeHtml(filter)}".</p>`;
+      jumpEl.innerHTML = '';
       return;
     }
     let currentLetter = '';
     let html = '';
+    const groups = [];
     for(const e of shown){
       const letter = (e.term.match(/[a-zA-Z0-9]/)||['#'])[0].toUpperCase();
       const group = /[0-9]/.test(letter) ? '0-9' : letter;
       if(group !== currentLetter){
         currentLetter = group;
-        html += `<div class="glossary-letter">${group}</div>`;
+        groups.push(group);
+        html += `<div class="glossary-letter" id="gl-${group}">${group}</div>`;
       }
       html += `
         <a class="glossary-item" href="#/lesson/${e.pathId}/${e.subId}">
-          <div class="gi-term">${escapeHtml(e.term)}</div>
-          <div class="gi-def">${escapeHtml(e.def)}</div>
+          <div class="gi-term">${inlineCode(e.term)}</div>
+          <div class="gi-def">${inlineCode(e.def)}</div>
           <div class="gi-src">Path ${e.pathN} · ${escapeHtml(e.subTitle)}</div>
         </a>`;
     }
     listEl.innerHTML = html;
+    // A–Z jump bar over whatever the current filter left visible.
+    jumpEl.innerHTML = groups.map(g=>`<a href="#gl-${g}" data-gl="${g}">${g}</a>`).join('');
   }
+  const jumpEl = document.getElementById('glossaryJump');
+  // Hash routing owns the fragment, so scroll manually.
+  jumpEl.addEventListener('click', e=>{
+    const a = e.target.closest('a[data-gl]');
+    if(!a) return;
+    e.preventDefault();
+    document.getElementById('gl-' + a.dataset.gl)?.scrollIntoView({behavior: prefersReduced() ? 'auto' : 'smooth', block:'start'});
+  });
   paint('');
   setupReveal(); // content arrived after route()'s afterRender — reveal it now
   let t = null;
