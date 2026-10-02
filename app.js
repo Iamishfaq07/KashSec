@@ -1,8 +1,7 @@
 /* KashSec Academy v2 — two-level structure, Mermaid, callouts, external refs */
 
-/* Repo coordinates for "suggest an edit" deep-links into GitHub's editor. */
+/* Repo coordinates for the collaborator "report a mistake" issue link. */
 const REPO_SLUG = 'Iamishfaq07/KashSec';
-const REPO_BRANCH = 'main';
 
 document.getElementById('year').textContent = new Date().getFullYear();
 document.body.classList.add('reveal-ready');
@@ -3227,10 +3226,6 @@ async function renderSubLesson(pathId, subId){
           ${ctx.next ? pagerCardHTML(ctx.next, 'next', ctx.path.id) : `<span></span>`}
         </div>
         <div class="reader-foot">
-          <a class="suggest-edit" href="https://github.com/${REPO_SLUG}/edit/${REPO_BRANCH}/course/${pathId}/${subId}.md" target="_blank" rel="noopener noreferrer">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-            Suggest an edit on GitHub (collaborators)
-          </a>
           <button class="suggest-edit report-mistake-btn" id="reportMistakeBtn" type="button">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
             Report a mistake (collaborators)
