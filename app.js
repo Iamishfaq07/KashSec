@@ -7,6 +7,30 @@ const REPO_BRANCH = 'main';
 document.getElementById('year').textContent = new Date().getFullYear();
 document.body.classList.add('reveal-ready');
 
+/* Back to top: appears once the reader is well into a long page (lessons
+   run to 7,000px+). One rAF-throttled scroll listener, no layout reads
+   beyond scrollY. */
+(()=>{
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'to-top';
+  btn.setAttribute('aria-label', 'Back to top');
+  btn.title = 'Back to top';
+  btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></svg>';
+  btn.addEventListener('click', ()=>{
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    window.scrollTo({top:0, behavior: reduce ? 'auto' : 'smooth'});
+    document.getElementById('app')?.focus({preventScroll:true});
+  });
+  document.body.appendChild(btn);
+  let ticking = false;
+  window.addEventListener('scroll', ()=>{
+    if(ticking) return;
+    ticking = true;
+    requestAnimationFrame(()=>{ ticking = false; btn.classList.toggle('show', window.scrollY > window.innerHeight * 1.5); });
+  }, {passive:true});
+})();
+
 /* Lesson rendering splits into one required library and two optional ones.
    marked is vendored locally (vendor/marked.min.js, precached by the service
    worker) so lesson text renders even when a CDN is blocked, down, or the
@@ -2235,6 +2259,10 @@ function heroArtSVG(){
   </svg>`;
 }
 
+// A spread across beginner, web, AI and Active Directory, so the homepage
+// shows the range of the labs rather than six variations on one topic.
+const HOME_FEATURED_LABS = ['terminal', 'sqli', 'phishing', 'jwt', 'prompt-injection', 'ad-attack'];
+
 function renderHome(){
   const total = totalSubLessons();
   const continueCtx = STATE.lastVisited ? findSubContext(STATE.lastVisited.pathId, STATE.lastVisited.subId) : null;
@@ -2306,6 +2334,26 @@ function renderHome(){
         ${PATHS.map((p,i)=>`
 ${pathCardHTML(p,i)}
         `).join('')}
+      </div>
+    </section>
+    <section class="sec">
+      <div class="sec-head" data-reveal>
+        <div class="sec-eyebrow">Learn by doing</div>
+        <h2>Hands-on, right in your browser</h2>
+        <p class="sec-lead">${LABS.length} interactive labs and ${TOOLS.length} security tools — no install, no VM, nothing leaves your machine.</p>
+      </div>
+      <div class="labs-grid" data-reveal>
+        ${HOME_FEATURED_LABS.map(id => LABS.find(l => l.id === id)).filter(Boolean).map(l => `
+          <a class="lab-card" href="#/labs/${l.id}">
+            <div class="lab-ico">${cardIco(l.ico)}</div>
+            <h3>${l.title}</h3>
+            <p>${escapeHtml(l.desc)}</p>
+            <div class="lab-related">Lab · ${l.points||10} pts</div>
+          </a>`).join('')}
+      </div>
+      <div class="sec-cta" data-reveal>
+        <a class="btn-amber" href="#/labs">All ${LABS.length} labs →</a>
+        <a class="btn-ghost" href="#/tools">Browse ${TOOLS.length} tools →</a>
       </div>
     </section>
     <section class="sec">
@@ -3014,6 +3062,18 @@ function levelTier(level){
    (amber), still to come — with a plain-text count for screen readers. The
    sidebar already offers keyboard navigation to every lesson, so the
    segments are pointer shortcuts only and stay out of the tab order. */
+/* Previous / next as cards. The old buttons truncated long titles to an
+   ellipsis inside a 48%-wide pill; a card has room for the whole title,
+   says which direction it goes, and flags a jump into a new path. */
+function pagerCardHTML(t, dir, curPathId){
+  const newPath = t.pathId !== curPathId;
+  const label = dir === 'next' ? (newPath ? `Next path · ${t.pathN}` : 'Next lesson') : (newPath ? `Previous path · ${t.pathN}` : 'Previous lesson');
+  return `<a class="pager-card ${dir}" href="#/lesson/${t.pathId}/${t.subId}" rel="${dir}">
+    <span class="pc-dir">${dir === 'prev' ? '← ' : ''}${label}${dir === 'next' ? ' →' : ''}</span>
+    <span class="pc-title">${newPath ? `<span class="pc-ico">${pathIco(t.pathId)}</span>` : ''}${t.pathN}.${t.subN} · ${escapeHtml(t.subTitle)}</span>
+  </a>`;
+}
+
 function lessonTrackHTML(ctx){
   const subs = ctx.path.subs;
   const idx = subs.findIndex(s => s.id === ctx.sub.id);
@@ -3157,12 +3217,8 @@ async function renderSubLesson(pathId, subId){
           <span class="lr-thanks" id="lrThanks">${STATE.lessonRatings[lessonKey(pathId,subId)] ? 'Thanks for the feedback!' : ''}</span>
         </div>
         <div class="reader-nav">
-          ${ctx.prev
-            ? `<a class="btn-ghost sm" href="#/lesson/${ctx.prev.pathId}/${ctx.prev.subId}">← ${ctx.prev.pathN}.${ctx.prev.subN} ${ctx.prev.subTitle}</a>`
-            : `<span></span>`}
-          ${ctx.next
-            ? `<a class="btn-amber sm" href="#/lesson/${ctx.next.pathId}/${ctx.next.subId}">${ctx.next.pathN}.${ctx.next.subN} ${ctx.next.subTitle} →</a>`
-            : `<span></span>`}
+          ${ctx.prev ? pagerCardHTML(ctx.prev, 'prev', ctx.path.id) : `<span></span>`}
+          ${ctx.next ? pagerCardHTML(ctx.next, 'next', ctx.path.id) : `<span></span>`}
         </div>
         <div class="reader-foot">
           <a class="suggest-edit" href="https://github.com/${REPO_SLUG}/edit/${REPO_BRANCH}/course/${pathId}/${subId}.md" target="_blank" rel="noopener noreferrer">
