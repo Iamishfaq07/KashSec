@@ -2913,6 +2913,9 @@ const LEGAL = {
       {h:'How it is paid for', p:[
         'It is not, particularly. The site is static and hosting it costs almost nothing. Advertising may appear on lessons to cover that; if it does, it will be modest and it will never sit between you and the content. Nothing on this site has ever been behind a payment, and that is not going to change.'
       ]},
+      {h:'Who makes it', p:[
+        'KashSec Academy is written, built and maintained by Ishfaq. You can find me on <a href="https://www.linkedin.com/in/iamishfaq07/" target="_blank" rel="noopener noreferrer me">LinkedIn</a> — connect if you are learning security, working in it, or would like to help make the course better.'
+      ]},
       {h:'Corrections', p:[
         'Security material goes out of date and hand-written material contains mistakes. If you find one, please say so — there is a reporting widget on every lesson, and the contact page has the other routes. Corrections are genuinely welcome and get made.'
       ]}
@@ -2922,11 +2925,14 @@ const LEGAL = {
     eyebrow:'Contact', title:'Get in touch',
     lead:'Corrections, questions, broken things, or anything else.',
     sections:[
+      {h:'Reach the author directly', p:[
+        'KashSec Academy is built and maintained by Ishfaq. The quickest way to reach me is on LinkedIn — <a href="https://www.linkedin.com/in/iamishfaq07/" target="_blank" rel="noopener noreferrer me">linkedin.com/in/iamishfaq07</a>. Send a message or a connection request; feedback, corrections, collaboration ideas and questions about learning security are all welcome.'
+      ]},
       {h:'Reporting a mistake in a lesson', p:[
         'Every lesson has a "report a mistake" control at the bottom. That is the fastest route for anything factual — a wrong command, an outdated tool, a broken link, an explanation that does not hold up. Please include which lesson, since the report does not always carry it.'
       ]},
       {h:'Bugs, suggestions and anything technical', p:[
-        'The source repository is currently private. Its issue and edit links are available only to collaborators with access. A public feedback channel is not yet configured; please do not include sensitive information in a report link.'
+        'The source repository is currently private. Its issue and edit links are available only to collaborators with access. For everything else — a bug, a feature idea, a lesson you would like to see — message me on <a href="https://www.linkedin.com/in/iamishfaq07/" target="_blank" rel="noopener noreferrer me">LinkedIn</a>. Please do not include sensitive information in a report link or a message.'
       ]},
       {h:'Privacy and data requests', p:[
         'If you have created an account and want your data exported or deleted, you can do both yourself from the progress page without asking anyone. If something is not working, use either route above and say what you need.'

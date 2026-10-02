@@ -101,6 +101,10 @@ To add a brand-new sub-lesson: drop a `.md` file in the right `course/<path>/` f
 - **[Supabase](https://supabase.com)** *(optional)* — auth + Postgres for cross-device sync; the site never depends on it being configured
 - `npm run build` regenerates crawlable pages, search data, freshness dates, and the service worker. Commit generated files with source changes; CI checks that they match.
 
+## 👋 Contact
+
+KashSec Academy is built and maintained by **Ishfaq** — connect or send feedback on [LinkedIn](https://www.linkedin.com/in/iamishfaq07/).
+
 ## 🌐 Deployment
 
 The site auto-deploys to **Vercel** from the `main` branch. Generated pages are committed and served as static files. Live at [kashsec.vercel.app](https://kashsec.vercel.app/). Lesson, lab, and tool links use canonical paths such as `/lesson/03-linux/terminal-basics.html`; older `#/lesson/...` links redirect to them.

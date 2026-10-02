@@ -41,7 +41,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Security labs","item":"https://kashsec.vercel.app/labs/"},{"@type":"ListItem","position":3,"name":"Webhook Signature Forgery Lab","item":"https://kashsec.vercel.app/labs/webhookforge.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebApplication","name":"Webhook Signature Forgery Lab","description":"Forge an HMAC-signed webhook without the secret, then flip on signature verification and watch it get rejected.","url":"https://kashsec.vercel.app/labs/webhookforge.html","applicationCategory":"SecurityApplication","applicationSubCategory":"security lab","operatingSystem":"Any (runs in a web browser)","browserRequirements":"Requires JavaScript","inLanguage":"en","dateModified":"2026-10-02","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."}}
+{"@context":"https://schema.org","@type":"WebApplication","name":"Webhook Signature Forgery Lab","description":"Forge an HMAC-signed webhook without the secret, then flip on signature verification and watch it get rejected.","url":"https://kashsec.vercel.app/labs/webhookforge.html","applicationCategory":"SecurityApplication","applicationSubCategory":"security lab","operatingSystem":"Any (runs in a web browser)","browserRequirements":"Requires JavaScript","inLanguage":"en","dateModified":"2026-10-02","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners.","founder":{"@type":"Person","name":"Ishfaq","url":"https://www.linkedin.com/in/iamishfaq07/","sameAs":["https://www.linkedin.com/in/iamishfaq07/"]}}}
 </script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why do webhooks need signatures at all?","acceptedAnswer":{"@type":"Answer","text":"The endpoint is public, so anyone can post to it. A signature is the only way to know the request came from the service you expect and was not modified in transit."}},{"@type":"Question","name":"Is HTTPS enough on its own?","acceptedAnswer":{"@type":"Answer","text":"No. TLS protects the request in transit from third parties; it says nothing about who sent it. Anyone can open their own TLS connection to your endpoint."}}]}
@@ -111,6 +111,14 @@
         <span class="brand-txt">KashSec<span class="amber">.</span></span>
       </div>
       <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+      <div class="foot-social">
+        <a class="icon-btn" href="https://www.linkedin.com/in/iamishfaq07/" target="_blank" rel="noopener noreferrer me" aria-label="KashSec's author on LinkedIn" title="LinkedIn">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="3.5"/><line x1="7.5" y1="10.5" x2="7.5" y2="16.5"/><line x1="7.5" y1="7.4" x2="7.5" y2="7.4"/><path d="M11.5 16.5v-6"/><path d="M11.5 13.2a2.6 2.6 0 0 1 5.2 0v3.3"/></svg>
+        </a>
+        <a class="icon-btn" href="/feed.xml" aria-label="RSS feed — what's new" title="RSS feed">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1.2"/></svg>
+        </a>
+      </div>
     </div>
     <div class="foot-cols">
       <div><h4>Learn</h4>
@@ -136,6 +144,7 @@
       <div><h4>About</h4>
         <a href="#/about">About KashSec</a>
         <a href="#/contact">Contact</a>
+        <a href="https://www.linkedin.com/in/iamishfaq07/" target="_blank" rel="noopener noreferrer me">LinkedIn</a>
         <a href="#/changelog">What's new</a>
         <a href="/feed.xml">RSS feed</a>
       </div>
