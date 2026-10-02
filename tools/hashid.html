@@ -41,7 +41,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Security tools","item":"https://kashsec.vercel.app/tools/"},{"@type":"ListItem","position":3,"name":"Hash Identifier","item":"https://kashsec.vercel.app/tools/hashid.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebApplication","name":"Hash Identifier","description":"Paste a hash and get likely algorithms, guessed from its length and character set.","url":"https://kashsec.vercel.app/tools/hashid.html","applicationCategory":"SecurityApplication","applicationSubCategory":"security tool","operatingSystem":"Any (runs in a web browser)","browserRequirements":"Requires JavaScript","inLanguage":"en","dateModified":"2026-10-02","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners."}}
+{"@context":"https://schema.org","@type":"WebApplication","name":"Hash Identifier","description":"Paste a hash and get likely algorithms, guessed from its length and character set.","url":"https://kashsec.vercel.app/tools/hashid.html","applicationCategory":"SecurityApplication","applicationSubCategory":"security tool","operatingSystem":"Any (runs in a web browser)","browserRequirements":"Requires JavaScript","inLanguage":"en","dateModified":"2026-10-02","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners.","founder":{"@type":"Person","name":"Ishfaq","url":"https://www.linkedin.com/in/iamishfaq07/","sameAs":["https://www.linkedin.com/in/iamishfaq07/"]}}}
 </script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why can one hash match several algorithms?","acceptedAnswer":{"@type":"Answer","text":"Because different algorithms can produce the same output length. MD5 and NTLM are both 32 hex characters, so context — where you found it, what system produced it — decides between them."}},{"@type":"Question","name":"Can this tool crack the hash?","acceptedAnswer":{"@type":"Answer","text":"No, it only identifies the likely format. Try the Password Cracking Lab to see what actually happens when a dictionary attack meets a real hash."}},{"@type":"Question","name":"What does the $ prefix mean?","acceptedAnswer":{"@type":"Answer","text":"It is Modular Crypt Format, which stores the algorithm, cost parameters and salt alongside the digest. It is a good sign — it means the system is using a proper password hash rather than a bare digest."}}]}
@@ -111,6 +111,14 @@
         <span class="brand-txt">KashSec<span class="amber">.</span></span>
       </div>
       <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+      <div class="foot-social">
+        <a class="icon-btn" href="https://www.linkedin.com/in/iamishfaq07/" target="_blank" rel="noopener noreferrer me" aria-label="KashSec's author on LinkedIn" title="LinkedIn">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="3.5"/><line x1="7.5" y1="10.5" x2="7.5" y2="16.5"/><line x1="7.5" y1="7.4" x2="7.5" y2="7.4"/><path d="M11.5 16.5v-6"/><path d="M11.5 13.2a2.6 2.6 0 0 1 5.2 0v3.3"/></svg>
+        </a>
+        <a class="icon-btn" href="/feed.xml" aria-label="RSS feed — what's new" title="RSS feed">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1.2"/></svg>
+        </a>
+      </div>
     </div>
     <div class="foot-cols">
       <div><h4>Learn</h4>
@@ -136,6 +144,7 @@
       <div><h4>About</h4>
         <a href="#/about">About KashSec</a>
         <a href="#/contact">Contact</a>
+        <a href="https://www.linkedin.com/in/iamishfaq07/" target="_blank" rel="noopener noreferrer me">LinkedIn</a>
         <a href="#/changelog">What's new</a>
         <a href="/feed.xml">RSS feed</a>
       </div>

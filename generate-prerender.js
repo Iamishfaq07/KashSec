@@ -198,12 +198,22 @@ const breadcrumbLd = crumbs => ({
   })),
 });
 
+// The person behind the course. Named as the lessons' author and the
+// organisation's founder so the structured data says who wrote this —
+// the authorship signal search engines look for on educational content.
+const AUTHOR = {
+  '@type': 'Person',
+  name: 'Ishfaq',
+  url: 'https://www.linkedin.com/in/iamishfaq07/',
+  sameAs: ['https://www.linkedin.com/in/iamishfaq07/'],
+};
 const ORG = {
   '@type': 'EducationalOrganization',
   name: 'KashSec Academy',
   url: SITE + '/',
   logo: SITE + '/icons/icon-512.png',
   description: 'Free cybersecurity education for complete beginners.',
+  founder: AUTHOR,
 };
 
 // Per-path social card from generate-og-image.js, when one has been built;
@@ -323,6 +333,7 @@ for (const p of PATHS) {
       inLanguage: 'en',
       dateModified: lastmod,
       learningResourceType: 'Lesson',
+      author: AUTHOR,
       image: pathOgImage(p.id) || `${SITE}/og-image.png`,
       educationalLevel: p.level || 'Beginner',
       timeRequired: readingTime(clean),

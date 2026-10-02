@@ -1,8 +1,7 @@
 /* KashSec Academy v2 — two-level structure, Mermaid, callouts, external refs */
 
-/* Repo coordinates for "suggest an edit" deep-links into GitHub's editor. */
+/* Repo coordinates for the collaborator "report a mistake" issue link. */
 const REPO_SLUG = 'Iamishfaq07/KashSec';
-const REPO_BRANCH = 'main';
 
 document.getElementById('year').textContent = new Date().getFullYear();
 document.body.classList.add('reveal-ready');
@@ -2913,6 +2912,9 @@ const LEGAL = {
       {h:'How it is paid for', p:[
         'It is not, particularly. The site is static and hosting it costs almost nothing. Advertising may appear on lessons to cover that; if it does, it will be modest and it will never sit between you and the content. Nothing on this site has ever been behind a payment, and that is not going to change.'
       ]},
+      {h:'Who makes it', p:[
+        'KashSec Academy is written, built and maintained by Ishfaq. You can find me on <a href="https://www.linkedin.com/in/iamishfaq07/" target="_blank" rel="noopener noreferrer me">LinkedIn</a> — connect if you are learning security, working in it, or would like to help make the course better.'
+      ]},
       {h:'Corrections', p:[
         'Security material goes out of date and hand-written material contains mistakes. If you find one, please say so — there is a reporting widget on every lesson, and the contact page has the other routes. Corrections are genuinely welcome and get made.'
       ]}
@@ -2922,11 +2924,14 @@ const LEGAL = {
     eyebrow:'Contact', title:'Get in touch',
     lead:'Corrections, questions, broken things, or anything else.',
     sections:[
+      {h:'Reach the author directly', p:[
+        'KashSec Academy is built and maintained by Ishfaq. The quickest way to reach me is on LinkedIn — <a href="https://www.linkedin.com/in/iamishfaq07/" target="_blank" rel="noopener noreferrer me">linkedin.com/in/iamishfaq07</a>. Send a message or a connection request; feedback, corrections, collaboration ideas and questions about learning security are all welcome.'
+      ]},
       {h:'Reporting a mistake in a lesson', p:[
         'Every lesson has a "report a mistake" control at the bottom. That is the fastest route for anything factual — a wrong command, an outdated tool, a broken link, an explanation that does not hold up. Please include which lesson, since the report does not always carry it.'
       ]},
       {h:'Bugs, suggestions and anything technical', p:[
-        'The source repository is currently private. Its issue and edit links are available only to collaborators with access. A public feedback channel is not yet configured; please do not include sensitive information in a report link.'
+        'The source repository is currently private. Its issue and edit links are available only to collaborators with access. For everything else — a bug, a feature idea, a lesson you would like to see — message me on <a href="https://www.linkedin.com/in/iamishfaq07/" target="_blank" rel="noopener noreferrer me">LinkedIn</a>. Please do not include sensitive information in a report link or a message.'
       ]},
       {h:'Privacy and data requests', p:[
         'If you have created an account and want your data exported or deleted, you can do both yourself from the progress page without asking anyone. If something is not working, use either route above and say what you need.'
@@ -3221,10 +3226,6 @@ async function renderSubLesson(pathId, subId){
           ${ctx.next ? pagerCardHTML(ctx.next, 'next', ctx.path.id) : `<span></span>`}
         </div>
         <div class="reader-foot">
-          <a class="suggest-edit" href="https://github.com/${REPO_SLUG}/edit/${REPO_BRANCH}/course/${pathId}/${subId}.md" target="_blank" rel="noopener noreferrer">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-            Suggest an edit on GitHub (collaborators)
-          </a>
           <button class="suggest-edit report-mistake-btn" id="reportMistakeBtn" type="button">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
             Report a mistake (collaborators)

@@ -12,7 +12,7 @@
 - **New interactive labs**: 4 API Security labs (BOLA/BFLA, GraphQL introspection abuse, mass assignment, rate-limit bypass), 4 AI Red Teaming labs (prompt injection, jailbreak, indirect injection, an agentic-risk defensive exercise), and a guided 3-stage Active Directory Attack Lab (BloodHound recon, Kerberoasting, Golden Ticket)
 - **Two new advanced paths**: **API Security** (OWASP API Top 10, BOLA/BFLA, JWT attacks, GraphQL security, capstone lab) and **DevSecOps & AppSec Program** (SAST/DAST/SCA, CI/CD security, secrets & supply chain, threat modeling, building an AppSec program)
 - **Tools** — a suite of in-browser security utilities (`/tools/`): encoder/decoder, hash generator, JWT decoder, CVSS 4.0 + 3.1 calculator, subnet calculator, password-strength meter, and a cipher playground. All client-side; nothing leaves the browser.
-- **Full-text search** — search now matches the body of every lesson, not just titles. Plus an activity heatmap on your progress page, reading preferences (text size, width, legibility boost), Markdown export of your notes, an interview question bank (`#/interview`), a changelog (`#/changelog`) with RSS feed, and a "suggest an edit" link on every lesson.
+- **Full-text search** — search now matches the body of every lesson, not just titles. Plus an activity heatmap on your progress page, reading preferences (text size, width, legibility boost), Markdown export of your notes, an interview question bank (`#/interview`), a changelog (`#/changelog`) with RSS feed.
 - **Glossary & flashcards** — all 600+ Key Terms from every lesson in one searchable A–Z glossary (`#/glossary`), plus an active-recall flashcard mode (`#/review`) that remembers which terms you already know
 - **Better lesson reading** — reading-time estimates, an "On this page" table of contents on longer lessons, one-click copy buttons and syntax highlighting on code blocks
 - **Streaks, backups & shortcuts** — a visible day-streak counter, JSON export/import of all your progress (no account needed), quiz "review your last attempt", and keyboard shortcuts (`[` / `]` between lessons, `?` for the cheatsheet)
@@ -100,6 +100,10 @@ To add a brand-new sub-lesson: drop a `.md` file in the right `course/<path>/` f
 - **[Mermaid](https://mermaid.js.org/)** — diagrams as code
 - **[Supabase](https://supabase.com)** *(optional)* — auth + Postgres for cross-device sync; the site never depends on it being configured
 - `npm run build` regenerates crawlable pages, search data, freshness dates, and the service worker. Commit generated files with source changes; CI checks that they match.
+
+## 👋 Contact
+
+KashSec Academy is built and maintained by **Ishfaq** — connect or send feedback on [LinkedIn](https://www.linkedin.com/in/iamishfaq07/).
 
 ## 🌐 Deployment
 
