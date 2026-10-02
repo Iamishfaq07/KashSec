@@ -336,6 +336,11 @@ if (fs.existsSync(ogMetaPath)) {
 
   // Per-path cards (og/<path>.jpg) bake in each path's lesson count too.
   const missing = PATHS.filter(p => !fs.existsSync(path.join(ROOT, 'og', p.id + '.jpg'))).map(p => p.id);
+  // Lab and tool pages point at section cards that bake in LABS/TOOLS
+  // counts — the same counts the site card above is checked against.
+  const missingSections = ['labs', 'tools'].filter(id => !fs.existsSync(path.join(ROOT, 'og', id + '.jpg')));
+  check('labs and tools have section social cards in og/', missingSections.length === 0,
+    `missing: ${missingSections.join(', ')} — run npm run build:og`);
   check('every path has a social card in og/', missing.length === 0,
     `missing: ${missing.join(', ')} — run npm run build:og`);
   const cardDrift = PATHS

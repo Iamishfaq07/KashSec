@@ -209,6 +209,7 @@ const ORG = {
 // Per-path social card from generate-og-image.js, when one has been built;
 // otherwise the site-wide card. Checked on disk so a fresh clone that never
 // ran build:og still emits valid tags.
+const sectionOgImage = dir => fs.existsSync(path.join(ROOT, 'og', dir + '.jpg')) ? `${SITE}/og/${dir}.jpg` : null;
 const pathOgImage = id => fs.existsSync(path.join(ROOT, 'og', id + '.jpg')) ? `${SITE}/og/${id}.jpg` : null;
 
 const template = ({title, desc, canonical, spaPath, contentHtml, crumbs, jsonLd = [], ogType = 'article', ogImage = null, ogAlt = null}) => `<!doctype html>
@@ -496,6 +497,7 @@ function writeStubSet(items, urlPrefix, dirName, kindLabel, indexTitle, indexDes
 
     fs.writeFileSync(path.join(outDir, it.id + '.html'), template({
       title, desc, canonical, spaPath, contentHtml: body,
+      ogImage: sectionOgImage(dirName), ogAlt: `KashSec Academy · ${it.title}`,
       crumbs: [
         { name: 'KashSec Academy', url: SITE + '/' },
         { name: plural, url: sectionUrl },
@@ -539,6 +541,7 @@ function writeStubSet(items, urlPrefix, dirName, kindLabel, indexTitle, indexDes
   fs.writeFileSync(path.join(outDir, 'index.html'), template({
     title: indexTitle + ' · KashSec Academy', desc: indexDesc,
     canonical: sectionUrl, spaPath: `/#/${dirName}`, contentHtml, ogType: 'website',
+    ogImage: sectionOgImage(dirName), ogAlt: `KashSec Academy · ${indexTitle}`,
     crumbs: [
       { name: 'KashSec Academy', url: SITE + '/' },
       { name: indexTitle, url: sectionUrl },
