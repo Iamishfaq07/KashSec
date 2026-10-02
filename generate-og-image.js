@@ -169,6 +169,26 @@ const pathCardHtml = p => `<!doctype html><meta charset="utf-8"><style>
 </main>
 <div class="bar"></div>`;
 
+const SECTIONS = [
+  { id: 'labs', eyebrow: 'Interactive labs', title: `${LABS.length} hands-on labs, right in your browser`,
+    sub: 'SQL injection, JWT forgery, phishing, prompt injection, Active Directory and more. No install, no VM.',
+    icons: LABS.slice(0, 9).map(l => l.ico), chips: [`${LABS.length} labs`, 'Free forever', 'Runs in your browser'] },
+  { id: 'tools', eyebrow: 'Security tools', title: `${TOOLS.length} free security tools`,
+    sub: 'Encoders, hash and JWT tools, CVSS calculator, subnetting, regex and more. Nothing you type leaves your browser.',
+    icons: TOOLS.slice(0, 9).map(t => t.ico), chips: [`${TOOLS.length} tools`, 'Free forever', '100% client-side'] },
+];
+const sectionCardHtml = sec => pathCardHtml({ n: '', id: '', title: sec.title, desc: sec.sub, level: '', subs: [] })
+  .replace(/<div class="eyebrow">[\s\S]*?<\/div>/, `<div class="eyebrow">${esc(sec.eyebrow)}</div>`)
+  .replace(/<div class="chips">[\s\S]*?<\/div>\n<\/main>/, `<div class="chips">${sec.chips.map((c, i) => `<div class="chip${i ? '' : ' hot'}">${esc(c)}</div>`).join('')}</div>\n</main>`)
+  .replace(/<div class="ring"><\/div>\s*<div class="ico">[\s\S]*?<\/div>/,
+    `<div class="grid8">${sec.icons.map(n => `<div class="g"><svg viewBox="0 0 24 24" fill="none" stroke="#5FE0CF" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${KICON[n] || ''}</svg></div>`).join('')}</div>`)
+  .replace('</style>', `.grid8{position:absolute;right:80px;top:150px;display:grid;grid-template-columns:repeat(3,104px);gap:16px}
+  .g{width:104px;height:104px;border-radius:26px;display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(160deg,rgba(63,182,168,.14),rgba(239,164,58,.06));border:1px solid rgba(95,224,207,.28)}
+  .g:nth-child(5){border-color:rgba(239,164,58,.55);box-shadow:0 20px 60px -24px rgba(239,164,58,.6)}
+  .g svg{width:50px;height:50px}
+  h1{max-width:700px!important}.sub{max-width:690px!important}</style>`);
+
 let chromium;
 try {
   ({ chromium } = await import('playwright'));
@@ -205,6 +225,15 @@ for (const p of PATHS) {
   await page.setContent(pathCardHtml(p), { waitUntil: 'load' });
   await page.waitForTimeout(80);
   await page.screenshot({ path: path.join(OG_DIR, p.id + '.jpg'), type: 'jpeg', quality: 84 });
+}
+
+/* ---- section cards: labs and tools ----
+   The 74 lab and tool pages shared the site card. Each section now gets
+   one that says what it is, with a grid of that section's own glyphs. */
+for (const sec of SECTIONS) {
+  await page.setContent(sectionCardHtml(sec), { waitUntil: 'load' });
+  await page.waitForTimeout(80);
+  await page.screenshot({ path: path.join(OG_DIR, sec.id + '.jpg'), type: 'jpeg', quality: 84 });
 }
 await browser.close();
 
