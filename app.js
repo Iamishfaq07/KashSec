@@ -1724,6 +1724,7 @@ const KICON = {
   webPage:'<rect x="3" y="4" width="18" height="16" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="7" y1="13" x2="13" y2="13"/><line x1="7" y1="16" x2="16" y2="16"/>',
   code:'<polyline points="8 6 2 12 8 18"/><polyline points="16 6 22 12 16 18"/><line x1="13.5" y1="4" x2="10.5" y2="20"/>',
   phone:'<rect x="6" y="2" width="12" height="20" rx="2.5"/><line x1="11" y1="18" x2="13" y2="18"/>',
+  award:'<circle cx="12" cy="9" r="6"/><path d="M8.6 13.9 7 22l5-3 5 3-1.6-8.1"/><path d="m9.8 9 1.5 1.5 3-3"/>',
   factory:'<path d="M3 21V10l5 3v-3l5 3V4h4l1.5 17z"/><line x1="2" y1="21" x2="22" y2="21"/><line x1="7" y1="17" x2="9" y2="17"/><line x1="11" y1="17" x2="13" y2="17"/>',
 };
 
@@ -2673,6 +2674,16 @@ function renderPathOverview(pathId){
  * The AI certifications at the bottom did not exist when this list was first
  * written; the whole category was created in 2026. If you are reading this
  * more than a year later, assume it is stale again and check. */
+/* All 13 certification cards used the same 🎓 emoji, which said nothing.
+   They now share an award glyph tinted by level, so the roadmap reads
+   entry → specialist at a glance (the level is still spelled out). */
+function certTier(level){
+  const l = String(level).toLowerCase();
+  if(l === 'entry') return 'start';
+  if(l.startsWith('entry')) return 'beginner';
+  if(l === 'intermediate') return 'intermediate';
+  return 'advanced';
+}
 const CERTS = [
   {id:'sec1', name:'SEC1 (Cyber Security 101)', org:'TryHackMe', level:'Entry',
     desc:'A foundational, fully hands-on certification rather than a multiple-choice one — unusual at this level, where almost everything else tests recall. A reasonable first certificate for someone with no background at all.',
@@ -2739,7 +2750,7 @@ function renderCertTracker(){
           const status = STATE.certTracker[c.id] || 'not-started';
           return `
           <div class="lab-card cert-track-card ${statusMeta[status].cls}" style="cursor:default">
-            <div class="lab-ico">🎓</div>
+            <div class="lab-ico cert-ico" data-tier="${certTier(c.level)}" title="${escapeHtml(c.level)}">${cardIco('award')}</div>
             <h3>${escapeHtml(c.name)}</h3>
             <p>${escapeHtml(c.desc)}</p>
             <div class="lab-related">${escapeHtml(c.org)} · ${escapeHtml(c.level)}</div>
@@ -9862,7 +9873,7 @@ function renderQuiz(id){
       <section class="sec">
         <div class="quiz-wrap">
           <div class="quiz-head" data-reveal>
-            <div class="sec-eyebrow">${isFinal ? 'Final Exam' : `Path ${path.n} Quiz`}</div>
+            <div class="sec-eyebrow">${isFinal ? `<span class="track-eyebrow-ico">${cardIco('award')}</span>Final Exam` : `<span class="track-eyebrow-ico">${pathIco(path.id)}</span>Path ${path.n} Quiz`}</div>
             <h1>${quiz.title}</h1>
           </div>
           <div class="quiz-progress-dots">
@@ -9939,7 +9950,7 @@ function renderQuiz(id){
     app.innerHTML = `
       <section class="sec">
         <div class="quiz-result">
-          <div class="sec-eyebrow" data-reveal>${isFinal ? 'Final Exam' : `Path ${path.n} Quiz`} results</div>
+          <div class="sec-eyebrow" data-reveal>${isFinal ? `<span class="track-eyebrow-ico">${cardIco('award')}</span>Final Exam` : `<span class="track-eyebrow-ico">${pathIco(path.id)}</span>Path ${path.n} Quiz`} results</div>
           <div class="quiz-result-ring" data-reveal style="--i:1">
             <svg viewBox="0 0 150 150">
               <circle class="ring-track" cx="75" cy="75" r="${R}"/>
