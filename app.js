@@ -1495,7 +1495,7 @@ const PATHS = [
    Path 00 (fresher basics) is included in every track since it's baseline. */
 const TRACKS = [
   {
-    id:'soc-analyst', ico:'📡', title:'SOC Analyst Track', desc:'Detect and respond to attacks in real time. The most common security entry-level role.',
+    id:'soc-analyst', ico:'radio', title:'SOC Analyst Track', desc:'Detect and respond to attacks in real time. The most common security entry-level role.',
     steps:[
       {pathId:'00-fresher-basics'},
       {pathId:'01-introduction'},
@@ -1510,7 +1510,7 @@ const TRACKS = [
     ]
   },
   {
-    id:'pentester', ico:'⚔️', title:'Penetration Tester Track', desc:'Legally break into systems and write the reports that fix them.',
+    id:'pentester', ico:'keyhole', title:'Penetration Tester Track', desc:'Legally break into systems and write the reports that fix them.',
     steps:[
       {pathId:'00-fresher-basics'},
       {pathId:'01-introduction'},
@@ -1526,7 +1526,7 @@ const TRACKS = [
     ]
   },
   {
-    id:'bug-hunter', ico:'🎯', title:'Bug Bounty Hunter Track', desc:'Find real bugs in real programs for cash. Web + logic-focused.',
+    id:'bug-hunter', ico:'bug', title:'Bug Bounty Hunter Track', desc:'Find real bugs in real programs for cash. Web + logic-focused.',
     steps:[
       {pathId:'00-fresher-basics'},
       {pathId:'01-introduction'},
@@ -1542,7 +1542,7 @@ const TRACKS = [
     ]
   },
   {
-    id:'cloud-sec', ico:'☁️', title:'Cloud Security Engineer Track', desc:'Secure AWS, Azure, and GCP — the fastest-growing security specialty.',
+    id:'cloud-sec', ico:'cloud', title:'Cloud Security Engineer Track', desc:'Secure AWS, Azure, and GCP — the fastest-growing security specialty.',
     steps:[
       {pathId:'00-fresher-basics'},
       {pathId:'01-introduction'},
@@ -1556,7 +1556,7 @@ const TRACKS = [
     ]
   },
   {
-    id:'appsec', ico:'🛠', title:'AppSec Engineer Track', desc:'Help developers ship safe software. The bridge between security and engineering.',
+    id:'appsec', ico:'code', title:'AppSec Engineer Track', desc:'Help developers ship safe software. The bridge between security and engineering.',
     steps:[
       {pathId:'00-fresher-basics'},
       {pathId:'01-introduction'},
@@ -1572,7 +1572,7 @@ const TRACKS = [
     ]
   },
   {
-    id:'ai-red-team', ico:'🤖', title:'AI Red Teamer Track', desc:'Adversarially test AI systems for safety and security. A brand-new field.',
+    id:'ai-red-team', ico:'robot', title:'AI Red Teamer Track', desc:'Adversarially test AI systems for safety and security. A brand-new field.',
     steps:[
       {pathId:'00-fresher-basics'},
       {pathId:'01-introduction'},
@@ -1584,7 +1584,7 @@ const TRACKS = [
     ]
   },
   {
-    id:'grc-analyst', ico:'📋', title:'GRC Analyst Track', desc:'Governance, risk, and compliance — the non-coding path into security.',
+    id:'grc-analyst', ico:'scale', title:'GRC Analyst Track', desc:'Governance, risk, and compliance — the non-coding path into security.',
     steps:[
       {pathId:'01-introduction'},
       {pathId:'10-fundamentals'},
@@ -1976,7 +1976,22 @@ const prefersReduced = () => window.matchMedia('(prefers-reduced-motion: reduce)
 
 /* Runs after every view render: reveal-on-scroll, cursor spotlight,
    active nav highlight, and hero count-up. */
+/* Lab pages were written with an emoji in their <h1> (💉 SQL Injection
+   Sandbox…) while the lab cards, tool pages and everything else use the
+   SVG icon set. Rather than touch 40-odd renderers, swap the leading emoji
+   for the lab's own card glyph once the page has rendered. */
+function decorateLabHeading(){
+  const m = activeRoute().match(/^#\/labs\/([\w-]+)/);
+  const lab = m && LABS.find(l => l.id === m[1]);
+  const h1 = lab && app.querySelector('.sec-head h1');
+  if(!h1 || h1.querySelector('.tool-head-ico') || !KICON[lab.ico]) return;
+  const first = h1.firstChild;
+  if(first && first.nodeType === 3) first.textContent = first.textContent.replace(/^[\p{Extended_Pictographic}\uFE0F\u200D\s]+/u, '');
+  h1.insertAdjacentHTML('afterbegin', `<span class="tool-head-ico">${cardIco(lab.ico)}</span>`);
+}
+
 function afterRender(){
+  decorateLabHeading();
   updateActiveNav();
   setupReveal();
   wireSpotlight();
@@ -2365,7 +2380,7 @@ ${pathCardHTML(p,i)}
         ${CAREERS.slice(0,4).map((c,i)=>`
           <div class="career-card" data-spotlight data-reveal style="--i:${i}">
             <h3>${c.role}</h3><p>${c.desc}</p>
-            <div class="career-follow"><span>Follow:</span> ${c.follow}</div>
+            <div class="career-follow"><span>Follow:</span> ${careerFollowHTML(c.follow)}</div>
           </div>
         `).join('')}
       </div>
@@ -2863,7 +2878,7 @@ function renderCareers(){
         ${CAREERS.map((c,i)=>`
           <div class="career-card" data-spotlight data-reveal style="--i:${i%4}">
             <h3>${c.role}</h3><p>${c.desc}</p>
-            <div class="career-follow"><span>Follow paths:</span> ${c.follow}</div>
+            <div class="career-follow"><span>Follow paths:</span> ${careerFollowHTML(c.follow)}</div>
           </div>
         `).join('')}
       </div>
@@ -3077,6 +3092,15 @@ function pagerCardHTML(t, dir, curPathId){
     <span class="pc-dir">${dir === 'prev' ? '← ' : ''}${label}${dir === 'next' ? ' →' : ''}</span>
     <span class="pc-title">${newPath ? `<span class="pc-ico">${pathIco(t.pathId)}</span>` : ''}${t.pathN}.${t.subN} · ${escapeHtml(t.subTitle)}</span>
   </a>`;
+}
+
+/* "02 → 10 → 12" on a career card named paths without linking to them.
+   Each number becomes a small chip with the path's icon that opens it. */
+function careerFollowHTML(follow){
+  return String(follow).split(/\s*→\s*/).map(n => {
+    const p = PATHS.find(x => x.n === n.trim());
+    return p ? `<a class="follow-chip" href="#/lesson/${p.id}" title="Path ${p.n} — ${escapeHtml(p.title)}" aria-label="Path ${p.n}: ${escapeHtml(p.title)}">${pathIco(p.id)}${p.n}</a>` : escapeHtml(n);
+  }).join('<span class="follow-arrow" aria-hidden="true">→</span>');
 }
 
 function lessonTrackHTML(ctx){
@@ -4224,7 +4248,7 @@ function renderTracks(){
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow">Practice tracks</div>
         <h1>A curated route for the job you actually want</h1>
-        <p class="sec-lead">The 21-path course covers everything. A track picks the exact lessons for a specific role and puts them in the right order — so you're not learning bug-bounty recon when you want to be a SOC analyst.</p>
+        <p class="sec-lead">The ${PATHS.length}-path course covers everything. A track picks the exact lessons for a specific role and puts them in the right order — so you're not learning bug-bounty recon when you want to be a SOC analyst.</p>
       </div>
       <div class="tracks-grid" data-reveal style="--i:1">
         ${TRACKS.map(t=>{
@@ -4234,7 +4258,7 @@ function renderTracks(){
           return `
             <a class="track-card" href="#/track/${t.id}">
               <div class="track-head">
-                <span class="track-ico">${t.ico}</span>
+                <span class="track-ico">${cardIco(t.ico)}</span>
                 <span class="track-title">${t.title}</span>
               </div>
               <p class="track-desc">${escapeHtml(t.desc)}</p>
@@ -4262,7 +4286,7 @@ function renderTrack(id){
     <section class="sec">
       <a href="#/tracks" class="back-link" data-reveal>← All tracks</a>
       <div class="sec-head" data-reveal style="--i:1">
-        <div class="sec-eyebrow">${track.ico} Practice track</div>
+        <div class="sec-eyebrow"><span class="track-eyebrow-ico">${cardIco(track.ico)}</span>Practice track</div>
         <h1>${escapeHtml(track.title)}</h1>
         <p class="sec-lead">${escapeHtml(track.desc)}</p>
       </div>
@@ -10899,7 +10923,7 @@ function renderProgressHub(){
         <div class="hub-stat"><div class="hub-stat-n">🔥 ${streakInfo().current}</div><div class="hub-stat-l">Day streak</div></div>
         <div class="hub-stat"><div class="hub-stat-n">${streakInfo().longest}</div><div class="hub-stat-l">Longest streak</div></div>
         <div class="hub-stat"><div class="hub-stat-n">${labScoreboard().points}</div><div class="hub-stat-l">Lab points</div></div>
-        <div class="hub-stat"><div class="hub-stat-n">${rankFor(totalScore()).name}</div><div class="hub-stat-l">${totalScore()} total pts</div></div>
+        <div class="hub-stat"><div class="hub-stat-n is-word">${rankFor(totalScore()).name}</div><div class="hub-stat-l">${totalScore()} total pts</div></div>
       </div>
 
       ${(()=>{

@@ -444,6 +444,14 @@ a{color:inherit}
 .career-card p{color:var(--muted);font-size:.9rem;margin:0 0 1rem;line-height:1.6}
 .career-follow{font-family:var(--font-mono);font-size:.72rem;color:var(--muted2);letter-spacing:.02em}
 .career-follow span{color:var(--amber)}
+.career-follow{display:flex;align-items:center;flex-wrap:wrap;gap:.3rem}
+.follow-chip{display:inline-flex;align-items:center;gap:.3rem;padding:.18rem .5rem;border-radius:99px;text-decoration:none;
+  color:var(--text);background:var(--overlay-2);border:1px solid var(--border);font-family:var(--font-mono);font-size:.72rem;
+  transition:border-color var(--dur-1) var(--ease),color var(--dur-1) var(--ease)}
+.follow-chip .kico{width:12px;height:12px;color:var(--teal)}
+.follow-chip:hover,.follow-chip:focus-visible{border-color:var(--amber);color:var(--amber)}
+.career-follow .follow-arrow{color:var(--muted2)}
+.career-follow > span:first-child{margin-right:.2rem}
 
 .sec-cta{text-align:center;margin-top:1.8rem}
 
@@ -1046,6 +1054,9 @@ body.zen-mode:has(.reader-wrap) .reader{max-width:44rem;margin:0 auto}
 .hub-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.9rem;margin-bottom:2.2rem}
 .hub-stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1.2rem}
 .hub-stat-n{font-family:var(--font-display);font-weight:700;font-size:1.8rem}
+/* A rank name ("Newcomer", "Practitioner") is a word, not a number: at the
+   numeric size it overflowed its card. */
+.hub-stat-n.is-word{font-size:1.3rem;line-height:1.25;overflow-wrap:anywhere}
 .hub-stat-l{font-family:var(--font-mono);font-size:.68rem;color:var(--muted2);text-transform:uppercase;letter-spacing:.04em;margin-top:.2rem}
 .hub-section{margin-bottom:2.6rem}
 .hub-section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.1rem}
@@ -1344,7 +1355,11 @@ mark{background:rgba(239,164,58,.35);color:inherit;border-radius:3px;padding:0 1
   padding:1.2rem 1.3rem;text-decoration:none;color:var(--text);transition:border-color .18s var(--ease),transform .18s var(--ease)}
 .track-card:hover{border-color:rgba(239,164,58,.5);transform:translateY(-2px)}
 .track-head{display:flex;align-items:center;gap:.55rem;margin-bottom:.55rem}
-.track-ico{font-size:1.4rem}
+.track-ico{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;flex:none;border-radius:10px;
+  background:var(--overlay-2);border:1px solid var(--border);color:var(--teal)}
+.track-ico .kico{width:18px;height:18px}
+.track-eyebrow-ico{display:inline-flex;vertical-align:-.2em;margin-right:.45rem}
+.track-eyebrow-ico .kico{width:15px;height:15px}
 .track-title{font-family:var(--font-display);font-weight:700;font-size:1.05rem}
 .track-desc{color:var(--muted);font-size:.9rem;line-height:1.55;min-height:2.6em;margin-bottom:1rem}
 .track-progress{margin-bottom:.6rem}
@@ -1394,6 +1409,14 @@ mark{background:rgba(239,164,58,.35);color:inherit;border-radius:3px;padding:0 1
   width:34px;height:34px;border-radius:9px;margin-right:.6rem;vertical-align:-.55rem;
   background:var(--overlay-1);border:1px solid var(--border);color:var(--teal-2)}
 .tool-head-ico .kico{width:18px;height:18px}
+/* Heading glyph for tool and lab pages: sized to the h1 and centred on it.
+   It was a 34px chip on -.55rem baseline offset, which sat below the
+   title's midline at h1 size. */
+.sec-head h1:has(> .tool-head-ico){display:flex;align-items:center;gap:.75rem}
+.sec-head h1 > .tool-head-ico{width:48px;height:48px;margin:0;flex:none;border-radius:13px;vertical-align:middle;
+  background:linear-gradient(160deg,rgba(63,182,168,.14),rgba(239,164,58,.06)),var(--surface);border-color:rgba(95,224,207,.3)}
+.sec-head h1 > .tool-head-ico .kico{width:24px;height:24px}
+@media(max-width:640px){.sec-head h1 > .tool-head-ico{width:40px;height:40px}.sec-head h1 > .tool-head-ico .kico{width:20px;height:20px}}
 .lab-card h3{font-family:var(--font-display);font-size:1.1rem;margin:0 0 .5rem}
 .lab-card p{color:var(--muted);font-size:.87rem;line-height:1.55;margin:0 0 .8rem}
 .lab-related{font-family:var(--font-mono);font-size:.68rem;color:var(--teal-2)}
