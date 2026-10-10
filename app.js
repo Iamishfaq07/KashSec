@@ -2011,8 +2011,39 @@ function decorateLabHeading(){
   h1.insertAdjacentHTML('afterbegin', `<span class="tool-head-ico">${cardIco(lab.ico)}</span>`);
 }
 
+/* The tab title follows the route. Pages with a prerendered twin (lessons,
+   labs, tools, hubs) load as a real page and already carry the right title;
+   app-only routes (progress, glossary, careers…) kept whatever title the
+   first page had, so tabs, history entries, bookmarks and screen-reader page
+   announcements all named the wrong page. */
+const STATIC_TITLE = document.title;
+const HOME_TITLE = 'KashSec Academy — Free cybersecurity course from absolute zero';
+// Page names for app-only routes. Their h1s are headlines ("Track
+// everything in one place"), which read badly as a tab or history entry.
+const ROUTE_TITLES = {
+  '#/progress':'My progress', '#/glossary':'Cybersecurity glossary', '#/tracks':'Career tracks',
+  '#/careers':'Cybersecurity careers', '#/certs':'Certification roadmap', '#/career-quiz':'Career-fit quiz',
+  '#/roadmap':'Learning roadmap', '#/review':'Flashcard review', '#/changelog':"What's new",
+  '#/interview':'Mock interview practice', '#/daily':'Daily challenge', '#/certificate':'Your certificate',
+  '#/capstone':'Capstone attack chain', '#/quiz/final':'Final exam', '#/quiz/shuffle':'Shuffle quiz',
+  '#/quiz/missed':'Review missed questions', '#/about':'About', '#/contact':'Contact',
+  '#/privacy':'Privacy policy', '#/terms':'Terms of use',
+};
+function syncDocTitle(){
+  const r = activeRoute();
+  if(r.startsWith('#/search')) return; // the search page titles itself with the query
+  if(hashRouteForPath(location.pathname) === r){ document.title = STATIC_TITLE; return; }
+  if(r === '#/'){ document.title = HOME_TITLE; return; }
+  const h1 = app.querySelector('h1');
+  const name = ROUTE_TITLES[r] || h1?.dataset.pageTitle || (h1?.textContent || '').replace(/\s+/g, ' ').trim();
+  if(!name) return;
+  const full = `${name} · KashSec Academy`;
+  document.title = full.length <= 65 ? full : `${name} · KashSec`;
+}
+
 function afterRender(){
   decorateLabHeading();
+  syncDocTitle();
   updateActiveNav();
   setupReveal();
   wireSpotlight();
@@ -3972,7 +4003,7 @@ function renderNotFound(){
     <section class="sec">
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow">404</div>
-        <h1>This page wandered off</h1>
+        <h1 data-page-title="Page not found">This page wandered off</h1>
         <p class="sec-lead">The link may be old or mistyped. Let's get you back on track.</p>
       </div>
       <div class="hero-btns" data-reveal style="--i:1">

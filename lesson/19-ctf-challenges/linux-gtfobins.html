@@ -5,12 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Linux — The Binary That Betrayed Root — Path 19 · KashSec Academy</title>
-<meta name="description" content="Category: Linux/Privesc · Difficulty: Medium">
+<meta name="description" content="Medium Linux/Privesc CTF challenge: You have low-privileged SSH access to a training box as user intern. This section's earlier privesc challenge covered…">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/19-ctf-challenges/linux-gtfobins.html">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/icons/icon-192.png" type="image/png" sizes="192x192">
 <meta property="og:title" content="Linux — The Binary That Betrayed Root — Path 19 · KashSec Academy">
-<meta property="og:description" content="Category: Linux/Privesc · Difficulty: Medium">
+<meta property="og:description" content="Medium Linux/Privesc CTF challenge: You have low-privileged SSH access to a training box as user intern. This section's earlier privesc challenge covered…">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/19-ctf-challenges/linux-gtfobins.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -21,7 +21,7 @@
 <meta property="og:image:alt" content="KashSec Academy · Path 19: CTF Challenges">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Linux — The Binary That Betrayed Root — Path 19 · KashSec Academy">
-<meta name="twitter:description" content="Category: Linux/Privesc · Difficulty: Medium">
+<meta name="twitter:description" content="Medium Linux/Privesc CTF challenge: You have low-privileged SSH access to a training box as user intern. This section's earlier privesc challenge covered…">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og/19-ctf-challenges.jpg">
 <meta name="twitter:image:alt" content="KashSec Academy · Path 19: CTF Challenges">
 <meta name="theme-color" content="#0A0E13" media="(prefers-color-scheme: dark)">
@@ -41,7 +41,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 19 — CTF Challenges","item":"https://kashsec.vercel.app/lesson/19-ctf-challenges/"},{"@type":"ListItem","position":4,"name":"Linux — The Binary That Betrayed Root","item":"https://kashsec.vercel.app/lesson/19-ctf-challenges/linux-gtfobins.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Linux — The Binary That Betrayed Root","headline":"Linux — The Binary That Betrayed Root","description":"Category: Linux/Privesc · Difficulty: Medium","url":"https://kashsec.vercel.app/lesson/19-ctf-challenges/linux-gtfobins.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","author":{"@type":"Person","name":"Ishfaq","url":"https://www.linkedin.com/in/iamishfaq07/","sameAs":["https://www.linkedin.com/in/iamishfaq07/"]},"image":"https://kashsec.vercel.app/og/19-ctf-challenges.jpg","educationalLevel":"All levels","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"A SUID-root Python interpreter is a root shell in disguise. Medium.","isPartOf":{"@type":"Course","name":"Path 19: CTF Challenges","url":"https://kashsec.vercel.app/lesson/19-ctf-challenges/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners.","founder":{"@type":"Person","name":"Ishfaq","url":"https://www.linkedin.com/in/iamishfaq07/","sameAs":["https://www.linkedin.com/in/iamishfaq07/"]}},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners.","founder":{"@type":"Person","name":"Ishfaq","url":"https://www.linkedin.com/in/iamishfaq07/","sameAs":["https://www.linkedin.com/in/iamishfaq07/"]}},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/19-ctf-challenges/linux-gtfobins.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Linux — The Binary That Betrayed Root","headline":"Linux — The Binary That Betrayed Root","description":"Medium Linux/Privesc CTF challenge: You have low-privileged SSH access to a training box as user intern. This section's earlier privesc challenge covered sudo misconfiguration specifically — this one is a different vector entirely: the SUID bit, a completely separate way an ordinary binary can end…","url":"https://kashsec.vercel.app/lesson/19-ctf-challenges/linux-gtfobins.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","author":{"@type":"Person","name":"Ishfaq","url":"https://www.linkedin.com/in/iamishfaq07/","sameAs":["https://www.linkedin.com/in/iamishfaq07/"]},"image":"https://kashsec.vercel.app/og/19-ctf-challenges.jpg","educationalLevel":"All levels","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"A SUID-root Python interpreter is a root shell in disguise. Medium.","isPartOf":{"@type":"Course","name":"Path 19: CTF Challenges","url":"https://kashsec.vercel.app/lesson/19-ctf-challenges/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners.","founder":{"@type":"Person","name":"Ishfaq","url":"https://www.linkedin.com/in/iamishfaq07/","sameAs":["https://www.linkedin.com/in/iamishfaq07/"]}},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners.","founder":{"@type":"Person","name":"Ishfaq","url":"https://www.linkedin.com/in/iamishfaq07/","sameAs":["https://www.linkedin.com/in/iamishfaq07/"]}},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/19-ctf-challenges/linux-gtfobins.html"}}
 </script>
 </head>
 <body>

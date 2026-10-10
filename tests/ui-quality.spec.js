@@ -250,6 +250,7 @@ function headingSkips() {
 
     // 2 + 3, measured on one pass over the routes.
     const noH1 = [], multiH1 = [], unlabelled = [];
+    const titles = new Map();
     const c2 = await browser.newContext({ viewport: { width: 1280, height: 1000 }, serviceWorkers: 'block' });
     await c2.addInitScript(() => { try { const k = 'kashsec_state_v1';
       const st = JSON.parse(localStorage.getItem(k) || '{}');
@@ -277,6 +278,7 @@ function headingSkips() {
           }).map(el => `${el.tagName.toLowerCase()}#${el.id || '?'}`);
         return { h1, bad };
       });
+      titles.set(r, await pg2.title());
       if (d.h1 === 0) noH1.push(r);
       else if (d.h1 > 1) multiH1.push(`${r}(${d.h1})`);
       if (d.bad.length) unlabelled.push(`${r}: ${d.bad.join(', ')}`);
@@ -287,6 +289,13 @@ function headingSkips() {
       [noH1.length ? `none on ${noH1.join(', ')}` : '', multiH1.length ? `several on ${multiH1.join(', ')}` : ''].filter(Boolean).join(' | ')]);
     out.push(['every interactive control has an accessible name',
       unlabelled.length === 0, unlabelled.join(' | ')]);
+    /* The tab title must follow in-app navigation. These routes are visited
+       one after another in the same document, so a stale title shows up as
+       two routes sharing one. */
+    const byTitle = new Map();
+    for (const [r, t] of titles) byTitle.set(t, [...(byTitle.get(t) || []), r]);
+    const shared = [...byTitle].filter(([, rs]) => rs.length > 1).map(([t, rs]) => `"${t}": ${rs.join(', ')}`);
+    out.push([`each route sets its own document title (${titles.size} routes)`, shared.length === 0, shared.join(' | ')]);
     return out;
   })();
   structural.forEach(([n, ok, d]) => record(n, ok, d));

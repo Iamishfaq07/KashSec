@@ -156,17 +156,34 @@ const metaDesc = desc => clampText(desc, 158);
 
 // Lesson description: the first prose paragraph, with Markdown links,
 // inline HTML and emphasis markers reduced to plain text.
+/* Search results cut titles at roughly 600px — about 60–65 characters. Past
+   that the tail, usually the brand, is replaced with an ellipsis, so a long
+   title loses the part that tells people whose page it is. Callers pass
+   the forms they want in order of preference; the first that fits wins,
+   and the last (shortest) is used when none do. */
+const TITLE_MAX = 65;
+function fitTitle(...forms){
+  return forms.find(t => t.length <= TITLE_MAX) || forms[forms.length - 1];
+}
+
 function firstPara(md){
   const noFront = md.replace(/^---[\s\S]*?---\n/,'');
   const paras = noFront.split(/\n\n+/).map(p=>p.trim()).filter(Boolean);
+  /* CTF challenges open with "**Category:** Web · **Difficulty:** Medium".
+     As a description that line was identical across a dozen pages and said
+     nothing about the challenge, so it becomes a short lead-in to the
+     scenario paragraph that follows it instead. */
+  let lead = '';
   for(const p of paras){
+    const meta = p.match(/^\*\*Category:\*\*\s*([^·\n]+?)\s*·\s*\*\*Difficulty:\*\*\s*(\w+)\s*$/);
+    if(meta && !lead){ lead = `${meta[2]} ${meta[1].trim()} CTF challenge: `; continue; }
     if(p.startsWith('#') || p.startsWith(':::') || p.startsWith('~~~') || p.startsWith('```') || p.startsWith('???') || p.startsWith('<') || p.startsWith('|') || p.startsWith('!')) continue;
     const plain = p
       .replace(/!\[[^\]]*\]\([^)]*\)/g, '')
       .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
       .replace(/<[^>]+>/g, '')
       .replace(/[*_`]/g, '');
-    if (plain.trim()) return clampText(plain, 300);
+    if (plain.trim()) return clampText(lead + plain, 300);
   }
   return '';
 }
@@ -295,7 +312,7 @@ for (const p of PATHS) {
     const md = fs.readFileSync(src, 'utf8').replace(/\r\n?/g, '\n');
     const canonical = `${SITE}/lesson/${p.id}/${s.id}.html`;
     const spaPath = `/#/lesson/${p.id}/${s.id}`;
-    const title = `${s.title} — Path ${p.n} · KashSec Academy`;
+    const title = fitTitle(`${s.title} — Path ${p.n} · KashSec Academy`, `${s.title} · KashSec Academy`, `${s.title} · KashSec`);
     const desc = firstPara(md) || `${s.title}: ${s.desc || ''}`;
     const lastmod = lastmodFor(rel);
     lessonUpdated[`${p.id}/${s.id}`] = lastmod;
@@ -365,7 +382,7 @@ for (const p of PATHS) {
 for (const p of PATHS) {
   const canonical = `${SITE}/lesson/${p.id}/`;
   const spaPath = `/#/lesson/${p.id}`;
-  const title = `Path ${p.n}: ${p.title} — KashSec Academy`;
+  const title = fitTitle(`Path ${p.n}: ${p.title} — KashSec Academy`, `${p.title} — KashSec Academy`, `${p.title} · KashSec`);
   // Path descriptions in PATHS are one-line taglines (~70 chars), which
   // left most of a search snippet empty. Lead with the tagline, then say
   // what the page offers: lesson count, level, and where it starts.
@@ -575,7 +592,8 @@ const toolsWritten = writeStubSet(
   'Free online security tools',
   'Encoders, hash tools, a JWT decoder, CVSS and subnet calculators, and more — all free, all running locally in your browser.',
   TOOL_CONTENT,
-  (it) => `${it.title} — free, runs in your browser · KashSec Academy`);
+  (it) => fitTitle(`${it.title} — free, runs in your browser · KashSec Academy`,
+    `${it.title} — free online tool · KashSec`, `${it.title} · KashSec Academy`, `${it.title} · KashSec`));
 const labsWritten = writeStubSet(
   LABS, 'labs', 'labs', 'security lab',
   'Free interactive security labs',
@@ -583,13 +601,14 @@ const labsWritten = writeStubSet(
   LAB_CONTENT,
   // Labs compete for learner intent ("practise X safely"), which is a
   // query a hands-on simulation genuinely answers better than an article.
-  (it) => `${it.title} — free hands-on practice, no setup · KashSec Academy`);
+  (it) => fitTitle(`${it.title} — free hands-on practice, no setup · KashSec Academy`,
+    `${it.title} — free hands-on practice · KashSec`, `${it.title} — free lab · KashSec`, `${it.title} · KashSec`));
 
 /* FAQ stub with FAQPage schema. The answers were already written and
    already public — they just had no URL a crawler could reach. */
 {
   const canonical = `${SITE}/faq.html`;
-  const title = 'Cybersecurity course FAQ — Is it free? Do I need experience? · KashSec Academy';
+  const title = 'Cybersecurity course FAQ — Is it free? · KashSec Academy';
   const desc = 'Answers to the questions beginners ask before starting: whether the course is really free, whether you need experience or a powerful computer, whether any of it is illegal, and how long it takes.';
   const contentHtml = `<h1>Frequently asked questions</h1>` +
     FAQS.map(f => `<h2>${escapeAttr(f.q)}</h2><p>${escapeAttr(f.a)}</p>`).join('') +
@@ -625,7 +644,8 @@ const labsWritten = writeStubSet(
 {
   const canonical = `${SITE}/practice.html`;
   const total = TASKS_META.total;
-  const title = `${total} free cybersecurity practice questions with answers · KashSec Academy`;
+  const title = fitTitle(`${total} free cybersecurity practice questions with answers · KashSec Academy`,
+    `${total} free cybersecurity practice questions · KashSec Academy`, `${total} free cybersecurity practice questions · KashSec`);
   const desc = `Type the answer, don't pick it. ${total} hands-on practice tasks across ${PATHS.length} paths — subnetting, Linux commands, CVSS scoring, log reading, web and cloud security. Free, no account, answers checked in your browser.`;
 
   // The questions are safe to publish: answers ship only as hashes, and
@@ -674,7 +694,7 @@ const labsWritten = writeStubSet(
 
 {
   const canonical = `${SITE}/exam.html`;
-  const title = 'Free timed cybersecurity practice exam — 90 questions, 90 minutes · KashSec Academy';
+  const title = 'Free timed cybersecurity practice exam · KashSec Academy';
   const desc = `A timed mock exam drawn across all ${PATHS.length} paths, weighted by path size. Nothing is graded until you submit, the clock runs, and the score report breaks results down by path. Free, no account.`;
   const contentHtml =
     `<h1>Timed mock exam</h1>` +

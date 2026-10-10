@@ -5,12 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Forensics — The EXIF Trail — Path 19 · KashSec Academy</title>
-<meta name="description" content="Category: Forensics · Difficulty: Easy">
+<meta name="description" content="Easy Forensics CTF challenge: A photo was posted to a fictional company's public &quot;team offsite&quot; blog post, then quietly taken down an hour later. You saved…">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/19-ctf-challenges/forensics-exif-trail.html">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/icons/icon-192.png" type="image/png" sizes="192x192">
 <meta property="og:title" content="Forensics — The EXIF Trail — Path 19 · KashSec Academy">
-<meta property="og:description" content="Category: Forensics · Difficulty: Easy">
+<meta property="og:description" content="Easy Forensics CTF challenge: A photo was posted to a fictional company's public &quot;team offsite&quot; blog post, then quietly taken down an hour later. You saved…">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/19-ctf-challenges/forensics-exif-trail.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -21,7 +21,7 @@
 <meta property="og:image:alt" content="KashSec Academy · Path 19: CTF Challenges">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Forensics — The EXIF Trail — Path 19 · KashSec Academy">
-<meta name="twitter:description" content="Category: Forensics · Difficulty: Easy">
+<meta name="twitter:description" content="Easy Forensics CTF challenge: A photo was posted to a fictional company's public &quot;team offsite&quot; blog post, then quietly taken down an hour later. You saved…">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og/19-ctf-challenges.jpg">
 <meta name="twitter:image:alt" content="KashSec Academy · Path 19: CTF Challenges">
 <meta name="theme-color" content="#0A0E13" media="(prefers-color-scheme: dark)">
@@ -41,7 +41,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 19 — CTF Challenges","item":"https://kashsec.vercel.app/lesson/19-ctf-challenges/"},{"@type":"ListItem","position":4,"name":"Forensics — The EXIF Trail","item":"https://kashsec.vercel.app/lesson/19-ctf-challenges/forensics-exif-trail.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Forensics — The EXIF Trail","headline":"Forensics — The EXIF Trail","description":"Category: Forensics · Difficulty: Easy","url":"https://kashsec.vercel.app/lesson/19-ctf-challenges/forensics-exif-trail.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","author":{"@type":"Person","name":"Ishfaq","url":"https://www.linkedin.com/in/iamishfaq07/","sameAs":["https://www.linkedin.com/in/iamishfaq07/"]},"image":"https://kashsec.vercel.app/og/19-ctf-challenges.jpg","educationalLevel":"All levels","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"A leaked photo's metadata reveals more than a flag. Easy.","isPartOf":{"@type":"Course","name":"Path 19: CTF Challenges","url":"https://kashsec.vercel.app/lesson/19-ctf-challenges/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners.","founder":{"@type":"Person","name":"Ishfaq","url":"https://www.linkedin.com/in/iamishfaq07/","sameAs":["https://www.linkedin.com/in/iamishfaq07/"]}},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners.","founder":{"@type":"Person","name":"Ishfaq","url":"https://www.linkedin.com/in/iamishfaq07/","sameAs":["https://www.linkedin.com/in/iamishfaq07/"]}},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/19-ctf-challenges/forensics-exif-trail.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Forensics — The EXIF Trail","headline":"Forensics — The EXIF Trail","description":"Easy Forensics CTF challenge: A photo was posted to a fictional company's public \"team offsite\" blog post, then quietly taken down an hour later. You saved a copy before it disappeared. Someone on the security team wants to know: does this image reveal anything the company wouldn't want public?","url":"https://kashsec.vercel.app/lesson/19-ctf-challenges/forensics-exif-trail.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","author":{"@type":"Person","name":"Ishfaq","url":"https://www.linkedin.com/in/iamishfaq07/","sameAs":["https://www.linkedin.com/in/iamishfaq07/"]},"image":"https://kashsec.vercel.app/og/19-ctf-challenges.jpg","educationalLevel":"All levels","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"A leaked photo's metadata reveals more than a flag. Easy.","isPartOf":{"@type":"Course","name":"Path 19: CTF Challenges","url":"https://kashsec.vercel.app/lesson/19-ctf-challenges/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners.","founder":{"@type":"Person","name":"Ishfaq","url":"https://www.linkedin.com/in/iamishfaq07/","sameAs":["https://www.linkedin.com/in/iamishfaq07/"]}},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners.","founder":{"@type":"Person","name":"Ishfaq","url":"https://www.linkedin.com/in/iamishfaq07/","sameAs":["https://www.linkedin.com/in/iamishfaq07/"]}},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/19-ctf-challenges/forensics-exif-trail.html"}}
 </script>
 </head>
 <body>
