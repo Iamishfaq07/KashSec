@@ -175,6 +175,8 @@ a{color:inherit}
 .btn-ghost{color:var(--text);border-color:var(--border-strong);background:var(--overlay-1);font-weight:500}
 .btn-ghost:hover{border-color:rgba(239,164,58,.55);background:rgba(239,164,58,.07);transform:translateY(-2px)}
 .btn-ghost:active{transform:translateY(0)}
+/* Icon leading a button label (download, import, compass...). */
+:is(.btn-amber,.btn-ghost) > .kico{width:1.05em;height:1.05em;flex-shrink:0}
 .btn-amber.sm,.btn-ghost.sm{padding:.55rem .9rem;font-size:.85rem;border-radius:9px}
 
 /* ---------- Nav ---------- */
@@ -682,6 +684,7 @@ a{color:inherit}
 /* External reference links */
 .md .ref-list{background:var(--surface2);border:1px solid var(--border);border-left:3px solid var(--teal);border-radius:var(--r);padding:1.1rem 1.3rem;margin:0 0 1.4rem}
 .md .ref-list-title{font-family:var(--font-mono);font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;color:var(--teal-ink);margin-bottom:.55rem;font-weight:700}
+.md .ref-list-title .kico{width:14px;height:14px;vertical-align:-2px;margin-right:.45rem}
 .md .ref-list ul{margin:0;padding-left:1.2rem;gap:.35rem}
 .md .ref-list a{color:var(--teal-ink)}
 .md .ref-list a:hover{color:var(--amber-ink)}
@@ -1074,6 +1077,17 @@ body.zen-mode:has(.reader-wrap) .reader{max-width:44rem;margin:0 auto}
 .hub-section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.1rem}
 .hub-h{font-family:var(--font-display);font-size:1.15rem;font-weight:700;line-height:1.3;letter-spacing:-.01em}
 .hub-h.sm{font-size:1.05rem}
+.hub-h{display:flex;align-items:center;gap:.6rem}
+.hub-h-ico{display:inline-grid;place-items:center;width:32px;height:32px;border-radius:10px;flex-shrink:0;
+  color:var(--amber-ink);background:linear-gradient(145deg,var(--overlay-2),var(--overlay-1));border:1px solid var(--border)}
+.hub-h-ico .kico{width:17px;height:17px}
+.hub-h.sm .hub-h-ico{width:28px;height:28px;border-radius:9px}
+.hub-h.sm .hub-h-ico .kico{width:15px;height:15px}
+/* Lab stage marker: a numbered ring that turns into a check when done. */
+.stage-n{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;flex-shrink:0;
+  font-family:var(--font-mono);font-size:.8rem;font-weight:700;color:var(--amber-ink);border:1.5px solid currentColor}
+.stage-n.done{color:var(--teal-ink);border-color:transparent}
+.stage-n.done .kico{width:28px;height:28px}
 .hub-path-row{display:flex;align-items:center;gap:1rem;padding:.8rem 0;border-bottom:1px solid var(--line-soft)}
 .hub-path-row:last-child{border-bottom:none}
 .hub-path-row .hpr-name{flex:0 0 12rem;font-weight:600;font-size:.9rem}
