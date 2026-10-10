@@ -240,9 +240,17 @@ function headingSkips() {
         const vw = document.documentElement.clientWidth;
         const start = document.querySelector('#startBtn');
         const nav = document.querySelector('.nav');
-        return { over: nav.scrollWidth - vw, cut: Math.round(start.getBoundingClientRect().right) > vw };
+        /* Overflow alone missed links running *under* the action buttons
+           (the link row may shrink, its text doesn't), so measure overlap. */
+        const links = [...nav.querySelectorAll('.nav-links a')].filter(a => a.offsetParent);
+        const last = links[links.length - 1].getBoundingClientRect();
+        const first = links[0].getBoundingClientRect();
+        const overlap = Math.max(last.right - nav.querySelector('.nav-cta').getBoundingClientRect().left,
+                                 nav.querySelector('.brand').getBoundingClientRect().right - first.left);
+        return { over: nav.scrollWidth - vw, cut: Math.round(start.getBoundingClientRect().right) > vw, overlap: Math.round(overlap) };
       });
-      if (bad.cut || bad.over > 1) clipped.push(`${w}px(+${bad.over}${bad.cut ? ', CTA cut off' : ''})`);
+      if (bad.cut || bad.over > 1 || bad.overlap > 0)
+        clipped.push(`${w}px(+${bad.over}${bad.cut ? ', CTA cut off' : ''}${bad.overlap > 0 ? `, links overlap ${bad.overlap}px` : ''})`);
       await c.close();
     }
     out.push(['the header fits and the Start button is visible at every width',

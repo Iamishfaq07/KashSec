@@ -6,6 +6,39 @@ const REPO_SLUG = 'Iamishfaq07/KashSec';
 document.getElementById('year').textContent = new Date().getFullYear();
 document.body.classList.add('reveal-ready');
 
+/* Fit the desktop nav to the font that actually rendered. The CSS
+   breakpoints are tuned for Inter; a wider fallback pushed the links under
+   the action buttons at common laptop widths. Measure, and add density
+   levels until the first link clears the brand and the last clears the
+   buttons. Re-run on resize and once web fonts finish loading. */
+(()=>{
+  const nav = document.querySelector('.nav');
+  if(!nav) return;
+  const LEVELS = ['nav-tight', 'nav-tighter', 'nav-tightest'];
+  const overlaps = ()=>{
+    const links = [...nav.querySelectorAll('.nav-links a')].filter(a => a.offsetParent);
+    if(!links.length) return false;
+    const first = links[0].getBoundingClientRect(), last = links[links.length - 1].getBoundingClientRect();
+    const brand = nav.querySelector('.brand')?.getBoundingClientRect();
+    const cta = nav.querySelector('.nav-cta')?.getBoundingClientRect();
+    return (cta && cta.left - last.right < 4) || (brand && first.left - brand.right < 4);
+  };
+  const fit = ()=>{
+    nav.classList.remove(...LEVELS);
+    if(window.innerWidth <= 900) return; // the mobile menu takes over
+    for(const level of LEVELS){ if(!overlaps()) break; nav.classList.add(level); }
+  };
+  let queued = false;
+  const schedule = ()=>{ if(queued) return; queued = true; requestAnimationFrame(()=>{ queued = false; fit(); }); };
+  window.addEventListener('resize', schedule, {passive:true});
+  document.fonts?.ready.then(schedule);
+  document.fonts?.addEventListener?.('loadingdone', schedule);
+  // The button group grows when an account button appears after sign-in.
+  const cta = nav.querySelector('.nav-cta');
+  if(cta && 'ResizeObserver' in window) new ResizeObserver(schedule).observe(cta);
+  fit();
+})();
+
 /* Back to top: appears once the reader is well into a long page (lessons
    run to 7,000px+). One rAF-throttled scroll listener, no layout reads
    beyond scrollY. */
@@ -2354,7 +2387,7 @@ function renderHome(){
           <a class="btn-ghost" href="#/roadmap">See the roadmap</a>
         </div>
         <div class="daily-lesson" data-reveal style="--i:3">
-          <span class="daily-tag">📅 Lesson of the day</span>
+          <span class="daily-tag">${cardIco('calendar')}Lesson of the day</span>
           <a class="daily-link" href="#/lesson/${daily.pathId}/${daily.subId}">${daily.pathN}.${daily.subN} · ${daily.subTitle}</a>
           <span class="daily-src">Path ${daily.pathN} — ${daily.pathTitle}</span>
         </div>
@@ -2396,10 +2429,21 @@ function renderHome(){
         <h2>Everything, in the right order</h2>
         <p class="sec-lead">Start at Path 01 and work down. Each path builds on the last, and every path is split into short sub-lessons.</p>
       </div>
-      <div class="paths">
+      <div class="paths" id="homePaths">
         ${PATHS.map((p,i)=>`
 ${pathCardHTML(p,i)}
         `).join('')}
+        <div class="paths-cta" data-reveal>
+          <div class="paths-cta-ico">${cardIco('compass')}</div>
+          <div class="paths-cta-body">
+            <h3>Not sure where to start?</h3>
+            <p>The 2-minute career-fit quiz points you at the paths that match the job you want. Or go in order from Path 00 — it assumes nothing.</p>
+          </div>
+          <div class="paths-cta-btns">
+            <a class="btn-amber sm" href="#/career-quiz">Take the quiz →</a>
+            <a class="btn-ghost sm" href="#/course">Browse all ${total} lessons</a>
+          </div>
+        </div>
       </div>
     </section>
     <section class="sec">
@@ -2448,6 +2492,30 @@ ${pathCardHTML(p,i)}
     </section>
   `;
   wireFAQ();
+  fitPathsFiller();
+}
+
+/* 26 paths never divide evenly into the grid's columns, which left a hole at
+   the end of the homepage roadmap. The closing card fills whatever is left
+   of the last row, and becomes a full-width banner when the row is full.
+   The grid is auto-fill, so the column count is read, not assumed. */
+function fitPathsFiller(){
+  const grid = document.getElementById('homePaths');
+  const filler = grid?.querySelector('.paths-cta');
+  if(!filler) return;
+  const cols = getComputedStyle(grid).gridTemplateColumns.split(' ').filter(Boolean).length || 1;
+  const rem = (grid.children.length - 1) % cols;
+  const span = rem ? cols - rem : cols;
+  filler.style.gridColumn = span >= cols ? '1 / -1' : `span ${span}`;
+  filler.classList.toggle('is-wide', span >= 2);
+}
+{
+  let queued = false;
+  window.addEventListener('resize', ()=>{
+    if(queued) return;
+    queued = true;
+    requestAnimationFrame(()=>{ queued = false; fitPathsFiller(); });
+  }, {passive:true});
 }
 
 function renderCourseIndex(){

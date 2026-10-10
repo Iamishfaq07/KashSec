@@ -228,6 +228,24 @@ a{color:inherit}
   .nav-links a.active::after{left:.3rem;right:.3rem}
   .brand-txt{display:none}
 }
+/* The widths above assume Inter. With a wider fallback font (web fonts
+   blocked, slow, or not yet loaded) the links ran under the action buttons
+   at 901px and 1366px, so app.js measures the bar and steps through these
+   densities until nothing overlaps. Each level adds to the one before. */
+@media(min-width:901px){
+  .nav.nav-tight{padding-left:clamp(.75rem,2vw,1.5rem);padding-right:clamp(.75rem,2vw,1.5rem)}
+  .nav.nav-tight .nav-links{gap:.05rem}
+  .nav.nav-tight .nav-links a{font-size:.86rem;padding:.45rem .42rem}
+  .nav.nav-tight .nav-links a.active::after{left:.42rem;right:.42rem}
+  .nav.nav-tight .brand{font-size:1.04rem}
+  .nav.nav-tight #randomLessonBtn{display:none}
+  .nav.nav-tight .nav-cta{gap:.3rem}
+  .nav.nav-tighter .nav-links a{font-size:.82rem;padding:.45rem .3rem}
+  .nav.nav-tighter .nav-links a.active::after{left:.3rem;right:.3rem}
+  .nav.nav-tighter .brand-txt{display:none}
+  .nav.nav-tightest .nav-links a{font-size:.78rem;padding:.45rem .22rem}
+  .nav.nav-tightest .nav-links a.active::after{left:.22rem;right:.22rem}
+}
 /* Narrow phones. The brand may shrink (min-width:0) instead of pushing the
    hamburger off-screen when its webfont hasn't loaded and a wider system
    fallback is measuring the wordmark. */
@@ -356,6 +374,19 @@ a{color:inherit}
 /* ---------- Generic card grids ---------- */
 .paths,.careers,.features{display:grid;gap:1.1rem}
 .paths{grid-template-columns:repeat(auto-fill,minmax(290px,1fr))}
+/* Closing card on the homepage roadmap; app.js sets how many columns it spans. */
+.paths-cta{display:flex;flex-direction:column;gap:1rem;padding:1.5rem;border-radius:var(--r-lg);
+  border:1px dashed var(--border-strong);background:linear-gradient(150deg,rgba(239,164,58,.07),transparent 60%),var(--overlay-1)}
+.paths-cta-ico{display:grid;place-items:center;width:42px;height:42px;border-radius:12px;color:var(--amber-ink);
+  background:var(--overlay-2);border:1px solid var(--border)}
+.paths-cta-ico .kico{width:22px;height:22px}
+.paths-cta h3{font-size:1.15rem;margin:0 0 .45rem}
+.paths-cta p{margin:0;color:var(--muted);font-size:.92rem;line-height:1.6}
+.paths-cta-btns{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:auto}
+.paths-cta.is-wide{flex-direction:row;align-items:center;gap:1.4rem}
+.paths-cta.is-wide .paths-cta-body{flex:1;min-width:0}
+.paths-cta.is-wide .paths-cta-btns{margin-top:0;flex-shrink:0}
+@media(max-width:700px){.paths-cta.is-wide{flex-direction:column;align-items:flex-start}}
 .careers{grid-template-columns:repeat(auto-fill,minmax(270px,1fr))}
 .features{grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
 
@@ -1364,6 +1395,7 @@ mark{background:rgba(239,164,58,.35);color:var(--text);border-radius:3px;padding
 .daily-lesson{margin-top:1rem;display:inline-flex;align-items:center;gap:.75rem;flex-wrap:wrap;
   background:var(--surface);border:1px solid var(--border);border-radius:999px;padding:.55rem 1rem}
 .daily-tag{font-family:var(--font-mono);font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--amber-ink)}
+.daily-tag .kico{width:13px;height:13px;vertical-align:-2px;margin-right:.4rem}
 .daily-link{color:var(--text);text-decoration:none;font-weight:600}
 .daily-link:hover{color:var(--teal-2)}
 .daily-src{font-size:.78rem;color:var(--muted)}
