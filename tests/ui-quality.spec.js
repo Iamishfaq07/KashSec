@@ -63,7 +63,29 @@ function measureContrast() {
     seen.add(c.dataset.tier);
     out.push({ sel: `level-chip[${c.dataset.tier}]`, fg: parse(getComputedStyle(c).color).c, bg: effBg(c) });
   });
+  /* The two text tokens that failed an axe audit on every page: --muted2
+     (footer, card meta, stat labels) and amber as a text colour (every
+     section eyebrow). Light --amber stays bright for fills behind dark ink,
+     so text must use --amber-ink. */
+  for (const [label, q] of [['eyebrow (amber-ink)', '.sec-eyebrow'], ['footer (muted2)', '.foot-bottom > span'],
+                            ['card meta (muted2)', '.mini-progress-label span']]) {
+    const el = document.querySelector(q);
+    if (el) out.push({ sel: label, fg: parse(getComputedStyle(el).color).c, bg: effBg(el) });
+  }
   return out;
+}
+
+/* Runs inside the page. Headings that skip a level (h1 → h3) break the
+   outline screen-reader users navigate by. */
+function headingSkips() {
+  let prev = 0; const bad = [];
+  for (const h of document.querySelectorAll('h1,h2,h3,h4,h5,h6')) {
+    if (!h.getClientRects().length && !h.classList.contains('sr-only')) continue;
+    const n = +h.tagName[1];
+    if (prev && n > prev + 1) bad.push(`${h.tagName} "${h.textContent.trim().slice(0, 30)}"`);
+    prev = n;
+  }
+  return bad;
 }
 
 (async () => {
@@ -128,6 +150,9 @@ function measureContrast() {
     });
     record(`[${theme}] focused control shows a visible indicator`, focusVisible !== false);
 
+    const skips = await page.evaluate(headingSkips);
+    record(`[${theme}] tools page headings never skip a level`, skips.length === 0, skips.slice(0, 3).join(', '));
+
     /* ---- course page: the difficulty chips ----
        Their own pass, because each tier has a different fill and small
        uppercase text on a tinted background is exactly where contrast
@@ -141,6 +166,19 @@ function measureContrast() {
       const r = ratio(m.fg, m.bg);
       record(`[${theme}] ${m.sel} contrast >= 4.5:1`, r >= 4.5, `${r.toFixed(2)}:1`);
     }
+
+    /* ---- progress hub: section headings and locked badges ---- */
+    await page.goto(`${BASE}/index.html#/progress`, { waitUntil: 'load' });
+    await page.waitForTimeout(1500);
+    const hubSkips = await page.evaluate(headingSkips);
+    record(`[${theme}] progress hub headings never skip a level`, hubSkips.length === 0, hubSkips.slice(0, 3).join(', '));
+    const locked = await page.evaluate(() => {
+      const el = document.querySelector('.badge-card.locked .badge-d');
+      if (!el) return null;
+      return { op: parseFloat(getComputedStyle(el.closest('.badge-card')).opacity) };
+    });
+    record(`[${theme}] locked badges dim the icon, not the text`, locked && locked.op === 1,
+      locked ? `card opacity ${locked.op}` : 'no locked badge found');
 
     await ctx.close();
   }

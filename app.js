@@ -2745,6 +2745,7 @@ function renderCertTracker(){
           <div class="mini-progress-label"><span>${passedCount}/${CERTS.length} passed</span></div>
         </div>
       </div>
+      <h2 class="sr-only">Certifications, entry level to specialist</h2>
       <div class="labs-grid" data-reveal style="--i:1">
         ${CERTS.map(c=>{
           const status = STATE.certTracker[c.id] || 'not-started';
@@ -2885,6 +2886,7 @@ function renderCareers(){
           <a class="btn-amber sm career-quiz-cta" href="#/career-quiz">🧭 Not sure? Take the 2-minute career-fit quiz →</a>
         </div>
       </div>
+      <h2 class="sr-only">Career roles</h2>
       <div class="careers">
         ${CAREERS.map((c,i)=>`
           <div class="career-card" data-spotlight data-reveal style="--i:${i%4}">
@@ -3053,7 +3055,7 @@ function renderLegal(kind){
       </div>
       <div class="legal-body" data-reveal style="--i:1">
         ${page.sections.map(s=>`
-          <h3>${escapeHtml(s.h)}</h3>
+          <h2>${escapeHtml(s.h)}</h2>
           ${s.p.map(t=>`<p>${t}</p>`).join('')}
         `).join('')}
       </div>
@@ -3202,7 +3204,7 @@ async function renderSubLesson(pathId, subId){
       <div class="reader">
         <div class="reader-nav-top">
           <div class="reader-crumb">
-            <a href="#/lesson/${ctx.path.id}" style="color:var(--teal);text-decoration:none"><span class="crumb-ico">${pathIco(ctx.path.id)}</span>Path ${ctx.path.n}: ${ctx.path.title}</a>
+            <a href="#/lesson/${ctx.path.id}"><span class="crumb-ico">${pathIco(ctx.path.id)}</span>Path ${ctx.path.n}: ${ctx.path.title}</a>
             &nbsp;·&nbsp; Sub-lesson ${ctx.path.n}.${ctx.sub.n}
             ${updatedOn ? `&nbsp;·&nbsp; <time datetime="${updatedOn}" title="Date the lesson content last changed; this is not an editorial review date">Updated ${new Date(updatedOn+'T00:00:00Z').toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric',timeZone:'UTC'})}</time>` : ''}
           </div>
@@ -4472,6 +4474,7 @@ function renderLabsIndex(){
         </div>
       </div>
       ${cardFilterHTML('labs', labs.length)}
+      <h2 class="sr-only">All labs</h2>
       <div class="labs-grid" data-reveal style="--i:1">
         ${labs.map(l=>{
           const done = !!STATE.labsCompleted[l.id];
@@ -5297,7 +5300,7 @@ function renderLabOsint(){
         </div>
         <div id="osintNote">${lastNote ? `<div class="sqli-bad" style="margin-top:1rem">🕵️ ${escapeHtml(lastNote)}</div>` : ''}</div>
         <div class="hub-section" data-reveal style="--i:3">
-          <div class="hub-section-head"><h3 style="font-family:var(--font-display);font-size:1.15rem">What you've uncovered (${found.size}/${FINDINGS.length})</h3></div>
+          <div class="hub-section-head"><h2 class="hub-h">What you've uncovered (${found.size}/${FINDINGS.length})</h2></div>
           ${FINDINGS.map(f=>`<div class="hub-list-item" style="cursor:default"><div><div class="hli-t">${found.has(f.id)?'✅':'🔒'} ${escapeHtml(f.label)}</div></div></div>`).join('')}
         </div>
       </section>
@@ -5825,7 +5828,7 @@ function renderLabADAttack(){
         </div>
 
         <div class="hub-section" data-reveal style="--i:1">
-          <div class="hub-section-head"><h3 style="font-family:var(--font-display);font-size:1.15rem">${stage1Done?'✅':'1️⃣'} Stage 1 — BloodHound recon: find a path to Domain Admin</h3></div>
+          <div class="hub-section-head"><h2 class="hub-h">${stage1Done?'✅':'1️⃣'} Stage 1 — BloodHound recon: find a path to Domain Admin</h2></div>
           <p class="sec-lead">You're logged in as <b>alice</b>, a standard user. Click "Investigate" on each discovered node to reveal its outbound relationships — the same thing BloodHound does automatically by collecting AD data.</p>
           <div class="labs-grid">
             ${[...discovered].map(id=>{
@@ -5842,7 +5845,7 @@ function renderLabADAttack(){
         </div>
 
         <div class="hub-section" data-reveal style="--i:2">
-          <div class="hub-section-head"><h3 style="font-family:var(--font-display);font-size:1.15rem">${stage2Done?'✅':'2️⃣'} Stage 2 — Kerberoast a service account</h3></div>
+          <div class="hub-section-head"><h2 class="hub-h">${stage2Done?'✅':'2️⃣'} Stage 2 — Kerberoast a service account</h2></div>
           <p class="sec-lead">Any account with a Service Principal Name (SPN) can have a ticket requested for it by any authenticated user — no elevated privilege required. Request a ticket for each, then decide which one is realistically crackable.</p>
           <div class="labs-grid">
             ${SPNS.map(s=>`
@@ -5857,7 +5860,7 @@ function renderLabADAttack(){
         </div>
 
         <div class="hub-section" data-reveal style="--i:3">
-          <div class="hub-section-head"><h3 style="font-family:var(--font-display);font-size:1.15rem">${stage3Done?'✅':'3️⃣'} Stage 3 — Forge a Golden Ticket</h3></div>
+          <div class="hub-section-head"><h2 class="hub-h">${stage3Done?'✅':'3️⃣'} Stage 3 — Forge a Golden Ticket</h2></div>
           <p class="sec-lead">You've reached Domain Admin (via svc-sql from Stage 1). Dump the krbtgt account's hash from the domain controller, then forge a ticket for any identity you like — even one that doesn't exist.</p>
           ${!krbtgtDumped ? `<button class="btn-amber sm" id="adDumpKrbtgt" type="button">Run: lsadump::dcsync /user:krbtgt</button>` : `
             <pre style="white-space:pre-wrap">krbtgt NTLM hash: 8846f7eaee8fb117ad06bdd830b7586c</pre>
@@ -7419,7 +7422,7 @@ function renderInterview(){
       </div>
       ${INTERVIEW.map((g,gi)=>`
         <div class="hub-section" data-reveal style="--i:${gi+1}">
-          <div class="hub-section-head"><h3 style="font-family:var(--font-display);font-size:1.15rem">${escapeHtml(g.cat)}</h3></div>
+          <div class="hub-section-head"><h2 class="hub-h">${escapeHtml(g.cat)}</h2></div>
           ${g.qs.map(item=>`
             <details class="iv-item">
               <summary>${escapeHtml(item.q)}</summary>
@@ -7481,6 +7484,7 @@ function renderToolsIndex(){
         <p class="sec-lead">Everyday tools you'll reach for while learning and working — encoders, hashing, JWT, CVSS, subnetting, and more. Everything runs entirely in your browser; nothing you type is ever sent anywhere.</p>
       </div>
       ${cardFilterHTML('tools', TOOLS.length)}
+      <h2 class="sr-only">All tools</h2>
       <div class="labs-grid" data-reveal style="--i:1">
         ${TOOLS.map(t=>`
           <a class="lab-card" href="#/tools/${t.id}">
@@ -7662,9 +7666,12 @@ function toolCvss4(el){
     el.innerHTML = `<p class="tool-note">CVSS 4.0 separates impact on the vulnerable system from impact on subsequent systems. Threat and environmental metrics refine the score; supplemental metrics describe context without changing it. CVSS is owned by FIRST and used by permission. <a href="https://www.first.org/cvss/v4.0/specification-document" target="_blank" rel="noopener noreferrer">Read the specification</a>.</p>
       <div class="cvss-output"><div class="cvss-result" id="cvssResult" aria-live="polite"></div><div class="cvss-vector" id="cvssVector"></div><button type="button" class="btn-ghost sm" id="cvssCopy">Copy vector</button></div>
       ${Object.entries(data.config).map(([type, typeData]) => `<section class="cvss-group"><h2>${escapeHtml(type)}</h2>${
-        Object.entries(typeData.metric_groups).map(([group, groupData]) => `<h3>${escapeHtml(group)}</h3><div class="cvss-grid">${
+        Object.entries(typeData.metric_groups).map(([group, groupData]) => `${group ? `<h3>${escapeHtml(group)}</h3>` : ''}<div class="cvss-grid">${
           Object.entries(groupData).map(([name, metric]) => `<fieldset class="cvss-metric"><legend class="cvss-mlabel" title="${escapeHtml(metric.tooltip || '')}">${escapeHtml(name)} <span class="cvss-key">${escapeHtml(metric.short)}</span></legend><div class="cvss-opts" data-k="${escapeHtml(metric.short)}">${
-            Object.entries(metric.options).map(([label, option]) => `<button type="button" class="cvss-opt ${selected[metric.short]===option.value?'on':''}" data-v="${escapeHtml(option.value)}" aria-pressed="${selected[metric.short]===option.value}" title="${escapeHtml(option.tooltip || '')}">${escapeHtml(label)}</button>`).join('')
+            /* FIRST's config pads some option lists with an empty "" entry as a
+               layout spacer; rendered as a button it had no name and clicking it
+               cleared the metric. */
+            Object.entries(metric.options).filter(([label, option]) => label && option.value).map(([label, option]) => `<button type="button" class="cvss-opt ${selected[metric.short]===option.value?'on':''}" data-v="${escapeHtml(option.value)}" aria-pressed="${selected[metric.short]===option.value}" title="${escapeHtml(option.tooltip || '')}">${escapeHtml(label)}</button>`).join('')
           }</div></fieldset>`).join('')
         }</div>`).join('')
       }</section>`).join('')}
@@ -8086,11 +8093,11 @@ function toolResumeHelper(el){
     const gaps = found.filter(k=>pathProgress(k.pathId).pct === 0);
     out.innerHTML = `
       <div class="hub-section">
-        <div class="hub-section-head"><h3 style="font-family:var(--font-display);font-size:1.05rem">✅ You already have progress in (${covered.length})</h3></div>
+        <div class="hub-section-head"><h2 class="hub-h sm">✅ You already have progress in (${covered.length})</h2></div>
         ${covered.length ? covered.map(k=>`<div class="hub-list-item" style="cursor:default"><div class="hli-t">${escapeHtml(k.kw)}</div></div>`).join('') : `<div class="hub-empty">None yet.</div>`}
       </div>
       <div class="hub-section">
-        <div class="hub-section-head"><h3 style="font-family:var(--font-display);font-size:1.05rem">🎯 Gaps worth closing (${gaps.length})</h3></div>
+        <div class="hub-section-head"><h2 class="hub-h sm">🎯 Gaps worth closing (${gaps.length})</h2></div>
         ${gaps.length ? gaps.map(k=>{ const p=findPath(k.pathId); return `<a class="hub-list-item" href="#/lesson/${k.pathId}"><div class="hli-t">${escapeHtml(k.kw)}</div><div class="hli-d">Covered by ${p?p.title:k.pathId} →</div></a>`; }).join('') : `<div class="hub-empty">No gaps found — nice.</div>`}
       </div>
     `;
@@ -10919,7 +10926,7 @@ function renderProgressHub(){
 
       ${typeof SupabaseSync !== 'undefined' && SupabaseSync.CONFIGURED ? `
         <div class="hub-section" data-reveal style="--i:1">
-          <div class="hub-section-head"><h3 style="font-family:var(--font-display);font-size:1.15rem">☁️ Sync</h3></div>
+          <div class="hub-section-head"><h2 class="hub-h">☁️ Sync</h2></div>
           ${SupabaseSync.isSignedIn()
             ? `<div class="hub-list-item" style="cursor:default"><div><div class="hli-t">Signed in as ${escapeHtml(SupabaseSync.userEmail()||'')}</div><div class="hli-d">Progress syncs automatically</div></div><button class="btn-ghost sm" id="hubSignOutBtn" type="button">Sign out</button></div>`
             : `<div class="hub-list-item" style="cursor:default"><div><div class="hli-t">Not signed in</div><div class="hli-d">Sign in to back up and sync across devices</div></div><button class="btn-amber sm" id="hubSignInBtn" type="button">Sign in →</button></div>`}
@@ -10942,7 +10949,7 @@ function renderProgressHub(){
         if(!changed.length) return '';
         return `
       <div class="hub-section" data-reveal style="--i:2">
-        <div class="hub-section-head"><h3 style="font-family:var(--font-display);font-size:1.15rem">✏️ Updated since you read them</h3></div>
+        <div class="hub-section-head"><h2 class="hub-h">✏️ Updated since you read them</h2></div>
         ${changed.slice(0,10).map(ctx=>`
           <a class="hub-list-item" href="#/lesson/${ctx.path.id}/${ctx.sub.id}">
             <div><div class="hli-t">${ctx.path.n}.${ctx.sub.n} · ${escapeHtml(ctx.sub.title)}</div><div class="hli-d">${escapeHtml(ctx.path.title)}</div></div>
@@ -10958,7 +10965,7 @@ function renderProgressHub(){
         if(!allN) return '';
         return `
       <div class="hub-section" data-reveal style="--i:2">
-        <div class="hub-section-head"><h3 style="font-family:var(--font-display);font-size:1.15rem">🔁 Questions to revisit</h3></div>
+        <div class="hub-section-head"><h2 class="hub-h">🔁 Questions to revisit</h2></div>
         <a class="hub-list-item" href="#/quiz/missed">
           <div>
             <div class="hli-t">${dueN ? `${dueN} question${dueN===1?'':'s'} due for review` : 'All caught up'}</div>
@@ -10970,19 +10977,19 @@ function renderProgressHub(){
       })()}
 
       <div class="hub-section" data-reveal style="--i:2">
-        <div class="hub-section-head"><h3 style="font-family:var(--font-display);font-size:1.15rem">📅 Activity</h3></div>
+        <div class="hub-section-head"><h2 class="hub-h">📅 Activity</h2></div>
         ${heatmapHtml()}
       </div>
 
       ${(()=>{ const t = trendChartHtml(); return t ? `
       <div class="hub-section" data-reveal style="--i:2">
-        <div class="hub-section-head"><h3 style="font-family:var(--font-display);font-size:1.15rem">📈 Lessons per week</h3></div>
+        <div class="hub-section-head"><h2 class="hub-h">📈 Lessons per week</h2></div>
         ${t}
       </div>` : ''; })()}
 
       <div class="hub-section" data-reveal style="--i:2">
         <div class="hub-section-head" style="display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap">
-          <h3 style="font-family:var(--font-display);font-size:1.15rem">📣 Share your progress</h3>
+          <h2 class="hub-h">📣 Share your progress</h2>
           <div style="display:flex;gap:.5rem;flex-wrap:wrap">
             <button class="btn-ghost sm" id="shareCardDownload" type="button">⬇ Download card</button>
             <button class="btn-amber sm" id="shareCardShare" type="button" hidden>Share…</button>
@@ -10993,7 +11000,7 @@ function renderProgressHub(){
 
       <div class="hub-section" data-reveal style="--i:3">
         <div class="hub-section-head">
-          <h3 style="font-family:var(--font-display);font-size:1.15rem">📜 Certificate</h3>
+          <h2 class="hub-h">📜 Certificate</h2>
         </div>
         ${STATE.finalQuiz && STATE.finalQuiz.passed
           ? `<div class="hub-list-item" style="cursor:default"><div><div class="hli-t">Final Exam passed — ${STATE.finalQuiz.pct}%</div><div class="hli-d">Your certificate is ready</div></div><a class="btn-amber sm" href="#/certificate">View certificate →</a></div>`
@@ -11005,7 +11012,7 @@ function renderProgressHub(){
       </div>
 
       <div class="hub-section" data-reveal style="--i:4">
-        <div class="hub-section-head"><h3 style="font-family:var(--font-display);font-size:1.15rem">🗺️ Path progress</h3></div>
+        <div class="hub-section-head"><h2 class="hub-h">🗺️ Path progress</h2></div>
         ${PATHS.map(p=>{
           const prog = pathProgress(p.id);
           return `
@@ -11019,12 +11026,12 @@ function renderProgressHub(){
       </div>
 
       <div class="hub-section" data-reveal style="--i:5">
-        <div class="hub-section-head"><h3 style="font-family:var(--font-display);font-size:1.15rem">🏅 Achievements</h3></div>
+        <div class="hub-section-head"><h2 class="hub-h">🏅 Achievements</h2></div>
         <div class="badge-grid">
           ${ACHIEVEMENTS.map(a=>`
             <div class="badge-card ${STATE.achievements[a.id]?'':'locked'}">
               <div class="badge-ico">${a.ico}</div>
-              <div class="badge-t">${a.t}</div>
+              <div class="badge-t">${a.t}<span class="sr-only">${STATE.achievements[a.id]?' (earned)':' (locked)'}</span></div>
               <div class="badge-d">${a.d}</div>
               <div class="badge-tier badge-tier-${(ACHIEVEMENT_TIERS[a.id]||'Common').toLowerCase()}">${ACHIEVEMENT_TIERS[a.id]||'Common'}</div>
             </div>
@@ -11034,7 +11041,7 @@ function renderProgressHub(){
 
       ${typeof SupabaseSync !== 'undefined' && SupabaseSync.CONFIGURED ? `
       <div class="hub-section" data-reveal style="--i:6">
-        <div class="hub-section-head"><h3 style="font-family:var(--font-display);font-size:1.15rem">🏆 Community leaderboard</h3></div>
+        <div class="hub-section-head"><h2 class="hub-h">🏆 Community leaderboard</h2></div>
         ${SupabaseSync.isSignedIn() ? `
           <div class="hub-list-item" style="cursor:default">
             <div><div class="hli-t">Show me on the public leaderboard</div><div class="hli-d">Ranked by lessons completed. Only your display name and count are visible — nothing else.</div></div>
@@ -11054,7 +11061,7 @@ function renderProgressHub(){
       ` : ''}
 
       <div class="hub-section" data-reveal style="--i:6">
-        <div class="hub-section-head"><h3 style="font-family:var(--font-display);font-size:1.15rem">🔖 Bookmarks</h3></div>
+        <div class="hub-section-head"><h2 class="hub-h">🔖 Bookmarks</h2></div>
         ${bookmarkEntries.length ? bookmarkEntries.map(ctx=>`
           <a class="hub-list-item" href="#/lesson/${ctx.path.id}/${ctx.sub.id}">
             <div><div class="hli-t">${ctx.path.n}.${ctx.sub.n} · ${ctx.sub.title}</div><div class="hli-d">${ctx.path.title}</div></div>
@@ -11065,7 +11072,7 @@ function renderProgressHub(){
 
       <div class="hub-section" data-reveal style="--i:7">
         <div class="hub-section-head" style="display:flex;justify-content:space-between;align-items:center;gap:1rem">
-          <h3 style="font-family:var(--font-display);font-size:1.15rem">✍️ Notes</h3>
+          <h2 class="hub-h">✍️ Notes</h2>
           ${noteEntries.length ? `<button class="btn-ghost sm" id="exportNotesBtn" type="button">⬇ Export as Markdown</button>` : ''}
         </div>
         ${noteEntries.length ? noteEntries.map(ctx=>`
@@ -11077,7 +11084,7 @@ function renderProgressHub(){
       </div>
 
       <div class="hub-section" data-reveal style="--i:7">
-        <div class="hub-section-head"><h3 style="font-family:var(--font-display);font-size:1.15rem">🎨 Appearance</h3></div>
+        <div class="hub-section-head"><h2 class="hub-h">🎨 Appearance</h2></div>
         <div class="hub-list-item" style="cursor:default">
           <div><div class="hli-t">Theme</div><div class="hli-d">"Auto: system" follows your OS setting. "Auto: time of day" switches to light 7am–7pm local, dark otherwise.</div></div>
           <select class="fc-select" id="themePicker" aria-label="Theme">
@@ -11121,7 +11128,7 @@ function renderProgressHub(){
       </div>
 
       <div class="hub-section" data-reveal style="--i:8">
-        <div class="hub-section-head"><h3 style="font-family:var(--font-display);font-size:1.15rem">💾 Backup</h3></div>
+        <div class="hub-section-head"><h2 class="hub-h">💾 Backup</h2></div>
         <div class="hub-list-item" style="cursor:default">
           <div><div class="hli-t">Download or restore your progress</div><div class="hli-d">Everything (progress, notes, bookmarks, quiz scores) as a JSON file — works without an account.</div></div>
           <div style="display:flex;gap:.5rem;flex-wrap:wrap">
