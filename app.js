@@ -2473,8 +2473,8 @@ ${pathCardHTML(p,i)}
         <p class="sec-lead">Security is many jobs — here's a shortlist and which paths lead to each.</p>
       </div>
       <div class="careers">
-        ${CAREERS.slice(0,4).map((c,i)=>`
-          <div class="career-card" data-spotlight data-reveal style="--i:${i}">
+        ${CAREERS.slice(0,6).map((c,i)=>`
+          <div class="career-card" data-spotlight data-reveal style="--i:${i%3}">
             <h3>${c.role}</h3><p>${c.desc}</p>
             <div class="career-follow"><span>Follow:</span> ${careerFollowHTML(c.follow)}</div>
           </div>
@@ -3534,6 +3534,9 @@ async function renderSubLesson(pathId, subId){
     // Key terms list → term cards
     enhanceKeyTerms(contentEl);
 
+    // Wide tables become keyboard-scrollable regions.
+    markScrollableTables(contentEl);
+
     // End-of-lesson quick check, drawn from this path's quiz bank.
     renderMicroCheck(ctx);
 
@@ -3883,6 +3886,34 @@ function animateLessonBlocks(contentEl){
    review that already drills these same terms. Only lists whose every
    item starts with a bold term are converted; anything else is left as
    written. */
+/* A table wider than the card scrolls sideways, but with nothing focusable
+   inside, a keyboard user had no way to scroll it. Only tables that really
+   overflow get a tab stop (a focusable, labelled region); ones that fit
+   stay out of the tab order. Re-checked on resize, since a phone held
+   sideways can turn one into the other. */
+function markScrollableTables(root){
+  root.querySelectorAll('.table-scroll').forEach(w => {
+    const scrolls = w.scrollWidth > w.clientWidth + 1;
+    if(scrolls){
+      w.tabIndex = 0;
+      w.setAttribute('role', 'region');
+      w.setAttribute('aria-label', 'Table, scrolls sideways');
+    } else {
+      w.removeAttribute('tabindex');
+      w.removeAttribute('role');
+      w.removeAttribute('aria-label');
+    }
+  });
+}
+{
+  let queued = false;
+  window.addEventListener('resize', ()=>{
+    if(queued) return;
+    queued = true;
+    requestAnimationFrame(()=>{ queued = false; const md = document.getElementById('content'); if(md?.classList.contains('md')) markScrollableTables(md); });
+  }, {passive:true});
+}
+
 function enhanceKeyTerms(contentEl){
   const h = [...contentEl.querySelectorAll('h2')].find(x => /^key terms$/i.test(x.textContent.trim()));
   const ul = h && h.nextElementSibling;
@@ -4398,7 +4429,7 @@ function renderTracks(){
                 <div class="track-bar"><div class="track-bar-fill" style="width:${pr.pct}%"></div></div>
                 <div class="track-meta"><b>${pr.done}/${pr.total}</b> lessons · ${pr.pct}%</div>
               </div>
-              <div class="track-next">${nextL ? `Next: ${nextL.path.n}.${nextL.sub.n} · ${escapeHtml(nextL.sub.title)}` : '✅ Track complete'}</div>
+              <div class="track-next">${nextL ? `Next: ${nextL.path.n}.${nextL.sub.n} · ${escapeHtml(nextL.sub.title)}` : `${cardIco('check')} Track complete`}</div>
             </a>`;
         }).join('')}
       </div>
@@ -7628,7 +7659,7 @@ function renderTool(id){
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow"><a href="#/tools" style="color:inherit;text-decoration:none">Tools</a> · ${meta.title}</div>
         <h1><span class="tool-head-ico">${cardIco(meta.ico)}</span>${meta.title}</h1>
-        <p class="sec-lead">${escapeHtml(meta.desc)} <span class="tool-privacy">🔒 Runs locally — nothing leaves your browser.</span></p>
+        <p class="sec-lead">${escapeHtml(meta.desc)} <span class="tool-privacy">${cardIco('lockKey')}Runs locally — nothing leaves your browser.</span></p>
       </div>
       <div id="toolBody" data-reveal style="--i:1"></div>
     </section>
