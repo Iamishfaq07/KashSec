@@ -22,6 +22,7 @@
      itself stays bright for fills behind dark ink, so text gets a deeper
      shade that clears WCAG AA (4.5:1) on every light surface. */
   --amber-ink:var(--amber);
+  --table-cover:var(--surface); --table-shadow:rgba(148,163,178,.28);
   --teal-ink:var(--teal);
   --teal:#3FB6A8; --teal-2:#5FE0CF; --crim:#E05548;
 
@@ -97,7 +98,7 @@
   --line:#E1E5EC; --line-soft:#E9EBF1;
   --border:rgba(15,20,30,.09); --border-strong:rgba(15,20,30,.16);
 
-  --amber:#C97B0F; --amber-2:#E39A2E; --amber-d:#A8630A; --amber-ink:#9A5B05;
+  --amber:#C97B0F; --amber-2:#E39A2E; --amber-d:#A8630A; --amber-ink:#9A5B05; --table-shadow:rgba(15,20,30,.16);
   --teal:#0E8377; --teal-2:#0B6F64; --crim:#C43C30; --teal-ink:#0C766A;
 
   --text:#12151C; --muted:#525B6A; --muted2:#636B79;
@@ -594,7 +595,17 @@ a{color:inherit}
 .md blockquote{border-left:3px solid var(--amber);padding:.7rem 0 .7rem 1.1rem;margin:0 0 1.3rem;color:var(--md-quote-text);background:linear-gradient(90deg,rgba(239,164,58,.08),transparent);border-radius:0 8px 8px 0}
 .md blockquote p{margin:0}
 .md hr{border:none;border-top:1px solid var(--line-soft);margin:2.6rem 0}
-.md .table-scroll{overflow-x:auto;margin:0 0 1.3rem;-webkit-overflow-scrolling:touch;border:1px solid var(--border);border-radius:var(--r)}
+.md .table-scroll{overflow-x:auto;margin:0 0 1.3rem;-webkit-overflow-scrolling:touch;border:1px solid var(--border);border-radius:var(--r);
+  /* Scroll shadows: a wide table cut off at the card edge gave no hint that
+     it scrolls. The two "local" covers travel with the content and hide the
+     shadows at either end, so a shadow shows only where more table is
+     hidden. Pure CSS — no scroll listener. */
+  background:
+    linear-gradient(90deg,var(--table-cover) 30%,transparent) left center/42px 100% no-repeat local,
+    linear-gradient(270deg,var(--table-cover) 30%,transparent) right center/42px 100% no-repeat local,
+    radial-gradient(farthest-side at 0 50%,var(--table-shadow),transparent) left center/14px 100% no-repeat scroll,
+    radial-gradient(farthest-side at 100% 50%,var(--table-shadow),transparent) right center/14px 100% no-repeat scroll,
+    var(--table-cover)}
 .md table{width:100%;min-width:420px;border-collapse:collapse;font-size:.92rem}
 .md thead{background:var(--surface2)}
 .md th,.md td{padding:.65rem .9rem;text-align:left;border-bottom:1px solid var(--line-soft);white-space:nowrap}
@@ -603,6 +614,11 @@ a{color:inherit}
 .md tbody tr:hover{background:var(--overlay-1)}
 .md th{color:var(--amber-ink);font-family:var(--font-mono);font-size:.74rem;letter-spacing:.05em;text-transform:uppercase}
 .md td{color:var(--md-text)}
+/* On phones, long cells wrap instead of stretching the table to several
+   screen widths; headers and short values stay on one line. */
+@media(max-width:600px){
+  .md td{white-space:normal;overflow-wrap:break-word}
+}
 .md details{background:rgba(239,164,58,.06);border:1px solid rgba(239,164,58,.28);border-radius:var(--r);padding:.7rem 1.1rem;margin:0 0 1.3rem}
 .md details summary{cursor:pointer;font-family:var(--font-mono);font-size:.78rem;color:var(--amber-ink);text-transform:uppercase;letter-spacing:.04em;padding:.3rem 0}
 .md details[open] summary{margin-bottom:.5rem;border-bottom:1px solid rgba(239,164,58,.2)}
