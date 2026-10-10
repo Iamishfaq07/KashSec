@@ -4,12 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
-<title>Active Directory Attack Lab — free hands-on practice, no setup · KashSec Academy</title>
+<title>Active Directory Attack Lab — free hands-on practice · KashSec</title>
 <meta name="description" content="A guided walkthrough of BloodHound-style graph recon, Kerberoasting a weak service account, and forging a Golden Ticket. A guided walk through the Active…">
 <link rel="canonical" href="https://kashsec.vercel.app/labs/ad-attack.html">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/icons/icon-192.png" type="image/png" sizes="192x192">
-<meta property="og:title" content="Active Directory Attack Lab — free hands-on practice, no setup · KashSec Academy">
+<meta property="og:title" content="Active Directory Attack Lab — free hands-on practice · KashSec">
 <meta property="og:description" content="A guided walkthrough of BloodHound-style graph recon, Kerberoasting a weak service account, and forging a Golden Ticket. A guided walk through the Active…">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/labs/ad-attack.html">
@@ -20,7 +20,7 @@
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="KashSec Academy · Active Directory Attack Lab">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Active Directory Attack Lab — free hands-on practice, no setup · KashSec Academy">
+<meta name="twitter:title" content="Active Directory Attack Lab — free hands-on practice · KashSec">
 <meta name="twitter:description" content="A guided walkthrough of BloodHound-style graph recon, Kerberoasting a weak service account, and forging a Golden Ticket. A guided walk through the Active…">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og/labs.jpg">
 <meta name="twitter:image:alt" content="KashSec Academy · Active Directory Attack Lab">
@@ -41,7 +41,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Security labs","item":"https://kashsec.vercel.app/labs/"},{"@type":"ListItem","position":3,"name":"Active Directory Attack Lab","item":"https://kashsec.vercel.app/labs/ad-attack.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebApplication","name":"Active Directory Attack Lab","description":"A guided walkthrough of BloodHound-style graph recon, Kerberoasting a weak service account, and forging a Golden Ticket.","url":"https://kashsec.vercel.app/labs/ad-attack.html","applicationCategory":"SecurityApplication","applicationSubCategory":"security lab","operatingSystem":"Any (runs in a web browser)","browserRequirements":"Requires JavaScript","inLanguage":"en","dateModified":"2026-10-09","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners.","founder":{"@type":"Person","name":"Ishfaq","url":"https://www.linkedin.com/in/iamishfaq07/","sameAs":["https://www.linkedin.com/in/iamishfaq07/"]}}}
+{"@context":"https://schema.org","@type":"WebApplication","name":"Active Directory Attack Lab","description":"A guided walkthrough of BloodHound-style graph recon, Kerberoasting a weak service account, and forging a Golden Ticket.","url":"https://kashsec.vercel.app/labs/ad-attack.html","applicationCategory":"SecurityApplication","applicationSubCategory":"security lab","operatingSystem":"Any (runs in a web browser)","browserRequirements":"Requires JavaScript","inLanguage":"en","dateModified":"2026-10-10","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners.","founder":{"@type":"Person","name":"Ishfaq","url":"https://www.linkedin.com/in/iamishfaq07/","sameAs":["https://www.linkedin.com/in/iamishfaq07/"]}}}
 </script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is a Golden Ticket?","acceptedAnswer":{"@type":"Answer","text":"A Kerberos ticket-granting ticket forged with the krbtgt account hash. It grants access as any user to any service and survives password resets, which is why it is the definition of full domain compromise."}},{"@type":"Question","name":"How is Kerberoasting detected?","acceptedAnswer":{"@type":"Answer","text":"Watch for unusual volumes of service ticket requests, especially with weak encryption types. Managed service accounts with long random passwords remove the payoff entirely."}}]}
@@ -121,7 +121,7 @@
       </div>
     </div>
     <div class="foot-cols">
-      <div><h4>Learn</h4>
+      <div><h2>Learn</h2>
         <a href="#/course">All paths</a>
         <a href="#/tracks">Tracks</a>
         <a href="#/labs">Labs</a>
@@ -134,21 +134,21 @@
         <a href="#/exam">Timed mock exam</a>
         <a href="#/search">Search</a>
       </div>
-      <div><h4>Explore</h4>
+      <div><h2>Explore</h2>
         <a href="#/tools">Tools</a>
         <a href="#/careers">Careers</a>
         <a href="#/interview">Interview bank</a>
         <a href="#/certs">Certification roadmap</a>
         <a href="#/faq">FAQ</a>
       </div>
-      <div><h4>About</h4>
+      <div><h2>About</h2>
         <a href="#/about">About KashSec</a>
         <a href="#/contact">Contact</a>
         <a href="https://www.linkedin.com/in/iamishfaq07/" target="_blank" rel="noopener noreferrer me">LinkedIn</a>
         <a href="#/changelog">What's new</a>
         <a href="/feed.xml">RSS feed</a>
       </div>
-      <div><h4>Legal</h4>
+      <div><h2>Legal</h2>
         <a href="#/privacy">Privacy policy</a>
         <a href="#/terms">Terms of use</a>
       </div>

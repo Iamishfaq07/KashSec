@@ -5,12 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Linux — The Privesc Puzzle — Path 19 · KashSec Academy</title>
-<meta name="description" content="Category: Linux/Privesc · Difficulty: Medium">
+<meta name="description" content="Medium Linux/Privesc CTF challenge: You have low-privileged SSH access to a training box as user analyst. Your goal, as in a real privilege escalation…">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/19-ctf-challenges/linux-privesc-challenge.html">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/icons/icon-192.png" type="image/png" sizes="192x192">
 <meta property="og:title" content="Linux — The Privesc Puzzle — Path 19 · KashSec Academy">
-<meta property="og:description" content="Category: Linux/Privesc · Difficulty: Medium">
+<meta property="og:description" content="Medium Linux/Privesc CTF challenge: You have low-privileged SSH access to a training box as user analyst. Your goal, as in a real privilege escalation…">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/19-ctf-challenges/linux-privesc-challenge.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -21,7 +21,7 @@
 <meta property="og:image:alt" content="KashSec Academy · Path 19: CTF Challenges">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Linux — The Privesc Puzzle — Path 19 · KashSec Academy">
-<meta name="twitter:description" content="Category: Linux/Privesc · Difficulty: Medium">
+<meta name="twitter:description" content="Medium Linux/Privesc CTF challenge: You have low-privileged SSH access to a training box as user analyst. Your goal, as in a real privilege escalation…">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og/19-ctf-challenges.jpg">
 <meta name="twitter:image:alt" content="KashSec Academy · Path 19: CTF Challenges">
 <meta name="theme-color" content="#0A0E13" media="(prefers-color-scheme: dark)">
@@ -41,7 +41,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 19 — CTF Challenges","item":"https://kashsec.vercel.app/lesson/19-ctf-challenges/"},{"@type":"ListItem","position":4,"name":"Linux — The Privesc Puzzle","item":"https://kashsec.vercel.app/lesson/19-ctf-challenges/linux-privesc-challenge.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Linux — The Privesc Puzzle","headline":"Linux — The Privesc Puzzle","description":"Category: Linux/Privesc · Difficulty: Medium","url":"https://kashsec.vercel.app/lesson/19-ctf-challenges/linux-privesc-challenge.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","author":{"@type":"Person","name":"Ishfaq","url":"https://www.linkedin.com/in/iamishfaq07/","sameAs":["https://www.linkedin.com/in/iamishfaq07/"]},"image":"https://kashsec.vercel.app/og/19-ctf-challenges.jpg","educationalLevel":"All levels","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Turn a passwordless sudo rule into a root shell. Medium.","isPartOf":{"@type":"Course","name":"Path 19: CTF Challenges","url":"https://kashsec.vercel.app/lesson/19-ctf-challenges/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners.","founder":{"@type":"Person","name":"Ishfaq","url":"https://www.linkedin.com/in/iamishfaq07/","sameAs":["https://www.linkedin.com/in/iamishfaq07/"]}},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners.","founder":{"@type":"Person","name":"Ishfaq","url":"https://www.linkedin.com/in/iamishfaq07/","sameAs":["https://www.linkedin.com/in/iamishfaq07/"]}},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/19-ctf-challenges/linux-privesc-challenge.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Linux — The Privesc Puzzle","headline":"Linux — The Privesc Puzzle","description":"Medium Linux/Privesc CTF challenge: You have low-privileged SSH access to a training box as user analyst. Your goal, as in a real privilege escalation scenario, is to find a path from this limited account to root — and read the flag sitting in /root/flag.txt, which only root can access.","url":"https://kashsec.vercel.app/lesson/19-ctf-challenges/linux-privesc-challenge.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","author":{"@type":"Person","name":"Ishfaq","url":"https://www.linkedin.com/in/iamishfaq07/","sameAs":["https://www.linkedin.com/in/iamishfaq07/"]},"image":"https://kashsec.vercel.app/og/19-ctf-challenges.jpg","educationalLevel":"All levels","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Turn a passwordless sudo rule into a root shell. Medium.","isPartOf":{"@type":"Course","name":"Path 19: CTF Challenges","url":"https://kashsec.vercel.app/lesson/19-ctf-challenges/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners.","founder":{"@type":"Person","name":"Ishfaq","url":"https://www.linkedin.com/in/iamishfaq07/","sameAs":["https://www.linkedin.com/in/iamishfaq07/"]}},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners.","founder":{"@type":"Person","name":"Ishfaq","url":"https://www.linkedin.com/in/iamishfaq07/","sameAs":["https://www.linkedin.com/in/iamishfaq07/"]}},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/19-ctf-challenges/linux-privesc-challenge.html"}}
 </script>
 </head>
 <body>
@@ -163,7 +163,7 @@ This tells <code>find</code> to "search" starting at <code>/etc/hostname</code> 
       </div>
     </div>
     <div class="foot-cols">
-      <div><h4>Learn</h4>
+      <div><h2>Learn</h2>
         <a href="#/course">All paths</a>
         <a href="#/tracks">Tracks</a>
         <a href="#/labs">Labs</a>
@@ -176,21 +176,21 @@ This tells <code>find</code> to "search" starting at <code>/etc/hostname</code> 
         <a href="#/exam">Timed mock exam</a>
         <a href="#/search">Search</a>
       </div>
-      <div><h4>Explore</h4>
+      <div><h2>Explore</h2>
         <a href="#/tools">Tools</a>
         <a href="#/careers">Careers</a>
         <a href="#/interview">Interview bank</a>
         <a href="#/certs">Certification roadmap</a>
         <a href="#/faq">FAQ</a>
       </div>
-      <div><h4>About</h4>
+      <div><h2>About</h2>
         <a href="#/about">About KashSec</a>
         <a href="#/contact">Contact</a>
         <a href="https://www.linkedin.com/in/iamishfaq07/" target="_blank" rel="noopener noreferrer me">LinkedIn</a>
         <a href="#/changelog">What's new</a>
         <a href="/feed.xml">RSS feed</a>
       </div>
-      <div><h4>Legal</h4>
+      <div><h2>Legal</h2>
         <a href="#/privacy">Privacy policy</a>
         <a href="#/terms">Terms of use</a>
       </div>

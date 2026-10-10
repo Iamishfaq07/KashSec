@@ -5,12 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>Web — A Key of Your Choosing — Path 19 · KashSec Academy</title>
-<meta name="description" content="Category: Web · Difficulty: Hard">
+<meta name="description" content="Hard Web CTF challenge: multi-tenant.kashsec-labs.test rotates signing keys per deployment and uses the JWT header's kid (Key ID) field to tell the server…">
 <link rel="canonical" href="https://kashsec.vercel.app/lesson/19-ctf-challenges/jwt-kid-injection.html">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/icons/icon-192.png" type="image/png" sizes="192x192">
 <meta property="og:title" content="Web — A Key of Your Choosing — Path 19 · KashSec Academy">
-<meta property="og:description" content="Category: Web · Difficulty: Hard">
+<meta property="og:description" content="Hard Web CTF challenge: multi-tenant.kashsec-labs.test rotates signing keys per deployment and uses the JWT header's kid (Key ID) field to tell the server…">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kashsec.vercel.app/lesson/19-ctf-challenges/jwt-kid-injection.html">
 <meta property="og:site_name" content="KashSec Academy">
@@ -21,7 +21,7 @@
 <meta property="og:image:alt" content="KashSec Academy · Path 19: CTF Challenges">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Web — A Key of Your Choosing — Path 19 · KashSec Academy">
-<meta name="twitter:description" content="Category: Web · Difficulty: Hard">
+<meta name="twitter:description" content="Hard Web CTF challenge: multi-tenant.kashsec-labs.test rotates signing keys per deployment and uses the JWT header's kid (Key ID) field to tell the server…">
 <meta name="twitter:image" content="https://kashsec.vercel.app/og/19-ctf-challenges.jpg">
 <meta name="twitter:image:alt" content="KashSec Academy · Path 19: CTF Challenges">
 <meta name="theme-color" content="#0A0E13" media="(prefers-color-scheme: dark)">
@@ -41,7 +41,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 19 — CTF Challenges","item":"https://kashsec.vercel.app/lesson/19-ctf-challenges/"},{"@type":"ListItem","position":4,"name":"Web — A Key of Your Choosing","item":"https://kashsec.vercel.app/lesson/19-ctf-challenges/jwt-kid-injection.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Web — A Key of Your Choosing","headline":"Web — A Key of Your Choosing","description":"Category: Web · Difficulty: Hard","url":"https://kashsec.vercel.app/lesson/19-ctf-challenges/jwt-kid-injection.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","author":{"@type":"Person","name":"Ishfaq","url":"https://www.linkedin.com/in/iamishfaq07/","sameAs":["https://www.linkedin.com/in/iamishfaq07/"]},"image":"https://kashsec.vercel.app/og/19-ctf-challenges.jpg","educationalLevel":"All levels","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Path-traverse the kid header into a known, empty signing key. Hard.","isPartOf":{"@type":"Course","name":"Path 19: CTF Challenges","url":"https://kashsec.vercel.app/lesson/19-ctf-challenges/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners.","founder":{"@type":"Person","name":"Ishfaq","url":"https://www.linkedin.com/in/iamishfaq07/","sameAs":["https://www.linkedin.com/in/iamishfaq07/"]}},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners.","founder":{"@type":"Person","name":"Ishfaq","url":"https://www.linkedin.com/in/iamishfaq07/","sameAs":["https://www.linkedin.com/in/iamishfaq07/"]}},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/19-ctf-challenges/jwt-kid-injection.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Web — A Key of Your Choosing","headline":"Web — A Key of Your Choosing","description":"Hard Web CTF challenge: multi-tenant.kashsec-labs.test rotates signing keys per deployment and uses the JWT header's kid (Key ID) field to tell the server which key to verify a given token against — a legitimate, widely used pattern for supporting multiple valid keys at once. You've captured a…","url":"https://kashsec.vercel.app/lesson/19-ctf-challenges/jwt-kid-injection.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","author":{"@type":"Person","name":"Ishfaq","url":"https://www.linkedin.com/in/iamishfaq07/","sameAs":["https://www.linkedin.com/in/iamishfaq07/"]},"image":"https://kashsec.vercel.app/og/19-ctf-challenges.jpg","educationalLevel":"All levels","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Path-traverse the kid header into a known, empty signing key. Hard.","isPartOf":{"@type":"Course","name":"Path 19: CTF Challenges","url":"https://kashsec.vercel.app/lesson/19-ctf-challenges/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners.","founder":{"@type":"Person","name":"Ishfaq","url":"https://www.linkedin.com/in/iamishfaq07/","sameAs":["https://www.linkedin.com/in/iamishfaq07/"]}},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners.","founder":{"@type":"Person","name":"Ishfaq","url":"https://www.linkedin.com/in/iamishfaq07/","sameAs":["https://www.linkedin.com/in/iamishfaq07/"]}},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/19-ctf-challenges/jwt-kid-injection.html"}}
 </script>
 </head>
 <body>
@@ -152,7 +152,7 @@ No allow-list of valid kid values currently implemented (tracked: JIRA-881).
       </div>
     </div>
     <div class="foot-cols">
-      <div><h4>Learn</h4>
+      <div><h2>Learn</h2>
         <a href="#/course">All paths</a>
         <a href="#/tracks">Tracks</a>
         <a href="#/labs">Labs</a>
@@ -165,21 +165,21 @@ No allow-list of valid kid values currently implemented (tracked: JIRA-881).
         <a href="#/exam">Timed mock exam</a>
         <a href="#/search">Search</a>
       </div>
-      <div><h4>Explore</h4>
+      <div><h2>Explore</h2>
         <a href="#/tools">Tools</a>
         <a href="#/careers">Careers</a>
         <a href="#/interview">Interview bank</a>
         <a href="#/certs">Certification roadmap</a>
         <a href="#/faq">FAQ</a>
       </div>
-      <div><h4>About</h4>
+      <div><h2>About</h2>
         <a href="#/about">About KashSec</a>
         <a href="#/contact">Contact</a>
         <a href="https://www.linkedin.com/in/iamishfaq07/" target="_blank" rel="noopener noreferrer me">LinkedIn</a>
         <a href="#/changelog">What's new</a>
         <a href="/feed.xml">RSS feed</a>
       </div>
-      <div><h4>Legal</h4>
+      <div><h2>Legal</h2>
         <a href="#/privacy">Privacy policy</a>
         <a href="#/terms">Terms of use</a>
       </div>
