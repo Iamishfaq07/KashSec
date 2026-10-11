@@ -4315,7 +4315,7 @@ async function renderReview(){
             <div class="fc-face fc-front">
               <div class="fc-hint">TERM ${di+1} / ${deck.length}</div>
               <div class="fc-term">${escapeHtml(card.term)}</div>
-              <div class="fc-hint">click / space to flip</div>
+              <div class="fc-hint">space to flip, then 1 again, 2 good, 3 easy</div>
             </div>
             <div class="fc-face fc-back">
               <div class="fc-def">${escapeHtml(card.def)}</div>
@@ -7063,7 +7063,8 @@ const CHANGELOG = [
   {date:'2026-10-12', title:'Every lesson points at a lab, and the keyboard can finish one', items:[
     'Each path now has one practice lab. The link sits on the path page and under the lesson heading, so you do not have to leave the reader to find the hands-on version.',
     'The home page shows the first unfinished lesson when you have already moved past it. Continue still opens the lesson you were just on.',
-    'B bookmarks the open lesson. C marks it complete. Both are listed in the ? shortcut panel, and neither fires while you are typing.'
+    'B bookmarks the open lesson. C marks it complete. Both are listed in the ? shortcut panel, and neither fires while you are typing.',
+    'Quizzes take 1–4 or A–D, then Enter. The results page can hide the questions you already got. Flashcards flip with space, then 1, 2, or 3 grades the card.'
   ]},
   {date:'2026-09-24', title:'Mobile layout and keyboard accessibility improvements', items:[
     'The header no longer extends past the screen at 320px or 430px. Narrow layouts hide duplicate header controls and offer Random lesson from the mobile menu.',
@@ -10028,6 +10029,7 @@ function renderQuiz(id){
   let qi = 0;
   let answers = new Array(quiz.questions.length).fill(null);
   let finished = false;
+  let missedOnly = false;
   const saved = isFinal ? STATE.finalQuiz : STATE.quizScores[id];
   const canReviewSaved = !!(saved && Array.isArray(saved.answers) && saved.answers.length === quiz.questions.length);
 
@@ -10051,7 +10053,7 @@ function renderQuiz(id){
             ${quiz.questions.map((_,i)=>`<div class="quiz-dot ${i===qi?'current':answers[i]!==null?'answered':''}"></div>`).join('')}
           </div>
           <div class="quiz-card" data-reveal>
-            <div class="quiz-qn">Question ${qi+1} of ${quiz.questions.length}</div>
+            <div class="quiz-qn">Question ${qi+1} of ${quiz.questions.length} · 1–${q.options.length} or A–${String.fromCharCode(64+q.options.length)}, then Enter</div>
             <div class="quiz-q">${q.q}</div>
             <div class="quiz-options">
               ${q.options.map((opt,oi)=>{
@@ -10107,7 +10109,7 @@ function renderQuiz(id){
     paintResult();
   }
 
-  function paintResult(){
+  function paintResult(celebrate = true){
     const {score,total,pct} = scoreNow();
     const passed = pct >= quiz.passPct;
     // Schedule every wrong answer to come back later. Only for real path
@@ -10146,7 +10148,8 @@ function renderQuiz(id){
               <button class="btn-amber sm" id="testOutBtn" type="button">Mark this path complete →</button>
             </div>` : ''}
           <div class="quiz-review" data-reveal style="--i:5">
-            ${quiz.questions.map((q,i)=>{
+            ${score < total ? `<div class="quiz-nav" style="margin-bottom:.8rem"><button class="btn-ghost sm" id="quizMissedOnly" type="button">${missedOnly ? 'Show every question' : 'Missed only'}</button></div>` : ''}
+            ${quiz.questions.map((q,i)=>({q,i})).filter(({q,i}) => !missedOnly || answers[i] !== q.correct).map(({q,i})=>{
               const right = answers[i]===q.correct;
               return `<div class="quiz-review-item ${right?'':'wrong'}">
                 <div class="qr-q">${i+1}. ${q.q}</div>
@@ -10160,7 +10163,11 @@ function renderQuiz(id){
       </section>
     `;
     setupReveal();
-    if(passed) fireConfetti({count: isFinal ? 140 : 80});
+    if(passed && celebrate) fireConfetti({count: isFinal ? 140 : 80});
+    document.getElementById('quizMissedOnly')?.addEventListener('click', ()=>{
+      missedOnly = !missedOnly;
+      paintResult(false);
+    });
     document.getElementById('testOutBtn')?.addEventListener('click', ()=>{
       if(!confirm(`Mark all ${pathProgress(id).total} lessons in "${path.title}" as complete?\n\nYou can still read them any time, and you can undo this per-lesson.`)) return;
       const now = Date.now();
@@ -10172,7 +10179,7 @@ function renderQuiz(id){
       location.hash = `#/lesson/${id}`;
     });
     document.getElementById('retakeBtn')?.addEventListener('click', ()=>{
-      qi = 0; answers.fill(null); finished = false;
+      qi = 0; answers.fill(null); finished = false; missedOnly = false;
       window.scrollTo(0,0);
       paintQuestion();
     });
@@ -11960,6 +11967,8 @@ function toggleKbdOverlay(force){
         <div class="kbd-row"><span><kbd>]</kbd></span><span>Next lesson</span></div>
         <div class="kbd-row"><span><kbd>B</kbd></span><span>Bookmark this lesson</span></div>
         <div class="kbd-row"><span><kbd>C</kbd></span><span>Mark this lesson complete</span></div>
+        <div class="kbd-row"><span><kbd>1</kbd>–<kbd>4</kbd></span><span>Answer a quiz, or grade a flipped card</span></div>
+        <div class="kbd-row"><span><kbd>Enter</kbd></span><span>Next quiz question</span></div>
         <div class="kbd-row"><span><kbd>R</kbd></span><span>Jump to a random lesson</span></div>
         <div class="kbd-row"><span><kbd>?</kbd></span><span>Show / hide this cheatsheet</span></div>
         <div class="kbd-row"><span><kbd>Esc</kbd></span><span>Close dialogs</span></div>
@@ -11984,6 +11993,36 @@ window.addEventListener('keydown', (e)=>{
     e.preventDefault();
     toggleKbdOverlay();
     return;
+  }
+  const quizOpts = [...document.querySelectorAll('.quiz-opt')];
+  if(quizOpts.length && /^[1-4a-d]$/i.test(e.key)){
+    const idx = /^[1-4]$/.test(e.key) ? Number(e.key) - 1 : e.key.toLowerCase().charCodeAt(0) - 97;
+    if(quizOpts[idx] && !quizOpts[idx].disabled){
+      e.preventDefault();
+      quizOpts[idx].click();
+    }
+    return;
+  }
+  if(document.getElementById('quizNextBtn') && (e.key === 'Enter' || e.key === 'n' || e.key === 'N')){
+    e.preventDefault();
+    document.getElementById('quizNextBtn').click();
+    return;
+  }
+  const flashcard = document.getElementById('fcCard');
+  if(flashcard){
+    if(e.key === ' '){
+      e.preventDefault();
+      flashcard.click();
+      return;
+    }
+    if(flashcard.classList.contains('flipped') && /^[123]$/.test(e.key)){
+      const gradeBtn = document.getElementById({1:'fcAgainBtn', 2:'fcGoodBtn', 3:'fcEasyBtn'}[e.key]);
+      if(gradeBtn){
+        e.preventDefault();
+        gradeBtn.click();
+      }
+      return;
+    }
   }
   if(e.key === 'Escape' && kbdOverlay?.classList.contains('open')){
     toggleKbdOverlay(false);
