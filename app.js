@@ -2037,11 +2037,20 @@ const prefersReduced = () => window.matchMedia('(prefers-reduced-motion: reduce)
 function decorateLabHeading(){
   const m = activeRoute().match(/^#\/labs\/([\w-]+)/);
   const lab = m && LABS.find(l => l.id === m[1]);
-  const h1 = lab && app.querySelector('.sec-head h1');
-  if(!h1 || h1.querySelector('.tool-head-ico') || !KICON[lab.ico]) return;
-  const first = h1.firstChild;
-  if(first && first.nodeType === 3) first.textContent = first.textContent.replace(/^[\p{Extended_Pictographic}\uFE0F\u200D\s]+/u, '');
-  h1.insertAdjacentHTML('afterbegin', `<span class="tool-head-ico">${cardIco(lab.ico)}</span>`);
+  if(!lab) return;
+  const h1 = app.querySelector('.sec-head h1');
+  if(h1 && !h1.querySelector('.tool-head-ico') && KICON[lab.ico]){
+    const first = h1.firstChild;
+    if(first && first.nodeType === 3) first.textContent = first.textContent.replace(/^[\p{Extended_Pictographic}\uFE0F\u200D\s]+/u, '');
+    h1.insertAdjacentHTML('afterbegin', `<span class="tool-head-ico">${cardIco(lab.ico)}</span>`);
+  }
+  const head = app.querySelector('.sec-head');
+  const path = pathForLab(lab);
+  if(path && head && !head.querySelector('.lab-path-link')){
+    const chip = `<a class="practice-chip lab-path-link" href="#/lesson/${path.id}">${cardIco('doc')}<span>Read Path ${path.n} · ${escapeHtml(path.title)}</span></a>`;
+    const lead = head.querySelector('.sec-lead');
+    (lead || head).insertAdjacentHTML(lead ? 'afterend' : 'beforeend', chip);
+  }
 }
 
 /* The tab title follows the route. Pages with a prerendered twin (lessons,
@@ -4529,6 +4538,12 @@ const PATH_LAB = {
 function labForPath(path){
   const id = PATH_LAB[path && path.n];
   return id ? LABS.find(l => l.id === id) : null;
+}
+function pathForLab(lab){
+  const m = String(lab && lab.related || '').match(/Path\s+(\d+)/);
+  if(!m) return null;
+  const n = m[1].padStart(2, '0');
+  return PATHS.find(p => p.n === n) || null;
 }
 function practiceChipHTML(path){
   const lab = labForPath(path);
@@ -7064,7 +7079,8 @@ const CHANGELOG = [
     'Each path now has one practice lab. The link sits on the path page and under the lesson heading, so you do not have to leave the reader to find the hands-on version.',
     'The home page shows the first unfinished lesson when you have already moved past it. Continue still opens the lesson you were just on.',
     'B bookmarks the open lesson. C marks it complete. Both are listed in the ? shortcut panel, and neither fires while you are typing.',
-    'Quizzes take 1–4 or A–D, then Enter. The results page can hide the questions you already got. Flashcards flip with space, then 1, 2, or 3 grades the card.'
+    'Quizzes take 1–4 or A–D, then Enter. The results page can hide the questions you already got. Flashcards flip with space, then 1, 2, or 3 grades the card.',
+    'Search can open every lab, not only the first half, and each lab page links back to the path that teaches it.'
   ]},
   {date:'2026-09-24', title:'Mobile layout and keyboard accessibility improvements', items:[
     'The header no longer extends past the screen at 320px or 430px. Narrow layouts hide duplicate header controls and offer Random lesson from the mobile menu.',
@@ -11697,29 +11713,7 @@ function getCommands(){
     ['Learning transcript','#/transcript','doc'],['Review missed questions','#/quiz/missed','refresh']
   ].map(([t,u,i])=>({title:t, url:u, icon:i, ctx:'Go to', keywords:t.toLowerCase()}));
   const tools = (typeof TOOLS!=='undefined'?TOOLS:[]).map(t=>({title:'Tool: '+t.title, url:`#/tools/${t.id}`, icon:t.ico, ctx:'Tool', keywords:(t.title+' '+t.desc).toLowerCase()}));
-  const labs = [
-    {title:'Lab: Terminal Simulator', url:'#/labs/terminal', icon:'🖥', kw:'terminal linux bash'},
-    {title:'Lab: Vulnerable Web App', url:'#/labs/webapp', icon:'🕸', kw:'xss web login'},
-    {title:'Lab: SQL Injection Sandbox', url:'#/labs/sqli', icon:'💉', kw:'sql injection sqli'},
-    {title:'Lab: Phishing Spotter', url:'#/labs/phishing', icon:'🎣', kw:'phishing email'},
-    {title:'Lab: Packet Capture Viewer', url:'#/labs/pcap', icon:'📡', kw:'pcap wireshark packets'},
-    {title:'Lab: IDOR Playground', url:'#/labs/idor', icon:'🔓', kw:'idor bola access control'},
-    {title:'Lab: JWT Forgery Lab', url:'#/labs/jwt', icon:'🪪', kw:'jwt token alg none forgery'},
-    {title:'Lab: Path Traversal Playground', url:'#/labs/traversal', icon:'📂', kw:'path traversal lfi directory'},
-    {title:'Lab: SSRF Playground', url:'#/labs/ssrf', icon:'🌐', kw:'ssrf server side request forgery metadata'},
-    {title:'Lab: XXE Playground', url:'#/labs/xxe', icon:'📄', kw:'xxe xml external entity'},
-    {title:'Lab: Log Analysis / IR', url:'#/labs/loganalysis', icon:'📜', kw:'log analysis incident response soc'},
-    {title:'Lab: OSINT Sandbox', url:'#/labs/osint', icon:'🔍', kw:'osint recon reconnaissance'},
-    {title:'Lab: BOLA/BFLA Playground', url:'#/labs/bola-bfla', icon:'🗂', kw:'bola bfla api authorization idor'},
-    {title:'Lab: GraphQL Introspection Abuse', url:'#/labs/graphql-introspection', icon:'🕸', kw:'graphql introspection api schema'},
-    {title:'Lab: Mass Assignment Toy', url:'#/labs/mass-assignment', icon:'🧩', kw:'mass assignment api json allow-list'},
-    {title:'Lab: Rate-Limit Bypass Simulator', url:'#/labs/rate-limit-bypass', icon:'🚦', kw:'rate limit bypass api brute force x-forwarded-for'},
-    {title:'Lab: Prompt Injection Simulator', url:'#/labs/prompt-injection', icon:'💬', kw:'prompt injection ai llm chatbot system prompt'},
-    {title:'Lab: Jailbreak Playground', url:'#/labs/jailbreak', icon:'🔓', kw:'jailbreak ai llm roleplay dan bypass'},
-    {title:'Lab: Indirect Prompt Injection Challenge', url:'#/labs/indirect-injection', icon:'🪤', kw:'indirect prompt injection ai agent llm'},
-    {title:'Lab: Agentic Risk Scenario', url:'#/labs/agentic-risk', icon:'🤖', kw:'agentic ai agent risk tool access injection'},
-    {title:'Lab: Active Directory Attack Lab', url:'#/labs/ad-attack', icon:'🏰', kw:'active directory bloodhound kerberoast golden ticket krbtgt domain admin'}
-  ].map(l=>({title:l.title, url:l.url, icon:l.icon, ctx:'Lab', keywords:(l.title+' '+l.kw).toLowerCase()}));
+  const labs = (typeof LABS!=='undefined'?LABS:[]).map(l=>({title:'Lab: '+l.title, url:`#/labs/${l.id}`, icon:l.ico, ctx:'Lab', keywords:(l.title+' '+(l.desc||'')+' '+(l.related||'')).toLowerCase()}));
   const actions = [
     {title:'Random lesson', icon:'🎲', ctx:'Action', keywords:'random surprise lesson', run:()=>{ const r=pickRandomLesson(); location.hash=`#/lesson/${r.pathId}/${r.subId}`; }},
     {title:'Toggle light / dark theme', icon:'🌓', ctx:'Action', keywords:'theme dark light mode', run:()=>toggleTheme()}
@@ -11808,7 +11802,21 @@ function searchAll(q){
       bodyHits.push({type:'lesson', title:c.t, desc:snippet, url, context:`${c.n} · ${c.pt}`, score:15, _body:true});
     }
   }
-  return titleHits.concat(bodyHits).sort((a,b)=>b.score-a.score).slice(0,60);
+  return titleHits.concat(bodyHits, catalogHits(ql)).sort((a,b)=>b.score-a.score).slice(0,60);
+}
+
+function catalogHits(ql){
+  const hits = [];
+  const add = (item, kind, url)=>{
+    const title = item.title.toLowerCase();
+    const blob = (item.title+' '+(item.desc||'')+' '+(item.related||'')).toLowerCase();
+    if(!blob.includes(ql)) return;
+    const score = title.startsWith(ql) ? 90 : title.includes(ql) ? 65 : 25;
+    hits.push({type:kind, title:item.title, desc:item.desc, url, context:kind==='lab'?'Lab':'Tool', score});
+  };
+  if(typeof LABS !== 'undefined') LABS.forEach(l => add(l, 'lab', `#/labs/${l.id}`));
+  if(typeof TOOLS !== 'undefined') TOOLS.forEach(t => add(t, 'tool', `#/tools/${t.id}`));
+  return hits;
 }
 
 function runSearch(q){
