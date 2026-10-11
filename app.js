@@ -4605,9 +4605,10 @@ function renderCapstone(){
 /* Type-to-filter for the lab and tool grids (42 and 32 cards spread over
    more than a dozen topics — too many for chips). Matches title,
    description and the paired path, so "jwt", "cloud" or "linux" all work. */
-function cardFilterHTML(kind, total){
+function cardFilterHTML(kind, total, extra=''){
   return `<div class="card-filter">
     <input type="search" id="cardFilter" class="glossary-search" placeholder="Filter ${kind}… (e.g. jwt, cloud, linux)" aria-label="Filter ${kind}" autocomplete="off" spellcheck="false">
+    ${extra}
     <span class="card-filter-count" id="cardFilterCount" role="status" aria-live="polite">${total} ${kind}</span>
   </div>`;
 }
@@ -4618,15 +4619,44 @@ function wireCardFilter(){
   const cards = [...app.querySelectorAll('.labs-grid .lab-card')];
   const kind = (input.getAttribute('aria-label') || '').replace(/^Filter /, '');
   const hay = cards.map(c => c.textContent.toLowerCase());
-  input.addEventListener('input', ()=>{
+  const unsolvedBtn = document.getElementById('unsolvedOnly');
+  let unsolved = false;
+  const apply = ()=>{
     const terms = input.value.toLowerCase().trim().split(/\s+/).filter(Boolean);
     let shown = 0;
     cards.forEach((c, i)=>{
-      const match = terms.every(t => hay[i].includes(t));
+      const textMatch = terms.every(t => hay[i].includes(t));
+      const hideSolved = unsolved && c.classList.contains('is-complete');
+      const match = textMatch && !hideSolved;
       c.classList.toggle('is-filtered', !match);
       if(match) shown++;
     });
-    count.textContent = terms.length ? `${shown} of ${cards.length} ${kind}` : `${cards.length} ${kind}`;
+    app.querySelectorAll('.lab-group').forEach(g=>{
+      const visible = [...g.querySelectorAll('.lab-card')].some(c => !c.classList.contains('is-filtered'));
+      g.hidden = !visible;
+    });
+    const narrowed = terms.length || unsolved;
+    count.textContent = narrowed ? `${shown} of ${cards.length} ${kind}` : `${cards.length} ${kind}`;
+  };
+  input.addEventListener('input', apply);
+  unsolvedBtn?.addEventListener('click', ()=>{
+    unsolved = !unsolved;
+    unsolvedBtn.setAttribute('aria-pressed', String(unsolved));
+    apply();
+  });
+}
+
+function labGroups(){
+  const groups = new Map();
+  for(const lab of LABS){
+    const key = lab.related || 'Other';
+    if(!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(lab);
+  }
+  return [...groups.entries()].sort((a, b)=>{
+    const na = parseInt((a[0].match(/\d+/) || ['99'])[0], 10);
+    const nb = parseInt((b[0].match(/\d+/) || ['99'])[0], 10);
+    return na - nb || a[0].localeCompare(b[0]);
   });
 }
 
@@ -4645,21 +4675,27 @@ function renderLabsIndex(){
         </div>
         <div class="hero-btns" style="justify-content:flex-start;margin-top:1rem">
           <a class="btn-amber sm" href="#/capstone"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-2px"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg> Try the capstone attack chain →</a>
+          ${(()=>{ const next = LABS.find(l => !STATE.labsCompleted[l.id]); return next ? `<a class="btn-ghost sm" href="#/labs/${next.id}">Next unsolved: ${escapeHtml(next.title)} →</a>` : ''; })()}
         </div>
       </div>
-      ${cardFilterHTML('labs', labs.length)}
-      <h2 class="sr-only">All labs</h2>
-      <div class="labs-grid" data-reveal style="--i:1">
-        ${labs.map(l=>{
-          const done = !!STATE.labsCompleted[l.id];
-          return `
-          <a class="lab-card ${done?'is-complete':''}" href="#/labs/${l.id}">
-            <div class="lab-ico">${cardIco(l.ico)}</div>
-            <h3>${l.title} ${done?'<span class="lab-done-badge" title="Solved">✅</span>':''}</h3>
-            <p>${escapeHtml(l.desc)}</p>
-            <div class="lab-related">Pairs with: <b>${l.related}</b> · ${l.points||10} pts</div>
-          </a>
-        `;}).join('')}
+      ${cardFilterHTML('labs', labs.length, '<button type="button" class="tier-chip" id="unsolvedOnly" aria-pressed="false">Unsolved</button>')}
+      <div id="labGroups">
+        ${labGroups().map(([name, group])=>`
+          <section class="lab-group">
+            <h2 class="lab-group-title">${escapeHtml(name)} <span>${group.length}</span></h2>
+            <div class="labs-grid">
+              ${group.map(l=>{
+                const done = !!STATE.labsCompleted[l.id];
+                return `
+                <a class="lab-card ${done?'is-complete':''}" href="#/labs/${l.id}">
+                  <div class="lab-ico">${cardIco(l.ico)}</div>
+                  <h3>${l.title} ${done?'<span class="lab-done-badge" title="Solved">✅</span>':''}</h3>
+                  <p>${escapeHtml(l.desc)}</p>
+                  <div class="lab-related">${l.points||10} pts</div>
+                </a>`;
+              }).join('')}
+            </div>
+          </section>`).join('')}
       </div>
     </section>
   `;
@@ -7080,7 +7116,8 @@ const CHANGELOG = [
     'The home page shows the first unfinished lesson when you have already moved past it. Continue still opens the lesson you were just on.',
     'B bookmarks the open lesson. C marks it complete. Both are listed in the ? shortcut panel, and neither fires while you are typing.',
     'Quizzes take 1–4 or A–D, then Enter. The results page can hide the questions you already got. Flashcards flip with space, then 1, 2, or 3 grades the card.',
-    'Search can open every lab, not only the first half, and each lab page links back to the path that teaches it.'
+    'Search can open every lab, not only the first half, and each lab page links back to the path that teaches it.',
+    'The labs page is grouped by path, and Unsolved hides the ones you have already solved.'
   ]},
   {date:'2026-09-24', title:'Mobile layout and keyboard accessibility improvements', items:[
     'The header no longer extends past the screen at 320px or 430px. Narrow layouts hide duplicate header controls and offer Random lesson from the mobile menu.',
