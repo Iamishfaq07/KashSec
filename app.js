@@ -2034,6 +2034,19 @@ const prefersReduced = () => window.matchMedia('(prefers-reduced-motion: reduce)
    Sandbox…) while the lab cards, tool pages and everything else use the
    SVG icon set. Rather than touch 40-odd renderers, swap the leading emoji
    for the lab's own card glyph once the page has rendered. */
+function decorateToolHeading(){
+  const m = activeRoute().match(/^#\/tools\/([\w-]+)/);
+  const tool = m && TOOLS.find(t => t.id === m[1]);
+  if(!tool) return;
+  const head = app.querySelector('.sec-head');
+  const path = pathForLab(tool);
+  if(path && head && !head.querySelector('.lab-path-link')){
+    const chip = `<a class="practice-chip lab-path-link" href="#/lesson/${path.id}">${cardIco('doc')}<span>Read Path ${path.n} · ${escapeHtml(path.title)}</span></a>`;
+    const lead = head.querySelector('.sec-lead');
+    (lead || head).insertAdjacentHTML(lead ? 'afterend' : 'beforeend', chip);
+  }
+}
+
 function decorateLabHeading(){
   const m = activeRoute().match(/^#\/labs\/([\w-]+)/);
   const lab = m && LABS.find(l => l.id === m[1]);
@@ -2085,6 +2098,7 @@ function syncDocTitle(){
 
 function afterRender(){
   decorateLabHeading();
+  decorateToolHeading();
   syncDocTitle();
   updateActiveNav();
   setupReveal();
@@ -4646,12 +4660,12 @@ function wireCardFilter(){
   });
 }
 
-function labGroups(){
+function labGroups(items){
   const groups = new Map();
-  for(const lab of LABS){
-    const key = lab.related || 'Other';
+  for(const item of items){
+    const key = item.related || 'Other';
     if(!groups.has(key)) groups.set(key, []);
-    groups.get(key).push(lab);
+    groups.get(key).push(item);
   }
   return [...groups.entries()].sort((a, b)=>{
     const na = parseInt((a[0].match(/\d+/) || ['99'])[0], 10);
@@ -4680,7 +4694,7 @@ function renderLabsIndex(){
       </div>
       ${cardFilterHTML('labs', labs.length, '<button type="button" class="tier-chip" id="unsolvedOnly" aria-pressed="false">Unsolved</button>')}
       <div id="labGroups">
-        ${labGroups().map(([name, group])=>`
+        ${labGroups(LABS).map(([name, group])=>`
           <section class="lab-group">
             <h2 class="lab-group-title">${escapeHtml(name)} <span>${group.length}</span></h2>
             <div class="labs-grid">
@@ -7117,7 +7131,8 @@ const CHANGELOG = [
     'B bookmarks the open lesson. C marks it complete. Both are listed in the ? shortcut panel, and neither fires while you are typing.',
     'Quizzes take 1–4 or A–D, then Enter. The results page can hide the questions you already got. Flashcards flip with space, then 1, 2, or 3 grades the card.',
     'Search can open every lab, not only the first half, and each lab page links back to the path that teaches it.',
-    'The labs page is grouped by path, and Unsolved hides the ones you have already solved.'
+    'The labs page is grouped by path, and Unsolved hides the ones you have already solved.',
+    'Tools are grouped the same way, and each tool page links back to the path it belongs to.'
   ]},
   {date:'2026-09-24', title:'Mobile layout and keyboard accessibility improvements', items:[
     'The header no longer extends past the screen at 320px or 430px. Narrow layouts hide duplicate header controls and offer Random lesson from the mobile menu.',
@@ -7702,16 +7717,19 @@ function renderToolsIndex(){
         <p class="sec-lead">Everyday tools you'll reach for while learning and working — encoders, hashing, JWT, CVSS, subnetting, and more. Everything runs entirely in your browser; nothing you type is ever sent anywhere.</p>
       </div>
       ${cardFilterHTML('tools', TOOLS.length)}
-      <h2 class="sr-only">All tools</h2>
-      <div class="labs-grid" data-reveal style="--i:1">
-        ${TOOLS.map(t=>`
-          <a class="lab-card" href="#/tools/${t.id}">
-            <div class="lab-ico">${cardIco(t.ico)}</div>
-            <h3>${t.title}</h3>
-            <p>${escapeHtml(t.desc)}</p>
-            <div class="lab-related">Pairs with: <b>${t.related}</b></div>
-          </a>
-        `).join('')}
+      <div id="toolGroups">
+        ${labGroups(TOOLS).map(([name, group])=>`
+          <section class="lab-group">
+            <h2 class="lab-group-title">${escapeHtml(name)} <span>${group.length}</span></h2>
+            <div class="labs-grid">
+              ${group.map(t=>`
+                <a class="lab-card" href="#/tools/${t.id}">
+                  <div class="lab-ico">${cardIco(t.ico)}</div>
+                  <h3>${t.title}</h3>
+                  <p>${escapeHtml(t.desc)}</p>
+                </a>`).join('')}
+            </div>
+          </section>`).join('')}
       </div>
     </section>
   `;
