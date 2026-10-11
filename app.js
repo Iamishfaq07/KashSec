@@ -2332,6 +2332,15 @@ function whatToLearnNext(){
   return null;
 }
 
+/* The first lesson in course order that is not marked complete. */
+function firstGap(){
+  for(const path of PATHS){
+    const sub = path.subs.find(s => !isComplete(path.id, s.id));
+    if(sub) return findSubContext(path.id, sub.id);
+  }
+  return null;
+}
+
 /* Hero illustration: two small network constellations either side of the
    headline, with "packets" running along the links and the course's own
    icons on the hub nodes. Decorative only (aria-hidden), drawn in theme
@@ -2367,6 +2376,9 @@ function renderHome(){
   const continueCtx = STATE.lastVisited ? findSubContext(STATE.lastVisited.pathId, STATE.lastVisited.subId) : null;
   const daily = dailyLesson();
   const next = whatToLearnNext();
+  const gap = firstGap();
+  const showGap = gap && Object.keys(STATE.completed).length
+    && (!continueCtx || gap.path.id !== continueCtx.path.id || gap.sub.id !== continueCtx.sub.id);
   app.innerHTML = `
     <section class="hero">
       ${heroArtSVG()}
@@ -2397,6 +2409,12 @@ function renderHome(){
           ${next.kind==='weak-quiz'
             ? `<a class="daily-link" href="#/quiz/${next.path.id}">Retake the ${next.path.title} quiz</a><span class="daily-src">You scored ${next.pct}% last time — worth another pass</span>`
             : `<a class="daily-link" href="#/lesson/${next.ctx.path.id}/${next.ctx.sub.id}">${next.ctx.path.n}.${next.ctx.sub.n} · ${next.ctx.sub.title}</a><span class="daily-src">Bookmarked, not finished yet</span>`}
+        </div>` : ''}
+        ${showGap ? `
+        <div class="daily-lesson" data-reveal style="--i:3">
+          <span class="daily-tag">First unfinished</span>
+          <a class="daily-link" href="#/lesson/${gap.path.id}/${gap.sub.id}">${gap.path.n}.${gap.sub.n} · ${escapeHtml(gap.sub.title)}</a>
+          <span class="daily-src">${escapeHtml(gap.path.title)}</span>
         </div>` : ''}
         <div class="hero-stats" data-reveal style="--i:4">
           <div><div class="hstat-n" data-count="${PATHS.length}">${PATHS.length}</div><div class="hstat-l">learning paths</div></div>
@@ -2673,6 +2691,7 @@ function renderPathOverview(pathId){
           <div class="hero-btns" style="justify-content:flex-start;margin-bottom:0">
             <a class="btn-amber" href="#/lesson/${p.id}/${firstUnfinished.id}">${startLabel} →</a>
             ${quiz ? `<a class="btn-ghost" href="#/quiz/${p.id}">${quizResult ? (quizResult.passed?'✅ Retake quiz':'Retake quiz') : '📝 Take the path quiz'}</a>` : ''}
+            ${labForPath(p) ? `<a class="btn-ghost" href="#/labs/${labForPath(p).id}">Practice: ${escapeHtml(labForPath(p).title)}</a>` : ''}
             <button class="btn-ghost" id="savePathOfflineBtn" type="button">Save path for offline use</button>
             <button class="btn-ghost" id="downloadPackBtn" type="button">${cardIco('download')}Download offline pack (.zip)</button>
           </div>
@@ -3350,6 +3369,7 @@ async function renderSubLesson(pathId, subId){
           </div>
         </div>
         ${lessonTrackHTML(ctx)}
+        ${practiceChipHTML(ctx.path)}
         <div class="pomodoro-widget" id="pomodoroWidget" hidden>
           <span class="pomodoro-time" id="pomodoroTime">25:00</span>
           <button class="btn-ghost sm" id="pomodoroToggle" type="button">Start</button>
@@ -4496,6 +4516,26 @@ const LABS = [
   {id:'passwordcrack', ico:'hammer', title:'Password Cracking Lab', desc:'Four hashed passwords, one wordlist. See exactly which ones fall to a dictionary attack and which survive it — and why.', related:'Path 00 — Absolute Basics', points:15},
   {id:'clouddockersecrets', ico:'keyhole', title:'Leaked Secret Hunt', desc:'A public GitHub repo dump. Find the hardcoded API key an automated scanner would catch in minutes — before an attacker does.', related:'Path 22 — DevSecOps & AppSec', points:15}
 ];
+
+/* One lab per path, so a lesson can point at practice without listing all 42. */
+const PATH_LAB = {
+  '00':'passwordcrack', '01':'phishing', '02':'pcap', '03':'terminal', '04':'cmdinjection',
+  '05':'openredirect', '06':'jwt', '07':'winprivesc', '08':'iammisconfig', '09':'osint',
+  '10':'phishing', '11':'sqli', '12':'ssrf', '13':'idor', '14':'osint', '15':'subdomaintakeover',
+  '16':'linuxprivesc', '17':'malwarestrings', '18':'prompt-injection', '19':'yarabuilder',
+  '20':'vendortiering', '21':'bola-bfla', '22':'clouddockersecrets', '23':'vendortiering',
+  '24':'oauthredirect', '25':'loganalysis'
+};
+function labForPath(path){
+  const id = PATH_LAB[path && path.n];
+  return id ? LABS.find(l => l.id === id) : null;
+}
+function practiceChipHTML(path){
+  const lab = labForPath(path);
+  if(!lab) return '';
+  const done = !!STATE.labsCompleted[lab.id];
+  return `<a class="practice-chip" href="#/labs/${lab.id}">${cardIco(lab.ico)}<span>Practice · ${escapeHtml(lab.title)}</span>${done ? '<span class="practice-done">Solved</span>' : ''}</a>`;
+}
 /* ============================================================
    Capstone attack-chain — a narrative wrapper around four existing
    labs, framed as one breach story with a visible kill-chain
@@ -7020,6 +7060,11 @@ function renderLabLeakedSecret(){
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
+  {date:'2026-10-12', title:'Every lesson points at a lab, and the keyboard can finish one', items:[
+    'Each path now has one practice lab. The link sits on the path page and under the lesson heading, so you do not have to leave the reader to find the hands-on version.',
+    'The home page shows the first unfinished lesson when you have already moved past it. Continue still opens the lesson you were just on.',
+    'B bookmarks the open lesson. C marks it complete. Both are listed in the ? shortcut panel, and neither fires while you are typing.'
+  ]},
   {date:'2026-09-24', title:'Mobile layout and keyboard accessibility improvements', items:[
     'The header no longer extends past the screen at 320px or 430px. Narrow layouts hide duplicate header controls and offer Random lesson from the mobile menu.',
     'The career-fit quiz action wraps within a phone screen. Browser checks now cover page width and the mobile random-lesson action across representative small widths.',
@@ -11913,6 +11958,8 @@ function toggleKbdOverlay(force){
         <div class="kbd-row"><span><kbd>Ctrl</kbd>+<kbd>K</kbd></span><span>Search lessons</span></div>
         <div class="kbd-row"><span><kbd>[</kbd></span><span>Previous lesson</span></div>
         <div class="kbd-row"><span><kbd>]</kbd></span><span>Next lesson</span></div>
+        <div class="kbd-row"><span><kbd>B</kbd></span><span>Bookmark this lesson</span></div>
+        <div class="kbd-row"><span><kbd>C</kbd></span><span>Mark this lesson complete</span></div>
         <div class="kbd-row"><span><kbd>R</kbd></span><span>Jump to a random lesson</span></div>
         <div class="kbd-row"><span><kbd>?</kbd></span><span>Show / hide this cheatsheet</span></div>
         <div class="kbd-row"><span><kbd>Esc</kbd></span><span>Close dialogs</span></div>
@@ -11949,6 +11996,13 @@ window.addEventListener('keydown', (e)=>{
     if(!ctx) return;
     const dest = e.key === '[' ? ctx.prev : ctx.next;
     if(dest) location.hash = `#/lesson/${dest.pathId}/${dest.subId}`;
+    return;
+  }
+  if(e.key === 'b' || e.key === 'B' || e.key === 'c' || e.key === 'C'){
+    const here = activeRoute().match(/^#\/lesson\/([^/]+)\/([^/]+)$/);
+    if(!here) return;
+    e.preventDefault();
+    document.getElementById(e.key.toLowerCase() === 'b' ? 'bookmarkBtn' : 'completeBtn')?.click();
     return;
   }
   if(e.key === 'r' || e.key === 'R'){
