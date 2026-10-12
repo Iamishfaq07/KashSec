@@ -1933,7 +1933,7 @@ function route(){
   else if(hash === '#/privacy') renderLegal('privacy');
   else if(hash === '#/terms') renderLegal('terms');
   else if(hash === '#/roadmap') renderRoadmap();
-  else if(hash === '#/glossary') renderGlossary();
+  else if(hash === '#/glossary' || hash.startsWith('#/glossary?')) renderGlossary();
   else if(hash === '#/review') renderReview();
   else if(hash === '#/tracks') renderTracks();
   else if(hash === '#/tools') renderToolsIndex();
@@ -3935,6 +3935,12 @@ function enhanceKeyTerms(contentEl){
   items.forEach(li => {
     const term = li.firstElementChild;
     term.classList.add('kt-term');
+    const link = document.createElement('a');
+    link.className = 'kt-term-link';
+    link.href = `#/glossary?q=${encodeURIComponent(term.textContent.trim())}`;
+    link.title = 'Open this term in the glossary';
+    term.before(link);
+    link.appendChild(term);
     const def = document.createElement('span');
     def.className = 'kt-def';
     while(term.nextSibling) def.appendChild(term.nextSibling);
@@ -4142,6 +4148,8 @@ async function renderGlossary(){
     return;
   }
   if(myGen !== renderGeneration) return;
+  const qi = location.hash.indexOf('?');
+  const preset = qi < 0 ? '' : (new URLSearchParams(location.hash.slice(qi + 1)).get('q') || '');
 
   app.innerHTML = `
     <section class="sec">
@@ -4151,7 +4159,7 @@ async function renderGlossary(){
         <p class="sec-lead">${GLOSSARY.length} terms collected from the Key Terms of all ${totalSubLessons()} lessons. Click any term to jump to the lesson that teaches it.</p>
       </div>
       <div class="glossary-tools" data-reveal style="--i:1">
-        <input type="search" id="glossarySearch" class="glossary-search" aria-label="Filter glossary terms" placeholder="Filter terms… (e.g. hashing, XSS, IAM)" autocomplete="off" spellcheck="false">
+        <input type="search" id="glossarySearch" class="glossary-search" aria-label="Filter glossary terms" placeholder="Filter terms… (e.g. hashing, XSS, IAM)" value="${escapeHtml(preset)}" autocomplete="off" spellcheck="false">
         <a class="btn-ghost sm" href="#/review">${cardIco('cards')}Practice as flashcards →</a>
       </div>
       <nav id="glossaryJump" class="glossary-jump" aria-label="Jump to letter"></nav>
@@ -4200,7 +4208,7 @@ async function renderGlossary(){
     e.preventDefault();
     document.getElementById('gl-' + a.dataset.gl)?.scrollIntoView({behavior: prefersReduced() ? 'auto' : 'smooth', block:'start'});
   });
-  paint('');
+  paint(preset);
   setupReveal(); // content arrived after route()'s afterRender — reveal it now
   let t = null;
   document.getElementById('glossarySearch').addEventListener('input', e=>{
@@ -7132,7 +7140,8 @@ const CHANGELOG = [
     'Quizzes take 1–4 or A–D, then Enter. The results page can hide the questions you already got. Flashcards flip with space, then 1, 2, or 3 grades the card.',
     'Search can open every lab, not only the first half, and each lab page links back to the path that teaches it.',
     'The labs page is grouped by path, and Unsolved hides the ones you have already solved.',
-    'Tools are grouped the same way, and each tool page links back to the path it belongs to.'
+    'Tools are grouped the same way, and each tool page links back to the path it belongs to.',
+    'Each key term in a lesson opens the glossary already filtered to that word.'
   ]},
   {date:'2026-09-24', title:'Mobile layout and keyboard accessibility improvements', items:[
     'The header no longer extends past the screen at 320px or 430px. Narrow layouts hide duplicate header controls and offer Random lesson from the mobile menu.',
