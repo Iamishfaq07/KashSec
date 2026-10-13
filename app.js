@@ -2473,8 +2473,8 @@ ${pathCardHTML(p,i)}
         <p class="sec-lead">Security is many jobs — here's a shortlist and which paths lead to each.</p>
       </div>
       <div class="careers">
-        ${CAREERS.slice(0,4).map((c,i)=>`
-          <div class="career-card" data-spotlight data-reveal style="--i:${i}">
+        ${CAREERS.slice(0,6).map((c,i)=>`
+          <div class="career-card" data-spotlight data-reveal style="--i:${i%3}">
             <h3>${c.role}</h3><p>${c.desc}</p>
             <div class="career-follow"><span>Follow:</span> ${careerFollowHTML(c.follow)}</div>
           </div>
@@ -3534,6 +3534,9 @@ async function renderSubLesson(pathId, subId){
     // Key terms list → term cards
     enhanceKeyTerms(contentEl);
 
+    // Wide tables become keyboard-scrollable regions.
+    markScrollableTables(contentEl);
+
     // End-of-lesson quick check, drawn from this path's quiz bank.
     renderMicroCheck(ctx);
 
@@ -3883,6 +3886,34 @@ function animateLessonBlocks(contentEl){
    review that already drills these same terms. Only lists whose every
    item starts with a bold term are converted; anything else is left as
    written. */
+/* A table wider than the card scrolls sideways, but with nothing focusable
+   inside, a keyboard user had no way to scroll it. Only tables that really
+   overflow get a tab stop (a focusable, labelled region); ones that fit
+   stay out of the tab order. Re-checked on resize, since a phone held
+   sideways can turn one into the other. */
+function markScrollableTables(root){
+  root.querySelectorAll('.table-scroll').forEach(w => {
+    const scrolls = w.scrollWidth > w.clientWidth + 1;
+    if(scrolls){
+      w.tabIndex = 0;
+      w.setAttribute('role', 'region');
+      w.setAttribute('aria-label', 'Table, scrolls sideways');
+    } else {
+      w.removeAttribute('tabindex');
+      w.removeAttribute('role');
+      w.removeAttribute('aria-label');
+    }
+  });
+}
+{
+  let queued = false;
+  window.addEventListener('resize', ()=>{
+    if(queued) return;
+    queued = true;
+    requestAnimationFrame(()=>{ queued = false; const md = document.getElementById('content'); if(md?.classList.contains('md')) markScrollableTables(md); });
+  }, {passive:true});
+}
+
 function enhanceKeyTerms(contentEl){
   const h = [...contentEl.querySelectorAll('h2')].find(x => /^key terms$/i.test(x.textContent.trim()));
   const ul = h && h.nextElementSibling;
@@ -4398,7 +4429,7 @@ function renderTracks(){
                 <div class="track-bar"><div class="track-bar-fill" style="width:${pr.pct}%"></div></div>
                 <div class="track-meta"><b>${pr.done}/${pr.total}</b> lessons · ${pr.pct}%</div>
               </div>
-              <div class="track-next">${nextL ? `Next: ${nextL.path.n}.${nextL.sub.n} · ${escapeHtml(nextL.sub.title)}` : '✅ Track complete'}</div>
+              <div class="track-next">${nextL ? `Next: ${nextL.path.n}.${nextL.sub.n} · ${escapeHtml(nextL.sub.title)}` : `${cardIco('check')} Track complete`}</div>
             </a>`;
         }).join('')}
       </div>
@@ -4792,6 +4823,7 @@ function renderLabWebapp(){
         <p class="sec-lead">Two deliberately-broken mini-apps for safe practice. Nothing here is real — the "XSS" fires inside an isolated iframe, the "SQL" is a fake evaluator. See if you can break each one.</p>
       </div>
 
+      <h2 class="sr-only">Exercises</h2>
       <div class="lab-panel" data-reveal style="--i:2">
         <h3>1) Reflected XSS demo</h3>
         <p class="sec-lead">This search box echoes your input into the results page <em>without escaping it</em>. Try a normal search first (<code>hello</code>), then try injecting JavaScript.</p>
@@ -4967,7 +4999,7 @@ function renderLabSqli(){
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · SQL Injection Sandbox</div>
         <h1>💉 SQL Injection Sandbox</h1>
-        <p class="sec-lead">This login builds its SQL query by <b>gluing your input straight into the string</b> — exactly the bug behind real SQL injection. Log in as <code>admin</code> without knowing the password. <span class="tool-privacy">🔒 Simulated locally — no real database.</span></p>
+        <p class="sec-lead">This login builds its SQL query by <b>gluing your input straight into the string</b> — exactly the bug behind real SQL injection. Log in as <code>admin</code> without knowing the password. <span class="tool-privacy">${cardIco('lockKey')}Simulated locally — no real database.</span></p>
       </div>
       <div class="sqli-wrap" data-reveal style="--i:1">
         <form class="sqli-form" id="sqliForm" autocomplete="off">
@@ -5036,7 +5068,7 @@ function renderLabIdor(){
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · IDOR Playground</div>
         <h1>🔓 IDOR Playground</h1>
-        <p class="sec-lead">This "my invoices" page trusts whatever ID you ask for and never checks it's actually yours. Try loading an invoice number that isn't listed below. <span class="tool-privacy">🔒 Simulated locally — no real API.</span></p>
+        <p class="sec-lead">This "my invoices" page trusts whatever ID you ask for and never checks it's actually yours. Try loading an invoice number that isn't listed below. <span class="tool-privacy">${cardIco('lockKey')}Simulated locally — no real API.</span></p>
       </div>
       <div class="idor-wrap" data-reveal style="--i:1">
         <div class="idor-mine">
@@ -5088,7 +5120,7 @@ function renderLabJwt(){
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · JWT Forgery Lab</div>
         <h1>🪪 JWT Forgery Lab</h1>
-        <p class="sec-lead">You're logged in as a guest. This app's "verify" endpoint has a classic bug: it accepts tokens with <code>alg:"none"</code> and skips signature verification entirely. Edit the header/payload below to become an admin. <span class="tool-privacy">🔒 Simulated locally — no real server.</span></p>
+        <p class="sec-lead">You're logged in as a guest. This app's "verify" endpoint has a classic bug: it accepts tokens with <code>alg:"none"</code> and skips signature verification entirely. Edit the header/payload below to become an admin. <span class="tool-privacy">${cardIco('lockKey')}Simulated locally — no real server.</span></p>
       </div>
       <div class="idor-wrap" data-reveal style="--i:1">
         <label class="tool-field">Header (JSON)<textarea class="tool-textarea" id="jwtHeader" rows="3">${JSON.stringify(header,null,2)}</textarea></label>
@@ -5147,7 +5179,7 @@ function renderLabTraversal(){
       <div class="sec-head" data-reveal style="--i:1">
         <div class="sec-eyebrow">Interactive lab</div>
         <h1>📂 Path Traversal Playground</h1>
-        <p class="sec-lead">This "view file" feature does <code>readFile("./uploads/" + filename)</code> with zero validation. Try to read something outside the <code>uploads/</code> folder. <span class="tool-privacy">🔒 Simulated locally — no real filesystem.</span></p>
+        <p class="sec-lead">This "view file" feature does <code>readFile("./uploads/" + filename)</code> with zero validation. Try to read something outside the <code>uploads/</code> folder. <span class="tool-privacy">${cardIco('lockKey')}Simulated locally — no real filesystem.</span></p>
       </div>
       <div class="idor-wrap" data-reveal style="--i:2">
         <div class="idor-mine">
@@ -5199,7 +5231,7 @@ function renderLabSsrf(){
       <div class="sec-head" data-reveal style="--i:1">
         <div class="sec-eyebrow">Interactive lab</div>
         <h1>🌐 SSRF Playground</h1>
-        <p class="sec-lead">This "preview a URL" feature fetches whatever address you give it, server-side, with no allowlist. Point it at something that sounds internal. <span class="tool-privacy">🔒 Simulated locally — no real network requests.</span></p>
+        <p class="sec-lead">This "preview a URL" feature fetches whatever address you give it, server-side, with no allowlist. Point it at something that sounds internal. <span class="tool-privacy">${cardIco('lockKey')}Simulated locally — no real network requests.</span></p>
       </div>
       <div class="idor-wrap" data-reveal style="--i:2">
         <div class="idor-mine">
@@ -5253,7 +5285,7 @@ function renderLabXxe(){
       <div class="sec-head" data-reveal style="--i:1">
         <div class="sec-eyebrow">Interactive lab</div>
         <h1>📄 XXE Playground</h1>
-        <p class="sec-lead">This "import order" feature parses uploaded XML with external entities enabled (the default in a lot of older XML parsers). Craft an XML document that reads a local file through it. <span class="tool-privacy">🔒 Simulated locally — no real XML parser or filesystem.</span></p>
+        <p class="sec-lead">This "import order" feature parses uploaded XML with external entities enabled (the default in a lot of older XML parsers). Craft an XML document that reads a local file through it. <span class="tool-privacy">${cardIco('lockKey')}Simulated locally — no real XML parser or filesystem.</span></p>
       </div>
       <div class="idor-wrap" data-reveal style="--i:2">
         <label class="tool-field">XML to upload<textarea class="tool-textarea" id="xxeInput" rows="8">${escapeHtml(SAMPLE)}</textarea></label>
@@ -5338,6 +5370,7 @@ function renderLabLogAnalysis(){
           <p class="sec-lead">A real-shaped auth.log from a compromised box. Read it, then answer ${QUESTIONS.length} questions to reconstruct what happened. Blue-team skills — no exploitation here.</p>
         </div>
         <pre class="sqli-query" data-reveal style="--i:2;max-height:20rem;overflow-y:auto">${LOG.join('\n')}</pre>
+        <h2 class="sr-only">Investigation</h2>
         <div class="lab-panel" data-reveal style="--i:3">
           <h3>Question ${qi+1} of ${QUESTIONS.length}</h3>
           <p>${escapeHtml(item.q)}</p>
@@ -5394,8 +5427,9 @@ function renderLabOsint(){
         <div class="sec-head" data-reveal style="--i:1">
           <div class="sec-eyebrow">Interactive lab</div>
           <h1>🔍 OSINT Sandbox</h1>
-          <p class="sec-lead">A fake company's public footprint — a "LinkedIn," a job posting, a PDF. Click each source to see what a real attacker (or a real pentester doing recon) could learn before ever touching the target. <span class="tool-privacy">🔒 Entirely fictional — nothing here is a real person or company.</span></p>
+          <p class="sec-lead">A fake company's public footprint — a "LinkedIn," a job posting, a PDF. Click each source to see what a real attacker (or a real pentester doing recon) could learn before ever touching the target. <span class="tool-privacy">${cardIco('lockKey')}Entirely fictional — nothing here is a real person or company.</span></p>
         </div>
+        <h2 class="sr-only">Public sources</h2>
         <div class="osint-grid" data-reveal style="--i:2">
           <div class="lab-panel">
             <h3>🏢 ${escapeHtml(PROFILE.company)}</h3>
@@ -5420,7 +5454,7 @@ function renderLabOsint(){
         <div id="osintNote">${lastNote ? `<div class="sqli-bad" style="margin-top:1rem">🕵️ ${escapeHtml(lastNote)}</div>` : ''}</div>
         <div class="hub-section" data-reveal style="--i:3">
           <div class="hub-section-head"><h2 class="hub-h">What you've uncovered (${found.size}/${FINDINGS.length})</h2></div>
-          ${FINDINGS.map(f=>`<div class="hub-list-item" style="cursor:default"><div><div class="hli-t">${found.has(f.id)?'✅':'🔒'} ${escapeHtml(f.label)}</div></div></div>`).join('')}
+          ${FINDINGS.map(f=>`<div class="hub-list-item" style="cursor:default"><div><div class="hli-t"><span class="finding-ico ${found.has(f.id)?'is-found':''}">${cardIco(found.has(f.id)?'check':'lockKey')}</span>${escapeHtml(f.label)}</div></div></div>`).join('')}
         </div>
       </section>
     `;
@@ -5459,7 +5493,7 @@ function renderLabBolaBfla(){
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · BOLA/BFLA Playground</div>
         <h1>🗂 BOLA/BFLA Playground</h1>
-        <p class="sec-lead">You're logged in as employee #${ME}, nothing more. This fake HR API has two separate bugs — find both. <span class="tool-privacy">🔒 Simulated locally — no real API, no real people.</span></p>
+        <p class="sec-lead">You're logged in as employee #${ME}, nothing more. This fake HR API has two separate bugs — find both. <span class="tool-privacy">${cardIco('lockKey')}Simulated locally — no real API, no real people.</span></p>
       </div>
       <div class="idor-wrap" data-reveal style="--i:1">
         <div class="tool-note">1. Object-level check — <code>GET /api/v2/employees/{id}</code></div>
@@ -5530,7 +5564,7 @@ function renderLabGraphQLIntrospection(){
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · GraphQL Introspection Abuse</div>
         <h1>🕸 GraphQL Introspection Abuse</h1>
-        <p class="sec-lead">One endpoint, <code>POST /graphql</code>. Introspection is left on in production, and every field is readable by anyone — nothing is authorized per-field. <span class="tool-privacy">🔒 Simulated locally — a tiny fake schema, not a real server.</span></p>
+        <p class="sec-lead">One endpoint, <code>POST /graphql</code>. Introspection is left on in production, and every field is readable by anyone — nothing is authorized per-field. <span class="tool-privacy">${cardIco('lockKey')}Simulated locally — a tiny fake schema, not a real server.</span></p>
       </div>
       <div class="idor-wrap" data-reveal style="--i:1">
         <label class="tool-field">Query<textarea class="tool-textarea" id="gqlQuery" rows="6" spellcheck="false">${escapeHtml(EXAMPLE)}</textarea></label>
@@ -5589,7 +5623,7 @@ function renderLabMassAssignment(){
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Mass Assignment Toy</div>
         <h1>🧩 Mass Assignment Toy</h1>
-        <p class="sec-lead">This "update my profile" endpoint does <code>Object.assign(account, req.body)</code> — whatever fields you send get written, no allow-list. Your account record also has fields the UI never lets you edit. <span class="tool-privacy">🔒 Simulated locally — no real account.</span></p>
+        <p class="sec-lead">This "update my profile" endpoint does <code>Object.assign(account, req.body)</code> — whatever fields you send get written, no allow-list. Your account record also has fields the UI never lets you edit. <span class="tool-privacy">${cardIco('lockKey')}Simulated locally — no real account.</span></p>
       </div>
       <div class="idor-wrap" data-reveal style="--i:1">
         <div class="tool-note">Your account record right now:</div>
@@ -5637,7 +5671,7 @@ function renderLabRateLimitBypass(){
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Rate-Limit Bypass Simulator</div>
         <h1>🚦 Rate-Limit Bypass Simulator</h1>
-        <p class="sec-lead">POST /api/login blocks an IP after 3 wrong passwords. It just trusts the client-supplied <code>X-Forwarded-For</code> header to decide which "IP" you are. <span class="tool-privacy">🔒 Simulated locally — no real login, no real brute force.</span></p>
+        <p class="sec-lead">POST /api/login blocks an IP after 3 wrong passwords. It just trusts the client-supplied <code>X-Forwarded-For</code> header to decide which "IP" you are. <span class="tool-privacy">${cardIco('lockKey')}Simulated locally — no real login, no real brute force.</span></p>
       </div>
       <div class="idor-wrap" data-reveal style="--i:1">
         <label class="tool-field">Username<input class="tool-input" id="rlUser" value="admin" disabled></label>
@@ -5692,7 +5726,7 @@ function renderLabPromptInjection(){
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Prompt Injection Simulator</div>
         <h1>💬 Prompt Injection Simulator</h1>
-        <p class="sec-lead">CorpBot has a hidden system prompt it's told never to reveal. Get it to reveal it anyway. <span class="tool-privacy">🔒 A rule-based simulator, not a real language model — nothing you type leaves your browser.</span></p>
+        <p class="sec-lead">CorpBot has a hidden system prompt it's told never to reveal. Get it to reveal it anyway. <span class="tool-privacy">${cardIco('lockKey')}A rule-based simulator, not a real language model — nothing you type leaves your browser.</span></p>
       </div>
       <div class="idor-wrap" data-reveal style="--i:1">
         <div class="tool-note">Chat with CorpBot:</div>
@@ -5747,7 +5781,7 @@ function renderLabJailbreak(){
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Jailbreak Playground</div>
         <h1>🔓 Jailbreak Playground</h1>
-        <p class="sec-lead">This assistant is told to never reveal the admin override code, no matter what. Find a framing that gets it to anyway. <span class="tool-privacy">🔒 A rule-based simulator; the "secret" is a made-up code, not real sensitive content.</span></p>
+        <p class="sec-lead">This assistant is told to never reveal the admin override code, no matter what. Find a framing that gets it to anyway. <span class="tool-privacy">${cardIco('lockKey')}A rule-based simulator; the "secret" is a made-up code, not real sensitive content.</span></p>
       </div>
       <div class="idor-wrap" data-reveal style="--i:1">
         <div id="jbLog" class="lab-panel" style="min-height:4rem;margin-bottom:1rem"><div class="sec-lead"><b>Assistant:</b> Hello! I can answer general questions, but I will never reveal the admin override code under any circumstances.</div></div>
@@ -5800,10 +5834,10 @@ function renderLabIndirectInjection(){
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Indirect Prompt Injection Challenge</div>
         <h1>🪤 Indirect Prompt Injection Challenge</h1>
-        <p class="sec-lead">A victim's AI assistant is about to browse this job posting and summarize it for them. You control the posting's content — plant an instruction the AI will follow instead of just summarizing. <span class="tool-privacy">🔒 Simulated locally — a rule-based stand-in for the assistant, no real page fetch.</span></p>
+        <p class="sec-lead">A victim's AI assistant is about to browse this job posting and summarize it for them. You control the posting's content — plant an instruction the AI will follow instead of just summarizing. <span class="tool-privacy">${cardIco('lockKey')}Simulated locally — a rule-based stand-in for the assistant, no real page fetch.</span></p>
       </div>
       <div class="idor-wrap" data-reveal style="--i:1">
-        <div class="tool-note">Job posting content (attacker-controlled):</div>
+        <label class="tool-note" for="iiContent">Job posting content (attacker-controlled):</label>
         <textarea class="tool-textarea" id="iiContent" rows="6" spellcheck="false">${escapeHtml(CLEAN_POSTING)}</textarea>
         <div class="tool-btnrow"><button class="btn-amber sm" id="iiRun" type="button">Have the assistant summarize this →</button></div>
         <div id="iiResult"></div>
@@ -5848,8 +5882,9 @@ function renderLabAgenticRisk(){
         <div class="sec-head" data-reveal>
           <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Agentic Risk Scenario</div>
           <h1>🤖 Agentic Risk Scenario</h1>
-          <p class="sec-lead">AutoAssist is an AI agent with <code>read_email</code> and <code>send_email</code> tools. Its task: "Check my inbox and reply to anything urgent." One of these emails contains a hidden instruction aimed at AutoAssist, not at you. Quarantine it before running the agent. <span class="tool-privacy">🔒 Simulated locally — no real inbox, no real agent.</span></p>
+          <p class="sec-lead">AutoAssist is an AI agent with <code>read_email</code> and <code>send_email</code> tools. Its task: "Check my inbox and reply to anything urgent." One of these emails contains a hidden instruction aimed at AutoAssist, not at you. Quarantine it before running the agent. <span class="tool-privacy">${cardIco('lockKey')}Simulated locally — no real inbox, no real agent.</span></p>
         </div>
+        <h2 class="sr-only">Agent inbox</h2>
         <div class="labs-grid" data-reveal style="--i:1">
           ${EMAILS.map(m=>`
             <div class="lab-panel">
@@ -5939,7 +5974,7 @@ function renderLabADAttack(){
         <div class="sec-head" data-reveal>
           <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Active Directory Attack Lab</div>
           <h1>🏰 Active Directory Attack Lab</h1>
-          <p class="sec-lead">A guided walkthrough of the classic AD chain: find a path to Domain Admin with BloodHound-style graph recon, Kerberoast a weak service account, then forge a Golden Ticket. <span class="tool-privacy">🔒 Simulated locally — a small fake domain, no real AD environment.</span></p>
+          <p class="sec-lead">A guided walkthrough of the classic AD chain: find a path to Domain Admin with BloodHound-style graph recon, Kerberoast a weak service account, then forge a Golden Ticket. <span class="tool-privacy">${cardIco('lockKey')}Simulated locally — a small fake domain, no real AD environment.</span></p>
           <div class="mini-progress" style="max-width:22rem;margin-top:1.2rem">
             <div class="mini-progress-track"><div class="mini-progress-fill" style="width:0%" data-pct="${Math.round(doneCount/3*100)}"></div></div>
             <div class="mini-progress-label"><span>${doneCount}/3 stages complete</span></div>
@@ -6121,7 +6156,7 @@ function renderLabCsrf(){
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · CSRF Playground</div>
         <h1>🎭 CSRF Playground</h1>
-        <p class="sec-lead">You're logged into a "bank" in one tab. A malicious page in another tab tries to submit a money transfer using your cookies, without your knowledge. See exactly how, and how a CSRF token stops it. <span class="tool-privacy">🔒 Simulated locally.</span></p>
+        <p class="sec-lead">You're logged into a "bank" in one tab. A malicious page in another tab tries to submit a money transfer using your cookies, without your knowledge. See exactly how, and how a CSRF token stops it. <span class="tool-privacy">${cardIco('lockKey')}Simulated locally.</span></p>
       </div>
       <div class="sqli-wrap" data-reveal style="--i:1">
         <div class="sqli-form">
@@ -6163,7 +6198,7 @@ function renderLabCmdInjection(){
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Command Injection Sandbox</div>
         <h1>⌨️ Command Injection Sandbox</h1>
-        <p class="sec-lead">A "network diagnostics" tool lets you ping a host — by gluing your input straight into a shell command. Escape the intended command and run something else. <span class="tool-privacy">🔒 Simulated locally — no real shell.</span></p>
+        <p class="sec-lead">A "network diagnostics" tool lets you ping a host — by gluing your input straight into a shell command. Escape the intended command and run something else. <span class="tool-privacy">${cardIco('lockKey')}Simulated locally — no real shell.</span></p>
       </div>
       <div class="sqli-wrap" data-reveal style="--i:1">
         <form class="sqli-form" id="cmdForm" autocomplete="off">
@@ -6204,7 +6239,7 @@ function renderLabOpenRedirect(){
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Open Redirect Playground</div>
         <h1>↪️ Open Redirect Playground</h1>
-        <p class="sec-lead">A login page redirects you back to wherever you came from after signing in — trusting a <code>?returnUrl=</code> parameter with no validation at all. Turn a trusted link into a phishing weapon. <span class="tool-privacy">🔒 Simulated locally.</span></p>
+        <p class="sec-lead">A login page redirects you back to wherever you came from after signing in — trusting a <code>?returnUrl=</code> parameter with no validation at all. Turn a trusted link into a phishing weapon. <span class="tool-privacy">${cardIco('lockKey')}Simulated locally.</span></p>
       </div>
       <div class="sqli-wrap" data-reveal style="--i:1">
         <form class="sqli-form" id="orForm" autocomplete="off">
@@ -6246,7 +6281,7 @@ function renderLabClickjacking(){
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Clickjacking Simulator</div>
         <h1>🖱️ Clickjacking Simulator</h1>
-        <p class="sec-lead">A malicious page overlays an invisible "Delete my account" button from another site on top of a fake game, so a real click lands on the hidden button instead. Toggle the defense and see the difference. <span class="tool-privacy">🔒 Simulated locally.</span></p>
+        <p class="sec-lead">A malicious page overlays an invisible "Delete my account" button from another site on top of a fake game, so a real click lands on the hidden button instead. Toggle the defense and see the difference. <span class="tool-privacy">${cardIco('lockKey')}Simulated locally.</span></p>
       </div>
       <div class="sqli-wrap" data-reveal style="--i:1">
         <div class="sqli-form">
@@ -6282,7 +6317,7 @@ function renderLabDeserialization(){
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Insecure Deserialization Toy</div>
         <h1>📦 Insecure Deserialization Toy</h1>
-        <p class="sec-lead">A "remember me" cookie stores a serialized user-preferences object the server deserializes and trusts completely. Craft a payload that grants yourself admin, no login required. <span class="tool-privacy">🔒 Simulated locally.</span></p>
+        <p class="sec-lead">A "remember me" cookie stores a serialized user-preferences object the server deserializes and trusts completely. Craft a payload that grants yourself admin, no login required. <span class="tool-privacy">${cardIco('lockKey')}Simulated locally.</span></p>
       </div>
       <div class="sqli-wrap" data-reveal style="--i:1">
         <form class="sqli-form" id="deserForm" autocomplete="off">
@@ -6326,7 +6361,7 @@ function renderLabSubdomainTakeover(){
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Subdomain Takeover Simulator</div>
         <h1>🏚️ Subdomain Takeover Simulator</h1>
-        <p class="sec-lead">Five subdomains, five CNAME records pointing at third-party services. One of them points at a service the organisation never actually claimed — find it and take it over. <span class="tool-privacy">🔒 Simulated locally.</span></p>
+        <p class="sec-lead">Five subdomains, five CNAME records pointing at third-party services. One of them points at a service the organisation never actually claimed — find it and take it over. <span class="tool-privacy">${cardIco('lockKey')}Simulated locally.</span></p>
       </div>
       <div class="sqli-wrap" data-reveal style="--i:1">
         <div class="tool-note">DNS zone dump (<code>dig CNAME</code> for every subdomain):</div>
@@ -6371,7 +6406,7 @@ function renderLabDnsRecon(){
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · DNS Recon Playground</div>
         <h1>🌐 DNS Recon Playground</h1>
-        <p class="sec-lead">A simulated <code>dig</code>. Query records for a target domain and its likely subdomains to build a map of an organisation's real, sometimes-forgotten attack surface, entirely passively. <span class="tool-privacy">🔒 Simulated locally — no real DNS traffic.</span></p>
+        <p class="sec-lead">A simulated <code>dig</code>. Query records for a target domain and its likely subdomains to build a map of an organisation's real, sometimes-forgotten attack surface, entirely passively. <span class="tool-privacy">${cardIco('lockKey')}Simulated locally — no real DNS traffic.</span></p>
       </div>
       <div class="sqli-wrap" data-reveal style="--i:1">
         <form class="sqli-form" id="dnsForm" autocomplete="off">
@@ -6412,7 +6447,7 @@ function renderLabWinPrivesc(){
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Windows Privesc Playground</div>
         <h1>🪟 Windows Privesc Playground</h1>
-        <p class="sec-lead">Four Windows services, one runs as SYSTEM with a binary path your low-privileged account can actually write to. Find it, replace it, and escalate on next restart. <span class="tool-privacy">🔒 Simulated locally.</span></p>
+        <p class="sec-lead">Four Windows services, one runs as SYSTEM with a binary path your low-privileged account can actually write to. Find it, replace it, and escalate on next restart. <span class="tool-privacy">${cardIco('lockKey')}Simulated locally.</span></p>
       </div>
       <div class="sqli-wrap" data-reveal style="--i:1">
         <div class="sqli-query"><pre>${SVCS.map(s=>`${s.name.padEnd(16)} ${s.runsAs.padEnd(14)} ${s.path}`).join('\n')}</pre></div>
@@ -6455,7 +6490,7 @@ function renderLabLinuxPrivesc(){
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Linux Privesc Playground</div>
         <h1>🐧 Linux Privesc Playground</h1>
-        <p class="sec-lead">Run the SUID enumeration a real LinPEAS pass would do, then use GTFOBins to turn one unexpected result into a root shell. <span class="tool-privacy">🔒 Simulated locally.</span></p>
+        <p class="sec-lead">Run the SUID enumeration a real LinPEAS pass would do, then use GTFOBins to turn one unexpected result into a root shell. <span class="tool-privacy">${cardIco('lockKey')}Simulated locally.</span></p>
       </div>
       <div class="sqli-wrap" data-reveal style="--i:1">
         <button class="btn-amber" id="findBtn" type="button">find / -perm -4000 -type f 2&gt;/dev/null</button>
@@ -6490,7 +6525,7 @@ function renderLabKerberoast(){
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Kerberoasting Simulator</div>
         <h1>🎫 Kerberoasting Simulator</h1>
-        <p class="sec-lead">Any domain user can request a service ticket for any SPN — no special privilege required. Request tickets for two service accounts, then crack the one with a weak password offline. <span class="tool-privacy">🔒 Simulated locally.</span></p>
+        <p class="sec-lead">Any domain user can request a service ticket for any SPN — no special privilege required. Request tickets for two service accounts, then crack the one with a weak password offline. <span class="tool-privacy">${cardIco('lockKey')}Simulated locally.</span></p>
       </div>
       <div class="sqli-wrap" data-reveal style="--i:1">
         <div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:1rem">
@@ -6529,7 +6564,7 @@ function renderLabIamMisconfig(){
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Cloud IAM Misconfig Playground</div>
         <h1>☁️ Cloud IAM Misconfig Playground</h1>
-        <p class="sec-lead">Your role holds one permission that looks harmless in isolation: <code>iam:PassRole</code>. Chain it with the ability to launch a compute instance into a full account takeover. <span class="tool-privacy">🔒 Simulated locally.</span></p>
+        <p class="sec-lead">Your role holds one permission that looks harmless in isolation: <code>iam:PassRole</code>. Chain it with the ability to launch a compute instance into a full account takeover. <span class="tool-privacy">${cardIco('lockKey')}Simulated locally.</span></p>
       </div>
       <div class="sqli-wrap" data-reveal style="--i:1">
         <div class="sqli-query"><pre>Your role "app-deployer" permissions:
@@ -6575,7 +6610,7 @@ function renderLabDockerEscape(){
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Docker Escape Playground</div>
         <h1>🐳 Docker Escape Playground</h1>
-        <p class="sec-lead">A "CI runner" container mounts <code>/var/run/docker.sock</code> for convenience. That socket <i>is</i> root on the host. <span class="tool-privacy">🔒 Simulated locally.</span></p>
+        <p class="sec-lead">A "CI runner" container mounts <code>/var/run/docker.sock</code> for convenience. That socket <i>is</i> root on the host. <span class="tool-privacy">${cardIco('lockKey')}Simulated locally.</span></p>
       </div>
       <div class="sqli-wrap" data-reveal style="--i:1">
         <div class="tool-note">Container mounts: <code>-v /var/run/docker.sock:/var/run/docker.sock</code> — status: <b id="dockState">mounted</b></div>
@@ -6617,7 +6652,7 @@ function renderLabMalwareStrings(){
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Malware Strings Triage Lab</div>
         <h1>🧬 Malware Strings Triage Lab</h1>
-        <p class="sec-lead">A raw <code>strings</code> dump from a suspicious binary. Click every genuine IOC — a C2 address, a persistence path, a mutex, an exfil channel — before touching a disassembler. <span class="tool-privacy">🔒 Simulated locally.</span></p>
+        <p class="sec-lead">A raw <code>strings</code> dump from a suspicious binary. Click every genuine IOC — a C2 address, a persistence path, a mutex, an exfil channel — before touching a disassembler. <span class="tool-privacy">${cardIco('lockKey')}Simulated locally.</span></p>
       </div>
       <div class="sqli-wrap" data-reveal style="--i:1">
         <div class="sqli-query"><pre id="msList">${STRINGS.map((s,i)=>`<span class="ms-pick" data-i="${i}" style="cursor:pointer;text-decoration:underline dotted">${escapeHtml(s)}</span>`).join('\n')}</pre></div>
@@ -6664,7 +6699,7 @@ function renderLabYaraBuilder(){
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · YARA Rule Builder Challenge</div>
         <h1>🔬 YARA Rule Builder Challenge</h1>
-        <p class="sec-lead">Three malware samples share one distinctive marker. Write a rule (just a string to match, simplified here) that catches all three and none of the two clean files. <span class="tool-privacy">🔒 Simulated locally.</span></p>
+        <p class="sec-lead">Three malware samples share one distinctive marker. Write a rule (just a string to match, simplified here) that catches all three and none of the two clean files. <span class="tool-privacy">${cardIco('lockKey')}Simulated locally.</span></p>
       </div>
       <div class="sqli-wrap" data-reveal style="--i:1">
         <div class="sqli-query"><pre>${SAMPLES.map(s=>`${s.name}: "${s.content}"`).join('\n\n')}</pre></div>
@@ -6702,7 +6737,7 @@ function renderLabRaceCondition(){
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Race Condition Lab</div>
         <h1>🏁 Race Condition Lab</h1>
-        <p class="sec-lead">One coupon, meant to be redeemed exactly once. The server checks "is it used?" then, separately, marks it used — a genuine check-then-act gap. Fire many requests "simultaneously" and redeem it more than once. <span class="tool-privacy">🔒 Simulated locally.</span></p>
+        <p class="sec-lead">One coupon, meant to be redeemed exactly once. The server checks "is it used?" then, separately, marks it used — a genuine check-then-act gap. Fire many requests "simultaneously" and redeem it more than once. <span class="tool-privacy">${cardIco('lockKey')}Simulated locally.</span></p>
       </div>
       <div class="sqli-wrap" data-reveal style="--i:1">
         <div class="tool-note">Coupon SAVE50 — uses remaining: <b id="rcBalance">1</b> · redeemed so far: <b id="rcCount">0</b></div>
@@ -6748,7 +6783,7 @@ function renderLabWebhookForge(){
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Webhook Signature Forgery Lab</div>
         <h1>🪝 Webhook Signature Forgery Lab</h1>
-        <p class="sec-lead">A payment webhook is verified with an HMAC signature. First, try to forge one without the secret. Then flip on verification and watch the endpoint correctly reject you. <span class="tool-privacy">🔒 Runs locally via the browser's real crypto engine.</span></p>
+        <p class="sec-lead">A payment webhook is verified with an HMAC signature. First, try to forge one without the secret. Then flip on verification and watch the endpoint correctly reject you. <span class="tool-privacy">${cardIco('lockKey')}Runs locally via the browser's real crypto engine.</span></p>
       </div>
       <div class="sqli-wrap" data-reveal style="--i:1">
         <div class="sqli-query"><pre>POST /webhooks/payments
@@ -6790,7 +6825,7 @@ function renderLabOauthRedirect(){
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · OAuth Redirect URI Hijack Lab</div>
         <h1>🔑 OAuth Redirect URI Hijack Lab</h1>
-        <p class="sec-lead">The authorization server checks that <code>redirect_uri</code> starts with the registered app's domain — but "starts with" is a looser check than "exactly matches." Steal an authorization code. <span class="tool-privacy">🔒 Simulated locally.</span></p>
+        <p class="sec-lead">The authorization server checks that <code>redirect_uri</code> starts with the registered app's domain — but "starts with" is a looser check than "exactly matches." Steal an authorization code. <span class="tool-privacy">${cardIco('lockKey')}Simulated locally.</span></p>
       </div>
       <div class="sqli-wrap" data-reveal style="--i:1">
         <div class="tool-note">Registered app domain: <code>https://realapp.example</code></div>
@@ -6838,13 +6873,13 @@ function renderLabVendorTiering(){
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Vendor Risk Tiering Simulator</div>
         <h1>🏢 Vendor Risk Tiering Simulator</h1>
-        <p class="sec-lead">Six real-shaped vendors, six different data-access levels. Tier each one correctly — over-scrutinizing a low-risk vendor wastes real time; under-scrutinizing a high-risk one is how breaches actually happen. <span class="tool-privacy">🔒 Simulated locally.</span></p>
+        <p class="sec-lead">Six real-shaped vendors, six different data-access levels. Tier each one correctly — over-scrutinizing a low-risk vendor wastes real time; under-scrutinizing a high-risk one is how breaches actually happen. <span class="tool-privacy">${cardIco('lockKey')}Simulated locally.</span></p>
       </div>
       <div class="sqli-wrap" data-reveal style="--i:1">
         ${VENDORS.map((v,i)=>`
           <div class="sqli-form" style="margin-bottom:.8rem">
             <div class="tool-note"><b>${escapeHtml(v.name)}</b> — ${escapeHtml(v.access)}</div>
-            <select class="tool-input" data-vi="${i}">
+            <select class="tool-input" data-vi="${i}" aria-label="Risk tier for ${escapeHtml(v.name)}">
               <option value="">Select a tier…</option>
               <option value="1">Tier 1 — Critical</option>
               <option value="2">Tier 2 — Moderate</option>
@@ -6947,7 +6982,7 @@ function renderLabPasswordCrack(){
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Password Cracking Lab</div>
         <h1>🔓 Password Cracking Lab</h1>
-        <p class="sec-lead">Four SHA-256 password hashes, one small wordlist. Run a real dictionary attack (using your browser's actual crypto engine) and see which ones fall — and which survive even unlimited offline attempts. <span class="tool-privacy">🔒 Runs locally.</span></p>
+        <p class="sec-lead">Four SHA-256 password hashes, one small wordlist. Run a real dictionary attack (using your browser's actual crypto engine) and see which ones fall — and which survive even unlimited offline attempts. <span class="tool-privacy">${cardIco('lockKey')}Runs locally.</span></p>
       </div>
       <div class="sqli-wrap" data-reveal style="--i:1">
         <div class="tool-note">Wordlist: <code>${WORDLIST.join(', ')}</code></div>
@@ -6992,7 +7027,7 @@ function renderLabLeakedSecret(){
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow"><a href="#/labs" style="color:inherit;text-decoration:none">Labs</a> · Leaked Secret Hunt</div>
         <h1>🗝️ Leaked Secret Hunt</h1>
-        <p class="sec-lead">Five files from a public GitHub repo dump. Find the one hardcoded secret an automated scanner (GitHub secret scanning, TruffleHog) would catch within minutes. <span class="tool-privacy">🔒 Simulated locally.</span></p>
+        <p class="sec-lead">Five files from a public GitHub repo dump. Find the one hardcoded secret an automated scanner (GitHub secret scanning, TruffleHog) would catch within minutes. <span class="tool-privacy">${cardIco('lockKey')}Simulated locally.</span></p>
       </div>
       <div class="sqli-wrap" data-reveal style="--i:1">
         ${FILES.map((f,i)=>`<div class="sqli-query" style="cursor:pointer" data-fi="${i}"><div class="tool-note">${escapeHtml(f.name)}</div><pre>${escapeHtml(f.content.replace(/\\n/g,'\n'))}</pre></div>`).join('')}
@@ -7628,7 +7663,7 @@ function renderTool(id){
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow"><a href="#/tools" style="color:inherit;text-decoration:none">Tools</a> · ${meta.title}</div>
         <h1><span class="tool-head-ico">${cardIco(meta.ico)}</span>${meta.title}</h1>
-        <p class="sec-lead">${escapeHtml(meta.desc)} <span class="tool-privacy">🔒 Runs locally — nothing leaves your browser.</span></p>
+        <p class="sec-lead">${escapeHtml(meta.desc)} <span class="tool-privacy">${cardIco('lockKey')}Runs locally — nothing leaves your browser.</span></p>
       </div>
       <div id="toolBody" data-reveal style="--i:1"></div>
     </section>
@@ -8234,6 +8269,7 @@ const PORTFOLIO_BRIEFS = [
 function toolPortfolioGen(el){
   el.innerHTML = `
     <div class="tool-note">Pick a project brief — each one is a real, resume-worthy artifact you can point to in interviews.</div>
+    <h2 class="sr-only">Project briefs</h2>
     <div class="labs-grid" id="pgList" style="margin-top:1rem">
       ${PORTFOLIO_BRIEFS.map((b,i)=>`
         <button class="lab-card" data-i="${i}" type="button" style="cursor:pointer;text-align:left;border:1px solid var(--border);background:var(--surface)">
@@ -8482,7 +8518,7 @@ function toolHttpBuilder(el){
 Content-Type: application/json</textarea></label>
     <label class="tool-field">Body (optional)<textarea id="hbBody" class="tool-textarea" rows="3">{"role":"admin"}</textarea></label>
     <div class="tool-note">Raw request:</div>
-    <pre id="hbOut" class="sqli-query" style="background:var(--code-bg);border:1px solid var(--border);border-radius:var(--r);padding:1rem;overflow-x:auto"></pre>
+    <pre id="hbOut" class="sqli-query" style="background:var(--code-bg);color:var(--code-text);border:1px solid var(--border);border-radius:var(--r);padding:1rem;overflow-x:auto"></pre>
   `;
   function run(){
     const method = document.getElementById('hbMethod').value;
@@ -8518,7 +8554,7 @@ Jul 26 09:02:10 web01 sshd: Accepted publickey for deploy from 10.0.4.2 port 519
     let re;
     try{ re = new RegExp(filterStr, 'i'); } catch(e){ out.innerHTML = `<span class="tool-warn">Invalid regex: ${escapeHtml(e.message)}</span>`; return; }
     const matched = lines.filter(l=>re.test(l));
-    out.innerHTML = `<div class="tool-note">${matched.length}/${lines.length} lines match.</div><pre class="sqli-query" style="background:var(--code-bg);border:1px solid var(--border);border-radius:var(--r);padding:1rem;overflow-x:auto;white-space:pre-wrap">${matched.map(l=>escapeHtml(l)).join('\n') || '(no matches)'}</pre>`;
+    out.innerHTML = `<div class="tool-note">${matched.length}/${lines.length} lines match.</div><pre class="sqli-query" style="background:var(--code-bg);color:var(--code-text);border:1px solid var(--border);border-radius:var(--r);padding:1rem;overflow-x:auto;white-space:pre-wrap">${matched.map(l=>escapeHtml(l)).join('\n') || '(no matches)'}</pre>`;
   }
   ['lpLog','lpFilter'].forEach(id=>document.getElementById(id).addEventListener('input', run));
   run();
@@ -10600,10 +10636,10 @@ function renderCertificate(){
       <section class="sec">
         <div class="cert-wrap">
           <div class="sec-eyebrow" data-reveal>Certificate</div>
-          <h2 data-reveal style="--i:1">Your certificate is waiting</h2>
+          <h1 class="cert-title" data-reveal style="--i:1">Your certificate is waiting</h1>
           <div class="cert-locked" data-reveal style="--i:2">
-            <div class="lock-ico">🔒</div>
-            <h3 style="margin-bottom:.6rem">Pass the Final Exam to unlock it</h3>
+            <div class="lock-ico">${cardIco('lockKey')}</div>
+            <h2 class="cert-locked-title">Pass the Final Exam to unlock it</h2>
             <p class="sec-lead" style="margin:0 0 1.4rem">The certificate of completion is issued once you pass the ${FINAL_QUIZ.questions.length}-question Final Exam covering the whole course.</p>
             <a class="btn-amber" href="#/quiz/final">Take the Final Exam →</a>
           </div>
@@ -10617,7 +10653,7 @@ function renderCertificate(){
     <section class="sec">
       <div class="cert-wrap">
         <div class="sec-eyebrow" data-reveal>Certificate</div>
-        <h2 data-reveal style="--i:1">🎉 You've earned it</h2>
+        <h1 class="cert-title" data-reveal style="--i:1">You've earned it</h1>
         <p class="sec-lead" data-reveal style="--i:2">Enter your name exactly as you'd like it to appear, then generate your certificate.</p>
         <form class="cert-form" id="certForm" data-reveal style="--i:3">
           <input type="text" id="certNameInput" placeholder="Your full name" maxlength="60" value="${escapeHtml(STATE.certName)}" required>

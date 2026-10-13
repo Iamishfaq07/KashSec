@@ -285,7 +285,7 @@ a{color:inherit}
 .progress-ring-btn .ring-txt{position:absolute;font-family:var(--font-mono);font-size:.56rem;font-weight:700;color:var(--text)}
 
 /* ---------- Sections ---------- */
-.sec{max-width:var(--maxw);margin:0 auto;padding:clamp(3rem,6vw,5.5rem) clamp(1rem,4vw,3rem);position:relative}
+.sec{max-width:var(--maxw);margin:0 auto;padding:clamp(2.75rem,5vw,4.5rem) clamp(1rem,4vw,3rem);position:relative}
 .sec-head{max-width:46rem;margin-bottom:2.4rem}
 /* The section title is the page's <h1>. It used to be an <h2>, which left
    25 routes with no <h1> anywhere in the document — the heading a screen
@@ -614,6 +614,7 @@ a{color:inherit}
 .md tbody tr:hover{background:var(--overlay-1)}
 .md th{color:var(--amber-ink);font-family:var(--font-mono);font-size:.74rem;letter-spacing:.05em;text-transform:uppercase}
 .md td{color:var(--md-text)}
+.md .table-scroll:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
 /* On phones, long cells wrap instead of stretching the table to several
    screen widths; headers and short values stay on one line. */
 @media(max-width:600px){
@@ -723,6 +724,9 @@ a{color:inherit}
 .callout.danger .ct-tag{background:#BE3A2E;color:#fff}
 .callout.lab{background:rgba(63,182,168,.06);border:1px solid rgba(63,182,168,.3)}
 .callout.lab .ct-tag{background:var(--teal);color:#04120f}
+/* Light --teal is mid-tone: dark ink on it measured 4.12:1. White on the
+   deeper teal clears AA comfortably. */
+:root[data-theme="light"] .callout.tip .ct-tag,:root[data-theme="light"] .callout.lab .ct-tag{background:var(--teal-2);color:#fff}
 .callout.challenge{background:rgba(239,164,58,.06);border:1px solid rgba(239,164,58,.34)}
 .callout.challenge .ct-tag{background:var(--amber);color:#160f02}
 .callout.note{background:var(--surface2);border:1px solid var(--border)}
@@ -742,11 +746,11 @@ a{color:inherit}
 /* Mermaid is CDN-hosted and optional. If it never loads, don't dump raw
    diagram source at the reader — collapse to a labelled placeholder that
    still lets a curious reader expand the source. */
-.md .mermaid.mermaid-unavailable{text-align:left;font-family:var(--font-mono);font-size:.78rem;color:var(--muted)}
-.md .mermaid.mermaid-unavailable>summary{cursor:pointer;color:var(--teal-2);font-family:var(--font-sans);font-size:.88rem;list-style:none}
+.md .mermaid.mermaid-unavailable{text-align:left;font-family:var(--font-mono);font-size:.78rem;color:#94A3B2}
+.md .mermaid.mermaid-unavailable>summary{cursor:pointer;color:#5FE0CF;font-family:var(--font-sans);font-size:.88rem;list-style:none}
 .md .mermaid.mermaid-unavailable>summary::-webkit-details-marker{display:none}
 .md .mermaid.mermaid-unavailable>summary::before{content:'◇ ';opacity:.8}
-.md .mermaid.mermaid-unavailable>pre{margin:.9rem 0 0;white-space:pre-wrap;word-break:break-word;color:var(--muted)}
+.md .mermaid.mermaid-unavailable>pre{margin:.9rem 0 0;white-space:pre-wrap;word-break:break-word;color:#94A3B2}
 
 /* Inline SVG figures */
 .md .svg-figure{background:var(--diagram-bg);border:1px solid var(--border);border-radius:var(--r);padding:1.6rem;margin:0 0 1.4rem;text-align:center}
@@ -764,9 +768,9 @@ a{color:inherit}
 /* ---------- Footer ---------- */
 .footer{border-top:1px solid var(--border);background:var(--bg2);margin-top:3rem;position:relative}
 .footer::before{content:"";position:absolute;top:-1px;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(239,164,58,.35),transparent)}
-.foot-top{max-width:var(--maxw);margin:0 auto;padding:clamp(2.6rem,5vw,3.6rem) clamp(1rem,4vw,3rem);display:grid;grid-template-columns:1.4fr 1.6fr;gap:2.6rem}
+.foot-top{max-width:var(--maxw);margin:0 auto;padding:clamp(2.6rem,5vw,3.6rem) clamp(1rem,4vw,3rem);display:grid;grid-template-columns:1fr 2fr;gap:2.6rem}
 .foot-brand p{color:var(--muted);font-size:.92rem;max-width:25rem;margin:1.1rem 0 1.2rem;line-height:1.7}
-.foot-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:1.6rem}
+.foot-cols{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1.6rem}
 .foot-social{display:flex;gap:.5rem;margin-top:1.1rem}
 .foot-social .icon-btn{color:var(--muted)}
 .foot-social .icon-btn:hover,.foot-social .icon-btn:focus-visible{color:var(--amber-ink);border-color:rgba(239,164,58,.45)}
@@ -930,8 +934,16 @@ body:has(.pomodoro-widget:not([hidden])) .to-top{bottom:5.6rem}
    Certificate
    ============================================================ */
 .cert-wrap{max-width:46rem;margin:0 auto;text-align:center}
+.cert-title{font-size:clamp(1.9rem,4vw,2.6rem);margin:0 0 1.8rem}
 .cert-locked{padding:3rem 1.5rem;border:1px dashed var(--border-strong);border-radius:var(--r-lg);background:var(--surface)}
-.cert-locked .lock-ico{font-size:2.6rem;margin-bottom:1rem}
+.cert-locked .lock-ico{display:inline-grid;place-items:center;width:64px;height:64px;margin-bottom:1rem;border-radius:18px;
+  color:var(--amber-ink);background:var(--overlay-2);border:1px solid var(--border)}
+.cert-locked .lock-ico .kico{width:30px;height:30px}
+.cert-locked-title{font-size:1.15rem;margin:0 0 .6rem;letter-spacing:-.01em;line-height:1.3}
+/* OSINT lab findings: lock until discovered, then a teal check. */
+.finding-ico{display:inline-flex;vertical-align:-.2em;margin-right:.5rem;color:var(--muted2)}
+.finding-ico .kico{width:16px;height:16px}
+.finding-ico.is-found{color:var(--teal-ink)}
 .cert-form{display:flex;gap:.7rem;justify-content:center;flex-wrap:wrap;margin:1.6rem 0}
 .cert-form input{padding:.8rem 1.1rem;border-radius:11px;border:1px solid var(--border-strong);background:var(--surface);
   color:var(--text);font-family:inherit;font-size:.95rem;min-width:16rem}
@@ -1433,7 +1445,9 @@ mark{background:rgba(239,164,58,.35);color:var(--text);border-radius:3px;padding
 
 /* ---------- Tracks ---------- */
 .tracks-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem}
-.track-card{display:block;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);
+/* Column flex so the progress block sits at the same height in every card
+   of a row, whatever the description length. */
+.track-card{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);
   padding:1.2rem 1.3rem;text-decoration:none;color:var(--text);transition:border-color .18s var(--ease),transform .18s var(--ease)}
 .track-card:hover{border-color:rgba(239,164,58,.5);transform:translateY(-2px)}
 .track-head{display:flex;align-items:center;gap:.55rem;margin-bottom:.55rem}
@@ -1444,7 +1458,8 @@ mark{background:rgba(239,164,58,.35);color:var(--text);border-radius:3px;padding
 .track-eyebrow-ico .kico{width:15px;height:15px}
 .track-title{font-family:var(--font-display);font-weight:700;font-size:1.05rem}
 .track-desc{color:var(--muted);font-size:.9rem;line-height:1.55;min-height:2.6em;margin-bottom:1rem}
-.track-progress{margin-bottom:.6rem}
+.track-progress{margin-bottom:.6rem;margin-top:auto}
+.track-next .kico{width:14px;height:14px;vertical-align:-2px}
 .track-bar{height:6px;background:var(--surface2);border-radius:3px;overflow:hidden}
 .track-bar-fill{height:100%;background:linear-gradient(90deg,var(--amber),var(--teal-2));border-radius:3px;transition:width .5s var(--ease)}
 .track-meta{font-family:var(--font-mono);font-size:.7rem;color:var(--muted);margin-top:.35rem}
@@ -1471,7 +1486,10 @@ mark{background:rgba(239,164,58,.35);color:var(--text);border-radius:3px;padding
 
 /* ---------- Labs ---------- */
 .labs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem}
-.lab-card{display:block;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);
+/* Column flex: the description grows, so the meta lines (and the status
+   select on the cert roadmap) line up along the bottom of every card in a
+   row instead of floating at the end of each description. */
+.lab-card{display:flex;flex-direction:column;align-items:flex-start;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);
   padding:1.3rem;text-decoration:none;color:var(--text);transition:border-color .18s var(--ease),transform .18s var(--ease)}
 .lab-card:hover{border-color:rgba(63,182,168,.5);transform:translateY(-3px)}
 /* Card icons. Was font-size:2.2rem because these used to be emoji; they're
@@ -1504,7 +1522,7 @@ mark{background:rgba(239,164,58,.35);color:var(--text);border-radius:3px;padding
 .sec-head h1 > .tool-head-ico .kico{width:24px;height:24px}
 @media(max-width:640px){.sec-head h1 > .tool-head-ico{width:40px;height:40px}.sec-head h1 > .tool-head-ico .kico{width:20px;height:20px}}
 .lab-card h3{font-family:var(--font-display);font-size:1.1rem;margin:0 0 .5rem}
-.lab-card p{color:var(--muted);font-size:.87rem;line-height:1.55;margin:0 0 .8rem}
+.lab-card p{color:var(--muted);font-size:.87rem;line-height:1.55;margin:0 0 .8rem;flex-grow:1}
 .lab-related{font-family:var(--font-mono);font-size:.68rem;color:var(--teal-2)}
 .lab-card.is-complete{border-color:rgba(63,182,168,.5);background:rgba(63,182,168,.06)}
 .lab-done-badge{font-size:.8rem}
@@ -1566,7 +1584,7 @@ mark{background:rgba(239,164,58,.35);color:var(--text);border-radius:3px;padding
 .pcap-kv{display:flex;justify-content:space-between;gap:1rem;padding:.25rem 0;border-bottom:1px dashed rgba(255,255,255,.06)}
 .pcap-kv b{color:#94A3B2;font-weight:600;font-size:.72rem;text-transform:uppercase;letter-spacing:.05em}
 .pcap-kv span{font-family:var(--font-mono);font-size:.8rem;color:#EAEFF5;text-align:right;word-break:break-all}
-.pcap-payload-title{margin:.8rem 0 .3rem;font-family:var(--font-mono);color:var(--amber-ink);font-size:.72rem;text-transform:uppercase;letter-spacing:.05em}
+.pcap-payload-title{margin:.8rem 0 .3rem;font-family:var(--font-mono);color:#EFA43A;font-size:.72rem;text-transform:uppercase;letter-spacing:.05em}
 .pcap-payload{background:rgba(0,0,0,.35);padding:.7rem .8rem;border-radius:6px;font-family:var(--font-mono);font-size:.75rem;
   color:var(--code-text);overflow-x:auto;white-space:pre-wrap;word-break:break-all;margin:0}
 .pcap-detail-hint{color:var(--muted);font-style:italic;margin-top:.5rem}
@@ -1614,7 +1632,8 @@ mark{background:rgba(239,164,58,.35);color:var(--text);border-radius:3px;padding
 :root[data-legible="true"] .md p, :root[data-legible="true"] .md li{line-height:2.05}
 
 /* ============ Tools ============ */
-.tool-page .sec-lead .tool-privacy{display:inline-block;margin-left:.4rem;font-size:.82rem;color:var(--teal-2)}
+.sec-lead .tool-privacy{display:inline-flex;align-items:center;gap:.35rem;margin-left:.4rem;font-size:.82rem;color:var(--teal-ink)}
+.tool-privacy .kico{width:14px;height:14px}
 .tool-controls{display:flex;gap:1rem;flex-wrap:wrap;align-items:flex-end;margin-bottom:1rem}
 .tool-controls label{display:flex;flex-direction:column;gap:.35rem;font-size:.8rem;color:var(--muted);font-family:var(--font-mono)}
 .tool-field{display:flex;flex-direction:column;gap:.4rem;font-size:.8rem;color:var(--muted);font-family:var(--font-mono);margin-bottom:1rem}
@@ -1624,11 +1643,13 @@ mark{background:rgba(239,164,58,.35);color:var(--text);border-radius:3px;padding
 .tool-input:focus,.tool-textarea:focus{outline:2px solid var(--amber);outline-offset:1px}
 .tool-btnrow{display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:1rem}
 .tool-note{font-size:.78rem;color:var(--muted);line-height:1.6;margin:.6rem 0 0}
+label.tool-note{display:block}
 .tool-warn{background:rgba(224,85,72,.1);border:1px solid rgba(224,85,72,.3);color:var(--text);padding:.7rem .9rem;border-radius:var(--r);font-size:.88rem}
 .tool-out-list{display:flex;flex-direction:column;gap:.5rem}
-.hash-row{display:flex;gap:.8rem;align-items:baseline;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:.6rem .8rem;flex-wrap:wrap}
+.hash-row{display:flex;gap:.8rem;align-items:baseline;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:.6rem .8rem}
 .hash-algo{font-family:var(--font-mono);font-size:.72rem;color:var(--teal-2);flex:none;min-width:120px;font-weight:600}
-.hash-val{font-family:var(--font-mono);font-size:.82rem;color:var(--text);word-break:break-all}
+.hash-val{font-family:var(--font-mono);font-size:.82rem;color:var(--text);word-break:break-all;flex:1;min-width:0}
+@media(max-width:560px){.hash-row{flex-direction:column;gap:.3rem}.hash-algo{min-width:0}}
 .jwt-block{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:.9rem 1rem;margin-bottom:.7rem}
 .jwt-block pre{margin:.4rem 0 0;overflow-x:auto;font-size:.82rem;color:var(--code-text)}
 .jwt-lbl{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;font-weight:700}
