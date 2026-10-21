@@ -1987,6 +1987,7 @@ let currentInvestigationFlush = null;
 let currentInvestigationRefresh = null;
 let currentPlaygroundRefresh = null;
 let currentStartGuideRefresh = null;
+let currentReviewRefresh = null;
 const lessonFallbacks = new Map();
 let currentLabMessageController = null;
 let currentCvssWorker = null;
@@ -2003,6 +2004,7 @@ function route(){
   currentInvestigationRefresh = null;
   currentPlaygroundRefresh = null;
   currentStartGuideRefresh = null;
+  currentReviewRefresh = null;
   currentPlannerRefresh = null;
   currentLessonNotesFlush?.();
   currentLessonNotesFlush = null;
@@ -2051,7 +2053,7 @@ function route(){
   else if(hash === '#/terms') renderLegal('terms');
   else if(hash === '#/roadmap') renderRoadmap();
   else if(hash === '#/glossary') renderGlossary();
-  else if(hash === '#/review') renderReview();
+  else if(hash === '#/review' || hash.startsWith('#/review?')) renderReview();
   else if(hash === '#/tracks') renderTracks();
   else if(hash === '#/tools') renderToolsIndex();
   else if(hash.startsWith('#/tools/')) renderTool(hash.slice(8));
@@ -3800,7 +3802,7 @@ async function renderSubLesson(pathId, subId){
       if(crumb) crumb.insertAdjacentHTML('beforeend', ` &nbsp;·&nbsp; <span class="read-time">⏱ ~${mins} min read</span>`);
       buildLessonToc(contentEl);
       enhanceCodeBlocks(contentEl);
-      enhanceKeyTerms(contentEl);
+      enhanceKeyTerms(contentEl,ctx);
       markScrollableTables(contentEl);
       renderMicroCheck(ctx);
       animateLessonBlocks(contentEl);
@@ -4192,7 +4194,7 @@ function markScrollableTables(root){
   }, {passive:true});
 }
 
-function enhanceKeyTerms(contentEl){
+function enhanceKeyTerms(contentEl,ctx){
   const h = [...contentEl.querySelectorAll('h2')].find(x => /^key terms$/i.test(x.textContent.trim()));
   const ul = h && h.nextElementSibling;
   if(!ul || ul.tagName !== 'UL') return;
@@ -4208,7 +4210,8 @@ function enhanceKeyTerms(contentEl){
     li.appendChild(def);
   });
   ul.classList.add('key-terms');
-  ul.insertAdjacentHTML('afterend', `<p class="kt-cta"><a href="#/review">Practise these as flashcards →</a></p>`);
+  const reviewHref=ctx?`#/review?path=${ctx.path.id}&amp;lesson=${ctx.sub.id}&amp;mode=all`:'#/review';
+  ul.insertAdjacentHTML('afterend', `<p class="kt-cta"><a href="${reviewHref}">Practise these as flashcards →</a></p>`);
 }
 
 /* Code blocks render as small windows: a title bar with the language (or
@@ -4481,203 +4484,136 @@ async function renderGlossary(){
    keep coming back in later sessions.
    ============================================================ */
 async function renderReview(){
-  const myGen = renderGeneration;
-  app.innerHTML = `<div class="loading">Loading flashcards…</div>`;
-  try{ await ensureGlossary(); }
-  catch(e){
-    if(myGen !== renderGeneration) return;
-    app.innerHTML = `<section class="sec"><div class="sec-head"><h1>Couldn't load the flashcards</h1>
-      <p class="sec-lead">Check your connection and try again.</p>
-      <button class="btn-amber" id="reviewRetry" type="button">Retry</button></div></section>`;
-    document.getElementById('reviewRetry').addEventListener('click', renderReview);
-    return;
+  const myGen=renderGeneration;
+  app.innerHTML='<div class="loading" role="status">Loading flashcards…</div>';
+  try{
+    await ensureGlossary();
+    if(typeof GLOSSARY==='undefined')throw new Error('Glossary unavailable');
+  }catch(error){
+    if(myGen!==renderGeneration)return;
+    glossaryPromise=null;
+    app.innerHTML='<section class="sec"><h1>Couldn’t load the flashcards</h1><p>Check your connection and try again.</p><button class="btn-amber" id="reviewRetry" type="button">Retry</button></section>';
+    document.getElementById('reviewRetry').addEventListener('click',renderReview);afterRender();return;
   }
-  if(myGen !== renderGeneration) return;
-  if(!STATE.flashcards) STATE.flashcards = {known:{}, reviews:{}};
-  if(!STATE.flashcards.known) STATE.flashcards.known = {};
-  if(!STATE.flashcards.reviews) STATE.flashcards.reviews = {};
-
-  const termKey = e => `${e.pathId}/${e.subId}/${e.term}`;
-  const todayStr = () => new Date().toISOString().slice(0,10);
-  const dateAdd = (iso, days) => { const d = new Date(iso+'T00:00:00Z'); d.setUTCDate(d.getUTCDate()+days); return d.toISOString().slice(0,10); };
-
-  /* SM-2 lite: three buttons instead of six.
-     - again: reset interval, ease drops slightly, due today
-     - good:  interval * ease, ease unchanged
-     - easy:  interval * ease * 1.3, ease bumps up */
-  function schedule(key, perf){
-    const r = STATE.flashcards.reviews[key] || {interval:0, ease:2.5, streak:0};
-    let interval, ease = r.ease, streak = r.streak;
-    if(perf === 'again'){
-      interval = 1;
-      ease = Math.max(1.3, ease - 0.2);
-      streak = 0;
-    } else if(perf === 'good'){
-      streak++;
-      interval = streak === 1 ? 1 : streak === 2 ? 3 : Math.round(r.interval * ease);
-    } else { // easy
-      streak++;
-      ease = Math.min(3.0, ease + 0.15);
-      interval = streak === 1 ? 3 : Math.round(r.interval * ease * 1.3);
+  if(myGen!==renderGeneration)return;
+  cacheOpenedAsset('glossary.js');
+  const params=new URLSearchParams(activeRoute().split('?')[1]||'');
+  let pathFilter=PATHS.some(p=>p.id===params.get('path'))?params.get('path'):'all';
+  let lessonFilter=GLOSSARY.some(e=>e.pathId===pathFilter&&e.subId===params.get('lesson'))?params.get('lesson'):'all';
+  let mode=['due','new','all'].includes(params.get('mode'))?params.get('mode'):'due';
+  let size=['5','10','20','all'].includes(params.get('size'))?params.get('size'):'10';
+  const invalidScope=(params.has('path')&&params.get('path')!=='all'&&pathFilter==='all')||(params.has('lesson')&&params.get('lesson')!=='all'&&lessonFilter==='all');
+  const termKey=e=>`${e.pathId}/${e.subId}/${e.term}`;
+  const today=()=>studyDayKey(new Date());
+  const dateAdd=(iso,days)=>{const d=new Date(iso+'T00:00:00Z');d.setUTCDate(d.getUTCDate()+days);return d.toISOString().slice(0,10);};
+  const review=e=>{
+    const r=STATE.flashcards.reviews[termKey(e)];
+    return r&&Number.isFinite(r.interval)&&r.interval>=1&&r.interval<=36500&&Number.isFinite(r.ease)&&r.ease>=1.3&&r.ease<=3&&Number.isInteger(r.streak)&&r.streak>=0&&/^\d{4}-\d{2}-\d{2}$/.test(r.due)&&!Number.isNaN(Date.parse(r.due))?r:null;
+  };
+  const pool=()=>GLOSSARY.filter(e=>(pathFilter==='all'||e.pathId===pathFilter)&&(lessonFilter==='all'||e.subId===lessonFilter));
+  const shuffle=items=>{for(let i=items.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[items[i],items[j]]=[items[j],items[i]];}return items;};
+  function nextInterval(card,perf){
+    const r=review(card)||{interval:0,ease:2.5,streak:0};
+    if(perf==='again')return 1;
+    if(perf==='good')return r.streak===0?1:r.streak===1?3:Math.min(36500,Math.max(1,Math.round(r.interval*r.ease)));
+    return r.streak===0?3:Math.min(36500,Math.max(1,Math.round(r.interval*Math.min(3,r.ease+.15)*1.3)));
+  }
+  let deck=[],index=0,flipped=false,initialCount=0,attempts=0;
+  let repeated=new Set(),results=new Map();
+  app.innerHTML=`<section class="sec fc-page"><div class="sec-head"><div class="sec-eyebrow">Flashcards · spaced repetition</div><h1>Active recall practice</h1><p class="sec-lead">Recall a meaning, reveal it, then choose how it felt. Pick a short session and finish at your own pace. Your ratings schedule the next review; they do not grade your knowledge.</p></div>
+    <p class="fc-scope-notice" id="fcScopeNotice" role="status">${invalidScope?'That requested deck is unavailable. Choose a path or lesson below.':''}</p>
+    <div class="fc-tools"><label>Course path<select id="fcPathFilter" class="fc-select"><option value="all">All paths</option>${PATHS.filter(p=>GLOSSARY.some(e=>e.pathId===p.id)).map(p=>`<option value="${p.id}">Path ${p.n} — ${escapeHtml(p.title)}</option>`).join('')}</select></label>
+    <label>Lesson<select id="fcLessonFilter" class="fc-select"></select></label><label>Session size<select id="fcSize" class="fc-select"><option value="5">5 terms</option><option value="10">10 terms</option><option value="20">20 terms</option><option value="all">Entire selected deck</option></select></label>
+    <div class="fc-mode-toggle" role="group" aria-label="Deck mode"><button class="fc-mode" data-mode="due" type="button">Due + new</button><button class="fc-mode" data-mode="new" type="button">Unseen</button><button class="fc-mode" data-mode="all" type="button">All terms</button></div>
+    <button class="btn-ghost sm" id="ankiExportBtn" type="button">${cardIco('download')}Export selected deck (.csv)</button></div>
+    <p id="fcScope" class="fc-scope"></p><div class="fc-stats" id="fcStats"></div><p id="fcSaveStatus" class="fc-save-status" role="status"></p><div id="fcSession"></div>
+    <p class="fc-help">Use Tab to move between controls and Enter or Space to activate them. “Again” gives a term one extra try in this session and schedules it for tomorrow. No timer, no automatic restart.</p>
+    <details class="fc-maintenance"><summary>Manage this deck</summary><p>Reset only the review history for the currently selected path and lesson. Lesson completion and notes stay as they are.</p><button class="btn-ghost sm" type="button" id="fcResetBtn">Reset selected review history</button></details></section>`;
+  const pathSelect=document.getElementById('fcPathFilter'),lessonSelect=document.getElementById('fcLessonFilter'),sizeSelect=document.getElementById('fcSize');
+  const session=document.getElementById('fcSession');
+  pathSelect.value=pathFilter;sizeSelect.value=size;
+  function fillLessons(){
+    const lessons=new Map(GLOSSARY.filter(e=>pathFilter==='all'||e.pathId===pathFilter).map(e=>[`${e.pathId}/${e.subId}`,e]));
+    lessonSelect.innerHTML='<option value="all">All lessons in this path</option>'+[...lessons.values()].map(e=>`<option value="${e.pathId}/${e.subId}">${escapeHtml(e.subTitle)}</option>`).join('');
+    lessonSelect.value=lessonFilter==='all'?'all':`${pathFilter}/${lessonFilter}`;
+  }
+  function updateURL(){
+    const query=new URLSearchParams();
+    if(pathFilter!=='all')query.set('path',pathFilter);
+    if(lessonFilter!=='all')query.set('lesson',lessonFilter);
+    if(mode!=='due')query.set('mode',mode);
+    if(size!=='10')query.set('size',size);
+    history.replaceState(null,'','/#/review'+(query.size?'?'+query:''));renderedRoute=activeRoute();
+  }
+  function paintStats(){
+    const cards=pool();let due=0,unseen=0;
+    cards.forEach(card=>{const r=review(card);if(!r)unseen++;else if(r.due<=today())due++;});
+    document.getElementById('fcStats').innerHTML=`<span class="fc-stat"><b>${cards.length}</b> terms in this deck</span><span class="fc-stat"><b>${due}</b> due today</span><span class="fc-stat"><b>${unseen}</b> unseen</span><span class="fc-stat"><b>${cards.length-due-unseen}</b> scheduled for later</span>`;
+    const ctx=lessonFilter!=='all'&&findSubContext(pathFilter,lessonFilter);
+    document.getElementById('fcScope').innerHTML=ctx?`Practising: <strong>${escapeHtml(ctx.sub.title)}</strong> · <a href="#/lesson/${pathFilter}/${lessonFilter}">Back to this lesson →</a>`:`${pathFilter==='all'?'Choose any path or lesson to focus your practice.':`Practising Path ${escapeHtml(findPath(pathFilter).n)} · <a href="#/lesson/${pathFilter}">Back to path overview →</a>`} Due + new starts with due terms, then adds up to 20 unseen terms.`;
+    app.querySelectorAll('.fc-mode').forEach(button=>{const selected=button.dataset.mode===mode;button.classList.toggle('active',selected);button.setAttribute('aria-pressed',String(selected));});
+    document.getElementById('ankiExportBtn').disabled=cards.length===0;
+  }
+  function paintIntervals(){
+    const card=deck[index];if(!card)return;
+    for(const perf of ['good','easy']){
+      const days=nextInterval(card,perf);
+      const label=document.querySelector(`#fc${perf[0].toUpperCase()+perf.slice(1)}Btn small`);
+      if(label)label.textContent=`in ${days} day${days===1?'':'s'}`;
     }
-    STATE.flashcards.reviews[key] = {interval, ease, streak, due: dateAdd(todayStr(), interval), lastPerf: perf, ts: Date.now()};
-    STATE.flashcards.known[key] = Date.now();
-    saveState();
   }
-
-  let pathFilter = 'all';
-  let mode = 'due'; // 'due' | 'all' | 'new'
-  let deck = [];
-  let di = 0;
-  let flipped = false;
-  let sessionSeen = 0, sessionKnew = 0;
-
-  function pool(){
-    return GLOSSARY.filter(e => pathFilter==='all' || e.pathId===pathFilter);
+  function start(){
+    const cards=pool();const due=shuffle(cards.filter(card=>{const r=review(card);return r&&r.due<=today();}));
+    const unseen=shuffle(cards.filter(card=>!review(card)));
+    const candidates=mode==='due'?due.concat(unseen.slice(0,20)):mode==='new'?unseen:shuffle(cards.slice());
+    deck=candidates.slice(0,size==='all'?candidates.length:Number(size));initialCount=deck.length;
+    index=0;flipped=false;attempts=0;repeated=new Set();results=new Map();paintStats();paintSession();
   }
-  function counts(){
-    const p = pool();
-    const today = todayStr();
-    let due = 0, learning = 0, mastered = 0, newT = 0;
-    for(const e of p){
-      const r = STATE.flashcards.reviews[termKey(e)];
-      if(!r){ newT++; continue; }
-      if(r.due <= today){ due++; continue; }
-      if(r.interval >= 21) mastered++; else learning++;
+  function paintSession(focus=false){
+    const card=deck[index];flipped=false;
+    if(!card){
+      const familiar=[...results.values()].filter(perf=>perf!=='again').length;
+      session.innerHTML=`<section class="fc-empty" aria-labelledby="fcResultHeading"><div class="sec-eyebrow">${initialCount?'Session complete':'No terms in this session'}</div><h2 id="fcResultHeading" tabindex="-1">${initialCount?'A small session, finished.':'Nothing to review in this selection.'}</h2><p>${initialCount?`You reviewed ${results.size} distinct term${results.size===1?'':'s'} in ${attempts} attempt${attempts===1?'':'s'}. ${familiar} felt familiar on the last try; ${results.size-familiar} need another look.`:'Choose another lesson or use All terms to revisit scheduled cards.'}</p><p>Each rating sets a next review date. Finishing a session does not mark a lesson complete.</p><button class="btn-amber" id="fcRestart" type="button">Start another session</button>${!initialCount?'<button class="btn-ghost" type="button" id="fcBrowseAll">Practise all terms in this selection</button>':''}</section>`;
+      document.getElementById('fcRestart').onclick=()=>{start();session.querySelector('#fcTerm,#fcResultHeading')?.focus({preventScroll:true});};
+      document.getElementById('fcBrowseAll')?.addEventListener('click',()=>{mode='all';updateURL();start();session.querySelector('#fcTerm,#fcResultHeading')?.focus({preventScroll:true});});
+      if(focus)document.getElementById('fcResultHeading').focus({preventScroll:true});return;
     }
-    return {due, learning, mastered, new: newT, total: p.length};
-  }
-  function buildDeck(){
-    const p = pool();
-    const today = todayStr();
-    let src;
-    if(mode === 'due'){
-      // due today + up to 20 new terms as a filler, so a fresh user isn't
-      // told "0 due" on their first visit
-      const due = p.filter(e => { const r = STATE.flashcards.reviews[termKey(e)]; return r && r.due <= today; });
-      const news = p.filter(e => !STATE.flashcards.reviews[termKey(e)]).slice(0, 20);
-      src = due.concat(news);
-    } else if(mode === 'new'){
-      src = p.filter(e => !STATE.flashcards.reviews[termKey(e)]);
-    } else {
-      src = p.slice();
-    }
-    for(let i=src.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [src[i],src[j]]=[src[j],src[i]]; }
-    deck = src;
-    di = 0; flipped = false; sessionSeen = 0; sessionKnew = 0;
-  }
-
-  function paint(){
-    const c = counts();
-    const card = deck[di];
-    app.innerHTML = `
-      <section class="sec">
-        <div class="sec-head" data-reveal>
-          <div class="sec-eyebrow">Flashcards · spaced repetition</div>
-          <h1>Active recall practice</h1>
-          <p class="sec-lead">Read the term, recall the meaning, then flip and grade yourself. Cards come back on a schedule based on how well you knew them — hard ones return tomorrow, easy ones in weeks.</p>
-        </div>
-        <div class="fc-tools" data-reveal style="--i:1">
-          <select id="fcPathFilter" class="fc-select" aria-label="Filter by path">
-            <option value="all" ${pathFilter==='all'?'selected':''}>All paths (${GLOSSARY.length} terms)</option>
-            ${PATHS.map(p=>{
-              const n = GLOSSARY.filter(e=>e.pathId===p.id).length;
-              return n ? `<option value="${p.id}" ${pathFilter===p.id?'selected':''}>Path ${p.n} — ${p.title} (${n})</option>` : '';
-            }).join('')}
-          </select>
-          <div class="fc-mode-toggle" role="tablist" aria-label="Deck mode">
-            <button class="fc-mode ${mode==='due'?'active':''}" data-mode="due" type="button">📅 Due today (${c.due + Math.min(c.new,20)})</button>
-            <button class="fc-mode ${mode==='new'?'active':''}" data-mode="new" type="button">✨ New (${c.new})</button>
-            <button class="fc-mode ${mode==='all'?'active':''}" data-mode="all" type="button">🗂 All</button>
-          </div>
-          <button class="btn-ghost sm" id="ankiExportBtn" type="button">${cardIco('download')}Export to Anki (.csv)</button>
-        </div>
-        <div class="fc-stats" data-reveal style="--i:2">
-          <span class="fc-stat"><b>${c.mastered}</b> mastered</span>
-          <span class="fc-stat"><b>${c.learning}</b> learning</span>
-          <span class="fc-stat"><b>${c.due}</b> due today</span>
-          <span class="fc-stat"><b>${c.new}</b> unseen</span>
-          ${sessionSeen ? `<span class="fc-stat session">this session ${sessionKnew}/${sessionSeen}</span>` : ''}
-        </div>
-        ${card ? `
-          <div class="fc-card ${flipped?'flipped':''}" id="fcCard" data-reveal style="--i:3" role="button" tabindex="0" aria-label="Flashcard — click to flip">
-            <div class="fc-face fc-front">
-              <div class="fc-hint">TERM ${di+1} / ${deck.length}</div>
-              <div class="fc-term">${escapeHtml(card.term)}</div>
-              <div class="fc-hint">click / space to flip</div>
-            </div>
-            <div class="fc-face fc-back">
-              <div class="fc-def">${escapeHtml(card.def)}</div>
-              <a class="fc-src" href="#/lesson/${card.pathId}/${card.subId}">from Path ${card.pathN} · ${escapeHtml(card.subTitle)} →</a>
-            </div>
-          </div>
-          <div class="fc-actions ${flipped?'':'hidden-until-flip'}" data-reveal style="--i:4">
-            <button class="btn-ghost fc-btn-again" id="fcAgainBtn" type="button">↻ Again <small>~1 day</small></button>
-            <button class="btn-ghost fc-btn-good" id="fcGoodBtn" type="button">✓ Good <small>~${nextInterval(card,'good')} days</small></button>
-            <button class="btn-amber fc-btn-easy" id="fcEasyBtn" type="button">⚡ Easy <small>~${nextInterval(card,'easy')} days</small></button>
-          </div>
-        ` : `
-          <div class="fc-empty">
-            <div class="fc-empty-ico">🎉</div>
-            <div class="fc-empty-t">${mode==='due' ? 'Nothing due today — nice work.' : 'Deck empty for this filter.'}</div>
-            <div class="fc-empty-d">Come back tomorrow, switch to <b>New</b> for unseen cards, or reset progress below.</div>
-            <button class="btn-ghost sm" id="fcResetBtn" type="button">Reset progress for this filter</button>
-          </div>
-        `}
-      </section>
-    `;
-    setupReveal();
-
-    document.getElementById('fcPathFilter').addEventListener('change', e=>{ pathFilter = e.target.value; buildDeck(); paint(); });
-    app.querySelectorAll('.fc-mode').forEach(btn=>btn.addEventListener('click', ()=>{ mode = btn.getAttribute('data-mode'); buildDeck(); paint(); }));
-    document.getElementById('ankiExportBtn')?.addEventListener('click', ()=>{
-      const csvEscape = s => `"${String(s).replace(/"/g,'""').replace(/\n/g,'<br>')}"`;
-      const rows = pool().map(e => `${csvEscape(e.term)},${csvEscape(e.def)}`);
-      const csv = rows.join('\n');
-      const blob = new Blob([csv], {type:'text/csv'});
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = `kashsec-flashcards-${pathFilter}.csv`;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      setTimeout(()=>URL.revokeObjectURL(a.href), 1000);
-    });
-    document.getElementById('fcResetBtn')?.addEventListener('click', ()=>{
-      if(!confirm('Reset review history for this filter?')) return;
-      pool().forEach(e => { const k = termKey(e); delete STATE.flashcards.known[k]; delete STATE.flashcards.reviews[k]; });
-      saveState(); buildDeck(); paint();
-    });
-    const cardEl = document.getElementById('fcCard');
-    if(cardEl){
-      const flip = ()=>{ flipped = !flipped; paint(); };
-      cardEl.addEventListener('click', e=>{ if(e.target.closest('a')) return; flip(); });
-      cardEl.addEventListener('keydown', e=>{ if(e.key===' '||e.key==='Enter'){ e.preventDefault(); flip(); } });
-    }
-    const grade = (perf)=>{
-      const card = deck[di];
-      sessionSeen++;
-      if(perf !== 'again') sessionKnew++;
-      schedule(termKey(card), perf);
-      if(perf === 'again') deck.push(card); // circle back this session
-      di++;
-      flipped = false;
-      if(di >= deck.length){ buildDeck(); }
-      paint();
+    session.innerHTML=`<p class="fc-progress" role="status">Term ${Math.min(index+1,initialCount)} of ${initialCount}${index>=initialCount?' · extra try':''} · ${results.size} distinct terms reviewed</p><section class="fc-study-card" id="fcCard" aria-labelledby="fcTerm"><span class="fc-hint">${index>=initialCount?'One more try':'Recall the meaning before revealing it'}</span><h2 class="fc-term" id="fcTerm" tabindex="-1">${escapeHtml(card.term)}</h2><button class="btn-ghost" id="fcFlipBtn" type="button" aria-expanded="false" aria-controls="fcDefinition" aria-describedby="fcTerm">Show meaning</button><div id="fcDefinition" hidden><p class="fc-def">${escapeHtml(card.def)}</p><a class="fc-src" href="#/lesson/${card.pathId}/${card.subId}">Read the source lesson: ${escapeHtml(card.subTitle)} →</a></div></section>
+      <div class="fc-actions" id="fcActions" hidden><button class="btn-ghost fc-btn-again" id="fcAgainBtn" type="button">↻ Again <small>tomorrow · one extra try</small></button><button class="btn-ghost fc-btn-good" id="fcGoodBtn" type="button">✓ Good <small>in ${nextInterval(card,'good')} day${nextInterval(card,'good')===1?'':'s'}</small></button><button class="btn-amber fc-btn-easy" id="fcEasyBtn" type="button">⚡ Easy <small>in ${nextInterval(card,'easy')} days</small></button></div>`;
+    document.getElementById('fcFlipBtn').onclick=event=>{
+      flipped=!flipped;event.currentTarget.setAttribute('aria-expanded',String(flipped));event.currentTarget.textContent=flipped?'Hide meaning':'Show meaning';
+      document.getElementById('fcDefinition').hidden=!flipped;document.getElementById('fcActions').hidden=!flipped;
     };
-    document.getElementById('fcAgainBtn')?.addEventListener('click', ()=>grade('again'));
-    document.getElementById('fcGoodBtn')?.addEventListener('click', ()=>grade('good'));
-    document.getElementById('fcEasyBtn')?.addEventListener('click', ()=>grade('easy'));
+    for(const perf of ['again','good','easy'])document.getElementById(`fc${perf[0].toUpperCase()+perf.slice(1)}Btn`).onclick=()=>grade(perf);
+    if(focus)document.getElementById('fcTerm').focus({preventScroll:true});
   }
-  function nextInterval(card, perf){
-    const r = STATE.flashcards.reviews[termKey(card)] || {interval:0, ease:2.5, streak:0};
-    if(perf === 'good') return r.streak === 0 ? 1 : r.streak === 1 ? 3 : Math.max(1, Math.round(r.interval * r.ease));
-    if(perf === 'easy') return r.streak === 0 ? 3 : Math.max(1, Math.round(r.interval * r.ease * 1.3));
-    return 1;
+  function grade(perf){
+    const card=deck[index];if(!flipped||!card)return;
+    const r=review(card)||{interval:0,ease:2.5,streak:0};
+    STATE.flashcards.reviews[termKey(card)]={interval:nextInterval(card,perf),ease:perf==='again'?Math.max(1.3,r.ease-.2):perf==='easy'?Math.min(3,r.ease+.15):r.ease,streak:perf==='again'?0:r.streak+1,due:dateAdd(today(),nextInterval(card,perf)),lastPerf:perf,ts:Date.now()};
+    STATE.flashcards.known[termKey(card)]=Date.now();
+    document.getElementById('fcSaveStatus').textContent=saveState()?'Review saved in this browser.':'Review recorded for this session. Browser storage is unavailable; it may be lost after leaving.';
+    attempts++;results.set(termKey(card),perf);
+    if(perf==='again'&&!repeated.has(termKey(card))){repeated.add(termKey(card));deck.push(card);}
+    index++;paintStats();paintSession(true);
   }
-
-  buildDeck();
-  paint();
+  function change(){document.getElementById('fcScopeNotice').textContent='Selection updated. A fresh session is ready; previous ratings are kept.';updateURL();start();}
+  pathSelect.onchange=()=>{pathFilter=pathSelect.value;lessonFilter='all';fillLessons();change();};
+  lessonSelect.onchange=()=>{const parts=lessonSelect.value.split('/');lessonFilter=parts[1]||'all';if(parts[1]){pathFilter=parts[0];pathSelect.value=pathFilter;fillLessons();}change();};
+  sizeSelect.onchange=()=>{size=sizeSelect.value;change();};
+  app.querySelectorAll('.fc-mode').forEach(button=>button.onclick=()=>{mode=button.dataset.mode;change();});
+  document.getElementById('ankiExportBtn').onclick=()=>{
+    const csvEscape=value=>`"${String(value).replace(/"/g,'""').replace(/\n/g,'<br>')}"`;
+    const csv=pool().map(e=>`${csvEscape(e.term)},${csvEscape(e.def)}`).join('\n');
+    const url=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));const link=document.createElement('a');
+    link.href=url;link.download=`kashsec-flashcards-${pathFilter}${lessonFilter==='all'?'':'-'+lessonFilter}.csv`;link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+  };
+  document.getElementById('fcResetBtn').onclick=()=>{
+    if(!confirm('Reset review history for the selected deck?'))return;
+    pool().forEach(card=>{delete STATE.flashcards.known[termKey(card)];delete STATE.flashcards.reviews[termKey(card)];});
+    document.getElementById('fcSaveStatus').textContent=saveState()?'Selected review history reset.':'History reset for this session; browser storage is unavailable.';start();
+  };
+  fillLessons();start();currentReviewRefresh=()=>{paintStats();paintIntervals();};afterRender();
 }
 
 /* ============================================================
@@ -7334,6 +7270,12 @@ function renderLabLeakedSecret(){
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
+  {date:'2026-10-22', title:'Flashcards that follow your lesson and finish with you', items:[
+    'Open the actual terms from a lesson, or choose a course path and lesson in Flashcards. Deck selections can be shared and survive a refresh.',
+    'Choose 5, 10, or 20 terms for a short session. Due terms come first, Again offers one extra try, and a clear finish screen replaces automatic restarts.',
+    'Reveal and rating controls work with a keyboard, hidden definitions stay out of the tab order, and ratings keep focus in the practice area. Review dates use your local calendar day.',
+    'Export only the selected deck to Anki, revisit the source lesson, and keep using saved review schedules through backups and offline practice. Account sync now imports schedules from another device and keeps the newest rating for each term.'
+  ]},
   {date:'2026-10-22', title:'Take an idea from the lesson into practice', items:[
     'Relevant lessons now connect directly to beginner experiments and evidence-based investigations, with a prediction prompt and honest activity completion labels.',
     'Jump to hands-on work from the reader, then return to the same lesson and reflect in your existing notes. Return links survive a refresh and can be shared with the activity URL.',
@@ -12694,6 +12636,7 @@ if(typeof SupabaseSync !== 'undefined' && SupabaseSync.CONFIGURED){
       currentInvestigationRefresh?.();
       currentPlaygroundRefresh?.();
       currentStartGuideRefresh?.();
+      currentReviewRefresh?.();
       if(authOverlay && authOverlay.classList.contains('open')) closeAuth();
     }
     if(!user) handledInitialSignIn = false;

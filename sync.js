@@ -120,6 +120,24 @@ const SupabaseSync = (function(){
     unionFlat('pomodoroSessions');
     unionFlat('lessonRatings');
     unionFlat('missedQuestions');
+      // Flashcard schedules belong to individual terms. Preserve reviews from
+      // either device and use the latest rating when both reviewed one term.
+      const validReview=r=>r&&typeof r==='object'&&!Array.isArray(r)&&
+        Number.isFinite(r.interval)&&r.interval>=1&&r.interval<=36500&&
+        Number.isFinite(r.ease)&&r.ease>=1.3&&r.ease<=3&&Number.isSafeInteger(r.streak)&&r.streak>=0&&
+        typeof r.due==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(r.due)&&!Number.isNaN(Date.parse(r.due))&&
+        (r.ts===undefined||(Number.isFinite(r.ts)&&r.ts>=0&&r.ts<=8.64e15));
+      merged.flashcards={known:{...(local.flashcards?.known||{})},reviews:{...(local.flashcards?.reviews||{})}};
+      Object.entries(remote.flashcards?.known||{}).forEach(([key,value])=>{
+        if(value!==true&&!(Number.isFinite(value)&&value>0&&value<=8.64e15))return;
+        const existing=merged.flashcards.known[key];
+        if(!existing||(value!==true&&(existing===true||value>existing)))merged.flashcards.known[key]=value;
+      });
+      Object.entries(remote.flashcards?.reviews||{}).forEach(([key,record])=>{
+        if(!validReview(record))return;
+        const existing=merged.flashcards.reviews[key];
+        if(!validReview(existing)||(record.ts||0)>(existing.ts||0))merged.flashcards.reviews[key]=record;
+      });
     // Case drafts are independent: keep the newest saved record for each case.
     merged.investigations = {...(local.investigations || {})};
     Object.entries(remote.investigations || {}).forEach(([id, record])=>{
