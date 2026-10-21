@@ -52,12 +52,11 @@ window.KashPlayground = (()=>{
     app.querySelector('.pg-hub').insertAdjacentHTML('beforeend','<p><a class="pg-link" href="#/start">Find a suggested starting route →</a></p>');
     currentPlaygroundRefresh=paintCompletion;paintCompletion();
   }
-  function renderExercise(rawId){
-    const {id,lesson}=practiceLessonContext('playground',rawId);
+  function renderExercise(id,lesson=null){
     const item=EXERCISES.find(item=>item.id===id);
     if(!item){renderNotFound();return;}
     app.innerHTML=`<section class="sec pg-exercise"><a class="pg-link" href="#/playground">← All experiments</a><div class="sec-head"><div class="sec-eyebrow">Experiment ${item.number} · ${item.minutes} minutes</div><h1>${item.title}</h1><p class="sec-lead">${item.desc}</p></div>
-      ${practiceReturnHTML(lesson)}
+      ${lesson?practiceReturnHTML(lesson):''}
       <div class="pg-assignment"><strong>Your goal</strong><p>${item.goal}</p><p class="pg-complete" id="pgComplete" data-exercise="${id}" hidden>✓ You’ve completed this experiment. Keep exploring or try the next one.</p></div>
       <div id="pgExperiment"></div><p id="pgSaveStatus" class="pg-hint" role="status"></p>
       <div class="pg-next"><div><h2>${lesson?'Return and explain it':'Keep the idea moving'}</h2><p>${lesson?'Go back to your reading and describe what the experiment showed.':'Use what you just tried in the next lesson or challenge.'}</p></div><a class="btn-amber" href="${lesson?lesson.href:item.next}">${lesson?'Back to my lesson':item.nextLabel} →</a></div>

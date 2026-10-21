@@ -11511,7 +11511,10 @@ async function renderInvestigationsRoute(id){
     // A first-ever direct visit can load this bundle before the worker controls
     // the page. Give that worker a request to cache once installation finishes.
     cacheOpenedAsset('investigations.js');
-    if(id) KashInvestigations.renderCase(id); else KashInvestigations.renderIndex();
+    if(id){
+      const context=practiceLessonContext('investigations',id);
+      KashInvestigations.renderCase(context.id,context.lesson);
+    }else KashInvestigations.renderIndex();
     afterRender();
   }catch(error){
     if(generation !== renderGeneration) return;
@@ -11534,7 +11537,10 @@ async function renderPlaygroundRoute(id){
     if(generation !== renderGeneration) return;
     if(!window.KashPlayground) throw new Error('Playground unavailable');
     cacheOpenedAsset('playground.js');
-    if(id) KashPlayground.renderExercise(id); else KashPlayground.renderIndex();
+    if(id){
+      const context=practiceLessonContext('playground',id);
+      KashPlayground.renderExercise(context.id,context.lesson);
+    }else KashPlayground.renderIndex();
     afterRender();
   }catch(error){
     if(generation !== renderGeneration) return;

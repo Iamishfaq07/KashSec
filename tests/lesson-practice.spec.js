@@ -82,6 +82,26 @@ try{
   await navigate(page,'#/lesson/03-linux/terminal-basics');await page.locator('#content[aria-busy="false"]').waitFor();
   check(await page.locator('.lesson-practice,#jumpLessonPractice').count()===0,'unrelated lessons stay uncluttered');
   check(errors.length===0,'practice bridge flows produce no JavaScript errors');
+  for(const [kind,id] of [['playground','access'],['investigations','cross-tenant-api']]){
+    check(await page.evaluate(({kind,id})=>{
+      const helper=practiceReturnHTML;
+      try{
+        practiceReturnHTML=undefined;
+        if(kind==='playground')KashPlayground.renderExercise(id);else KashInvestigations.renderCase(id);
+        return !!document.getElementById(kind==='playground'?'pgRequest':'iwDecisionForm')&&!document.querySelector('.practice-return');
+      }finally{practiceReturnHTML=helper;}
+    },{kind,id}),`${kind} bundle still supports an older cached shell calling it without lesson context`);
+    check(await page.evaluate(({kind,id})=>{
+      const module=kind==='playground'?KashPlayground:KashInvestigations;
+      const method=kind==='playground'?'renderExercise':'renderCase';
+      const original=module[method];let received;
+      try{
+        module[method]=activityId=>{received=activityId;app.innerHTML='<h1>Previously cached activity</h1>';};
+        navigateTo(`#/${kind}/${id}?from=11-web-security%2Fidor`);
+        return received===id&&app.querySelector('h1').textContent==='Previously cached activity';
+      }finally{module[method]=original;}
+    },{kind,id}),`${kind} loader passes a plain ID that an older cached activity bundle can still render`);
+  }
   await context.close();
   const synced=await contextFor();
   await synced.addInitScript(()=>{
