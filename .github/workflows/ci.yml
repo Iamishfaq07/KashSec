@@ -26,7 +26,7 @@ jobs:
 
       - name: Syntax check hand-written JS
         run: |
-          for f in app.js quizzes.js sync.js ads.js analytics.js lesson-hashes.js; do
+          for f in app.js investigations.js quizzes.js sync.js ads.js analytics.js lesson-hashes.js; do
             [ -f "$f" ] && node --check "$f"
           done
 
@@ -84,6 +84,11 @@ jobs:
 
       - name: Study planner (goals, backups, sync, offline, responsive layout)
         run: npm run test:planner
+        env:
+          BASE: http://127.0.0.1:8000
+
+      - name: Incident Workbench (evidence, decisions, notes, sync, offline)
+        run: npm run test:investigations
         env:
           BASE: http://127.0.0.1:8000
 

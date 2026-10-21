@@ -36,6 +36,8 @@ const ROUTES = [
   ['capstone', '#/capstone'],
   ['progress hub', '#/progress'],
   ['study planner', '#/planner'],
+  ['incident workbench', '#/investigations'],
+  ['incident case', '#/investigations/mailbox-takeover'],
   ['transcript', '#/transcript'],
   ['certificate', '#/certificate'],
   ['changelog', '#/changelog'],

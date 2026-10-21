@@ -64,6 +64,7 @@ const deferredUrls = [
   'vendor/cvss4/cvss_score.js',
   // Lazily loaded on #/tasks.
   'tasks.js',
+  'investigations.js',
   'search-preview.js',
   'search-index.js',
 ];
