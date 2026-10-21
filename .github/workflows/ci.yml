@@ -102,6 +102,11 @@ jobs:
         env:
           BASE: http://127.0.0.1:8000
 
+      - name: Lesson practice (return links, notes, progress, sync, offline)
+        run: npm run test:lesson-practice
+        env:
+          BASE: http://127.0.0.1:8000
+
       # Nothing graded before submit, a paper that survives a refresh, an
       # expired clock that submits rather than resumes.
       - name: Timed mock exam
