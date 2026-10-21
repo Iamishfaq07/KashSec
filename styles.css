@@ -2282,6 +2282,29 @@ label.tool-note{display:block}
 .sg-planner .pg-link{margin:0}
 .sg-footer{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-top:1.5rem}
 .sg-case-back{margin-left:1.3rem}
+/* A short bridge between reading and hands-on learning. */
+.lp-shortcut{margin:.8rem 0 1.5rem}
+.lp-shortcut button{white-space:normal;min-height:44px}
+.lesson-practice{margin:2.5rem 0;padding:1.4rem;border:1px solid var(--border-strong);border-radius:var(--r-lg);background:var(--surface);scroll-margin-top:100px}
+.lp-heading h2{font-family:var(--font-display);font-size:1.4rem;margin:.5rem 0}
+.lp-heading>p,.lp-foot{font-size:.85rem;color:var(--muted);line-height:1.8}
+.lp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:1rem;margin-top:1.3rem}
+.lp-card{display:flex;flex-direction:column;align-items:flex-start;min-width:0;padding:1.2rem;background:var(--bg);border:1px solid var(--border);border-radius:var(--r)}
+.lp-icon{display:block;color:var(--teal-ink);margin-bottom:.8rem}
+.lp-icon svg{width:25px;height:25px}
+.lp-card h3{font-size:1.05rem;line-height:1.5;margin:.6rem 0}
+.lp-card>p,.lp-card details{font-size:.85rem;line-height:1.8;color:var(--muted);margin:0 0 1rem}
+.lp-card details{width:100%;border-top:1px solid var(--border);padding-top:.5rem}
+.lp-card summary{cursor:pointer;color:var(--text);min-height:44px;display:list-item;align-content:center;list-style-position:inside}
+.lp-card details p{margin:.5rem 0;line-height:1.8}
+.lp-status{font-size:.77rem;line-height:1.7;color:var(--teal-ink);margin-top:auto;padding-bottom:.8rem}
+.lp-card .btn-ghost{min-height:44px;white-space:normal}
+.lp-foot{margin:1.2rem 0 0}
+.practice-return{margin:1.4rem 0;padding:1.2rem;border:1px solid var(--border-strong);border-radius:var(--r);background:var(--surface)}
+.practice-return>a{display:block;width:fit-content;min-height:44px;align-content:center;color:var(--teal-ink);line-height:1.7;font-weight:600}
+.practice-return p{font-size:.85rem;line-height:1.8;color:var(--muted);margin:.4rem 0 0}
+@media(max-width:450px){.lesson-practice{padding:1rem}.lp-card{padding:1rem}}
+@media print{.lesson-practice,.lp-shortcut,.practice-return{display:none!important}}
 @media(max-width:850px){.sg-layout{grid-template-columns:1fr}}
 @media(max-width:450px){
   .sg-form-actions{flex-direction:column}

@@ -3446,6 +3446,64 @@ function wireFAQ(){
   });
 }
 
+/* Curated bridges use exact lessons, so unrelated reading stays uncluttered.
+   The return context lives in the activity URL, never in saved learner data. */
+const LESSON_PRACTICE = [
+  {kind:'playground',id:'network',title:'Follow a web request',minutes:5,icon:'radio',
+    why:'Walk through DNS, a connection, TLS, and a page request. Change the failure and see where the trip stops.',
+    prompt:'If finding the address fails, will the browser send a page request to the web server?',
+    lessons:['00-fresher-basics/how-internet-works','02-networking/dns','02-networking/http-https','02-networking/tcp-vs-udp','02-networking/protocols','06-crypto-fundamentals/tls-handshake-explained']},
+  {kind:'playground',id:'encoding',title:'Turn text into bytes',minutes:5,icon:'swap',
+    why:'Inspect UTF-8 bytes and reverse a Base64 message. Try another alphabet or an emoji.',
+    prompt:'Can somebody recover a Base64 message without knowing a secret key?',
+    lessons:['00-fresher-basics/what-is-a-computer','06-crypto-fundamentals/what-is-cryptography','06-crypto-fundamentals/common-crypto-mistakes','06-crypto-fundamentals/hashing-explained']},
+  {kind:'playground',id:'access',title:'Who can open this invoice?',minutes:7,icon:'lockKey',
+    why:'Switch customers and observe what a server-side ownership check changes.',
+    prompt:'Does signing in mean you should be able to open another customer’s invoice?',
+    lessons:['11-web-security/idor','11-web-security/api-security-fundamentals','21-api-security/authn-authz-apis','21-api-security/bola-and-bfla']},
+  {kind:'investigations',id:'mailbox-takeover',title:'The invoice that opened a mailbox',minutes:15,icon:'mail',
+    why:'Connect a suspicious message, sign-in records, and a mailbox rule. Review decisions with explanations.',
+    prompt:'Which evidence would help you distinguish a suspicious message from confirmed account activity?',
+    lessons:['00-fresher-basics/email-basics-and-safety','10-fundamentals/phishing','10-fundamentals/incident-response-basics']},
+  {kind:'investigations',id:'cross-tenant-api',title:'A valid token, the wrong customer',minutes:20,icon:'window',
+    why:'Investigate an API access boundary using request records, ownership evidence, and response decisions.',
+    prompt:'What would show that a valid identity crossed a customer boundary?',
+    lessons:['11-web-security/idor','21-api-security/bola-and-bfla','21-api-security/api-breach-case-studies']},
+  {kind:'investigations',id:'exposed-cloud-key',title:'The key that outlived the commit',minutes:20,icon:'cloud',
+    why:'Follow an exposed credential through audit evidence. Separate attempted actions from confirmed actions.',
+    prompt:'If a secret is removed from a commit, what else must change to stop it being used?',
+    lessons:['16-advanced/cloud-security','16-advanced/iam-deep-dive','21-api-security/api-key-and-secret-management']}
+];
+function lessonPracticeItems(ctx){
+  return LESSON_PRACTICE.filter(item=>item.lessons.includes(`${ctx.path.id}/${ctx.sub.id}`));
+}
+function lessonPracticeHTML(ctx){
+  const items=lessonPracticeItems(ctx);
+  if(!items.length)return '';
+  const from=encodeURIComponent(`${ctx.path.id}/${ctx.sub.id}`);
+  return `<section class="lesson-practice" aria-labelledby="lessonPracticeHeading"><div class="lp-heading"><span class="sec-eyebrow">Read → try → explain</span><h2 id="lessonPracticeHeading" tabindex="-1">Put this lesson into practice</h2><p>Make a prediction, try the activity, then explain what changed. Your reading progress stays separate.</p></div><div class="lp-grid">${items.map(item=>`<article class="lp-card"><span class="lp-icon" aria-hidden="true">${cardIco(item.icon)}</span><span class="sec-eyebrow">${item.kind==='playground'?'Experiment':'Investigation'} · About ${item.minutes} min</span><h3>${item.title}</h3><p>${item.why}</p><details><summary>Think before you try</summary><p>${item.prompt}</p></details><span class="lp-status" data-practice-status="${item.kind}/${item.id}"></span><a class="btn-ghost sm" href="#/${item.kind}/${item.id}?from=${from}">Open ${item.kind==='playground'?'experiment':'investigation'} →</a></article>`).join('')}</div><p class="lp-foot">No timer or penalty for retrying. Activity progress is saved with your usual progress. Return here afterward and use your lesson notes to explain what you learned.</p></section>`;
+}
+function refreshLessonPractice(){
+  app.querySelectorAll('[data-practice-status]').forEach(label=>{
+    const [kind,id]=label.dataset.practiceStatus.split('/');
+    const done=kind==='playground'?!!STATE.playgroundCompleted[id]:(STATE.investigations[id]?.attempts||0)>0;
+    label.textContent=done?(kind==='playground'?'✓ Experiment completed · try again anytime':'✓ Findings reviewed · revisit anytime'):'Ready whenever you are';
+  });
+}
+function practiceLessonContext(kind,rawId){
+  const [id,query='']=rawId.split('?');
+  const from=new URLSearchParams(query).get('from');
+  const item=LESSON_PRACTICE.find(item=>item.kind===kind&&item.id===id);
+  // Accept only a registered internal lesson for this activity. Unknown or
+  // malicious context is ignored while the activity itself remains usable.
+  const parts=from?.split('/');
+  const ctx=parts?.length===2&&item?.lessons.includes(from)?findSubContext(...parts):null;
+  return {id,lesson:ctx?{href:`#/lesson/${ctx.path.id}/${ctx.sub.id}`,title:ctx.sub.title,prompt:item.prompt}:null};
+}
+function practiceReturnHTML(lesson){
+  return lesson?`<aside class="practice-return"><span class="sec-eyebrow">From your lesson</span><a href="${lesson.href}">← Back to ${escapeHtml(lesson.title)}</a><p>After trying this, explain in your lesson notes: ${escapeHtml(lesson.prompt)}</p></aside>`:'';
+}
+
 async function renderSubLesson(pathId, subId){
   const ctx = findSubContext(pathId, subId);
   if(!ctx) return renderNotFound();
@@ -3508,6 +3566,7 @@ async function renderSubLesson(pathId, subId){
           </div>
         </div>
         ${lessonTrackHTML(ctx)}
+        ${lessonPracticeItems(ctx).length?'<p class="lp-shortcut"><button class="btn-ghost sm" id="jumpLessonPractice" type="button">Try this idea in an activity ↓</button></p>':''}
         <div class="pomodoro-widget" id="pomodoroWidget" hidden>
           <span class="pomodoro-time" id="pomodoroTime">25:00</span>
           <button class="btn-ghost sm" id="pomodoroToggle" type="button">Start</button>
@@ -3522,6 +3581,7 @@ async function renderSubLesson(pathId, subId){
         </div>` : ''}
         <div class="md" id="content" aria-busy="true">${fallbackHtml ? `<article>${fallbackHtml}</article>` : '<div class="loading" role="status">Loading lesson…</div>'}</div>
         <div id="microCheck"></div>
+        ${lessonPracticeHTML(ctx)}
         ${STATE.studyPlan.updatedAt ? '<p class="study-return"><a class="btn-ghost sm" href="#/planner">Back to my study plan</a></p>' : ''}
         ${STATE.learningGuide.updatedAt ? '<p class="study-return"><a class="btn-ghost sm" href="#/start">Back to my starting route</a></p>' : ''}
         <details class="notes-panel">
@@ -3560,6 +3620,11 @@ async function renderSubLesson(pathId, subId){
   `;
 
   renderSidebar(pathId, subId);
+  refreshLessonPractice();
+  document.getElementById('jumpLessonPractice')?.addEventListener('click',()=>{
+    document.getElementById('lessonPracticeHeading').focus({preventScroll:true});
+    document.querySelector('.lesson-practice').scrollIntoView({block:'start',behavior:'instant'});
+  });
   pushAdSlots(app);
   const sidebar = document.getElementById('sidebar');
   const menuBtn = document.getElementById('menuBtn');
@@ -3724,6 +3789,9 @@ async function renderSubLesson(pathId, subId){
       if(!res.ok) throw new Error('Lesson request failed');
       const md = await res.text();
       if(!isCurrent()) return;
+      // The first lesson request can precede service-worker takeover. Cache
+      // that opened lesson once controlled so a practice trip can return offline.
+      cacheOpenedAsset(`course/${pathId}/${subId}.md`);
       contentEl.innerHTML = enrichMarkdown(md);
 
       const mins = Math.max(1, Math.round(md.split(/\s+/).length / 200));
@@ -7266,6 +7334,11 @@ function renderLabLeakedSecret(){
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
+  {date:'2026-10-22', title:'Take an idea from the lesson into practice', items:[
+    'Relevant lessons now connect directly to beginner experiments and evidence-based investigations, with a prediction prompt and honest activity completion labels.',
+    'Jump to hands-on work from the reader, then return to the same lesson and reflect in your existing notes. Return links survive a refresh and can be shared with the activity URL.',
+    'Reading progress remains separate from activity completion. No new account, tracking, or saved preferences are required.'
+  ]},
   {date:'2026-10-22', title:'A clear starting route for every learner', items:[
     'Choose your experience and interest to preview a short route combining lessons, playground experiments, and investigations. Open any step and save your choices when ready.',
     'The route follows your real progress and points to the next unfinished step. Saved choices are included in progress backups and optional account sync.',
@@ -11414,10 +11487,10 @@ function investigationEntryHtml(){
 }
 
 let investigationsPromise = null;
-const openedBundlesScheduled = new Set();
-function cacheOpenedBundle(src){
-  if(!('serviceWorker' in navigator) || openedBundlesScheduled.has(src)) return;
-  openedBundlesScheduled.add(src);
+const openedAssetsScheduled = new Set();
+function cacheOpenedAsset(src){
+  if(!('serviceWorker' in navigator) || openedAssetsScheduled.has(src)) return;
+  openedAssetsScheduled.add(src);
   navigator.serviceWorker.ready.then(async()=>{
     if(!navigator.serviceWorker.controller) await new Promise(resolve=>
       navigator.serviceWorker.addEventListener('controllerchange',resolve,{once:true}));
@@ -11437,8 +11510,11 @@ async function renderInvestigationsRoute(id){
     if(!window.KashInvestigations) throw new Error('Workbench unavailable');
     // A first-ever direct visit can load this bundle before the worker controls
     // the page. Give that worker a request to cache once installation finishes.
-    cacheOpenedBundle('investigations.js');
-    if(id) KashInvestigations.renderCase(id); else KashInvestigations.renderIndex();
+    cacheOpenedAsset('investigations.js');
+    if(id){
+      const context=practiceLessonContext('investigations',id);
+      KashInvestigations.renderCase(context.id,context.lesson);
+    }else KashInvestigations.renderIndex();
     afterRender();
   }catch(error){
     if(generation !== renderGeneration) return;
@@ -11460,8 +11536,11 @@ async function renderPlaygroundRoute(id){
     }
     if(generation !== renderGeneration) return;
     if(!window.KashPlayground) throw new Error('Playground unavailable');
-    cacheOpenedBundle('playground.js');
-    if(id) KashPlayground.renderExercise(id); else KashPlayground.renderIndex();
+    cacheOpenedAsset('playground.js');
+    if(id){
+      const context=practiceLessonContext('playground',id);
+      KashPlayground.renderExercise(context.id,context.lesson);
+    }else KashPlayground.renderIndex();
     afterRender();
   }catch(error){
     if(generation !== renderGeneration) return;
@@ -11483,7 +11562,7 @@ async function renderStartGuide(){
     }
     if(generation !== renderGeneration) return;
     if(!window.KashLearningGuide) throw new Error('Starting guide unavailable');
-    cacheOpenedBundle('learning-guide.js');KashLearningGuide.render();afterRender();
+    cacheOpenedAsset('learning-guide.js');KashLearningGuide.render();afterRender();
   }catch(error){
     if(generation !== renderGeneration) return;
     app.innerHTML = '<section class="sec"><h1>Your starting guide could not load</h1><p>Check your connection and try again. Your saved choices are still in this browser.</p><button class="btn-amber" id="sgLoadRetry" type="button">Try again</button><p><a href="#/course">Browse the course</a></p></section>';
@@ -12608,6 +12687,7 @@ if(typeof SupabaseSync !== 'undefined' && SupabaseSync.CONFIGURED){
           bookmark?.setAttribute('aria-pressed', String(saved));
           bookmark?.querySelector('svg')?.setAttribute('fill', saved ? 'currentColor' : 'none');
           refreshLessonTrack(ctx);
+          refreshLessonPractice();
         }
       }
       currentPlannerRefresh?.();

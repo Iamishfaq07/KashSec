@@ -52,13 +52,14 @@ window.KashPlayground = (()=>{
     app.querySelector('.pg-hub').insertAdjacentHTML('beforeend','<p><a class="pg-link" href="#/start">Find a suggested starting route →</a></p>');
     currentPlaygroundRefresh=paintCompletion;paintCompletion();
   }
-  function renderExercise(id){
+  function renderExercise(id,lesson=null){
     const item=EXERCISES.find(item=>item.id===id);
     if(!item){renderNotFound();return;}
     app.innerHTML=`<section class="sec pg-exercise"><a class="pg-link" href="#/playground">← All experiments</a><div class="sec-head"><div class="sec-eyebrow">Experiment ${item.number} · ${item.minutes} minutes</div><h1>${item.title}</h1><p class="sec-lead">${item.desc}</p></div>
+      ${lesson?practiceReturnHTML(lesson):''}
       <div class="pg-assignment"><strong>Your goal</strong><p>${item.goal}</p><p class="pg-complete" id="pgComplete" data-exercise="${id}" hidden>✓ You’ve completed this experiment. Keep exploring or try the next one.</p></div>
       <div id="pgExperiment"></div><p id="pgSaveStatus" class="pg-hint" role="status"></p>
-      <div class="pg-next"><div><h2>Keep the idea moving</h2><p>Use what you just tried in the next lesson or challenge.</p></div><a class="btn-amber" href="${item.next}">${item.nextLabel} →</a></div>
+      <div class="pg-next"><div><h2>${lesson?'Return and explain it':'Keep the idea moving'}</h2><p>${lesson?'Go back to your reading and describe what the experiment showed.':'Use what you just tried in the next lesson or challenge.'}</p></div><a class="btn-amber" href="${lesson?lesson.href:item.next}">${lesson?'Back to my lesson':item.nextLabel} →</a></div>
       ${STATE.learningGuide.updatedAt?'<p><a class="pg-link" href="#/start">Back to my starting route →</a></p>':''}
       <details class="pg-reference"><summary>Read the reference behind this experiment</summary><a class="pg-link" href="${item.source}" target="_blank" rel="noopener noreferrer">${id==='access'?'OWASP: object-level authorisation':'MDN: how this works'} ↗</a></details></section>`;
     if(id==='network')renderNetwork();
