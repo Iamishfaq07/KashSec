@@ -7,6 +7,7 @@
 [![Live Site](https://img.shields.io/badge/live-kashsec.vercel.app-EFA43A?style=for-the-badge)](https://kashsec.vercel.app/)
 
 ## What's new
+- **Personal study planner** — choose a learning path and a daily lesson goal, see this week's completions in your local time, and open your next unfinished lessons. Saved plans are included in progress backups and support optional cloud sync. Open it from the course page, My Progress, or search (`#/planner`).
 - **New advanced path: OT/ICS & Critical Infrastructure Security** — SCADA/ICS fundamentals, industrial protocols (Modbus, DNP3) and why they lack built-in security, the Purdue Model, real-world attacks (Stuxnet, the Ukraine grid attacks, Oldsmar, Triton), practical OT controls, and a full capstone security assessment
 - **New advanced path: Zero Trust Architecture** — never trust/always verify, identity as the perimeter, device posture, micro-segmentation, ZTNA vs. VPN, continuous verification, Zero Trust in the cloud, and a practical rollout roadmap capped with a BeyondCorp case study and maturity-assessment capstone
 - **New interactive labs**: 4 API Security labs (BOLA/BFLA, GraphQL introspection abuse, mass assignment, rate-limit bypass), 4 AI Red Teaming labs (prompt injection, jailbreak, indirect injection, an agentic-risk defensive exercise), and a guided 3-stage Active Directory Attack Lab (BloodHound recon, Kerberoasting, Golden Ticket)

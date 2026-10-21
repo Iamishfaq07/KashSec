@@ -1990,3 +1990,66 @@ label.tool-note{display:block}
 .legal-body a:hover{color:var(--amber-ink)}
 .legal-body code{font-family:var(--font-mono);font-size:.88em;
   background:var(--surface-2,rgba(127,127,127,.12));padding:.12em .4em;border-radius:4px}
+
+/* ---------- Personal study planner ---------- */
+.study-entry{display:flex;align-items:center;gap:1.1rem;padding:1.3rem 1.5rem;margin:0 0 2rem;
+  background:linear-gradient(110deg,rgba(63,182,168,.08),transparent 75%),var(--surface);
+  border:1px solid var(--border-strong);border-radius:var(--r-lg)}
+.study-entry-icon{flex:none;color:var(--teal-ink);width:2.6rem;height:2.6rem;display:grid;place-items:center}
+.study-entry-icon svg{width:1.8rem;height:1.8rem}
+.study-entry>div{flex:1;min-width:0}
+.study-entry h2{font-size:1.05rem;line-height:1.4;margin:0 0 .25rem}
+.study-entry p{color:var(--muted);font-size:.9rem;margin:0}
+.study-entry .btn-ghost{flex:none;min-height:44px}
+.study-layout{display:grid;grid-template-columns:minmax(250px,320px) minmax(0,1fr);gap:1.5rem;align-items:start}
+.study-settings,.study-overview,.study-next,.study-week-section{padding:clamp(1.2rem,2.5vw,2rem);border:1px solid var(--border);border-radius:var(--r-lg);background:var(--surface);min-width:0}
+.study-planner h2{font-family:var(--font-display);font-size:1.3rem;line-height:1.35;letter-spacing:-.02em;margin:0 0 .8rem}
+.study-settings form{display:flex;flex-direction:column;margin:1.5rem 0 1rem}
+.study-settings label{font-size:.9rem;font-weight:600;margin:0 0 .5rem}
+.study-settings input,.study-settings select{min-height:48px;width:100%;min-width:0;padding:.7rem .8rem;border:1px solid var(--border-strong);border-radius:var(--r-sm);background:var(--bg);color:var(--text);font:inherit;font-size:1rem}
+.study-settings select{margin-bottom:1.3rem}
+.study-settings button{min-height:48px;margin-top:1rem;justify-content:center}
+.study-hint{font-size:.88rem;line-height:1.65;color:var(--muted);margin:.65rem 0}
+#studyPlanStatus{min-height:1.5em;margin-bottom:0;color:var(--teal-ink)}
+.study-progress-link{display:inline-flex;align-items:center;min-height:44px;font-size:.9rem;color:var(--teal-ink)}
+.study-content{display:grid;gap:1.5rem;min-width:0}
+.study-overview{background:linear-gradient(130deg,rgba(63,182,168,.09),transparent 70%),var(--surface)}
+.study-today-count{display:flex;align-items:baseline;gap:.5rem;flex-wrap:wrap;margin:.5rem 0 1rem}
+.study-today-count strong{font-family:var(--font-display);font-size:clamp(3rem,6vw,4.5rem);line-height:1.05;letter-spacing:-.06em}
+.study-today-count span{color:var(--muted);font-size:1rem}
+.study-progress{display:block;width:100%;height:8px;border:0;border-radius:99px;overflow:hidden;background:var(--surface2);accent-color:var(--teal)}
+.study-progress::-webkit-progress-bar{background:var(--surface2);border-radius:99px}
+.study-progress::-webkit-progress-value{background:var(--teal);border-radius:99px}
+.study-progress::-moz-progress-bar{background:var(--teal);border-radius:99px}
+.study-goal-reached{color:var(--teal-ink)}
+.study-queue{list-style:none;margin:1.2rem 0 0;padding:0;display:grid;gap:.6rem}
+.study-lesson{display:grid;grid-template-columns:2.2rem minmax(0,1fr) auto;align-items:center;gap:.9rem;min-height:76px;padding:1rem;
+  border:1px solid var(--border);border-radius:var(--r);color:var(--text);text-decoration:none;background:var(--bg);transition:border-color .18s var(--ease)}
+.study-lesson:hover{border-color:var(--teal)}
+.study-step{display:grid;place-items:center;width:2.2rem;height:2.2rem;border-radius:50%;background:var(--surface2);color:var(--teal-ink);font-family:var(--font-mono);font-size:.85rem}
+.study-lesson-meta{display:block;color:var(--muted);font-size:.75rem;margin-bottom:.25rem}
+.study-lesson strong{display:block;font-size:.95rem;line-height:1.5;overflow-wrap:anywhere}
+.study-empty{border-top:1px solid var(--border);padding-top:.8rem;margin-top:1rem}
+.study-week-section{margin-top:1.5rem}
+.study-week-head{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:1rem}
+.study-week{list-style:none;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:.65rem;padding:0;margin:0}
+.study-day{display:flex;flex-direction:column;gap:.8rem;border:1px solid var(--border);border-radius:var(--r);padding:1rem;background:var(--bg)}
+.study-day.is-today{border-color:var(--teal);background:var(--surface2)}
+.study-day time{font-size:.85rem;font-weight:600}
+.study-day strong{font-family:var(--font-display);font-size:1.8rem;line-height:1}
+.study-day>span{color:var(--muted);font-size:.75rem}
+.study-return{margin:1.5rem 0 0}
+@media(max-width:850px){
+  .study-layout{grid-template-columns:1fr}
+  .study-week{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .study-entry{flex-wrap:wrap}
+  .study-entry .btn-ghost{margin-left:3.7rem}
+}
+@media(max-width:400px){
+  .study-week{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .study-entry{padding:1.1rem;gap:.7rem}
+  .study-entry-icon{display:none}
+  .study-entry .btn-ghost{margin-left:0}
+  .study-lesson{padding:.8rem;gap:.6rem;grid-template-columns:1.8rem minmax(0,1fr) auto}
+  .study-step{width:1.8rem;height:1.8rem}
+}
