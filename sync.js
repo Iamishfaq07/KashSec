@@ -140,6 +140,11 @@ const SupabaseSync = (function(){
     merged.theme = local.theme || remote.theme || null;
     merged.certName = local.certName || remote.certName || '';
     merged.usedSearch = !!(local.usedSearch || remote.usedSearch);
+    // Only a complete, valid saved preference can supersede this device's plan.
+    const planTs = plan => typeof plan?.pathId === 'string' && /^[a-z0-9-]+$/.test(plan.pathId) &&
+      Number.isInteger(plan.dailyGoal) && plan.dailyGoal >= 1 && plan.dailyGoal <= 10 &&
+      Number.isFinite(plan.updatedAt) && plan.updatedAt >= 0 ? plan.updatedAt : 0;
+    if(planTs(remote.studyPlan) > planTs(local.studyPlan)) merged.studyPlan = remote.studyPlan;
 
     return merged;
   }

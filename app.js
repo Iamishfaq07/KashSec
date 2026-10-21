@@ -357,6 +357,7 @@ function defaultState(){
     flashcards:{known:{}, reviews:{}}, // known: legacy "seen once"; reviews: SR state
     // reviews entries: { term_key: { due: ISO_date, interval: days, ease: 2.5, streak: N, lastPerf: 'again|good|easy' } }
     readingPrefs:{size:'normal', width:'normal', legible:false}, // size: normal|large|xlarge; width: normal|wide
+    studyPlan:{pathId:'all', dailyGoal:2, updatedAt:0},
     daily:{}, // { "YYYY-MM-DD": { qi, chosen, correct } }
     leaderboardOptIn:false,
     leaderboardName:'',
@@ -437,6 +438,13 @@ function normalizeState(input){
     legible:typeof prefs.legible === 'boolean' ? prefs.legible : false
   };
   if(Object.keys(state.readingPrefs).some(key=>Object.hasOwn(prefs, key) && state.readingPrefs[key] !== prefs[key])) repaired = true;
+  const plan = state.studyPlan;
+  state.studyPlan = {
+    pathId:typeof plan.pathId === 'string' && /^[a-z0-9-]+$/.test(plan.pathId) ? plan.pathId : 'all',
+    dailyGoal:Number.isInteger(plan.dailyGoal) && plan.dailyGoal >= 1 && plan.dailyGoal <= 10 ? plan.dailyGoal : 2,
+    updatedAt:Number.isFinite(plan.updatedAt) && plan.updatedAt >= 0 ? plan.updatedAt : 0
+  };
+  if(Object.keys(state.studyPlan).some(key=>Object.hasOwn(plan, key) && state.studyPlan[key] !== plan[key])) repaired = true;
   if(state.lastVisited && (typeof state.lastVisited.pathId !== 'string' || typeof state.lastVisited.subId !== 'string')){
     state.lastVisited = null; repaired = true;
   }
@@ -1929,6 +1937,7 @@ let currentLessonScrollController = null;
 let currentLessonMenuController = null;
 let currentLessonLoadController = null;
 let currentLessonNotesFlush = null;
+let currentPlannerRefresh = null;
 const lessonFallbacks = new Map();
 let currentLabMessageController = null;
 let currentCvssWorker = null;
@@ -1940,6 +1949,7 @@ document.addEventListener('visibilitychange', ()=>{
 });
 
 function route(){
+  currentPlannerRefresh = null;
   currentLessonNotesFlush?.();
   currentLessonNotesFlush = null;
   renderGeneration++;
@@ -2001,6 +2011,7 @@ function route(){
   else if(hash === '#/labs/phishing') renderLabPhishing();
   else if(hash === '#/daily') renderDaily();
   else if(hash === '#/progress') renderProgressHub();
+  else if(hash === '#/planner') renderStudyPlanner();
   else if(hash === '#/certificate') renderCertificate();
   else if(hash === '#/search' || hash.startsWith('#/search?')){
     const qs = hash.indexOf('?');
@@ -2110,6 +2121,7 @@ const HOME_TITLE = 'KashSec Academy — Free cybersecurity course from absolute 
 const ROUTE_TITLES = {
   '#/course':'Cybersecurity course', '#/labs':'Security labs', '#/tools':'Security tools',
   '#/tasks':'Practice tasks', '#/exam':'Mock exam', '#/faq':'Frequently asked questions',
+  '#/planner':'Study planner',
   '#/progress':'My progress', '#/glossary':'Cybersecurity glossary', '#/tracks':'Career tracks',
   '#/careers':'Cybersecurity careers', '#/certs':'Certification roadmap', '#/career-quiz':'Career-fit quiz',
   '#/roadmap':'Learning roadmap', '#/review':'Flashcard review', '#/changelog':"What's new",
@@ -2588,6 +2600,7 @@ function renderCourseIndex(){
         <h1>${PATHS.length} paths, ${totalSubLessons()}+ sub-lessons</h1>
         <p class="sec-lead">Each path is split into short focused sub-lessons. Click a path to see its map.</p>
       </div>
+      ${studyPlannerEntryHtml()}
       ${(()=>{
         // Level filter. The tier is already on every card (data-tier) and
         // colour-coded on its edge; this lets a newcomer narrow 26 cards to
@@ -3152,14 +3165,14 @@ const LEGAL = {
   },
   privacy: {
     eyebrow:'Privacy', title:'Privacy policy',
-    lead:'What this site stores, what leaves your device, and what you can do about it. Last updated 24 September 2026.',
+    lead:'What this site stores, what leaves your device, and what you can do about it. Last updated 21 October 2026.',
     sections:[
       {h:'The short version', p:[
         'You can use the entire course without an account, and if you do, your progress never leaves your browser. If you choose to create an account, your progress is synced to a database so you can pick it up on another device. Page-view and performance analytics are collected for everyone. Advertising may appear and, when it does, is served by Google.',
         'Nothing here is sold, and nothing is shared with anyone beyond the specific services named below.'
       ]},
       {h:'What is stored on your device', p:[
-        'KashSec progress normally uses one browser-storage entry, <code>kashsec_state_v1</code>. It holds your lesson progress, quiz and exam results, practice-task answers, flashcard scheduling, notes you have written, lessons you have rated, your streak, and display settings. If this record becomes unreadable, KashSec tries to keep an untouched second local entry, <code>kashsec_state_recovery_v1</code>, so you can download the original data. Clearing this site\'s storage deletes both entries.',
+        'KashSec progress normally uses one browser-storage entry, <code>kashsec_state_v1</code>. It holds your lesson progress, quiz and exam results, practice-task answers, flashcard scheduling, notes you have written, lessons you have rated, your streak, study-plan settings, and display settings. If this record becomes unreadable, KashSec tries to keep an untouched second local entry, <code>kashsec_state_recovery_v1</code>, so you can download the original data. Clearing this site\'s storage deletes both entries.',
         'This is stored by your browser, on your device. Without an account it is never transmitted anywhere, and it is not readable by this site\'s author or anyone else. Clearing browser storage for this site erases both entries permanently — export a copy first if you need one.'
       ]},
       {h:'If you create an account (optional)', p:[
@@ -3444,6 +3457,7 @@ async function renderSubLesson(pathId, subId){
         </div>` : ''}
         <div class="md" id="content" aria-busy="true">${fallbackHtml ? `<article>${fallbackHtml}</article>` : '<div class="loading" role="status">Loading lesson…</div>'}</div>
         <div id="microCheck"></div>
+        ${STATE.studyPlan.updatedAt ? '<p class="study-return"><a class="btn-ghost sm" href="#/planner">Back to my study plan</a></p>' : ''}
         <details class="notes-panel">
           <summary><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg> My notes on this lesson</summary>
           <div class="notes-panel-body">
@@ -7185,6 +7199,11 @@ function renderLabLeakedSecret(){
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
+  {date:'2026-10-21', title:'A personal study planner', items:[
+    'Choose a learning path and a daily lesson goal, then open your next unfinished lessons directly from your plan.',
+    'See today\'s completions and a Monday-to-Sunday overview in your local time. Your saved plan is included in progress backups and optional cloud sync.',
+    'Open the planner from the course page, My Progress, or the command palette. Planning and saved progress continue to work offline.'
+  ]},
   {date:'2026-09-24', title:'Mobile layout and keyboard accessibility improvements', items:[
     'The header no longer extends past the screen at 320px or 430px. Narrow layouts hide duplicate header controls and offer Random lesson from the mobile menu.',
     'The career-fit quiz action wraps within a phone screen. Browser checks now cover page width and the mobile random-lesson action across representative small widths.',
@@ -11187,6 +11206,127 @@ function renderTranscript(){
    Progress hub — the personal dashboard: overall stats, per-path
    progress, achievements, bookmarks, notes, and the certificate CTA.
    ============================================================ */
+function studyPlannerEntryHtml(){
+  return `<aside class="study-entry">
+    <span class="study-entry-icon" aria-hidden="true">${cardIco('calendar')}</span>
+    <div><h2>Make your next lesson a small, clear goal</h2><p>Pick a focus, set a daily target, and see your next steps.</p></div>
+    <a class="btn-ghost sm" href="#/planner">Open study planner →</a>
+  </aside>`;
+}
+
+function studyDayKey(date){
+  return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
+}
+
+function studyPlanSnapshot(now = new Date()){
+  const focus = findPath(STATE.studyPlan.pathId);
+  const paths = focus ? [focus] : PATHS;
+  const lessons = paths.flatMap(path=>path.subs.map(sub=>({path,sub,key:lessonKey(path.id,sub.id)})));
+  const keys = new Set(lessons.map(lesson=>lesson.key));
+  const counts = {};
+  Object.entries(STATE.completed).forEach(([key,ts])=>{
+    if(!keys.has(key)) return;
+    const day = studyDayKey(new Date(ts));
+    counts[day] = (counts[day] || 0) + 1;
+  });
+  const todayKey = studyDayKey(now);
+  const start = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  start.setDate(start.getDate() - (start.getDay()+6)%7);
+  const week = Array.from({length:7}, (_,i)=>{
+    const date = new Date(start);
+    date.setDate(start.getDate()+i);
+    const key = studyDayKey(date);
+    return {date,key,count:counts[key] || 0,today:key === todayKey};
+  });
+  const remaining = lessons.filter(lesson=>!isComplete(lesson.path.id,lesson.sub.id));
+  return {focus,week,today:counts[todayKey] || 0,goal:STATE.studyPlan.dailyGoal,
+    remaining,total:lessons.length,done:lessons.length - remaining.length};
+}
+
+function renderStudyPlanner(){
+  app.innerHTML = `<section class="sec study-planner">
+    <div class="sec-head" data-reveal><div class="sec-eyebrow">Study planner</div>
+      <h1>A little progress, every day</h1>
+      <p class="sec-lead">Choose a focus and a daily lesson goal. Your plan follows the progress you already track.</p>
+    </div>
+    <div class="study-layout">
+      <section class="study-settings" aria-labelledby="studySettingsHeading">
+        <div class="sec-eyebrow">Your pace</div><h2 id="studySettingsHeading">Make it manageable</h2>
+        <form id="studyPlanForm">
+          <label for="studyPath">Learning focus</label>
+          <select id="studyPath" name="pathId"><option value="all">All paths — course order</option>
+            ${PATHS.map(path=>`<option value="${path.id}">Path ${path.n} · ${escapeHtml(path.title)}</option>`).join('')}
+          </select>
+          <label for="studyGoal">Lessons per day</label>
+          <input id="studyGoal" name="dailyGoal" type="number" min="1" max="10" step="1" required aria-describedby="studyGoalHint">
+          <p id="studyGoalHint" class="study-hint">Choose 1–10 lessons. You can change your goal at any time.</p>
+          <button class="btn-amber" type="submit">Save plan</button>
+          <p id="studyPlanStatus" class="study-hint" role="status"></p>
+        </form>
+        <p class="study-hint">Saved in this browser and included in progress backups. Sign in to sync your saved plan across devices.</p>
+        <a class="study-progress-link" href="#/progress">My Progress & backups →</a>
+      </section>
+      <div class="study-content"><section id="studyPlanOverview" class="study-overview" aria-labelledby="studyTodayHeading"></section>
+        <section class="study-next" aria-labelledby="studyNextHeading"><div id="studyPlanQueue"></div></section>
+      </div>
+    </div>
+    <section class="study-week-section" aria-labelledby="studyWeekHeading">
+      <div class="study-week-head"><div><div class="sec-eyebrow">Your rhythm</div><h2 id="studyWeekHeading">This week's completions</h2></div><p class="study-hint">Monday–Sunday · your local time</p></div>
+      <div id="studyPlanWeek"></div>
+    </section>
+  </section>`;
+  const form = document.getElementById('studyPlanForm');
+  const pathInput = document.getElementById('studyPath');
+  const goalInput = document.getElementById('studyGoal');
+  const status = document.getElementById('studyPlanStatus');
+  let dirty = false;
+  const readSettings = ()=>{
+    pathInput.value = findPath(STATE.studyPlan.pathId) ? STATE.studyPlan.pathId : 'all';
+    goalInput.value = STATE.studyPlan.dailyGoal;
+  };
+  const paint = ()=>{
+    const data = studyPlanSnapshot();
+    const reached = data.today >= data.goal;
+    document.getElementById('studyPlanOverview').innerHTML = `<div class="sec-eyebrow">Today</div>
+      <h2 id="studyTodayHeading">${reached ? 'Your daily goal is reached' : 'One lesson at a time'}</h2>
+      <div class="study-today-count"><strong id="studyTodayCount">${data.today}</strong><span> / ${data.goal} lessons</span></div>
+      <progress class="study-progress" value="${Math.min(data.today,data.goal)}" max="${data.goal}" aria-label="Today's lesson goal"></progress>
+      <p class="study-hint">${escapeHtml(data.focus?.title || 'All learning paths')} · ${data.done} of ${data.total} lessons complete</p>
+      ${reached ? '<p class="study-goal-reached">A good place to pause, review, or plan your next session.</p>' : `<p>${data.goal - data.today} more lesson${data.goal - data.today === 1 ? '' : 's'} to reach your goal.</p>`}`;
+    const next = data.remaining.slice(0,Math.max(1,data.goal - data.today));
+    document.getElementById('studyPlanQueue').innerHTML = `<h2 id="studyNextHeading">${reached ? 'Ready for your next session' : 'Your next steps'}</h2>
+      <p class="study-hint">Unfinished lessons in course order. Your queue updates as you mark them complete.</p>
+      ${next.length ? `<ol class="study-queue">${next.map((lesson,i)=>`<li><a class="study-lesson" href="#/lesson/${lesson.path.id}/${lesson.sub.id}">
+        <span class="study-step" aria-hidden="true">${i+1}</span><span><span class="study-lesson-meta">Path ${lesson.path.n} · ${lesson.path.n}.${lesson.sub.n}</span><strong>${escapeHtml(lesson.sub.title)}</strong></span><span aria-hidden="true">→</span>
+      </a></li>`).join('')}</ol>` : `<div class="study-empty"><p>All lessons in this focus are complete. Choose another path or revisit your key terms.</p><a class="btn-ghost sm" href="#/review">Review flashcards →</a></div>`}`;
+    document.getElementById('studyPlanWeek').innerHTML = `<ol class="study-week">${data.week.map(day=>{
+      const label = day.date.toLocaleDateString(undefined,{weekday:'short'});
+      const fullDate = day.date.toLocaleDateString(undefined,{weekday:'long',month:'short',day:'numeric'});
+      return `<li class="study-day ${day.today ? 'is-today' : ''}" data-day="${day.key}"><time datetime="${day.key}"${day.today ? ' aria-current="date"' : ''}>${label}</time>
+        <progress class="study-progress" value="${Math.min(day.count,data.goal)}" max="${data.goal}" aria-label="${escapeHtml(fullDate)}: ${day.count} lessons complete"></progress>
+        <strong>${day.count}</strong><span>${day.today ? 'Today' : day.date.toLocaleDateString(undefined,{month:'short',day:'numeric'})}</span></li>`;
+    }).join('')}</ol>`;
+  };
+  readSettings();
+  paint();
+  form.addEventListener('input', ()=>{ dirty = true; status.textContent = 'Unsaved changes'; });
+  form.addEventListener('change', ()=>{ dirty = true; status.textContent = 'Unsaved changes'; });
+  form.addEventListener('submit', event=>{
+    event.preventDefault();
+    if(!form.reportValidity()) return;
+    STATE.studyPlan = {pathId:pathInput.value, dailyGoal:Number(goalInput.value), updatedAt:Date.now()};
+    saveState();
+    dirty = false;
+    paint();
+    status.textContent = 'Study plan saved.';
+  });
+  currentPlannerRefresh = ()=>{
+    if(dirty) return;
+    readSettings();
+    paint();
+  };
+}
+
 function renderProgressHub(){
   const overall = overallProgress();
   const unlockedCount = Object.keys(STATE.achievements).filter(k=>!k.startsWith('_') && !k.startsWith('theme-explorer-seen')).length;
@@ -11207,6 +11347,7 @@ function renderProgressHub(){
         <h1>Track everything in one place</h1>
         <p class="sec-lead">Progress, bookmarks, notes, achievements, and your certificate — all saved locally in this browser.</p>
       </div>
+      ${studyPlannerEntryHtml()}
 
       ${continueCtx ? `
         <div class="hero-btns" style="justify-content:flex-start" data-reveal style="--i:1">
@@ -11822,7 +11963,7 @@ function getCommands(){
      palette showed SVG for tools and labs and raw emoji for navigation, in
      the same list. Finishing the migration is what makes it one set. */
   const nav = [
-    ['Home','#/','house'],['Course','#/course','doc'],['Roadmap','#/roadmap','mapPin'],
+    ['Home','#/','house'],['Course','#/course','doc'],['Study planner','#/planner','calendar'],['Roadmap','#/roadmap','mapPin'],
     ['Practice tracks','#/tracks','layers'],['Labs','#/labs','microscope'],['Tools','#/tools','toolbox'],
     ['Practice tasks','#/tasks','check'],['Timed mock exam','#/exam','timer'],['Search','#/search','search'],
     ['Glossary','#/glossary','scroll'],['Flashcards','#/review','folders'],['Daily challenge','#/daily','clock'],
@@ -12297,6 +12438,7 @@ if(typeof SupabaseSync !== 'undefined' && SupabaseSync.CONFIGURED){
           refreshLessonTrack(ctx);
         }
       }
+      currentPlannerRefresh?.();
       if(authOverlay && authOverlay.classList.contains('open')) closeAuth();
     }
     if(!user) handledInitialSignIn = false;

@@ -35,6 +35,7 @@ const ROUTES = [
   ['mock interview', '#/interview/mock'],
   ['capstone', '#/capstone'],
   ['progress hub', '#/progress'],
+  ['study planner', '#/planner'],
   ['transcript', '#/transcript'],
   ['certificate', '#/certificate'],
   ['changelog', '#/changelog'],
