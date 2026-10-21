@@ -12104,6 +12104,10 @@ document.getElementById('accountNavLink')?.addEventListener('click', (e)=>{
    progress on sign-in, and land on a clean URL after a magic-link or
    OAuth redirect. */
 if(typeof SupabaseSync !== 'undefined' && SupabaseSync.CONFIGURED){
+  // Capture this before init(): Supabase can consume the callback tokens
+  // before it reports the session. A restored session on a canonical page
+  // (which normally has no hash) must keep the reader's chosen destination.
+  const authCallbackUrl = SupabaseSync.isAuthCallbackUrl() ? new URL(location.href) : null;
   let handledInitialSignIn = false;
   SupabaseSync.onAuthChange(async (user)=>{
     updateAccountNav(user);
@@ -12112,11 +12116,12 @@ if(typeof SupabaseSync !== 'undefined' && SupabaseSync.CONFIGURED){
       STATE = normalizeState(await SupabaseSync.pullAndMerge(STATE)).state;
       try{ localStorage.setItem(STORE_KEY, JSON.stringify(STATE)); }catch(e){}
       refreshProgressRing();
-      if(SupabaseSync.isAuthCallbackUrl() || !location.hash || location.hash === '#'){
-        location.hash = '#/progress';
-      } else {
-        route();
+      if(authCallbackUrl && location.pathname === authCallbackUrl.pathname &&
+          (!location.hash || location.hash === '#' || location.hash === authCallbackUrl.hash)){
+        // Clean callback parameters, and respect navigation during the merge.
+        history.replaceState(null, '', '/#/progress');
       }
+      route();
       if(authOverlay && authOverlay.classList.contains('open')) closeAuth();
     }
     if(!user) handledInitialSignIn = false;
