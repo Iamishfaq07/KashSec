@@ -224,7 +224,7 @@ function headingSkips() {
   const structural = await (async () => {
     const out = [];
     const ROUTES = ['#/', '#/course', '#/labs', '#/tools', '#/tasks', '#/exam', '#/glossary',
-      '#/progress', '#/planner', '#/about', '#/privacy', '#/review', '#/daily', '#/search',
+      '#/progress', '#/planner', '#/investigations', '#/investigations/mailbox-takeover', '#/about', '#/privacy', '#/review', '#/daily', '#/search',
       '#/lesson/01-introduction', '#/lesson/01-introduction/cia-triad-explained',
       '#/labs/terminal', '#/tools/encoder', '#/quiz/01-introduction'];
 

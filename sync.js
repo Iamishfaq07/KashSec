@@ -119,6 +119,21 @@ const SupabaseSync = (function(){
     unionFlat('pomodoroSessions');
     unionFlat('lessonRatings');
     unionFlat('missedQuestions');
+    // Case drafts are independent: keep the newest saved record for each case.
+    merged.investigations = {...(local.investigations || {})};
+    Object.entries(remote.investigations || {}).forEach(([id, record])=>{
+      if(!record || typeof record !== 'object' || Array.isArray(record) ||
+        typeof record.notes !== 'string' || !record.answers || typeof record.answers !== 'object' || Array.isArray(record.answers) ||
+        record.notes.length > 12000 || !Array.isArray(record.reviewed) || !Number.isFinite(record.updatedAt) || record.updatedAt < 0 || record.updatedAt > 8.64e15 ||
+        !Number.isFinite(record.submittedAt) || record.submittedAt < 0 || record.submittedAt > 8.64e15 || !Number.isSafeInteger(record.attempts) || record.attempts < 0 ||
+        !Number.isInteger(record.bestScore) || record.bestScore < 0 || record.bestScore > 100) return;
+      const localRecord = merged.investigations[id];
+      const winner = !localRecord || record.updatedAt > localRecord.updatedAt ? record : localRecord;
+      merged.investigations[id] = {...winner,
+        reviewed:[...new Set([...(localRecord?.reviewed || []),...record.reviewed])],
+        bestScore:Math.max(localRecord?.bestScore || 0,record.bestScore),
+        attempts:Math.max(localRecord?.attempts || 0,record.attempts)};
+    });
 
     merged.quizScores = Object.assign({}, remote.quizScores||{});
     Object.entries(local.quizScores||{}).forEach(([pathId, score])=>{

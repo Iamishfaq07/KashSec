@@ -358,6 +358,7 @@ function defaultState(){
     // reviews entries: { term_key: { due: ISO_date, interval: days, ease: 2.5, streak: N, lastPerf: 'again|good|easy' } }
     readingPrefs:{size:'normal', width:'normal', legible:false}, // size: normal|large|xlarge; width: normal|wide
     studyPlan:{pathId:'all', dailyGoal:2, updatedAt:0},
+    investigations:{}, // caseId: saved decisions, evidence opened, notes, review history
     daily:{}, // { "YYYY-MM-DD": { qi, chosen, correct } }
     leaderboardOptIn:false,
     leaderboardName:'',
@@ -445,6 +446,38 @@ function normalizeState(input){
     updatedAt:Number.isFinite(plan.updatedAt) && plan.updatedAt >= 0 ? plan.updatedAt : 0
   };
   if(Object.keys(state.studyPlan).some(key=>Object.hasOwn(plan, key) && state.studyPlan[key] !== plan[key])) repaired = true;
+  const investigations = state.investigations;
+  state.investigations = {};
+  for(const [id, value] of Object.entries(investigations)){
+    if(!/^[a-z0-9-]+$/.test(id) || !isStateRecord(value)){ repaired = true; continue; }
+    const record = {answers:{},reviewed:[],notes:'',updatedAt:0,submittedAt:0,bestScore:0,attempts:0};
+    const rules = {
+      notes:v=>typeof v === 'string' && v.length <= 12000,
+      updatedAt:v=>Number.isFinite(v) && v >= 0 && v <= 8.64e15,
+      submittedAt:v=>Number.isFinite(v) && v >= 0 && v <= 8.64e15,
+      bestScore:v=>Number.isInteger(v) && v >= 0 && v <= 100,
+      attempts:v=>Number.isSafeInteger(v) && v >= 0
+    };
+    for(const [key, valid] of Object.entries(rules)){
+      if(!Object.hasOwn(value,key)) continue;
+      if(valid(value[key])) record[key] = value[key]; else repaired = true;
+    }
+    if(Object.hasOwn(value,'answers')){
+      if(isStateRecord(value.answers)){
+        for(const [key, answer] of Object.entries(value.answers)){
+          if(/^[a-z0-9-]+$/.test(key) && Number.isInteger(answer) && answer >= 0 && answer < 10) record.answers[key] = answer;
+          else repaired = true;
+        }
+      } else repaired = true;
+    }
+    if(Object.hasOwn(value,'reviewed')){
+      if(Array.isArray(value.reviewed)){
+        record.reviewed = [...new Set(value.reviewed.filter(key=>typeof key === 'string' && /^[a-z0-9-]+$/.test(key)))];
+        if(record.reviewed.length !== value.reviewed.length) repaired = true;
+      } else repaired = true;
+    }
+    state.investigations[id] = record;
+  }
   if(state.lastVisited && (typeof state.lastVisited.pathId !== 'string' || typeof state.lastVisited.subId !== 'string')){
     state.lastVisited = null; repaired = true;
   }
@@ -505,8 +538,10 @@ if(stateRecovery){
   document.getElementById('siteNav').after(notice);
 }
 function saveState(){
-  try{ localStorage.setItem(STORE_KEY, JSON.stringify(STATE)); }catch(e){}
+  let stored = false;
+  try{ localStorage.setItem(STORE_KEY, JSON.stringify(STATE)); stored = true; }catch(e){}
   if(typeof SupabaseSync !== 'undefined') SupabaseSync.pushState(STATE);
+  return stored;
 }
 const lessonKey = (pathId,subId) => pathId+'/'+subId;
 
@@ -1938,17 +1973,22 @@ let currentLessonMenuController = null;
 let currentLessonLoadController = null;
 let currentLessonNotesFlush = null;
 let currentPlannerRefresh = null;
+let currentInvestigationFlush = null;
+let currentInvestigationRefresh = null;
 const lessonFallbacks = new Map();
 let currentLabMessageController = null;
 let currentCvssWorker = null;
 
 // Flush the debounce before navigation, backgrounding, or a page refresh.
-window.addEventListener('pagehide', ()=>currentLessonNotesFlush?.());
+window.addEventListener('pagehide', ()=>{currentLessonNotesFlush?.();currentInvestigationFlush?.();});
 document.addEventListener('visibilitychange', ()=>{
-  if(document.visibilityState === 'hidden') currentLessonNotesFlush?.();
+  if(document.visibilityState === 'hidden'){currentLessonNotesFlush?.();currentInvestigationFlush?.();}
 });
 
 function route(){
+  currentInvestigationFlush?.();
+  currentInvestigationFlush = null;
+  currentInvestigationRefresh = null;
   currentPlannerRefresh = null;
   currentLessonNotesFlush?.();
   currentLessonNotesFlush = null;
@@ -2012,6 +2052,8 @@ function route(){
   else if(hash === '#/daily') renderDaily();
   else if(hash === '#/progress') renderProgressHub();
   else if(hash === '#/planner') renderStudyPlanner();
+  else if(hash === '#/investigations') renderInvestigationsRoute();
+  else if(hash.startsWith('#/investigations/')) renderInvestigationsRoute(hash.slice(17));
   else if(hash === '#/certificate') renderCertificate();
   else if(hash === '#/search' || hash.startsWith('#/search?')){
     const qs = hash.indexOf('?');
@@ -2122,6 +2164,7 @@ const ROUTE_TITLES = {
   '#/course':'Cybersecurity course', '#/labs':'Security labs', '#/tools':'Security tools',
   '#/tasks':'Practice tasks', '#/exam':'Mock exam', '#/faq':'Frequently asked questions',
   '#/planner':'Study planner',
+  '#/investigations':'Incident Workbench',
   '#/progress':'My progress', '#/glossary':'Cybersecurity glossary', '#/tracks':'Career tracks',
   '#/careers':'Cybersecurity careers', '#/certs':'Certification roadmap', '#/career-quiz':'Career-fit quiz',
   '#/roadmap':'Learning roadmap', '#/review':'Flashcard review', '#/changelog':"What's new",
@@ -2487,6 +2530,7 @@ function renderHome(){
         <h2>Built to actually get you there</h2>
         <p class="sec-lead">Most security resources assume you already know the basics. This one doesn't — it's engineered for the complete beginner, end to end.</p>
       </div>
+      ${investigationEntryHtml()}
       <div class="features">
         ${FEATURES().map((f,i)=>`
           <div class="feature-card" data-spotlight data-reveal style="--i:${i}">
@@ -3172,7 +3216,7 @@ const LEGAL = {
         'Nothing here is sold, and nothing is shared with anyone beyond the specific services named below.'
       ]},
       {h:'What is stored on your device', p:[
-        'KashSec progress normally uses one browser-storage entry, <code>kashsec_state_v1</code>. It holds your lesson progress, quiz and exam results, practice-task answers, flashcard scheduling, notes you have written, lessons you have rated, your streak, study-plan settings, and display settings. If this record becomes unreadable, KashSec tries to keep an untouched second local entry, <code>kashsec_state_recovery_v1</code>, so you can download the original data. Clearing this site\'s storage deletes both entries.',
+        'KashSec progress normally uses one browser-storage entry, <code>kashsec_state_v1</code>. It holds your lesson progress, quiz and exam results, practice-task answers, flashcard scheduling, notes you have written, lessons you have rated, your streak, study-plan settings, investigation decisions and analyst notes, and display settings. If this record becomes unreadable, KashSec tries to keep an untouched second local entry, <code>kashsec_state_recovery_v1</code>, so you can download the original data. Clearing this site\'s storage deletes both entries.',
         'This is stored by your browser, on your device. Without an account it is never transmitted anywhere, and it is not readable by this site\'s author or anyone else. Clearing browser storage for this site erases both entries permanently — export a copy first if you need one.'
       ]},
       {h:'If you create an account (optional)', p:[
@@ -4767,6 +4811,7 @@ function renderLabsIndex(){
           <a class="btn-amber sm" href="#/capstone"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-2px"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg> Try the capstone attack chain →</a>
         </div>
       </div>
+      ${investigationEntryHtml()}
       ${cardFilterHTML('labs', labs.length)}
       <h2 class="sr-only">All labs</h2>
       <div class="labs-grid" data-reveal style="--i:1">
@@ -7199,6 +7244,11 @@ function renderLabLeakedSecret(){
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
+  {date:'2026-10-21', title:'Incident Workbench: build a case from the evidence', items:[
+    'Investigate three fictional incidents: mailbox compromise, cross-tenant API access, and an exposed cloud key. Each case includes three evidence files and three decisions to review.',
+    'Search the evidence, keep an analyst notebook, resume saved decisions, and download evidence packs or a completed case report.',
+    'Review explanations tied to specific evidence, follow response references, and retry while keeping your notes and best score. Saved casework is included in progress backups and optional account sync.'
+  ]},
   {date:'2026-10-21', title:'A personal study planner', items:[
     'Choose a learning path and a daily lesson goal, then open your next unfinished lessons directly from your plan.',
     'See today\'s completions and a Monday-to-Sunday overview in your local time. Your saved plan is included in progress backups and optional cloud sync.',
@@ -11327,6 +11377,43 @@ function renderStudyPlanner(){
   };
 }
 
+function investigationEntryHtml(){
+  return `<aside class="iw-entry"><div><div class="sec-eyebrow">New · Incident Workbench</div><h2>Follow the evidence. Make the call.</h2><p>Investigate a mailbox, an API, and a cloud key. Save your findings and build a case report.</p></div><a class="btn-amber" href="#/investigations">Open the workbench →</a></aside>`;
+}
+
+let investigationsPromise = null;
+let investigationsCacheScheduled = false;
+async function renderInvestigationsRoute(id){
+  const generation = renderGeneration;
+  app.innerHTML = '<div class="loading" role="status">Opening the Incident Workbench…</div>';
+  try{
+    if(!window.KashInvestigations){
+      if(!investigationsPromise) investigationsPromise = withTimeout(loadScript('investigations.js'),12000,'Opening the Incident Workbench')
+        .catch(error=>{investigationsPromise=null;throw error;});
+      await investigationsPromise;
+    }
+    if(generation !== renderGeneration) return;
+    if(!window.KashInvestigations) throw new Error('Workbench unavailable');
+    // A first-ever direct visit can load this bundle before the worker controls
+    // the page. Give that worker a request to cache once installation finishes.
+    if('serviceWorker' in navigator && !investigationsCacheScheduled){
+      investigationsCacheScheduled = true;
+      navigator.serviceWorker.ready.then(async()=>{
+        if(!navigator.serviceWorker.controller) await new Promise(resolve=>
+          navigator.serviceWorker.addEventListener('controllerchange',resolve,{once:true}));
+        if(!await caches.match(new URL('investigations.js',location.href).href)) await fetch('investigations.js');
+      }).catch(()=>{});
+    }
+    if(id) KashInvestigations.renderCase(id); else KashInvestigations.renderIndex();
+    afterRender();
+  }catch(error){
+    if(generation !== renderGeneration) return;
+    app.innerHTML = '<section class="sec"><h1>The workbench could not load</h1><p>Check your connection and try again. Your saved casework is still in this browser.</p><button class="btn-amber" id="iwLoadRetry" type="button">Try again</button><p><a href="#/labs">Back to labs</a></p></section>';
+    document.getElementById('iwLoadRetry').addEventListener('click',()=>renderInvestigationsRoute(id));
+    afterRender();
+  }
+}
+
 function renderProgressHub(){
   const overall = overallProgress();
   const unlockedCount = Object.keys(STATE.achievements).filter(k=>!k.startsWith('_') && !k.startsWith('theme-explorer-seen')).length;
@@ -11348,6 +11435,7 @@ function renderProgressHub(){
         <p class="sec-lead">Progress, bookmarks, notes, achievements, and your certificate — all saved locally in this browser.</p>
       </div>
       ${studyPlannerEntryHtml()}
+      ${investigationEntryHtml()}
 
       ${continueCtx ? `
         <div class="hero-btns" style="justify-content:flex-start" data-reveal style="--i:1">
@@ -11963,7 +12051,7 @@ function getCommands(){
      palette showed SVG for tools and labs and raw emoji for navigation, in
      the same list. Finishing the migration is what makes it one set. */
   const nav = [
-    ['Home','#/','house'],['Course','#/course','doc'],['Study planner','#/planner','calendar'],['Roadmap','#/roadmap','mapPin'],
+    ['Home','#/','house'],['Course','#/course','doc'],['Study planner','#/planner','calendar'],['Incident Workbench','#/investigations','microscope'],['Roadmap','#/roadmap','mapPin'],
     ['Practice tracks','#/tracks','layers'],['Labs','#/labs','microscope'],['Tools','#/tools','toolbox'],
     ['Practice tasks','#/tasks','check'],['Timed mock exam','#/exam','timer'],['Search','#/search','search'],
     ['Glossary','#/glossary','scroll'],['Flashcards','#/review','folders'],['Daily challenge','#/daily','clock'],
@@ -12439,6 +12527,7 @@ if(typeof SupabaseSync !== 'undefined' && SupabaseSync.CONFIGURED){
         }
       }
       currentPlannerRefresh?.();
+      currentInvestigationRefresh?.();
       if(authOverlay && authOverlay.classList.contains('open')) closeAuth();
     }
     if(!user) handledInitialSignIn = false;
