@@ -127,7 +127,10 @@ try {
   check(await page.evaluate(() => document.getElementById('sidebar').inert), 'outside click closes lesson menu');
   await page.locator('#menuBtn').click();
   await page.setViewportSize({width:1280,height:900});
-  await page.waitForFunction(() => !document.getElementById('sidebar').inert);
+  // The open mobile menu is already non-inert. Wait for the resize handler
+  // to close it before inspecting the focus it restores on desktop.
+  await page.waitForFunction(() => !document.getElementById('sidebar').inert &&
+    !document.getElementById('sidebar').classList.contains('open'));
   check(await page.evaluate(() => document.activeElement === document.querySelector('.sb-path.active .sb-path-head') &&
     !document.getElementById('sidebar').classList.contains('open')), 'desktop lesson resize keeps focus on a visible control');
   await page.setViewportSize({width:390,height:844});
