@@ -278,6 +278,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
   });
 });
 
+let reloadForWorkerUpdate = false;
 function showUpdateToast(reg){
   const host = pwaToastHost();
   const el = document.createElement('div');
@@ -286,14 +287,17 @@ function showUpdateToast(reg){
   host.appendChild(el);
   requestAnimationFrame(()=>el.classList.add('in'));
   el.querySelector('.toast-btn').addEventListener('click', ()=>{
-    if(reg.waiting) reg.waiting.postMessage({type:'SKIP_WAITING'});
+    if(reg.waiting){
+      reloadForWorkerUpdate = true;
+      reg.waiting.postMessage({type:'SKIP_WAITING'});
+    } else window.location.reload();
   });
 }
 
 if('serviceWorker' in navigator){
   let refreshingAfterUpdate = false;
   navigator.serviceWorker.addEventListener('controllerchange', ()=>{
-    if(refreshingAfterUpdate) return;
+    if(!reloadForWorkerUpdate || refreshingAfterUpdate) return;
     refreshingAfterUpdate = true;
     window.location.reload();
   });
@@ -1845,9 +1849,12 @@ function findSubContext(pathId, subId){
 }
 
 /* --- Router --- */
-window.addEventListener('hashchange', route);
-window.addEventListener('DOMContentLoaded', route);
-window.addEventListener('popstate', route);
+function routeFromLocation(){
+  if(activeRoute() !== renderedRoute) route();
+}
+window.addEventListener('hashchange', routeFromLocation);
+window.addEventListener('DOMContentLoaded', routeFromLocation);
+window.addEventListener('popstate', routeFromLocation);
 
 // Public lessons, labs, tools, and key hubs have real static HTML pages.
 // Keep their URL in the address bar for readers and crawlers alike.
@@ -1859,6 +1866,8 @@ function canonicalPathForHash(hash){
   if(hash === '#/faq') return '/faq.html';
   if(hash === '#/tasks') return '/practice.html';
   if(hash === '#/exam') return '/exam.html';
+  const legal = hash.match(/^#\/(about|contact|privacy|terms)$/);
+  if(legal) return `/${legal[1]}.html`;
   const lesson = hash.match(/^#\/lesson\/([a-z0-9-]+)(?:\/([a-z0-9-]+))?$/);
   if(lesson) return lesson[2] ? `/lesson/${lesson[1]}/${lesson[2]}.html` : `/lesson/${lesson[1]}/`;
   const item = hash.match(/^#\/(labs|tools)\/([a-z0-9-]+)$/);
@@ -1874,6 +1883,8 @@ function hashRouteForPath(pathname){
   if(pathname === '/faq.html') return '#/faq';
   if(pathname === '/practice.html') return '#/tasks';
   if(pathname === '/exam.html') return '#/exam';
+  const legal = pathname.match(/^\/(about|contact|privacy|terms)\.html$/);
+  if(legal) return `#/${legal[1]}`;
   const lesson = pathname.match(/^\/lesson\/([a-z0-9-]+)\/(?:([a-z0-9-]+)\.html)?$/);
   if(lesson) return lesson[2] ? `#/lesson/${lesson[1]}/${lesson[2]}` : `#/lesson/${lesson[1]}`;
   const item = pathname.match(/^\/(labs|tools)\/([a-z0-9-]+)\.html$/);
@@ -1883,19 +1894,37 @@ function hashRouteForPath(pathname){
 
 const activeRoute = ()=>location.hash.startsWith('#/') ? location.hash : (hashRouteForPath(location.pathname) || '#/');
 
+function navigateTo(hash, {replace = false} = {}){
+  const url = canonicalPathForHash(hash) || '/' + hash;
+  if(location.pathname + location.search + location.hash !== url){
+    history[replace ? 'replaceState' : 'pushState'](null, '', url);
+  }
+  routeFromLocation();
+}
+
 document.addEventListener('click', e=>{
-  const anchor = e.target.closest?.('a[href^="#/"]');
+  const anchor = e.target.closest?.('a[href]');
   if(!anchor || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-  const path = canonicalPathForHash(anchor.getAttribute('href'));
-  if(!path) return;
+  if(anchor.hasAttribute('download') || (anchor.target && anchor.target !== '_self')) return;
+  if(anchor.matches('.skip')){
+    e.preventDefault();
+    app.focus({preventScroll:true});
+    app.scrollIntoView({block:'start',behavior:'instant'});
+    return;
+  }
+  const url = new URL(anchor.href);
+  if(url.origin !== location.origin || url.search || (url.hash && !url.hash.startsWith('#/'))) return;
+  const hash = url.hash.startsWith('#/') ? url.hash : hashRouteForPath(url.pathname);
+  if(!hash) return;
   e.preventDefault();
-  location.assign(path);
+  navigateTo(hash);
 });
 
 /* Bumped on every navigation so in-flight async work (a lesson fetch
    still resolving after the user clicked elsewhere) can tell it's stale
    and skip writing into DOM nodes that no longer exist. */
 let renderGeneration = 0;
+let renderedRoute = null;
 let currentLessonScrollController = null;
 let currentLessonMenuController = null;
 let currentLessonLoadController = null;
@@ -1940,13 +1969,9 @@ function route(){
   }
   const hash = activeRoute();
   if(location.hash.startsWith('#/')){
-    const canonical = canonicalPathForHash(hash);
-    if(canonical){ location.replace(canonical); return; }
-    if(location.pathname !== '/' && location.pathname !== '/index.html'){
-      location.replace('/' + hash);
-      return;
-    }
+    history.replaceState(null, '', canonicalPathForHash(hash) || '/' + hash);
   }
+  renderedRoute = hash;
   // Explicit 'instant' bypasses the site-wide CSS scroll-behavior:smooth —
   // without it, this scroll animates and gets cut short the instant the
   // new page's (possibly much shorter) content replaces the old DOM a
@@ -2078,10 +2103,13 @@ function decorateLabHeading(){
    first page had, so tabs, history entries, bookmarks and screen-reader page
    announcements all named the wrong page. */
 const STATIC_TITLE = document.title;
+const STATIC_ROUTE = hashRouteForPath(location.pathname);
 const HOME_TITLE = 'KashSec Academy — Free cybersecurity course from absolute zero';
 // Page names for app-only routes. Their h1s are headlines ("Track
 // everything in one place"), which read badly as a tab or history entry.
 const ROUTE_TITLES = {
+  '#/course':'Cybersecurity course', '#/labs':'Security labs', '#/tools':'Security tools',
+  '#/tasks':'Practice tasks', '#/exam':'Mock exam', '#/faq':'Frequently asked questions',
   '#/progress':'My progress', '#/glossary':'Cybersecurity glossary', '#/tracks':'Career tracks',
   '#/careers':'Cybersecurity careers', '#/certs':'Certification roadmap', '#/career-quiz':'Career-fit quiz',
   '#/roadmap':'Learning roadmap', '#/review':'Flashcard review', '#/changelog':"What's new",
@@ -2093,16 +2121,22 @@ const ROUTE_TITLES = {
 function syncDocTitle(){
   const r = activeRoute();
   if(r.startsWith('#/search')) return; // the search page titles itself with the query
-  if(hashRouteForPath(location.pathname) === r){ document.title = STATIC_TITLE; return; }
+  if(STATIC_ROUTE === r){ document.title = STATIC_TITLE; return; }
   if(r === '#/'){ document.title = HOME_TITLE; return; }
   const h1 = app.querySelector('h1');
-  const name = ROUTE_TITLES[r] || h1?.dataset.pageTitle || (h1?.textContent || '').replace(/\s+/g, ' ').trim();
+  const lesson = r.match(/^#\/lesson\/([^/]+)(?:\/([^/]+))?$/);
+  const path = lesson && findPath(lesson[1]);
+  const lessonTitle = path && (lesson[2] ? path.subs.find(s=>s.id === lesson[2])?.title : path.title);
+  const name = ROUTE_TITLES[r] || lessonTitle || h1?.dataset.pageTitle || (h1?.textContent || '').replace(/\s+/g, ' ').trim();
   if(!name) return;
   const full = `${name} · KashSec Academy`;
   document.title = full.length <= 65 ? full : `${name} · KashSec`;
 }
 
 function afterRender(){
+  const canonical = new URL(canonicalPathForHash(activeRoute()) || '/', location.origin).href;
+  document.querySelector('link[rel="canonical"]')?.setAttribute('href', canonical);
+  document.querySelector('meta[property="og:url"]')?.setAttribute('content', canonical);
   decorateLabHeading();
   syncDocTitle();
   updateActiveNav();
@@ -2134,7 +2168,7 @@ function maybeStartTour(){
   if(Object.keys(STATE.completed).length > 0){ STATE.tourSeen = true; saveState(); return; }
   if(document.getElementById('tourOverlay')) return;
   tourIndex = 0;
-  setTimeout(()=>paintTourStep(), 700); // let the hero animation settle first
+  setTimeout(()=>{ if(activeRoute() === '#/' && !STATE.tourSeen) paintTourStep(); }, 700);
 }
 function endTour(){
   STATE.tourSeen = true;
@@ -9638,7 +9672,9 @@ function wireTaskCards(root, onSolved){
 }
 
 function renderTasksPage(pathId){
+  const myGen = renderGeneration;
   const paint = ()=>{
+    if(myGen !== renderGeneration) return;
     if(typeof TASKS === 'undefined'){
       app.innerHTML = `<section class="sec"><div class="loading">Loading practice tasks…</div></section>`;
       return;
@@ -9688,6 +9724,7 @@ function renderTasksPage(pathId){
         </div>
       </section>`;
     setupReveal();
+    syncDocTitle();
     wireTaskCards(app, ()=>{
       // Repaint the rank bar in place so the score visibly moves, without
       // re-rendering the cards and losing revealed explanations.
@@ -9701,8 +9738,10 @@ function renderTasksPage(pathId){
     });
   };
 
+  if(typeof TASKS !== 'undefined'){ paint(); return; }
   paint();
   ensureTasks().then(paint).catch(()=>{
+    if(myGen !== renderGeneration) return;
     app.innerHTML = `<section class="sec"><h1 class="sec-title">Practice tasks</h1>
       <p class="sec-sub">Couldn't load the tasks. Check your connection and try again.</p></section>`;
   });
@@ -12235,9 +12274,29 @@ if(typeof SupabaseSync !== 'undefined' && SupabaseSync.CONFIGURED){
       if(authCallbackUrl && location.pathname === authCallbackUrl.pathname &&
           (!location.hash || location.hash === '#' || location.hash === authCallbackUrl.hash)){
         // Clean callback parameters, and respect navigation during the merge.
-        history.replaceState(null, '', '/#/progress');
+        navigateTo('#/progress', {replace:true});
+      } else if(renderedRoute === null){
+        routeFromLocation();
+      } else {
+        // Session restoration updates state without replacing the page the
+        // learner is using. In particular, do not clear forms or refetch it.
+        const lesson = activeRoute().match(/^#\/lesson\/([^/]+)\/([^/]+)$/);
+        const ctx = lesson && findSubContext(lesson[1], lesson[2]);
+        if(ctx){
+          const complete = document.getElementById('completeBtn');
+          const done = isComplete(ctx.path.id, ctx.sub.id);
+          complete?.classList.toggle('done', done);
+          complete?.setAttribute('aria-pressed', String(done));
+          const label = document.getElementById('completeBtnLabel');
+          if(label) label.textContent = done ? 'Completed' : 'Mark complete';
+          const bookmark = document.getElementById('bookmarkBtn');
+          const saved = isBookmarked(ctx.path.id, ctx.sub.id);
+          bookmark?.classList.toggle('active', saved);
+          bookmark?.setAttribute('aria-pressed', String(saved));
+          bookmark?.querySelector('svg')?.setAttribute('fill', saved ? 'currentColor' : 'none');
+          refreshLessonTrack(ctx);
+        }
       }
-      route();
       if(authOverlay && authOverlay.classList.contains('open')) closeAuth();
     }
     if(!user) handledInitialSignIn = false;

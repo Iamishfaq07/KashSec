@@ -73,7 +73,7 @@ try {
     await expectLocation(page, target);
   }
 
-  // Follow real links from My Progress across full-page and hash navigation.
+  // Follow real links from My Progress across canonical and hash routes.
   for(const [href, target] of [['#/course', '/lesson/'],
     ['#/lesson/03-linux', '/lesson/03-linux/'],
     ['#/lesson/03-linux/terminal-basics', '/lesson/03-linux/terminal-basics.html'],
@@ -113,6 +113,25 @@ try {
   await waitForSync(delayedPage);
   await expectLocation(delayedPage, '/#/glossary');
   await delayed.close();
+
+  const restoring = await makeContext({delayMerge:true});
+  const restoringPage = await restoring.newPage();
+  await restoringPage.goto(BASE + '/lesson/03-linux/terminal-basics.html');
+  await restoringPage.waitForFunction(()=>window.__mergeStarted);
+  await restoringPage.locator('.notes-panel summary').click();
+  await restoringPage.locator('#lessonNotes').fill('Keep editing while sync finishes');
+  const generation = await restoringPage.evaluate(()=>{
+    window.__editingNotes = document.getElementById('lessonNotes');
+    return renderGeneration;
+  });
+  await restoringPage.evaluate(()=>window.__releaseMerge());
+  await waitForSync(restoringPage);
+  assert.equal(await restoringPage.evaluate(()=>renderGeneration), generation, 'session restoration does not rerender the page');
+  assert.equal(await restoringPage.evaluate(()=>document.getElementById('lessonNotes') === window.__editingNotes), true);
+  assert.equal(await restoringPage.locator('#lessonNotes').inputValue(), 'Keep editing while sync finishes');
+  assert.equal(await restoringPage.locator('#completeBtn').getAttribute('aria-pressed'), 'true', 'merged progress still updates visible completion');
+  checks++;
+  await restoring.close();
 
   const signedOut = await makeContext({ signedIn: false });
   const signedOutPage = await signedOut.newPage();
