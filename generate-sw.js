@@ -65,6 +65,7 @@ const deferredUrls = [
   // Lazily loaded on #/tasks.
   'tasks.js',
   'investigations.js',
+  'playground.js',
   'search-preview.js',
   'search-index.js',
 ];

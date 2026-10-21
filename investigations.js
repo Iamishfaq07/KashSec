@@ -201,6 +201,11 @@ Retain the alert, commit references, and audit exports as evidence.`}
       related:[{path:'08-cloud-basics',label:'Cloud fundamentals'}, {path:'22-devsecops-appsec',label:'DevSecOps & application security'}]
     }
   ];
+  const GUIDES = {
+    'mailbox-takeover':{terms:[['Session','The signed-in context used for later actions. A session identifier can help connect events.'],['Audit log','A record of actions, such as creating a mailbox rule.'],['MFA','Multi-factor authentication: using more than one kind of proof to sign in.']],hints:['Compare the user’s report with the successful sign-in and the new rule. What is directly supported?','Look for access that would remain after deleting the email. Which evidence shows it?','Read the collection note in E3. What information has not been collected yet?']},
+    'cross-tenant-api':{terms:[['Tenant','One customer or organisation’s space in a shared application.'],['Token','A value the application uses to recognise an authenticated caller.'],['Authorisation','Checking whether this caller is allowed to perform this action on this object.']],hints:['Compare the caller’s tenant with the returned invoice’s tenant. Is the login itself invalid?','Read the handler in E3. Where would you compare the caller’s allowed scope with the invoice owner?','Use one invoice the customer may read and one they may not. What should each request return?']},
+    'exposed-cloud-key':{terms:[['Access key','A credential used by software to make cloud requests. Removing a copy does not revoke the credential.'],['Principal','The user or software identity whose permissions are being used.'],['Access denied','The requested action was rejected. It is evidence of an attempt, not a successful action.']],hints:['Match the key identifier across E1 and E2. Separate events marked Success from AccessDenied.','Check the credential’s status after the cleanup commit. Did removing the file change its status?','Read the coverage gaps in E3. What cannot be ruled out from this excerpt alone?']}
+  };
   const fresh = ()=>({answers:{},reviewed:[],notes:'',updatedAt:0,submittedAt:0,bestScore:0,attempts:0});
   const recordFor = id=>STATE.investigations[id] || (STATE.investigations[id]=fresh());
   const answered = (item,record)=>item.questions.filter(q=>Number.isInteger(record.answers[q.id]) && record.answers[q.id] >= 0 && record.answers[q.id] < q.options.length).length;
@@ -219,6 +224,7 @@ Retain the alert, commit references, and audit exports as evidence.`}
     app.innerHTML=`<section class="sec iw-hub">
       <div class="iw-hub-hero"><div class="sec-head"><div class="sec-eyebrow">Incident Workbench</div><h1>From alert to understanding.</h1><p class="sec-lead">Open the evidence, connect the events, and defend your decisions. Three self-paced investigations, entirely in your browser.</p><p class="iw-training">Fictional training cases · no account or live systems required</p></div>
       <aside class="iw-board" aria-label="Your caseboard"><span class="sec-eyebrow">Your caseboard</span><strong>${complete}<span> / ${CASES.length}</span></strong><p>cases reviewed</p><div class="iw-board-foot"><span>${drafts} draft${drafts===1?'':'s'} in progress</span><a href="#/progress">Backups & progress →</a></div></aside></div>
+      <p class="pg-course-link">Want to build the basics first? <a href="#/playground">Try three short, guided experiments →</a></p>
       <div class="iw-index-head"><h2>Choose your investigation</h2><label class="iw-filter-label">Focus<select id="iwCategory" aria-label="Focus"><option value="all">All disciplines</option>${[...new Set(CASES.map(item=>item.category))].map(category=>`<option>${category}</option>`).join('')}</select></label></div>
       <div class="iw-cases">${CASES.map((item,i)=>{
         const record=records[i];
@@ -251,16 +257,18 @@ Retain the alert, commit references, and audit exports as evidence.`}
     app.innerHTML=`<section class="sec iw-case">
       <a class="iw-back" href="#/investigations">← All investigations</a>
       <div class="sec-head"><div class="sec-eyebrow">Case ${item.number} · ${item.category}</div><h1>${escapeHtml(item.title)}</h1><p class="sec-lead">${escapeHtml(item.intro)}</p><div class="iw-case-chips"><span>${item.minutes} min · self-paced</span><span>${item.level}</span><span>Fictional training environment</span></div></div>
+      <details class="iw-guide"><summary>First investigation? Follow these three steps</summary><ol><li><strong>Open the evidence.</strong> Read E1, E2, and E3. The small labels tell you which file you are viewing.</li><li><strong>Connect the clues.</strong> Use the notebook to record what happened and what is still unknown. Your notes save automatically.</li><li><strong>Try a decision.</strong> Use the optional hints if you get stuck. Review your findings to see explanations, then retry freely.</li></ol><a href="#/playground">Start with a beginner experiment instead →</a></details>
       <div class="iw-brief"><strong>Your assignment</strong><p>${escapeHtml(item.mission)}</p></div>
       <div class="iw-workspace"><section class="iw-evidence" aria-labelledby="iwEvidenceHeading"><div class="iw-panel-head"><h2 id="iwEvidenceHeading">Evidence desk</h2><span id="iwInspected"></span></div>
         <label class="sr-only" for="iwFind">Find in evidence</label><input id="iwFind" class="iw-find" type="search" maxlength="80" placeholder="Find text across the evidence…" autocomplete="off"><div id="iwFindResults" class="iw-find-results" aria-live="polite"></div>
+        <details class="iw-terms"><summary>Explain the terms in this case</summary><dl>${GUIDES[id].terms.map(([term,definition])=>`<dt>${term}</dt><dd>${definition}</dd>`).join('')}</dl></details>
         <div class="iw-tabs" role="tablist" aria-label="Evidence files">${item.evidence.map((file,i)=>`<button type="button" id="iwTab-${file.id}" role="tab" aria-controls="iwEvidencePanel" aria-selected="${i===0}" tabindex="${i===0?0:-1}" data-evidence="${file.id}">E${i+1} · ${escapeHtml(file.title)}</button>`).join('')}</div>
         <div id="iwEvidencePanel" class="iw-evidence-panel" role="tabpanel" aria-labelledby="iwTab-${active}" tabindex="0"><div id="iwFileKind" class="iw-file-kind"></div><pre id="iwEvidenceText" tabindex="0" aria-label="Evidence file contents"></pre></div>
         <button class="btn-ghost sm" type="button" id="iwDownloadEvidence">Download evidence pack</button>
         <section class="iw-notes" aria-labelledby="iwNotesHeading"><h3 id="iwNotesHeading">Analyst notebook</h3><label for="iwNotes">What happened, what supports it, and what is still unknown?</label><textarea id="iwNotes" maxlength="12000" rows="7" placeholder="Reference E1, E2, or E3 as you connect the events…"></textarea><p class="iw-note-status" id="iwSaveStatus" role="status"></p></section>
       </section>
       <section class="iw-decisions" aria-labelledby="iwDecisionsHeading"><div class="iw-panel-head"><h2 id="iwDecisionsHeading">Your findings</h2><span id="iwAnswered"></span></div><p class="iw-training">Inspect the evidence, then choose one response for each decision. Explanations appear when you review.</p>
-        <form id="iwDecisionForm">${item.questions.map((question,qi)=>`<fieldset class="iw-question"><legend><span>Decision ${qi+1}</span>${escapeHtml(question.prompt)}</legend>${question.options.map((option,oi)=>`<label class="iw-option"><input type="radio" name="${question.id}" value="${oi}" required><span>${escapeHtml(option)}</span></label>`).join('')}</fieldset>`).join('')}<button class="btn-amber" type="submit" id="iwSubmit">Review my findings</button><p id="iwReviewStatus" class="iw-note-status" role="status"></p></form>
+        <form id="iwDecisionForm">${item.questions.map((question,qi)=>`<fieldset class="iw-question"><legend><span>Decision ${qi+1}</span>${escapeHtml(question.prompt)}</legend><details class="iw-hint"><summary>Give me a starting point</summary><p>${GUIDES[id].hints[qi]}</p><button type="button" class="btn-ghost sm" data-hint-ref="${question.refs[0]}">Open the first related evidence file</button></details>${question.options.map((option,oi)=>`<label class="iw-option"><input type="radio" name="${question.id}" value="${oi}" required><span>${escapeHtml(option)}</span></label>`).join('')}</fieldset>`).join('')}<button class="btn-amber" type="submit" id="iwSubmit">Review my findings</button><p id="iwReviewStatus" class="iw-note-status" role="status"></p></form>
         <div id="iwDebrief" class="iw-debrief" aria-live="polite"></div>
       </section></div>
     </section>`;
@@ -333,6 +341,10 @@ Retain the alert, commit references, and audit exports as evidence.`}
     });
     notes.addEventListener('blur',flush);
     const form=document.getElementById('iwDecisionForm');
+    form.addEventListener('click',event=>{
+      const hint=event.target.closest('[data-hint-ref]');
+      if(hint){selectEvidence(hint.dataset.hintRef);document.getElementById('iwEvidencePanel').focus();}
+    });
     form.addEventListener('change',event=>{
       if(!event.target.matches('input[type="radio"]') || isSubmitted(item,recordFor(id)))return;
       recordFor(id).answers[event.target.name]=Number(event.target.value);touch();flush();paintCounts();

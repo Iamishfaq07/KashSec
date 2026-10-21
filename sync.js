@@ -115,6 +115,7 @@ const SupabaseSync = (function(){
     unionFlat('visitDays');
     unionFlat('certTracker');
     unionFlat('labsCompleted');
+    unionFlat('playgroundCompleted');
     unionFlat('weeklyChain');
     unionFlat('pomodoroSessions');
     unionFlat('lessonRatings');
