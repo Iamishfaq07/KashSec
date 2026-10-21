@@ -79,6 +79,7 @@ try {
     ['#/lesson/03-linux/terminal-basics', '/lesson/03-linux/terminal-basics.html'],
     ['#/labs', '/labs/'], ['#/tools', '/tools/'], ['#/glossary', '/#/glossary']]) {
     const link = page.locator(`a[href="${href}"]`).first();
+    if(!await link.isVisible()) await page.locator('#hamb').click();
     await link.click();
     await page.waitForURL(BASE + target);
     await waitForSync(page);
@@ -105,6 +106,7 @@ try {
   const delayedPage = await delayed.newPage();
   await delayedPage.goto(BASE + '/#access_token=test');
   await delayedPage.waitForFunction(() => window.__mergeStarted);
+  if(!await delayedPage.locator('a[href="#/glossary"]').first().isVisible()) await delayedPage.locator('#hamb').click();
   await delayedPage.locator('a[href="#/glossary"]').first().click();
   await delayedPage.waitForURL(BASE + '/#/glossary');
   await delayedPage.evaluate(() => window.__releaseMerge());
