@@ -360,6 +360,7 @@ function defaultState(){
     studyPlan:{pathId:'all', dailyGoal:2, updatedAt:0},
     investigations:{}, // caseId: saved decisions, evidence opened, notes, review history
     playgroundCompleted:{}, // exerciseId: completion timestamp; demo inputs are never stored
+    learningGuide:{experience:'new',focus:'basics',updatedAt:0},
     daily:{}, // { "YYYY-MM-DD": { qi, chosen, correct } }
     leaderboardOptIn:false,
     leaderboardName:'',
@@ -448,6 +449,13 @@ function normalizeState(input){
     updatedAt:Number.isFinite(plan.updatedAt) && plan.updatedAt >= 0 ? plan.updatedAt : 0
   };
   if(Object.keys(state.studyPlan).some(key=>Object.hasOwn(plan, key) && state.studyPlan[key] !== plan[key])) repaired = true;
+  const guide = state.learningGuide;
+  state.learningGuide = {
+    experience:['new','some','practice'].includes(guide.experience) ? guide.experience : 'new',
+    focus:['basics','web','defense'].includes(guide.focus) ? guide.focus : 'basics',
+    updatedAt:Number.isFinite(guide.updatedAt) && guide.updatedAt >= 0 && guide.updatedAt <= 8.64e15 ? guide.updatedAt : 0
+  };
+  if(Object.keys(state.learningGuide).some(key=>Object.hasOwn(guide,key) && state.learningGuide[key] !== guide[key])) repaired = true;
   const investigations = state.investigations;
   state.investigations = {};
   for(const [id, value] of Object.entries(investigations)){
@@ -1978,6 +1986,7 @@ let currentPlannerRefresh = null;
 let currentInvestigationFlush = null;
 let currentInvestigationRefresh = null;
 let currentPlaygroundRefresh = null;
+let currentStartGuideRefresh = null;
 const lessonFallbacks = new Map();
 let currentLabMessageController = null;
 let currentCvssWorker = null;
@@ -1993,6 +2002,7 @@ function route(){
   currentInvestigationFlush = null;
   currentInvestigationRefresh = null;
   currentPlaygroundRefresh = null;
+  currentStartGuideRefresh = null;
   currentPlannerRefresh = null;
   currentLessonNotesFlush?.();
   currentLessonNotesFlush = null;
@@ -2060,6 +2070,7 @@ function route(){
   else if(hash.startsWith('#/investigations/')) renderInvestigationsRoute(hash.slice(17));
   else if(hash === '#/playground') renderPlaygroundRoute();
   else if(hash.startsWith('#/playground/')) renderPlaygroundRoute(hash.slice(13));
+  else if(hash === '#/start') renderStartGuide();
   else if(hash === '#/certificate') renderCertificate();
   else if(hash === '#/search' || hash.startsWith('#/search?')){
     const qs = hash.indexOf('?');
@@ -2172,6 +2183,7 @@ const ROUTE_TITLES = {
   '#/planner':'Study planner',
   '#/investigations':'Incident Workbench',
   '#/playground':'Learning Playground',
+  '#/start':'Your starting route',
   '#/progress':'My progress', '#/glossary':'Cybersecurity glossary', '#/tracks':'Career tracks',
   '#/careers':'Cybersecurity careers', '#/certs':'Certification roadmap', '#/career-quiz':'Career-fit quiz',
   '#/roadmap':'Learning roadmap', '#/review':'Flashcard review', '#/changelog':"What's new",
@@ -2508,7 +2520,7 @@ function renderHome(){
           ${continueCtx
             ? `<a class="btn-amber" href="#/lesson/${continueCtx.path.id}/${continueCtx.sub.id}">Continue learning →</a>`
             : `<a class="btn-amber" href="#/lesson/01-introduction/what-is-cybersecurity">Begin lesson 1 →</a>`}
-          <a class="btn-ghost" href="#/roadmap">See the roadmap</a>
+          <a class="btn-ghost" href="#/start">Find my starting point</a>
         </div>
         <p class="pg-home-link" data-reveal style="--i:3">Prefer to try things first? <a href="#/playground">Start with a 5-minute experiment →</a></p>
         <div class="daily-lesson" data-reveal style="--i:3">
@@ -2653,7 +2665,7 @@ function renderCourseIndex(){
         <p class="sec-lead">Each path is split into short focused sub-lessons. Click a path to see its map.</p>
       </div>
       ${studyPlannerEntryHtml()}
-      <p class="pg-course-link">New to security? <a href="#/playground">Try the beginner Learning Playground →</a></p>
+      <p class="pg-course-link">Not sure where to begin? <a href="#/start">Find my starting point →</a><br>Prefer trying things first? <a href="#/playground">Try the beginner Learning Playground →</a></p>
       ${(()=>{
         // Level filter. The tier is already on every card (data-tier) and
         // colour-coded on its edge; this lets a newcomer narrow 26 cards to
@@ -3218,14 +3230,14 @@ const LEGAL = {
   },
   privacy: {
     eyebrow:'Privacy', title:'Privacy policy',
-    lead:'What this site stores, what leaves your device, and what you can do about it. Last updated 21 October 2026.',
+    lead:'What this site stores, what leaves your device, and what you can do about it. Last updated 22 October 2026.',
     sections:[
       {h:'The short version', p:[
         'You can use the entire course without an account, and if you do, your progress never leaves your browser. If you choose to create an account, your progress is synced to a database so you can pick it up on another device. Page-view and performance analytics are collected for everyone. Advertising may appear and, when it does, is served by Google.',
         'Nothing here is sold, and nothing is shared with anyone beyond the specific services named below.'
       ]},
       {h:'What is stored on your device', p:[
-        'KashSec progress normally uses one browser-storage entry, <code>kashsec_state_v1</code>. It holds your lesson progress, quiz and exam results, practice-task answers, flashcard scheduling, notes you have written, lessons you have rated, your streak, study-plan settings, investigation decisions and analyst notes, playground completion, and display settings. Playground messages and experiment settings are not saved or synced. If this record becomes unreadable, KashSec tries to keep an untouched second local entry, <code>kashsec_state_recovery_v1</code>, so you can download the original data. Clearing this site\'s storage deletes both entries.',
+        'KashSec progress normally uses one browser-storage entry, <code>kashsec_state_v1</code>. It holds your lesson progress, quiz and exam results, practice-task answers, flashcard scheduling, notes you have written, lessons you have rated, your streak, study-plan settings, starting-route preferences, investigation decisions and analyst notes, playground completion, and display settings. Playground messages and experiment settings are not saved or synced. If this record becomes unreadable, KashSec tries to keep an untouched second local entry, <code>kashsec_state_recovery_v1</code>, so you can download the original data. Clearing this site\'s storage deletes both entries.',
         'This is stored by your browser, on your device. Without an account it is never transmitted anywhere, and it is not readable by this site\'s author or anyone else. Clearing browser storage for this site erases both entries permanently — export a copy first if you need one.'
       ]},
       {h:'If you create an account (optional)', p:[
@@ -3511,6 +3523,7 @@ async function renderSubLesson(pathId, subId){
         <div class="md" id="content" aria-busy="true">${fallbackHtml ? `<article>${fallbackHtml}</article>` : '<div class="loading" role="status">Loading lesson…</div>'}</div>
         <div id="microCheck"></div>
         ${STATE.studyPlan.updatedAt ? '<p class="study-return"><a class="btn-ghost sm" href="#/planner">Back to my study plan</a></p>' : ''}
+        ${STATE.learningGuide.updatedAt ? '<p class="study-return"><a class="btn-ghost sm" href="#/start">Back to my starting route</a></p>' : ''}
         <details class="notes-panel">
           <summary><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg> My notes on this lesson</summary>
           <div class="notes-panel-body">
@@ -7253,6 +7266,11 @@ function renderLabLeakedSecret(){
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
+  {date:'2026-10-22', title:'A clear starting route for every learner', items:[
+    'Choose your experience and interest to preview a short route combining lessons, playground experiments, and investigations. Open any step and save your choices when ready.',
+    'The route follows your real progress and points to the next unfinished step. Saved choices are included in progress backups and optional account sync.',
+    'Use the suggested course path in your study planner with one explicit action, keeping your existing daily lesson goal. Return to your route from lessons, experiments, and casework.'
+  ]},
   {date:'2026-10-21', title:'Learn by doing, one small experiment at a time', items:[
     'A new beginner Learning Playground explains web requests, UTF-8 and Base64, and invoice access checks through short interactive experiments with immediate feedback.',
     'Follow small goals at your own pace, restart freely, and continue into related lessons or an investigation. Completed experiments are saved with your progress; typed messages and demo settings are not stored.',
@@ -11453,6 +11471,27 @@ async function renderPlaygroundRoute(id){
   }
 }
 
+let startGuidePromise = null;
+async function renderStartGuide(){
+  const generation = renderGeneration;
+  app.innerHTML = '<div class="loading" role="status">Finding your starting point…</div>';
+  try{
+    if(!window.KashLearningGuide){
+      if(!startGuidePromise) startGuidePromise = withTimeout(loadScript('learning-guide.js'),12000,'Opening your starting guide')
+        .catch(error=>{startGuidePromise=null;throw error;});
+      await startGuidePromise;
+    }
+    if(generation !== renderGeneration) return;
+    if(!window.KashLearningGuide) throw new Error('Starting guide unavailable');
+    cacheOpenedBundle('learning-guide.js');KashLearningGuide.render();afterRender();
+  }catch(error){
+    if(generation !== renderGeneration) return;
+    app.innerHTML = '<section class="sec"><h1>Your starting guide could not load</h1><p>Check your connection and try again. Your saved choices are still in this browser.</p><button class="btn-amber" id="sgLoadRetry" type="button">Try again</button><p><a href="#/course">Browse the course</a></p></section>';
+    startGuidePromise = null;
+    document.getElementById('sgLoadRetry').addEventListener('click',renderStartGuide);afterRender();
+  }
+}
+
 function renderProgressHub(){
   const overall = overallProgress();
   const unlockedCount = Object.keys(STATE.achievements).filter(k=>!k.startsWith('_') && !k.startsWith('theme-explorer-seen')).length;
@@ -11475,6 +11514,7 @@ function renderProgressHub(){
       </div>
       ${studyPlannerEntryHtml()}
       ${investigationEntryHtml()}
+      <p class="pg-course-link"><a href="#/start">${STATE.learningGuide.updatedAt?'Return to my saved starting route':'Find a starting point that fits me'} →</a></p>
 
       ${continueCtx ? `
         <div class="hero-btns" style="justify-content:flex-start" data-reveal style="--i:1">
@@ -12095,7 +12135,7 @@ function getCommands(){
      palette showed SVG for tools and labs and raw emoji for navigation, in
      the same list. Finishing the migration is what makes it one set. */
   const nav = [
-    ['Home','#/','house'],['Course','#/course','doc'],['Learning Playground','#/playground','compass'],['Study planner','#/planner','calendar'],['Incident Workbench','#/investigations','microscope'],['Roadmap','#/roadmap','mapPin'],
+    ['Home','#/','house'],['Start here','#/start','compass'],['Course','#/course','doc'],['Learning Playground','#/playground','compass'],['Study planner','#/planner','calendar'],['Incident Workbench','#/investigations','microscope'],['Roadmap','#/roadmap','mapPin'],
     ['Practice tracks','#/tracks','layers'],['Labs','#/labs','microscope'],['Tools','#/tools','toolbox'],
     ['Practice tasks','#/tasks','check'],['Timed mock exam','#/exam','timer'],['Search','#/search','search'],
     ['Glossary','#/glossary','scroll'],['Flashcards','#/review','folders'],['Daily challenge','#/daily','clock'],
@@ -12573,6 +12613,7 @@ if(typeof SupabaseSync !== 'undefined' && SupabaseSync.CONFIGURED){
       currentPlannerRefresh?.();
       currentInvestigationRefresh?.();
       currentPlaygroundRefresh?.();
+      currentStartGuideRefresh?.();
       if(authOverlay && authOverlay.classList.contains('open')) closeAuth();
     }
     if(!user) handledInitialSignIn = false;

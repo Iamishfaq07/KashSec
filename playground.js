@@ -49,6 +49,7 @@ window.KashPlayground = (()=>{
       <div class="pg-grid">${EXERCISES.map(item=>`<article class="pg-card" data-pg-card="${item.id}"><span class="sec-eyebrow">Experiment ${item.number} · ${item.minutes} minutes</span><span class="pg-card-icon" aria-hidden="true">${cardIco(item.icon)}</span><h2>${item.title}</h2><p>${item.desc}</p><span class="pg-card-state"></span><a class="btn-ghost" href="#/playground/${item.id}">Try this experiment →</a></article>`).join('')}</div>
       <p class="pg-hint">Completion is saved in this browser, included in progress backups, and available through optional account sync. Your typed messages and experiment settings are not saved.</p>
       <a class="pg-link" href="#/course">Prefer reading? Browse the course →</a></section>`;
+    app.querySelector('.pg-hub').insertAdjacentHTML('beforeend','<p><a class="pg-link" href="#/start">Find a suggested starting route →</a></p>');
     currentPlaygroundRefresh=paintCompletion;paintCompletion();
   }
   function renderExercise(id){
@@ -58,6 +59,7 @@ window.KashPlayground = (()=>{
       <div class="pg-assignment"><strong>Your goal</strong><p>${item.goal}</p><p class="pg-complete" id="pgComplete" data-exercise="${id}" hidden>✓ You’ve completed this experiment. Keep exploring or try the next one.</p></div>
       <div id="pgExperiment"></div><p id="pgSaveStatus" class="pg-hint" role="status"></p>
       <div class="pg-next"><div><h2>Keep the idea moving</h2><p>Use what you just tried in the next lesson or challenge.</p></div><a class="btn-amber" href="${item.next}">${item.nextLabel} →</a></div>
+      ${STATE.learningGuide.updatedAt?'<p><a class="pg-link" href="#/start">Back to my starting route →</a></p>':''}
       <details class="pg-reference"><summary>Read the reference behind this experiment</summary><a class="pg-link" href="${item.source}" target="_blank" rel="noopener noreferrer">${id==='access'?'OWASP: object-level authorisation':'MDN: how this works'} ↗</a></details></section>`;
     if(id==='network')renderNetwork();
     if(id==='encoding')renderEncoding();

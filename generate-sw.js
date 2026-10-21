@@ -66,6 +66,7 @@ const deferredUrls = [
   'tasks.js',
   'investigations.js',
   'playground.js',
+  'learning-guide.js',
   'search-preview.js',
   'search-index.js',
 ];
