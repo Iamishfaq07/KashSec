@@ -6,11 +6,9 @@ const REPO_SLUG = 'Iamishfaq07/KashSec';
 document.getElementById('year').textContent = new Date().getFullYear();
 document.body.classList.add('reveal-ready');
 
-/* Fit the desktop nav to the font that actually rendered. The CSS
-   breakpoints are tuned for Inter; a wider fallback pushed the links under
-   the action buttons at common laptop widths. Measure, and add density
-   levels until the first link clears the brand and the last clears the
-   buttons. Re-run on resize and once web fonts finish loading. */
+/* Fit desktop links to the rendered font and account name. Try compact
+   spacing before falling back to the scrollable menu; laptops use that
+   menu directly. Recheck after fonts, account text, or controls change. */
 (()=>{
   const nav = document.querySelector('.nav');
   if(!nav) return;
@@ -24,18 +22,32 @@ document.body.classList.add('reveal-ready');
     return (cta && cta.left - last.right < 4) || (brand && first.left - brand.right < 4);
   };
   const fit = ()=>{
-    nav.classList.remove(...LEVELS);
-    if(window.innerWidth <= 900) return; // the mobile menu takes over
-    for(const level of LEVELS){ if(!overlaps()) break; nav.classList.add(level); }
+    const wasCollapsed = nav.classList.contains('nav-collapsed');
+    nav.classList.remove(...LEVELS, 'nav-collapsed');
+    let collapsed = window.innerWidth <= 1100;
+    if(!collapsed){
+      for(const level of LEVELS){ if(!overlaps()) break; nav.classList.add(level); }
+      collapsed = overlaps();
+    }
+    nav.classList.toggle('nav-collapsed', collapsed);
+    if(collapsed) nav.classList.remove(...LEVELS);
+    nav.style.setProperty('--nav-height', `${nav.getBoundingClientRect().height}px`);
+    if(collapsed !== wasCollapsed) nav.dispatchEvent(new Event('navlayoutchange'));
   };
   let queued = false;
   const schedule = ()=>{ if(queued) return; queued = true; requestAnimationFrame(()=>{ queued = false; fit(); }); };
   window.addEventListener('resize', schedule, {passive:true});
   document.fonts?.ready.then(schedule);
   document.fonts?.addEventListener?.('loadingdone', schedule);
-  // The button group grows when an account button appears after sign-in.
+  // The button group grows when install and streak controls appear.
   const cta = nav.querySelector('.nav-cta');
   if(cta && 'ResizeObserver' in window) new ResizeObserver(schedule).observe(cta);
+  // Account text lives in the links row and can appear after session restore.
+  const links = nav.querySelector('.nav-links');
+  if(links) new MutationObserver(schedule).observe(links, {
+    childList:true, characterData:true, subtree:true, attributes:true,
+    attributeFilter:['style', 'hidden']
+  });
   fit();
 })();
 
@@ -1885,6 +1897,7 @@ document.addEventListener('click', e=>{
    and skip writing into DOM nodes that no longer exist. */
 let renderGeneration = 0;
 let currentLessonScrollController = null;
+let currentLessonMenuController = null;
 let currentLabMessageController = null;
 let currentCvssWorker = null;
 
@@ -1892,6 +1905,8 @@ function route(){
   renderGeneration++;
   currentLessonScrollController?.abort();
   currentLessonScrollController = null;
+  currentLessonMenuController?.abort();
+  currentLessonMenuController = null;
   currentLabMessageController?.abort();
   currentLabMessageController = null;
   currentCvssWorker?.terminate();
@@ -3315,8 +3330,8 @@ async function renderSubLesson(pathId, subId){
   app.innerHTML = `
     <div class="reader-progress" id="rprog" style="width:0%"></div>
     <div class="reader-wrap">
-      <aside class="sidebar" id="sidebar">
-        <div class="sb-head">All paths</div>
+      <aside class="sidebar" id="sidebar" aria-label="Lesson navigation">
+        <div class="sb-head"><span>All paths</span><button class="btn-ghost sm sb-close" id="closeLessonMenuBtn" type="button">Close</button></div>
         <div id="sbNav"></div>
         ${adSlotHtml('sidebar')}
       </aside>
@@ -3344,7 +3359,7 @@ async function renderSubLesson(pathId, subId){
             <button class="icon-btn ${STATE.zenMode?'active':''}" id="zenModeBtn" type="button" aria-label="${STATE.zenMode?'Exit focus reading mode':'Enter focus reading mode'}" aria-pressed="${STATE.zenMode}" title="Focus reading mode — hide everything but the lesson">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2-5 3 10 2.5-7 1.5 2h5"/></svg>
             </button>
-            <button class="btn-ghost sm mobile-only" id="menuBtn" aria-label="Open lesson menu">
+            <button class="btn-ghost sm mobile-only" id="menuBtn" type="button" aria-label="Open lesson menu" aria-controls="sidebar" aria-expanded="false">
               <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg> Lessons
             </button>
           </div>
@@ -3401,9 +3416,50 @@ async function renderSubLesson(pathId, subId){
 
   renderSidebar(pathId, subId);
   pushAdSlots(app);
-  document.getElementById('menuBtn')?.addEventListener('click',()=>{
-    document.getElementById('sidebar').classList.toggle('open');
-  });
+  const sidebar = document.getElementById('sidebar');
+  const menuBtn = document.getElementById('menuBtn');
+  const closeMenuBtn = document.getElementById('closeLessonMenuBtn');
+  const narrowLesson = window.matchMedia('(max-width: 900px)');
+  currentLessonMenuController?.abort();
+  currentLessonMenuController = new AbortController();
+  const menuSignal = currentLessonMenuController.signal;
+  const setLessonMenuOpen = (open, restoreFocus = false) => {
+    const mobileOpen = open && narrowLesson.matches;
+    sidebar.classList.toggle('open', mobileOpen);
+    sidebar.inert = narrowLesson.matches && !mobileOpen;
+    menuBtn.setAttribute('aria-expanded', String(mobileOpen));
+    menuBtn.setAttribute('aria-label', mobileOpen ? 'Close lesson menu' : 'Open lesson menu');
+    if(mobileOpen) closeMenuBtn.focus();
+    else if(restoreFocus) menuBtn.focus();
+  };
+  setLessonMenuOpen(false);
+  menuBtn.addEventListener('click', () => setLessonMenuOpen(!sidebar.classList.contains('open')), {signal:menuSignal});
+  closeMenuBtn.addEventListener('click', () => setLessonMenuOpen(false, true), {signal:menuSignal});
+  sidebar.addEventListener('click', e => {
+    if(e.target.closest('a')) setLessonMenuOpen(false);
+  }, {signal:menuSignal});
+  sidebar.addEventListener('focusout', e => {
+    if(sidebar.classList.contains('open') && e.relatedTarget &&
+        !sidebar.contains(e.relatedTarget) && e.relatedTarget !== menuBtn){
+      setLessonMenuOpen(false);
+    }
+  }, {signal:menuSignal});
+  document.addEventListener('click', e => {
+    if(sidebar.classList.contains('open') && !sidebar.contains(e.target) && !menuBtn.contains(e.target)){
+      setLessonMenuOpen(false);
+    }
+  }, {signal:menuSignal});
+  document.addEventListener('keydown', e => {
+    if(e.key === 'Escape' && sidebar.classList.contains('open')) setLessonMenuOpen(false, true);
+  }, {signal:menuSignal});
+  narrowLesson.addEventListener('change', () => {
+    const closeButtonFocused = document.activeElement === closeMenuBtn;
+    const sidebarFocused = sidebar.contains(document.activeElement);
+    setLessonMenuOpen(false, narrowLesson.matches && sidebarFocused);
+    if(!narrowLesson.matches && closeButtonFocused){
+      sidebar.querySelector('.sb-path.active .sb-path-head')?.focus();
+    }
+  }, {signal:menuSignal});
   document.getElementById('printLessonBtn')?.addEventListener('click',()=>window.print());
   document.getElementById('dismissUpdated')?.addEventListener('click', ()=>{
     markLessonReRead(pathId, subId);
@@ -3566,15 +3622,15 @@ function renderSidebar(activePathId, activeSubId){
     const isActive = p.id === activePathId;
     return `
       <div class="sb-path ${isActive?'active open':''}" data-pid="${p.id}">
-        <button class="sb-path-head">
+        <button class="sb-path-head" type="button" aria-expanded="${isActive}" aria-controls="sb-lessons-${p.id}">
           <span class="n">${p.n}</span>
           <span class="name">${p.title}</span>
           <svg class="chev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
         </button>
-        <ul class="sb-sublist">
-          <li><a href="#/lesson/${p.id}" class="${isActive && !activeSubId ? 'active':''}"><em>Overview</em></a></li>
+        <ul class="sb-sublist" id="sb-lessons-${p.id}">
+          <li><a href="#/lesson/${p.id}" class="${isActive && !activeSubId ? 'active':''}"${isActive && !activeSubId ? ' aria-current="page"':''}><em>Overview</em></a></li>
           ${p.subs.map(s=>`
-            <li><a href="#/lesson/${p.id}/${s.id}" class="${isActive && s.id===activeSubId?'active':''}">
+            <li><a href="#/lesson/${p.id}/${s.id}" class="${isActive && s.id===activeSubId?'active':''}"${isActive && s.id===activeSubId ? ' aria-current="page"':''}>
               ${p.n}.${s.n} · ${s.title}
             </a></li>
           `).join('')}
@@ -3587,6 +3643,7 @@ function renderSidebar(activePathId, activeSubId){
     btn.addEventListener('click', e=>{
       const parent = btn.closest('.sb-path');
       parent.classList.toggle('open');
+      btn.setAttribute('aria-expanded', String(parent.classList.contains('open')));
     });
   });
 }
@@ -11506,20 +11563,40 @@ function renderProgressHub(){
 const hamb = document.getElementById('hamb');
 const navLinks = document.getElementById('navLinks');
 function setMobileMenuOpen(open, restoreFocus = false){
+  const collapsed = document.getElementById('siteNav').classList.contains('nav-collapsed');
+  open = open && collapsed;
   navLinks.classList.toggle('open', open);
+  navLinks.inert = collapsed && !open;
   hamb.setAttribute('aria-expanded', String(open));
   hamb.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
   if(open) navLinks.querySelector('a, button')?.focus();
-  else if(restoreFocus) hamb.focus();
+  else if(restoreFocus && collapsed) hamb.focus();
 }
 hamb.addEventListener('click',()=>{
   setMobileMenuOpen(!navLinks.classList.contains('open'));
 });
 document.querySelectorAll('#navLinks a').forEach(a=>{
   a.addEventListener('click',()=>{
-    setMobileMenuOpen(false);
+    setMobileMenuOpen(false, a.id === 'accountNavLink');
   });
 });
+document.addEventListener('click', e=>{
+  if(navLinks.classList.contains('open') && !e.target.closest('#siteNav')) setMobileMenuOpen(false);
+});
+navLinks.addEventListener('focusout', e=>{
+  if(e.relatedTarget && !navLinks.contains(e.relatedTarget) && e.relatedTarget !== hamb){
+    setMobileMenuOpen(false);
+  }
+});
+document.getElementById('siteNav').addEventListener('navlayoutchange', ()=>{
+  const linksFocused = navLinks.contains(document.activeElement);
+  const toggleFocused = document.activeElement === hamb;
+  setMobileMenuOpen(false, linksFocused);
+  if(toggleFocused && !document.getElementById('siteNav').classList.contains('nav-collapsed')){
+    navLinks.querySelector('a')?.focus();
+  }
+});
+setMobileMenuOpen(false);
 document.addEventListener('keydown', e=>{
   if(e.key === 'Escape' && navLinks.classList.contains('open') &&
       (navLinks.contains(document.activeElement) || document.activeElement === hamb)){
@@ -12096,7 +12173,7 @@ function updateAccountNav(user){
 
 document.getElementById('accountNavLink')?.addEventListener('click', (e)=>{
   e.preventDefault();
-  navLinks.classList.remove('open');
+  setMobileMenuOpen(false);
   openAuth();
 });
 

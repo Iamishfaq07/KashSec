@@ -243,6 +243,7 @@ function headingSkips() {
         /* Overflow alone missed links running *under* the action buttons
            (the link row may shrink, its text doesn't), so measure overlap. */
         const links = [...nav.querySelectorAll('.nav-links a')].filter(a => a.offsetParent);
+        if(!links.length) return {over:nav.scrollWidth - vw, cut:start.getBoundingClientRect().right > vw, overlap:0};
         const last = links[links.length - 1].getBoundingClientRect();
         const first = links[0].getBoundingClientRect();
         const overlap = Math.max(last.right - nav.querySelector('.nav-cta').getBoundingClientRect().left,
