@@ -26,7 +26,7 @@ jobs:
 
       - name: Syntax check hand-written JS
         run: |
-          for f in app.js investigations.js playground.js quizzes.js sync.js ads.js analytics.js lesson-hashes.js; do
+          for f in app.js investigations.js playground.js learning-guide.js quizzes.js sync.js ads.js analytics.js lesson-hashes.js; do
             [ -f "$f" ] && node --check "$f"
           done
 
@@ -94,6 +94,11 @@ jobs:
 
       - name: Learning Playground (guided experiments, Unicode, progress, offline)
         run: npm run test:playground
+        env:
+          BASE: http://127.0.0.1:8000
+
+      - name: Starting guide (routes, progress, planner, backups, sync, offline)
+        run: npm run test:guide
         env:
           BASE: http://127.0.0.1:8000
 

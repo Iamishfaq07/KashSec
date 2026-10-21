@@ -2241,3 +2241,52 @@ label.tool-note{display:block}
   #pgResetAccess{margin:.7rem 0 0}
   .pg-next .btn-amber{width:100%;white-space:normal;text-align:center;justify-content:center}
 }
+
+/* ---------- Start-here learning routes ---------- */
+.sg-layout{display:grid;grid-template-columns:minmax(290px,.8fr) minmax(0,1.2fr);gap:1.5rem;align-items:start}
+.sg-choices,.sg-result{min-width:0;padding:clamp(1.2rem,2.7vw,2rem);background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg)}
+.sg-choices h2,.sg-result-head h2{font-family:var(--font-display);font-size:1.5rem;line-height:1.35;letter-spacing:-.02em;margin:0 0 .8rem}
+.sg-choices fieldset{border:0;padding:0;margin:1.6rem 0;min-width:0}
+.sg-choices legend{font-size:.95rem;line-height:1.5;font-weight:600;padding:0;margin-bottom:.8rem}
+.sg-choices legend>span{display:inline-grid;place-items:center;width:1.6rem;height:1.6rem;border-radius:50%;background:var(--surface2);color:var(--teal-ink);font:500 .75rem var(--font-mono);margin-right:.4rem}
+.sg-option{display:flex;gap:.7rem;align-items:flex-start;padding:1rem;margin:.6rem 0;background:var(--bg);border:1px solid var(--border);border-radius:var(--r);cursor:pointer;min-height:48px}
+.sg-option:has(input:checked){border-color:var(--teal);background:var(--surface2)}
+.sg-option input{flex:none;width:17px;height:17px;margin-top:.2rem;accent-color:var(--teal)}
+.sg-option>span{min-width:0}
+.sg-option strong{display:block;font-size:.9rem;line-height:1.6}
+.sg-option>span>span{display:block;font-size:.8rem;color:var(--muted);line-height:1.8;margin-top:.25rem}
+.sg-form-actions{display:flex;gap:.6rem;flex-wrap:wrap}
+.sg-form-actions button{min-height:48px}
+.sg-result{scroll-margin-top:calc(var(--nav-height,64px) + 1rem)}
+.sg-result-head h2{margin:.5rem 0}
+.sg-context{color:var(--teal-ink);font-size:.85rem;margin:0 0 1rem}
+.sg-result-head>p:not(.sg-context){font-size:.93rem;line-height:1.8;color:var(--muted);margin:0 0 1.5rem}
+.sg-progress-label{display:flex;justify-content:space-between;gap:.8rem;flex-wrap:wrap;font-size:.78rem;color:var(--muted);margin-bottom:.6rem}
+.sg-progress-label strong{color:var(--text);font-weight:500}
+.sg-next{border:1px solid var(--border-strong);border-radius:var(--r);padding:1.3rem;margin:1.6rem 0;background:linear-gradient(130deg,rgba(63,182,168,.1),transparent),var(--bg)}
+.sg-next h3{font-family:var(--font-display);font-size:1.2rem;line-height:1.5;margin:.6rem 0 1rem;overflow-wrap:anywhere}
+.sg-next .btn-amber{min-height:48px}
+.sg-next p{font-size:.9rem;line-height:1.8;color:var(--muted)}
+.sg-steps{list-style:none;padding:0;margin:1.5rem 0;display:grid;gap:1rem}
+.sg-steps>li{display:grid;grid-template-columns:2rem minmax(0,1fr);gap:.9rem;padding-bottom:1rem;border-bottom:1px solid var(--border)}
+.sg-step-number{display:grid;place-items:center;width:2rem;height:2rem;border:1px solid var(--border-strong);border-radius:50%;font:500 .75rem var(--font-mono);color:var(--muted)}
+.sg-steps .is-done .sg-step-number{border-color:var(--teal);color:var(--teal-ink)}
+.sg-step-kind{font-size:.72rem;line-height:1.7;color:var(--teal-ink)}
+.sg-steps h3{font-size:1rem;line-height:1.6;margin:.35rem 0 .4rem}
+.sg-steps p{font-size:.86rem;line-height:1.8;color:var(--muted);margin:0 0 .3rem}
+.sg-steps a{display:inline-flex;align-items:center;min-height:44px;color:var(--teal-ink);font-size:.86rem}
+.sg-planner{padding:1.3rem;border:1px solid var(--border);border-radius:var(--r);background:var(--bg)}
+.sg-planner h3{font-family:var(--font-display);font-size:1.1rem;margin:0 0 .8rem}
+.sg-planner>p{font-size:.86rem;color:var(--muted);line-height:1.8}
+.sg-planner button{min-height:48px;white-space:normal}
+.sg-planner .pg-link{margin:0}
+.sg-footer{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-top:1.5rem}
+.sg-case-back{margin-left:1.3rem}
+@media(max-width:850px){.sg-layout{grid-template-columns:1fr}}
+@media(max-width:450px){
+  .sg-form-actions{flex-direction:column}
+  .sg-next .btn-amber{white-space:normal;text-align:center;justify-content:center;width:100%}
+  .sg-case-back{margin-left:0}
+  .sg-steps>li{gap:.6rem;grid-template-columns:1.7rem minmax(0,1fr)}
+  .sg-step-number{width:1.7rem;height:1.7rem}
+}

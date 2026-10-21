@@ -161,6 +161,10 @@ const SupabaseSync = (function(){
       Number.isInteger(plan.dailyGoal) && plan.dailyGoal >= 1 && plan.dailyGoal <= 10 &&
       Number.isFinite(plan.updatedAt) && plan.updatedAt >= 0 ? plan.updatedAt : 0;
     if(planTs(remote.studyPlan) > planTs(local.studyPlan)) merged.studyPlan = remote.studyPlan;
+    const guideTs = guide => ['new','some','practice'].includes(guide?.experience) &&
+      ['basics','web','defense'].includes(guide.focus) && Number.isFinite(guide.updatedAt) &&
+      guide.updatedAt >= 0 && guide.updatedAt <= 8.64e15 ? guide.updatedAt : 0;
+    if(guideTs(remote.learningGuide) > guideTs(local.learningGuide)) merged.learningGuide = remote.learningGuide;
 
     return merged;
   }

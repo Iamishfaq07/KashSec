@@ -39,6 +39,7 @@ const ROUTES = [
   ['incident workbench', '#/investigations'],
   ['incident case', '#/investigations/mailbox-takeover'],
   ['learning playground', '#/playground'],
+  ['starting guide', '#/start'],
   ['network experiment', '#/playground/network'],
   ['encoding experiment', '#/playground/encoding'],
   ['access experiment', '#/playground/access'],
